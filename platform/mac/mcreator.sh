@@ -13,7 +13,7 @@ setopt +o nomatch
 DIR=$(cd "$(dirname "$0")"; pwd)
 cd "$DIR"
 
-./jdk/bin/java \
+./jdk/Contents/Home/bin/java \
   --add-opens=java.base/java.lang=ALL-UNNAMED \
   -Xdock:name=MCreator \
   -Xdock:icon=../Resources/mcreatorapp.icns \

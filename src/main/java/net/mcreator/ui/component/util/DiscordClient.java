@@ -121,6 +121,6 @@ public class DiscordClient implements Closeable {
 		}
 	}
 	private boolean isDisabled() {
-		return !PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable || OS.getArchitecture().equals("aarch64");
+		return !PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable || OS.getArchitecture().equals(OS.AARCH64);
 	}
 }

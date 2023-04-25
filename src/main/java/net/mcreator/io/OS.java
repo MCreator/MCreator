@@ -26,6 +26,7 @@ public class OS {
 
 	public static final int BIT32 = 32;
 	public static final int BIT64 = 64;
+
 	public static final String X86_64 = "x86_64";
 	public static final String AARCH64 = "aarch64";
 
