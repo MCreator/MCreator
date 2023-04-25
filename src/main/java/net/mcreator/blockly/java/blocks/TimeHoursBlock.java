@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 
 public class TimeHoursBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		master.append("Calendar.getInstance().get(Calendar.HOUR_OF_DAY)");
+		master.append("/*@int*/Calendar.getInstance().get(Calendar.HOUR_OF_DAY)");
 	}
 
 	@Override public String[] getSupportedBlocks() {
