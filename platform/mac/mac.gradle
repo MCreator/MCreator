@@ -11,21 +11,25 @@ tasks.register('exportMac64', Copy.class) {
     dependsOn jar
     dependsOn exportPlugins
 
+    icon = "mcreator.icns"
+    appIcon = "mcreatorapp.icns"
+    if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
+        icon = "mcreator_eap.icns"
+        appIcon = "mcreatorapp_eap.icns"
+    }
+
     into exportPath
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
             line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
+            line.replace('%icon%', icon)
+            line.replace('%appIcon%', appIcon)
         }
         from file('LICENSE.txt')
     }
     into('Resources') {
-        if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
-            from file('platform/mac/mcreatorapp_eap.icns')
-            from file('platform/mac/mcreator_eap.icns')
-        } else {
-            from file('platform/mac/mcreatorapp.icns')
-            from file('platform/mac/mcreator.icns')
-        }
+        from file("platform/mac/${appIcon}")
+        from file("platform/mac/${icon}")
     }
     into('MacOS') {
         from file('platform/mac/mcreator')

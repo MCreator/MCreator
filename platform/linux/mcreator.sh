@@ -5,6 +5,8 @@
 # ---------------------------------------------------------------------
 #
 
+icon_file="$1"
+
 # make launcher desktop file
 if [[ ! -f "mcreator.desktop" ]]; then
 
@@ -12,11 +14,11 @@ pwd=$(pwd)
 
 cat > mcreator.desktop <<EOL
 [Desktop Entry]
-Exec=/bin/bash -c 'cd "${pwd}" && ./mcreator.sh'
+Exec=/bin/bash -c 'cd "${pwd}" && ./mcreator.sh ${icon_file}'
 Type=Application
 Terminal=false
 Name=MCreator
-Icon=${pwd}/icon.png
+Icon=${pwd}/${icon_file}
 EOL
 
 chmod +x mcreator.desktop
@@ -38,4 +40,4 @@ fi
 export CLASSPATH='./lib/mcreator.jar:./lib/*'
 
 # launch MCreator with bundled java
-./jdk/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED net.mcreator.Launcher "$1"
+./jdk/bin/java --add-opens=java.base/java.lang=ALL-UNNAMED net.mcreator.Launcher "$@"

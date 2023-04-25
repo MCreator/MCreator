@@ -7,15 +7,16 @@ tasks.register('exportLinux64', Copy.class) {
     dependsOn jar
     dependsOn exportPlugins
 
+    icon = "icon.png"
+    if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
+        icon = "icon_eap.png"
+    }
+
     into 'build/export/linux64'
     into('') {
         from file('LICENSE.txt')
         from file('platform/linux/mcreator.sh') rename('mcreator.sh', 'mcreator.shdos')
-        if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
-            from file('src/main/resources/net/mcreator/ui/res/icon_eap.png')
-        } else {
-            from file('src/main/resources/net/mcreator/ui/res/icon.png')
-        }
+        from file("src/main/resources/net/mcreator/ui/res/${icon}")
     }
     into('lib') {
         from 'build/libs'
@@ -28,6 +29,10 @@ tasks.register('exportLinux64', Copy.class) {
     doLast {
         convertCRLF(file('build/export/linux64/mcreator.shdos'), file('build/export/linux64/mcreator.sh'))
         delete 'build/export/linux64/mcreator.shdos'
+
+        // Replace ${icon_file} in the mcreator.sh file with the correct value
+        mcreator_sh = file('build/export/linux64/mcreator.sh')
+        mcreator_sh.text = mcreator_sh.text.replace('${icon_file}', icon)
     }
 }
 
