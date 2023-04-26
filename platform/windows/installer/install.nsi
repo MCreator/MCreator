@@ -19,8 +19,8 @@ Name "MCreator ${MCREATOR_VERSION}"
 BrandingText "MCreator ${MCREATOR_VERSION}.${BUILD} - Developed by Pylo"
 
 !define MUI_PRODUCT "MCreator"
-!define MUI_ICON "..\..\platform\windows\installer\installer.ico"
-!define MUI_UNICON "..\..\platform\windows\installer\uninstaller.ico"
+!define MUI_ICON "..\..\platform\windows\installer\%installer%"
+!define MUI_UNICON "..\..\platform\windows\installer\%uninstaller%"
 
 RequestExecutionLevel admin
 
@@ -38,9 +38,9 @@ InstallDir "$PROGRAMFILES${BITS}\Pylo\MCreator"
 !define INSTALLSIZE 306000
 
 !define MUI_HEADERIMAGE
-!define MUI_HEADERIMAGE_BITMAP "..\..\platform\windows\installer\installer.bmp"
-!define MUI_WELCOMEFINISHPAGE_BITMAP "..\..\platform\windows\installer\installer_side.bmp"
-!define MUI_UNWELCOMEFINISHPAGE_BITMAP "..\..\platform\windows\installer\installer_side.bmp"
+!define MUI_HEADERIMAGE_BITMAP "..\..\platform\windows\installer\%bmpInstaller%"
+!define MUI_WELCOMEFINISHPAGE_BITMAP "..\..\platform\windows\installer\%bmpInstallerSide%"
+!define MUI_UNWELCOMEFINISHPAGE_BITMAP "..\..\platform\windows\installer\%bmpInstallerSide%"
 
 !define MUI_LICENSEPAGE_TEXT_TOP "Please read our terms of use published on our website. You can find the links below."
 
