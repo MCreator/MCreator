@@ -1,1 +1,1 @@
-If specified, the entity will be executing this task as long as it passes this condition.
+Si spécifié, l'entité exécutera cette tâche tant que la condition est passée.
