@@ -16,7 +16,10 @@ tasks.register('exportLinux64', Copy.class) {
     into('') {
         from file('LICENSE.txt')
         from file('platform/linux/mcreator.sh') rename('mcreator.sh', 'mcreator.shdos')
-        from file("src/main/resources/net/mcreator/ui/res/${icon}")
+        from("src/main/resources/net/mcreator/ui/res") {
+            include icon
+            rename icon, "icon.png"
+        }
     }
     into('lib') {
         from 'build/libs'
@@ -29,10 +32,6 @@ tasks.register('exportLinux64', Copy.class) {
     doLast {
         convertCRLF(file('build/export/linux64/mcreator.shdos'), file('build/export/linux64/mcreator.sh'))
         delete 'build/export/linux64/mcreator.shdos'
-
-        // Replace ${icon_file} in the mcreator.sh file with the correct value
-        mcreator_sh = file('build/export/linux64/mcreator.sh')
-        mcreator_sh.text = mcreator_sh.text.replace('${icon_file}', icon)
     }
 }
 

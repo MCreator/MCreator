@@ -15,7 +15,7 @@
         <key>CFBundleExecutable</key>
         <string>mcreator</string>
         <key>CFBundleIconFile</key>
-        <string>%appIcon%</string>
+        <string>mcreatorapp.icns</string>
 
         <key>CFBundleInfoDictionaryVersion</key>
         <string>6.0</string>
@@ -38,7 +38,7 @@
                     <string>mcreator</string>
                 </array>
                 <key>CFBundleTypeIconFile</key>
-                <string>%icon%</string>
+                <string>mcreator.icns</string>
                 <key>CFBundleTypeName</key>
                 <string>MCreator workspace file</string>
                 <key>CFBundleTypeRole</key>

@@ -22,14 +22,16 @@ tasks.register('exportMac64', Copy.class) {
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
             line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
-            line.replace('%icon%', icon)
-            line.replace('%appIcon%', appIcon)
         }
         from file('LICENSE.txt')
     }
     into('Resources') {
-        from file("platform/mac/${appIcon}")
-        from file("platform/mac/${icon}")
+        from("platform/mac") {
+            include icon
+            include appIcon
+            rename icon, "mcreator.icns"
+            rename appIcon, "mcreatorapp.icns"
+        }
     }
     into('MacOS') {
         from file('platform/mac/mcreator')
