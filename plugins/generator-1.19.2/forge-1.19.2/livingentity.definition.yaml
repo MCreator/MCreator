@@ -24,3 +24,5 @@ localizationkeys:
     suffix: " Spawn Egg"
   - key: entity.@modid.@registryname
     mapto: mobName
+  - key: entity.@modid.@registryname.none
+    mapto: mobName
