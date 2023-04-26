@@ -43,21 +43,23 @@ package ${package}.init;
 	<#assign tabMap = w.getCreativeTabMap()>
 
 	<#if w.hasItemsInVanillaTabs(tabMap)>
-	@SubscribeEvent public static void buildContentsVanilla(CreativeModeTabEvent.BuildContents tabData) {
+	@SubscribeEvent public static void buildTabContentsVanilla(CreativeModeTabEvent.BuildContents tabData) {
+		<#assign first = true>
 		<#list tabMap.keySet() as tabName>
 			<#if !tabName.startsWith("CUSTOM:")>
-				<#if !tabName?is_first>else </#if>if (tabData.getTab() == ${generator.map(tabName, "tabs")}) {
+				<#if !first>else <#assign first = false></#if>
+				if (tabData.getTab() == ${generator.map(tabName, "tabs")}) {
 					<#list tabMap.get(tabName) as tabElement>
 					tabData.accept(${mappedMCItemToItem(tabElement)});
 					</#list>
-			}
+				}
 			</#if>
 		</#list>
 	}
 	</#if>
 
 	<#if w.hasItemsInCustomTabs(tabMap)>
-	@SubscribeEvent public static void buildContentsModded(CreativeModeTabEvent.Register event) {
+	@SubscribeEvent public static void buildTabContentsModded(CreativeModeTabEvent.Register event) {
 		<#list w.getElementsOfType("tab") as tabME>
 			<#if tabMap.containsKey("CUSTOM:" + tabME.getName())>
 				<#assign tab = tabME.getGeneratableElement()>
