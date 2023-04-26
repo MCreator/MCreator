@@ -19,9 +19,10 @@
 
 package net.mcreator.plugin;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 /**
  * <p>This record is used to save the plugin and the new version/changes of the detected update.</p>
  */
-public record PluginUpdateInfo(Plugin plugin, String newVersion, List<String> recentChanges) {}
+public record PluginUpdateInfo(Plugin plugin, String newVersion, @Nullable List<String> recentChanges) {}
