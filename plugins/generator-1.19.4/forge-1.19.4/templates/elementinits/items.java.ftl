@@ -86,8 +86,8 @@ public class ${JavaModName}Items {
 					block(${JavaModName}Blocks.${item.getModElement().getRegistryNameUpper()});
 			</#if>
 		<#else>
-		public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
-			REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
+			public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()} =
+				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
 		</#if>
 	</#list>
 
