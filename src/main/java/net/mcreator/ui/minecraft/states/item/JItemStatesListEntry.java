@@ -86,7 +86,6 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 				L10N.label("elementgui.item.custom_state.model")), model);
 		CollapsiblePanel override = new CollapsiblePanel(L10N.t("elementgui.item.custom_state.overridden_params"),
 				PanelUtils.join(ito, imo));
-		override.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 		add(PanelUtils.centerAndSouthElement(PanelUtils.join(FlowLayout.LEFT, stateLabel), override));
 
 		JComponent container = PanelUtils.expandHorizontally(this);
