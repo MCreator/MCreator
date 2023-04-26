@@ -1,2 +1,2 @@
-This parameter defines the text displayed by the label when the GUI is open.
-You can use string return type procedure for more complex texts.
+Ce paramètre définit le texte affiché par l'étiquette de texte quand le GUI est ouvert.
+Vous pouvez utiliser les procédures qui retournent du texte pour en faire de plus complexes.
