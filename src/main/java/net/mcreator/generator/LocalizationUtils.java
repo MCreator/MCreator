@@ -127,18 +127,6 @@ public class LocalizationUtils {
 		return keysToEntries;
 	}
 
-	public static boolean shouldBeSkippedBasedOnCondition(Generator generator, Map<?, ?> template,
-			Object conditionData) {
-		TemplateExpressionParser.Operator operator = TemplateExpressionParser.Operator.AND;
-		String conditionRaw = (String) template.get("condition");
-		if (conditionRaw == null) {
-			conditionRaw = (String) template.get("condition_any");
-			operator = TemplateExpressionParser.Operator.OR;
-		}
-		return TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, conditionRaw, conditionData,
-				operator);
-	}
-
 	private static void addLocalizationEntry(Generator generator, String key, Map<?, ?> template, Object entry) {
 		try {
 			String mapto = (String) template.get("mapto");
@@ -154,7 +142,7 @@ public class LocalizationUtils {
 			if (prefix != null)
 				value = prefix + value;
 
-			if (shouldBeSkippedBasedOnCondition(generator, template, entry)) {
+			if (TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, template, entry)) {
 				// If localization key is skipped, we make sure to remove the localization entry
 				generator.getWorkspace().removeLocalizationEntryByKey(key);
 			} else {

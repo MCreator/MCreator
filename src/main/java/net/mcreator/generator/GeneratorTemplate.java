@@ -89,15 +89,7 @@ public class GeneratorTemplate {
 	}
 
 	public boolean shouldBeSkippedBasedOnCondition(Generator generator, Object conditionData) {
-		TemplateExpressionParser.Operator operator = TemplateExpressionParser.Operator.AND;
-		Object conditionRaw = templateDefinition.get("condition");
-		if (conditionRaw == null) {
-			conditionRaw = templateDefinition.get("condition_any");
-			operator = TemplateExpressionParser.Operator.OR;
-		}
-
-		return TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, conditionRaw, conditionData,
-				operator);
+		return TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, templateDefinition, conditionData);
 	}
 
 	@Override public boolean equals(Object o) {
