@@ -83,7 +83,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 			Map<Integer, String> args = new HashMap<>();
 			Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 			if (mutation != null) {
-				depCount = Integer.parseInt(mutation.getAttribute("dependencies"));
+				depCount = Integer.parseInt(mutation.getAttribute("inputs"));
 				Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
 						.filter(e -> e.getAttribute("name").matches("name\\d+"))
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
@@ -97,7 +97,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 					} else {
 						args.put(i, "");
 						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-								L10N.t("blockly.errors.call_procedure.missing_inputs")));
+								L10N.t("blockly.errors.call_procedure.missing_inputs", names.get(i))));
 					}
 				}
 			}
