@@ -14,3 +14,11 @@ public-f net.minecraft.world.level.chunk.ChunkGenerator f_223021_ #generationSet
 public-f net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator f_64318_ #settings
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 </#if>
+
+<#if w.hasElementsOfType("livingentity")>
+public-f net.minecraft.world.entity.npc.Villager f_35366_ #assignProfessionWhenSpawned
+public-f net.minecraft.world.entity.npc.Villager f_35373_ #updateMerchantTimer
+public-f net.minecraft.world.entity.npc.Villager f_35374_ #increaseProfessionLevelOnUpdate
+public net.minecraft.world.entity.npc.Villager m_35528_()V #increaseMerchantCareer
+public-f net.minecraft.world.entity.npc.Villager f_35375_ #lastTradedPlayer
+</#if>

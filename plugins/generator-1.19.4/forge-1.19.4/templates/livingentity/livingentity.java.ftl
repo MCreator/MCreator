@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -56,6 +56,10 @@ import javax.annotation.Nullable;
 
 <#if (data.tameable && data.breedable)>
 	<#assign extendsClass = "TamableAnimal">
+</#if>
+
+<#if data.canTrade() && data.tradingType == "Wandering Trader">
+    <#assign extendsClass = "AbstractVillager">
 </#if>
 
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
@@ -160,15 +164,21 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
-	<#if data.hasAI>
+	<#if data.hasAI || (data.canTrade() && data.tradingType == "Wandering Trader")>
 	@Override protected void registerGoals() {
 		super.registerGoals();
 
-		<#if aicode??>
+		<#if data.canTrade() && data.tradingType == "Wandering Trader">
+			this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
+			this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
+			this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
+		</#if>
+
+		<#if data.hasAI && aicode??>
             ${aicode}
         </#if>
 
-        <#if data.ranged>
+        <#if data.hasAI && data.ranged>
             this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25, ${data.rangedAttackInterval}, ${data.rangedAttackRadius}f) {
 				@Override public boolean canContinueToUse() {
 					return this.canUse();
@@ -201,6 +211,93 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
    	}
 	</#if>
 
+	<#if data.canTrade()>
+	protected void updateTrades() {
+		<#assign professions = w.exclude(w.filterBrokenReferences(data.professionTrade), "WANDERING_TRADER")>
+		List<VillagerProfession> professions = List.of(
+			<#list professions as profession>
+				${profession}<#if profession?has_next>,</#if>
+			</#list>
+		);
+		Int2ObjectMap<VillagerTrades.ItemListing[]> trades = new Int2ObjectOpenHashMap<>();
+		VillagerTrades.TRADES.forEach((key, value) -> {
+			if (professions.contains(key)) {
+				value.int2ObjectEntrySet().forEach(ent -> trades.put(ent.getIntKey(), Arrays.copyOf(ent.getValue(), ent.getValue().length)));
+			}
+		});
+		<#if data.professionTrade?contains("WanderingTrader")>
+		VillagerTrades.WANDERING_TRADER_TRADES.int2ObjectEntrySet().forEach(e -> trades.put(e.getIntKey(), Arrays.copyOf(e.getValue(), e.getValue().length)));
+		</#if>
+		if (trades != null && !trades.isEmpty()) {
+			VillagerTrades.ItemListing[] leveledTrades = trades.get(<#if data.tradingType == "Wandering Trader">1<#else>this.getVillagerData().getLevel()</#if>);
+			if (leveledTrades != null) {
+				this.addOffersFromItemListings(this.getOffers(), leveledTrades, 2);
+			}
+		}
+	}
+
+	<#if data.tradingType == "Villager">@Override</#if>public boolean canRestock() {
+		return ${data.canRestock};
+	}
+
+	<#if data.tradingType == "Villager">
+	@Override protected void customServerAiStep() {
+		this.level.getProfiler().push("villagerBrain");
+		this.getBrain().tick((ServerLevel) this.level, this);
+		this.level.getProfiler().pop();
+		if (this.assignProfessionWhenSpawned) {
+			this.assignProfessionWhenSpawned = false;
+		}
+
+		if (!this.isTrading() && this.updateMerchantTimer > 0) {
+			--this.updateMerchantTimer;
+			if (this.updateMerchantTimer <= 0) {
+				if (this.increaseProfessionLevelOnUpdate) {
+					this.increaseMerchantCareer();
+					this.increaseProfessionLevelOnUpdate = false;
+				}
+				this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
+			}
+		}
+
+		if (this.lastTradedPlayer != null && this.level instanceof ServerLevel) {
+			((ServerLevel) this.level).onReputationEvent(ReputationEventType.TRADE, this.lastTradedPlayer, this);
+			this.level.broadcastEntityEvent(this, (byte) 14);
+			this.lastTradedPlayer = null;
+		}
+
+		if (!this.isNoAi() && this.random.nextInt(100) == 0) {
+			Raid raid = ((ServerLevel) this.level).getRaidAt(this.blockPosition());
+			if (raid != null && raid.isActive() && !raid.isOver()) {
+				this.level.broadcastEntityEvent(this, (byte) 42);
+			}
+		}
+	}
+
+	private void updateSpecialPrices(Player player) {
+		int reputation = this.getPlayerReputation(player);
+		if (reputation != 0) {
+			for (MerchantOffer offer : this.getOffers()) {
+				offer.addToSpecialPriceDiff(-Mth.floor((float) reputation * offer.getPriceMultiplier()));
+			}
+		}
+	}
+	</#if>
+
+	<#if data.tradingType == "Wandering Trader">
+	public boolean showProgressBar() {
+		return false;
+	}
+
+	protected void rewardTradeXp(MerchantOffer offer) {
+		if (offer.shouldRewardExp()) {
+			int i = 3 + this.random.nextInt(4);
+			this.level.addFreshEntity(new ExperienceOrb(this.level, this.getX(), this.getY() + 0.5D, this.getZ(), i));
+		}
+	}
+	</#if>
+	</#if>
+
    	<#if data.livingSound?has_content && data.livingSound.getMappedValue()?has_content>
 	@Override public SoundEvent getAmbientSound() {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
@@ -222,6 +319,16 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	<#if data.deathSound?has_content && data.deathSound.getMappedValue()?has_content>
 	@Override public SoundEvent getDeathSound() {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
+	}
+	</#if>
+
+	<#if data.canTrade() && data.tradingType == "Wandering Trader">
+	protected SoundEvent getTradeUpdatedSound(boolean hasContent) {
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(hasContent ? "${data.fullUpdateSound}" : "${data.emptyUpdateSound}"));
+	}
+
+	public SoundEvent getNotifyTradeSound() {
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.notificationSound}"));
 	}
 	</#if>
 
@@ -399,15 +506,48 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     }
     </#if>
 
-	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
+	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>") || data.canTrade()>
 	@Override public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
 		ItemStack itemstack = sourceentity.getItemInHand(hand);
 		InteractionResult retval = InteractionResult.sidedSuccess(this.level.isClientSide());
 
-		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+		<#if (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>") || data.canTrade()>
 			<#if data.ridable>
 				if (sourceentity.isSecondaryUseActive()) {
 			</#if>
+			<#if data.canTrade()>
+				if (
+					<#if data.hasSpawnEgg>
+					itemstack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_SPAWN_EGG.get() &&
+					</#if>
+					this.isAlive() && !this.isTrading() && !this.isBaby()
+					<#if data.tradingType == "Villager">&& !this.isSleeping()</#if>
+				) {
+					if (hand == InteractionHand.MAIN_HAND) {
+						sourceentity.awardStat(Stats.TALKED_TO_VILLAGER);
+					}
+
+					if (this.getOffers().isEmpty()) {
+						return InteractionResult.sidedSuccess(this.level.isClientSide);
+					} else {
+						if (!this.level.isClientSide) {
+							<#if data.tradingType == "Villager">
+							this.updateSpecialPrices(sourceentity);
+							this.setTradingPlayer(sourceentity);
+							this.openTradingScreen(sourceentity, this.getDisplayName(), this.getVillagerData().getLevel());
+							<#else>
+							this.setTradingPlayer(sourceentity);
+							this.openTradingScreen(sourceentity, this.getDisplayName(), 1);
+							</#if>
+						}
+
+						return InteractionResult.sidedSuccess(this.level.isClientSide);
+					}
+				} else {
+					return super.mobInteract(sourceentity, hand);
+				}
+			</#if>
+			<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 				if(sourceentity instanceof ServerPlayer serverPlayer) {
 					NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
 
@@ -429,6 +569,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 						buf.writeVarInt(this.getId());
 					});
 				}
+			</#if>
 			<#if data.ridable>
 					return InteractionResult.sidedSuccess(this.level.isClientSide());
 				}
@@ -475,7 +616,9 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				}
 			}
 		<#else>
+			<#if !data.canTrade()>
 			super.mobInteract(sourceentity, hand);
+			</#if>
 		</#if>
 
 		<#if data.ridable>
@@ -495,7 +638,9 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				return retval;
 			</#if>
 		<#else>
+			<#if !data.canTrade()>
 			return retval;
+			</#if>
 		</#if>
 	}
     </#if>
@@ -560,16 +705,20 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
     </#if>
 
-	<#if data.breedable>
-        @Override public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+	<#if data.breedable || (data.canTrade() && data.tradingType == "Wandering Trader")>
+		<#if data.canTrade()>@Nullable<#else>@Override</#if> public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+			<#if data.canTrade()>return null;<#else>
 			${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld);
 			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null, null);
 			return retval;
+			</#if>
 		}
 
+		<#if data.breedable>
 		@Override public boolean isFood(ItemStack stack) {
 			return List.of(<#list data.breedTriggerItems as breedTriggerItem>${mappedMCItemToItem(breedTriggerItem)}<#if breedTriggerItem?has_next>,</#if></#list>).contains(stack.getItem());
 		}
+		</#if>
     </#if>
 
 	<#if data.waterMob>
