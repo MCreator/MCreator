@@ -2,8 +2,8 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 def jdk17_win_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/windows/x64/jdk/hotspot/normal/adoptopenjdk'
 def jdk17_linux_64 = 'https://api.adoptopenjdk.net/v3/binary/version/jdk-17.0.5+8/linux/x64/jdk/hotspot/normal/adoptopenjdk'
-def jdk17_mac_aarch64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.5%2B8/mac/aarch64/jdk/hotspot/normal/eclipse?project=jdk'
-def jdk17_mac_x64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.5%2B8/mac/x64/jdk/hotspot/normal/eclipse?project=jdk'
+def jdk17_mac_aarch64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.5+8/mac/aarch64/jdk/hotspot/normal/eclipse?project=jdk'
+def jdk17_mac_x64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.5+8/mac/x64/jdk/hotspot/normal/eclipse?project=jdk'
 
 def nsis_url = 'https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.08/nsis-3.08.zip'
 def nsis_lockedlist_plugin_url = 'https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip'
