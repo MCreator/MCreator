@@ -67,27 +67,12 @@ tasks.register('buildInstallerWin64', Exec.class) {
     dependsOn downloadNSIS
     dependsOn exportWin64
 
-    def installer = "installer.ico"
-    def uninstaller = "uninstaller.ico"
-    def bmpInstaller = "installer.bmp"
-    def bmpInstallerSide = "installer_side.bmp"
-    if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
-        installer = "installer_eap.ico"
-        uninstaller = "uninstaller_eap.ico"
-        bmpInstaller = "installer_eap.bmp"
-        bmpInstallerSide = "installer_side_eap.bmp"
-    }
-
     doFirst {
         copy {
             from file('platform/windows/installer/install.nsi') into 'build/export' rename('install.nsi', 'install64.nsi') filter { line ->
                 line.replace('%year%', new Date().format('yyyy'))
                         .replace('%build%', project.builddate)
                         .replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
-                        .replace('%installer%', installer)
-                        .replace('%uninstaller%', uninstaller)
-                        .replace('%bmpInstaller%', bmpInstaller)
-                        .replace('%bmpInstallerSide%', bmpInstallerSide)
             }
         }
     }
