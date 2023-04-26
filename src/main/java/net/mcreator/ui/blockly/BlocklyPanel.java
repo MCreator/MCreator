@@ -71,7 +71,7 @@ public class BlocklyPanel extends JFXPanel {
 
 	private static final String MINIMAL_XML = "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>";
 
-	public BlocklyPanel(MCreator mcreator) {
+	public BlocklyPanel(MCreator mcreator, BlocklyEditorType type) {
 		setOpaque(false);
 
 		this.mcreator = mcreator;
@@ -175,6 +175,8 @@ public class BlocklyPanel extends JFXPanel {
 					// register JS bridge
 					JSObject window = (JSObject) webEngine.executeScript("window");
 					window.setMember("javabridge", bridge);
+					if (type != null)
+						window.setMember("editorType", type.registryName());
 
 					loaded = true;
 					runAfterLoaded.forEach(ThreadUtil::runOnFxThread);
