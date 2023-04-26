@@ -46,7 +46,7 @@ public class ${JavaModName}Items {
     <#list items as item>
         <#if item.getModElement().getTypeString() == "armor">
             <#if item.enableHelmet>
-            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET =
+            public static final RegistryObject<Item> ${item.getModElement().getRegistryNameUpper()}_HELMET = 
                 REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", () -> new ${item.getModElement().getName()}Item.Helmet());
             </#if>
             <#if item.enableBody>
