@@ -4,13 +4,14 @@
   "textures": {
     <@textures data.getItemModelTextureMap(var_item)/>
     "particle": "${modid}:items/${data.getItemTextureFor(var_item)}"
+  }
 <#else>
   "parent": "${modid}:custom/${data.customModelName.split(":")[0]}",
   "textures": {
     <@textures data.getTextureMap()/>
     "particle": "${modid}:items/${data.texture}"
-</#if>
   }
+</#if>
 }
 
 <#macro textures textureMap>
