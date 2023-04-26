@@ -207,11 +207,11 @@ Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs
 
 // Helper function for extensions that validate one or more resource location text fields
 function validateResourceLocationFields(...fields) {
-    return function() {
+    return function () {
         for (let i = 0; i < fields.length; i++) {
             let field = this.getField(fields[i]);
             // The validator checks if the new input value is a valid resource location
-            field.setValidator(function(newValue) {
+            field.setValidator(function (newValue) {
                 if (/^([a-z0-9_\-\.]+:)?[a-z0-9_\-\.\/]+$/.test(newValue))
                     return newValue;
                 return null;
@@ -377,20 +377,3 @@ Blockly.Extensions.registerMutator('block_list_mutator', simpleRepeatingInputMix
                 .appendField(new FieldMCItemSelector('allblocks'), 'block' + index);
         }, false, ['block']),
         undefined, ['block_list_mutator_input']);
-
-// Helper function for extensions that validate one or more resource location text fields
-function validateResourceLocationFields(...fields) {
-    return function () {
-        for (let i = 0; i < fields.length; i++) {
-            let field = this.getField(fields[i]);
-            // The validator checks if the new input value is a valid resource location
-            field.setValidator(function (newValue) {
-                if (/^([a-z0-9_\-\.]+:)?[a-z0-9_\-\.\/]+$/.test(newValue))
-                    return newValue;
-                return null;
-            });
-        }
-    }
-}
-
-Blockly.Extensions.register('tag_input_field_validator', validateResourceLocationFields('tag'));
