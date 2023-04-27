@@ -2,6 +2,14 @@ templates:
   - template: biome/biome.json.ftl
     writer: json
     name: "@MODDATAROOT/worldgen/biome/@registryname.json"
+  - template: biome/configured_tree.json.ftl
+    writer: json
+    condition: hasTrees()
+    name: "@MODDATAROOT/worldgen/configured_feature/@registryname_tree.json"
+  - template: biome/placed_tree.json.ftl
+    writer: json
+    condition: hasTrees()
+    name: "@MODDATAROOT/worldgen/placed_feature/@registryname_tree.json"
 
 global_templates:
   - template: biome/biometag.json.ftl
@@ -160,14 +168,7 @@ global_templates:
     condition: ${w.hasBiomesWithStructure('ruined_portal_nether')}
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_nether.json"
 
-field_inclusions: [rainingPossibility, temperature,
-                   foliageColor, grassColor, airColor, waterColor, waterFogColor, spawnEntries,
-                   defaultFeatures, name, groundBlock, undergroundBlock, spawnStronghold, spawnMineshaft,
-                   spawnMineshaftMesa, spawnPillagerOutpost, villageType, spawnWoodlandMansion,
-                   spawnJungleTemple, spawnDesertPyramid, spawnSwampHut, spawnIgloo, spawnOceanMonument,
-                   spawnShipwreck, spawnShipwreckBeached, spawnBuriedTreasure, oceanRuinType,
-                   spawnNetherBridge, spawnNetherFossil, spawnBastionRemnant, spawnEndCity, spawnRuinedPortal,
-                   genTemperature, genHumidity, genContinentalness, genErosion, genWeirdness]
+field_exclusions: [name, coverageEstimate, treeVines, treeFruits, spawnBiome, spawnInCaves, spawnBiomeNether]
 
 localizationkeys:
   - key: biome.@modid.@registryname
