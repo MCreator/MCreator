@@ -43,9 +43,6 @@ public class BiomeDefaultFeaturesConverter implements IConverter {
 			biome.foliageColor = biome.grassColor;
 			biome.waterFogColor = biome.waterColor;
 
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("generateLakes") != null) {
-				biome.defaultFeatures.add("Lakes");
-			}
 			biome.name = StringUtils.machineToReadableName(input.getModElement().getName());
 		} catch (Exception e) {
 			LOG.warn("Could not convert: " + biome.getModElement().getName());
