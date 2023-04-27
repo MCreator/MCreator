@@ -356,7 +356,10 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', simpleRepea
         function(thisBlock, inputName, index) {
                 thisBlock.appendValueInput(inputName + index).setAlign(Blockly.Input.Align.RIGHT)
                         .appendField(javabridge.t('blockly.block.call_procedure.name'))
-                        .appendField(new FieldJavaName('dependency' + index), 'name' + index)
+                        .appendField(validOnLoad(new FieldJavaName('dependency' + index,
+                            uniqueValueValidator('name', function () {
+                                return "" + firstFreeIndex(thisBlock, 'name', index);
+                            }))), 'name' + index)
                         .appendField(javabridge.t('blockly.block.call_procedure.arg'));
         }, true, ['name']),
         undefined, ['procedure_dependencies_mutator_input']);

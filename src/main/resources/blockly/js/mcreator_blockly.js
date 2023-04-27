@@ -107,6 +107,54 @@ function appendDropDownWithMessage(messageKey, listType, fieldName) {
     };
 }
 
+// Helper function to use in Blockly extensions that validate repeating fields' values meant to be unique
+// The nullValue function is used when mutator needs to set a valid value in the field right after its creation
+function uniqueValueValidator(fieldName, nullValue) {
+    return function (newValue) {
+        for (let i = 0; this.sourceBlock_.getField(fieldName + i); i++) {
+            if (this.sourceBlock_.getFieldValue(fieldName + i) == newValue && (fieldName + i) != this.name)
+                return this.mutationInProcess_ ? nullValue() : null;
+        }
+        return newValue;
+    };
+}
+
+// Helper function to find first index not taken by repeating fields with a certain name
+function firstFreeIndex(block, fieldName, index) {
+    const values = [];
+    for (let i = 0; block.getField(fieldName + i); i++) {
+        if (index && i == index)
+            continue;
+        values.push("" + block.getFieldValue(fieldName + i));
+    }
+    let retVal = 0;
+    while (true) {
+        if (values.indexOf("" + retVal) === -1)
+            break;
+        retVal++;
+    }
+    return retVal;
+}
+
+// Helper function to disable validators on newly created repeating fields when loading from save file
+function validOnLoad(field) {
+    const fieldFromXml = field.fromXml;
+    field.fromXml = function (fieldElement) {
+        const validator = this.validator_;
+        this.validator_ = null;
+        fieldFromXml.call(this, fieldElement);
+        this.validator_ = validator;
+    };
+    const fieldLoadState = field.loadState; // we need to "override" this one too
+    field.loadState = function (state) { // to not get caught by loadLegacyState function on this field
+        const validator = this.validator_;
+        this.validator_ = null;
+        fieldLoadState.call(this, state);
+        this.validator_ = validator;
+    };
+    return field;
+}
+
 // A function to properly convert workspace to XML (google/blockly#6738)
 function workspaceToXML() {
     const treeXml = Blockly.Xml.workspaceToDom(workspace, true);
