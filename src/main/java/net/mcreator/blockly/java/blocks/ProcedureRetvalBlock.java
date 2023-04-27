@@ -61,7 +61,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 			Map<Integer, String> names = new HashMap<>();
 			Map<Integer, String> args = new HashMap<>();
 			Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
-			if (mutation != null) {
+			if (mutation != null && mutation.hasAttribute("inputs")) {
 				depCount = Integer.parseInt(mutation.getAttribute("inputs"));
 				Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
 						.filter(e -> e.getAttribute("name").matches("name\\d+"))
