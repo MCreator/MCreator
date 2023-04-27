@@ -17,35 +17,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.preferences;
+package net.mcreator.preferences.entries;
 
-public abstract class PreferencesSection {
+import net.mcreator.preferences.PreferencesEntry;
+import net.mcreator.ui.component.JEmptyBox;
 
-	private final String preferencesIdentifier;
+import javax.swing.*;
+import java.awt.*;
+import java.util.EventObject;
+import java.util.function.Consumer;
 
-	public PreferencesSection(String preferencesIdentifier) {
-		this.preferencesIdentifier = preferencesIdentifier;
+public abstract class HiddenEntry<T> extends PreferencesEntry<T> {
+
+	public HiddenEntry(String id, T value) {
+		super(id, value);
 	}
 
-	public final <T, S extends PreferencesEntry<T>> S addEntry(S entry) {
-		entry.setSection(this);
-		PreferencesManager.register(preferencesIdentifier, entry);
-		return entry;
+	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
+		return new JEmptyBox();
 	}
 
-	public final <T, S extends PreferencesEntry<T>> S addPluginEntry(String pluginPreferencesIdentifier, S entry) {
-		entry.setSection(this);
-		PreferencesManager.register(pluginPreferencesIdentifier, entry);
-		return entry;
-	}
+	@Override public void setValueFromComponent(JComponent component) {
 
-	public boolean isVisible() {
-		return true;
 	}
-
-	/**
-	 * @return Section key this preferences data collection belongs to
-	 */
-	public abstract String getSectionKey();
 
 }
