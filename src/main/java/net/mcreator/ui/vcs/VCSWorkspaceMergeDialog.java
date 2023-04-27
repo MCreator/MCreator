@@ -38,6 +38,8 @@ class VCSWorkspaceMergeDialog {
 
 		JPanel merges = new JPanel();
 		merges.setLayout(new BoxLayout(merges, BoxLayout.Y_AXIS));
+		merges.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		merges.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		List<MergeHandleComponent> mergeHandleComponents = new ArrayList<>();
 
@@ -85,9 +87,9 @@ class VCSWorkspaceMergeDialog {
 
 		JScrollPane scrollPane = new JScrollPane(PanelUtils.totalCenterInPanel(merges));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(15);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder());
+		scrollPane.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 		scrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-		scrollPane.setPreferredSize(new Dimension(410, 400));
+		scrollPane.setMaximumSize(new Dimension(410, 400));
 
 		dialog.add("Center", scrollPane);
 		dialog.add("North", new JLabel(
