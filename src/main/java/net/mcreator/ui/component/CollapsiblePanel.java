@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
@@ -29,122 +30,71 @@ public class CollapsiblePanel extends JPanel {
 
 	private String title = "";
 	private final TitledBorder border;
+	protected final JPanel contentHolder = new JPanel(new BorderLayout());
 
 	public CollapsiblePanel(String text, JComponent content) {
-		border = BorderFactory.createTitledBorder(title);
-		setBorder(border);
-		BorderLayout borderLayout = new BorderLayout();
-		setLayout(borderLayout);
+		this(text, content, true);
+	}
+
+	public CollapsiblePanel(String text, JComponent content, boolean allowExpandInitially) {
+		setLayout(new BorderLayout());
+		setOpaque(false);
+
+		setBorder(border = BorderFactory.createTitledBorder(title));
+		setTitle(text);
+		updateBorderTitle();
+
+		contentHolder.setOpaque(false);
+		contentHolder.add(content);
+		super.addImpl(contentHolder, null, -1);
+		toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault.get() && allowExpandInitially);
+
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				toggleVisibility();
 			}
 		});
-		setTitle(text);
-		add(content);
-		updateBorderTitle();
-		setOpaque(false);
 	}
-
-	private final ComponentListener contentComponentListener = new ComponentAdapter() {
-		@Override public void componentShown(ComponentEvent e) {
-			updateBorderTitle();
-		}
-
-		@Override public void componentHidden(ComponentEvent e) {
-			updateBorderTitle();
-		}
-	};
 
 	public void setTitle(String title) {
 		firePropertyChange("title", this.title, this.title = title);
 	}
 
-	@Override public Component add(Component comp) {
-		comp.addComponentListener(contentComponentListener);
-		Component r = super.add(comp);
-		updateBorderTitle();
-		return r;
-	}
-
-	@Override public Component add(String name, Component comp) {
-		comp.addComponentListener(contentComponentListener);
-		Component r = super.add(name, comp);
-		updateBorderTitle();
-		return r;
-	}
-
-	@Override public Component add(Component comp, int index) {
-		comp.addComponentListener(contentComponentListener);
-		Component r = super.add(comp, index);
-		updateBorderTitle();
-		return r;
-	}
-
-	@Override public void add(Component comp, Object constraints) {
-		comp.addComponentListener(contentComponentListener);
-		super.add(comp, constraints);
-		updateBorderTitle();
-	}
-
-	@Override public void add(Component comp, Object constraints, int index) {
-		comp.addComponentListener(contentComponentListener);
-		super.add(comp, constraints, index);
-		updateBorderTitle();
+	@Override protected void addImpl(Component comp, Object constraints, int index) {
+		contentHolder.add(comp, constraints, index);
 	}
 
 	@Override public void remove(int index) {
-		Component comp = getComponent(index);
-		comp.removeComponentListener(contentComponentListener);
-		super.remove(index);
+		contentHolder.remove(index);
 	}
 
 	@Override public void remove(Component comp) {
-		comp.removeComponentListener(contentComponentListener);
-		super.remove(comp);
+		contentHolder.remove(comp);
 	}
 
 	@Override public void removeAll() {
-		for (Component c : getComponents()) {
-			c.removeComponentListener(contentComponentListener);
-		}
-		super.removeAll();
+		contentHolder.removeAll();
 	}
 
 	public void toggleVisibility() {
-		toggleVisibility(hasInvisibleComponent());
+		toggleVisibility(!contentHolder.isVisible());
 	}
 
 	public void toggleVisibility(boolean visible) {
-		for (Component c : getComponents()) {
-			c.setVisible(visible);
-		}
+		contentHolder.setVisible(visible);
 		updateBorderTitle();
-
-		if (hasInvisibleComponent()) {
-			setPreferredSize(new Dimension(getPreferredSize().width, 24));
-		} else {
-			setPreferredSize(null);
-		}
+		setPreferredSize(contentHolder.isVisible() ? null : new Dimension(getPreferredSize().width, 24));
 	}
 
 	protected void updateBorderTitle() {
-		String arrow = "";
-		if (getComponentCount() > 0)
-			arrow = (hasInvisibleComponent() ?
+		if (contentHolder.getComponentCount() > 0) {
+			String arrow = !contentHolder.isVisible() ?
 					"[" + L10N.t("components.collapsible_panel.expand") + "]" :
-					"[" + L10N.t("components.collapsible_panel.collapse") + "]");
-		border.setTitle("<html>" + title + " <b>" + arrow);
+					"[" + L10N.t("components.collapsible_panel.collapse") + "]";
+			border.setTitle("<html>" + title + " <b>" + arrow);
+		} else {
+			border.setTitle("<html>" + title);
+		}
 		repaint();
 	}
-
-	protected final boolean hasInvisibleComponent() {
-		for (Component c : getComponents()) {
-			if (!c.isVisible()) {
-				return true;
-			}
-		}
-		return false;
-	}
-
 }

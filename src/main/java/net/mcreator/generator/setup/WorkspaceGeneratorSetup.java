@@ -22,6 +22,7 @@ import freemarker.template.Template;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorUtils;
+import net.mcreator.generator.setup.folders.AbstractFolderStructure;
 import net.mcreator.generator.template.base.BaseDataModelProvider;
 import net.mcreator.generator.template.base.DefaultFreemarkerConfiguration;
 import net.mcreator.io.FileIO;
@@ -46,22 +47,21 @@ public class WorkspaceGeneratorSetup {
 	private static final Logger LOG = LogManager.getLogger("Workspace Setup");
 
 	public static void cleanupGeneratorForSwitchTo(Workspace workspace, GeneratorConfiguration newGenerator) {
-		// skip if there is no generator change
-		if (workspace.getGeneratorConfiguration().getGeneratorName().equals(newGenerator.getGeneratorName()))
-			return;
+		Generator currentGenerator = workspace.getGenerator();
 
-		workspace.getGenerator().close(); // close gradle connection
+		if (currentGenerator != null) { // conversion from a generator that is present
+			// skip if there is no generator change
+			if (workspace.getGeneratorConfiguration().getGeneratorName().equals(newGenerator.getGeneratorName()))
+				return;
 
-		// delete generator base files
-		Set<String> fileNames = PluginLoader.INSTANCE.getResourcesInPackage(
-				workspace.getGenerator().getGeneratorName() + ".workspacebase");
-		for (String file : fileNames) {
-			File generatorFile = new File(workspace.getWorkspaceFolder(),
-					file.replace(workspace.getGenerator().getGeneratorName() + "/workspacebase", ""));
-			if (generatorFile.isFile())
-				generatorFile.delete();
-			else
-				FileIO.deleteDir(generatorFile);
+			LOG.info("Cleaning up generator for switch to " + newGenerator.getGeneratorName() + " from "
+					+ workspace.getGeneratorConfiguration().getGeneratorName());
+
+			// close gradle connection so no files are locked
+			currentGenerator.close();
+		} else if (workspace.getWorkspaceSettings().getCurrentGenerator() != null) {
+			LOG.warn("Cleaning up generator for switch to " + newGenerator.getGeneratorName()
+					+ " from non-existent generator " + workspace.getWorkspaceSettings().getCurrentGenerator());
 		}
 
 		// delete gradle dirs if present
@@ -75,22 +75,36 @@ public class WorkspaceGeneratorSetup {
 			FileIO.deleteDir(new File(workspace.getWorkspaceFolder(), "lib/"));
 		}
 
-		// move folders to the new locations, starting from more nested folders down
+		// delete generator base files
+		if (currentGenerator != null) { // only do it if the current generator is known/present
+			Set<String> fileNames = PluginLoader.INSTANCE.getResourcesInPackage(
+					currentGenerator.getGeneratorName() + ".workspacebase");
+			for (String file : fileNames) {
+				File generatorFile = new File(workspace.getWorkspaceFolder(),
+						file.replace(currentGenerator.getGeneratorName() + "/workspacebase", ""));
+				if (generatorFile.isFile())
+					generatorFile.delete();
+			}
+		}
 
-		moveFilesToAnotherDir(workspace.getFolderManager().getStructuresDir(),
+		AbstractFolderStructure folderStructure = AbstractFolderStructure.getFolderStructure(workspace);
+
+		LOG.info("Moving files to new locations while assuming " + folderStructure.getClass().getSimpleName() + " for the generator converting from");
+
+		// move folders to the new locations, starting from more nested folders down
+		moveFilesToAnotherDir(folderStructure.getStructuresDir(),
 				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "structures_dir"));
 
-		moveFilesToAnotherDir(workspace.getFolderManager().getSoundsDir(),
+		moveFilesToAnotherDir(folderStructure.getSoundsDir(),
 				GeneratorUtils.getSpecificRoot(workspace, newGenerator, "sounds_dir"));
 
 		Arrays.stream(TextureType.values()).forEach(
-				category -> moveFilesToAnotherDir(workspace.getFolderManager().getTexturesFolder(category),
+				category -> moveFilesToAnotherDir(folderStructure.getTexturesFolder(category),
 						GeneratorUtils.getSpecificRoot(workspace, newGenerator, category.getID() + "_textures_dir")));
 
-		moveFilesToAnotherDir(workspace.getGenerator().getSourceRoot(),
-				GeneratorUtils.getSourceRoot(workspace, newGenerator));
+		moveFilesToAnotherDir(folderStructure.getSourceRoot(), GeneratorUtils.getSourceRoot(workspace, newGenerator));
 
-		moveFilesToAnotherDir(workspace.getGenerator().getResourceRoot(),
+		moveFilesToAnotherDir(folderStructure.getResourceRoot(),
 				GeneratorUtils.getResourceRoot(workspace, newGenerator));
 	}
 
@@ -98,12 +112,12 @@ public class WorkspaceGeneratorSetup {
 		if (sourceDir != null && sourceDir.isDirectory() && destinationDir != null) {
 			try {
 				if (!sourceDir.getCanonicalPath().equals(destinationDir.getCanonicalPath())) {
-					LOG.info("Moving " + sourceDir.getName() + " to a new directory");
+					LOG.info("Moving " + sourceDir.getName() + " to a new directory " + destinationDir.getName());
 					FileIO.copyDirectory(sourceDir, destinationDir);
 					FileIO.deleteDir(sourceDir);
 				}
 			} catch (IOException e) {
-				LOG.warn("Failed to determine " + sourceDir.getName() + " dirs", e);
+				LOG.warn("Failed to move " + sourceDir.getName() + " dirs", e);
 			}
 		}
 	}
@@ -160,4 +174,5 @@ public class WorkspaceGeneratorSetup {
 	public static void requestSetup(Workspace workspace) {
 		new File(workspace.getFolderManager().getWorkspaceCacheDir(), "setupInfo").delete();
 	}
+
 }

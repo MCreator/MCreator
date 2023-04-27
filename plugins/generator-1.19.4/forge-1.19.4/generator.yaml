@@ -1,5 +1,5 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-status: dev
+status: stable
 buildfileversion: 45.0.39
 
 import:
@@ -63,8 +63,8 @@ base_templates:
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
       - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
-#      - ${w.hasElementsOfType('dimension')}
-#      - ${w.hasElementsOfType('biome')}
+      - ${w.hasElementsOfType('biome')}
+      - hasBiomesInVanillaDimensions()
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
