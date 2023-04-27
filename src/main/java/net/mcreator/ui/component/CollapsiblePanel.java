@@ -47,7 +47,7 @@ public class CollapsiblePanel extends JPanel {
 		contentHolder.setOpaque(false);
 		contentHolder.add(content);
 		super.addImpl(contentHolder, null, -1);
-		toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault && allowExpandInitially);
+		toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault.get() && allowExpandInitially);
 
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
