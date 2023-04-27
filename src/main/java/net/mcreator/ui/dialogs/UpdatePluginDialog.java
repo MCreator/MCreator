@@ -41,6 +41,7 @@ public class UpdatePluginDialog {
 
 			pan.add("North", L10N.label("dialog.plugin_update_notify.message"));
 			pan.add("Center", new JScrollPane(PanelUtils.pullElementUp(plugins)));
+			pan.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 			pan.setPreferredSize(new Dimension(560, 250));
 
 			for (PluginUpdateInfo pluginUpdateInfo : PluginLoader.INSTANCE.getPluginUpdates()) {
@@ -61,9 +62,16 @@ public class UpdatePluginDialog {
 				plugins.add(PanelUtils.westAndEastElement(label, PanelUtils.join(update)));
 			}
 
-			JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.plugin_update_notify.update_title"),
-					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
-					new Object[] { L10N.t("dialog.plugin_update_notify.close") }, "");
+			MCreatorDialog window = new MCreatorDialog(null, L10N.t("dialog.plugin_update_notify.update_title"));
+			window.setSize(720, 300);
+			window.setLocationRelativeTo(parent);
+			window.setModal(true);
+
+			JButton close = L10N.button("dialog.plugin_update_notify.close");
+			close.addActionListener(e -> window.setVisible(false));
+
+			window.getContentPane().add("Center", PanelUtils.centerAndSouthElement(pan, PanelUtils.join(close)));
+			window.setVisible(true);
 		}
 	}
 }
