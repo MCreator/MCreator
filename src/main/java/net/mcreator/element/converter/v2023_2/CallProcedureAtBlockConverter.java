@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.v2023_1;
+package net.mcreator.element.converter.v2023_2;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
@@ -57,7 +57,7 @@ public class CallProcedureAtBlockConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 40;
+		return 44;
 	}
 
 	protected String fixXML(String xml) throws Exception {
