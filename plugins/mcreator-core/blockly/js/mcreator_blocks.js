@@ -53,18 +53,8 @@ Blockly.Blocks['call_procedure'] = {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour(250);
-        Blockly.Extensions.apply('procedure_dependencies_mutator', this, true);
-    }
-};
-
-Blockly.Blocks['call_procedure_no_args'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.call_procedure"))
-            .appendField(new FieldDataListSelector('procedure'), 'procedure');
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(250);
+        if (editorType == "procedures")
+            Blockly.Extensions.apply('procedure_dependencies_mutator', this, true);
     }
 };
 

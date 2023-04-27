@@ -128,7 +128,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "call_procedure", "call_procedure_no_args", "old_command" };
+		return new String[] { "call_procedure", "old_command" };
 	}
 
 	@Override public BlockType getBlockType() {
