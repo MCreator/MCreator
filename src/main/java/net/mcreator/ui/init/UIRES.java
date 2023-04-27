@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.init;
 
+import net.mcreator.Launcher;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 
@@ -60,7 +61,7 @@ public class UIRES {
 		// we start by checking if the loaded pack contains the image
 		if (PluginLoader.INSTANCE.getResource(identifierToResourcePath(themedTextureIdentifier)) != null) {
 			return getImageFromResourceID(themedTextureIdentifier);
-		} else { // if the loaded pack does not have the image, we fallback to the default one
+		} else { // if the loaded pack does not have the image, we fall back to the default one
 			return getImageFromResourceID("themes.default_dark.images." + identifier);
 		}
 	}
@@ -91,6 +92,14 @@ public class UIRES {
 			identifier += ".png";
 		return new ImageIcon(Toolkit.getDefaultToolkit()
 				.createImage(ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + identifier)));
+	}
+
+	public static ImageIcon getAppIcon() {
+		if (Launcher.version.isSnapshot()) {
+			return getBuiltIn("icon_eap");
+		} else {
+			return getBuiltIn("icon");
+		}
 	}
 
 }
