@@ -41,10 +41,8 @@ public class DiscordClient implements Closeable {
 	private final Timer timer = new Timer();
 
 	public DiscordClient() {
-
-		if (isDisabled()) {
+		if (isDisabled())
 			return;
-		}
 
 		try {
 			discordRpc = Native.load("discord-rpc", DiscordRPC.class);
@@ -70,9 +68,8 @@ public class DiscordClient implements Closeable {
 	}
 
 	public void updatePresence(String state, String details, String smallImage) {
-		if (isDisabled()) {
+		if (isDisabled())
 			return;
-		}
 
 		new Thread(() -> {
 			try {
@@ -90,9 +87,8 @@ public class DiscordClient implements Closeable {
 	}
 
 	@Override public void close() {
-		if (isDisabled()) {
+		if (isDisabled())
 			return;
-		}
 
 		try {
 			timer.cancel();
@@ -105,4 +101,5 @@ public class DiscordClient implements Closeable {
 	private boolean isDisabled() {
 		return !PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable || OS.getArchitecture().equals(OS.AARCH64);
 	}
+
 }
