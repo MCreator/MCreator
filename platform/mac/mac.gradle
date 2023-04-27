@@ -11,11 +11,11 @@ tasks.register('exportMac64', Copy.class) {
     dependsOn jar
     dependsOn exportPlugins
 
-    def icon = "mcreator.icns"
     def appIcon = "mcreatorapp.icns"
+    def icon = "mcreator.icns"
     if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
-        icon = "mcreator_eap.icns"
         appIcon = "mcreatorapp_eap.icns"
+        icon = "mcreator_eap.icns"
     }
 
     into exportPath
@@ -26,12 +26,8 @@ tasks.register('exportMac64', Copy.class) {
         from file('LICENSE.txt')
     }
     into('Resources') {
-        from("platform/mac") {
-            include icon
-            include appIcon
-            rename icon, "mcreator.icns"
-            rename appIcon, "mcreatorapp.icns"
-        }
+        from file('platform/mac/' + appIcon) rename(appIcon, 'mcreatorapp.icns')
+        from file('platform/mac/' + icon) rename(icon, 'mcreator.icns')
     }
     into('MacOS') {
         from file('platform/mac/mcreator')

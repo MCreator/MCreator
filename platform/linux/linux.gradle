@@ -16,10 +16,7 @@ tasks.register('exportLinux64', Copy.class) {
     into('') {
         from file('LICENSE.txt')
         from file('platform/linux/mcreator.sh') rename('mcreator.sh', 'mcreator.shdos')
-        from("src/main/resources/net/mcreator/ui/res") {
-            include icon
-            rename icon, "icon.png"
-        }
+        from file('src/main/resources/net/mcreator/ui/res/' + icon) rename(icon, 'icon.png')
     }
     into('lib') {
         from 'build/libs'
