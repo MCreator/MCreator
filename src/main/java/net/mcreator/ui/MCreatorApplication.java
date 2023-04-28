@@ -201,11 +201,6 @@ public final class MCreatorApplication {
 				SwingUtilities.invokeAndWait(() -> {
 					UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
 					UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(splashScreen);
-
-					if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.notifications.snapshotMessage.get()) {
-						JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
-								L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
-					}
 				});
 			} catch (Exception e) {
 				LOG.warn("Failed to check for updates", e);
