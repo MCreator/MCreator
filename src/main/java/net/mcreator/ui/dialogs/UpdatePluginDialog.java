@@ -62,16 +62,17 @@ public class UpdatePluginDialog {
 				plugins.add(PanelUtils.westAndEastElement(label, PanelUtils.join(update)));
 			}
 
-			MCreatorDialog window = new MCreatorDialog(null, L10N.t("dialog.plugin_update_notify.update_title"));
-			window.setSize(720, 300);
-			window.setLocationRelativeTo(parent);
-			window.setModal(true);
+			MCreatorDialog dialog = new MCreatorDialog(JOptionPane.getRootFrame(),
+					L10N.t("dialog.plugin_update_notify.update_title"));
+			dialog.setSize(700, 300);
+			dialog.setLocationRelativeTo(parent);
+			dialog.setModal(true);
 
 			JButton close = L10N.button("dialog.plugin_update_notify.close");
-			close.addActionListener(e -> window.setVisible(false));
+			close.addActionListener(e -> dialog.setVisible(false));
 
-			window.getContentPane().add("Center", PanelUtils.centerAndSouthElement(pan, PanelUtils.join(close)));
-			window.setVisible(true);
+			dialog.add("Center", PanelUtils.centerAndSouthElement(pan, PanelUtils.join(close)));
+			dialog.setVisible(true);
 		}
 	}
 }
