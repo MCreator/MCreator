@@ -17,35 +17,23 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.preferences;
+package net.mcreator.preferences.data;
 
-public abstract class PreferencesSection {
+import net.mcreator.preferences.PreferencesSection;
+import net.mcreator.preferences.entries.BooleanEntry;
 
-	private final String preferencesIdentifier;
+public class BedrockSection extends PreferencesSection {
 
-	public PreferencesSection(String preferencesIdentifier) {
-		this.preferencesIdentifier = preferencesIdentifier;
+	public BooleanEntry silentReload;
+
+	BedrockSection(String preferencesIdentifier) {
+		super(preferencesIdentifier);
+
+		silentReload = addEntry(new BooleanEntry("silentReload", false));
 	}
 
-	public final <T, S extends PreferencesEntry<T>> S addEntry(S entry) {
-		entry.setSection(this);
-		PreferencesManager.register(preferencesIdentifier, entry);
-		return entry;
+	@Override public String getSectionKey() {
+		return "bedrock";
 	}
-
-	public final <T, S extends PreferencesEntry<T>> S addPluginEntry(String pluginPreferencesIdentifier, S entry) {
-		entry.setSection(this);
-		PreferencesManager.register(pluginPreferencesIdentifier, entry);
-		return entry;
-	}
-
-	public boolean isVisible() {
-		return true;
-	}
-
-	/**
-	 * @return Section key this preferences data collection belongs to
-	 */
-	public abstract String getSectionKey();
 
 }
