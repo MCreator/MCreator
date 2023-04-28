@@ -164,7 +164,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private MCItemHolder equipmentBoots;
 	private MCItemHolder equipmentOffHand;
 
-	private final JComboBox<String> tradingType = new JComboBox<>(new String[] { "<NONE>", "Villager", "Wandering Trader" });
+	private final JComboBox<String> tradingType = new JComboBox<>(
+			new String[] { "<NONE>", "Villager", "Wandering Trader" });
 	private ProfessionListField professionTrade;
 	private final JCheckBox canRestock = L10N.checkbox("elementgui.common.enable");
 	private final SoundSelector fullUpdateSound = new SoundSelector(mcreator);

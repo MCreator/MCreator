@@ -95,7 +95,7 @@ import java.util.*;
 	public boolean flyingMob;
 
 	public String tradingType;
-	public List<VillagerProfession> professionTrade;
+	public List<ProfessionEntry> professionTrade;
 	public boolean canRestock;
 	public Sound fullUpdateSound;
 	public Sound emptyUpdateSound;

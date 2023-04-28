@@ -19,7 +19,7 @@
 
 package net.mcreator.ui.minecraft.villagers;
 
-import net.mcreator.element.parts.VillagerProfession;
+import net.mcreator.element.parts.ProfessionEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
@@ -28,15 +28,15 @@ import net.mcreator.ui.init.L10N;
 
 import java.util.List;
 
-public class ProfessionListField extends JItemListField<VillagerProfession> {
+public class ProfessionListField extends JItemListField<ProfessionEntry> {
 
 	public ProfessionListField(MCreator mcreator) {
 		super(mcreator);
 	}
 
-	@Override protected List<VillagerProfession> getElementsToAdd() {
+	@Override protected List<ProfessionEntry> getElementsToAdd() {
 		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllVillagerProfessions,
 						L10N.t("dialog.list_field.profession_list_title"), L10N.t("dialog.list_field.profession_list_message"))
-				.stream().map(e -> new VillagerProfession(mcreator.getWorkspace(), e)).toList();
+				.stream().map(e -> new ProfessionEntry(mcreator.getWorkspace(), e)).toList();
 	}
 }
