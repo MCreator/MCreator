@@ -1,1 +1,0 @@
-NoneFeatureConfiguration.INSTANCE

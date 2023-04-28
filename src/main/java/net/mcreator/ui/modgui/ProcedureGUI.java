@@ -564,7 +564,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE).getDefinedBlocks();
 
-		blocklyPanel = new BlocklyPanel(mcreator);
+		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.PROCEDURE);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.PROCEDURE);
