@@ -211,7 +211,7 @@ Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs
 // The input provider is a function that accepts the block being mutated, the input name and the input index
 // If the input provider returns a dummy input (i.e. only repeating fields are being added), isProperInput must be set to false
 function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputProvider, isProperInput = true,
-                                   fieldNames = []) {
+                                   fieldNames = [], disableIfEmpty) {
     return {
         // Store number of inputs in XML as '<mutation inputs="inputCount_"></mutation>'
         mutationToDom: function () {
@@ -315,12 +315,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
 
         // Add/remove inputs from this block
         updateShape_: function () {
-            // Handle the dummy "empty" input for when there are no proper inputs
-            if (this.inputCount_ && this.getInput('EMPTY')) {
-                this.removeInput('EMPTY');
-            } else if (!this.inputCount_ && !this.getInput('EMPTY')) {
-                this.appendDummyInput('EMPTY').appendField(javabridge.t('blockly.block.' + this.type + '.empty'));
-            }
+            this.handleEmptyInput_(disableIfEmpty);
             // Add proper inputs
             for (let i = 0; i < this.inputCount_; i++) {
                 if (!this.getInput(inputName + i))
@@ -329,6 +324,20 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
             // Remove extra inputs
             for (let i = this.inputCount_; this.getInput(inputName + i); i++) {
                 this.removeInput(inputName + i);
+            }
+        },
+
+        // Handle the dummy "empty" input or warning for when there are no proper inputs
+        handleEmptyInput_: function (disableIfEmpty) {
+            if (disableIfEmpty === undefined) {
+                if (this.inputCount_ && this.getInput('EMPTY')) {
+                    this.removeInput('EMPTY');
+                } else if (!this.inputCount_ && !this.getInput('EMPTY')) {
+                    this.appendDummyInput('EMPTY').appendField(javabridge.t('blockly.block.' + this.type + '.empty'));
+                }
+            } else if (disableIfEmpty) {
+                this.setWarningText(this.inputCount_ ? null : javabridge.t('blockly.block.' + this.type + '.empty'));
+                this.setEnabled(this.inputCount_);
             }
         }
     }
@@ -351,6 +360,14 @@ Blockly.Extensions.registerMutator('block_list_mutator', simpleRepeatingInputMix
         }, false, ['block']),
     undefined, ['block_list_mutator_input']);
 
+Blockly.Extensions.registerMutator('geode_crystal_mutator', simpleRepeatingInputMixin(
+        'geode_crystal_mutator_container', 'geode_crystal_mutator_input', 'crystal',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('MCItemBlock')
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+        }, true, [], true),
+    undefined, ['geode_crystal_mutator_input']);
+
 // Helper function for extensions that validate one or more resource location text fields
 function validateResourceLocationFields(...fields) {
     return function () {
@@ -367,3 +384,6 @@ function validateResourceLocationFields(...fields) {
 }
 
 Blockly.Extensions.register('tag_input_field_validator', validateResourceLocationFields('tag'));
+
+Blockly.Extensions.register('geode_tag_fields_validator',
+        validateResourceLocationFields('cannot_replace_tag', 'invalid_blocks_tag'));
