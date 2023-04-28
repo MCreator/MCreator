@@ -48,20 +48,12 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
 
 		if (element != null) {
-			Procedure procedure = new Procedure(element.getTextContent());
-			procedure.getDependencies(master.getWorkspace()).forEach(master::addDependency);
-
-			if (!procedure.exists) {
-				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-						L10N.t("blockly.errors.procedure_retval.nonexistent", procedure.getName())));
-				return;
-			}
-
 			int depCount = 0;
 			Map<Integer, String> names = new HashMap<>();
 			Map<Integer, String> args = new HashMap<>();
 			Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
-			if (mutation != null && mutation.hasAttribute("inputs")) {
+			if (mutation != null && mutation.hasAttribute("inputs")
+					&& !mutation.getAttribute("inputs").equals("undefined")) {
 				depCount = Integer.parseInt(mutation.getAttribute("inputs"));
 				Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
 						.filter(e -> e.getAttribute("name").matches("name\\d+"))
@@ -79,6 +71,16 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 								L10N.t("blockly.errors.call_procedure.missing_inputs", names.get(i))));
 					}
 				}
+			}
+
+			Procedure procedure = new Procedure(element.getTextContent());
+			procedure.getDependencies(master.getWorkspace()).stream().filter(e -> !names.containsValue(e.getName()))
+					.forEach(master::addDependency);
+
+			if (!procedure.exists) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.procedure_retval.nonexistent", procedure.getName())));
+				return;
 			}
 
 			if (master.getTemplateGenerator() != null) {

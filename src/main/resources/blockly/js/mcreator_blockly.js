@@ -120,7 +120,7 @@ function uniqueValueValidator(fieldName, nullValue) {
 }
 
 // Helper function to find first index not taken by repeating fields with a certain name
-function firstFreeIndex(block, fieldName, index) {
+function firstFreeIndex(block, fieldName, index, valueProvider) {
     const values = [];
     for (let i = 0; block.getField(fieldName + i); i++) {
         if (index && i == index)
@@ -129,7 +129,7 @@ function firstFreeIndex(block, fieldName, index) {
     }
     let retVal = 0;
     while (true) {
-        if (values.indexOf("" + retVal) === -1)
+        if (values.indexOf(valueProvider ? valueProvider("" + retVal) : "" + retVal) == -1)
             break;
         retVal++;
     }

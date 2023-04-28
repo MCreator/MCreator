@@ -73,7 +73,6 @@ Blockly.Blocks['procedure_dependencies_mutator_input'] = {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.contextMenu = false;
-        this.fieldValues_ = [];
         this.setColour(250);
     }
 };
