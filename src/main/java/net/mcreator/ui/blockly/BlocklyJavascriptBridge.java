@@ -20,9 +20,11 @@
 package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Procedure;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
@@ -256,6 +258,17 @@ public class BlocklyJavascriptBridge {
 
 	public void addExternalTrigger(ExternalTrigger external_trigger) {
 		ext_triggers.put(external_trigger.getID(), external_trigger.getName());
+	}
+
+	@SuppressWarnings("unused") public String getDependencyType(String procedureName, String dependencyName) {
+		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
+		if (me != null && me.getGeneratableElement() instanceof Procedure procedure) {
+			Optional<String> dependency = procedure.getDependencies().stream()
+					.filter(e -> e.getName().equals(dependencyName)).map(Dependency::getRawType).findFirst();
+			if (dependency.isPresent())
+				return VariableTypeLoader.INSTANCE.fromName(dependency.get()).getBlocklyVariableType();
+		}
+		return null;
 	}
 
 	@SuppressWarnings("unused") public String t(String key) {

@@ -37,6 +37,29 @@ Blockly.Extensions.register('is_custom_loop',
         Blockly.libraryBlocks.loops.loopTypes.add(this.type);
     });
 
+Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
+    function () {
+        this.setOnChange(function (changeEvent) {
+            // Trigger the change only if a block is changed or created
+            if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
+                changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
+                return;
+            }
+            const group = Blockly.Events.getGroup();
+            // Makes it so the block change and the unplug event get undone together.
+            Blockly.Events.setGroup(changeEvent.group);
+            // For each passed input, we check if it's within bounds
+            for (var i = 0; this.getField('name' + i); i++) {
+                const prevType = this.getInput('arg' + i).connection.getCheck();
+                this.getInput('arg' + i).setCheck(javabridge.getDependencyType(
+                    this.getFieldValue('procedure'), this.getFieldValue('name' + i)));
+                Blockly.Events.fire(new InputCheckChange(this, 'arg' + i, prevType,
+                    this.getInput('arg' + i).connection.getCheck()));
+            }
+            Blockly.Events.setGroup(group);
+        });
+    });
+
 // marks in the xml if the block is attached to a block/item input, for proper mapping
 Blockly.Extensions.registerMutator('mark_attached_to_block_item',
     {
@@ -204,26 +227,6 @@ Blockly.Extensions.register('delta_feature_validator', validateIntProviderInputs
 Blockly.Extensions.register('replace_sphere_validator', validateIntProviderInputs(['radius', 0, 12]));
 
 Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs(['height', 0, Infinity]));
-
-// Helper function for extensions that validate one or more resource location text fields
-function validateResourceLocationFields(...fields) {
-    return function () {
-        for (let i = 0; i < fields.length; i++) {
-            let field = this.getField(fields[i]);
-            // The validator checks if the new input value is a valid resource location
-            field.setValidator(function (newValue) {
-                if (/^([a-z0-9_\-\.]+:)?[a-z0-9_\-\.\/]+$/.test(newValue))
-                    return newValue;
-                return null;
-            });
-        }
-    }
-}
-
-Blockly.Extensions.register('tag_input_field_validator', validateResourceLocationFields('tag'));
-
-Blockly.Extensions.register('geode_tag_fields_validator',
-        validateResourceLocationFields('cannot_replace_tag', 'invalid_blocks_tag'));
 
 // Helper function to provide a mixin for mutators that add a single repeating (dummy) input with additional fields
 // The mutator container block must have a "STACK" statement input for this to work
@@ -432,3 +435,23 @@ Blockly.Extensions.registerMutator('geode_crystal_mutator', simpleRepeatingInput
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }, true, [], true),
     undefined, ['geode_crystal_mutator_input']);
+
+// Helper function for extensions that validate one or more resource location text fields
+function validateResourceLocationFields(...fields) {
+    return function () {
+        for (let i = 0; i < fields.length; i++) {
+            let field = this.getField(fields[i]);
+            // The validator checks if the new input value is a valid resource location
+            field.setValidator(function (newValue) {
+                if (/^([a-z0-9_\-\.]+:)?[a-z0-9_\-\.\/]+$/.test(newValue))
+                    return newValue;
+                return null;
+            });
+        }
+    }
+}
+
+Blockly.Extensions.register('tag_input_field_validator', validateResourceLocationFields('tag'));
+
+Blockly.Extensions.register('geode_tag_fields_validator',
+        validateResourceLocationFields('cannot_replace_tag', 'invalid_blocks_tag'));

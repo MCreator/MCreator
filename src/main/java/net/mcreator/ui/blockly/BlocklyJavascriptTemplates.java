@@ -145,6 +145,9 @@ public class BlocklyJavascriptTemplates {
 							"datalist": "procedure_retval_%s"
 						}
 					],
+					"extensions": [
+						"procedure_dependencies_onchange_mixin"
+					],
 					"output": "%s",
 					"colour": "%s",
 					"mutator": "procedure_dependencies_mutator"
@@ -170,6 +173,9 @@ public class BlocklyJavascriptTemplates {
 							"name": "procedure",
 							"datalist": "procedure_retval_%s"
 						}
+					],
+					"extensions": [
+						"procedure_dependencies_onchange_mixin"
 					],
 					"output": "%s",
 					"colour": "%s",

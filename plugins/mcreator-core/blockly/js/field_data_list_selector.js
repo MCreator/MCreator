@@ -77,11 +77,10 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
                 let thisField = this; // reference to this field, to use in the callback function
                 javabridge.openEntrySelector(this.type, this.typeFilter, this.customEntryProviders, {
                     'callback': function (data) {
-                        if (data !== undefined) {
-                            thisField.entry = data;
-                        } else {
-                            thisField.entry = FieldDataListSelector.getDefaultEntry();
-                        }
+                        const oldEntry = thisField.entry;
+                        thisField.entry = data || FieldDataListSelector.getDefaultEntry();
+                        Blockly.Events.fire(new EntryChange(this.sourceBlock_,
+                            null, this.name || null, oldEntry, thisField.entry));
 
                         javabridge.triggerEvent();
                         thisField.updateDisplay();
@@ -101,13 +100,17 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
 
     // We load the readable name again after opening the procedure, in case the entry has a new readable name
     fromXml(fieldElement) {
+        const oldEntry = this.entry;
         if (fieldElement && fieldElement.textContent) {
             let readableName = javabridge.getReadableNameOf(fieldElement.textContent, this.type);
             if (!readableName) // The readable name is an empty string because it couldn't be found
                 readableName = fieldElement.textContent; // In this case, we use the actual value
             this.entry = fieldElement.textContent + ',' + readableName;
-        } else
+        } else {
             this.entry = FieldDataListSelector.getDefaultEntry();
+        }
+        Blockly.Events.fire(new EntryChange(this.sourceBlock_,
+            null, this.name || null, oldEntry, this.entry));
         this.updateDisplay();
     };
 
@@ -136,6 +139,14 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
         this.setTooltip(this.getText_()); // Update the field tooltip
         this.forceRerender(); // Update the selected text and shape
     };
+}
+
+class EntryChange extends Blockly.Events.BlockChange {
+    run(forward) {
+        const block = this.blockId && this.getEventWorkspace_().getBlockById(this.blockId);
+        if (block && block.getField(this.name).entry)
+            block.getField(this.name).entry = forward ? this.newValue : this.oldValue;
+    }
 }
 
 // Register this field, so that it can be added without extensions
