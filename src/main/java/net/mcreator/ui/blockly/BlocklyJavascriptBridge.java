@@ -24,6 +24,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.*;
@@ -340,6 +341,9 @@ public class BlocklyJavascriptBridge {
 			break;
 		case "rangeditem":
 			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "villagerprofessions":
+			return ElementUtil.loadAllVillagerProfessions(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		default:
 			retval = new ArrayList<>();
