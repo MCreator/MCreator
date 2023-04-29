@@ -61,6 +61,7 @@ import java.util.Locale;
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG).getDefinedBlocks(),
+					getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG),
 					this.getModElement().getGenerator()
 							.getTemplateGeneratorFromName(BlocklyEditorType.COMMAND_ARG.registryName()),
 					additionalData).setTemplateExtension(

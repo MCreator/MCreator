@@ -217,6 +217,7 @@ import java.util.*;
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks(),
+					getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK),
 					this.getModElement().getGenerator()
 							.getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
 					additionalData).setTemplateExtension(

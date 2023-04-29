@@ -109,7 +109,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 		propertiesAndCondition.setOpaque(false);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks();
-		blocklyPanel = new BlocklyPanel(mcreator);
+		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.FEATURE);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);

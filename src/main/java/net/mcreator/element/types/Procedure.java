@@ -146,6 +146,7 @@ public class Procedure extends GeneratableElement implements IXMLProvider {
 			throws TemplateGeneratorException {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 				BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE).getDefinedBlocks(),
+				getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.PROCEDURE),
 				getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.PROCEDURE.registryName()),
 				additionalData);
 

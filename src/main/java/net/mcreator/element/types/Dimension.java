@@ -25,6 +25,7 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
+import net.mcreator.element.types.interfaces.IPOIProvider;
 import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.mapping.MappableElement;
@@ -41,7 +42,7 @@ import java.util.List;
 import java.util.*;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ICommonType, ITabContainedElement, IMCItemProvider, IResourcesDependent {
+		implements ICommonType, ITabContainedElement, IMCItemProvider, IPOIProvider, IResourcesDependent {
 
 	public List<BiomeEntry> biomesInDimension;
 
@@ -124,6 +125,10 @@ import java.util.*;
 			return workspace.getFolderManager().getTextureImageIcon(portalTexture, TextureType.BLOCK);
 		else
 			return workspace.getFolderManager().getTextureImageIcon(texture, TextureType.ITEM);
+	}
+
+	@Override public List<MItemBlock> poiBlocks() {
+		return List.of(new MItemBlock(this.getModElement().getWorkspace(), "CUSTOM:" + this.getModElement().getName() + ".portal"));
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {

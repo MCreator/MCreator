@@ -129,7 +129,7 @@ public class ModElementUITest {
 		}
 
 		// reduce autosave interval for tests
-		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 2000;
+		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
 
 		LOG.info("Test workspace folder: " + workspace.getWorkspaceFolder());
 	}
@@ -139,7 +139,7 @@ public class ModElementUITest {
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
 
-		PreferencesManager.PREFERENCES.ui.language = L10N.DEFAULT_LOCALE;
+		PreferencesManager.PREFERENCES.ui.language.set(L10N.DEFAULT_LOCALE);
 		L10N.initTranslations();
 
 		// test mod elements using default (en) translations
@@ -152,12 +152,12 @@ public class ModElementUITest {
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
 
-		PreferencesManager.PREFERENCES.ui.language = L10N.getSupportedLocales().stream()
+		PreferencesManager.PREFERENCES.ui.language.set(L10N.getSupportedLocales().stream()
 				.filter(locale -> locale != L10N.DEFAULT_LOCALE)
-				.max(Comparator.comparingInt(L10N::getUITextsLocaleSupport)).orElse(null);
+				.max(Comparator.comparingInt(L10N::getUITextsLocaleSupport)).orElse(null));
 		L10N.initTranslations();
 
-		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language);
+		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language.get());
 
 		testModElementLoading(random);
 	}

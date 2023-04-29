@@ -97,6 +97,9 @@ public final class MCreatorApplication {
 
 			MCREvent.event(new ApplicationLoadedEvent(this));
 
+			// As plugins are now loaded, preferences from Java plugins can now be loaded
+			PreferencesManager.initNonCore();
+
 			splashScreen.setProgress(10, "Loading UI Themes");
 
 			// We load UI themes now as theme plugins are loaded at this point
@@ -199,7 +202,7 @@ public final class MCreatorApplication {
 					UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
 					UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(splashScreen);
 
-					if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.notifications.snapshotMessage) {
+					if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.notifications.snapshotMessage.get()) {
 						JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
 								L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
 					}
@@ -392,7 +395,7 @@ public final class MCreatorApplication {
 		});
 
 		LOG.debug("Performing exit tasks");
-		PreferencesManager.storePreferences(PreferencesManager.PREFERENCES); // store any potential preferences changes
+		PreferencesManager.savePreferences(); // store any potential preferences changes
 		analytics.trackPageSync(AnalyticsConstants.PAGE_CLOSE); // track app close in sync mode
 
 		discordClient.close(); // close discord client
