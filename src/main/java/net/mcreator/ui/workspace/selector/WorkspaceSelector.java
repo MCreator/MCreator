@@ -70,6 +70,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private static final Logger LOG = LogManager.getLogger("Workspace Selector");
 
 	private final JPanel recentPanel = new JPanel(new GridLayout());
+	private final JPanel actions = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 	private final WorkspaceOpenListener workspaceOpenListener;
 	private RecentWorkspaces recentWorkspaces = new RecentWorkspaces();
 
@@ -91,18 +92,17 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				}
 			});
 
-		JPanel actions = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 10));
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.new_workspace"), UIRES.get("addwrk"), e -> {
 			NewWorkspaceDialog newWorkspaceDialog = new NewWorkspaceDialog(this);
 			if (newWorkspaceDialog.getWorkspaceFile() != null)
 				workspaceOpenListener.workspaceOpened(newWorkspaceDialog.getWorkspaceFile());
-		}, actions);
+		});
 
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.open_workspace"), UIRES.get("opnwrk"), e -> {
 			File workspaceFile = FileDialogs.getOpenDialog(this, new String[] { ".mcreator" });
 			if (workspaceFile != null && workspaceFile.getParentFile().isDirectory())
 				workspaceOpenListener.workspaceOpened(workspaceFile);
-		}, actions);
+		});
 
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.import"), UIRES.get("impfile"), e -> {
 			File file = FileDialogs.getOpenDialog(this, new String[] { ".zip" });
@@ -114,7 +114,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						workspaceOpenListener.workspaceOpened(workspaceFile);
 				}
 			}
-		}, actions);
+		});
 
 		addWorkspaceButton(L10N.t("dialog.workspace_selector.clone"), UIRES.get("vcsclone"), e -> {
 			VCSInfo vcsInfo = VCSSetupDialogs.getVCSInfoDialog(this, L10N.t("dialog.workspace_selector.vcs_info"));
@@ -140,7 +140,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 					}
 				}
 			}
-		}, actions);
+		});
 
 		JPanel logoPanel = new JPanel(new BorderLayout());
 		JLabel logo = new JLabel(new ImageIcon(ImageUtils.resizeAA(UIRES.getBuiltIn("logo").getImage(), 250, 45)));
@@ -220,8 +220,14 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		});
 		southcenter.add(prefs);
 
-		add("Center",
-				PanelUtils.centerAndSouthElement(PanelUtils.northAndCenterElement(logoPanel, actions), southcenter));
+		JScrollPane actSP = new JScrollPane(actions);
+		actSP.getHorizontalScrollBar().setUnitIncrement(10);
+		actSP.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+
+		JPanel mainContents = new JPanel(new BorderLayout());
+		mainContents.add("North", logoPanel);
+		mainContents.add("Center", actSP);
+		mainContents.add("South", southcenter);
 
 		recentPanel.setBorder(
 				BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
@@ -229,7 +235,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		initWebsitePanel();
 
-		add("West", recentPanel);
+		add(PanelUtils.westAndCenterElement(recentPanel, mainContents));
 
 		new DropTarget(this, DnDConstants.ACTION_MOVE, this, true, null);
 
@@ -406,7 +412,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			reloadRecents();
 	}
 
-	private void addWorkspaceButton(String text, ImageIcon icon, ActionListener event, JPanel container) {
+	public void addWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
 		JButton newWorkspace = new JButton(text);
 		ComponentUtils.deriveFont(newWorkspace, 10);
 		newWorkspace.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
@@ -414,12 +420,13 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		newWorkspace.setMargin(new Insets(0, 0, 0, 0));
 		newWorkspace.setIcon(icon);
 		newWorkspace.addActionListener(event);
+		newWorkspace.setToolTipText(text);
 		newWorkspace.setVerticalTextPosition(SwingConstants.BOTTOM);
 		newWorkspace.setHorizontalTextPosition(SwingConstants.CENTER);
 		newWorkspace.setBorder(
 				BorderFactory.createLineBorder(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).brighter(), 1));
 		newWorkspace.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		container.add(newWorkspace);
+		actions.add(newWorkspace);
 	}
 
 	private void initWebsitePanel() {
