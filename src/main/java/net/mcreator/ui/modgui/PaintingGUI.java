@@ -80,7 +80,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 				L10N.label("elementgui.painting.painting_title")));
 		selp.add(title);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("paintings/author"),
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/author"),
 				L10N.label("elementgui.painting.painting_author")));
 		selp.add(author);
 
