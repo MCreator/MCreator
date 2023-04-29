@@ -301,6 +301,8 @@
             <#else>
                 <#return '{ "Name": "' + mapped + '" }'>
             </#if>
+        <#else>
+        <#assign mapped = "minecraft:" + mapped />
         </#if>
     </#if>
     <#return '{ "Name": "minecraft:air" }'>
