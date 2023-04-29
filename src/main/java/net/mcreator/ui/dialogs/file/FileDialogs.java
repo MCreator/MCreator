@@ -67,6 +67,14 @@ public class FileDialogs {
 		}
 	}
 
+	public static File getDirectoryChooser(File file) {
+		if (useNativeFileChooser()) {
+			return NativeFileDialogs.getDirectoryChooserDialog(file);
+		} else {
+			return JavaFileDialogs.getDirectoryChooserDialog(file);
+		}
+	}
+
 	public static File getWorkspaceDirectorySelectDialog(Window f, File file) {
 		if (useNativeFileChooser()) {
 			return NativeFileDialogs.getWorkspaceDirectorySelectDialog(f, file);

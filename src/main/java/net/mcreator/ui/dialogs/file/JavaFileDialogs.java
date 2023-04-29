@@ -118,6 +118,35 @@ class JavaFileDialogs {
 		return null;
 	}
 
+	protected static File getDirectoryChooserDialog(File file) {
+		JFileChooser fc = new JFileChooser();
+		fc.setPreferredSize(FILEDIALOG_SIZE);
+		fc.setCurrentDirectory(file);
+		fc.setAcceptAllFileFilterUsed(false);
+		fc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		fc.setFileView(new FileView() {
+			final FileSystemView fileSystemView = FileSystemView.getFileSystemView();
+
+			@Override public Icon getIcon(File f) {
+				if (f.isDirectory())
+					if (!fileSystemView.isComputerNode(f) && !fileSystemView.isDrive(f))
+						return UIRES.get("laf.directory.gif");
+
+				return fileSystemView.getSystemIcon(f);
+			}
+		});
+
+		int result = fc.showOpenDialog(null);
+		if (result == JFileChooser.APPROVE_OPTION) {
+			// store last dir shown after the dialog is closed
+			prevDir = fc.getCurrentDirectory();
+
+			return fc.getSelectedFile();
+		}
+
+		return null;
+	}
+
 	protected static File getWorkspaceDirectorySelectDialog(Window f, File file) {
 		JFileChooser fc = new JFileChooser() {
 			@Override public void approveSelection() {
