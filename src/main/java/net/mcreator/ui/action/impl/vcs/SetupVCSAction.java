@@ -23,6 +23,7 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.vcs.VCSSetupDialogs;
+import net.mcreator.ui.workspace.WorkspacePanelVCS;
 import net.mcreator.vcs.VCSInfo;
 import net.mcreator.vcs.WorkspaceNotEmptyException;
 import net.mcreator.vcs.WorkspaceVCS;
@@ -55,7 +56,7 @@ public class SetupVCSAction extends VCSAction {
 					mcreator.actionRegistry.getActions().stream()
 							.filter(action -> action instanceof VCSStateChangeListener)
 							.forEach(action -> ((VCSStateChangeListener) action).vcsStateChanged());
-					mcreator.statusBar.reloadVCSStatus();
+					((WorkspacePanelVCS) mcreator.mv.getVerticalTab("vcs")).reloadVCSStatus();
 				} catch (WorkspaceNotEmptyException e) {
 					JOptionPane.showMessageDialog(mcreator,
 							L10N.t("dialog.vcs.setup.workspace_folder_not_empty.message"),

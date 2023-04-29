@@ -26,7 +26,7 @@ import net.mcreator.ui.workspace.WorkspacePanel;
 import javax.swing.*;
 import java.awt.*;
 
-public class WorkspacePanelResources extends JTabbedPane {
+public class WorkspacePanelResources extends JTabbedPane implements IReloadableFilterable {
 
 	public WorkspacePanelTextures workspacePanelTextures;
 	public WorkspacePanelSounds workspacePanelSounds;
@@ -89,7 +89,7 @@ public class WorkspacePanelResources extends JTabbedPane {
 		super.paintComponent(g);
 	}
 
-	public void reloadElements() {
+	@Override public void reloadElements() {
 		if (getSelectedIndex() < 0)
 			return;
 
@@ -99,7 +99,7 @@ public class WorkspacePanelResources extends JTabbedPane {
 		}
 	}
 
-	public void refilter() {
+	@Override public void refilterElements() {
 		if (getSelectedIndex() < 0)
 			return;
 

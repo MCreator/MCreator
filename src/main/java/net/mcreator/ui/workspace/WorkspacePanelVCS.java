@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.workspace;
 
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.vcs.SetupVCSAction;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -25,6 +26,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.vcs.BranchesPopup;
+import net.mcreator.util.image.ImageUtils;
+import net.mcreator.vcs.WorkspaceVCS;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
@@ -45,10 +48,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
+public class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 
 	private static final Logger LOG = LogManager.getLogger("VCS Panel");
 
+	private final MCreator mcreator;
 	private final WorkspacePanel workspacePanel;
 
 	private final JTable commits;
@@ -56,11 +60,14 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 
 	private final JButton switchBranch = new JButton("");
 
+	private final JLabel currentBranch = new JLabel();
+
 	WorkspacePanelVCS(WorkspacePanel workspacePanel) {
 		super(new BorderLayout(0, 5));
 		setOpaque(false);
 
 		this.workspacePanel = workspacePanel;
+		this.mcreator = workspacePanel.getMCreator();
 
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
@@ -92,8 +99,9 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 		switchBranch.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(switchBranch);
 
-		switchBranch.addActionListener(e -> new BranchesPopup(workspacePanel.getMCreator().getWorkspace().getVCS(),
-				workspacePanel.getMCreator()).show(switchBranch, 4, 20));
+		switchBranch.addActionListener(
+				e -> new BranchesPopup(WorkspaceVCS.getVCSWorkspace(workspacePanel.getMCreator().getWorkspace()),
+						workspacePanel.getMCreator()).show(switchBranch, 4, 20));
 
 		bar.add(switchBranch);
 
@@ -151,14 +159,42 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 				}
 			}
 		});
+
+		currentBranch.setIcon(
+				new ImageIcon(ImageUtils.darken(ImageUtils.toBufferedImage(UIRES.get("16px.vcs").getImage()))));
+		currentBranch.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+				new BranchesPopup(WorkspaceVCS.getVCSWorkspace(mcreator.getWorkspace()), mcreator).show(currentBranch,
+						0, 0);
+			}
+		});
+		currentBranch.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
+		currentBranch.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		ComponentUtils.deriveFont(currentBranch, 12);
+
+		add("South", currentBranch);
+	}
+
+	public void reloadVCSStatus() {
+		WorkspaceVCS workspaceVCS = WorkspaceVCS.getVCSWorkspace(mcreator.getWorkspace());
+		if (workspaceVCS != null) {
+			currentBranch.setVisible(true);
+			try {
+				currentBranch.setText(workspaceVCS.getGit().getRepository().getBranch());
+			} catch (IOException ignored) {
+			}
+		} else {
+			currentBranch.setVisible(false);
+		}
 	}
 
 	private void checkoutToSelectedCommit() {
+		WorkspaceVCS workspaceVCS = WorkspaceVCS.getVCSWorkspace(workspacePanel.getMCreator().getWorkspace());
 		String shortCommitId = commits.getValueAt(commits.getSelectedRow(), 0).toString();
-
-		if (shortCommitId != null && workspacePanel.getMCreator().getWorkspace().getVCS() != null) {
+		if (shortCommitId != null && workspaceVCS != null) {
 			try {
-				Git git = workspacePanel.getMCreator().getWorkspace().getVCS().getGit();
+				Git git = workspaceVCS.getGit();
 				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
 						.call()) {
 					if (commit.abbreviate(7).name().equals(shortCommitId)) {
@@ -218,13 +254,14 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 	}
 
 	@Override public void reloadElements() {
-		if (workspacePanel.getMCreator().getWorkspace().getVCS() != null) {
+		WorkspaceVCS workspaceVCS = WorkspaceVCS.getVCSWorkspace(workspacePanel.getMCreator().getWorkspace());
+		if (workspaceVCS != null) {
 			int row = commits.getSelectedRow();
 
 			DefaultTableModel model = (DefaultTableModel) commits.getModel();
 			model.setRowCount(0);
 
-			Git git = workspacePanel.getMCreator().getWorkspace().getVCS().getGit();
+			Git git = workspaceVCS.getGit();
 			try {
 				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
 						.call()) {
@@ -247,7 +284,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 	}
 
 	@Override public void refilterElements() {
-		if (workspacePanel.getMCreator().getWorkspace().getVCS() != null)
+		if (WorkspaceVCS.getVCSWorkspace(workspacePanel.getMCreator().getWorkspace()) != null)
 			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
 	}
 

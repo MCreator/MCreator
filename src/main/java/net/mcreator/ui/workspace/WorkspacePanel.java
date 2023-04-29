@@ -70,6 +70,8 @@ import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -92,12 +94,12 @@ import java.util.stream.Collectors;
 	};
 	private final JPanel panels = new JPanel(cardLayout);
 
-	public WorkspacePanelResources resourcesPan;
-	private final WorkspacePanelLocalizations localePan;
-	private final WorkspacePanelVariables variablesPan;
-	private final WorkspacePanelVCS vcsPan;
+	private final JPanel rotatablePanel = new JPanel();
+	private final Map<String, IReloadableFilterable> panelTabs = new HashMap<>();
+	private final Map<String, JButton> verticalTabs = new HashMap<>();
+	public final WorkspacePanelResources resourcesPan;
 
-	private String currentTab = "mods";
+	private String currentTab;
 
 	private final MCreator mcreator;
 
@@ -171,15 +173,13 @@ import java.util.stream.Collectors;
 		this.currentFolder = mcreator.getWorkspace().getFoldersRoot();
 
 		this.resourcesPan = new WorkspacePanelResources(this);
-		this.localePan = new WorkspacePanelLocalizations(this);
-		this.variablesPan = new WorkspacePanelVariables(this);
-		this.vcsPan = new WorkspacePanelVCS(this);
 
 		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator);
 
 		JPopupMenu contextMenu = new JPopupMenu();
 
 		panels.setOpaque(false);
+		panels.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
 		list = new JSelectableList<>(dml);
 		list.setOpaque(false);
@@ -289,14 +289,6 @@ import java.util.stream.Collectors;
 
 		JPanel modElementsPanel = new JPanel(new BorderLayout(0, 0));
 		modElementsPanel.setOpaque(false);
-
-		resourcesPan.setBorder(
-				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
-		localePan.setBorder(
-				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
-		variablesPan.setBorder(
-				BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
-		vcsPan.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
 		JPanel slo = new JPanel(new BorderLayout(0, 3));
 
@@ -658,131 +650,25 @@ import java.util.stream.Collectors;
 				PanelUtils.northAndCenterElement(PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0),
 						mainp));
 
-		panels.add(modElementsPanel, "mods");
-		panels.add(resourcesPan, "res");
-		panels.add(localePan, "locales");
-		panels.add(variablesPan, "variables");
-		panels.add(vcsPan, "vcs");
-
-		cardLayout.show(panels, "mods");
-
 		slo.add("Center", panels);
 
 		slo.setBorder(null);
 
-		JPanel rotatablePanel = new JPanel();
 		rotatablePanel.setLayout(new BoxLayout(rotatablePanel, BoxLayout.PAGE_AXIS));
 
-		VerticalTabButton btt1 = new VerticalTabButton(L10N.t("workspace.category.mod_elements"));
-		VerticalTabButton btt2 = new VerticalTabButton(L10N.t("workspace.category.resources"));
-		VerticalTabButton btt3 = new VerticalTabButton(L10N.t("workspace.category.variables"));
-		VerticalTabButton btt6 = new VerticalTabButton(L10N.t("workspace.category.localization"));
-		VerticalTabButton btt7 = new VerticalTabButton(L10N.t("workspace.category.remote_workspace"));
-
-		btt1.setContentAreaFilled(false);
-		btt1.setMargin(new Insets(7, 1, 7, 2));
-		btt1.setBorderPainted(false);
-		btt1.setFocusPainted(false);
-		btt1.setOpaque(true);
-		btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		btt1.setCursor(new
-
-				Cursor(Cursor.HAND_CURSOR));
-		btt1.addActionListener(e -> {
-			btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			cardLayout.show(panels, "mods");
-			updateMods();
-			modElementsBar.setVisible(true);
-		});
-		rotatablePanel.add(btt1);
-
-		btt2.setContentAreaFilled(false);
-		btt2.setMargin(new Insets(7, 1, 7, 2));
-		btt2.setBorderPainted(false);
-		btt2.setFocusPainted(false);
-		btt2.setOpaque(true);
-		btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		btt2.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btt2.addActionListener(e -> {
-			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			btt2.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-			btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			cardLayout.show(panels, "res");
-			updateMods();
-			modElementsBar.setVisible(false);
-		});
-
-		if (resourcesPan.getTabCount() > 0)
-			rotatablePanel.add(btt2);
-
-		btt3.setContentAreaFilled(false);
-		btt3.setMargin(new Insets(7, 1, 7, 2));
-		btt3.setBorderPainted(false);
-		btt3.setFocusPainted(false);
-		btt3.setOpaque(true);
-		btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		btt3.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btt3.addActionListener(e -> {
-			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			btt3.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			cardLayout.show(panels, "variables");
-			updateMods();
-			modElementsBar.setVisible(false);
-		});
-
-		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("variables") != GeneratorStats.CoverageStatus.NONE)
-			rotatablePanel.add(btt3);
-
-		btt6.setContentAreaFilled(false);
-		btt6.setMargin(new Insets(7, 1, 7, 2));
-		btt6.setBorderPainted(false);
-		btt6.setFocusPainted(false);
-		btt6.setOpaque(true);
-		btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		btt6.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btt6.addActionListener(e -> {
-			btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			btt6.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-			btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			cardLayout.show(panels, "locales");
-			updateMods();
-			modElementsBar.setVisible(false);
-		});
-
-		if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("i18n") != GeneratorStats.CoverageStatus.NONE)
-			rotatablePanel.add(btt6);
-
-		btt7.setContentAreaFilled(false);
-		btt7.setMargin(new Insets(7, 1, 7, 2));
-		btt7.setBorderPainted(false);
-		btt7.setFocusPainted(false);
-		btt7.setOpaque(true);
-		btt7.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		btt7.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		btt7.addActionListener(e -> {
-			if (vcsPan.panelShown()) {
-				btt1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				btt2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				btt6.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				btt7.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-				cardLayout.show(panels, "vcs");
-				updateMods();
-				modElementsBar.setVisible(false);
-			}
-		});
-		rotatablePanel.add(btt7);
+		addVerticalTab("mods", L10N.t("workspace.category.mod_elements"), new WorkspacePanelMods(modElementsPanel),
+				(m, e) -> true, e -> true);
+		verticalTabs.get("mods").doClick();
+		addVerticalTab("res", L10N.t("workspace.category.resources"), resourcesPan, (m, e) -> e.getTabCount() > 0,
+				e -> true);
+		addVerticalTab("locales", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this),
+				(m, e) -> m.getGeneratorStats().getBaseCoverageInfo().get("variables")
+						!= GeneratorStats.CoverageStatus.NONE, e -> true);
+		addVerticalTab("variables", L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this),
+				(m, e) -> m.getGeneratorStats().getBaseCoverageInfo().get("i18n") != GeneratorStats.CoverageStatus.NONE,
+				e -> true);
+		addVerticalTab("vcs", L10N.t("workspace.category.remote_workspace"), new WorkspacePanelVCS(this),
+				(m, e) -> true, WorkspacePanelVCS::panelShown);
 
 		rotatablePanel.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
@@ -984,6 +870,43 @@ import java.util.stream.Collectors;
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
 		upFolder.setEnabled(!currentFolder.isRoot());
+	}
+
+	public <T extends JComponent & IReloadableFilterable> void addVerticalTab(String id, String name, T panel,
+			BiPredicate<MCreator, T> addCondition, Predicate<T> switchCondition) {
+		if (panelTabs.containsKey(id))
+			return;
+
+		VerticalTabButton tab = new VerticalTabButton(name);
+		tab.setContentAreaFilled(false);
+		tab.setMargin(new Insets(7, 1, 7, 2));
+		tab.setBorderPainted(false);
+		tab.setFocusPainted(false);
+		tab.setOpaque(true);
+		tab.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		tab.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		tab.addActionListener(e -> {
+			if (switchCondition.test(panel)) {
+				for (JButton btt : verticalTabs.values()) {
+					btt.setBackground(btt == tab ?
+							(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
+							(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				}
+				cardLayout.show(panels, id);
+				updateMods();
+				modElementsBar.setVisible(id.equals("mods"));
+			}
+		});
+
+		panels.add(panel, id);
+		panelTabs.put(id, panel);
+		verticalTabs.put(id, tab);
+		if (addCondition.test(mcreator, panel))
+			rotatablePanel.add(tab);
+	}
+
+	public IReloadableFilterable getVerticalTab(String id) {
+		return panelTabs.get(id);
 	}
 
 	private void togglefilter(String filter) {
@@ -1341,23 +1264,7 @@ import java.util.stream.Collectors;
 
 		updateRunning = true;
 
-		switch (currentTab) {
-		case "mods":
-			this.reloadElements();
-			break;
-		case "res":
-			resourcesPan.reloadElements();
-			break;
-		case "locales":
-			localePan.reloadElements();
-			break;
-		case "variables":
-			variablesPan.reloadElements();
-			break;
-		case "vcs":
-			vcsPan.reloadElements();
-			break;
-		}
+		panelTabs.get(currentTab).reloadElements();
 
 		updateRunning = false;
 	}
@@ -1422,11 +1329,7 @@ import java.util.stream.Collectors;
 	}
 
 	public void refilterElements() {
-		dml.refilter();
-		resourcesPan.refilter();
-		localePan.refilterElements();
-		variablesPan.refilterElements();
-		vcsPan.refilterElements();
+		panelTabs.values().forEach(IReloadableFilterable::refilterElements);
 	}
 
 	public MCreator getMCreator() {
@@ -1592,4 +1495,19 @@ import java.util.stream.Collectors;
 		}
 	}
 
+	private class WorkspacePanelMods extends JPanel implements IReloadableFilterable {
+		private WorkspacePanelMods(JComponent contents) {
+			setLayout(new BorderLayout());
+			setOpaque(false);
+			add(contents);
+		}
+
+		@Override public void reloadElements() {
+			WorkspacePanel.this.reloadElements();
+		}
+
+		@Override public void refilterElements() {
+			dml.refilter();
+		}
+	}
 }
