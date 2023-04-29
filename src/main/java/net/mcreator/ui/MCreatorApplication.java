@@ -256,7 +256,7 @@ public final class MCreatorApplication {
 
 	private void showPluginLoadingFailures(Window parent) {
 		Collection<PluginLoadFailure> failedPlugins = PluginLoader.INSTANCE.getFailedPlugins();
-		if (!failedPlugins.isEmpty()) {
+		if (!failedPlugins.isEmpty() && PreferencesManager.PREFERENCES.notifications.warnInvalidPlugins.get()) {
 			StringBuilder sb = new StringBuilder();
 			sb.append("<html>");
 			sb.append(L10N.t("dialog.plugin_load_failed.msg1"));
