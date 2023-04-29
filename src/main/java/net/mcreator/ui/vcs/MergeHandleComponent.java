@@ -32,11 +32,11 @@ import java.util.Locale;
 
 class MergeHandleComponent extends JPanel {
 
-	protected final JRadioButton local;
-	protected final JRadioButton remote;
+	protected final JRadioButton local, remote;
 
 	MergeHandleComponent(List<MergeHandleComponent> mergeHandleComponents, MergeHandle<?> mergeHandle) {
 		super(new BorderLayout(40, 2));
+		setOpaque(false);
 		setMinimumSize(new Dimension(400, 10));
 		local = L10N.radiobutton("dialog.vcs.merge_handle_accept_mine",
 				mergeHandle.getLocalChange().name().toLowerCase(Locale.ENGLISH));
@@ -71,5 +71,4 @@ class MergeHandleComponent extends JPanel {
 
 		mergeHandleComponents.add(this);
 	}
-
 }
