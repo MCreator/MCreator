@@ -97,11 +97,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		this.workspace = workspace;
 		this.application = application;
 
-		WorkspaceVCS vcs = WorkspaceVCS.loadVCSWorkspace(this.workspace);
-		if (vcs != null) {
-			this.workspace.setVCS(vcs);
+		if (WorkspaceVCS.loadVCSWorkspace(this.workspace))
 			LOG.info("Loaded VCS for current workspace");
-		}
 
 		this.gradleConsole = new GradleConsole(this);
 		this.gradleConsole.addGradleStateListener(new GradleStateListener() {

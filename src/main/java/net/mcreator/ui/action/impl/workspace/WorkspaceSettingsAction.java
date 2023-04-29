@@ -36,8 +36,6 @@ import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
-import net.mcreator.vcs.diff.DiffResult;
-import net.mcreator.vcs.diff.ListDiff;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
@@ -174,14 +172,13 @@ public class WorkspaceSettingsAction extends GradleAction {
 								.getGeneratorStats().getBaseCoverageInfo().get("model_java")
 								!= GeneratorStats.CoverageStatus.NONE) {
 							List<Model> javaModelsOld = Model.getJavaModels(mcreator.getWorkspace());
-							List<Model> javaModelsNew = Model.getJavaModels(mcreator.getWorkspace());
+							List<Model> javaModelsNew = Model.getJavaModels(mcreator.getWorkspace()); // FIXME
+							javaModelsOld.removeAll(javaModelsNew);
 
-							DiffResult<Model> diffResult = ListDiff.getListDiff(javaModelsOld, javaModelsNew);
-
-							if (!diffResult.removed().isEmpty()) {
+							if (!javaModelsOld.isEmpty()) {
 								JOptionPane.showMessageDialog(mcreator,
 										L10N.t("dialog.workspace.version_switch.java_model_warning",
-												diffResult.removed().stream().map(Model::getReadableName)
+												javaModelsOld.stream().map(Model::getReadableName)
 														.collect(Collectors.joining(", ")).trim()),
 										L10N.t("dialog.workspace.version_switch.java_model_warning.title"),
 										JOptionPane.WARNING_MESSAGE);
