@@ -63,6 +63,7 @@ public class ModElementTypeLoader {
 		ModElementType.TAB = register(new ModElementType<>("tab", 'w', BaseType.OTHER, TabGUI::new, Tab.class));
 		ModElementType.TAG = register(new ModElementType<>("tag", 'j', BaseType.DATAPACK, TagGUI::new, Tag.class));
 		ModElementType.TOOL = register(new ModElementType<>("tool", 't', BaseType.ITEM, ToolGUI::new, Tool.class));
+		ModElementType.VILLAGERPROFESSION = register(new ModElementType<>("villagerprofession", null, BaseType.OTHER, VillagerProfessionGUI::new, VillagerProfession.class));
 		ModElementType.VILLAGERTRADE = register(new ModElementType<>("villagertrade", null, BaseType.OTHER, VillagerTradeGUI::new, VillagerTrade.class));
 
 		// Unregistered type used to mask legacy removed mod element types

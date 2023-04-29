@@ -21,6 +21,8 @@ package net.mcreator.minecraft;
 
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.IPOIProvider;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -218,8 +220,26 @@ public class ElementUtil {
 		return loadDataListAndElements(workspace, "potions", false, null, "potion");
 	}
 
-	public static List<DataListEntry> loadAllVillagerProfessions() {
-		return DataListLoader.loadDataList("villagerprofessions");
+	public static List<DataListEntry> loadAllVillagerProfessions(Workspace workspace) {
+		return loadDataListAndElements(workspace, "villagerprofessions", false, null, "villagerprofession");
+	}
+
+	/**
+	 * Returns list of blocks attached to a POI for this workspace
+	 *
+	 * @param workspace Workspace to return for
+	 * @return List of blocks attached to a POI for this workspace
+	 */
+	public static List<MItemBlock> loadAllPOIBlocks(Workspace workspace) {
+		List<MItemBlock> elements = loadBlocks(workspace).stream().filter(MCItem::isPOI)
+				.map(e -> new MItemBlock(workspace, e.getName())).collect(Collectors.toList());
+
+		for (ModElement modElement : workspace.getModElements()) {
+			if (modElement.getGeneratableElement() instanceof IPOIProvider poiProvider)
+				elements.addAll(poiProvider.poiBlocks());
+		}
+
+		return elements;
 	}
 
 	public static List<DataListEntry> getAllBooleanGameRules(Workspace workspace) {
