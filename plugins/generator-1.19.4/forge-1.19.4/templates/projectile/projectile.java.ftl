@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2021, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -34,6 +34,7 @@
 
 package ${package}.entity;
 
+<#compress>
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
@@ -55,7 +56,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		super(type, entity, world);
 	}
 
-	@Override public Packet<?> getAddEntityPacket() {
+	@Override public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
 
@@ -73,47 +74,47 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 	<#if hasProcedure(data.onHitsPlayer)>
-	@Override public void playerTouch(Player entity) {
-		super.playerTouch(entity);
-		<@procedureCode data.onHitsPlayer, {
-			"x": "this.getX()",
-			"y": "this.getY()",
-			"z": "this.getZ()",
-			"entity": "entity",
-			"sourceentity": "this.getOwner()",
-			"immediatesourceentity": "this",
-			"world": "this.level"
-		}/>
-	}
+		@Override public void playerTouch(Player entity) {
+			super.playerTouch(entity);
+			<@procedureCode data.onHitsPlayer, {
+				"x": "this.getX()",
+				"y": "this.getY()",
+				"z": "this.getZ()",
+				"entity": "entity",
+				"sourceentity": "this.getOwner()",
+				"immediatesourceentity": "this",
+				"world": "this.level"
+			}/>
+		}
 	</#if>
 
 	<#if hasProcedure(data.onHitsEntity)>
-	@Override public void onHitEntity(EntityHitResult entityHitResult) {
-		super.onHitEntity(entityHitResult);
-		<@procedureCode data.onHitsEntity, {
-			"x": "this.getX()",
-			"y": "this.getY()",
-			"z": "this.getZ()",
-			"entity": "entityHitResult.getEntity()",
-			"sourceentity": "this.getOwner()",
-			"immediatesourceentity": "this",
-			"world": "this.level"
-		}/>
-	}
+		@Override public void onHitEntity(EntityHitResult entityHitResult) {
+			super.onHitEntity(entityHitResult);
+			<@procedureCode data.onHitsEntity, {
+				"x": "this.getX()",
+				"y": "this.getY()",
+				"z": "this.getZ()",
+				"entity": "entityHitResult.getEntity()",
+				"sourceentity": "this.getOwner()",
+				"immediatesourceentity": "this",
+				"world": "this.level"
+			}/>
+		}
 	</#if>
 
 	<#if hasProcedure(data.onHitsBlock)>
-	@Override public void onHitBlock(BlockHitResult blockHitResult) {
-		super.onHitBlock(blockHitResult);
-		<@procedureCode data.onHitsBlock, {
-			"x": "blockHitResult.getBlockPos().getX()",
-			"y": "blockHitResult.getBlockPos().getY()",
-			"z": "blockHitResult.getBlockPos().getZ()",
-			"entity": "this.getOwner()",
-			"immediatesourceentity": "this",
-			"world": "this.level"
-		}/>
-	}
+		@Override public void onHitBlock(BlockHitResult blockHitResult) {
+			super.onHitBlock(blockHitResult);
+			<@procedureCode data.onHitsBlock, {
+				"x": "blockHitResult.getBlockPos().getX()",
+				"y": "blockHitResult.getBlockPos().getY()",
+				"z": "blockHitResult.getBlockPos().getZ()",
+				"entity": "this.getOwner()",
+				"immediatesourceentity": "this",
+				"world": "this.level"
+			}/>
+		}
 	</#if>
 
 	@Override public void tick() {
@@ -134,11 +135,11 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			this.discard();
 	}
 
-	public static ${name}Entity shoot(Level world, LivingEntity entity, Random random) {
-		return shoot(world, entity, random, ${data.power}f, ${data.damage}, ${data.knockback});
+	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource source) {
+		return shoot(world, entity, source, ${data.power}f, ${data.damage}, ${data.knockback});
 	}
 
-	public static ${name}Entity shoot(Level world, LivingEntity entity, Random random, float power, double damage, int knockback) {
+	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource random, float power, double damage, int knockback) {
 		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, world);
 		entityarrow.shoot(entity.getViewVector(1).x, entity.getViewVector(1).y, entity.getViewVector(1).z, power * 2, 0);
 		entityarrow.setSilent(true);
@@ -151,7 +152,7 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		world.addFreshEntity(entityarrow);
 
 		world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
-				.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
+        		.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
 
 		return entityarrow;
 	}
@@ -172,11 +173,12 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		</#if>
 		entity.level.addFreshEntity(entityarrow);
 		entity.level.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
-				.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (new Random().nextFloat() * 0.5f + 1));
+				.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (RandomSource.create().nextFloat() * 0.5f + 1));
 
 		return entityarrow;
 	}
 
 }
+</#compress>
 
 <#-- @formatter:on -->
