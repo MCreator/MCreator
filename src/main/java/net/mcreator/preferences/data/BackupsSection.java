@@ -21,10 +21,13 @@ package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
+import net.mcreator.preferences.entries.FileEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
+import net.mcreator.workspace.WorkspaceFolderManager;
 
 public class BackupsSection extends PreferencesSection {
 
+	public FileEntry defaultWorkspacesFolder;
 	public IntegerEntry workspaceAutosaveInterval;
 	public IntegerEntry automatedBackupInterval;
 	public IntegerEntry numberOfBackupsToStore;
@@ -33,6 +36,7 @@ public class BackupsSection extends PreferencesSection {
 	public BackupsSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
+		defaultWorkspacesFolder = addEntry(new FileEntry("defaultWorkspacesFolder", WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot().getAbsolutePath(), true));
 		workspaceAutosaveInterval = addEntry(new IntegerEntry("workspaceAutosaveInterval", 30, 10, 2000));
 		automatedBackupInterval = addEntry(new IntegerEntry("automatedBackupInterval", 5, 3, 120));
 		numberOfBackupsToStore = addEntry(new IntegerEntry("numberOfBackupsToStore", 10, 2, 20));

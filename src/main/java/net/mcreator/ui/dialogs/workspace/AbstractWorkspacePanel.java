@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -83,7 +84,7 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 		});
 
 		workspaceFolder.setText(
-				WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot().getAbsolutePath() + File.separator
+				PreferencesManager.PREFERENCES.backups.defaultWorkspacesFolder.get().getAbsolutePath() + File.separator
 						+ workspaceDialogPanel.modID.getText());
 
 		selectWorkspaceFolder.addActionListener(actionEvent -> {

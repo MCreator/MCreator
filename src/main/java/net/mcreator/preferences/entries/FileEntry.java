@@ -46,7 +46,9 @@ public class FileEntry extends PreferencesEntry<File> {
 
 	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
 
-		JButton button = new JButton(StringUtils.abbreviateStringInverse(value.getAbsolutePath(), 35));
+		String path = StringUtils.abbreviateStringInverse(value.getAbsolutePath(), 35);
+		JButton button = new JButton(path);
+		button.setToolTipText(path);
 		button.addActionListener(actionEvent -> {
 			File file = FileDialogs.getDirectoryChooser(new File(button.getText()));
 			if (file != null && file.exists()) {
