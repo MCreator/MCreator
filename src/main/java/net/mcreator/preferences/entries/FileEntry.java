@@ -20,7 +20,6 @@
 package net.mcreator.preferences.entries;
 
 import com.google.gson.JsonElement;
-import com.google.gson.JsonPrimitive;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.dialogs.file.FileDialogs;

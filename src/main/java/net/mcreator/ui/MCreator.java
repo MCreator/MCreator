@@ -358,6 +358,14 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			}
 		}
 
+		if(PreferencesManager.PREFERENCES.system.confirmBeforeClosing.get()) {
+			int reply = JOptionPane.showConfirmDialog(this,
+					L10N.t("action.close_mcreator_confirmation"),
+					L10N.t("action.gradle.close_mcreator_while_running_title"), JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE, null);
+			safetoexit = reply == JOptionPane.YES_OPTION;
+		}
+
 		if (safetoexit) {
 			LOG.info("Closing MCreator window ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
