@@ -47,7 +47,7 @@ public class ${name}Block extends
 	<#elseif data.blockBase?has_content && data.blockBase == "Button">
 		<#if (data.material.getUnmappedValue() == "WOOD") || (data.material.getUnmappedValue() == "NETHER_WOOD")>Wood<#else>Stone</#if>ButtonBlock
 	<#elseif data.blockBase?has_content>
-		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")?replace("Egg", "DragonEgg")}Block
+		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")}Block
 	<#else>
 		Block
 	</#if>

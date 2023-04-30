@@ -45,7 +45,7 @@ public class ${name}Block extends
 	<#if data.hasGravity>
 		FallingBlock
 	<#elseif data.blockBase?has_content>
-		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")?replace("Egg", "DragonEgg")}Block
+		${data.blockBase?replace("Stairs", "Stair")?replace("Pane", "IronBars")}Block
 	<#else>
 		Block
 	</#if>
