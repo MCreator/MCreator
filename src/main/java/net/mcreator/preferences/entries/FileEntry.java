@@ -52,6 +52,7 @@ public class FileEntry extends PreferencesEntry<File> {
 			File file = FileDialogs.getDirectoryChooser(new File(button.getText()));
 			if (file != null && file.exists()) {
 				if ((isFolder && file.isDirectory()) || (!isFolder && file.isFile())) {
+					fct.accept(actionEvent);
 					button.setText(StringUtils.abbreviateStringInverse(file.getAbsolutePath(), 35));
 					button.setToolTipText(file.getAbsolutePath());
 				}
