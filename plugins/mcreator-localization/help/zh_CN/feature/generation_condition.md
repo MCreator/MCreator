@@ -1,5 +1,5 @@
-Add a procedure with logic return value to have more conditions for the generation of this feature.
+添加带有逻辑返回值的过程，为生成该特性提供更多条件。
 
-This condition is checked AFTER the placement modifiers in the feature builder.
+在特性构建器中的位置修饰符之后检查此条件。
 
-Keep in mind some procedure blocks might not work properly in this trigger during early world generation.
+请记住，在早期生成世界时，某些流程脚本可能无法在此触发器中正常工作。

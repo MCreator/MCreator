@@ -1,3 +1,3 @@
-Use this field to define dimensions where the spawning should happen.
+使用此字段定义应该启用生成的维度。
 
-If the list is empty, no dimension restriction will be set and spawning will occur in all dimensions.
+如果列表为空，则不设置维度限制，并且将在所有维度上生成。
