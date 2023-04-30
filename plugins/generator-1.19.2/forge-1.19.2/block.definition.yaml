@@ -377,6 +377,20 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
+  # TX: Chain template
+  - template: json/block_item.json.ftl
+    condition: "blockBase %= Chain"
+    writer: json
+    name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/txblock/chain_states.json.ftl
+    condition: "blockBase %= Chain"
+    writer: json
+    name: "@MODASSETSROOT/blockstates/@registryname.json"
+  - template: json/txblock/chain.json.ftl
+    condition: "blockBase %= Chain"
+    writer: json
+    name: "@MODASSETSROOT/models/block/@registryname.json"
+
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
