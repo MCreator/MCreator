@@ -161,16 +161,22 @@ public class PreferencesManager {
 		File file = UserFolderManager.getFileFromUserFolder("preferences");
 		JsonObject obj = gson.fromJson(FileIO.readFileToString(file), JsonObject.class);
 		PREFERENCES_REGISTRY.get(PreferencesData.CORE_PREFERENCES_KEY).forEach(entry -> {
-			// We check if the entry's section and the entry are defined to avoid crashes
-			if (obj.has(entry.getSectionKey()) && obj.get(entry.getSectionKey()).getAsJsonObject().has(entry.getID())) {
-				JsonElement value = obj.get(entry.getSectionKey()).getAsJsonObject()
-						.get(entry.getID().replace("autoReloadTabs", "autoreloadTabs").replace("aaText", "aatext")
-								.replace("useMacOSMenuBar", "usemacOSMenuBar"));
+			// We check if the entry's section is present to avoid crashes
+			if (obj.has(entry.getSectionKey())) {
+				String id = entry.getID().replace("autoReloadTabs", "autoreloadTabs").replace("aaText", "aatext")
+						.replace("useMacOSMenuBar", "usemacOSMenuBar");
+				JsonElement value = obj.get(entry.getSectionKey()).getAsJsonObject().get(id);
 
-				if (value == null || value == JsonNull.INSTANCE)
-					return; // not defined in old preferences, we use the default value
+				// We check if the entry is defined to avoid a crash
+				if (obj.get(entry.getSectionKey()).getAsJsonObject().has(id)) {
+					System.out.println(entry.getID());
+					System.out.println(value);
+					if (value == null || value == JsonNull.INSTANCE)
+						return; // not defined in old preferences, we use the default value
 
-				entry.setValueFromJsonElement(value);
+					System.out.println(entry.getID());
+					entry.setValueFromJsonElement(value);
+				}
 			}
 		});
 

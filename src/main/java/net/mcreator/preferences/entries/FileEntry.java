@@ -45,7 +45,6 @@ public class FileEntry extends PreferencesEntry<File> {
 	}
 
 	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
-
 		String path = StringUtils.abbreviateStringInverse(value.getAbsolutePath(), 35);
 		JButton button = new JButton(path);
 		button.setToolTipText(path);
