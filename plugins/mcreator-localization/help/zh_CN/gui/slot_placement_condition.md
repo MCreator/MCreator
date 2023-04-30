@@ -1,4 +1,5 @@
-If the condition returns true, players will not be able to place the items inside this slot.
-However, they will still be able to take items without any restriction.
+如果条件返回true，玩家将无法将物品放入此物品槽中。
 
-Note: This condition overrides the "Limit stack input" parameter.
+但是，他们仍然可以不受任何限制地携带物品。
+
+注意:此条件覆盖“限制堆栈输入”参数。
