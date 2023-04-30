@@ -1,1 +1,1 @@
-This procedure will be executed each tick when the item is inside the inventory of a player.
+当物品出现在玩家的背包中时，这个流程将在每一游戏刻执行一次。

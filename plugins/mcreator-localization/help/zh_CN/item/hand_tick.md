@@ -1,1 +1,1 @@
-The procedure is executed each tick when the item is held in hand by the player.
+当道具被玩家拿在手里时，这个流程就会被执行。

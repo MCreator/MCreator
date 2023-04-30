@@ -1,3 +1,3 @@
-This is maximal number of items of this type that can fit in a stack. 
+这是该类型元素在堆栈中所能容纳的最大数目。
 
-Vanilla example: Ender Pearls have a stack size of 16.
+原版示例:末影珍珠的堆叠大小为16。

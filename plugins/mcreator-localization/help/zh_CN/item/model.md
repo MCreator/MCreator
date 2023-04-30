@@ -1,7 +1,7 @@
-Select the model to be used with this item. Model only defines visual look.
+选择要与此项目一起使用的模型。模型只定义视觉外观。
 
-* **Normal** - Normal item
-* Tool - Model used by tools
-* Custom - you can define custom JSON and OBJ models too
+* **Normal** -正常项目
+* 工具-工具使用的模型
+* 自定义-你也可以定义自定义JSON和OBJ模型
 
-When making custom models, JSON is recommended due to vanilla support for this model type.
+在创建自定义模型时，建议使用JSON，因为原版对这种模型类型支持最好。

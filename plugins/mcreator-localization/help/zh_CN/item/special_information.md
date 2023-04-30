@@ -1,6 +1,6 @@
-This parameter adds a tooltip to the block when you hold your icon over the block in your inventory.
+当您将图标放在背包中中的方块上时，此参数将为方块添加一个工具提示。
 
-Tips:
+小贴士:
 
-* Use commas "," to separate entries to a new line.
-* Use the backslash with a comma after "\," to insert comma in the text instead of separating entries.
+* 使用逗号“，”将条目分隔到新行。
+* 在“\”后使用反斜杠加逗号，在文本中插入逗号，而不是分隔条目。

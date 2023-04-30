@@ -1,3 +1,3 @@
-The nutritional value is how much this food feeds the player. 
+营养价值是指食物能给玩家提供多少饥饿值。
 
-1 is 1/2 in the food bar. 20 is the full food bar.
+1是1/2格饥饿值。20是完整原版游戏饥饿值。

@@ -1,21 +1,21 @@
-This parameter controls the durability of the item (how many times the item can be used).
+这个参数控制项目的耐久值(项目可以被使用多少次)。
 
-Set this value to 0 to disable use count mechanic on the given item.
+将此值设置为0以禁用给定项目的使用计数机制。
 
-Vanilla values for the reference:
+可供参考的原版值:
 
-* Gold: 32 uses:
-* Wood: 59 uses.
-* Stone: 131 uses.
-* Iron: 250 uses.
-* Diamond: 1561 uses.
-* Netherite: 2031 uses.
-* Fishing rod: 64 uses.
-* Flint and steel: 64 uses.
-* Carrot on a stick: 25 uses.
-* Shears: 238 uses.
-* Trident 250 uses.
-* Crossbow: 326 uses.
-* Shield: 336 uses.
-* Bow: 384 uses.
-* Elytra: 432 uses.
+* 黄金:32次使用。
+* 木材:59次使用。
+* 石头:131次使用。
+* 铁:250次使用。
+* 钻石:1561次使用。
+* Netherite: 2031次使用。
+* 钓鱼竿:64次使用。
+* 打火石:64种用途。
+* 胡萝卜钓竿:25次使用。
+* 剪刀:238次使用。
+* 三叉戟250次使用。
+* 弩:326次使用。
+* 盾牌:336次使用。
+* 弓:384次使用。
+* 鞘翅:432次使用。

@@ -1,3 +1,3 @@
-Select the number of slots your GUI/inventory has. Don't forget to add 1 to the biggest slot ID.
+选择GUI/库存的物品槽数量。不要忘记给最大的槽号加1。
 
-If the block is bound to GUI, set this value to `the biggest slot ID in the GUI + 1`
+如果方块绑定到GUI，则将此值设置为`GUI中最大的插槽ID + 1`。（Minecraft的计数从0开始）

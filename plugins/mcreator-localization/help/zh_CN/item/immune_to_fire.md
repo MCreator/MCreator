@@ -1,3 +1,3 @@
-This parameter controls if the item is immune to fire, like Netherite stuff.
+这个参数控制物品是否对火免疫，比如下界合金物品。
 
-NOTE: Only available in Minecraft 1.16.x and higher
+注意:仅适用于Minecraft 1.16.x及以上

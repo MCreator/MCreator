@@ -1,12 +1,13 @@
-How common rare enchantments can be enchanted on this item/tool. 
-The higher the enchantability, the better enchantments you will get when enchanting the item/tool.
+在这个物品/工具上得到稀有附魔的概率。
 
-Vanilla values:
+附魔能力越高，你在附魔物品/工具时获得的附魔效果越好。
 
-* Wooden tools: 15
-* Stone tools: 5
-* Iron tools: 14
-* Gold tools: 22
-* Diamond tools: 10
-* Netherite tools: 15
-* Books: 1
+原版值:
+
+* 木制工具:15
+* 石制工具:5
+* 铁制工具:14
+* 金制工具:22
+* 钻石工具:10
+* 下界合金工具:15
+* 书籍:1本

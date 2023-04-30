@@ -1,5 +1,6 @@
-The rarity affects only the color of the item's name.
-* Common: White
-* Uncommon: Yellow
-* Rare: Aqua
-* Epic: Light Purple
+稀有性只会影响道具名称的颜色。
+
+* 普通:白色
+* 不常见:黄色
+* 稀有:浅绿色
+* 史诗:淡紫色

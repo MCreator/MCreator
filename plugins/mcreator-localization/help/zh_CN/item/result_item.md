@@ -1,1 +1,1 @@
-This parameter defines what item should be added to inventory of the entity that ate this food.
+该参数定义了食用该食品的实体的背包中应添加的物品。

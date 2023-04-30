@@ -1,3 +1,3 @@
-This parameter controls how long the item can be used in one take.
+此参数控制物品一次可以使用多长时间。
 
-If the item is a food, this value will define the time in ticks that the player takes to eat one item of the food.
+如果物品是一种食物，那么这个值将定义玩家吃一种食物所需的时间。

@@ -1,1 +1,1 @@
-Glowing effect makes the item glow like golden apple or enchanted items, except the glow is permanent.
+发光效果使物品像附魔金苹果或附魔物品一样发光，只是这种发光是永久的。
