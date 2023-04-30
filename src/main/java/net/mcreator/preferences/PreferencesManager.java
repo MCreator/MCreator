@@ -161,14 +161,17 @@ public class PreferencesManager {
 		File file = UserFolderManager.getFileFromUserFolder("preferences");
 		JsonObject obj = gson.fromJson(FileIO.readFileToString(file), JsonObject.class);
 		PREFERENCES_REGISTRY.get(PreferencesData.CORE_PREFERENCES_KEY).forEach(entry -> {
-			JsonElement value = obj.get(entry.getSectionKey()).getAsJsonObject()
-					.get(entry.getID().replace("autoReloadTabs", "autoreloadTabs").replace("aaText", "aatext")
-							.replace("useMacOSMenuBar", "usemacOSMenuBar"));
+			// We check if the entry's section and the entry are defined to avoid crashes
+			if (obj.has(entry.getSectionKey()) && obj.get(entry.getSectionKey()).getAsJsonObject().has(entry.getID())) {
+				JsonElement value = obj.get(entry.getSectionKey()).getAsJsonObject()
+						.get(entry.getID().replace("autoReloadTabs", "autoreloadTabs").replace("aaText", "aatext")
+								.replace("useMacOSMenuBar", "usemacOSMenuBar"));
 
-			if (value == null || value == JsonNull.INSTANCE)
-				return; // not defined in old preferences, we use the default value
+				if (value == null || value == JsonNull.INSTANCE)
+					return; // not defined in old preferences, we use the default value
 
-			entry.setValueFromJsonElement(value);
+				entry.setValueFromJsonElement(value);
+			}
 		});
 
 		// We save the new preferences
