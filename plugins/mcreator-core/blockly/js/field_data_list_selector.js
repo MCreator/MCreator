@@ -77,14 +77,8 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
                 let thisField = this; // reference to this field, to use in the callback function
                 javabridge.openEntrySelector(this.type, this.typeFilter, this.customEntryProviders, {
                     'callback': function (data) {
-                        if (data !== undefined) {
-                            thisField.entry = data;
-                        } else {
-                            thisField.entry = FieldDataListSelector.getDefaultEntry();
-                        }
-
+                        thisField.setEntry(data);
                         javabridge.triggerEvent();
-                        thisField.updateDisplay();
                     }
                 });
             } else {
@@ -105,10 +99,10 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
             let readableName = javabridge.getReadableNameOf(fieldElement.textContent, this.type);
             if (!readableName) // The readable name is an empty string because it couldn't be found
                 readableName = fieldElement.textContent; // In this case, we use the actual value
-            this.entry = fieldElement.textContent + ',' + readableName;
-        } else
-            this.entry = FieldDataListSelector.getDefaultEntry();
-        this.updateDisplay();
+            this.setEntry(fieldElement.textContent + ',' + readableName);
+        } else {
+            this.setEntry(FieldDataListSelector.getDefaultEntry());
+        }
     };
 
     // Returns the readable text
@@ -127,14 +121,17 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
         return '';
     }
 
-    updateDisplay() {
+    setEntry(newEntry) {
+        const oldEntry = this.entry;
+        this.entry = newEntry || FieldDataListSelector.getDefaultEntry();
         if (this.entry.split(',').length === 2) {
-            this.setValue(this.entry.split(',')[0]);
+            this.doValueUpdate_(this.entry.split(',')[0]);
         } else {
-            this.setValue('');
+            this.doValueUpdate_('');
         }
         this.setTooltip(this.getText_()); // Update the field tooltip
         this.forceRerender(); // Update the selected text and shape
+        Blockly.Events.fire(new EntryChange(this.sourceBlock_, this.name, oldEntry, newEntry));
     };
 }
 

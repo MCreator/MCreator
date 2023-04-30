@@ -56,13 +56,7 @@ class FieldAiConditionSelector extends Blockly.FieldLabelSerializable {
                 let thisField = this;
                 javabridge.openAIConditionEditor(this.condition, {
                     'callback': function (data) {
-                        if (data) {
-                            thisField.condition = data;
-                        } else {
-                            thisField.condition = 'null,null';
-                        }
-
-                        thisField.updateDisplay();
+                        thisField.setEntry(data);
                     }
                 });
             } else {
@@ -77,19 +71,22 @@ class FieldAiConditionSelector extends Blockly.FieldLabelSerializable {
     }
 
     fromXml(fieldElement) {
-        this.condition = fieldElement.textContent || 'null,null';
-        this.updateDisplay();
+        this.setEntry(fieldElement.textContent);
     }
 
-    updateDisplay() {
+    setEntry(newEntry) {
+        const oldEntry = this.condition;
+        this.condition = newEntry || 'null,null';
         if (this.condition.split(',').length === 2) {
-            this.setValue('Conditions: ' +
+            this.doValueUpdate_('Conditions: ' +
                 (this.condition.split(',')[0] !== 'null' ? 'X' : 'O') +
                 (this.condition.split(',')[1] !== 'null' ? 'X' : 'O')
             );
         } else {
-            this.setValue('Conditions: OO');
+            this.doValueUpdate_('Conditions: OO');
         }
+        this.forceRerender();
+        Blockly.Events.fire(new EntryChange(this.sourceBlock_, this.name, oldEntry, newEntry));
     }
 }
 
