@@ -386,7 +386,7 @@ templates:
     name: "@MODASSETSROOT/models/block/@registryname_inventory.json"
 
   # TX: DragonEgg template
-  - template: json/txblock/egg_item.json.ftl
+  - template: json/txblock/dragon_egg_item.json.ftl
     condition: "blockBase %= DragonEgg"
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
@@ -394,7 +394,7 @@ templates:
     condition: "blockBase %= DragonEgg"
     writer: json
     name: "@MODASSETSROOT/blockstates/@registryname.json"
-  - template: json/txblock/egg.json.ftl
+  - template: json/txblock/dragon_egg.json.ftl
     condition: "blockBase %= DragonEgg"
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"

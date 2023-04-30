@@ -1074,12 +1074,12 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
-		 * <p>This method generates the block icon for egg.</p>
+		 * <p>This method generates the block icon for Dragon Egg.</p>
 		 *
 		 * @param texture <p>Block texture</p>
 		 * @return <p>Returns generated image.</p>
 		 */
-		public static Image generateEggIcon(Image texture) {
+		public static Image generateDragonEggIcon(Image texture) {
 			BufferedImage out = new BufferedImage(32, 32, BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = (Graphics2D) out.getGraphics();
 			g2d.scale(1, 1.15);

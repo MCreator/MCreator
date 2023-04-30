@@ -310,7 +310,7 @@ import java.util.stream.Collectors;
 		} else if (blockBase != null && blockBase.equals("Button")) {
 			return (BufferedImage) MinecraftImageGenerator.Preview.generateButtonIcon(getMainTexture());
 		} else if (blockBase != null && blockBase.equals("DragonEgg")) {
-			return (BufferedImage) MinecraftImageGenerator.Preview.generateEggIcon(getMainTexture());
+			return (BufferedImage) MinecraftImageGenerator.Preview.generateDragonEggIcon(getMainTexture());
 		} else if (renderType() == 14) {
 			Image side = ImageUtils.drawOver(new ImageIcon(getTextureWithFallback(textureFront)),
 					new ImageIcon(getTextureWithFallback(textureLeft))).getImage();
