@@ -22,27 +22,22 @@ package net.mcreator.preferences.data;
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.FileEntry;
-import net.mcreator.preferences.entries.IntegerEntry;
 import net.mcreator.workspace.WorkspaceFolderManager;
 
-public class BackupsSection extends PreferencesSection {
+public class SystemSection extends PreferencesSection {
 
-	public IntegerEntry workspaceAutosaveInterval;
-	public IntegerEntry automatedBackupInterval;
-	public IntegerEntry numberOfBackupsToStore;
-	public BooleanEntry backupOnVersionSwitch;
 
-	public BackupsSection(String preferencesIdentifier) {
+	public FileEntry defaultWorkspacesFolder;
+	public BooleanEntry openLastWorkspace;
+
+	public SystemSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
-		workspaceAutosaveInterval = addEntry(new IntegerEntry("workspaceAutosaveInterval", 30, 10, 2000));
-		automatedBackupInterval = addEntry(new IntegerEntry("automatedBackupInterval", 5, 3, 120));
-		numberOfBackupsToStore = addEntry(new IntegerEntry("numberOfBackupsToStore", 10, 2, 20));
-		backupOnVersionSwitch = addEntry(new BooleanEntry("backupOnVersionSwitch", true));
+		defaultWorkspacesFolder = addEntry(new FileEntry("defaultWorkspacesFolder", WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot().getAbsolutePath(), true));
+		openLastWorkspace = addEntry(new BooleanEntry("openLastWorkspace", true));
 	}
 
 	@Override public String getSectionKey() {
-		return "backups";
+		return "system";
 	}
-
 }

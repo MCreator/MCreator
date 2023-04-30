@@ -244,7 +244,10 @@ public final class MCreatorApplication {
 					}
 				}
 
-				if (!directLaunch)
+				File workspace = PreferencesManager.PREFERENCES.hidden.lastWorkspace.get();
+				if (PreferencesManager.PREFERENCES.system.openLastWorkspace.get() && workspace != null) {
+					openWorkspaceInMCreator(workspace);
+				} else if (!directLaunch)
 					showWorkspaceSelector();
 
 				splashScreen.setVisible(false);

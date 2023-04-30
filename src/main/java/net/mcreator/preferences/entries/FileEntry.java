@@ -22,6 +22,7 @@ package net.mcreator.preferences.entries;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonPrimitive;
 import net.mcreator.preferences.PreferencesEntry;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.util.StringUtils;
 
@@ -67,10 +68,11 @@ public class FileEntry extends PreferencesEntry<File> {
 	}
 
 	@Override public void setValueFromJsonElement(JsonElement object) {
-		this.value = new File(object.getAsString());
+		this.value = new File(object.getAsJsonObject().get("path").getAsString());
+
 	}
 
 	@Override public JsonElement getSerializedValue() {
-		return new JsonPrimitive(value.getAbsolutePath());
+		return PreferencesManager.gson.toJsonTree(value, File.class);
 	}
 }

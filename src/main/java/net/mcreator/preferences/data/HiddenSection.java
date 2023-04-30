@@ -23,10 +23,7 @@ import com.google.gson.JsonElement;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesSection;
-import net.mcreator.preferences.entries.BooleanEntry;
-import net.mcreator.preferences.entries.HiddenEntry;
-import net.mcreator.preferences.entries.IntegerEntry;
-import net.mcreator.preferences.entries.StringEntry;
+import net.mcreator.preferences.entries.*;
 
 import java.io.File;
 
@@ -40,6 +37,8 @@ public class HiddenSection extends PreferencesSection {
 	public PreferencesEntry<File> java_home;
 	public StringEntry uiTheme;
 	public BooleanEntry enableJavaPlugins;
+
+	public FileEntry lastWorkspace;
 
 	HiddenSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -76,6 +75,7 @@ public class HiddenSection extends PreferencesSection {
 		});
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
 		enableJavaPlugins = addEntry(new BooleanEntry("enableJavaPlugins", false));
+		lastWorkspace = addEntry(new FileEntry("lastWorkspace", (File) null, false));
 	}
 
 	@Override public boolean isVisible() {
