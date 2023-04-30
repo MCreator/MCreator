@@ -396,10 +396,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				if (!isEditingMode()) {
 					lightOpacity.setValue(1);
 				}
-			} else if (blockBase.getSelectedItem() != null && blockBase.getSelectedItem().equals("Chain")) {
-				transparencyType.setSelectedItem("TRANSLUCENT");
-				isWaterloggable.setSelected(false);
-				isWaterloggable.setEnabled(false);
 			} else if (blockBase.getSelectedItem() != null && blockBase.getSelectedIndex() != 0) {
 				renderType.setSelectedItem(singleTexture);
 				renderType.setEnabled(false);
@@ -411,6 +407,10 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 				hasGravity.setSelected(false);
 				rotationMode.setSelectedIndex(0);
+
+				if (blockBase.getSelectedItem().equals("Chain")) {
+					transparencyType.setSelectedItem("TRANSLUCENT");
+				}
 
 				if (!isEditingMode()) {
 					lightOpacity.setValue(0);
