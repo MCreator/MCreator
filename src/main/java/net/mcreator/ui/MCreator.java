@@ -381,7 +381,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 			if (application.getOpenMCreators()
 					.isEmpty()) { // no MCreator windows left, close the app, or return to project selector if selected
-				if (returnToProjectSelector)
+				if (returnToProjectSelector || PreferencesManager.PREFERENCES.system.returnToWorkspaceSelector.get())
 					application.showWorkspaceSelector();
 				else
 					application.closeApplication();

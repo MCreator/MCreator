@@ -30,6 +30,7 @@ public class SystemSection extends PreferencesSection {
 	public FileEntry defaultWorkspacesFolder;
 	public BooleanEntry openLastWorkspace;
 	public BooleanEntry confirmBeforeClosing;
+	public BooleanEntry returnToWorkspaceSelector;
 
 	public SystemSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -37,6 +38,7 @@ public class SystemSection extends PreferencesSection {
 		defaultWorkspacesFolder = addEntry(new FileEntry("defaultWorkspacesFolder", WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot().getAbsolutePath(), true));
 		openLastWorkspace = addEntry(new BooleanEntry("openLastWorkspace", false));
 		confirmBeforeClosing = addEntry(new BooleanEntry("confirmBeforeClosing", false));
+		returnToWorkspaceSelector = addEntry(new BooleanEntry("returnToWorkspaceSelector", false));
 	}
 
 	@Override public String getSectionKey() {
