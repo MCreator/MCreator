@@ -200,19 +200,24 @@ implements <a href="../generator/IGeneratorProvider.html" title="interface in ne
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlock(org.w3c.dom.Element)" class="member-name-link">processOutputBlock</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;condition)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlockWithoutParentheses(org.w3c.dom.Element)" class="member-name-link">processOutputBlockWithoutParentheses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlockToInt(org.w3c.dom.Element)" class="member-name-link">processOutputBlockToInt</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
-<div class="block">Helper method to process an output block and remove surrounding parentheses if possible</div>
+<div class="block">Helper method to process an output block and cast to int when needed</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlockWithoutParentheses(org.w3c.dom.Element,java.lang.String)" class="member-name-link">processOutputBlockWithoutParentheses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;blacklist)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlockWithoutParentheses(org.w3c.dom.Element)" class="member-name-link">processOutputBlockWithoutParentheses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Helper method to process an output block and remove surrounding parentheses if possible</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#pushDepProviderInputStack(net.mcreator.blockly.data.DependencyProviderInput)" class="member-name-link">pushDepProviderInputStack</a><wbr>(<a href="data/DependencyProviderInput.html" title="class in net.mcreator.blockly.data">DependencyProviderInput</a>&nbsp;statementInput)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#processOutputBlockWithoutParentheses(org.w3c.dom.Element,java.lang.String)" class="member-name-link">processOutputBlockWithoutParentheses</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;blacklist)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Helper method to process an output block and remove surrounding parentheses if possible</div>
+</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#pushDepProviderInputStack(net.mcreator.blockly.data.DependencyProviderInput)" class="member-name-link">pushDepProviderInputStack</a><wbr>(<a href="data/DependencyProviderInput.html" title="class in net.mcreator.blockly.data">DependencyProviderInput</a>&nbsp;statementInput)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -471,6 +476,20 @@ implements <a href="../generator/IGeneratorProvider.html" title="interface in ne
 <dd><code>element</code> - The element to process</dd>
 <dt>Returns:</dt>
 <dd>The generated code of the element with parentheses optimization</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../generator/template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></code> - If the template can't be generated</dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="processOutputBlockToInt(org.w3c.dom.Element)">
+<h3>processOutputBlockToInt</h3>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">processOutputBlockToInt</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.xml/org/w3c/dom/Element.html" title="class or interface in org.w3c.dom" class="external-link">Element</a>&nbsp;element)</span>
+                                   throws <span class="exceptions"><a href="../generator/template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></span></div>
+<div class="block">Helper method to process an output block and cast to int when needed</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>element</code> - The element to process</dd>
 <dt>Throws:</dt>
 <dd><code><a href="../generator/template/TemplateGeneratorException.html" title="class in net.mcreator.generator.template">TemplateGeneratorException</a></code> - If the template can't be generated</dd>
 </dl>
