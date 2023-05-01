@@ -362,6 +362,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
 		canTrade.addActionListener(e -> updateTradingConditions());
+		villagerTradingType.addActionListener(e -> updateTradingConditions());
 		updateTradingConditions();
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -932,7 +933,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	}
 
 	private void updateTradingConditions() {
-		aiBase.setSelectedItem("(none)");
+		aiBase.setSelectedIndex(0);
 		guiBoundTo.setSelectedItem("<NONE>");
 		villagerTradingType.setEnabled(canTrade.isSelected());
 		professionTrade.setEnabled(canTrade.isSelected());
@@ -947,7 +948,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		breedable.setEnabled(!canTrade.isSelected());
 		tameable.setEnabled(!canTrade.isSelected());
 		if (canTrade.isSelected() && villagerTradingType.isSelected())
-			aiBase.setSelectedItem("Villager");
+			aiBase.setSelectedIndex(16);
 	}
 
 	@Override public void reloadDataLists() {
