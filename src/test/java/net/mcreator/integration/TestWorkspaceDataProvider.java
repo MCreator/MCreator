@@ -675,8 +675,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.ridable = _true;
 			livingEntity.canControlStrafe = !_true;
 			livingEntity.canControlForward = _true;
-			livingEntity.canTrade = _true;
-			livingEntity.villagerTradingType = _true;
+			livingEntity.canTrade = !_true;
+			livingEntity.villagerTradingType = !_true;
 			livingEntity.professionTrade = new ArrayList<>();
 			if (!emptyLists) {
 				livingEntity.professionTrade.addAll(
@@ -687,7 +687,7 @@ public class TestWorkspaceDataProvider {
 				livingEntity.professionTrade.add(
 						new ProfessionEntry(modElement.getWorkspace(), getRandomDataListEntry(random, professions)));
 			}
-			livingEntity.canRestock = _true;
+			livingEntity.canRestock = !_true;
 			livingEntity.fullUpdateSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.emptyUpdateSound = new Sound(modElement.getWorkspace(),

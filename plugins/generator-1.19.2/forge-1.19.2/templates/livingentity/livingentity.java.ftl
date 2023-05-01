@@ -236,7 +236,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
 	}
 
-	<#if data.villagerTradingType>@Override</#if>public boolean canRestock() {
+	<#if data.villagerTradingType>@Override</#if> public boolean canRestock() {
 		return ${data.canRestock};
 	}
 
