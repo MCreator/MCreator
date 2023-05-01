@@ -19,10 +19,16 @@
 package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.component.VTextField;
 
 import java.util.Arrays;
 
 public class NamespaceValidator<T> extends RegistryNameValidator {
+
+	public NamespaceValidator(VTextField holder) {
+		super(holder, "Namespace");
+		setValidChars(Arrays.asList('_', '-'));
+	}
 
 	public NamespaceValidator(VComboBox<T> holder) {
 		super(holder, "Namespace");

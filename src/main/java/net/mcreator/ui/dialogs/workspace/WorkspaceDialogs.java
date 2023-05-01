@@ -27,6 +27,7 @@ import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
@@ -36,6 +37,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.NamespaceValidator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidatorJSON;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -58,7 +60,6 @@ import java.io.File;
 import java.lang.module.ModuleDescriptor;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class WorkspaceDialogs {
 
@@ -136,9 +137,7 @@ public class WorkspaceDialogs {
 		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
 		JCheckBox disableForgeVersionCheck = new JCheckBox();
 		JTextField updateJSON = new JTextField(24);
-		JTextField requiredMods = new JTextField(24);
-		JTextField dependencies = new JTextField(24);
-		JTextField dependants = new JTextField(24);
+		JStringListField requiredMods, dependencies, dependants;
 
 		JComboBox<String> license = new JComboBox<>(
 				new String[] { "Academic Free License v3.0", "Ace3 Style BSD", "All Rights Reserved",
@@ -162,6 +161,13 @@ public class WorkspaceDialogs {
 
 		WorkspaceDialogPanel(Window parent, @Nullable Workspace workspace) {
 			setLayout(new BorderLayout());
+
+			requiredMods = new JStringListField(parent, NamespaceValidator::new).setJoinEntries(true)
+					.setUniqueEntries(true);
+			dependencies = new JStringListField(parent, NamespaceValidator::new).setJoinEntries(true)
+					.setUniqueEntries(true);
+			dependants = new JStringListField(parent, NamespaceValidator::new).setJoinEntries(true)
+					.setUniqueEntries(true);
 
 			if (workspace != null) { // prevent modid autofill on existing workspaces
 				modIDManuallyEntered = true;
@@ -556,12 +562,9 @@ public class WorkspaceDialogs {
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
 				packageName.setText(workspace.getWorkspaceSettings().getModElementsPackage());
 
-				if (!workspace.getWorkspaceSettings().requiredMods.isEmpty())
-					requiredMods.setText(String.join(",", workspace.getWorkspaceSettings().requiredMods).trim());
-				if (!workspace.getWorkspaceSettings().dependencies.isEmpty())
-					dependencies.setText(String.join(",", workspace.getWorkspaceSettings().dependencies).trim());
-				if (!workspace.getWorkspaceSettings().dependants.isEmpty())
-					dependants.setText(String.join(",", workspace.getWorkspaceSettings().dependants).trim());
+				requiredMods.setTextList(new ArrayList<>(workspace.getWorkspaceSettings().requiredMods));
+				dependencies.setTextList(new ArrayList<>(workspace.getWorkspaceSettings().dependencies));
+				dependants.setTextList(new ArrayList<>(workspace.getWorkspaceSettings().dependants));
 
 				for (String mcrdep : workspace.getWorkspaceSettings().getMCreatorDependenciesRaw()) {
 					JCheckBox box = apis.get(mcrdep);
@@ -596,15 +599,9 @@ public class WorkspaceDialogs {
 			retVal.setCurrentGenerator(
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());
 
-			retVal.setRequiredMods(
-					Arrays.stream(requiredMods.getText().split(",")).map(String::trim).filter(text -> !text.equals(""))
-							.collect(Collectors.toSet()));
-			retVal.setDependencies(
-					Arrays.stream(dependencies.getText().split(",")).map(String::trim).filter(text -> !text.equals(""))
-							.collect(Collectors.toSet()));
-			retVal.setDependants(
-					Arrays.stream(dependants.getText().split(",")).map(String::trim).filter(text -> !text.equals(""))
-							.collect(Collectors.toSet()));
+			retVal.setRequiredMods(new HashSet<>(requiredMods.getTextList()));
+			retVal.setDependencies(new HashSet<>(dependencies.getTextList()));
+			retVal.setDependants(new HashSet<>(dependants.getTextList()));
 
 			Set<String> mcreatordeps = new HashSet<>();
 			for (JCheckBox box : apis.values()) {
