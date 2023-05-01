@@ -164,8 +164,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private MCItemHolder equipmentBoots;
 	private MCItemHolder equipmentOffHand;
 
-	private final JComboBox<String> tradingType = new JComboBox<>(
-			new String[] { "<NONE>", "Villager", "Wandering Trader" });
+	private final JCheckBox canTrade = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox villagerTradingType = L10N.checkbox("elementgui.common.enable");
 	private ProfessionListField professionTrade;
 	private final JCheckBox canRestock = L10N.checkbox("elementgui.common.enable");
 	private final SoundSelector fullUpdateSound = new SoundSelector(mcreator);
@@ -361,7 +361,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		mobModelGlowTexture.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
-		tradingType.addActionListener(e -> updateTradingConditions());
+		canTrade.addActionListener(e -> updateTradingConditions());
 		updateTradingConditions();
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -861,16 +861,22 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.common.max_stack_size")));
 		props.add(inventoryStackSize);
 
-		JPanel villagerProperties = new JPanel(new GridLayout(6, 2, 5, 2));
+		JPanel villagerProperties = new JPanel(new GridLayout(7, 2, 5, 2));
 		villagerProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.living_entity.villager_properties"), TitledBorder.LEADING,
 				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		villagerProperties.setOpaque(false);
 
+		canTrade.setOpaque(false);
+		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/can_trade"),
+				L10N.label("elementgui.living_entity.can_trade")));
+		villagerProperties.add(canTrade);
+
+		villagerTradingType.setOpaque(false);
 		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/trading_type"),
 				L10N.label("elementgui.living_entity.trading_type")));
-		villagerProperties.add(tradingType);
+		villagerProperties.add(villagerTradingType);
 
 		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/profession_trade"),
 				L10N.label("elementgui.living_entity.profession_trade")));
@@ -926,22 +932,22 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	}
 
 	private void updateTradingConditions() {
-		boolean noTrades = tradingType.getSelectedItem() != null && tradingType.getSelectedItem().equals("<NONE>");
 		aiBase.setSelectedItem("(none)");
 		guiBoundTo.setSelectedItem("<NONE>");
-		if (tradingType.getSelectedItem() != null && tradingType.getSelectedItem().equals("Villager"))
+		villagerTradingType.setEnabled(canTrade.isSelected());
+		professionTrade.setEnabled(canTrade.isSelected());
+		canRestock.setEnabled(canTrade.isSelected());
+		fullUpdateSound.setEnabled(canTrade.isSelected());
+		emptyUpdateSound.setEnabled(canTrade.isSelected());
+		notificationSound.setEnabled(canTrade.isSelected());
+		guiBoundTo.setEnabled(!canTrade.isSelected());
+		inventorySize.setEnabled(!canTrade.isSelected());
+		inventoryStackSize.setEnabled(!canTrade.isSelected());
+		aiBase.setEnabled(!canTrade.isSelected());
+		breedable.setEnabled(!canTrade.isSelected());
+		tameable.setEnabled(!canTrade.isSelected());
+		if (canTrade.isSelected() && villagerTradingType.isSelected())
 			aiBase.setSelectedItem("Villager");
-		professionTrade.setEnabled(!noTrades);
-		canRestock.setEnabled(!noTrades);
-		fullUpdateSound.setEnabled(!noTrades);
-		emptyUpdateSound.setEnabled(!noTrades);
-		notificationSound.setEnabled(!noTrades);
-		guiBoundTo.setEnabled(noTrades);
-		inventorySize.setEnabled(noTrades);
-		inventoryStackSize.setEnabled(noTrades);
-		aiBase.setEnabled(noTrades);
-		breedable.setEnabled(noTrades);
-		tameable.setEnabled(noTrades);
 	}
 
 	@Override public void reloadDataLists() {
@@ -1098,7 +1104,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		armorBaseValue.setValue(livingEntity.armorBaseValue);
 		waterMob.setSelected(livingEntity.waterMob);
 		flyingMob.setSelected(livingEntity.flyingMob);
-		tradingType.setSelectedItem(livingEntity.tradingType);
+		canTrade.setSelected(livingEntity.canTrade);
+		villagerTradingType.setSelected(livingEntity.villagerTradingType);
 		professionTrade.setListElements(livingEntity.professionTrade);
 		canRestock.setSelected(livingEntity.canRestock);
 		fullUpdateSound.setSound(livingEntity.fullUpdateSound);
@@ -1236,7 +1243,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		livingEntity.inventorySize = (int) inventorySize.getValue();
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
-		livingEntity.tradingType = (String) tradingType.getSelectedItem();
+		livingEntity.canTrade = canTrade.isSelected();
+		livingEntity.villagerTradingType = villagerTradingType.isSelected();
 		livingEntity.professionTrade = professionTrade.getListElements();
 		livingEntity.canRestock = canRestock.isSelected();
 		livingEntity.fullUpdateSound = fullUpdateSound.getSound();

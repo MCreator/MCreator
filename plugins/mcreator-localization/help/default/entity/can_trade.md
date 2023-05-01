@@ -1,0 +1,1 @@
+Check this parameter to enable trading with the entity.

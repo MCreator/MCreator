@@ -675,7 +675,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.ridable = _true;
 			livingEntity.canControlStrafe = !_true;
 			livingEntity.canControlForward = _true;
-			livingEntity.tradingType = "<NONE>";
+			livingEntity.canTrade = _true;
+			livingEntity.villagerTradingType = _true;
 			livingEntity.professionTrade = new ArrayList<>();
 			if (!emptyLists) {
 				livingEntity.professionTrade.addAll(
