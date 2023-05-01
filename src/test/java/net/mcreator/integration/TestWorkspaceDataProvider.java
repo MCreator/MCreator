@@ -687,7 +687,7 @@ public class TestWorkspaceDataProvider {
 				livingEntity.professionTrade.add(
 						new ProfessionEntry(modElement.getWorkspace(), getRandomDataListEntry(random, professions)));
 			}
-			livingEntity.canRestock = !_true;
+			livingEntity.restockCondition = new LogicProcedure(_true ? "condition4" : null, _true);
 			livingEntity.fullUpdateSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.emptyUpdateSound = new Sound(modElement.getWorkspace(),

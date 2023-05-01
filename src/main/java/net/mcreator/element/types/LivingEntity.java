@@ -97,7 +97,7 @@ import java.util.*;
 	public boolean canTrade;
 	public boolean villagerTradingType;
 	public List<ProfessionEntry> professionTrade;
-	public boolean canRestock;
+	public LogicProcedure restockCondition;
 	public Sound fullUpdateSound;
 	public Sound emptyUpdateSound;
 	public Sound notificationSound;
@@ -185,7 +185,6 @@ import java.util.*;
 		this.canTrade = false;
 		this.villagerTradingType = true;
 		this.professionTrade = new ArrayList<>();
-		this.canRestock = false;
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
 	}

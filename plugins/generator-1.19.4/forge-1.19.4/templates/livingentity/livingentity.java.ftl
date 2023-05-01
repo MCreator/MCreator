@@ -236,9 +236,18 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
 	}
 
+	<#if data.restockCondition?? && (hasProcedure(data.restockCondition) || data.restockCondition.getFixedValue())>
 	<#if data.villagerTradingType>@Override</#if> public boolean canRestock() {
-		return ${data.canRestock};
+		<#if hasProcedure(data.restockCondition)>
+			Entity entity = this;
+			Level world = entity.level;
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+		</#if>
+		return <@procedureOBJToConditionCode data.restockCondition true false/>;
 	}
+	</#if>
 
 	<#if data.villagerTradingType>
 	@Override protected void customServerAiStep() {
