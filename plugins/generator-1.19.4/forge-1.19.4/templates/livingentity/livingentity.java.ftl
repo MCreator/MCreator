@@ -300,8 +300,17 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	protected void rewardTradeXp(MerchantOffer offer) {
 		if (offer.shouldRewardExp()) {
-			int i = 3 + this.random.nextInt(4);
-			this.level.addFreshEntity(new ExperienceOrb(this.level, this.getX(), this.getY() + 0.5D, this.getZ(), i));
+			<#if hasProcedure(data.rewardXp)>
+				Entity entity = this;
+				Level world = entity.level;
+				double x = entity.getX();
+				double y = entity.getY();
+				double z = entity.getZ();
+				int rewardXp = (int) <@procedureOBJToNumberCode data.rewardXp/>;
+			<#else>
+				int rewardXp = ${data.rewardXp.getFixedValue()};
+			</#if>
+			this.level.addFreshEntity(new ExperienceOrb(this.level, this.getX(), this.getY() + 0.5D, this.getZ(), rewardXp));
 		}
 	}
 	</#if>

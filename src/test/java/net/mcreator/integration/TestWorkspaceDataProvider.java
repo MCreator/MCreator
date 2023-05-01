@@ -687,13 +687,14 @@ public class TestWorkspaceDataProvider {
 				livingEntity.professionTrade.add(
 						new ProfessionEntry(modElement.getWorkspace(), getRandomDataListEntry(random, professions)));
 			}
-			livingEntity.restockCondition = new LogicProcedure(_true ? "condition4" : null, _true);
 			livingEntity.fullUpdateSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.emptyUpdateSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.notificationSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			livingEntity.restockCondition = new LogicProcedure(_true ? "condition4" : null, _true);
+			livingEntity.rewardXp = new NumberProcedure(emptyLists ? null : "number1", 4);
 			livingEntity.guiBoundTo = "<NONE>";
 			livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
