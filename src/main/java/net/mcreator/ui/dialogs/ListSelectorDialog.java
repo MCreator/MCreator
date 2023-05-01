@@ -83,20 +83,17 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 12, 0, 0));
 		mainComponent.add("Center", scrollPane);
 
-		if (customValue) {
-			customValueButton.addActionListener(e -> {
-				String inputValue = JOptionPane.showInputDialog(L10N.t("dialog.item_selector.enter_custom_value"));
-				if (inputValue != null && !inputValue.isEmpty()) {
-					model.addElement((T) inputValue);
-					list.setSelectedValue((T) inputValue, true);
-				}
-			});
-		}
+		customValueButton.addActionListener(e -> {
+			String inputValue = JOptionPane.showInputDialog(L10N.t("dialog.item_selector.enter_custom_value"));
+			if (inputValue != null && !inputValue.isEmpty()) {
+				model.addElement((T) inputValue);
+				list.setSelectedValue((T) inputValue, true);
+			}
+		});
 
 		add("Center", mainComponent);
-		add("South", PanelUtils.centerInPanel(customValue ?
-				PanelUtils.westAndEastElement(selectButton, customValueButton) :
-				PanelUtils.centerInPanel(selectButton)));
+		add("South", PanelUtils.centerInPanel(
+				customValue ? PanelUtils.westAndEastElement(selectButton, customValueButton) : selectButton));
 
 		setSize(360, 360);
 
