@@ -950,7 +950,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private void updateTradingConditions() {
 		aiBase.setSelectedIndex(0);
+		if (canTrade.isSelected() && villagerTradingType.isSelected())
+			aiBase.setSelectedIndex(16);
 		guiBoundTo.setSelectedItem("<NONE>");
+		breedable.setSelected(false);
+		tameable.setSelected(false);
+		ridable.setSelected(false);
+		canControlForward.setSelected(false);
+		canControlStrafe.setSelected(false);
+
 		villagerTradingType.setEnabled(canTrade.isSelected());
 		professionTrade.setEnabled(canTrade.isSelected());
 		fullUpdateSound.setEnabled(canTrade.isSelected());
@@ -964,8 +972,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		aiBase.setEnabled(!canTrade.isSelected());
 		breedable.setEnabled(!canTrade.isSelected());
 		tameable.setEnabled(!canTrade.isSelected());
-		if (canTrade.isSelected() && villagerTradingType.isSelected())
-			aiBase.setSelectedIndex(16);
+		ridable.setEnabled(!canTrade.isSelected());
+		canControlForward.setEnabled(!canTrade.isSelected());
+		canControlStrafe.setEnabled(!canTrade.isSelected());
 	}
 
 	@Override public void reloadDataLists() {

@@ -73,8 +73,14 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     	this(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
     }
 
+	<#if data.canTrade && data.villagerTradingType>
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
-    	super(type, world);
+		this(type, world, VillagerType.PLAINS);
+	}
+	</#if>
+
+	public ${name}Entity(EntityType<${name}Entity> type, Level world<#if data.canTrade && data.villagerTradingType>, VillagerType villagerType</#if>) {
+    	super(type, world<#if data.canTrade && data.villagerTradingType>, villagerType</#if>);
 		xpReward = ${data.xpAmount};
 		setNoAi(${(!data.hasAI)});
 
@@ -291,9 +297,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			}
 		}
 	}
-	</#if>
-
-	<#if !data.villagerTradingType>
+	<#else>
 	public boolean showProgressBar() {
 		return false;
 	}
@@ -723,13 +727,26 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
     </#if>
 
-	<#if data.breedable || (data.canTrade && !data.villagerTradingType)>
-		<#if data.canTrade>@Nullable<#else>@Override</#if> public AgeableMob getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
-			<#if data.canTrade>return null;<#else>
-			${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld);
+	<#if data.breedable || data.canTrade>
+		<#if data.canTrade && !data.villagerTradingType>@Nullable<#else>@Override</#if> public <#if data.canTrade && data.villagerTradingType>${name}Entity<#else>AgeableMob</#if> getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+			<#if data.canTrade && !data.villagerTradingType>
+				return null;
+			<#elseif data.canTrade && data.villagerTradingType>
+				double random = this.random.nextDouble();
+				VillagerType villagerType;
+				if (random < 0.5D) {
+					villagerType = VillagerType.byBiome(serverWorld.getBiome(this.blockPosition()));
+				} else if (random < 0.75D) {
+					villagerType = this.getVillagerData().getType();
+				} else {
+					villagerType = ((${name}Entity) ageable).getVillagerData().getType();
+				}
+				${name}Entity retval = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), serverWorld, villagerType);
+			<#else>
+				${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld);
+			</#if>
 			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null, null);
 			return retval;
-			</#if>
 		}
 
 		<#if data.breedable>
