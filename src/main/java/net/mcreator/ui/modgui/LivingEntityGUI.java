@@ -949,15 +949,17 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	}
 
 	private void updateTradingConditions() {
-		aiBase.setSelectedIndex(0);
-		if (canTrade.isSelected() && villagerTradingType.isSelected())
-			aiBase.setSelectedIndex(16);
+		aiBase.setSelectedItem("(none)");
 		guiBoundTo.setSelectedItem("<NONE>");
-		breedable.setSelected(false);
-		tameable.setSelected(false);
-		ridable.setSelected(false);
-		canControlForward.setSelected(false);
-		canControlStrafe.setSelected(false);
+		if (canTrade.isSelected()) {
+			breedable.setSelected(false);
+			tameable.setSelected(false);
+			ridable.setSelected(false);
+			canControlForward.setSelected(false);
+			canControlStrafe.setSelected(false);
+			if (villagerTradingType.isSelected())
+				aiBase.setSelectedItem("Villager");
+		}
 
 		villagerTradingType.setEnabled(canTrade.isSelected());
 		professionTrade.setEnabled(canTrade.isSelected());

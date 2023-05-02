@@ -58,7 +58,7 @@ import javax.annotation.Nullable;
 	<#assign extendsClass = "TamableAnimal">
 </#if>
 
-<#if data.canTrade && !data.villagerTradingType>
+<#if data.hasWanderingTraderTrade()>
 	<#assign extendsClass = "AbstractVillager">
 </#if>
 
@@ -73,14 +73,14 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     	this(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
     }
 
-	<#if data.canTrade && data.villagerTradingType>
+	<#if data.hasVillagerTrade()>
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
 		this(type, world, VillagerType.PLAINS);
 	}
 	</#if>
 
-	public ${name}Entity(EntityType<${name}Entity> type, Level world<#if data.canTrade && data.villagerTradingType>, VillagerType villagerType</#if>) {
-    	super(type, world<#if data.canTrade && data.villagerTradingType>, villagerType</#if>);
+	public ${name}Entity(EntityType<${name}Entity> type, Level world<#if data.hasVillagerTrade()>, VillagerType villagerType</#if>) {
+    	super(type, world<#if data.hasVillagerTrade()>, villagerType</#if>);
 		xpReward = ${data.xpAmount};
 		setNoAi(${(!data.hasAI)});
 
@@ -170,11 +170,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
-	<#if data.hasAI || (data.canTrade && !data.villagerTradingType)>
+	<#if data.hasAI || data.hasWanderingTraderTrade()>
 	@Override protected void registerGoals() {
 		super.registerGoals();
 
-		<#if data.canTrade && !data.villagerTradingType>
+		<#if data.hasWanderingTraderTrade()>
 			this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
 			this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
 			this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
@@ -344,7 +344,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
-	<#if data.canTrade && !data.villagerTradingType>
+	<#if data.hasWanderingTraderTrade()>
 	protected SoundEvent getTradeUpdatedSound(boolean hasContent) {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(hasContent ? "${data.fullUpdateSound}" : "${data.emptyUpdateSound}"));
 	}
@@ -728,10 +728,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if data.breedable || data.canTrade>
-		<#if data.canTrade && !data.villagerTradingType>@Nullable<#else>@Override</#if> public <#if data.canTrade && data.villagerTradingType>${name}Entity<#else>AgeableMob</#if> getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
-			<#if data.canTrade && !data.villagerTradingType>
+		<#if data.hasWanderingTraderTrade()>@Nullable<#else>@Override</#if> public <#if data.hasVillagerTrade()>${name}Entity<#else>AgeableMob</#if> getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+			<#if data.hasWanderingTraderTrade()>
 				return null;
-			<#elseif data.canTrade && data.villagerTradingType>
+			<#elseif data.hasVillagerTrade()>
 				double random = this.random.nextDouble();
 				VillagerType villagerType;
 				if (random < 0.5D) {

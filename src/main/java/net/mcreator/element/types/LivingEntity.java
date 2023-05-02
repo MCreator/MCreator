@@ -223,6 +223,14 @@ import java.util.*;
 		return ranged && "Default item".equals(rangedItemType) && !rangedAttackItem.isEmpty();
 	}
 
+	public boolean hasVillagerTrade() {
+		return canTrade && villagerTradingType;
+	}
+
+	public boolean hasWanderingTraderTrade() {
+		return canTrade && !villagerTradingType;
+	}
+
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
