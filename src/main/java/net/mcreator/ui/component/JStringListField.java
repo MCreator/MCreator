@@ -19,6 +19,8 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ListEditorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -33,10 +35,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
+/**
+ * This class represents a component that stores list of strings and allows to edit them using {@link ListEditorDialog}.
+ */
 public class JStringListField extends JPanel {
 
 	private final List<String> textList = new ArrayList<>();
 	private int index = -1;
+	private boolean joinEntries = false, uniqueEntries = false;
+
+	private final JLabel label = new JLabel() {
+		@Override public String getToolTipText() {
+			return joinEntries || index < 0 ? null : L10N.t("components.string_list.item", index + 1);
+		}
+	};
 
 	private final JButton edit = new JButton(UIRES.get("16px.edit.gif")) {
 		@Override public String getName() {
@@ -53,27 +65,32 @@ public class JStringListField extends JPanel {
 			return "TechnicalButton";
 		}
 	};
-	private boolean joinEntries = false, uniqueEntries = false;
 
-	private final JLabel label = new JLabel() {
-		@Override public String getToolTipText() {
-			return joinEntries || index < 0 ? null : L10N.t("components.string_list.item", index + 1);
-		}
-	};
-
+	/**
+	 * Sole constructor.
+	 *
+	 * @param parent    The parent window that the editor dialog would be shown over.
+	 * @param validator Function that returns a validator for each list entry when editing them in the dialog,
+	 *                  {@code null} means no validation.
+	 */
 	public JStringListField(Window parent, @Nullable Function<VTextField, Validator> validator) {
-		super(new FlowLayout(FlowLayout.CENTER, 7, 5));
+		super(new BorderLayout());
 		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
 		label.setOpaque(false);
-		label.setFont(label.getFont().deriveFont(16f));
+		ComponentUtils.deriveFont(label, 16);
 		ToolTipManager.sharedInstance().registerComponent(label);
 
+		JScrollPane scrollPane = new JScrollPane(label);
+		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false);
+		scrollPane.setPreferredSize(new Dimension(200, 30));
+
 		back.setMargin(new Insets(0, 0, 0, 0));
-		back.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		back.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		back.setFocusPainted(false);
 		back.setContentAreaFilled(false);
-		back.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		back.addActionListener(e -> {
 			if (!joinEntries) {
 				if (index <= 0)
@@ -84,10 +101,10 @@ public class JStringListField extends JPanel {
 		});
 
 		forward.setMargin(new Insets(0, 0, 0, 0));
-		forward.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
+		forward.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		forward.setFocusPainted(false);
 		forward.setContentAreaFilled(false);
-		forward.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		forward.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		forward.addActionListener(e -> {
 			if (!joinEntries) {
 				index++;
@@ -96,18 +113,6 @@ public class JStringListField extends JPanel {
 				refreshVisibleText();
 			}
 		});
-
-		JScrollPane scrollPane = new JScrollPane(label);
-		scrollPane.setOpaque(false);
-		scrollPane.getViewport().setOpaque(false);
-		scrollPane.setPreferredSize(new Dimension(200, 30));
-
-		JPanel listPane = new JPanel(new BorderLayout(5, 5));
-		listPane.setOpaque(false);
-		listPane.add("West", back);
-		listPane.add("Center", scrollPane);
-		listPane.add("East", forward);
-		add(listPane);
 
 		edit.setOpaque(false);
 		edit.setMargin(new Insets(0, 0, 0, 0));
@@ -137,7 +142,10 @@ public class JStringListField extends JPanel {
 		controls.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		controls.add(edit);
 		controls.add(copy);
-		add(controls);
+
+		add("West", back);
+		add("Center", scrollPane);
+		add("East", PanelUtils.westAndEastElement(forward, PanelUtils.centerInPanel(controls)));
 	}
 
 	@Override public void setEnabled(boolean b) {
@@ -145,6 +153,10 @@ public class JStringListField extends JPanel {
 		edit.setEnabled(b);
 	}
 
+	/**
+	 * @param joinEntries Whether string entries should be joined using commas and shown together.
+	 * @return This field instance.
+	 */
 	public JStringListField setJoinEntries(boolean joinEntries) {
 		this.joinEntries = joinEntries;
 		back.setVisible(!joinEntries);
@@ -152,15 +164,25 @@ public class JStringListField extends JPanel {
 		return this;
 	}
 
+	/**
+	 * @param uniqueEntries Whether duplicate string entries in the list are forbidden.
+	 * @return This field instance.
+	 */
 	public JStringListField setUniqueEntries(boolean uniqueEntries) {
 		this.uniqueEntries = uniqueEntries;
 		return this;
 	}
 
+	/**
+	 * @return List of string entries stored in this component.
+	 */
 	public List<String> getTextList() {
 		return textList;
 	}
 
+	/**
+	 * @param textList List of string entries to be stored in this component.
+	 */
 	public void setTextList(List<String> textList) {
 		if (this.textList.isEmpty() != textList.isEmpty())
 			index = textList.isEmpty() ? -1 : 0;

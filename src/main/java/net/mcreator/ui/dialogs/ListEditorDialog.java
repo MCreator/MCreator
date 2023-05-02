@@ -43,7 +43,7 @@ public class ListEditorDialog {
 	 *
 	 * @param parent        The workspace window this method was called from.
 	 * @param textList      List of string entries that are about to be edited.
-	 * @param validator     Supplier of validators used on list entries' text fields, {@code null} means no validation.
+	 * @param validator     Function that returns a validator for each list entry, {@code null} means no validation.
 	 * @param uniqueEntries If {@code true}, duplicate list entries will not be allowed.
 	 * @return True if user chose OK option after editing strings list, false if it was cancel/close option.
 	 */
@@ -70,15 +70,15 @@ public class ListEditorDialog {
 		dialog.getRootPane().setDefaultButton(ok);
 
 		ok.addActionListener(e -> {
-			if (new AggregatedValidationResult(
+			if ((validator != null || uniqueEntries) && !new AggregatedValidationResult(
 					entryList.stream().map(s -> s.valueField).toArray(IValidable[]::new)).validateIsErrorFree()) {
+				JOptionPane.showMessageDialog(parent, L10N.t("dialog.list_editor.errors.message"),
+						L10N.t("dialog.list_editor.errors.title"), JOptionPane.ERROR_MESSAGE);
+			} else {
 				retVal.set(new ArrayList<>());
 				for (ListEntry entry : entryList)
 					retVal.get().add(entry.valueField.getText());
 				dialog.setVisible(false);
-			} else {
-				JOptionPane.showMessageDialog(parent, L10N.t("dialog.list_editor.errors.message"),
-						L10N.t("dialog.list_editor.errors.title"), JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		cancel.addActionListener(e -> dialog.setVisible(false));
