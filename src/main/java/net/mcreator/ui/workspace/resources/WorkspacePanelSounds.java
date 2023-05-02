@@ -34,6 +34,8 @@ import net.mcreator.workspace.elements.SoundElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -102,18 +104,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
-		del.addActionListener(actionEvent -> {
-			List<SoundElement> file = soundElementList.getSelectedValuesList();
-			if (file.size() > 0) {
-				int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-						L10N.t("workspace.sounds.confirm_deletion_message"), L10N.t("common.confirmation"),
-						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-				if (n == 0) {
-					file.forEach(workspacePanel.getMCreator().getWorkspace()::removeSoundElement);
-					reloadElements();
-				}
-			}
-		});
+		del.addActionListener(a -> deleteSelectedSound(workspacePanel, soundElementList));
 
 		JButton play = L10N.button("workspace.sounds.play_selected");
 		play.setIcon(UIRES.get("16px.play"));
@@ -141,10 +132,32 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 
 		});
 
+		soundElementList.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_DELETE -> deleteSelectedSound(workspacePanel, soundElementList);
+				case KeyEvent.VK_ENTER -> editSelectedSound(soundElementList.getSelectedValue());
+				}
+			}
+		});
+
 		edit.addActionListener(e -> editSelectedSound(soundElementList.getSelectedValue()));
 		importsound.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
 		add("North", bar);
 
+	}
+
+	private void deleteSelectedSound(WorkspacePanel workspacePanel, JSelectableList<SoundElement> soundElementList) {
+		List<SoundElement> soundElements = soundElementList.getSelectedValuesList();
+		if (soundElements.size() > 0) {
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+					L10N.t("workspace.sounds.confirm_deletion_message"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (n == 0) {
+				soundElements.forEach(workspacePanel.getMCreator().getWorkspace()::removeSoundElement);
+				reloadElements();
+			}
+		}
 	}
 
 	private void editSelectedSound(SoundElement selectedValue) {

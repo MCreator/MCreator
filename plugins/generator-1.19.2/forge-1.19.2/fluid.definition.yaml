@@ -8,9 +8,6 @@ templates:
   - template: fluid/fluidbucket.java.ftl
     condition: generateBucket
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
-  - template: fluid/fluidgen.java.ftl
-    condition: doesGenerateInWorld()
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/lakes/@NAMEFeature.java"
 
   - template: json/bucket.json.ftl
     writer: json
@@ -21,11 +18,6 @@ templates:
   - template: json/fluid.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/block/@registryname.json"
-  - template: json/block_feature_biome_modifier.json.ftl
-    writer: json
-    condition: doesGenerateInWorld()
-    name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
-    variables: "step=lakes"
 
 global_templates:
   - template: elementinits/fluids.java.ftl

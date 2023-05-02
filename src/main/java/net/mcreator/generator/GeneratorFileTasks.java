@@ -91,14 +91,14 @@ public class GeneratorFileTasks {
 							BufferedImage resized = ImageUtils.resize(image, w, h);
 							ImageIO.write(resized, "png", new File(to));
 						} catch (IOException e) {
-							generator.LOG.warn("Failed to read image file for resizing", e);
+							generator.getLogger().warn("Failed to read image file for resizing", e);
 						}
 					} else if (generator.getWorkspace().getFolderManager().isFileInWorkspace(new File(to))) {
 						try {
 							BufferedImage resized = ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h);
 							ImageIO.write(resized, "png", new File(to));
 						} catch (IOException e) {
-							generator.LOG.warn("Failed to read image file for resizing", e);
+							generator.getLogger().warn("Failed to read image file for resizing", e);
 						}
 					}
 				}

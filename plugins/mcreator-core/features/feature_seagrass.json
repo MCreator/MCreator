@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "probability",
+      "value": 0.4,
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "inputsInline": true,
+  "output": "Feature",
+  "colour": 0,
+  "mcreator": {
+    "toolbox_id": "features",
+    "fields": [
+      "probability"
+    ]
+  }
+}

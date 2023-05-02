@@ -135,6 +135,12 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				new ArrayList<>();
 	}
 
+	public List<String> getImports() {
+		return (generatorConfig.get("import") != null) ?
+				((List<?>) generatorConfig.get("import")).stream().map(Object::toString).toList() :
+				new ArrayList<>();
+	}
+
 	public GeneratorFlavor getGeneratorFlavor() {
 		return generatorFlavor;
 	}
@@ -227,7 +233,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		if (templateGeneratorConfigs.containsKey(name))
 			return templateGeneratorConfigs.get(name);
 		else {
-			TemplateGeneratorConfiguration tpl = new TemplateGeneratorConfiguration(generatorName, name);
+			TemplateGeneratorConfiguration tpl = new TemplateGeneratorConfiguration(this, name);
 			templateGeneratorConfigs.put(name, tpl);
 			return tpl;
 		}
@@ -238,6 +244,9 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	}
 
 	@Nullable public List<String> getSupportedDefinitionFields(ModElementType<?> type) {
+		if (type == ModElementType.UNKNOWN)
+			return null; // silently return null for unknown mod element type
+
 		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
 
 		if (map == null) {
@@ -253,6 +262,9 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	}
 
 	@Nullable public List<String> getUnsupportedDefinitionFields(ModElementType<?> type) {
+		if (type == ModElementType.UNKNOWN)
+			return null; // silently return null for unknown mod element type
+
 		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
 
 		if (map == null) {

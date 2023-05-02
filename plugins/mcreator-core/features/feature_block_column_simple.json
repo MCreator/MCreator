@@ -1,0 +1,31 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "height",
+      "check": "IntProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "block",
+      "check": "BlockStateProvider"
+    }
+  ],
+  "extensions": [
+    "simple_column_validator"
+  ],
+  "inputsInline": true,
+  "output": "Feature",
+  "colour": 0,
+  "mcreator": {
+    "toolbox_id": "features",
+    "toolbox_init": [
+      "<value name=\"height\"><block type=\"int_provider_constant\"><field name=\"value\">5</field></block></value>",
+      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "height",
+      "block"
+    ]
+  }
+}

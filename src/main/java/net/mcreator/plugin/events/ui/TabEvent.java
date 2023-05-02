@@ -30,7 +30,7 @@ public class TabEvent extends MCREvent {
 
 	private final MCreatorTabs.Tab tab;
 
-	public TabEvent(MCreatorTabs.Tab tab) {
+	protected TabEvent(MCreatorTabs.Tab tab) {
 		this.tab = tab;
 	}
 

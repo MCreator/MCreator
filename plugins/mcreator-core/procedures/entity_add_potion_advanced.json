@@ -30,6 +30,12 @@
       "name": "potion",
       "datalist": "effects",
       "customEntryProviders": "potioneffect"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/server.png",
+      "width": 8,
+      "height": 24
     }
   ],
   "inputsInline": true,

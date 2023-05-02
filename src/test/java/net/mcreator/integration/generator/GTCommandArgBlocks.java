@@ -37,6 +37,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import static net.mcreator.integration.TestWorkspaceDataProvider.getRandomItem;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -57,28 +58,57 @@ public class GTCommandArgBlocks {
 			StringBuilder additionalXML = new StringBuilder();
 
 			// silently skip command argument blocks not supported by this generator
-			if (!generatorBlocks.contains(commandArg.machine_name)) {
+			if (!generatorBlocks.contains(commandArg.getMachineName())) {
 				continue;
 			}
 
-			if (commandArg.toolboxXML == null) {
+			if (commandArg.getToolboxTestXML() == null) {
 				LOG.warn("[" + generatorName + "] Skipping command argument block without default XML defined: "
-						+ commandArg.machine_name);
+						+ commandArg.getMachineName());
 				continue;
 			}
 
-			if (!commandArg.getInputs().isEmpty()) {
-				boolean templatesDefined = false;
+			if (!commandArg.getAllInputs().isEmpty() || !commandArg.getAllRepeatingInputs().isEmpty()) {
+				boolean templatesDefined = true;
 
-				if (commandArg.toolbox_init != null) {
-					templatesDefined = commandArg.getInputs().stream().noneMatch(
-							input -> commandArg.toolbox_init.stream().noneMatch(
-									toolboxTemplate -> toolboxTemplate.contains("<value name=\"" + input + "\">")));
+				if (commandArg.getToolboxInitStatements() != null) {
+					for (String input : commandArg.getAllInputs()) {
+						boolean match = false;
+						for (String toolboxtemplate : commandArg.getToolboxInitStatements()) {
+							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
+								match = true;
+								break;
+							}
+						}
+
+						if (!match) {
+							templatesDefined = false;
+							break;
+						}
+					}
+
+					for (String input : commandArg.getAllRepeatingInputs()) {
+						Pattern pattern = Pattern.compile("<value name=\"" + input + "\\d+\">");
+						boolean match = false;
+						for (String toolboxtemplate : commandArg.getToolboxInitStatements()) {
+							if (pattern.matcher(toolboxtemplate).find()) {
+								match = true;
+								break;
+							}
+						}
+
+						if (!match) {
+							templatesDefined = false;
+							break;
+						}
+					}
+				} else {
+					templatesDefined = false;
 				}
 
 				if (!templatesDefined) {
 					LOG.warn("[" + generatorName + "] Skipping command argument block with incomplete template: "
-							+ commandArg.machine_name);
+							+ commandArg.getMachineName());
 					continue;
 				}
 			}
@@ -86,12 +116,12 @@ public class GTCommandArgBlocks {
 			if (commandArg.getFields() != null) {
 				int processed = 0;
 
-				for (String field : commandArg.getFields()) {
-					try {
-						JsonArray args0 = commandArg.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
+				if (commandArg.getBlocklyJSON().has("args0")) {
+					for (String field : commandArg.getFields()) {
+						JsonArray args0 = commandArg.getBlocklyJSON().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
-							if (arg.get("name").getAsString().equals(field)) {
+							if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
 								switch (arg.get("type").getAsString()) {
 								case "field_checkbox":
 									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
@@ -117,12 +147,11 @@ public class GTCommandArgBlocks {
 								break;
 							}
 						}
-					} catch (Exception ignored) {
 					}
 				}
 
-				if (commandArg.blocklyJSON.getAsJsonObject().get("extensions") != null) {
-					JsonArray extensions = commandArg.blocklyJSON.getAsJsonObject().get("extensions").getAsJsonArray();
+				if (commandArg.getBlocklyJSON().get("extensions") != null) {
+					JsonArray extensions = commandArg.getBlocklyJSON().get("extensions").getAsJsonArray();
 					for (int i = 0; i < extensions.size(); i++) {
 						String extension = extensions.get(i).getAsString();
 						String suggestedFieldName = extension;
@@ -146,7 +175,7 @@ public class GTCommandArgBlocks {
 
 				if (processed != commandArg.getFields().size()) {
 					LOG.warn("[" + generatorName + "] Skipping command argument block with special fields: "
-							+ commandArg.machine_name);
+							+ commandArg.getMachineName());
 					continue;
 				}
 			}
@@ -160,20 +189,20 @@ public class GTCommandArgBlocks {
 				}
 			}
 
-			ModElement modElement = new ModElement(workspace, "TestCmdArgBlock" + commandArg.machine_name,
+			ModElement modElement = new ModElement(workspace, "TestCmdArgBlock" + commandArg.getMachineName(),
 					ModElementType.COMMAND);
 
-			String testXML = commandArg.toolboxXML;
+			String testXML = commandArg.getToolboxTestXML();
 
 			// add additional xml to the cmd arg block definition
-			testXML = testXML.replace("<block type=\"" + commandArg.machine_name + "\">",
-					"<block type=\"" + commandArg.machine_name + "\">" + additionalXML);
+			testXML = testXML.replace("<block type=\"" + commandArg.getMachineName() + "\">",
+					"<block type=\"" + commandArg.getMachineName() + "\">" + additionalXML);
 
 			Command command = new Command(modElement);
 			command.commandName = modElement.getName();
 			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
 
-			if (commandArg.type == IBlockGenerator.BlockType.PROCEDURAL)
+			if (commandArg.getType() == IBlockGenerator.BlockType.PROCEDURAL)
 				command.argsxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\""
 						+ " deletable=\"false\" x=\"40\" y=\"40\"><next>" + testXML + "</next></block></xml>";
 
@@ -183,7 +212,8 @@ public class GTCommandArgBlocks {
 				workspace.getModElementManager().storeModElement(command);
 			} catch (Throwable t) {
 				t.printStackTrace();
-				fail("[" + generatorName + "] Failed generating command argument block: " + commandArg.machine_name);
+				fail("[" + generatorName + "] Failed generating command argument block: "
+						+ commandArg.getMachineName());
 			}
 		}
 

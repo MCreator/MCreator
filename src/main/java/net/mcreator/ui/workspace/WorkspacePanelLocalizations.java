@@ -37,6 +37,8 @@ import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -260,20 +262,12 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 			tab.add(button);
 			pane.setTabComponentAt(id, tab);
 
-			del.addActionListener(e -> {
-				if (elements.getSelectedRow() == -1 || pane.getSelectedIndex() != id)
-					return;
+			del.addActionListener(a -> deleteCurrentlySelected(elements, id));
 
-				String key = (String) elements.getValueAt(elements.getSelectedRow(), 0);
-				if (key != null) {
-					int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-							L10N.t("workspace.localization.confirm_delete_entry"), L10N.t("common.confirmation"),
-							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-					if (n == 0) {
-						Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
-								.forEach(workspacePanel.getMCreator().getWorkspace()::removeLocalizationEntryByKey);
-						reloadElements();
-					}
+			elements.addKeyListener(new KeyAdapter() {
+				@Override public void keyReleased(KeyEvent e) {
+					if (e.getKeyCode() == KeyEvent.VK_DELETE)
+						deleteCurrentlySelected(elements, id);
 				}
 			});
 
@@ -363,6 +357,23 @@ class WorkspacePanelLocalizations extends JPanel implements IReloadableFilterabl
 		pane.addChangeListener(changeListener);
 
 		refilterElements();
+	}
+
+	private void deleteCurrentlySelected(JTable elements, int id) {
+		if (elements.getSelectedRow() == -1 || pane.getSelectedIndex() != id)
+			return;
+
+		String key = (String) elements.getValueAt(elements.getSelectedRow(), 0);
+		if (key != null) {
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+					L10N.t("workspace.localization.confirm_delete_entry"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (n == 0) {
+				Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
+						.forEach(workspacePanel.getMCreator().getWorkspace()::removeLocalizationEntryByKey);
+				reloadElements();
+			}
+		}
 	}
 
 	private void newLocalizationDialog() {

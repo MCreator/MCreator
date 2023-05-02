@@ -1,0 +1,11 @@
+_default: NEUTRAL
+master: MASTER
+music: MUSIC
+record: RECORDS
+weather: WEATHER
+block: BLOCKS
+hostile: HOSTILE
+neutral: NEUTRAL
+player: PLAYERS
+ambient: AMBIENT
+voice: VOICE

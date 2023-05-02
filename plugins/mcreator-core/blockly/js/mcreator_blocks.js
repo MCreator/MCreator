@@ -41,7 +41,7 @@ Blockly.Blocks['old_command'] = {
             .appendField(new FieldDataListSelector('procedure'), 'procedure');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setColour(160);
+        this.setColour('%{BKY_TEXTS_HUE}');
     }
 };
 
@@ -148,15 +148,61 @@ Blockly.Blocks['mcitem_all'] = {
     }
 };
 
-Blockly.Blocks['condition_input'] = {
+Blockly.Blocks['entity_from_deps'] = {
     init: function () {
-        this.appendValueInput('CONDITION').setCheck('Boolean').setAlign(Blockly.ALIGN_RIGHT)
-            .appendField(javabridge.t("blockly.block.condition_input"));
-        this.setStyle('hat_blocks');
-        this.setColour(210);
-        this.setPreviousStatement(false);
-        this.setNextStatement(false);
-        this.setTooltip(javabridge.t("blockly.block.condition_input.tooltip"));
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.entity_from_deps"));
+        this.setColour(195);
+        this.setOutput(true, 'Entity');
+    }
+};
+
+Blockly.Blocks['source_entity_from_deps'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.source_entity_from_deps"));
+        this.setColour(195);
+        this.setOutput(true, 'Entity');
+    }
+};
+
+Blockly.Blocks['immediate_source_entity_from_deps'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.immediate_source_entity_from_deps"));
+        this.setColour(195);
+        this.setOutput(true, 'Entity');
+    }
+};
+
+Blockly.Blocks['entity_iterator'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.entity_iterator"));
+        this.setColour(195);
+        this.setOutput(true, 'Entity');
+    }
+};
+
+Blockly.Blocks['entity_none'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldImage('./res/null.png', 8, 24))
+            .appendField(javabridge.t("blockly.block.entity_none"));
+        this.setColour(195);
+        this.setOutput(true, 'Entity');
+    }
+};
+
+Blockly.Blocks['direction_from_deps'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.direction_from_deps"));
+        this.setColour(20);
+        this.setOutput(true, 'Direction');
+    }
+};
+
+Blockly.Blocks['direction_unspecified'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.direction_unspecified"));
+        this.setColour(20);
+        this.setOutput(true, 'Null');
     }
 };
 
@@ -181,6 +227,44 @@ Blockly.Blocks['java_code_get'] = {
     }
 };
 
+Blockly.Blocks['logic_ternary_op'] = {
+    init: function () {
+        this.appendValueInput('condition').setCheck('Boolean')
+            .appendField(javabridge.t("blockly.block.logic_ternary_op.if"));
+        this.appendValueInput('THEN')
+            .appendField(javabridge.t("blockly.block.logic_ternary_op.then"));
+        this.appendValueInput('ELSE')
+            .appendField(javabridge.t("blockly.block.logic_ternary_op.else"));
+        this.setInputsInline(true);
+        this.setOutput(true);
+        this.setColour('#888888');
+        Blockly.Extensions.apply('logic_ternary', this, false);
+        Blockly.Extensions.apply('mark_attached_to_block_item', this, true);
+    }
+};
+
+Blockly.Blocks['controls_while'] = {
+    init: function () {
+        this.appendValueInput('BOOL').setCheck('Boolean')
+            .appendField(javabridge.t("blockly.block.controls_while"));
+        this.appendStatementInput('DO')
+            .appendField('%{BKY_CONTROLS_REPEAT_INPUT_DO}');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour('%{BKY_LOOPS_HUE}');
+        Blockly.Extensions.apply('is_custom_loop', this, false);
+    }
+};
+
+Blockly.Blocks['math_from_text'] = {
+    init: function () {
+        this.appendValueInput('NUMTEXT').setCheck('String')
+            .appendField(javabridge.t("blockly.block.math_from_text"));
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
 Blockly.Blocks['text_contains'] = {
     init: function () {
         this.appendValueInput('text').setCheck('String')
@@ -191,7 +275,7 @@ Blockly.Blocks['text_contains'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'Boolean');
-        this.setColour(210);
+        this.setColour('%{BKY_LOGIC_HUE}');
     }
 };
 
@@ -205,7 +289,7 @@ Blockly.Blocks['text_starts_with'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'Boolean');
-        this.setColour(210);
+        this.setColour('%{BKY_LOGIC_HUE}');
     }
 };
 
@@ -219,7 +303,7 @@ Blockly.Blocks['text_ends_with'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'Boolean');
-        this.setColour(210);
+        this.setColour('%{BKY_LOGIC_HUE}');
     }
 };
 
@@ -235,7 +319,21 @@ Blockly.Blocks['text_substring'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'String');
-        this.setColour(160);
+        this.setColour('%{BKY_TEXTS_HUE}');
+    }
+};
+
+Blockly.Blocks['text_substring_from'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_substring.substring"));
+        this.appendValueInput('from').setCheck('Number')
+            .appendField(javabridge.t("blockly.block.text_substring.from"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour('%{BKY_TEXTS_HUE}');
     }
 };
 
@@ -251,7 +349,7 @@ Blockly.Blocks['text_replace'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'String');
-        this.setColour(160);
+        this.setColour('%{BKY_TEXTS_HUE}');
     }
 };
 
@@ -265,7 +363,7 @@ Blockly.Blocks['text_format_number'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'String');
-        this.setColour(160);
+        this.setColour('%{BKY_TEXTS_HUE}');
     }
 };
 
@@ -277,7 +375,7 @@ Blockly.Blocks['text_is_empty'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'Boolean');
-        this.setColour(210);
+        this.setColour('%{BKY_LOGIC_HUE}');
     }
 };
 
@@ -289,7 +387,7 @@ Blockly.Blocks['text_trim'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'String');
-        this.setColour(160);
+        this.setColour('%{BKY_TEXTS_HUE}');
     }
 };
 
@@ -301,7 +399,7 @@ Blockly.Blocks['text_uppercase'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'String');
-        this.setColour(160);
+        this.setColour('%{BKY_TEXTS_HUE}');
     }
 };
 
@@ -313,7 +411,15 @@ Blockly.Blocks['text_lowercase'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'String');
-        this.setColour(160);
+        this.setColour('%{BKY_TEXTS_HUE}');
+    }
+};
+
+Blockly.Blocks['time_as_string'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_as_string"));
+        this.setColour('%{BKY_TEXTS_HUE}');
+        this.setOutput(true, 'String');
     }
 };
 
@@ -325,7 +431,135 @@ Blockly.Blocks['time_to_formatted_string'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setOutput(true, 'String');
-        this.setColour(160);
+        this.setColour('%{BKY_TEXTS_HUE}');
+    }
+};
+
+Blockly.Blocks['time_day_of_week'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_day_of_week"));
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.Blocks['time_day_of_month'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_day_of_month"));
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.Blocks['time_hours'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_hours"));
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.Blocks['time_minutes'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_minutes"));
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.Blocks['time_month'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_month"));
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.Blocks['time_seconds'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_seconds"));
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.Blocks['time_year'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_year"));
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
+Blockly.Blocks['time_week_of_year'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.time_week_of_year"));
+        this.setColour('%{BKY_MATH_HUE}');
+        this.setOutput(true, 'Number');
+    }
+};
+
+// Mutator block for "Any/All of" block predicates
+Blockly.Blocks['block_predicate_mutator_container'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.block_predicate_mutator.container"));
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+        this.setColour('%{BKY_LOGIC_HUE}');
+    }
+};
+
+// Mutator block for "Any/All of" block predicates
+Blockly.Blocks['block_predicate_mutator_input'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.block_predicate_mutator.input"));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+        this.setColour('%{BKY_LOGIC_HUE}');
+    }
+};
+
+// Mutator block for "Block list" mixin
+Blockly.Blocks['block_list_mutator_container'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t('blockly.block.block_list_mutator.container'));
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+        this.setColour(45);
+    }
+};
+
+// Mutator block for "Block list" mixin
+Blockly.Blocks['block_list_mutator_input'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t('blockly.block.block_list_mutator.input'));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+        this.fieldValues_ = [];
+        this.setColour(45);
+    }
+};
+
+// Mutator block for geode feature mixin
+Blockly.Blocks['geode_crystal_mutator_container'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.geode_crystal_mutator.container"));
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+        this.setColour(0);
+    }
+};
+
+// Mutator block for geode feature mixin
+Blockly.Blocks['geode_crystal_mutator_input'] = {
+    init: function () {
+      this.appendDummyInput().appendField(javabridge.t("blockly.block.geode_crystal_mutator.input"));
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.contextMenu = false;
+      this.setColour(0);
     }
 };
 
@@ -506,54 +740,6 @@ Blockly.defineBlocksWithJsonArray([
         "colour": "%{BKY_MATH_HUE}"
     },
     {
-        "type": "logic_ternary_op",
-        "message0": "if %1 then %2 else %3",
-        "args0": [
-            {
-                "type": "input_value",
-                "name": "condition",
-                "check": "Boolean"
-            },
-            {
-                "type": "input_value",
-                "name": "THEN"
-            },
-            {
-                "type": "input_value",
-                "name": "ELSE"
-            }
-        ],
-        "inputsInline": true,
-        "output": null,
-        "colour": "#888888",
-        "extensions": [
-            "logic_ternary"
-        ],
-        "mutator": "mark_attached_to_block_item"
-    },
-    {
-        "type": "controls_while",
-        "message0": "while %1",
-        "args0": [
-            {
-                "type": "input_value",
-                "name": "BOOL",
-                "check": "Boolean"
-            }
-        ],
-        "message1": "%{BKY_CONTROLS_REPEAT_INPUT_DO} %1",
-        "args1": [{
-            "type": "input_statement",
-            "name": "DO"
-        }],
-        "extensions": [
-            "is_custom_loop"
-        ],
-        "previousStatement": null,
-        "nextStatement": null,
-        "colour": "%{BKY_LOOPS_HUE}"
-    },
-    {
         "type": "coord_x",
         "message0": "x",
         "output": "Number",
@@ -572,58 +758,6 @@ Blockly.defineBlocksWithJsonArray([
         "colour": "%{BKY_MATH_HUE}"
     },
     {
-        "type": "entity_from_deps",
-        "message0": "Event/target entity",
-        "output": "Entity",
-        "colour": "195"
-    },
-    {
-        "type": "source_entity_from_deps",
-        "message0": "Source entity",
-        "output": "Entity",
-        "colour": "195"
-    },
-    {
-        "type": "entity_iterator",
-        "message0": "Entity iterator",
-        "output": "Entity",
-        "colour": "195"
-    },
-    {
-        "type": "immediate_source_entity_from_deps",
-        "message0": "Immediate source entity",
-        "output": "Entity",
-        "colour": "195"
-    },
-    {
-        "type": "entity_none",
-        "message0": "%1 No entity",
-        "args0": [
-            {
-                "type": "field_image",
-                "src": "./res/null.png",
-                "width": 8,
-                "height": 24
-            }
-        ],
-        "output": "Entity",
-        "colour": "195"
-    },
-    {
-        "type": "math_from_text",
-        "message0": "number from text %1",
-        "args0": [
-            {
-                "type": "input_value",
-                "name": "NUMTEXT",
-                "check": "String"
-            }
-        ],
-        "inputsInline": false,
-        "output": "Number",
-        "colour": "%{BKY_MATH_HUE}"
-    },
-    {
         "type": "direction_constant",
         "message0": "",
         "extensions": [
@@ -631,71 +765,5 @@ Blockly.defineBlocksWithJsonArray([
         ],
         "output": "Direction",
         "colour": "20"
-    },
-    {
-        "type": "direction_unspecified",
-        "message0": "Any direction",
-        "output": "Null",
-        "colour": "20"
-    },
-    {
-        "type": "direction_from_deps",
-        "message0": "Trigger direction/face",
-        "output": "Direction",
-        "colour": "20"
-    },
-    {
-        "type": "time_as_string",
-        "message0": "Time as text",
-        "output": "String",
-        "colour": "%{BKY_TEXTS_HUE}"
-    },
-    {
-        "type": "time_day_of_week",
-        "message0": "Day of this week",
-        "output": "Number",
-        "colour": "%{BKY_MATH_HUE}"
-    },
-    {
-        "type": "time_day_of_month",
-        "message0": "Day of this month",
-        "output": "Number",
-        "colour": "%{BKY_MATH_HUE}"
-    },
-    {
-        "type": "time_hours",
-        "message0": "Current hour of the day",
-        "output": "Number",
-        "colour": "%{BKY_MATH_HUE}"
-    },
-    {
-        "type": "time_month",
-        "message0": "Current month",
-        "output": "Number",
-        "colour": "%{BKY_MATH_HUE}"
-    },
-    {
-        "type": "time_minutes",
-        "message0": "Minutes past current hour",
-        "output": "Number",
-        "colour": "%{BKY_MATH_HUE}"
-    },
-    {
-        "type": "time_year",
-        "message0": "Current year",
-        "output": "Number",
-        "colour": "%{BKY_MATH_HUE}"
-    },
-    {
-        "type": "time_seconds",
-        "message0": "Seconds past current minute",
-        "output": "Number",
-        "colour": "%{BKY_MATH_HUE}"
-    },
-    {
-        "type": "time_week_of_year",
-        "message0": "Week of the current year",
-        "output": "Number",
-        "colour": "%{BKY_MATH_HUE}"
     }
 ]);

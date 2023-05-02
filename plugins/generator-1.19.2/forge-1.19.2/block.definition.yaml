@@ -28,7 +28,6 @@ templates:
   # Normal block templates
   - template: json/block_states.json.ftl
     writer: json
-    variables: "variant= "
     name: "@MODASSETSROOT/blockstates/@registryname.json"
   - template: json/block_all_fixed.json.ftl
     condition: "renderType() #= 10"
@@ -210,7 +209,6 @@ templates:
   - template: json/block_states.json.ftl
     condition: "blockBase %= Leaves"
     writer: json
-    variables: "variant= "
     name: "@MODASSETSROOT/blockstates/@registryname.json"
   - template: json/block.json.ftl
     condition:

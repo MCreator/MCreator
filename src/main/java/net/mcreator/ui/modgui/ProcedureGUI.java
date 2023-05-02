@@ -564,7 +564,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE).getDefinedBlocks();
 
-		blocklyPanel = new BlocklyPanel(mcreator);
+		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.PROCEDURE);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.PROCEDURE);
@@ -576,8 +576,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			}
 			blocklyPanel.getJSBridge().setJavaScriptEventListener(() -> new Thread(this::regenerateProcedure).start());
 			if (!isEditingMode()) {
-				blocklyPanel.setXML(
-						"<xml><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>");
+				blocklyPanel.setXML(net.mcreator.element.types.Procedure.XML_BASE);
 			}
 		});
 
