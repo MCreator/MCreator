@@ -101,6 +101,7 @@ import java.util.*;
 	public Sound fullUpdateSound;
 	public Sound emptyUpdateSound;
 	public Sound notificationSound;
+	public Procedure tradingCondition;
 	public LogicProcedure restockCondition;
 	public NumberProcedure rewardXp;
 	public String guiBoundTo;

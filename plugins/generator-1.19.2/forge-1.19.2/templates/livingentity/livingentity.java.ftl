@@ -520,6 +520,21 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     }
     </#if>
 
+	<#if data.canTrade>
+	private boolean tradeEnabled() {
+		<#if hasProcedure(data.tradingCondition)>
+			Entity entity = this;
+			Level world = this.level;
+			double x = this.getX();
+			double y = this.getY();
+			double z = this.getZ();
+			return <@procedureOBJToConditionCode data.tradingCondition/>;
+		<#else>
+			return true;
+		</#if>
+	}
+	</#if>
+
 	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>") || data.canTrade>
 	@Override public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
 		ItemStack itemstack = sourceentity.getItemInHand(hand);
@@ -534,8 +549,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					<#if data.hasSpawnEgg>
 					itemstack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}_SPAWN_EGG.get() &&
 					</#if>
-					this.isAlive() && !this.isTrading() && !this.isBaby()
-					<#if data.villagerTradingType>&& !this.isSleeping()</#if>
+					this.isAlive() && !this.isTrading() && !this.isBaby() && tradeEnabled()
+					<#if data.villagerTradingType> && !this.isSleeping()</#if>
 				) {
 					if (hand == InteractionHand.MAIN_HAND) {
 						sourceentity.awardStat(Stats.TALKED_TO_VILLAGER);

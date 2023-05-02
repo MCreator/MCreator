@@ -693,7 +693,8 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.notificationSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			livingEntity.restockCondition = new LogicProcedure(_true ? "condition4" : null, _true);
+			livingEntity.tradingCondition = new Procedure("condition4");
+			livingEntity.restockCondition = new LogicProcedure(_true ? "condition5" : null, _true);
 			livingEntity.rewardXp = new NumberProcedure(emptyLists ? null : "number1", 4);
 			livingEntity.guiBoundTo = "<NONE>";
 			livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),

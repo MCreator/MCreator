@@ -171,6 +171,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final SoundSelector fullUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector emptyUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector notificationSound = new SoundSelector(mcreator);
+	private ProcedureSelector tradingCondition;
 	private LogicProcedureSelector restockCondition;
 	private NumberProcedureSelector rewardXp;
 	private final JComboBox<String> guiBoundTo = new JComboBox<>();
@@ -354,13 +355,18 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.checkbox("elementgui.common.enable"), 300,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
+		tradingCondition = new ProcedureSelector(this.withEntry("entity/trading_condition"), mcreator,
+				L10N.t("elementgui.living_entity.trading_condition"), AbstractProcedureSelector.Side.BOTH, false,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
+				L10N.t("condition.common.true"));
 		restockCondition = new LogicProcedureSelector(this.withEntry("entity/can_restock"), mcreator,
 				L10N.t("elementgui.living_entity.can_restock"), AbstractProcedureSelector.Side.BOTH,
 				L10N.checkbox("elementgui.common.enable"), 250,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		rewardXp = new NumberProcedureSelector(this.withEntry("entity/reward_xp"), mcreator,
 				L10N.t("elementgui.living_entity.reward_xp"), AbstractProcedureSelector.Side.BOTH,
-				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)), 250,
+				new JSpinner(new SpinnerNumberModel(4, 0, Integer.MAX_VALUE, 0.5)), 250,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		restrictionBiomes = new BiomeListField(mcreator);
@@ -902,6 +908,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.label("elementgui.living_entity.notification_sound")));
 		villagerProperties.add(notificationSound);
 
+		JPanel tradingConditionPanel = new JPanel(new GridLayout(1, 1, 0, 2));
+		tradingConditionPanel.setOpaque(false);
+
+		tradingConditionPanel.add(tradingCondition);
+
 		JPanel villagerPropertiesConditions = new JPanel(new GridLayout(2, 1, 0, 2));
 		villagerPropertiesConditions.setOpaque(false);
 
@@ -909,7 +920,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		villagerPropertiesConditions.add(rewardXp);
 
 		JComponent villagerPropertiesPanel = PanelUtils.northAndCenterElement(villagerProperties,
-				villagerPropertiesConditions, 2, 2);
+				PanelUtils.centerAndSouthElement(tradingConditionPanel, villagerPropertiesConditions), 2, 2);
 		villagerPropertiesPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.living_entity.villager_properties"), TitledBorder.LEADING,
@@ -966,6 +977,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		fullUpdateSound.setEnabled(canTrade.isSelected());
 		emptyUpdateSound.setEnabled(canTrade.isSelected());
 		notificationSound.setEnabled(canTrade.isSelected());
+		tradingCondition.setEnabled(canTrade.isSelected());
 		restockCondition.setEnabled(canTrade.isSelected());
 		rewardXp.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
 		guiBoundTo.setEnabled(!canTrade.isSelected());
@@ -997,6 +1009,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		transparentModelCondition.refreshListKeepSelected();
 		isShakingCondition.refreshListKeepSelected();
 		solidBoundingBox.refreshListKeepSelected();
+		tradingCondition.refreshListKeepSelected();
 		restockCondition.refreshListKeepSelected();
 		rewardXp.refreshListKeepSelected();
 
@@ -1141,6 +1154,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		fullUpdateSound.setSound(livingEntity.fullUpdateSound);
 		emptyUpdateSound.setSound(livingEntity.emptyUpdateSound);
 		notificationSound.setSound(livingEntity.notificationSound);
+		tradingCondition.setSelectedProcedure(livingEntity.tradingCondition);
 		restockCondition.setSelectedProcedure(livingEntity.restockCondition);
 		rewardXp.setSelectedProcedure(livingEntity.rewardXp);
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
@@ -1281,6 +1295,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.fullUpdateSound = fullUpdateSound.getSound();
 		livingEntity.emptyUpdateSound = emptyUpdateSound.getSound();
 		livingEntity.notificationSound = notificationSound.getSound();
+		livingEntity.tradingCondition = tradingCondition.getSelectedProcedure();
 		livingEntity.restockCondition = restockCondition.getSelectedProcedure();
 		livingEntity.rewardXp = rewardXp.getSelectedProcedure();
 		livingEntity.guiBoundTo = (String) guiBoundTo.getSelectedItem();

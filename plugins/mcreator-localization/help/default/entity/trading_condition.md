@@ -1,0 +1,1 @@
+Additional condition to disable trading with the entity, even if the checkbox is checked.
