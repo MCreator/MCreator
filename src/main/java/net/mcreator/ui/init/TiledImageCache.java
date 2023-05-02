@@ -55,12 +55,16 @@ public class TiledImageCache {
 	public static ImageIcon bucket;
 	public static ImageIcon bucketMask;
 
+	public static ImageIcon spawnEggBase;
+	public static ImageIcon spawnEggDots;
+
 	public static void loadAndTileImages() {
 		try {
 			TiledImageUtils plantGrowthTile = new TiledImageUtils(UIRES.get("growthtile"), 128, 215);
 			TiledImageUtils modTabTile = new TiledImageUtils(UIRES.get("taboverlaytile"), 64, 64);
 			TiledImageUtils workspaceIcons = new TiledImageUtils(UIRES.get("wrktile"), 45, 45);
 			TiledImageUtils bucketIcons = new TiledImageUtils(UIRES.get("fluidbucket"), 32, 32);
+			TiledImageUtils spawnEggIcons = new TiledImageUtils(UIRES.get("spawnegg"), 32, 32);
 
 			plantGrowingYes = plantGrowthTile.getIcon(1, 1);
 			plantGrowingNo = plantGrowthTile.getIcon(2, 1);
@@ -87,8 +91,10 @@ public class TiledImageCache {
 			bucket = bucketIcons.getIcon(1, 1);
 			bucketMask = bucketIcons.getIcon(2, 1);
 
+			spawnEggBase = spawnEggIcons.getIcon(1, 1);
+			spawnEggDots = spawnEggIcons.getIcon(2, 1);
 		} catch (InvalidTileSizeException e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Failed loading some tiles into the cache", e);
 		}
 	}
 

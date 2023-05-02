@@ -19,10 +19,12 @@
 package net.mcreator.generator.template.base;
 
 import freemarker.cache.SoftCacheStorage;
+import freemarker.core.JSONCFormat;
 import freemarker.ext.beans.BeansWrapper;
 import freemarker.ext.beans.BeansWrapperBuilder;
 import freemarker.template.Configuration;
 import freemarker.template.TemplateExceptionHandler;
+import freemarker.template.Version;
 
 import java.util.Locale;
 
@@ -30,19 +32,22 @@ public class DefaultFreemarkerConfiguration extends Configuration {
 
 	private final BeansWrapper beansWrapper;
 
+	private static final Version FTL_CONFIGURATION_VERSION = Configuration.VERSION_2_3_32;
+
 	public DefaultFreemarkerConfiguration() {
-		super(Configuration.VERSION_2_3_31);
+		super(FTL_CONFIGURATION_VERSION);
 		setAutoEscapingPolicy(Configuration.DISABLE_AUTO_ESCAPING_POLICY);
 		setDefaultEncoding("UTF-8");
 		setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 		setNumberFormat("computer");
 		setBooleanFormat("c");
+		setCFormat(JSONCFormat.INSTANCE);
 		setTemplateUpdateDelayMilliseconds(Integer.MAX_VALUE);
 		setCacheStorage(new SoftCacheStorage());
 		setLocale(Locale.ENGLISH);
 		setLogTemplateExceptions(false);
 
-		BeansWrapperBuilder wrapperBuilder = new BeansWrapperBuilder(Configuration.VERSION_2_3_31);
+		BeansWrapperBuilder wrapperBuilder = new BeansWrapperBuilder(FTL_CONFIGURATION_VERSION);
 		wrapperBuilder.setExposeFields(true);
 		this.beansWrapper = wrapperBuilder.build();
 	}

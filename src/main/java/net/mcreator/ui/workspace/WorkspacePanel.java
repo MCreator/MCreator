@@ -22,11 +22,13 @@ import net.mcreator.element.*;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
+import net.mcreator.generator.GeneratorTemplatesList;
+import net.mcreator.generator.ListTemplate;
 import net.mcreator.io.FileIO;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
-import net.mcreator.preferences.PreferencesData;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.preferences.data.HiddenSection;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.UnregisteredAction;
 import net.mcreator.ui.component.*;
@@ -40,7 +42,6 @@ import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.renderer.elementlist.*;
 import net.mcreator.ui.modgui.ModElementGUI;
@@ -49,7 +50,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
-import net.mcreator.ui.validation.validators.UniqueNameValidator;
+import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.util.image.EmptyIcon;
@@ -261,6 +262,21 @@ import java.util.stream.Collectors;
 			}
 		});
 
+		list.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					deleteCurrentlySelectedModElement();
+				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					IElement selected = list.getSelectedValue();
+					if (selected instanceof FolderElement) {
+						switchFolder((FolderElement) selected);
+					} else {
+						editCurrentlySelectedModElement((ModElement) selected, list, 0, 0);
+					}
+				}
+			}
+		});
+
 		JScrollPane sp = new JScrollPane(list);
 		sp.setOpaque(false);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -405,12 +421,11 @@ import java.util.stream.Collectors;
 		JRadioButtonMenuItem tilesIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.tiles"));
 		tilesIcons.addActionListener(e -> {
 			if (tilesIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.TILES;
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.set(HiddenSection.IconSize.TILES);
 				updateElementListRenderer();
 			}
 		});
-		tilesIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
-				== PreferencesData.WorkspaceIconSize.TILES);
+		tilesIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get() == HiddenSection.IconSize.TILES);
 		Arrays.stream(tilesIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(tilesIcons)));
 		ComponentUtils.deriveFont(tilesIcons, 12);
 		tilesIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
@@ -418,12 +433,12 @@ import java.util.stream.Collectors;
 		JRadioButtonMenuItem largeIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.large"));
 		largeIcons.addActionListener(e -> {
 			if (largeIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.LARGE;
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.set(HiddenSection.IconSize.LARGE);
 				updateElementListRenderer();
 			}
 		});
-		largeIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
-				== PreferencesData.WorkspaceIconSize.LARGE);
+		largeIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
+				== HiddenSection.IconSize.LARGE);
 		Arrays.stream(largeIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(largeIcons)));
 		ComponentUtils.deriveFont(largeIcons, 12);
 		largeIcons.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -431,12 +446,12 @@ import java.util.stream.Collectors;
 		JRadioButtonMenuItem mediumIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.medium"));
 		mediumIcons.addActionListener(e -> {
 			if (mediumIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.MEDIUM;
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.set(HiddenSection.IconSize.MEDIUM);
 				updateElementListRenderer();
 			}
 		});
-		mediumIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
-				== PreferencesData.WorkspaceIconSize.MEDIUM);
+		mediumIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
+				== HiddenSection.IconSize.MEDIUM);
 		Arrays.stream(mediumIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(mediumIcons)));
 		ComponentUtils.deriveFont(mediumIcons, 12);
 		mediumIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
@@ -444,12 +459,12 @@ import java.util.stream.Collectors;
 		JRadioButtonMenuItem smallIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.small"));
 		smallIcons.addActionListener(e -> {
 			if (smallIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.SMALL;
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.set(HiddenSection.IconSize.SMALL);
 				updateElementListRenderer();
 			}
 		});
-		smallIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
-				== PreferencesData.WorkspaceIconSize.SMALL);
+		smallIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
+				== HiddenSection.IconSize.SMALL);
 		Arrays.stream(smallIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(smallIcons)));
 		ComponentUtils.deriveFont(smallIcons, 12);
 		smallIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
@@ -457,12 +472,12 @@ import java.util.stream.Collectors;
 		JRadioButtonMenuItem listIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.list"));
 		listIcons.addActionListener(e -> {
 			if (listIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.LIST;
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.set(HiddenSection.IconSize.LIST);
 				updateElementListRenderer();
 			}
 		});
-		listIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
-				== PreferencesData.WorkspaceIconSize.LIST);
+		listIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
+				== HiddenSection.IconSize.LIST);
 		Arrays.stream(listIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(listIcons)));
 		ComponentUtils.deriveFont(listIcons, 12);
 		listIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
@@ -470,12 +485,12 @@ import java.util.stream.Collectors;
 		JRadioButtonMenuItem detailsIcons = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.details"));
 		detailsIcons.addActionListener(e -> {
 			if (detailsIcons.isSelected()) {
-				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize = PreferencesData.WorkspaceIconSize.DETAILS;
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.set(HiddenSection.IconSize.DETAILS);
 				updateElementListRenderer();
 			}
 		});
-		detailsIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
-				== PreferencesData.WorkspaceIconSize.DETAILS);
+		detailsIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
+				== HiddenSection.IconSize.DETAILS);
 		Arrays.stream(detailsIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(detailsIcons)));
 		ComponentUtils.deriveFont(detailsIcons, 12);
 		detailsIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
@@ -572,8 +587,8 @@ import java.util.stream.Collectors;
 		EventButtonGroup sortOne = new EventButtonGroup();
 		sortOne.addActionListener(e -> resort());
 		JRadioButtonMenuItem asc = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.ascending"));
-		asc.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceSortAscending);
-		desc.setSelected(!PreferencesManager.PREFERENCES.hidden.workspaceSortAscending);
+		asc.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceSortAscending.get());
+		desc.setSelected(!PreferencesManager.PREFERENCES.hidden.workspaceSortAscending.get());
 		sortOne.add(asc);
 		sortOne.add(desc);
 		sortPopup.add(asc);
@@ -614,12 +629,12 @@ import java.util.stream.Collectors;
 
 		view.addActionListener(e -> viewPopup.show(view, 0, 23));
 
-		if (PreferencesManager.PREFERENCES.hidden.workspaceSortType == PreferencesData.WorkspaceSortType.NAME) {
+		if (PreferencesManager.PREFERENCES.hidden.workspaceSortType.get() == HiddenSection.SortType.NAME) {
 			sortName.setSelected(true);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceSortType == PreferencesData.WorkspaceSortType.TYPE) {
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceSortType.get() == HiddenSection.SortType.TYPE) {
 			sortType.setSelected(true);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceSortType
-				== PreferencesData.WorkspaceSortType.LOADORDER) {
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceSortType.get()
+				== HiddenSection.SortType.LOADORDER) {
 			sortLoadingOrder.setSelected(true);
 		} else {
 			sortDateCreated.setSelected(true);
@@ -981,23 +996,23 @@ import java.util.stream.Collectors;
 
 	private void resort() {
 		if (sortName.isSelected()) {
-			PreferencesManager.PREFERENCES.hidden.workspaceSortType = PreferencesData.WorkspaceSortType.NAME;
+			PreferencesManager.PREFERENCES.hidden.workspaceSortType.set(HiddenSection.SortType.NAME);
 		} else if (sortType.isSelected()) {
-			PreferencesManager.PREFERENCES.hidden.workspaceSortType = PreferencesData.WorkspaceSortType.TYPE;
+			PreferencesManager.PREFERENCES.hidden.workspaceSortType.set(HiddenSection.SortType.TYPE);
 		} else if (sortLoadingOrder.isSelected()) {
-			PreferencesManager.PREFERENCES.hidden.workspaceSortType = PreferencesData.WorkspaceSortType.LOADORDER;
+			PreferencesManager.PREFERENCES.hidden.workspaceSortType.set(HiddenSection.SortType.LOADORDER);
 		} else {
-			PreferencesManager.PREFERENCES.hidden.workspaceSortType = PreferencesData.WorkspaceSortType.CREATED;
+			PreferencesManager.PREFERENCES.hidden.workspaceSortType.set(HiddenSection.SortType.CREATED);
 		}
 
-		PreferencesManager.PREFERENCES.hidden.workspaceSortAscending = !desc.isSelected();
+		PreferencesManager.PREFERENCES.hidden.workspaceSortAscending.set(!desc.isSelected());
 
 		refilterElements();
 	}
 
 	private void updateElementListRenderer() {
-		if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
-				== PreferencesData.WorkspaceIconSize.TILES) {
+		if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
+				== HiddenSection.IconSize.TILES) {
 			list.setCellRenderer(new TilesModListRender());
 			list.setFixedCellHeight(72);
 			list.setFixedCellWidth(287);
@@ -1005,8 +1020,8 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.tiles.gif"));
 			view.setText(L10N.t("workspace.elements.list.tiles"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
-				== PreferencesData.WorkspaceIconSize.LARGE) {
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
+				== HiddenSection.IconSize.LARGE) {
 			list.setCellRenderer(new LargeIconModListRender());
 			list.setFixedCellHeight(97);
 			list.setFixedCellWidth(90);
@@ -1014,8 +1029,8 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.large.gif"));
 			view.setText(L10N.t("workspace.elements.list.large"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
-				== PreferencesData.WorkspaceIconSize.MEDIUM) {
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
+				== HiddenSection.IconSize.MEDIUM) {
 			list.setCellRenderer(new MediumIconModListRender());
 			list.setFixedCellHeight(52);
 			list.setFixedCellWidth(287);
@@ -1023,8 +1038,8 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.medium.gif"));
 			view.setText(L10N.t("workspace.elements.list.medium"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
-				== PreferencesData.WorkspaceIconSize.SMALL) {
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
+				== HiddenSection.IconSize.SMALL) {
 			list.setCellRenderer(new SmallIconModListRender(true));
 			list.setFixedCellHeight(32);
 			list.setFixedCellWidth(200);
@@ -1032,8 +1047,8 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.small.gif"));
 			view.setText(L10N.t("workspace.elements.list.small"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
-				== PreferencesData.WorkspaceIconSize.LIST) {
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
+				== HiddenSection.IconSize.LIST) {
 			list.setCellRenderer(new ListIconModListRender());
 			list.setFixedCellHeight(28);
 			list.setFixedCellWidth(-1);
@@ -1041,8 +1056,8 @@ import java.util.stream.Collectors;
 			view.setIcon(UIRES.get("16px.list.gif"));
 			view.setText(L10N.t("workspace.elements.list.list"));
 			detailsbar.setVisible(false);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize
-				== PreferencesData.WorkspaceIconSize.DETAILS) {
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
+				== HiddenSection.IconSize.DETAILS) {
 			list.setCellRenderer(new DetailsIconModListRender());
 			list.setFixedCellHeight(24);
 			list.setFixedCellWidth(-1);
@@ -1137,8 +1152,8 @@ import java.util.stream.Collectors;
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
 						new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
-								return UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(),
-										(VTextField) component, L10N.t("common.mod_element_name")).validate();
+								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
+										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));
 				if (modName != null && !modName.equals("")) {
@@ -1163,16 +1178,16 @@ import java.util.stream.Collectors;
 
 						if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
 							List<GeneratorTemplate> originalFiles = mcreator.getGenerator()
-									.getModElementGeneratorTemplatesList(mu);
+									.getModElementGeneratorTemplatesList(generatableElementOriginal);
 							List<GeneratorTemplate> duplicateFiles = mcreator.getGenerator()
-									.getModElementGeneratorTemplatesList(duplicateModElement);
+									.getModElementGeneratorTemplatesList(generatableElementDuplicate);
 
 							for (GeneratorTemplate originalTemplate : originalFiles) {
 								File originalFile = originalTemplate.getFile();
 								File duplicateFile = null;
 								for (GeneratorTemplate newCandidate : duplicateFiles) {
-									if (newCandidate.getTemplateIdentificator()
-											.equals(originalTemplate.getTemplateIdentificator())) {
+									if (newCandidate.getTemplateIdentifier()
+											.equals(originalTemplate.getTemplateIdentifier())) {
 										duplicateFile = newCandidate.getFile();
 										break;
 									}
@@ -1218,50 +1233,30 @@ import java.util.stream.Collectors;
 	}
 
 	private void editCurrentlySelectedModElementAsCode(ModElement mu, JComponent component, int x, int y) {
-		GeneratableElement ge = mu.getGeneratableElement();
+		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator()
+				.getModElementGeneratorTemplatesList(mu.getGeneratableElement());
+		List<GeneratorTemplate> modElementGlobalFiles = mcreator.getGenerator()
+				.getGlobalTemplatesListForModElementType(mu.getType(), false, new AtomicInteger());
+		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator()
+				.getModElementListTemplates(mu.getGeneratableElement());
 
-		List<GeneratorTemplate> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(mu, ge);
-
-		modElementFiles.addAll(
-				mcreator.getGenerator().getModElementGlobalTemplatesList(mu.getType(), false, new AtomicInteger()));
-
-		if (ge instanceof ICommonType) {
-			Collection<BaseType> baseTypes = ((ICommonType) ge).getBaseTypesProvided();
+		if (mu.getGeneratableElement() instanceof ICommonType) {
+			Collection<BaseType> baseTypes = ((ICommonType) mu.getGeneratableElement()).getBaseTypesProvided();
 			for (BaseType baseType : baseTypes) {
-				modElementFiles.addAll(mcreator.getGenerator().getGlobalTemplatesList(
+				modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesListForDefinition(
 						mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
 								.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
 			}
 		}
 
-		if (modElementFiles.size() > 1) {
-			JPopupMenu codeDropdown = new JPopupMenu();
-			codeDropdown.setBorder(BorderFactory.createEmptyBorder());
-			codeDropdown.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-
-			boolean global = false;
-			for (GeneratorTemplate modElementFile : modElementFiles) {
-				if (!global && modElementFile.isGlobal()) {
-					codeDropdown.addSeparator();
-					global = true;
-				}
-
-				JMenuItem item = new JMenuItem(
-						"<html>" + modElementFile.getFile().getName() + "<br><small color=#666666>"
-								+ mcreator.getWorkspace().getWorkspaceFolder().toPath()
-								.relativize(modElementFile.getFile().toPath()));
-				item.setIcon(FileIcons.getIconForFile(modElementFile.getFile()));
-				item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-				item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				item.setIconTextGap(8);
-				item.setBorder(BorderFactory.createEmptyBorder(3, 0, 5, 3));
-				item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, modElementFile.getFile()));
-				codeDropdown.add(item);
-			}
-			codeDropdown.show(component, x, y);
-		} else if (modElementFiles.size() == 1) {
+		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)
+			new ModElementCodeDropdown(mcreator,
+					modElementFiles.stream().filter(e -> !(e instanceof ListTemplate)).toList(), modElementGlobalFiles,
+					modElementListFiles).show(component, x, y);
+		else if (modElementFiles.size() == 1)
 			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
-		}
+		else if (modElementGlobalFiles.size() == 1)
+			ProjectFileOpener.openCodeFile(mcreator, modElementGlobalFiles.get(0).getFile());
 	}
 
 	private void deleteCurrentlySelectedModElement() {
@@ -1433,7 +1428,7 @@ import java.util.stream.Collectors;
 		vcsPan.refilterElements();
 	}
 
-	public MCreator getMcreator() {
+	public MCreator getMCreator() {
 		return mcreator;
 	}
 

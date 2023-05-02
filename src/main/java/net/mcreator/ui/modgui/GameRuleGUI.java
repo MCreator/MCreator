@@ -76,8 +76,6 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 
 		name.setEnabled(false);
 
-		ComponentUtils.deriveFont(name, 16);
-
 		subpane2.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("gamerule/name"), L10N.label("elementgui.gamerule.name")));
 		subpane2.add(name);
@@ -105,12 +103,8 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 				L10N.label("elementgui.gamerule.default_value")));
 		subpane2.add(defaultValue);
 
-		page1group.addValidationElement(name);
 		page1group.addValidationElement(displayName);
 		page1group.addValidationElement(description);
-
-		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.gamerule.gamerule_needs_name")));
-		name.enableRealtimeValidation();
 
 		displayName.setValidator(
 				new TextFieldValidator(displayName, L10N.t("elementgui.gamerule.gamerule_needs_display_name")));
@@ -129,7 +123,6 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 
 		if (!isEditingMode()) {
 			name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
-
 			updateDefaultValueUI();
 		}
 	}
@@ -153,7 +146,6 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		defaultValueNumber.setValue(gamerule.defaultValueNumber);
 
 		name.setText(StringUtils.lowercaseFirstLetter(modElement.getName()));
-
 		updateDefaultValueUI();
 	}
 
@@ -168,18 +160,12 @@ public class GameRuleGUI extends ModElementGUI<GameRule> {
 		return gamerule;
 	}
 
-	@Override protected void beforeGeneratableElementGenerated() {
-		super.beforeGeneratableElementGenerated();
-		modElement.setRegistryName(StringUtils.lowercaseFirstLetter(modElement.getName()));
-	}
-
 	@Override protected void afterGeneratableElementStored() {
 		super.afterGeneratableElementStored();
 		modElement.clearMetadata();
 		modElement.putMetadata("type", "Number".equals(gameruleType.getSelectedItem()) ?
 				VariableTypeLoader.BuiltInTypes.NUMBER.getName() :
 				VariableTypeLoader.BuiltInTypes.LOGIC.getName());
-		modElement.reinit();
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {

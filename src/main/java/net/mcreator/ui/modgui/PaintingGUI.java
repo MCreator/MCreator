@@ -29,6 +29,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
@@ -44,6 +46,8 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 
 	private final JSpinner width = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
 	private final JSpinner height = new JSpinner(new SpinnerNumberModel(16, 16, 64000, 16));
+	private final VTextField title = new VTextField(28);
+	private final VTextField author = new VTextField(28);
 
 	private TextureHolder texture;
 
@@ -59,15 +63,26 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.OTHER));
 		texture.setOpaque(false);
 
-		JComponent textureComponent = PanelUtils.totalCenterInPanel(ComponentUtils.squareAndBorder(
+		JComponent textureComponent = PanelUtils.centerInPanel(ComponentUtils.squareAndBorder(
 				HelpUtils.wrapWithHelpButton(this.withEntry("painting/texture"), texture),
 				L10N.t("elementgui.common.texture")));
 
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		JPanel selp = new JPanel(new GridLayout(2, 2, 50, 2));
+		ComponentUtils.deriveFont(title, 16);
+		ComponentUtils.deriveFont(author, 16);
+
+		JPanel selp = new JPanel(new GridLayout(4, 2, 50, 2));
 		selp.setOpaque(false);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/title"),
+				L10N.label("elementgui.painting.painting_title")));
+		selp.add(title);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/author"),
+				L10N.label("elementgui.painting.painting_author")));
+		selp.add(author);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("painting/width"),
 				L10N.label("elementgui.painting.painting_width")));
@@ -78,12 +93,28 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		selp.add(height);
 
 		pane3.add("Center",
-				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, selp, 35, 35)));
+				PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(textureComponent, selp, 25, 25)));
 
 		texture.setValidator(new TileHolderValidator(texture));
+
+		title.setValidator(
+				new TextFieldValidator(title, L10N.t("elementgui.painting.painting_needs_title")));
+		title.enableRealtimeValidation();
+
+		author.setValidator(new TextFieldValidator(author, L10N.t("elementgui.painting.painting_needs_author")));
+		author.enableRealtimeValidation();
+
 		page1group.addValidationElement(texture);
+		page1group.addValidationElement(title);
+		page1group.addValidationElement(author);
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
+
+		if (!isEditingMode()) {
+			String readableNameFromModElement = net.mcreator.util.StringUtils.machineToReadableName(
+					modElement.getName());
+			title.setText(readableNameFromModElement);
+		}
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -93,6 +124,8 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 	}
 
 	@Override public void openInEditingMode(Painting painting) {
+		title.setText(painting.title);
+		author.setText(painting.author);
 		width.setValue(painting.width);
 		height.setValue(painting.height);
 		texture.setTextureFromTextureName(
@@ -101,6 +134,8 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 
 	@Override public Painting getElementFromGUI() {
 		Painting painting = new Painting(modElement);
+		painting.title = title.getText();
+		painting.author = author.getText();
 		painting.width = (int) width.getValue();
 		painting.height = (int) height.getValue();
 		painting.texture = texture.getID() + ".png"; // legacy, old workspaces stored name with extension

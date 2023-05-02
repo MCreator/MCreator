@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "condition",
+      "check": "BlockPredicate"
+    }
+  ],
+  "output": "BlockPredicate",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "toolbox_id": "blockpredicates",
+    "toolbox_init": [
+      "~<value name=\"condition\"><block type=\"block_predicate_is_air\"></block></value>"
+    ],
+    "inputs": [
+      "condition"
+    ]
+  }
+}

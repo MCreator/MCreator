@@ -2,7 +2,15 @@ import org.apache.tools.ant.taskdefs.condition.Os
 
 def exportPath = 'build/export/mac64/MCreator.app/Contents/'
 
-task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) {
+static void convertCRLF(File input, File out) {
+    out << input.text.replaceAll('\r\n', '\n')
+}
+
+tasks.register('exportMac64', Copy.class) {
+    dependsOn downloadJDKMac64
+    dependsOn jar
+    dependsOn exportPlugins
+
     into exportPath
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
@@ -19,22 +27,23 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
         from file('LICENSE.txt')
     }
     into('MacOS/plugins') { from 'build/plugins/' }
-    into('MacOS/license') { with copySpec { from 'license' } }
+    into('MacOS/license') { from 'license' }
     into('MacOS/lib') {
-        with copySpec {
-            from 'build/libs'
-            from configurations.export
-            from configurations.mac64
-        }
+        from 'build/libs'
+        from configurations.export
+        from configurations.mac64
     }
-    into('MacOS/jdk/') { with copySpec { from 'jdk/jdk17_mac_64/' } }
+    into('MacOS/jdk/') { from 'jdk/jdk17_mac_64/' }
     doLast {
         convertCRLF(file(exportPath + '/Info.plistdos'), file(exportPath + '/Info.plist'))
         delete exportPath + '/Info.plistdos'
     }
 }
 
-task dmgMac64(dependsOn: [downloadMKISOFS, exportMac64]) {
+tasks.register('dmgMac64') {
+    dependsOn downloadMKISOFS
+    dependsOn exportMac64
+
     doLast {
         def mkisofs_binary
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
@@ -60,11 +69,9 @@ task dmgMac64(dependsOn: [downloadMKISOFS, exportMac64]) {
     }
 }
 
-static void convertCRLF(File input, File out) {
-    out << input.text.replaceAll('\r\n', '\n')
-}
+tasks.register('exportMac') {
+    group 'export'
 
-task exportMac(type: DefaultTask, group: 'export') {
     dependsOn dmgMac64
 
     doLast {

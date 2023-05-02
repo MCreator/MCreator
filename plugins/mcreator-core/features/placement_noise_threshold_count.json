@@ -1,0 +1,36 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "threshold",
+      "value": 0
+    },
+    {
+      "type": "field_number",
+      "name": "belowNoise",
+      "value": 2,
+      "min": 0,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "aboveNoise",
+      "value": 5,
+      "min": 0,
+      "precision": 1
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": "Placement",
+  "colour": 130,
+  "mcreator": {
+    "group": "repeatingNoise",
+    "toolbox_id": "placements",
+    "fields": [
+      "threshold",
+      "belowNoise",
+      "aboveNoise"
+    ]
+  }
+}

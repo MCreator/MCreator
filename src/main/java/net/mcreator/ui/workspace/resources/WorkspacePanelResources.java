@@ -43,28 +43,28 @@ public class WorkspacePanelResources extends JTabbedPane {
 		this.workspacePanelStructures = new WorkspacePanelStructures(workspacePanel);
 		this.workspacePanelScreenshots = new WorkspacePanelScreenshots(workspacePanel);
 
-		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
+		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addTab(L10N.t("workspace.resources.tab.textures"), workspacePanelTextures);
 
-		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
+		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
 				!= GeneratorStats.CoverageStatus.NONE
-				|| workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
+				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
 				!= GeneratorStats.CoverageStatus.NONE
-				|| workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
+				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addTab(L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
 
-		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("sounds")
+		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("sounds")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addTab(L10N.t("workspace.resources.tab.sounds"), workspacePanelSounds);
 
-		if (workspacePanel.getMcreator().getGeneratorStats().getBaseCoverageInfo().get("structures")
+		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("structures")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addTab(L10N.t("workspace.resources.tab.structures"), workspacePanelStructures);
 
-		if (workspacePanel.getMcreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
-				&& !workspacePanel.getMcreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
+		if (workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
+				&& !workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
 				.contains("@"))
 			addTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
 

@@ -42,9 +42,6 @@ public class TemplateExpressionParser {
 		if (conditionDataProvider == null) // if no conditionDataProvider element is found, there is nothing to do
 			return false;
 
-		boolean anyConditionFailed = false;
-		boolean anyConditionPassed = false;
-
 		// get list of all conditions that need to be met for template to be included
 		List<String> conditions = new ArrayList<>();
 		if (conditionRaw instanceof List<?> conditionRawList) {
@@ -54,15 +51,21 @@ public class TemplateExpressionParser {
 			conditions.add(conditionRaw.toString());
 		}
 
-		for (var condition : conditions) {
-			boolean result = parseCondition(generator, condition, conditionDataProvider);
-			if (!result)
-				anyConditionFailed = true;
-			else
-				anyConditionPassed = true;
-		}
+		if (operator == Operator.AND) {
+			for (var condition : conditions) {
+				if (!parseCondition(generator, condition, conditionDataProvider))
+					return true; // at least one condition was false (AND logic), skip the template
+			}
 
-		return operator == Operator.AND ? anyConditionFailed : !anyConditionPassed;
+			return false; // all conditions were true, include the template (false = don't skip it)
+		} else {
+			for (var condition : conditions) {
+				if (parseCondition(generator, condition, conditionDataProvider))
+					return false; // at least one condition was true (OR logic), include the template
+			}
+
+			return true; // no conditions were true, skip the template (true = skip it)
+		}
 	}
 
 	private static boolean parseCondition(@Nonnull Generator generator, @Nonnull String condition,
@@ -110,12 +113,13 @@ public class TemplateExpressionParser {
 		try {
 			Map<String, Object> dataModel = new HashMap<>(generator.getBaseDataModelProvider().provide());
 			AtomicReference<?> retVal = new AtomicReference<>(null);
-			dataModel.put("_retVal", retVal);
 			dataModel.put("data", dataHolder);
+			dataModel.put("_retVal", retVal);
 
 			Template t = new Template("INLINE EXPRESSION", new StringReader("${_retVal.set(" + expression + ")}"),
 					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration());
-			t.process(dataModel, new StringWriter());
+			t.process(dataModel, new StringWriter(),
+					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getBeansWrapper());
 
 			return retVal.get();
 		} catch (Exception e) {

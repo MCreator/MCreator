@@ -21,6 +21,7 @@ package net.mcreator.ui.component.util;
 import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;
 import club.minnced.discord.rpc.DiscordRichPresence;
+import com.sun.jna.Native;
 import net.mcreator.preferences.PreferencesManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -39,11 +40,11 @@ public class DiscordClient implements Closeable {
 	private final Timer timer = new Timer();
 
 	public DiscordClient() {
-		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable)
+		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable.get())
 			return;
 
 		try {
-			discordRpc = DiscordRPC.INSTANCE;
+			discordRpc = Native.load("discord-rpc", DiscordRPC.class);
 			startTime = System.currentTimeMillis() / 1000L;
 
 			DiscordEventHandlers handlers = new DiscordEventHandlers();
@@ -66,7 +67,7 @@ public class DiscordClient implements Closeable {
 	}
 
 	public void updatePresence(String state, String details, String smallImage) {
-		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable)
+		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable.get())
 			return;
 
 		new Thread(() -> {
@@ -85,7 +86,7 @@ public class DiscordClient implements Closeable {
 	}
 
 	@Override public void close() {
-		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable)
+		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable.get())
 			return;
 
 		try {

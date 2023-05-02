@@ -14,10 +14,11 @@
       "type": "field_number",
       "name": "followarea",
       "value": 5.0
+    },
+    {
+      "type": "field_ai_condition_selector",
+      "name": "condition"
     }
-  ],
-  "extensions": [
-    "ai_condition_selector"
   ],
   "inputsInline": true,
   "previousStatement": null,

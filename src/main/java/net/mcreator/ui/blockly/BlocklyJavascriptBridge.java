@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
@@ -50,6 +51,7 @@ import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class BlocklyJavascriptBridge {
@@ -57,18 +59,18 @@ public class BlocklyJavascriptBridge {
 	private static final Logger LOG = LogManager.getLogger("Blockly JS Bridge");
 
 	private JavaScriptEventListener listener;
-	private final Runnable blocklyEvent;
+	private final Supplier<Boolean> blocklyEvent;
 	private final MCreator mcreator;
 
-	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Runnable blocklyEvent) {
+	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Supplier<Boolean> blocklyEvent) {
 		this.blocklyEvent = blocklyEvent;
 		this.mcreator = mcreator;
 	}
 
 	// these methods are called from JavaScript so we suppress warnings
 	@SuppressWarnings("unused") public void triggerEvent() {
-		blocklyEvent.run();
-		if (listener != null)
+		boolean success = blocklyEvent.get();
+		if (success && listener != null)
 			listener.event();
 	}
 
@@ -124,10 +126,10 @@ public class BlocklyJavascriptBridge {
 	/**
 	 * Common method to open an entry selector of either data list entries or strings
 	 *
-	 * @param type     The type of selector to open
-	 * @param typeFilter If present, only entries whose type matches this parameter are loaded
+	 * @param type                 The type of selector to open
+	 * @param typeFilter           If present, only entries whose type matches this parameter are loaded
 	 * @param customEntryProviders If present, the types of the mod elements that provide custom entries
-	 * @param callback The Javascript object that passes the "value,readableName" pair to the Blockly editor
+	 * @param callback             The Javascript object that passes the "value,readableName" pair to the Blockly editor
 	 */
 	@SuppressWarnings("unused") public void openEntrySelector(@Nonnull String type, @Nullable String typeFilter,
 			@Nullable String customEntryProviders, JSObject callback) {
@@ -156,9 +158,8 @@ public class BlocklyJavascriptBridge {
 				}
 
 				if (!DataListLoader.loadDataList(type).isEmpty()) {
-					yield openDataListEntrySelector(
-							w -> ElementUtil.loadDataListAndElements(w, type, true, typeFilter,
-									StringUtils.split(customEntryProviders, ',')), type);
+					yield openDataListEntrySelector(w -> ElementUtil.loadDataListAndElements(w, type, true, typeFilter,
+							StringUtils.split(customEntryProviders, ',')), type);
 				}
 
 				yield "," + L10N.t("blockly.extension.data_list_selector.no_entry");
@@ -172,7 +173,7 @@ public class BlocklyJavascriptBridge {
 	 * Opens a data list selector window for the searchable Blockly selectors
 	 *
 	 * @param entryProvider The function that provides the entries from a given workspace
-	 * @param type       The type of the data list, used for the selector title and message
+	 * @param type          The type of the data list, used for the selector title and message
 	 * @return A "value,readable name" pair, or the default entry if no entry was selected
 	 */
 	private String openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
@@ -204,7 +205,7 @@ public class BlocklyJavascriptBridge {
 	 * Opens a string selector window for the searchable Blockly selectors
 	 *
 	 * @param entryProvider The function that provides the strings from a given workspace
-	 * @param type       The type of the data list, used for the selector title and message
+	 * @param type          The type of the data list, used for the selector title and message
 	 * @return A "value,value" pair (strings don't have readable names!), or the default entry if no string was selected
 	 */
 	private String openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
@@ -327,6 +328,9 @@ public class BlocklyJavascriptBridge {
 			break;
 		case "rangeditem":
 			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "villagerprofessions":
+			return ElementUtil.loadAllVillagerProfessions(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		default:
 			retval = new ArrayList<>();

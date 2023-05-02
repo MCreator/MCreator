@@ -30,10 +30,9 @@ public class OutputSlot extends Slot {
 		this.dropItemsWhenNotBound = true;
 	}
 
-	public OutputSlot(int id, int x, int y, Color color, LogicProcedure disablePickup,
-			boolean dropItemsWhenNotBound, Procedure onSlotChanged, Procedure onTakenFromSlot, Procedure onStackTransfer) {
-		super(id, x, y, color, disablePickup, dropItemsWhenNotBound,
-				onSlotChanged, onTakenFromSlot, onStackTransfer);
+	public OutputSlot(int id, int x, int y, Color color, LogicProcedure disablePickup, boolean dropItemsWhenNotBound,
+			Procedure onSlotChanged, Procedure onTakenFromSlot, Procedure onStackTransfer) {
+		super(id, x, y, color, disablePickup, dropItemsWhenNotBound, onSlotChanged, onTakenFromSlot, onStackTransfer);
 
 	}
 

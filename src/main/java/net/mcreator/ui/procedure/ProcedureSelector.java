@@ -22,7 +22,6 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorStats;
-import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
@@ -36,7 +35,7 @@ import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
-import net.mcreator.ui.validation.validators.UniqueNameValidator;
+import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -180,8 +179,8 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 						L10N.t("action.procedure.enter_procedure_name"),
 						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidatior() {
 							@Override public ValidationResult validate(JComponent component) {
-								return UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(),
-										(VTextField) component, L10N.t("common.mod_element_name")).validate();
+								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
+										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("action.procedure.create_procedure"),
 						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString);
@@ -198,9 +197,6 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 							refreshList();
 							setSelectedProcedure(modName);
 						});
-						mcreator.getApplication().getAnalytics().async(() -> mcreator.getApplication().getAnalytics()
-								.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
-										ModElementType.PROCEDURE.getReadableName(), null, null));
 					}
 				}
 			});

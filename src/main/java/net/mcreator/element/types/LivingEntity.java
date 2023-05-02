@@ -23,31 +23,36 @@ import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.Particle;
-import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.Sound;
+import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
+import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.modgui.LivingEntityGUI;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @SuppressWarnings("unused") public class LivingEntity extends GeneratableElement
-		implements IEntityWithModel, ITabContainedElement, ICommonType {
+		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
 
 	public String mobName;
 	public String mobLabel;
@@ -57,6 +62,7 @@ import java.util.Locale;
 	public String mobModelGlowTexture;
 	public Procedure transparentModelCondition;
 	public Procedure isShakingCondition;
+	public LogicProcedure solidBoundingBox;
 
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;
@@ -211,14 +217,16 @@ import java.util.Locale;
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-					BlocklyLoader.INSTANCE.getAITaskBlockLoader().getDefinedBlocks(),
-					this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
+					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks(),
+					getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK),
+					this.getModElement().getGenerator()
+							.getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
 					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
 			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), this.getModElement(),
-					BlocklyEditorType.AI_TASK, this.aixml,
-					this.getModElement().getGenerator().getTemplateGeneratorFromName("aitasks"),
+					BlocklyEditorType.AI_TASK, this.aixml, this.getModElement().getGenerator()
+					.getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			List<?> unmodifiableAIBases = (List<?>) getModElement().getWorkspace().getGenerator()
@@ -230,4 +238,21 @@ import java.util.Locale;
 		};
 	}
 
+	@Override public List<MCItem> providedMCItems() {
+		if (hasSpawnEgg)
+			return List.of(new MCItem.Custom(this.getModElement(), "spawn_egg", "item", "Spawn egg"));
+		return Collections.emptyList();
+	}
+
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
+	}
+
+	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {
+		if ("spawn_egg".equals(suffix)) {
+			return MinecraftImageGenerator.generateSpawnEggIcon(spawnEggBaseColor, spawnEggDotColor);
+		}
+
+		return null;
+	}
 }

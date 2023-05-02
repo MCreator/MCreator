@@ -6,17 +6,14 @@ templates:
     writer: json
     name: "@SRCROOT/loot_tables/blocks/@modid_@registryname.json"
     condition: hasCustomDrop()
-    deleteWhenConditionFalse: true
   - template: block/block_ore_feature.json.ftl
     writer: json
     name: "@SRCROOT/features/@modid_@registryname_ore_feature.json"
     condition: isGeneratedInWorld()
-    deleteWhenConditionFalse: true
   - template: block/block_ore_feature_rule.json.ftl
     writer: json
     name: "@SRCROOT/feature_rules/@modid_@registryname_ore_feature_rule.json"
     condition: isGeneratedInWorld()
-    deleteWhenConditionFalse: true
 
 localizationkeys:
   - key: tile.@modid:@registryname.name

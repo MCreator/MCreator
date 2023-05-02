@@ -18,51 +18,86 @@
 
 package net.mcreator.generator;
 
+import net.mcreator.generator.template.TemplateExpressionParser;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-public final class GeneratorTemplate {
+public class GeneratorTemplate {
 
 	private final File file;
-	private final Object templateData;
 
-	private final String templateIdentificator;
+	private final Map<?, ?> templateDefinition;
 
-	private final boolean isGlobal;
+	private final String templateIdentifier;
 
 	private final Map<String, Object> dataModel = new HashMap<>();
 
-	GeneratorTemplate(File file, String templateIdentificator, boolean global, Object templateData) {
+	/**
+	 * @param file               File where this GeneratorTemplate should be generated into
+	 * @param templateIdentifier String that is equal for all GeneratorTemplate generated for the same template entry in element definition
+	 * @param templateDefinition Map defining the template properties that generator uses
+	 */
+	GeneratorTemplate(File file, String templateIdentifier, Map<?, ?> templateDefinition) {
 		this.file = file;
-		this.templateData = templateData;
-		this.isGlobal = global;
-
-		this.templateIdentificator = templateIdentificator;
+		this.templateIdentifier = templateIdentifier;
+		this.templateDefinition = templateDefinition;
 	}
 
-	public boolean isGlobal() {
-		return isGlobal;
-	}
-
+	/**
+	 * @return File where this GeneratorTemplate should be generated into
+	 */
 	public File getFile() {
 		return file;
 	}
 
-	public Object getTemplateData() {
-		return templateData;
+	/**
+	 * @return Map defining the template properties that generator uses
+	 */
+	public Map<?, ?> getTemplateDefinition() {
+		return templateDefinition;
 	}
 
-	public String getTemplateIdentificator() {
-		return templateIdentificator;
+	/**
+	 * Used to determine what template belongs to what file. Same GeneratorTemplate file of different MEs
+	 * can belong to the same template entry in element definition that was used to generate said file.
+	 * <p>
+	 * Currently used to determine which files to copy to which files when duplicating ME with locked code.
+	 *
+	 * @return String that is equal for all GeneratorTemplate generated for the same template entry in element definition
+	 */
+	public String getTemplateIdentifier() {
+		return templateIdentifier;
 	}
 
+	/**
+	 * @return Data model that is used to generate this GeneratorTemplate (data accessible in FTL templates)
+	 */
 	public Map<String, Object> getDataModel() {
 		return dataModel;
 	}
 
 	public void addDataModelEntry(String key, Object value) {
 		dataModel.put(key, value);
+	}
+
+	// Helper functions below
+
+	public GeneratorFile toGeneratorFile(String code) {
+		return new GeneratorFile(this, (String) templateDefinition.get("writer"), code);
+	}
+
+	public boolean shouldBeSkippedBasedOnCondition(Generator generator, Object conditionData) {
+		TemplateExpressionParser.Operator operator = TemplateExpressionParser.Operator.AND;
+		Object conditionRaw = templateDefinition.get("condition");
+		if (conditionRaw == null) {
+			conditionRaw = templateDefinition.get("condition_any");
+			operator = TemplateExpressionParser.Operator.OR;
+		}
+
+		return TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, conditionRaw, conditionData,
+				operator);
 	}
 
 	@Override public boolean equals(Object o) {

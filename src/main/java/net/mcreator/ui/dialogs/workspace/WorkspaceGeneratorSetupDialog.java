@@ -34,7 +34,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 public class WorkspaceGeneratorSetupDialog {
 
@@ -42,7 +41,6 @@ public class WorkspaceGeneratorSetupDialog {
 
 	public static void runSetup(final MCreator m, boolean showWebsite) {
 		ProgressDialog dial = new ProgressDialog(m, L10N.t("dialog.setup_workspace.title"));
-		AtomicBoolean setupOk = new AtomicBoolean(true);
 
 		Thread t = new Thread(() -> {
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
@@ -85,7 +83,6 @@ public class WorkspaceGeneratorSetupDialog {
 
 						finalizeTheSetup(m, dial);
 					} else {
-						setupOk.set(false);
 						p2.err();
 						showSetupFailedMessage(dial, m, null);
 					}

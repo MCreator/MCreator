@@ -20,22 +20,26 @@ package net.mcreator.generator;
 
 import java.io.File;
 
-public record GeneratorFile(String contents, File file, String writer) {
+public record GeneratorFile(GeneratorTemplate source, String writer, String contents) {
+
+	public File getFile() {
+		return source.getFile();
+	}
 
 	@Override public boolean equals(Object o) {
 		if (this == o)
 			return true;
 		if (o == null || getClass() != o.getClass())
 			return false;
-		return file.equals(((GeneratorFile) o).file);
+		return source.equals(((GeneratorFile) o).source);
 	}
 
 	@Override public int hashCode() {
-		return file.hashCode();
+		return source.hashCode();
 	}
 
 	@Override public String toString() {
-		return file.toString();
+		return source.getFile().toString();
 	}
 
 }

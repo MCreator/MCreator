@@ -19,6 +19,14 @@
 
 package net.mcreator.plugin;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import javax.annotation.Nonnull;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+
 /**
  * Extend this object to define custom plugin.
  * <p>
@@ -29,6 +37,17 @@ public abstract class JavaPlugin {
 	protected final Plugin plugin;
 
 	private final EventMap listeners = new EventMap();
+
+	private final ExecutorService eventQueue = Executors.newSingleThreadExecutor(new ThreadFactory() {
+		@Override public Thread newThread(@Nonnull Runnable runnable) {
+			final Logger LOG = LogManager.getLogger("JavaPlugin-LOG-" + plugin.getID());
+
+			Thread thread = new Thread(runnable);
+			thread.setName("JavaPlugin-EventQueue-" + plugin.getID());
+			thread.setUncaughtExceptionHandler((t, e) -> LOG.error(e));
+			return thread;
+		}
+	});
 
 	// Called by reflection
 	public JavaPlugin(Plugin plugin) {
@@ -52,8 +71,12 @@ public abstract class JavaPlugin {
 		listeners.addEvent(eventType, listener);
 	}
 
-	protected EventMap getListeners() {
+	EventMap getListeners() {
 		return listeners;
+	}
+
+	ExecutorService getEventQueue() {
+		return eventQueue;
 	}
 
 }

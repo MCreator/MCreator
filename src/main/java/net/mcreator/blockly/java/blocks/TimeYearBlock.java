@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 
 public class TimeYearBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		master.append("Calendar.getInstance().get(Calendar.YEAR)");
+		master.append("/*@int*/Calendar.getInstance().get(Calendar.YEAR)");
 	}
 
 	@Override public String[] getSupportedBlocks() {
