@@ -110,16 +110,20 @@ public class MainToolBar extends JToolBar {
 		add(new JEmptyBox(4, 4));
 	}
 
+	/**
+	 * @implNote Plugins should use {@link #addToLeftToolbar(Action)} and {@link #addToRightToolbar(Action)}
+	 *           instead of this overridden method.
+	 */
+	@Override public JButton add(Action action) {
+		return decorateToolbarButton(super.add(action));
+	}
+
 	public JButton addToLeftToolbar(Action action) {
 		return decorateToolbarButton(pluginToolbarLeft.add(action));
 	}
 
 	public JButton addToRightToolbar(Action action) {
 		return decorateToolbarButton(pluginToolbarRight.add(action));
-	}
-
-	@Override public JButton add(Action action) {
-		return decorateToolbarButton(super.add(action));
 	}
 
 	private static JButton decorateToolbarButton(JButton button) {
