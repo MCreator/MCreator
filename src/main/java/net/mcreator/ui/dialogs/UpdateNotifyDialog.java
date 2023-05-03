@@ -21,7 +21,6 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.Launcher;
 import net.mcreator.io.net.api.update.Release;
 import net.mcreator.io.net.api.update.UpdateInfo;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -45,8 +44,7 @@ public class UpdateNotifyDialog {
 			UpdateInfo updateInfo = MCreatorApplication.WEB_API.getUpdateInfo();
 			if (updateInfo != null) {
 				long newMajor = MCreatorVersionNumber.majorStringToLong(updateInfo.getLatestMajor());
-				if (newMajor > oldMajor && (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates.get()
-						|| Launcher.version.isSnapshot())) {
+				if (newMajor > oldMajor) {
 					JPanel pan = new JPanel(new BorderLayout());
 					JLabel upde = L10N.label("dialog.update_notify.message", Launcher.version.major,
 							updateInfo.getLatestMajor());
@@ -78,9 +76,7 @@ public class UpdateNotifyDialog {
 				} else {
 					Release thisRelease = updateInfo.getReleases().get(Launcher.version.major);
 					if (thisRelease != null) {
-						if (Launcher.version.buildlong < Long.parseLong(thisRelease.getLatestBuild()) && (
-								PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPatches.get()
-										|| Launcher.version.isSnapshot())) {
+						if (Launcher.version.buildlong < Long.parseLong(thisRelease.getLatestBuild())) {
 							JPanel pan = new JPanel(new BorderLayout());
 							JLabel upde = L10N.label("dialog.update_notify.more_recent_build", Launcher.version.major,
 									Launcher.version.build,
