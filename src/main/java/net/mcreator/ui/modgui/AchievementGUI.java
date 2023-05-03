@@ -211,7 +211,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		page1group.addValidationElement(achievementDescription);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER).getDefinedBlocks();
-		blocklyPanel = new BlocklyPanel(mcreator);
+		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.JSON_TRIGGER);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);

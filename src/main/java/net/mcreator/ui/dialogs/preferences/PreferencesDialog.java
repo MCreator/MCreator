@@ -21,46 +21,35 @@ package net.mcreator.ui.dialogs.preferences;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.ui.PreferencesDialogEvent;
-import net.mcreator.preferences.PreferencesData;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.util.image.ImageUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
-import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.lang.management.ManagementFactory;
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PreferencesDialog extends MCreatorDialog {
 
-	private static final Logger LOG = LogManager.getLogger("Preferences UI");
-
 	DefaultListModel<String> model = new DefaultListModel<>();
 	JPanel preferences = new JPanel();
-	private ThemesPanel themes;
+
+	private final Map<String, JPanel> sectionPanels = new HashMap<>();
 
 	private final JList<String> sections = new JList<>(model);
 	private final CardLayout preferencesLayout = new CardLayout();
 
-	private final Map<PreferencesUnit, JComponent> entries = new HashMap<>();
+	private final Map<PreferencesEntry<?>, JComponent> entries = new HashMap<>();
 
 	private final JButton apply = L10N.button("action.common.apply");
 
@@ -116,8 +105,9 @@ public class PreferencesDialog extends MCreatorDialog {
 					L10N.t("dialog.preferences.restore_defaults"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE, null);
 			if (option == JOptionPane.YES_OPTION) {
-				PreferencesManager.PREFERENCES = new PreferencesData();
-				PreferencesManager.storePreferences(PreferencesManager.PREFERENCES);
+				PreferencesManager.getPreferencesRegistry()
+						.forEach((identifier, entries) -> PreferencesManager.resetFromList(entries));
+
 				setVisible(false);
 				new PreferencesDialog(parent, sections.getSelectedValue());
 			}
@@ -147,12 +137,12 @@ public class PreferencesDialog extends MCreatorDialog {
 		}
 
 		ok.addActionListener(event -> {
-			storePreferences();
+			savePreferences();
 			setVisible(false);
 		});
 
 		apply.addActionListener(event -> {
-			storePreferences();
+			savePreferences();
 			apply.setEnabled(false);
 		});
 
@@ -165,18 +155,18 @@ public class PreferencesDialog extends MCreatorDialog {
 	}
 
 	private void loadSections() {
-		Field[] fields = PreferencesData.class.getFields();
-		for (Field field : fields) {
-			PreferencesSection section = field.getAnnotation(PreferencesSection.class);
-			if (section != null) {
-				createPreferencesPanel(field);
-			}
-		}
-		sections.setSelectedIndex(0);
+		// Add preference entries
+		PreferencesManager.getPreferencesRegistry().forEach(
+				(identifier, preferences) -> preferences.stream().filter(e -> e.getSection().isVisible()).toList()
+						.forEach(entry -> {
+							if (!sectionPanels.containsKey(entry.getSectionKey()))
+								createPreferenceSection(entry.getSectionKey());
+							entries.put(entry, generateEntryComponent(entry, sectionPanels.get(entry.getSectionKey())));
+						}));
 
 		new PluginsPanel(this);
 
-		themes = new ThemesPanel(this);
+		new ThemesPanel(this);
 
 		addEditTemplatesPanel("ui_backgrounds", "backgrounds", "png");
 		addEditTemplatesPanel("texture_templates", "templates/textures/texturemaker", "png");
@@ -186,6 +176,8 @@ public class PreferencesDialog extends MCreatorDialog {
 				.forEach(this::addEditTemplatesPanel);
 
 		MCREvent.event(new PreferencesDialogEvent.SectionsLoaded(this));
+
+		sections.setSelectedIndex(0);
 	}
 
 	public void addEditTemplatesPanel(BlocklyEditorType type) {
@@ -196,37 +188,13 @@ public class PreferencesDialog extends MCreatorDialog {
 		new EditTemplatesPanel(this, L10N.t("dialog.preferences.page_" + translationKey), folder, extension);
 	}
 
-	private void createPreferencesPanel(Field sectionField) {
-		String sectionid = sectionField.getName();
-
-		String name = L10N.t("preferences.section." + sectionid);
-		String description = L10N.t("preferences.section." + sectionid + ".description");
-
+	private void createPreferenceSection(String section) {
+		String name = L10N.t("preferences.section." + section);
+		String description = L10N.t("preferences.section." + section + ".description");
 		model.addElement(name);
 
 		JPanel sectionPanel = new JPanel(new GridBagLayout());
-		GridBagConstraints cons = new GridBagConstraints();
-		cons.anchor = GridBagConstraints.NORTH;
-		cons.fill = GridBagConstraints.BOTH;
-		cons.gridx = 0;
-		cons.weightx = 1;
-		cons.weighty = 1;
-		cons.insets = new Insets(5, 10, 15, 10);
 		sectionPanel.setOpaque(false);
-		cons.insets = new Insets(5, 10, 5, 10);
-
-		Field[] fields = sectionField.getType().getFields();
-		for (Field field : fields) {
-			PreferencesEntry entry = field.getAnnotation(PreferencesEntry.class);
-			try {
-				Object sectionInstance = sectionField.get(PreferencesManager.PREFERENCES); // load actual data
-				Object value = field.get(sectionInstance);
-				JComponent component = generateEntryComponent(field, sectionid, entry, value, sectionPanel, cons);
-				entries.put(new PreferencesUnit(sectionField, field), component);
-			} catch (IllegalAccessException e) {
-				LOG.info("Reflection error: " + e.getMessage());
-			}
-		}
 
 		JComponent titlebar = L10N.label("dialog.preferences.description", name, description);
 		titlebar.setBorder(BorderFactory.createEmptyBorder(3, 10, 5, 10));
@@ -234,186 +202,46 @@ public class PreferencesDialog extends MCreatorDialog {
 		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(sectionPanel));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
 		preferences.add(PanelUtils.northAndCenterElement(titlebar, scrollPane), name);
+
+		sectionPanels.put(section, sectionPanel);
 	}
 
-	private void storePreferences() {
-		PreferencesData data = PreferencesManager.PREFERENCES;
-		for (Map.Entry<PreferencesUnit, JComponent> entry : entries.entrySet()) {
-			PreferencesUnit unit = entry.getKey();
-			try {
-				Object sectionInstance = unit.section.get(data); // load actual data
-				Object value = getValueFromComponent(unit.entry.getType(), entry.getValue());
-				if (value != null)
-					unit.entry.set(sectionInstance, value);
-			} catch (IllegalAccessException e) {
-				LOG.info("Reflection error: " + e.getMessage());
-			}
-		}
-
-		data.hidden.uiTheme = themes.getSelectedTheme();
-
-		PreferencesManager.storePreferences(data);
+	private void savePreferences() {
+		PreferencesManager.getPreferencesRegistry().forEach((identifier, preferences) -> preferences.forEach(entry -> {
+			if (entries.containsKey(entry))
+				entry.setValueFromComponent(entries.get(entry));
+		}));
+		PreferencesManager.savePreferences();
 	}
 
-	private JComponent generateEntryComponent(Field actualField, String sectionid, PreferencesEntry entry, Object value,
-			JPanel placeInside, GridBagConstraints cons) {
-		String fieldName = actualField.getName();
-		String name = L10N.t("preferences." + sectionid + "." + fieldName);
-		String description = L10N.t("preferences." + sectionid + "." + fieldName + ".description");
-
+	private JComponent generateEntryComponent(PreferencesEntry<?> entry, JPanel placeInside) {
+		String name = L10N.t("preferences." + entry.getSectionKey() + "." + entry.getID());
+		String description = L10N.t("preferences." + entry.getSectionKey() + "." + entry.getID() + ".description");
 		if (description == null)
 			description = "";
 
 		JComponent label = L10N.label("dialog.preferences.entry_description", name, description);
-
-		if (actualField.getType().equals(int.class) || actualField.getType().equals(Integer.class)) {
-			int max = (int) entry.max();
-			if (entry.meta().equals("max:maxram")) {
-				max = ((int) (
-						((com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
-								/ 1048576)) - 1024;
-			}
-			value = Math.max(entry.min(), Math.min(max, (Integer) value));
-			SpinnerNumberModel model = new SpinnerNumberModel((int) Math.round((double) value), (int) entry.min(), max,
-					1);
-			JSpinner spinner = new JSpinner(model);
-			spinner.addChangeListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, spinner), cons);
-			return spinner;
-		} else if (actualField.getType().equals(boolean.class) || actualField.getType().equals(Boolean.class)) {
-			JCheckBox box = new JCheckBox();
-			box.setSelected((boolean) value);
-			box.addActionListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
-			return box;
-		} else if (actualField.getType().equals(String.class)) {
-			JComboBox<String> box = new JComboBox<>(entry.arrayData());
-			if (entry.visualWidth() != -1)
-				box.setPreferredSize(new Dimension(entry.visualWidth(), 0));
-			box.setEditable(entry.arrayDataEditable());
-			box.setSelectedItem(value);
-			box.addActionListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
-			return box;
-		} else if (actualField.getType().equals(Color.class)) {
-			JColor box = new JColor(parent, false, false);
-			if (entry.visualWidth() != -1)
-				box.setPreferredSize(new Dimension(entry.visualWidth(), 0));
-			box.setColor((Color) value);
-			box.setColorSelectedListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
-			return box;
-		} else if (actualField.getType().equals(Locale.class)) {
-			List<Locale> locales = new ArrayList<>(L10N.getSupportedLocales());
-			locales.sort((a, b) -> {
-				int sa = L10N.getUITextsLocaleSupport(a) + L10N.getHelpTipsSupport(a);
-				int sb = L10N.getUITextsLocaleSupport(b) + L10N.getHelpTipsSupport(b);
-				if (sa == sb)
-					return a.getDisplayName().compareTo(b.getDisplayName());
-
-				return sb - sa;
-			});
-			JComboBox<Locale> box = new JComboBox<>(locales.toArray(new Locale[0]));
-			box.setRenderer(new LocaleListRenderer());
-			box.setSelectedItem(value);
-			box.addActionListener(e -> apply.setEnabled(true));
-			placeInside.add(PanelUtils.westAndEastElement(label, box), cons);
-			return box;
-		}
-
-		placeInside.add(L10N.label("dialog.preferences.unknown_property_type", name), cons);
-		return null;
+		JComponent component = entry.getComponent(parent, e -> markChanged());
+		if (component != null)
+			placeInside.add(PanelUtils.westAndEastElement(label, component), getConstraints());
+		else
+			placeInside.add(L10N.label("dialog.preferences.unknown_property_type", name), getConstraints());
+		return component;
 	}
 
-	private Object getValueFromComponent(Class<?> type, JComponent value) {
-		if (type.equals(int.class) || type.equals(Integer.class)) {
-			return ((JSpinner) value).getValue();
-		} else if (type.equals(boolean.class) || type.equals(Boolean.class)) {
-			return ((JCheckBox) value).isSelected();
-		} else if (type.equals(String.class)) {
-			return ((JComboBox<?>) value).getSelectedItem();
-		} else if (type.equals(Color.class)) {
-			return ((JColor) value).getColor();
-		} else if (type.equals(Locale.class)) {
-			return ((JComboBox<?>) value).getSelectedItem();
-		}
-		return null;
+	private GridBagConstraints getConstraints() {
+		GridBagConstraints cons = new GridBagConstraints();
+		cons.anchor = GridBagConstraints.NORTH;
+		cons.fill = GridBagConstraints.BOTH;
+		cons.gridx = 0;
+		cons.weightx = 1;
+		cons.weighty = 1;
+		cons.insets = new Insets(5, 10, 5, 10);
+		return cons;
 	}
 
 	public void markChanged() {
 		apply.setEnabled(true);
-	}
-
-	private static class PreferencesUnit {
-
-		Field entry;
-		Field section;
-
-		PreferencesUnit(Field section, Field entry) {
-			this.section = section;
-			this.entry = entry;
-		}
-	}
-
-	private static class LocaleListRenderer extends JLabel implements ListCellRenderer<Locale> {
-
-		private int uiTextsPercent = 0;
-		private int helpTipsPercent = 0;
-
-		@Override
-		public Component getListCellRendererComponent(JList<? extends Locale> list, Locale value, int index,
-				boolean isSelected, boolean cellHasFocus) {
-			setOpaque(isSelected);
-			setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-			setForeground(Color.white);
-			setBorder(new EmptyBorder(0, 1, 0, 0));
-
-			ComponentUtils.deriveFont(this, 12);
-			setText(" " + value.getDisplayName(Locale.ROOT));
-
-			uiTextsPercent = L10N.getUITextsLocaleSupport(value);
-			helpTipsPercent = L10N.getHelpTipsSupport(value);
-
-			try {
-				String flagpath = "/flags/" + value.toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
-				@SuppressWarnings("ConstantConditions") BufferedImage image = ImageIO.read(
-						getClass().getResourceAsStream(flagpath));
-				setIcon(new ImageIcon(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11))));
-			} catch (Exception ignored) { // flag not found, ignore
-			}
-
-			return this;
-		}
-
-		@Override public Dimension getPreferredSize() {
-			return new Dimension(super.getPreferredSize().width, super.getPreferredSize().height + 15);
-		}
-
-		@Override protected void paintComponent(Graphics gx) {
-			Graphics2D g = (Graphics2D) gx;
-
-			g.translate(0, -5);
-			super.paintComponent(g);
-			g.translate(0, 5);
-
-			g.setColor(Color.lightGray);
-			g.fillRect(0, getHeight() - 11, getWidth(), 11);
-
-			g.setColor(Color.getHSBColor((float) (1 / 3d - ((100 - uiTextsPercent) / 3d / 100d)), 0.65f, 0.9f));
-			g.fillRect(0, getHeight() - 11, (int) ((getWidth() / 2 - 2) * (uiTextsPercent / 100d)), 11);
-
-			g.setColor(Color.getHSBColor((float) (1 / 3d - ((100 - helpTipsPercent) / 3d / 100d)), 0.65f, 0.9f));
-			g.fillRect(getWidth() / 2 + 2, getHeight() - 11, (int) ((getWidth() / 2 - 2) * (helpTipsPercent / 100d)),
-					11);
-
-			g.setFont(getFont().deriveFont(9f));
-			g.setColor(Color.darkGray);
-			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-
-			g.drawString("Texts: " + uiTextsPercent + "%", 2, getHeight() - 2);
-			g.drawString("Tips: " + helpTipsPercent + "%", getWidth() / 2 + 2 + 2, getHeight() - 2);
-		}
-
 	}
 
 }

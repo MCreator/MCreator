@@ -19,6 +19,8 @@
 package net.mcreator.plugin;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
@@ -108,7 +110,7 @@ public class PluginLoader extends URLClassLoader {
 						+ plugin.getWeight());
 				addURL(plugin.toURL());
 
-				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins && plugin.getJavaPlugin() != null) {
+				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get() && plugin.getJavaPlugin() != null) {
 					@SuppressWarnings("resource") DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(
 							"PluginClassLoader-" + plugin.getID(), new URL[] {},
 							Thread.currentThread().getContextClassLoader()) {
@@ -276,15 +278,19 @@ public class PluginLoader extends URLClassLoader {
 
 	private void checkForPluginUpdates() {
 		if (MCreatorApplication.isInternet) {
-			pluginUpdates.addAll(plugins.stream().parallel().map(plugin -> {
+			pluginUpdates.addAll(plugins.parallelStream().map(plugin -> {
 				if (plugin.getInfo().getUpdateJSONURL() != null) {
 					if (!plugin.getInfo().getVersion().equals(PluginInfo.VERSION_NOT_SPECIFIED)) {
 						try {
 							String updateJSON = WebIO.readURLToString(plugin.getInfo().getUpdateJSONURL());
-							String version = JsonParser.parseString(updateJSON).getAsJsonObject().get(plugin.getID())
-									.getAsJsonObject().get("latest").getAsString();
+							JsonObject updateData = JsonParser.parseString(updateJSON).getAsJsonObject()
+									.get(plugin.getID()).getAsJsonObject();
+							String version = updateData.get("latest").getAsString();
 							if (!version.equals(plugin.getPluginVersion())) {
-								return new PluginUpdateInfo(plugin, version);
+								return new PluginUpdateInfo(plugin, version, updateData.has("changes") ?
+										updateData.get("changes").getAsJsonArray().asList().stream()
+												.map(JsonElement::getAsString).toList() :
+										null);
 							}
 						} catch (Exception e) {
 							LOG.warn("Failed to parse update info for plugin: " + plugin.getID(), e);
