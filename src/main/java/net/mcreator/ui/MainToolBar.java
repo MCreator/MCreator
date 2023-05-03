@@ -26,90 +26,103 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class MainToolBar extends JToolBar {
-	private final JToolBar pluginTools = new JToolBar();
+
+	private final JToolBar pluginToolbarLeft = new JToolBar();
+	private final JToolBar pluginToolbarRight = new JToolBar();
 
 	MainToolBar(MCreator mcreator) {
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
 		setFloatable(false);
-		pluginTools.setBorder(BorderFactory.createEmptyBorder());
-		pluginTools.setFloatable(false);
+
+		pluginToolbarLeft.setBorder(BorderFactory.createEmptyBorder());
+		pluginToolbarLeft.setMargin(new Insets(0, 0, 0, 0));
+		pluginToolbarLeft.setFloatable(false);
+
+		pluginToolbarRight.setBorder(BorderFactory.createEmptyBorder());
+		pluginToolbarRight.setMargin(new Insets(0, 0, 0, 0));
+		pluginToolbarRight.setFloatable(false);
 
 		add(new JEmptyBox(4, 4));
 
-		addBuiltin(mcreator.actionRegistry.createMCItemTexture);
-		addBuiltin(mcreator.actionRegistry.createAnimatedTexture);
+		add(mcreator.actionRegistry.createMCItemTexture);
+		add(mcreator.actionRegistry.createAnimatedTexture);
 
 		addSeparator(new Dimension(10, 4));
 
-		addBuiltin(mcreator.actionRegistry.importBlockTexture);
-		addBuiltin(mcreator.actionRegistry.importItemTexture);
-		addBuiltin(mcreator.actionRegistry.importEntityTexture);
-		addBuiltin(mcreator.actionRegistry.importScreenTexture);
-		addBuiltin(mcreator.actionRegistry.importParticleTexture);
+		add(mcreator.actionRegistry.importBlockTexture);
+		add(mcreator.actionRegistry.importItemTexture);
+		add(mcreator.actionRegistry.importEntityTexture);
+		add(mcreator.actionRegistry.importScreenTexture);
+		add(mcreator.actionRegistry.importParticleTexture);
 
 		addSeparator(new Dimension(10, 4));
 
-		addBuiltin(mcreator.actionRegistry.importSound);
-		addBuiltin(mcreator.actionRegistry.importStructure);
+		add(mcreator.actionRegistry.importSound);
+		add(mcreator.actionRegistry.importStructure);
 
 		addSeparator(new Dimension(10, 4));
 
-		addBuiltin(mcreator.actionRegistry.importJavaModel);
-		addBuiltin(mcreator.actionRegistry.importJSONModel);
-		addBuiltin(mcreator.actionRegistry.importOBJModel);
+		add(mcreator.actionRegistry.importJavaModel);
+		add(mcreator.actionRegistry.importJSONModel);
+		add(mcreator.actionRegistry.importOBJModel);
 
 		addSeparator(new Dimension(10, 4));
 
-		addBuiltin(mcreator.actionRegistry.openMaterialPackMaker);
-		addBuiltin(mcreator.actionRegistry.openOrePackMaker);
-		addBuiltin(mcreator.actionRegistry.openToolPackMaker);
-		addBuiltin(mcreator.actionRegistry.openArmorPackMaker);
-		addBuiltin(mcreator.actionRegistry.openWoodPackMaker);
+		add(mcreator.actionRegistry.openMaterialPackMaker);
+		add(mcreator.actionRegistry.openOrePackMaker);
+		add(mcreator.actionRegistry.openToolPackMaker);
+		add(mcreator.actionRegistry.openArmorPackMaker);
+		add(mcreator.actionRegistry.openWoodPackMaker);
 
 		addSeparator(new Dimension(10, 4));
-		addBuiltin(mcreator.actionRegistry.setCreativeTabItemOrder);
-		addBuiltin(mcreator.actionRegistry.injectDefaultTags);
+		add(mcreator.actionRegistry.setCreativeTabItemOrder);
+		add(mcreator.actionRegistry.injectDefaultTags);
 
-		addSeparator(new Dimension(10, 4));
-		add(pluginTools);
-		add(Box.createHorizontalGlue());
+		add(pluginToolbarLeft);
 
-		addBuiltin(mcreator.actionRegistry.setupVCSOrSettings);
-		addBuiltin(mcreator.actionRegistry.syncFromRemote);
-		addBuiltin(mcreator.actionRegistry.syncToRemote);
+		add(Box.createHorizontalGlue()); // split left and right toolbar sections
 
-		addSeparator(new Dimension(10, 4));
+		add(pluginToolbarRight);
 
-		addBuiltin(mcreator.actionRegistry.workspaceSettings);
+		add(mcreator.actionRegistry.setupVCSOrSettings);
+		add(mcreator.actionRegistry.syncFromRemote);
+		add(mcreator.actionRegistry.syncToRemote);
 
 		addSeparator(new Dimension(10, 4));
 
-		addBuiltin(mcreator.actionRegistry.regenerateCode);
-		addBuiltin(mcreator.actionRegistry.buildWorkspace);
+		add(mcreator.actionRegistry.workspaceSettings);
 
 		addSeparator(new Dimension(10, 4));
 
-		addBuiltin(mcreator.actionRegistry.runClient);
-		addBuiltin(mcreator.actionRegistry.runServer);
-		addBuiltin(mcreator.actionRegistry.cancelGradleTaskAction);
+		add(mcreator.actionRegistry.regenerateCode);
+		add(mcreator.actionRegistry.buildWorkspace);
 
 		addSeparator(new Dimension(10, 4));
 
-		addBuiltin(mcreator.actionRegistry.exportToJAR);
+		add(mcreator.actionRegistry.runClient);
+		add(mcreator.actionRegistry.runServer);
+		add(mcreator.actionRegistry.cancelGradleTaskAction);
+
+		addSeparator(new Dimension(10, 4));
+
+		add(mcreator.actionRegistry.exportToJAR);
 
 		add(new JEmptyBox(4, 4));
+	}
+
+	public JButton addToLeftToolbar(Action action) {
+		return decorateToolbarButton(pluginToolbarLeft.add(action));
+	}
+
+	public JButton addToRightToolbar(Action action) {
+		return decorateToolbarButton(pluginToolbarRight.add(action));
 	}
 
 	@Override public JButton add(Action action) {
-		return addImpl(action, true);
+		return decorateToolbarButton(super.add(action));
 	}
 
-	private void addBuiltin(Action action) {
-		addImpl(action, false);
-	}
-
-	private JButton addImpl(Action action, boolean custom) {
-		JButton button = custom ? pluginTools.add(action) : super.add(action);
+	private static JButton decorateToolbarButton(JButton button) {
 		button.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		button.addMouseListener(new MouseAdapter() {
 			@Override public void mouseEntered(MouseEvent mouseEvent) {
