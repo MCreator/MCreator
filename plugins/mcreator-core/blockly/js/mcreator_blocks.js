@@ -331,6 +331,20 @@ Blockly.Blocks['text_substring'] = {
     }
 };
 
+Blockly.Blocks['text_substring_from'] = {
+    init: function () {
+        this.appendValueInput('text').setCheck('String')
+            .appendField(javabridge.t("blockly.block.text_substring.substring"));
+        this.appendValueInput('from').setCheck('Number')
+            .appendField(javabridge.t("blockly.block.text_substring.from"));
+        this.setInputsInline(true);
+        this.setPreviousStatement(false);
+        this.setNextStatement(false);
+        this.setOutput(true, 'String');
+        this.setColour('%{BKY_TEXTS_HUE}');
+    }
+};
+
 Blockly.Blocks['text_replace'] = {
     init: function () {
         this.appendValueInput('what').setCheck('String')
@@ -533,6 +547,27 @@ Blockly.Blocks['block_list_mutator_input'] = {
         this.contextMenu = false;
         this.fieldValues_ = [];
         this.setColour(45);
+    }
+};
+
+// Mutator block for geode feature mixin
+Blockly.Blocks['geode_crystal_mutator_container'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.geode_crystal_mutator.container"));
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+        this.setColour(0);
+    }
+};
+
+// Mutator block for geode feature mixin
+Blockly.Blocks['geode_crystal_mutator_input'] = {
+    init: function () {
+      this.appendDummyInput().appendField(javabridge.t("blockly.block.geode_crystal_mutator.input"));
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.contextMenu = false;
+      this.setColour(0);
     }
 };
 

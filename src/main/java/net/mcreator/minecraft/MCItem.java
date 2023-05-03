@@ -39,6 +39,7 @@ import java.awt.*;
 import java.io.File;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class MCItem extends DataListEntry {
 
@@ -78,6 +79,14 @@ public class MCItem extends DataListEntry {
 			this.icon = DEFAULT_ICON;
 		} else
 			this.icon = icon;
+	}
+
+	public boolean isPOI() {
+		if (getOther() instanceof Map<?, ?> otherMap) {
+			return otherMap.containsKey("poi") && Boolean.parseBoolean(otherMap.get("poi").toString());
+		}
+
+		return false;
 	}
 
 	public static ImageIcon getBlockIconBasedOnName(Workspace workspace, String name) {

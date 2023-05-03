@@ -9,14 +9,15 @@
   "has_ceiling": ${data.worldGenType == "Nether like gen"},
   "coordinate_scale": 1,
   "ambient_light": <#if data.isDark>0<#else>0.5</#if>,
-  "logical_height": 256,
   "infiniburn": "#minecraft:infiniburn_overworld",
   <#if data.worldGenType == "Normal world gen">
   "min_y": -64,
   "height": 384,
+  "logical_height": 384,
   <#else>
   "min_y": 0,
   "height": 256,
+  "logical_height": 256,
   </#if>
   <#if data.worldGenType == "Nether like gen">
   "monster_spawn_light_level": 11,
