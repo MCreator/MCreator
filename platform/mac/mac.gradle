@@ -56,7 +56,7 @@ tasks.register('exportMacX64', Copy.class) {
             arg(value: '-r')
             arg(value: '-D')
             arg(value: '-o')
-            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac x64.dmg')
+            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg')
             arg(value: '-mac-name')
             arg(value: '-V')
             arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
