@@ -47,6 +47,10 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("gui")>${JavaModName}Menus.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("biome")>${JavaModName}Biomes.REGISTRY.register(bus);</#if>
+		<#if w.hasElementsOfType("villagerprofession")>
+			${JavaModName}VillagerProfessions.POI.register(bus);
+			${JavaModName}VillagerProfessions.PROFESSIONS.register(bus);
+		</#if>
 	}
 
 	private static final String PROTOCOL_VERSION = "1";
