@@ -54,8 +54,8 @@ class WorkspacePanelVCS extends WorkspaceSectionPanel {
 
 	private final JButton switchBranch = new JButton("");
 
-	WorkspacePanelVCS(WorkspacePanels workspacePanels) {
-		super(workspacePanels);
+	WorkspacePanelVCS(WorkspacePanel workspacePanel) {
+		super(workspacePanel);
 
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
@@ -68,7 +68,7 @@ class WorkspacePanelVCS extends WorkspaceSectionPanel {
 		uncommited.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(uncommited);
 
-		uncommited.addActionListener(e -> workspacePanels.getMCreator().actionRegistry.showUnsyncedChanges.doAction());
+		uncommited.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.showUnsyncedChanges.doAction());
 
 		JButton checkout = L10N.button("workspace.vcs.jump_to_selected_commit");
 		checkout.setIcon(UIRES.get("16px.rwd"));
@@ -87,8 +87,8 @@ class WorkspacePanelVCS extends WorkspaceSectionPanel {
 		switchBranch.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(switchBranch);
 
-		switchBranch.addActionListener(e -> new BranchesPopup(workspacePanels.getMCreator().getWorkspace().getVCS(),
-				workspacePanels.getMCreator()).show(switchBranch, 4, 20));
+		switchBranch.addActionListener(e -> new BranchesPopup(workspacePanel.getMCreator().getWorkspace().getVCS(),
+				workspacePanel.getMCreator()).show(switchBranch, 4, 20));
 
 		bar.add(switchBranch);
 
@@ -151,13 +151,13 @@ class WorkspacePanelVCS extends WorkspaceSectionPanel {
 	private void checkoutToSelectedCommit() {
 		String shortCommitId = commits.getValueAt(commits.getSelectedRow(), 0).toString();
 
-		if (shortCommitId != null && workspacePanels.getMCreator().getWorkspace().getVCS() != null) {
+		if (shortCommitId != null && workspacePanel.getMCreator().getWorkspace().getVCS() != null) {
 			try {
-				Git git = workspacePanels.getMCreator().getWorkspace().getVCS().getGit();
+				Git git = workspacePanel.getMCreator().getWorkspace().getVCS().getGit();
 				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
 						.call()) {
 					if (commit.abbreviate(7).name().equals(shortCommitId)) {
-						int option = JOptionPane.showOptionDialog(workspacePanels.getMCreator(),
+						int option = JOptionPane.showOptionDialog(workspacePanel.getMCreator(),
 								L10N.t("workspace.vcs.jump_commit_confirmation", commit.getShortMessage()),
 								L10N.t("workspace.vcs.jump_commit_confirmation.title"), JOptionPane.DEFAULT_OPTION,
 								JOptionPane.QUESTION_MESSAGE, null,
@@ -194,9 +194,9 @@ class WorkspacePanelVCS extends WorkspaceSectionPanel {
 							} catch (Exception ignored) {
 							}
 
-							workspacePanels.getMCreator().getWorkspace().reloadFromFS();
-							workspacePanels.updateMods();
-							workspacePanels.getMCreator().actionRegistry.buildWorkspace.doAction();
+							workspacePanel.getMCreator().getWorkspace().reloadFromFS();
+							workspacePanel.updateMods();
+							workspacePanel.getMCreator().actionRegistry.buildWorkspace.doAction();
 						}
 
 						break;
@@ -209,17 +209,17 @@ class WorkspacePanelVCS extends WorkspaceSectionPanel {
 	}
 
 	@Override public boolean canSwitchToSection() {
-		return SetupVCSAction.setupVCSForWorkspaceIfNotYet(workspacePanels.getMCreator());
+		return SetupVCSAction.setupVCSForWorkspaceIfNotYet(workspacePanel.getMCreator());
 	}
 
 	@Override public void reloadElements() {
-		if (workspacePanels.getMCreator().getWorkspace().getVCS() != null) {
+		if (workspacePanel.getMCreator().getWorkspace().getVCS() != null) {
 			int row = commits.getSelectedRow();
 
 			DefaultTableModel model = (DefaultTableModel) commits.getModel();
 			model.setRowCount(0);
 
-			Git git = workspacePanels.getMCreator().getWorkspace().getVCS().getGit();
+			Git git = workspacePanel.getMCreator().getWorkspace().getVCS().getGit();
 			try {
 				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
 						.call()) {
@@ -242,8 +242,8 @@ class WorkspacePanelVCS extends WorkspaceSectionPanel {
 	}
 
 	@Override public void refilterElements() {
-		if (workspacePanels.getMCreator().getWorkspace().getVCS() != null)
-			sorter.setRowFilter(RowFilter.regexFilter(workspacePanels.search.getText()));
+		if (workspacePanel.getMCreator().getWorkspace().getVCS() != null)
+			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
 	}
 
 }

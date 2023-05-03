@@ -58,8 +58,8 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 
 	private volatile boolean storingEdits = false;
 
-	WorkspacePanelVariables(WorkspacePanels workspacePanels) {
-		super(workspacePanels);
+	WorkspacePanelVariables(WorkspacePanel workspacePanel) {
+		super(workspacePanel);
 
 		elements = new JTable(new DefaultTableModel(
 				new Object[] { L10N.t("workspace.variables.variable_name"), L10N.t("workspace.variables.variable_type"),
@@ -83,7 +83,7 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 					return;
 
 				if (column != 3) {
-					int n = JOptionPane.showConfirmDialog(workspacePanels.getMCreator(),
+					int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 							L10N.t("workspace.variables.change_type"), L10N.t("common.confirmation"),
 							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (n == JOptionPane.YES_OPTION) {
@@ -97,7 +97,7 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 							} else if (type == VariableTypeLoader.BuiltInTypes.STRING) {
 								elements.setValueAt("", row, 3);
 							} else {
-								elements.setValueAt(type.getDefaultValue(workspacePanels.getMCreator().getWorkspace()),
+								elements.setValueAt(type.getDefaultValue(workspacePanel.getMCreator().getWorkspace()),
 										row, 3);
 							}
 						}
@@ -112,10 +112,10 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 				VariableType variableType = VariableTypeLoader.INSTANCE.fromName((String) elements.getValueAt(row, 1));
 				if (modelColumn == 2) {
 					return new DefaultCellEditor(new JComboBox<>(variableType.getSupportedScopesWithoutLocal(
-							workspacePanels.getMCreator().getGeneratorConfiguration())));
+							workspacePanel.getMCreator().getGeneratorConfiguration())));
 				} else if (modelColumn == 1) {
 					return new DefaultCellEditor(new JComboBox<>(VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
-									workspacePanels.getMCreator().getGeneratorConfiguration()).stream()
+									workspacePanel.getMCreator().getGeneratorConfiguration()).stream()
 							.map(VariableType::getName).toArray(String[]::new)));
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
@@ -225,7 +225,7 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 		add("North", bar);
 
 		addvar.addActionListener(e -> {
-			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanels.getMCreator(), true,
+			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
 							UniqueNameValidator validator = new UniqueNameValidator(
@@ -237,9 +237,9 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 							return validator.validate();
 						}
 					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
-							workspacePanels.getMCreator().getGeneratorConfiguration()));
+							workspacePanel.getMCreator().getGeneratorConfiguration()));
 			if (element != null) {
-				workspacePanels.getMCreator().getWorkspace().addVariableElement(element);
+				workspacePanel.getMCreator().getWorkspace().addVariableElement(element);
 				reloadElements();
 			}
 		});
@@ -263,7 +263,7 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 				storingEdits = true;
 				elements.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-				Workspace workspace = workspacePanels.getMCreator().getWorkspace();
+				Workspace workspace = workspacePanel.getMCreator().getWorkspace();
 
 				List<VariableElement> todelete = new ArrayList<>(workspace.getVariableElements());
 				for (VariableElement variableElement : todelete)
@@ -292,7 +292,7 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 		if (elements.getSelectedRow() == -1)
 			return;
 
-		int n = JOptionPane.showConfirmDialog(workspacePanels.getMCreator(),
+		int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 				L10N.t("workspace.variables.remove_variable_confirmation"), L10N.t("common.confirmation"),
 				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 		if (n == JOptionPane.YES_OPTION) {
@@ -300,14 +300,14 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 					.forEach(el -> {
 						VariableElement element = new VariableElement();
 						element.setName(el);
-						workspacePanels.getMCreator().getWorkspace().removeVariableElement(element);
+						workspacePanel.getMCreator().getWorkspace().removeVariableElement(element);
 					});
 			reloadElements();
 		}
 	}
 
 	@Override public boolean supportedInWorkspace() {
-		return workspacePanels.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("variables")
+		return workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("variables")
 				!= GeneratorStats.CoverageStatus.NONE;
 	}
 
@@ -317,7 +317,7 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 		DefaultTableModel model = (DefaultTableModel) elements.getModel();
 		model.setRowCount(0);
 
-		for (VariableElement variable : workspacePanels.getMCreator().getWorkspace().getVariableElements()) {
+		for (VariableElement variable : workspacePanel.getMCreator().getWorkspace().getVariableElements()) {
 			model.addRow(new Object[] { variable.getName(), variable.getType().getName(), variable.getScope(),
 					variable.getValue() });
 		}
@@ -331,7 +331,7 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 
 	@Override public void refilterElements() {
 		try {
-			sorter.setRowFilter(RowFilter.regexFilter(workspacePanels.search.getText()));
+			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
 		} catch (Exception ignored) {
 		}
 	}
