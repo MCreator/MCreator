@@ -92,7 +92,7 @@ import java.util.stream.Collectors;
 	private final JPanel panels = new JPanel(cardLayout);
 
 	private final JPanel rotatablePanel = new JPanel();
-	private final Map<String, IReloadableFilterable> panelTabs = new HashMap<>();
+	private final Map<String, WorkspaceSection> sectionTabs = new HashMap<>();
 	private final List<JButton> verticalTabs = new ArrayList<>();
 	public final WorkspacePanelResources resourcesPan;
 
@@ -858,7 +858,7 @@ import java.util.stream.Collectors;
 			return;
 
 		panels.add(section, id);
-		panelTabs.put(id, section);
+		sectionTabs.put(id, section);
 
 		if (section.supportedInWorkspace()) {
 			VerticalTabButton tab = new VerticalTabButton(name);
@@ -886,8 +886,8 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	public IReloadableFilterable getVerticalTab(String id) {
-		return panelTabs.get(id);
+	public WorkspaceSection getVerticalTab(String id) {
+		return sectionTabs.get(id);
 	}
 
 	public void switchFolder(FolderElement switchTo) {
@@ -1257,7 +1257,7 @@ import java.util.stream.Collectors;
 
 		updateRunning = true;
 
-		panelTabs.get(currentTab).reloadElements();
+		sectionTabs.get(currentTab).reloadElements();
 
 		updateRunning = false;
 	}
@@ -1322,7 +1322,7 @@ import java.util.stream.Collectors;
 	}
 
 	public void refilterElements() {
-		panelTabs.values().forEach(IReloadableFilterable::refilterElements);
+		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 	}
 
 	public MCreator getMCreator() {
