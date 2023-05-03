@@ -125,15 +125,3 @@ function workspaceToXML() {
 
     return Blockly.Xml.domToText(treeXml);
 }
-
-class EntryChange extends Blockly.Events.BlockChange {
-    constructor(block, name, oldValue, newValue) {
-        super(block, 'field', name, oldValue, newValue);
-    }
-
-    run(forward) {
-        const block = this.blockId && this.getEventWorkspace_().getBlockById(this.blockId);
-        if (block && block.getField(this.name).setEntry)
-            block.getField(this.name).setEntry(forward ? this.newValue : this.oldValue);
-    }
-}

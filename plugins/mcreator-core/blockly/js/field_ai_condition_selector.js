@@ -56,7 +56,7 @@ class FieldAiConditionSelector extends Blockly.FieldLabelSerializable {
                 let thisField = this;
                 javabridge.openAIConditionEditor(this.condition, {
                     'callback': function (data) {
-                        thisField.setEntry(data);
+                        thisField.setValue(data);
                     }
                 });
             } else {
@@ -71,11 +71,11 @@ class FieldAiConditionSelector extends Blockly.FieldLabelSerializable {
     }
 
     fromXml(fieldElement) {
-        this.setEntry(fieldElement.textContent);
+        this.setValue(fieldElement.textContent);
     }
 
-    setEntry(newEntry) {
-        const oldEntry = this.condition;
+    setValue(newEntry) {
+        const oldCondition = this.condition;
         this.condition = newEntry || 'null,null';
         if (this.condition.split(',').length === 2) {
             this.doValueUpdate_('Conditions: ' +
@@ -86,7 +86,8 @@ class FieldAiConditionSelector extends Blockly.FieldLabelSerializable {
             this.doValueUpdate_('Conditions: OO');
         }
         this.forceRerender();
-        Blockly.Events.fire(new EntryChange(this.sourceBlock_, this.name, oldEntry, newEntry));
+        Blockly.Events.fire(new Blockly.Events.BlockChange(this.sourceBlock_,
+            'field', this.name, oldCondition, this.condition));
     }
 }
 

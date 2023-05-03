@@ -77,7 +77,7 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
                 let thisField = this; // reference to this field, to use in the callback function
                 javabridge.openEntrySelector(this.type, this.typeFilter, this.customEntryProviders, {
                     'callback': function (data) {
-                        thisField.setEntry(data);
+                        thisField.setValue(data);
                         javabridge.triggerEvent();
                     }
                 });
@@ -99,9 +99,9 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
             let readableName = javabridge.getReadableNameOf(fieldElement.textContent, this.type);
             if (!readableName) // The readable name is an empty string because it couldn't be found
                 readableName = fieldElement.textContent; // In this case, we use the actual value
-            this.setEntry(fieldElement.textContent + ',' + readableName);
+            this.setValue(fieldElement.textContent + ',' + readableName);
         } else {
-            this.setEntry(FieldDataListSelector.getDefaultEntry());
+            this.setValue(FieldDataListSelector.getDefaultEntry());
         }
     };
 
@@ -121,7 +121,7 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
         return '';
     }
 
-    setEntry(newEntry) {
+    setValue(newEntry) {
         const oldEntry = this.entry;
         this.entry = newEntry || FieldDataListSelector.getDefaultEntry();
         if (this.entry.split(',').length === 2) {
@@ -131,7 +131,8 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
         }
         this.setTooltip(this.getText_()); // Update the field tooltip
         this.forceRerender(); // Update the selected text and shape
-        Blockly.Events.fire(new EntryChange(this.sourceBlock_, this.name, oldEntry, newEntry));
+        Blockly.Events.fire(new Blockly.Events.BlockChange(this.sourceBlock_,
+            'field', this.name, oldEntry, this.entry));
     };
 }
 

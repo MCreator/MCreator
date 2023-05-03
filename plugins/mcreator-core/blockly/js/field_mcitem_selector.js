@@ -44,7 +44,7 @@ class FieldMCItemSelector extends Blockly.FieldImage {
                 let thisField = this; // reference to this field, to use in the callback function
                 javabridge.openMCItemSelector(this.supported_mcitems, {
                     'callback': function (selected) {
-                        thisField.setEntry(selected);
+                        thisField.setValue(selected);
                         javabridge.triggerEvent();
                     }
                 });
@@ -60,17 +60,14 @@ class FieldMCItemSelector extends Blockly.FieldImage {
     };
 
     setValue(new_mcitem) {
-        this.setEntry(new_mcitem);
-    };
-
-    setEntry(newEntry) {
-        this.src_ = javabridge.getMCItemURI(newEntry);
+        this.src_ = javabridge.getMCItemURI(new_mcitem);
         if (this.imageElement_) {
             this.imageElement_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.src_ || '');
         }
-        const oldEntry = this.mcitem;
-        this.mcitem = newEntry;
-        Blockly.Events.fire(new EntryChange(this.sourceBlock_, this.name, oldEntry, newEntry));
+        const old_mcitem = this.mcitem;
+        this.mcitem = new_mcitem;
+        Blockly.Events.fire(new Blockly.Events.BlockChange(this.sourceBlock_,
+            'field', this.name, old_mcitem, this.mcitem));
     };
 }
 
