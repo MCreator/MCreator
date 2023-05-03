@@ -72,7 +72,7 @@ public class GradleErrorDialogs {
 	}
 
 	private static void showGradleCacheDataErrorDialog(MCreator whereToShow, int errorCode) {
-		if (PreferencesManager.PREFERENCES.gradle.offline) {
+		if (PreferencesManager.PREFERENCES.gradle.offline.get()) {
 			showGradleCacheOutdatedDialogOfflineMode(whereToShow, errorCode);
 		} else {
 			String msg = L10N.t("gradle.errors.cache_corrupted");

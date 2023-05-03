@@ -61,7 +61,8 @@ class VCSFileMergeDialog {
 		dialog.add("North", L10N.label("dialog.vcs.file_merge_manual_message"));
 
 		JOptionPane.showOptionDialog(mcreator, dialog, L10N.t("dialog.vcs.file_merge_manual_required"),
-				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Finish merge" }, null);
+				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+				new String[] { L10N.t("dialog.vcs.file_merge_finish") }, null);
 	}
 
 }
