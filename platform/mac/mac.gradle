@@ -5,15 +5,9 @@ static void convertCRLF(File input, File out) {
 }
 
 // locate mkisofs
-def mkisofs_binary
+def mkisofs_binary = 'mkisofs'
 if (Os.isFamily(Os.FAMILY_WINDOWS)) {
     mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs'
-} else { // we are on Nix system
-    mkisofs_binary = 'mkisofs'
-
-    // chmod needed on executable as mkisofs does not +x on Nix systems
-    exec { commandLine('chmod', '+x', exportPathAarch64 + '/MacOS/mcreator') }
-    exec { commandLine('chmod', '+x', exportPathX64 + '/MacOS/mcreator') }
 }
 
 tasks.register('exportMacX64', Copy.class) {
@@ -51,6 +45,11 @@ tasks.register('exportMacX64', Copy.class) {
         // fix line endings where needed
         convertCRLF(file(exportPathX64 + '/Info.plistdos'), file(exportPathX64 + '/Info.plist'))
         delete exportPathX64 + '/Info.plistdos'
+
+        // chmod needed on executable as mkisofs does not +x on Nix systems
+        if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
+            exec { commandLine('chmod', '+x', exportPathX64 + '/MacOS/mcreator') }
+        }
 
         // Create x64 DMG
         ant.exec(executable: mkisofs_binary, failonerror: true) {
@@ -103,6 +102,11 @@ tasks.register('exportMacAarch64', Copy.class) {
         // fix line endings where needed
         convertCRLF(file(exportPathAarch64 + '/Info.plistdos'), file(exportPathAarch64 + '/Info.plist'))
         delete exportPathAarch64 + '/Info.plistdos'
+
+        // chmod needed on executable as mkisofs does not +x on Nix systems
+        if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
+            exec { commandLine('chmod', '+x', exportPathAarch64 + '/MacOS/mcreator') }
+        }
 
         // Create Aarch64 DMG
         ant.exec(executable: mkisofs_binary, failonerror: true) {
