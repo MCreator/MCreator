@@ -38,13 +38,13 @@ import java.util.Map;
 
 public class UpdateNotifyDialog {
 
-	public static void showUpdateDialogIfUpdateExists(Window parent, boolean showNoUpdates) {
+	public static void showUpdateDialogIfUpdateExists(Window parent, boolean notifyForUpdates, boolean notifyForPatches, boolean showNoUpdates) {
 		if (MCreatorApplication.isInternet) {
 			long oldMajor = Launcher.version.majorlong;
 			UpdateInfo updateInfo = MCreatorApplication.WEB_API.getUpdateInfo();
 			if (updateInfo != null) {
 				long newMajor = MCreatorVersionNumber.majorStringToLong(updateInfo.getLatestMajor());
-				if (newMajor > oldMajor) {
+				if (newMajor > oldMajor && notifyForUpdates) {
 					JPanel pan = new JPanel(new BorderLayout());
 					JLabel upde = L10N.label("dialog.update_notify.message", Launcher.version.major,
 							updateInfo.getLatestMajor());
@@ -76,7 +76,7 @@ public class UpdateNotifyDialog {
 				} else {
 					Release thisRelease = updateInfo.getReleases().get(Launcher.version.major);
 					if (thisRelease != null) {
-						if (Launcher.version.buildlong < Long.parseLong(thisRelease.getLatestBuild())) {
+						if (Launcher.version.buildlong < Long.parseLong(thisRelease.getLatestBuild()) && notifyForPatches) {
 							JPanel pan = new JPanel(new BorderLayout());
 							JLabel upde = L10N.label("dialog.update_notify.more_recent_build", Launcher.version.major,
 									Launcher.version.build,

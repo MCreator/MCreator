@@ -42,7 +42,11 @@ public class StartupNotifications {
 			ThreadUtil.runOnSwingThreadAndWait(() -> {
 				if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates.get()
 						|| Launcher.version.isSnapshot()) {
-					UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent, false);
+					UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent,
+							PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates.get()
+									|| Launcher.version.isSnapshot(),
+							PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPatches.get()
+									|| Launcher.version.isSnapshot(), false);
 				}
 
 				showPluginLoadingFailures(parent);
