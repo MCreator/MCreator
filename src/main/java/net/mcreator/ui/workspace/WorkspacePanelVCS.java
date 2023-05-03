@@ -45,7 +45,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-class WorkspacePanelVCS extends WorkspaceSectionPanel {
+class WorkspacePanelVCS extends WorkspaceSection {
 
 	private static final Logger LOG = LogManager.getLogger("VCS Panel");
 
@@ -56,6 +56,7 @@ class WorkspacePanelVCS extends WorkspaceSectionPanel {
 
 	WorkspacePanelVCS(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
+		setLayout(new BorderLayout(0, 5));
 
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
@@ -134,7 +135,7 @@ class WorkspacePanelVCS extends WorkspaceSectionPanel {
 
 		JPanel holder = new JPanel(new BorderLayout());
 		holder.setOpaque(false);
-		holder.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
+		holder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		holder.add(sp);
 
 		add("Center", holder);

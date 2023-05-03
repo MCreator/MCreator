@@ -25,7 +25,7 @@ import java.awt.*;
 /**
  * This class represents a section of a workspace where certain workspace elements/files can be managed.
  */
-public abstract class WorkspaceSectionPanel extends JPanel implements IReloadableFilterable {
+public abstract class WorkspaceSection extends JPanel implements IReloadableFilterable {
 
 	protected final WorkspacePanel workspacePanel;
 
@@ -34,7 +34,7 @@ public abstract class WorkspaceSectionPanel extends JPanel implements IReloadabl
 	 *
 	 * @param workspacePanel The main workspace section.
 	 */
-	public WorkspaceSectionPanel(WorkspacePanel workspacePanel) {
+	public WorkspaceSection(WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
 		this.workspacePanel = workspacePanel;
 		setOpaque(false);

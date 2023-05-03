@@ -51,7 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class WorkspacePanelVariables extends WorkspaceSectionPanel {
+class WorkspacePanelVariables extends WorkspaceSection {
 
 	private final TableRowSorter<TableModel> sorter;
 	private final JTable elements;
@@ -60,6 +60,7 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 
 	WorkspacePanelVariables(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
+		setLayout(new BorderLayout(0, 5));
 
 		elements = new JTable(new DefaultTableModel(
 				new Object[] { L10N.t("workspace.variables.variable_name"), L10N.t("workspace.variables.variable_type"),
@@ -188,7 +189,7 @@ class WorkspacePanelVariables extends WorkspaceSectionPanel {
 
 		JPanel holder = new JPanel(new BorderLayout());
 		holder.setOpaque(false);
-		holder.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
+		holder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		holder.add(sp);
 
 		add("Center", holder);

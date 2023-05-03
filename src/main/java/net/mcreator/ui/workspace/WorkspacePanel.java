@@ -851,16 +851,16 @@ import java.util.stream.Collectors;
 	 *
 	 * @param id    The unique identifier of the section used for reloading/filtering contained elements.
 	 * @param name  The name of the section shown in the workspace.
-	 * @param panel The panel representing contents of the vertical tab being added.
+	 * @param section The panel representing contents of the vertical tab being added.
 	 */
-	public void addVerticalTab(String id, String name, WorkspaceSectionPanel panel) {
+	public void addVerticalTab(String id, String name, WorkspaceSection section) {
 		if (getVerticalTab(id) != null)
 			return;
 
-		panels.add(panel, id);
-		panelTabs.put(id, panel);
+		panels.add(section, id);
+		panelTabs.put(id, section);
 
-		if (panel.supportedInWorkspace()) {
+		if (section.supportedInWorkspace()) {
 			VerticalTabButton tab = new VerticalTabButton(name);
 			tab.setContentAreaFilled(false);
 			tab.setMargin(new Insets(7, 1, 7, 2));
@@ -870,7 +870,7 @@ import java.util.stream.Collectors;
 			tab.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			tab.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			tab.addActionListener(e -> {
-				if (panel.canSwitchToSection()) {
+				if (section.canSwitchToSection()) {
 					for (JButton btt : verticalTabs) {
 						btt.setBackground(btt == tab ?
 								(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
@@ -1488,7 +1488,7 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	private class WorkspacePanelMods extends WorkspaceSectionPanel {
+	private class WorkspacePanelMods extends WorkspaceSection {
 
 		private WorkspacePanelMods(JComponent contents) {
 			super(WorkspacePanel.this);
