@@ -36,6 +36,8 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.notifications.INotificationConsumer;
+import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.ui.vcs.VCSSetupDialogs;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.ListUtils;
@@ -65,7 +67,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
-public final class WorkspaceSelector extends JFrame implements DropTargetListener {
+public final class WorkspaceSelector extends JFrame implements DropTargetListener, INotificationConsumer {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace Selector");
 
@@ -75,7 +77,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 	@Nullable private final MCreatorApplication application;
 
-	private final WorkspaceSelectorTips selectorTips = new WorkspaceSelectorTips(this);
+	private final NotificationsRenderer notificationsRenderer;
 
 	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
@@ -225,7 +227,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JComponent centerComponent = PanelUtils.centerAndSouthElement(
 				PanelUtils.northAndCenterElement(logoPanel, actions), southcenter);
 
-		selectorTips.setAnchor(centerComponent);
+		notificationsRenderer = new NotificationsRenderer(centerComponent);
 
 		add("Center", centerComponent);
 
@@ -236,14 +238,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		initWebsitePanel();
 
 		add("West", recentPanel);
-
-		selectorTips.addTip(null, "Tip 2");
-		selectorTips.addTip("Title 3", "Tip 3");
-		selectorTips.addTip("Plugin updates available",
-				"Some of the plugins can be updated to a more recent version.<br>Check the website for more details.",
-				new WorkspaceSelectorTips.ActionButton("Action 1", e -> {
-					// do something
-				}));
 
 		new DropTarget(this, DnDConstants.ACTION_MOVE, this, true, null);
 
@@ -521,4 +515,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	@Nullable public MCreatorApplication getApplication() {
 		return application;
 	}
+
+	@Override public NotificationsRenderer getNotificationsRenderer() {
+		return notificationsRenderer;
+	}
+
 }

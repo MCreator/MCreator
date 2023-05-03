@@ -36,7 +36,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui;
+/*
+ * MCreator (https://mcreator.net/)
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+package net.mcreator.ui.notifications;
 
 import net.mcreator.plugin.PluginLoadFailure;
 import net.mcreator.plugin.PluginLoader;
@@ -54,7 +73,7 @@ public class StartupNotifications {
 
 	private static boolean notificationsHandled = false;
 
-	public static void handleStartupNotifications(Window parent) {
+	public static <T extends Window & INotificationConsumer> void handleStartupNotifications(T parent) {
 		if (!notificationsHandled) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> {
 				UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent, false);
@@ -66,6 +85,15 @@ public class StartupNotifications {
 
 			notificationsHandled = true;
 		}
+
+		/*parent.addNotification("Tip 2");
+		parent.addNotification("Title 3", "Tip 3");
+		parent.addNotification("Plugin updates available",
+				"Some of the plugins can be updated to a more recent version.<br>Check the website for more details.",
+				new NotificationsRenderer.ActionButton("Action 1", e -> {
+					// do something
+				}));
+		 */
 	}
 
 	private static void showPluginLoadingFailures(Window parent) {
