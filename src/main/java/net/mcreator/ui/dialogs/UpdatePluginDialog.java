@@ -62,8 +62,7 @@ public class UpdatePluginDialog {
 				plugins.add(PanelUtils.westAndEastElement(label, PanelUtils.join(update)));
 			}
 
-			MCreatorDialog dialog = new MCreatorDialog(JOptionPane.getRootFrame(),
-					L10N.t("dialog.plugin_update_notify.update_title"));
+			MCreatorDialog dialog = new MCreatorDialog(parent, L10N.t("dialog.plugin_update_notify.update_title"));
 			dialog.setSize(700, 300);
 			dialog.setLocationRelativeTo(parent);
 			dialog.setModal(true);
