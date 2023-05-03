@@ -1,4 +1,4 @@
-tasks.register('cleanupPlugins') {
+task cleanupPlugins(type: DefaultTask) {
     doFirst {
         delete 'build/plugins/'
     }
@@ -6,22 +6,21 @@ tasks.register('cleanupPlugins') {
 
 // export  all plugins
 file('plugins').traverse([maxDepth: 0, type: groovy.io.FileType.DIRECTORIES]) {
-    tasks.create('export_plugin_' + it.getName().replace('.', ''), Zip.class) { task ->
-        task.archiveFileName = it.getName() + '.zip'
-        task.destinationDirectory = file('build/plugins/')
+    tasks.create(name: 'export_plugin_' + it.getName().replace('.', ''), type: Zip) { task ->
+        task.archiveName = it.getName() + '.zip'
+        task.destinationDir = file('build/plugins/')
         task.from 'plugins/' + it.getName()
         task.group "mcreatorplugins"
         task.mustRunAfter cleanupPlugins
     }
 }
 
-tasks.register('exportPlugins') {
+task exportPlugins(type: DefaultTask) {
     dependsOn tasks.matching { Task t -> t.name.startsWith("export_plugin_") }
     dependsOn cleanupPlugins
 }
 
-tasks.register('exportReleasePreTask') {
-    dependsOn testClasses
+task exportReleasePreTask(type: DefaultTask, dependsOn: testClasses) {
     doFirst {
         delete 'build/export/'
         mkdir 'build/export/'
@@ -40,16 +39,13 @@ jar {
     dependsOn exportReleasePreTask
 }
 
-tasks.register('exportRelease') {
-    group 'export'
+task exportRelease(group: 'export') {
     doLast {
         project.logger.lifecycle('\nFINISHED export for MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
 
-tasks.register('exportSnapshot') {
-    group 'export'
-
+task exportSnapshot(group: 'export') {
     if (gradle.startParameter.taskNames.contains(name)) { // only run this if the task started was this one
         project.mcreatorconf.setProperty('mcreator', "EAP " + (String) project.mcreatorconf.getProperty('mcreator') + new Date().format(" 'b'wwuHH"))
         file('src/main/resources/snapshot.conf') << (String) project.mcreatorconf.getProperty('mcreator')
@@ -61,28 +57,33 @@ tasks.register('exportSnapshot') {
     }
 }
 
-tasks.register('generateExportReport') {
+task generateExportReport {
     doLast {
         def report = ""
 
-        def fg = new LinkedHashSet<String>()
-        def bd = new LinkedHashSet<String>()
-        def dp = new LinkedHashSet<String>()
-        file('plugins').traverse([maxDepth: 1, type: groovy.io.FileType.DIRECTORIES]) {
+        def fg = ""
+        def bd = ""
+        def dp = ""
+        file('plugins').traverse([maxDepth: 0, type: groovy.io.FileType.DIRECTORIES]) {
             def fn = it.getName()
-            if (fn.startsWith("addon-")) {
-                bd.add(fn.substring(fn.lastIndexOf("-") + 1))
-            } else if (fn.startsWith("datapack-")) {
-                dp.add(fn.substring(fn.lastIndexOf("-") + 1))
-            } else if (fn.startsWith("forge-")) {
-                fg.add(fn.substring(fn.lastIndexOf("-") + 1))
+            if (fn.startsWith("generator-")) {
+                if (fn.contains("addon-")) {
+                    if (!bd.isEmpty()) bd += "/"
+                    bd += fn.substring(fn.lastIndexOf("-") + 1)
+                } else if (fn.contains("datapack-")) {
+                    if (!dp.isEmpty()) dp += "/"
+                    dp += fn.substring(fn.lastIndexOf("-") + 1)
+                } else {
+                    if (!fg.isEmpty()) fg += "/"
+                    fg += fn.substring(fn.lastIndexOf("-") + 1)
+                }
             }
         }
 
-        report += 'mcreator=' + version.toString() + '.' + project.builddate.toString() + '\n'
-        report += 'version=' + (String) project.mcreatorconf.getProperty('mcreator').toString() + '\n'
-        report += 'builddate=' + project.builddate.toString() + '\n'
-        report += 'minecraft=Minecraft Forge ' + String.join("/", fg) + ', Data Packs ' + String.join("/", dp) + ', and Bedrock Edition ' + String.join("/", bd) + '\n'
+        report += 'mcreator=' + version + '.' + project.builddate + '\n'
+        report += 'version=' + project.mcreatorconf.getProperty('mcreator') + '\n'
+        report += 'builddate=' + project.builddate + '\n'
+        report += 'minecraft=Minecraft Forge ' + fg + ', Data Packs ' + dp + ', and Bedrock Edition ' + bd + '\n'
 
         new File("build/reports").mkdirs()
         new File("build/reports/export.txt").text = report

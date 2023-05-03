@@ -27,7 +27,6 @@ import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -76,16 +75,14 @@ import java.util.List;
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER).getDefinedBlocks(),
-					getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.JSON_TRIGGER),
-					this.getModElement().getGenerator()
-							.getTemplateGeneratorFromName(BlocklyEditorType.JSON_TRIGGER.registryName()),
+					BlocklyLoader.INSTANCE.getJSONTriggerLoader().getDefinedBlocks(),
+					this.getModElement().getGenerator().getTemplateGeneratorFromName("jsontriggers"),
 					additionalData).setTemplateExtension("json");
 
-			// load blocklytojsontrigger with custom generators loaded
+			// load blocklytojava with custom generators loaded
 			BlocklyToJSONTrigger blocklyToJSONTrigger = new BlocklyToJSONTrigger(this.getModElement().getWorkspace(),
-					this.getModElement(), this.triggerxml, this.getModElement().getGenerator()
-					.getTemplateGeneratorFromName(BlocklyEditorType.JSON_TRIGGER.registryName()),
+					this.getModElement(), this.triggerxml,
+					this.getModElement().getGenerator().getTemplateGeneratorFromName("jsontriggers"),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			String triggerCode = blocklyToJSONTrigger.getGeneratedCode();

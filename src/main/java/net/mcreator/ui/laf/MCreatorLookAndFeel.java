@@ -36,7 +36,7 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 	private final MCreatorTheme theme;
 
 	public MCreatorLookAndFeel() {
-		setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme.get())));
+		setCurrentTheme(theme = new MCreatorTheme(ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme)));
 	}
 
 	@Override protected void initClassDefaults(UIDefaults table) {

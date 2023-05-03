@@ -1,1 +1,0 @@
-La texture du zombie villageois ayant cette profession.

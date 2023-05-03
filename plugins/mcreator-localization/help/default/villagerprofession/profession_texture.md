@@ -1,1 +1,0 @@
-The texture of the villager with this profession.

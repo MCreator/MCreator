@@ -141,7 +141,6 @@ public class ConsoleSearchBar extends JToolBar {
 				index = 0;
 			}
 		} catch (Exception ignored) {
-			results.setText("No results");
 		}
 	}
 

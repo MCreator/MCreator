@@ -1,0 +1,5 @@
+task build(type: Zip) {
+    from 'src/main'
+    archiveName = 'export.zip'
+    destinationDir = file('build/export/')
+}

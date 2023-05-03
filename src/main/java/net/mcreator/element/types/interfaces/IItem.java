@@ -24,7 +24,7 @@ import net.mcreator.element.BaseType;
 import java.util.Collection;
 import java.util.List;
 
-public interface IItem extends ICommonType, IMCItemProvider {
+public interface IItem extends ICommonType {
 
 	@Override default Collection<BaseType> getBaseTypesProvided() {
 		return List.of(BaseType.ITEM);

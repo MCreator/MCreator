@@ -86,9 +86,9 @@ class PluginsPanel {
 		opts.add(new JEmptyBox(5, 5));
 
 		JCheckBox box = L10N.checkbox("dialog.preferences.java_plugins");
-		box.setSelected(PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get());
+		box.setSelected(PreferencesManager.PREFERENCES.hidden.enableJavaPlugins);
 
-		box.addActionListener(e -> PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.set(box.isSelected()));
+		box.addActionListener(e -> PreferencesManager.PREFERENCES.hidden.enableJavaPlugins = box.isSelected());
 
 		openPluginFolder.addActionListener(
 				e -> DesktopUtils.openSafe(UserFolderManager.getFileFromUserFolder("plugins")));
@@ -103,7 +103,7 @@ class PluginsPanel {
 	private void reloadPluginList() {
 		tmodel.removeAllElements();
 		PluginLoader.INSTANCE.getPlugins().stream().sorted(Comparator.comparing(Plugin::getWeight).reversed())
-				.sorted(Comparator.comparing(Plugin::isBuiltin)).forEach(tmodel::addElement);
+				.sorted(Comparator.comparing(Plugin::isBuiltin).reversed()).forEach(tmodel::addElement);
 	}
 
 	static class PluginsListCellRenderer extends JLabel implements ListCellRenderer<Plugin> {
@@ -125,22 +125,21 @@ class PluginsPanel {
 			if ((value.getInfo().getAuthor() != null) && (value.getInfo().getName() != null) && (value.getInfo()
 					.getCredits().equals("None"))) {
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: "
-						+ value.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", fully loaded: " + (
-						value.isLoaded() ?
-								"<html><font color=#a7ed1a>yes</font>" :
-								"<html><font color=#f24122>no</font>"));
-			} else if (value.getInfo().getAuthor() != null) {
+						+ value.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", loaded: "
+						+ (value.isLoaded() ?
+						"<html><font color=#a7ed1a>yes</font>" :
+						"<html><font color=#f24122>no</font>"));
+			} else if (value.getInfo().getAuthor() != null)
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: "
 						+ value.getPluginVersion() + ", author: " + value.getInfo().getAuthor() + ", credit: "
-						+ value.getInfo().getCredits() + ", fully loaded: " + (value.isLoaded() ?
+						+ value.getInfo().getCredits() + ", loaded: " + (value.isLoaded() ?
 						"<html><font color=#a7ed1a>yes</font>" :
 						"<html><font color=#f24122>no</font>"));
-			} else {
+			else
 				setText("<html>" + value.getInfo().getName() + "<br><small>ID: " + value.getID() + ", version: "
-						+ value.getPluginVersion() + ", fully loaded: " + (value.isLoaded() ?
+						+ value.getPluginVersion() + ", loaded: " + (value.isLoaded() ?
 						"<html><font color=#a7ed1a>yes</font>" :
 						"<html><font color=#f24122>no</font>"));
-			}
 
 			setToolTipText(value.getInfo().getDescription());
 			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));

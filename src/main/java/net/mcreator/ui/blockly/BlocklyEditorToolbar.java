@@ -71,12 +71,12 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			ProcedureGUI procedureGUI) {
 		setBorder(null);
 
-		List<ResourcePointer> templates = TemplatesLoader.loadTemplates(blocklyEditorType.extension(),
-				blocklyEditorType.extension());
+		List<ResourcePointer> templates =
+				TemplatesLoader.loadTemplates(blocklyEditorType.getExtension(), blocklyEditorType.getExtension());
 
 		BlocklyTemplateDropdown templateDropdown = new BlocklyTemplateDropdown(blocklyPanel, templates, procedureGUI);
 
-		templateLib = L10N.button("blockly.templates." + blocklyEditorType.registryName());
+		templateLib = L10N.button("blockly.templates." + blocklyEditorType.getTranslationKey());
 		templateLib.setPreferredSize(new Dimension(155, 16));
 		templateLib.setIcon(UIRES.get("18px.templatelib"));
 		templateLib.setOpaque(false);
@@ -126,22 +126,21 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 						Set<ToolboxBlock> filtered = new LinkedHashSet<>();
 
-						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
-								.getDefinedBlocks().values()) {
+						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
+								.values()) {
 							if (block.getName().toLowerCase(Locale.ENGLISH)
 									.contains(search.getText().toLowerCase(Locale.ENGLISH))) {
 								filtered.add(block);
 							}
 						}
 
-						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
-								.getDefinedBlocks().values()) {
+						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks()
+								.values()) {
 							for (String keyWord : keyWords) {
 								if (block.getName().toLowerCase(Locale.ENGLISH)
-										.contains(keyWord.toLowerCase(Locale.ENGLISH)) && (
-										block.getToolboxCategory() != null && block.getToolboxCategory().getName()
-												.toLowerCase(Locale.ENGLISH)
-												.contains(keyWord.toLowerCase(Locale.ENGLISH)))) {
+										.contains(keyWord.toLowerCase(Locale.ENGLISH)) && (block.toolboxCategory != null
+										&& block.toolboxCategory.getName().toLowerCase(Locale.ENGLISH)
+										.contains(keyWord.toLowerCase(Locale.ENGLISH)))) {
 									filtered.add(block);
 									break;
 								} else if (block.getName().toLowerCase(Locale.ENGLISH)
@@ -159,19 +158,18 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 							results.setMaximumVisibleRows(20);
 
 							for (ToolboxBlock block : filtered) {
-								JMenuItem menuItem = new JMenuItem("<html>" + (block.getToolboxCategory() != null ?
+								JMenuItem menuItem = new JMenuItem("<html>" + (block.toolboxCategory != null ?
 										"<span style='background: #" + Integer.toHexString(
-												block.getToolboxCategory().getColor().getRGB()).substring(2)
-												+ ";'>&nbsp;" + block.getToolboxCategory().getName()
-												+ "&nbsp;</span>&nbsp;&nbsp;" :
+												block.toolboxCategory.getColor().getRGB()).substring(2) + ";'>&nbsp;"
+												+ block.toolboxCategory.getName() + "&nbsp;</span>&nbsp;&nbsp;" :
 										"") + block.getName().replaceAll("%\\d+?",
 										"&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
 								menuItem.addActionListener(ev -> {
-									if (block.getToolboxXML() != null) {
-										blocklyPanel.addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>");
+									if (block.toolboxXML != null) {
+										blocklyPanel.addBlocksFromXML("<xml>" + block.toolboxXML + "</xml>");
 									} else {
 										blocklyPanel.addBlocksFromXML(
-												"<xml><block type=\"" + block.getMachineName() + "\"></block></xml>");
+												"<xml><block type=\"" + block.machine_name + "\"></block></xml>");
 									}
 									blocklyPanel.requestFocus();
 									results.setVisible(false);
@@ -199,33 +197,34 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 		add(Box.createHorizontalGlue());
 
-		JButton export = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".export");
+		JButton export = L10N.button("blockly.templates." + blocklyEditorType.getTranslationKey() + ".export");
 		export.setIcon(UIRES.get("18px.export"));
 		export.setOpaque(false);
 		add(export);
 		export.addActionListener(event -> {
-			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { "." + blocklyEditorType.extension() });
+			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { "." + blocklyEditorType.getExtension() });
 			if (exp != null) {
 				try {
 					ProcedureTemplateIO.exportBlocklySetup(blocklyPanel.getXML(), exp, blocklyEditorType);
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + blocklyEditorType.registryName() + ".export_failed.message"),
-							L10N.t("blockly.templates." + blocklyEditorType.registryName() + ".export_failed.title"),
-							JOptionPane.WARNING_MESSAGE);
+							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey()
+									+ ".export_failed.message"),
+							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey()
+									+ ".export_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});
 		ComponentUtils.normalizeButton4(export);
 		export.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 
-		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".import");
+		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.getTranslationKey() + ".import");
 		import_.setIcon(UIRES.get("18px.import"));
 		import_.setOpaque(false);
 		add(import_);
 		import_.addActionListener(event -> {
-			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { blocklyEditorType.extension() });
+			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { blocklyEditorType.getExtension() });
 			if (imp != null) {
 				try {
 					String procedureXml = ProcedureTemplateIO.importBlocklyXML(imp);
@@ -246,9 +245,10 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				} catch (Exception e) {
 					LOG.error(e.getMessage(), e);
 					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + blocklyEditorType.registryName() + ".import_failed.message"),
-							L10N.t("blockly.templates." + blocklyEditorType.registryName() + ".import_failed.title"),
-							JOptionPane.WARNING_MESSAGE);
+							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey()
+									+ ".import_failed.message"),
+							L10N.t("blockly.templates." + blocklyEditorType.getTranslationKey()
+									+ ".import_failed.title"), JOptionPane.WARNING_MESSAGE);
 				}
 			}
 		});

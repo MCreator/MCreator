@@ -10,12 +10,6 @@
       "name": "achievement",
       "datalist": "achievements",
       "customEntryProviders": "achievement"
-    },
-    {
-      "type": "field_image",
-      "src": "./res/server.png",
-      "width": 8,
-      "height": 24
     }
   ],
   "inputsInline": true,
@@ -23,7 +17,7 @@
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
     "group": "advancements",
-    "toolbox_id": "playerdata",
+    "toolbox_id": "playermanagement",
     "fields": [
       "achievement"
     ],

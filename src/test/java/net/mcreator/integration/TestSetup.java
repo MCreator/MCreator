@@ -24,16 +24,17 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.io.net.analytics.GoogleAnalytics;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.ui.help.HelpLoader;
-import net.mcreator.ui.init.*;
+import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
+import net.mcreator.ui.init.EntityAnimationsLoader;
+import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.TerribleModuleHacks;
@@ -65,9 +66,6 @@ public class TestSetup {
 
 		MCreatorApplication.isInternet = MCreatorApplication.WEB_API.initAPI();
 
-		// Do not track unit tests
-		GoogleAnalytics.ANALYTICS_ENABLED = false;
-
 		// print version of Java
 		LOG.info("Java version: " + System.getProperty("java.version") + ", VM: " + System.getProperty("java.vm.name")
 				+ ", vendor: " + System.getProperty("java.vendor"));
@@ -83,9 +81,6 @@ public class TestSetup {
 		} catch (InterruptedException | InvocationTargetException e) {
 			LOG.error("Failed to start JFX toolkit", e);
 		}
-
-		// load preferences
-		PreferencesManager.init();
 
 		// load plugins
 		// We begin by loading plugins, so every image can be changed
@@ -121,7 +116,6 @@ public class TestSetup {
 
 		// load JS files for Blockly
 		BlocklyJavaScriptsLoader.init();
-		BlocklyToolboxesLoader.init();
 
 		// blockly mod elements need blockly blocks loaded
 		BlocklyLoader.init();

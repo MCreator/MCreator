@@ -1,0 +1,8 @@
+localizationkeys:
+  - key: itemGroup.tab@registryname
+    mapto: name
+
+global_templates:
+  - template: elementinits/tabs.java.ftl
+    writer: java
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"

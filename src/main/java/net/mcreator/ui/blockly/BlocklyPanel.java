@@ -44,7 +44,6 @@ import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.lang.reflect.Method;
@@ -58,6 +57,8 @@ public class BlocklyPanel extends JFXPanel {
 
 	private static final Logger LOG = LogManager.getLogger("Blockly");
 
+	public static boolean DISABLE_WEBVIEW = false;
+
 	@Nullable private WebEngine webEngine;
 
 	private final BlocklyJavascriptBridge bridge;
@@ -66,27 +67,24 @@ public class BlocklyPanel extends JFXPanel {
 
 	private boolean loaded = false;
 
-	private String currentXML = "";
+	private String currentXML = null;
 
 	private final MCreator mcreator;
 
-	private static final String MINIMAL_XML = "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>";
-
-	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
+	public BlocklyPanel(MCreator mcreator) {
 		setOpaque(false);
 
 		this.mcreator = mcreator;
 
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> {
-			String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
-
-			if (newXml.length() > MINIMAL_XML.length()) {
+			String newXml = (String) executeJavaScriptSynchronously(
+					"Blockly.Xml.domToText(Blockly.Xml.workspaceToDom(workspace, true))");
+			if (!newXml.isEmpty())
 				this.currentXML = newXml;
-				return true;
-			}
-
-			return false;
 		});
+
+		if (DISABLE_WEBVIEW)
+			return;
 
 		ThreadUtil.runOnFxThread(() -> {
 			WebView browser = new WebView();
@@ -124,7 +122,7 @@ public class BlocklyPanel extends JFXPanel {
 					}
 
 					//remove font declaration if property set so
-					if (PreferencesManager.PREFERENCES.blockly.legacyFont.get()) {
+					if (PreferencesManager.PREFERENCES.blockly.legacyFont) {
 						css = css.replace("font-family: sans-serif;", "");
 					}
 
@@ -134,21 +132,21 @@ public class BlocklyPanel extends JFXPanel {
 							.appendChild(styleNode);
 
 					// @formatter:off
-					webEngine.executeScript("var MCR_BLOCKLY_PREF = { "
-							+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments.get() + ","
-							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.get().toLowerCase(Locale.ENGLISH) + "',"
-							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse.get() + ","
-							+ "'trashcan' : " + PreferencesManager.PREFERENCES.blockly.enableTrashcan.get() + ","
-							+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale.get() / 100.0 + ","
-							+ "'minScale' : " + PreferencesManager.PREFERENCES.blockly.minScale.get() / 100.0 + ","
-							+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed.get() / 100.0 + ","
+					webEngine.executeScript("var MCR_BLCKLY_PREF = { "
+							+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments + ","
+							+ "'renderer' : '" + PreferencesManager.PREFERENCES.blockly.blockRenderer.toLowerCase(Locale.ENGLISH) + "',"
+							+ "'collapse' : " + PreferencesManager.PREFERENCES.blockly.enableCollapse + ","
+							+ "'trashcan' : " + PreferencesManager.PREFERENCES.blockly.enableTrashcan + ","
+							+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale/100.0 + ","
+							+ "'minScale' : " + PreferencesManager.PREFERENCES.blockly.minScale/100.0 + ","
+							+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed/100.0 + ","
 							+ " };");
 					// @formatter:on
 
 					// Blockly core
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blockly_compressed.js"));
-					webEngine.executeScript(
-							FileIO.readResourceToString("/jsdist/msg/" + L10N.getBlocklyLangName() + ".js"));
+					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/messages.js"));
+					webEngine.executeScript(FileIO.readResourceToString("/jsdist/msg/" + L10N.getLangString() + ".js"));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"));
 
 					// Blockly MCreator modifications
@@ -176,7 +174,6 @@ public class BlocklyPanel extends JFXPanel {
 					// register JS bridge
 					JSObject window = (JSObject) webEngine.executeScript("window");
 					window.setMember("javabridge", bridge);
-					window.setMember("editorType", type.registryName());
 
 					loaded = true;
 					runAfterLoaded.forEach(ThreadUtil::runOnFxThread);

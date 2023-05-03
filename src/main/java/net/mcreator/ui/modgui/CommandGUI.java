@@ -20,8 +20,8 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
-import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.types.Command;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -86,16 +86,17 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		enderpanel.setOpaque(false);
 
-		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG).getDefinedBlocks();
+		externalBlocks = BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks();
 
-		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.COMMAND_ARG);
+		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
-					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
+			BlocklyLoader.INSTANCE.getCmdArgsBlockLoader()
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.COMMAND);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(CommandGUI.this::regenerateArgs).start());
 			if (!isEditingMode()) {
-				blocklyPanel.setXML(Command.XML_BASE);
+				blocklyPanel.setXML(
+						"<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"></block></next></block></xml>");
 			}
 		});
 
@@ -124,13 +125,12 @@ public class CommandGUI extends ModElementGUI<Command> {
 		}
 	}
 
-	private synchronized void regenerateArgs() {
+	private void regenerateArgs() {
 		BlocklyToJava blocklyToJava;
 		try {
 			blocklyToJava = new BlocklyToJava(mcreator.getWorkspace(), this.modElement, BlocklyEditorType.COMMAND_ARG,
 					blocklyPanel.getXML(), null, new ProceduralBlockCodeGenerator(
-					new BlocklyBlockCodeGenerator(externalBlocks,
-							mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG))));
+					new BlocklyBlockCodeGenerator(externalBlocks, mcreator.getGeneratorStats().getGeneratorCmdArgs())));
 		} catch (TemplateGeneratorException e) {
 			return;
 		}

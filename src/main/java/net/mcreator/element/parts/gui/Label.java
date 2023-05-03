@@ -57,7 +57,7 @@ public class Label extends GUIComponent {
 	}
 
 	@Override public int getWeight() {
-		return 10;
+		return 0;
 	}
 
 	@Override public boolean isSizeKnown() {

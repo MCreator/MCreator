@@ -20,8 +20,8 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
-import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.AchievementEntry;
@@ -32,7 +32,6 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.util.ComboBoxUtil;
@@ -210,11 +209,11 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		page1group.addValidationElement(achievementName);
 		page1group.addValidationElement(achievementDescription);
 
-		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER).getDefinedBlocks();
-		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.JSON_TRIGGER);
+		externalBlocks = BlocklyLoader.INSTANCE.getJSONTriggerLoader().getDefinedBlocks();
+		blocklyPanel = new BlocklyPanel(mcreator);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
-					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
+			BlocklyLoader.INSTANCE.getJSONTriggerLoader()
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.EMPTY);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(AchievementGUI.this::regenerateTrigger).start());
 			if (!isEditingMode()) {
@@ -245,9 +244,9 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		}
 	}
 
-	private synchronized void regenerateTrigger() {
+	private void regenerateTrigger() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.JSON_TRIGGER));
+				mcreator.getGeneratorStats().getJsonTriggers());
 
 		BlocklyToJSONTrigger blocklyToJSONTrigger;
 		try {

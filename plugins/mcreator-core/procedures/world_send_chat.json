@@ -4,12 +4,6 @@
       "type": "input_value",
       "name": "text",
       "check": "String"
-    },
-    {
-      "type": "field_image",
-      "src": "./res/server.png",
-      "width": 8,
-      "height": 24
     }
   ],
   "previousStatement": null,

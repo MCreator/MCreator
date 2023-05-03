@@ -36,18 +36,17 @@ public class CustomElementGUI extends ModElementGUI<CustomElement> {
 
 	public CustomElementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
-
-		GeneratableElement generatableElement = new CustomElement(modElement);
-
-		List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(generatableElement)
-				.stream().map(GeneratorTemplate::getFile).toList();
+		List<File> modElementFiles = mcreator.getGenerator().getModElementGeneratorTemplatesList(modElement).stream()
+				.map(GeneratorTemplate::getFile).toList();
 
 		File modElementFile = modElementFiles.get(0);
 
 		// this element was just created, generate its file
 		if (!editingMode) {
+			GeneratableElement element = new CustomElement(modElement);
+
 			// generate mod element code
-			mcreator.getGenerator().generateElement(generatableElement);
+			mcreator.getGenerator().generateElement(element);
 
 			// add mod element to the list, it will be only added for the first time, otherwise refreshed
 			modElement.setCodeLock(true);

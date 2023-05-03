@@ -23,5 +23,3 @@ templates:
     writer: json
     name: "@SRCROOT/recipes/@[getName()].json"
     condition: "recipeType %= Stone cutting"
-
-field_exclusions: [cookingBookCategory, craftingBookCategory]

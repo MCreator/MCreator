@@ -18,19 +18,16 @@
 
 package net.mcreator.minecraft;
 
-import net.mcreator.element.types.interfaces.IMCItemProvider;
-import net.mcreator.generator.GeneratorWrapper;
+import net.mcreator.element.types.Armor;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
+import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.EmptyIcon;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import org.apache.commons.lang3.StringUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -38,12 +35,9 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.Objects;
 
 public class MCItem extends DataListEntry {
-
-	private static final Logger LOG = LogManager.getLogger(MCItem.class);
 
 	public static final ImageIcon DEFAULT_ICON = UIRES.get("mod");
 	public static final ImageIcon TAG_ICON = UIRES.get("tag");
@@ -62,7 +56,6 @@ public class MCItem extends DataListEntry {
 		setType(entry.getType());
 		setTexture(entry.getTexture());
 		setRequiredAPIs(entry.getRequiredAPIs());
-		setOther(entry.getOther());
 		setIcon(BlockItemIcons.getIconForItem(entry.getTexture()));
 	}
 
@@ -81,51 +74,46 @@ public class MCItem extends DataListEntry {
 			this.icon = icon;
 	}
 
-	public boolean isPOI() {
-		if (getOther() instanceof Map<?, ?> otherMap) {
-			return otherMap.containsKey("poi") && Boolean.parseBoolean(otherMap.get("poi").toString());
-		}
-
-		return false;
-	}
-
 	public static ImageIcon getBlockIconBasedOnName(Workspace workspace, String name) {
 		if (name == null || name.trim().equals(""))
 			return new EmptyIcon.ImageIcon(32, 32);
 
-		if (name.startsWith("TAG:"))
-			return TAG_ICON;
-
 		ImageIcon retval = null;
 		try {
 			if (name.startsWith("CUSTOM:")) {
-				String elementName = GeneratorWrapper.getElementPlainName(name);
-				String suffix = StringUtils.substringAfterLast(name, ".");
-				boolean hasGeneratableIcon = false;
-
-				ModElement modElement = workspace.getModElementByName(elementName);
-
-				// if the element is not found, use the default icon
-				if (modElement == null) {
-					retval = DEFAULT_ICON;
-					hasGeneratableIcon = true;
-				}
-				// try to get the icon from the generatable element
-				else if (modElement.getGeneratableElement() instanceof IMCItemProvider provider) {
-					ImageIcon providedIcon = provider.getIconForMCItem(workspace, suffix);
-					if (providedIcon != null) {
-						retval = providedIcon;
-						hasGeneratableIcon = true;
-					}
-				}
-
-				// Otherwise, try using the mod element icon
-				if (!hasGeneratableIcon && new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
-						elementName + ".png").isFile()) {
+				if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
+						name.replace("CUSTOM:", "") + ".png").isFile()) {
 					retval = new ImageIcon(
 							workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
-									+ elementName + ".png");
+									+ name.replace("CUSTOM:", "") + ".png");
+				} else if (name.endsWith(".helmet")) {
+					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
+							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".helmet", ""))
+									.getGeneratableElement())).textureHelmet, TextureType.ITEM);
+				} else if (name.endsWith(".body")) {
+					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
+							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".body", ""))
+									.getGeneratableElement())).textureBody, TextureType.ITEM);
+				} else if (name.endsWith(".legs")) {
+					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
+							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".legs", ""))
+									.getGeneratableElement())).textureLeggings, TextureType.ITEM);
+				} else if (name.endsWith(".boots")) {
+					retval = workspace.getFolderManager().getTextureImageIcon(((Armor) Objects.requireNonNull(
+							workspace.getModElementByName(name.replace("CUSTOM:", "").replace(".boots", ""))
+									.getGeneratableElement())).textureBoots, TextureType.ITEM);
+				} else if (name.endsWith(".bucket")) {
+					if (new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
+							name.replace("CUSTOM:", "").replace(".bucket", "") + ".png").isFile()) {
+						retval = MinecraftImageGenerator.generateFluidBucketIcon(new ImageIcon(
+								workspace.getFolderManager().getModElementPicturesCacheDir().getAbsolutePath() + "/"
+										+ name.replace("CUSTOM:", "").replace(".bucket", "") + ".png"));
+					} else {
+						retval = TiledImageCache.bucket;
+					}
 				}
+			} else if (name.startsWith("TAG:")) {
+				return TAG_ICON;
 			} else if (name.startsWith("POTION:")) {
 				String potion = name.replace("POTION:", "");
 				if (potion.startsWith("CUSTOM:")) {
@@ -151,13 +139,11 @@ public class MCItem extends DataListEntry {
 
 			if (retval != null && retval.getImage() != null) {
 				if (retval.getImage().getWidth(null) > -1 && retval.getImage().getHeight(null) > -1) {
-					// The image is cropped to fix an issue with long animated textures
-					return new ImageIcon(ImageUtils.resizeAndCrop(retval.getImage(), 32));
+					return retval;
 				}
 			}
 
-		} catch (Exception e) {
-			LOG.warn("Failed to load icon for item: " + name, e);
+		} catch (Exception ignored) {
 		}
 
 		return DEFAULT_ICON;
@@ -169,20 +155,12 @@ public class MCItem extends DataListEntry {
 			this(element, fieldName, type, null);
 		}
 
-		public Custom(ModElement element, String fieldName, String type, @Nullable String descriptor) {
+		public Custom(ModElement element, String fieldName, String type, @Nullable String description) {
 			super("CUSTOM:" + element.getName() + (fieldName == null ? "" : ("." + fieldName)));
-
-			if (descriptor != null) {
-				setReadableName(
-						element.getName() + " - " + element.getType().getReadableName() + " " + descriptor.toLowerCase(
-								Locale.ENGLISH));
-			} else {
-				setReadableName(element.getName() + " - " + element.getType().getReadableName());
-			}
-
+			setReadableName(element.getName() + " - " + element.getType().getReadableName());
 			setIcon(getBlockIconBasedOnName(element.getWorkspace(), getName()));
 			setType(type);
-			setDescription(element.getType().getDescription());
+			setDescription(description);
 		}
 
 		@Override public boolean isSupportedInWorkspace(Workspace workspace) {

@@ -46,6 +46,8 @@ public class BlocklyToJava extends BlocklyToCode {
 	protected final Logger LOG = LogManager.getLogger("Blockly2Java");
 	protected final BlocklyVariables variableGenerator = new BlocklyVariables(this);
 
+	private final BlocklyEditorType editorType;
+
 	/**
 	 * @param workspace         <p>The {@link Workspace} executing the code</p>
 	 * @param blocklyEditorType <p>Blockly editor type</p>
@@ -55,7 +57,9 @@ public class BlocklyToJava extends BlocklyToCode {
 	public BlocklyToJava(Workspace workspace, ModElement parent, BlocklyEditorType blocklyEditorType, String sourceXML,
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
 			throws TemplateGeneratorException {
-		super(workspace, parent, blocklyEditorType, templateGenerator, externalGenerators);
+		super(workspace, parent, templateGenerator, externalGenerators);
+
+		this.editorType = blocklyEditorType;
 
 		preInitialization();
 
@@ -65,7 +69,7 @@ public class BlocklyToJava extends BlocklyToCode {
 						.parse(new InputSource(new StringReader(sourceXML)));
 				doc.getDocumentElement().normalize();
 
-				Element start_block = BlocklyBlockUtil.getStartBlock(doc, blocklyEditorType.startBlockName());
+				Element start_block = BlocklyBlockUtil.getStartBlock(doc, blocklyEditorType.getStartBlockName());
 
 				// if there is no start block, we return empty string
 				if (start_block == null)
@@ -94,7 +98,7 @@ public class BlocklyToJava extends BlocklyToCode {
 	/**
 	 * <p>This method contains the code needing to be executed before blocks are placed.</p>
 	 *
-	 * @param doc        Blockly XML document
+	 * @param doc Blockly XML document
 	 * @param startBlock The basic block of the editor used to get other blocks.
 	 */
 	protected void preBlocksPlacement(Document doc, Element startBlock) throws TemplateGeneratorException {}
@@ -102,7 +106,7 @@ public class BlocklyToJava extends BlocklyToCode {
 	/**
 	 * <p>This method contains the code needing to be executed after blocks are placed.</p>
 	 *
-	 * @param doc        Blockly XML document
+	 * @param doc Blockly XML document
 	 * @param startBlock The basic block of the editor used to get other blocks.
 	 * @param baseBlocks A list of all blocks placed under start block.
 	 */
@@ -172,5 +176,9 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new SetVariableBlock());
 		blockGenerators.add(new GetVariableBlock());
 		blockGenerators.add(new ReturnBlock());
+	}
+
+	public BlocklyEditorType getEditorType() {
+		return editorType;
 	}
 }

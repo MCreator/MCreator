@@ -1,1 +1,0 @@
-If this option is enabled, the block can be fertilized with bone meal.

@@ -77,7 +77,7 @@ class WorkspaceFileBrowserContextMenu extends JPopupMenu {
 		}
 
 		boolean fileInWorkspace = selected.getUserObject() instanceof File file && browser.mcreator.getFolderManager()
-				.isFileInWorkspace(file, true);
+				.isFileInWorkspace(file);
 		browser.mcreator.actionRegistry.openFile.setEnabled(true);
 		browser.mcreator.actionRegistry.openFileInDesktop.setEnabled(
 				fileInWorkspace || selected == browser.sourceCode || selected == browser.currRes);

@@ -5,28 +5,20 @@
       "name": "heightmap",
       "options": [
         [
-          "Motion blocking (worldgen)",
+          "Top solid block",
           "OCEAN_FLOOR_WG"
         ],
         [
-          "Motion blocking",
-          "OCEAN_FLOOR"
-        ],
-        [
-          "Non-air block (worldgen)",
+          "World surface",
           "WORLD_SURFACE_WG"
         ],
         [
-          "Non-air block",
-          "WORLD_SURFACE"
+          "Ocean floor",
+          "OCEAN_FLOOR"
         ],
         [
-          "Motion blocking or liquid",
+          "Top motion blocking",
           "MOTION_BLOCKING"
-        ],
-        [
-          "Motion blocking or liquid (except leaves)",
-          "MOTION_BLOCKING_NO_LEAVES"
         ]
       ]
     }

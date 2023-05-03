@@ -19,12 +19,6 @@
       "type": "input_value",
       "name": "inaccuracy",
       "check": "Number"
-    },
-    {
-      "type": "field_image",
-      "src": "./res/server.png",
-      "width": 8,
-      "height": 24
     }
   ],
   "inputsInline": true,
@@ -36,8 +30,7 @@
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
       "<value name=\"speed\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
-      "<value name=\"inaccuracy\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
-      "~<value name=\"projectile\"><block type=\"projectiles_throwable\"><field name=\"projectile\">Snowball</field><value name=\"shooter\"><block type=\"entity_none\"></block></value></block></value>"
+      "<value name=\"inaccuracy\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
     ],
     "inputs": [
       "entity",

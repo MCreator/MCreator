@@ -33,8 +33,6 @@ public class Painting extends GeneratableElement {
 	public String texture;
 	public int width;
 	public int height;
-	public String title;
-	public String author;
 
 	public Painting(ModElement element) {
 		super(element);

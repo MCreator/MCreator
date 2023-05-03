@@ -1,1 +1,0 @@
-The display name of this villager profession. It is displayed in the trading interface.

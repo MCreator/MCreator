@@ -25,7 +25,6 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
-import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -33,7 +32,10 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings("unused") public class RangedItem extends GeneratableElement
 		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture {
@@ -103,7 +105,7 @@ import java.util.*;
 		Model model = getItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
-		return new HashMap<>();
+		return null;
 	}
 
 	@Override public Model getEntityModel() {
@@ -123,14 +125,6 @@ import java.util.*;
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		return List.of(BaseType.ITEM, BaseType.ENTITY);
-	}
-
-	@Override public List<MCItem> providedMCItems() {
-		return List.of(new MCItem.Custom(this.getModElement(), null, "item"));
-	}
-
-	@Override public List<MCItem> getCreativeTabItems() {
-		return providedMCItems();
 	}
 
 }

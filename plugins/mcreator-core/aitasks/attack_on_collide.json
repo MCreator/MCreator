@@ -9,11 +9,10 @@
       "type": "field_checkbox",
       "name": "longmemory",
       "checked": false
-    },
-    {
-      "type": "field_ai_condition_selector",
-      "name": "condition"
     }
+  ],
+  "extensions": [
+    "ai_condition_selector"
   ],
   "inputsInline": true,
   "previousStatement": null,

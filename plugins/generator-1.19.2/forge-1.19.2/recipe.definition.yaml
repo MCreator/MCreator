@@ -1,34 +1,33 @@
 templates:
-  - template: recipe/smelting.json.ftl # loaded from datapack generator
+  - template: json/recipe/smelting.json.ftl
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Smelting"
-  - template: recipe/blasting.json.ftl # loaded from datapack generator
+  - template: json/recipe/blasting.json.ftl
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Blasting"
-  - template: recipe/campfire_cooking.json.ftl # loaded from datapack generator
+  - template: json/recipe/campfire_cooking.json.ftl
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Campfire cooking"
-  - template: recipe/smoking.json.ftl # loaded from datapack generator
+  - template: json/recipe/smoking.json.ftl
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Smoking"
-  - template: recipe/crafting.json.ftl # loaded from datapack generator
+  - template: json/recipe/crafting.json.ftl
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Crafting"
-  - template: recipe/stonecutting.json.ftl # loaded from datapack generator
+  - template: json/recipe/stonecutting.json.ftl
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Stone cutting"
-  - template: recipe/smithing.json.ftl # loaded from datapack generator
+  - template: json/recipe/smithing.json.ftl
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Smithing"
-  - template: recipe/brewingrecipe.java.ftl
+  - template: brewingrecipe.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/recipes/brewing/@NAMEBrewingRecipe.java"
     condition: "recipeType %= Brewing"
-
-field_exclusions: [cookingBookCategory, craftingBookCategory]
+    deleteWhenConditionFalse: true

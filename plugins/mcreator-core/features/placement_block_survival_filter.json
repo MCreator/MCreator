@@ -11,7 +11,6 @@
   "nextStatement": "Placement",
   "colour": 130,
   "mcreator": {
-    "group": "filter",
     "toolbox_id": "placements",
     "toolbox_init": [
       "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"

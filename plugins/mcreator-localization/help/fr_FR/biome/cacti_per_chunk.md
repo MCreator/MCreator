@@ -1,0 +1,1 @@
+Ce paramètre contrôle le nombre de cactus dans un tronçon de biome

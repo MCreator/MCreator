@@ -19,59 +19,91 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 
+import javax.swing.*;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 /**
- * While serving as a wrapper for the main component validator (if specified), a unique name validator also checks
- * if that component provides a non-empty identifier that has no duplicates in the given elements list.
+ * While serving as a wrapper for the main validator of the text field instance, a unique name validator also checks
+ * that the provided text field defines a non-empty name that has no duplicates in the given elements list.
  */
 public class UniqueNameValidator implements Validator {
 
 	private final String name;
-	private final Supplier<String> uniqueNameGetter;
+	private final JTextField holder;
 
+	private final Function<String, String> uniqueNameGetter;
 	private final Supplier<Stream<String>> otherNames;
-	private Supplier<Boolean> isPresentOnList;
+	private boolean isPresentOnList;
 	private boolean ignoreCase;
 	private final List<String> forbiddenNames;
 
 	private final Validator extraValidator;
 
 	/**
-	 * @param name             The text used to describe the purpose of the holder.
-	 * @param uniqueNameGetter Supplier to get unique name from the holder's text.
-	 * @param otherNames       Supplier of names of other elements in the same list. Those must all be unique names.
-	 * @param extraValidator   The main validator for the holder.
+	 * @param holder         The element to add this validator to.
+	 * @param name           The text used to describe the purpose of the {@code holder}.
+	 * @param otherNames     Supplier of names of other elements in the same list. Those must all be unique names.
+	 * @param extraValidator The main validator for the {@code holder}.
 	 */
-	public UniqueNameValidator(String name, Supplier<String> uniqueNameGetter, Supplier<Stream<String>> otherNames,
+	public UniqueNameValidator(VTextField holder, String name, Supplier<Stream<String>> otherNames,
 			Validator extraValidator) {
-		this(name, uniqueNameGetter, otherNames, Collections.emptyList(), extraValidator);
+		this(holder, name, e -> e, otherNames, Collections.emptyList(), extraValidator);
 	}
 
 	/**
-	 * @param name             The text used to describe the purpose of the holder.
-	 * @param uniqueNameGetter Supplier to get unique name from the holder's text.
+	 * @param holder         The element to add this validator to.
+	 * @param name           The text used to describe the purpose of the {@code holder}.
+	 * @param otherNames     Supplier of names of other elements in the same list. Those must all be unique names.
+	 * @param forbiddenNames List of strings that must not be used as a name, e.g. names of built-in properties.
+	 * @param extraValidator The main validator for the {@code holder}.
+	 */
+	public UniqueNameValidator(VTextField holder, String name, Supplier<Stream<String>> otherNames,
+			List<String> forbiddenNames, Validator extraValidator) {
+		this(holder, name, e -> e, otherNames, forbiddenNames, extraValidator);
+	}
+
+	/**
+	 * @param holder           The element to add this validator to.
+	 * @param name             The text used to describe the purpose of the {@code holder}.
+	 * @param uniqueNameGetter The function to get unique name from the {@code holder}'s text.
+	 * @param otherNames       Supplier of names of other elements in the same list. Those must all be unique names.
+	 * @param extraValidator   The main validator for the {@code holder}.
+	 */
+	public UniqueNameValidator(VTextField holder, String name, Function<String, String> uniqueNameGetter,
+			Supplier<Stream<String>> otherNames, Validator extraValidator) {
+		this(holder, name, uniqueNameGetter, otherNames, Collections.emptyList(), extraValidator);
+	}
+
+	/**
+	 * @param holder           The element to add this validator to.
+	 * @param name             The text used to describe the purpose of the {@code holder}.
+	 * @param uniqueNameGetter The function to get unique name from the {@code holder}'s text.
 	 * @param otherNames       Supplier of names of other elements in the same list. Those must all be unique names.
 	 * @param forbiddenNames   List of strings that must not be used as a name, e.g. names of built-in properties.
-	 * @param extraValidator   The main validator for the holder.
+	 * @param extraValidator   The main validator for the {@code holder}.
 	 */
-	public UniqueNameValidator(String name, Supplier<String> uniqueNameGetter, Supplier<Stream<String>> otherNames,
-			List<String> forbiddenNames, Validator extraValidator) {
+	public UniqueNameValidator(VTextField holder, String name, Function<String, String> uniqueNameGetter,
+			Supplier<Stream<String>> otherNames, List<String> forbiddenNames, Validator extraValidator) {
 		this.name = name;
+		this.holder = holder;
 		this.uniqueNameGetter = uniqueNameGetter;
 		this.otherNames = otherNames;
-		this.isPresentOnList = () -> true;
+		this.isPresentOnList = true;
 		this.ignoreCase = false;
 		this.forbiddenNames = forbiddenNames;
-		this.extraValidator = Objects.requireNonNullElse(extraValidator, () -> ValidationResult.PASSED);
+		this.extraValidator = extraValidator != null ? extraValidator : () -> ValidationResult.PASSED;
 	}
 
 	/**
@@ -81,16 +113,6 @@ public class UniqueNameValidator implements Validator {
 	 * @return This validator instance with {@code isPresentOnList} parameter set to passed value.
 	 */
 	public UniqueNameValidator setIsPresentOnList(boolean isPresentOnList) {
-		return setIsPresentOnList(() -> isPresentOnList);
-	}
-
-	/**
-	 * Use this method to define if the validated name is present on {@link UniqueNameValidator#otherNames} list.
-	 *
-	 * @param isPresentOnList Supplier that controls whether the validated name is present on {@code otherNames} list.
-	 * @return This validator instance with {@code isPresentOnList} parameter set to passed value.
-	 */
-	public UniqueNameValidator setIsPresentOnList(Supplier<Boolean> isPresentOnList) {
 		this.isPresentOnList = isPresentOnList;
 		return this;
 	}
@@ -113,8 +135,28 @@ public class UniqueNameValidator implements Validator {
 	 * @param extraValidator The new main validator for the validated element.
 	 */
 	public UniqueNameValidator wrapValidator(Validator extraValidator) {
-		return new UniqueNameValidator(name, uniqueNameGetter, otherNames, forbiddenNames,
+		return new UniqueNameValidator((VTextField) holder, name, uniqueNameGetter, otherNames, forbiddenNames,
 				extraValidator).setIsPresentOnList(isPresentOnList).setIgnoreCase(ignoreCase);
+	}
+
+	/**
+	 * Creates an instance of unique name validator to validate new mod element's name (formerly known as a
+	 * separate class called <i>{@code ModElementNameValidator}</i>).
+	 *
+	 * @param workspace The workspace to check for mod elements with the same name.
+	 * @param textField The text field to be validated.
+	 * @param name      The text used to describe the purpose of the {@code textField}.
+	 * @return An unique name validator to validate new mod element's name.
+	 */
+	public static UniqueNameValidator createModElementNameValidator(Workspace workspace, VTextField textField,
+			String name) {
+		UniqueNameValidator validator = new UniqueNameValidator(textField, name,
+				JavaConventions::convertToValidClassName,
+				() -> workspace.getModElements().stream().map(ModElement::getName),
+				new JavaMemberNameValidator(textField, true));
+		validator.setIsPresentOnList(false);
+		validator.setIgnoreCase(true);
+		return validator;
 	}
 
 	/**
@@ -131,12 +173,12 @@ public class UniqueNameValidator implements Validator {
 	}
 
 	@Override public ValidationResult validate() {
-		String uniqueName = uniqueNameGetter.get();
+		String uniqueName = uniqueNameGetter.apply(holder.getText());
 		if (uniqueName == null || uniqueName.equals(""))
 			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.empty", name));
-		if (otherNames.get().filter(textCheck(uniqueName)).count() > (isPresentOnList.get() ? 1 : 0)
+		if (otherNames.get().filter(textCheck(uniqueName)).count() > (isPresentOnList ? 1 : 0)
 				|| forbiddenNames.contains(uniqueName))
-			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.duplicate", name));
+			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.duplicate"));
 
 		return extraValidator.validate();
 	}

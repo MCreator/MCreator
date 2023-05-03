@@ -19,7 +19,6 @@
 package net.mcreator.ui.action.impl.workspace;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.gradle.GradleTaskFinishedListener;
@@ -39,10 +38,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RegenerateCodeAction extends GradleAction {
@@ -71,17 +67,9 @@ public class RegenerateCodeAction extends GradleAction {
 
 			// remove all sources of mod elements that are not locked
 			for (ModElement mod : mcreator.getWorkspace().getModElements()) {
-				if (mod.getType() == ModElementType.UNKNOWN)
-					continue; // skip unknown MEs as we don't know what we can remove from them
-
-				GeneratableElement generatableElement = mod.getGeneratableElement();
-
-				if (generatableElement == null)
-					continue; // we can't remove sources for GE that lacks definition
-
-				List<GeneratorTemplate> templates = mcreator.getGenerator()
-						.getModElementGeneratorTemplatesList(generatableElement);
-
+				List<GeneratorTemplate> templates = mcreator.getGenerator().getModElementGeneratorTemplatesList(mod);
+				if (templates == null)
+					continue;
 				List<File> modElementFiles = templates.stream().map(GeneratorTemplate::getFile).toList();
 				toBePreserved.addAll(modElementFiles); // we don't delete mod element files in next step
 				if (!mod.isCodeLocked()) // but we do in this step, if the code is not locked
@@ -91,8 +79,8 @@ public class RegenerateCodeAction extends GradleAction {
 			// keep base mod files that can be locked if selected so in the workspace settings
 			if (mcreator.getWorkspaceSettings().isLockBaseModFiles()) {
 				mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).forEach(generatorTemplate -> {
-					if (generatorTemplate.getTemplateDefinition().get("canLock") != null
-							&& generatorTemplate.getTemplateDefinition().get("canLock")
+					if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
+							&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
 							.equals("true")) // can this file be locked
 						// are mod base file locked
 						toBePreserved.add(
@@ -165,31 +153,27 @@ public class RegenerateCodeAction extends GradleAction {
 				try {
 					GeneratableElement generatableElement = mod.getGeneratableElement();
 
-					if (generatableElement != null) {
-						LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: " + mod.getName());
+					LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: " + mod.getName());
 
-						// generate mod element code
-						List<GeneratorFile> generatedFiles = mcreator.getGenerator()
-								.generateElement(generatableElement, false);
+					// generate mod element code
+					List<GeneratorFile> generatedFiles = mcreator.getGenerator()
+							.generateElement(generatableElement, false);
 
-						if (!mod.isCodeLocked()) {
-							filesToReformat.addAll(
-									generatedFiles.stream().map(GeneratorFile::getFile).collect(Collectors.toSet()));
-						}
-
-						// save custom mod element picture if it has one
-						mcreator.getModElementManager().storeModElementPicture(generatableElement);
-
-						// add mod element to workspace again, so the icons get reloaded
-						mcreator.getWorkspace().addModElement(generatableElement.getModElement());
-
-						// we reinit the mod to load new icons etc.
-						generatableElement.getModElement().reinit(mcreator.getWorkspace());
-
-						generatableElementsToSave.add(generatableElement);
-					} else {
-						LOG.warn("Failed to regenerate: " + mod.getName() + " as it has no generatable element");
+					if (!mod.isCodeLocked()) {
+						filesToReformat.addAll(
+								generatedFiles.stream().map(GeneratorFile::file).collect(Collectors.toSet()));
 					}
+
+					// save custom mod element picture if it has one
+					mcreator.getModElementManager().storeModElementPicture(generatableElement);
+
+					// add mod element to workspace again, so the icons get reloaded
+					mcreator.getWorkspace().addModElement(mod);
+
+					// we reinit the mod to load new icons etc.
+					mod.reinit();
+
+					generatableElementsToSave.add(generatableElement);
 				} catch (Exception e) {
 					LOG.error("Failed to regenerate: " + mod.getName(), e);
 				}
@@ -230,7 +214,6 @@ public class RegenerateCodeAction extends GradleAction {
 			dial.addProgress(p2);
 
 			mcreator.getGenerator().runResourceSetupTasks();
-			// generate base files without organizing imports as we first need all files generated so we can properly organize imports
 			mcreator.getGenerator().generateBase(false);
 			mcreator.mv.updateMods();
 
@@ -245,7 +228,6 @@ public class RegenerateCodeAction extends GradleAction {
 			dial.addProgress(p22);
 
 			int ftfCount = filesToReformat.size();
-			// after all files are generated, we can perform global import organization and code reformat
 			ClassWriter.formatAndOrganiseImportsForFiles(mcreator.getWorkspace(), filesToReformat,
 					idx -> p22.setPercent((int) (((float) idx / (float) ftfCount) * 100.0f)));
 

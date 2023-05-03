@@ -45,7 +45,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
+@SuppressWarnings("ClassCanBeRecord") public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 
 	private final MCreator mcreator;
 
@@ -465,8 +465,8 @@ public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 		// process workspace base files
 		List<GeneratorTemplate> modBaseTemplates = localWorkspace.getGenerator().getModBaseGeneratorTemplatesList(true);
 		for (GeneratorTemplate generatorTemplate : modBaseTemplates) {
-			if (generatorTemplate.getTemplateDefinition().get("canLock") != null
-					&& generatorTemplate.getTemplateDefinition().get("canLock")
+			if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
+					&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
 					.equals("true")) // can this file be locked
 				if (localWorkspace.getWorkspaceSettings()
 						.isLockBaseModFiles()) // are mod base file locked in local workspace

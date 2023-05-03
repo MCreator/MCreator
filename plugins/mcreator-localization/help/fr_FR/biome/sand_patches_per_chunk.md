@@ -1,0 +1,1 @@
+Ce paramètre contrôle le nombre de groupes de blocs de sable par tronçon de biome.

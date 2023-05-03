@@ -202,14 +202,11 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().toString().equals("")) {
+		if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().toString().equals(""))
 			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.structuregen.error_select_structure_spawn"));
-		} else if ((int) minCountPerChunk.getValue() > (int) maxCountPerChunk.getValue()) {
-			return new AggregatedValidationResult.FAIL(L10N.t("validator.minimal_lower_than_maximal",
-					L10N.t("elementgui.structuregen.structure_group_size")));
-		} else {
+		else
 			return new AggregatedValidationResult(page1group);
-		}
+
 	}
 
 	@Override public void openInEditingMode(Structure structure) {

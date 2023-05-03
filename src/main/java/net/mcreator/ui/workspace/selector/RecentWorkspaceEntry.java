@@ -22,7 +22,6 @@ import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import java.io.File;
 
 public final class RecentWorkspaceEntry {
@@ -32,19 +31,15 @@ public final class RecentWorkspaceEntry {
 
 	@Nonnull private final String path;
 
-	@Nullable private String mcrVersion;
-
-	public RecentWorkspaceEntry(Workspace workspace, File path, String mcrVersion) {
+	public RecentWorkspaceEntry(Workspace workspace, File path) {
 		this.name = workspace.getWorkspaceSettings().getModName();
 		this.path = path.toString();
 		this.type = workspace.getGeneratorConfiguration().getGeneratorFlavor();
-		this.mcrVersion = mcrVersion;
 	}
 
 	public void update(RecentWorkspaceEntry source) {
 		this.name = source.getName();
 		this.type = source.getType();
-		this.mcrVersion = source.getMCRVersion();
 	}
 
 	@Nonnull public File getPath() {
@@ -60,10 +55,6 @@ public final class RecentWorkspaceEntry {
 			return GeneratorFlavor.UNKNOWN;
 
 		return type;
-	}
-
-	@Nullable public String getMCRVersion() {
-		return mcrVersion;
 	}
 
 	@Override public int hashCode() {

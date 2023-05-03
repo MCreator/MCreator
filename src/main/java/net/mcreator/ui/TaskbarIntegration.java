@@ -27,9 +27,8 @@ public class TaskbarIntegration {
 	@Nullable private Taskbar taskbar = null;
 
 	public TaskbarIntegration() {
-		if (Taskbar.isTaskbarSupported()) {
+		if (Taskbar.isTaskbarSupported())
 			taskbar = Taskbar.getTaskbar();
-		}
 	}
 
 	public void setProgressState(Window w, int progress) {

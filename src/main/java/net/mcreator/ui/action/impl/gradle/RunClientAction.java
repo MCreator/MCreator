@@ -40,7 +40,7 @@ public class RunClientAction extends GradleAction {
 				actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
 				actionRegistry.getMCreator().getGenerator().generateBase();
 
-				if (PreferencesManager.PREFERENCES.gradle.passLangToMinecraft.get())
+				if (PreferencesManager.PREFERENCES.gradle.passLangToMinecraft)
 					MinecraftOptionsUtils.setLangTo(actionRegistry.getMCreator().getWorkspace(),
 							L10N.getLocaleString());
 

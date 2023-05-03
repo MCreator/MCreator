@@ -1,0 +1,1 @@
+Ce paramètre contrôle le nombre de gros champignons à générer par tronçon de biome.

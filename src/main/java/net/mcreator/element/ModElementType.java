@@ -35,6 +35,7 @@ public class ModElementType<GE extends GeneratableElement> {
 
 	private final String registryName;
 	private final BaseType baseType;
+	private final RecipeType recipeType;
 
 	private final ModElementGUIProvider<GE> modElementGUIProvider;
 	private final Class<? extends GE> modElementStorageClass;
@@ -46,9 +47,10 @@ public class ModElementType<GE extends GeneratableElement> {
 
 	private boolean hasProcedureTriggers;
 
-	public ModElementType(String registryName, Character shortcut, BaseType baseType,
+	public ModElementType(String registryName, Character shortcut, BaseType baseType, RecipeType recipeType,
 			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass) {
 		this.baseType = baseType;
+		this.recipeType = recipeType;
 		this.registryName = registryName;
 		this.shortcut = shortcut;
 
@@ -73,6 +75,10 @@ public class ModElementType<GE extends GeneratableElement> {
 		return shortcut;
 	}
 
+	public RecipeType getRecipeType() {
+		return recipeType;
+	}
+
 	public BaseType getBaseType() {
 		return baseType;
 	}
@@ -93,7 +99,7 @@ public class ModElementType<GE extends GeneratableElement> {
 		return modElementGUIProvider.get(mcreator, modElement, editingMode);
 	}
 
-	public Class<? extends GE> getModElementStorageClass() {
+	public Class<? extends GeneratableElement> getModElementStorageClass() {
 		return modElementStorageClass;
 	}
 
@@ -158,7 +164,6 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> TAB;
 	public static ModElementType<?> TAG;
 	public static ModElementType<?> TOOL;
-	public static ModElementType<?> VILLAGERPROFESSION;
 	public static ModElementType<?> VILLAGERTRADE;
 
 	public static ModElementType<?> UNKNOWN;

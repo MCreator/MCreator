@@ -26,7 +26,6 @@ import paulscode.sound.codecs.CodecJOrbis;
 import paulscode.sound.libraries.LibraryJavaSound;
 
 import java.io.File;
-import java.net.URL;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -62,15 +61,9 @@ public class SoundUtils {
 
 		soundSystemThread.execute(() -> {
 			try {
-				URL url = file.toURI().toURL();
-
-				if (new CodecJOrbis().initialize(url)) {
-					soundSystem.newSource(false, sourceName, file.toURI().toURL(), file.getName(), false, 0, 0, 0,
-							SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
-					soundSystem.play(sourceName);
-				} else {
-					LOG.warn("Failed to load sound file " + file.getName());
-				}
+				soundSystem.newSource(false, sourceName, file.toURI().toURL(), file.getName(), false, 0, 0, 0,
+						SoundSystemConfig.ATTENUATION_NONE, SoundSystemConfig.getDefaultRolloff());
+				soundSystem.play(sourceName);
 			} catch (Exception e) {
 				LOG.warn("Failed to load sound file", e);
 			}

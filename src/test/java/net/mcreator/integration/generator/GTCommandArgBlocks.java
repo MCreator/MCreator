@@ -28,7 +28,6 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Command;
 import net.mcreator.generator.GeneratorStats;
-import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
@@ -37,7 +36,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import static net.mcreator.integration.TestWorkspaceDataProvider.getRandomItem;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -45,70 +43,41 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTCommandArgBlocks {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
-		// silently skip if commands are not supported by this generator
 		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.COMMAND)
 				== GeneratorStats.CoverageStatus.NONE) {
+			LOG.warn("[" + generatorName
+					+ "] Skipping command argument blocks test as the current generator does not support them.");
 			return;
 		}
 
-		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG);
+		Set<String> generatorBlocks = workspace.getGeneratorStats().getGeneratorCmdArgs();
 
-		for (ToolboxBlock commandArg : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
-				.getDefinedBlocks().values()) {
+		for (ToolboxBlock commandArg : BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
 			// silently skip command argument blocks not supported by this generator
-			if (!generatorBlocks.contains(commandArg.getMachineName())) {
+			if (!generatorBlocks.contains(commandArg.machine_name)) {
 				continue;
 			}
 
-			if (commandArg.getToolboxTestXML() == null) {
+			if (commandArg.toolboxXML == null) {
 				LOG.warn("[" + generatorName + "] Skipping command argument block without default XML defined: "
-						+ commandArg.getMachineName());
+						+ commandArg.machine_name);
 				continue;
 			}
 
-			if (!commandArg.getAllInputs().isEmpty() || !commandArg.getAllRepeatingInputs().isEmpty()) {
-				boolean templatesDefined = true;
+			if (!commandArg.getInputs().isEmpty()) {
+				boolean templatesDefined = false;
 
-				if (commandArg.getToolboxInitStatements() != null) {
-					for (String input : commandArg.getAllInputs()) {
-						boolean match = false;
-						for (String toolboxtemplate : commandArg.getToolboxInitStatements()) {
-							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
-								match = true;
-								break;
-							}
-						}
-
-						if (!match) {
-							templatesDefined = false;
-							break;
-						}
-					}
-
-					for (String input : commandArg.getAllRepeatingInputs()) {
-						Pattern pattern = Pattern.compile("<value name=\"" + input + "\\d+\">");
-						boolean match = false;
-						for (String toolboxtemplate : commandArg.getToolboxInitStatements()) {
-							if (pattern.matcher(toolboxtemplate).find()) {
-								match = true;
-								break;
-							}
-						}
-
-						if (!match) {
-							templatesDefined = false;
-							break;
-						}
-					}
-				} else {
-					templatesDefined = false;
+				if (commandArg.toolbox_init != null) {
+					templatesDefined = commandArg.getInputs().stream().noneMatch(
+							input -> commandArg.toolbox_init.stream().noneMatch(
+									toolboxTemplate -> toolboxTemplate.contains("<value name=\"" + input + "\">")));
 				}
 
 				if (!templatesDefined) {
 					LOG.warn("[" + generatorName + "] Skipping command argument block with incomplete template: "
-							+ commandArg.getMachineName());
+							+ commandArg.machine_name);
 					continue;
 				}
 			}
@@ -116,12 +85,12 @@ public class GTCommandArgBlocks {
 			if (commandArg.getFields() != null) {
 				int processed = 0;
 
-				if (commandArg.getBlocklyJSON().has("args0")) {
-					for (String field : commandArg.getFields()) {
-						JsonArray args0 = commandArg.getBlocklyJSON().get("args0").getAsJsonArray();
+				for (String field : commandArg.getFields()) {
+					try {
+						JsonArray args0 = commandArg.blocklyJSON.getAsJsonObject().get("args0").getAsJsonArray();
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
-							if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
+							if (arg.get("name").getAsString().equals(field)) {
 								switch (arg.get("type").getAsString()) {
 								case "field_checkbox":
 									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
@@ -147,11 +116,12 @@ public class GTCommandArgBlocks {
 								break;
 							}
 						}
+					} catch (Exception ignored) {
 					}
 				}
 
-				if (commandArg.getBlocklyJSON().get("extensions") != null) {
-					JsonArray extensions = commandArg.getBlocklyJSON().get("extensions").getAsJsonArray();
+				if (commandArg.blocklyJSON.getAsJsonObject().get("extensions") != null) {
+					JsonArray extensions = commandArg.blocklyJSON.getAsJsonObject().get("extensions").getAsJsonArray();
 					for (int i = 0; i < extensions.size(); i++) {
 						String extension = extensions.get(i).getAsString();
 						String suggestedFieldName = extension;
@@ -175,7 +145,7 @@ public class GTCommandArgBlocks {
 
 				if (processed != commandArg.getFields().size()) {
 					LOG.warn("[" + generatorName + "] Skipping command argument block with special fields: "
-							+ commandArg.getMachineName());
+							+ commandArg.machine_name);
 					continue;
 				}
 			}
@@ -189,20 +159,20 @@ public class GTCommandArgBlocks {
 				}
 			}
 
-			ModElement modElement = new ModElement(workspace, "TestCmdArgBlock" + commandArg.getMachineName(),
+			ModElement modElement = new ModElement(workspace, "TestCmdArgBlock" + commandArg.machine_name,
 					ModElementType.COMMAND);
 
-			String testXML = commandArg.getToolboxTestXML();
+			String testXML = commandArg.toolboxXML;
 
 			// add additional xml to the cmd arg block definition
-			testXML = testXML.replace("<block type=\"" + commandArg.getMachineName() + "\">",
-					"<block type=\"" + commandArg.getMachineName() + "\">" + additionalXML);
+			testXML = testXML.replace("<block type=\"" + commandArg.machine_name + "\">",
+					"<block type=\"" + commandArg.machine_name + "\">" + additionalXML);
 
 			Command command = new Command(modElement);
 			command.commandName = modElement.getName();
 			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
 
-			if (commandArg.getType() == IBlockGenerator.BlockType.PROCEDURAL)
+			if (commandArg.type == IBlockGenerator.BlockType.PROCEDURAL)
 				command.argsxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\""
 						+ " deletable=\"false\" x=\"40\" y=\"40\"><next>" + testXML + "</next></block></xml>";
 
@@ -212,8 +182,7 @@ public class GTCommandArgBlocks {
 				workspace.getModElementManager().storeModElement(command);
 			} catch (Throwable t) {
 				t.printStackTrace();
-				fail("[" + generatorName + "] Failed generating command argument block: "
-						+ commandArg.getMachineName());
+				fail("[" + generatorName + "] Failed generating command argument block: " + commandArg.machine_name);
 			}
 		}
 

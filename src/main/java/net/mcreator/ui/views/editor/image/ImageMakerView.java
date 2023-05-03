@@ -230,15 +230,11 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				File exportFile = mcreator.getFolderManager()
 						.getTextureFile(RegistryNameFixer.fix(name.getText()), textureType);
 
-				if (exportFile.isFile()) {
+				if (exportFile.isFile())
 					JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.image_maker.texture_type_name_exists"),
 							L10N.t("dialog.image_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
-				} else {
+				else
 					FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
-
-					// load image in java cache
-					new ImageIcon(exportFile.getAbsolutePath()).getImage().flush();
-				}
 				this.image = exportFile;
 				this.name = this.image.getName();
 				refreshTab();
@@ -376,9 +372,4 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public LayerPanel getLayerPanel() {
 		return layerPanel;
 	}
-
-	public File getImageFile() {
-		return image;
-	}
-
 }

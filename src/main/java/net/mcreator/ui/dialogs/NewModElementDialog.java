@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -28,7 +29,7 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
-import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
@@ -52,8 +53,8 @@ public class NewModElementDialog {
 								regNameString == null || regNameString.equals("") ?
 										L10N.t("dialog.new_modelement.registry_name.empty") :
 										regNameString));
-						return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
-								L10N.t("common.mod_element_name")).validate();
+						return UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(),
+								(VTextField) component, L10N.t("common.mod_element_name")).validate();
 					}
 				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
 				UIManager.getString("OptionPane.cancelButtonText"), null, regName);
@@ -66,6 +67,8 @@ public class NewModElementDialog {
 			ModElementGUI<?> newGUI = type.getModElementGUI(mcreator, element, false);
 			if (newGUI != null) {
 				newGUI.showView();
+				mcreator.getApplication().getAnalytics().async(() -> mcreator.getApplication().getAnalytics()
+						.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT, type.getReadableName(), null, null));
 			}
 		}
 	}

@@ -29,8 +29,6 @@ import net.mcreator.ui.workspace.WorkspacePanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.*;
 
@@ -88,40 +86,30 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
-		del.addActionListener(a -> deleteCurrentlySelected(structureElementList));
-
-		structureElementList.addKeyListener(new KeyAdapter() {
-			@Override public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					deleteCurrentlySelected(structureElementList);
+		del.addActionListener(actionEvent -> {
+			List<String> files = structureElementList.getSelectedValuesList();
+			if (files.size() > 0) {
+				int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
+						L10N.t("workspace.structure.confirm_deletion_message"), L10N.t("common.confirmation"),
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (n == 0) {
+					files.forEach(workspacePanel.getMcreator().getFolderManager()::removeStructure);
+					reloadElements();
 				}
 			}
 		});
 
-		importnbt.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());
+		importnbt.addActionListener(e -> workspacePanel.getMcreator().actionRegistry.importStructure.doAction());
 		importmc.addActionListener(
-				e -> workspacePanel.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
+				e -> workspacePanel.getMcreator().actionRegistry.importStructureFromMinecraft.doAction());
 
 		add("North", bar);
 
 	}
 
-	private void deleteCurrentlySelected(JSelectableList<String> structureElementList) {
-		List<String> files = structureElementList.getSelectedValuesList();
-		if (files.size() > 0) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.structure.confirm_deletion_message"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (n == 0) {
-				files.forEach(workspacePanel.getMCreator().getFolderManager()::removeStructure);
-				reloadElements();
-			}
-		}
-	}
-
 	@Override public void reloadElements() {
 		listmodel.removeAllElements();
-		workspacePanel.getMCreator().getFolderManager().getStructureList().forEach(listmodel::addElement);
+		workspacePanel.getMcreator().getFolderManager().getStructureList().forEach(listmodel::addElement);
 		refilterElements();
 	}
 

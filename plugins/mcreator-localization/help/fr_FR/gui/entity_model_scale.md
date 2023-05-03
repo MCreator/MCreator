@@ -1,1 +1,0 @@
-Détermine la taille d'affichage du modèle d'entité.

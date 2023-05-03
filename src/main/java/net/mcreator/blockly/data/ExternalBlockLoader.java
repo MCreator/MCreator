@@ -24,7 +24,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.init.BlocklyToolboxesLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.Tuple;
@@ -69,8 +68,8 @@ public class ExternalBlockLoader {
 				if (toolboxBlock != null) {
 					toolboxBlock.machine_name = FilenameUtilsPatched.getBaseName(procedureBlock);
 
-					String localized_message = L10N.t("blockly.block." + toolboxBlock.getMachineName());
-					String localized_message_en = L10N.t_en("blockly.block." + toolboxBlock.getMachineName());
+					String localized_message = L10N.t("blockly.block." + toolboxBlock.machine_name);
+					String localized_message_en = L10N.t_en("blockly.block." + toolboxBlock.machine_name);
 
 					if (localized_message != null) {
 						int parameters_count = net.mcreator.util.StringUtils.countRegexMatches(localized_message,
@@ -82,7 +81,7 @@ public class ExternalBlockLoader {
 							jsonresult.add("message0", new JsonPrimitive(localized_message));
 						} else {
 							LOG.warn("Not all procedure block inputs are defined using %N for block "
-									+ toolboxBlock.getMachineName() + " for the selected language");
+									+ toolboxBlock.machine_name + " for the selected language");
 							if (localized_message_en != null) {
 								jsonresult.add("message0", new JsonPrimitive(localized_message_en));
 							}
@@ -91,12 +90,12 @@ public class ExternalBlockLoader {
 						jsonresult.add("message0", new JsonPrimitive(localized_message_en));
 					}
 
-					String localized_tooltip = L10N.t("blockly.block." + toolboxBlock.getMachineName() + ".tooltip");
+					String localized_tooltip = L10N.t("blockly.block." + toolboxBlock.machine_name + ".tooltip");
 					if (localized_tooltip != null) {
 						jsonresult.add("tooltip", new JsonPrimitive(localized_tooltip));
 					}
 
-					jsonresult.add("type", new JsonPrimitive(toolboxBlock.getMachineName()));
+					jsonresult.add("type", new JsonPrimitive(toolboxBlock.machine_name));
 
 					toolboxBlock.blocklyJSON = jsonresult;
 					toolboxBlock.type = jsonresult.get("output") == null ?
@@ -122,7 +121,7 @@ public class ExternalBlockLoader {
 		// setup lookup cache of loaded blocks
 		this.toolboxBlocks = new HashMap<>();
 		for (ToolboxBlock toolboxBlock : toolboxBlocksList)
-			toolboxBlocks.put(toolboxBlock.getMachineName(), toolboxBlock);
+			toolboxBlocks.put(toolboxBlock.machine_name, toolboxBlock);
 
 		// generate JSON for loaded blocks
 		JsonArray blocksJSON = new JsonArray();
@@ -134,7 +133,7 @@ public class ExternalBlockLoader {
 		toolboxBlocksList.addAll(DynamicBlockLoader.getDynamicBlocks());
 
 		// and then sort them for toolbox display
-		if (PreferencesManager.PREFERENCES.blockly.useSmartSort.get()) {
+		if (PreferencesManager.PREFERENCES.blockly.useSmartSort) {
 			toolboxBlocksList.sort(
 					Comparator.comparing(ToolboxBlock::getGroupEstimate).thenComparing(ToolboxBlock::getName));
 		} else {
@@ -144,7 +143,19 @@ public class ExternalBlockLoader {
 		// setup toolbox
 
 		// add default "built-in" categories
-		BlocklyLoader.getBuiltinCategories().forEach(name -> toolbox.put(name, new ArrayList<>()));
+		toolbox.put("other", new ArrayList<>());
+		toolbox.put("apis", new ArrayList<>());
+		toolbox.put("mcelements", new ArrayList<>());
+		toolbox.put("mcvariables", new ArrayList<>());
+		toolbox.put("customvariables", new ArrayList<>());
+		toolbox.put("logicloops", new ArrayList<>());
+		toolbox.put("logicoperations", new ArrayList<>());
+		toolbox.put("math", new ArrayList<>());
+		toolbox.put("text", new ArrayList<>());
+		toolbox.put("time", new ArrayList<>());
+		toolbox.put("advanced", new ArrayList<>());
+		toolbox.put("aiadvanced", new ArrayList<>());
+		toolbox.put("actions", new ArrayList<>());
 
 		// Handle built-in categories
 		for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
@@ -153,7 +164,15 @@ public class ExternalBlockLoader {
 					continue;
 
 				if (toolboxBlock.toolbox_id != null && toolboxBlock.toolbox_id.equals(entry.getKey())) {
-					entry.getValue().add(new Tuple<>(toolboxBlock, toolboxBlock.getToolboxXML()));
+					StringBuilder toolboxXML = new StringBuilder();
+
+					toolboxXML.append("<block type=\"").append(toolboxBlock.machine_name).append("\">");
+					if (toolboxBlock.toolbox_init != null)
+						toolboxBlock.toolbox_init.forEach(toolboxXML::append);
+					toolboxXML.append("</block>");
+
+					entry.getValue().add(new Tuple<>(toolboxBlock, toolboxXML.toString()));
+					toolboxBlock.toolboxXML = toolboxXML.toString();
 				}
 			}
 		}
@@ -169,7 +188,15 @@ public class ExternalBlockLoader {
 			}
 			for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
 				if (toolboxBlock.toolbox_id != null && toolboxBlock.toolbox_id.equals(category.id)) {
-					categoryBuilder.append(toolboxBlock.getToolboxXML());
+					StringBuilder toolboxXML = new StringBuilder();
+
+					toolboxXML.append("<block type=\"").append(toolboxBlock.machine_name).append("\">");
+					if (toolboxBlock.toolbox_init != null)
+						toolboxBlock.toolbox_init.forEach(toolboxXML::append);
+					toolboxXML.append("</block>");
+
+					categoryBuilder.append(toolboxXML);
+					toolboxBlock.toolboxXML = toolboxXML.toString();
 					toolboxBlock.toolboxCategory = category;
 				}
 			}
@@ -183,8 +210,8 @@ public class ExternalBlockLoader {
 	public void loadBlocksAndCategoriesInPanel(BlocklyPanel pane, ToolboxType toolboxType) {
 		pane.executeJavaScriptSynchronously("Blockly.defineBlocksWithJsonArray(" + blocksJSONString + ")");
 
-		String toolbox_xml = BlocklyToolboxesLoader.INSTANCE.getToolboxXML(
-				toolboxType.name().toLowerCase(Locale.ENGLISH));
+		String toolbox_xml = FileIO.readResourceToString(
+				"/blockly/toolbox_" + toolboxType.name().toLowerCase(Locale.ENGLISH) + ".xml");
 
 		Matcher m = translationsMatcher.matcher(toolbox_xml);
 		while (m.find()) {
@@ -211,6 +238,10 @@ public class ExternalBlockLoader {
 
 	public Map<String, ToolboxBlock> getDefinedBlocks() {
 		return toolboxBlocks;
+	}
+
+	public enum ToolboxType {
+		AI_BUILDER, PROCEDURE, COMMAND, EMPTY
 	}
 
 }

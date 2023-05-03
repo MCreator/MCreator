@@ -1,0 +1,1 @@
+Ce paramètre contrôle le nombre de blocs de champignons (plantes) par tronçon dans ce biome

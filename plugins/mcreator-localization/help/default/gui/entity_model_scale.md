@@ -1,1 +1,0 @@
-Determines the size of the displayed entity model.

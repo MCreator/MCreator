@@ -247,8 +247,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 		toDraw.stream().sorted().forEach(component -> {
 			g.setColor(Color.gray.brighter().brighter());
-			Font originalFont = g.getFont();
-			Stroke originalStroke = g.getStroke();
+			Font tmp = g.getFont();
 
 			int cx = component.getX(), cy = component.getY();
 			if (component.equals(selected) && componentMoveMode) {
@@ -259,8 +258,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 			// paint actual component
 			component.paintComponent(cx, cy, wysiwygEditor, g);
 
-			g.setFont(originalFont);
-			g.setStroke(originalStroke);
+			g.setFont(tmp);
 		});
 	}
 

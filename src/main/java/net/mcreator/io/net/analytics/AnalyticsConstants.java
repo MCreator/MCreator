@@ -21,12 +21,9 @@ package net.mcreator.io.net.analytics;
 public class AnalyticsConstants {
 
 	public static final String EVENT_NEW_MOD_ELEMENT = "new_mod_element";
-	public static final String EVENT_EDIT_MOD_ELEMENT = "edit_mod_element";
-	public static final String EVENT_EXPORT_FOR_DIST = "export_for_distribution";
-	public static final String EVENT_NEW_WORKSPACE = "new_workspace";
+	public static final String EVENT_WORKSPACE_IMPORT = "workspace_import";
 
-	public static final String PAGE_LAUNCH = "/launch";
-	public static final String PAGE_CLOSE = "/close";
-	public static final String PAGE_WORKSPACE_OPEN = "/workspace/open";
+	static final String PAGE_LAUNCH = "launch";
+	static final String PAGE_CLOSE = "close";
 
 }

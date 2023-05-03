@@ -31,6 +31,7 @@ public class BooleanBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
+		master.append("(");
 		if (element != null) {
 			master.append(element.getTextContent().toLowerCase(Locale.ENGLISH));
 		} else {
@@ -38,6 +39,7 @@ public class BooleanBlock implements IBlockGenerator {
 			master.addCompileNote(
 					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.boolean")));
 		}
+		master.append(")");
 	}
 
 	@Override public String[] getSupportedBlocks() {

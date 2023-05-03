@@ -25,36 +25,26 @@ import java.io.File;
 public class GeneratorUtils {
 
 	public static File getSourceRoot(Workspace workspace, GeneratorConfiguration generatorConfiguration) {
-		return new File(
-				GeneratorTokens.replaceTokens(workspace, generatorConfiguration, workspace.getWorkspaceSettings(),
-						generatorConfiguration.getSourceRoot()));
+		return new File(GeneratorTokens.replaceTokens(workspace, generatorConfiguration.getSourceRoot()));
 	}
 
 	public static File getResourceRoot(Workspace workspace, GeneratorConfiguration generatorConfiguration) {
-		return new File(
-				GeneratorTokens.replaceTokens(workspace, generatorConfiguration, workspace.getWorkspaceSettings(),
-						generatorConfiguration.getResourceRoot()));
+		return new File(GeneratorTokens.replaceTokens(workspace, generatorConfiguration.getResourceRoot()));
 	}
 
 	public static File getModAssetsRoot(Workspace workspace, GeneratorConfiguration generatorConfiguration) {
-		return new File(
-				GeneratorTokens.replaceTokens(workspace, generatorConfiguration, workspace.getWorkspaceSettings(),
-						generatorConfiguration.getModAssetsRoot()));
+		return new File(GeneratorTokens.replaceTokens(workspace, generatorConfiguration.getModAssetsRoot()));
 	}
 
 	public static File getModDataRoot(Workspace workspace, GeneratorConfiguration generatorConfiguration) {
-		return new File(
-				GeneratorTokens.replaceTokens(workspace, generatorConfiguration, workspace.getWorkspaceSettings(),
-						generatorConfiguration.getModDataRoot()));
+		return new File(GeneratorTokens.replaceTokens(workspace, generatorConfiguration.getModDataRoot()));
 	}
 
 	public static File getSpecificRoot(Workspace workspace, GeneratorConfiguration generatorConfiguration,
 			String root) {
 		String rootString = generatorConfiguration.getSpecificRoot(root);
 		if (rootString != null)
-			return new File(
-					GeneratorTokens.replaceTokens(workspace, generatorConfiguration, workspace.getWorkspaceSettings(),
-							rootString));
+			return new File(GeneratorTokens.replaceTokens(workspace, rootString));
 		else
 			return null;
 	}

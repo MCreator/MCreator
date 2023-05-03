@@ -20,15 +20,11 @@
 package net.mcreator.element.types.interfaces;
 
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.minecraft.MCItem;
 
 import javax.annotation.Nullable;
-import java.util.List;
 
 public interface ITabContainedElement {
 
 	@Nullable TabEntry getCreativeTab();
-
-	List<MCItem> getCreativeTabItems();
 
 }

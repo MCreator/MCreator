@@ -33,6 +33,7 @@ import java.util.Comparator;
 public class ThemesPanel {
 
 	private final DefaultListModel<Theme> tmodel = new DefaultListModel<>();
+	private final JComboBox<String> themeIDs;
 
 	public ThemesPanel(PreferencesDialog dialog) {
 		dialog.model.addElement(L10N.t("dialog.preferences.page_themes"));
@@ -50,16 +51,10 @@ public class ThemesPanel {
 		String themeDescription = L10N.t("preferences.themes.select_theme.description");
 		top.add("West", L10N.label("dialog.preferences.entry_description", themeName, themeDescription));
 
-		JComboBox<String> themeIDs = new JComboBox<>(ThemeLoader.getThemeIDList().toArray(new String[0]));
+		themeIDs = new JComboBox<>(ThemeLoader.getThemeIDList().toArray(new String[0]));
 		themeIDs.setPreferredSize(new Dimension(250, 0));
-		themeIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.uiTheme.get());
+		themeIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.uiTheme);
 		themeIDs.addActionListener(e -> dialog.markChanged());
-
-		themeIDs.addActionListener(e -> {
-			if (themeIDs.getSelectedItem() != null)
-				PreferencesManager.PREFERENCES.hidden.uiTheme.set((String) themeIDs.getSelectedItem());
-		});
-
 		top.add("East", themeIDs);
 
 		reloadThemesList();
@@ -74,6 +69,10 @@ public class ThemesPanel {
 	private void reloadThemesList() {
 		tmodel.removeAllElements();
 		ThemeLoader.getThemes().stream().sorted(Comparator.comparing(Theme::getID)).forEach(tmodel::addElement);
+	}
+
+	public String getSelectedTheme() {
+		return (String) themeIDs.getSelectedItem();
 	}
 
 	static class ThemesListCellRenderer extends JLabel implements ListCellRenderer<Theme> {

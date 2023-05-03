@@ -21,8 +21,6 @@ package net.mcreator.workspace;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.mcreator.io.FileIO;
-import net.mcreator.plugin.MCREvent;
-import net.mcreator.plugin.events.workspace.WorkspaceSavedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.ModElementManager;
@@ -72,7 +70,7 @@ public class WorkspaceFileManager implements Closeable {
 
 		// start autosave scheduler
 		lastSchedule = dataSaveExecutor.schedule(new SaveTask(this),
-				PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.get(), TimeUnit.SECONDS);
+				PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval, TimeUnit.SECONDS);
 	}
 
 	public File getWorkspaceFile() {
@@ -107,15 +105,11 @@ public class WorkspaceFileManager implements Closeable {
 	}
 
 	private void saveWorkspaceIfChanged() {
-		MCREvent.event(new WorkspaceSavedEvent.CalledSavingMethod(workspace));
-
 		if (!workspace.isDirty()) // if the workspace file was not changed, we do not perform save
 			return;
 
 		String workspacestring = gson.toJson(workspace);
 		if (workspacestring != null && !workspacestring.equals("")) {
-			MCREvent.event(new WorkspaceSavedEvent.BeforeSaving(workspace));
-
 			// first we backup workspace file
 			rotateWorkspaceFileBackup();
 
@@ -143,8 +137,6 @@ public class WorkspaceFileManager implements Closeable {
 			if (dataSavedListener != null)
 				dataSavedListener.dataSaved();
 
-			MCREvent.event(new WorkspaceSavedEvent.AfterSaving(workspace));
-
 			LOG.debug("Workspace stored on the FS");
 		} else {
 			LOG.error("Skipping workspace save. Workspace is defined but we failed to serialize it!");
@@ -152,7 +144,7 @@ public class WorkspaceFileManager implements Closeable {
 	}
 
 	private void rotateWorkspaceFileBackup() {
-		int numberOfBackupsExcludingCurrent = PreferencesManager.PREFERENCES.backups.numberOfBackupsToStore.get() - 1;
+		int numberOfBackupsExcludingCurrent = PreferencesManager.PREFERENCES.backups.numberOfBackupsToStore - 1;
 		File[] existingBackupsArray = folderManager.getWorkspaceBackupsCacheDir().listFiles();
 
 		if (existingBackupsArray != null && existingBackupsArray.length > 0) { // we already have some backups
@@ -161,7 +153,7 @@ public class WorkspaceFileManager implements Closeable {
 			Collections.reverse(existingBackups);
 			long lastBackupTime = existingBackups.get(0).lastModified();
 			if ((System.currentTimeMillis() - lastBackupTime) / (1000 * 60)
-					> PreferencesManager.PREFERENCES.backups.automatedBackupInterval.get()) {  // check if we have surpassed backup interval
+					> PreferencesManager.PREFERENCES.backups.automatedBackupInterval) {  // check if we have surpassed backup interval
 				if (existingBackupsArray.length
 						> numberOfBackupsExcludingCurrent) // only delete old ones if we have more than threshold of backups
 					existingBackups.stream().skip(numberOfBackupsExcludingCurrent).forEach(File::delete);
@@ -202,7 +194,7 @@ public class WorkspaceFileManager implements Closeable {
 
 			// after we call save, we schedule a new call
 			fileManager.lastSchedule = fileManager.dataSaveExecutor.schedule(new SaveTask(fileManager),
-					PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.get(), TimeUnit.SECONDS);
+					PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval, TimeUnit.SECONDS);
 		}
 
 	}

@@ -19,10 +19,7 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.*;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeLoader;
-import net.mcreator.element.types.interfaces.IMCItemProvider;
+import net.mcreator.element.*;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -53,15 +50,15 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	@Nullable private String path;
 
 	// MCItem representations of this element
-	// it is transient, so it does not get serialized
+	// it is transient so it does not get serialized
 	private transient List<MCItem> mcItems = null;
 
 	// current mod icon if not obtained from mcitem - used for recipes
-	// it is transient, so it does not get serialized
+	// it is transient so it does not get serialized
 	private transient ImageIcon elementIcon;
 
 	// Workspace this ModElement is in
-	// it is transient, so it does not get serialized
+	// it is transient so it does not get serialized
 	private transient Workspace workspace;
 
 	public ModElement(@Nonnull Workspace workspace, @Nonnull String name, ModElementType<?> type) {
@@ -69,7 +66,9 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.type = type.getRegistryName();
 		this.registry_name = RegistryNameFixer.fromCamelCase(name);
 
-		reinit(workspace);
+		setWorkspace(workspace);
+
+		reinit();
 	}
 
 	/**
@@ -83,15 +82,12 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.type = mu.type;
 		this.registry_name = RegistryNameFixer.fromCamelCase(name);
 
-		if (mu.metadata != null) {
+		if (mu.metadata != null)
 			this.metadata = new HashMap<>(mu.metadata);
 
-			// remove files cache from metadata as otherwise on the first re-generation,
-			// files from original mod element (mu) will be deleted
-			this.metadata.remove("files");
-		}
+		setWorkspace(workspace);
 
-		reinit(workspace);
+		reinit();
 	}
 
 	@Nullable public GeneratableElement getGeneratableElement() {
@@ -110,26 +106,38 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.workspace = other.workspace;
 	}
 
-	/**
-	 * Call this method to reinit ME icon, mcItems cache or update associated workspace
-	 *
-	 * @param workspace Workspace this ME belongs to
-	 */
-	public void reinit(Workspace workspace) {
-		this.workspace = workspace;
-
-		if (type == null || this.getType() == ModElementType.UNKNOWN) {
+	public void reinit() {
+		if (type == null)
 			return;
-		}
 
-		// reload ME icon
 		reloadElementIcon();
 
-		// revalidate MCItems cache so it is reloaded on next request
-		mcItems = null;
+		mcItems = new ArrayList<>();
+
+		if (getType() == ModElementType.DIMENSION) {
+			if (getMetadata("ep") != null && (Boolean) getMetadata("ep"))
+				mcItems.add(new MCItem.Custom(this, null, "item", "Portal igniter"));
+		} else if (getType().getRecipeType() == RecipeType.ITEM) {
+			mcItems.add(new MCItem.Custom(this, null, "item"));
+		} else if (getType().getRecipeType() == RecipeType.BLOCK) {
+			mcItems.add(new MCItem.Custom(this, null, "block"));
+		} else if (getType().getRecipeType() == RecipeType.BUCKET) {
+			mcItems.add(new MCItem.Custom(this, null, "block", "Fluid block"));
+			if (getMetadata("gb") != null && (Boolean) getMetadata("gb"))
+				mcItems.add(new MCItem.Custom(this, "bucket", "item", "Fluid bucket"));
+		} else if (getType().getBaseType() == BaseType.ARMOR) {
+			if (getMetadata("eh") != null && (Boolean) getMetadata("eh"))
+				mcItems.add(new MCItem.Custom(this, "helmet", "item", "Helmet"));
+			if (getMetadata("ec") != null && (Boolean) getMetadata("ec"))
+				mcItems.add(new MCItem.Custom(this, "body", "item", "Chestplate"));
+			if (getMetadata("el") != null && (Boolean) getMetadata("el"))
+				mcItems.add(new MCItem.Custom(this, "legs", "item", "Leggings"));
+			if (getMetadata("eb") != null && (Boolean) getMetadata("eb"))
+				mcItems.add(new MCItem.Custom(this, "boots", "item", "Boots"));
+		}
 	}
 
-	public void reloadElementIcon() {
+	private void reloadElementIcon() {
 		if (elementIcon != null && elementIcon.getImage() != null)
 			elementIcon.getImage().flush();
 
@@ -143,6 +151,16 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public void setWorkspace(Workspace workspace) {
 		this.workspace = workspace;
+
+		// if this mod element does not have ID inside the workspace yet, define it now
+		if (sortid == null)
+			this.sortid =
+					workspace.getModElements().stream().filter(e -> e.sortid != null).mapToInt(e -> e.sortid).max()
+							.orElse(0) + 1;
+	}
+
+	public Integer getSortID() {
+		return sortid;
 	}
 
 	public void setSortID(Integer sortid) {
@@ -153,6 +171,13 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		if (elementIcon != null && elementIcon.getImage() != null)
 			return elementIcon;
 		return null;
+	}
+
+	public void updateIcons() {
+		// flush all the buffers of the contained icons in case if the icons changed
+		mcItems.forEach(mcItem -> mcItem.icon.getImage().flush());
+
+		reloadElementIcon();
 	}
 
 	public ModElement putMetadata(String key, Object data) {
@@ -230,23 +255,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.locked_code = codeLock;
 	}
 
-	@Nonnull public Integer getSortID() {
-		if (sortid == null) {
-			this.sortid =
-					workspace.getModElements().stream().filter(e -> e.sortid != null).mapToInt(e -> e.sortid).max()
-							.orElse(0) + 1;
-		}
-
-		return sortid;
-	}
-
-	@Nonnull public synchronized List<MCItem> getMCItems() {
-		if (mcItems == null) {
-			mcItems = this.getGeneratableElement() instanceof IMCItemProvider provider ?
-					provider.providedMCItems() :
-					Collections.emptyList();
-		}
-
+	public List<MCItem> getMCItems() {
 		return mcItems;
 	}
 

@@ -223,7 +223,8 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onStoppedUsing.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
+		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
+				new DataListEntry.Dummy("MISC"));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

@@ -13,7 +13,6 @@
   "nextStatement": "Placement",
   "colour": 130,
   "mcreator": {
-    "group": "filter",
     "toolbox_id": "placements",
     "fields": [
       "depth"

@@ -47,7 +47,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -62,6 +65,9 @@ public class ModElementUITest {
 	@BeforeAll public static void initTest() throws IOException {
 		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
 		LOG = LogManager.getLogger("Mod Element Test");
+
+		// disable webview to avoid issues in headless test environments
+		BlocklyPanel.DISABLE_WEBVIEW = true;
 
 		TestSetup.setupIntegrationTestEnvironment();
 
@@ -86,7 +92,7 @@ public class ModElementUITest {
 		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
 
 		// generate some "dummy" procedures for dropdowns to work
-		for (int i = 1; i <= 15; i++) {
+		for (int i = 1; i <= 14; i++) {
 			workspace.addModElement(
 					new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
 							new ArrayList<String>()));
@@ -122,14 +128,8 @@ public class ModElementUITest {
 							"dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE"));
 		}
 
-		for (int i = 1; i <= 1; i++) {
-			workspace.addModElement(
-					new ModElement(workspace, "entity" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
-							new ArrayList<String>()).putMetadata("return_type", "ENTITY"));
-		}
-
 		// reduce autosave interval for tests
-		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
+		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 2000;
 
 		LOG.info("Test workspace folder: " + workspace.getWorkspaceFolder());
 	}
@@ -139,7 +139,7 @@ public class ModElementUITest {
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
 
-		PreferencesManager.PREFERENCES.ui.language.set(L10N.DEFAULT_LOCALE);
+		PreferencesManager.PREFERENCES.ui.language = L10N.DEFAULT_LOCALE;
 		L10N.initTranslations();
 
 		// test mod elements using default (en) translations
@@ -152,23 +152,22 @@ public class ModElementUITest {
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
 
-		PreferencesManager.PREFERENCES.ui.language.set(L10N.getSupportedLocales().stream()
+		PreferencesManager.PREFERENCES.ui.language = L10N.getSupportedLocales().stream()
 				.filter(locale -> locale != L10N.DEFAULT_LOCALE)
-				.max(Comparator.comparingInt(L10N::getUITextsLocaleSupport)).orElse(null));
+				.max(Comparator.comparingInt(L10N::getUITextsLocaleSupport)).orElse(null);
 		L10N.initTranslations();
 
-		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language.get());
+		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language);
 
 		testModElementLoading(random);
 	}
 
 	private void testModElementLoading(Random random)
-			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException,
-			InterruptedException {
+			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException {
 		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
 
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
-					modElementType, true, random);
+					modElementType, random);
 
 			LOG.info("Testing mod element type UI " + modElementType.getReadableName() + " with "
 					+ generatableElements.size() + " variants");
@@ -193,8 +192,6 @@ public class ModElementUITest {
 
 				ModElementGUI<?> modElementGUI = modElementType.getModElementGUI(mcreator, modElement, false);
 
-				modElementGUI.showView();
-
 				Field field = modElementGUI.getClass().getSuperclass().getDeclaredField("editingMode");
 				field.setAccessible(true);
 				field.set(modElementGUI, true);
@@ -204,12 +201,6 @@ public class ModElementUITest {
 						.getDeclaredMethod("openInEditingMode", GeneratableElement.class);
 				method.setAccessible(true);
 				method.invoke(modElementGUI, generatableElement);
-
-				if (Arrays.stream(modElementGUI.getClass().getDeclaredFields())
-						.anyMatch(f -> f.getType() == BlocklyPanel.class)) {
-					// If ModElementGUI<?> contains BlocklyPanel, give it time to fully load
-					Thread.sleep(3500);
-				}
 
 				// test if data remains the same after reloading the data lists
 				modElementGUI.reloadDataLists();

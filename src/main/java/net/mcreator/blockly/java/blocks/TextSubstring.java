@@ -42,15 +42,13 @@ public class TextSubstring implements IBlockGenerator {
 				else if (element.getAttribute("name").equals("text"))
 					text = element;
 
-		if (text != null && from != null && (to != null || block.getAttribute("type").equals("text_substring_from"))) {
+		if (text != null && from != null && to != null) {
 			master.append("(");
 			master.processOutputBlock(text);
-			master.append(".substring(");
-			master.processOutputBlockToInt(from);
-			if (to != null) {
-				master.append(", ");
-				master.processOutputBlockToInt(to);
-			}
+			master.append(".substring((int)");
+			master.processOutputBlock(from);
+			master.append(",(int)");
+			master.processOutputBlock(to);
 			master.append("))");
 		} else {
 			master.addCompileNote(
@@ -59,7 +57,7 @@ public class TextSubstring implements IBlockGenerator {
 	}
 
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "text_substring", "text_substring_from" };
+		return new String[] { "text_substring" };
 	}
 
 	@Override public BlockType getBlockType() {

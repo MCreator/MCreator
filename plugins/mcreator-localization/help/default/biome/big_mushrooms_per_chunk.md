@@ -1,0 +1,1 @@
+This parameter controls how many big mushrooms should be spawned per biome chunk.

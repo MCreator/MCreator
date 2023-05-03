@@ -34,8 +34,6 @@ import java.util.Locale;
 
 @SuppressWarnings("unused") public class Command extends GeneratableElement {
 
-	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"><field name=\"procedure\"></field></block></next></block></xml>";
-
 	public String commandName;
 
 	public String permissionLevel;
@@ -59,16 +57,14 @@ import java.util.Locale;
 	@Override public @Nullable IAdditionalTemplateDataProvider getAdditionalTemplateData() {
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG).getDefinedBlocks(),
-					getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG),
-					this.getModElement().getGenerator()
-							.getTemplateGeneratorFromName(BlocklyEditorType.COMMAND_ARG.registryName()),
+					BlocklyLoader.INSTANCE.getCmdArgsBlockLoader().getDefinedBlocks(),
+					this.getModElement().getGenerator().getTemplateGeneratorFromName("cmdargs"),
 					additionalData).setTemplateExtension(
 					this.getModElement().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage().name()
 							.toLowerCase(Locale.ENGLISH));
 			BlocklyToJava blocklyToJava = new BlocklyToJava(this.getModElement().getWorkspace(), this.getModElement(),
-					BlocklyEditorType.COMMAND_ARG, this.argsxml, this.getModElement().getGenerator()
-					.getTemplateGeneratorFromName(BlocklyEditorType.COMMAND_ARG.registryName()),
+					BlocklyEditorType.COMMAND_ARG, this.argsxml,
+					this.getModElement().getGenerator().getTemplateGeneratorFromName("cmdargs"),
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			additionalData.put("argscode", blocklyToJava.getGeneratedCode());

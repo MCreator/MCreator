@@ -40,16 +40,17 @@ public class LoopBlock implements IBlockGenerator {
 		if (value != null && statement != null) {
 			int index = loopIndex++;
 
-			if ("controls_while".equals(blocktype)) {
+			if ("controls_while".equals(blocktype))
 				master.append("while(");
-				master.processOutputBlockWithoutParentheses(value);
+			else if ("controls_repeat_ext".equals(blocktype))
+				master.append("for (int index").append(index).append(" = 0; index").append(index).append("<(int)(");
+
+			master.processOutputBlockWithoutParentheses(value);
+
+			if ("controls_while".equals(blocktype))
 				master.append(") {");
-			}
-			else if ("controls_repeat_ext".equals(blocktype)) {
-				master.append("for (int index").append(index).append(" = 0; index").append(index).append("<");
-				master.processOutputBlockToInt(value);
-				master.append("; index").append(index).append("++) {");
-			}
+			else if ("controls_repeat_ext".equals(blocktype))
+				master.append("); index").append(index).append("++) {");
 
 			master.processBlockProcedure(BlocklyBlockUtil.getBlockProcedureStartingWithBlock(statement));
 			master.append("}");

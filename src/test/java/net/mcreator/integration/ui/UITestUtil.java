@@ -43,9 +43,9 @@ public class UITestUtil {
 		long start = System.currentTimeMillis();
 		while (Window.getWindows().length == frames_start) {
 			//noinspection BusyWait
-			Thread.sleep(100);
+			Thread.sleep(5);
 
-			if (System.currentTimeMillis() - start > 6000)
+			if (System.currentTimeMillis() - start > 5000)
 				throw new TimeoutException();
 
 			if (throwableAtomic.get() != null)

@@ -28,7 +28,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 public class DesktopUtils {
 
@@ -270,12 +269,12 @@ public class DesktopUtils {
 
 	private static boolean isGNOME() {
 		String gdmSession = System.getenv("GDMSESSION");
-		return gdmSession != null && gdmSession.toLowerCase(Locale.ENGLISH).contains("gnome");
+		return gdmSession != null && gdmSession.toLowerCase().contains("gnome");
 	}
 
 	private static boolean isKDE() {
 		String gdmSession = System.getenv("GDMSESSION");
-		return gdmSession != null && gdmSession.toLowerCase(Locale.ENGLISH).contains("kde");
+		return gdmSession != null && gdmSession.toLowerCase().contains("kde");
 	}
 
 }

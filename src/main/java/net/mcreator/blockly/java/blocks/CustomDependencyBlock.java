@@ -50,7 +50,7 @@ public class CustomDependencyBlock implements IBlockGenerator {
 			else if (deptype.equalsIgnoreCase("blockstate"))
 				master.append("/*@BlockState*/");
 
-			master.append(element.getTextContent());
+			master.append("(").append(element.getTextContent()).append(")");
 		} else {
 			master.addCompileNote(
 					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.custom_dependency")));

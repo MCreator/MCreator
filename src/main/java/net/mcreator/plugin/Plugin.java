@@ -33,9 +33,9 @@ public class Plugin implements Comparable<Plugin> {
 
 	transient File file;
 	transient boolean builtin;
-	@Nullable transient String loaded_failure = null; // indicates if plugin was fully loaded without any errors
+	transient boolean loaded;
 
-	String id;
+	private String id;
 	private int weight = 0;
 
 	private long minversion = -1;
@@ -44,10 +44,6 @@ public class Plugin implements Comparable<Plugin> {
 	private PluginInfo info;
 
 	@Nullable private String javaplugin;
-
-	// Prevent direct instantiation outside internal plugin system by making a private constructor
-	private Plugin() {
-	}
 
 	public File getFile() {
 		return file;
@@ -63,12 +59,12 @@ public class Plugin implements Comparable<Plugin> {
 	}
 
 	/**
-	 * A plugin is loaded when all plugin dependencies are present and plugin loaded without errors.
+	 * A plugin is loaded when all plugin dependencies are present.
 	 *
 	 * @return <p>The plugin is loaded.</p>
 	 */
 	public boolean isLoaded() {
-		return loaded_failure == null;
+		return loaded;
 	}
 
 	/**
@@ -148,10 +144,6 @@ public class Plugin implements Comparable<Plugin> {
 		}
 	}
 
-	@Nullable public String getLoadFailure() {
-		return loaded_failure;
-	}
-
 	@Nullable public String getJavaPlugin() {
 		return javaplugin;
 	}
@@ -171,5 +163,4 @@ public class Plugin implements Comparable<Plugin> {
 	@Override public int compareTo(@Nonnull Plugin p) {
 		return p.weight - weight;
 	}
-
 }
