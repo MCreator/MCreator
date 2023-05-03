@@ -88,8 +88,12 @@ tasks.register('buildInstallerWin64', Exec.class) {
 tasks.register('exportWindowsAll') {
     group 'export'
 
-    dependsOn zipWin64
-    dependsOn buildInstallerWin64
+    if (Os.isFamily(Os.FAMILY_MAC)) { // MacOS does not support makensis
+        dependsOn exportWindowsZIP
+    } else {
+        dependsOn exportWin64
+        dependsOn buildInstallerWin64
+    }
 
     doLast {
         delete 'build/export/win64'
