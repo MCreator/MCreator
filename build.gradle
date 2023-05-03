@@ -17,7 +17,8 @@ file('src/main/resources/mcreator.conf').withInputStream { project.mcreatorconf.
 
 group = 'net.mcreator'
 version = project.mcreatorconf.getProperty('mcreator')
-project.ext.builddate = new Date().format('wwuHH')
+project.ext.builddate = project.hasProperty('builddate') ? project.getProperty('builddate') : new Date().format('wwuHH')
+project.ext.snapshot = project.hasProperty('snapshot') ? Boolean.parseBoolean((String) project.getProperty('snapshot')) : false
 
 javadoc.source = sourceSets.main.allJava
 compileJava.options.encoding = 'UTF-8'
@@ -58,7 +59,8 @@ configurations {
     export.canBeResolved = true
 
     win64
-    mac64
+    macX64
+    macAarch64
     linux64
 }
 
@@ -106,12 +108,19 @@ dependencies {
     win64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'win'
     win64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'win'
 
-    mac64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'mac'
-    mac64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'mac'
+    macX64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'mac'
+    macX64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'mac'
+    macX64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'mac'
+    macX64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'mac'
+    macX64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'mac'
+    macX64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'mac'
+
+    macAarch64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'mac-aarch64'
+    macAarch64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'mac-aarch64'
+    macAarch64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'mac-aarch64'
+    macAarch64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'mac-aarch64'
+    macAarch64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'mac-aarch64'
+    macAarch64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'mac-aarch64'
 
     linux64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'linux'
     linux64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'linux'
