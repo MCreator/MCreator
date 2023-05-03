@@ -45,11 +45,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
+class WorkspacePanelVCS extends WorkspaceSectionPanel {
 
 	private static final Logger LOG = LogManager.getLogger("VCS Panel");
-
-	private final WorkspacePanel workspacePanel;
 
 	private final JTable commits;
 	private final TableRowSorter<TableModel> sorter;
@@ -57,10 +55,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 	private final JButton switchBranch = new JButton("");
 
 	WorkspacePanelVCS(WorkspacePanel workspacePanel) {
-		super(new BorderLayout(0, 5));
-		setOpaque(false);
-
-		this.workspacePanel = workspacePanel;
+		super(workspacePanel);
 
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
@@ -139,7 +134,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 
 		JPanel holder = new JPanel(new BorderLayout());
 		holder.setOpaque(false);
-		holder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
+		holder.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
 		holder.add(sp);
 
 		add("Center", holder);
@@ -213,7 +208,7 @@ class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 		}
 	}
 
-	boolean panelShown() {
+	@Override public boolean canSwitchToSection() {
 		return SetupVCSAction.setupVCSForWorkspaceIfNotYet(workspacePanel.getMCreator());
 	}
 

@@ -20,7 +20,6 @@ package net.mcreator.ui.workspace;
 
 import net.mcreator.element.*;
 import net.mcreator.element.types.interfaces.ICommonType;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.generator.ListTemplate;
@@ -70,7 +69,6 @@ import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.BiPredicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -772,18 +770,12 @@ import java.util.stream.Collectors;
 		mainp.add("sp", sp);
 
 		addVerticalTab("mods", L10N.t("workspace.category.mod_elements"),
-				new WorkspacePanelMods(PanelUtils.westAndCenterElement(toolp, modElementsPanel)), true, (m, e) -> true);
+				new WorkspacePanelMods(PanelUtils.westAndCenterElement(toolp, modElementsPanel)));
 		verticalTabs.get(0).doClick();
-		addVerticalTab("res", L10N.t("workspace.category.resources"), resourcesPan, resourcesPan.getTabCount() > 0,
-				(m, e) -> true);
-		addVerticalTab("locales", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this),
-				mcreator.getGeneratorStats().getBaseCoverageInfo().get("variables")
-						!= GeneratorStats.CoverageStatus.NONE, (m, e) -> true);
-		addVerticalTab("variables", L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this),
-				mcreator.getGeneratorStats().getBaseCoverageInfo().get("i18n") != GeneratorStats.CoverageStatus.NONE,
-				(m, e) -> true);
-		addVerticalTab("vcs", L10N.t("workspace.category.remote_workspace"), new WorkspacePanelVCS(this), true,
-				(m, e) -> e.panelShown());
+		addVerticalTab("res", L10N.t("workspace.category.resources"), resourcesPan);
+		addVerticalTab("locales", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
+		addVerticalTab("variables", L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
+		addVerticalTab("vcs", L10N.t("workspace.category.remote_workspace"), new WorkspacePanelVCS(this));
 
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
@@ -857,22 +849,18 @@ import java.util.stream.Collectors;
 	 * Adds a new section to this workspace as well as a vertical tab button on the left that switches
 	 * to the section panel when clicked.
 	 *
-	 * @param id              The unique identifier of the section used for reloading/filtering contained elements.
-	 * @param name            The name of the section shown in the workspace.
-	 * @param panel           The panel representing contents of the vertical tab being added.
-	 * @param available       If {@code false}, the section will be registered but not shown in the workspace.
-	 * @param switchCondition Determines whether clicking the tab button will actually switch the section.
-	 * @param <T>             The type of the section panel to be added.
+	 * @param id    The unique identifier of the section used for reloading/filtering contained elements.
+	 * @param name  The name of the section shown in the workspace.
+	 * @param panel The panel representing contents of the vertical tab being added.
 	 */
-	public <T extends JComponent & IReloadableFilterable> void addVerticalTab(String id, String name, T panel,
-			boolean available, BiPredicate<MCreator, T> switchCondition) {
+	public void addVerticalTab(String id, String name, WorkspaceSectionPanel panel) {
 		if (getVerticalTab(id) != null)
 			return;
 
 		panels.add(panel, id);
 		panelTabs.put(id, panel);
 
-		if (available) {
+		if (panel.supportedInWorkspace()) {
 			VerticalTabButton tab = new VerticalTabButton(name);
 			tab.setContentAreaFilled(false);
 			tab.setMargin(new Insets(7, 1, 7, 2));
@@ -882,7 +870,7 @@ import java.util.stream.Collectors;
 			tab.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			tab.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			tab.addActionListener(e -> {
-				if (switchCondition.test(mcreator, panel)) {
+				if (panel.canSwitchToSection()) {
 					for (JButton btt : verticalTabs) {
 						btt.setBackground(btt == tab ?
 								(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
@@ -1500,11 +1488,10 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	private class WorkspacePanelMods extends JPanel implements IReloadableFilterable {
+	private class WorkspacePanelMods extends WorkspaceSectionPanel {
 
 		private WorkspacePanelMods(JComponent contents) {
-			setLayout(new BorderLayout());
-			setOpaque(false);
+			super(WorkspacePanel.this);
 			add(contents);
 		}
 
