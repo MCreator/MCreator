@@ -38,7 +38,7 @@ import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.ui.workspace.WorkspacePanels;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.image.ImageUtils;
@@ -66,7 +66,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	private static final Logger LOG = LogManager.getLogger("MCreator");
 
-	public WorkspacePanel mv;
+	public WorkspacePanels mv;
 	private final GradleConsole gradleConsole;
 
 	private final WorkspaceFileBrowser workspaceFileBrowser;
@@ -209,7 +209,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		mpan.setLayout(new BorderLayout());
 		mpan.add("Center", mcreatorTabs.getContainer());
 
-		mv = new WorkspacePanel(this);
+		mv = new WorkspacePanels(this);
 
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
 		pon.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));

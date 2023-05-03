@@ -73,7 +73,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends JPanel {
+@SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanels extends JPanel {
 
 	private FilterModel dml = new FilterModel();
 	public final JTextField search;
@@ -163,7 +163,7 @@ import java.util.stream.Collectors;
 		}
 	};
 
-	public WorkspacePanel(final MCreator mcreator) {
+	public WorkspacePanels(final MCreator mcreator) {
 		super(new BorderLayout(5, 5));
 		this.mcreator = mcreator;
 
@@ -1491,12 +1491,12 @@ import java.util.stream.Collectors;
 	private class WorkspacePanelMods extends WorkspaceSectionPanel {
 
 		private WorkspacePanelMods(JComponent contents) {
-			super(WorkspacePanel.this);
+			super(WorkspacePanels.this);
 			add(contents);
 		}
 
 		@Override public void reloadElements() {
-			WorkspacePanel.this.reloadElements();
+			WorkspacePanels.this.reloadElements();
 		}
 
 		@Override public void refilterElements() {

@@ -27,7 +27,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.workspace.IReloadableFilterable;
-import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.ui.workspace.WorkspacePanels;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.SoundUtils;
 import net.mcreator.workspace.elements.SoundElement;
@@ -44,15 +44,15 @@ import java.util.*;
 
 public class WorkspacePanelSounds extends JPanel implements IReloadableFilterable {
 
-	private final WorkspacePanel workspacePanel;
+	private final WorkspacePanels workspacePanels;
 
 	private final FilterModel listmodel = new FilterModel();
 
-	WorkspacePanelSounds(WorkspacePanel workspacePanel) {
+	WorkspacePanelSounds(WorkspacePanels workspacePanels) {
 		super(new BorderLayout());
 		setOpaque(false);
 
-		this.workspacePanel = workspacePanel;
+		this.workspacePanels = workspacePanels;
 
 		JSelectableList<SoundElement> soundElementList = new JSelectableList<>(listmodel);
 		soundElementList.setOpaque(false);
@@ -104,7 +104,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
-		del.addActionListener(a -> deleteSelectedSound(workspacePanel, soundElementList));
+		del.addActionListener(a -> deleteSelectedSound(workspacePanels, soundElementList));
 
 		JButton play = L10N.button("workspace.sounds.play_selected");
 		play.setIcon(UIRES.get("16px.play"));
@@ -118,7 +118,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 				if (soundElement != null) {
 					if (!soundElement.getFiles().isEmpty()) {
 						SoundUtils.playSound(
-								new File(workspacePanel.getMCreator().getWorkspace().getFolderManager().getSoundsDir(),
+								new File(workspacePanels.getMCreator().getWorkspace().getFolderManager().getSoundsDir(),
 										ListUtils.getRandomItem(soundElement.getFiles()) + ".ogg"));
 						play.setEnabled(false);
 					}
@@ -135,26 +135,26 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		soundElementList.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
-				case KeyEvent.VK_DELETE -> deleteSelectedSound(workspacePanel, soundElementList);
+				case KeyEvent.VK_DELETE -> deleteSelectedSound(workspacePanels, soundElementList);
 				case KeyEvent.VK_ENTER -> editSelectedSound(soundElementList.getSelectedValue());
 				}
 			}
 		});
 
 		edit.addActionListener(e -> editSelectedSound(soundElementList.getSelectedValue()));
-		importsound.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
+		importsound.addActionListener(e -> workspacePanels.getMCreator().actionRegistry.importSound.doAction());
 		add("North", bar);
 
 	}
 
-	private void deleteSelectedSound(WorkspacePanel workspacePanel, JSelectableList<SoundElement> soundElementList) {
+	private void deleteSelectedSound(WorkspacePanels workspacePanels, JSelectableList<SoundElement> soundElementList) {
 		List<SoundElement> soundElements = soundElementList.getSelectedValuesList();
 		if (soundElements.size() > 0) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+			int n = JOptionPane.showConfirmDialog(workspacePanels.getMCreator(),
 					L10N.t("workspace.sounds.confirm_deletion_message"), L10N.t("common.confirmation"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (n == 0) {
-				soundElements.forEach(workspacePanel.getMCreator().getWorkspace()::removeSoundElement);
+				soundElements.forEach(workspacePanels.getMCreator().getWorkspace()::removeSoundElement);
 				reloadElements();
 			}
 		}
@@ -162,15 +162,15 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 
 	private void editSelectedSound(SoundElement selectedValue) {
 		if (selectedValue != null) {
-			SoundElement newElement = SoundElementDialog.soundDialog(workspacePanel.getMCreator(), selectedValue, null);
-			workspacePanel.getMCreator().getWorkspace().updateSoundElement(selectedValue, newElement);
+			SoundElement newElement = SoundElementDialog.soundDialog(workspacePanels.getMCreator(), selectedValue, null);
+			workspacePanels.getMCreator().getWorkspace().updateSoundElement(selectedValue, newElement);
 			reloadElements();
 		}
 	}
 
 	@Override public void reloadElements() {
 		listmodel.removeAllElements();
-		workspacePanel.getMCreator().getWorkspace().getSoundElements().forEach(listmodel::addElement);
+		workspacePanels.getMCreator().getWorkspace().getSoundElements().forEach(listmodel::addElement);
 		refilterElements();
 	}
 
@@ -220,16 +220,16 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 
 		void refilter() {
 			filterItems.clear();
-			String term = workspacePanel.search.getText();
+			String term = workspacePanels.search.getText();
 			filterItems.addAll(items.stream().filter(Objects::nonNull)
 					.filter(item -> (item.getName().toLowerCase(Locale.ENGLISH)
 							.contains(term.toLowerCase(Locale.ENGLISH)))).toList());
 
-			if (workspacePanel.sortName.isSelected()) {
+			if (workspacePanels.sortName.isSelected()) {
 				filterItems.sort(Comparator.comparing(SoundElement::getName));
 			}
 
-			if (workspacePanel.desc.isSelected())
+			if (workspacePanels.desc.isSelected())
 				Collections.reverse(filterItems);
 
 			fireContentsChanged(this, 0, getSize());

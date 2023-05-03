@@ -21,7 +21,7 @@ package net.mcreator.ui.workspace.resources;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.IReloadableFilterable;
-import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.ui.workspace.WorkspacePanels;
 import net.mcreator.ui.workspace.WorkspaceSectionPanel;
 
 import javax.swing.*;
@@ -36,8 +36,8 @@ public class WorkspacePanelResources extends WorkspaceSectionPanel {
 	public WorkspacePanelStructures workspacePanelStructures;
 	private final JTabbedPane resourceTabs;
 
-	public WorkspacePanelResources(WorkspacePanel workspacePanel) {
-		super(workspacePanel);
+	public WorkspacePanelResources(WorkspacePanels workspacePanels) {
+		super(workspacePanels);
 		resourceTabs = new JTabbedPane() {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
@@ -49,36 +49,36 @@ public class WorkspacePanelResources extends WorkspaceSectionPanel {
 			}
 		};
 
-		this.workspacePanelTextures = new WorkspacePanelTextures(workspacePanel);
-		this.workspacePanelSounds = new WorkspacePanelSounds(workspacePanel);
-		this.workspacePanelModels = new WorkspacePanelModels(workspacePanel);
-		this.workspacePanelStructures = new WorkspacePanelStructures(workspacePanel);
+		this.workspacePanelTextures = new WorkspacePanelTextures(workspacePanels);
+		this.workspacePanelSounds = new WorkspacePanelSounds(workspacePanels);
+		this.workspacePanelModels = new WorkspacePanelModels(workspacePanels);
+		this.workspacePanelStructures = new WorkspacePanelStructures(workspacePanels);
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
+		if (workspacePanels.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addResourcesTab(L10N.t("workspace.resources.tab.textures"), workspacePanelTextures);
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
+		if (workspacePanels.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
 				!= GeneratorStats.CoverageStatus.NONE
-				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
+				|| workspacePanels.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_java")
 				!= GeneratorStats.CoverageStatus.NONE
-				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
+				|| workspacePanels.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addResourcesTab(L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("sounds")
+		if (workspacePanels.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("sounds")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addResourcesTab(L10N.t("workspace.resources.tab.sounds"), workspacePanelSounds);
 
-		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("structures")
+		if (workspacePanels.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("structures")
 				!= GeneratorStats.CoverageStatus.NONE)
 			addResourcesTab(L10N.t("workspace.resources.tab.structures"), workspacePanelStructures);
 
-		if (workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
-				&& !workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
+		if (workspacePanels.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
+				&& !workspacePanels.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
 				.contains("@"))
 			addResourcesTab(L10N.t("workspace.resources.tab.screenshots"),
-					new WorkspacePanelScreenshots(workspacePanel));
+					new WorkspacePanelScreenshots(workspacePanels));
 
 		for (int i = 0; i < resourceTabs.getTabCount(); i++) {
 			resourceTabs.setBackgroundAt(i, new Color(0, 0, 0, 0));

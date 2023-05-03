@@ -29,7 +29,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.workspace.IReloadableFilterable;
-import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.ui.workspace.WorkspacePanels;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -44,16 +44,16 @@ import java.util.*;
 
 class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable {
 
-	private final WorkspacePanel workspacePanel;
+	private final WorkspacePanels workspacePanels;
 
 	private final FilterModel listmodel = new FilterModel();
 	private final JSelectableList<File> screenshotsList = new JSelectableList<>(listmodel);
 
-	WorkspacePanelScreenshots(WorkspacePanel workspacePanel) {
+	WorkspacePanelScreenshots(WorkspacePanels workspacePanels) {
 		super(new BorderLayout());
 		setOpaque(false);
 
-		this.workspacePanel = workspacePanel;
+		this.workspacePanels = workspacePanels;
 
 		screenshotsList.setOpaque(false);
 		screenshotsList.setCellRenderer(new Render());
@@ -125,14 +125,14 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 	private void useSelectedAsBackgrounds() {
 		screenshotsList.getSelectedValuesList().forEach(
 				f -> FileIO.copyFile(f, new File(UserFolderManager.getFileFromUserFolder("backgrounds"), f.getName())));
-		JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
+		JOptionPane.showMessageDialog(workspacePanels.getMCreator(),
 				L10N.t("workspace.screenshots.use_background_message"), L10N.t("workspace.screenshots.action_complete"),
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private void exportSelectedScreenshots() {
 		screenshotsList.getSelectedValuesList().forEach(f -> {
-			File to = FileDialogs.getSaveDialog(workspacePanel.getMCreator(), new String[] { ".png" });
+			File to = FileDialogs.getSaveDialog(workspacePanels.getMCreator(), new String[] { ".png" });
 			if (to != null)
 				FileIO.copyFile(f, to);
 		});
@@ -142,7 +142,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		List<File> selected = screenshotsList.getSelectedValuesList();
 
 		listmodel.removeAllElements();
-		File[] screenshots = new File(workspacePanel.getMCreator().getWorkspaceFolder(),
+		File[] screenshots = new File(workspacePanels.getMCreator().getWorkspaceFolder(),
 				"run/screenshots/").listFiles();
 		if (screenshots != null)
 			Arrays.stream(screenshots).forEach(listmodel::addElement);
@@ -205,16 +205,16 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 
 		void refilter() {
 			filterItems.clear();
-			String term = workspacePanel.search.getText();
+			String term = workspacePanels.search.getText();
 			filterItems.addAll(items.stream().filter(Objects::nonNull)
 					.filter(item -> item.getName().toLowerCase(Locale.ENGLISH)
 							.contains(term.toLowerCase(Locale.ENGLISH))).toList());
 
-			if (workspacePanel.sortName.isSelected()) {
+			if (workspacePanels.sortName.isSelected()) {
 				filterItems.sort(Comparator.comparing(File::getName));
 			}
 
-			if (workspacePanel.desc.isSelected())
+			if (workspacePanels.desc.isSelected())
 				Collections.reverse(filterItems);
 
 			fireContentsChanged(this, 0, getSize());

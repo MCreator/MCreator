@@ -61,8 +61,8 @@ class WorkspacePanelLocalizations extends WorkspaceSectionPanel {
 	private final JButton exp;
 	private final JButton imp;
 
-	WorkspacePanelLocalizations(WorkspacePanel workspacePanel) {
-		super(workspacePanel);
+	WorkspacePanelLocalizations(WorkspacePanels workspacePanels) {
+		super(workspacePanels);
 
 		pane = new JTabbedPane();
 		pane.setOpaque(false);
@@ -116,11 +116,11 @@ class WorkspacePanelLocalizations extends WorkspaceSectionPanel {
 		add("North", bar);
 
 		add.addActionListener(e -> {
-			String key = JOptionPane.showInputDialog(workspacePanel.getMCreator(),
+			String key = JOptionPane.showInputDialog(workspacePanels.getMCreator(),
 					L10N.t("workspace.localization.key_name_message"), L10N.t("workspace.localization.key_name_title"),
 					JOptionPane.QUESTION_MESSAGE);
 			if (key != null && !key.equals("")) {
-				workspacePanel.getMCreator().getWorkspace().setLocalization(key, "");
+				workspacePanels.getMCreator().getWorkspace().setLocalization(key, "");
 				reloadElements();
 			}
 		});
@@ -139,7 +139,7 @@ class WorkspacePanelLocalizations extends WorkspaceSectionPanel {
 		pane.removeAll();
 		sorters = new ArrayList<>();
 
-		for (var entry : workspacePanel.getMCreator().getWorkspace().getLanguageMap().entrySet()) {
+		for (var entry : workspacePanels.getMCreator().getWorkspace().getLanguageMap().entrySet()) {
 			ConcurrentHashMap<String, String> entries = entry.getValue();
 
 			JTable elements = new JTable(new DefaultTableModel(
@@ -210,7 +210,7 @@ class WorkspacePanelLocalizations extends WorkspaceSectionPanel {
 						keyValueMap.put((String) elements.getModel().getValueAt(i, 0),
 								(String) elements.getModel().getValueAt(i, 1));
 					}
-					workspacePanel.getMCreator().getWorkspace().updateLanguage(entry.getKey(), keyValueMap);
+					workspacePanels.getMCreator().getWorkspace().updateLanguage(entry.getKey(), keyValueMap);
 				}
 			}).start());
 
@@ -234,11 +234,11 @@ class WorkspacePanelLocalizations extends WorkspaceSectionPanel {
 			button.setBorder(BorderFactory.createEmptyBorder());
 			button.setMargin(new Insets(0, 0, 0, 0));
 			button.addActionListener(e -> {
-				int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+				int n = JOptionPane.showConfirmDialog(workspacePanels.getMCreator(),
 						L10N.t("workspace.localization.confirm_delete_map"), L10N.t("common.confirmation"),
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 				if (n == 0) {
-					workspacePanel.getMCreator().getWorkspace().removeLocalizationLanguage(entry.getKey());
+					workspacePanels.getMCreator().getWorkspace().removeLocalizationLanguage(entry.getKey());
 					reloadElements();
 				}
 			});
@@ -273,15 +273,15 @@ class WorkspacePanelLocalizations extends WorkspaceSectionPanel {
 					return;
 
 				if (entry.getKey().equals("en_us")) {
-					JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
+					JOptionPane.showMessageDialog(workspacePanels.getMCreator(),
 							L10N.t("workspace.localization.confirm_export"),
 							L10N.t("workspace.localization.export_translation"), JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 
-				File expFile = FileDialogs.getSaveDialog(workspacePanel.getMCreator(), new String[] { ".csv" });
+				File expFile = FileDialogs.getSaveDialog(workspacePanels.getMCreator(), new String[] { ".csv" });
 				if (expFile != null) {
-					Map<String, String> en_us = workspacePanel.getMCreator().getWorkspace().getLanguageMap()
+					Map<String, String> en_us = workspacePanels.getMCreator().getWorkspace().getLanguageMap()
 							.get("en_us");
 
 					ByteArrayOutputStream csvResult = new ByteArrayOutputStream();
@@ -291,7 +291,7 @@ class WorkspacePanelLocalizations extends WorkspaceSectionPanel {
 					writer.writeHeaders("Translation key (DON'T EDIT)",
 							"TRANSLATION IN " + entry.getKey() + " - EDIT THIS COLUMN",
 							"English text (DON'T EDIT - reference only)");
-					for (Map.Entry<String, String> langs : workspacePanel.getMCreator().getWorkspace().getLanguageMap()
+					for (Map.Entry<String, String> langs : workspacePanels.getMCreator().getWorkspace().getLanguageMap()
 							.get(entry.getKey()).entrySet())
 						writer.writeRow(langs.getKey(), langs.getValue(), en_us.get(langs.getKey()));
 					writer.close();
@@ -305,15 +305,15 @@ class WorkspacePanelLocalizations extends WorkspaceSectionPanel {
 					return;
 
 				if (entry.getKey().equals("en_us")) {
-					JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
+					JOptionPane.showMessageDialog(workspacePanels.getMCreator(),
 							L10N.t("workspace.localization.warning_export"),
 							L10N.t("workspace.localization.export_translation"), JOptionPane.WARNING_MESSAGE);
 					return;
 				}
 
-				File impFile = FileDialogs.getOpenDialog(workspacePanel.getMCreator(), new String[] { ".csv" });
+				File impFile = FileDialogs.getOpenDialog(workspacePanels.getMCreator(), new String[] { ".csv" });
 				if (impFile != null) {
-					ConcurrentHashMap<String, String> en_us = workspacePanel.getMCreator().getWorkspace()
+					ConcurrentHashMap<String, String> en_us = workspacePanels.getMCreator().getWorkspace()
 							.getLanguageMap().get("en_us");
 					CsvParserSettings settings = new CsvParserSettings();
 					settings.setDelimiterDetectionEnabled(true);
@@ -332,7 +332,7 @@ class WorkspacePanelLocalizations extends WorkspaceSectionPanel {
 							keyValueMap.put(key, value);
 					}
 
-					workspacePanel.getMCreator().getWorkspace().updateLanguage(entry.getKey(), keyValueMap);
+					workspacePanels.getMCreator().getWorkspace().updateLanguage(entry.getKey(), keyValueMap);
 
 					SwingUtilities.invokeLater(this::reloadElements);
 				}
@@ -362,19 +362,19 @@ class WorkspacePanelLocalizations extends WorkspaceSectionPanel {
 
 		String key = (String) elements.getValueAt(elements.getSelectedRow(), 0);
 		if (key != null) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+			int n = JOptionPane.showConfirmDialog(workspacePanels.getMCreator(),
 					L10N.t("workspace.localization.confirm_delete_entry"), L10N.t("common.confirmation"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (n == 0) {
 				Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
-						.forEach(workspacePanel.getMCreator().getWorkspace()::removeLocalizationEntryByKey);
+						.forEach(workspacePanels.getMCreator().getWorkspace()::removeLocalizationEntryByKey);
 				reloadElements();
 			}
 		}
 	}
 
 	private void newLocalizationDialog() {
-		Map<String, ConcurrentHashMap<String, String>> language_map = workspacePanel.getMCreator().getWorkspace()
+		Map<String, ConcurrentHashMap<String, String>> language_map = workspacePanels.getMCreator().getWorkspace()
 				.getLanguageMap();
 
 		Set<String> locales = new HashSet<>();
@@ -395,31 +395,31 @@ class WorkspacePanelLocalizations extends WorkspaceSectionPanel {
 		sortedLocales.sort(String::compareToIgnoreCase);
 
 		String[] options = sortedLocales.toArray(new String[0]);
-		String new_locale_id = (String) JOptionPane.showInputDialog(workspacePanel.getMCreator(),
+		String new_locale_id = (String) JOptionPane.showInputDialog(workspacePanels.getMCreator(),
 				L10N.t("workspace.localization.language_choose"), L10N.t("workspace.localization.add_localization"),
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 		if (new_locale_id != null) {
 			String locale = new_locale_id.split(":")[1].trim();
 
-			String based_from_id = (String) JOptionPane.showInputDialog(workspacePanel.getMCreator(),
+			String based_from_id = (String) JOptionPane.showInputDialog(workspacePanels.getMCreator(),
 					L10N.t("workspace.localization.language_copy"), L10N.t("workspace.localization.add_localization"),
 					JOptionPane.QUESTION_MESSAGE, null, language_map.keySet().toArray(), "en_us");
 			if (based_from_id != null) {
 				ConcurrentHashMap<String, String> en_us = language_map.get(based_from_id);
-				workspacePanel.getMCreator().getWorkspace().addLanguage(locale, en_us);
+				workspacePanels.getMCreator().getWorkspace().addLanguage(locale, en_us);
 				reloadElements();
 			}
 		}
 	}
 
 	@Override public boolean supportedInWorkspace() {
-		return workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("i18n")
+		return workspacePanels.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("i18n")
 				!= GeneratorStats.CoverageStatus.NONE;
 	}
 
 	@Override public void refilterElements() {
 		for (TableRowSorter<TableModel> sorter : sorters)
-			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
+			sorter.setRowFilter(RowFilter.regexFilter(workspacePanels.search.getText()));
 	}
 
 }

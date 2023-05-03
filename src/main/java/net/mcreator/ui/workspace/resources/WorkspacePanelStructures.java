@@ -25,7 +25,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.workspace.IReloadableFilterable;
-import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.ui.workspace.WorkspacePanels;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,15 +36,15 @@ import java.util.*;
 
 public class WorkspacePanelStructures extends JPanel implements IReloadableFilterable {
 
-	private final WorkspacePanel workspacePanel;
+	private final WorkspacePanels workspacePanels;
 
 	private final FilterModel listmodel = new FilterModel();
 
-	WorkspacePanelStructures(WorkspacePanel workspacePanel) {
+	WorkspacePanelStructures(WorkspacePanels workspacePanels) {
 		super(new BorderLayout());
 		setOpaque(false);
 
-		this.workspacePanel = workspacePanel;
+		this.workspacePanels = workspacePanels;
 
 		JSelectableList<String> structureElementList = new JSelectableList<>(listmodel);
 		structureElementList.setOpaque(false);
@@ -98,9 +98,9 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 			}
 		});
 
-		importnbt.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());
+		importnbt.addActionListener(e -> workspacePanels.getMCreator().actionRegistry.importStructure.doAction());
 		importmc.addActionListener(
-				e -> workspacePanel.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
+				e -> workspacePanels.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
 
 		add("North", bar);
 
@@ -109,11 +109,11 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 	private void deleteCurrentlySelected(JSelectableList<String> structureElementList) {
 		List<String> files = structureElementList.getSelectedValuesList();
 		if (files.size() > 0) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+			int n = JOptionPane.showConfirmDialog(workspacePanels.getMCreator(),
 					L10N.t("workspace.structure.confirm_deletion_message"), L10N.t("common.confirmation"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (n == 0) {
-				files.forEach(workspacePanel.getMCreator().getFolderManager()::removeStructure);
+				files.forEach(workspacePanels.getMCreator().getFolderManager()::removeStructure);
 				reloadElements();
 			}
 		}
@@ -121,7 +121,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 
 	@Override public void reloadElements() {
 		listmodel.removeAllElements();
-		workspacePanel.getMCreator().getFolderManager().getStructureList().forEach(listmodel::addElement);
+		workspacePanels.getMCreator().getFolderManager().getStructureList().forEach(listmodel::addElement);
 		refilterElements();
 	}
 
@@ -178,15 +178,15 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 
 		void refilter() {
 			filterItems.clear();
-			String term = workspacePanel.search.getText();
+			String term = workspacePanels.search.getText();
 			filterItems.addAll(items.stream().filter(Objects::nonNull)
 					.filter(e -> (e.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)))).toList());
 
-			if (workspacePanel.sortName.isSelected()) {
+			if (workspacePanels.sortName.isSelected()) {
 				filterItems.sort(Comparator.comparing(String::toString));
 			}
 
-			if (workspacePanel.desc.isSelected())
+			if (workspacePanels.desc.isSelected())
 				Collections.reverse(filterItems);
 
 			fireContentsChanged(this, 0, getSize());

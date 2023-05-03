@@ -27,16 +27,16 @@ import java.awt.*;
  */
 public abstract class WorkspaceSectionPanel extends JPanel implements IReloadableFilterable {
 
-	protected final WorkspacePanel workspacePanel;
+	protected final WorkspacePanels workspacePanels;
 
 	/**
 	 * Sole constructor.
 	 *
-	 * @param workspacePanel The main workspace section.
+	 * @param workspacePanels The main workspace section.
 	 */
-	public WorkspaceSectionPanel(WorkspacePanel workspacePanel) {
+	public WorkspaceSectionPanel(WorkspacePanels workspacePanels) {
 		super(new BorderLayout());
-		this.workspacePanel = workspacePanel;
+		this.workspacePanels = workspacePanels;
 		setOpaque(false);
 	}
 
