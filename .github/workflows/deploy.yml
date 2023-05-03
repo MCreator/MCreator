@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Checkout Repository
-        if: github.repository != 'MCreator/MCreator'
+      - name: Verify Repository
+        if: github.repository != 'MCreator/MCreator' && github.repository != 'KlemenDEV/MCreator'
         run: |
           cat << EOF
           ⚠️Deploy action is only intended to be run from the official MCreator's repository. ⚠️
@@ -35,10 +35,10 @@ jobs:
           sudo unzip LockedList.zip -d /usr/share/nsis/
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
-        run: xvfb-run -a ./gradlew exportRelease
+        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportMac exportLinux
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
-        run: xvfb-run -a ./gradlew exportSnapshot
+        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportMac exportLinux -Psnapshot=true
       - name: Determine Export Version
         run: |
           MCR_VERSION=$(cat build/reports/export.txt | grep "mcreator=" | cut -d'=' -f2)
