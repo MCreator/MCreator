@@ -231,8 +231,10 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public void saveAs() {
 		if (!canEdit) {
-			JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.image_maker.save.view_only"),
-					L10N.t("common.confirmation"), JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			int option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.image_maker.save.view_only"),
+					L10N.t("common.confirmation"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			if (option != JOptionPane.OK_OPTION)
+				return;
 		}
 
 		Image image = canvasRenderer.render();
