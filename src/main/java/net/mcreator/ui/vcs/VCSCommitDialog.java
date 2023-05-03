@@ -46,7 +46,8 @@ public class VCSCommitDialog {
 
 		int option = JOptionPane.showOptionDialog(parent, main, L10N.t("dialog.vcs.commit_enter_message"),
 				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-				new String[] { "Create commit and sync", "Cancel" }, "Create commit and sync");
+				new String[] { L10N.t("dialog.vcs.commit_sync"), UIManager.getString("OptionPane.cancelButtonText") },
+				L10N.t("dialog.vcs.commit_sync"));
 
 		if (option == 0)
 			return commitMessage.getText();

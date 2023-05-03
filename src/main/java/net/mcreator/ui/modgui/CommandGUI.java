@@ -88,7 +88,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG).getDefinedBlocks();
 
-		blocklyPanel = new BlocklyPanel(mcreator);
+		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.COMMAND_ARG);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
