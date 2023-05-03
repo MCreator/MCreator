@@ -22,6 +22,7 @@ import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;
 import club.minnced.discord.rpc.DiscordRichPresence;
 import com.sun.jna.Native;
+import net.mcreator.io.OS;
 import net.mcreator.preferences.PreferencesManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -40,7 +41,7 @@ public class DiscordClient implements Closeable {
 	private final Timer timer = new Timer();
 
 	public DiscordClient() {
-		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable)
+		if (isDisabled())
 			return;
 
 		try {
@@ -67,7 +68,7 @@ public class DiscordClient implements Closeable {
 	}
 
 	public void updatePresence(String state, String details, String smallImage) {
-		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable)
+		if (isDisabled())
 			return;
 
 		new Thread(() -> {
@@ -86,7 +87,7 @@ public class DiscordClient implements Closeable {
 	}
 
 	@Override public void close() {
-		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable)
+		if (isDisabled())
 			return;
 
 		try {
@@ -96,4 +97,10 @@ public class DiscordClient implements Closeable {
 			LOG.warn("Failed to close properly", e);
 		}
 	}
+
+	private boolean isDisabled() {
+		return !PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable.get() || OS.AARCH64.equals(
+				OS.getArchitecture());
+	}
+
 }
