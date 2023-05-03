@@ -99,7 +99,8 @@ public class DiscordClient implements Closeable {
 	}
 
 	private boolean isDisabled() {
-		return !PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable || OS.getArchitecture().equals(OS.AARCH64);
+		return !PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable.get() || OS.AARCH64.equals(
+				OS.getArchitecture());
 	}
 
 }
