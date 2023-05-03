@@ -121,9 +121,15 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
         return '';
     }
 
-    setValue(newEntry) {
+    setValue(newValue) {
+        let newEntry = newValue || FieldDataListSelector.getDefaultEntry();
+        if (this.getValidator()) {
+            newEntry = this.getValidator().call(this, newEntry);
+            if (!newEntry)
+                return;
+        }
         const oldEntry = this.entry;
-        this.entry = newEntry || FieldDataListSelector.getDefaultEntry();
+        this.entry = newEntry;
         if (this.entry.split(',').length === 2) {
             this.doValueUpdate_(this.entry.split(',')[0]);
         } else {

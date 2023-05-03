@@ -74,9 +74,15 @@ class FieldAiConditionSelector extends Blockly.FieldLabelSerializable {
         this.setValue(fieldElement.textContent);
     }
 
-    setValue(newEntry) {
+    setValue(newValue) {
+        let newCondition = newValue || 'null,null';
+        if (this.getValidator()) {
+            newCondition = this.getValidator().call(this, newCondition);
+            if (!newCondition)
+                return;
+        }
         const oldCondition = this.condition;
-        this.condition = newEntry || 'null,null';
+        this.condition = newCondition;
         if (this.condition.split(',').length === 2) {
             this.doValueUpdate_('Conditions: ' +
                 (this.condition.split(',')[0] !== 'null' ? 'X' : 'O') +

@@ -59,7 +59,13 @@ class FieldMCItemSelector extends Blockly.FieldImage {
         return this.mcitem;
     };
 
-    setValue(new_mcitem) {
+    setValue(newValue) {
+        let new_mcitem = newValue;
+        if (this.getValidator()) {
+            new_mcitem = this.getValidator().call(this, new_mcitem);
+            if (!new_mcitem)
+                return;
+        }
         this.src_ = javabridge.getMCItemURI(new_mcitem);
         if (this.imageElement_) {
             this.imageElement_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.src_ || '');
