@@ -413,6 +413,13 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			reloadRecents();
 	}
 
+	/**
+	 * Adds a new "quick start" button to the main panel of the workspace selector.
+	 *
+	 * @param text  The text displayed by the button being added.
+	 * @param icon  The icon to be shown by the button being added.
+	 * @param event The action performed when the button is clicked.
+	 */
 	public void addWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
 		JButton newWorkspace = new JButton(text);
 		ComponentUtils.deriveFont(newWorkspace, 10);
