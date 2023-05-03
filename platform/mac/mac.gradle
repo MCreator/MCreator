@@ -1,8 +1,5 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-def exportPathAarch64 = 'build/export/mac_aarch64/MCreator.app/Contents/'
-def exportPathX64 = 'build/export/mac_x64/MCreator.app/Contents/'
-
 static void convertCRLF(File input, File out) {
     out << input.text.replaceAll('\r\n', '\n')
 }
@@ -11,6 +8,8 @@ tasks.register('exportMacX64', Copy.class) {
     dependsOn downloadJDKMacX64
     dependsOn jar
     dependsOn exportPlugins
+
+    def exportPathX64 = 'build/export/mac_x64/MCreator.app/Contents/'
 
     into exportPathX64
     into('') {
@@ -36,8 +35,35 @@ tasks.register('exportMacX64', Copy.class) {
     }
     into('MacOS/jdk') { from 'jdk/jdk17_mac_x64/' }
     doLast {
+        // fix line endings where needed
         convertCRLF(file(exportPathX64 + '/Info.plistdos'), file(exportPathX64 + '/Info.plist'))
         delete exportPathX64 + '/Info.plistdos'
+
+        // locate mkisofs
+        def mkisofs_binary
+        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+            mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs'
+        } else { // we are on Nix system
+            mkisofs_binary = 'mkisofs'
+
+            // chmod needed on executable as mkisofs does not +x on Nix systems
+            exec { commandLine('chmod', '+x', exportPathAarch64 + '/MacOS/mcreator') }
+            exec { commandLine('chmod', '+x', exportPathX64 + '/MacOS/mcreator') }
+        }
+
+        // Create x64 DMG
+        ant.exec(executable: mkisofs_binary, failonerror: true) {
+            arg(value: '-r')
+            arg(value: '-D')
+            arg(value: '-o')
+            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac x64.dmg')
+            arg(value: '-mac-name')
+            arg(value: '-V')
+            arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
+            arg(value: '-apple')
+            arg(value: '-v')
+            arg(value: new File(buildDir, 'export/mac_x64'))
+        }
     }
 }
 
@@ -45,6 +71,8 @@ tasks.register('exportMacAarch64', Copy.class) {
     dependsOn downloadJDKMacAarch64
     dependsOn jar
     dependsOn exportPlugins
+
+    def exportPathAarch64 = 'build/export/mac_aarch64/MCreator.app/Contents/'
 
     into exportPathAarch64
     into('') {
@@ -70,16 +98,11 @@ tasks.register('exportMacAarch64', Copy.class) {
     }
     into('MacOS/jdk/') { from 'jdk/jdk17_mac_aarch64/' }
     doLast {
+        // fix line endings where needed
         convertCRLF(file(exportPathAarch64 + '/Info.plistdos'), file(exportPathAarch64 + '/Info.plist'))
         delete exportPathAarch64 + '/Info.plistdos'
-    }
-}
 
-tasks.register('dmgMac') {
-    dependsOn downloadMKISOFS
-    dependsOn exportMacAarch64, exportMacX64
-
-    doLast {
+        // locate mkisofs
         def mkisofs_binary
         if (Os.isFamily(Os.FAMILY_WINDOWS)) {
             mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs'
@@ -104,30 +127,17 @@ tasks.register('dmgMac') {
             arg(value: '-v')
             arg(value: new File(buildDir, 'export/mac_aarch64'))
         }
-
-        // Create x64 DMG
-        ant.exec(executable: mkisofs_binary, failonerror: true) {
-            arg(value: '-r')
-            arg(value: '-D')
-            arg(value: '-o')
-            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac x64.dmg')
-            arg(value: '-mac-name')
-            arg(value: '-V')
-            arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
-            arg(value: '-apple')
-            arg(value: '-v')
-            arg(value: new File(buildDir, 'export/mac_x64'))
-        }
     }
 }
 
 tasks.register('exportMac') {
     group 'export'
 
-    dependsOn dmgMac
+    dependsOn exportMacX64
+    dependsOn exportMacAarch64
 
     doLast {
-        delete 'build/export/mac_aarch64'
         delete 'build/export/mac_x64'
+        delete 'build/export/mac_aarch64'
     }
 }
