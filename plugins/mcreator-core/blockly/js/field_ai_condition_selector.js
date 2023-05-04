@@ -2,12 +2,13 @@
  * This class represents a condition selector for AI blocks
  */
 class FieldAiConditionSelector extends Blockly.Field {
+
+    EDITABLE = true;
+    SERIALIZABLE = true;
+    CURSOR = 'default';
+
     constructor(opt_validator) {
         super('null,null', opt_validator);
-
-        this.EDITABLE = true;
-        this.SERIALIZABLE = true;
-        this.CURSOR = 'default';
 
         // Show the selected conditions, or the "Double click to select conditions" message
         let thisField = this;

@@ -3,15 +3,17 @@
  * The behaviour is similar to block/item selectors or condition selectors for entity AI blocks
  */
 class FieldDataListSelector extends Blockly.Field {
+
+    EDITABLE = true;
+    SERIALIZABLE = true;
+    CURSOR = 'default';
+
     constructor(datalist = '', opt_validator, opt_config) {
         super('', opt_validator, opt_config);
         this.type = datalist;
         this.typeFilter = null;
         this.customEntryProviders = null;
 
-        this.EDITABLE = true;
-        this.SERIALIZABLE = true;
-        this.CURSOR = 'default';
         this.maxDisplayLength = 75;
 
         if (opt_config)
