@@ -30,6 +30,7 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
+<#include "itemlists.java.ftl">
 
 package ${package}.enchantment;
 
@@ -59,40 +60,14 @@ public class ${name}Enchantment extends Enchantment {
 
 	<#if data.compatibleEnchantments?has_content>
 		@Override protected boolean checkCompatibility(Enchantment ench) {
-			return <#if data.excludeEnchantments>!</#if>List.of(
-				<#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(ench);
+		    return <#if data.excludeEnchantments>this != ench && !</#if>List.of(
+                <#list data.compatibleEnchantments as compatibleEnchantment>${compatibleEnchantment}<#sep>,</#list>).contains(ench);
 		}
 	</#if>
 
 	<#if data.compatibleItems?has_content>
 		@Override public boolean canApplyAtEnchantingTable(ItemStack itemstack) {
-			Item item = itemstack.getItem();
-			<#assign items = []>
-			<#assign tags = []>
-			<#list data.compatibleItems as compatibleItem>
-				<#if compatibleItem.getUnmappedValue().startsWith("TAG:")>
-					<#assign tags += [compatibleItem.getUnmappedValue().replace("TAG:", "")]>
-				<#elseif generator.map(compatibleItem.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-					<#assign tags += [generator.map(compatibleItem.getUnmappedValue(), "blocksitems", 1).replace("#", "")]>
-				<#else>
-					<#assign items += [mappedMCItemToItem(compatibleItem)]>
-				</#if>
-			</#list>
-
-			return <#if data.excludeItems>!</#if>
-				List.of(
-					<#list items as item>
-						${item}<#sep>,
-					</#list>
-				).contains(item)
-				<#if tags?has_content>
-					|| Stream.of(
-						<#list tags as tag>
-							ItemTags.create(new ResourceLocation("${tag}"))<#sep>,
-						</#list>
-					).
-					<#if data.excludeItems>noneMatch<#else>anyMatch</#if>(itemstack::is)
-				</#if>;
+			return <@itemListBasedOnDirectChecks data.compatibleItems "itemstack" data.excludeItems/>;
 		}
 	</#if>
 

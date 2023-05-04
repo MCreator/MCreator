@@ -30,12 +30,16 @@ import java.util.Arrays;
 @SuppressWarnings("unused") public class Recipe extends NamespacedGeneratableElement {
 
 	public String recipeType;
-	public double xpReward;
-	public int cookingTime;
 	public int recipeRetstackSize;
 	public String group;
 
+	// Cooking recipes common fields
+	public String cookingBookCategory;
+	public double xpReward;
+	public int cookingTime;
+
 	// Crafting recipe
+	public String craftingBookCategory;
 	public boolean recipeShapeless;
 	public MItemBlock[] recipeSlots;
 	public MItemBlock recipeReturnStack;
@@ -83,6 +87,9 @@ import java.util.Arrays;
 		this.namespace = "mod";
 
 		this.cookingTime = 200;
+
+		this.cookingBookCategory = "MISC";
+		this.craftingBookCategory = "MISC";
 	}
 
 	@Override public void setModElement(ModElement element) {

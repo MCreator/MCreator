@@ -46,7 +46,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class WorkspaceConvertersTest {
 
@@ -108,7 +109,7 @@ public class WorkspaceConvertersTest {
 						ge.getModElement().reinit(workspace);
 
 						// test if GE definition is valid enough to be generated
-						workspace.getGenerator().generateElement(ge);
+						assertTrue(workspace.getGenerator().generateElement(ge));
 					}
 				}
 			});

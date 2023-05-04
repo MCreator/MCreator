@@ -8,28 +8,28 @@ const workspace = Blockly.inject(blockly, {
     media: 'res/',
     oneBasedIndex: false,
     sounds: false,
-    comments: MCR_BLCKLY_PREF['comments'],
-    collapse: MCR_BLCKLY_PREF['collapse'],
+    comments: MCR_BLOCKLY_PREF['comments'],
+    collapse: MCR_BLOCKLY_PREF['collapse'],
     disable: false,
-    trashcan: MCR_BLCKLY_PREF['trashcan'],
-    renderer: MCR_BLCKLY_PREF['renderer'],
+    trashcan: MCR_BLOCKLY_PREF['trashcan'],
+    renderer: MCR_BLOCKLY_PREF['renderer'],
     zoom: {
         controls: false,
         wheel: true,
         startScale: 0.95,
-        maxScale: MCR_BLCKLY_PREF['maxScale'],
-        minScale: MCR_BLCKLY_PREF['minScale'],
-        scaleSpeed: MCR_BLCKLY_PREF['scaleSpeed']
+        maxScale: MCR_BLOCKLY_PREF['maxScale'],
+        minScale: MCR_BLOCKLY_PREF['minScale'],
+        scaleSpeed: MCR_BLOCKLY_PREF['scaleSpeed']
     },
     toolbox: '<xml id="toolbox"><category name="" colour=""></category></xml>'
 });
 
-function blocklyEventFuntion() {
+function blocklyEventFunction() {
     if (typeof javabridge !== "undefined")
         javabridge.triggerEvent();
 }
 
-workspace.addChangeListener(blocklyEventFuntion);
+workspace.addChangeListener(blocklyEventFunction);
 
 window.addEventListener('resize', function () {
     Blockly.svgResize(workspace);

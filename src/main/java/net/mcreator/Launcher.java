@@ -83,14 +83,14 @@ public class Launcher {
 		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
 
 		// after we have libraries loaded, we load preferences
-		PreferencesManager.loadPreferences();
+		PreferencesManager.init();
 
 		// set system properties from preferences
 		System.setProperty("apple.laf.useScreenMenuBar",
-				Boolean.toString(PreferencesManager.PREFERENCES.ui.usemacOSMenuBar));
-		System.setProperty("awt.useSystemAAFontSettings", PreferencesManager.PREFERENCES.ui.textAntialiasingType);
-		System.setProperty("swing.aatext", Boolean.toString(PreferencesManager.PREFERENCES.ui.aatext));
-		System.setProperty("sun.java2d.opengl", Boolean.toString(PreferencesManager.PREFERENCES.ui.use2DAcceleration));
+				Boolean.toString(PreferencesManager.PREFERENCES.ui.usemacOSMenuBar.get()));
+		System.setProperty("awt.useSystemAAFontSettings", PreferencesManager.PREFERENCES.ui.textAntialiasingType.get());
+		System.setProperty("swing.aatext", Boolean.toString(PreferencesManager.PREFERENCES.ui.aaText.get()));
+		System.setProperty("sun.java2d.opengl", Boolean.toString(PreferencesManager.PREFERENCES.ui.use2DAcceleration.get()));
 		System.setProperty("sun.java2d.d3d", "false");
 		System.setProperty("prism.lcdtext", "false");
 

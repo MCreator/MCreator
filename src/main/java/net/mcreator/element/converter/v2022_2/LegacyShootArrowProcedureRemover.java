@@ -76,6 +76,9 @@ public class LegacyShootArrowProcedureRemover implements IConverter {
 				if (projectileField != null) {
 					element.removeChild(projectileField); // This is moved to the arrow block
 					projectileField.setAttribute("name", "projectile");
+				} else { // projectile filed is null, really old procedure blocks did not have arrow field
+					projectileField = bh.createField("projectile", "Arrow");
+					projectileField.setAttribute("name", "projectile");
 				}
 
 				Element shooterValue = null, damageValue = null, knockbackValue = null;

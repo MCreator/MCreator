@@ -41,13 +41,14 @@ public class WindowTitleHelper {
 				appendix = " - " + codeEditorView.fileWorkingOn.toPath();
 			}
 		} else if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
-				.getContent() instanceof ImageMakerView imageMakerView) {
+				.getContent() instanceof ImageMakerView imageMakerView && imageMakerView.getImageFile() != null) {
 			try {
 				appendix = " - " + mcreator.getFolderManager().getPathInWorkspace(imageMakerView.getImageFile());
 			} catch (Exception e) {
 				appendix = " - " + imageMakerView.getImageFile().toPath();
 			}
 		}
+
 		String workspaceBaseName = mcreator.getWorkspaceSettings().getModName();
 		try {
 			return workspaceBaseName + " [" + mcreator.getWorkspaceFolder().getCanonicalPath() + "]" + appendix

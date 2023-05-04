@@ -46,7 +46,7 @@ jobs:
           echo "MCR_VERSION=$MCR_VERSION" >> $GITHUB_ENV
           echo "MC_VERSION=$MC_VERSION" >> $GITHUB_ENV
       - name: Upload Binaries and Tag Release
-        uses: Pylo/upload-release-action@2.3.0
+        uses: Pylo/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ env.MCR_VERSION }}

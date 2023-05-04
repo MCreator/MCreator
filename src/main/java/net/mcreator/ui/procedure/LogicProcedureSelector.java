@@ -36,26 +36,32 @@ public class LogicProcedureSelector extends RetvalProcedureSelector<Boolean, Log
 
 	public LogicProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, @Nullable JCheckBox fixedValue,
 			Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, 0, providedDependencies);
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, true, fixedValue, 0,
+				providedDependencies);
 	}
 
 	public LogicProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, @Nullable JCheckBox fixedValue,
 			int width, Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, width,
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, true, fixedValue, width,
 				providedDependencies);
 	}
 
 	public LogicProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			@Nullable JCheckBox fixedValue, int width, Dependency... providedDependencies) {
-		super(VariableTypeLoader.BuiltInTypes.LOGIC, helpContext, mcreator, eventName, side, fixedValue, width,
-				providedDependencies);
+		this(helpContext, mcreator, eventName, side, true, fixedValue, width, providedDependencies);
+	}
+
+	public LogicProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
+			boolean allowInlineEditor, @Nullable JCheckBox fixedValue, int width, Dependency... providedDependencies) {
+		super(VariableTypeLoader.BuiltInTypes.LOGIC, helpContext, mcreator, eventName, side, allowInlineEditor,
+				fixedValue, width, providedDependencies);
 
 		this.fixedValue = fixedValue;
 
 		if (fixedValue != null) {
 			fixedValue.setBorderPainted(true);
 			fixedValue.setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(1, 5, 1, 5, this.getBackground()),
+					BorderFactory.createMatteBorder(1, 5, 1, allowInlineEditor ? 5 : 0, this.getBackground()),
 					BorderFactory.createMatteBorder(0, 5, 0, 5, fixedValue.getBackground())));
 		}
 	}
