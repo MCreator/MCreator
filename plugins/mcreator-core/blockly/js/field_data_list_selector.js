@@ -23,7 +23,8 @@ class FieldDataListSelector extends Blockly.Field {
         let thisField = this;
         this.setTooltip(function () {
             return thisField.getValue() ?
-                thisField.readableName : javabridge.t('blockly.field_data_list_selector.tooltip.empty');
+                thisField.readableName :
+                javabridge.t('blockly.field_data_list_selector.tooltip.empty');
         });
     };
 
