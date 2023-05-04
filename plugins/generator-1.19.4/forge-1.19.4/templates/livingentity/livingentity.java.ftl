@@ -678,11 +678,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.calculateEntityAnimation(true);
 				return;
 			}
-<<<<<<< HEAD:plugins/generator-1.18.2/forge-1.18.2/templates/livingentity/livingentity.java.ftl
-			this.flyingSpeed = 0.02F;
-=======
-			this.maxUpStep = 0.5F;
->>>>>>> upstream/master:plugins/generator-1.19.4/forge-1.19.4/templates/livingentity/livingentity.java.ftl
 			</#if>
 
 			super.travel(dir);
