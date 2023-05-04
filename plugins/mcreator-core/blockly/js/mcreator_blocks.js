@@ -124,10 +124,6 @@ Blockly.Blocks['mcitem_allblocks'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setColour(60);
-        this.setTooltip(function () {
-            let value = block.getFieldValue('value');
-            return value == null ? "Double click to select block" : value;
-        });
     }
 };
 
@@ -141,10 +137,6 @@ Blockly.Blocks['mcitem_all'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setColour(350);
-        this.setTooltip(function () {
-            let value = block.getFieldValue('value');
-            return value == null ? "Double click to select item/block" : value;
-        });
     }
 };
 
