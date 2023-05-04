@@ -307,7 +307,7 @@ class WorkspacePanelVariables extends WorkspaceSection {
 		}
 	}
 
-	@Override public boolean supportedInWorkspace() {
+	@Override public boolean isSupportedInWorkspace() {
 		return workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("variables")
 				!= GeneratorStats.CoverageStatus.NONE;
 	}

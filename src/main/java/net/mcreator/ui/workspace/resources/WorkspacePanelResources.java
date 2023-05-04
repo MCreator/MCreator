@@ -103,7 +103,7 @@ public class WorkspacePanelResources extends WorkspaceSection {
 		resourceTabs.addTab(title, component);
 	}
 
-	@Override public boolean supportedInWorkspace() {
+	@Override public boolean isSupportedInWorkspace() {
 		return resourceTabs.getTabCount() > 0;
 	}
 

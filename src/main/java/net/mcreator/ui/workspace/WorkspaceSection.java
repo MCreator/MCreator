@@ -45,7 +45,7 @@ public abstract class WorkspaceSection extends JPanel implements IReloadableFilt
 	 *
 	 * @return Whether the section will be registered but not shown in the workspace when registered.
 	 */
-	public boolean supportedInWorkspace() {
+	public boolean isSupportedInWorkspace() {
 		return true;
 	}
 

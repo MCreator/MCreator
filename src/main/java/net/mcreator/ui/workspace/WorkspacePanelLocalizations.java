@@ -412,7 +412,7 @@ class WorkspacePanelLocalizations extends WorkspaceSection {
 		}
 	}
 
-	@Override public boolean supportedInWorkspace() {
+	@Override public boolean isSupportedInWorkspace() {
 		return workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("i18n")
 				!= GeneratorStats.CoverageStatus.NONE;
 	}

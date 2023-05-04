@@ -860,7 +860,7 @@ import java.util.stream.Collectors;
 		panels.add(section, id);
 		sectionTabs.put(id, section);
 
-		if (section.supportedInWorkspace()) {
+		if (section.isSupportedInWorkspace()) {
 			VerticalTabButton tab = new VerticalTabButton(name);
 			tab.setContentAreaFilled(false);
 			tab.setMargin(new Insets(7, 1, 7, 2));
