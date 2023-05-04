@@ -30,10 +30,12 @@ import java.awt.*;
 
 public class WorkspacePanelResources extends WorkspaceSection {
 
-	public WorkspacePanelTextures workspacePanelTextures;
-	public WorkspacePanelSounds workspacePanelSounds;
-	public WorkspacePanelModels workspacePanelModels;
-	public WorkspacePanelStructures workspacePanelStructures;
+	public final WorkspacePanelTextures workspacePanelTextures;
+	public final WorkspacePanelSounds workspacePanelSounds;
+	public final WorkspacePanelModels workspacePanelModels;
+	public final WorkspacePanelStructures workspacePanelStructures;
+	public final WorkspacePanelScreenshots workspacePanelScreenshots;
+
 	private final JTabbedPane resourceTabs;
 
 	public WorkspacePanelResources(WorkspacePanel workspacePanel) {
@@ -53,6 +55,7 @@ public class WorkspacePanelResources extends WorkspaceSection {
 		this.workspacePanelSounds = new WorkspacePanelSounds(workspacePanel);
 		this.workspacePanelModels = new WorkspacePanelModels(workspacePanel);
 		this.workspacePanelStructures = new WorkspacePanelStructures(workspacePanel);
+		this.workspacePanelScreenshots = new WorkspacePanelScreenshots(workspacePanel);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
 				!= GeneratorStats.CoverageStatus.NONE)
@@ -77,8 +80,7 @@ public class WorkspacePanelResources extends WorkspaceSection {
 		if (workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
 				&& !workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
 				.contains("@"))
-			addResourcesTab(L10N.t("workspace.resources.tab.screenshots"),
-					new WorkspacePanelScreenshots(workspacePanel));
+			addResourcesTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
 
 		for (int i = 0; i < resourceTabs.getTabCount(); i++) {
 			resourceTabs.setBackgroundAt(i, new Color(0, 0, 0, 0));
