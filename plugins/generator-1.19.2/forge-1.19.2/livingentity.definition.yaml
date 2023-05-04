@@ -27,3 +27,4 @@ localizationkeys:
     mapto: mobName
   - key: entity.@modid.@registryname.none
     mapto: mobName
+    condition: canTrade
