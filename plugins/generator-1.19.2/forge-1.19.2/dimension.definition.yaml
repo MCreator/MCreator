@@ -55,3 +55,4 @@ global_templates:
 localizationkeys:
   - key: item.@modid.@registryname
     mapto: igniterName
+    condition: enablePortal
