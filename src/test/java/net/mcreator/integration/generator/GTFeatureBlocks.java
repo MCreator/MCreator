@@ -63,8 +63,6 @@ public class GTFeatureBlocks {
 			StringBuilder additionalXML = new StringBuilder();
 
 			if (!generatorBlocks.contains(featureBlock.getMachineName())) {
-				LOG.warn("[" + generatorName + "] Skipping feature block that is not defined by generator: "
-						+ featureBlock.getMachineName());
 				continue;
 			}
 
@@ -312,7 +310,8 @@ public class GTFeatureBlocks {
 		case "field_dropdown" -> {
 			JsonArray opts = arg.get("options").getAsJsonArray();
 			JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
-			additionalXML.append("<field name=\"").append(field).append("\">").append(opt.get(1).getAsString()).append("</field>");
+			additionalXML.append("<field name=\"").append(field).append("\">").append(opt.get(1).getAsString())
+					.append("</field>");
 			processed++;
 		}
 		case "field_mcitem_selector" -> {

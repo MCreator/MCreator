@@ -43,6 +43,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
@@ -67,18 +68,34 @@ public class GeneratorsTest {
 		ConsolePane.DEBUG_CONTENTS_TO_LOG = true;
 
 		// reduce autosave interval for tests
-		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval = 2000;
+		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
+
+		// This test is RAM intensive, so we may need more RAM
+		PreferencesManager.PREFERENCES.gradle.xmx.set(3000); // 3G
 	}
 
 	public @TestFactory Stream<DynamicTest> testGenerators() {
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
-		LOG.info("Generators found: " + fileNames);
-
 		long rgenseed = System.currentTimeMillis();
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
 
-		return fileNames.stream().map(generatorFile -> {
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
+
+		// Sort generators, so they are tested in predictable order
+		List<String> fileNamesSorted = fileNames.stream().sorted((a, b) -> {
+			String[] ap = a.split("/")[0].split("-");
+			String[] bp = b.split("/")[0].split("-");
+
+			if (ap[0].equals(bp[0])) { // same type, sort by version
+				return bp[1].compareTo(ap[1]);
+			} else { // different status, sort by status
+				return bp[0].compareTo(ap[0]);
+			}
+		}).toList();
+
+		LOG.info("Generators found: " + fileNamesSorted);
+
+		return fileNamesSorted.stream().map(generatorFile -> {
 			final String generator = generatorFile.replace("/generator.yaml", "");
 			return DynamicTest.dynamicTest("Test generator: " + generator, () -> {
 				LOG.info("================");
@@ -165,6 +182,11 @@ public class GeneratorsTest {
 				// We also need to verify JSON files
 				LOG.info("[" + generator + "] ----- Verifying workspace JSON files");
 				verifyGeneratedJSON(workspace);
+
+				LOG.info("[" + generator + "] ----- Attempting to stop all Gradle daemons");
+				GradleDaemonUtils.stopAllDaemons(workspace);
+
+				workspace.close();
 			});
 		});
 	}

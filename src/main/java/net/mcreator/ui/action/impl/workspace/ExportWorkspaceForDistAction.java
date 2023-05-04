@@ -84,7 +84,7 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 						UIManager.getString("OptionPane.cancelButtonText") };
 				int n = JOptionPane.showOptionDialog(actionRegistry.getMCreator(),
 						L10N.t("dialog.workspace.export.message"), L10N.t("dialog.workspace.export.title"),
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, UIRES.getBuiltIn("icon"), options2,
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, UIRES.get("export_donate"), options2,
 						options2[1]);
 				if (n == 2 || n == JOptionPane.CLOSED_OPTION) {
 					return;
@@ -95,7 +95,8 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 				File loc = FileDialogs.getSaveDialog(actionRegistry.getMCreator(),
 						new String[] { "." + FilenameUtilsPatched.getExtension(exportFile) });
 				if (loc != null) {
-					actionRegistry.getMCreator().getApplication().getAnalytics().trackEvent(AnalyticsConstants.EVENT_EXPORT_FOR_DIST, task);
+					actionRegistry.getMCreator().getApplication().getAnalytics()
+							.trackEvent(AnalyticsConstants.EVENT_EXPORT_FOR_DIST, task);
 
 					FileIO.copyFile(new File(actionRegistry.getMCreator().getWorkspaceFolder(), exportFile), loc);
 				}
