@@ -175,9 +175,16 @@ function workspaceToXML() {
 }
 
 class InputCheckChange extends Blockly.Events.BlockChange {
+    constructor(block, name, oldValue, newValue) {
+        super(block, null, name, oldValue, newValue);
+    }
+
     run(forward) {
         const block = this.blockId && this.getEventWorkspace_().getBlockById(this.blockId);
-        if (block)
+        if (block) {
             block.getInput(this.name).setCheck(forward ? this.newValue : this.oldValue);
+            Blockly.Events.fire(new InputCheckChange(block, this.name, forward ? this.oldValue : this.newValue,
+                block.getInput(this.name).connection.getCheck()));
+        }
     }
 }
