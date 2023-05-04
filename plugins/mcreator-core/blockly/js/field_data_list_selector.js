@@ -89,7 +89,7 @@ class FieldDataListSelector extends Blockly.Field {
         // First check if there's a cached readable name (after selecting a value)
         if (this.cachedReadableName) {
             this.readableName = this.cachedReadableName;
-            this.cachedReadableName = null
+            this.cachedReadableName = null;
         }
         // If there isn't (for example after opening a saved procedure), try to get the readable name from the value
         else if (value) {
