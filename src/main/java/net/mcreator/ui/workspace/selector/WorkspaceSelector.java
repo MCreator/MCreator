@@ -511,7 +511,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			((ImagePanel) soim).setOffsetY(-270);
 		} else {
 			soim = new JPanel();
-			soim.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			soim.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		}
 
 		soim.setLayout(new BorderLayout());
