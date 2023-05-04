@@ -22,6 +22,7 @@ localizationkeys:
   - key: item.@modid.@registryname_spawn_egg
     mapto: mobName
     suffix: " Spawn Egg"
+    condition: hasSpawnEgg
   - key: entity.@modid.@registryname
     mapto: mobName
   - key: entity.@modid.@registryname.none
