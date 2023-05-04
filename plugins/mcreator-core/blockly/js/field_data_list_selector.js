@@ -25,12 +25,12 @@ class FieldDataListSelector extends Blockly.Field {
             return thisField.getValue() ?
                 thisField.readableName : javabridge.t('blockly.field_data_list_selector.tooltip.empty');
         });
-    }
+    };
 
     // Get the default text for when no value is selected
     static getDefaultText() {
         return javabridge.t('blockly.extension.data_list_selector.no_entry');
-    }
+    };
 
     // Configure the field given a map of settings
     configure_(config) {
@@ -45,12 +45,12 @@ class FieldDataListSelector extends Blockly.Field {
         let opt_customEntryProviders = config['customEntryProviders'];
         if (opt_customEntryProviders)
             this.customEntryProviders = opt_customEntryProviders;
-    }
+    };
 
     // Create the field from the json definition
     static fromJson(options) {
         return new this(Blockly.utils.parsing.replaceMessageReferences(options['datalist']), undefined, options);
-    }
+    };
 
     // Function to handle clicking
     onMouseDown_(e) {
@@ -69,7 +69,7 @@ class FieldDataListSelector extends Blockly.Field {
                 this.lastClickTime = new Date().getTime();
             }
         }
-    }
+    };
 
     // Update the value of this selector
     doValueUpdate_(newValue) {
@@ -77,13 +77,14 @@ class FieldDataListSelector extends Blockly.Field {
             this.updateReadableName(newValue);
         }
         super.doValueUpdate_(newValue);
-    }
+    };
 
-    // Returns the readable text of the field
+    // Get the text that is shown in the Blockly editor
     getText_() {
         return this.readableName || FieldDataListSelector.getDefaultText();
-    }
+    };
 
+    // Update the readable name of this field
     updateReadableName(value) {
         // First check if there's a cached readable name (after selecting a value)
         if (this.cachedReadableName) {
@@ -96,7 +97,7 @@ class FieldDataListSelector extends Blockly.Field {
         } else {
             this.readableName = FieldDataListSelector.getDefaultText(); // Fallback to the "No entry selected" message
         }
-    }
+    };
 }
 
 // Register this field, so that it can be added without extensions

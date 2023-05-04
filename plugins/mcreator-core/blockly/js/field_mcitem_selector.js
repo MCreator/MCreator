@@ -21,12 +21,12 @@ class FieldMCItemSelector extends Blockly.FieldImage {
                 javabridge.t('blockly.field_mcitem_selector.tooltip.empty_block') :
                 javabridge.t('blockly.field_mcitem_selector.tooltip.empty_block_item'));
         });
-    }
+    };
 
     // Create the field from the json definition
     static fromJson(options) {
         return new this(Blockly.utils.parsing.replaceMessageReferences(options['supported_mcitems']), undefined);
-    }
+    };
 
     // Initialize the field visuals
     initView() {
@@ -64,6 +64,7 @@ class FieldMCItemSelector extends Blockly.FieldImage {
         }
     };
 
+    // Update the value and the image of this field
     doValueUpdate_(newValue) {
         this.value_ = newValue;
         this.src_ = javabridge.getMCItemURI(newValue);

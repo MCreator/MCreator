@@ -33,12 +33,12 @@ class FieldAiConditionSelector extends Blockly.Field {
             }
             return tooltip;
         });
-    }
+    };
 
     // Create the field from the json definition
     static fromJson(options) {
         return new this(undefined);
-    }
+    };
 
     // Function to handle clicking
     onMouseDown_(e) {
@@ -56,17 +56,18 @@ class FieldAiConditionSelector extends Blockly.Field {
                 this.lastClickTime = new Date().getTime();
             }
         }
-    }
+    };
 
+    // Get the text that is shown in the Blockly editor
     getText_() {
         let currentValues = this.getValue().split(',');
         if (currentValues.length === 2) {
-            return 'Conditions: ' + 
+            return javabridge.t('blockly.field_ai_condition_selector.conditions') +
                 (currentValues[0] === 'null' ? 'O' : 'X') + 
                 (currentValues[1] === 'null' ? 'O' : 'X');
         }
-        return 'Conditions: OO';
-    }
+        return javabridge.t('blockly.field_ai_condition_selector.conditions') + 'OO';
+    };
 }
 
 // Register this field, so that it can be added without extensions
