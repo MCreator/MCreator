@@ -50,7 +50,7 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 
 		setOpaque(true);
 
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		setForeground(isSelected ?
 				(Color) UIManager.get("MCreatorLAF.MAIN_TINT") :
 				(Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
