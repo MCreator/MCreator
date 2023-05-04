@@ -314,23 +314,20 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
                     currentField.setValidator(null); // Detach validators from fields to force setting previous values
                     currentField.mutationInProcess_ = true;
                 }
+                const newValues = [];
                 for (let j = 0; j < this.inputCount_; j++) {
                     const currentField = this.getField(fieldNames[i] + j);
                     if (fieldValues[j]) // If fields existed before, restore their values unconditionally
                         currentField.setValue(fieldValues[j][i] ?? '');
-                }
-                for (let j = 0; j < this.inputCount_; j++) {
-                    const currentField = this.getField(fieldNames[i] + j);
                     currentField.setValidator(validators[j]);
                     if (fieldValues[j] == null) // Make sure values of newly created fields are validated
                         currentField.setValue(currentField.getValue());
+                    newValues.push(currentField.getValue());
                 }
-                const newValues = [];
                 for (let j = 0; j < this.inputCount_; j++) {
                     const currentField = this.getField(fieldNames[i] + j);
                     if (newValues.indexOf(currentField.getValue()) != -1)
                         currentField.setValue(currentField.getValue()); // Prevent duplicated initial values
-                    newValues.push(currentField.getValue());
                     currentField.mutationInProcess_ = false;
                 }
             }
