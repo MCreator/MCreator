@@ -21,6 +21,7 @@ package net.mcreator.ui.vcs;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.vcs.diff.MergeHandle;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -41,44 +42,48 @@ class VCSWorkspaceMergeDialog {
 
 		List<MergeHandleComponent> mergeHandleComponents = new ArrayList<>();
 
-		JButton allLocal = new JButton("All local");
-		JButton allRemote = new JButton("All remote");
+		JButton allLocal = L10N.button("dialog.vcs.element_merge_all_local");
+		JButton allRemote = L10N.button("dialog.vcs.element_merge_all_remote");
 		allLocal.addActionListener(e -> mergeHandleComponents.forEach(mhc -> mhc.local.setSelected(true)));
 		allRemote.addActionListener(e -> mergeHandleComponents.forEach(mhc -> mhc.remote.setSelected(true)));
 		merges.add(PanelUtils.westAndEastElement(allLocal, allRemote));
 
 		if (input.workspaceSettingsMergeHandle() != null) {
-			merges.add(
-					PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Workspace settings"), 19)));
+			merges.add(PanelUtils.join(FlowLayout.LEFT,
+					ComponentUtils.deriveFont(L10N.label("dialog.vcs.element_merge_elements.workspace_settings"), 19)));
 			merges.add(new MergeHandleComponent(mergeHandleComponents, input.workspaceSettingsMergeHandle()));
 		}
 
 		if (input.workspaceFoldersMergeHandle() != null) {
-			merges.add(PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Folder structure"), 19)));
+			merges.add(PanelUtils.join(FlowLayout.LEFT,
+					ComponentUtils.deriveFont(L10N.label("dialog.vcs.element_merge_elements.folder_structure"), 19)));
 			merges.add(new MergeHandleComponent(mergeHandleComponents, input.workspaceFoldersMergeHandle()));
 		}
 
 		if (input.conflictingModElements().size() > 0) {
-			merges.add(PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Mod elements"), 19)));
+			merges.add(PanelUtils.join(FlowLayout.LEFT,
+					ComponentUtils.deriveFont(L10N.label("dialog.vcs.element_merge_elements.mod_elements"), 19)));
 			for (MergeHandle<ModElement> modElementMergeHandle : input.conflictingModElements())
 				merges.add(new MergeHandleComponent(mergeHandleComponents, modElementMergeHandle));
 		}
 
 		if (input.conflictingVariableElements().size() > 0) {
-			merges.add(
-					PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Variable elements"), 19)));
+			merges.add(PanelUtils.join(FlowLayout.LEFT,
+					ComponentUtils.deriveFont(L10N.label("dialog.vcs.element_merge_elements.variable_elements"), 19)));
 			for (MergeHandle<VariableElement> variableElementMergeHandle : input.conflictingVariableElements())
 				merges.add(new MergeHandleComponent(mergeHandleComponents, variableElementMergeHandle));
 		}
 
 		if (input.conflictingSoundElements().size() > 0) {
-			merges.add(PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Sound elements"), 19)));
+			merges.add(PanelUtils.join(FlowLayout.LEFT,
+					ComponentUtils.deriveFont(L10N.label("dialog.vcs.element_merge_elements.sound_elements"), 19)));
 			for (MergeHandle<SoundElement> soundElementMergeHandle : input.conflictingSoundElements())
 				merges.add(new MergeHandleComponent(mergeHandleComponents, soundElementMergeHandle));
 		}
 
 		if (input.conflictingLangMaps().size() > 0) {
-			merges.add(PanelUtils.join(FlowLayout.LEFT, ComponentUtils.deriveFont(new JLabel("Language maps"), 19)));
+			merges.add(PanelUtils.join(FlowLayout.LEFT,
+					ComponentUtils.deriveFont(L10N.label("dialog.vcs.element_merge_elements.language_maps"), 19)));
 			for (MergeHandle<String> languageMapMergeHandle : input.conflictingLangMaps())
 				merges.add(new MergeHandleComponent(mergeHandleComponents, languageMapMergeHandle));
 		}
@@ -90,14 +95,11 @@ class VCSWorkspaceMergeDialog {
 		scrollPane.setPreferredSize(new Dimension(410, 400));
 
 		dialog.add("Center", scrollPane);
-		dialog.add("North", new JLabel(
-				"<html><b>Some of the workspace elements were changed both on remote and your local side.</b>"
-						+ "<br><small>For such elements, you need to choose if you want to keep your local changes or the changes from the<br>"
-						+ "remote workspace. To do this, select local or remote side to be preserved for each element listed below<br>"
-						+ "and click \"Finish merge\" after you are done."));
+		dialog.add("North", L10N.label("dialog.vcs.element_merge_manual_message"));
 
-		JOptionPane.showOptionDialog(mcreator, dialog, "Manual workspace merge required", JOptionPane.DEFAULT_OPTION,
-				JOptionPane.PLAIN_MESSAGE, null, new String[] { "Finish merge" }, null);
+		JOptionPane.showOptionDialog(mcreator, dialog, L10N.t("dialog.vcs.element_merge_manual_required"),
+				JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+				new String[] { L10N.t("dialog.vcs.element_merge_finish") }, null);
 	}
 
 }

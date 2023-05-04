@@ -1,16 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 
     <dict>
 
         <key>CFBundleDevelopmentRegion</key>
-        <string>English</string>
+        <string>en</string>
 
         <key>CFBundleName</key>
         <string>MCreator</string>
-        <key>CFBundleGetInfoString</key>
-        <string>MCreator Minecraft Mod Maker</string>
         <key>CFBundleIdentifier</key>
         <string>net.mcreator</string>
 
@@ -26,7 +24,7 @@
         <key>CFBundleShortVersionString</key>
         <string>%mcreator%</string>
         <key>CFBundleSignature</key>
-        <string>????</string>
+        <string>net.mcreator.mcreator</string>
         <key>CFBundleVersion</key>
         <string>%mcreator%</string>
         <key>LSApplicationCategoryType</key>
@@ -45,6 +43,8 @@
                 <string>MCreator workspace file</string>
                 <key>CFBundleTypeRole</key>
                 <string>Editor</string>
+                <key>LSHandlerRank</key>
+                <string>Owner</string>
             </dict>
         </array>
 

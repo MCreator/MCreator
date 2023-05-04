@@ -25,18 +25,28 @@
       "name": "mode",
       "options": [
         [
-          "BREAK",
-          "BREAK"
-        ],
-        [
-          "DESTROY",
-          "DESTROY"
-        ],
-        [
           "NONE",
           "NONE"
+        ],
+        [
+          "BLOCK",
+          "BLOCK"
+        ],
+        [
+          "MOB",
+          "MOB"
+        ],
+        [
+          "TNT",
+          "TNT"
         ]
       ]
+    },
+    {
+      "type": "field_image",
+      "src": "./res/server.png",
+      "width": 8,
+      "height": 24
     }
   ],
   "inputsInline": true,

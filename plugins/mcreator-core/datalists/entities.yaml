@@ -384,3 +384,15 @@
 - EntityWarden:
   readable_name: "Warden"
   type: spawnable
+- EntityBlockDisplay:
+  readable_name: "Block display"
+  type: spawnable
+- EntityInteraction:
+  readable_name: "Interaction"
+  type: spawnable
+- EntityItemDisplay:
+  readable_name: "Item display"
+  type: spawnable
+- EntityTextDisplay:
+  readable_name: "Text display"
+  type: spawnable
