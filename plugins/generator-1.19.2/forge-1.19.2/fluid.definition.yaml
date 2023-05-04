@@ -32,3 +32,4 @@ localizationkeys:
     mapto: name
   - key: item.@modid.@registryname_bucket
     mapto: bucketName
+    condition: generateBucket
