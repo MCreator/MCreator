@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
@@ -354,7 +353,7 @@ public class BlocklyJavascriptBridge {
 			}).map(ModElement::getName).collect(Collectors.toList());
 		}
 
-		if (retval.size() <= 0)
+		if (retval.size() == 0)
 			return new String[] { "" };
 
 		return retval.toArray(new String[0]);
