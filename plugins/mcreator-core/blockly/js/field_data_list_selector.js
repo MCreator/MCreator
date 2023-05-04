@@ -16,6 +16,13 @@ class FieldDataListSelector extends Blockly.Field {
 
         if (opt_config)
             this.configure_(opt_config);
+
+        // Show the full name of the selected value, or the "Double click to select value" message
+        let thisField = this;
+        this.setTooltip(function () {
+            return thisField.getValue() ?
+                thisField.readableName : javabridge.t('blockly.field_data_list_selector.tooltip.empty');
+        });
     }
 
     // Get the default text for when no value is selected
