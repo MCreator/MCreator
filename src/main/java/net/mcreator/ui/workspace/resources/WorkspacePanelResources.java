@@ -22,13 +22,13 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
-import net.mcreator.ui.workspace.WorkspaceSection;
+import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
 
-public class WorkspacePanelResources extends WorkspaceSection {
+public class WorkspacePanelResources extends AbstractWorkspacePanel {
 
 	public final WorkspacePanelTextures workspacePanelTextures;
 	public final WorkspacePanelSounds workspacePanelSounds;

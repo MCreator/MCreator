@@ -51,7 +51,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class WorkspacePanelVariables extends WorkspaceSection {
+class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 	private final TableRowSorter<TableModel> sorter;
 	private final JTable elements;

@@ -92,11 +92,11 @@ import java.util.stream.Collectors;
 	private final JPanel panels = new JPanel(cardLayout);
 
 	private final JPanel rotatablePanel = new JPanel();
-	private final Map<String, WorkspaceSection> sectionTabs = new HashMap<>();
+	private final Map<String, AbstractWorkspacePanel> sectionTabs = new HashMap<>();
 	private final List<JButton> verticalTabs = new ArrayList<>();
 	public final WorkspacePanelResources resourcesPan;
 
-	private String currentTab;
+	private String currentTab = "mods";
 
 	private final MCreator mcreator;
 
@@ -771,11 +771,12 @@ import java.util.stream.Collectors;
 
 		addVerticalTab("mods", L10N.t("workspace.category.mod_elements"),
 				new WorkspacePanelMods(PanelUtils.westAndCenterElement(toolp, modElementsPanel)));
-		verticalTabs.get(0).doClick();
 		addVerticalTab("res", L10N.t("workspace.category.resources"), resourcesPan);
 		addVerticalTab("locales", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
 		addVerticalTab("variables", L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
 		addVerticalTab("vcs", L10N.t("workspace.category.remote_workspace"), new WorkspacePanelVCS(this));
+
+		verticalTabs.get(0).doClick();
 
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
@@ -853,7 +854,7 @@ import java.util.stream.Collectors;
 	 * @param name  The name of the section shown in the workspace.
 	 * @param section The panel representing contents of the vertical tab being added.
 	 */
-	public void addVerticalTab(String id, String name, WorkspaceSection section) {
+	public void addVerticalTab(String id, String name, AbstractWorkspacePanel section) {
 		if (getVerticalTab(id) != null)
 			return;
 
@@ -886,7 +887,7 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	public WorkspaceSection getVerticalTab(String id) {
+	public AbstractWorkspacePanel getVerticalTab(String id) {
 		return sectionTabs.get(id);
 	}
 
@@ -1488,7 +1489,7 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	private class WorkspacePanelMods extends WorkspaceSection {
+	private class WorkspacePanelMods extends AbstractWorkspacePanel {
 
 		private WorkspacePanelMods(JComponent contents) {
 			super(WorkspacePanel.this);

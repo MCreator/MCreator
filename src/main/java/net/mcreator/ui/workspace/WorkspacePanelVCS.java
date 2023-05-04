@@ -45,7 +45,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-class WorkspacePanelVCS extends WorkspaceSection {
+class WorkspacePanelVCS extends AbstractWorkspacePanel {
 
 	private static final Logger LOG = LogManager.getLogger("VCS Panel");
 

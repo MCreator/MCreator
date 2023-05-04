@@ -50,7 +50,7 @@ import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-class WorkspacePanelLocalizations extends WorkspaceSection {
+class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 	private final JTabbedPane pane;
 	private ArrayList<TableRowSorter<TableModel>> sorters = new ArrayList<>();
