@@ -2,7 +2,7 @@
  * This class represents a MCItem selector field
  */
 class FieldMCItemSelector extends Blockly.FieldImage {
-    constructor(opt_supported_mcitems='all', opt_validator) {
+    constructor(opt_supported_mcitems = 'all', opt_validator) {
         super('', 36, 36, '');
         this.supported_mcitems = opt_supported_mcitems // The type of selector to open ("allblocks" will open the block selector)
         this.mcitem = null; // The selected mcitem

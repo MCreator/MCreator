@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -24,6 +25,8 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -42,7 +45,9 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class RecipeGUI extends ModElementGUI<Recipe> {
 
@@ -55,7 +60,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private SmithingRecipeMaker smcm;
 	private BrewingRecipeMaker brm;
 
-	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.recipe.is_shapeless");
+	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.common.enable");
 
 	private final JSpinner xpReward = new JSpinner(new SpinnerNumberModel(1.0, 0, 256, 1));
 	private final JSpinner cookingTime = new JSpinner(new SpinnerNumberModel(200, 0, 1000000, 1));
@@ -69,6 +74,24 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	private final JComboBox<String> recipeType = new JComboBox<>(
 			new String[] { "Crafting", "Smelting", "Brewing", "Blasting", "Smoking", "Stone cutting",
 					"Campfire cooking", "Smithing" });
+
+	private final JComboBox<String> cookingBookCategory = new JComboBox<>(
+			new String[] { "MISC", "FOOD", "BLOCKS" });
+
+	private final JComboBox<String> craftingBookCategory = new JComboBox<>(
+			new String[] { "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" });
+
+	private final CardLayout recipesPanelLayout = new CardLayout();
+	private final JPanel recipesPanel = new JPanel(recipesPanelLayout);
+
+	private JComponent namePanel;
+	private JComponent namespacePanel;
+	private JComponent xpRewardPanel;
+	private JComponent cookingTimePanel;
+	private JComponent groupPanel;
+	private JComponent shapelessPanel;
+	private JComponent cookingBookCategoryPanel;
+	private JComponent craftingBookCategoryPanel;
 
 	public RecipeGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -120,21 +143,13 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 
-		CardLayout recipesPanelLayout = new CardLayout();
-		JPanel recipesPanel = new JPanel(recipesPanelLayout);
-		recipesPanel.setOpaque(false);
-
-		JPanel crafting = new JPanel(new BorderLayout());
-		crafting.setOpaque(false);
-
-		crafting.add("West", rm);
-		crafting.add("North", PanelUtils.join(FlowLayout.LEFT,
-				HelpUtils.wrapWithHelpButton(this.withEntry("recipe/shapeless"), recipeShapeless)));
 
 		recipeShapeless.setOpaque(false);
 		recipeShapeless.addActionListener(event -> rm.setShapeless(recipeShapeless.isSelected()));
 
-		recipesPanel.add(crafting, "crafting");
+		recipesPanel.setOpaque(false);
+
+		recipesPanel.add(PanelUtils.totalCenterInPanel(rm), "crafting");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(fm), "smelting");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(bm), "blasting");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(sm), "smoking");
@@ -146,72 +161,82 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		JComponent recwrap = PanelUtils.maxMargin(recipesPanel, 10, true, true, true, true);
 		recwrap.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				"Recipe parameters", TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
+				L10N.t("elementgui.recipe.definition"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(), Color.white));
 
-		JPanel northPanel = new JPanel(new GridLayout(6, 2, 10, 2));
+		JPanel northPanel = new JPanel(new AdaptiveGridLayout(-1, 1, 10, 2));
 		northPanel.setOpaque(false);
 
-		northPanel.add(
-				HelpUtils.wrapWithHelpButton(this.withEntry("recipe/type"), L10N.label("elementgui.recipe.type")));
-		northPanel.add(recipeType);
+		northPanel.add(PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("recipe/type"), L10N.label("elementgui.recipe.type")),
+				recipeType));
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/registry_name"),
-				L10N.label("elementgui.recipe.registry_name")));
-		northPanel.add(name);
+		northPanel.add(namePanel = PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("recipe/registry_name"),
+						L10N.label("elementgui.recipe.registry_name")), name));
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/namespace"),
-				L10N.label("elementgui.recipe.name_space")));
-		northPanel.add(namespace);
+		northPanel.add(namespacePanel = PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("recipe/namespace"),
+				L10N.label("elementgui.recipe.name_space")), namespace));
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/group_name"),
-				L10N.label("elementgui.recipe.group")));
-		northPanel.add(group);
+		northPanel.add(groupPanel = PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("recipe/group_name"),
+				L10N.label("elementgui.recipe.group")), group));
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/xp_reward"),
-				L10N.label("elementgui.recipe.xp_reward")));
-		northPanel.add(xpReward);
+		northPanel.add(craftingBookCategoryPanel = PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("recipe/crafting_book_category"),
+				L10N.label("elementgui.recipe.crafting_book_category")), craftingBookCategory));
 
-		northPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("recipe/cooking_time"),
-				L10N.label("elementgui.recipe.cooking_time")));
-		northPanel.add(cookingTime);
+		northPanel.add(cookingBookCategoryPanel = PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("recipe/cooking_book_category"),
+				L10N.label("elementgui.recipe.cooking_book_category")), cookingBookCategory));
+
+		northPanel.add(shapelessPanel = PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("recipe/shapeless"),
+				L10N.label("elementgui.recipe.is_shapeless")), recipeShapeless));
+
+		northPanel.add(xpRewardPanel = PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("recipe/xp_reward"),
+				L10N.label("elementgui.recipe.xp_reward")), xpReward));
+
+		northPanel.add(cookingTimePanel = PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("recipe/cooking_time"),
+				L10N.label("elementgui.recipe.cooking_time")), cookingTime));
 
 		pane5.setOpaque(false);
-		pane5.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.westAndEastElement(PanelUtils.join(FlowLayout.LEFT, northPanel), recwrap, 15, 15)));
+		pane5.add(PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(PanelUtils.pullElementUp(northPanel), PanelUtils.pullElementUp(recwrap), 15, 15)));
 
-		xpReward.setEnabled(false);
-		cookingTime.setEnabled(false);
-
-		recipeType.addActionListener(e -> {
-			if (recipeType.getSelectedItem() != null) {
-				xpReward.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
-						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing")
-						&& !recipeType.getSelectedItem().equals("Brewing"));
-				cookingTime.setEnabled(!recipeType.getSelectedItem().equals("Crafting") && !recipeType.getSelectedItem()
-						.equals("Stone cutting") && !recipeType.getSelectedItem().equals("Smithing")
-						&& !recipeType.getSelectedItem().equals("Brewing"));
-
-				group.setEnabled(!recipeType.getSelectedItem().equals("Brewing"));
-
-				if (!isEditingMode() && cookingTime.isEnabled()) {
-					if (recipeType.getSelectedItem().equals("Smelting")) {
-						cookingTime.setValue(200);
-					} else if (recipeType.getSelectedItem().equals("Campfire cooking")) {
-						cookingTime.setValue(600);
-					} else {
-						cookingTime.setValue(100);
-					}
-				}
-
-				recipesPanelLayout.show(recipesPanel,
-						recipeType.getSelectedItem().toString().toLowerCase(Locale.ENGLISH));
-			}
-		});
+		recipeType.addActionListener(e -> updateUIFields());
 
 		group.enableRealtimeValidation();
 		group.setValidator(new RegistryNameValidator(group, "Recipe group").setAllowEmpty(true).setMaxLength(128));
 
+		updateUIFields();
+
 		addPage(pane5);
+	}
+
+	private void updateUIFields() {
+		String recipeTypeValue = (String) recipeType.getSelectedItem();
+		if (recipeTypeValue != null) {
+			boolean isCookingRecipe = List.of("Smelting", "Blasting", "Smoking", "Campfire cooking").contains(recipeTypeValue);
+			xpRewardPanel.setVisible(isCookingRecipe);
+			cookingTimePanel.setVisible(isCookingRecipe);
+			cookingBookCategoryPanel.setVisible(isCookingRecipe);
+
+			boolean isRecipeJSON = List.of("Crafting", "Smelting", "Blasting", "Smoking", "Stone cutting", "Campfire cooking", "Smithing").contains(recipeTypeValue);
+			groupPanel.setVisible(isRecipeJSON);
+			namespacePanel.setVisible(isRecipeJSON);
+			namePanel.setVisible(isRecipeJSON);
+
+			boolean isRecipeCrafting = recipeTypeValue.equals("Crafting");
+			shapelessPanel.setVisible(isRecipeCrafting);
+			craftingBookCategoryPanel.setVisible(isRecipeCrafting);
+
+			if (!isEditingMode() && isCookingRecipe) {
+				if (recipeTypeValue.equals("Smelting")) {
+					cookingTime.setValue(200);
+				} else if (recipeTypeValue.equals("Campfire cooking")) {
+					cookingTime.setValue(600);
+				} else {
+					cookingTime.setValue(100);
+				}
+			}
+
+			recipesPanelLayout.show(recipesPanel, recipeTypeValue.toLowerCase(Locale.ENGLISH));
+		}
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -270,6 +295,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		name.getEditor().setItem(recipe.name);
 
 		group.setText(recipe.group);
+
+		cookingBookCategory.setSelectedItem(recipe.cookingBookCategory);
+		craftingBookCategory.setSelectedItem(recipe.craftingBookCategory);
 
 		if ("Crafting".equals(recipe.recipeType)) {
 			recipeShapeless.setSelected(recipe.recipeShapeless);
@@ -377,6 +405,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipe.name = name.getEditor().getItem().toString();
 
 		recipe.group = group.getText();
+
+		recipe.cookingBookCategory = (String) cookingBookCategory.getSelectedItem();
+		recipe.craftingBookCategory = (String) craftingBookCategory.getSelectedItem();
 
 		return recipe;
 	}
