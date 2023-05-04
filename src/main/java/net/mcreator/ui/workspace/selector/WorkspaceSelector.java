@@ -170,7 +170,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		logoPanel.add("South", version);
 
 		logoPanel.setBorder(BorderFactory.createEmptyBorder(45, 26 + 25, 0, 10));
-		actions.setBorder(BorderFactory.createEmptyBorder(25, 24 + 25, 2, 10));
 
 		JPanel southcenter = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		southcenter.setBorder(BorderFactory.createEmptyBorder(0, 0, 26, 60 - 1));
@@ -224,6 +223,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JScrollPane actSP = new JScrollPane(actions);
 		actSP.getHorizontalScrollBar().setUnitIncrement(10);
 		actSP.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		actSP.setBorder(BorderFactory.createEmptyBorder(25, 24 + 25, 2, 10 + 49));
 
 		JPanel mainContents = new JPanel(new BorderLayout());
 		mainContents.add("North", logoPanel);
@@ -421,19 +421,18 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	 * @param event The action performed when the button is clicked.
 	 */
 	public void addWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
-		JButton newWorkspace = new JButton(text);
+		JButton newWorkspace = new JButton(text, icon);
 		ComponentUtils.deriveFont(newWorkspace, 10);
 		newWorkspace.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 		newWorkspace.setPreferredSize(new Dimension(100, 100));
 		newWorkspace.setMargin(new Insets(0, 0, 0, 0));
-		newWorkspace.setIcon(icon);
 		newWorkspace.addActionListener(event);
 		newWorkspace.setToolTipText(text);
 		newWorkspace.setVerticalTextPosition(SwingConstants.BOTTOM);
 		newWorkspace.setHorizontalTextPosition(SwingConstants.CENTER);
 		newWorkspace.setBorder(
-				BorderFactory.createLineBorder(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).brighter(), 1));
-		newWorkspace.setCursor(new Cursor(Cursor.HAND_CURSOR));
+				BorderFactory.createLineBorder(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).brighter()));
+		newWorkspace.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		actions.add(newWorkspace);
 	}
 
