@@ -30,7 +30,6 @@
 
 <#-- @formatter:off -->
 <#include "mcitems.ftl">
-<#include "itemlists.java.ftl">
 
 package ${package}.enchantment;
 
@@ -67,7 +66,7 @@ public class ${name}Enchantment extends Enchantment {
 
 	<#if data.compatibleItems?has_content>
 		@Override public boolean canApplyAtEnchantingTable(ItemStack itemstack) {
-        	return <@itemListBasedOnDirectChecks data.compatibleItems "itemstack" data.excludeItems/>;
+			return <#if data.excludeItems>!</#if>${mappedMCItemsToIngredient(data.compatibleItems)}.test(itemstack);
         }
 	</#if>
 

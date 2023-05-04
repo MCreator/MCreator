@@ -29,7 +29,6 @@
 -->
 
 <#-- @formatter:off -->
-<#include "itemlists.java.ftl">
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
 <#include "triggers.java.ftl">
@@ -211,7 +210,7 @@ public class ${name}Item extends FishingRodItem {
 
 	<#if data.repairItems?has_content>
     	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
-    		return <@itemListBasedOnDirectChecks data.repairItems "repairitem"/>;
+			return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
     	}
     </#if>
 
