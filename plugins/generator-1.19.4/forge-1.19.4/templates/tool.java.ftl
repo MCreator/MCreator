@@ -29,6 +29,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "itemlists.java.ftl">
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
 <#include "triggers.java.ftl">
