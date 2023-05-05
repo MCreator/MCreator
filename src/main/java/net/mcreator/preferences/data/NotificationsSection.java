@@ -28,7 +28,6 @@ public class NotificationsSection extends PreferencesSection {
 	public BooleanEntry checkAndNotifyForUpdates;
 	public BooleanEntry checkAndNotifyForPatches;
 	public BooleanEntry checkAndNotifyForPluginUpdates;
-	public BooleanEntry warnInvalidPlugins;
 
 	NotificationsSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -37,7 +36,6 @@ public class NotificationsSection extends PreferencesSection {
 		checkAndNotifyForUpdates = addEntry(new BooleanEntry("checkAndNotifyForUpdates", true));
 		checkAndNotifyForPatches = addEntry(new BooleanEntry("checkAndNotifyForPatches", true));
 		checkAndNotifyForPluginUpdates = addEntry(new BooleanEntry("checkAndNotifyForPluginUpdates", false));
-		warnInvalidPlugins = addEntry(new BooleanEntry("warnInvalidPlugins", true));
 	}
 
 	@Override public String getSectionKey() {
