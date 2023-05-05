@@ -40,6 +40,7 @@ package net.mcreator.ui;
 
 import net.mcreator.plugin.PluginLoadFailure;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
 import net.mcreator.ui.dialogs.UpdatePluginDialog;
@@ -59,7 +60,8 @@ public class StartupNotifications {
 			ThreadUtil.runOnSwingThreadAndWait(() -> {
 				UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent, false);
 
-				showPluginLoadingFailures(parent);
+				if (PreferencesManager.PREFERENCES.notifications.warnInvalidPlugins.get())
+					showPluginLoadingFailures(parent);
 
 				UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(parent);
 			});
