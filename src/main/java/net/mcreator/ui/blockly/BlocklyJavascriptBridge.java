@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.OS;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
@@ -129,11 +128,11 @@ public class BlocklyJavascriptBridge {
 	 * @param type                 The type of selector to open
 	 * @param typeFilter           If present, only entries whose type matches this parameter are loaded
 	 * @param customEntryProviders If present, the types of the mod elements that provide custom entries
-	 * @param callback             The Javascript object that passes the "value,readableName" pair to the Blockly editor
+	 * @param callback             The Javascript object that passes the {"value", "readable name"} pair to the Blockly editor
 	 */
 	@SuppressWarnings("unused") public void openEntrySelector(@Nonnull String type, @Nullable String typeFilter,
 			@Nullable String customEntryProviders, JSObject callback) {
-		String retval = switch (type) {
+		String[] retval = switch (type) {
 			case "entity" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"entity");
@@ -162,11 +161,11 @@ public class BlocklyJavascriptBridge {
 							StringUtils.split(customEntryProviders, ',')), type);
 				}
 
-				yield "," + L10N.t("blockly.extension.data_list_selector.no_entry");
+				yield new String[]{"", L10N.t("blockly.extension.data_list_selector.no_entry")};
 			}
 		};
 
-		callback.call("callback", retval);
+		callback.call("callback", retval[0], retval[1]);
 	}
 
 	/**
@@ -174,26 +173,30 @@ public class BlocklyJavascriptBridge {
 	 *
 	 * @param entryProvider The function that provides the entries from a given workspace
 	 * @param type          The type of the data list, used for the selector title and message
-	 * @return A "value,readable name" pair, or the default entry if no entry was selected
+	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
 	 */
-	private String openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
-		String retval = "," + L10N.t("blockly.extension.data_list_selector.no_entry");
+	private String[] openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
+		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
 		String title = L10N.t("dialog.selector." + type + ".title");
 		String message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()
 				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
 			DataListEntry selected = DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider, title, message);
-			if (selected != null)
-				retval = selected.getName() + "," + selected.getReadableName();
+			if (selected != null) {
+				retval[0] = selected.getName();
+				retval[1] = selected.getReadableName();
+			}
 		} else {
 			FutureTask<DataListEntry> query = new FutureTask<>(
 					() -> DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider, title, message));
 			try {
 				SwingUtilities.invokeLater(query);
 				DataListEntry selected = query.get();
-				if (selected != null)
-					retval = selected.getName() + "," + selected.getReadableName();
+				if (selected != null) {
+					retval[0] = selected.getName();
+					retval[1] = selected.getReadableName();
+				}
 			} catch (InterruptedException | ExecutionException ignored) {
 			}
 		}
@@ -206,26 +209,30 @@ public class BlocklyJavascriptBridge {
 	 *
 	 * @param entryProvider The function that provides the strings from a given workspace
 	 * @param type          The type of the data list, used for the selector title and message
-	 * @return A "value,value" pair (strings don't have readable names!), or the default entry if no string was selected
+	 * @return A {"value", "value"} pair (strings don't have readable names!), or the default entry if no string was selected
 	 */
-	private String openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
-		String retval = "," + L10N.t("blockly.extension.data_list_selector.no_entry");
+	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
+		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
 		String title = L10N.t("dialog.selector." + type + ".title");
 		String message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()
 				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
 			String selected = StringSelectorDialog.openSelectorDialog(mcreator, entryProvider, title, message);
-			if (selected != null)
-				retval = selected + "," + selected;
+			if (selected != null) {
+				retval[0] = selected;
+				retval[1] = selected;
+			}
 		} else {
 			FutureTask<String> query = new FutureTask<>(
 					() -> StringSelectorDialog.openSelectorDialog(mcreator, entryProvider, title, message));
 			try {
 				SwingUtilities.invokeLater(query);
 				String selected = query.get();
-				if (selected != null)
-					retval = selected + "," + selected;
+				if (selected != null) {
+					retval[0] = selected;
+					retval[1] = selected;
+				}
 			} catch (InterruptedException | ExecutionException ignored) {
 			}
 		}
@@ -354,7 +361,7 @@ public class BlocklyJavascriptBridge {
 			}).map(ModElement::getName).collect(Collectors.toList());
 		}
 
-		if (retval.size() <= 0)
+		if (retval.size() == 0)
 			return new String[] { "" };
 
 		return retval.toArray(new String[0]);

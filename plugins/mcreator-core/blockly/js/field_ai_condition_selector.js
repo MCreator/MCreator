@@ -1,52 +1,44 @@
 /**
  * This class represents a condition selector for AI blocks
  */
-class FieldAiConditionSelector extends Blockly.FieldLabelSerializable {
+class FieldAiConditionSelector extends Blockly.Field {
+
+    EDITABLE = true;
+    SERIALIZABLE = true;
+    CURSOR = 'default';
+
     constructor(opt_validator) {
-        super('Conditions: OO', 'condition-label');
-        this.condition = 'null,null';
+        super('null,null', opt_validator);
 
-        this.EDITABLE = true;
+        // Show the selected conditions, or the "Double click to select conditions" message
+        let thisField = this;
+        this.setTooltip(function () {
+            let conditions = thisField.getValue() && thisField.getValue().split(',');
+            if (!conditions)
+                return javabridge.t('blockly.field_ai_condition_selector.tooltip.empty');
 
-        if (opt_validator)
-            this.setValidator(opt_validator);
-    }
+            let startCond = conditions[0];
+            let continueCond = conditions[1];
+            // If no condition is selected, show the "Double click to select conditions" message
+            if (startCond === 'null' && continueCond === 'null')
+                return javabridge.t('blockly.field_ai_condition_selector.tooltip.empty');
+
+            let tooltip = '';
+            if (startCond !== 'null') {
+                tooltip += javabridge.t('blockly.field_ai_condition_selector.tooltip.start_condition') + startCond +
+                    (continueCond !== 'null' ? '\n' : ''); // Add a new line if both conditions are selected
+            }
+            if (continueCond !== 'null') {
+                tooltip += javabridge.t('blockly.field_ai_condition_selector.tooltip.continue_condition') + continueCond;
+            }
+            return tooltip;
+        });
+    };
 
     // Create the field from the json definition
     static fromJson(options) {
         return new this(undefined);
-    }
-
-    // Initialize the field with a rectangle surrounding the text
-    initView() {
-        let rect = Blockly.utils.dom.createSvgElement('rect',
-            {
-                'class': 'blocklyFlyoutButtonShadow',
-                'rx': 2, 'ry': 2, 'y': 0, 'x': 1
-            },
-            this.fieldGroup_);
-        this.createTextElement_();
-
-        if (workspace.getRenderer().name === "thrasos") {
-            this.textElement_.setAttribute("y", 8);
-            this.textElement_.setAttribute("x", this.textElement_.getAttribute("x") + 3);
-        } else {
-            this.textElement_.setAttribute("y", 13);
-            this.textElement_.setAttribute("x", this.textElement_.getAttribute("x") + 4);
-        }
-
-        if (this.class_)
-            Blockly.utils.dom.addClass(this.textElement_, this.class_);
-
-        rect.setAttribute('width', 93);
-        rect.setAttribute('height', 15);
-        this.lastClickTime = -1;
-    }
-
-    updateSize_() {
-        this.size_.height = 14;
-        this.size_.width = 93;
-    }
+    };
 
     // Function to handle clicking
     onMouseDown_(e) {
@@ -54,43 +46,28 @@ class FieldAiConditionSelector extends Blockly.FieldLabelSerializable {
             if (this.lastClickTime !== -1 && ((new Date().getTime() - this.lastClickTime) < 500)) {
                 e.stopPropagation(); // fix so the block does not "stick" to the mouse when the field is clicked
                 let thisField = this;
-                javabridge.openAIConditionEditor(this.condition, {
+                javabridge.openAIConditionEditor(this.getValue() || 'null,null', { // If somehow the value is missing, pass 'null,null'
                     'callback': function (data) {
-                        if (data) {
-                            thisField.condition = data;
-                        } else {
-                            thisField.condition = 'null,null';
-                        }
-
-                        thisField.updateDisplay();
+                        thisField.setValue(data || 'null,null');
+                        javabridge.triggerEvent();
                     }
                 });
             } else {
                 this.lastClickTime = new Date().getTime();
             }
         }
-    }
+    };
 
-    toXml(fieldElement) {
-        fieldElement.textContent = this.condition;
-        return fieldElement;
-    }
-
-    fromXml(fieldElement) {
-        this.condition = fieldElement.textContent || 'null,null';
-        this.updateDisplay();
-    }
-
-    updateDisplay() {
-        if (this.condition.split(',').length === 2) {
-            this.setValue('Conditions: ' +
-                (this.condition.split(',')[0] !== 'null' ? 'X' : 'O') +
-                (this.condition.split(',')[1] !== 'null' ? 'X' : 'O')
-            );
-        } else {
-            this.setValue('Conditions: OO');
+    // Get the text that is shown in the Blockly editor
+    getText_() {
+        let currentValues = this.getValue().split(',');
+        if (currentValues.length === 2) {
+            return javabridge.t('blockly.field_ai_condition_selector.conditions') +
+                (currentValues[0] === 'null' ? 'O' : 'X') + 
+                (currentValues[1] === 'null' ? 'O' : 'X');
         }
-    }
+        return javabridge.t('blockly.field_ai_condition_selector.conditions') + 'OO';
+    };
 }
 
 // Register this field, so that it can be added without extensions
