@@ -1,0 +1,97 @@
+_default: null
+ForestFlowers:
+  vegetal_decoration/forest_flowers
+TaigaLargeFerns:
+  vegetal_decoration/patch_large_fern
+PlainsTallGrass:
+  vegetal_decoration/patch_tall_grass
+TaigaGrassAndMushrooms:
+  vegetal_decoration/patch_grass_taiga_2, 
+  vegetal_decoration/brown_mushroom_taiga, 
+  vegetal_decoration/red_mushroom_taiga
+ForestGrass:
+  vegetal_decoration/patch_grass_forest
+Icebergs:
+  local_modifications/iceberg_packed, 
+  local_modifications/iceberg_blue
+AmethystGeodes:
+  local_modifications/amethyst_geode
+Bamboo:
+  vegetal_decoration/bamboo_light
+JungleTreeForest:
+  vegetal_decoration/trees_jungle
+Caves:
+  carvers/cave, 
+  carvers/cave_extra_underground, 
+  carvers/canyon, 
+  lakes/lake_lava_underground
+DeadBushes:
+  vegetal_decoration/patch_dead_bush_2
+SwampVegetation:
+  vegetal_decoration/trees_swamp, 
+  vegetal_decoration/flower_swamp, 
+  vegetal_decoration/patch_grass_normal, 
+  vegetal_decoration/patch_dead_bush, 
+  vegetal_decoration/patch_waterlily, 
+  vegetal_decoration/brown_mushroom_swamp, 
+  vegetal_decoration/red_mushroom_swamp
+DesertFeatures:
+  surface_structures/desert_well
+Dripstone:
+  local_modifications/large_dripstone, 
+  underground_decoration/dripstone_cluster, 
+  underground_decoration/pointed_dripstone
+Ores:
+  underground_ores/ore_coal_upper, 
+  underground_ores/ore_coal_lower, 
+  underground_ores/ore_iron_upper, 
+  underground_ores/ore_iron_middle, 
+  underground_ores/ore_iron_small, 
+  underground_ores/ore_gold, 
+  underground_ores/ore_gold_lower, 
+  underground_ores/ore_redstone, 
+  underground_ores/ore_redstone_lower, 
+  underground_ores/ore_diamond, 
+  underground_ores/ore_diamond_large, 
+  underground_ores/ore_diamond_buried, 
+  underground_ores/ore_lapis, 
+  underground_ores/ore_lapis_buried, 
+  underground_ores/ore_copper, 
+  underground_ores/underwater_magma
+SavannaTrees:
+  vegetal_decoration/trees_savanna
+ExtraGoldOre:
+  underground_ores/ore_gold_extra
+ExtraEmeraldOre:
+  underground_ores/ore_emerald
+Fossils:
+  underground_structures/fossil_upper,
+  underground_structures/fossil_lower
+FrozenTopLayer:
+  top_layer_modification/freeze_top_layer
+InfestedStone:
+  underground_decoration/ore_infested
+JungleGrass:
+  vegetal_decoration/patch_grass_jungle
+LushCavesDecoration:
+  vegetal_decoration/lush_caves_ceiling_vegetation,
+  vegetal_decoration/cave_vines,
+  vegetal_decoration/lush_caves_clay,
+  vegetal_decoration/lush_caves_vegetation,
+  vegetal_decoration/rooted_azalea_tree,
+  vegetal_decoration/spore_blossom,
+  vegetal_decoration/classic_vines_cave_feature
+MeadowVegetation:
+  vegetal_decoration/patch_grass_plain,
+  vegetal_decoration/flower_meadow,
+  vegetal_decoration/trees_meadow
+MonsterRooms:
+  underground_structures/monster_room,
+  underground_structures/monster_room_deep
+ReedsAndPumpkins:
+  vegetal_decoration/patch_sugar_cane,
+  vegetal_decoration/patch_pumpkin
+TaigaRocks:
+  local_modifications/forest_rock
+TallSeagrassLush:
+  vegetal_decoration/seagrass_simple

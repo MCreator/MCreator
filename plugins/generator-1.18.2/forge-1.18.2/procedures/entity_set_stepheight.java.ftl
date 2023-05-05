@@ -1,1 +1,0 @@
-${input$entity}.maxUpStep = (float) ${input$stepHeight};

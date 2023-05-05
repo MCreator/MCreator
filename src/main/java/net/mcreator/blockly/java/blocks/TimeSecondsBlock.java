@@ -26,7 +26,7 @@ import org.w3c.dom.Element;
 
 public class TimeSecondsBlock implements IBlockGenerator {
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		master.append("Calendar.getInstance().get(Calendar.SECOND)");
+		master.append("/*@int*/Calendar.getInstance().get(Calendar.SECOND)");
 	}
 
 	@Override public String[] getSupportedBlocks() {

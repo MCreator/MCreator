@@ -40,6 +40,10 @@ import net.mcreator.element.converter.v2022_1.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.v2022_2.*;
 import net.mcreator.element.converter.v2022_3.BiomeDictionaryProcedureConverter;
 import net.mcreator.element.converter.v2023_1.*;
+import net.mcreator.element.converter.v2023_2.BiomeCustomFeaturesConverter;
+import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
+import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
+import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,10 +55,11 @@ public class ConverterRegistry {
 		put(ModElementType.ADVANCEMENT, List.of(new AchievementFixer(), new AdvancementTextureConverter()));
 		put(ModElementType.ARMOR, List.of(new ArmorTexturesConverter()));
 		put(ModElementType.BIOME, List.of(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
-				new BiomeFrozenTopLayerConverter(), new BiomeGenParametersConverter()));
+				new BiomeFrozenTopLayerConverter(), new BiomeGenParametersConverter(),
+				new BiomeCustomFeaturesConverter()));
 		put(ModElementType.BLOCK,
 				List.of(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
-						new BlockRequiresCorrectToolConverter()));
+						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer()));
 		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer()));
@@ -67,6 +72,7 @@ public class ConverterRegistry {
 		put(ModElementType.LIVINGENTITY, List.of(new EntityTexturesConverter()));
 		put(ModElementType.OVERLAY,
 				List.of(new OverlayCoordinateConverter(), new OverlayTexturesConverter(), new GUIComponentNamer()));
+		put(ModElementType.PAINTING, List.of(new PaintingFieldsFixer()));
 		put(ModElementType.PARTICLE, List.of(new ParticleTextureConverter()));
 		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
 		put(ModElementType.POTION, List.of(new PotionToEffectConverter()));
@@ -76,7 +82,7 @@ public class ConverterRegistry {
 				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
 				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(),
-				new ToolToItemTypeProcedureConverter()));
+				new ToolToItemTypeProcedureConverter(), new ExplodeProcedureConverter()));
 		put(ModElementType.RANGEDITEM, List.of(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
 		put(ModElementType.ITEM, List.of(new ItemDispenseBehaviorToItemExtensionConverter()));
