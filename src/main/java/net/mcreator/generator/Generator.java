@@ -330,7 +330,7 @@ public class Generator implements IGenerator, Closeable {
 
 			List<GeneratableElement> elementsList = workspace.getWorkspaceInfo().getElementsOfType(type).stream()
 					.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
-					.collect(Collectors.toList());
+					.filter(Objects::nonNull).collect(Collectors.toList());
 
 			if (!elementsList.isEmpty()) {
 				globalTemplatesList.forEach(e -> e.addDataModelEntry(type.getRegistryName() + "s", elementsList));
@@ -566,9 +566,13 @@ public class Generator implements IGenerator, Closeable {
 				continue;
 
 			try {
-				List<File> modElementFiles = getModElementGeneratorTemplatesList(
-						element.getGeneratableElement()).stream().map(GeneratorTemplate::getFile)
-						.collect(Collectors.toList());
+				GeneratableElement generatableElement = element.getGeneratableElement();
+
+				if (generatableElement == null)
+					continue;
+
+				List<File> modElementFiles = getModElementGeneratorTemplatesList(generatableElement).stream()
+						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 				if (FileIO.isFileOnFileList(modElementFiles, file))
 					return element;
 

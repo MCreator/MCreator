@@ -34,16 +34,19 @@ public class TemplateExpressionParser {
 
 	private static final Logger LOG = LogManager.getLogger("Template expression parser");
 
-	public static boolean shouldSkipTemplateBasedOnCondition(@Nonnull Generator generator,
-			@Nullable Object conditionRaw, @Nullable Object conditionDataProvider, Operator operator) {
+	public static boolean shouldSkipTemplateBasedOnCondition(@Nonnull Generator generator, @Nonnull Map<?, ?> template, @Nullable Object conditionDataProvider) {
+		Operator operator = Operator.AND;
+		Object conditionRaw = template.get("condition");
+		if (conditionRaw == null) {
+			conditionRaw = template.get("condition_any");
+			operator = Operator.OR;
+		}
+
 		if (conditionRaw == null) // we check for condition value if present
 			return false;
 
 		if (conditionDataProvider == null) // if no conditionDataProvider element is found, there is nothing to do
 			return false;
-
-		boolean anyConditionFailed = false;
-		boolean anyConditionPassed = false;
 
 		// get list of all conditions that need to be met for template to be included
 		List<String> conditions = new ArrayList<>();
@@ -54,15 +57,21 @@ public class TemplateExpressionParser {
 			conditions.add(conditionRaw.toString());
 		}
 
-		for (var condition : conditions) {
-			boolean result = parseCondition(generator, condition, conditionDataProvider);
-			if (!result)
-				anyConditionFailed = true;
-			else
-				anyConditionPassed = true;
-		}
+		if (operator == Operator.AND) {
+			for (var condition : conditions) {
+				if (!parseCondition(generator, condition, conditionDataProvider))
+					return true; // at least one condition was false (AND logic), skip the template
+			}
 
-		return operator == Operator.AND ? anyConditionFailed : !anyConditionPassed;
+			return false; // all conditions were true, include the template (false = don't skip it)
+		} else {
+			for (var condition : conditions) {
+				if (parseCondition(generator, condition, conditionDataProvider))
+					return false; // at least one condition was true (OR logic), include the template
+			}
+
+			return true; // no conditions were true, skip the template (true = skip it)
+		}
 	}
 
 	private static boolean parseCondition(@Nonnull Generator generator, @Nonnull String condition,
@@ -125,7 +134,7 @@ public class TemplateExpressionParser {
 		}
 	}
 
-	public enum Operator {
+	private enum Operator {
 		AND, OR
 	}
 

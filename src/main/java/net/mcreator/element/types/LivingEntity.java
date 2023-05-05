@@ -221,6 +221,7 @@ import java.util.*;
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks(),
+					getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK),
 					this.getModElement().getGenerator()
 							.getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
 					additionalData).setTemplateExtension(
@@ -244,6 +245,10 @@ import java.util.*;
 		if (hasSpawnEgg)
 			return List.of(new MCItem.Custom(this.getModElement(), "spawn_egg", "item", "Spawn egg"));
 		return Collections.emptyList();
+	}
+
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {

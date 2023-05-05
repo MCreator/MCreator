@@ -1,9 +1,24 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-def exportPath = 'build/export/mac64/MCreator.app/Contents/'
+static void convertCRLF(File input, File out) {
+    out << input.text.replaceAll('\r\n', '\n')
+}
 
-task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) {
-    into exportPath
+// locate mkisofs
+def mkisofs_binary = 'mkisofs'
+if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+    mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs'
+}
+
+tasks.register('exportMacX64', Copy.class) {
+    dependsOn downloadJDKMacX64
+    dependsOn downloadMKISOFS
+    dependsOn jar
+    dependsOn exportPlugins
+
+    def exportPathX64 = 'build/export/mac_x64/MCreator.app/Contents/'
+
+    into exportPathX64
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
             line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
@@ -15,36 +30,28 @@ task exportMac64(type: Copy, dependsOn: [downloadJDKMac64, jar, exportPlugins]) 
         from file('platform/mac/mcreator.icns')
     }
     into('MacOS') {
-        from file('platform/mac/mcreator')
+        from file('platform/mac/mcreator_x64') rename('mcreator_x64', 'mcreator')
         from file('LICENSE.txt')
     }
     into('MacOS/plugins') { from 'build/plugins/' }
-    into('MacOS/license') { with copySpec { from 'license' } }
+    into('MacOS/license') { from 'license' }
     into('MacOS/lib') {
-        with copySpec {
-            from 'build/libs'
-            from configurations.export
-            from configurations.mac64
-        }
+        from 'build/libs'
+        from configurations.export
+        from configurations.macX64
     }
-    into('MacOS/jdk/') { with copySpec { from 'jdk/jdk17_mac_64/' } }
+    into('MacOS/jdk') { from 'jdk/jdk17_mac_x64/' }
     doLast {
-        convertCRLF(file(exportPath + '/Info.plistdos'), file(exportPath + '/Info.plist'))
-        delete exportPath + '/Info.plistdos'
-    }
-}
+        // fix line endings where needed
+        convertCRLF(file(exportPathX64 + '/Info.plistdos'), file(exportPathX64 + '/Info.plist'))
+        delete exportPathX64 + '/Info.plistdos'
 
-task dmgMac64(dependsOn: [downloadMKISOFS, exportMac64]) {
-    doLast {
-        def mkisofs_binary
-        if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-            mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs'
-        } else { // we are on Nix system
-            mkisofs_binary = 'mkisofs'
-
-            // chmod needed on executable as mkisofs does not +x on Nix systems
-            exec { commandLine('chmod', '+x', exportPath + '/MacOS/mcreator') }
+        // chmod needed on executable as mkisofs does not +x on Nix systems
+        if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
+            exec { commandLine('chmod', '+x', exportPathX64 + '/MacOS/mcreator') }
         }
+
+        // Create x64 DMG
         ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
             arg(value: '-D')
@@ -55,19 +62,76 @@ task dmgMac64(dependsOn: [downloadMKISOFS, exportMac64]) {
             arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
             arg(value: '-apple')
             arg(value: '-v')
-            arg(value: new File(buildDir, 'export/mac64'))
+            arg(value: new File(buildDir, 'export/mac_x64'))
         }
     }
 }
 
-static void convertCRLF(File input, File out) {
-    out << input.text.replaceAll('\r\n', '\n')
+tasks.register('exportMacAarch64', Copy.class) {
+    dependsOn downloadJDKMacAarch64
+    dependsOn downloadMKISOFS
+    dependsOn jar
+    dependsOn exportPlugins
+
+    def exportPathAarch64 = 'build/export/mac_aarch64/MCreator.app/Contents/'
+
+    into exportPathAarch64
+    into('') {
+        from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
+            line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
+        }
+        from file('LICENSE.txt')
+    }
+    into('Resources') {
+        from file('platform/mac/mcreatorapp.icns')
+        from file('platform/mac/mcreator.icns')
+    }
+    into('MacOS') {
+        from file('platform/mac/mcreator_aarch64') rename('mcreator_aarch64', 'mcreator')
+        from file('LICENSE.txt')
+    }
+    into('MacOS/plugins') { from 'build/plugins/' }
+    into('MacOS/license') { from 'license' }
+    into('MacOS/lib') {
+        from 'build/libs'
+        from configurations.export
+        from configurations.macAarch64
+    }
+    into('MacOS/jdk/') { from 'jdk/jdk17_mac_aarch64/' }
+    doLast {
+        // fix line endings where needed
+        convertCRLF(file(exportPathAarch64 + '/Info.plistdos'), file(exportPathAarch64 + '/Info.plist'))
+        delete exportPathAarch64 + '/Info.plistdos'
+
+        // chmod needed on executable as mkisofs does not +x on Nix systems
+        if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
+            exec { commandLine('chmod', '+x', exportPathAarch64 + '/MacOS/mcreator') }
+        }
+
+        // Create Aarch64 DMG
+        ant.exec(executable: mkisofs_binary, failonerror: true) {
+            arg(value: '-r')
+            arg(value: '-D')
+            arg(value: '-o')
+            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg')
+            arg(value: '-mac-name')
+            arg(value: '-V')
+            arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
+            arg(value: '-apple')
+            arg(value: '-v')
+            arg(value: new File(buildDir, 'export/mac_aarch64'))
+        }
+    }
 }
 
-task exportMac(type: DefaultTask, group: 'export') {
-    dependsOn dmgMac64
+tasks.register('exportMac') {
+    group 'export'
+
+    dependsOn exportMacX64
+    dependsOn exportMacAarch64
 
     doLast {
-        delete 'build/export/mac64'
+        delete 'build/export/mac_x64'
+        delete 'build/export/mac_aarch64'
     }
 }
