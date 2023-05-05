@@ -8,7 +8,7 @@ tasks.register('exportLinux64', Copy.class) {
     dependsOn exportPlugins
 
     def icon = "icon.png"
-    if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
+    if (project.snapshot) {
         icon = "icon_eap.png"
     }
 

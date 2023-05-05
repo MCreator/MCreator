@@ -26,7 +26,7 @@ createExe {
     productName = "MCreator"
     companyName = "Pylo"
 
-    if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
+    if (project.snapshot) {
         icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/icon_eap.ico"
     } else {
         icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/icon.ico"

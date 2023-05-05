@@ -18,7 +18,7 @@ tasks.register('exportMacX64', Copy.class) {
 
     def appIcon = "mcreatorapp.icns"
     def icon = "mcreator.icns"
-    if (((String) project.mcreatorconf.getProperty('mcreator')).contains("EAP")) {
+    if (project.snapshot) {
         appIcon = "mcreatorapp_eap.icns"
         icon = "mcreator_eap.icns"
     }
@@ -26,7 +26,6 @@ tasks.register('exportMacX64', Copy.class) {
     def exportPathX64 = 'build/export/mac_x64/MCreator.app/Contents/'
 
     into exportPathX64
-
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
             line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
