@@ -40,7 +40,7 @@ public class DiscordClient implements Closeable {
 	private final Timer timer = new Timer();
 
 	public DiscordClient() {
-		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable)
+		if (isDisabled())
 			return;
 
 		try {
@@ -67,7 +67,7 @@ public class DiscordClient implements Closeable {
 	}
 
 	public void updatePresence(String state, String details, String smallImage) {
-		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable)
+		if (isDisabled())
 			return;
 
 		new Thread(() -> {
@@ -86,7 +86,7 @@ public class DiscordClient implements Closeable {
 	}
 
 	@Override public void close() {
-		if (!PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable)
+		if (isDisabled())
 			return;
 
 		try {
@@ -96,4 +96,9 @@ public class DiscordClient implements Closeable {
 			LOG.warn("Failed to close properly", e);
 		}
 	}
+
+	private boolean isDisabled() {
+		return !PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable.get();
+	}
+
 }

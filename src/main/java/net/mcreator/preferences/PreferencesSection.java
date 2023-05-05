@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +19,33 @@
 
 package net.mcreator.preferences;
 
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
+public abstract class PreferencesSection {
 
-@Retention(RetentionPolicy.RUNTIME) public @interface PreferencesSection {}
+	private final String preferencesIdentifier;
+
+	public PreferencesSection(String preferencesIdentifier) {
+		this.preferencesIdentifier = preferencesIdentifier;
+	}
+
+	public final <T, S extends PreferencesEntry<T>> S addEntry(S entry) {
+		entry.setSection(this);
+		PreferencesManager.register(preferencesIdentifier, entry);
+		return entry;
+	}
+
+	public final <T, S extends PreferencesEntry<T>> S addPluginEntry(String pluginPreferencesIdentifier, S entry) {
+		entry.setSection(this);
+		PreferencesManager.register(pluginPreferencesIdentifier, entry);
+		return entry;
+	}
+
+	public boolean isVisible() {
+		return true;
+	}
+
+	/**
+	 * @return Section key this preferences data collection belongs to
+	 */
+	public abstract String getSectionKey();
+
+}
