@@ -21,6 +21,7 @@ package net.mcreator.ui.notifications;
 
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.EdgedBalloonStyle;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
 
@@ -57,7 +58,13 @@ public class NotificationsRenderer {
 			JPanel actionButtonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 			actionButtonsPanel.setBorder(BorderFactory.createEmptyBorder(12, 0, 0, 0));
 
+			boolean first = true;
 			for (ActionButton actionButton : actionButtons) {
+				if (first)
+					first = false;
+				else
+					actionButtonsPanel.add(new JEmptyBox(5, 5));
+
 				JButton button = new JButton(actionButton.text);
 				button.setMargin(new Insets(0, 5, 0, 5));
 				if (actionButton.closePopup())
@@ -66,7 +73,10 @@ public class NotificationsRenderer {
 				actionButtonsPanel.add(button);
 			}
 
-			tipContents.add("South", actionButtonsPanel);
+			tipContents.add("Center",
+					PanelUtils.centerAndSouthElement(new JLabel("<html>" + text), actionButtonsPanel));
+		} else {
+			tipContents.add("Center", new JLabel("<html>" + text));
 		}
 
 		if (icon != null) {
@@ -74,8 +84,6 @@ public class NotificationsRenderer {
 			iconLabel.setBorder(BorderFactory.createEmptyBorder(3, 1, 0, 8));
 			tipContents.add("West", PanelUtils.pullElementUp(iconLabel));
 		}
-
-		tipContents.add("Center", new JLabel("<html>" + text));
 
 		BalloonTip balloonTip = new BalloonTip(this.anchor, tipContents,
 				new EdgedBalloonStyle((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),

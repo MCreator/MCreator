@@ -20,15 +20,18 @@
 package net.mcreator.ui.notifications;
 
 import net.mcreator.Launcher;
+import net.mcreator.io.net.api.update.UpdateInfo;
 import net.mcreator.plugin.PluginLoadFailure;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.PluginUpdateInfo;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
 import net.mcreator.ui.dialogs.UpdatePluginDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.StringUtils;
 
 import javax.swing.*;
@@ -43,9 +46,12 @@ public class StartupNotifications {
 	public static <T extends Window & INotificationConsumer> void handleStartupNotifications(T parent) {
 		if (!notificationsHandled) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> {
-				handleUpdatesCore(parent);
+				// those show now dialogs initially, only notifications
 				handleUpdatesPlugin(parent);
 				handlePluginLoadFails(parent);
+
+				// dialog if enabled, otherwise last in chain so this notification is on the top
+				handleUpdatesCore(parent);
 			});
 
 			notificationsHandled = true;
@@ -53,11 +59,38 @@ public class StartupNotifications {
 	}
 
 	private static <T extends Window & INotificationConsumer> void handleUpdatesCore(T parent) {
-		UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent,
-				PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates.get()
-						|| Launcher.version.isSnapshot(),
-				PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPatches.get()
-						|| Launcher.version.isSnapshot(), false);
+		UpdateInfo updateInfo = MCreatorApplication.WEB_API.getUpdateInfo();
+		if (MCreatorApplication.isInternet && updateInfo != null) {
+			if (updateInfo.isNewUpdateAvailable()) {
+				if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates.get()
+						|| Launcher.version.isSnapshot()) {
+					UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent, true, false, false);
+				} else {
+					parent.addNotification(UIRES.get("18px.info"),
+							L10N.t("notification.update_available.msg", Launcher.version.major,
+									updateInfo.getLatestMajor()),
+							new NotificationsRenderer.ActionButton(L10N.t("notification.common.more_info"),
+									e -> UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent, true, false, false)),
+							new NotificationsRenderer.ActionButton(L10N.t("dialog.update_notify.open_download_page"),
+									e -> DesktopUtils.browseSafe(
+											MCreatorApplication.SERVER_DOMAIN + "/download#update")));
+				}
+			} else if (updateInfo.isNewPatchAvailable()) {
+				if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPatches.get()
+						|| Launcher.version.isSnapshot()) {
+					UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent, false, true, false);
+				} else {
+					parent.addNotification(UIRES.get("18px.info"),
+							L10N.t("notification.patch_available.msg", Launcher.version.major, Launcher.version.build,
+									updateInfo.getLatestPatchVersion()),
+							new NotificationsRenderer.ActionButton(L10N.t("notification.common.more_info"),
+									e -> UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent, false, true, false)),
+							new NotificationsRenderer.ActionButton(L10N.t("dialog.update_notify.open_download_page"),
+									e -> DesktopUtils.browseSafe(
+											MCreatorApplication.SERVER_DOMAIN + "/download#updatebuild")));
+				}
+			}
+		}
 	}
 
 	private static <T extends Window & INotificationConsumer> void handleUpdatesPlugin(T parent) {
