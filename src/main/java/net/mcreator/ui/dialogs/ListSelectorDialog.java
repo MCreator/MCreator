@@ -66,17 +66,8 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 
 		JButton selectButton = L10N.button("dialog.item_selector.use_selected");
 		selectButton.addActionListener(e -> {
-			T selectedValue = list.getSelectedValue();
-			if (selectedValue == null && customValue) {
-				String inputValue = JOptionPane.showInputDialog(L10N.t("dialog.item_selector.enter_custom_value"));
-				if (inputValue != null && !inputValue.isEmpty()) {
-					model.addElement((T) inputValue);
-					list.setSelectedValue((T) inputValue, true);
-				}
-			} else {
-				setVisible(false);
-				dispose();
-			}
+			setVisible(false);
+			dispose();
 		});
 
 		message.setBorder(BorderFactory.createEmptyBorder(7, 2, 2, 0));
@@ -92,20 +83,17 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 12, 0, 0));
 		mainComponent.add("Center", scrollPane);
 
-		if (customValue) {
-			customValueButton.addActionListener(e -> {
-				String inputValue = JOptionPane.showInputDialog(L10N.t("dialog.item_selector.enter_custom_value"));
-				if (inputValue != null && !inputValue.isEmpty()) {
-					model.addElement((T) inputValue);
-					list.setSelectedValue((T) inputValue, true);
-				}
-			});
-		}
+		customValueButton.addActionListener(e -> {
+			String inputValue = JOptionPane.showInputDialog(L10N.t("dialog.item_selector.enter_custom_value"));
+			if (inputValue != null && !inputValue.isEmpty()) {
+				model.addElement((T) inputValue);
+				list.setSelectedValue((T) inputValue, true);
+			}
+		});
 
 		add("Center", mainComponent);
-		add("South", PanelUtils.centerInPanel(customValue ?
-				PanelUtils.westAndEastElement(selectButton, customValueButton) :
-				PanelUtils.centerInPanel(selectButton)));
+		add("South", PanelUtils.centerInPanel(
+				customValue ? PanelUtils.westAndEastElement(selectButton, customValueButton) : selectButton));
 
 		setSize(360, 360);
 
