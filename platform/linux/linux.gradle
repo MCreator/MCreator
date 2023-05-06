@@ -7,10 +7,7 @@ tasks.register('exportLinux64', Copy.class) {
     dependsOn jar
     dependsOn exportPlugins
 
-    def icon = "icon.png"
-    if (project.snapshot) {
-        icon = "icon_eap.png"
-    }
+    def icon = project.snapshot ? "icon_eap.png" : "icon.png"
 
     into 'build/export/linux64'
     into('') {

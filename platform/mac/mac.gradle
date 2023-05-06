@@ -16,14 +16,10 @@ tasks.register('exportMacX64', Copy.class) {
     dependsOn jar
     dependsOn exportPlugins
 
-    def appIcon = "mcreatorapp.icns"
-    def icon = "mcreator.icns"
-    if (project.snapshot) {
-        appIcon = "mcreatorapp_eap.icns"
-        icon = "mcreator_eap.icns"
-    }
-
     def exportPathX64 = 'build/export/mac_x64/MCreator.app/Contents/'
+
+    def appIcon = project.snapshot ? "mcreatorapp_eap.icns" : "mcreatorapp.icns"
+    def icon = project.snapshot ? "mcreator_eap.icns" : "mcreator.icns"
 
     into exportPathX64
     into('') {
@@ -80,14 +76,10 @@ tasks.register('exportMacAarch64', Copy.class) {
     dependsOn jar
     dependsOn exportPlugins
 
-    def appIcon = "mcreatorapp.icns"
-    def icon = "mcreator.icns"
-    if (project.snapshot) {
-        appIcon = "mcreatorapp_eap.icns"
-        icon = "mcreator_eap.icns"
-    }
-
     def exportPathAarch64 = 'build/export/mac_aarch64/MCreator.app/Contents/'
+
+    def appIcon = project.snapshot ? "mcreatorapp_eap.icns" : "mcreatorapp.icns"
+    def icon = project.snapshot ? "mcreator_eap.icns" : "mcreator.icns"
 
     into exportPathAarch64
     into('') {
