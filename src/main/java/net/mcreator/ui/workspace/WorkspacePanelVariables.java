@@ -333,11 +333,12 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 
 		if (SearchUsagesDialog.show(workspacePanel.getMCreator(), L10N.t("dialog.search_usages.type.global_variable"),
 				new ArrayList<>(references), true)) {
-			Arrays.stream(elements.getSelectedRows()).mapToObj(i -> (String) elements.getValueAt(i, 0)).forEach(e -> {
-				VariableElement element = new VariableElement();
-				element.setName(e);
-				workspacePanel.getMCreator().getWorkspace().removeVariableElement(element);
-			});
+			Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
+					.forEach(el -> {
+						VariableElement element = new VariableElement();
+						element.setName(el);
+						workspacePanel.getMCreator().getWorkspace().removeVariableElement(element);
+					});
 			reloadElements();
 		}
 	}

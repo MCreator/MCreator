@@ -110,9 +110,8 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 
 		JButton del = L10N.button("workspace.sounds.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
-		del.setContentAreaFilled(false);
 		del.setOpaque(false);
-		ComponentUtils.deriveFont(search, 12);
+		del.setContentAreaFilled(false);
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
@@ -168,7 +167,6 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			}
 		});
 		importsound.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
-
 		add("North", bar);
 
 	}

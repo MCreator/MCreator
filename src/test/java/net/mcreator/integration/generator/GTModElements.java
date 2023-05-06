@@ -63,45 +63,47 @@ public class GTModElements {
 						+ modElementType.getReadableName() + " with " + modElementExamples.size() + " variants");
 			}
 
-			modElementExamples.forEach(generatableElement -> {
-				ModElement modElement = generatableElement.getModElement();
-
-				workspace.addModElement(modElement);
-
-				assertTrue(workspace.getGenerator().generateElement(generatableElement));
-
-				workspace.getModElementManager().storeModElement(generatableElement);
-
-				List<File> modElementFiles = workspace.getGenerator()
-						.getModElementGeneratorTemplatesList(generatableElement).stream()
-						.map(GeneratorTemplate::getFile).toList();
-
-				// test mod element file detection system
-				for (File modElementFile : modElementFiles) {
-					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
-					if (!modElement.equals(modElement1))
-						fail("Filed to properly determine file ownership for mod element type: " + modElement.getType()
-								.getReadableName() + ", file: " + modElementFile);
-				}
-
-				// testing if element file deletion works properly (no exception thrown)
-				workspace.getGenerator().removeElementFilesAndLangKeys(generatableElement);
-
-				// testing if all element files were properly deleted
-				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement)
-						.stream().map(GeneratorTemplate::getFile).collect(Collectors.toList());
-				for (File modElementFile : modElementFiles) {
-					ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
-					if (modElement.equals(
-							modElement1)) // if now ownership can still be found, this means some files were not properly removed
-						fail("Filed to properly delete file of mod element type: " + modElement.getType()
-								.getReadableName() + ", file: " + modElementFile);
-				}
-
-				// generate back after removal for build testing
-				assertTrue(workspace.getGenerator().generateElement(generatableElement));
-			});
+			modElementExamples.forEach(generatableElement -> generateModElement(workspace, generatableElement));
 		}
+	}
+
+	public static void generateModElement(Workspace workspace, GeneratableElement generatableElement) {
+		ModElement modElement = generatableElement.getModElement();
+
+		workspace.addModElement(modElement);
+
+		assertTrue(workspace.getGenerator().generateElement(generatableElement));
+
+		workspace.getModElementManager().storeModElement(generatableElement);
+
+		List<File> modElementFiles = workspace.getGenerator()
+				.getModElementGeneratorTemplatesList(generatableElement).stream()
+				.map(GeneratorTemplate::getFile).toList();
+
+		// test mod element file detection system
+		for (File modElementFile : modElementFiles) {
+			ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
+			if (!modElement.equals(modElement1))
+				fail("Filed to properly determine file ownership for mod element type: " + modElement.getType()
+						.getReadableName() + ", file: " + modElementFile);
+		}
+
+		// testing if element file deletion works properly (no exception thrown)
+		workspace.getGenerator().removeElementFilesAndLangKeys(generatableElement);
+
+		// testing if all element files were properly deleted
+		modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement)
+				.stream().map(GeneratorTemplate::getFile).collect(Collectors.toList());
+		for (File modElementFile : modElementFiles) {
+			ModElement modElement1 = workspace.getGenerator().getModElementThisFileBelongsTo(modElementFile);
+			if (modElement.equals(
+					modElement1)) // if now ownership can still be found, this means some files were not properly removed
+				fail("Filed to properly delete file of mod element type: " + modElement.getType()
+						.getReadableName() + ", file: " + modElementFile);
+		}
+
+		// generate back after removal for build testing
+		assertTrue(workspace.getGenerator().generateElement(generatableElement));
 	}
 
 }

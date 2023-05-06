@@ -19,9 +19,12 @@
 
 package net.mcreator.integration.workspace;
 
+import net.mcreator.element.ModElementType;
+import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.integration.generator.GTModElements;
@@ -95,7 +98,13 @@ public class ReferencesFinderTest {
 		LOG.info("Generating sample elements");
 		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
 		GTSampleElements.provideAndGenerateSampleElements(random, workspace);
-		GTModElements.runTest(null, generatorConfiguration.getGeneratorName(), random, workspace);
+		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(modElementType)
+					!= GeneratorStats.CoverageStatus.NONE) {
+				TestWorkspaceDataProvider.getModElementExamplesFor(workspace, modElementType, false, random)
+						.forEach(generatableElement -> GTModElements.generateModElement(workspace, generatableElement));
+			}
+		}
 	}
 
 	@BeforeEach void printName(TestInfo testInfo) {

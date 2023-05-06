@@ -689,7 +689,9 @@ import java.util.stream.Collectors;
 		btt1.setFocusPainted(false);
 		btt1.setOpaque(true);
 		btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		btt1.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		btt1.setCursor(new
+
+				Cursor(Cursor.HAND_CURSOR));
 		btt1.addActionListener(e -> {
 			btt1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			btt3.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
@@ -923,6 +925,8 @@ import java.util.stream.Collectors;
 		deleteElement.setIcon(UIRES.get("16px.clear"));
 		deleteElement.addActionListener(e -> deleteCurrentlySelectedModElement());
 
+		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
+
 		searchElement.setIcon(UIRES.get("16px.search"));
 		searchElement.addActionListener(e -> {
 			if (list.getSelectedValuesList().stream().anyMatch(i -> i instanceof ModElement)) {
@@ -940,8 +944,11 @@ import java.util.stream.Collectors;
 			}
 		});
 
-		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
-
+		codeElement.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				super.mouseClicked(e);
+			}
+		});
 		codeElement.addActionListener(e -> {
 			IElement selected = list.getSelectedValue();
 			if (selected instanceof ModElement) {
