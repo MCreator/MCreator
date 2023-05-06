@@ -21,6 +21,7 @@ package net.mcreator.ui.notifications;
 
 import net.java.balloontip.BalloonTip;
 import net.java.balloontip.styles.EdgedBalloonStyle;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
 
 import javax.annotation.Nullable;
@@ -40,7 +41,8 @@ public class NotificationsRenderer {
 		this.anchor = anchor;
 	}
 
-	public void addNotification(@Nullable String title, String text, ActionButton... actionButtons) {
+	public void addNotification(@Nullable String title, String text, @Nullable ImageIcon icon,
+			ActionButton... actionButtons) {
 		JButton closeButton = new JButton();
 
 		JPanel tipContents = new JPanel(new BorderLayout());
@@ -58,7 +60,8 @@ public class NotificationsRenderer {
 			for (ActionButton actionButton : actionButtons) {
 				JButton button = new JButton(actionButton.text);
 				button.setMargin(new Insets(0, 5, 0, 5));
-				button.addActionListener(e -> closeButton.doClick());
+				if (actionButton.closePopup())
+					button.addActionListener(e -> closeButton.doClick());
 				button.addActionListener(actionButton.action);
 				actionButtonsPanel.add(button);
 			}
@@ -66,11 +69,17 @@ public class NotificationsRenderer {
 			tipContents.add("South", actionButtonsPanel);
 		}
 
+		if (icon != null) {
+			JLabel iconLabel = new JLabel(icon);
+			iconLabel.setBorder(BorderFactory.createEmptyBorder(3, 1, 0, 8));
+			tipContents.add("West", PanelUtils.pullElementUp(iconLabel));
+		}
+
 		tipContents.add("Center", new JLabel("<html>" + text));
 
 		BalloonTip balloonTip = new BalloonTip(this.anchor, tipContents,
 				new EdgedBalloonStyle((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-						(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")), BalloonTip.Orientation.RIGHT_ABOVE,
+						(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")), BalloonTip.Orientation.RIGHT_BELOW,
 				BalloonTip.AttachLocation.SOUTHEAST, -10, 10, false);
 
 		closeButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -92,6 +101,12 @@ public class NotificationsRenderer {
 		tips.add(balloonTip);
 	}
 
-	public record ActionButton(String text, ActionListener action) {}
+	public record ActionButton(String text, ActionListener action, boolean closePopup) {
+
+		public ActionButton(String text, ActionListener action) {
+			this(text, action, true);
+		}
+
+	}
 
 }

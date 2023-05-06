@@ -19,18 +19,27 @@
 
 package net.mcreator.ui.notifications;
 
-import javax.annotation.Nullable;
+import javax.swing.*;
 
 public interface INotificationConsumer {
 
 	NotificationsRenderer getNotificationsRenderer();
 
-	default void addNotification(@Nullable String title, String text, NotificationsRenderer.ActionButton... actionButtons) {
-		getNotificationsRenderer().addNotification(title, text, actionButtons);
+	default void addNotification(String title, String text, NotificationsRenderer.ActionButton... actionButtons) {
+		getNotificationsRenderer().addNotification(title, text, null, actionButtons);
+	}
+
+	default void addNotification(String title, ImageIcon icon, String text,
+			NotificationsRenderer.ActionButton... actionButtons) {
+		getNotificationsRenderer().addNotification(title, text, icon, actionButtons);
+	}
+
+	default void addNotification(ImageIcon icon, String text, NotificationsRenderer.ActionButton... actionButtons) {
+		getNotificationsRenderer().addNotification(null, text, icon, actionButtons);
 	}
 
 	default void addNotification(String text, NotificationsRenderer.ActionButton... actionButtons) {
-		getNotificationsRenderer().addNotification(null, text, actionButtons);
+		getNotificationsRenderer().addNotification(null, text, null, actionButtons);
 	}
 
 }

@@ -27,11 +27,13 @@ import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
 import net.mcreator.ui.dialogs.UpdatePluginDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
 public class StartupNotifications {
 
@@ -40,51 +42,51 @@ public class StartupNotifications {
 	public static <T extends Window & INotificationConsumer> void handleStartupNotifications(T parent) {
 		if (!notificationsHandled) {
 			ThreadUtil.runOnSwingThreadAndWait(() -> {
-				if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates.get()
-						|| Launcher.version.isSnapshot()) {
-					UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent,
-							PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates.get()
-									|| Launcher.version.isSnapshot(),
-							PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPatches.get()
-									|| Launcher.version.isSnapshot(), false);
-				}
-
-				showPluginLoadingFailures(parent);
-
-				UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(parent);
+				handleUpdatesCore(parent);
+				handleUpdatesPlugin(parent);
+				handlePluginLoadFails(parent);
 			});
 
 			notificationsHandled = true;
 		}
-
-		/*
-		parent.addNotification("Tip 2");
-		parent.addNotification("Title 3", "Tip 3");
-		parent.addNotification("Plugin updates available",
-				"Some of the plugins can be updated to a more recent version.<br>Check the website for more details.",
-				new NotificationsRenderer.ActionButton("Action 1", e -> {
-					// do something
-				}));
-		 */
 	}
 
-	private static void showPluginLoadingFailures(Window parent) {
-		Collection<PluginLoadFailure> failedPlugins = PluginLoader.INSTANCE.getFailedPlugins();
-		if (!failedPlugins.isEmpty()) {
-			StringBuilder sb = new StringBuilder();
-			sb.append("<html>");
-			sb.append(L10N.t("dialog.plugin_load_failed.msg1"));
-			sb.append("<ul>");
-			for (PluginLoadFailure plugin : failedPlugins) {
-				sb.append("<li><b>").append(plugin.pluginID()).append("</b> - reason: ")
-						.append(StringUtils.abbreviateString(plugin.message(), 100, true))
-						.append("<br><small>Location: ").append(plugin.pluginFile()).append("</small></li>");
-			}
-			sb.append("</ul><br>");
-			sb.append(L10N.t("dialog.plugin_load_failed.msg2"));
+	private static <T extends Window & INotificationConsumer> void handleUpdatesCore(T parent) {
+		UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent,
+				PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates.get()
+						|| Launcher.version.isSnapshot(),
+				PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPatches.get()
+						|| Launcher.version.isSnapshot(), false);
+	}
 
-			JOptionPane.showMessageDialog(parent, sb.toString(), L10N.t("dialog.plugin_load_failed.title"),
-					JOptionPane.WARNING_MESSAGE);
+	private static <T extends Window & INotificationConsumer> void handleUpdatesPlugin(T parent) {
+		UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(parent);
+	}
+
+	private static <T extends Window & INotificationConsumer> void handlePluginLoadFails(T parent) {
+		Collection<PluginLoadFailure> failedPlugins = PluginLoader.INSTANCE.getFailedPlugins();
+
+		if (!failedPlugins.isEmpty()) {
+			parent.addNotification(UIRES.get("18px.warning"),
+					L10N.t("notification.plugin_load_failed.msg") + "<br><p style='width:240px'><kbd>"
+							+ failedPlugins.stream().map(PluginLoadFailure::pluginID).collect(Collectors.joining(", ")),
+					new NotificationsRenderer.ActionButton(L10N.t("notification.plugin_load_failed.more_info"), e -> {
+						StringBuilder sb = new StringBuilder();
+						sb.append("<html>");
+						sb.append(L10N.t("dialog.plugin_load_failed.msg1"));
+						sb.append("<ul>");
+						for (PluginLoadFailure plugin : failedPlugins) {
+							sb.append("<li><b>").append(plugin.pluginID()).append("</b> - reason: ")
+									.append(StringUtils.abbreviateString(plugin.message(), 100, true))
+									.append("<br><small>Location: ").append(plugin.pluginFile())
+									.append("</small></li>");
+						}
+						sb.append("</ul><br>");
+						sb.append(L10N.t("dialog.plugin_load_failed.msg2"));
+
+						JOptionPane.showMessageDialog(parent, sb.toString(), L10N.t("dialog.plugin_load_failed.title"),
+								JOptionPane.WARNING_MESSAGE);
+					}));
 		}
 	}
 
