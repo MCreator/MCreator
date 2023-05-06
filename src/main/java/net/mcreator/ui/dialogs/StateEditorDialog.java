@@ -26,6 +26,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.PropertyData;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ import java.util.concurrent.atomic.AtomicReference;
 public class StateEditorDialog {
 
 	/**
-	 * Opens a dialog to edit values of passed properties list used in the future/passed state.
+	 * Opens a dialog to edit values of passed properties list used in the future/provided state.
 	 *
 	 * @param mcreator   The workspace window this method was called from.
 	 * @param properties List of properties that can be used to form the resulting state.
@@ -46,8 +47,8 @@ public class StateEditorDialog {
 	 * @return The resulting properties' values map after editing session is complete, or {@code null} if the operation
 	 * has been canceled (via cancel/close button).
 	 */
-	public static LinkedHashMap<PropertyData<?>, Object> open(MCreator mcreator, List<PropertyData<?>> properties,
-			LinkedHashMap<PropertyData<?>, ?> stateMap) {
+	@Nullable public static LinkedHashMap<PropertyData<?>, Object> open(MCreator mcreator,
+			List<PropertyData<?>> properties, LinkedHashMap<PropertyData<?>, ?> stateMap) {
 		AtomicReference<LinkedHashMap<PropertyData<?>, Object>> retVal = new AtomicReference<>();
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
 
@@ -56,7 +57,7 @@ public class StateEditorDialog {
 		for (PropertyData<?> param : properties) {
 			Object value = stateMap != null ? stateMap.get(param) : null;
 			StatePart part = new StatePart(param.getName(), param.getComponent(mcreator, value));
-			part.useEntry.setSelected(stateMap == null || value != null);
+			part.useEntry.setSelected(value != null);
 			entryMap.put(param, part);
 			entries.add(PanelUtils.expandHorizontally(part));
 		}

@@ -80,7 +80,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	};
 
 	public JItemPropertiesStatesList(MCreator mcreator, IHelpContext gui) {
-		super(mcreator, new BorderLayout(), gui);
+		super(mcreator, new GridLayout(), gui);
+		setOpaque(false);
+		setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
 
 		Map<String, DataListEntry> properties = DataListLoader.loadDataMap("itemproperties");
 		builtinPropertyNames = List.copyOf(properties.keySet());
@@ -91,10 +93,11 @@ public class JItemPropertiesStatesList extends JEntriesList {
 				float min = Float.parseFloat((String) other.get("min"));
 				float max = Float.parseFloat((String) other.get("max"));
 
+				PropertyData.FloatNumber builtin;
 				if ("Number".equals(e.getType())) {
-					builtinProperties.put(e.getName(), new PropertyData.FloatNumber(e.getName(), min, max));
+					builtin = new PropertyData.FloatNumber(e.getName(), min, max);
 				} else if ("Logic".equals(e.getType())) {
-					builtinProperties.put(e.getName(), new PropertyData.FloatNumber(e.getName(), min, max) {
+					builtin = new PropertyData.FloatNumber(e.getName(), min, max) {
 						@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
 							return logic.getComponent(mcreator, value != null && (Float) value == max);
 						}
@@ -102,13 +105,14 @@ public class JItemPropertiesStatesList extends JEntriesList {
 						@Override public Float getValue(JComponent component) {
 							return logic.getValue(component) ? max : min;
 						}
-					});
+					};
+				} else {
+					return;
 				}
+				builtinProperties.put(e.getName(), builtin);
 			}
 		});
 
-		setBorder(BorderFactory.createEmptyBorder(0, 10, 0, 10));
-		setOpaque(false);
 		propertyEntries.setLayout(new GridLayout(0, 1, 5, 5));
 		propertyEntries.setOpaque(false);
 		stateEntries.setLayout(new BoxLayout(stateEntries, BoxLayout.Y_AXIS));
@@ -142,25 +146,32 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addProperty.addActionListener(e -> addPropertiesEntry());
 		addState.addActionListener(e -> editState(null)); // passing null here means a new entry should be created
 
-		JScrollPane left = new JScrollPane(PanelUtils.pullElementUp(propertyEntries));
+		JScrollPane scrollProperties = new JScrollPane(PanelUtils.pullElementUp(propertyEntries));
+		scrollProperties.setOpaque(false);
+		scrollProperties.getViewport().setOpaque(false);
+		scrollProperties.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				L10N.t("elementgui.item.custom_properties.title"), 0, 0,
+				scrollProperties.getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		JPanel left = new JPanel(new BorderLayout());
 		left.setOpaque(false);
-		left.getViewport().setOpaque(false);
-		left.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.item.custom_properties.title"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		left.add("North", PanelUtils.join(FlowLayout.RIGHT, 2, 3,
+				HelpUtils.wrapWithHelpButton(gui.withEntry("item/custom_states"), addProperty, SwingConstants.LEFT)));
+		left.add("Center", scrollProperties);
+		add(left);
 
-		JScrollPane right = new JScrollPane(PanelUtils.pullElementUp(stateEntries));
+		JScrollPane scrollStates = new JScrollPane(PanelUtils.pullElementUp(stateEntries));
+		scrollStates.setOpaque(false);
+		scrollStates.getViewport().setOpaque(false);
+		scrollStates.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
+				L10N.t("elementgui.item.custom_states.title"), 0, 0,
+				scrollStates.getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		JPanel right = new JPanel(new BorderLayout());
 		right.setOpaque(false);
-		right.getViewport().setOpaque(false);
-		right.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.item.custom_states.title"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		add("North", PanelUtils.centerInPanel(HelpUtils.wrapWithHelpButton(gui.withEntry("item/custom_states"),
-				PanelUtils.join(addProperty, addState))));
-		add("Center", PanelUtils.gridElements(1, 0, left, right));
+		right.add("North", PanelUtils.join(FlowLayout.LEFT, 2, 3, addState));
+		right.add("Center", scrollStates);
+		add(right);
 	}
 
 	@Override public void setEnabled(boolean enabled) {
@@ -222,8 +233,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	private List<PropertyData<?>> buildPropertiesList() {
-		List<PropertyData<?>> props = new ArrayList<>(builtinProperties.values());
+		List<PropertyData<?>> props = new ArrayList<>();
 		propertiesList.stream().map(JItemPropertiesListEntry::toPropertyData).forEach(props::add);
+		props.addAll(builtinProperties.values());
 		return props;
 	}
 

@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.minecraft.states;
 
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.StringUtils;
@@ -38,10 +39,11 @@ public class JStateLabel extends JPanel {
 	private final JTextField label = new JTextField();
 
 	public JStateLabel(Supplier<List<PropertyData<?>>> properties, Runnable editButtonListener) {
-		super(new FlowLayout(FlowLayout.CENTER, 7, 5));
+		super(new BorderLayout(5, 0));
 		this.properties = properties;
 
 		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		label.setEditable(false);
 		label.setOpaque(false);
@@ -51,11 +53,11 @@ public class JStateLabel extends JPanel {
 		statePane.setOpaque(false);
 		statePane.getViewport().setOpaque(false);
 		statePane.setPreferredSize(new Dimension(300, 30));
-		add(statePane);
+		add("Center", statePane);
 
 		JPanel controls = new JPanel();
 		controls.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		add(controls);
+		add("East", PanelUtils.centerInPanelPadding(controls, 2, 2));
 
 		if (editButtonListener != null) {
 			JButton edit = new JButton(UIRES.get("16px.edit.gif")) {

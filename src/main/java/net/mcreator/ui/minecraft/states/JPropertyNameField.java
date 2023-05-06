@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.minecraft.states;
 
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
@@ -35,8 +36,9 @@ public class JPropertyNameField extends JPanel implements IValidable {
 	private String cachedName;
 
 	public JPropertyNameField(String initialPropertyName) {
-		super(new FlowLayout(FlowLayout.CENTER, 7, 7));
+		super(new BorderLayout(5, 0));
 		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		field.setEditable(false);
 		field.setToolTipText(L10N.t("components.property_name_field.renaming"));
@@ -49,7 +51,7 @@ public class JPropertyNameField extends JPanel implements IValidable {
 			}
 		});
 		renameTo(initialPropertyName);
-		add(field);
+		add("Center", field);
 
 		JButton rename = new JButton(UIRES.get("16px.edit.gif")) {
 			@Override public String getName() {
@@ -71,7 +73,7 @@ public class JPropertyNameField extends JPanel implements IValidable {
 		JPanel butPan = new JPanel();
 		butPan.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		butPan.add(rename);
-		add(butPan);
+		add("East", PanelUtils.centerInPanelPadding(butPan, 2, 2));
 	}
 
 	@Override public void setEnabled(boolean enabled) {

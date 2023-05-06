@@ -20,7 +20,6 @@
 package net.mcreator.ui.minecraft.states.item;
 
 import net.mcreator.element.types.Item;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.SearchableComboBox;
@@ -66,10 +65,11 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JItemStatesListEntry> entryList, Supplier<List<PropertyData<?>>> properties,
 			Consumer<JItemStatesListEntry> editButtonListener) {
-		super(new FlowLayout(FlowLayout.LEFT));
+		super(new BorderLayout(5, 5));
 		this.mcreator = mcreator;
 
-		setBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0));
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0),
+				BorderFactory.createLineBorder(getBackground(), 5)));
 
 		stateLabel = new JStateLabel(properties, () -> editButtonListener.accept(this));
 
@@ -86,7 +86,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 				L10N.label("elementgui.item.custom_state.model")), model);
 		CollapsiblePanel override = new CollapsiblePanel(L10N.t("elementgui.item.custom_state.overridden_params"),
 				PanelUtils.join(ito, imo));
-		add(PanelUtils.centerAndSouthElement(PanelUtils.join(FlowLayout.LEFT, stateLabel), override));
+		override.toggleVisibility(true);
 
 		JComponent container = PanelUtils.expandHorizontally(this);
 		parent.add(container);
@@ -99,7 +99,10 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 			parent.revalidate();
 			parent.repaint();
 		});
-		add(remove);
+
+		add("North", PanelUtils.maxMargin(stateLabel, 5, true, true, true, true));
+		add("Center", override);
+		add("East", PanelUtils.centerInPanelPadding(remove, 8, 8));
 
 		parent.revalidate();
 		parent.repaint();
