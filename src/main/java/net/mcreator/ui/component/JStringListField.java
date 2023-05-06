@@ -161,6 +161,7 @@ public class JStringListField extends JPanel {
 		this.joinEntries = joinEntries;
 		back.setVisible(!joinEntries);
 		forward.setVisible(!joinEntries);
+		refreshVisibleText();
 		return this;
 	}
 

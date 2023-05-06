@@ -51,6 +51,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -163,6 +164,11 @@ public class DialogsTest {
 
 	@Test public void testAIConditionEditor() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AIConditionEditor.open(mcreator, null));
+	}
+
+	@Test public void testListEditor() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> ListEditorDialog.open(mcreator,
+				Arrays.asList("info 1", "info 2", "test \\, is this", "another one"), null, false));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {
