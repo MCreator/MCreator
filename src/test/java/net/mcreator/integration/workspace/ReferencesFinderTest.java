@@ -27,7 +27,6 @@ import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
-import net.mcreator.integration.generator.GTModElements;
 import net.mcreator.integration.generator.GTSampleElements;
 import net.mcreator.integration.ui.UITestUtil;
 import net.mcreator.minecraft.ElementUtil;

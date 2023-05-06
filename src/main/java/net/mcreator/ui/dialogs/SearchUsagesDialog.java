@@ -67,10 +67,10 @@ public class SearchUsagesDialog {
 			boolean deletionRequested, @Nullable String messageSuffix) {
 		if (references.isEmpty()) { // skip custom dialog if there are no references to show
 			if (deletionRequested) {
-				String msg = L10N.t("dialog.search_usages.deletion_safe.confirm_msg", queryType);
+				String msg = L10N.t("dialog.search_usages.deletion_safe.confirm_msg");
 				int n = JOptionPane.showConfirmDialog(mcreator,
 						messageSuffix != null ? msg + "<br><br><small>" + messageSuffix : msg,
-						L10N.t("common.confirmation", queryType), JOptionPane.YES_NO_OPTION,
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
 						JOptionPane.QUESTION_MESSAGE);
 				return n == JOptionPane.YES_OPTION;
 			} else {
@@ -83,7 +83,7 @@ public class SearchUsagesDialog {
 		}
 
 		AtomicBoolean retVal = new AtomicBoolean(false);
-		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.search_usages.title", queryType), true);
+		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.search_usages.title"), true);
 
 		JList<ModElement> refList = new JList<>(references.toArray(ModElement[]::new));
 		refList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -142,7 +142,6 @@ public class SearchUsagesDialog {
 				retVal.set(true);
 				dialog.setVisible(false);
 			});
-
 			list.add("South", PanelUtils.join(edit, delete, close));
 		} else {
 			list.add("North", PanelUtils.centerInPanel(L10N.label("dialog.search_usages.list", queryType)));
