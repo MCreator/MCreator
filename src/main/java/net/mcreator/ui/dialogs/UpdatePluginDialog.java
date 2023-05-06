@@ -32,7 +32,7 @@ import java.util.Collection;
 
 public class UpdatePluginDialog {
 
-	public static void showPluginUpdateDialogIfUpdatesExist(Window parent, boolean showNoUpdates) {
+	public static void showPluginUpdateDialog(Window parent, boolean showNoUpdates) {
 		Collection<PluginUpdateInfo> pluginUpdateInfos = PluginLoader.INSTANCE.getPluginUpdates();
 		if (!pluginUpdateInfos.isEmpty()) {
 			JPanel pan = new JPanel(new BorderLayout(10, 15));

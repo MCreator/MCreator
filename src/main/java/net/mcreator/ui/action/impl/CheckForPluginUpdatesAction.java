@@ -26,6 +26,6 @@ import net.mcreator.ui.init.L10N;
 public class CheckForPluginUpdatesAction extends BasicAction {
 	public CheckForPluginUpdatesAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.check_for_plugin_updates"),
-				e -> UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(actionRegistry.getMCreator(), true));
+				e -> UpdatePluginDialog.showPluginUpdateDialog(actionRegistry.getMCreator(), true));
 	}
 }

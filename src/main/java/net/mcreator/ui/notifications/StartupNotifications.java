@@ -22,6 +22,7 @@ package net.mcreator.ui.notifications;
 import net.mcreator.Launcher;
 import net.mcreator.plugin.PluginLoadFailure;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.PluginUpdateInfo;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.UpdateNotifyDialog;
@@ -60,9 +61,13 @@ public class StartupNotifications {
 	}
 
 	private static <T extends Window & INotificationConsumer> void handleUpdatesPlugin(T parent) {
-		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPluginUpdates.get()
-				&& !PluginLoader.INSTANCE.getPluginUpdates().isEmpty()) {
-			UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(parent, false);
+		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPluginUpdates.get()) {
+			Collection<PluginUpdateInfo> pluginUpdateInfos = PluginLoader.INSTANCE.getPluginUpdates();
+			if (!pluginUpdateInfos.isEmpty()) {
+				parent.addNotification(UIRES.get("18px.info"), L10N.t("notification.plugin_updates.msg"),
+						new NotificationsRenderer.ActionButton(L10N.t("notification.common.more_info"),
+								e -> UpdatePluginDialog.showPluginUpdateDialog(parent, false)));
+			}
 		}
 	}
 
@@ -73,7 +78,7 @@ public class StartupNotifications {
 			parent.addNotification(UIRES.get("18px.warning"),
 					L10N.t("notification.plugin_load_failed.msg") + "<br><p style='width:240px'><kbd>"
 							+ failedPlugins.stream().map(PluginLoadFailure::pluginID).collect(Collectors.joining(", ")),
-					new NotificationsRenderer.ActionButton(L10N.t("notification.plugin_load_failed.more_info"), e -> {
+					new NotificationsRenderer.ActionButton(L10N.t("notification.common.more_info"), e -> {
 						StringBuilder sb = new StringBuilder();
 						sb.append("<html>");
 						sb.append(L10N.t("dialog.plugin_load_failed.msg1"));
