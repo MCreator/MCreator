@@ -19,9 +19,6 @@
 
 package net.mcreator.ui.minecraft.states;
 
-import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -35,45 +32,23 @@ public class JPropertyNameField extends JPanel implements IValidable {
 	private final VTextField field = new VTextField(20);
 	private String cachedName;
 
-	public JPropertyNameField(String initialPropertyName) {
-		super(new BorderLayout(5, 0));
-		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+	public JPropertyNameField(String initialPropertyName, Runnable editListener) {
+		super(new BorderLayout());
 
-		field.setEditable(false);
-		field.setToolTipText(L10N.t("components.property_name_field.renaming"));
 		field.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		field.addFocusListener(new FocusAdapter() {
 			@Override public void focusLost(FocusEvent e) {
-				field.setEditable(false);
-				field.setText(cachedName);
-				field.getValidationStatus();
+				if (field.getValidationStatus() == Validator.ValidationResult.PASSED) {
+					editListener.run();
+					renameTo(field.getText());
+				} else {
+					field.setText(cachedName);
+				}
+				getValidationStatus();
 			}
 		});
 		renameTo(initialPropertyName);
-		add("Center", field);
-
-		JButton rename = new JButton(UIRES.get("16px.edit.gif")) {
-			@Override public String getName() {
-				return "TechnicalButton";
-			}
-		};
-		rename.setOpaque(false);
-		rename.setMargin(new Insets(0, 0, 0, 0));
-		rename.setBorder(BorderFactory.createEmptyBorder());
-		rename.setContentAreaFilled(false);
-		rename.setToolTipText(L10N.t("components.property_name_field.rename"));
-		rename.addActionListener(e -> {
-			field.setEditable(true);
-			field.requestFocus();
-		});
-		field.addPropertyChangeListener("enabled", e -> rename.setEnabled(field.isEnabled() && !field.isEditable()));
-		field.addPropertyChangeListener("editable", e -> rename.setEnabled(field.isEnabled() && !field.isEditable()));
-
-		JPanel butPan = new JPanel();
-		butPan.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		butPan.add(rename);
-		add("East", PanelUtils.centerInPanelPadding(butPan, 2, 2));
+		add(field);
 	}
 
 	@Override public void setEnabled(boolean enabled) {
@@ -95,10 +70,6 @@ public class JPropertyNameField extends JPanel implements IValidable {
 
 	public void renameTo(String newName) {
 		field.setText(cachedName = newName);
-	}
-
-	public void stopRenaming() {
-		field.dispatchEvent(new FocusEvent(field, FocusEvent.FOCUS_LOST));
 	}
 
 	@Override public Validator.ValidationResult getValidationStatus() {

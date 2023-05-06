@@ -39,8 +39,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -57,29 +55,13 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JItemPropertiesListEntry> entryList, int propertyId,
 			Function<Supplier<String>, UniqueNameValidator> validator,
-			Consumer<JItemPropertiesListEntry> editButtonListener) {
+			Consumer<JItemPropertiesListEntry> editListener) {
 		super(new FlowLayout(FlowLayout.LEFT));
 
-		name = new JPropertyNameField("property" + propertyId);
+		name = new JPropertyNameField("property" + propertyId, () -> editListener.accept(this));
 		name.setValidator(validator.apply(name::getPropertyName).wrapValidator(
 				new RegistryNameValidator(name.getTextField(), L10N.t("elementgui.item.custom_property.validator"))));
 		name.getTextField().enableRealtimeValidation();
-		name.getTextField().addKeyListener(new KeyAdapter() {
-			@Override public void keyPressed(KeyEvent e) {
-				if (!name.isEnabled())
-					return;
-
-				if (e.getKeyCode() == KeyEvent.VK_ENTER
-						&& name.getValidationStatus() == Validator.ValidationResult.PASSED) {
-					editButtonListener.accept(JItemPropertiesListEntry.this);
-					String newName = name.getPropertyName();
-					name.stopRenaming();
-					name.renameTo(newName);
-				} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-					name.stopRenaming();
-				}
-			}
-		});
 		add(PanelUtils.northAndCenterElement(HelpUtils.wrapWithHelpButton(gui.withEntry("item/custom_property_name"),
 				L10N.label("elementgui.item.custom_property.name")), name));
 
