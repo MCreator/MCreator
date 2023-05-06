@@ -98,11 +98,14 @@ public class ReferencesFinderTest {
 		LOG.info("Generating sample elements");
 		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
 		GTSampleElements.provideAndGenerateSampleElements(random, workspace);
-		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
-			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(modElementType)
+		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(type)
 					!= GeneratorStats.CoverageStatus.NONE) {
-				TestWorkspaceDataProvider.getModElementExamplesFor(workspace, modElementType, false, random)
-						.forEach(generatableElement -> GTModElements.generateModElement(workspace, generatableElement));
+				TestWorkspaceDataProvider.getModElementExamplesFor(workspace, type, false, random).forEach(e -> {
+					workspace.addModElement(e.getModElement());
+					workspace.getGenerator().generateElement(e);
+					workspace.getModElementManager().storeModElement(e);
+				});
 			}
 		}
 	}
