@@ -62,7 +62,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	private static final Logger LOG = LogManager.getLogger("Image Maker View");
 
-	private String name;
+	private String name = L10N.t("tab.image_maker");
 
 	private Canvas canvas;
 	private final CanvasRenderer canvasRenderer;
