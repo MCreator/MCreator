@@ -125,9 +125,13 @@ templates:
 localizationkeys:
   - key: item.@modid.@registryname_helmet
     mapto: helmetName
+    condition: enableHelmet
   - key: item.@modid.@registryname_chestplate
     mapto: bodyName
+    condition: enableBody
   - key: item.@modid.@registryname_leggings
     mapto: leggingsName
+    condition: enableLeggings
   - key: item.@modid.@registryname_boots
     mapto: bootsName
+    condition: enableBoots
