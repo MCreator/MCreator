@@ -1,1 +1,1 @@
-(${input$entity} instanceof Player _plr && _plr.containerMenu instanceof ${field$guiname}Menu)
+(${input$entity} instanceof Player _plr${customBlockIndex} && _plr${customBlockIndex}.containerMenu instanceof ${field$guiname}Menu)
