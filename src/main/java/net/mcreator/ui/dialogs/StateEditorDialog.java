@@ -24,7 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.IPropertyData;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -47,14 +47,14 @@ public class StateEditorDialog {
 	 * @return The resulting properties' values map after editing session is complete, or {@code null} if the operation
 	 * has been canceled (via cancel/close button).
 	 */
-	@Nullable public static LinkedHashMap<PropertyData<?>, Object> open(MCreator mcreator,
-			List<PropertyData<?>> properties, LinkedHashMap<PropertyData<?>, ?> stateMap) {
-		AtomicReference<LinkedHashMap<PropertyData<?>, Object>> retVal = new AtomicReference<>();
+	@Nullable public static LinkedHashMap<IPropertyData<?>, Object> open(MCreator mcreator,
+			List<IPropertyData<?>> properties, LinkedHashMap<IPropertyData<?>, ?> stateMap) {
+		AtomicReference<LinkedHashMap<IPropertyData<?>, Object>> retVal = new AtomicReference<>();
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
 
-		Map<PropertyData<?>, StatePart> entryMap = new HashMap<>();
+		Map<IPropertyData<?>, StatePart> entryMap = new HashMap<>();
 		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
-		for (PropertyData<?> param : properties) {
+		for (IPropertyData<?> param : properties) {
 			Object value = stateMap != null ? stateMap.get(param) : null;
 			StatePart part = new StatePart(param.getName(), param.getComponent(mcreator, value));
 			part.useEntry.setSelected(value != null);
@@ -68,7 +68,7 @@ public class StateEditorDialog {
 
 		ok.addActionListener(e -> {
 			retVal.set(new LinkedHashMap<>());
-			for (PropertyData<?> param : properties) {
+			for (IPropertyData<?> param : properties) {
 				StatePart part = entryMap.get(param);
 				if (part.useEntry.isSelected())
 					retVal.get().put(param, param.getValue(part.entryComponent));

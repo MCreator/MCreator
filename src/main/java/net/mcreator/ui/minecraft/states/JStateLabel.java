@@ -33,12 +33,12 @@ import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public class JStateLabel extends JPanel {
-	private final Supplier<List<PropertyData<?>>> properties;
-	private LinkedHashMap<PropertyData<?>, Object> stateMap = new LinkedHashMap<>();
+	private final Supplier<List<IPropertyData<?>>> properties;
+	private LinkedHashMap<IPropertyData<?>, Object> stateMap = new LinkedHashMap<>();
 
 	private final JTextField label = new JTextField();
 
-	public JStateLabel(Supplier<List<PropertyData<?>>> properties, Runnable editButtonListener) {
+	public JStateLabel(Supplier<List<IPropertyData<?>>> properties, Runnable editButtonListener) {
 		super(new BorderLayout(5, 0));
 		this.properties = properties;
 
@@ -96,23 +96,23 @@ public class JStateLabel extends JPanel {
 	}
 
 	public void setState(String state) {
-		stateMap = PropertyData.passStateToMap(state, properties.get());
+		stateMap = IPropertyData.passStateToMap(state, properties.get());
 		refreshState();
 	}
 
-	public LinkedHashMap<PropertyData<?>, Object> getStateMap() {
+	public LinkedHashMap<IPropertyData<?>, Object> getStateMap() {
 		return this.stateMap;
 	}
 
-	public void setStateMap(LinkedHashMap<PropertyData<?>, Object> stateMap) {
+	public void setStateMap(LinkedHashMap<IPropertyData<?>, Object> stateMap) {
 		this.stateMap = stateMap;
 		refreshState();
 	}
 
 	public void rename(String property, String newName) {
-		for (PropertyData<?> data : stateMap.keySet()) {
-			if (data.getName().equals(property)) {
-				data.setName(newName);
+		for (IPropertyData<?> data : stateMap.keySet()) {
+			if (data instanceof PropertyData<?> prop && prop.getName().equals(property)) {
+				prop.setName(newName);
 				break;
 			}
 		}

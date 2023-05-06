@@ -34,7 +34,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.minecraft.states.JStateLabel;
-import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.IPropertyData;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
@@ -63,7 +63,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>(new Model[] { normal, tool });
 
 	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JItemStatesListEntry> entryList, Supplier<List<PropertyData<?>>> properties,
+			List<JItemStatesListEntry> entryList, Supplier<List<IPropertyData<?>>> properties,
 			Consumer<JItemStatesListEntry> editButtonListener) {
 		super(new BorderLayout(5, 5));
 		this.mcreator = mcreator;

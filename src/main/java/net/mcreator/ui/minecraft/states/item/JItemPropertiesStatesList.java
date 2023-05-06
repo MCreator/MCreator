@@ -31,6 +31,8 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
+import net.mcreator.ui.minecraft.states.BuiltInPropertyData;
+import net.mcreator.ui.minecraft.states.IPropertyData;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.IValidable;
@@ -53,7 +55,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private final AtomicInteger propertyId = new AtomicInteger(0);
 
 	private final List<String> builtinPropertyNames;
-	private final Map<String, PropertyData<?>> builtinProperties = new LinkedHashMap<>();
+	private final Map<String, BuiltInPropertyData<?>> builtinProperties = new LinkedHashMap<>();
 
 	private final JPanel propertyEntries = new JPanel() {
 		@Override public void setEnabled(boolean enabled) {
@@ -109,7 +111,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 				} else {
 					return;
 				}
-				builtinProperties.put(e.getName(), builtin);
+				builtinProperties.put(e.getName(), new BuiltInPropertyData<>(builtin));
 			}
 		});
 
@@ -123,9 +125,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 				if (e.getChild() instanceof Container c && c.getComponentCount() > 0
 						&& c.getComponents()[0] instanceof JItemPropertiesListEntry entry) {
 					PropertyData.FloatNumber data = entry.toPropertyData();
-					Set<LinkedHashMap<PropertyData<?>, Object>> duplicateFilter = new HashSet<>();
+					Set<LinkedHashMap<IPropertyData<?>, Object>> duplicateFilter = new HashSet<>();
 					statesList.stream().toList().forEach(s -> {
-						LinkedHashMap<PropertyData<?>, Object> stateMap = s.getStateLabel().getStateMap();
+						LinkedHashMap<IPropertyData<?>, Object> stateMap = s.getStateLabel().getStateMap();
 						stateMap.remove(data);
 						if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) {
 							statesList.remove(s);
@@ -151,8 +153,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		scrollProperties.getViewport().setOpaque(false);
 		scrollProperties.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.item.custom_properties.title"), 0, 0,
-				scrollProperties.getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				L10N.t("elementgui.item.custom_properties.title"), 0, 0, scrollProperties.getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		JPanel left = new JPanel(new BorderLayout());
 		left.setOpaque(false);
 		left.add("North", PanelUtils.join(FlowLayout.RIGHT, 2, 3,
@@ -165,8 +167,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		scrollStates.getViewport().setOpaque(false);
 		scrollStates.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.item.custom_states.title"), 0, 0,
-				scrollStates.getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				L10N.t("elementgui.item.custom_states.title"), 0, 0, scrollStates.getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		JPanel right = new JPanel(new BorderLayout());
 		right.setOpaque(false);
 		right.add("North", PanelUtils.join(FlowLayout.LEFT, 2, 3, addState));
@@ -212,7 +214,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private void editState(JItemStatesListEntry entry) {
 		if (new AggregatedValidationResult(propertiesList.stream().map(JItemPropertiesListEntry::getNameField)
 				.toArray(IValidable[]::new)).validateIsErrorFree()) {
-			LinkedHashMap<PropertyData<?>, Object> stateMap = StateEditorDialog.open(mcreator, buildPropertiesList(),
+			LinkedHashMap<IPropertyData<?>, Object> stateMap = StateEditorDialog.open(mcreator, buildPropertiesList(),
 					entry == null ? null : entry.getStateLabel().getStateMap());
 			if (stateMap == null)
 				return;
@@ -232,8 +234,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		}
 	}
 
-	private List<PropertyData<?>> buildPropertiesList() {
-		List<PropertyData<?>> props = new ArrayList<>();
+	private List<IPropertyData<?>> buildPropertiesList() {
+		List<IPropertyData<?>> props = new ArrayList<>();
 		propertiesList.stream().map(JItemPropertiesListEntry::toPropertyData).forEach(props::add);
 		props.addAll(builtinProperties.values());
 		return props;
@@ -256,9 +258,10 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	public void setStates(LinkedHashMap<String, Item.ModelEntry> states) {
-		Set<LinkedHashMap<PropertyData<?>, Object>> duplicateFilter = new HashSet<>();
+		Set<LinkedHashMap<IPropertyData<?>, Object>> duplicateFilter = new HashSet<>();
 		states.forEach((state, model) -> {
-			LinkedHashMap<PropertyData<?>, Object> stateMap = PropertyData.passStateToMap(state, buildPropertiesList());
+			LinkedHashMap<IPropertyData<?>, Object> stateMap = IPropertyData.passStateToMap(state,
+					buildPropertiesList());
 			if (!stateMap.isEmpty() && duplicateFilter.add(stateMap))
 				addStatesEntry().setEntry(state, model);
 		});

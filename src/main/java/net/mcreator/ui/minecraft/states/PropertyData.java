@@ -24,37 +24,9 @@ import net.mcreator.ui.MCreator;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Objects;
 
-/**
- * Instances of this class store information about certain property (its name, type,
- * minimum and maximum values for number properties, list of allowed values for string properties and so on).
- *
- * @param <T> Type of values this property can take.
- */
-public abstract class PropertyData<T> {
-
-	/**
-	 * Converts passed state string to a property-to-value map basing on the provided list of available properties.
-	 *
-	 * @param state      String representation of a state.
-	 * @param properties List of properties that can be used.
-	 * @return Map containing values of properties for the given state.
-	 */
-	public static LinkedHashMap<PropertyData<?>, Object> passStateToMap(String state,
-			List<PropertyData<?>> properties) {
-		LinkedHashMap<PropertyData<?>, Object> stateMap = new LinkedHashMap<>();
-		Map<String, String> values = Arrays.stream(state.split(","))
-				.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
-		for (PropertyData<?> property : properties) {
-			if (values.containsKey(property.getName()))
-				stateMap.put(property, property.parseObj(values.get(property.getName())));
-		}
-		return stateMap;
-	}
-
+public abstract class PropertyData<T> implements IPropertyData<T> {
 	private String name;
 
 	/**
@@ -66,57 +38,18 @@ public abstract class PropertyData<T> {
 		this.name = name;
 	}
 
-	/**
-	 * @return The name of this property.
-	 */
-	public final String getName() {
+	@Override public final String getName() {
 		return name;
 	}
 
 	/**
-	 * Sets the name of this property to the passed one (used within UI to rename custom properties).<br>
-	 * <b>NOTE:</b> Should not be used on {@code PropertyData} instances created for built-in/external properties.
+	 * Sets the name of this property to the passed one (used within UI to rename custom properties).
 	 *
 	 * @param name The new name of this property.
 	 */
 	public final void setName(String name) {
 		this.name = name;
 	}
-
-	/**
-	 * Converts passed value of this property to its string representation.
-	 *
-	 * @param value A value of this property's type.
-	 * @return Possible value of this property as a string.
-	 * @throws ClassCastException if the type of passed value doesn't match the type of property or its subtype.
-	 */
-	public abstract String toString(Object value);
-
-	/**
-	 * Parses string representation of passed value of this property.
-	 *
-	 * @param value Possible value of this property as a string.
-	 * @return A value of this property's type.
-	 */
-	public abstract T parseObj(String value);
-
-	/**
-	 * Generates a UI component accepting values of type {@link T} and sets its value to the passed one.
-	 *
-	 * @param mcreator The future parent window of the component returned.
-	 * @param value    Possible value of this property.
-	 * @return A UI component that accepts values of type {@link T}.
-	 * @throws ClassCastException if the type of passed value doesn't match the type of property or its subtype.
-	 */
-	public abstract JComponent getComponent(MCreator mcreator, @Nullable Object value);
-
-	/**
-	 * Extracts possible value of this property from the provided UI component.
-	 *
-	 * @param component A UI component that accepts values of type {@link T}.
-	 * @return A value of this property's type.
-	 */
-	public abstract T getValue(JComponent component);
 
 	@Override public final boolean equals(Object obj) {
 		return super.equals(obj) || obj instanceof PropertyData<?> that && this.name.equals(that.name);
