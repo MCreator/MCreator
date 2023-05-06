@@ -60,7 +60,10 @@ public class StartupNotifications {
 	}
 
 	private static <T extends Window & INotificationConsumer> void handleUpdatesPlugin(T parent) {
-		UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(parent);
+		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPluginUpdates.get()
+				&& !PluginLoader.INSTANCE.getPluginUpdates().isEmpty()) {
+			UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(parent, false);
+		}
 	}
 
 	private static <T extends Window & INotificationConsumer> void handlePluginLoadFails(T parent) {
