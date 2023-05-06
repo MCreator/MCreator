@@ -37,6 +37,7 @@ import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.states.IPropertyData;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
@@ -174,13 +175,13 @@ public class DialogsTest {
 
 	@Test public void testStateEditorDialog() throws Throwable {
 		List<String> meTypes = ModElementTypeLoader.REGISTRY.stream().map(ModElementType::getRegistryName).toList();
-		Map<String, PropertyData<?>> testProps = new LinkedHashMap<>();
+		Map<String, IPropertyData<?>> testProps = new LinkedHashMap<>();
 		testProps.put("logic", new PropertyData.Logic("logic"));
 		testProps.put("integer", new PropertyData.IntNumber("integer", 0, 1000));
 		testProps.put("float", new PropertyData.FloatNumber("float", 0F, 1000000F));
 		testProps.put("text", new PropertyData.Text("text", meTypes.toArray(String[]::new)));
 		Random rng = new Random();
-		LinkedHashMap<PropertyData<?>, Object> testState = new LinkedHashMap<>();
+		LinkedHashMap<IPropertyData<?>, Object> testState = new LinkedHashMap<>();
 		if (rng.nextBoolean())
 			testState.put(testProps.get("logic"), rng.nextBoolean());
 		if (rng.nextBoolean())
