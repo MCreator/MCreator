@@ -24,7 +24,7 @@ import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.FileEntry;
 import net.mcreator.workspace.WorkspaceFolderManager;
 
-public class SystemSection extends PreferencesSection {
+public class BehaviourSection extends PreferencesSection {
 
 
 	public FileEntry defaultWorkspacesFolder;
@@ -32,7 +32,7 @@ public class SystemSection extends PreferencesSection {
 	public BooleanEntry confirmBeforeClosing;
 	public BooleanEntry returnToWorkspaceSelector;
 
-	public SystemSection(String preferencesIdentifier) {
+	public BehaviourSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
 		defaultWorkspacesFolder = addEntry(new FileEntry("defaultWorkspacesFolder", WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot(), true));
@@ -42,6 +42,6 @@ public class SystemSection extends PreferencesSection {
 	}
 
 	@Override public String getSectionKey() {
-		return "system";
+		return "behaviour";
 	}
 }

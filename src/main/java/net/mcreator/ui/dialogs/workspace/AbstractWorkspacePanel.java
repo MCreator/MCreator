@@ -84,7 +84,7 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 		});
 
 		workspaceFolder.setText(
-				PreferencesManager.PREFERENCES.system.defaultWorkspacesFolder.get().getAbsolutePath() + File.separator
+				PreferencesManager.PREFERENCES.behaviour.defaultWorkspacesFolder.get().getAbsolutePath() + File.separator
 						+ workspaceDialogPanel.modID.getText());
 
 		selectWorkspaceFolder.addActionListener(actionEvent -> {
