@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.workspace;
 
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.Transliteration;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreatorApplication;
@@ -50,19 +51,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
+class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
-	private final WorkspacePanel workspacePanel;
 	private final TableRowSorter<TableModel> sorter;
 	private final JTable elements;
 
 	private volatile boolean storingEdits = false;
 
 	WorkspacePanelVariables(WorkspacePanel workspacePanel) {
-		super(new BorderLayout(0, 5));
-		setOpaque(false);
-
-		this.workspacePanel = workspacePanel;
+		super(workspacePanel);
+		setLayout(new BorderLayout(0, 5));
 
 		elements = new JTable(new DefaultTableModel(
 				new Object[] { L10N.t("workspace.variables.variable_name"), L10N.t("workspace.variables.variable_type"),
@@ -307,6 +305,11 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					});
 			reloadElements();
 		}
+	}
+
+	@Override public boolean isSupportedInWorkspace() {
+		return workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("variables")
+				!= GeneratorStats.CoverageStatus.NONE;
 	}
 
 	@Override public void reloadElements() {

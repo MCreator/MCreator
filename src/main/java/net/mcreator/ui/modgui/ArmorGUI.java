@@ -34,7 +34,6 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.JavaModels;
 import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.CollapsiblePanel;
@@ -124,7 +123,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final VComboBox<String> armorTextureFile = new SearchableComboBox<>();
 
 	private final JCheckBox enableHelmet = L10N.checkbox("elementgui.armor.armor_helmet");
-	private final JCheckBox enableBody = L10N.checkbox("elementgui.armor.armor_body");
+	private final JCheckBox enableBody = L10N.checkbox("elementgui.armor.armor_chestplate");
 	private final JCheckBox enableLeggings = L10N.checkbox("elementgui.armor.armor_leggings");
 	private final JCheckBox enableBoots = L10N.checkbox("elementgui.armor.armor_boots");
 
@@ -357,8 +356,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), helmetSubPanel);
 
-		helmetCollapsiblePanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
-
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
 				enableHelmet);
 		helText.setBorder(BorderFactory.createCompoundBorder(
@@ -401,12 +398,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bodySubPanel.add(bodyImmuneToFire);
 
-		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_body"),
+		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"),
 				PanelUtils.northAndCenterElement(bodyModelComponent, bodySubPanel));
-		bodyCollapsiblePanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.body_name"), bodyName),
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.chestplate_name"), bodyName),
 				bodyCollapsiblePanel), 5, 0));
 
 		destal.add(new JEmptyBox(10, 10));
@@ -441,7 +437,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
 				PanelUtils.northAndCenterElement(leggingsModelComponent, leggingsSubPanel));
-		leggingsCollapsiblePanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
@@ -479,7 +474,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
 				PanelUtils.northAndCenterElement(bootsModelComponent, bootsSubPanel));
-		bootsCollapsiblePanel.toggleVisibility(PreferencesManager.PREFERENCES.ui.expandSectionsByDefault);
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
@@ -719,7 +713,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				new ConditionalTextFieldValidator(bootsName, L10N.t("elementgui.armor.boots_need_name"), enableBoots,
 						true));
 		bodyName.setValidator(
-				new ConditionalTextFieldValidator(bodyName, L10N.t("elementgui.armor.body_needs_name"), enableBody,
+				new ConditionalTextFieldValidator(bodyName, L10N.t("elementgui.armor.chestplate_needs_name"), enableBody,
 						true));
 		leggingsName.setValidator(
 				new ConditionalTextFieldValidator(leggingsName, L10N.t("elementgui.armor.leggings_need_name"),
@@ -759,7 +753,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			helmetName.setText(L10N.t("elementgui.armor.helmet", readableNameFromModElement));
-			bodyName.setText(L10N.t("elementgui.armor.body", readableNameFromModElement));
+			bodyName.setText(L10N.t("elementgui.armor.chestplate", readableNameFromModElement));
 			leggingsName.setText(L10N.t("elementgui.armor.leggings", readableNameFromModElement));
 			bootsName.setText(L10N.t("elementgui.armor.boots", readableNameFromModElement));
 		}

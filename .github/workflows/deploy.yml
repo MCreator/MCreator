@@ -9,13 +9,17 @@ on:
         default: 'snapshot'
 
 jobs:
-  build:
-    name: Build and Export
+  export1:
+    name: Build and Export (all but MacOS)
     runs-on: ubuntu-latest
+    outputs:
+      mcr_version: ${{ steps.determineExportVersion.outputs.mcr_version }}
+      mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
+      build_date: ${{ steps.determineExportVersion.outputs.build_date }}
     steps:
       - uses: actions/checkout@v3
-      - name: Checkout Repository
-        if: github.repository != 'MCreator/MCreator'
+      - name: Verify Repository
+        if: github.repository != 'MCreator/MCreator' && github.repository != 'KlemenDEV/MCreator'
         run: |
           cat << EOF
           ⚠️Deploy action is only intended to be run from the official MCreator's repository. ⚠️
@@ -35,16 +39,22 @@ jobs:
           sudo unzip LockedList.zip -d /usr/share/nsis/
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
-        run: xvfb-run -a ./gradlew exportRelease
+        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
-        run: xvfb-run -a ./gradlew exportSnapshot
+        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux -Psnapshot=true
       - name: Determine Export Version
+        id: determineExportVersion
         run: |
           MCR_VERSION=$(cat build/reports/export.txt | grep "mcreator=" | cut -d'=' -f2)
           MC_VERSION=$(cat build/reports/export.txt | grep "minecraft=" | cut -d'=' -f2)
+          BUILD_DATE=$(cat build/reports/export.txt | grep "builddate=" | cut -d'=' -f2)
           echo "MCR_VERSION=$MCR_VERSION" >> $GITHUB_ENV
           echo "MC_VERSION=$MC_VERSION" >> $GITHUB_ENV
+          echo "BUILD_DATE=$BUILD_DATE" >> $GITHUB_ENV
+          echo "mcr_version=$MCR_VERSION" >> $GITHUB_OUTPUT
+          echo "mc_version=$MC_VERSION" >> $GITHUB_OUTPUT
+          echo "build_date=$BUILD_DATE" >> $GITHUB_OUTPUT
       - name: Upload Binaries and Tag Release
         uses: Pylo/upload-release-action@v2
         with:
@@ -54,7 +64,7 @@ jobs:
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
-          body: > 
+          body: >
             ### **Download: https://mcreator.net/download**
             
             ### Changelog: https://mcreator.net/changelog
@@ -62,6 +72,46 @@ jobs:
             <!--[[
             {
             "minecraft": "${{ env.MC_VERSION }}"
+            }
+            ]]-->
+          overwrite: true
+  export2:
+    name: Build and Export (only MacOS)
+    needs: export1
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17.0.5+8'
+          distribution: 'adopt'
+      - name: Install Dependencies
+        run: |
+          brew install cdrtools
+      - name: Build and Export Release Using Gradle
+        if: github.event.inputs.release-type == 'release'
+        run: ./gradlew generateExportReport exportMac -Pbuilddate=${{ needs.export1.outputs.build_date }}
+      - name: Build and Export Snapshot Using Gradle
+        if: github.event.inputs.release-type == 'snapshot'
+        run: ./gradlew generateExportReport exportMac -Psnapshot=true -Pbuilddate=${{ needs.export1.outputs.build_date }}
+      - name: Upload Binaries and Tag Release
+        uses: Pylo/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ needs.export1.outputs.mcr_version }}
+          release_name: ${{ needs.export1.outputs.mcr_version }}
+          prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
+          file_glob: true
+          file: build/export/*
+          body: >
+            ### **Download: https://mcreator.net/download**
+            
+            ### Changelog: https://mcreator.net/changelog
+            
+            <!--[[
+            {
+            "minecraft": "${{ needs.export1.outputs.mc_version }}"
             }
             ]]-->
           overwrite: true

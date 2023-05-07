@@ -33,17 +33,17 @@ public class LogicNegateBlock implements IBlockGenerator {
 		Element negated_output_block = XMLUtil.getFirstChildrenWithName(block, "value");
 		if (negated_output_block != null) {
 			String inputCode = BlocklyToCode.directProcessOutputBlock(master, negated_output_block);
-			if (inputCode.equals("(true)"))
-				master.append("(false)");
-			else if (inputCode.equals("(false)"))
-				master.append("(true)");
+			if (inputCode.equals("true"))
+				master.append("false");
+			else if (inputCode.equals("false"))
+				master.append("true");
 			else {
 				master.append("(!");
 				master.append(withoutParentheses(inputCode));
 				master.append(")");
 			}
 		} else {
-			master.append("(false)");
+			master.append("false");
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.empty_not_block")));
 		}
