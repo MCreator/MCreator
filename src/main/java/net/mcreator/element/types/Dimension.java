@@ -92,13 +92,12 @@ import java.util.List;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		if (this.enablePortal) {
-			return MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
-					getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
-					getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame, enableIgniter);
-		} else {
-			return null;
-		}
+		return this.enablePortal ?
+				MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
+						getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
+						getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame,
+						enableIgniter) :
+				null;
 	}
 
 	@Override public TabEntry getCreativeTab() {
@@ -133,7 +132,8 @@ import java.util.List;
 	}
 
 	@Override public List<MItemBlock> poiBlocks() {
-		return List.of(new MItemBlock(this.getModElement().getWorkspace(), "CUSTOM:" + this.getModElement().getName() + ".portal"));
+		return List.of(new MItemBlock(this.getModElement().getWorkspace(),
+				"CUSTOM:" + this.getModElement().getName() + ".portal"));
 	}
 
 }
