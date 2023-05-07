@@ -1,1 +1,2 @@
-(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(${input$a})).is(${input$b}))
+<#include "mcitems.ftl">
+(${damageTypeToDamageSource(input$a)}.is(${damageSourceToDamageType(input$b)}))
