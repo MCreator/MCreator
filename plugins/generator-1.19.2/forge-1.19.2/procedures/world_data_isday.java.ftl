@@ -1,1 +1,1 @@
-(world instanceof Level _lvl && _lvl.isDay())
+(world instanceof Level _lvl${customBlockIndex} && _lvl${customBlockIndex}.isDay())
