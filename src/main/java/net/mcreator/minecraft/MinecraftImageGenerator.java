@@ -220,7 +220,7 @@ public class MinecraftImageGenerator {
 			g.drawRect(0, 0, 159, 77);
 			g.drawString("BOOTS", 5, 155);
 			g.drawRect(0, 79, 78, 80);
-			g.drawString("BODY", 87, 155);
+			g.drawString("CHESTPLATE", 87, 155);
 			g.drawRect(80, 79, 205, 80);
 			return image;
 		}
