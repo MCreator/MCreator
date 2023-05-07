@@ -48,7 +48,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
 
-public class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
+public class WorkspacePanelVCS extends AbstractWorkspacePanel {
 
 	private static final Logger LOG = LogManager.getLogger("VCS Panel");
 
@@ -58,13 +58,13 @@ public class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 	private final JTable commits;
 	private final TableRowSorter<TableModel> sorter;
 
-	private final JButton switchBranch = new JButton("");
+	private final JButton switchBranch = new JButton(UIRES.get("16px.vcs"));
 
 	private final JLabel currentBranch = new JLabel();
 
 	WorkspacePanelVCS(WorkspacePanel workspacePanel) {
-		super(new BorderLayout(0, 5));
-		setOpaque(false);
+		super(workspacePanel);
+		setLayout(new BorderLayout(0, 5));
 
 		this.workspacePanel = workspacePanel;
 		this.mcreator = workspacePanel.getMCreator();
@@ -92,7 +92,6 @@ public class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 
 		checkout.addActionListener(e -> checkoutToSelectedCommit());
 
-		switchBranch.setIcon(UIRES.get("16px.vcs"));
 		switchBranch.setContentAreaFilled(false);
 		switchBranch.setOpaque(false);
 		ComponentUtils.deriveFont(switchBranch, 12);
@@ -107,12 +106,13 @@ public class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 
 		add("North", bar);
 
-		commits = new JTable(
-				new DefaultTableModel(new Object[] { "ID", "Commit message", "Commit author", "Date" }, 0) {
-					@Override public boolean isCellEditable(int row, int column) {
-						return false;
-					}
-				});
+		commits = new JTable(new DefaultTableModel(
+				new Object[] { L10N.t("workspace.vcs.commit_list.id"), L10N.t("workspace.vcs.commit_list.message"),
+						L10N.t("workspace.vcs.commit_list.author"), L10N.t("workspace.vcs.commit_list.date") }, 0) {
+			@Override public boolean isCellEditable(int row, int column) {
+				return false;
+			}
+		});
 
 		sorter = new TableRowSorter<>(commits.getModel());
 		commits.setRowSorter(sorter);
@@ -249,7 +249,7 @@ public class WorkspacePanelVCS extends JPanel implements IReloadableFilterable {
 		}
 	}
 
-	boolean panelShown() {
+	@Override public boolean canSwitchToSection() {
 		return SetupVCSAction.setupVCSForWorkspaceIfNotYet(workspacePanel.getMCreator());
 	}
 
