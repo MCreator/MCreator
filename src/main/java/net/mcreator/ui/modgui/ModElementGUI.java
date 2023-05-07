@@ -437,7 +437,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	/**
 	 * This method disables UI elements representing mod element parameters not supported by the selected generator
 	 * based on provided lists of excluded/included component entries. These can follow a few different formats,
-	 * depending on what child component does an entry target:
+	 * depending on what child component an entry targets:
 	 * <ul>
 	 *     <li><b>{@code <fieldName>}</b> - will handle a component named "fieldName" directly
 	 *     on the source/initial UI element;</li>
@@ -454,7 +454,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	 * @param source     The topmost component from which the process is initiated.
 	 * @param exclusions List of child UI components of the {@code source} object that will be disabled.
 	 * @param inclusions List of child UI components of the {@code source} object that will be enabled.
-	 * @apiNote Only one of the lists described above should be different from {@code null} (and not empty)
+	 * @apiNote Only one of the lists described above should be different from {@code null} and not empty
 	 * for this method to take proper action.
 	 */
 	private static void disableUnsupportedFields(Container source, List<String> exclusions, List<String> inclusions) {
