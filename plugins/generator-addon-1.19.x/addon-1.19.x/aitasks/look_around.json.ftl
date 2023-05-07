@@ -1,3 +1,3 @@
 "minecraft:behavior.random_look_around": {
-    "priority": ${customBlockIndex+1}
+    "priority": ${cbi+1}
 },

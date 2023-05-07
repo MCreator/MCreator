@@ -267,11 +267,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		blocklyPanel.setXML("""
 				<xml xmlns="https://developers.google.com/blockly/xml">
 				<block type="aitasks_container" deletable="false" x="40" y="40"><next>
-				<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition"/><next>
-				<block type="wander"><field name="speed">1</field><field name="condition"/><next>
-				<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition"/><next>
-				<block type="look_around"><field name="condition"/><next>
-				<block type="swim_in_water"/><field name="condition"/></next>
+				<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition">null,null</field><next>
+				<block type="wander"><field name="speed">1</field><field name="condition">null,null</field><next>
+				<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition">null,null</field><next>
+				<block type="look_around"><field name="condition">null,null</field><next>
+				<block type="swim_in_water"/><field name="condition">null,null</field></next>
 				</block></next></block></next></block></next></block></next></block></xml>""");
 	}
 

@@ -21,6 +21,10 @@ public-f net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator f_64318_ #s
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 </#if>
 
+<#if w.hasElementsOfType("feature")>
+public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lcom/mojang/serialization/Codec;)V #constructor
+</#if>
+
 <#if w.hasElementsOfType("livingentity")>
 public-f net.minecraft.world.entity.npc.Villager f_35366_ #assignProfessionWhenSpawned
 public-f net.minecraft.world.entity.npc.Villager f_35373_ #updateMerchantTimer
