@@ -23,6 +23,12 @@
     "inputs": [
       "a",
       "b"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
     ]
   }
 }

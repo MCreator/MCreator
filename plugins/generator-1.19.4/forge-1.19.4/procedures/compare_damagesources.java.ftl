@@ -1,1 +1,1 @@
-(${input$a} == ${input$b})
+(new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(${input$a})).is(${input$b}))
