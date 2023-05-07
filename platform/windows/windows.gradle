@@ -51,7 +51,7 @@ tasks.register('exportWin64', Copy.class) {
     into('jdk') { from 'jdk/jdk17_win_64' }
 }
 
-tasks.register('zipWin64', Zip.class) {
+tasks.register('exportWindowsZip', Zip.class) {
     dependsOn exportWin64
 
     from 'build/export/win64/'
@@ -85,21 +85,16 @@ tasks.register('buildInstallerWin64', Exec.class) {
     doLast { delete 'build/export/install64.nsi' }
 }
 
-tasks.register('exportWindowsAll') {
+tasks.register('exportWindows') {
     group 'export'
 
-    dependsOn zipWin64
-    dependsOn buildInstallerWin64
+    dependsOn exportWindowsZip
 
-    doLast {
-        delete 'build/export/win64'
+    // Add installer only if this is not a snapshot build (and not MacOS that does not support makensis)
+    if (!project.snapshot && !Os.isFamily(Os.FAMILY_MAC)) {
+        dependsOn buildInstallerWin64
     }
-}
 
-tasks.register('exportWindowsZIP') {
-    group 'export'
-
-    dependsOn zipWin64
     doLast {
         delete 'build/export/win64'
     }

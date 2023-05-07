@@ -53,7 +53,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 	private static final Logger LOG = LogManager.getLogger("From Template Dialog");
 
 	private static final String[] templateList = new String[] { "Random", "Sword", "Pickaxe", "Axe", "Shovel", "Hoe",
-			"Shears", "Music disc", "Drinkable potion", "Splash potion", "Lingering potion", "Ore" };
+			"Shears", "Music disc", "Drinkable potion", "Splash potion", "Lingering potion", "Ore", "Block" };
 
 	private static final Color[] presetColors = new Color[] { Color.red, Color.green, Color.blue,
 			(Color) UIManager.get("MCreatorLAF.MAIN_TINT"), Color.magenta, Color.cyan, new Color(244, 67, 54),
@@ -319,6 +319,8 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 	private void generateFromTemplate(String template) {
 		disableRefresh = true;
+		ResourcePointer randomNoise = ListUtils.getRandomItem(
+				templatesSorted.stream().filter(e -> e.toString().contains("noise")).toList());
 
 		switch (template) {
 		case "Sword":
@@ -507,16 +509,37 @@ public class FromTemplateDialog extends MCreatorDialog {
 			cbs4.setSelectedItem(noimage);
 			break;
 		case "Ore":
-			cbs.setSelectedItem(ListUtils.getRandomItem(
-					templatesSorted.stream().filter(e -> e.toString().contains("noise")).collect(Collectors.toList())));
+			cbs.setSelectedItem(randomNoise);
 			cbs2.setSelectedItem(ListUtils.getRandomItem(
-					templatesSorted.stream().filter(e -> e.toString().matches("ore\\d+"))
-							.collect(Collectors.toList())));
+					templatesSorted.stream().filter(e -> e.toString().matches("ore\\d+")).toList()));
 			cbs3.setSelectedItem(noimage);
 			cbs4.setSelectedItem(noimage);
 			col1.setColor(ListUtils.getRandomItem(presetColors));
 			type1.setSelected(Math.random() < 0.4);
 			ang1.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 270, 0, 0 }));
+			break;
+		case "Block":
+			ResourcePointer randomTexture = ListUtils.getRandomItem(templatesSorted.stream()
+					.filter(e -> e.toString().contains("block") || e.toString().contains("pattern") || e.toString()
+							.contains("noise") || e.toString().contains("machine") || e.toString().contains("plank")
+							|| e.toString().contains("log") || e.toString().contains("wood") || e.toString()
+							.contains("leaves") || e.toString().contains("stone_") || e.toString()
+							.contains("stonebrick") || e.toString().contains("dirt")).toList());
+			// We want cbs and cbs2 to be the same if "randomTexture" isn't a noise.
+			// If "randomTexture" is a noise, then we set cbs2 to be that noise, and cbs can be completely random. (won't be filtered like "randomTexture")
+			// If "randomTexture" is not a noise, we set cbs and cbs2 to be that "randomTexture"
+			cbs.setSelectedItem(randomTexture.toString().contains("noise") ?
+					ListUtils.getRandomItem(templatesSorted) :
+					randomTexture);
+			cbs2.setSelectedItem(randomTexture);
+			cbs3.setSelectedItem(randomTexture.toString().contains("machine") ? randomNoise : noimage);
+			cbs4.setSelectedItem(noimage);
+			col1.setColor(ListUtils.getRandomItem(presetColors));
+			col2.setColor(ListUtils.getRandomItem(presetColors));
+			type1.setSelected(Math.random() < 0.4);
+			type2.setSelected(Math.random() < 0.4);
+			ang1.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 90, 0, 0 }));
+			ang2.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 90, 0, 0 }));
 			break;
 		default:
 			randomizeSetup();
