@@ -27,9 +27,20 @@ import java.awt.event.MouseEvent;
 
 public class MainToolBar extends JToolBar {
 
+	private final JToolBar pluginToolbarLeft = new JToolBar();
+	private final JToolBar pluginToolbarRight = new JToolBar();
+
 	MainToolBar(MCreator mcreator) {
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
 		setFloatable(false);
+
+		pluginToolbarLeft.setBorder(BorderFactory.createEmptyBorder());
+		pluginToolbarLeft.setMargin(new Insets(0, 0, 0, 0));
+		pluginToolbarLeft.setFloatable(false);
+
+		pluginToolbarRight.setBorder(BorderFactory.createEmptyBorder());
+		pluginToolbarRight.setMargin(new Insets(0, 0, 0, 0));
+		pluginToolbarRight.setFloatable(false);
 
 		add(new JEmptyBox(4, 4));
 
@@ -67,7 +78,11 @@ public class MainToolBar extends JToolBar {
 		add(mcreator.actionRegistry.setCreativeTabItemOrder);
 		add(mcreator.actionRegistry.injectDefaultTags);
 
-		add(Box.createHorizontalGlue());
+		add(pluginToolbarLeft);
+
+		add(Box.createHorizontalGlue()); // split left and right toolbar sections
+
+		add(pluginToolbarRight);
 
 		add(mcreator.actionRegistry.setupVCSOrSettings);
 		add(mcreator.actionRegistry.syncFromRemote);
@@ -95,8 +110,23 @@ public class MainToolBar extends JToolBar {
 		add(new JEmptyBox(4, 4));
 	}
 
+	/**
+	 * @implNote Plugins should use {@link #addToLeftToolbar(Action)} and {@link #addToRightToolbar(Action)}
+	 *           instead of this overridden method.
+	 */
 	@Override public JButton add(Action action) {
-		JButton button = super.add(action);
+		return decorateToolbarButton(super.add(action));
+	}
+
+	public JButton addToLeftToolbar(Action action) {
+		return decorateToolbarButton(pluginToolbarLeft.add(action));
+	}
+
+	public JButton addToRightToolbar(Action action) {
+		return decorateToolbarButton(pluginToolbarRight.add(action));
+	}
+
+	private static JButton decorateToolbarButton(JButton button) {
 		button.setBorder(BorderFactory.createEmptyBorder(4, 4, 4, 4));
 		button.addMouseListener(new MouseAdapter() {
 			@Override public void mouseEntered(MouseEvent mouseEvent) {

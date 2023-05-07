@@ -1,1 +1,0 @@
-VerticalAnchor.absolute(${field$value})

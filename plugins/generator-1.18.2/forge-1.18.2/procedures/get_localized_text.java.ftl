@@ -1,1 +1,0 @@
-(new TranslatableComponent(${input$key}).getString())

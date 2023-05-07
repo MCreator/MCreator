@@ -33,7 +33,7 @@ import java.awt.*;
 public class UpdatePluginDialog {
 
 	public static void showPluginUpdateDialogIfUpdatesExist(Window parent) {
-		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPluginUpdates
+		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPluginUpdates.get()
 				&& !PluginLoader.INSTANCE.getPluginUpdates().isEmpty()) {
 			JPanel pan = new JPanel(new BorderLayout(10, 15));
 
@@ -41,24 +41,37 @@ public class UpdatePluginDialog {
 
 			pan.add("North", L10N.label("dialog.plugin_update_notify.message"));
 			pan.add("Center", new JScrollPane(PanelUtils.pullElementUp(plugins)));
+			pan.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 			pan.setPreferredSize(new Dimension(560, 250));
 
 			for (PluginUpdateInfo pluginUpdateInfo : PluginLoader.INSTANCE.getPluginUpdates()) {
-				JLabel label = L10N.label("dialog.plugin_update_notify.version_message",
+				StringBuilder usb = new StringBuilder(L10N.t("dialog.plugin_update_notify.version_message",
 						pluginUpdateInfo.plugin().getInfo().getName(), pluginUpdateInfo.plugin().getInfo().getVersion(),
-						pluginUpdateInfo.newVersion());
+						pluginUpdateInfo.newVersion()));
+				if (pluginUpdateInfo.recentChanges() != null) {
+					usb.append("<br>").append(L10N.t("dialog.plugin_update_notify.changes_message")).append("<ul>");
+					for (String change : pluginUpdateInfo.recentChanges())
+						usb.append("<li>").append(change).append("</li>");
+				}
 
+				JLabel label = new JLabel(usb.toString());
 				JButton update = L10N.button("dialog.plugin_update_notify.update");
 				update.addActionListener(e -> DesktopUtils.browseSafe(
 						MCreatorApplication.SERVER_DOMAIN + "/node/" + pluginUpdateInfo.plugin().getInfo()
 								.getPluginPageID()));
-
-				plugins.add(PanelUtils.westAndEastElement(label, update));
+				plugins.add(PanelUtils.westAndEastElement(label, PanelUtils.join(update)));
 			}
 
-			JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.plugin_update_notify.update_title"),
-					JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
-					new Object[] { L10N.t("dialog.plugin_update_notify.close") }, "");
+			MCreatorDialog dialog = new MCreatorDialog(parent, L10N.t("dialog.plugin_update_notify.update_title"));
+			dialog.setSize(700, 300);
+			dialog.setLocationRelativeTo(parent);
+			dialog.setModal(true);
+
+			JButton close = L10N.button("dialog.plugin_update_notify.close");
+			close.addActionListener(e -> dialog.setVisible(false));
+
+			dialog.add("Center", PanelUtils.centerAndSouthElement(pan, PanelUtils.join(close)));
+			dialog.setVisible(true);
 		}
 	}
 }

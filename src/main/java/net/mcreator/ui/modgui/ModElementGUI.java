@@ -114,14 +114,14 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// reload data lists in a background thread
 		this.tabIn.setTabShownListener(tab -> {
-			if (PreferencesManager.PREFERENCES.ui.autoreloadTabs) {
+			if (PreferencesManager.PREFERENCES.ui.autoReloadTabs.get()) {
 				listeningEnabled = false;
 				reloadDataLists();
 				listeningEnabled = true;
 			}
 		});
 		this.tabIn.setTabClosingListener(tab -> {
-			if (changed && PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges)
+			if (changed && PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges.get())
 				return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(mcreator,
 						L10N.label("dialog.unsaved_changes.message"), L10N.t("dialog.unsaved_changes.title"),
 						JOptionPane.YES_NO_OPTION);
@@ -559,7 +559,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		}
 
 		// build if selected and needed
-		if (PreferencesManager.PREFERENCES.gradle.compileOnSave && mcreator.getModElementManager()
+		if (PreferencesManager.PREFERENCES.gradle.compileOnSave.get() && mcreator.getModElementManager()
 				.requiresElementGradleBuild(element))
 			mcreator.actionRegistry.buildWorkspace.doAction();
 
