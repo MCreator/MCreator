@@ -34,8 +34,14 @@ public class TemplateExpressionParser {
 
 	private static final Logger LOG = LogManager.getLogger("Template expression parser");
 
-	public static boolean shouldSkipTemplateBasedOnCondition(@Nonnull Generator generator,
-			@Nullable Object conditionRaw, @Nullable Object conditionDataProvider, Operator operator) {
+	public static boolean shouldSkipTemplateBasedOnCondition(@Nonnull Generator generator, @Nonnull Map<?, ?> template, @Nullable Object conditionDataProvider) {
+		Operator operator = Operator.AND;
+		Object conditionRaw = template.get("condition");
+		if (conditionRaw == null) {
+			conditionRaw = template.get("condition_any");
+			operator = Operator.OR;
+		}
+
 		if (conditionRaw == null) // we check for condition value if present
 			return false;
 
@@ -128,7 +134,7 @@ public class TemplateExpressionParser {
 		}
 	}
 
-	public enum Operator {
+	private enum Operator {
 		AND, OR
 	}
 
