@@ -21,9 +21,7 @@ package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
-import net.mcreator.preferences.entries.FileEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
-import net.mcreator.workspace.WorkspaceFolderManager;
 
 public class BackupsSection extends PreferencesSection {
 

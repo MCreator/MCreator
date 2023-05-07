@@ -35,10 +35,6 @@ public class FileEntry extends PreferencesEntry<File> {
 
 	private final transient boolean isFolder;
 
-	public FileEntry(String id, String path, boolean isFolder) {
-		this(id, new File(path), isFolder);
-	}
-
 	public FileEntry(String id, File value, boolean isFolder) {
 		super(id, value);
 		this.isFolder = isFolder;
