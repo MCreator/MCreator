@@ -160,6 +160,12 @@ public class ElementUtil {
 		return elements;
 	}
 
+	/**
+	 * Loads all mod elements and all Minecraft blocks, including elements
+	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
+	 *
+	 * @return All Blocks from both Minecraft and custom elements with or without metadata
+	 */
 	public static List<MCItem> loadBlocksAndTags(Workspace workspace) {
 		List<MCItem> elements = new ArrayList<>();
 		workspace.getModElements().forEach(modElement -> elements.addAll(
