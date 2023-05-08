@@ -166,14 +166,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private MCItemHolder equipmentOffHand;
 
 	private final JCheckBox canTrade = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox villagerTradingType = L10N.checkbox("elementgui.common.enable");
+	private final JRadioButton villagerTradingType = L10N.radiobutton("elementgui.living_entity.villager");
+	private final JRadioButton wanderingTraderTradingType = L10N.radiobutton("elementgui.living_entity.wandering_trader");
 	private ProfessionListField professionTrade;
 	private final SoundSelector fullUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector emptyUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector notificationSound = new SoundSelector(mcreator);
-	private ProcedureSelector tradingCondition;
 	private LogicProcedureSelector restockCondition;
 	private NumberProcedureSelector rewardXp;
+	private ProcedureSelector tradingCondition;
 	private final JComboBox<String> guiBoundTo = new JComboBox<>();
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
@@ -355,11 +356,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.checkbox("elementgui.common.enable"), 300,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
-		tradingCondition = new ProcedureSelector(this.withEntry("entity/trading_condition"), mcreator,
-				L10N.t("elementgui.living_entity.trading_condition"), AbstractProcedureSelector.Side.BOTH, false,
-				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
-				L10N.t("condition.common.true"));
 		restockCondition = new LogicProcedureSelector(this.withEntry("entity/can_restock"), mcreator,
 				L10N.t("elementgui.living_entity.can_restock"), AbstractProcedureSelector.Side.BOTH,
 				L10N.checkbox("elementgui.common.enable"), 250,
@@ -368,6 +364,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.t("elementgui.living_entity.reward_xp"), AbstractProcedureSelector.Side.BOTH,
 				new JSpinner(new SpinnerNumberModel(4, 0, Integer.MAX_VALUE, 0.5)), 250,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		tradingCondition = new ProcedureSelector(this.withEntry("entity/trading_condition"), mcreator,
+				L10N.t("elementgui.living_entity.trading_condition"), AbstractProcedureSelector.Side.BOTH, false,
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
+				L10N.t("condition.common.true"));
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		professionTrade = new ProfessionListField(mcreator);
@@ -378,8 +379,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		mobModelGlowTexture.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
+		ButtonGroup bg = new ButtonGroup();
+		bg.add(villagerTradingType);
+		bg.add(wanderingTraderTradingType);
+		villagerTradingType.setSelected(true);
+
 		canTrade.addActionListener(e -> updateTradingConditions());
 		villagerTradingType.addActionListener(e -> updateTradingConditions());
+		wanderingTraderTradingType.addActionListener(e -> updateTradingConditions());
 		updateTradingConditions();
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -888,9 +895,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		villagerProperties.add(canTrade);
 
 		villagerTradingType.setOpaque(false);
+		wanderingTraderTradingType.setOpaque(false);
 		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/trading_type"),
 				L10N.label("elementgui.living_entity.trading_type")));
-		villagerProperties.add(villagerTradingType);
+		villagerProperties.add(PanelUtils.join(FlowLayout.LEFT, villagerTradingType, wanderingTraderTradingType));
 
 		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/profession_trade"),
 				L10N.label("elementgui.living_entity.profession_trade")));
@@ -920,10 +928,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		villagerPropertiesConditions.add(rewardXp);
 
 		JComponent villagerPropertiesPanel = PanelUtils.northAndCenterElement(villagerProperties,
-				PanelUtils.centerAndSouthElement(tradingConditionPanel, villagerPropertiesConditions), 2, 2);
+				PanelUtils.centerAndSouthElement(villagerPropertiesConditions, tradingConditionPanel), 2, 2);
 		villagerPropertiesPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.living_entity.villager_properties"), TitledBorder.LEADING,
+				L10N.t("elementgui.living_entity.trade_properties"), TitledBorder.LEADING,
 				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		villagerPropertiesPanel.setOpaque(false);
 
@@ -977,9 +985,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		fullUpdateSound.setEnabled(canTrade.isSelected());
 		emptyUpdateSound.setEnabled(canTrade.isSelected());
 		notificationSound.setEnabled(canTrade.isSelected());
-		tradingCondition.setEnabled(canTrade.isSelected());
 		restockCondition.setEnabled(canTrade.isSelected());
 		rewardXp.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
+		tradingCondition.setEnabled(canTrade.isSelected());
 		guiBoundTo.setEnabled(!canTrade.isSelected());
 		inventorySize.setEnabled(!canTrade.isSelected());
 		inventoryStackSize.setEnabled(!canTrade.isSelected());
@@ -1009,9 +1017,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		transparentModelCondition.refreshListKeepSelected();
 		isShakingCondition.refreshListKeepSelected();
 		solidBoundingBox.refreshListKeepSelected();
-		tradingCondition.refreshListKeepSelected();
 		restockCondition.refreshListKeepSelected();
 		rewardXp.refreshListKeepSelected();
+		tradingCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
 				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
@@ -1150,13 +1158,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		flyingMob.setSelected(livingEntity.flyingMob);
 		canTrade.setSelected(livingEntity.canTrade);
 		villagerTradingType.setSelected(livingEntity.villagerTradingType);
+		wanderingTraderTradingType.setSelected(!livingEntity.villagerTradingType);
 		professionTrade.setListElements(livingEntity.professionTrade);
 		fullUpdateSound.setSound(livingEntity.fullUpdateSound);
 		emptyUpdateSound.setSound(livingEntity.emptyUpdateSound);
 		notificationSound.setSound(livingEntity.notificationSound);
-		tradingCondition.setSelectedProcedure(livingEntity.tradingCondition);
 		restockCondition.setSelectedProcedure(livingEntity.restockCondition);
 		rewardXp.setSelectedProcedure(livingEntity.rewardXp);
+		tradingCondition.setSelectedProcedure(livingEntity.tradingCondition);
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
@@ -1295,9 +1304,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.fullUpdateSound = fullUpdateSound.getSound();
 		livingEntity.emptyUpdateSound = emptyUpdateSound.getSound();
 		livingEntity.notificationSound = notificationSound.getSound();
-		livingEntity.tradingCondition = tradingCondition.getSelectedProcedure();
 		livingEntity.restockCondition = restockCondition.getSelectedProcedure();
 		livingEntity.rewardXp = rewardXp.getSelectedProcedure();
+		livingEntity.tradingCondition = tradingCondition.getSelectedProcedure();
 		livingEntity.guiBoundTo = (String) guiBoundTo.getSelectedItem();
 		return livingEntity;
 	}
