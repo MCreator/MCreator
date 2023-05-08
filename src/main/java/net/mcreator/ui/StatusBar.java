@@ -83,6 +83,7 @@ public class StatusBar extends JPanel {
 		});
 		preferences.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		left.add(preferences);
+		left.add(new JEmptyBox(10, 10));
 
 		messages.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		left.add(messages);
