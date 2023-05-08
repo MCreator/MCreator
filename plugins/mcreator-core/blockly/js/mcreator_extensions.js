@@ -42,8 +42,7 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
         this.setOnChange(function (changeEvent) {
             // Trigger the change only if a block is changed or created
             if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
-                changeEvent.type !== Blockly.Events.BLOCK_CREATE ||
-                changeEvent instanceof InputCheckChange) {
+                changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
                 return;
             }
             const group = Blockly.Events.getGroup();
@@ -54,8 +53,9 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
                 const prevType = this.getInput('arg' + i).connection.getCheck();
                 this.getInput('arg' + i).setCheck(javabridge.getDependencyType(
                     this.getFieldValue('procedure'), this.getFieldValue('name' + i)));
-                Blockly.Events.fire(new InputCheckChange(this, 'arg' + i, prevType,
-                    this.getInput('arg' + i).connection.getCheck()));
+                const newType = this.getInput('arg' + i).connection.getCheck();
+                if ((prevType == null) != (newType == null) || (prevType.toString() !== newType.toString()))
+                    Blockly.Events.fire(new InputCheckChange(this, 'arg' + i, prevType, newType));
             }
             Blockly.Events.setGroup(group);
         });

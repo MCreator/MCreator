@@ -53,6 +53,7 @@ class FieldMCItemSelector extends Blockly.FieldImage {
                 let thisField = this; // reference to this field, to use in the callback function
                 javabridge.openMCItemSelector(this.supported_mcitems, {
                     'callback': function (selected) {
+                        Blockly.Events.setGroup(true);
                         thisField.setValue(selected || '');
                         javabridge.triggerEvent();
                     }
