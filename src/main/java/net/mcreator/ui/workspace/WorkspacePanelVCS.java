@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.workspace;
 
-import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.vcs.SetupVCSAction;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -26,7 +25,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.vcs.BranchesPopup;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.vcs.WorkspaceVCS;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -35,6 +33,7 @@ import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.revwalk.RevCommit;
 
@@ -52,22 +51,14 @@ public class WorkspacePanelVCS extends AbstractWorkspacePanel {
 
 	private static final Logger LOG = LogManager.getLogger("VCS Panel");
 
-	private final MCreator mcreator;
-	private final WorkspacePanel workspacePanel;
-
 	private final JTable commits;
 	private final TableRowSorter<TableModel> sorter;
 
 	private final JButton switchBranch = new JButton(UIRES.get("16px.vcs"));
 
-	private final JLabel currentBranch = new JLabel();
-
 	WorkspacePanelVCS(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
 		setLayout(new BorderLayout(0, 5));
-
-		this.workspacePanel = workspacePanel;
-		this.mcreator = workspacePanel.getMCreator();
 
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
@@ -159,36 +150,6 @@ public class WorkspacePanelVCS extends AbstractWorkspacePanel {
 				}
 			}
 		});
-
-		currentBranch.setIcon(
-				new ImageIcon(ImageUtils.darken(ImageUtils.toBufferedImage(UIRES.get("16px.vcs").getImage()))));
-		currentBranch.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				new BranchesPopup(WorkspaceVCS.getVCSWorkspace(mcreator.getWorkspace()), mcreator).show(currentBranch,
-						0, 0);
-			}
-		});
-		currentBranch.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-		currentBranch.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
-		ComponentUtils.deriveFont(currentBranch, 12);
-
-		add("South", currentBranch);
-
-		reloadVCSStatus();
-	}
-
-	public void reloadVCSStatus() {
-		WorkspaceVCS workspaceVCS = WorkspaceVCS.getVCSWorkspace(mcreator.getWorkspace());
-		if (workspaceVCS != null) {
-			currentBranch.setVisible(true);
-			try {
-				currentBranch.setText(workspaceVCS.getGit().getRepository().getBranch());
-			} catch (IOException ignored) {
-			}
-		} else {
-			currentBranch.setVisible(false);
-		}
 	}
 
 	private void checkoutToSelectedCommit() {
@@ -265,14 +226,13 @@ public class WorkspacePanelVCS extends AbstractWorkspacePanel {
 
 			Git git = workspaceVCS.getGit();
 			try {
-				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
-						.call()) {
+				Repository repository = git.getRepository();
+				for (RevCommit commit : git.log().add(repository.resolve(repository.getFullBranch())).call()) {
 					model.addRow(new Object[] { commit.abbreviate(7).name(), "<html><b>" + commit.getShortMessage(),
 							commit.getAuthorIdent().getName(), commit.getAuthorIdent().getWhen() });
 				}
 
-				switchBranch.setText(L10N.t("workspace.vcs.current_branch",
-						git.getRepository().getFullBranch().replace("refs/heads/", "")));
+				switchBranch.setText(L10N.t("workspace.vcs.current_branch", repository.getBranch()));
 			} catch (Exception ignored) {
 			}
 
