@@ -25,7 +25,6 @@ import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.util.*;
 import java.util.List;
 import java.util.function.Supplier;

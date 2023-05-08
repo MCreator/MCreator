@@ -21,7 +21,7 @@ package net.mcreator.ui.minecraft.states.item;
 
 import net.mcreator.element.types.Item;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.CollapsiblePanel;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -72,7 +72,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 
 		stateLabel = new JStateLabel(properties, () -> editButtonListener.accept(this));
 
-		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
+		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 42);
 		texture.setValidator(new TileHolderValidator(texture));
 
 		ComponentUtils.deriveFont(model, 16);
@@ -80,28 +80,27 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		model.setRenderer(new ModelComboBoxRenderer());
 		reloadDataLists(); // we make sure that combo box can be properly shown
 
-		JPanel ito = ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"));
+		Component ito = PanelUtils.northAndCenterElement(
+				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.item.texture")),
+				PanelUtils.join(FlowLayout.LEFT, 2, 2, texture));
+
 		Component imo = PanelUtils.northAndCenterElement(HelpUtils.wrapWithHelpButton(gui.withEntry("item/model"),
 				L10N.label("elementgui.item.custom_state.model")), model);
-		CollapsiblePanel override = new CollapsiblePanel(L10N.t("elementgui.item.custom_state.overridden_params"),
-				PanelUtils.join(ito, imo));
-		override.toggleVisibility(true);
 
-		JComponent container = PanelUtils.expandHorizontally(this);
-		parent.add(container);
+		parent.add(this);
 		entryList.add(this);
 
 		remove.setText(L10N.t("elementgui.item.custom_state.remove"));
 		remove.addActionListener(e -> {
 			entryList.remove(this);
-			parent.remove(container);
+			parent.remove(this);
 			parent.revalidate();
 			parent.repaint();
 		});
 
-		add("North", PanelUtils.maxMargin(stateLabel, 5, true, true, true, true));
-		add("Center", override);
-		add("East", PanelUtils.centerInPanelPadding(remove, 8, 8));
+		add("North", PanelUtils.maxMargin(stateLabel, 5, true, false, true, false));
+		add("West", PanelUtils.westAndCenterElement(ito, imo));
+		add("East", PanelUtils.pullElementUp(remove));
 
 		parent.revalidate();
 		parent.repaint();

@@ -115,7 +115,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 		propertyEntries.setLayout(new GridLayout(0, 1, 5, 5));
 		propertyEntries.setOpaque(false);
-		stateEntries.setLayout(new BoxLayout(stateEntries, BoxLayout.Y_AXIS));
+		stateEntries.setLayout(new GridLayout(0, 1, 5, 5));
 		stateEntries.setOpaque(false);
 
 		propertyEntries.addContainerListener(new ContainerAdapter() {
