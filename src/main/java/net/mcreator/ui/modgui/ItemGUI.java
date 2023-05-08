@@ -538,8 +538,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		if (model != null)
 			renderType.setSelectedItem(model);
 
-		customProperties.setProperties(item.filterProperties());
-		customProperties.setStates(item.filterModels());
+		customProperties.setProperties(item.customProperties);
+		customProperties.setStates(item.modelsMap);
 	}
 
 	@Override public Item getElementFromGUI() {

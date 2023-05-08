@@ -26,6 +26,7 @@ import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -179,25 +180,25 @@ import java.util.*;
 	}
 
 	public LinkedHashMap<String, Procedure> filterProperties() {
-		DataListLoader.loadDataMap("itemproperties").entrySet().stream()
-				.filter(e -> e.getValue().isSupportedInWorkspace(getModElement().getWorkspace()))
-				.forEach(property -> customProperties.remove(property.getKey()));
+		DataListLoader.loadDataList("itemproperties").stream()
+				.filter(e -> e.isSupportedInWorkspace(getModElement().getWorkspace()))
+				.forEach(property -> customProperties.remove(property.getName()));
 		return customProperties;
 	}
 
 	public LinkedHashMap<String, ModelEntry> filterModels() {
 		LinkedHashMap<String, ModelEntry> models = new LinkedHashMap<>();
-		List<String> builtinProperties = DataListLoader.loadDataMap("itemproperties").entrySet().stream()
-				.filter(e -> e.getValue().isSupportedInWorkspace(getModElement().getWorkspace())).map(Map.Entry::getKey)
+		List<String> builtinProperties = DataListLoader.loadDataList("itemproperties").stream()
+				.filter(e -> e.isSupportedInWorkspace(getModElement().getWorkspace())).map(DataListEntry::getName)
 				.toList();
 		modelsMap.forEach((state, model) -> {
-			StringBuilder stateBuilder = new StringBuilder();
+			List<String> states = new ArrayList<>();
 			for (String match : state.split(",")) {
 				String property = match.split("=")[0];
 				if (customProperties.containsKey(property) || builtinProperties.contains(property))
-					stateBuilder.append(",").append(match);
+					states.add(match);
 			}
-			models.putIfAbsent(stateBuilder.toString().replaceFirst(",", ""), model);
+			models.putIfAbsent(String.join(",", states), model);
 		});
 		return models;
 	}

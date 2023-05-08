@@ -96,7 +96,7 @@ public class ${JavaModName}Items {
 		event.enqueueWork(() -> {
 		<#list items as item>
 			<#if item.getModElement().getTypeString() == "item">
-				<#list item.customProperties.entrySet() as property>
+				<#list item.filterProperties().entrySet() as property>
 				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("${property.getKey()}"),
 						(itemStackToRender, clientWorld, livingEntity, itemEntityId) -> <#if hasProcedure(property.getValue())>{
 					Entity entity = livingEntity != null ? livingEntity : itemStackToRender.getEntityRepresentation();
