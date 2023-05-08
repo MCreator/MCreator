@@ -227,12 +227,13 @@ class WorkspacePanelVCS extends AbstractWorkspacePanel {
 			Git git = workspaceVCS.getGit();
 			try {
 				Repository repository = git.getRepository();
+
+				switchBranch.setText(L10N.t("workspace.vcs.current_branch", repository.getBranch()));
+
 				for (RevCommit commit : git.log().add(repository.resolve(repository.getFullBranch())).call()) {
 					model.addRow(new Object[] { commit.abbreviate(7).name(), "<html><b>" + commit.getShortMessage(),
 							commit.getAuthorIdent().getName(), commit.getAuthorIdent().getWhen() });
 				}
-
-				switchBranch.setText(L10N.t("workspace.vcs.current_branch", repository.getBranch()));
 			} catch (Exception ignored) {
 			}
 
