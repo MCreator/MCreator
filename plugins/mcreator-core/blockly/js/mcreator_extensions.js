@@ -130,6 +130,27 @@ function getIntProviderMinMax(providerBlock) {
         let blockValue = providerBlock.getField('value').getValue();
         return [blockValue, blockValue];
     }
+    // Check the values for the weighted list int provider
+    else if (providerBlock.type === 'int_provider_weighted') {
+    	// Weighted lists always have at least one input, so the actual returned value won't be [Infinity, -Infinity]
+    	let retval = [Infinity, -Infinity];
+    	for (let i = 0, input; input = providerBlock.inputList[i]; i++) {
+			if (!input.connection) {
+				continue;
+			}
+			const targetBlockMinMax = getIntProviderMinMax(input.connection.targetBlock());
+			// One of the inputs is missing or not properly defined, return undefined
+			if (!targetBlockMinMax)
+				return undefined;
+			// Compare the min values
+			if (targetBlockMinMax[0] < retval[0])
+				retval[0] = targetBlockMinMax[0];
+			// Compare the max values
+			if (targetBlockMinMax[1] > retval[1])
+				retval[1] = targetBlockMinMax[1]
+    	}
+        return retval;
+    }
     // Check the values for the other "terminal" int providers
     else if (providerBlock.type !== 'int_provider_clamped') {
         let blockMin = providerBlock.getField('min').getValue();
@@ -387,6 +408,12 @@ Blockly.Extensions.registerMutator('ore_feature_mutator', simpleRepeatingInputMi
                     index == 0 ? 'blockly.block.ore_mutator.try' : 'blockly.block.ore_mutator.else_try'));
         }),
     undefined, ['ore_mutator_input']);
+
+Blockly.Extensions.registerMutator('weighted_height_provider_mutator', weightedListMutatorMixin('HeightProvider'),
+        undefined, ['weighted_list_mutator_input']);
+
+Blockly.Extensions.registerMutator('weighted_int_provider_mutator', weightedListMutatorMixin('IntProvider'),
+        undefined, ['weighted_list_mutator_input']);
 
 // Helper function for extensions that validate one or more resource location text fields
 function validateResourceLocationFields(...fields) {
