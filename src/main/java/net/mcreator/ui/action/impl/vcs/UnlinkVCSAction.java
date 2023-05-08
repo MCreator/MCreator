@@ -21,7 +21,6 @@ package net.mcreator.ui.action.impl.vcs;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.workspace.WorkspacePanelVCS;
 import net.mcreator.vcs.WorkspaceVCS;
 import org.eclipse.jgit.api.Git;
 
@@ -41,7 +40,6 @@ public class UnlinkVCSAction extends VCSAction {
 				WorkspaceVCS.removeVCSWorkspace(actionRegistry.getMCreator().getWorkspace());
 				actionRegistry.getActions().stream().filter(action -> action instanceof VCSAction)
 						.forEach(action -> ((VCSAction) action).vcsStateChanged());
-				((WorkspacePanelVCS) actionRegistry.getMCreator().mv.getVerticalTab("vcs")).reloadVCSStatus();
 			}
 		});
 	}
