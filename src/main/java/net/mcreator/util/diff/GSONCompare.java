@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.util;
+package net.mcreator.util.diff;
 
 import com.google.gson.Gson;
 

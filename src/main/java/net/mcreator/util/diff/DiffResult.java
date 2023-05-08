@@ -16,22 +16,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.vcs.diff;
+package net.mcreator.util.diff;
 
-import org.eclipse.jgit.diff.DiffEntry;
-
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
-public record DiffResult<T>(Set<T> changed, Set<T> removed, Set<T> added) {
-
-	List<AffectedObjectWithType<T>> getAffected() {
-		List<AffectedObjectWithType<T>> retval = new ArrayList<>();
-		retval.addAll(changed.stream().map(e -> new AffectedObjectWithType<>(e, DiffEntry.ChangeType.MODIFY)).toList());
-		retval.addAll(removed.stream().map(e -> new AffectedObjectWithType<>(e, DiffEntry.ChangeType.DELETE)).toList());
-		retval.addAll(added.stream().map(e -> new AffectedObjectWithType<>(e, DiffEntry.ChangeType.ADD)).toList());
-		return retval;
-	}
-
-}
+public record DiffResult<T>(Set<T> changed, Set<T> removed, Set<T> added) {}
