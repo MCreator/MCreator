@@ -27,7 +27,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.vcs.MCreatorWorkspaceSyncHandler;
 import net.mcreator.ui.vcs.VCSCommitDialog;
-import net.mcreator.util.GSONClone;
+import net.mcreator.vcs.util.GSONClone;
 import net.mcreator.vcs.ICustomSyncHandler;
 import net.mcreator.vcs.SyncTwoRefsWithMerge;
 import net.mcreator.vcs.WorkspaceVCS;

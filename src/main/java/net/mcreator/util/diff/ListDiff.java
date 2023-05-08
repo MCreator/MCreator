@@ -16,9 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.vcs.diff;
-
-import net.mcreator.util.GSONCompare;
+package net.mcreator.util.diff;
 
 import java.util.Collection;
 import java.util.HashSet;
