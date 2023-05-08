@@ -73,20 +73,6 @@ public class JStateLabel extends JPanel {
 			addPropertyChangeListener("enabled", e -> edit.setEnabled((boolean) e.getNewValue()));
 			controls.add(edit);
 		}
-
-		JButton copy = new JButton(UIRES.get("16px.copyclipboard")) {
-			@Override public String getName() {
-				return "TechnicalButton";
-			}
-		};
-		copy.setOpaque(false);
-		copy.setMargin(new Insets(0, 0, 0, 0));
-		copy.setBorder(BorderFactory.createEmptyBorder());
-		copy.setContentAreaFilled(false);
-		copy.setToolTipText(L10N.t("components.state_label.copy"));
-		copy.addActionListener(e -> Toolkit.getDefaultToolkit().getSystemClipboard()
-				.setContents(new StringSelection(getState()), null));
-		controls.add(copy);
 	}
 
 	public String getState() {
