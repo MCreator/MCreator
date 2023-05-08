@@ -108,7 +108,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 					}
 				};
 			} else {
-				return;
+				continue;
 			}
 			builtinProperties.put(entry.getName(), new BuiltInPropertyData<>(builtin));
 		}
