@@ -21,6 +21,7 @@ package net.mcreator.ui.vcs;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.vcs.BranchSwitchAction;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.vcs.WorkspaceVCS;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,10 +44,12 @@ public class BranchesPopup extends JPopupMenu {
 		try {
 			Git git = workspaceVCS.getGit();
 
-			JMenuItem newBranch = new JMenuItem("New branch from current");
+			JMenuItem newBranch = new JMenuItem(L10N.t("dialog.vcs.branches_popup.new_branch"));
 			add(newBranch);
 			newBranch.addActionListener(e -> {
-				String newBranchName = JOptionPane.showInputDialog("Enter the name of a new branch:");
+				String newBranchName = JOptionPane.showInputDialog(mcreator,
+						L10N.t("dialog.vcs.branches_popup.new_branch.message"),
+						L10N.t("dialog.vcs.branches_popup.new_branch.title"), JOptionPane.QUESTION_MESSAGE);
 				if (newBranchName != null) {
 					newBranchName = RegistryNameFixer.fix(newBranchName);
 					if (!newBranchName.isEmpty()) {
