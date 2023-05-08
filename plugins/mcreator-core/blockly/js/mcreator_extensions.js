@@ -343,6 +343,17 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
     }
 }
 
+// Helper function to provide mixins for weighted list mutators
+function weightedListMutatorMixin(inputType) {
+    return simpleRepeatingInputMixin('weighted_list_mutator_container', 'weighted_list_mutator_input', 'entry',
+        function(thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck(inputType).setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.weighted_list.weight'))
+                .appendField(new Blockly.FieldNumber(1, 1, null, 1), 'weight' + index)
+                .appendField(javabridge.t('blockly.block.weighted_list.entry'));
+        }, true, ['weight'], true);
+}
+
 Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepeatingInputMixin(
         'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition',
         function (thisBlock, inputName, index) {
