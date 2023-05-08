@@ -675,8 +675,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.ridable = _true;
 			livingEntity.canControlStrafe = !_true;
 			livingEntity.canControlForward = _true;
-			livingEntity.canTrade = true;
-			livingEntity.villagerTradingType = true;
+			livingEntity.canTrade = false;
+			livingEntity.villagerTradingType = false;
 			livingEntity.professionTrade = new ArrayList<>();
 			if (!emptyLists) {
 				livingEntity.professionTrade.addAll(
@@ -695,7 +695,6 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.restockCondition = new LogicProcedure(_true ? "condition4" : null, _true);
 			livingEntity.rewardXp = new NumberProcedure(emptyLists ? null : "number1", 4);
-			livingEntity.tradingCondition = new Procedure("condition5");
 			livingEntity.guiBoundTo = "<NONE>";
 			livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
@@ -709,6 +708,7 @@ public class TestWorkspaceDataProvider {
 					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			livingEntity.rangedItemType = "Default item";
 			if (!emptyLists) {
+				livingEntity.tradingCondition = new Procedure("condition5");
 				livingEntity.spawningCondition = new Procedure("condition3");
 				livingEntity.onStruckByLightning = new Procedure("procedure1");
 				livingEntity.whenMobFalls = new Procedure("procedure2");
