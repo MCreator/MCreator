@@ -97,6 +97,9 @@ public final class MCreatorApplication {
 
 			MCREvent.event(new ApplicationLoadedEvent(this));
 
+			// As plugins are now loaded, preferences from Java plugins can now be loaded
+			PreferencesManager.initNonCore();
+
 			splashScreen.setProgress(10, "Loading UI Themes");
 
 			// We load UI themes now as theme plugins are loaded at this point
@@ -194,20 +197,6 @@ public final class MCreatorApplication {
 			// Do not externalize this text
 			discordClient.updatePresence("Just opened", "Version " + Launcher.version.getMajorString());
 
-			try {
-				SwingUtilities.invokeAndWait(() -> {
-					UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
-					UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(splashScreen);
-
-					if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.notifications.snapshotMessage) {
-						JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
-								L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
-					}
-				});
-			} catch (Exception e) {
-				LOG.warn("Failed to check for updates", e);
-			}
-
 			splashScreen.setProgress(100, "Loading MCreator windows");
 
 			try {
@@ -236,7 +225,7 @@ public final class MCreatorApplication {
 					if (passedFile.isFile() && passedFile.getName().endsWith(".mcreator")) {
 						splashScreen.setVisible(false);
 						MCreator mcreator = openWorkspaceInMCreator(passedFile);
-						showPluginLoadingFailures(mcreator);
+						StartupNotifications.handleStartupNotifications(mcreator);
 						directLaunch = true;
 					}
 				}
@@ -249,26 +238,6 @@ public final class MCreatorApplication {
 
 			LOG.debug("Application loader finished");
 		}, "Application-Loader").start();
-	}
-
-	private void showPluginLoadingFailures(Window parent) {
-		Collection<PluginLoadFailure> failedPlugins = PluginLoader.INSTANCE.getFailedPlugins();
-		if (!failedPlugins.isEmpty()) {
-			StringBuilder sb = new StringBuilder();
-			sb.append("<html>");
-			sb.append(L10N.t("dialog.plugin_load_failed.msg1"));
-			sb.append("<ul>");
-			for (PluginLoadFailure plugin : failedPlugins) {
-				sb.append("<li><b>").append(plugin.pluginID()).append("</b> - reason: ")
-						.append(StringUtils.abbreviateString(plugin.message(), 100, true))
-						.append("<br><small>Location: ").append(plugin.pluginFile()).append("</small></li>");
-			}
-			sb.append("</ul><br>");
-			sb.append(L10N.t("dialog.plugin_load_failed.msg2"));
-
-			JOptionPane.showMessageDialog(parent, sb.toString(), L10N.t("dialog.plugin_load_failed.title"),
-					JOptionPane.WARNING_MESSAGE);
-		}
 	}
 
 	public GoogleAnalytics getAnalytics() {
@@ -392,7 +361,7 @@ public final class MCreatorApplication {
 		});
 
 		LOG.debug("Performing exit tasks");
-		PreferencesManager.storePreferences(PreferencesManager.PREFERENCES); // store any potential preferences changes
+		PreferencesManager.savePreferences(); // store any potential preferences changes
 		analytics.trackPageSync(AnalyticsConstants.PAGE_CLOSE); // track app close in sync mode
 
 		discordClient.close(); // close discord client
@@ -424,7 +393,8 @@ public final class MCreatorApplication {
 
 	void showWorkspaceSelector() {
 		workspaceSelector.setVisible(true);
-		showPluginLoadingFailures(workspaceSelector);
+
+		StartupNotifications.handleStartupNotifications(workspaceSelector);
 	}
 
 	List<RecentWorkspaceEntry> getRecentWorkspaces() {

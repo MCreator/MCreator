@@ -1,5 +1,5 @@
 "minecraft:behavior.avoid_mob_type": {
-    "priority": ${customBlockIndex+1},
+    "priority": ${cbi+1},
     "max_dist": ${field$radius},
     "walk_speed_multiplier": ${field$farspeed},
     "sprint_speed_multiplier": ${field$nearspeed},
