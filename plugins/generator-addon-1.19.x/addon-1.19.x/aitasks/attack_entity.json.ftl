@@ -1,5 +1,5 @@
 "minecraft:behavior.nearest_attackable_target": {
-    "priority": ${customBlockIndex+1},
+    "priority": ${cbi+1},
     "must_see":  ${field$insight?lower_case},
     "must_reach":  ${field$nearby?lower_case},
     "entity_types": [
