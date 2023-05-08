@@ -174,6 +174,8 @@ public class WorkspacePanelVCS extends AbstractWorkspacePanel {
 		ComponentUtils.deriveFont(currentBranch, 12);
 
 		add("South", currentBranch);
+
+		reloadVCSStatus();
 	}
 
 	public void reloadVCSStatus() {
