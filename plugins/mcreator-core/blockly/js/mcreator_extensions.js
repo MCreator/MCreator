@@ -132,23 +132,23 @@ function getIntProviderMinMax(providerBlock) {
     }
     // Check the values for the weighted list int provider
     else if (providerBlock.type === 'int_provider_weighted') {
-    	// Weighted lists always have at least one input, so the actual returned value won't be [Infinity, -Infinity]
-    	let retval = [Infinity, -Infinity];
-    	for (let i = 0, input; input = providerBlock.inputList[i]; i++) {
-			if (!input.connection) {
-				continue;
-			}
-			const targetBlockMinMax = getIntProviderMinMax(input.connection.targetBlock());
-			// One of the inputs is missing or not properly defined, return undefined
-			if (!targetBlockMinMax)
-				return undefined;
-			// Compare the min values
-			if (targetBlockMinMax[0] < retval[0])
-				retval[0] = targetBlockMinMax[0];
-			// Compare the max values
-			if (targetBlockMinMax[1] > retval[1])
-				retval[1] = targetBlockMinMax[1]
-    	}
+        // Weighted lists always have at least one input, so the actual returned value won't be [Infinity, -Infinity]
+        let retval = [Infinity, -Infinity];
+        for (let i = 0, input; input = providerBlock.inputList[i]; i++) {
+            if (!input.connection) {
+                continue;
+            }
+            const targetBlockMinMax = getIntProviderMinMax(input.connection.targetBlock());
+            // One of the inputs is missing or not properly defined, return undefined
+            if (!targetBlockMinMax)
+                return undefined;
+            // Compare the min values
+            if (targetBlockMinMax[0] < retval[0])
+                retval[0] = targetBlockMinMax[0];
+            // Compare the max values
+            if (targetBlockMinMax[1] > retval[1])
+                retval[1] = targetBlockMinMax[1]
+        }
         return retval;
     }
     // Check the values for the other "terminal" int providers
