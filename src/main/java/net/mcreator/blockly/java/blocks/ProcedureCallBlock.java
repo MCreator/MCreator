@@ -66,9 +66,8 @@ public class ProcedureCallBlock implements IBlockGenerator {
 			}
 
 			Procedure procedure = new Procedure(element.getTextContent());
-			List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace()).stream()
-					.filter(e -> !names.containsValue(e.getName())).toList();
-			dependencies.forEach(master::addDependency);
+			List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
+			dependencies.stream().filter(e -> !names.containsValue(e.getName())).forEach(master::addDependency);
 
 			if (!procedure.exists) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
