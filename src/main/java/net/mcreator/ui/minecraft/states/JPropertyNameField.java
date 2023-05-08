@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.minecraft.states;
 
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -28,40 +29,32 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 
-public class JPropertyNameField extends JPanel implements IValidable {
-	private final VTextField field = new VTextField(20);
+public class JPropertyNameField extends VTextField implements IValidable {
+
 	private String cachedName;
 
 	public JPropertyNameField(String initialPropertyName, Runnable editListener) {
-		super(new BorderLayout());
+		super(20);
 
-		field.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		field.addFocusListener(new FocusAdapter() {
+		setPreferredSize(new Dimension(0, 28));
+		ComponentUtils.deriveFont(this, 16);
+
+		addFocusListener(new FocusAdapter() {
 			@Override public void focusLost(FocusEvent e) {
-				if (field.getValidationStatus() == Validator.ValidationResult.PASSED) {
+				if (getValidationStatus() == Validator.ValidationResult.PASSED) {
 					editListener.run();
-					renameTo(field.getText());
+					renameTo(getText());
 				} else {
-					field.setText(cachedName);
+					setText(cachedName);
 				}
 				getValidationStatus();
 			}
 		});
 		renameTo(initialPropertyName);
-		add(field);
-	}
-
-	@Override public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-		field.setEnabled(enabled);
-	}
-
-	public VTextField getTextField() {
-		return field;
 	}
 
 	public String getPropertyName() {
-		return field.getText();
+		return this.getText();
 	}
 
 	public String getCachedName() {
@@ -69,18 +62,7 @@ public class JPropertyNameField extends JPanel implements IValidable {
 	}
 
 	public void renameTo(String newName) {
-		field.setText(cachedName = newName);
+		this.setText(cachedName = newName);
 	}
 
-	@Override public Validator.ValidationResult getValidationStatus() {
-		return field.getValidationStatus();
-	}
-
-	@Override public void setValidator(Validator validator) {
-		field.setValidator(validator);
-	}
-
-	@Override public Validator getValidator() {
-		return field.getValidator();
-	}
 }

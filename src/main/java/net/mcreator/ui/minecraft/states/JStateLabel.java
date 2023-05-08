@@ -121,7 +121,7 @@ public class JStateLabel extends JPanel {
 
 	private void refreshState() {
 		List<String> stateParts = new ArrayList<>();
-		stateMap.forEach((k, v) -> stateParts.add(StringUtils.snakeToCamel(k.getName()) + " = " + k.toString(v)));
+		stateMap.forEach((k, v) -> stateParts.add(k.getName() + " = " + k.toString(v)));
 		label.setText(L10N.t("components.state_label.when",
 				stateParts.isEmpty() ? L10N.t("condition.common.true") : String.join("; ", stateParts)));
 	}

@@ -80,7 +80,11 @@ public class StateEditorDialog {
 		dialog.getContentPane().add("North", PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("common/state_definition"),
 						L10N.label("dialog.state_editor.header"))));
-		dialog.getContentPane().add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
+
+		JScrollPane sp = new JScrollPane(PanelUtils.pullElementUp(entries));
+		sp.getVerticalScrollBar().setUnitIncrement(15);
+
+		dialog.getContentPane().add("Center", sp);
 		dialog.getContentPane().add("South", PanelUtils.join(ok, cancel));
 		dialog.setSize(300, 400);
 		dialog.setLocationRelativeTo(mcreator);
