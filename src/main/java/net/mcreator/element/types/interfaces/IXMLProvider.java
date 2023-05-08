@@ -19,8 +19,13 @@
 
 package net.mcreator.element.types.interfaces;
 
+/**
+ * These methods are used by {@link net.mcreator.workspace.ReferencesFinder ReferencesFinder}.
+ */
 public interface IXMLProvider {
 
+	/**
+	 * @return XML data on a mod element instance used by Blockly editors.
+	 */
 	String getXML();
-
 }

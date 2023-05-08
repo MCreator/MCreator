@@ -25,16 +25,33 @@ import net.mcreator.generator.mapping.MappableElement;
 import java.util.Collection;
 import java.util.Collections;
 
+/**
+ * These methods are used by {@link net.mcreator.workspace.ReferencesFinder ReferencesFinder} to acquire
+ * all {@link MappableElement MappableElements} declared by mod element type storage class implementing this interface,
+ * as well as all procedures from that class.
+ */
 public interface IOtherModElementsDependent {
 
+	/**
+	 * @return List of names of all elements used by mod element instance and not already provided as names of entries
+	 * in the list returned by {@link #getUsedElementMappings()} (with {@code CUSTOM:} prefix for entries created
+	 * from other mod elements).
+	 */
 	default Collection<String> getUsedElementNames() {
 		return Collections.emptyList();
 	}
 
+	/**
+	 * @return List of all mapping entries found on a mod element instance, excluding those that can not be custom
+	 * (can not be imported from other mod elements).
+	 */
 	default Collection<? extends MappableElement> getUsedElementMappings() {
 		return Collections.emptyList();
 	}
 
+	/**
+	 * @return List of all procedures found on a mod element instance.
+	 */
 	default Collection<? extends Procedure> getUsedProcedures() {
 		return Collections.emptyList();
 	}

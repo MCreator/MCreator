@@ -25,20 +25,37 @@ import net.mcreator.workspace.resources.Model;
 
 import java.util.*;
 
+/**
+ * These methods are used by {@link net.mcreator.workspace.ReferencesFinder ReferencesFinder} to acquire all resources
+ * of various types found in the mod element type storage class implementing this interface.
+ */
 public interface IResourcesDependent {
 
+	/**
+	 * @param type The type of textures that need to be collected.
+	 * @return List of names of all files holding textures of provided type used by mod element instance.
+	 */
 	default Collection<String> getTextures(TextureType type) {
 		return Collections.emptyList();
 	}
 
+	/**
+	 * @return List of all models used by mod element instance.
+	 */
 	default Collection<Model> getModels() {
 		return Collections.emptyList();
 	}
 
+	/**
+	 * @return List of all sounds used by mod element instance.
+	 */
 	default Collection<Sound> getSounds() {
 		return Collections.emptyList();
 	}
 
+	/**
+	 * @return List of names of all structure files used by mod element instance.
+	 */
 	default Collection<String> getStructures() {
 		return Collections.emptyList();
 	}
