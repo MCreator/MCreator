@@ -167,7 +167,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private final JCheckBox canTrade = L10N.checkbox("elementgui.common.enable");
 	private final JRadioButton villagerTradingType = L10N.radiobutton("elementgui.living_entity.villager");
-	private final JRadioButton wanderingTraderTradingType = L10N.radiobutton("elementgui.living_entity.wandering_trader");
+	private final JRadioButton wanderingTraderTradingType = L10N.radiobutton(
+			"elementgui.living_entity.wandering_trader");
 	private ProfessionListField professionTrade;
 	private final SoundSelector fullUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector emptyUpdateSound = new SoundSelector(mcreator);
