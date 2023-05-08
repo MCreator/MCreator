@@ -90,30 +90,27 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		builtinPropertyNames = List.copyOf(properties.keySet());
 
 		PropertyData.Logic logic = new PropertyData.Logic(""); // needed for hardcoded logic properties
-		properties.values().stream().filter(e -> e.isSupportedInWorkspace(mcreator.getWorkspace())).forEach(e -> {
-			if (e.getOther() instanceof Map<?, ?> other) { // only accept properties that have value bounds defined
+		for (DataListEntry entry : properties.values()) {
+			PropertyData.FloatNumber builtin;
+			if ("Number".equals(entry.getType()) && entry.getOther() instanceof Map<?, ?> other) {
 				float min = Float.parseFloat((String) other.get("min"));
 				float max = Float.parseFloat((String) other.get("max"));
+				builtin = new PropertyData.FloatNumber(entry.getName(), min, max);
+			} else if ("Logic".equals(entry.getType())) {
+				builtin = new PropertyData.FloatNumber(entry.getName(), 0, 1) {
+					@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
+						return logic.getComponent(mcreator, value != null && (Float) value == 1);
+					}
 
-				PropertyData.FloatNumber builtin;
-				if ("Number".equals(e.getType())) {
-					builtin = new PropertyData.FloatNumber(e.getName(), min, max);
-				} else if ("Logic".equals(e.getType())) {
-					builtin = new PropertyData.FloatNumber(e.getName(), min, max) {
-						@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-							return logic.getComponent(mcreator, value != null && (Float) value == max);
-						}
-
-						@Override public Float getValue(JComponent component) {
-							return logic.getValue(component) ? max : min;
-						}
-					};
-				} else {
-					return;
-				}
-				builtinProperties.put(e.getName(), new BuiltInPropertyData<>(builtin));
+					@Override public Float getValue(JComponent component) {
+						return logic.getValue(component) ? 1 : 0f;
+					}
+				};
+			} else {
+				return;
 			}
-		});
+			builtinProperties.put(entry.getName(), new BuiltInPropertyData<>(builtin));
+		}
 
 		propertyEntries.setLayout(new GridLayout(0, 1, 5, 5));
 		propertyEntries.setOpaque(false);
