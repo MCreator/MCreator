@@ -22,7 +22,6 @@ package net.mcreator.ui.minecraft.states;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.util.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;

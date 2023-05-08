@@ -165,7 +165,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		JPanel left = new JPanel(new BorderLayout());
 		left.setOpaque(false);
-		left.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 0, addProperty, new JEmptyBox(5, 5),
+		left.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5),
 				HelpUtils.helpButton(gui.withEntry("item/custom_states"))));
 		left.add("Center", scrollProperties);
 		add(left);
@@ -189,7 +189,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 		JPanel right = new JPanel(new BorderLayout());
 		right.setOpaque(false);
-		right.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 0, addState, new JEmptyBox(5, 5),
+		right.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addState, new JEmptyBox(5, 5),
 				HelpUtils.helpButton(gui.withEntry("item/custom_states"))));
 		right.add("Center", scrollStates);
 		add(right);

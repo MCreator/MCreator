@@ -33,8 +33,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.TextureHolder;
-import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.IPropertyData;
+import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
@@ -68,8 +68,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		super(new BorderLayout(5, 5));
 		this.mcreator = mcreator;
 
-		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(0, 0, 5, 0),
-				BorderFactory.createLineBorder(getBackground(), 5)));
+		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		stateLabel = new JStateLabel(properties, () -> editButtonListener.accept(this));
 
