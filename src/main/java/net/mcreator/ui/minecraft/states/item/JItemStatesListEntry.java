@@ -33,6 +33,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.minecraft.states.JStateLabel;
+import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
@@ -54,9 +55,8 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	private final JStateLabel stateLabel;
 
 	private final TextureHolder texture;
-	private static final Model normal = new Model.BuiltInModel("Normal");
-	private static final Model tool = new Model.BuiltInModel("Tool");
-	private final SearchableComboBox<Model> model = new SearchableComboBox<>(new Model[] { normal, tool });
+
+	private final SearchableComboBox<Model> model = new SearchableComboBox<>(ItemGUI.builtinitemmodels);
 
 	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
 			List<JItemStatesListEntry> entryList, JStateLabel stateLabel) {
@@ -93,7 +93,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		});
 
 		add("North", PanelUtils.maxMargin(stateLabel, 5, true, false, true, false));
-		add("West", PanelUtils.westAndCenterElement(ito, imo, 20, 0));
+		add("West", PanelUtils.westAndCenterElement(ito, imo, 10, 0));
 		add("East", PanelUtils.pullElementUp(remove));
 
 		parent.revalidate();
@@ -111,7 +111,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	}
 
 	public void reloadDataLists() {
-		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(Arrays.asList(normal, tool),
+		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ).toList()));
 	}

@@ -45,6 +45,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
+import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
@@ -1065,7 +1066,7 @@ public class TestWorkspaceDataProvider {
 			}
 			item.texture = "test2";
 			item.renderType = 0;
-			item.customModelName = "Normal";
+			item.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
 			if (!emptyLists) {
 				int size1 = random.nextInt(3) + 1;
 				for (int i = 1; i <= size1; i++)
@@ -1080,7 +1081,7 @@ public class TestWorkspaceDataProvider {
 					}
 
 					Item.ModelEntry model = new Item.ModelEntry();
-					model.customModelName = _true ^ random.nextBoolean() ? "Tool" : "Normal";
+					model.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
 					model.texture = i == 0 ? "test" : "test" + i;
 					model.renderType = 0;
 

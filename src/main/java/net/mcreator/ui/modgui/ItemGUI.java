@@ -89,9 +89,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final Model normal = new Model.BuiltInModel("Normal");
-	private final Model tool = new Model.BuiltInModel("Tool");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal, tool });
+	private static final Model normal = new Model.BuiltInModel("Normal");
+	private static final Model tool = new Model.BuiltInModel("Tool");
+	public static final Model[] builtinitemmodels = new Model[] { normal, tool };
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
 	private JItemPropertiesStatesList customProperties;
 
 	private ProcedureSelector onRightClickedInAir;
@@ -469,7 +470,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, tool),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
