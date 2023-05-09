@@ -20,6 +20,7 @@
 package net.mcreator.ui.minecraft.states;
 
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.StateEditorDialog;
 import net.mcreator.ui.init.L10N;
@@ -63,11 +64,7 @@ public class JStateLabel extends JPanel {
 		statePane.setPreferredSize(new Dimension(300, 30));
 		add("Center", statePane);
 
-		JButton edit = new JButton(UIRES.get("16px.edit.gif")) {
-			@Override public String getName() {
-				return "TechnicalButton";
-			}
-		};
+		TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit.gif"));
 		edit.setOpaque(false);
 		edit.setMargin(new Insets(0, 0, 0, 0));
 		edit.setBorder(BorderFactory.createEmptyBorder());

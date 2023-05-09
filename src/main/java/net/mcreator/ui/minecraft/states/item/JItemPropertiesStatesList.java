@@ -25,6 +25,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -67,16 +68,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		}
 	};
 
-	private final JButton addProperty = new JButton(UIRES.get("16px.add.gif")) {
-		@Override public String getName() {
-			return "TechnicalButton";
-		}
-	};
-	private final JButton addState = new JButton(UIRES.get("16px.add.gif")) {
-		@Override public String getName() {
-			return "TechnicalButton";
-		}
-	};
+	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add.gif"));
+	private final TechnicalButton addState = new TechnicalButton(UIRES.get("16px.add.gif"));
 
 	public JItemPropertiesStatesList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new GridLayout(), gui);
