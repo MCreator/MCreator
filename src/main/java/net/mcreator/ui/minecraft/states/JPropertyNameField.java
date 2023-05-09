@@ -20,7 +20,6 @@
 package net.mcreator.ui.minecraft.states;
 
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 
@@ -53,10 +52,6 @@ public class JPropertyNameField extends VTextField implements IValidable {
 		renameTo(initialPropertyName);
 	}
 
-	public String getPropertyName() {
-		return this.getText();
-	}
-
 	public String getCachedName() {
 		return cachedName;
 	}
@@ -64,5 +59,4 @@ public class JPropertyNameField extends VTextField implements IValidable {
 	public void renameTo(String newName) {
 		this.setText(cachedName = newName);
 	}
-
 }

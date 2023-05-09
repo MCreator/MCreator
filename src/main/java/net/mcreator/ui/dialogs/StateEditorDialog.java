@@ -62,6 +62,9 @@ public class StateEditorDialog {
 			entries.add(PanelUtils.expandHorizontally(part));
 		}
 
+		JScrollPane scrollEntries = new JScrollPane(PanelUtils.pullElementUp(entries));
+		scrollEntries.getVerticalScrollBar().setUnitIncrement(15);
+
 		JButton ok = L10N.button("dialog.state_editor.save");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		dialog.getRootPane().setDefaultButton(ok);
@@ -80,11 +83,7 @@ public class StateEditorDialog {
 		dialog.getContentPane().add("North", PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(IHelpContext.NONE.withEntry("common/state_definition"),
 						L10N.label("dialog.state_editor.header"))));
-
-		JScrollPane sp = new JScrollPane(PanelUtils.pullElementUp(entries));
-		sp.getVerticalScrollBar().setUnitIncrement(15);
-
-		dialog.getContentPane().add("Center", sp);
+		dialog.getContentPane().add("Center", scrollEntries);
 		dialog.getContentPane().add("South", PanelUtils.join(ok, cancel));
 		dialog.setSize(300, 400);
 		dialog.setLocationRelativeTo(mcreator);
