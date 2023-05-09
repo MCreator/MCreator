@@ -19,7 +19,9 @@
 
 package net.mcreator.ui.minecraft.states;
 
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.StateEditorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
@@ -29,16 +31,24 @@ import java.util.*;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class JStateLabel extends JPanel {
+	private final MCreator mcreator;
 	private final Supplier<List<IPropertyData<?>>> properties;
+	private final Supplier<Stream<JStateLabel>> otherStates;
+
 	private LinkedHashMap<IPropertyData<?>, Object> stateMap = new LinkedHashMap<>();
+	private boolean allowEmpty = false;
 
 	private final JTextField label = new JTextField();
 
-	public JStateLabel(Supplier<List<IPropertyData<?>>> properties, Runnable editButtonListener) {
+	public JStateLabel(MCreator mcreator, Supplier<List<IPropertyData<?>>> properties,
+			Supplier<Stream<JStateLabel>> otherStates) {
 		super(new BorderLayout(5, 0));
+		this.mcreator = mcreator;
 		this.properties = properties;
+		this.otherStates = otherStates;
 
 		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -53,25 +63,48 @@ public class JStateLabel extends JPanel {
 		statePane.setPreferredSize(new Dimension(300, 30));
 		add("Center", statePane);
 
+		JButton edit = new JButton(UIRES.get("16px.edit.gif")) {
+			@Override public String getName() {
+				return "TechnicalButton";
+			}
+		};
+		edit.setOpaque(false);
+		edit.setMargin(new Insets(0, 0, 0, 0));
+		edit.setBorder(BorderFactory.createEmptyBorder());
+		edit.setContentAreaFilled(false);
+		edit.setToolTipText(L10N.t("components.state_label.edit"));
+		edit.addActionListener(e -> editState());
+		addPropertyChangeListener("enabled", e -> edit.setEnabled((boolean) e.getNewValue()));
+
 		JPanel controls = new JPanel();
 		controls.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		controls.add(edit);
 		add("East", PanelUtils.centerInPanelPadding(controls, 2, 2));
+	}
 
-		if (editButtonListener != null) {
-			JButton edit = new JButton(UIRES.get("16px.edit.gif")) {
-				@Override public String getName() {
-					return "TechnicalButton";
-				}
-			};
-			edit.setOpaque(false);
-			edit.setMargin(new Insets(0, 0, 0, 0));
-			edit.setBorder(BorderFactory.createEmptyBorder());
-			edit.setContentAreaFilled(false);
-			edit.setToolTipText(L10N.t("components.state_label.edit"));
-			edit.addActionListener(e -> editButtonListener.run());
-			addPropertyChangeListener("enabled", e -> edit.setEnabled((boolean) e.getNewValue()));
-			controls.add(edit);
+	public boolean editState() {
+		LinkedHashMap<IPropertyData<?>, Object> stateMap = StateEditorDialog.open(mcreator, properties.get(),
+				getStateMap());
+		if (stateMap == null)
+			return false;
+
+		if (stateMap.isEmpty() && !allowEmpty) {
+			JOptionPane.showMessageDialog(mcreator, L10N.t("components.state_label.error_empty"),
+					L10N.t("components.state_label.error_empty.title"), JOptionPane.ERROR_MESSAGE);
+			return false;
+		} else if (otherStates.get().anyMatch(s -> s != this && s.getStateMap().equals(stateMap))) {
+			JOptionPane.showMessageDialog(mcreator, L10N.t("components.state_label.error_duplicate"),
+					L10N.t("components.state_label.error_duplicate.title"), JOptionPane.ERROR_MESSAGE);
+			return false;
 		}
+
+		setStateMap(stateMap);
+		return true;
+	}
+
+	public JStateLabel setAllowEmpty(boolean allowEmpty) {
+		this.allowEmpty = allowEmpty;
+		return this;
 	}
 
 	public String getState() {
@@ -85,7 +118,7 @@ public class JStateLabel extends JPanel {
 	}
 
 	public LinkedHashMap<IPropertyData<?>, Object> getStateMap() {
-		return this.stateMap;
+		return stateMap;
 	}
 
 	public void setStateMap(LinkedHashMap<IPropertyData<?>, Object> stateMap) {
