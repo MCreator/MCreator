@@ -55,6 +55,9 @@ public interface ModElementChangedListener
 	 */
 	default void registerUI(JComponent container) {
 		for (Component component : container.getComponents()) {
+			if ("TechnicalComponent".equals(component.getName()))
+				continue; // don't add listeners if component triggers actions not affecting mod element directly
+
 			if (component instanceof MCItemHolder itemHolder) {
 				itemHolder.addBlockSelectedListener(this);
 			} else if (component instanceof JItemListField<?> listField) {
@@ -66,8 +69,7 @@ public interface ModElementChangedListener
 					modElementChanged();
 				});
 				component.addMouseListener(this);
-			} else if (component instanceof AbstractButton button && !"TechnicalButton".equals(
-					button.getName())) { // don't add listeners if button triggers actions not affecting mod element
+			} else if (component instanceof AbstractButton button) {
 				button.addActionListener(this);
 			} else if (component instanceof JSpinner spinner) {
 				spinner.addChangeListener(this);

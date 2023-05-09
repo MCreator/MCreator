@@ -20,6 +20,7 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.UIRES;
 
@@ -36,11 +37,7 @@ public abstract class JEntriesList extends JPanel {
 
 	private final List<Consumer<JComponent>> entryListeners = new ArrayList<>();
 
-	protected final JButton add = new JButton(UIRES.get("16px.add.gif")) {
-		@Override public String getName() {
-			return "TechnicalButton";
-		}
-	};
+	protected final TechnicalButton add = new TechnicalButton(UIRES.get("16px.add.gif"));
 
 	public JEntriesList(MCreator mcreator, LayoutManager layout, IHelpContext gui) {
 		super(layout);
