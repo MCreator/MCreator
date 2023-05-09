@@ -20,7 +20,6 @@
 package net.mcreator.integration.ui;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
