@@ -20,20 +20,18 @@
 package net.mcreator.ui.minecraft.states;
 
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+import java.util.function.BiConsumer;
 
-public class JPropertyNameField extends VTextField implements IValidable {
-
+public class JPropertyNameField extends VTextField {
 	private String cachedName;
 
-	public JPropertyNameField(String initialPropertyName, Runnable editListener) {
+	public JPropertyNameField(String initialPropertyName, BiConsumer<String, String> editListener) {
 		super(20);
 
 		setPreferredSize(new Dimension(0, 28));
@@ -42,7 +40,7 @@ public class JPropertyNameField extends VTextField implements IValidable {
 		addFocusListener(new FocusAdapter() {
 			@Override public void focusLost(FocusEvent e) {
 				if (getValidationStatus() == Validator.ValidationResult.PASSED) {
-					editListener.run();
+					editListener.accept(cachedName, getText());
 					renameTo(getText());
 				} else {
 					setText(cachedName);
@@ -53,10 +51,6 @@ public class JPropertyNameField extends VTextField implements IValidable {
 		renameTo(initialPropertyName);
 	}
 
-	public String getPropertyName() {
-		return this.getText();
-	}
-
 	public String getCachedName() {
 		return cachedName;
 	}
@@ -64,5 +58,4 @@ public class JPropertyNameField extends VTextField implements IValidable {
 	public void renameTo(String newName) {
 		this.setText(cachedName = newName);
 	}
-
 }

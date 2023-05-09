@@ -21,7 +21,6 @@ package net.mcreator.ui.minecraft.states.item;
 
 import net.mcreator.element.types.Item;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -33,7 +32,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.TextureHolder;
-import net.mcreator.ui.minecraft.states.IPropertyData;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
@@ -47,8 +45,6 @@ import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Consumer;
-import java.util.function.Supplier;
 
 public class JItemStatesListEntry extends JPanel implements IValidable {
 
@@ -63,14 +59,12 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 	private final SearchableComboBox<Model> model = new SearchableComboBox<>(new Model[] { normal, tool });
 
 	public JItemStatesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JItemStatesListEntry> entryList, Supplier<List<IPropertyData<?>>> properties,
-			Consumer<JItemStatesListEntry> editButtonListener) {
+			List<JItemStatesListEntry> entryList, JStateLabel stateLabel) {
 		super(new BorderLayout(5, 5));
 		this.mcreator = mcreator;
+		this.stateLabel = stateLabel;
 
-		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-		stateLabel = new JStateLabel(properties, () -> editButtonListener.accept(this));
+		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 42);
 		texture.setValidator(new TileHolderValidator(texture));
@@ -80,11 +74,11 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		model.setRenderer(new ModelComboBoxRenderer());
 		reloadDataLists(); // we make sure that combo box can be properly shown
 
-		Component ito = PanelUtils.northAndCenterElement(
+		JComponent ito = PanelUtils.northAndCenterElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.item.texture")),
 				PanelUtils.join(FlowLayout.LEFT, 2, 2, texture));
 
-		Component imo = PanelUtils.northAndCenterElement(HelpUtils.wrapWithHelpButton(gui.withEntry("item/model"),
+		JComponent imo = PanelUtils.northAndCenterElement(HelpUtils.wrapWithHelpButton(gui.withEntry("item/model"),
 				L10N.label("elementgui.item.custom_state.model")), model);
 
 		parent.add(this);
@@ -99,7 +93,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		});
 
 		add("North", PanelUtils.maxMargin(stateLabel, 5, true, false, true, false));
-		add("West", PanelUtils.westAndCenterElement(ito, imo));
+		add("West", PanelUtils.westAndCenterElement(ito, imo, 20, 0));
 		add("East", PanelUtils.pullElementUp(remove));
 
 		parent.revalidate();

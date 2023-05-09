@@ -26,17 +26,14 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.dialogs.StateEditorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
-import net.mcreator.ui.minecraft.states.BuiltInPropertyData;
-import net.mcreator.ui.minecraft.states.IPropertyData;
-import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
-import net.mcreator.ui.validation.IValidable;
+import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
 import javax.annotation.Nullable;
@@ -47,7 +44,6 @@ import java.awt.event.ContainerEvent;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Supplier;
 
 public class JItemPropertiesStatesList extends JEntriesList {
 
@@ -144,7 +140,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addState.setText(L10N.t("elementgui.item.custom_states.add"));
 
 		addProperty.addActionListener(e -> addPropertiesEntry());
-		addState.addActionListener(e -> editState(null)); // passing null here means a new entry should be created
+		addState.addActionListener(e -> addStatesEntry(true));
 
 		JScrollPane scrollProperties = new JScrollPane(PanelUtils.pullElementUp(propertyEntries)) {
 			@Override protected void paintComponent(Graphics g) {
@@ -211,46 +207,30 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	private JItemPropertiesListEntry addPropertiesEntry() {
+		JPropertyNameField nameField = new JPropertyNameField("property" + propertyId.incrementAndGet(),
+				(cachedName, newName) -> statesList.forEach(s -> s.getStateLabel().rename(cachedName, newName)));
+
+		nameField.setValidator(
+				new UniqueNameValidator(L10N.t("elementgui.item.custom_properties.validator"), nameField::getText,
+						() -> propertiesList.stream().map(e -> e.getNameField().getText()), builtinPropertyNames,
+						new RegistryNameValidator(nameField, L10N.t("elementgui.item.custom_properties.validator"))));
+		nameField.enableRealtimeValidation();
+
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
-				propertyId.incrementAndGet(), this::nameValidator, entry -> statesList.forEach(s -> s.getStateLabel()
-				.rename(entry.getNameField().getCachedName(), entry.getNameField().getPropertyName())));
+				nameField, propertyId.get());
 		registerEntryUI(pe);
 		return pe;
 	}
 
-	private UniqueNameValidator nameValidator(Supplier<String> nameGetter) {
-		return new UniqueNameValidator(L10N.t("elementgui.item.custom_property.validator"), nameGetter,
-				() -> propertiesList.stream().map(e -> e.getNameField().getPropertyName()), builtinPropertyNames, null);
-	}
+	private JItemStatesListEntry addStatesEntry(boolean initState) {
+		JStateLabel stateLabel = new JStateLabel(mcreator, this::buildPropertiesList,
+				() -> statesList.stream().map(JItemStatesListEntry::getStateLabel));
+		if (initState && !stateLabel.editState())
+			return null;
 
-	private JItemStatesListEntry addStatesEntry() {
-		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList,
-				this::buildPropertiesList, this::editState);
+		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList, stateLabel);
 		registerEntryUI(se);
 		return se;
-	}
-
-	private void editState(JItemStatesListEntry entry) {
-		if (new AggregatedValidationResult(propertiesList.stream().map(JItemPropertiesListEntry::getNameField)
-				.toArray(IValidable[]::new)).validateIsErrorFree()) {
-			LinkedHashMap<IPropertyData<?>, Object> stateMap = StateEditorDialog.open(mcreator, buildPropertiesList(),
-					entry == null ? null : entry.getStateLabel().getStateMap());
-			if (stateMap == null)
-				return;
-
-			if (stateMap.isEmpty()) { // all properties were unchecked - not acceptable by items
-				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.error_empty"),
-						L10N.t("elementgui.item.custom_states.error_empty.title"), JOptionPane.ERROR_MESSAGE);
-			} else if (statesList.stream() // check if any other entry defines the same state
-					.anyMatch(s -> s != entry && s.getStateLabel().getStateMap().equals(stateMap))) {
-				JOptionPane.showMessageDialog(mcreator, L10N.t("elementgui.item.custom_states.error_duplicate"),
-						L10N.t("elementgui.item.custom_states.error_duplicate.title"), JOptionPane.ERROR_MESSAGE);
-			} else { // all good, add new entry or update existing one
-				(entry != null ? entry : addStatesEntry()).getStateLabel().setStateMap(stateMap);
-			}
-		} else {
-			Toolkit.getDefaultToolkit().beep();
-		}
 	}
 
 	private List<IPropertyData<?>> buildPropertiesList() {
@@ -262,7 +242,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	public LinkedHashMap<String, Procedure> getProperties() {
 		LinkedHashMap<String, Procedure> retVal = new LinkedHashMap<>();
-		propertiesList.forEach(e -> retVal.put(e.getNameField().getPropertyName(), e.getEntry()));
+		propertiesList.forEach(e -> retVal.put(e.getNameField().getText(), e.getEntry()));
 		return retVal;
 	}
 
@@ -282,7 +262,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			LinkedHashMap<IPropertyData<?>, Object> stateMap = IPropertyData.passStateToMap(state,
 					buildPropertiesList());
 			if (!stateMap.isEmpty() && duplicateFilter.add(stateMap))
-				addStatesEntry().setEntry(state, model);
+				Objects.requireNonNull(addStatesEntry(false)).setEntry(state, model);
 		});
 	}
 
