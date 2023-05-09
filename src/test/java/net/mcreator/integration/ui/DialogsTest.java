@@ -174,12 +174,11 @@ public class DialogsTest {
 	}
 
 	@Test public void testStateEditorDialog() throws Throwable {
-		List<String> meTypes = ModElementTypeLoader.REGISTRY.stream().map(ModElementType::getRegistryName).toList();
 		Map<String, IPropertyData<?>> testProps = new LinkedHashMap<>();
 		testProps.put("logic", new PropertyData.Logic("logic"));
 		testProps.put("integer", new PropertyData.IntNumber("integer", 0, 1000));
 		testProps.put("float", new PropertyData.FloatNumber("float", 0F, 1000000F));
-		testProps.put("text", new PropertyData.Text("text", meTypes.toArray(String[]::new)));
+		testProps.put("text", new PropertyData.Text("text", ElementUtil.loadDirections()));
 		Random rng = new Random();
 		LinkedHashMap<IPropertyData<?>, Object> testState = new LinkedHashMap<>();
 		if (rng.nextBoolean())
@@ -189,7 +188,7 @@ public class DialogsTest {
 		if (rng.nextBoolean())
 			testState.put(testProps.get("float"), rng.nextFloat());
 		if (rng.nextBoolean())
-			testState.put(testProps.get("text"), TestWorkspaceDataProvider.getRandomString(rng, meTypes));
+			testState.put(testProps.get("text"), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> StateEditorDialog.open(mcreator, List.copyOf(testProps.values()), testState));
 	}
