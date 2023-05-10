@@ -165,6 +165,7 @@ public class ArmorPackMakerTool {
 		Recipe armorHelmetRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 						new ModElement(workspace, name + "ArmorHelmetRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
+		armorHelmetRecipe.craftingBookCategory = "EQUIPMENT";
 		armorHelmetRecipe.recipeSlots[0] = base;
 		armorHelmetRecipe.recipeSlots[1] = base;
 		armorHelmetRecipe.recipeSlots[2] = base;
@@ -179,7 +180,9 @@ public class ArmorPackMakerTool {
 		mcreator.getModElementManager().storeModElement(armorHelmetRecipe);
 
 		Recipe armorBodyRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
-				new ModElement(workspace, name + "ArmorBodyRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+						new ModElement(workspace, name + "ArmorChestplateRecipe", ModElementType.RECIPE), false)
+				.getElementFromGUI();
+		armorBodyRecipe.craftingBookCategory = "EQUIPMENT";
 		armorBodyRecipe.recipeSlots[0] = base;
 		armorBodyRecipe.recipeSlots[2] = base;
 		armorBodyRecipe.recipeSlots[3] = base;
@@ -199,6 +202,7 @@ public class ArmorPackMakerTool {
 		Recipe armorLeggingsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 						new ModElement(workspace, name + "ArmorLeggingsRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
+		armorLeggingsRecipe.craftingBookCategory = "EQUIPMENT";
 		armorLeggingsRecipe.recipeSlots[0] = base;
 		armorLeggingsRecipe.recipeSlots[1] = base;
 		armorLeggingsRecipe.recipeSlots[2] = base;
@@ -216,6 +220,7 @@ public class ArmorPackMakerTool {
 
 		Recipe armorBootsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "ArmorBootsRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		armorBootsRecipe.craftingBookCategory = "EQUIPMENT";
 		armorBootsRecipe.recipeSlots[3] = base;
 		armorBootsRecipe.recipeSlots[5] = base;
 		armorBootsRecipe.recipeSlots[6] = base;
