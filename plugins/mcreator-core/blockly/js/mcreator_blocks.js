@@ -124,10 +124,6 @@ Blockly.Blocks['mcitem_allblocks'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setColour(60);
-        this.setTooltip(function () {
-            let value = block.getFieldValue('value');
-            return value == null ? "Double click to select block" : value;
-        });
     }
 };
 
@@ -141,10 +137,6 @@ Blockly.Blocks['mcitem_all'] = {
         this.setPreviousStatement(false);
         this.setNextStatement(false);
         this.setColour(350);
-        this.setTooltip(function () {
-            let value = block.getFieldValue('value');
-            return value == null ? "Double click to select item/block" : value;
-        });
     }
 };
 
@@ -556,6 +548,27 @@ Blockly.Blocks['geode_crystal_mutator_container'] = {
 Blockly.Blocks['geode_crystal_mutator_input'] = {
     init: function () {
       this.appendDummyInput().appendField(javabridge.t("blockly.block.geode_crystal_mutator.input"));
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.contextMenu = false;
+      this.setColour(0);
+    }
+};
+
+// Mutator block for ore features mixin
+Blockly.Blocks['ore_mutator_container'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.ore_mutator.container"));
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+        this.setColour(0);
+    }
+};
+
+// Mutator block for ore features mixin
+Blockly.Blocks['ore_mutator_input'] = {
+    init: function () {
+      this.appendDummyInput().appendField(javabridge.t("blockly.block.ore_mutator.input"));
       this.setPreviousStatement(true);
       this.setNextStatement(true);
       this.contextMenu = false;
