@@ -207,7 +207,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#assign btid = 0>
 
 		<#list data.getComponentsOfType("Button") as component>
-		    <#if component.isTextButton>
+		    <#if component.isUndecoratedButton>
                 ${component.getName()} = new PlainTextButton(
                     this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
                     ${component.width}, ${component.height},
