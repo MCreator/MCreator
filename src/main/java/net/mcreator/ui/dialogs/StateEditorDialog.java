@@ -65,7 +65,7 @@ public class StateEditorDialog {
 		JScrollPane scrollEntries = new JScrollPane(PanelUtils.pullElementUp(entries));
 		scrollEntries.getVerticalScrollBar().setUnitIncrement(15);
 
-		JButton ok = L10N.button("dialog.state_editor.save");
+		JButton ok = L10N.button("dialog.common.save_changes");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		dialog.getRootPane().setDefaultButton(ok);
 
