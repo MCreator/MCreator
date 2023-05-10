@@ -347,13 +347,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		if (recentWorkspaces != null && recentWorkspaces.getList().size() > 0) {
 			DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 			recentWorkspaces.getList().forEach(defaultListModel::addElement);
-			JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel) {
-				@Override public String getToolTipText(MouseEvent event) {
-					RecentWorkspaceEntry w = defaultListModel.get(locationToIndex(event.getPoint()));
-					return L10N.t("dialog.workspace_selector.recent_workspace", w.getName(), w.getType(), w.getPath(),
-							Objects.requireNonNullElse(w.getMCRVersion(), L10N.t("common.not_applicable")));
-				}
-			};
+			JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
 			recentsList.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 			recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			recentsList.addMouseListener(new MouseAdapter() {
