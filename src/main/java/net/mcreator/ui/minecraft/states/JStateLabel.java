@@ -41,6 +41,7 @@ public class JStateLabel extends JPanel {
 
 	private LinkedHashMap<IPropertyData<?>, Object> stateMap = new LinkedHashMap<>();
 	private boolean allowEmpty = false;
+	private NumberMatchType numberMatchType = NumberMatchType.EQUAL;
 
 	private final JTextField label = new JTextField();
 
@@ -104,6 +105,12 @@ public class JStateLabel extends JPanel {
 		return this;
 	}
 
+	public JStateLabel setNumberMatchType(NumberMatchType numberMatchType) {
+		this.numberMatchType = Objects.requireNonNullElse(numberMatchType, NumberMatchType.EQUAL);
+		refreshState();
+		return this;
+	}
+
 	public String getState() {
 		return stateMap.entrySet().stream().map(e -> e.getKey().getName() + "=" + e.getKey().toString(e.getValue()))
 				.collect(Collectors.joining(","));
@@ -135,8 +142,23 @@ public class JStateLabel extends JPanel {
 
 	private void refreshState() {
 		List<String> stateParts = new ArrayList<>();
-		stateMap.forEach((k, v) -> stateParts.add(k.getName() + " = " + k.toString(v)));
+		stateMap.forEach((k, v) -> {
+			String matchSymbol = "=";
+			if (k instanceof PropertyData.IntNumber || k instanceof PropertyData.FloatNumber)
+				matchSymbol = numberMatchType.symbol;
+			stateParts.add(k.getName() + " " + matchSymbol + " " + k.toString(v));
+		});
 		label.setText(L10N.t("components.state_label.when",
 				stateParts.isEmpty() ? L10N.t("condition.common.true") : String.join("; ", stateParts)));
+	}
+
+	public enum NumberMatchType {
+		LESS("<"), LESS_OR_EQUAL("<="), EQUAL("="), GREATER_OR_EQUAL(">="), GREATER(">");
+
+		private final String symbol;
+
+		NumberMatchType(String symbol) {
+			this.symbol = symbol;
+		}
 	}
 }

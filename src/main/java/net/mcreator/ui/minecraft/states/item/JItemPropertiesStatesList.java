@@ -217,7 +217,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private JItemStatesListEntry addStatesEntry(boolean initState) {
 		JStateLabel stateLabel = new JStateLabel(mcreator, this::buildPropertiesList,
-				() -> statesList.stream().map(JItemStatesListEntry::getStateLabel));
+				() -> statesList.stream().map(JItemStatesListEntry::getStateLabel)).setNumberMatchType(
+				JStateLabel.NumberMatchType.GREATER_OR_EQUAL);
 		if (initState && !stateLabel.editState())
 			return null;
 
