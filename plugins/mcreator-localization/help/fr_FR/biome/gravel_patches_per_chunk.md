@@ -1,1 +1,0 @@
-Ce paramètre contrôle le nombre de groupes de blocs de gravier par tronçon dans ce biome.

@@ -1,3 +1,3 @@
 "minecraft:behavior.break_door": {
-    "priority": ${customBlockIndex+1}
+    "priority": ${cbi+1}
 },

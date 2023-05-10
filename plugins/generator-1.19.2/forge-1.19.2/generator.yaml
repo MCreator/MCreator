@@ -1,6 +1,9 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-status: stable
+status: lts
 buildfileversion: 43.2.0
+
+import:
+  - datapack-1.19.2
 
 java_models:
   key: mojmap-1.19.x
@@ -59,6 +62,7 @@ base_templates:
       - ${w.hasGameRulesOfType('Number') || w.hasGameRulesOfType('Logic')}
       - ${w.hasElementsOfType('dimension')}
       - ${w.hasElementsOfType('biome')}
+      - ${w.hasElementsOfType('feature')}
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()

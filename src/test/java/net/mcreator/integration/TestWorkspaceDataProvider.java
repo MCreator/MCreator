@@ -60,6 +60,7 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.util.List;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class TestWorkspaceDataProvider {
 
@@ -194,7 +195,7 @@ public class TestWorkspaceDataProvider {
 				if (scope != VariableType.Scope.LOCAL) {
 					VariableElement variable = new VariableElement();
 					variable.setName("blockstate" + (idx++));
-					variable.setValue("UP");
+					variable.setValue("Blocks.AIR");
 					variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
 					variable.setScope(scope);
 					workspace.addVariableElement(variable);
@@ -348,15 +349,6 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			biome.particlesProbability = 0.0123;
 			biome.treesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex];
-			biome.grassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 1;
-			biome.seagrassPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 2;
-			biome.flowersPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 3;
-			biome.mushroomsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 4;
-			biome.bigMushroomsChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 5;
-			biome.sandPatchesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 6;
-			biome.gravelPatchesPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 7;
-			biome.reedsPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 8;
-			biome.cactiPerChunk = new int[] { 0, 5, 10, 16 }[valueIndex] + 9;
 			biome.spawnShipwreck = _true;
 			biome.spawnShipwreckBeached = _true;
 			biome.oceanRuinType = getRandomItem(random, new String[] { "NONE", "COLD", "WARM" });
@@ -1513,6 +1505,8 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PAINTING.equals(modElement.getType())) {
 			Painting painting = new Painting(modElement);
 			painting.texture = "test.png";
+			painting.title = modElement.getName();
+			painting.author = modElement.getName() + " author";
 			painting.width = 16;
 			painting.height = 16;
 			return painting;
@@ -1548,6 +1542,20 @@ public class TestWorkspaceDataProvider {
 					VariableTypeLoader.BuiltInTypes.NUMBER.getName() :
 					VariableTypeLoader.BuiltInTypes.LOGIC.getName());
 			return gamerule;
+		} else if (ModElementType.VILLAGERPROFESSION.equals(modElement.getType())) {
+			VillagerProfession profession = new VillagerProfession(modElement);
+			profession.displayName = modElement.getName();
+			List<MItemBlock> poiBlocks = ElementUtil.loadAllPOIBlocks(modElement.getWorkspace());
+			profession.pointOfInterest = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					blocks.stream()
+							.filter(e -> !poiBlocks.contains(new MItemBlock(modElement.getWorkspace(), e.getName())))
+							.collect(Collectors.toList())).getName());
+			profession.actionSound = new Sound(modElement.getWorkspace(),
+					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+			profession.hat = getRandomString(random, Arrays.asList("None", "Partial", "Full"));
+			profession.professionTextureFile = "test.png";
+			profession.zombifiedProfessionTextureFile = "test.png";
+			return profession;
 		} else if (ModElementType.VILLAGERTRADE.equals(modElement.getType())) {
 			VillagerTrade villagerTrade = new VillagerTrade(modElement);
 			villagerTrade.tradeEntries = new ArrayList<>();
@@ -1555,8 +1563,9 @@ public class TestWorkspaceDataProvider {
 				int tradeEntries = random.nextInt(10) + 1;
 				for (int i = 0; i < tradeEntries; i++) {
 					VillagerTrade.CustomTradeEntry trade = new VillagerTrade.CustomTradeEntry();
-					trade.villagerProfession = new VillagerProfession(modElement.getWorkspace(),
-							getRandomDataListEntry(random, ElementUtil.loadAllVillagerProfessions()));
+					trade.villagerProfession = new ProfessionEntry(modElement.getWorkspace(),
+							getRandomDataListEntry(random,
+									ElementUtil.loadAllVillagerProfessions(modElement.getWorkspace())));
 					trade.entries = new ArrayList<>();
 
 					int entries = random.nextInt(10) + 1;
@@ -1581,7 +1590,7 @@ public class TestWorkspaceDataProvider {
 						trade.entries.add(entry);
 					}
 					VillagerTrade.CustomTradeEntry wanderingTrade = new VillagerTrade.CustomTradeEntry();
-					wanderingTrade.villagerProfession = new VillagerProfession(modElement.getWorkspace(),
+					wanderingTrade.villagerProfession = new ProfessionEntry(modElement.getWorkspace(),
 							"WANDERING_TRADER");
 					wanderingTrade.entries = new ArrayList<>();
 
@@ -1750,6 +1759,9 @@ public class TestWorkspaceDataProvider {
 			boolean _true) {
 		Recipe recipe = new Recipe(modElement);
 		recipe.group = modElement.getName().toLowerCase(Locale.ENGLISH);
+		recipe.cookingBookCategory = getRandomItem(random, new String[] { "MISC", "FOOD", "BLOCKS" });
+		recipe.craftingBookCategory = getRandomItem(random,
+				new String[] { "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" });
 		recipe.recipeType = recipeType;
 		if ("Crafting".equals(recipe.recipeType)) {
 			MItemBlock[] recipeSlots = new MItemBlock[9];

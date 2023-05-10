@@ -49,13 +49,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Objects;
 
 public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> extends AbstractProcedureSelector {
 
 	@Nullable private final JComponent fixedValue;
 
 	public RetvalProcedureSelector(VariableType returnType, @Nullable IHelpContext helpContext, MCreator mcreator,
-			String eventName, Side side, @Nullable JComponent fixedValue, int width,
+			String eventName, Side side, boolean allowInlineEditor, @Nullable JComponent fixedValue, int width,
 			Dependency... providedDependencies) {
 		super(mcreator, returnType, providedDependencies);
 
@@ -69,8 +70,6 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 				e.consume();
 			}
 		});
-
-		setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
 
 		setOpaque(true);
 		procedures.setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
@@ -123,70 +122,76 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 
 		top.add("South", depslab);
 
-		add.setContentAreaFilled(false);
-		add.setOpaque(false);
-		add.setMargin(new Insets(0, 0, 0, 0));
-		add.addActionListener(e -> {
-			String procedureNameString = "";
-			if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI) {
-				StringBuilder procedureName = new StringBuilder(
-						((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).getModElement()
-								.getName());
-				String[] parts = eventName.replaceAll("\\(.*\\)", "").split(" ");
-				for (String part : parts) {
-					procedureName.append(StringUtils.uppercaseFirstLetter(part));
+		JComponent procwrap = PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(procedures),
+				Objects.requireNonNullElse(fixedValue, new JEmptyBox(1, 1)));
+
+		if (allowInlineEditor) {
+			setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
+
+			add.setContentAreaFilled(false);
+			add.setOpaque(false);
+			add.setMargin(new Insets(0, 0, 0, 0));
+			add.addActionListener(e -> {
+				String procedureNameString = "";
+				if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI) {
+					StringBuilder procedureName = new StringBuilder(
+							((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).getModElement()
+									.getName());
+					String[] parts = eventName.replaceAll("\\(.*\\)", "").split(" ");
+					for (String part : parts) {
+						procedureName.append(StringUtils.uppercaseFirstLetter(part));
+					}
+					procedureNameString = JavaConventions.convertToValidClassName(
+							procedureName.toString().replace("When", ""));
 				}
-				procedureNameString = JavaConventions.convertToValidClassName(
-						procedureName.toString().replace("When", ""));
-			}
 
-			procedureNameString = VOptionPane.showInputDialog(mcreator, L10N.t("action.procedure.enter_procedure_name"),
-					L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidatior() {
-						@Override public ValidationResult validate(JComponent component) {
-							return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
-									L10N.t("common.mod_element_name")).validate();
-						}
-					}, L10N.t("action.procedure.create_procedure"), UIManager.getString("OptionPane.cancelButtonText"),
-					procedureNameString);
+				procedureNameString = VOptionPane.showInputDialog(mcreator,
+						L10N.t("action.procedure.enter_procedure_name"),
+						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidatior() {
+							@Override public ValidationResult validate(JComponent component) {
+								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
+										L10N.t("common.mod_element_name")).validate();
+							}
+						}, L10N.t("action.procedure.create_procedure"),
+						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString);
 
-			if (procedureNameString != null) {
-				ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
-						ModElementType.PROCEDURE);
-				ModElementGUI<?> newGUI = ModElementType.PROCEDURE.getModElementGUI(mcreator, element, false);
-				if (newGUI != null) {
-					newGUI.showView();
-					newGUI.setModElementCreatedListener(generatableElement -> {
-						String modName = JavaConventions.convertToValidClassName(
-								generatableElement.getModElement().getName());
-						refreshList();
-						setSelectedProcedure(modName);
-					});
+				if (procedureNameString != null) {
+					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
+							ModElementType.PROCEDURE);
+					ModElementGUI<?> newGUI = ModElementType.PROCEDURE.getModElementGUI(mcreator, element, false);
+					if (newGUI != null) {
+						newGUI.showView();
+						newGUI.setModElementCreatedListener(generatableElement -> {
+							String modName = JavaConventions.convertToValidClassName(
+									generatableElement.getModElement().getName());
+							refreshList();
+							setSelectedProcedure(modName);
+						});
+					}
 				}
-			}
-		});
+			});
 
-		edit.setMargin(new Insets(0, 0, 0, 0));
-		edit.setOpaque(false);
-		edit.setContentAreaFilled(false);
-		edit.addActionListener(e -> {
-			if (getSelectedProcedure() != null) {
-				ModElement selectedProcedureAsModElement = mcreator.getWorkspace()
-						.getModElementByName(getSelectedProcedure().getName());
-				ModElementGUI<?> modeditor = selectedProcedureAsModElement.getType()
-						.getModElementGUI(mcreator, selectedProcedureAsModElement, true);
-				if (modeditor != null)
-					modeditor.showView();
-			}
-		});
+			edit.setMargin(new Insets(0, 0, 0, 0));
+			edit.setOpaque(false);
+			edit.setContentAreaFilled(false);
+			edit.addActionListener(e -> {
+				if (getSelectedProcedure() != null) {
+					ModElement selectedProcedureAsModElement = mcreator.getWorkspace()
+							.getModElementByName(getSelectedProcedure().getName());
+					ModElementGUI<?> modeditor = selectedProcedureAsModElement.getType()
+							.getModElementGUI(mcreator, selectedProcedureAsModElement, true);
+					if (modeditor != null)
+						modeditor.showView();
+				}
+			});
 
-		if (fixedValue != null)
-			add("Center", PanelUtils.westAndEastElement(
-					PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(procedures), fixedValue),
+			add("Center", PanelUtils.westAndEastElement(procwrap,
 					PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, add, edit))));
-		else
-			add("East", PanelUtils.totalCenterInPanel(
-					PanelUtils.join(FlowLayout.LEFT, 0, 1, procedures, new JEmptyBox(1, 1),
-							PanelUtils.gridElements(1, 2, add, edit))));
+		} else {
+			setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 1));
+
+			add("Center", procwrap);
+		}
 
 		add("West", PanelUtils.join(FlowLayout.LEFT, 4, 4, top));
 
@@ -209,12 +214,13 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 		edit.setEnabled(selected != null && !selected.string.equals(defaultName));
 
 		if (fixedValue != null)
-			fixedValue.setEnabled(!edit.isEnabled());
+			fixedValue.setEnabled(isEnabled() && !edit.isEnabled());
 
 		return selected;
 	}
 
 	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
 		if (fixedValue != null)
 			fixedValue.setEnabled(enabled);
 

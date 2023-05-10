@@ -40,27 +40,33 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 
 	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator,
 			@Nullable JTextComponent fixedValue, Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, 200,
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, true, fixedValue, 200,
 				providedDependencies);
 	}
 
 	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator,
 			@Nullable JTextComponent fixedValue, int width, Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, width,
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, true, fixedValue, width,
 				providedDependencies);
 	}
 
 	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			@Nullable JTextComponent fixedValue, int width, Dependency... providedDependencies) {
-		super(VariableTypeLoader.BuiltInTypes.STRING, helpContext, mcreator, eventName, side, fixedValue, width,
-				providedDependencies);
+		this(helpContext, mcreator, eventName, side, true, fixedValue, width, providedDependencies);
+	}
+
+	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
+			boolean allowInlineEditor, @Nullable JTextComponent fixedValue, int width,
+			Dependency... providedDependencies) {
+		super(VariableTypeLoader.BuiltInTypes.STRING, helpContext, mcreator, eventName, side, allowInlineEditor,
+				fixedValue, width, providedDependencies);
 
 		this.fixedValue = fixedValue;
 
 		if (fixedValue != null) {
 			fixedValue.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			fixedValue.setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(1, 5, 1, 5, this.getBackground()),
+					BorderFactory.createMatteBorder(1, 5, 1, allowInlineEditor ? 5 : 0, this.getBackground()),
 					BorderFactory.createMatteBorder(0, 5, 0, 5, fixedValue.getBackground())));
 		}
 	}
@@ -69,20 +75,26 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 
 	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator,
 			@Nullable JComboBox<String> fixedValue, Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, 200,
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, true, fixedValue, 200,
 				providedDependencies);
 	}
 
 	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator,
 			@Nullable JComboBox<String> fixedValue, int width, Dependency... providedDependencies) {
-		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, fixedValue, width,
+		this(helpContext, mcreator, L10N.t("elementgui.common.value"), Side.BOTH, true, fixedValue, width,
 				providedDependencies);
 	}
 
 	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			@Nullable JComboBox<String> fixedValue, int width, Dependency... providedDependencies) {
-		super(VariableTypeLoader.BuiltInTypes.STRING, helpContext, mcreator, eventName, side, fixedValue, width,
-				providedDependencies);
+		this(helpContext, mcreator, eventName, side, true, fixedValue, width, providedDependencies);
+	}
+
+	public StringProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
+			boolean allowInlineEditor, @Nullable JComboBox<String> fixedValue, int width,
+			Dependency... providedDependencies) {
+		super(VariableTypeLoader.BuiltInTypes.STRING, helpContext, mcreator, eventName, side, allowInlineEditor,
+				fixedValue, width, providedDependencies);
 
 		this.fixedValue = fixedValue;
 

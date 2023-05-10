@@ -33,7 +33,6 @@ import net.mcreator.io.net.api.IWebAPI;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.MCREvent;
-import net.mcreator.plugin.PluginLoadFailure;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
@@ -41,8 +40,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
-import net.mcreator.ui.dialogs.UpdateNotifyDialog;
-import net.mcreator.ui.dialogs.UpdatePluginDialog;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
@@ -51,7 +49,6 @@ import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.SoundUtils;
-import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
@@ -65,6 +62,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
 public final class MCreatorApplication {
@@ -94,6 +92,9 @@ public final class MCreatorApplication {
 			PluginLoader.initInstance();
 
 			MCREvent.event(new ApplicationLoadedEvent(this));
+
+			// As plugins are now loaded, preferences from Java plugins can now be loaded
+			PreferencesManager.initNonCore();
 
 			splashScreen.setProgress(10, "Loading UI Themes");
 
@@ -192,20 +193,6 @@ public final class MCreatorApplication {
 			// Do not externalize this text
 			discordClient.updatePresence("Just opened", "Version " + Launcher.version.getMajorString());
 
-			try {
-				SwingUtilities.invokeAndWait(() -> {
-					UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
-					UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(splashScreen);
-
-					if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.notifications.snapshotMessage) {
-						JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
-								L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
-					}
-				});
-			} catch (Exception e) {
-				LOG.warn("Failed to check for updates", e);
-			}
-
 			splashScreen.setProgress(100, "Loading MCreator windows");
 
 			try {
@@ -234,7 +221,7 @@ public final class MCreatorApplication {
 					if (passedFile.isFile() && passedFile.getName().endsWith(".mcreator")) {
 						splashScreen.setVisible(false);
 						MCreator mcreator = openWorkspaceInMCreator(passedFile);
-						showPluginLoadingFailures(mcreator);
+						StartupNotifications.handleStartupNotifications(mcreator);
 						directLaunch = true;
 					}
 				}
@@ -247,26 +234,6 @@ public final class MCreatorApplication {
 
 			LOG.debug("Application loader finished");
 		}, "Application-Loader").start();
-	}
-
-	private void showPluginLoadingFailures(Window parent) {
-		Collection<PluginLoadFailure> failedPlugins = PluginLoader.INSTANCE.getFailedPlugins();
-		if (!failedPlugins.isEmpty()) {
-			StringBuilder sb = new StringBuilder();
-			sb.append("<html>");
-			sb.append(L10N.t("dialog.plugin_load_failed.msg1"));
-			sb.append("<ul>");
-			for (PluginLoadFailure plugin : failedPlugins) {
-				sb.append("<li><b>").append(plugin.pluginID()).append("</b> - reason: ")
-						.append(StringUtils.abbreviateString(plugin.message(), 100, true))
-						.append("<br><small>Location: ").append(plugin.pluginFile()).append("</small></li>");
-			}
-			sb.append("</ul><br>");
-			sb.append(L10N.t("dialog.plugin_load_failed.msg2"));
-
-			JOptionPane.showMessageDialog(parent, sb.toString(), L10N.t("dialog.plugin_load_failed.title"),
-					JOptionPane.WARNING_MESSAGE);
-		}
 	}
 
 	public GoogleAnalytics getAnalytics() {
@@ -299,27 +266,35 @@ public final class MCreatorApplication {
 			workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
 			if (workspace.getMCreatorVersion() > Launcher.version.versionlong
 					&& !MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
-				JOptionPane.showMessageDialog(workspaceSelector, L10N.t("dialog.workspace.open_failed_message"),
-						L10N.t("dialog.workspace.open_failed_title"), JOptionPane.ERROR_MESSAGE);
+				ThreadUtil.runOnSwingThreadAndWait(() -> JOptionPane.showMessageDialog(workspaceSelector,
+						L10N.t("dialog.workspace.open_failed_message"), L10N.t("dialog.workspace.open_failed_title"),
+						JOptionPane.ERROR_MESSAGE));
 			} else {
-				MCreator mcreator = new MCreator(this, workspace);
-				if (!this.openMCreators.contains(mcreator)) {
-					this.workspaceSelector.setVisible(false);
-					this.openMCreators.add(mcreator);
-					mcreator.setVisible(true);
-					mcreator.requestFocusInWindow();
-					mcreator.toFront();
-					analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
-					return mcreator;
-				} else { // already open, just focus it
-					LOG.warn("Trying to open already open workspace, bringing it to the front.");
-					for (MCreator openmcreator : openMCreators) {
-						if (openmcreator.equals(mcreator)) {
-							openmcreator.requestFocusInWindow();
-							openmcreator.toFront();
+				AtomicReference<MCreator> openResult = new AtomicReference<>(null);
+
+				Workspace finalWorkspace = workspace;
+				ThreadUtil.runOnSwingThreadAndWait(() -> {
+					MCreator mcreator = new MCreator(this, finalWorkspace);
+					if (!this.openMCreators.contains(mcreator)) {
+						this.workspaceSelector.setVisible(false);
+						this.openMCreators.add(mcreator);
+						mcreator.setVisible(true);
+						mcreator.requestFocusInWindow();
+						mcreator.toFront();
+						analytics.trackPage(AnalyticsConstants.PAGE_WORKSPACE_OPEN);
+						openResult.set(mcreator);
+					} else { // already open, just focus it
+						LOG.warn("Trying to open already open workspace, bringing it to the front.");
+						for (MCreator openmcreator : openMCreators) {
+							if (openmcreator.equals(mcreator)) {
+								openmcreator.requestFocusInWindow();
+								openmcreator.toFront();
+							}
 						}
 					}
-				}
+				});
+
+				return openResult.get();
 			}
 		} catch (CorruptedWorkspaceFileException corruptedWorkspaceFile) {
 			LOG.fatal("Failed to open workspace!", corruptedWorkspaceFile);
@@ -328,20 +303,22 @@ public final class MCreatorApplication {
 			if (backupsDir.isDirectory()) {
 				String[] files = backupsDir.list();
 				if (files != null) {
-					String[] backups = Arrays.stream(files).filter(e -> e.contains(".mcreator-backup"))
-							.sorted(Collections.reverseOrder()).toArray(String[]::new);
-					String selected = (String) JOptionPane.showInputDialog(this.workspaceSelector,
-							L10N.t("dialog.workspace.got_corrupted_message"),
-							L10N.t("dialog.workspace.got_corrupted_title"), JOptionPane.QUESTION_MESSAGE, null, backups,
-							"");
-					if (selected != null) {
-						File backup = new File(backupsDir, selected);
-						FileIO.copyFile(backup, workspaceFile);
-						openWorkspaceInMCreator(workspaceFile);
-					} else {
-						reportFailedWorkspaceOpen(
-								new IOException("User canceled workspace backup restoration", corruptedWorkspaceFile));
-					}
+					ThreadUtil.runOnSwingThreadAndWait(() -> {
+						String[] backups = Arrays.stream(files).filter(e -> e.contains(".mcreator-backup"))
+								.sorted(Collections.reverseOrder()).toArray(String[]::new);
+						String selected = (String) JOptionPane.showInputDialog(this.workspaceSelector,
+								L10N.t("dialog.workspace.got_corrupted_message"),
+								L10N.t("dialog.workspace.got_corrupted_title"), JOptionPane.QUESTION_MESSAGE, null,
+								backups, "");
+						if (selected != null) {
+							File backup = new File(backupsDir, selected);
+							FileIO.copyFile(backup, workspaceFile);
+							openWorkspaceInMCreator(workspaceFile);
+						} else {
+							reportFailedWorkspaceOpen(new IOException("User canceled workspace backup restoration",
+									corruptedWorkspaceFile));
+						}
+					});
 				}
 			} else {
 				reportFailedWorkspaceOpen(
@@ -361,23 +338,26 @@ public final class MCreatorApplication {
 	}
 
 	private void reportFailedWorkspaceOpen(Exception e) {
-		JOptionPane.showMessageDialog(this.workspaceSelector,
+		ThreadUtil.runOnSwingThreadAndWait(() -> JOptionPane.showMessageDialog(this.workspaceSelector,
 				L10N.t("dialog.workspace.is_not_valid_message") + e.getMessage(),
-				L10N.t("dialog.workspace.is_not_valid_title"), JOptionPane.ERROR_MESSAGE);
+				L10N.t("dialog.workspace.is_not_valid_title"), JOptionPane.ERROR_MESSAGE));
 	}
 
 	public void closeApplication() {
 		LOG.debug("Closing any potentially open MCreator windows");
-		List<MCreator> mcreatorsTmp = new ArrayList<>(
-				openMCreators); // create list copy so we don't modify the list we iterate
-		for (MCreator mcreator : mcreatorsTmp) {
-			LOG.info("Attempting to close MCreator window with workspace: " + mcreator.getWorkspace());
-			if (!mcreator.closeThisMCreator(false))
-				return; // if we fail to close all windows, we cancel the application close
-		}
+
+		ThreadUtil.runOnSwingThreadAndWait(() -> {
+			// create list copy, so we don't modify the list we iterate
+			List<MCreator> mcreatorsTmp = new ArrayList<>(openMCreators);
+			for (MCreator mcreator : mcreatorsTmp) {
+				LOG.info("Attempting to close MCreator window with workspace: " + mcreator.getWorkspace());
+				if (!mcreator.closeThisMCreator(false))
+					return; // if we fail to close all windows, we cancel the application close
+			}
+		});
 
 		LOG.debug("Performing exit tasks");
-		PreferencesManager.storePreferences(PreferencesManager.PREFERENCES); // store any potential preferences changes
+		PreferencesManager.savePreferences(); // store any potential preferences changes
 		analytics.trackPageSync(AnalyticsConstants.PAGE_CLOSE); // track app close in sync mode
 
 		discordClient.close(); // close discord client
@@ -409,7 +389,8 @@ public final class MCreatorApplication {
 
 	void showWorkspaceSelector() {
 		workspaceSelector.setVisible(true);
-		showPluginLoadingFailures(workspaceSelector);
+
+		StartupNotifications.handleStartupNotifications(workspaceSelector);
 	}
 
 	List<RecentWorkspaceEntry> getRecentWorkspaces() {

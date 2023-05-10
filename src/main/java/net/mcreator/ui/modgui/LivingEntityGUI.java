@@ -256,11 +256,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		blocklyPanel.setXML("""
 				<xml xmlns="https://developers.google.com/blockly/xml">
 				<block type="aitasks_container" deletable="false" x="40" y="40"><next>
-				<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition"/><next>
-				<block type="wander"><field name="speed">1</field><field name="condition"/><next>
-				<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition"/><next>
-				<block type="look_around"><field name="condition"/><next>
-				<block type="swim_in_water"/><field name="condition"/></next>
+				<block type="attack_on_collide"><field name="speed">1.2</field><field name="longmemory">FALSE</field><field name="condition">null,null</field><next>
+				<block type="wander"><field name="speed">1</field><field name="condition">null,null</field><next>
+				<block type="attack_action"><field name="callhelp">FALSE</field><field name="condition">null,null</field><next>
+				<block type="look_around"><field name="condition">null,null</field><next>
+				<block type="swim_in_water"/><field name="condition">null,null</field></next>
 				</block></next></block></next></block></next></block></next></block></xml>""");
 	}
 
@@ -701,7 +701,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks();
 
-		blocklyPanel = new BlocklyPanel(mcreator);
+		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.AI_TASK);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
@@ -925,14 +925,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0) {
 			return new AggregatedValidationResult(mobModelTexture, mobName);
-		} else if (page == 5) {
+		} else if (page == 4) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
 						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
 						.collect(Collectors.toList()));
-		} else if (page == 6) {
+		} else if (page == 5) {
 			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {
-				return new AggregatedValidationResult.FAIL("Minimal mob group size can't be bigger than maximal size");
+				return new AggregatedValidationResult.FAIL(
+						L10N.t("validator.minimal_lower_than_maximal", L10N.t("elementgui.living_entity.group_size")));
 			}
 		}
 		return new AggregatedValidationResult.PASS();
