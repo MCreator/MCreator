@@ -37,6 +37,8 @@ public class ProgressDialog extends MCreatorDialog {
 	public ProgressDialog(Window w, String title) {
 		super(w, title, true);
 
+		setLayout(new BorderLayout(0, 0));
+
 		if (w instanceof MCreator)
 			mcreator = (MCreator) w;
 
@@ -46,18 +48,27 @@ public class ProgressDialog extends MCreatorDialog {
 		setUndecorated(true);
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
+		JLabel titleLabel = new JLabel(title);
+		titleLabel.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		titleLabel.setOpaque(true);
+		titleLabel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(8, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+				BorderFactory.createMatteBorder(0, 4, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"))));
+		ComponentUtils.deriveFont(titleLabel, 13);
+		add("North", titleLabel);
+
 		progress.setCellRenderer(new Render());
 		progress.setOpaque(false);
+		progress.setBorder(null);
+
 		JScrollPane panes = new JScrollPane(progress);
 		panes.getViewport().setOpaque(false);
 		panes.setPreferredSize(new Dimension(600, 280));
-
-		progress.setBorder(null);
-
 		panes.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		panes.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
-				BorderFactory.createMatteBorder(4, 8, 4, 4, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"))));
+		panes.setBorder(BorderFactory.createMatteBorder(4, 8, 4, 4, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+
+		((JComponent) getContentPane()).setBorder(
+				BorderFactory.createMatteBorder(0, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 
 		add("Center", panes);
 
