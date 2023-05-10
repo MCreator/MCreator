@@ -92,7 +92,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
 				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height})
-					this.renderTooltip(ms, <#if hasProcedure(component.text)>new TextComponent(<@procedureOBJToStringCode component.text/>)<#else>new TranslatableComponent("gui.${modid}.${registryname}.${component.getName()}")</#if>, mouseX, mouseY);
+					this.renderTooltip(ms, <#if hasProcedure(component.text)>Component.literal(<@procedureOBJToStringCode component.text/>)<#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>, mouseX, mouseY);
 		</#list>
 
 		<#list data.getComponentsOfType("TextField") as component>
