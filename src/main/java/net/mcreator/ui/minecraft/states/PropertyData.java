@@ -102,6 +102,10 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	public static class IntNumber extends PropertyData<Integer> {
 		private final int min, max;
 
+		public IntNumber(String name) {
+			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		}
+
 		public IntNumber(String name, int min, int max) {
 			super(name);
 			this.min = min;
@@ -134,6 +138,10 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	public static class FloatNumber extends PropertyData<Float> {
 		private final float min, max;
 
+		public FloatNumber(String name) {
+			this(name, Float.MIN_VALUE, Float.MAX_VALUE);
+		}
+
 		public FloatNumber(String name, float min, float max) {
 			super(name);
 			this.min = min;
@@ -150,7 +158,8 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
 			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Float) value, 0F)));
-			JSpinner box = new JSpinner(new SpinnerNumberModel((float) value, min, max, 0.001));
+			JSpinner box = new JSpinner(new SpinnerNumberModel((float) value, min, max, 0.000000001));
+			((JSpinner.NumberEditor) box.getEditor()).getFormat().setMaximumFractionDigits(9);
 			box.setPreferredSize(new Dimension(130, 22));
 			return box;
 		}
