@@ -1,1 +1,1 @@
-(${input$entity} instanceof LivingEntity _livEnt && _livEnt.getMobType() == MobType.${field$type})
+(${input$entity} instanceof LivingEntity _livEnt${cbi} && _livEnt${cbi}.getMobType() == MobType.${field$type})
