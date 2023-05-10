@@ -97,7 +97,7 @@ public class ${JavaModName}Items {
 		<#list items as item>
 			<#if item.getModElement().getTypeString() == "item">
 				<#list item.filterProperties().entrySet() as property>
-				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("${property.getKey()}"),
+				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("${modid}:${property.getKey()}"),
 						(itemStackToRender, clientWorld, livingEntity, itemEntityId) -> <#if hasProcedure(property.getValue())>{
 					Entity entity = livingEntity != null ? livingEntity : itemStackToRender.getEntityRepresentation();
 					if (entity == null)
