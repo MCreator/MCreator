@@ -227,7 +227,7 @@ public final class MCreatorApplication {
 				}
 
 				File workspace = PreferencesManager.PREFERENCES.hidden.lastWorkspace.get();
-				if (PreferencesManager.PREFERENCES.behaviour.openLastWorkspace.get() && workspace != null)
+				if (PreferencesManager.PREFERENCES.behavior.openLastWorkspace.get() && workspace != null)
 					openWorkspaceInMCreator(workspace);
 				else if (!directLaunch)
 					showWorkspaceSelector();

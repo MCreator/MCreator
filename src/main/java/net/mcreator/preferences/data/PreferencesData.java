@@ -24,7 +24,7 @@ public class PreferencesData {
 	public static final String CORE_PREFERENCES_KEY = "core";
 
 	public final UISection ui;
-	public final BehaviourSection behaviour;
+	public final BehaviorSection behavior;
 	public final NotificationsSection notifications;
 	public final BackupsSection backups;
 	public final BlocklySection blockly;
@@ -35,7 +35,7 @@ public class PreferencesData {
 
 	public PreferencesData() {
 		ui = new UISection(CORE_PREFERENCES_KEY);
-		behaviour = new BehaviourSection(CORE_PREFERENCES_KEY);
+		behavior = new BehaviorSection(CORE_PREFERENCES_KEY);
 		notifications = new NotificationsSection(CORE_PREFERENCES_KEY);
 		backups = new BackupsSection(CORE_PREFERENCES_KEY);
 		blockly = new BlocklySection(CORE_PREFERENCES_KEY);

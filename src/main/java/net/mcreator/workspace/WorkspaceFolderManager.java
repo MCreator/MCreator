@@ -21,6 +21,7 @@ package net.mcreator.workspace;
 import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;
@@ -59,7 +60,7 @@ public class WorkspaceFolderManager {
 	}
 
 	public static File getSuggestedWorkspaceFoldersRoot() {
-		File workspacesFolder = new File(System.getProperty("user.home"), "MCreatorWorkspaces");
+		File workspacesFolder = PreferencesManager.PREFERENCES.behavior.defaultWorkspacesFolder.get();
 		if (!workspacesFolder.getAbsolutePath().matches("[a-zA-Z0-9_/+\\-\\\\:()\\[\\].,@$=`' ]+")) {
 			if (OS.getOS() == OS.WINDOWS)
 				workspacesFolder = new File("C:/", "MCreatorWorkspaces");

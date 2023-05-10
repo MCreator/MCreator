@@ -358,7 +358,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			}
 		}
 
-		if (PreferencesManager.PREFERENCES.behaviour.confirmBeforeClosing.get()) {
+		if (PreferencesManager.PREFERENCES.behavior.confirmBeforeClosing.get()) {
 			int reply = JOptionPane.showConfirmDialog(this,
 					L10N.t("action.close_mcreator_confirmation"),
 					L10N.t("action.gradle.close_mcreator_while_running_title"), JOptionPane.YES_NO_OPTION,
@@ -381,7 +381,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 			if (application.getOpenMCreators()
 					.isEmpty()) { // no MCreator windows left, close the app, or return to project selector if selected
-				if (returnToProjectSelector || PreferencesManager.PREFERENCES.behaviour.returnToWorkspaceSelector.get())
+				if (returnToProjectSelector || PreferencesManager.PREFERENCES.behavior.returnToWorkspaceSelector.get())
 					application.showWorkspaceSelector();
 				else
 					application.closeApplication();
