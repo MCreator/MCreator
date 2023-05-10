@@ -63,6 +63,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 public final class WorkspaceSelector extends JFrame implements DropTargetListener {
@@ -339,7 +340,13 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		if (recentWorkspaces != null && recentWorkspaces.getList().size() > 0) {
 			DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 			recentWorkspaces.getList().forEach(defaultListModel::addElement);
-			JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
+			JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel) {
+				@Override public String getToolTipText(MouseEvent event) {
+					RecentWorkspaceEntry w = defaultListModel.get(locationToIndex(event.getPoint()));
+					return L10N.t("dialog.workspace_selector.recent_workspace", w.getName(), w.getType(), w.getPath(),
+							Objects.requireNonNullElse(w.getMCRVersion(), L10N.t("common.not_applicable")));
+				}
+			};
 			recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			recentsList.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
