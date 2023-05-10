@@ -18,6 +18,9 @@ tasks.register('exportMacX64', Copy.class) {
 
     def exportPathX64 = 'build/export/mac_x64/MCreator.app/Contents/'
 
+    def appIcon = project.snapshot ? "mcreatorapp_eap.icns" : "mcreatorapp.icns"
+    def icon = project.snapshot ? "mcreator_eap.icns" : "mcreator.icns"
+
     into exportPathX64
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
@@ -26,8 +29,8 @@ tasks.register('exportMacX64', Copy.class) {
         from file('LICENSE.txt')
     }
     into('Resources') {
-        from file('platform/mac/mcreatorapp.icns')
-        from file('platform/mac/mcreator.icns')
+        from file('platform/mac/' + appIcon) rename(appIcon, 'mcreatorapp.icns')
+        from file('platform/mac/' + icon) rename(icon, 'mcreator.icns')
     }
     into('MacOS') {
         from file('platform/mac/mcreator_x64') rename('mcreator_x64', 'mcreator')
@@ -75,6 +78,9 @@ tasks.register('exportMacAarch64', Copy.class) {
 
     def exportPathAarch64 = 'build/export/mac_aarch64/MCreator.app/Contents/'
 
+    def appIcon = project.snapshot ? "mcreatorapp_eap.icns" : "mcreatorapp.icns"
+    def icon = project.snapshot ? "mcreator_eap.icns" : "mcreator.icns"
+
     into exportPathAarch64
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
@@ -83,8 +89,8 @@ tasks.register('exportMacAarch64', Copy.class) {
         from file('LICENSE.txt')
     }
     into('Resources') {
-        from file('platform/mac/mcreatorapp.icns')
-        from file('platform/mac/mcreator.icns')
+        from file('platform/mac/' + appIcon) rename(appIcon, 'mcreatorapp.icns')
+        from file('platform/mac/' + icon) rename(icon, 'mcreator.icns')
     }
     into('MacOS') {
         from file('platform/mac/mcreator_aarch64') rename('mcreator_aarch64', 'mcreator')
