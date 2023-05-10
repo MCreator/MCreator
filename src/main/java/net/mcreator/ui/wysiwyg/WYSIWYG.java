@@ -28,8 +28,8 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
-import org.eclipse.jgit.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
