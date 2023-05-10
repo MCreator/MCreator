@@ -55,6 +55,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 	private boolean positioningModeSettingWidth = false;
 	private boolean positioningModeSettingHeight = false;
+
 	private boolean componentMoveMode;
 	private boolean componentDragMode;
 
