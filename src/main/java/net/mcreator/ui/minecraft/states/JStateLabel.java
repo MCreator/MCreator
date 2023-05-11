@@ -112,12 +112,16 @@ public class JStateLabel extends JPanel {
 	}
 
 	public String getState() {
-		return stateMap.entrySet().stream().map(e -> e.getKey().getName() + "=" + e.getKey().toString(e.getValue()))
-				.collect(Collectors.joining(","));
+		return stateMap.entrySet().stream().map(e -> {
+			String name = e.getKey().getName();
+			if (!(e.getKey() instanceof BuiltInPropertyData<?>))
+				name = "CUSTOM:" + name;
+			return name + "=" + e.getKey().toString(e.getValue());
+		}).collect(Collectors.joining(","));
 	}
 
 	public void setState(String state) {
-		stateMap = IPropertyData.passStateToMap(state, properties.get());
+		stateMap = IPropertyData.passStateToMap(state.replace("CUSTOM:", ""), properties.get());
 		refreshState();
 	}
 

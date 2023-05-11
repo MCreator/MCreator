@@ -194,8 +194,8 @@ import java.util.*;
 		modelsMap.forEach((state, model) -> {
 			List<String> states = new ArrayList<>();
 			for (String match : state.split(",")) {
-				String property = match.split("=")[0];
-				if (customProperties.containsKey(property) || builtinProperties.contains(property))
+				String prop = match.split("=")[0];
+				if (customProperties.containsKey(prop.replace("CUSTOM:", "")) || builtinProperties.contains(prop))
 					states.add(match);
 			}
 			models.putIfAbsent(String.join(",", states), model);
