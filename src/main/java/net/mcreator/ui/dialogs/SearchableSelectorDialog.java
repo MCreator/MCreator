@@ -50,7 +50,6 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 		this.provider = provider;
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setIconImage(UIRES.getBuiltIn("icon").getImage());
 
 		filterField.getDocument().addDocumentListener(new DocumentListener() {
 			@Override public void removeUpdate(DocumentEvent arg0) {

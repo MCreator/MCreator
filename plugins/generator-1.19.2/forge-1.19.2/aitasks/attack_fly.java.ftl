@@ -5,7 +5,7 @@
 <#else>
 	<#assign conditions = ["", ""]>
 </#if>
-this.goalSelector.addGoal(${customBlockIndex+1}, new Goal() {
+this.goalSelector.addGoal(${cbi+1}, new Goal() {
 	{
 		this.setFlags(EnumSet.of(Goal.Flag.MOVE));
 	}

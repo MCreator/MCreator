@@ -18,8 +18,10 @@
 
 package net.mcreator.vcs.diff;
 
+import net.mcreator.util.diff.DiffResult;
 import org.eclipse.jgit.diff.DiffEntry;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -29,8 +31,8 @@ public class DiffResultToBaseConflictFinder {
 	public static <T> Set<MergeHandle<T>> findConflicts(DiffResult<T> baseToLocal, DiffResult<T> baseToRemote) {
 		Set<MergeHandle<T>> mergeHandlesSet = new HashSet<>();
 
-		List<AffectedObjectWithType<T>> affectedLocal = baseToLocal.getAffected();
-		List<AffectedObjectWithType<T>> affectedRemote = baseToRemote.getAffected();
+		List<AffectedObjectWithType<T>> affectedLocal = getAffected(baseToLocal);
+		List<AffectedObjectWithType<T>> affectedRemote = getAffected(baseToRemote);
 
 		for (AffectedObjectWithType<T> local : affectedLocal) {
 			for (AffectedObjectWithType<T> remote : affectedRemote) {
@@ -47,6 +49,19 @@ public class DiffResultToBaseConflictFinder {
 		}
 
 		return mergeHandlesSet;
+	}
+
+	private static <T> List<AffectedObjectWithType<T>> getAffected(DiffResult<T> diffResult) {
+		List<AffectedObjectWithType<T>> retval = new ArrayList<>();
+		retval.addAll(
+				diffResult.changed().stream().map(e -> new AffectedObjectWithType<>(e, DiffEntry.ChangeType.MODIFY))
+						.toList());
+		retval.addAll(
+				diffResult.removed().stream().map(e -> new AffectedObjectWithType<>(e, DiffEntry.ChangeType.DELETE))
+						.toList());
+		retval.addAll(diffResult.added().stream().map(e -> new AffectedObjectWithType<>(e, DiffEntry.ChangeType.ADD))
+				.toList());
+		return retval;
 	}
 
 }
