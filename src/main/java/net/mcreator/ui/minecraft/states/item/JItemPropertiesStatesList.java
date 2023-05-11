@@ -40,8 +40,6 @@ import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ContainerAdapter;
-import java.awt.event.ContainerEvent;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -55,18 +53,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private final List<String> builtinPropertyNames;
 	private final Map<String, BuiltInPropertyData<?>> builtinProperties = new LinkedHashMap<>();
 
-	private final JPanel propertyEntries = new JPanel() {
-		@Override public void setEnabled(boolean enabled) {
-			super.setEnabled(enabled);
-			propertiesList.forEach(e -> e.setEnabled(enabled));
-		}
-	};
-	private final JPanel stateEntries = new JPanel() {
-		@Override public void setEnabled(boolean enabled) {
-			super.setEnabled(enabled);
-			statesList.forEach(e -> e.setEnabled(enabled));
-		}
-	};
+	private final JPanel propertyEntries = new JPanel(), stateEntries = new JPanel();
 
 	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add.gif"));
 	private final TechnicalButton addState = new TechnicalButton(UIRES.get("16px.add.gif"));
@@ -107,32 +94,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		stateEntries.setLayout(new GridLayout(0, 1, 5, 5));
 		stateEntries.setOpaque(false);
 
-		propertyEntries.addContainerListener(new ContainerAdapter() {
-			@Override public void componentRemoved(ContainerEvent e) {
-				if (e.getChild() instanceof Container c && c.getComponentCount() > 0
-						&& c.getComponents()[0] instanceof JItemPropertiesListEntry entry) {
-					PropertyData.Number data = entry.toPropertyData();
-					Set<LinkedHashMap<IPropertyData<?>, Object>> duplicateFilter = new HashSet<>();
-					statesList.stream().toList().forEach(s -> {
-						LinkedHashMap<IPropertyData<?>, Object> stateMap = s.getStateLabel().getStateMap();
-						stateMap.remove(data);
-						if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) {
-							statesList.remove(s);
-							stateEntries.remove(s.getParent());
-						} else {
-							s.getStateLabel().setStateMap(stateMap);
-						}
-					});
-					stateEntries.revalidate();
-					stateEntries.repaint();
-				}
-			}
-		});
-
 		addProperty.setText(L10N.t("elementgui.item.custom_properties.add"));
-		addState.setText(L10N.t("elementgui.item.custom_states.add"));
-
 		addProperty.addActionListener(e -> addPropertiesEntry());
+		addState.setText(L10N.t("elementgui.item.custom_states.add"));
 		addState.addActionListener(e -> addStatesEntry(true));
 
 		JScrollPane scrollProperties = new JScrollPane(PanelUtils.pullElementUp(propertyEntries)) {
@@ -190,6 +154,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		addProperty.setEnabled(enabled);
 		addState.setEnabled(enabled);
 
+		propertiesList.forEach(e -> e.setEnabled(enabled));
+		statesList.forEach(e -> e.setEnabled(enabled));
+
 		propertyEntries.setEnabled(enabled);
 		stateEntries.setEnabled(enabled);
 	}
@@ -209,7 +176,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 						new RegistryNameValidator(nameField, L10N.t("elementgui.item.custom_properties.validator"))));
 		nameField.enableRealtimeValidation();
 
-		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, propertyEntries, propertiesList,
+		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, this, propertyEntries, propertiesList,
 				nameField, propertyId.get());
 		registerEntryUI(pe);
 		return pe;
@@ -225,6 +192,28 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		JItemStatesListEntry se = new JItemStatesListEntry(mcreator, gui, stateEntries, statesList, stateLabel);
 		registerEntryUI(se);
 		return se;
+	}
+
+	void removeProperty(JItemPropertiesListEntry entry) {
+		propertiesList.remove(entry);
+		propertyEntries.remove(entry);
+		propertyEntries.revalidate();
+		propertyEntries.repaint();
+
+		PropertyData.Number data = entry.toPropertyData();
+		Set<LinkedHashMap<IPropertyData<?>, Object>> duplicateFilter = new HashSet<>();
+		statesList.stream().toList().forEach(s -> {
+			LinkedHashMap<IPropertyData<?>, Object> stateMap = s.getStateLabel().getStateMap();
+			stateMap.remove(data);
+			if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) {
+				statesList.remove(s);
+				stateEntries.remove(s.getParent());
+			} else {
+				s.getStateLabel().setStateMap(stateMap);
+			}
+		});
+		stateEntries.revalidate();
+		stateEntries.repaint();
 	}
 
 	private List<IPropertyData<?>> buildPropertiesList() {

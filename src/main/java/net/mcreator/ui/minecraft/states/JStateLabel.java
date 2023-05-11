@@ -44,6 +44,7 @@ public class JStateLabel extends JPanel {
 	private NumberMatchType numberMatchType = NumberMatchType.EQUAL;
 
 	private final JTextField label = new JTextField();
+	private final TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit.gif"));
 
 	public JStateLabel(MCreator mcreator, Supplier<List<IPropertyData<?>>> properties,
 			Supplier<Stream<JStateLabel>> otherStates) {
@@ -65,19 +66,22 @@ public class JStateLabel extends JPanel {
 		statePane.setPreferredSize(new Dimension(300, 30));
 		add("Center", statePane);
 
-		TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit.gif"));
 		edit.setOpaque(false);
 		edit.setMargin(new Insets(0, 0, 0, 0));
 		edit.setBorder(BorderFactory.createEmptyBorder());
 		edit.setContentAreaFilled(false);
 		edit.setToolTipText(L10N.t("components.state_label.edit"));
 		edit.addActionListener(e -> editState());
-		addPropertyChangeListener("enabled", e -> edit.setEnabled((boolean) e.getNewValue()));
 
 		JPanel controls = new JPanel();
 		controls.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		controls.add(edit);
 		add("East", PanelUtils.centerInPanelPadding(controls, 2, 2));
+	}
+
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		edit.setEnabled(enabled);
 	}
 
 	public boolean editState() {
