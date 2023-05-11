@@ -72,6 +72,10 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 			super(name);
 		}
 
+		@Override public Boolean getDefaultValue() {
+			return false;
+		}
+
 		@Override public final String toString(Object value) {
 			return Boolean.toString((Boolean) value);
 		}
@@ -86,7 +90,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 					return isSelected() ? "True" : "False";
 				}
 			};
-			box.setSelected(Objects.requireNonNullElse((Boolean) value, false));
+			box.setSelected(Objects.requireNonNullElse((Boolean) value, getDefaultValue()));
 			box.setPreferredSize(new Dimension(54, 25));
 			return box;
 		}
@@ -99,74 +103,82 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	/**
 	 * A subclass for integer number type properties.
 	 */
-	public static class IntNumber extends PropertyData<Integer> {
+	public static class Integer extends PropertyData<java.lang.Integer> {
 		private final int min, max;
 
-		public IntNumber(String name) {
-			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
+		public Integer(String name) {
+			this(name, java.lang.Integer.MIN_VALUE, java.lang.Integer.MAX_VALUE);
 		}
 
-		public IntNumber(String name, int min, int max) {
+		public Integer(String name, int min, int max) {
 			super(name);
 			this.min = min;
 			this.max = max;
 		}
 
-		@Override public final String toString(Object value) {
-			return Integer.toString((Integer) value);
+		@Override public java.lang.Integer getDefaultValue() {
+			return 0;
 		}
 
-		@Override public final Integer parseObj(String value) {
-			return Integer.parseInt(value);
+		@Override public final String toString(Object value) {
+			return java.lang.Integer.toString((java.lang.Integer) value);
+		}
+
+		@Override public final java.lang.Integer parseObj(String value) {
+			return java.lang.Integer.parseInt(value);
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Integer) value, 0)));
+			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((java.lang.Integer) value, getDefaultValue())));
 			JSpinner box = new JSpinner(new SpinnerNumberModel((int) value, min, max, 1));
 			box.setPreferredSize(new Dimension(105, 22));
 			return box;
 		}
 
-		@Override public Integer getValue(JComponent component) {
-			return (Integer) ((JSpinner) component).getValue();
+		@Override public java.lang.Integer getValue(JComponent component) {
+			return (java.lang.Integer) ((JSpinner) component).getValue();
 		}
 	}
 
 	/**
 	 * A subclass for float number type properties.
 	 */
-	public static class FloatNumber extends PropertyData<Float> {
-		private final float min, max;
+	public static class Number extends PropertyData<Double> {
+		private final double min, max;
 
-		public FloatNumber(String name) {
-			this(name, Float.MIN_VALUE, Float.MAX_VALUE);
+		public Number(String name) {
+			this(name, java.lang.Integer.MIN_VALUE, java.lang.Integer.MAX_VALUE);
 		}
 
-		public FloatNumber(String name, float min, float max) {
+		public Number(String name, double min, double max) {
 			super(name);
 			this.min = min;
 			this.max = max;
 		}
 
-		@Override public final String toString(Object value) {
-			return Float.toString((Float) value);
+		@Override public Double getDefaultValue() {
+			return 0d;
 		}
 
-		@Override public final Float parseObj(String value) {
-			return Float.parseFloat(value);
+		@Override public final String toString(Object value) {
+			return Double.toString((Double) value);
+		}
+
+		@Override public final Double parseObj(String value) {
+			return Double.parseDouble(value);
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Float) value, 0F)));
-			JSpinner box = new JSpinner(new SpinnerNumberModel((float) value, min, max, 0.000000001));
+			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Double) value, getDefaultValue())));
+			JSpinner box = new JSpinner(new SpinnerNumberModel((double) value, min, max, 0.000000001));
 			((JSpinner.NumberEditor) box.getEditor()).getFormat().setMaximumFractionDigits(9);
 			box.setPreferredSize(new Dimension(130, 22));
 			return box;
 		}
 
-		@Override public Float getValue(JComponent component) {
-			Number num = (Number) ((JSpinner) component).getValue();
-			return Math.round(num.floatValue() * 1000) / 1000F;
+		@Override public Double getValue(JComponent component) {
+			java.lang.Number num = (java.lang.Number) ((JSpinner) component).getValue();
+			return Math.round(num.doubleValue() * 1000) / 1000d;
 		}
 	}
 
@@ -181,6 +193,10 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 			this.arrayData = arrayData;
 		}
 
+		@Override public String getDefaultValue() {
+			return "";
+		}
+
 		@Override public final String toString(Object value) {
 			return (String) value;
 		}
@@ -192,7 +208,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
 			JComboBox<String> box = new JComboBox<>(arrayData);
 			box.setEditable(false);
-			box.setSelectedItem(Objects.requireNonNullElse((String) value, ""));
+			box.setSelectedItem(Objects.requireNonNullElse((String) value, getDefaultValue()));
 			return box;
 		}
 
