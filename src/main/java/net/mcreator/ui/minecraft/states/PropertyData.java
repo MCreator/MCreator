@@ -141,16 +141,16 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	}
 
 	/**
-	 * A subclass for float number type properties.
+	 * A subclass for fractional number type properties.
 	 */
-	public static class Number extends PropertyData<Double> {
+	public static class Num extends PropertyData<Double> {
 		private final double min, max;
 
-		public Number(String name) {
+		public Num(String name) {
 			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		}
 
-		public Number(String name, double min, double max) {
+		public Num(String name, double min, double max) {
 			super(name);
 			this.min = min;
 			this.max = max;
@@ -177,7 +177,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 		}
 
 		@Override public Double getValue(JComponent component) {
-			java.lang.Number num = (java.lang.Number) ((JSpinner) component).getValue();
+			Number num = (Number) ((JSpinner) component).getValue();
 			return Math.round(num.doubleValue() * 1000) / 1000d;
 		}
 	}
