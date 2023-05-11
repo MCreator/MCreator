@@ -23,6 +23,7 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import java.awt.*;
@@ -57,15 +58,19 @@ public class Tooltip extends SizedComponent {
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
+		String renderText = getRenderText();
+		if (text.getName() == null)
+			renderText = StringUtils.abbreviateString(renderText, 10);
+
 		g.setColor(new Color(0, 0, 0, 70));
 		g.fillRect(cx, cy, width, height);
 
 		g.setColor(new Color(230, 230, 230));
 		g.setFont(g.getFont().deriveFont(5f));
 
-		int textHeight = (int) (g.getFont().getStringBounds(getRenderText(), WYSIWYG.frc).getHeight());
-		int textWidth = (int) (g.getFont().getStringBounds(getRenderText(), WYSIWYG.frc).getWidth());
-		g.drawString(getRenderText(), cx + 2, cy + textHeight + 1);
+		int textHeight = (int) (g.getFont().getStringBounds(renderText, WYSIWYG.frc).getHeight());
+		int textWidth = (int) (g.getFont().getStringBounds(renderText, WYSIWYG.frc).getWidth());
+		g.drawString(renderText, cx + 2, cy + textHeight + 1);
 
 		if (text.getName() != null) { // we have a procedure-based text
 			g.setColor(VariableTypeLoader.BuiltInTypes.STRING.getBlocklyColor());

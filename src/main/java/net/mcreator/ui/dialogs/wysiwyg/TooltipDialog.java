@@ -28,7 +28,6 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
-import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -54,10 +53,10 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 			}
 		});
 
-		StringProcedureSelector labelText = new StringProcedureSelector(IHelpContext.NONE.withEntry("gui/tooltip_text"),
-				editor.mcreator, textField, 200,
+		StringProcedureSelector tooltipText = new StringProcedureSelector(
+				IHelpContext.NONE.withEntry("gui/tooltip_text"), editor.mcreator, textField, 200,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
-		labelText.refreshList();
+		tooltipText.refreshList();
 
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/tooltip_display_condition"), editor.mcreator,
@@ -69,7 +68,7 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
-		add("North", PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text"), labelText));
+		add("North", PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text"), tooltipText));
 
 		add("Center", PanelUtils.centerInPanel(displayCondition));
 
@@ -84,14 +83,14 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 
 		if (tooltip != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
-			labelText.setSelectedProcedure(tooltip.text);
+			tooltipText.setSelectedProcedure(tooltip.text);
 			displayCondition.setSelectedProcedure(tooltip.displayCondition);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
 		ok.addActionListener(arg01 -> {
 			setVisible(false);
-			StringProcedure textProcedure = labelText.getSelectedProcedure();
+			StringProcedure textProcedure = tooltipText.getSelectedProcedure();
 
 			if (tooltip == null) {
 				String nameBase;
@@ -103,13 +102,7 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 
 				String name = textToMachineName(editor.getComponentList(), "tooltip_", nameBase);
 
-				int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(textProcedure.getName() == null ?
-						textProcedure.getFixedValue() : textProcedure.getName(), WYSIWYG.frc).getWidth());
-
-				int textheight = (int) (WYSIWYG.fontMC.getStringBounds(textProcedure.getName() == null ?
-						textProcedure.getFixedValue() : textProcedure.getName(), WYSIWYG.frc).getHeight());
-
-				Tooltip component = new Tooltip(name, 0, 0, textwidth, textheight, textProcedure,
+				Tooltip component = new Tooltip(name, 0, 0, 24, 24, textProcedure,
 						displayCondition.getSelectedProcedure());
 
 				setEditingComponent(component);
@@ -119,8 +112,10 @@ public class TooltipDialog extends AbstractWYSIWYGDialog<Tooltip> {
 			} else {
 				int idx = editor.components.indexOf(tooltip);
 				editor.components.remove(tooltip);
-				Tooltip tooltipNew = new Tooltip(tooltip.name, tooltip.getX(), tooltip.getY(), tooltip.getWidth(editor.mcreator.getWorkspace()),
-						tooltip.getHeight(editor.mcreator.getWorkspace()), textProcedure, displayCondition.getSelectedProcedure());
+				Tooltip tooltipNew = new Tooltip(tooltip.name, tooltip.getX(), tooltip.getY(),
+						tooltip.getWidth(editor.mcreator.getWorkspace()),
+						tooltip.getHeight(editor.mcreator.getWorkspace()), textProcedure,
+						displayCondition.getSelectedProcedure());
 				editor.components.add(idx, tooltipNew);
 				setEditingComponent(tooltipNew);
 			}
