@@ -103,40 +103,40 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	/**
 	 * A subclass for integer number type properties.
 	 */
-	public static class Integer extends PropertyData<java.lang.Integer> {
+	public static class Int extends PropertyData<Integer> {
 		private final int min, max;
 
-		public Integer(String name) {
-			this(name, java.lang.Integer.MIN_VALUE, java.lang.Integer.MAX_VALUE);
+		public Int(String name) {
+			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		}
 
-		public Integer(String name, int min, int max) {
+		public Int(String name, int min, int max) {
 			super(name);
 			this.min = min;
 			this.max = max;
 		}
 
-		@Override public java.lang.Integer getDefaultValue() {
+		@Override public Integer getDefaultValue() {
 			return 0;
 		}
 
 		@Override public final String toString(Object value) {
-			return java.lang.Integer.toString((java.lang.Integer) value);
+			return Integer.toString((Integer) value);
 		}
 
-		@Override public final java.lang.Integer parseObj(String value) {
-			return java.lang.Integer.parseInt(value);
+		@Override public final Integer parseObj(String value) {
+			return Integer.parseInt(value);
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((java.lang.Integer) value, getDefaultValue())));
+			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Integer) value, getDefaultValue())));
 			JSpinner box = new JSpinner(new SpinnerNumberModel((int) value, min, max, 1));
 			box.setPreferredSize(new Dimension(105, 22));
 			return box;
 		}
 
-		@Override public java.lang.Integer getValue(JComponent component) {
-			return (java.lang.Integer) ((JSpinner) component).getValue();
+		@Override public Integer getValue(JComponent component) {
+			return (Integer) ((JSpinner) component).getValue();
 		}
 	}
 
@@ -147,7 +147,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 		private final double min, max;
 
 		public Number(String name) {
-			this(name, java.lang.Integer.MIN_VALUE, java.lang.Integer.MAX_VALUE);
+			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		}
 
 		public Number(String name, double min, double max) {
