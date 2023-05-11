@@ -176,7 +176,7 @@ public class DialogsTest {
 		Map<String, IPropertyData<?>> testProps = new LinkedHashMap<>();
 		testProps.put("logic", new PropertyData.Logic("logic"));
 		testProps.put("integer", new PropertyData.IntNumber("integer", 0, 1000));
-		testProps.put("float", new PropertyData.FloatNumber("float", 0F, 1000000F));
+		testProps.put("float", new PropertyData.DecNumber("decimal", 0F, 1000000F));
 		testProps.put("text", new PropertyData.Text("text", ElementUtil.loadDirections()));
 		Random rng = new Random();
 		LinkedHashMap<IPropertyData<?>, Object> testState = new LinkedHashMap<>();
@@ -185,7 +185,7 @@ public class DialogsTest {
 		if (rng.nextBoolean())
 			testState.put(testProps.get("integer"), rng.nextInt());
 		if (rng.nextBoolean())
-			testState.put(testProps.get("float"), rng.nextFloat());
+			testState.put(testProps.get("decimal"), rng.nextDouble());
 		if (rng.nextBoolean())
 			testState.put(testProps.get("text"), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,

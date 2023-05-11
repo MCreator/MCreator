@@ -36,6 +36,10 @@ public final class BuiltInPropertyData<T> implements IPropertyData<T> {
 		return property.getName();
 	}
 
+	@Override public T getDefaultValue() {
+		return property.getDefaultValue();
+	}
+
 	@Override public String toString(Object value) {
 		return property.toString(value);
 	}

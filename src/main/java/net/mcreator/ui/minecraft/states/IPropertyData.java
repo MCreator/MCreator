@@ -43,6 +43,14 @@ public interface IPropertyData<T> {
 	String getName();
 
 	/**
+	 * Provides the default value of type of this property. This is the "null" value of this type, which means
+	 * it may be outside value limits defined for a particular property.
+	 *
+	 * @return A default value of this property's type.
+	 */
+	T getDefaultValue();
+
+	/**
 	 * Converts passed value of this property to its string representation.
 	 *
 	 * @param value A value of this property's type.

@@ -101,8 +101,8 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		return nameField;
 	}
 
-	PropertyData.FloatNumber toPropertyData() {
-		return new PropertyData.FloatNumber(nameField.getText());
+	PropertyData.DecNumber toPropertyData() {
+		return new PropertyData.DecNumber(nameField.getText());
 	}
 
 	public Procedure getEntry() {
