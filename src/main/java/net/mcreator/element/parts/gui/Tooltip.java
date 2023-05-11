@@ -52,22 +52,29 @@ public class Tooltip extends SizedComponent {
 			return text.getName();
 	}
 
-	@Override
-	public boolean canChangeHeight() {
+	@Override public boolean canChangeHeight() {
 		return true;
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
-		g.draw3DRect(x, y, width, height,false);
-		g.drawString(text.getName() == null ? text.getFixedValue() : text.getName(), x, y - 3);
+		g.setColor(new Color(0, 0, 0, 70));
+		g.fillRect(cx, cy, width, height);
+
+		g.setColor(new Color(230, 230, 230));
+		g.setFont(g.getFont().deriveFont(5f));
+
+		int textHeight = (int) (g.getFont().getStringBounds(getRenderText(), WYSIWYG.frc).getHeight());
+		int textWidth = (int) (g.getFont().getStringBounds(getRenderText(), WYSIWYG.frc).getWidth());
+		g.drawString(getRenderText(), cx + 2, cy + textHeight + 1);
 
 		if (text.getName() != null) { // we have a procedure-based text
 			g.setColor(VariableTypeLoader.BuiltInTypes.STRING.getBlocklyColor());
-			g.drawLine(x, y - 1, (int) (x + WYSIWYG.fontMC.getStringBounds(text.getName(), WYSIWYG.frc).getWidth()), y - 1);
+			g.drawLine(cx + 2, cy + textHeight + 3, cx + 2 + textWidth, cy + textHeight + 3);
 		}
 	}
 
 	@Override public int getWeight() {
 		return -15;
 	}
+
 }
