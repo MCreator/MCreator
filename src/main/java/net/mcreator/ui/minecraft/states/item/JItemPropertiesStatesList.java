@@ -81,13 +81,13 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 		PropertyData.Logic logic = new PropertyData.Logic(""); // needed for hardcoded logic properties
 		for (DataListEntry entry : properties.values()) {
-			PropertyData.DecNumber builtin;
+			PropertyData.Number builtin;
 			if ("Number".equals(entry.getType()) && entry.getOther() instanceof Map<?, ?> other) {
 				double min = Double.parseDouble((String) other.get("min"));
 				double max = Double.parseDouble((String) other.get("max"));
-				builtin = new PropertyData.DecNumber(entry.getName(), min, max);
+				builtin = new PropertyData.Number(entry.getName(), min, max);
 			} else if ("Logic".equals(entry.getType())) {
-				builtin = new PropertyData.DecNumber(entry.getName(), 0, 1) {
+				builtin = new PropertyData.Number(entry.getName(), 0, 1) {
 					@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
 						return logic.getComponent(mcreator, value != null && (Double) value == 1);
 					}
@@ -111,7 +111,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			@Override public void componentRemoved(ContainerEvent e) {
 				if (e.getChild() instanceof Container c && c.getComponentCount() > 0
 						&& c.getComponents()[0] instanceof JItemPropertiesListEntry entry) {
-					PropertyData.DecNumber data = entry.toPropertyData();
+					PropertyData.Number data = entry.toPropertyData();
 					Set<LinkedHashMap<IPropertyData<?>, Object>> duplicateFilter = new HashSet<>();
 					statesList.stream().toList().forEach(s -> {
 						LinkedHashMap<IPropertyData<?>, Object> stateMap = s.getStateLabel().getStateMap();

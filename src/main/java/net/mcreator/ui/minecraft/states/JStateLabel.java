@@ -144,7 +144,7 @@ public class JStateLabel extends JPanel {
 		List<String> stateParts = new ArrayList<>();
 		stateMap.forEach((k, v) -> {
 			String matchSymbol = "=";
-			if (k instanceof PropertyData.IntNumber || k instanceof PropertyData.DecNumber)
+			if (k instanceof PropertyData.Integer || k instanceof PropertyData.Number)
 				matchSymbol = numberMatchType.symbol;
 			stateParts.add(k.getName() + " " + matchSymbol + " " + k.toString(v));
 		});
