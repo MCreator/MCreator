@@ -33,8 +33,8 @@ import java.util.Collections;
 public interface IOtherModElementsDependent {
 
 	/**
-	 * @return List of names of all elements (mappable or MEs) used by mod element instance and not already provided as names of entries
-	 * in the list returned by {@link #getUsedElementMappings()}
+	 * @return List of names of all elements (mappable or MEs) used by mod element instance and NOT already provided as names of entries
+	 * in the list returned by {@link #getUsedElementMappings()} or  {@link #getUsedProcedures()}
 	 * <p>
 	 * Format of string in returned collection: with {@code CUSTOM:} prefix for entries created from other mod elements or unmapped name for datalist entries
 	 */
