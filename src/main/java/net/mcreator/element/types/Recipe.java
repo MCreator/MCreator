@@ -27,7 +27,10 @@ import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 @SuppressWarnings("unused") public class Recipe extends NamespacedGeneratableElement
 		implements IOtherModElementsDependent {
@@ -178,7 +181,9 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>(Arrays.asList(recipeSlots));
+		List<MappableElement> elements = new ArrayList<>();
+		if (recipeSlots != null)
+			elements.addAll(Arrays.asList(recipeSlots));
 		elements.add(recipeReturnStack);
 		elements.add(smeltingInputStack);
 		elements.add(smeltingReturnStack);
