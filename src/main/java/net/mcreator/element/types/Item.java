@@ -218,11 +218,11 @@ import java.util.*;
 			return null;
 		}
 
-		public boolean isNormalModel() {
+		public boolean hasNormalModel() {
 			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Normal");
 		}
 
-		public boolean isToolModel() {
+		public boolean hasToolModel() {
 			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Tool");
 		}
 	}

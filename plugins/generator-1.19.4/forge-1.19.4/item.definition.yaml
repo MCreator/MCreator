@@ -33,13 +33,13 @@ list_templates:
         writer: json
         condition:
           - "renderType #= 0"
-          - "isNormalModel()"
+          - "hasNormalModel()"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/tool.json.ftl
         writer: json
         condition:
           - "renderType #= 0"
-          - "isToolModel()"
+          - "hasToolModel()"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
       - template: json/item_cmodel.json.ftl
         writer: json
