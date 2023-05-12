@@ -24,10 +24,7 @@ import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.IBlock;
-import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
-import net.mcreator.element.types.interfaces.IItemWithModel;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -46,7 +43,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
-		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
+		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox, IOtherModElementsDependent,
+		IResourcesDependent {
 
 	public String texture;
 	public String textureTop;
@@ -358,19 +356,21 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public Collection<String> getUsedElementNames() {
-		Collection<String> entries = new ArrayList<>(spawnWorldTypes);
-		entries.add("CUSTOM:" + guiBoundTo);
-		return entries;
+		List<String> elements = new ArrayList<>(spawnWorldTypes);
+		elements.add("CUSTOM:" + guiBoundTo);
+		return elements;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
-		entries.add(customDrop);
-		entries.add(creativePickItem);
-		entries.addAll(fluidRestrictions);
-		entries.addAll(restrictionBiomes);
-		entries.addAll(blocksToReplace);
-		return entries;
+		List<MappableElement> elements = new ArrayList<>();
+		elements.add(creativeTab);
+		elements.add(customDrop);
+		elements.add(creativePickItem);
+		elements.add(soundOnStep);
+		elements.addAll(fluidRestrictions);
+		elements.addAll(restrictionBiomes);
+		elements.addAll(blocksToReplace);
+		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
@@ -387,6 +387,10 @@ import java.util.stream.Collectors;
 			case ITEM -> Collections.singletonList(itemTexture);
 			default -> Collections.emptyList();
 		};
+	}
+
+	@Override public Collection<Model> getModels() {
+		return Collections.singletonList(getItemModel());
 	}
 
 	@Override public Collection<Sound> getSounds() {

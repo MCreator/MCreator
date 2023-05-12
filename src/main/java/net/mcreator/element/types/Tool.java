@@ -22,10 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.IItem;
-import net.mcreator.element.types.interfaces.IItemWithModel;
-import net.mcreator.element.types.interfaces.IItemWithTexture;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -38,7 +35,8 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 @SuppressWarnings("unused") public class Tool extends GeneratableElement
-		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
+		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture, IOtherModElementsDependent,
+		IResourcesDependent {
 
 	public int renderType;
 	public String texture;
@@ -123,14 +121,19 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
-		entries.addAll(blocksAffected);
-		entries.addAll(repairItems);
-		return entries;
+		List<MappableElement> elements = new ArrayList<>();
+		elements.add(creativeTab);
+		elements.addAll(blocksAffected);
+		elements.addAll(repairItems);
+		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
 		return Arrays.asList(glowCondition, onRightClickedInAir, onRightClickedOnBlock, onCrafted, onEntityHitWith,
 				onItemInInventoryTick, onItemInUseTick, onStoppedUsing, onBlockDestroyedWithTool, onEntitySwing);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return type == TextureType.ITEM ? Collections.singletonList(texture) : new ArrayList<>();
 	}
 }

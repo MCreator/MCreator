@@ -22,21 +22,18 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.IItem;
-import net.mcreator.element.types.interfaces.IItemWithTexture;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.*;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-public class MusicDisc extends GeneratableElement implements IItem, IItemWithTexture, ITabContainedElement {
+public class MusicDisc extends GeneratableElement
+		implements IItem, IItemWithTexture, ITabContainedElement, IOtherModElementsDependent, IResourcesDependent {
 
 	public String name;
 	public String texture;
@@ -83,9 +80,17 @@ public class MusicDisc extends GeneratableElement implements IItem, IItemWithTex
 		return providedMCItems();
 	}
 
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
+		return Collections.singletonList(creativeTab);
+	}
+
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
 		return Arrays.asList(onRightClickedInAir, onRightClickedOnBlock, onCrafted, onEntityHitWith,
 				onItemInInventoryTick, onItemInUseTick, onStoppedUsing, onEntitySwing);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return type == TextureType.ITEM ? Collections.singletonList(texture) : new ArrayList<>();
 	}
 
 	@Override public Collection<Sound> getSounds() {

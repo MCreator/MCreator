@@ -37,10 +37,7 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("unused") public class Achievement extends GeneratableElement
 		implements IOtherModElementsDependent, IResourcesDependent, IXMLProvider {
@@ -103,6 +100,14 @@ import java.util.List;
 
 			additionalData.put("triggercode", triggerCode);
 		};
+	}
+
+	@Override public Collection<String> getUsedElementNames() {
+		List<String> elements = new ArrayList<>();
+		elements.add("CUSTOM:" + rewardFunction);
+		rewardLoot.forEach(e -> elements.add("CUSTOM:" + e));
+		rewardRecipes.forEach(e -> elements.add("CUSTOM:" + e));
+		return elements;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {

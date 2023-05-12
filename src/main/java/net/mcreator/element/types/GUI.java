@@ -20,12 +20,15 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
+import net.mcreator.element.parts.gui.*;
 import net.mcreator.element.parts.gui.Button;
-import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.element.parts.gui.ImageButton;
-import net.mcreator.element.parts.gui.Slot;
+import net.mcreator.element.parts.gui.Checkbox;
+import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IGUI;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
+import net.mcreator.element.types.interfaces.IResourcesDependent;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -35,13 +38,15 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class GUI extends GeneratableElement implements IGUI {
+@SuppressWarnings("unused") public class GUI extends GeneratableElement
+		implements IGUI, IOtherModElementsDependent, IResourcesDependent {
 
 	public int type;
 	public int width, height;
@@ -159,11 +164,53 @@ import java.util.List;
 		return components;
 	}
 
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
+		return getComponentsOfType("InputSlot").stream().map(e -> ((InputSlot) e).inputLimit).toList();
+	}
+
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		Collection<Procedure> procedures = new ArrayList<>(IGUI.super.getUsedProcedures());
+		Collection<Procedure> procedures = new ArrayList<>();
 		procedures.add(onOpen);
 		procedures.add(onTick);
 		procedures.add(onClosed);
+		getComponentsOfType("EntityModel").forEach(e -> {
+			procedures.add(((EntityModel) e).entityModel);
+			procedures.add(((EntityModel) e).displayCondition);
+		});
+		getComponentsOfType("Label").forEach(e -> {
+			procedures.add(((Label) e).text);
+			procedures.add(((Label) e).displayCondition);
+		});
+		getComponentsOfType("Checkbox").forEach(e -> procedures.add(((Checkbox) e).isCheckedProcedure));
+		getComponentsOfType("ImageButton").forEach(e -> {
+			procedures.add(((ImageButton) e).onClick);
+			procedures.add(((ImageButton) e).displayCondition);
+		});
+		getComponentsOfType("Button").forEach(e -> {
+			procedures.add(((Button) e).onClick);
+			procedures.add(((Button) e).displayCondition);
+		});
+		getComponentsOfType("Image").forEach(
+				e -> procedures.add(((net.mcreator.element.parts.gui.Image) e).displayCondition));
+		getComponentsOfType("Slot").forEach(e -> {
+			procedures.add(((Slot) e).disablePickup);
+			procedures.add(((Slot) e).onSlotChanged);
+			procedures.add(((Slot) e).onTakenFromSlot);
+			procedures.add(((Slot) e).onStackTransfer);
+		});
+		getComponentsOfType("InputSlot").forEach(e -> procedures.add(((InputSlot) e).disablePlacement));
 		return procedures;
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		List<String> textures = new ArrayList<>();
+		if (type == TextureType.SCREEN) {
+			getComponentsOfType("Image").forEach(e -> textures.add(((net.mcreator.element.parts.gui.Image) e).image));
+			getComponentsOfType("ImageButton").forEach(e -> {
+				textures.add(((ImageButton) e).image);
+				textures.add(((ImageButton) e).hoveredImage);
+			});
+		}
+		return textures;
 	}
 }

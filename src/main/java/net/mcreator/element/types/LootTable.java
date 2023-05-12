@@ -40,12 +40,12 @@ import java.util.List;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>();
+		List<MappableElement> elements = new ArrayList<>();
 		for (Pool pool : pools) {
 			for (Pool.Entry entry : pool.entries)
-				entries.add(entry.item);
+				elements.add(entry.item);
 		}
-		return entries;
+		return elements;
 	}
 
 	public static class Pool {

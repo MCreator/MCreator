@@ -63,15 +63,15 @@ import java.util.Locale;
 	}
 
 	@Override public Collection<String> getUsedElementNames() {
-		return new ArrayList<>(functions);
+		return functions.stream().map(e -> "CUSTOM:" + e).toList();
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>();
-		entries.addAll(items);
-		entries.addAll(blocks);
-		entries.addAll(entities);
-		entries.addAll(biomes);
-		return entries;
+		List<MappableElement> elements = new ArrayList<>();
+		elements.addAll(items);
+		elements.addAll(blocks);
+		elements.addAll(entities);
+		elements.addAll(biomes);
+		return elements;
 	}
 }

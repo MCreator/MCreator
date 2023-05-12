@@ -63,6 +63,9 @@ import java.util.List;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return new ArrayList<>(compatibleItems);
+		List<MappableElement> elements = new ArrayList<>();
+		elements.addAll(compatibleEnchantments);
+		elements.addAll(compatibleItems);
+		return elements;
 	}
 }

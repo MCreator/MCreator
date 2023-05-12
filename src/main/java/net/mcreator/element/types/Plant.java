@@ -22,10 +22,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.IBlock;
-import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
-import net.mcreator.element.types.interfaces.IItemWithModel;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -40,7 +37,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Plant extends GeneratableElement
-		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
+		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox, IOtherModElementsDependent,
+		IResourcesDependent {
 
 	public int renderType;
 	public String texture;
@@ -231,17 +229,20 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public Collection<String> getUsedElementNames() {
-		return new ArrayList<>(spawnWorldTypes);
+		List<String> elements = new ArrayList<>(spawnWorldTypes);
+		elements.add("CUSTOM:" + suspiciousStewEffect);
+		return elements;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
-		entries.add(soundOnStep);
-		entries.add(customDrop);
-		entries.add(creativePickItem);
-		entries.addAll(canBePlacedOn);
-		entries.addAll(restrictionBiomes);
-		return entries;
+		List<MappableElement> elements = new ArrayList<>();
+		elements.add(creativeTab);
+		elements.add(soundOnStep);
+		elements.add(customDrop);
+		elements.add(creativePickItem);
+		elements.addAll(canBePlacedOn);
+		elements.addAll(restrictionBiomes);
+		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
@@ -257,6 +258,10 @@ import java.util.stream.Collectors;
 			case ITEM -> Collections.singletonList(itemTexture);
 			default -> Collections.emptyList();
 		};
+	}
+
+	@Override public Collection<Model> getModels() {
+		return Collections.singletonList(getItemModel());
 	}
 
 	@Override public Collection<Sound> getSounds() {

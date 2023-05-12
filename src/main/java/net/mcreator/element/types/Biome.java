@@ -196,10 +196,18 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = spawnEntries.stream().map(e -> e.entity).collect(Collectors.toList());
-		entries.addAll(Arrays.asList(groundBlock, undergroundBlock, underwaterBlock,
-				particleToSpawn, treeStem, treeBranch, treeVines, treeFruits));
-		return entries;
+		List<MappableElement> elements = new ArrayList<>();
+		elements.add(groundBlock);
+		elements.add(undergroundBlock);
+		elements.add(underwaterBlock);
+		elements.add(particleToSpawn);
+		elements.add(treeStem);
+		elements.add(treeBranch);
+		elements.add(treeVines);
+		elements.add(treeFruits);
+		for (SpawnEntry entry : spawnEntries)
+			elements.add(entry.entity);
+		return elements;
 	}
 
 	@Override public Collection<Sound> getSounds() {

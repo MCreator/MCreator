@@ -21,8 +21,12 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.parts.gui.Image;
+import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IGUI;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
+import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
@@ -31,11 +35,13 @@ import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.Dimension;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Overlay extends GeneratableElement implements IGUI {
+@SuppressWarnings("unused") public class Overlay extends GeneratableElement
+		implements IGUI, IOtherModElementsDependent, IResourcesDependent {
 
 	private static final Logger LOG = LogManager.getLogger(Overlay.class);
 
@@ -98,13 +104,21 @@ import java.util.List;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Collections.singletonList(displayCondition);
+		List<Procedure> procedures = new ArrayList<>();
+		procedures.add(displayCondition);
+		getComponentsOfType("Label").forEach(e -> {
+			procedures.add(((Label) e).text);
+			procedures.add(((Label) e).displayCondition);
+		});
+		getComponentsOfType("Image").forEach(e -> procedures.add(((Image) e).displayCondition));
+		return procedures;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {
 		if (type == TextureType.SCREEN) {
-			Collection<String> textures = IGUI.super.getTextures(type);
+			List<String> textures = new ArrayList<>();
 			textures.add(baseTexture);
+			getComponentsOfType("Image").forEach(e -> textures.add(((Image) e).image));
 			return textures;
 		}
 		return Collections.emptyList();

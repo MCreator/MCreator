@@ -51,7 +51,8 @@ import java.util.List;
 import java.util.*;
 
 @SuppressWarnings("unused") public class LivingEntity extends GeneratableElement
-		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider, IXMLProvider {
+		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider, IOtherModElementsDependent,
+		IResourcesDependent, IXMLProvider {
 
 	public String mobName;
 	public String mobLabel;
@@ -256,18 +257,19 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
-		entries.add(equipmentMainHand);
-		entries.add(equipmentOffHand);
-		entries.add(equipmentHelmet);
-		entries.add(equipmentBody);
-		entries.add(equipmentLeggings);
-		entries.add(equipmentBoots);
-		entries.add(mobDrop);
-		entries.add(rangedAttackItem);
-		entries.addAll(breedTriggerItems);
-		entries.addAll(restrictionBiomes);
-		return entries;
+		List<MappableElement> elements = new ArrayList<>();
+		elements.add(creativeTab);
+		elements.add(equipmentMainHand);
+		elements.add(equipmentOffHand);
+		elements.add(equipmentHelmet);
+		elements.add(equipmentBody);
+		elements.add(equipmentLeggings);
+		elements.add(equipmentBoots);
+		elements.add(mobDrop);
+		elements.add(rangedAttackItem);
+		elements.addAll(breedTriggerItems);
+		elements.addAll(restrictionBiomes);
+		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
@@ -280,6 +282,10 @@ import java.util.*;
 		return type == TextureType.ENTITY ?
 				Arrays.asList(mobModelTexture, mobModelGlowTexture) :
 				Collections.emptyList();
+	}
+
+	@Override public Collection<Model> getModels() {
+		return Collections.singletonList(getEntityModel());
 	}
 
 	@Override public Collection<Sound> getSounds() {

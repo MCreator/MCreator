@@ -19,19 +19,8 @@
 
 package net.mcreator.element.types.interfaces;
 
-import net.mcreator.ui.workspace.resources.TextureType;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
-public interface IItemWithTexture extends IResourcesDependent {
+public interface IItemWithTexture {
 
 	String getTexture();
 
-	@Override default Collection<String> getTextures(TextureType type) {
-		return type == TextureType.ITEM ?
-				new ArrayList<>(Collections.singleton(getTexture())) :
-				new ArrayList<>();
-	}
 }

@@ -27,10 +27,7 @@ import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Collections;
+import java.util.*;
 
 @SuppressWarnings("unused") public class Recipe extends NamespacedGeneratableElement
 		implements IOtherModElementsDependent {
@@ -181,20 +178,24 @@ import java.util.Collections;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		if (recipeType.equals("Crafting")) {
-			Collection<MappableElement> entries = new ArrayList<>(Arrays.asList(recipeSlots));
-			entries.add(recipeReturnStack);
-			return entries;
-		}
-		return switch (recipeType) {
-			case "Smelting" -> Arrays.asList(smeltingInputStack, smeltingReturnStack);
-			case "Blasting" -> Arrays.asList(blastingInputStack, blastingReturnStack);
-			case "Smoking" -> Arrays.asList(smokingInputStack, smokingReturnStack);
-			case "Stone cutting" -> Arrays.asList(stoneCuttingInputStack, stoneCuttingReturnStack);
-			case "Campfire cooking" -> Arrays.asList(campfireCookingInputStack, campfireCookingReturnStack);
-			case "Smithing" -> Arrays.asList(smithingInputStack, smithingInputAdditionStack, smithingReturnStack);
-			case "Brewing" -> Arrays.asList(brewingInputStack, brewingIngredientStack, brewingReturnStack);
-			default -> Collections.emptyList();
-		};
+		List<MappableElement> elements = new ArrayList<>(Arrays.asList(recipeSlots));
+		elements.add(recipeReturnStack);
+		elements.add(smeltingInputStack);
+		elements.add(smeltingReturnStack);
+		elements.add(blastingInputStack);
+		elements.add(blastingReturnStack);
+		elements.add(smokingInputStack);
+		elements.add(smokingReturnStack);
+		elements.add(stoneCuttingInputStack);
+		elements.add(stoneCuttingReturnStack);
+		elements.add(campfireCookingInputStack);
+		elements.add(campfireCookingReturnStack);
+		elements.add(smithingInputStack);
+		elements.add(smithingInputAdditionStack);
+		elements.add(smithingReturnStack);
+		elements.add(brewingInputStack);
+		elements.add(brewingIngredientStack);
+		elements.add(brewingReturnStack);
+		return elements;
 	}
 }

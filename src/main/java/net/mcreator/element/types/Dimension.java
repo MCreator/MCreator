@@ -23,11 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.ICommonType;
-import net.mcreator.element.types.interfaces.IMCItemProvider;
-import net.mcreator.element.types.interfaces.IPOIProvider;
-import net.mcreator.element.types.interfaces.IResourcesDependent;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -42,7 +38,8 @@ import java.util.List;
 import java.util.*;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ICommonType, ITabContainedElement, IMCItemProvider, IPOIProvider, IResourcesDependent {
+		implements ICommonType, ITabContainedElement, IMCItemProvider, IPOIProvider, IOtherModElementsDependent,
+		IResourcesDependent {
 
 	public List<BiomeEntry> biomesInDimension;
 
@@ -132,13 +129,13 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
-		entries.addAll(biomesInDimension);
-		entries.add(mainFillerBlock);
-		entries.add(fluidBlock);
-		entries.add(portalFrame);
-		entries.add(portalParticles);
-		return entries;
+		List<MappableElement> elements = new ArrayList<>(biomesInDimension);
+		elements.add(igniterTab);
+		elements.add(mainFillerBlock);
+		elements.add(fluidBlock);
+		elements.add(portalFrame);
+		elements.add(portalParticles);
+		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {

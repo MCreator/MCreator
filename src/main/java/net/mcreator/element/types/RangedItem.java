@@ -37,7 +37,8 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 @SuppressWarnings("unused") public class RangedItem extends GeneratableElement
-		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture {
+		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture,
+		IOtherModElementsDependent, IResourcesDependent {
 
 	public int renderType;
 	public String texture;
@@ -135,10 +136,7 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
-		entries.add(ammoItem);
-		entries.add(bulletItemTexture);
-		return entries;
+		return Arrays.asList(creativeTab, ammoItem, bulletItemTexture);
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
@@ -148,16 +146,14 @@ import java.util.*;
 
 	@Override public Collection<String> getTextures(TextureType type) {
 		return switch (type) {
-			case ITEM -> IItemWithTexture.super.getTextures(type);
+			case ITEM -> Collections.singletonList(texture);
 			case ENTITY -> Collections.singletonList(customBulletModelTexture);
 			default -> Collections.emptyList();
 		};
 	}
 
 	@Override public Collection<Model> getModels() {
-		Collection<Model> models = new ArrayList<>(IItemWithModel.super.getModels());
-		models.addAll(IEntityWithModel.super.getModels());
-		return models;
+		return Arrays.asList(getItemModel(), getEntityModel());
 	}
 
 	@Override public Collection<Sound> getSounds() {

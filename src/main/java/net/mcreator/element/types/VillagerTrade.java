@@ -45,15 +45,15 @@ import java.util.List;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>();
+		List<MappableElement> elements = new ArrayList<>();
 		for (CustomTradeEntry tradeEntry : tradeEntries) {
 			for (CustomTradeEntry.Entry entry : tradeEntry.entries) {
-				entries.add(entry.price1);
-				entries.add(entry.price2);
-				entries.add(entry.offer);
+				elements.add(entry.price1);
+				elements.add(entry.price2);
+				elements.add(entry.offer);
 			}
 		}
-		return entries;
+		return elements;
 	}
 
 	public static class CustomTradeEntry {

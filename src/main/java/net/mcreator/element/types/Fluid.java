@@ -25,6 +25,7 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IBlock;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
 import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.mapping.MappableElement;
@@ -40,7 +41,7 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 @SuppressWarnings("unused") public class Fluid extends GeneratableElement
-		implements IBlock, ITabContainedElement, IResourcesDependent {
+		implements IBlock, ITabContainedElement, IOtherModElementsDependent, IResourcesDependent {
 
 	public String name;
 	public String bucketName;
@@ -174,9 +175,7 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
-		entries.add(dripParticle);
-		return entries;
+		return Arrays.asList(creativeTab, dripParticle);
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {

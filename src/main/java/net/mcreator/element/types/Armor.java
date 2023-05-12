@@ -24,6 +24,7 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IItem;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
 import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.mapping.MappableElement;
@@ -42,7 +43,7 @@ import java.io.File;
 import java.util.*;
 
 @SuppressWarnings("unused") public class Armor extends GeneratableElement
-		implements IItem, ITabContainedElement, IResourcesDependent {
+		implements IItem, ITabContainedElement, IOtherModElementsDependent, IResourcesDependent {
 
 	public boolean enableHelmet;
 	public String textureHelmet;
@@ -350,9 +351,10 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>(ITabContainedElement.super.getUsedElementMappings());
-		entries.addAll(repairItems);
-		return entries;
+		List<MappableElement> elements = new ArrayList<>();
+		elements.add(creativeTab);
+		elements.addAll(repairItems);
+		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {

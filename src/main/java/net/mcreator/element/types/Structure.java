@@ -88,10 +88,10 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		Collection<MappableElement> entries = new ArrayList<>();
-		entries.addAll(restrictionBlocks);
-		entries.addAll(restrictionBiomes);
-		return entries;
+		List<MappableElement> elements = new ArrayList<>();
+		elements.addAll(restrictionBlocks);
+		elements.addAll(restrictionBiomes);
+		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {

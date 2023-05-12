@@ -22,16 +22,23 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
+import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
 import net.mcreator.element.types.interfaces.IPOIProvider;
+import net.mcreator.element.types.interfaces.IResourcesDependent;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
-public class VillagerProfession extends GeneratableElement implements IPOIProvider {
+public class VillagerProfession extends GeneratableElement
+		implements IOtherModElementsDependent, IPOIProvider, IResourcesDependent {
 
 	public String displayName;
 	public MItemBlock pointOfInterest;
@@ -68,4 +75,17 @@ public class VillagerProfession extends GeneratableElement implements IPOIProvid
 		return List.of(pointOfInterest);
 	}
 
+	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
+		return Collections.singletonList(pointOfInterest);
+	}
+
+	@Override public Collection<String> getTextures(TextureType type) {
+		return type == TextureType.ENTITY ?
+				Arrays.asList(professionTextureFile, zombifiedProfessionTextureFile) :
+				Collections.emptyList();
+	}
+
+	@Override public Collection<Sound> getSounds() {
+		return Collections.singletonList(actionSound);
+	}
 }

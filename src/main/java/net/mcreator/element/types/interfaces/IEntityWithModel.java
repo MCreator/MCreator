@@ -21,11 +21,7 @@ package net.mcreator.element.types.interfaces;
 import net.mcreator.io.FileIO;
 import net.mcreator.workspace.resources.Model;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-
-@SuppressWarnings("unused") public interface IEntityWithModel extends IResourcesDependent {
+@SuppressWarnings("unused") public interface IEntityWithModel {
 
 	Model getEntityModel();
 
@@ -51,7 +47,4 @@ import java.util.Collections;
 		return !isBuiltInModel();
 	}
 
-	@Override default Collection<Model> getModels() {
-		return new ArrayList<>(Collections.singleton(getEntityModel()));
-	}
 }
