@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.states;
 
 import net.mcreator.ui.MCreator;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 
@@ -36,7 +37,7 @@ public final class BuiltInPropertyData<T> implements IPropertyData<T> {
 		return property.getName();
 	}
 
-	@Override public T getDefaultValue() {
+	@Override @Nonnull public T getDefaultValue() {
 		return property.getDefaultValue();
 	}
 

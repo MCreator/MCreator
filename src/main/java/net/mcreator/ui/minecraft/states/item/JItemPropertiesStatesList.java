@@ -242,8 +242,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	public void setStates(LinkedHashMap<String, Item.ModelEntry> states) {
 		Set<LinkedHashMap<IPropertyData<?>, Object>> duplicateFilter = new HashSet<>();
 		states.forEach((state, model) -> {
-			LinkedHashMap<IPropertyData<?>, Object> stateMap = IPropertyData.passStateToMap(state,
-					buildPropertiesList());
+			LinkedHashMap<IPropertyData<?>, Object> stateMap = IPropertyData.passStateToMap(
+					state.replace("CUSTOM:", ""), buildPropertiesList());
 			if (!stateMap.isEmpty() && duplicateFilter.add(stateMap))
 				Objects.requireNonNull(addStatesEntry(false)).setEntry(state, model);
 		});
