@@ -87,7 +87,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
 			JCheckBox box = new JCheckBox() {
 				@Override public String getText() {
-					return isSelected() ? "True" : "False";
+					return isSelected() ? "true" : "false";
 				}
 			};
 			box.setSelected(checkValue(value));
