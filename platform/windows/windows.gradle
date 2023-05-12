@@ -26,7 +26,7 @@ createExe {
     productName = "MCreator"
     companyName = "Pylo"
 
-    icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/icon.ico"
+    icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/" + (project.snapshot ? "icon_eap.ico" : "icon.ico")
 }
 
 tasks.register('exportWin64', Copy.class) {
