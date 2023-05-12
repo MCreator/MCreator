@@ -84,8 +84,6 @@ public class BranchSwitchAction {
 				mcreator.statusBar.setPersistentMessage(L10N.t("statusbar.vcs.switched_working_branch",
 						FilenameUtilsPatched.getName(branchToSwitchTo)));
 
-				mcreator.statusBar.reloadVCSStatus();
-
 				mcreator.mv.updateMods();
 			} catch (GitAPIException e) {
 				LOG.error("Failed to switch branch!", e);
