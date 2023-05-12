@@ -179,13 +179,12 @@ import java.util.*;
 		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
 	}
 
-	public LinkedHashMap<String, Procedure> filterProperties() {
-		DataListLoader.loadDataList("itemproperties").stream()
-				.filter(e -> e.isSupportedInWorkspace(getModElement().getWorkspace()))
-				.forEach(property -> customProperties.remove(property.getName()));
-		return customProperties;
-	}
-
+	/**
+	 * Returns a copy of {@link #modelsMap} referencing only properties supported in the current workspace.
+	 * Should only be used by generators to filter invalid data.
+	 *
+	 * @return Models map with contents matching current generator.
+	 */
 	public LinkedHashMap<String, ModelEntry> filterModels() {
 		LinkedHashMap<String, ModelEntry> models = new LinkedHashMap<>();
 		List<String> builtinProperties = DataListLoader.loadDataList("itemproperties").stream()
@@ -194,8 +193,8 @@ import java.util.*;
 		modelsMap.forEach((state, model) -> {
 			List<String> states = new ArrayList<>();
 			for (String match : state.split(",")) {
-				String property = match.split("=")[0];
-				if (customProperties.containsKey(property) || builtinProperties.contains(property))
+				String prop = match.split("=")[0];
+				if (customProperties.containsKey(prop.replace("CUSTOM:", "")) || builtinProperties.contains(prop))
 					states.add(match);
 			}
 			models.putIfAbsent(String.join(",", states), model);

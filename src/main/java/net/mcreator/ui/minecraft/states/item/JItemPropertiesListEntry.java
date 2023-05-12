@@ -47,8 +47,8 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 	private final ProcedureSelector value;
 
-	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
-			List<JItemPropertiesListEntry> entryList, JPropertyNameField nameField, int propertyId) {
+	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JItemPropertiesStatesList listPanel,
+			JPanel parent, List<JItemPropertiesListEntry> entryList, JPropertyNameField nameField, int propertyId) {
 		super(new BorderLayout(10, 5));
 		this.nameField = nameField;
 
@@ -67,19 +67,12 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 						L10N.label("elementgui.item.custom_property.name")), nameField)));
 		add("Center", value);
 
-		JComponent container = PanelUtils.expandHorizontally(this);
-		parent.add(container);
-		entryList.add(this);
-
 		remove.setText(L10N.t("elementgui.item.custom_property.remove"));
-		remove.addActionListener(e -> {
-			parent.remove(container);
-			parent.revalidate();
-			parent.repaint();
-			entryList.remove(this);
-		});
+		remove.addActionListener(e -> listPanel.removeProperty(this));
 		add("East", PanelUtils.pullElementUp(remove));
 
+		entryList.add(this);
+		parent.add(this);
 		parent.revalidate();
 		parent.repaint();
 	}
@@ -101,8 +94,8 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		return nameField;
 	}
 
-	PropertyData.Number toPropertyData() {
-		return new PropertyData.Number(nameField.getText());
+	PropertyData.Num toPropertyData() {
+		return new PropertyData.Num(nameField.getText());
 	}
 
 	public Procedure getEntry() {

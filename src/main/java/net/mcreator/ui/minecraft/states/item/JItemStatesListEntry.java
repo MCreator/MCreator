@@ -81,9 +81,6 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		JComponent imo = PanelUtils.northAndCenterElement(HelpUtils.wrapWithHelpButton(gui.withEntry("item/model"),
 				L10N.label("elementgui.item.custom_state.model")), model);
 
-		parent.add(this);
-		entryList.add(this);
-
 		remove.setText(L10N.t("elementgui.item.custom_state.remove"));
 		remove.addActionListener(e -> {
 			entryList.remove(this);
@@ -96,6 +93,8 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 		add("West", PanelUtils.westAndCenterElement(ito, imo, 10, 0));
 		add("East", PanelUtils.pullElementUp(remove));
 
+		entryList.add(this);
+		parent.add(this);
 		parent.revalidate();
 		parent.repaint();
 	}

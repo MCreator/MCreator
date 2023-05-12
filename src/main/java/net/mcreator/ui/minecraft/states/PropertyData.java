@@ -21,10 +21,10 @@ package net.mcreator.ui.minecraft.states;
 
 import net.mcreator.ui.MCreator;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.util.Objects;
 
 public abstract class PropertyData<T> implements IPropertyData<T> {
 	private String name;
@@ -72,7 +72,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 			super(name);
 		}
 
-		@Override public Boolean getDefaultValue() {
+		@Override @Nonnull public Boolean getDefaultValue() {
 			return false;
 		}
 
@@ -90,7 +90,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 					return isSelected() ? "True" : "False";
 				}
 			};
-			box.setSelected(Objects.requireNonNullElse((Boolean) value, getDefaultValue()));
+			box.setSelected(checkValue(value));
 			box.setPreferredSize(new Dimension(54, 25));
 			return box;
 		}
@@ -116,7 +116,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 			this.max = max;
 		}
 
-		@Override public Integer getDefaultValue() {
+		@Override @Nonnull public Integer getDefaultValue() {
 			return 0;
 		}
 
@@ -129,7 +129,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Integer) value, getDefaultValue())));
+			value = Math.max(min, Math.min(max, checkValue(value)));
 			JSpinner box = new JSpinner(new SpinnerNumberModel((int) value, min, max, 1));
 			box.setPreferredSize(new Dimension(105, 22));
 			return box;
@@ -141,22 +141,22 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	}
 
 	/**
-	 * A subclass for float number type properties.
+	 * A subclass for fractional number type properties.
 	 */
-	public static class Number extends PropertyData<Double> {
+	public static class Num extends PropertyData<Double> {
 		private final double min, max;
 
-		public Number(String name) {
+		public Num(String name) {
 			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		}
 
-		public Number(String name, double min, double max) {
+		public Num(String name, double min, double max) {
 			super(name);
 			this.min = min;
 			this.max = max;
 		}
 
-		@Override public Double getDefaultValue() {
+		@Override @Nonnull public Double getDefaultValue() {
 			return 0d;
 		}
 
@@ -169,7 +169,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Double) value, getDefaultValue())));
+			value = Math.max(min, Math.min(max, checkValue(value)));
 			JSpinner box = new JSpinner(new SpinnerNumberModel((double) value, min, max, 0.000000001));
 			((JSpinner.NumberEditor) box.getEditor()).getFormat().setMaximumFractionDigits(9);
 			box.setPreferredSize(new Dimension(130, 22));
@@ -177,8 +177,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 		}
 
 		@Override public Double getValue(JComponent component) {
-			java.lang.Number num = (java.lang.Number) ((JSpinner) component).getValue();
-			return Math.round(num.doubleValue() * 1000) / 1000d;
+			return (Double) ((JSpinner) component).getValue();
 		}
 	}
 
@@ -193,7 +192,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 			this.arrayData = arrayData;
 		}
 
-		@Override public String getDefaultValue() {
+		@Override @Nonnull public String getDefaultValue() {
 			return "";
 		}
 
@@ -208,7 +207,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
 			JComboBox<String> box = new JComboBox<>(arrayData);
 			box.setEditable(false);
-			box.setSelectedItem(Objects.requireNonNullElse((String) value, getDefaultValue()));
+			box.setSelectedItem(checkValue(value));
 			return box;
 		}
 

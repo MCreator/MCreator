@@ -1,5 +1,7 @@
-damaged: "minecraft:damaged"
-damage: "minecraft:damage"
-lefthanded: "minecraft:lefthanded"
-cooldown: "minecraft:cooldown"
-custom_model_data: "minecraft:custom_model_data"
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template: "@modid:@name"
+damaged: damaged
+damage: damage
+lefthanded: lefthanded
+cooldown: cooldown
+custom_model_data: custom_model_data

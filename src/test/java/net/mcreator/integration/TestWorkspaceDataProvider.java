@@ -1076,8 +1076,9 @@ public class TestWorkspaceDataProvider {
 				for (int i = 0; i < size2; i++) {
 					StringBuilder state = new StringBuilder();
 					for (int j = 2; j <= size1; j++) {
-						if (random.nextBoolean())
-							state.append(",property").append(j).append("=").append(random.nextFloat(0F, 1000000F));
+						if (random.nextBoolean()) {
+							state.append(",CUSTOM:property").append(j).append("=").append(random.nextDouble());
+						}
 					}
 
 					Item.ModelEntry model = new Item.ModelEntry();
@@ -1085,7 +1086,7 @@ public class TestWorkspaceDataProvider {
 					model.texture = i == 0 ? "test" : "test" + i;
 					model.renderType = 0;
 
-					item.modelsMap.put("property1=" + random.nextFloat(0F, 1000000F) + state, model);
+					item.modelsMap.put("CUSTOM:property1=" + random.nextDouble() + state, model);
 				}
 			}
 			item.isFood = _true;
