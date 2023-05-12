@@ -52,22 +52,6 @@ public interface IPropertyData<T> {
 	@Nonnull T getDefaultValue();
 
 	/**
-	 * Checks if the provided value is different from {@code null} and its type matches type of this property
-	 * or its subtype. Falls back to the default property value if this condition is not met.
-	 *
-	 * @param value A value of this property's type.
-	 * @return Passed value, or the default one if {@code null}.
-	 */
-	@SuppressWarnings("unchecked") default T checkValue(Object value) {
-		try {
-			if (value != null)
-				return (T) value;
-		} catch (ClassCastException ignored) {
-		}
-		return getDefaultValue();
-	}
-
-	/**
 	 * Converts passed value of this property to its string representation.
 	 *
 	 * @param value A value of this property's type.
@@ -90,7 +74,7 @@ public interface IPropertyData<T> {
 	 * @param mcreator The future parent window of the component returned.
 	 * @param value    Possible value of this property.
 	 * @return A UI component that accepts values of type {@link T}.
-	 * @implNote It is recommended to use {@link #checkValue(Object)} to ensure the value is of specified type.
+	 * @throws ClassCastException if the type of passed value doesn't match the type of property or its subtype.
 	 */
 	JComponent getComponent(MCreator mcreator, @Nullable Object value);
 

@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Objects;
 
 public abstract class PropertyData<T> implements IPropertyData<T> {
 	private String name;
@@ -90,7 +91,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 					return isSelected() ? "true" : "false";
 				}
 			};
-			box.setSelected(checkValue(value));
+			box.setSelected(Objects.requireNonNullElse((Boolean) value, getDefaultValue()));
 			box.setPreferredSize(new Dimension(54, 25));
 			return box;
 		}
@@ -129,7 +130,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Math.max(min, Math.min(max, checkValue(value)));
+			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Integer) value, getDefaultValue())));
 			JSpinner box = new JSpinner(new SpinnerNumberModel((int) value, min, max, 1));
 			box.setPreferredSize(new Dimension(105, 22));
 			return box;
@@ -169,7 +170,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			value = Math.max(min, Math.min(max, checkValue(value)));
+			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Double) value, getDefaultValue())));
 			JSpinner box = new JSpinner(new SpinnerNumberModel((double) value, min, max, 0.000000001));
 			((JSpinner.NumberEditor) box.getEditor()).getFormat().setMaximumFractionDigits(9);
 			box.setPreferredSize(new Dimension(130, 22));
@@ -207,7 +208,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
 			JComboBox<String> box = new JComboBox<>(arrayData);
 			box.setEditable(false);
-			box.setSelectedItem(checkValue(value));
+			box.setSelectedItem(Objects.requireNonNullElse((String) value, getDefaultValue()));
 			return box;
 		}
 
