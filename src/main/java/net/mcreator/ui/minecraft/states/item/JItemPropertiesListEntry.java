@@ -21,7 +21,6 @@ package net.mcreator.ui.minecraft.states.item;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -47,14 +46,14 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 	private final ProcedureSelector value;
 
-	public JItemPropertiesListEntry(MCreator mcreator, IHelpContext gui, JItemPropertiesStatesList listPanel,
-			JPanel parent, List<JItemPropertiesListEntry> entryList, JPropertyNameField nameField, int propertyId) {
+	public JItemPropertiesListEntry(JItemPropertiesStatesList listPanel, IHelpContext gui, JPanel propertyEntries,
+			List<JItemPropertiesListEntry> propertiesList, JPropertyNameField nameField, int propertyId) {
 		super(new BorderLayout(10, 5));
 		this.nameField = nameField;
 
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		value = new ProcedureSelector(gui.withEntry("item/custom_property_value"), mcreator,
+		value = new ProcedureSelector(gui.withEntry("item/custom_property_value"), listPanel.getMCreator(),
 				L10N.t("elementgui.item.custom_property.value"),
 				L10N.t("elementgui.item.custom_property.value") + propertyId, ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.NUMBER,
@@ -71,10 +70,11 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		remove.addActionListener(e -> listPanel.removeProperty(this));
 		add("East", PanelUtils.pullElementUp(remove));
 
-		entryList.add(this);
-		parent.add(this);
-		parent.revalidate();
-		parent.repaint();
+		propertiesList.add(this);
+
+		propertyEntries.add(this);
+		propertyEntries.revalidate();
+		propertyEntries.repaint();
 	}
 
 	@Override public void setEnabled(boolean enabled) {

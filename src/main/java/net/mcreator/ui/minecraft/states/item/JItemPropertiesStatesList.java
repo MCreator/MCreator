@@ -176,14 +176,14 @@ public class JItemPropertiesStatesList extends JEntriesList {
 						new RegistryNameValidator(nameField, L10N.t("elementgui.item.custom_properties.validator"))));
 		nameField.enableRealtimeValidation();
 
-		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(mcreator, gui, this, propertyEntries, propertiesList,
+		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(this, gui, propertyEntries, propertiesList,
 				nameField, propertyId.get());
 		registerEntryUI(pe);
 		return pe;
 	}
 
 	private JItemStatesListEntry addStatesEntry(boolean initState) {
-		JStateLabel stateLabel = new JStateLabel(mcreator, this::buildPropertiesList,
+		JStateLabel stateLabel = new JStateLabel(mcreator, this::getPropertiesList,
 				() -> statesList.stream().map(JItemStatesListEntry::getStateLabel)).setNumberMatchType(
 				JStateLabel.NumberMatchType.GREATER_OR_EQUAL);
 		if (initState && !stateLabel.editState())
@@ -216,7 +216,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		stateEntries.repaint();
 	}
 
-	private List<IPropertyData<?>> buildPropertiesList() {
+	private List<IPropertyData<?>> getPropertiesList() {
 		List<IPropertyData<?>> props = new ArrayList<>();
 		propertiesList.stream().map(JItemPropertiesListEntry::toPropertyData).forEach(props::add);
 		props.addAll(builtinProperties.values());
@@ -243,7 +243,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		Set<LinkedHashMap<IPropertyData<?>, Object>> duplicateFilter = new HashSet<>();
 		states.forEach((state, model) -> {
 			LinkedHashMap<IPropertyData<?>, Object> stateMap = IPropertyData.passStateToMap(
-					state.replace("CUSTOM:", ""), buildPropertiesList());
+					state.replace("CUSTOM:", ""), getPropertiesList());
 			if (!stateMap.isEmpty() && duplicateFilter.add(stateMap))
 				Objects.requireNonNull(addStatesEntry(false)).setEntry(state, model);
 		});
