@@ -152,7 +152,7 @@ public class JStateLabel extends JPanel {
 		List<String> stateParts = new ArrayList<>();
 		stateMap.forEach((k, v) -> {
 			String matchSymbol = "=";
-			if (k instanceof PropertyData.Int || k instanceof PropertyData.Num)
+			if (k instanceof PropertyData.IntegerType || k instanceof PropertyData.NumberType)
 				matchSymbol = numberMatchType.symbol;
 			stateParts.add(k.getName() + " " + matchSymbol + " " + k.toString(v));
 		});

@@ -174,10 +174,12 @@ public class DialogsTest {
 
 	@Test public void testStateEditorDialog() throws Throwable {
 		Map<String, IPropertyData<?>> testProps = new LinkedHashMap<>();
-		testProps.put("logic", new PropertyData.Logic("logic"));
-		testProps.put("integer", new PropertyData.Int("integer"));
-		testProps.put("number", new PropertyData.Num("number", -0.001d, 1000000d));
-		testProps.put("text", new PropertyData.Text("text", ElementUtil.loadDirections()));
+		testProps.put("logic", new PropertyData.LogicType("logic"));
+		testProps.put("integer", new PropertyData.IntegerType("integer"));
+		testProps.put("integer2", new PropertyData.IntegerType("integer", -100, 100));
+		testProps.put("number", new PropertyData.NumberType("number"));
+		testProps.put("number2", new PropertyData.NumberType("number", -0.0001, 1000000));
+		testProps.put("text", new PropertyData.StringType("text", ElementUtil.loadDirections()));
 		Random rng = new Random();
 		LinkedHashMap<IPropertyData<?>, Object> testState = new LinkedHashMap<>();
 		if (rng.nextBoolean())

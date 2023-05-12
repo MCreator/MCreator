@@ -66,9 +66,9 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	/**
 	 * A subclass for boolean type properties.
 	 */
-	public static class Logic extends PropertyData<Boolean> {
+	public static class LogicType extends PropertyData<Boolean> {
 
-		public Logic(String name) {
+		public LogicType(String name) {
 			super(name);
 		}
 
@@ -103,14 +103,14 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	/**
 	 * A subclass for integer number type properties.
 	 */
-	public static class Int extends PropertyData<Integer> {
+	public static class IntegerType extends PropertyData<Integer> {
 		private final int min, max;
 
-		public Int(String name) {
+		public IntegerType(String name) {
 			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		}
 
-		public Int(String name, int min, int max) {
+		public IntegerType(String name, int min, int max) {
 			super(name);
 			this.min = min;
 			this.max = max;
@@ -143,14 +143,14 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	/**
 	 * A subclass for fractional number type properties.
 	 */
-	public static class Num extends PropertyData<Double> {
+	public static class NumberType extends PropertyData<Double> {
 		private final double min, max;
 
-		public Num(String name) {
+		public NumberType(String name) {
 			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
 		}
 
-		public Num(String name, double min, double max) {
+		public NumberType(String name, double min, double max) {
 			super(name);
 			this.min = min;
 			this.max = max;
@@ -184,10 +184,10 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	/**
 	 * A subclass for string type properties.
 	 */
-	public static class Text extends PropertyData<String> {
+	public static class StringType extends PropertyData<String> {
 		private final String[] arrayData;
 
-		public Text(String name, String[] arrayData) {
+		public StringType(String name, String[] arrayData) {
 			super(name);
 			this.arrayData = arrayData;
 		}
