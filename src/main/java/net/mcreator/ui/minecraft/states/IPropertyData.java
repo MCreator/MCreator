@@ -110,33 +110,16 @@ public interface IPropertyData<T> {
 		public IPropertyData<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			JsonObject jsonObject = json.getAsJsonObject();
-
-			String propertyTypeName = jsonObject.get("type").getAsString();
-			boolean builtIn = false;
-			if (propertyTypeName.startsWith("$")) {
-				builtIn = true;
-				propertyTypeName = propertyTypeName.substring(1);
-			}
-
-			if (builtIn)
-				return new BuiltInPropertyData<>(
-						(PropertyData<?>) gson.fromJson(jsonObject, typeMappings.get(propertyTypeName)));
-			else
-				return gson.fromJson(jsonObject, typeMappings.get(propertyTypeName));
+			PropertyData<?> data = gson.fromJson(jsonObject, typeMappings.get(jsonObject.get("type").getAsString()));
+			return !jsonObject.get("name").getAsString().startsWith("CUSTOM:") ? new BuiltInPropertyData<>(data) : data;
 		}
 
 		@Override
 		public JsonElement serialize(IPropertyData<?> propertyData, Type typeOfSrc, JsonSerializationContext context) {
-			JsonObject retval = new JsonObject();
-			retval.addProperty("name", propertyData.getName());
-
-			if (propertyData instanceof BuiltInPropertyData<?> builtInPropertyData) {
-				retval.addProperty("type", "$" + typeMappingsReverse.get(builtInPropertyData.getUnderlyingType()));
-			} else {
-				retval.addProperty("type", typeMappingsReverse.get(propertyData.getClass()));
-			}
-
-			return retval;
+			JsonObject retVal = new JsonObject();
+			retVal.addProperty("name", propertyData.getName());
+			retVal.addProperty("type", typeMappingsReverse.get(propertyData.getClass()));
+			return retVal;
 		}
 	}
 
