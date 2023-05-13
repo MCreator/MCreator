@@ -25,6 +25,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.IPropertyData;
+import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
 
 import javax.annotation.Nullable;
@@ -47,17 +48,20 @@ public class StateEditorDialog {
 	 * @return The resulting properties' values map after editing session is complete, or {@code null} if the operation
 	 * has been canceled (via cancel/close button).
 	 */
-	@Nullable public static StateMap open(MCreator mcreator, List<IPropertyData<?>> properties, StateMap stateMap) {
+	@Nullable public static StateMap open(MCreator mcreator, List<IPropertyData<?>> properties, StateMap stateMap,
+			String numberMatchSymbol) {
 		AtomicReference<StateMap> retVal = new AtomicReference<>();
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
 
 		Map<IPropertyData<?>, StatePart> entryMap = new HashMap<>();
 		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
-		for (IPropertyData<?> param : properties) {
-			Object value = stateMap != null ? stateMap.get(param) : null;
-			StatePart part = new StatePart(param.getName(), param.getComponent(mcreator, value));
+		for (IPropertyData<?> data : properties) {
+			Object value = stateMap != null ? stateMap.get(data) : null;
+			StatePart part = new StatePart(data.getName(), data.getDataClass() == PropertyData.IntegerType.class
+					|| data.getDataClass() == PropertyData.NumberType.class ? numberMatchSymbol : "=",
+					data.getComponent(mcreator, value));
 			part.useEntry.setSelected(value != null);
-			entryMap.put(param, part);
+			entryMap.put(data, part);
 			entries.add(PanelUtils.expandHorizontally(part));
 		}
 
@@ -70,10 +74,10 @@ public class StateEditorDialog {
 
 		ok.addActionListener(e -> {
 			retVal.set(new StateMap());
-			for (IPropertyData<?> param : properties) {
-				StatePart part = entryMap.get(param);
+			for (IPropertyData<?> data : properties) {
+				StatePart part = entryMap.get(data);
 				if (part.useEntry.isSelected())
-					retVal.get().put(param, param.getValue(part.entryComponent));
+					retVal.get().put(data, data.getValue(part.entryComponent));
 			}
 			dialog.setVisible(false);
 		});
@@ -95,14 +99,14 @@ public class StateEditorDialog {
 		private final JCheckBox useEntry = new JCheckBox();
 		private final JComponent entryComponent;
 
-		private StatePart(String property, JComponent component) {
+		private StatePart(String property, String matchSymbol, JComponent component) {
 			super(new FlowLayout(FlowLayout.LEFT));
 			entryComponent = component;
 
 			JPanel settings = new JPanel();
 			settings.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			settings.add(new JLabel(property.replace("CUSTOM:", "")));
-			settings.add(new JLabel("="));
+			settings.add(new JLabel(matchSymbol));
 			settings.add(entryComponent);
 
 			useEntry.setSelected(true);

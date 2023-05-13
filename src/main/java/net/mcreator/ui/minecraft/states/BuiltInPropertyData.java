@@ -38,6 +38,10 @@ public final class BuiltInPropertyData<T> implements IPropertyData<T> {
 		return property.getName();
 	}
 
+	@Override public Class<?> getDataClass() {
+		return property.getDataClass();
+	}
+
 	@Override @Nonnull public T getDefaultValue() {
 		return property.getDefaultValue();
 	}
@@ -69,9 +73,4 @@ public final class BuiltInPropertyData<T> implements IPropertyData<T> {
 	@Override public String toString() {
 		return getName();
 	}
-
-	public Class<?> getUnderlyingType() {
-		return property.getClass();
-	}
-
 }

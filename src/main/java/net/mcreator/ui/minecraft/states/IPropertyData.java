@@ -54,6 +54,13 @@ public sealed interface IPropertyData<T> permits BuiltInPropertyData, PropertyDa
 	String getName();
 
 	/**
+	 * @return The type of this property data object.
+	 */
+	default Class<?> getDataClass() {
+		return getClass();
+	}
+
+	/**
 	 * Provides the default value of type of this property. This is the "null" value of this type, which means
 	 * it may be outside value limits defined for a particular property.
 	 *
@@ -118,10 +125,7 @@ public sealed interface IPropertyData<T> permits BuiltInPropertyData, PropertyDa
 		public JsonElement serialize(IPropertyData<?> propertyData, Type typeOfSrc, JsonSerializationContext context) {
 			JsonObject retVal = new JsonObject();
 			retVal.addProperty("name", propertyData.getName());
-			if (propertyData instanceof BuiltInPropertyData builtin)
-				retVal.addProperty("type", typeMappingsReverse.get(builtin.getUnderlyingType()));
-			else
-				retVal.addProperty("type", typeMappingsReverse.get(propertyData.getClass()));
+			retVal.addProperty("type", typeMappingsReverse.get(propertyData.getDataClass()));
 			return retVal;
 		}
 	}

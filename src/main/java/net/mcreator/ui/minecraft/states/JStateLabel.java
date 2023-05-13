@@ -85,7 +85,7 @@ public class JStateLabel extends JPanel {
 	}
 
 	public boolean editState() {
-		StateMap stateMap = StateEditorDialog.open(mcreator, properties.get(), getStateMap());
+		StateMap stateMap = StateEditorDialog.open(mcreator, properties.get(), getStateMap(), numberMatchType.symbol);
 		if (stateMap == null)
 			return false;
 
@@ -137,13 +137,8 @@ public class JStateLabel extends JPanel {
 		List<String> stateParts = new ArrayList<>();
 		stateMap.forEach((k, v) -> {
 			String matchSymbol = "=";
-			if (k instanceof PropertyData.IntegerType || k instanceof PropertyData.NumberType) {
+			if (k.getDataClass() == PropertyData.IntegerType.class || k.getDataClass() == PropertyData.NumberType.class)
 				matchSymbol = numberMatchType.symbol;
-			} else if (k instanceof BuiltInPropertyData<?> builtin) {
-				Class<?> type = builtin.getUnderlyingType();
-				if (type == PropertyData.IntegerType.class || type == PropertyData.NumberType.class)
-					matchSymbol = numberMatchType.symbol;
-			}
 			stateParts.add(k.getName().replace("CUSTOM:", "") + " " + matchSymbol + " " + k.toString(v));
 		});
 		label.setText(L10N.t("components.state_label.when",
