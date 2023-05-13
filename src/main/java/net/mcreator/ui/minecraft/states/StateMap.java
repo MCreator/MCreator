@@ -43,6 +43,11 @@ import java.util.stream.Collectors;
 	private static final Map<Class<? extends IPropertyData<?>>, String> typeMappingsReverse = typeMappings.entrySet()
 			.stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
 
+	/**
+	 * We need a custom serializer/deserializer for this class because we need to store the type of property.
+	 * Technically type could be determined from properties list, but we don't have a reference to it, and it also
+	 * depends on the ME type, so this is second-best option. There is minimal overhead in storing the type.
+	 */
 	public static class GSONAdapter implements JsonSerializer<StateMap>, JsonDeserializer<StateMap> {
 
 		@Override public StateMap deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
