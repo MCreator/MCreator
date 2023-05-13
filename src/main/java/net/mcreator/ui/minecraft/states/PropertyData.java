@@ -106,7 +106,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	 * A subclass for integer number type properties.
 	 */
 	public static class IntegerType extends PropertyData<Integer> {
-		private final int min, max;
+		private transient final int min, max;
 
 		public IntegerType(String name) {
 			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
@@ -146,7 +146,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	 * A subclass for fractional number type properties.
 	 */
 	public static class NumberType extends PropertyData<Double> {
-		private final double min, max;
+		private transient final double min, max;
 
 		public NumberType(String name) {
 			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
@@ -187,7 +187,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	 * A subclass for string type properties.
 	 */
 	public static class StringType extends PropertyData<String> {
-		private final String[] arrayData;
+		private transient final String[] arrayData;
 
 		public StringType(String name, String[] arrayData) {
 			super(name);

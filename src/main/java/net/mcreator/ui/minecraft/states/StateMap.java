@@ -23,64 +23,44 @@ import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
 
 import java.lang.reflect.Type;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * This object holds the state map. It is a map of property (property name and its description) to value of the state.
  */
 @JsonAdapter(StateMap.GSONAdapter.class) public class StateMap extends LinkedHashMap<IPropertyData<?>, Object> {
 
-	private static final Map<String, Class<? extends IPropertyData<?>>> typeMappings = new HashMap<>() {{
-		put("logic", PropertyData.LogicType.class);
-		put("integer", PropertyData.IntegerType.class);
-		put("number", PropertyData.NumberType.class);
-		put("string", PropertyData.StringType.class);
-	}};
+	private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
+			.registerTypeHierarchyAdapter(IPropertyData.class, new IPropertyData.GSONAdapter()).create();
 
-	private static final Map<Class<? extends IPropertyData<?>>, String> typeMappingsReverse = typeMappings.entrySet()
-			.stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
-
-	/**
-	 * We need a custom serializer/deserializer for this class because we need to store the type of property.
-	 * Technically type could be determined from properties list, but we don't have a reference to it, and it also
-	 * depends on the ME type, so this is second-best option. There is minimal overhead in storing the type.
-	 */
 	public static class GSONAdapter implements JsonSerializer<StateMap>, JsonDeserializer<StateMap> {
 
 		@Override public StateMap deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			StateMap stateMap = new StateMap();
 
-			JsonObject jsonObject = json.getAsJsonObject();
-			jsonObject.keySet().forEach(propertyName -> {
-				JsonObject propertyObject = jsonObject.getAsJsonObject(propertyName);
+			JsonArray jsonArray = json.getAsJsonArray();
+			jsonArray.forEach(jsonElement -> {
+				JsonObject entryObject = jsonElement.getAsJsonObject();
 
-				String propertyTypeName = propertyObject.get("type").getAsString();
-				JsonElement propertyValue = propertyObject.get("value");
-
-				IPropertyData<?> propertyData = context.deserialize(propertyObject, typeMappings.get(propertyTypeName));
-				stateMap.put(propertyData, propertyData.parseObj(propertyValue));
+				IPropertyData<?> propertyData = gson.fromJson(entryObject.get("property"), IPropertyData.class);
+				stateMap.put(propertyData, propertyData.parseObj(entryObject.get("value")));
 			});
 
 			return stateMap;
 		}
 
 		@Override public JsonElement serialize(StateMap stateMap, Type typeOfSrc, JsonSerializationContext context) {
-			JsonObject retval = new JsonObject();
+			JsonArray retval = new JsonArray();
 
 			// iterate key/value pairs of stateMap
 			for (Map.Entry<IPropertyData<?>, Object> entry : stateMap.entrySet()) {
-				String propertyName = entry.getKey().getName();
-				Object propertyValue = entry.getValue();
-
 				JsonObject propertyObject = new JsonObject();
-				propertyObject.addProperty("type", typeMappingsReverse.get(entry.getKey().getClass()));
-				propertyObject.add("value", context.serialize(propertyValue));
+				propertyObject.add("property", gson.toJsonTree(entry.getKey()));
+				propertyObject.add("value", gson.toJsonTree(entry.getValue()));
 
-				retval.add(propertyName, propertyObject);
+				retval.add(propertyObject);
 			}
 
 			return retval;

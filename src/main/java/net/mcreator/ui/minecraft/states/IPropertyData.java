@@ -19,12 +19,16 @@
 
 package net.mcreator.ui.minecraft.states;
 
-import com.google.gson.JsonElement;
+import com.google.gson.*;
 import net.mcreator.ui.MCreator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Instances of this class store information about certain property (its name, type,
@@ -33,6 +37,16 @@ import javax.swing.*;
  * @param <T> Type of values this property can take.
  */
 public interface IPropertyData<T> {
+
+	Map<String, Class<? extends PropertyData<?>>> typeMappings = new HashMap<>() {{
+		put("logic", PropertyData.LogicType.class);
+		put("integer", PropertyData.IntegerType.class);
+		put("number", PropertyData.NumberType.class);
+		put("string", PropertyData.StringType.class);
+	}};
+
+	Map<Class<? extends PropertyData<?>>, String> typeMappingsReverse = typeMappings.entrySet().stream()
+			.collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
 
 	/**
 	 * @return The name of this property.
@@ -81,5 +95,49 @@ public interface IPropertyData<T> {
 	 * @return A value of this property's type.
 	 */
 	T getValue(JComponent component);
+
+	/**
+	 * We need a custom serializer/deserializer for this class because we need to store the type of property.
+	 * Technically type could be determined from properties list, but we don't have a reference to it, and it also
+	 * depends on the ME type, so this is second-best option. There is minimal overhead in storing the type.
+	 */
+	class GSONAdapter implements JsonSerializer<IPropertyData<?>>, JsonDeserializer<IPropertyData<?>> {
+
+		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
+				.create();
+
+		@Override
+		public IPropertyData<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+				throws JsonParseException {
+			JsonObject jsonObject = json.getAsJsonObject();
+
+			String propertyTypeName = jsonObject.get("type").getAsString();
+			boolean builtIn = false;
+			if (propertyTypeName.startsWith("$")) {
+				builtIn = true;
+				propertyTypeName = propertyTypeName.substring(1);
+			}
+
+			if (builtIn)
+				return new BuiltInPropertyData<>(
+						(PropertyData<?>) gson.fromJson(jsonObject, typeMappings.get(propertyTypeName)));
+			else
+				return gson.fromJson(jsonObject, typeMappings.get(propertyTypeName));
+		}
+
+		@Override
+		public JsonElement serialize(IPropertyData<?> propertyData, Type typeOfSrc, JsonSerializationContext context) {
+			JsonObject retval = new JsonObject();
+			retval.addProperty("name", propertyData.getName());
+
+			if (propertyData instanceof BuiltInPropertyData<?> builtInPropertyData) {
+				retval.addProperty("type", "$" + typeMappingsReverse.get(builtInPropertyData.getUnderlyingType()));
+			} else {
+				retval.addProperty("type", typeMappingsReverse.get(propertyData.getClass()));
+			}
+
+			return retval;
+		}
+	}
 
 }

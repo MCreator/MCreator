@@ -69,4 +69,9 @@ public final class BuiltInPropertyData<T> implements IPropertyData<T> {
 	@Override public String toString() {
 		return getName();
 	}
+
+	public Class<?> getUnderlyingType() {
+		return property.getClass();
+	}
+
 }
