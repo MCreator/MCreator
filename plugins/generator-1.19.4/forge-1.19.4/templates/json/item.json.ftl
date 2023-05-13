@@ -13,7 +13,9 @@
         {
             "predicate": {
                 <#list model.stateMap.keySet() as property>
-                    "${generator.map(property.getName(), "itemproperties")}": ${model.stateMap.get(property)}<#sep>,
+                    <#assign value = model.stateMap.get(property)>
+                    "${generator.map(property.getName(), "itemproperties")}":
+                        ${value?is_boolean?then(value?then("1", "0"), value)}<#sep>,
                 </#list>
             },
             "model": "${modid}:item/${registryname}_${model?index}"
