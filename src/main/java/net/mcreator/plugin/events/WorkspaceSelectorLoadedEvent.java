@@ -19,11 +19,18 @@
 
 package net.mcreator.plugin.events;
 
-import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 
-public class ApplicationPostLoadedEvent extends ApplicationLoadedEvent {
+public class WorkspaceSelectorLoadedEvent extends MCREvent {
 
-	public ApplicationPostLoadedEvent(MCreatorApplication mcreatorApplication) {
-		super(mcreatorApplication);
+	private final WorkspaceSelector workspaceSelector;
+
+	public WorkspaceSelectorLoadedEvent(WorkspaceSelector workspaceSelector) {
+		this.workspaceSelector = workspaceSelector;
+	}
+
+	public WorkspaceSelector getWorkspaceSelector() {
+		return workspaceSelector;
 	}
 }

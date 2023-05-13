@@ -24,6 +24,8 @@ import net.mcreator.Launcher;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.WorkspaceSelectorLoadedEvent;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.ImagePanel;
@@ -246,6 +248,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		add("West", recentPanel);
 
 		new DropTarget(this, DnDConstants.ACTION_MOVE, this, true, null);
+
+		MCREvent.event(new WorkspaceSelectorLoadedEvent(this));
 
 		setSize(795, 460);
 		setResizable(false);

@@ -35,7 +35,6 @@ import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
-import net.mcreator.plugin.events.ApplicationPostLoadedEvent;
 import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ThemeLoader;
@@ -232,8 +231,6 @@ public final class MCreatorApplication {
 
 				splashScreen.setVisible(false);
 			});
-
-			MCREvent.event(new ApplicationPostLoadedEvent(this));
 
 			LOG.debug("Application loader finished");
 		}, "Application-Loader").start();
