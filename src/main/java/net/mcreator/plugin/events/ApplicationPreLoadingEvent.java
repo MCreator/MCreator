@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2022, Pylo, opensource contributors
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,15 +19,18 @@
 
 package net.mcreator.plugin.events;
 
+import net.mcreator.plugin.MCREvent;
 import net.mcreator.ui.MCreatorApplication;
 
-/**
- * <p>This event is triggered before generators are loaded. This event can be used to load custom {@link net.mcreator.element.ModElementType} or other plugin features.
- * As it is triggered after plugins are loaded, except generators, this event can be used to create new features for plugins.</p>
- */
-public class PreGeneratorsLoadingEvent extends ApplicationPreLoadingEvent {
+public class ApplicationPreLoadingEvent extends MCREvent {
 
-	public PreGeneratorsLoadingEvent(MCreatorApplication mcreatorApplication) {
-		super(mcreatorApplication);
+	private final MCreatorApplication mcreatorApplication;
+
+	public ApplicationPreLoadingEvent(MCreatorApplication mcreatorApplication) {
+		this.mcreatorApplication = mcreatorApplication;
+	}
+
+	public MCreatorApplication getMCreatorApplication() {
+		return mcreatorApplication;
 	}
 }
