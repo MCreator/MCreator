@@ -36,7 +36,7 @@ import java.util.stream.Collectors;
  *
  * @param <T> Type of values this property can take.
  */
-public interface IPropertyData<T> {
+public sealed interface IPropertyData<T> permits BuiltInPropertyData, PropertyData {
 
 	Map<String, Class<? extends PropertyData<?>>> typeMappings = new HashMap<>() {{
 		put("logic", PropertyData.LogicType.class);
@@ -118,7 +118,10 @@ public interface IPropertyData<T> {
 		public JsonElement serialize(IPropertyData<?> propertyData, Type typeOfSrc, JsonSerializationContext context) {
 			JsonObject retVal = new JsonObject();
 			retVal.addProperty("name", propertyData.getName());
-			retVal.addProperty("type", typeMappingsReverse.get(propertyData.getClass()));
+			if (propertyData instanceof BuiltInPropertyData builtin)
+				retVal.addProperty("type", typeMappingsReverse.get(builtin.getUnderlyingType()));
+			else
+				retVal.addProperty("type", typeMappingsReverse.get(propertyData.getClass()));
 			return retVal;
 		}
 	}

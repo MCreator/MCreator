@@ -31,7 +31,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Objects;
 
-public abstract class PropertyData<T> implements IPropertyData<T> {
+public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
 	private String name;
 
 	/**
