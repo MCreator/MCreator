@@ -11,7 +11,7 @@
   "model": "${modid}:models/item/${data.customModelName.split(":")[0]}.obj",
   "textures": {
     <@textures data.getTextureMap()/>
-    "particle": "${modid}:items/${data.texture}"
+    "particle": "${modid}:item/${data.texture}"
 </#if>
   }
 </#if>

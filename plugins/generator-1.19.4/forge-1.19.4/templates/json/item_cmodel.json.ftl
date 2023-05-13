@@ -9,7 +9,7 @@
   "parent": "${modid}:custom/${data.customModelName.split(":")[0]}",
   "textures": {
     <@textures data.getTextureMap()/>
-    "particle": "${modid}:items/${data.texture}"
+    "particle": "${modid}:item/${data.texture}"
   }
 </#if>
     <#if data.getModElement?? && data.getModElement().getTypeString() == "item" && data.getModels()?has_content>,
