@@ -37,7 +37,6 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
@@ -64,23 +63,14 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		Map<String, DataListEntry> properties = DataListLoader.loadDataMap("itemproperties");
 		builtinPropertyNames = List.copyOf(properties.keySet());
 
-		PropertyData.LogicType logic = new PropertyData.LogicType(""); // needed for hardcoded logic properties
 		for (DataListEntry entry : properties.values()) {
-			PropertyData.NumberType builtin;
+			PropertyData<?> builtin;
 			if ("Number".equals(entry.getType()) && entry.getOther() instanceof Map<?, ?> other) {
 				double min = Double.parseDouble((String) other.get("min"));
 				double max = Double.parseDouble((String) other.get("max"));
 				builtin = new PropertyData.NumberType(entry.getName(), min, max);
 			} else if ("Logic".equals(entry.getType())) {
-				builtin = new PropertyData.NumberType(entry.getName(), 0, 1) {
-					@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-						return logic.getComponent(mcreator, value != null && (Double) value == 1);
-					}
-
-					@Override public Double getValue(JComponent component) {
-						return logic.getValue(component) ? 1 : 0d;
-					}
-				};
+				builtin = new PropertyData.LogicType(entry.getName());
 			} else {
 				continue;
 			}
