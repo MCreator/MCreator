@@ -26,6 +26,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.Locale;
 import java.util.Objects;
 
 public abstract class PropertyData<T> implements IPropertyData<T> {
@@ -146,6 +149,13 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 	 * A subclass for fractional number type properties.
 	 */
 	public static class NumberType extends PropertyData<Double> {
+		private static final DecimalFormat df = new DecimalFormat("0",
+				DecimalFormatSymbols.getInstance(Locale.ENGLISH));
+
+		static {
+			df.setMaximumFractionDigits(9);
+		}
+
 		private transient final double min, max;
 
 		public NumberType(String name) {
@@ -163,7 +173,7 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 		}
 
 		@Override public final String toString(Object value) {
-			return Double.toString((Double) value);
+			return df.format((double) (Double) value);
 		}
 
 		@Override public final Double parseObj(JsonElement value) {

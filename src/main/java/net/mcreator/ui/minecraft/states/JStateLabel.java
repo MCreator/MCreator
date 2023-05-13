@@ -139,7 +139,7 @@ public class JStateLabel extends JPanel {
 			String matchSymbol = "=";
 			if (k instanceof PropertyData.IntegerType || k instanceof PropertyData.NumberType)
 				matchSymbol = numberMatchType.symbol;
-			stateParts.add(k.getName() + " " + matchSymbol + " " + k.toString(v));
+			stateParts.add(k.getName().replace("CUSTOM:", "") + " " + matchSymbol + " " + k.toString(v));
 		});
 		label.setText(L10N.t("components.state_label.when",
 				stateParts.isEmpty() ? L10N.t("condition.common.true") : String.join("; ", stateParts)));

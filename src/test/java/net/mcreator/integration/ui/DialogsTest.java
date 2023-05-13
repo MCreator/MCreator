@@ -38,6 +38,7 @@ import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.IPropertyData;
 import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -54,9 +55,8 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.LinkedHashMap;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.fail;
@@ -173,25 +173,28 @@ public class DialogsTest {
 	}
 
 	@Test public void testStateEditorDialog() throws Throwable {
-		Map<String, IPropertyData<?>> testProps = new LinkedHashMap<>();
-		testProps.put("logic", new PropertyData.LogicType("logic"));
-		testProps.put("integer", new PropertyData.IntegerType("integer"));
-		testProps.put("integer2", new PropertyData.IntegerType("integer", -100, 100));
-		testProps.put("number", new PropertyData.NumberType("number"));
-		testProps.put("number2", new PropertyData.NumberType("number", -0.0001, 1000000));
-		testProps.put("text", new PropertyData.StringType("text", ElementUtil.loadDirections()));
+		List<IPropertyData<?>> testProps = new ArrayList<>();
+		testProps.add(new PropertyData.LogicType("logic"));
+		testProps.add(new PropertyData.IntegerType("integer"));
+		testProps.add(new PropertyData.IntegerType("integer2", -100, 100));
+		testProps.add(new PropertyData.NumberType("number"));
+		testProps.add(new PropertyData.NumberType("number2", -0.0001, 1000000));
+		testProps.add(new PropertyData.StringType("text", ElementUtil.loadDirections()));
 		Random rng = new Random();
-		LinkedHashMap<IPropertyData<?>, Object> testState = new LinkedHashMap<>();
+		StateMap testState = new StateMap();
 		if (rng.nextBoolean())
-			testState.put(testProps.get("logic"), rng.nextBoolean());
+			testState.put(testProps.get(0), rng.nextBoolean());
 		if (rng.nextBoolean())
-			testState.put(testProps.get("integer"), rng.nextInt());
+			testState.put(testProps.get(1), rng.nextInt());
 		if (rng.nextBoolean())
-			testState.put(testProps.get("number"), rng.nextDouble());
+			testState.put(testProps.get(2), rng.nextInt());
 		if (rng.nextBoolean())
-			testState.put(testProps.get("text"), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> StateEditorDialog.open(mcreator, List.copyOf(testProps.values()), testState));
+			testState.put(testProps.get(3), rng.nextDouble());
+		if (rng.nextBoolean())
+			testState.put(testProps.get(4), rng.nextDouble());
+		if (rng.nextBoolean())
+			testState.put(testProps.get(5), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> StateEditorDialog.open(mcreator, testProps, testState));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

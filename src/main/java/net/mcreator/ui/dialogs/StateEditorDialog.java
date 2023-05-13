@@ -31,7 +31,6 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -48,8 +47,7 @@ public class StateEditorDialog {
 	 * @return The resulting properties' values map after editing session is complete, or {@code null} if the operation
 	 * has been canceled (via cancel/close button).
 	 */
-	@Nullable public static StateMap open(MCreator mcreator,
-			List<IPropertyData<?>> properties, LinkedHashMap<IPropertyData<?>, ?> stateMap) {
+	@Nullable public static StateMap open(MCreator mcreator, List<IPropertyData<?>> properties, StateMap stateMap) {
 		AtomicReference<StateMap> retVal = new AtomicReference<>();
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
 
@@ -103,7 +101,7 @@ public class StateEditorDialog {
 
 			JPanel settings = new JPanel();
 			settings.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-			settings.add(new JLabel(property));
+			settings.add(new JLabel(property.replace("CUSTOM:", "")));
 			settings.add(new JLabel("="));
 			settings.add(entryComponent);
 
