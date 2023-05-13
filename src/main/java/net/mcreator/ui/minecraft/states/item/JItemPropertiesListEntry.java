@@ -47,15 +47,14 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	private final ProcedureSelector value;
 
 	public JItemPropertiesListEntry(JItemPropertiesStatesList listPanel, IHelpContext gui, JPanel propertyEntries,
-			List<JItemPropertiesListEntry> propertiesList, JPropertyNameField nameField, int propertyId) {
+			List<JItemPropertiesListEntry> propertiesList, JPropertyNameField nameField) {
 		super(new BorderLayout(10, 5));
 		this.nameField = nameField;
 
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		value = new ProcedureSelector(gui.withEntry("item/custom_property_value"), listPanel.getMCreator(),
-				L10N.t("elementgui.item.custom_property.value"),
-				L10N.t("elementgui.item.custom_property.value") + propertyId, ProcedureSelector.Side.CLIENT, true,
+				L10N.t("elementgui.item.custom_property.value"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.NUMBER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		value.setValidator(new ProcedureSelectorValidator(value));

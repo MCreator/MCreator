@@ -42,13 +42,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public class JItemPropertiesStatesList extends JEntriesList {
 
 	private final List<JItemPropertiesListEntry> propertiesList = new ArrayList<>();
 	private final List<JItemStatesListEntry> statesList = new ArrayList<>();
-	private final AtomicInteger propertyId = new AtomicInteger(0);
 
 	private final List<String> builtinPropertyNames;
 	private final Map<String, BuiltInPropertyData<?>> builtinProperties = new LinkedHashMap<>();
@@ -167,7 +165,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	private JItemPropertiesListEntry addPropertiesEntry() {
-		JPropertyNameField nameField = new JPropertyNameField("property" + propertyId.incrementAndGet(),
+		JPropertyNameField nameField = new JPropertyNameField("property_name",
 				(cachedName, newName) -> statesList.forEach(s -> s.getStateLabel().rename(cachedName, newName)));
 
 		nameField.setValidator(
@@ -177,7 +175,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		nameField.enableRealtimeValidation();
 
 		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(this, gui, propertyEntries, propertiesList,
-				nameField, propertyId.get());
+				nameField);
 		registerEntryUI(pe);
 		return pe;
 	}
