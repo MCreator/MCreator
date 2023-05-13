@@ -20,12 +20,12 @@ package net.mcreator.ui.action.impl;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
-import net.mcreator.ui.dialogs.UpdateNotifyDialog;
+import net.mcreator.ui.dialogs.UpdatePluginDialog;
 import net.mcreator.ui.init.L10N;
 
-public class CheckForUpdatesAction extends BasicAction {
-	public CheckForUpdatesAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.check_for_updates"),
-				e -> UpdateNotifyDialog.showUpdateDialogIfUpdateExists(actionRegistry.getMCreator(), true, true, true));
+public class CheckForPluginUpdatesAction extends BasicAction {
+	public CheckForPluginUpdatesAction(ActionRegistry actionRegistry) {
+		super(actionRegistry, L10N.t("action.check_for_plugin_updates"),
+				e -> UpdatePluginDialog.showPluginUpdateDialog(actionRegistry.getMCreator(), true));
 	}
 }
