@@ -19,18 +19,11 @@
 
 package net.mcreator.plugin.events;
 
-import net.mcreator.plugin.MCREvent;
 import net.mcreator.ui.MCreatorApplication;
 
-public class ApplicationPreLoadingEvent extends MCREvent {
+public class ApplicationPostLoadedEvent extends ApplicationLoadedEvent {
 
-	private final MCreatorApplication mcreatorApplication;
-
-	public ApplicationPreLoadingEvent(MCreatorApplication mcreatorApplication) {
-		this.mcreatorApplication = mcreatorApplication;
-	}
-
-	public MCreatorApplication getMCreatorApplication() {
-		return mcreatorApplication;
+	public ApplicationPostLoadedEvent(MCreatorApplication mcreatorApplication) {
+		super(mcreatorApplication);
 	}
 }
