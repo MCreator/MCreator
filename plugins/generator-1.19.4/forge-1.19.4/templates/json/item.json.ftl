@@ -12,12 +12,9 @@
         <#list data.getModels() as model>
         {
             "predicate": {
-                <#list model.stateMap as property, value>
-                    "${generator.map(property.getName(), "itemproperties")}": ${value}<#sep>,
+                <#list model.stateMap.keySet() as property>
+                    "${generator.map(property.getName(), "itemproperties")}": ${model.stateMap.get(property)}<#sep>,
                 </#list>
-            <#list model.getKey().split(",") as state>
-
-            </#list>
             },
             "model": "${modid}:item/${registryname}_${model?index}"
         }<#sep>,
