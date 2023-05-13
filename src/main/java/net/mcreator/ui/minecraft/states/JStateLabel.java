@@ -28,10 +28,10 @@ import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class JStateLabel extends JPanel {
@@ -39,7 +39,7 @@ public class JStateLabel extends JPanel {
 	private final Supplier<List<IPropertyData<?>>> properties;
 	private final Supplier<Stream<JStateLabel>> otherStates;
 
-	private LinkedHashMap<IPropertyData<?>, Object> stateMap = new LinkedHashMap<>();
+	private StateMap stateMap = new StateMap();
 	private boolean allowEmpty = false;
 	private NumberMatchType numberMatchType = NumberMatchType.EQUAL;
 
@@ -85,8 +85,7 @@ public class JStateLabel extends JPanel {
 	}
 
 	public boolean editState() {
-		LinkedHashMap<IPropertyData<?>, Object> stateMap = StateEditorDialog.open(mcreator, properties.get(),
-				getStateMap());
+		StateMap stateMap = StateEditorDialog.open(mcreator, properties.get(), getStateMap());
 		if (stateMap == null)
 			return false;
 
@@ -115,25 +114,11 @@ public class JStateLabel extends JPanel {
 		return this;
 	}
 
-	public String getState() {
-		return stateMap.entrySet().stream().map(e -> {
-			String name = e.getKey().getName();
-			if (!(e.getKey() instanceof BuiltInPropertyData<?>))
-				name = "CUSTOM:" + name;
-			return name + "=" + e.getKey().toString(e.getValue());
-		}).collect(Collectors.joining(","));
-	}
-
-	public void setState(String state) {
-		stateMap = IPropertyData.passStateToMap(state.replace("CUSTOM:", ""), properties.get());
-		refreshState();
-	}
-
-	public LinkedHashMap<IPropertyData<?>, Object> getStateMap() {
+	public StateMap getStateMap() {
 		return stateMap;
 	}
 
-	public void setStateMap(LinkedHashMap<IPropertyData<?>, Object> stateMap) {
+	public void setStateMap(StateMap stateMap) {
 		this.stateMap = stateMap;
 		refreshState();
 	}

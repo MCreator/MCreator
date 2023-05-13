@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.minecraft.states;
 
+import com.google.gson.JsonElement;
 import net.mcreator.ui.MCreator;
 
 import javax.annotation.Nonnull;
@@ -45,7 +46,7 @@ public final class BuiltInPropertyData<T> implements IPropertyData<T> {
 		return property.toString(value);
 	}
 
-	@Override public T parseObj(String value) {
+	@Override public T parseObj(JsonElement value) {
 		return property.parseObj(value);
 	}
 

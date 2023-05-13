@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.minecraft.states;
 
+import com.google.gson.JsonElement;
 import net.mcreator.ui.MCreator;
 
 import javax.annotation.Nonnull;
@@ -81,8 +82,8 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 			return Boolean.toString((Boolean) value);
 		}
 
-		@Override public final Boolean parseObj(String value) {
-			return Boolean.parseBoolean(value);
+		@Override public final Boolean parseObj(JsonElement value) {
+			return value.getAsBoolean();
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
@@ -125,8 +126,8 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 			return Integer.toString((Integer) value);
 		}
 
-		@Override public final Integer parseObj(String value) {
-			return Integer.parseInt(value);
+		@Override public final Integer parseObj(JsonElement value) {
+			return value.getAsInt();
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
@@ -165,8 +166,8 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 			return Double.toString((Double) value);
 		}
 
-		@Override public final Double parseObj(String value) {
-			return Double.parseDouble(value);
+		@Override public final Double parseObj(JsonElement value) {
+			return value.getAsDouble();
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
@@ -201,8 +202,8 @@ public abstract class PropertyData<T> implements IPropertyData<T> {
 			return (String) value;
 		}
 
-		@Override public final String parseObj(String value) {
-			return value;
+		@Override public final String parseObj(JsonElement value) {
+			return value.getAsString();
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {

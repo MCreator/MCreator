@@ -180,6 +180,13 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		return pe;
 	}
 
+	private List<IPropertyData<?>> getPropertiesList() {
+		List<IPropertyData<?>> props = new ArrayList<>();
+		propertiesList.stream().map(JItemPropertiesListEntry::toPropertyData).forEach(props::add);
+		props.addAll(builtinProperties.values());
+		return props;
+	}
+
 	private JItemStatesListEntry addStatesEntry(boolean initState) {
 		JStateLabel stateLabel = new JStateLabel(mcreator, this::getPropertiesList,
 				() -> statesList.stream().map(JItemStatesListEntry::getStateLabel)).setNumberMatchType(
@@ -199,9 +206,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		propertyEntries.repaint();
 
 		PropertyData.NumberType data = entry.toPropertyData();
-		Set<LinkedHashMap<IPropertyData<?>, Object>> duplicateFilter = new HashSet<>();
+		Set<StateMap> duplicateFilter = new HashSet<>();
 		statesList.stream().toList().forEach(s -> {
-			LinkedHashMap<IPropertyData<?>, Object> stateMap = s.getStateLabel().getStateMap();
+			StateMap stateMap = s.getStateLabel().getStateMap();
 			stateMap.remove(data);
 			if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) {
 				statesList.remove(s);
@@ -214,37 +221,24 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		stateEntries.repaint();
 	}
 
-	private List<IPropertyData<?>> getPropertiesList() {
-		List<IPropertyData<?>> props = new ArrayList<>();
-		propertiesList.stream().map(JItemPropertiesListEntry::toPropertyData).forEach(props::add);
-		props.addAll(builtinProperties.values());
-		return props;
-	}
-
-	public LinkedHashMap<String, Procedure> getProperties() {
-		LinkedHashMap<String, Procedure> retVal = new LinkedHashMap<>();
+	public Map<String, Procedure> getProperties() {
+		Map<String, Procedure> retVal = new LinkedHashMap<>();
 		propertiesList.forEach(e -> retVal.put(e.getNameField().getText(), e.getEntry()));
 		return retVal;
 	}
 
-	public void setProperties(LinkedHashMap<String, Procedure> properties) {
+	public void setProperties(Map<String, Procedure> properties) {
 		properties.forEach((name, value) -> addPropertiesEntry().setEntry(name, value));
 	}
 
-	public LinkedHashMap<String, Item.ModelEntry> getStates() {
-		LinkedHashMap<String, Item.ModelEntry> retVal = new LinkedHashMap<>();
-		statesList.forEach(e -> retVal.put(e.getStateLabel().getState(), e.getEntry()));
+	public List<Item.StateEntry> getStates() {
+		List<Item.StateEntry> retVal = new ArrayList<>();
+		statesList.forEach(e -> retVal.add(e.getEntry()));
 		return retVal;
 	}
 
-	public void setStates(LinkedHashMap<String, Item.ModelEntry> states) {
-		Set<LinkedHashMap<IPropertyData<?>, Object>> duplicateFilter = new HashSet<>();
-		states.forEach((state, model) -> {
-			LinkedHashMap<IPropertyData<?>, Object> stateMap = IPropertyData.passStateToMap(
-					state.replace("CUSTOM:", ""), getPropertiesList());
-			if (!stateMap.isEmpty() && duplicateFilter.add(stateMap))
-				Objects.requireNonNull(addStatesEntry(false)).setEntry(state, model);
-		});
+	public void setStates(List<Item.StateEntry> states) {
+		states.forEach(state -> Objects.requireNonNull(addStatesEntry(false)).setEntry(state));
 	}
 
 	public AggregatedValidationResult getValidationResult() {
@@ -253,4 +247,5 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		statesList.forEach(validationResult::addValidationElement);
 		return validationResult;
 	}
+
 }

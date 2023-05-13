@@ -29,6 +29,7 @@ import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
@@ -46,8 +47,8 @@ import java.util.*;
 	public String texture;
 	public String customModelName;
 
-	public LinkedHashMap<String, Procedure> customProperties;
-	public LinkedHashMap<String, ModelEntry> modelsMap;
+	public Map<String, Procedure> customProperties;
+	public List<StateEntry> states;
 
 	public String name;
 	public String rarity;
@@ -95,22 +96,6 @@ import java.util.*;
 	public boolean isAlwaysEdible;
 	public String animation;
 
-	public static int encodeModelType(Model.Type modelType) {
-		return switch (modelType) {
-			case JSON -> 1;
-			case OBJ -> 2;
-			default -> 0;
-		};
-	}
-
-	public static Model.Type decodeModelType(int modelType) {
-		return switch (modelType) {
-			case 1 -> Model.Type.JSON;
-			case 2 -> Model.Type.OBJ;
-			default -> Model.Type.BUILTIN;
-		};
-	}
-
 	private Item() {
 		this(null);
 	}
@@ -119,7 +104,7 @@ import java.util.*;
 		super(element);
 
 		this.customProperties = new LinkedHashMap<>();
-		this.modelsMap = new LinkedHashMap<>();
+		this.states = new ArrayList<>();
 
 		this.rarity = "COMMON";
 		this.inventorySize = 9;
@@ -180,33 +165,44 @@ import java.util.*;
 	}
 
 	/**
-	 * Returns a copy of {@link #modelsMap} referencing only properties supported in the current workspace.
+	 * Returns a copy of {@link #states} referencing only properties supported in the current workspace.
 	 * Should only be used by generators to filter invalid data.
 	 *
-	 * @return Models map with contents matching current generator.
+	 * @return Models with contents matching current generator.
 	 */
-	public LinkedHashMap<String, ModelEntry> filterModels() {
-		LinkedHashMap<String, ModelEntry> models = new LinkedHashMap<>();
+	public List<StateEntry> getModels() {
+		List<StateEntry> models = new ArrayList<>();
 		List<String> builtinProperties = DataListLoader.loadDataList("itemproperties").stream()
 				.filter(e -> e.isSupportedInWorkspace(getModElement().getWorkspace())).map(DataListEntry::getName)
 				.toList();
-		modelsMap.forEach((state, model) -> {
-			List<String> states = new ArrayList<>();
-			for (String match : state.split(",")) {
-				String prop = match.split("=")[0];
-				if (customProperties.containsKey(prop.replace("CUSTOM:", "")) || builtinProperties.contains(prop))
-					states.add(match);
-			}
-			models.putIfAbsent(String.join(",", states), model);
+
+		states.forEach(state -> {
+			StateEntry model = new StateEntry();
+			model.renderType = state.renderType;
+			model.texture = state.texture;
+			model.customModelName = state.customModelName;
+
+			model.stateMap = new StateMap();
+			state.stateMap.forEach((prop, value) -> {
+				if (customProperties.containsKey(prop.getName().replace("CUSTOM:", "")) || builtinProperties.contains(
+						prop.getName()))
+					model.stateMap.put(prop, value);
+			});
+
+			// only add this state if at least one supported property is present
+			if (!model.stateMap.isEmpty())
+				models.add(model);
 		});
 		return models;
 	}
 
-	public static class ModelEntry {
+	public static class StateEntry {
 
 		public int renderType;
 		public String texture;
 		public String customModelName;
+
+		public StateMap stateMap;
 
 		public Model getItemModel(Workspace workspace) {
 			return Model.getModelByParams(workspace, customModelName, decodeModelType(renderType));
@@ -225,6 +221,22 @@ import java.util.*;
 		public boolean hasToolModel() {
 			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Tool");
 		}
+	}
+
+	public static int encodeModelType(Model.Type modelType) {
+		return switch (modelType) {
+			case JSON -> 1;
+			case OBJ -> 2;
+			default -> 0;
+		};
+	}
+
+	public static Model.Type decodeModelType(int modelType) {
+		return switch (modelType) {
+			case 1 -> Model.Type.JSON;
+			case 2 -> Model.Type.OBJ;
+			default -> Model.Type.BUILTIN;
+		};
 	}
 
 }

@@ -540,7 +540,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			renderType.setSelectedItem(model);
 
 		customProperties.setProperties(item.customProperties);
-		customProperties.setStates(item.modelsMap);
+		customProperties.setStates(item.states);
 	}
 
 	@Override public Item getElementFromGUI() {
@@ -590,7 +590,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 
 		item.customProperties = customProperties.getProperties();
-		item.modelsMap = customProperties.getStates();
+		item.states = customProperties.getStates();
 
 		return item;
 	}

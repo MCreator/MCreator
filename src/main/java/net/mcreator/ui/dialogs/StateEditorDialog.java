@@ -25,6 +25,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.IPropertyData;
+import net.mcreator.ui.minecraft.states.StateMap;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -47,9 +48,9 @@ public class StateEditorDialog {
 	 * @return The resulting properties' values map after editing session is complete, or {@code null} if the operation
 	 * has been canceled (via cancel/close button).
 	 */
-	@Nullable public static LinkedHashMap<IPropertyData<?>, Object> open(MCreator mcreator,
+	@Nullable public static StateMap open(MCreator mcreator,
 			List<IPropertyData<?>> properties, LinkedHashMap<IPropertyData<?>, ?> stateMap) {
-		AtomicReference<LinkedHashMap<IPropertyData<?>, Object>> retVal = new AtomicReference<>();
+		AtomicReference<StateMap> retVal = new AtomicReference<>();
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
 
 		Map<IPropertyData<?>, StatePart> entryMap = new HashMap<>();
@@ -70,7 +71,7 @@ public class StateEditorDialog {
 		dialog.getRootPane().setDefaultButton(ok);
 
 		ok.addActionListener(e -> {
-			retVal.set(new LinkedHashMap<>());
+			retVal.set(new StateMap());
 			for (IPropertyData<?> param : properties) {
 				StatePart part = entryMap.get(param);
 				if (part.useEntry.isSelected())

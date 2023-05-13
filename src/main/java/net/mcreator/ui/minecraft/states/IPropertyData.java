@@ -19,16 +19,12 @@
 
 package net.mcreator.ui.minecraft.states;
 
+import com.google.gson.JsonElement;
 import net.mcreator.ui.MCreator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Instances of this class store information about certain property (its name, type,
@@ -63,10 +59,10 @@ public interface IPropertyData<T> {
 	/**
 	 * Parses string representation of passed value of this property.
 	 *
-	 * @param value Possible value of this property as a string.
+	 * @param value Possible value of this property as JsonElement.
 	 * @return A value of this property's type.
 	 */
-	T parseObj(String value);
+	T parseObj(JsonElement value);
 
 	/**
 	 * Generates a UI component accepting values of type {@link T} and sets its value to the passed one.
@@ -86,21 +82,4 @@ public interface IPropertyData<T> {
 	 */
 	T getValue(JComponent component);
 
-	/**
-	 * Converts passed state string to a property-to-value map basing on the provided list of available properties.
-	 *
-	 * @param state      String representation of a state.
-	 * @param properties List of properties that can be used.
-	 * @return Map containing values of properties for the given state.
-	 */
-	static LinkedHashMap<IPropertyData<?>, Object> passStateToMap(String state, List<IPropertyData<?>> properties) {
-		LinkedHashMap<IPropertyData<?>, Object> stateMap = new LinkedHashMap<>();
-		Map<String, String> values = Arrays.stream(state.split(","))
-				.collect(Collectors.toMap(e -> e.split("=")[0], e -> e.split("=")[1]));
-		for (IPropertyData<?> property : properties) {
-			if (values.containsKey(property.getName()))
-				stateMap.put(property, property.parseObj(values.get(property.getName())));
-		}
-		return stateMap;
-	}
 }

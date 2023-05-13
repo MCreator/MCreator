@@ -45,6 +45,8 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
+import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -1067,6 +1069,9 @@ public class TestWorkspaceDataProvider {
 			item.texture = "test2";
 			item.renderType = 0;
 			item.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
+
+			item.customProperties = new HashMap<>();
+			item.states = new ArrayList<>();
 			if (!emptyLists) {
 				int size1 = random.nextInt(3) + 1;
 				for (int i = 1; i <= size1; i++)
@@ -1074,21 +1079,24 @@ public class TestWorkspaceDataProvider {
 
 				int size2 = random.nextInt(4) + 1;
 				for (int i = 0; i < size2; i++) {
-					StringBuilder state = new StringBuilder();
+					StateMap stateMap = new StateMap();
+
 					for (int j = 2; j <= size1; j++) {
 						if (random.nextBoolean()) {
-							state.append(",CUSTOM:property").append(j).append("=").append(random.nextDouble());
+							stateMap.put(new PropertyData.NumberType("property" + j), random.nextDouble());
 						}
 					}
 
-					Item.ModelEntry model = new Item.ModelEntry();
-					model.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
-					model.texture = i == 0 ? "test" : "test" + i;
-					model.renderType = 0;
+					Item.StateEntry stateEntry = new Item.StateEntry();
+					stateEntry.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
+					stateEntry.texture = i == 0 ? "test" : "test" + i;
+					stateEntry.renderType = 0;
+					stateEntry.stateMap = stateMap;
 
-					item.modelsMap.put("CUSTOM:property1=" + random.nextDouble() + state, model);
+					item.states.add(stateEntry);
 				}
 			}
+
 			item.isFood = _true;
 			item.nutritionalValue = 5;
 			item.saturation = 0.8f;
