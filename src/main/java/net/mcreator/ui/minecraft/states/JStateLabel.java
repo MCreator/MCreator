@@ -137,8 +137,13 @@ public class JStateLabel extends JPanel {
 		List<String> stateParts = new ArrayList<>();
 		stateMap.forEach((k, v) -> {
 			String matchSymbol = "=";
-			if (k instanceof PropertyData.IntegerType || k instanceof PropertyData.NumberType)
+			if (k instanceof PropertyData.IntegerType || k instanceof PropertyData.NumberType) {
 				matchSymbol = numberMatchType.symbol;
+			} else if (k instanceof BuiltInPropertyData<?> builtin) {
+				Class<?> type = builtin.getUnderlyingType();
+				if (type == PropertyData.IntegerType.class || type == PropertyData.NumberType.class)
+					matchSymbol = numberMatchType.symbol;
+			}
 			stateParts.add(k.getName().replace("CUSTOM:", "") + " " + matchSymbol + " " + k.toString(v));
 		});
 		label.setText(L10N.t("components.state_label.when",
