@@ -26,7 +26,7 @@ templates:
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
 list_templates:
-  - name: "Custom models"
+  - name: "Item states"
     listData: data.getModels()
     forEach:
       - template: json/item.json.ftl
@@ -48,7 +48,6 @@ list_templates:
       - template: json/item_cmodel_obj.json.ftl
         writer: json
         condition: "renderType #= 2"
-        variables: "type=item"
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
 
 localizationkeys:
