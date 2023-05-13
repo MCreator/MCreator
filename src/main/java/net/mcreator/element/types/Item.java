@@ -37,6 +37,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
@@ -167,6 +168,8 @@ import java.util.*;
 	/**
 	 * Returns a copy of {@link #states} referencing only properties supported in the current workspace.
 	 * Should only be used by generators to filter invalid data.
+	 * <p>
+	 * Also populates models with Workspace reference for the use in templates
 	 *
 	 * @return Models with contents matching current generator.
 	 */
@@ -178,6 +181,7 @@ import java.util.*;
 
 		states.forEach(state -> {
 			StateEntry model = new StateEntry();
+			model.setWorkspace(getModElement().getWorkspace());
 			model.renderType = state.renderType;
 			model.texture = state.texture;
 			model.customModelName = state.customModelName;
@@ -204,12 +208,18 @@ import java.util.*;
 
 		public StateMap stateMap;
 
-		public Model getItemModel(Workspace workspace) {
+		@Nullable Workspace workspace;
+
+		void setWorkspace(@Nullable Workspace workspace) {
+			this.workspace = workspace;
+		}
+
+		public Model getItemModel() {
 			return Model.getModelByParams(workspace, customModelName, decodeModelType(renderType));
 		}
 
-		public Map<String, String> getTextureMap(Workspace workspace) {
-			if (getItemModel(workspace) instanceof TexturedModel textured && textured.getTextureMapping() != null)
+		public Map<String, String> getTextureMap() {
+			if (getItemModel() instanceof TexturedModel textured && textured.getTextureMapping() != null)
 				return textured.getTextureMapping().getTextureMap();
 			return null;
 		}

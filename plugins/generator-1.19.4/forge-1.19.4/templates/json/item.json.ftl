@@ -4,16 +4,19 @@
         <#if var_item??>
             "layer0": "${modid}:item/${data.getItemTextureFor(var_item)}"
         <#else>
-            "layer0": "${modid}:item/${(item??)?then(item, data).texture}"
+            "layer0": "${modid}:item/${data.texture}"
         </#if>
     }
-    <#if data?? && data.getModElement().getTypeString() == "item" && data.filterModels()?has_content>,
+    <#if data.getModElement?? && data.getModElement().getTypeString() == "item" && data.getModels()?has_content>,
     "overrides": [
-        <#list data.filterModels().entrySet() as model>
+        <#list data.getModels() as model>
         {
             "predicate": {
+                <#list model.stateMap as property, value>
+                    "${generator.map(property.getName(), "itemproperties")}": ${value}<#sep>,
+                </#list>
             <#list model.getKey().split(",") as state>
-                "${generator.map(state.split("=")[0], "itemproperties")}": ${state.split("=")[1]}<#sep>,
+
             </#list>
             },
             "model": "${modid}:item/${registryname}_${model?index}"
