@@ -123,8 +123,9 @@ public sealed interface IPropertyData<T> permits BuiltInPropertyData, PropertyDa
 
 		@Override
 		public JsonElement serialize(IPropertyData<?> propertyData, Type typeOfSrc, JsonSerializationContext context) {
-			JsonObject retVal = new JsonObject();
-			retVal.addProperty("name", propertyData.getName());
+			JsonObject retVal = gson.toJsonTree(propertyData instanceof BuiltInPropertyData<?> builtInPropertyData ?
+					builtInPropertyData.getUnderlyingProperty() :
+					propertyData).getAsJsonObject();
 			retVal.addProperty("type", typeMappingsReverse.get(propertyData.getDataClass()));
 			return retVal;
 		}

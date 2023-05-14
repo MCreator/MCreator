@@ -109,7 +109,7 @@ public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
 	 * A subclass for integer number type properties.
 	 */
 	public static class IntegerType extends PropertyData<Integer> {
-		private transient final int min, max;
+		private final int min, max;
 
 		public IntegerType(String name) {
 			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
@@ -156,7 +156,7 @@ public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
 			df.setMaximumFractionDigits(9);
 		}
 
-		private transient final double min, max;
+		private final double min, max;
 
 		public NumberType(String name) {
 			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
@@ -197,7 +197,7 @@ public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
 	 * A subclass for string type properties.
 	 */
 	public static class StringType extends PropertyData<String> {
-		private transient final String[] arrayData;
+		private final String[] arrayData;
 
 		public StringType(String name, String[] arrayData) {
 			super(name);
