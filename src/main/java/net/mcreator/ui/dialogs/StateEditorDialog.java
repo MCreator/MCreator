@@ -41,10 +41,11 @@ public class StateEditorDialog {
 	/**
 	 * Opens a dialog to edit values of passed properties list used in the future/provided state.
 	 *
-	 * @param mcreator   The workspace window this method was called from.
-	 * @param properties List of properties that can be used to form the resulting state.
-	 * @param stateMap   The property-to-object map representation of the state to be edited, or {@code null} in case
-	 *                   it is just being created.
+	 * @param mcreator          The workspace window this method was called from.
+	 * @param properties        List of properties that can be used to form the resulting state.
+	 * @param stateMap          The property-to-object map representation of the state to be edited, or {@code null}
+	 *                          in case it is just being created.
+	 * @param numberMatchSymbol Character(s) describing how a number property should relate to the specified value.
 	 * @return The resulting properties' values map after editing session is complete, or {@code null} if the operation
 	 * has been canceled (via cancel/close button).
 	 */
