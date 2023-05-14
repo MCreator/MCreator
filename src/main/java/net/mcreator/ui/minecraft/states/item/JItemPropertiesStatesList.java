@@ -34,6 +34,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.states.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
@@ -172,7 +173,12 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private List<IPropertyData<?>> getPropertiesList() {
 		List<IPropertyData<?>> props = new ArrayList<>();
-		propertiesList.stream().map(JItemPropertiesListEntry::toPropertyData).forEach(props::add);
+		for (JItemPropertiesListEntry entry : propertiesList) {
+			if (entry.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.PASSED)
+				return null; // indicates that some property names are not defined correctly
+
+			props.add(entry.toPropertyData());
+		}
 		props.addAll(builtinProperties.values());
 		return props;
 	}

@@ -85,7 +85,11 @@ public class JStateLabel extends JPanel {
 	}
 
 	public boolean editState() {
-		StateMap stateMap = StateEditorDialog.open(mcreator, properties.get(), getStateMap(), numberMatchType.symbol);
+		List<IPropertyData<?>> propertyList = properties.get();
+		if (propertyList == null)
+			return false;
+
+		StateMap stateMap = StateEditorDialog.open(mcreator, propertyList, getStateMap(), numberMatchType.symbol);
 		if (stateMap == null)
 			return false;
 
