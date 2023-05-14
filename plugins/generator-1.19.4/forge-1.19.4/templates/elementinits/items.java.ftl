@@ -109,7 +109,8 @@ public class ${JavaModName}Items {
 		<#list items as item>
 			<#if item.getModElement().getTypeString() == "item">
 				<#list item.customProperties.entrySet() as property>
-				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("${modid}:${property.getKey()}"),
+				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(),
+					new ResourceLocation("${modid}:${item.getModElement().getRegistryName()}_${property.getKey()}"),
 					(itemStackToRender, clientWorld, entity, itemEntityId) ->
 						<#if hasProcedure(property.getValue())>
 							(float) <@procedureCode property.getValue(), {
