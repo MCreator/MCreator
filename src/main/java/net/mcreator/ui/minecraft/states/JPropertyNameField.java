@@ -31,7 +31,7 @@ import java.util.function.BiConsumer;
 public class JPropertyNameField extends VTextField {
 	private String cachedName;
 
-	public JPropertyNameField(String initialPropertyName, BiConsumer<String, String> editListener) {
+	public JPropertyNameField(BiConsumer<String, String> editListener) {
 		super(20);
 
 		setPreferredSize(new Dimension(0, 28));
@@ -48,11 +48,6 @@ public class JPropertyNameField extends VTextField {
 				getValidationStatus();
 			}
 		});
-		renameTo(initialPropertyName);
-	}
-
-	public String getCachedName() {
-		return cachedName;
 	}
 
 	public void renameTo(String newName) {

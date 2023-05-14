@@ -155,7 +155,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	private JItemPropertiesListEntry addPropertiesEntry() {
-		JPropertyNameField nameField = new JPropertyNameField("property_name",
+		JPropertyNameField nameField = new JPropertyNameField(
 				(cachedName, newName) -> statesList.forEach(s -> s.getStateLabel().rename(cachedName, newName)));
 
 		nameField.setValidator(
