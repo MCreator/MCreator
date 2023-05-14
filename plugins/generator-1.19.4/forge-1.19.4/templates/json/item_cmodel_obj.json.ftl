@@ -14,8 +14,7 @@
     "particle": "${modid}:item/${data.texture}"
 </#if>
   }
-</#if>
-    <#if data.getModElement?? && data.getModElement().getTypeString() == "item" && data.getModels()?has_content>,
+<#if data.getModElement?? && data.getModElement().getTypeString() == "item" && data.getModels()?has_content>,
     "overrides": [
         <#list data.getModels() as model>
         {
@@ -29,7 +28,7 @@
         }<#sep>,
         </#list>
     ]
-    </#if>
+</#if>
 }
 
 <#macro textures textureMap>
