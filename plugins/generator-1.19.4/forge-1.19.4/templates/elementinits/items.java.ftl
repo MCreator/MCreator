@@ -91,35 +91,6 @@ public class ${JavaModName}Items {
 		</#if>
 	</#list>
 
-	<#if w.hasItemsWithCustomProperties()>
-	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
-		event.enqueueWork(() -> {
-		<#list items as item>
-			<#if item.getModElement().getTypeString() == "item">
-				<#list item.customProperties.entrySet() as property>
-				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("${modid}:${property.getKey()}"),
-						(itemStackToRender, clientWorld, livingEntity, itemEntityId) -> <#if hasProcedure(property.getValue())>{
-					Entity entity = livingEntity != null ? livingEntity : itemStackToRender.getEntityRepresentation();
-					if (entity == null)
-						return 0F;
-
-					return (float) <@procedureCode property.getValue(), {
-						"x": "entity.getX()",
-						"y": "entity.getY()",
-						"z": "entity.getZ()",
-						"world": "entity.level",
-						"entity": "entity",
-						"itemstack": "itemStackToRender"
-					}/>
-					}<#else>0F</#if>
-				);
-				</#list>
-			</#if>
-		</#list>
-		});
-	}
-	</#if>
-
 	<#if hasBlocks>
 	private static RegistryObject<Item> block(RegistryObject<Block> block) {
 		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
@@ -129,6 +100,32 @@ public class ${JavaModName}Items {
 	<#if hasDoubleBlocks>
 	private static RegistryObject<Item> doubleBlock(RegistryObject<Block> block) {
 		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties()));
+	}
+	</#if>
+
+	<#if w.hasItemsWithCustomProperties()>
+	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
+		event.enqueueWork(() -> {
+		<#list items as item>
+			<#if item.getModElement().getTypeString() == "item">
+				<#list item.customProperties.entrySet() as property>
+				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("${modid}:${property.getKey()}"),
+					(itemStackToRender, clientWorld, entity, itemEntityId) ->
+						<#if hasProcedure(property.getValue())>
+							(float) <@procedureCode property.getValue(), {
+								"x": "entity.getX()",
+								"y": "entity.getY()",
+								"z": "entity.getZ()",
+								"world": "entity != null ? entity.level : clientWorld",
+								"entity": "entity",
+								"itemstack": "itemStackToRender"
+							}, false/>
+						<#else>0</#if>
+				);
+				</#list>
+			</#if>
+		</#list>
+		});
 	}
 	</#if>
 
