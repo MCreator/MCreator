@@ -14,7 +14,7 @@
     "particle": "${modid}:items/${data.texture}"
 </#if>
   }
-<#if data.getModElement?? && data.getModElement().getTypeString() == "item" && data.getModels()?has_content>,
+<#if data.getModels?? && data.getModels()?has_content>,
     "overrides": [
         <#list data.getModels() as model>
         {
