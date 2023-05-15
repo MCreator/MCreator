@@ -24,6 +24,8 @@ import net.mcreator.Launcher;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.WorkspaceSelectorLoadedEvent;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.ImagePanel;
@@ -36,6 +38,8 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.notifications.INotificationConsumer;
+import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.ui.vcs.VCSSetupDialogs;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.ListUtils;
@@ -66,7 +70,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-public final class WorkspaceSelector extends JFrame implements DropTargetListener {
+public final class WorkspaceSelector extends JFrame implements DropTargetListener, INotificationConsumer {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace Selector");
 
@@ -77,6 +81,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	@Nullable private final MCreatorApplication application;
 
 	private final JPanel subactions = new JPanel(new GridLayout(-1, 1, 0, 2));
+
+	private final NotificationsRenderer notificationsRenderer;
 
 	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
@@ -236,6 +242,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JComponent centerComponent = PanelUtils.centerAndSouthElement(
 				PanelUtils.northAndCenterElement(logoPanel, PanelUtils.totalCenterInPanel(actions)), southSubComponent);
 
+		notificationsRenderer = new NotificationsRenderer(centerComponent);
+
 		add("Center", centerComponent);
 
 		recentPanel.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -246,6 +254,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		add("West", recentPanel);
 
 		new DropTarget(this, DnDConstants.ACTION_MOVE, this, true, null);
+
+		MCREvent.event(new WorkspaceSelectorLoadedEvent(this));
 
 		setSize(795, 460);
 		setResizable(false);
@@ -539,4 +549,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	@Nullable public MCreatorApplication getApplication() {
 		return application;
 	}
+
+	@Override public NotificationsRenderer getNotificationsRenderer() {
+		return notificationsRenderer;
+	}
+
 }

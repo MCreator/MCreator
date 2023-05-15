@@ -28,7 +28,6 @@ import org.eclipse.jgit.api.RemoteAddCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.ConfigConstants;
 import org.eclipse.jgit.lib.Constants;
-import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.lib.StoredConfig;
 import org.eclipse.jgit.transport.CredentialsProvider;
 import org.eclipse.jgit.transport.URIish;
@@ -38,10 +37,13 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class WorkspaceVCS {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace VCS");
+	private static final Map<File, WorkspaceVCS> workspaces = new HashMap<>();
 
 	private VCSInfo info;
 
@@ -73,8 +75,7 @@ public class WorkspaceVCS {
 		return new UsernamePasswordCredentialsProvider(info.getUsername(), info.getPassword(workspaceFolder, parent));
 	}
 
-	public static WorkspaceVCS initNewVCSWorkspace(Workspace workspace, VCSInfo vcsInfo)
-			throws WorkspaceNotEmptyException {
+	public static void initNewVCSWorkspace(Workspace workspace, VCSInfo vcsInfo) throws WorkspaceNotEmptyException {
 		Git git = null;
 		try {
 			git = Git.init().setDirectory(workspace.getWorkspaceFolder()).call();
@@ -120,26 +121,35 @@ public class WorkspaceVCS {
 
 		VCSInfo.saveToFile(vcsInfo, new File(workspace.getFolderManager().getWorkspaceCacheDir(), "vcsInfo"));
 
-		return new WorkspaceVCS(workspace, vcsInfo);
+		workspaces.put(workspace.getWorkspaceFolder(), new WorkspaceVCS(workspace, vcsInfo));
 	}
 
-	public static WorkspaceVCS loadVCSWorkspace(Workspace workspace) {
-		if (!isVCSInitialized(workspace))
-			return null;
+	public static boolean loadVCSWorkspace(Workspace workspace) {
+		if (isVCSInitialized(workspace)) {
+			VCSInfo vcsInfo = VCSInfo.loadFromFile(
+					new File(workspace.getFolderManager().getWorkspaceCacheDir(), "vcsInfo"));
+			if (vcsInfo != null) {
+				workspaces.put(workspace.getWorkspaceFolder(), new WorkspaceVCS(workspace, vcsInfo));
+				return true;
+			}
+		}
+		return false;
+	}
 
-		VCSInfo vcsInfo = VCSInfo.loadFromFile(
-				new File(workspace.getFolderManager().getWorkspaceCacheDir(), "vcsInfo"));
-		if (vcsInfo != null)
-			return new WorkspaceVCS(workspace, vcsInfo);
-		return null;
+	public static WorkspaceVCS getVCSWorkspace(Workspace workspace) {
+		return workspaces.get(workspace.getWorkspaceFolder());
+	}
+
+	public static void removeVCSWorkspace(Workspace workspace) {
+		workspaces.remove(workspace.getWorkspaceFolder());
 	}
 
 	private static boolean isVCSInitialized(Workspace workspace) {
 		try {
 			if (new File(workspace.getFolderManager().getWorkspaceCacheDir(), "vcsInfo").isFile()) {
-				Git git = Git.init().setDirectory(workspace.getWorkspaceFolder()).call();
-				Repository repository = git.getRepository();
-				return !repository.getRemoteNames().isEmpty();
+				try (Git git = Git.init().setDirectory(workspace.getWorkspaceFolder()).call()) {
+					return !git.getRepository().getRemoteNames().isEmpty();
+				}
 			}
 		} catch (GitAPIException e) {
 			LOG.warn("Failed to check for Git repo", e);

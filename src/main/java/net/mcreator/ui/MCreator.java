@@ -38,6 +38,8 @@ import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.notifications.INotificationConsumer;
+import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.MCreatorVersionNumber;
@@ -62,7 +64,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider {
+public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider, INotificationConsumer {
 
 	private static final Logger LOG = LogManager.getLogger("MCreator");
 
@@ -90,6 +92,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	private final long windowUID;
 
+	private final NotificationsRenderer notificationsRenderer;
+
 	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		LOG.info("Opening MCreator workspace: " + workspace.getWorkspaceSettings().getModID());
 
@@ -97,11 +101,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		this.workspace = workspace;
 		this.application = application;
 
-		WorkspaceVCS vcs = WorkspaceVCS.loadVCSWorkspace(this.workspace);
-		if (vcs != null) {
-			this.workspace.setVCS(vcs);
+		if (WorkspaceVCS.loadVCSWorkspace(this.workspace))
 			LOG.info("Loaded VCS for current workspace");
-		}
 
 		this.gradleConsole = new GradleConsole(this);
 		this.gradleConsole.addGradleStateListener(new GradleStateListener() {
@@ -266,6 +267,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
+		this.notificationsRenderer = new NotificationsRenderer(splitPane);
+
 		add("South", statusBar);
 		add("North", toolBar);
 		add("Center", splitPane);
@@ -333,6 +336,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	@Override public @Nonnull Workspace getWorkspace() {
 		return workspace;
+	}
+
+	@Override public NotificationsRenderer getNotificationsRenderer() {
+		return notificationsRenderer;
 	}
 
 	public StatusBar getStatusBar() {

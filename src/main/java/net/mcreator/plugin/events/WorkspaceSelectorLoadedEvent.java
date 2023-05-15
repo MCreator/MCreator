@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,16 +17,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.action.impl;
+package net.mcreator.plugin.events;
 
-import net.mcreator.ui.action.ActionRegistry;
-import net.mcreator.ui.action.BasicAction;
-import net.mcreator.ui.dialogs.UpdateNotifyDialog;
-import net.mcreator.ui.init.L10N;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 
-public class CheckForUpdatesAction extends BasicAction {
-	public CheckForUpdatesAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.check_for_updates"),
-				e -> UpdateNotifyDialog.showUpdateDialogIfUpdateExists(actionRegistry.getMCreator(), true, true, true));
+public class WorkspaceSelectorLoadedEvent extends MCREvent {
+
+	private final WorkspaceSelector workspaceSelector;
+
+	public WorkspaceSelectorLoadedEvent(WorkspaceSelector workspaceSelector) {
+		this.workspaceSelector = workspaceSelector;
+	}
+
+	public WorkspaceSelector getWorkspaceSelector() {
+		return workspaceSelector;
 	}
 }

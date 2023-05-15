@@ -21,6 +21,7 @@ package net.mcreator.ui.action.impl.vcs;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.vcs.LocalChangesPanel;
+import net.mcreator.vcs.WorkspaceVCS;
 import org.eclipse.jgit.api.Git;
 import org.eclipse.jgit.api.Status;
 import org.eclipse.jgit.api.errors.GitAPIException;
@@ -31,7 +32,7 @@ public class ShowLocalChangesAction extends VCSAction {
 
 	public ShowLocalChangesAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.vcs.show_unsynced_changes"), e -> {
-			Git git = actionRegistry.getMCreator().getWorkspace().getVCS().getGit();
+			Git git = WorkspaceVCS.getVCSWorkspace(actionRegistry.getMCreator().getWorkspace()).getGit();
 			try {
 				git.rm().addFilepattern(".").call();
 				git.add().addFilepattern(".").call();

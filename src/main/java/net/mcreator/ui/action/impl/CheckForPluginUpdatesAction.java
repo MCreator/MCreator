@@ -16,34 +16,16 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.action.impl.vcs;
+package net.mcreator.ui.action.impl;
 
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.dialogs.UpdatePluginDialog;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
-import net.mcreator.vcs.WorkspaceVCS;
 
-public class SetupOrSettingsVCSAction extends BasicAction implements VCSStateChangeListener {
-
-	public SetupOrSettingsVCSAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.vcs.setup_settings"), e -> {
-			if (WorkspaceVCS.getVCSWorkspace(actionRegistry.getMCreator().getWorkspace()) == null) {
-				actionRegistry.setupVCS.doAction();
-			} else {
-				actionRegistry.remoteWorkspaceSettings.doAction();
-			}
-		});
-
-		// Force initial update of the icon.
-		vcsStateChanged();
-	}
-
-	@Override public void vcsStateChanged() {
-		if (WorkspaceVCS.getVCSWorkspace(actionRegistry.getMCreator().getWorkspace()) == null) {
-			setIcon(UIRES.get("16px.setupvcs"));
-		} else {
-			setIcon(UIRES.get("16px.vcs"));
-		}
+public class CheckForPluginUpdatesAction extends BasicAction {
+	public CheckForPluginUpdatesAction(ActionRegistry actionRegistry) {
+		super(actionRegistry, L10N.t("action.check_for_plugin_updates"),
+				e -> UpdatePluginDialog.showPluginUpdateDialog(actionRegistry.getMCreator(), true));
 	}
 }
