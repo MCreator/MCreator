@@ -149,12 +149,8 @@ public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
 	 * A subclass for fractional number type properties.
 	 */
 	public static class NumberType extends PropertyData<Double> {
-		private static final DecimalFormat df = new DecimalFormat("0",
+		private static final DecimalFormat df = new DecimalFormat("#.#########",
 				DecimalFormatSymbols.getInstance(Locale.ENGLISH));
-
-		static {
-			df.setMaximumFractionDigits(9);
-		}
 
 		private final double min, max;
 
