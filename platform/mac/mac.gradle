@@ -126,7 +126,7 @@ tasks.register('exportMacAarch64', Copy.class) {
 
         // If we are on MacOS, we can also ad-hoc sign the executable
         if (Os.isFamily(Os.FAMILY_MAC)) {
-            exec { commandLine('codesign', '--force', '-s', '-', exportPathX64 + '/MacOS/mcreator') }
+            exec { commandLine('codesign', '--force', '-s', '-', exportPathAarch64 + '/MacOS/mcreator') }
         }
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
