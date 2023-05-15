@@ -105,6 +105,7 @@ public class ${JavaModName}Items {
 	</#if>
 
 	<#if w.hasItemsWithCustomProperties()>
+	<#compress>
 	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
 		<#list items as item>
@@ -129,6 +130,7 @@ public class ${JavaModName}Items {
 		</#list>
 		});
 	}
+	</#compress>
 	</#if>
 
 }
