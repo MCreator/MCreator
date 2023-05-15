@@ -183,6 +183,7 @@ public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
 			value = Math.max(min, Math.min(max, Objects.requireNonNullElse((Double) value, getDefaultValue())));
 			JSpinner box = new JSpinner(new SpinnerNumberModel((double) value, min, max, 0.000000001));
+			box.setEditor(new JSpinner.NumberEditor(box, "#.#########"));
 			((JSpinner.NumberEditor) box.getEditor()).getFormat().setMaximumFractionDigits(9);
 			box.setPreferredSize(new Dimension(130, 22));
 			return box;
