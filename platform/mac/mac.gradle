@@ -34,7 +34,6 @@ tasks.register('exportMacX64', Copy.class) {
     }
     into('MacOS') {
         from file('platform/mac/mcreator_x64') rename('mcreator_x64', 'mcreator')
-        from file('LICENSE.txt')
     }
     into('MacOS/plugins') { from 'build/plugins/' }
     into('MacOS/license') { from 'license' }
