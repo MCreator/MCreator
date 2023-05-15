@@ -113,16 +113,16 @@ public class ${JavaModName}Items {
 				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(),
 					new ResourceLocation("${modid}:${item.getModElement().getRegistryName()}_${property.getKey()}"),
 					(itemStackToRender, clientWorld, entity, itemEntityId) ->
-					<#if hasProcedure(property.getValue())>
+						<#if hasProcedure(property.getValue())>
 							(float) <@procedureCode property.getValue(), {
-							"x": "entity.getX()",
-							"y": "entity.getY()",
-							"z": "entity.getZ()",
-							"world": "entity != null ? entity.level : clientWorld",
-							"entity": "entity",
-							"itemstack": "itemStackToRender"
+								"x": "entity.getX()",
+								"y": "entity.getY()",
+								"z": "entity.getZ()",
+								"world": "entity != null ? entity.level : clientWorld",
+								"entity": "entity",
+								"itemstack": "itemStackToRender"
 							}, false/>
-					<#else>0</#if>
+						<#else>0</#if>
 				);
 				</#list>
 			</#if>
