@@ -93,7 +93,6 @@ tasks.register('exportMacAarch64', Copy.class) {
     }
     into('MacOS') {
         from file('platform/mac/mcreator_aarch64') rename('mcreator_aarch64', 'mcreator')
-        from file('LICENSE.txt')
     }
     into('MacOS/plugins') { from 'build/plugins/' }
     into('MacOS/license') { from 'license' }
