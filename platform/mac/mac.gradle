@@ -53,18 +53,30 @@ tasks.register('exportMacX64', Copy.class) {
             exec { commandLine('chmod', '+x', exportPathX64 + '/MacOS/mcreator') }
         }
 
+        // If we are on MacOS, we can also ad-hoc sign the executable
+        if (Os.isFamily(Os.FAMILY_MAC)) {
+            exec { commandLine('codesign', '--force', '-s', '-', exportPathX64 + '/MacOS/mcreator') }
+        }
+
+        def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
+
         // Create x64 DMG
         ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
             arg(value: '-D')
             arg(value: '-o')
-            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg')
+            arg(value: dmgFile)
             arg(value: '-mac-name')
             arg(value: '-V')
             arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
             arg(value: '-apple')
             arg(value: '-v')
             arg(value: new File(buildDir, 'export/mac_x64'))
+        }
+
+        // If we are on MacOS, we can also ad-hoc sign the DMG
+        if (Os.isFamily(Os.FAMILY_MAC)) {
+            exec { commandLine('codesign', '--force', '-s', '-', dmgFile) }
         }
     }
 }
@@ -112,18 +124,30 @@ tasks.register('exportMacAarch64', Copy.class) {
             exec { commandLine('chmod', '+x', exportPathAarch64 + '/MacOS/mcreator') }
         }
 
+        // If we are on MacOS, we can also ad-hoc sign the executable
+        if (Os.isFamily(Os.FAMILY_MAC)) {
+            exec { commandLine('codesign', '--force', '-s', '-', exportPathX64 + '/MacOS/mcreator') }
+        }
+
+        def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
+
         // Create Aarch64 DMG
         ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
             arg(value: '-D')
             arg(value: '-o')
-            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg')
+            arg(value: dmgFile)
             arg(value: '-mac-name')
             arg(value: '-V')
             arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
             arg(value: '-apple')
             arg(value: '-v')
             arg(value: new File(buildDir, 'export/mac_aarch64'))
+        }
+
+        // If we are on MacOS, we can also ad-hoc sign the DMG
+        if (Os.isFamily(Os.FAMILY_MAC)) {
+            exec { commandLine('codesign', '--force', '-s', '-', dmgFile) }
         }
     }
 }
