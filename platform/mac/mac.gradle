@@ -35,14 +35,14 @@ tasks.register('exportMacX64', Copy.class) {
     into('MacOS') {
         from file('platform/mac/mcreator_x64') rename('mcreator_x64', 'mcreator')
     }
-    into('MacOS/plugins') { from 'build/plugins/' }
-    into('MacOS/license') { from 'license' }
-    into('MacOS/lib') {
+    into('plugins') { from 'build/plugins/' }
+    into('license') { from 'license' }
+    into('lib') {
         from 'build/libs'
         from configurations.export
         from configurations.macX64
     }
-    into('MacOS/jdk') { from 'jdk/jdk17_mac_x64/' }
+    into('jdk.bundle') { from 'jdk/jdk17_mac_x64/' }
     doLast {
         // fix line endings where needed
         convertCRLF(file(exportPathX64 + '/Info.plistdos'), file(exportPathX64 + '/Info.plist'))
@@ -55,7 +55,7 @@ tasks.register('exportMacX64', Copy.class) {
 
         // If we are on MacOS, we can also ad-hoc sign the executable
         if (Os.isFamily(Os.FAMILY_MAC)) {
-            exec { commandLine('codesign', '--force', '-s', '-', exportPathX64 + '/MacOS/mcreator') }
+            exec { commandLine('codesign', '--force', '--sign', '-', exportPathX64 + '/MacOS/mcreator') }
         }
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
@@ -72,11 +72,6 @@ tasks.register('exportMacX64', Copy.class) {
             arg(value: '-apple')
             arg(value: '-v')
             arg(value: new File(buildDir, 'export/mac_x64'))
-        }
-
-        // If we are on MacOS, we can also ad-hoc sign the DMG
-        if (Os.isFamily(Os.FAMILY_MAC)) {
-            exec { commandLine('codesign', '--force', '-s', '-', dmgFile) }
         }
     }
 }
@@ -106,14 +101,14 @@ tasks.register('exportMacAarch64', Copy.class) {
     into('MacOS') {
         from file('platform/mac/mcreator_aarch64') rename('mcreator_aarch64', 'mcreator')
     }
-    into('MacOS/plugins') { from 'build/plugins/' }
-    into('MacOS/license') { from 'license' }
-    into('MacOS/lib') {
+    into('plugins') { from 'build/plugins/' }
+    into('license') { from 'license' }
+    into('lib') {
         from 'build/libs'
         from configurations.export
         from configurations.macAarch64
     }
-    into('MacOS/jdk/') { from 'jdk/jdk17_mac_aarch64/' }
+    into('jdk.bundle') { from 'jdk/jdk17_mac_aarch64/' }
     doLast {
         // fix line endings where needed
         convertCRLF(file(exportPathAarch64 + '/Info.plistdos'), file(exportPathAarch64 + '/Info.plist'))
@@ -126,7 +121,7 @@ tasks.register('exportMacAarch64', Copy.class) {
 
         // If we are on MacOS, we can also ad-hoc sign the executable
         if (Os.isFamily(Os.FAMILY_MAC)) {
-            exec { commandLine('codesign', '--force', '-s', '-', exportPathAarch64 + '/MacOS/mcreator') }
+            exec { commandLine('codesign', '--force', '--sign', '-', exportPathAarch64 + '/MacOS/mcreator') }
         }
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
@@ -143,11 +138,6 @@ tasks.register('exportMacAarch64', Copy.class) {
             arg(value: '-apple')
             arg(value: '-v')
             arg(value: new File(buildDir, 'export/mac_aarch64'))
-        }
-
-        // If we are on MacOS, we can also ad-hoc sign the DMG
-        if (Os.isFamily(Os.FAMILY_MAC)) {
-            exec { commandLine('codesign', '--force', '-s', '-', dmgFile) }
         }
     }
 }
