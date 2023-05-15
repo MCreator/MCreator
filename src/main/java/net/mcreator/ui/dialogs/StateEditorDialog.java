@@ -25,6 +25,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.IPropertyData;
+import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
 
@@ -45,12 +46,12 @@ public class StateEditorDialog {
 	 * @param properties        List of properties that can be used to form the resulting state.
 	 * @param stateMap          The property-to-object map representation of the state to be edited, or {@code null}
 	 *                          in case it is just being created.
-	 * @param numberMatchSymbol Character(s) describing how a number property should relate to the specified value.
+	 * @param numberMatchSymbol NumberMatchType describing how a number property should relate to the specified value.
 	 * @return The resulting properties' values map after editing session is complete, or {@code null} if the operation
 	 * has been canceled (via cancel/close button).
 	 */
 	@Nullable public static StateMap open(MCreator mcreator, List<IPropertyData<?>> properties, StateMap stateMap,
-			String numberMatchSymbol) {
+			JStateLabel.NumberMatchType numberMatchSymbol) {
 		AtomicReference<StateMap> retVal = new AtomicReference<>();
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
 
@@ -59,7 +60,7 @@ public class StateEditorDialog {
 		for (IPropertyData<?> data : properties) {
 			Object value = stateMap != null ? stateMap.get(data) : null;
 			StatePart part = new StatePart(data.getName(), data.getDataClass() == PropertyData.IntegerType.class
-					|| data.getDataClass() == PropertyData.NumberType.class ? numberMatchSymbol : "=",
+					|| data.getDataClass() == PropertyData.NumberType.class ? numberMatchSymbol.getSymbol() : "=",
 					data.getComponent(mcreator, value));
 			part.useEntry.setSelected(value != null);
 			entryMap.put(data, part);

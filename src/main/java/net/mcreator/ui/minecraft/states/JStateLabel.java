@@ -89,7 +89,7 @@ public class JStateLabel extends JPanel {
 		if (propertyList == null)
 			return false;
 
-		StateMap stateMap = StateEditorDialog.open(mcreator, propertyList, getStateMap(), numberMatchType.symbol);
+		StateMap stateMap = StateEditorDialog.open(mcreator, propertyList, getStateMap(), numberMatchType);
 		if (stateMap == null)
 			return false;
 
@@ -156,6 +156,10 @@ public class JStateLabel extends JPanel {
 
 		NumberMatchType(String symbol) {
 			this.symbol = symbol;
+		}
+
+		public String getSymbol() {
+			return symbol;
 		}
 	}
 }

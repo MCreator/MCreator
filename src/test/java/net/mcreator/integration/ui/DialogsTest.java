@@ -37,6 +37,7 @@ import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.IPropertyData;
+import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -194,7 +195,7 @@ public class DialogsTest {
 			testState.put(testProps.get(4), rng.nextDouble());
 		if (rng.nextBoolean())
 			testState.put(testProps.get(5), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> StateEditorDialog.open(mcreator, testProps, testState, "="));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> StateEditorDialog.open(mcreator, testProps, testState, JStateLabel.NumberMatchType.EQUAL));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {
