@@ -96,6 +96,7 @@ net.mcreator.ui.minecraft.spawntypes
 net.mcreator.ui.minecraft.villagers
 net.mcreator.ui.modgui
 net.mcreator.ui.modgui.codeviewer
+net.mcreator.ui.notifications
 net.mcreator.ui.procedure
 net.mcreator.ui.validation
 net.mcreator.ui.validation.component
@@ -120,11 +121,13 @@ net.mcreator.ui.workspace.resources
 net.mcreator.ui.workspace.selector
 net.mcreator.ui.wysiwyg
 net.mcreator.util
+net.mcreator.util.diff
 net.mcreator.util.image
 net.mcreator.util.locale
 net.mcreator.util.math
 net.mcreator.vcs
 net.mcreator.vcs.diff
+net.mcreator.vcs.util
 net.mcreator.workspace
 net.mcreator.workspace.elements
 net.mcreator.workspace.misc

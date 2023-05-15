@@ -102,11 +102,17 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getInfo()" class="member-name-link">getInfo</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="WorkspaceVCS.html" title="class in net.mcreator.vcs">WorkspaceVCS</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#initNewVCSWorkspace(net.mcreator.workspace.Workspace,net.mcreator.vcs.VCSInfo)" class="member-name-link">initNewVCSWorkspace</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
- <a href="VCSInfo.html" title="class in net.mcreator.vcs">VCSInfo</a>&nbsp;vcsInfo)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getVCSWorkspace(net.mcreator.workspace.Workspace)" class="member-name-link">getVCSWorkspace</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="WorkspaceVCS.html" title="class in net.mcreator.vcs">WorkspaceVCS</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadVCSWorkspace(net.mcreator.workspace.Workspace)" class="member-name-link">loadVCSWorkspace</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#initNewVCSWorkspace(net.mcreator.workspace.Workspace,net.mcreator.vcs.VCSInfo)" class="member-name-link">initNewVCSWorkspace</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="VCSInfo.html" title="class in net.mcreator.vcs">VCSInfo</a>&nbsp;vcsInfo)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadVCSWorkspace(net.mcreator.workspace.Workspace)" class="member-name-link">loadVCSWorkspace</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#removeVCSWorkspace(net.mcreator.workspace.Workspace)" class="member-name-link">removeVCSWorkspace</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setInfo(net.mcreator.vcs.VCSInfo)" class="member-name-link">setInfo</a><wbr>(<a href="VCSInfo.html" title="class in net.mcreator.vcs">VCSInfo</a>&nbsp;info)</code></div>
@@ -156,9 +162,9 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="initNewVCSWorkspace(net.mcreator.workspace.Workspace,net.mcreator.vcs.VCSInfo)">
 <h3>initNewVCSWorkspace</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="WorkspaceVCS.html" title="class in net.mcreator.vcs">WorkspaceVCS</a></span>&nbsp;<span class="element-name">initNewVCSWorkspace</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">initNewVCSWorkspace</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="VCSInfo.html" title="class in net.mcreator.vcs">VCSInfo</a>&nbsp;vcsInfo)</span>
-                                        throws <span class="exceptions"><a href="WorkspaceNotEmptyException.html" title="class in net.mcreator.vcs">WorkspaceNotEmptyException</a></span></div>
+                                throws <span class="exceptions"><a href="WorkspaceNotEmptyException.html" title="class in net.mcreator.vcs">WorkspaceNotEmptyException</a></span></div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="WorkspaceNotEmptyException.html" title="class in net.mcreator.vcs">WorkspaceNotEmptyException</a></code></dd>
@@ -168,7 +174,19 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="loadVCSWorkspace(net.mcreator.workspace.Workspace)">
 <h3>loadVCSWorkspace</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="WorkspaceVCS.html" title="class in net.mcreator.vcs">WorkspaceVCS</a></span>&nbsp;<span class="element-name">loadVCSWorkspace</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</span></div>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">loadVCSWorkspace</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="getVCSWorkspace(net.mcreator.workspace.Workspace)">
+<h3>getVCSWorkspace</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="WorkspaceVCS.html" title="class in net.mcreator.vcs">WorkspaceVCS</a></span>&nbsp;<span class="element-name">getVCSWorkspace</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="removeVCSWorkspace(net.mcreator.workspace.Workspace)">
+<h3>removeVCSWorkspace</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">removeVCSWorkspace</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</span></div>
 </section>
 </li>
 </ul>

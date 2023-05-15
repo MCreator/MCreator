@@ -146,8 +146,9 @@ loadScripts(document, 'script');</script>
 <div class="summary-table two-column-summary">
 <div class="table-header col-first">Constructor</div>
 <div class="table-header col-last">Description</div>
-<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,net.mcreator.ui.help.IHelpContext)" class="member-name-link">JBoundingBoxList</a><wbr>(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
- <a href="../../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;gui)</code></div>
+<div class="col-constructor-name even-row-color"><code><a href="#%3Cinit%3E(net.mcreator.ui.MCreator,net.mcreator.ui.help.IHelpContext,java.util.function.Supplier)" class="member-name-link">JBoundingBoxList</a><wbr>(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+ <a href="../../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;gui,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="../../../workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a>&gt;&nbsp;modelProvider)</code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 </section>
@@ -170,11 +171,14 @@ loadScripts(document, 'script');</script>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isFullCube()" class="member-name-link">isFullCube</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setBoundingBoxes(java.util.List)" class="member-name-link">setBoundingBoxes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../element/types/interfaces/IBlockWithBoundingBox.BoxEntry.html" title="class in net.mcreator.element.types.interfaces">IBlockWithBoundingBox.BoxEntry</a>&gt;&nbsp;box)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#modelChanged()" class="member-name-link">modelChanged</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnabled(boolean)" class="member-name-link">setEnabled</a><wbr>(boolean&nbsp;enabled)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setBoundingBoxes(java.util.List)" class="member-name-link">setBoundingBoxes</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../element/types/interfaces/IBlockWithBoundingBox.BoxEntry.html" title="class in net.mcreator.element.types.interfaces">IBlockWithBoundingBox.BoxEntry</a>&gt;&nbsp;box)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnabled(boolean)" class="member-name-link">setEnabled</a><wbr>(boolean&nbsp;enabled)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -208,10 +212,12 @@ loadScripts(document, 'script');</script>
 <h2>Constructor Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreator,net.mcreator.ui.help.IHelpContext)">
+<section class="detail" id="&lt;init&gt;(net.mcreator.ui.MCreator,net.mcreator.ui.help.IHelpContext,java.util.function.Supplier)">
 <h3>JBoundingBoxList</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">JBoundingBoxList</span><wbr><span class="parameters">(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
- <a href="../../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;gui)</span></div>
+ <a href="../../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a>&nbsp;gui,
+ @Nullable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="../../../workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a>&gt;&nbsp;modelProvider)</span></div>
 </section>
 </li>
 </ul>
@@ -230,6 +236,12 @@ loadScripts(document, 'script');</script>
 <dt>Overrides:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html#setEnabled(boolean)" title="class or interface in javax.swing" class="external-link">setEnabled</a></code>&nbsp;in class&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a></code></dd>
 </dl>
+</section>
+</li>
+<li>
+<section class="detail" id="modelChanged()">
+<h3>modelChanged</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">modelChanged</span>()</div>
 </section>
 </li>
 <li>

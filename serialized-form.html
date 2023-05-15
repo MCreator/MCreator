@@ -181,6 +181,10 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/workspace/WorkspacePanel.html" title="class in net.mcreator.ui.workspace">WorkspacePanel</a> mv</pre>
 </li>
 <li class="block-list">
+<h5>notificationsRenderer</h5>
+<pre><a href="net/mcreator/ui/notifications/NotificationsRenderer.html" title="class in net.mcreator.ui.notifications">NotificationsRenderer</a> notificationsRenderer</pre>
+</li>
+<li class="block-list">
 <h5>splitPane</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSplitPane.html" title="class or interface in javax.swing" class="external-link">JSplitPane</a> splitPane</pre>
 </li>
@@ -334,10 +338,6 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>currentBranch</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JLabel.html" title="class or interface in javax.swing" class="external-link">JLabel</a> currentBranch</pre>
-</li>
-<li class="block-list">
 <h5>gradleIndicator</h5>
 <pre>net.mcreator.ui.StatusBar.GradleIndicator gradleIndicator</pre>
 </li>
@@ -437,6 +437,12 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="net.mcreator.ui.action.impl.AboutAction">
 <h3>Class&nbsp;<a href="net/mcreator/ui/action/impl/AboutAction.html" title="class in net.mcreator.ui.action.impl">net.mcreator.ui.action.impl.AboutAction</a></h3>
 <div class="type-signature">class AboutAction extends <a href="net/mcreator/ui/action/BasicAction.html" title="class in net.mcreator.ui.action">BasicAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.action.impl.CheckForPluginUpdatesAction">
+<h3>Class&nbsp;<a href="net/mcreator/ui/action/impl/CheckForPluginUpdatesAction.html" title="class in net.mcreator.ui.action.impl">net.mcreator.ui.action.impl.CheckForPluginUpdatesAction</a></h3>
+<div class="type-signature">class CheckForPluginUpdatesAction extends <a href="net/mcreator/ui/action/BasicAction.html" title="class in net.mcreator.ui.action">BasicAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 </section>
 </li>
 <li>
@@ -1444,6 +1450,12 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
+<section class="serialized-class-details" id="net.mcreator.ui.component.TechnicalButton">
+<h3>Class&nbsp;<a href="net/mcreator/ui/component/TechnicalButton.html" title="class in net.mcreator.ui.component">net.mcreator.ui.component.TechnicalButton</a></h3>
+<div class="type-signature">class TechnicalButton extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+</section>
+</li>
+<li>
 <section class="serialized-class-details" id="net.mcreator.ui.component.TransparentToolBar">
 <h3>Class&nbsp;<a href="net/mcreator/ui/component/TransparentToolBar.html" title="class in net.mcreator.ui.component">net.mcreator.ui.component.TransparentToolBar</a></h3>
 <div class="type-signature">class TransparentToolBar extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JToolBar.html" title="class or interface in javax.swing" class="external-link">JToolBar</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -1891,10 +1903,6 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>progress</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JList.html" title="class or interface in javax.swing" class="external-link">JList</a>&lt;<a href="net/mcreator/ui/dialogs/ProgressDialog.ProgressUnit.html" title="class in net.mcreator.ui.dialogs">ProgressDialog.ProgressUnit</a>&gt; progress</pre>
-</li>
-<li class="block-list">
-<h5>topInfo</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JLabel.html" title="class or interface in javax.swing" class="external-link">JLabel</a> topInfo</pre>
 </li>
 </ul>
 </section>
@@ -3081,7 +3089,7 @@ loadScripts(document, 'script');</script>
 <ul class="block-list">
 <li class="block-list">
 <h5>add</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> add</pre>
+<pre><a href="net/mcreator/ui/component/TechnicalButton.html" title="class in net.mcreator.ui.component">TechnicalButton</a> add</pre>
 </li>
 <li class="block-list">
 <h5>entryListeners</h5>
@@ -3336,6 +3344,14 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>entries</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> entries</pre>
+</li>
+<li class="block-list">
+<h5>genFromModel</h5>
+<pre><a href="net/mcreator/ui/component/TechnicalButton.html" title="class in net.mcreator.ui.component">TechnicalButton</a> genFromModel</pre>
+</li>
+<li class="block-list">
+<h5>modelProvider</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/function/Supplier.html" title="class or interface in java.util.function" class="external-link">Supplier</a>&lt;<a href="net/mcreator/workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a>&gt; modelProvider</pre>
 </li>
 </ul>
 </section>
@@ -9404,12 +9420,20 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/MCreatorApplication.html" title="class in net.mcreator.ui">MCreatorApplication</a> application</pre>
 </li>
 <li class="block-list">
+<h5>notificationsRenderer</h5>
+<pre><a href="net/mcreator/ui/notifications/NotificationsRenderer.html" title="class in net.mcreator.ui.notifications">NotificationsRenderer</a> notificationsRenderer</pre>
+</li>
+<li class="block-list">
 <h5>recentPanel</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> recentPanel</pre>
 </li>
 <li class="block-list">
 <h5>recentWorkspaces</h5>
 <pre><a href="net/mcreator/ui/workspace/selector/RecentWorkspaces.html" title="class in net.mcreator.ui.workspace.selector">RecentWorkspaces</a> recentWorkspaces</pre>
+</li>
+<li class="block-list">
+<h5>subactions</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> subactions</pre>
 </li>
 <li class="block-list">
 <h5>workspaceOpenListener</h5>

@@ -86,12 +86,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/RootPaneContainer.html" title="class or interface in javax.swing" class="external-link">RootPaneContainer</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/WindowConstants.html" title="class or interface in javax.swing" class="external-link">WindowConstants</a></code>, <code><a href="../generator/IGeneratorProvider.html" title="interface in net.mcreator.generator">IGeneratorProvider</a></code>, <code><a href="../workspace/IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/RootPaneContainer.html" title="class or interface in javax.swing" class="external-link">RootPaneContainer</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/WindowConstants.html" title="class or interface in javax.swing" class="external-link">WindowConstants</a></code>, <code><a href="../generator/IGeneratorProvider.html" title="interface in net.mcreator.generator">IGeneratorProvider</a></code>, <code><a href="notifications/INotificationConsumer.html" title="interface in net.mcreator.ui.notifications">INotificationConsumer</a></code>, <code><a href="../workspace/IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public final class </span><span class="element-name type-name-label">MCreator</span>
 <span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JFrame.html" title="class or interface in javax.swing" class="external-link">JFrame</a>
-implements <a href="../workspace/IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a>, <a href="../generator/IGeneratorProvider.html" title="interface in net.mcreator.generator">IGeneratorProvider</a></span></div>
+implements <a href="../workspace/IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a>, <a href="../generator/IGeneratorProvider.html" title="interface in net.mcreator.generator">IGeneratorProvider</a>, <a href="notifications/INotificationConsumer.html" title="interface in net.mcreator.ui.notifications">INotificationConsumer</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -218,27 +218,30 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MCreatorTabs.html" title="class in net.mcreator.ui">MCreatorTabs</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMCreatorTabs()" class="member-name-link">getMCreatorTabs</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="browser/WorkspaceFileBrowser.html" title="class in net.mcreator.ui.browser">WorkspaceFileBrowser</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectBrowser()" class="member-name-link">getProjectBrowser</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="notifications/NotificationsRenderer.html" title="class in net.mcreator.ui.notifications">NotificationsRenderer</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getNotificationsRenderer()" class="member-name-link">getNotificationsRenderer</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="StatusBar.html" title="class in net.mcreator.ui">StatusBar</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStatusBar()" class="member-name-link">getStatusBar</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="browser/WorkspaceFileBrowser.html" title="class in net.mcreator.ui.browser">WorkspaceFileBrowser</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getProjectBrowser()" class="member-name-link">getProjectBrowser</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MainToolBar.html" title="class in net.mcreator.ui">MainToolBar</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getToolBar()" class="member-name-link">getToolBar</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="StatusBar.html" title="class in net.mcreator.ui">StatusBar</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getStatusBar()" class="member-name-link">getStatusBar</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspace()" class="member-name-link">getWorkspace</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="MainToolBar.html" title="class in net.mcreator.ui">MainToolBar</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getToolBar()" class="member-name-link">getToolBar</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getWorkspace()" class="member-name-link">getWorkspace</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTitle(java.lang.String)" class="member-name-link">setTitle</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;title)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>int</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#hashCode()" class="member-name-link">hashCode</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVisible(boolean)" class="member-name-link">setVisible</a><wbr>(boolean&nbsp;b)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setTitle(java.lang.String)" class="member-name-link">setTitle</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;title)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setVisible(boolean)" class="member-name-link">setVisible</a><wbr>(boolean&nbsp;b)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -263,6 +266,9 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.generator.IGeneratorProvider">Methods inherited from interface&nbsp;net.mcreator.generator.<a href="../generator/IGeneratorProvider.html" title="interface in net.mcreator.generator">IGeneratorProvider</a></h3>
 <code><a href="../generator/IGeneratorProvider.html#getGenerator()">getGenerator</a>, <a href="../generator/IGeneratorProvider.html#getGeneratorConfiguration()">getGeneratorConfiguration</a>, <a href="../generator/IGeneratorProvider.html#getGeneratorStats()">getGeneratorStats</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-net.mcreator.ui.notifications.INotificationConsumer">Methods inherited from interface&nbsp;net.mcreator.ui.notifications.<a href="notifications/INotificationConsumer.html" title="interface in net.mcreator.ui.notifications">INotificationConsumer</a></h3>
+<code><a href="notifications/INotificationConsumer.html#addNotification(java.lang.String,java.lang.String,net.mcreator.ui.notifications.NotificationsRenderer.ActionButton...)">addNotification</a>, <a href="notifications/INotificationConsumer.html#addNotification(java.lang.String,javax.swing.ImageIcon,java.lang.String,net.mcreator.ui.notifications.NotificationsRenderer.ActionButton...)">addNotification</a>, <a href="notifications/INotificationConsumer.html#addNotification(java.lang.String,net.mcreator.ui.notifications.NotificationsRenderer.ActionButton...)">addNotification</a>, <a href="notifications/INotificationConsumer.html#addNotification(javax.swing.ImageIcon,java.lang.String,net.mcreator.ui.notifications.NotificationsRenderer.ActionButton...)">addNotification</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.workspace.IWorkspaceProvider">Methods inherited from interface&nbsp;net.mcreator.workspace.<a href="../workspace/IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a></h3>
 <code><a href="../workspace/IWorkspaceProvider.html#getFileManager()">getFileManager</a>, <a href="../workspace/IWorkspaceProvider.html#getFolderManager()">getFolderManager</a>, <a href="../workspace/IWorkspaceProvider.html#getModElementManager()">getModElementManager</a>, <a href="../workspace/IWorkspaceProvider.html#getWorkspaceFolder()">getWorkspaceFolder</a>, <a href="../workspace/IWorkspaceProvider.html#getWorkspaceSettings()">getWorkspaceSettings</a></code></div>
@@ -383,6 +389,16 @@ implements <a href="../workspace/IWorkspaceProvider.html" title="interface in ne
 <dl class="notes">
 <dt>Specified by:</dt>
 <dd><code><a href="../workspace/IWorkspaceProvider.html#getWorkspace()">getWorkspace</a></code>&nbsp;in interface&nbsp;<code><a href="../workspace/IWorkspaceProvider.html" title="interface in net.mcreator.workspace">IWorkspaceProvider</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getNotificationsRenderer()">
+<h3>getNotificationsRenderer</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="notifications/NotificationsRenderer.html" title="class in net.mcreator.ui.notifications">NotificationsRenderer</a></span>&nbsp;<span class="element-name">getNotificationsRenderer</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="notifications/INotificationConsumer.html#getNotificationsRenderer()">getNotificationsRenderer</a></code>&nbsp;in interface&nbsp;<code><a href="notifications/INotificationConsumer.html" title="interface in net.mcreator.ui.notifications">INotificationConsumer</a></code></dd>
 </dl>
 </section>
 </li>
