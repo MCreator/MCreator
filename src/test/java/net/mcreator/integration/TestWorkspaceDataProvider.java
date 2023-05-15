@@ -1083,7 +1083,7 @@ public class TestWorkspaceDataProvider {
 
 					for (int j = 2; j <= size1; j++) {
 						if (random.nextBoolean()) {
-							stateMap.put(new PropertyData.NumberType("property" + j), random.nextDouble());
+							stateMap.put(new PropertyData.NumberType("CUSTOM:property" + j), random.nextDouble());
 						}
 					}
 
