@@ -1,0 +1,17 @@
+{
+  "args0": [
+    {
+      "type": "field_mcitem_selector",
+      "name": "block",
+      "supported_mcitems": "allblocks"
+    }
+  ],
+  "output": "RuleTest",
+  "colour": "80",
+  "mcreator": {
+    "toolbox_id": "orefeatures",
+    "fields": [
+      "block"
+    ]
+  }
+}

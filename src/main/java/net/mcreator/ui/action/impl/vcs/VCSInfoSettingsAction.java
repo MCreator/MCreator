@@ -23,6 +23,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.vcs.VCSSetupDialogs;
 import net.mcreator.vcs.VCSInfo;
+import net.mcreator.vcs.WorkspaceVCS;
 
 import java.io.File;
 
@@ -30,7 +31,8 @@ public class VCSInfoSettingsAction extends VCSAction {
 
 	public VCSInfoSettingsAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.vcs.settings"), e -> {
-			VCSInfo vcsInfo = actionRegistry.getMCreator().getWorkspace().getVCS().getInfo();
+			WorkspaceVCS workspaceVCS = WorkspaceVCS.getVCSWorkspace(actionRegistry.getMCreator().getWorkspace());
+			VCSInfo vcsInfo = workspaceVCS.getInfo();
 			VCSInfo newInfo;
 			if (vcsInfo != null) {
 				newInfo = VCSSetupDialogs.getVCSInfoDialog(actionRegistry.getMCreator(),
@@ -42,7 +44,7 @@ public class VCSInfoSettingsAction extends VCSAction {
 			}
 
 			if (newInfo != null) {
-				actionRegistry.getMCreator().getWorkspace().getVCS().setInfo(newInfo);
+				workspaceVCS.setInfo(newInfo);
 				VCSInfo.saveToFile(newInfo,
 						new File(actionRegistry.getMCreator().getFolderManager().getWorkspaceCacheDir(), "vcsInfo"));
 			}

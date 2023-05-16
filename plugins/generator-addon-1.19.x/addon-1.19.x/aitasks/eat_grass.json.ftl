@@ -1,3 +1,3 @@
 "minecraft:behavior.eat_block": {
-    "priority": ${customBlockIndex+1}
+    "priority": ${cbi+1}
 },
