@@ -219,7 +219,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	public Map<String, Procedure> getProperties() {
 		Map<String, Procedure> retVal = new LinkedHashMap<>();
-		propertiesList.forEach(e -> retVal.put(e.getNameField().getText(), e.getEntry()));
+		propertiesList.forEach(e -> retVal.put(e.getNameField().getText(), e.getSelectedProcedure()));
 		return retVal;
 	}
 

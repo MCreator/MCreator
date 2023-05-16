@@ -97,7 +97,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		return new PropertyData.NumberType("CUSTOM:" + nameField.getText());
 	}
 
-	public Procedure getEntry() {
+	public Procedure getSelectedProcedure() {
 		return value.getSelectedProcedure();
 	}
 
