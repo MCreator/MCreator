@@ -146,6 +146,7 @@ public class BlocklyJavascriptTemplates {
 						}
 					],
 					"extensions": [
+						"procedure_dependencies_tooltip",
 						"procedure_dependencies_onchange_mixin"
 					],
 					"output": "%s",
@@ -175,6 +176,7 @@ public class BlocklyJavascriptTemplates {
 						}
 					],
 					"extensions": [
+						"procedure_dependencies_tooltip",
 						"procedure_dependencies_onchange_mixin"
 					],
 					"output": "%s",

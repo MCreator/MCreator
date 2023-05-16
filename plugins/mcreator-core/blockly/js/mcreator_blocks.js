@@ -54,6 +54,7 @@ Blockly.Blocks['call_procedure'] = {
         this.setNextStatement(true);
         this.setColour(250);
         if (editorType == "procedures") {
+            Blockly.Extensions.apply('procedure_dependencies_tooltip', this, false);
             Blockly.Extensions.apply('procedure_dependencies_mutator', this, true);
             Blockly.Extensions.apply('procedure_dependencies_onchange_mixin', this, false);
         }

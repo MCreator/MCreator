@@ -37,6 +37,20 @@ Blockly.Extensions.register('is_custom_loop',
         Blockly.libraryBlocks.loops.loopTypes.add(this.type);
     });
 
+Blockly.Extensions.register('procedure_dependencies_tooltip',
+    function () {
+        let thisBlock = this;
+        this.setTooltip(function () {
+            const depList = javabridge.getAllDependencies(thisBlock.getFieldValue('procedure'));
+            if (depList.length == 0)
+                return javabridge.t('blockly.extension.procedure_dep_tooltip.empty');
+            let tooltip = javabridge.t('blockly.extension.procedure_dep_tooltip');
+            for (const dependency of depList)
+                tooltip += '\n' + dependency;
+            return tooltip;
+        });
+    });
+
 Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
     function () {
         this.setOnChange(function (changeEvent) {
