@@ -459,7 +459,7 @@ function validatingRepeatingInputMixin(mutatorContainer, mutatorInput, inputName
 
         // Add/remove inputs from this block
         updateShape_: function () {
-            this.handleEmptyInput_(disableIfEmpty);
+            mixin.handleEmptyInput_(disableIfEmpty);
             // Add proper inputs
             for (let i = 0; i < this.inputCount_; i++) {
                 if (!this.getInput(inputName + i)) {
@@ -476,9 +476,7 @@ function validatingRepeatingInputMixin(mutatorContainer, mutatorInput, inputName
             for (let i = this.inputCount_; this.getInput(inputName + i); i++) {
                 this.removeInput(inputName + i);
             }
-        },
-
-        handleEmptyInput_: mixin.handleEmptyInput_
+        }
     }
 }
 
