@@ -21,6 +21,7 @@ package net.mcreator.blockly.java.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
@@ -30,7 +31,9 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Element;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -81,6 +84,16 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.procedure_retval.nonexistent", procedure.getName())));
 				return;
+			}
+
+			List<String> overridden = new ArrayList<>(names.values());
+			procedure.getDependencies(master.getWorkspace()).stream().map(Dependency::getName)
+					.forEach(overridden::remove);
+
+			if (!overridden.isEmpty()) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("blockly.warnings.call_procedure.extra_deps", procedure.getName(),
+								String.join(", ", overridden))));
 			}
 
 			if (master.getTemplateGenerator() != null) {

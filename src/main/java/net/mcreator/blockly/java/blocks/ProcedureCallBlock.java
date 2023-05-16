@@ -75,6 +75,15 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				return;
 			}
 
+			List<String> overridden = new ArrayList<>(names.values());
+			dependencies.stream().map(Dependency::getName).forEach(overridden::remove);
+
+			if (!overridden.isEmpty()) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("blockly.warnings.call_procedure.extra_deps", procedure.getName(),
+								String.join(", ", overridden))));
+			}
+
 			if (master instanceof BlocklyToJava blocklyToJava
 					&& blocklyToJava.getEditorType() == BlocklyEditorType.COMMAND_ARG) {
 				List<Dependency> dependenciesProvided;
