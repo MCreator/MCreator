@@ -202,17 +202,22 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		propertyEntries.repaint();
 
 		PropertyData.NumberType data = entry.toPropertyData();
+
 		Set<StateMap> duplicateFilter = new HashSet<>();
-		statesList.stream().toList().forEach(s -> {
+		Iterator<JItemStatesListEntry> iterator = statesList.iterator();
+		while (iterator.hasNext()) {
+			JItemStatesListEntry s = iterator.next();
 			StateMap stateMap = s.getStateLabel().getStateMap();
 			stateMap.remove(data);
-			if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) {
-				statesList.remove(s);
+			if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) { // if state map is empty or duplicate entry is found
+				// remove the JItemStatesListEntry
+				iterator.remove();
 				stateEntries.remove(s);
 			} else {
 				s.getStateLabel().setStateMap(stateMap);
 			}
-		});
+		}
+
 		stateEntries.revalidate();
 		stateEntries.repaint();
 	}
