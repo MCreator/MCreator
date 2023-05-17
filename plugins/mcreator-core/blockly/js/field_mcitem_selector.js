@@ -2,26 +2,35 @@
  * This class represents a MCItem selector field
  */
 class FieldMCItemSelector extends Blockly.FieldImage {
+
+    EDITABLE = true;
+    SERIALIZABLE = true;
+    CURSOR = 'default';
+
     constructor(opt_supported_mcitems = 'all', opt_validator) {
         super('', 36, 36, '');
         this.supported_mcitems = opt_supported_mcitems // The type of selector to open ("allblocks" will open the block selector)
-        this.mcitem = null; // The selected mcitem
-
-        this.EDITABLE = true;
-        this.SERIALIZABLE = true;
 
         if (opt_validator)
             this.setValidator(opt_validator);
-    }
+
+        // Show the full name of the selected mcitem, or the "Double click to select value" message
+        let thisField = this;
+        this.setTooltip(function () {
+            return thisField.getValue() || (thisField.supported_mcitems === 'allblocks' ?
+                javabridge.t('blockly.field_mcitem_selector.tooltip.empty_block') :
+                javabridge.t('blockly.field_mcitem_selector.tooltip.empty_block_item'));
+        });
+    };
 
     // Create the field from the json definition
     static fromJson(options) {
         return new this(Blockly.utils.parsing.replaceMessageReferences(options['supported_mcitems']), undefined);
-    }
+    };
 
     // Initialize the field visuals
     initView() {
-        this.imageElement_ = Blockly.utils.dom.createSvgElement(
+        this.imageElement = Blockly.utils.dom.createSvgElement(
             'image',
             {
                 'height': this.imageHeight_ + 'px',
@@ -29,8 +38,8 @@ class FieldMCItemSelector extends Blockly.FieldImage {
                 'style': 'cursor: default;'
             },
             this.fieldGroup_);
-        if (this.imageElement_) {
-            this.imageElement_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.src_ || '');
+        if (this.imageElement) {
+            this.imageElement.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.src_ || '');
         }
         this.sourceBlock_.getSvgRoot().appendChild(this.fieldGroup_);
         this.lastClickTime = -1;
@@ -44,7 +53,7 @@ class FieldMCItemSelector extends Blockly.FieldImage {
                 let thisField = this; // reference to this field, to use in the callback function
                 javabridge.openMCItemSelector(this.supported_mcitems, {
                     'callback': function (selected) {
-                        thisField.setValue(selected);
+                        thisField.setValue(selected || '');
                         javabridge.triggerEvent();
                     }
                 });
@@ -55,16 +64,13 @@ class FieldMCItemSelector extends Blockly.FieldImage {
         }
     };
 
-    getValue() {
-        return this.mcitem;
-    };
-
-    setValue(new_mcitem) {
-        this.src_ = javabridge.getMCItemURI(new_mcitem);
-        if (this.imageElement_) {
-            this.imageElement_.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.src_ || '');
+    // Update the value and the image of this field
+    doValueUpdate_(newValue) {
+        this.value_ = newValue;
+        this.src_ = javabridge.getMCItemURI(newValue);
+        if (this.imageElement) {
+            this.imageElement.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', this.src_ || '');
         }
-        this.mcitem = new_mcitem;
     };
 }
 

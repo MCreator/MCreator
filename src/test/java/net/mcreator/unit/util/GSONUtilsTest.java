@@ -18,8 +18,8 @@
 
 package net.mcreator.unit.util;
 
-import net.mcreator.util.GSONClone;
-import net.mcreator.util.GSONCompare;
+import net.mcreator.vcs.util.GSONClone;
+import net.mcreator.util.diff.GSONCompare;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
