@@ -67,7 +67,6 @@ public class HiddenSection extends PreferencesSection {
 		java_home = addEntry(new FileEntry("java_home", null, false));
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
 		enableJavaPlugins = addEntry(new BooleanEntry("enableJavaPlugins", false));
-		lastWorkspace = addEntry(new FileEntry("lastWorkspace", null, false));
 	}
 
 	@Override public boolean isVisible() {

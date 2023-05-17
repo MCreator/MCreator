@@ -226,9 +226,9 @@ public final class MCreatorApplication {
 					}
 				}
 
-				File workspace = PreferencesManager.PREFERENCES.hidden.lastWorkspace.get();
+				RecentWorkspaceEntry workspace = workspaceSelector.getRecentWorkspaces().getList().get(0);
 				if (PreferencesManager.PREFERENCES.behavior.openLastWorkspace.get() && workspace != null)
-					openWorkspaceInMCreator(workspace);
+					openWorkspaceInMCreator(workspace.getPath());
 				else if (!directLaunch)
 					showWorkspaceSelector();
 
