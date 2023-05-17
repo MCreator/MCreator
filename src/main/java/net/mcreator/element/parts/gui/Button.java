@@ -57,8 +57,8 @@ public class Button extends SizedComponent {
 					this.height, wysiwygEditor);
 		int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getWidth());
 		int textheight = (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getHeight()) - 4;
-		g.drawString(this.text, cx + (this.width / 2f) - (textwidth / (isUndecorated ? 1.7f : 2)),
-				cy + textheight + (this.height / 2f) - (textheight / 2f));
+		g.drawString(this.text, isUndecorated ? cx : cx + (this.width / 2) - (textwidth / 2),
+				isUndecorated ? cy + textheight + 4 : cy + textheight + (this.height / 2) - (textheight / 2));
 	}
 
 }
