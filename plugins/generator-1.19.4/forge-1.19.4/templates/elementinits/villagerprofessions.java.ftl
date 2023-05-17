@@ -38,7 +38,7 @@
 
 package ${package}.init;
 
-import net.minecraft.sounds.SoundEvent;import java.util.Map;import java.util.concurrent.atomic.AtomicReference;
+import net.minecraft.sounds.SoundEvent;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}VillagerProfessions {
 
