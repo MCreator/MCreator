@@ -54,20 +54,13 @@ public sealed interface IPropertyData<T> permits BuiltInPropertyData, PropertyDa
 	String getName();
 
 	/**
-	 * @return The type of this property data object.
-	 */
-	default Class<?> getDataClass() {
-		return getClass();
-	}
-
-	/**
 	 * Adds the prefix to the name of this property if it is not a built-in property and returns the result.
 	 * Can be used for cases where property names need to be unique across multiple mod elements that could define property with the same name.
 	 *
 	 * @param prefix Prefix to add to the name
 	 * @return The name of this property with the prefix
 	 */
-	default String getPrefixedName(String prefix) {
+	@SuppressWarnings("unused") default String getPrefixedName(String prefix) {
 		String rawname = getName();
 
 		if (this instanceof BuiltInPropertyData<?>)
@@ -76,6 +69,13 @@ public sealed interface IPropertyData<T> permits BuiltInPropertyData, PropertyDa
 			return "CUSTOM:" + prefix + rawname.substring(7);
 		else
 			return prefix + getName();
+	}
+
+	/**
+	 * @return The type of this property data object.
+	 */
+	default Class<?> getDataClass() {
+		return getClass();
 	}
 
 	/**
