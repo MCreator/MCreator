@@ -418,101 +418,7 @@ function weightedListMutatorMixin(inputType) {
         }, true, ['weight'], true);
 }
 
-function validatingRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputProvider, isProperInput = true,
-                                       fieldNames = [], disableIfEmpty) {
-    const mixin = simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputProvider, isProperInput,
-        fieldNames, disableIfEmpty);
-    return {
-        mutationToDom: mixin.mutationToDom,
-
-        domToMutation: mixin.domToMutation,
-
-        saveExtraState: mixin.saveExtraState,
-
-        loadExtraState: mixin.loadExtraState,
-
-        decompose: mixin.decompose,
-
-        // Rebuild this block based on the number of inputs in the mutator UI
-        compose: function (containerBlock) {
-            let inputBlock = containerBlock.getInputTargetBlock('STACK');
-            // Count number of inputs.
-            const connections = [];
-            const fieldValues = [];
-            while (inputBlock && !inputBlock.isInsertionMarker()) {
-                connections.push(inputBlock.valueConnection_);
-                fieldValues.push(inputBlock.fieldValues_);
-                inputBlock = inputBlock.nextConnection && inputBlock.nextConnection.targetBlock();
-            }
-            // Disconnect any children that don't belong. This is skipped if the provided input is a dummy input
-            if (isProperInput) {
-                for (let i = 0; i < this.inputCount_; i++) {
-                    const connection = this.getInput(inputName + i) && this.getInput(inputName + i).connection.targetConnection;
-                    if (connection && connections.indexOf(connection) == -1) {
-                        connection.disconnect();
-                    }
-                }
-            }
-            this.inputCount_ = connections.length;
-            this.updateShape_();
-            // Reconnect any child blocks and update the field values
-            if (isProperInput) {
-                for (let i = 0; i < this.inputCount_; i++)
-                    Blockly.Mutator.reconnect(connections[i], this, inputName + i);
-            }
-            for (let i = 0; i < fieldNames.length; i++) {
-                const validators = [];
-                for (let j = 0; j < this.inputCount_; j++) {
-                    const currentField = this.getField(fieldNames[i] + j);
-                    validators.push(currentField.getValidator());
-                    currentField.setValidator(null); // Detach validators from fields to force setting previous values
-                    currentField.mutationInProcess_ = true;
-                }
-                const newValues = [];
-                for (let j = 0; j < this.inputCount_; j++) {
-                    const currentField = this.getField(fieldNames[i] + j);
-                    if (fieldValues[j]) // If fields existed before, restore their values unconditionally
-                        currentField.setValue(fieldValues[j][i] ?? '');
-                    currentField.setValidator(validators[j]);
-                    if (fieldValues[j] == null) // Make sure values of newly created fields are validated
-                        currentField.setValue(currentField.getValue());
-                    newValues.push(currentField.getValue());
-                }
-                for (let j = 0; j < this.inputCount_; j++) {
-                    const currentField = this.getField(fieldNames[i] + j);
-                    if (newValues.indexOf(currentField.getValue()) != -1)
-                        currentField.setValue(currentField.getValue()); // Prevent duplicated initial values
-                    currentField.mutationInProcess_ = false;
-                }
-            }
-        },
-
-        saveConnections: mixin.saveConnections,
-
-        // Add/remove inputs from this block
-        updateShape_: function () {
-            mixin.handleEmptyInput_(disableIfEmpty);
-            // Add proper inputs
-            for (let i = 0; i < this.inputCount_; i++) {
-                if (!this.getInput(inputName + i)) {
-                    inputProvider(this, inputName, i);
-                    for (let j = 0; j < fieldNames.length; j++) {
-                        const currentField = this.getField(fieldNames[j] + i);
-                        currentField.mutationInProcess_ = true;
-                        currentField.setValue(currentField.getValue());
-                        currentField.mutationInProcess_ = false;
-                    }
-                }
-            }
-            // Remove extra inputs
-            for (let i = this.inputCount_; this.getInput(inputName + i); i++) {
-                this.removeInput(inputName + i);
-            }
-        }
-    }
-}
-
-Blockly.Extensions.registerMutator('procedure_dependencies_mutator', validatingRepeatingInputMixin(
+const PROCEDURE_DEPENDENCIES_MUTATOR = simpleRepeatingInputMixin(
         'procedure_dependencies_mutator_container', 'procedure_dependencies_mutator_input', 'arg',
         function(thisBlock, inputName, index) {
             thisBlock.appendValueInput(inputName + index).setAlign(Blockly.Input.Align.RIGHT)
@@ -524,7 +430,58 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', validatingR
                         });
                     }))), 'name' + index)
                 .appendField(javabridge.t('blockly.block.call_procedure.arg'));
-        }, true, ['name'], false),
+            const currentField = thisBlock.getField('name' + index);
+            currentField.mutationInProcess_ = true;
+            currentField.setValue(currentField.getValue());
+            currentField.mutationInProcess_ = false;
+        }, true, ['name'], false);
+PROCEDURE_DEPENDENCIES_MUTATOR.compose = function (containerBlock) {
+    let inputBlock = containerBlock.getInputTargetBlock('STACK');
+    // Count number of inputs.
+    const connections = [];
+    const fieldValues = [];
+    while (inputBlock && !inputBlock.isInsertionMarker()) {
+        connections.push(inputBlock.valueConnection_);
+        fieldValues.push(inputBlock.fieldValues_);
+        inputBlock = inputBlock.nextConnection && inputBlock.nextConnection.targetBlock();
+    }
+    // Disconnect any children that don't belong. This is skipped if the provided input is a dummy input
+    for (let i = 0; i < this.inputCount_; i++) {
+        const connection = this.getInput('arg' + i) && this.getInput('arg' + i).connection.targetConnection;
+        if (connection && connections.indexOf(connection) == -1) {
+            connection.disconnect();
+        }
+    }
+    this.inputCount_ = connections.length;
+    this.updateShape_();
+    // Reconnect any child blocks and update the field values
+    for (let i = 0; i < this.inputCount_; i++)
+        Blockly.Mutator.reconnect(connections[i], this, 'arg' + i);
+    const validators = [];
+    for (let i = 0; i < this.inputCount_; i++) {
+        const currentField = this.getField('name' + i);
+        validators.push(currentField.getValidator());
+        currentField.setValidator(null); // Detach validators from fields to force setting previous values
+        currentField.mutationInProcess_ = true;
+    }
+    const newValues = [];
+    for (let i = 0; i < this.inputCount_; i++) {
+        const currentField = this.getField('name' + i);
+        if (fieldValues[i]) // If fields existed before, restore their values unconditionally
+            currentField.setValue(fieldValues[i][0] ?? '');
+        currentField.setValidator(validators[i]);
+        if (fieldValues[i] == null) // Make sure values of newly created fields are validated
+            currentField.setValue(currentField.getValue());
+        newValues.push(currentField.getValue());
+    }
+    for (let i = 0; i < this.inputCount_; i++) {
+        const currentField = this.getField('name' + i);
+        if (newValues.indexOf(currentField.getValue()) != -1)
+            currentField.setValue(currentField.getValue()); // Prevent duplicated initial values
+        currentField.mutationInProcess_ = false;
+    }
+}
+Blockly.Extensions.registerMutator('procedure_dependencies_mutator', PROCEDURE_DEPENDENCIES_MUTATOR,
     undefined, ['procedure_dependencies_mutator_input']);
 
 Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepeatingInputMixin(
