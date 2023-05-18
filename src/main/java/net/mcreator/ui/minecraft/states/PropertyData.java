@@ -19,19 +19,39 @@
 
 package net.mcreator.ui.minecraft.states;
 
-import com.google.gson.JsonElement;
+import com.google.gson.*;
+import com.google.gson.annotations.JsonAdapter;
 import net.mcreator.ui.MCreator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.lang.reflect.Type;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
-public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
+/**
+ * Instances of this class store information about certain property (its name, type,
+ * minimum and maximum values for number properties, list of allowed values for string properties and so on).
+ *
+ * @param <T> Type of values this property can take.
+ */
+@JsonAdapter(PropertyData.GSONAdapter.class) public abstract class PropertyData<T> {
+	private static final Map<String, Class<? extends PropertyData<?>>> typeMappings = new HashMap<>() {{
+		put("logic", PropertyData.LogicType.class);
+		put("integer", PropertyData.IntegerType.class);
+		put("number", PropertyData.NumberType.class);
+		put("string", PropertyData.StringType.class);
+	}};
+	private static final Map<Class<? extends PropertyData<?>>, String> typeMappingsReverse = typeMappings.entrySet().stream()
+			.collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+
 	@SuppressWarnings("FieldMayBeFinal") private String name;
 
 	/**
@@ -43,9 +63,71 @@ public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
 		this.name = name;
 	}
 
-	@Override public final String getName() {
+	/**
+	 * @return The name of this property.
+	 */
+	public final String getName() {
 		return name;
 	}
+
+	/**
+	 * Adds the prefix to the name of this property if it is not a built-in property and returns the result.
+	 * Can be used for cases where property names need to be unique across multiple mod elements that could define property with the same name.
+	 *
+	 * @param prefix Prefix to add to the name
+	 * @return The name of this property with the prefix
+	 */
+	@SuppressWarnings("unused") public final String getPrefixedName(String prefix) {
+		String rawName = getName();
+
+		if (rawName.startsWith("CUSTOM:"))
+			return "CUSTOM:" + prefix + rawName.substring(7);
+		else
+			return prefix + rawName;
+	}
+
+	/**
+	 * Provides the default value of type of this property. This is the "null" value of this type, which means
+	 * it may be outside value limits defined for a particular property.
+	 *
+	 * @return A default value of this property's type.
+	 */
+	@Nonnull public abstract T getDefaultValue();
+
+	/**
+	 * Converts passed value of this property to its string representation.
+	 *
+	 * @param value A value of this property's type.
+	 * @return Possible value of this property as a string.
+	 * @throws ClassCastException if the type of passed value doesn't match the type of property or its subtype.
+	 */
+	public abstract String toString(Object value);
+
+	/**
+	 * Parses string representation of passed value of this property.
+	 *
+	 * @param value Possible value of this property as JsonElement.
+	 * @return A value of this property's type.
+	 */
+	public abstract T parseObj(JsonElement value);
+
+	/**
+	 * Generates a UI component accepting values of type {@link T} and sets its value to the passed one.
+	 *
+	 * @param mcreator The future parent window of the component returned.
+	 * @param value    Possible value of this property.
+	 * @return A UI component that accepts values of type {@link T}.
+	 * @throws ClassCastException if the type of passed value doesn't match the type of property or its subtype.
+	 */
+	public abstract JComponent getComponent(MCreator mcreator, @Nullable Object value);
+
+	/**
+	 * Extracts possible value of this property from the provided UI component.
+	 *
+	 * @param component A UI component that accepts values of type {@link T}.
+	 * @return A value of this property's type.
+	 */
+	public abstract T getValue(JComponent component);
 
 	@Override public final boolean equals(Object obj) {
 		return super.equals(obj) || obj instanceof PropertyData<?> that && this.name.equals(that.name);
@@ -57,6 +139,31 @@ public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
 
 	@Override public final String toString() {
 		return getName();
+	}
+
+	/**
+	 * We need a custom serializer/deserializer for this class because we need to store the type of property.
+	 * Technically type could be determined from properties list, but we don't have a reference to it, and it also
+	 * depends on the ME type, so this is second-best option. There is minimal overhead in storing the type.
+	 */
+	static class GSONAdapter implements JsonSerializer<PropertyData<?>>, JsonDeserializer<PropertyData<?>> {
+
+		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
+				.create();
+
+		@Override
+		public PropertyData<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+				throws JsonParseException {
+			JsonObject jsonObject = json.getAsJsonObject();
+			return gson.fromJson(jsonObject, typeMappings.get(jsonObject.get("type").getAsString()));
+		}
+
+		@Override
+		public JsonElement serialize(PropertyData<?> propertyData, Type typeOfSrc, JsonSerializationContext context) {
+			JsonObject retVal = gson.toJsonTree(propertyData).getAsJsonObject();
+			retVal.addProperty("type", typeMappingsReverse.get(propertyData.getClass()));
+			return retVal;
+		}
 	}
 
 	/**

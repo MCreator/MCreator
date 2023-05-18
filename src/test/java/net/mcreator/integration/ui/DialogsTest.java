@@ -36,7 +36,6 @@ import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.states.IPropertyData;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -174,7 +173,7 @@ public class DialogsTest {
 	}
 
 	@Test public void testStateEditorDialog() throws Throwable {
-		List<IPropertyData<?>> testProps = new ArrayList<>();
+		List<PropertyData<?>> testProps = new ArrayList<>();
 		testProps.add(new PropertyData.LogicType("logic"));
 		testProps.add(new PropertyData.IntegerType("integer"));
 		testProps.add(new PropertyData.IntegerType("integer2", -100, 100));

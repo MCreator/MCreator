@@ -29,10 +29,10 @@ import java.util.Map;
 /**
  * This object holds the state map. It is a map of property (property name and its description) to value of the state.
  */
-@JsonAdapter(StateMap.GSONAdapter.class) public class StateMap extends LinkedHashMap<IPropertyData<?>, Object> {
+@JsonAdapter(StateMap.GSONAdapter.class) public class StateMap extends LinkedHashMap<PropertyData<?>, Object> {
 
 	private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
-			.registerTypeHierarchyAdapter(IPropertyData.class, new IPropertyData.GSONAdapter()).create();
+			.registerTypeHierarchyAdapter(PropertyData.class, new PropertyData.GSONAdapter()).create();
 
 	public static class GSONAdapter implements JsonSerializer<StateMap>, JsonDeserializer<StateMap> {
 
@@ -44,7 +44,7 @@ import java.util.Map;
 			jsonArray.forEach(jsonElement -> {
 				JsonObject entryObject = jsonElement.getAsJsonObject();
 
-				IPropertyData<?> propertyData = gson.fromJson(entryObject.get("property"), IPropertyData.class);
+				PropertyData<?> propertyData = gson.fromJson(entryObject.get("property"), PropertyData.class);
 				stateMap.put(propertyData, propertyData.parseObj(entryObject.get("value")));
 			});
 
@@ -55,7 +55,7 @@ import java.util.Map;
 			JsonArray retval = new JsonArray();
 
 			// iterate key/value pairs of stateMap
-			for (Map.Entry<IPropertyData<?>, Object> entry : stateMap.entrySet()) {
+			for (Map.Entry<PropertyData<?>, Object> entry : stateMap.entrySet()) {
 				JsonObject propertyObject = new JsonObject();
 				propertyObject.add("property", gson.toJsonTree(entry.getKey()));
 				propertyObject.add("value", gson.toJsonTree(entry.getValue()));

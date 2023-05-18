@@ -24,7 +24,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.states.IPropertyData;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -50,17 +49,17 @@ public class StateEditorDialog {
 	 * @return The resulting properties' values map after editing session is complete, or {@code null} if the operation
 	 * has been canceled (via cancel/close button).
 	 */
-	@Nullable public static StateMap open(MCreator mcreator, List<IPropertyData<?>> properties, StateMap stateMap,
+	@Nullable public static StateMap open(MCreator mcreator, List<PropertyData<?>> properties, StateMap stateMap,
 			JStateLabel.NumberMatchType numberMatchSymbol) {
 		AtomicReference<StateMap> retVal = new AtomicReference<>();
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.state_editor.title"), true);
 
-		Map<IPropertyData<?>, StatePart> entryMap = new HashMap<>();
+		Map<PropertyData<?>, StatePart> entryMap = new HashMap<>();
 		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
-		for (IPropertyData<?> data : properties) {
+		for (PropertyData<?> data : properties) {
 			Object value = stateMap != null ? stateMap.get(data) : null;
-			StatePart part = new StatePart(data.getName(), data.getDataClass() == PropertyData.IntegerType.class
-					|| data.getDataClass() == PropertyData.NumberType.class ? numberMatchSymbol.getSymbol() : "=",
+			StatePart part = new StatePart(data.getName(), data.getClass() == PropertyData.IntegerType.class
+					|| data.getClass() == PropertyData.NumberType.class ? numberMatchSymbol.getSymbol() : "=",
 					data.getComponent(mcreator, value));
 			part.useEntry.setSelected(value != null);
 			entryMap.put(data, part);
@@ -76,7 +75,7 @@ public class StateEditorDialog {
 
 		ok.addActionListener(e -> {
 			retVal.set(new StateMap());
-			for (IPropertyData<?> data : properties) {
+			for (PropertyData<?> data : properties) {
 				StatePart part = entryMap.get(data);
 				if (part.useEntry.isSelected())
 					retVal.get().put(data, data.getValue(part.entryComponent));

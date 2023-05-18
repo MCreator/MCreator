@@ -32,7 +32,9 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
-import net.mcreator.ui.minecraft.states.*;
+import net.mcreator.ui.minecraft.states.JStateLabel;
+import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -51,7 +53,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private final List<JItemPropertiesListEntry> propertiesList = new ArrayList<>();
 	private final List<JItemStatesListEntry> statesList = new ArrayList<>();
 
-	private final Map<String, BuiltInPropertyData<?>> builtinProperties = new LinkedHashMap<>();
+	private final Map<String, PropertyData<?>> builtinProperties = new LinkedHashMap<>();
 
 	private final JPanel propertyEntries = new JPanel(), stateEntries = new JPanel();
 
@@ -67,17 +69,13 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		List<String> builtinPropertyNames = List.copyOf(properties.keySet());
 
 		for (DataListEntry entry : properties.values()) {
-			PropertyData<?> builtin;
 			if ("Number".equals(entry.getType()) && entry.getOther() instanceof Map<?, ?> other) {
 				double min = Double.parseDouble((String) other.get("min"));
 				double max = Double.parseDouble((String) other.get("max"));
-				builtin = new PropertyData.NumberType(entry.getName(), min, max);
+				builtinProperties.put(entry.getName(), new PropertyData.NumberType(entry.getName(), min, max));
 			} else if ("Logic".equals(entry.getType())) {
-				builtin = new PropertyData.LogicType(entry.getName());
-			} else {
-				continue;
+				builtinProperties.put(entry.getName(), new PropertyData.LogicType(entry.getName()));
 			}
-			builtinProperties.put(entry.getName(), new BuiltInPropertyData<>(builtin));
 		}
 
 		propertyEntries.setLayout(new GridLayout(0, 1, 5, 5));
@@ -177,8 +175,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		return pe;
 	}
 
-	private List<IPropertyData<?>> getPropertiesList() {
-		List<IPropertyData<?>> props = new ArrayList<>();
+	private List<PropertyData<?>> getPropertiesList() {
+		List<PropertyData<?>> props = new ArrayList<>();
 		for (JItemPropertiesListEntry entry : propertiesList) {
 			if (entry.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.PASSED)
 				return null; // indicates that some property names are not defined correctly

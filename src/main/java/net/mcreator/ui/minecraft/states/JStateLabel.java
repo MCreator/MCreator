@@ -36,7 +36,7 @@ import java.util.stream.Stream;
 
 public class JStateLabel extends JPanel {
 	private final MCreator mcreator;
-	private final Supplier<List<IPropertyData<?>>> properties;
+	private final Supplier<List<PropertyData<?>>> properties;
 	private final Supplier<Stream<JStateLabel>> otherStates;
 
 	private StateMap stateMap = new StateMap();
@@ -46,7 +46,7 @@ public class JStateLabel extends JPanel {
 	private final JTextField label = new JTextField();
 	private final TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit.gif"));
 
-	public JStateLabel(MCreator mcreator, Supplier<List<IPropertyData<?>>> properties,
+	public JStateLabel(MCreator mcreator, Supplier<List<PropertyData<?>>> properties,
 			Supplier<Stream<JStateLabel>> otherStates) {
 		super(new BorderLayout(5, 0));
 		this.mcreator = mcreator;
@@ -85,7 +85,7 @@ public class JStateLabel extends JPanel {
 	}
 
 	public boolean editState() {
-		List<IPropertyData<?>> propertyList = properties.get();
+		List<PropertyData<?>> propertyList = properties.get();
 		if (propertyList == null)
 			return false;
 
@@ -132,7 +132,7 @@ public class JStateLabel extends JPanel {
 		List<String> stateParts = new ArrayList<>();
 		stateMap.forEach((k, v) -> {
 			String matchSymbol = "=";
-			if (k.getDataClass() == PropertyData.IntegerType.class || k.getDataClass() == PropertyData.NumberType.class)
+			if (k.getClass() == PropertyData.IntegerType.class || k.getClass() == PropertyData.NumberType.class)
 				matchSymbol = numberMatchType.getSymbol();
 			stateParts.add(k.getName().replace("CUSTOM:", "") + " " + matchSymbol + " " + k.toString(v));
 		});
