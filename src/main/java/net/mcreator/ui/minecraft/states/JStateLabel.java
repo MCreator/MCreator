@@ -123,7 +123,13 @@ public class JStateLabel extends JPanel {
 	}
 
 	public void setStateMap(StateMap stateMap) {
-		this.stateMap = stateMap;
+		this.stateMap = new StateMap();
+		for (IPropertyData<?> data : stateMap.keySet()) {
+			for (IPropertyData<?> dataSrc : properties.get()) {
+				if (data.getName().equals(dataSrc.getName()))
+					this.stateMap.put(dataSrc, stateMap.get(data));
+			}
+		}
 		refreshState();
 	}
 
