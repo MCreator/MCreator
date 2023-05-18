@@ -106,12 +106,6 @@ public class ModElementUITest {
 
 		for (int i = 1; i <= 4; i++) {
 			workspace.addModElement(
-					new ModElement(workspace, "text" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
-							new ArrayList<String>()).putMetadata("return_type", "STRING"));
-		}
-
-		for (int i = 1; i <= 2; i++) {
-			workspace.addModElement(
 					new ModElement(workspace, "string" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
 							new ArrayList<String>()).putMetadata("return_type", "STRING"));
 		}
