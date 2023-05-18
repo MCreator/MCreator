@@ -50,17 +50,17 @@ public class JStringListField extends JPanel {
 		}
 	};
 
-	private final JButton edit = new JButton(UIRES.get("16px.edit.gif")) {
+	private final TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit.gif")) {
 		@Override public String getName() {
 			return "TechnicalButton";
 		}
 	};
-	private final JButton back = new JButton(UIRES.get("previous")) {
+	private final TechnicalButton back = new TechnicalButton(UIRES.get("previous")) {
 		@Override public String getName() {
 			return "TechnicalButton";
 		}
 	};
-	private final JButton forward = new JButton(UIRES.get("next")) {
+	private final TechnicalButton forward = new TechnicalButton(UIRES.get("next")) {
 		@Override public String getName() {
 			return "TechnicalButton";
 		}
@@ -125,7 +125,7 @@ public class JStringListField extends JPanel {
 				setTextList(newList);
 		});
 
-		JButton copy = new JButton(UIRES.get("16px.copyclipboard")) {
+		TechnicalButton copy = new TechnicalButton(UIRES.get("16px.copyclipboard")) {
 			@Override public String getName() {
 				return "TechnicalButton";
 			}
