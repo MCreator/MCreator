@@ -34,6 +34,16 @@ import java.util.Map;
 	private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
 			.registerTypeHierarchyAdapter(IPropertyData.class, new IPropertyData.GSONAdapter()).create();
 
+	public StateMap() {
+		super();
+	}
+
+	public StateMap(StateMap stateMap) {
+		this();
+		for (IPropertyData<?> data : stateMap.keySet())
+			put(data instanceof PropertyData<?> prop ? prop.clone() : data, stateMap.get(data));
+	}
+
 	public static class GSONAdapter implements JsonSerializer<StateMap>, JsonDeserializer<StateMap> {
 
 		@Override public StateMap deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)

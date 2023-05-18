@@ -123,17 +123,19 @@ public class JStateLabel extends JPanel {
 	}
 
 	public void setStateMap(StateMap stateMap) {
-		this.stateMap = stateMap;
+		this.stateMap = new StateMap(stateMap);
 		refreshState();
 	}
 
 	public void rename(String property, String newName) {
+		StateMap newState = new StateMap();
 		for (IPropertyData<?> data : stateMap.keySet()) {
-			if (data instanceof PropertyData<?> prop && prop.getName().equals(property)) {
+			Object value = stateMap.get(data);
+			if (data instanceof PropertyData<?> prop && prop.getName().equals(property))
 				prop.setName(newName);
-				break;
-			}
+			newState.put(data, value);
 		}
+		stateMap = newState;
 		refreshState();
 	}
 
