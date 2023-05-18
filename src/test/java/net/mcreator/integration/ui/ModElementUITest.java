@@ -92,7 +92,7 @@ public class ModElementUITest {
 							new ArrayList<String>()));
 		}
 
-		for (int i = 1; i <= 4; i++) {
+		for (int i = 1; i <= 6; i++) {
 			workspace.addModElement(
 					new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
 							new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
