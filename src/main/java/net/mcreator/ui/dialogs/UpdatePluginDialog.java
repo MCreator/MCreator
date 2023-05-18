@@ -21,7 +21,6 @@ package net.mcreator.ui.dialogs;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.PluginUpdateInfo;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
@@ -29,12 +28,13 @@ import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Collection;
 
 public class UpdatePluginDialog {
 
-	public static void showPluginUpdateDialogIfUpdatesExist(Window parent) {
-		if (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPluginUpdates.get()
-				&& !PluginLoader.INSTANCE.getPluginUpdates().isEmpty()) {
+	public static void showPluginUpdateDialog(Window parent, boolean showNoUpdates) {
+		Collection<PluginUpdateInfo> pluginUpdateInfos = PluginLoader.INSTANCE.getPluginUpdates();
+		if (!pluginUpdateInfos.isEmpty()) {
 			JPanel pan = new JPanel(new BorderLayout(10, 15));
 
 			JPanel plugins = new JPanel(new GridLayout(0, 1, 10, 10));
@@ -44,7 +44,7 @@ public class UpdatePluginDialog {
 			pan.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 			pan.setPreferredSize(new Dimension(560, 250));
 
-			for (PluginUpdateInfo pluginUpdateInfo : PluginLoader.INSTANCE.getPluginUpdates()) {
+			for (PluginUpdateInfo pluginUpdateInfo : pluginUpdateInfos) {
 				StringBuilder usb = new StringBuilder(L10N.t("dialog.plugin_update_notify.version_message",
 						pluginUpdateInfo.plugin().getInfo().getName(), pluginUpdateInfo.plugin().getInfo().getVersion(),
 						pluginUpdateInfo.newVersion()));
@@ -72,6 +72,10 @@ public class UpdatePluginDialog {
 
 			dialog.add("Center", PanelUtils.centerAndSouthElement(pan, PanelUtils.join(close)));
 			dialog.setVisible(true);
+
+		} else if (showNoUpdates) {
+			JOptionPane.showMessageDialog(parent, L10N.t("dialog.update_notify.no_pluin_update_message"),
+					L10N.t("dialog.update_notify.no_update_title"), JOptionPane.INFORMATION_MESSAGE);
 		}
 	}
 }
