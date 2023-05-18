@@ -156,8 +156,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	}
 
 	private JItemPropertiesListEntry addPropertiesEntry() {
-		JPropertyNameField nameField = new JPropertyNameField(
-				(cachedName, newName) -> statesList.forEach(s -> s.getStateLabel().rename(cachedName, newName)));
+		JPropertyNameField nameField = new JPropertyNameField((cachedName, newName) -> statesList.forEach(
+				s -> s.getStateLabel().rename("CUSTOM:" + cachedName, "CUSTOM:" + newName)));
 
 		nameField.setValidator(
 				new UniqueNameValidator(L10N.t("elementgui.item.custom_properties.validator"), nameField::getText,
@@ -209,9 +209,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			JItemStatesListEntry s = iterator.next();
 			StateMap stateMap = s.getStateLabel().getStateMap();
 			stateMap.remove(data);
-			if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) { // if state map is empty or duplicate entry is found
-				// remove the JItemStatesListEntry
-				iterator.remove();
+			if (stateMap.isEmpty() || !duplicateFilter.add(stateMap)) { // if state map is empty or duplicate is found
+				iterator.remove(); // remove the JItemStatesListEntry
 				stateEntries.remove(s);
 			} else {
 				s.getStateLabel().setStateMap(stateMap);
