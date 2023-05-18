@@ -777,18 +777,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		hasAI.setSelected(true);
 
-		breedable.addActionListener(actionEvent -> {
-			if (breedable.isSelected()) {
-				hasAI.setSelected(true);
-				hasAI.setEnabled(false);
-				this.breedTriggerItems.setEnabled(true);
-				this.tameable.setEnabled(true);
-			} else {
-				hasAI.setEnabled(true);
-				this.breedTriggerItems.setEnabled(false);
-				this.tameable.setEnabled(false);
-			}
-		});
+		breedable.addActionListener(e -> updateBreedingConditions());
 
 		isBoss.addActionListener(e -> {
 			bossBarColor.setEnabled(isBoss.isSelected());
@@ -968,19 +957,23 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		editorReady = true;
 	}
 
-	private void updateTradingConditions() {
-		aiBase.setSelectedItem("(none)");
-		guiBoundTo.setSelectedItem("<NONE>");
-		if (canTrade.isSelected()) {
-			breedable.setSelected(false);
-			tameable.setSelected(false);
-			ridable.setSelected(false);
-			canControlForward.setSelected(false);
-			canControlStrafe.setSelected(false);
-			if (villagerTradingType.isSelected())
-				aiBase.setSelectedItem("Villager");
+	private void updateBreedingConditions() {
+		if (breedable.isSelected()) {
+			hasAI.setSelected(true);
+			hasAI.setEnabled(false);
+			this.breedTriggerItems.setEnabled(true);
+			this.tameable.setEnabled(true);
+		} else {
+			hasAI.setEnabled(true);
+			this.breedTriggerItems.setEnabled(false);
+			this.tameable.setEnabled(false);
 		}
+	}
 
+	private void updateTradingConditions() {
+		aiBase.setEnabled(!canTrade.isSelected());
+		breedable.setEnabled(!canTrade.isSelected());
+		ridable.setEnabled(!canTrade.isSelected());
 		villagerTradingType.setEnabled(canTrade.isSelected());
 		professionTrade.setEnabled(canTrade.isSelected());
 		fullUpdateSound.setEnabled(canTrade.isSelected());
@@ -992,12 +985,19 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		guiBoundTo.setEnabled(!canTrade.isSelected());
 		inventorySize.setEnabled(!canTrade.isSelected());
 		inventoryStackSize.setEnabled(!canTrade.isSelected());
-		aiBase.setEnabled(!canTrade.isSelected());
-		breedable.setEnabled(!canTrade.isSelected());
-		tameable.setEnabled(!canTrade.isSelected());
-		ridable.setEnabled(!canTrade.isSelected());
 		canControlForward.setEnabled(!canTrade.isSelected());
 		canControlStrafe.setEnabled(!canTrade.isSelected());
+
+		if (canTrade.isSelected()) {
+			aiBase.setSelectedItem(villagerTradingType.isSelected() ? "Villager" : "(none)");
+			guiBoundTo.setSelectedItem("<NONE>");
+			breedable.setSelected(false);
+			updateBreedingConditions();
+			tameable.setSelected(false);
+			ridable.setSelected(false);
+			canControlForward.setSelected(false);
+			canControlStrafe.setSelected(false);
+		}
 	}
 
 	@Override public void reloadDataLists() {
@@ -1185,16 +1185,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			regenerateAITasks();
 		});
 
-		if (breedable.isSelected()) {
-			hasAI.setSelected(true);
-			hasAI.setEnabled(false);
-			this.breedTriggerItems.setEnabled(true);
-			this.tameable.setEnabled(true);
-		} else {
-			hasAI.setEnabled(true);
-			this.breedTriggerItems.setEnabled(false);
-			this.tameable.setEnabled(false);
-		}
+		updateBreedingConditions();
 
 		bossBarColor.setEnabled(isBoss.isSelected());
 		bossBarType.setEnabled(isBoss.isSelected());
