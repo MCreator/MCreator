@@ -31,7 +31,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Objects;
 
-public abstract non-sealed class PropertyData<T> implements Cloneable, IPropertyData<T> {
+public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
 	private String name;
 
 	/**
@@ -54,14 +54,6 @@ public abstract non-sealed class PropertyData<T> implements Cloneable, IProperty
 	 */
 	public final void setName(String name) {
 		this.name = name;
-	}
-
-	@Override @SuppressWarnings("unchecked") public PropertyData<T> clone() {
-		try {
-			return (PropertyData<T>) super.clone();
-		} catch (CloneNotSupportedException e) {
-			throw new AssertionError();
-		}
 	}
 
 	@Override public final boolean equals(Object obj) {
