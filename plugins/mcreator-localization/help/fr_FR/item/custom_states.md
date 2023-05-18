@@ -1,13 +1,13 @@
-Ici, vous pouvez répertorier les propriétés supplémentaires de l'item et spécifier comment sa texture va changer
+Ici, vous pouvez lister les propriétés supplémentaires de cet item et spécifier comment sa texture/modèle change
 en fonction d'une combinaison donnée de valeurs de propriétés qui forment un état.
+Une propriété d'item peut prendre n'importe quel nombre (entier ou fractionnaire) comme valeur, alors afin d'éviter
+d'avoir à suivre une quelconque granularité et pour permettre de fournir des valeurs proches, un état correspond
+si les valeurs de propriété réelles extraites de l'item sont les mêmes que ou supérieures aux valeurs attendues
+(spécifiées ici). S'il y a plusieurs états avec des valeurs correspondantes, le dernier de ces états correspondants
+sera utilisé. Si aucun état ne correspond, l'élément utilisera son aspect visuel par défaut.
 
-En plus des propriétés personnalisées, vous pouvez également utiliser les propriétés d'item intégrées:
+Outre les propriétés personnalisées, vous pouvez également utiliser certaines propriétés d'item
+intégrées définies pour tous les items au nom de Minecraft.
 
-* `damaged`: Renvoie 1.0 si l'item est endommagé et 0.0 dans le cas contraire;
-* `damage`: Renvoie les dommages de l'item (entre 0.0 et 1.0);
-* `lefthanded`: Renvoie 1.0 si l'item est tenu dans la main gauche d'une entité et 0.0 sinon;
-* `cooldown`: Renvoie le temps de recharge restant de l'item (entre 0.0 et 1.0);
-* `trim_type` (1.19.4+): Renvoie l'"ID" fractionné du type d'ornement d'armure appliqué à l'item (entre 0.0 et 1.0).
-
-REMARQUE: Les états en double ne sont pas autorisés. Si deux états ou plus ne diffèrent que par la valeur d'une seule
-propriété, la suppression de cette propriété supprimera automatiquement les doublons du premier de ces états.
+NOTE: Les états doublons ne sont pas autorisés. Si deux états ou plus ne diffèrent que par la valeur
+d'une seule propriété, la suppression de cette propriété supprimera automatiquement les autres doublons.

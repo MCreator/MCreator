@@ -1,3 +1,3 @@
-Ce paramètre contrôle le nom de cette propriété. Les noms en double ne sont pas autorisés.
+Ce paramètre contrôle le nom de votre propriété. Les noms dupliqués ne sont pas acceptés.
 
-Il y a des propriétés définies pour tous les items par Minecraft vanilla, donc leurs noms ne peuvent pas être utilisés.
+Certaines propriétés sont définies pour tous les éléments au nom de Minecraft vanilla, de sorte que leurs noms ne peuvent pas être utilisés.
