@@ -30,9 +30,15 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.UUID;
 
 public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
 	private String name;
+	public transient UUID uuid;
+
+	private PropertyData() {
+		this.uuid = UUID.randomUUID();
+	}
 
 	/**
 	 * The sole constructor.
@@ -40,6 +46,7 @@ public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
 	 * @param name Name of the future property object.
 	 */
 	protected PropertyData(String name) {
+		this();
 		this.name = name;
 	}
 
@@ -57,11 +64,11 @@ public abstract non-sealed class PropertyData<T> implements IPropertyData<T> {
 	}
 
 	@Override public final boolean equals(Object obj) {
-		return super.equals(obj) || obj instanceof PropertyData<?> that && this.name.equals(that.name);
+		return super.equals(obj) || obj instanceof PropertyData<?> that && this.uuid.equals(that.uuid);
 	}
 
 	@Override public final int hashCode() {
-		return name.hashCode();
+		return uuid.hashCode();
 	}
 
 	@Override public final String toString() {

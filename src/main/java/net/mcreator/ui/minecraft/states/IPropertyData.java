@@ -28,6 +28,7 @@ import javax.swing.*;
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 /**
@@ -136,6 +137,7 @@ public sealed interface IPropertyData<T> permits BuiltInPropertyData, PropertyDa
 				throws JsonParseException {
 			JsonObject jsonObject = json.getAsJsonObject();
 			PropertyData<?> data = gson.fromJson(jsonObject, typeMappings.get(jsonObject.get("type").getAsString()));
+			data.uuid = UUID.randomUUID(); // init UUID for deserialized property
 			return !jsonObject.get("name").getAsString().startsWith("CUSTOM:") ? new BuiltInPropertyData<>(data) : data;
 		}
 
