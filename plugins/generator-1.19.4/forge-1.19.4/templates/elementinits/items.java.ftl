@@ -115,9 +115,9 @@ public class ${JavaModName}Items {
 					(itemStackToRender, clientWorld, entity, itemEntityId) ->
 						<#if hasProcedure(property.getValue())>
 							(float) <@procedureCode property.getValue(), {
-								"x": "entity.getX()",
-								"y": "entity.getY()",
-								"z": "entity.getZ()",
+								"x": "entity != null ? entity.getX() : 0",
+								"y": "entity != null ? entity.getY() : 0",
+								"z": "entity != null ? entity.getZ() : 0",
 								"world": "entity != null ? entity.level : clientWorld",
 								"entity": "entity",
 								"itemstack": "itemStackToRender"
