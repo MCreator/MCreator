@@ -124,22 +124,7 @@ public class JStateLabel extends JPanel {
 
 	public void setStateMap(StateMap stateMap) {
 		this.stateMap = new StateMap();
-		for (IPropertyData<?> data : stateMap.keySet()) {
-			for (IPropertyData<?> dataSrc : properties.get()) {
-				if (data.getName().equals(dataSrc.getName()))
-					this.stateMap.put(dataSrc, stateMap.get(data));
-			}
-		}
-		refreshState();
-	}
-
-	public void rename(String property, String newName) {
-		for (IPropertyData<?> data : stateMap.keySet()) {
-			if (data instanceof PropertyData<?> prop && prop.getName().equals(property)) {
-				prop.setName(newName);
-				break;
-			}
-		}
+		this.stateMap.putAll(stateMap);
 		refreshState();
 	}
 

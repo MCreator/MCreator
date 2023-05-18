@@ -35,6 +35,9 @@ import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.states.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
+import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
@@ -48,7 +51,6 @@ public class JItemPropertiesStatesList extends JEntriesList {
 	private final List<JItemPropertiesListEntry> propertiesList = new ArrayList<>();
 	private final List<JItemStatesListEntry> statesList = new ArrayList<>();
 
-	private final List<String> builtinPropertyNames;
 	private final Map<String, BuiltInPropertyData<?>> builtinProperties = new LinkedHashMap<>();
 
 	private final JPanel propertyEntries = new JPanel(), stateEntries = new JPanel();
@@ -62,7 +64,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		setBorder(BorderFactory.createEmptyBorder(5, 10, 0, 10));
 
 		Map<String, DataListEntry> properties = DataListLoader.loadDataMap("itemproperties");
-		builtinPropertyNames = List.copyOf(properties.keySet());
+		List<String> builtinPropertyNames = List.copyOf(properties.keySet());
 
 		for (DataListEntry entry : properties.values()) {
 			PropertyData<?> builtin;
@@ -84,7 +86,21 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		stateEntries.setOpaque(false);
 
 		addProperty.setText(L10N.t("elementgui.item.custom_properties.add"));
-		addProperty.addActionListener(e -> addPropertiesEntry());
+		addProperty.addActionListener(e -> {
+			String name = VOptionPane.showInputDialog(mcreator, L10N.t("elementgui.item.custom_properties.add.message"),
+					L10N.t("elementgui.item.custom_properties.add.input"), null, new OptionPaneValidatior() {
+						@Override public ValidationResult validate(JComponent component) {
+							VTextField holder = (VTextField) component;
+							return new UniqueNameValidator(L10N.t("elementgui.item.custom_properties.add.input"),
+									holder::getText,
+									() -> propertiesList.stream().map(JItemPropertiesListEntry::getPropertyName),
+									builtinPropertyNames, new RegistryNameValidator(holder,
+									L10N.t("elementgui.item.custom_properties.add.input"))).validate();
+						}
+					});
+			if (name != null)
+				addPropertiesEntry(name);
+		});
 		addState.setText(L10N.t("elementgui.item.custom_states.add"));
 		addState.addActionListener(e -> addStatesEntry(true));
 
@@ -155,18 +171,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		statesList.forEach(JItemStatesListEntry::reloadDataLists);
 	}
 
-	private JItemPropertiesListEntry addPropertiesEntry() {
-		JPropertyNameField nameField = new JPropertyNameField((cachedName, newName) -> statesList.forEach(
-				s -> s.getStateLabel().rename("CUSTOM:" + cachedName, "CUSTOM:" + newName)));
-
-		nameField.setValidator(
-				new UniqueNameValidator(L10N.t("elementgui.item.custom_properties.validator"), nameField::getText,
-						() -> propertiesList.stream().map(e -> e.getNameField().getText()), builtinPropertyNames,
-						new RegistryNameValidator(nameField, L10N.t("elementgui.item.custom_properties.validator"))));
-		nameField.enableRealtimeValidation();
-
-		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(this, gui, propertyEntries, propertiesList,
-				nameField);
+	private JItemPropertiesListEntry addPropertiesEntry(String name) {
+		JItemPropertiesListEntry pe = new JItemPropertiesListEntry(this, gui, propertyEntries, propertiesList, name);
 		registerEntryUI(pe);
 		return pe;
 	}
@@ -223,12 +229,12 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	public Map<String, Procedure> getProperties() {
 		Map<String, Procedure> retVal = new LinkedHashMap<>();
-		propertiesList.forEach(e -> retVal.put(e.getNameField().getText(), e.getSelectedProcedure()));
+		propertiesList.forEach(e -> retVal.put(e.getPropertyName(), e.getSelectedProcedure()));
 		return retVal;
 	}
 
 	public void setProperties(Map<String, Procedure> properties) {
-		properties.forEach((name, value) -> addPropertiesEntry().setEntry(name, value));
+		properties.forEach((name, value) -> addPropertiesEntry(name).setSelectedProcedure(value));
 	}
 
 	public List<Item.StateEntry> getStates() {

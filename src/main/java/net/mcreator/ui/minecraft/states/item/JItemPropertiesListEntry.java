@@ -21,12 +21,12 @@ package net.mcreator.ui.minecraft.states.item;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.minecraft.states.JPropertyNameField;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.IValidable;
@@ -42,16 +42,30 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
-	private final JPropertyNameField nameField;
+	private final String propertyName;
+	private final PropertyData.NumberType data;
 
 	private final ProcedureSelector value;
 
 	public JItemPropertiesListEntry(JItemPropertiesStatesList listPanel, IHelpContext gui, JPanel propertyEntries,
-			List<JItemPropertiesListEntry> propertiesList, JPropertyNameField nameField) {
+			List<JItemPropertiesListEntry> propertiesList, String propertyName) {
 		super(new BorderLayout(10, 5));
-		this.nameField = nameField;
+		this.propertyName = propertyName;
+		this.data = new PropertyData.NumberType("CUSTOM:" + propertyName);
 
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+
+		JLabel nameLabel = new JLabel(propertyName);
+		nameLabel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		nameLabel.setPreferredSize(new Dimension(0, 28));
+		ComponentUtils.deriveFont(nameLabel, 16);
+
+		JPanel namePane = new JPanel(new BorderLayout());
+		namePane.setOpaque(false);
+		namePane.add("North", HelpUtils.wrapWithHelpButton(gui.withEntry("item/custom_property_name"),
+				L10N.label("elementgui.item.custom_property.name")));
+		namePane.add("Center", nameLabel);
+		add("Center", PanelUtils.join(FlowLayout.LEFT, namePane));
 
 		value = new ProcedureSelector(gui.withEntry("item/custom_property_value"), listPanel.getMCreator(),
 				L10N.t("elementgui.item.custom_property.value"), ProcedureSelector.Side.CLIENT, true,
@@ -60,17 +74,11 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		value.setValidator(new ProcedureSelectorValidator(value));
 		reloadDataLists(); // we make sure that selector can be properly shown
 
-		add("West", PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(
-				HelpUtils.wrapWithHelpButton(gui.withEntry("item/custom_property_name"),
-						L10N.label("elementgui.item.custom_property.name")), nameField)));
-		add("Center", value);
-
 		remove.setText(L10N.t("elementgui.item.custom_property.remove"));
 		remove.addActionListener(e -> listPanel.removeProperty(this));
-		add("East", PanelUtils.pullElementUp(remove));
+		add("East", PanelUtils.westAndEastElement(value, PanelUtils.pullElementUp(remove), 5, 0));
 
 		propertiesList.add(this);
-
 		propertyEntries.add(this);
 		propertyEntries.revalidate();
 		propertyEntries.repaint();
@@ -79,9 +87,7 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 
-		nameField.setEnabled(enabled);
 		value.setEnabled(enabled);
-
 		remove.setEnabled(enabled);
 	}
 
@@ -89,28 +95,23 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		value.refreshListKeepSelected();
 	}
 
-	JPropertyNameField getNameField() {
-		return nameField;
+	PropertyData.NumberType toPropertyData() {
+		return data;
 	}
 
-	PropertyData.NumberType toPropertyData() {
-		return new PropertyData.NumberType("CUSTOM:" + nameField.getText());
+	public String getPropertyName() {
+		return propertyName;
 	}
 
 	public Procedure getSelectedProcedure() {
 		return value.getSelectedProcedure();
 	}
 
-	public void setEntry(String name, Procedure value) {
-		this.nameField.renameTo(name);
+	public void setSelectedProcedure(Procedure value) {
 		this.value.setSelectedProcedure(value);
 	}
 
 	@Override public Validator.ValidationResult getValidationStatus() {
-		Validator.ValidationResult result = nameField.getValidationStatus();
-		if (result != Validator.ValidationResult.PASSED)
-			return result;
-
 		return value.getValidationStatus();
 	}
 
@@ -118,6 +119,6 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 	}
 
 	@Override public Validator getValidator() {
-		return nameField.getValidator();
+		return value.getValidator();
 	}
 }
