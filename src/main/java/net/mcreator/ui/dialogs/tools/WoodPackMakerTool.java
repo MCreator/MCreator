@@ -387,6 +387,8 @@ public class WoodPackMakerTool {
 		//Recipes
 		Recipe woodRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "WoodRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		woodRecipe.craftingBookCategory = "BUILDING";
+		woodRecipe.group = "bark";
 		woodRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
 		woodRecipe.recipeSlots[1] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
 		woodRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + logBlock.getModElement().getName());
@@ -402,6 +404,8 @@ public class WoodPackMakerTool {
 
 		Recipe planksRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "PlanksRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		planksRecipe.craftingBookCategory = "BUILDING";
+		planksRecipe.group = "planks";
 		planksRecipe.recipeSlots[4] = new MItemBlock(workspace,
 				"TAG:" + woodItemTag.namespace + ":" + woodItemTag.name);
 		planksRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Planks");
@@ -416,6 +420,8 @@ public class WoodPackMakerTool {
 
 		Recipe stairsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "StairsRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		stairsRecipe.craftingBookCategory = "BUILDING";
+		stairsRecipe.group = "wooden_stairs";
 		stairsRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		stairsRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		stairsRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
@@ -433,6 +439,8 @@ public class WoodPackMakerTool {
 
 		Recipe slabRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "SlabRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		slabRecipe.craftingBookCategory = "BUILDING";
+		slabRecipe.group = "wooden_slab";
 		slabRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		slabRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		slabRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
@@ -447,6 +455,7 @@ public class WoodPackMakerTool {
 
 		Recipe fenceRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "FenceRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		fenceRecipe.group = "wooden_fence";
 		fenceRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		fenceRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		fenceRecipe.recipeSlots[5] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
@@ -464,6 +473,8 @@ public class WoodPackMakerTool {
 
 		Recipe fenceGateRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "FenceGateRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		fenceGateRecipe.craftingBookCategory = "REDSTONE";
+		fenceGateRecipe.group = "wooden_fence_gate";
 		fenceGateRecipe.recipeSlots[3] = new MItemBlock(workspace, "Items.STICK");
 		fenceGateRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		fenceGateRecipe.recipeSlots[5] = new MItemBlock(workspace, "Items.STICK");
@@ -482,6 +493,8 @@ public class WoodPackMakerTool {
 		Recipe pressurePlateRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 						new ModElement(workspace, name + "PressurePlateRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
+		pressurePlateRecipe.craftingBookCategory = "REDSTONE";
+		pressurePlateRecipe.group = "wooden_pressure_plate";
 		pressurePlateRecipe.recipeSlots[6] = new MItemBlock(workspace,
 				"CUSTOM:" + planksBlock.getModElement().getName());
 		pressurePlateRecipe.recipeSlots[7] = new MItemBlock(workspace,
@@ -497,6 +510,8 @@ public class WoodPackMakerTool {
 
 		Recipe buttonRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "ButtonRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		buttonRecipe.craftingBookCategory = "REDSTONE";
+		buttonRecipe.group = "wooden_button";
 		buttonRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		buttonRecipe.recipeShapeless = true;
 		buttonRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Button");
@@ -510,6 +525,7 @@ public class WoodPackMakerTool {
 
 		Recipe stickRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "StickRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		stickRecipe.group = "sticks";
 		stickRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		stickRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
 		stickRecipe.recipeReturnStack = new MItemBlock(workspace, "Items.STICK");

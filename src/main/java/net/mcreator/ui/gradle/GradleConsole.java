@@ -112,6 +112,10 @@ public class GradleConsole extends JPanel {
 					try {
 						ProjectJarManager jarManager = ref.getGenerator().getProjectJarManager();
 						if (jarManager != null) {
+							if (fileurl.contains("/")) { // we don't have just FQDN but also module definition which we need to remove
+								fileurl = fileurl.substring(fileurl.lastIndexOf("/") + 1);
+							}
+
 							DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(
 									ref.getWorkspace(), fileurl, "mod.mcreator", jarManager);
 
@@ -315,10 +319,10 @@ public class GradleConsole extends JPanel {
 
 		long millis = System.currentTimeMillis();
 
-		if (PreferencesManager.PREFERENCES.gradle.offline && gradleSetupTaskRunning) {
+		if (PreferencesManager.PREFERENCES.gradle.offline.get() && gradleSetupTaskRunning) {
 			JOptionPane.showMessageDialog(ref, L10N.t("dialog.gradle_console.offline_mode_message"),
 					L10N.t("dialog.gradle_console.offline_mode_title"), JOptionPane.WARNING_MESSAGE);
-			PreferencesManager.PREFERENCES.gradle.offline = false;
+			PreferencesManager.PREFERENCES.gradle.offline.set(false);
 		}
 
 		String[] commandTokens = command.split(" ");
@@ -328,7 +332,7 @@ public class GradleConsole extends JPanel {
 
 		BuildLauncher task = GradleUtils.getGradleTaskLauncher(ref.getWorkspace(), commands);
 
-		if (PreferencesManager.PREFERENCES.gradle.offline)
+		if (PreferencesManager.PREFERENCES.gradle.offline.get())
 			arguments.add("--offline");
 
 		task.addArguments(arguments);

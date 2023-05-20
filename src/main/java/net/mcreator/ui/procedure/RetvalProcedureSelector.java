@@ -214,12 +214,13 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 		edit.setEnabled(selected != null && !selected.string.equals(defaultName));
 
 		if (fixedValue != null)
-			fixedValue.setEnabled(!edit.isEnabled());
+			fixedValue.setEnabled(isEnabled() && !edit.isEnabled());
 
 		return selected;
 	}
 
 	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
 		if (fixedValue != null)
 			fixedValue.setEnabled(enabled);
 
