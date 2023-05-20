@@ -20,10 +20,7 @@ package net.mcreator.ui.action;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.action.impl.AboutAction;
-import net.mcreator.ui.action.impl.CheckForUpdatesAction;
-import net.mcreator.ui.action.impl.MinecraftFolderActions;
-import net.mcreator.ui.action.impl.ShowDataListAction;
+import net.mcreator.ui.action.impl.*;
 import net.mcreator.ui.action.impl.gradle.*;
 import net.mcreator.ui.action.impl.vcs.*;
 import net.mcreator.ui.action.impl.workspace.*;
@@ -79,6 +76,7 @@ public class ActionRegistry {
 	// Help actions
 	public final BasicAction aboutMCreator;
 	public final BasicAction checkForUpdates;
+	public final BasicAction checkForPluginUpdates;
 	public final BasicAction showShortcuts;
 	public final BasicAction help;
 	public final BasicAction support;
@@ -215,6 +213,7 @@ public class ActionRegistry {
 				e -> mcreator.getApplication().closeApplication());
 		this.aboutMCreator = new AboutAction(this);
 		this.checkForUpdates = new CheckForUpdatesAction(this);
+		this.checkForPluginUpdates = new CheckForPluginUpdatesAction(this);
 		this.help = new VisitURIAction(this, L10N.t("action.wiki"), MCreatorApplication.SERVER_DOMAIN + "/wiki");
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");

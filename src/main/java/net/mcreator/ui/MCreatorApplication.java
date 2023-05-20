@@ -33,7 +33,6 @@ import net.mcreator.io.net.api.IWebAPI;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.MCREvent;
-import net.mcreator.plugin.PluginLoadFailure;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
@@ -42,17 +41,15 @@ import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
 import net.mcreator.ui.component.util.ThreadUtil;
-import net.mcreator.ui.dialogs.UpdateNotifyDialog;
-import net.mcreator.ui.dialogs.UpdatePluginDialog;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.MCreatorLookAndFeel;
+import net.mcreator.ui.notifications.StartupNotifications;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.SoundUtils;
-import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
@@ -197,20 +194,6 @@ public final class MCreatorApplication {
 			// Do not externalize this text
 			discordClient.updatePresence("Just opened", "Version " + Launcher.version.getMajorString());
 
-			try {
-				SwingUtilities.invokeAndWait(() -> {
-					UpdateNotifyDialog.showUpdateDialogIfUpdateExists(splashScreen, false);
-					UpdatePluginDialog.showPluginUpdateDialogIfUpdatesExist(splashScreen);
-
-					if (Launcher.version.isSnapshot() && PreferencesManager.PREFERENCES.notifications.snapshotMessage.get()) {
-						JOptionPane.showMessageDialog(splashScreen, L10N.t("action.eap_loading.text"),
-								L10N.t("action.eap_loading.title"), JOptionPane.WARNING_MESSAGE);
-					}
-				});
-			} catch (Exception e) {
-				LOG.warn("Failed to check for updates", e);
-			}
-
 			splashScreen.setProgress(100, "Loading MCreator windows");
 
 			try {
@@ -239,7 +222,7 @@ public final class MCreatorApplication {
 					if (passedFile.isFile() && passedFile.getName().endsWith(".mcreator")) {
 						splashScreen.setVisible(false);
 						MCreator mcreator = openWorkspaceInMCreator(passedFile);
-						showPluginLoadingFailures(mcreator);
+						StartupNotifications.handleStartupNotifications(mcreator);
 						directLaunch = true;
 					}
 				}
@@ -252,26 +235,6 @@ public final class MCreatorApplication {
 
 			LOG.debug("Application loader finished");
 		}, "Application-Loader").start();
-	}
-
-	private void showPluginLoadingFailures(Window parent) {
-		Collection<PluginLoadFailure> failedPlugins = PluginLoader.INSTANCE.getFailedPlugins();
-		if (!failedPlugins.isEmpty()) {
-			StringBuilder sb = new StringBuilder();
-			sb.append("<html>");
-			sb.append(L10N.t("dialog.plugin_load_failed.msg1"));
-			sb.append("<ul>");
-			for (PluginLoadFailure plugin : failedPlugins) {
-				sb.append("<li><b>").append(plugin.pluginID()).append("</b> - reason: ")
-						.append(StringUtils.abbreviateString(plugin.message(), 100, true))
-						.append("<br><small>Location: ").append(plugin.pluginFile()).append("</small></li>");
-			}
-			sb.append("</ul><br>");
-			sb.append(L10N.t("dialog.plugin_load_failed.msg2"));
-
-			JOptionPane.showMessageDialog(parent, sb.toString(), L10N.t("dialog.plugin_load_failed.title"),
-					JOptionPane.WARNING_MESSAGE);
-		}
 	}
 
 	public GoogleAnalytics getAnalytics() {
@@ -427,7 +390,8 @@ public final class MCreatorApplication {
 
 	void showWorkspaceSelector() {
 		workspaceSelector.setVisible(true);
-		showPluginLoadingFailures(workspaceSelector);
+
+		StartupNotifications.handleStartupNotifications(workspaceSelector);
 	}
 
 	List<RecentWorkspaceEntry> getRecentWorkspaces() {

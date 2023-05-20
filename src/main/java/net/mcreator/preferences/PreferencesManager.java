@@ -159,14 +159,20 @@ public class PreferencesManager {
 	 */
 	private static void convertOldPreferences() {
 		File file = UserFolderManager.getFileFromUserFolder("preferences");
-		JsonObject obj = gson.fromJson(FileIO.readFileToString(file), JsonObject.class);
+		JsonObject oldPreferences = gson.fromJson(FileIO.readFileToString(file), JsonObject.class);
 		PREFERENCES_REGISTRY.get(PreferencesData.CORE_PREFERENCES_KEY).forEach(entry -> {
-			JsonElement value = obj.get(entry.getSectionKey()).getAsJsonObject()
-					.get(entry.getID().replace("autoReloadTabs", "autoreloadTabs").replace("aaText", "aatext")
-							.replace("useMacOSMenuBar", "usemacOSMenuBar"));
+			// if the entry section did not exist in old preferences, skip this entry and use its default value
+			if (!oldPreferences.has(entry.getSectionKey()))
+				return;
 
+			String oldPreferencesKey = entry.getID().replace("autoReloadTabs", "autoreloadTabs")
+					.replace("aaText", "aatext").replace("useMacOSMenuBar", "usemacOSMenuBar");
+
+			JsonElement value = oldPreferences.get(entry.getSectionKey()).getAsJsonObject().get(oldPreferencesKey);
+
+			// if not defined in old preferences, we use the default value
 			if (value == null || value == JsonNull.INSTANCE)
-				return; // not defined in old preferences, we use the default value
+				return;
 
 			entry.setValueFromJsonElement(value);
 		});

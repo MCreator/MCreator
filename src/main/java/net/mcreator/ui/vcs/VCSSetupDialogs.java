@@ -68,7 +68,8 @@ public class VCSSetupDialogs {
 
 		int option = JOptionPane.showOptionDialog(parent, main, L10N.t("dialog.vcs.setup_remote_workspace_details"),
 				JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null,
-				new String[] { "Setup remote workspace", "Cancel" }, "Setup remote workspace");
+				new String[] { L10N.t("dialog.vcs.setup_proceed"), UIManager.getString("OptionPane.cancelButtonText") },
+				L10N.t("dialog.vcs.setup_proceed"));
 
 		if (option == 0) {
 			VCSInfo info = new VCSInfo(remote.getText(), username.getText(), new String(password.getPassword()),
