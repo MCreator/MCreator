@@ -130,11 +130,14 @@ import java.util.*;
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		List<MappableElement> elements = new ArrayList<>(biomesInDimension);
-		elements.add(igniterTab);
+		if (/*enableIgniter*/enablePortal) // #3672
+			elements.add(igniterTab);
 		elements.add(mainFillerBlock);
 		elements.add(fluidBlock);
-		elements.add(portalFrame);
-		elements.add(portalParticles);
+		if (enablePortal) {
+			elements.add(portalFrame);
+			elements.add(portalParticles);
+		}
 		return elements;
 	}
 
@@ -144,11 +147,11 @@ import java.util.*;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {
-		return switch (type) {
-			case ITEM -> Collections.singletonList(texture);
-			case BLOCK -> Collections.singletonList(portalTexture);
-			default -> Collections.emptyList();
-		};
+		if (type == TextureType.ITEM && /*enableIgniter*/enablePortal) // #3672
+			return Collections.singletonList(texture);
+		else if (type == TextureType.BLOCK && enablePortal)
+			return Collections.singletonList(portalTexture);
+		return Collections.emptyList();
 	}
 
 	@Override public Collection<Sound> getSounds() {

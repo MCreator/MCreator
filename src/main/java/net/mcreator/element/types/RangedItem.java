@@ -140,8 +140,17 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(glowCondition, onRangedItemUsed, onEntitySwing, useCondition, onBulletHitsBlock,
-				onBulletHitsPlayer, onBulletHitsEntity, onBulletFlyingTick);
+		List<Procedure> procedures = new ArrayList<>();
+		procedures.add(onRangedItemUsed);
+		procedures.add(onEntitySwing);
+		procedures.add(useCondition);
+		procedures.add(onBulletHitsBlock);
+		procedures.add(onBulletHitsPlayer);
+		procedures.add(onBulletHitsEntity);
+		procedures.add(onBulletFlyingTick);
+		if (hasGlow)
+			procedures.add(glowCondition);
+		return procedures;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

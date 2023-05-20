@@ -123,14 +123,26 @@ import java.util.*;
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		List<MappableElement> elements = new ArrayList<>();
 		elements.add(creativeTab);
-		elements.addAll(blocksAffected);
+		if ("Special".equals(toolType))
+			elements.addAll(blocksAffected);
 		elements.addAll(repairItems);
 		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(glowCondition, onRightClickedInAir, onRightClickedOnBlock, onCrafted, onEntityHitWith,
-				onItemInInventoryTick, onItemInUseTick, onStoppedUsing, onBlockDestroyedWithTool, onEntitySwing);
+		List<Procedure> procedures = new ArrayList<>();
+		procedures.add(onRightClickedInAir);
+		procedures.add(onRightClickedOnBlock);
+		procedures.add(onCrafted);
+		procedures.add(onEntityHitWith);
+		procedures.add(onItemInInventoryTick);
+		procedures.add(onItemInUseTick);
+		procedures.add(onStoppedUsing);
+		procedures.add(onBlockDestroyedWithTool);
+		procedures.add(onEntitySwing);
+		if (hasGlow)
+			procedures.add(glowCondition);
+		return procedures;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

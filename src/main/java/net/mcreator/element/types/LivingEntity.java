@@ -266,16 +266,32 @@ import java.util.*;
 		elements.add(equipmentLeggings);
 		elements.add(equipmentBoots);
 		elements.add(mobDrop);
-		elements.add(rangedAttackItem);
-		elements.addAll(breedTriggerItems);
-		elements.addAll(restrictionBiomes);
+		if (ranged)
+			elements.add(rangedAttackItem);
+		if (breedable)
+			elements.addAll(breedTriggerItems);
+		if (spawnThisMob)
+			elements.addAll(restrictionBiomes);
 		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(transparentModelCondition, isShakingCondition, solidBoundingBox, onStruckByLightning,
-				whenMobFalls, whenMobDies, whenMobIsHurt, onRightClickedOn, whenThisMobKillsAnother, onMobTickUpdate,
-				onPlayerCollidesWith, onInitialSpawn, spawningCondition);
+		List<Procedure> procedures = new ArrayList<>();
+		procedures.add(transparentModelCondition);
+		procedures.add(isShakingCondition);
+		procedures.add(solidBoundingBox);
+		procedures.add(onStruckByLightning);
+		procedures.add(whenMobFalls);
+		procedures.add(whenMobDies);
+		procedures.add(whenMobIsHurt);
+		procedures.add(onRightClickedOn);
+		procedures.add(whenThisMobKillsAnother);
+		procedures.add(onMobTickUpdate);
+		procedures.add(onPlayerCollidesWith);
+		procedures.add(onInitialSpawn);
+		if (spawnThisMob)
+			procedures.add(spawningCondition);
+		return procedures;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

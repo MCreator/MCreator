@@ -27,9 +27,10 @@ import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class ItemExtension extends GeneratableElement implements IOtherModElementsDependent {
 
@@ -54,6 +55,15 @@ public class ItemExtension extends GeneratableElement implements IOtherModElemen
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(fuelPower, fuelSuccessCondition, dispenseSuccessCondition, dispenseResultItemstack);
+		List<Procedure> procedures = new ArrayList<>();
+		if (enableFuel) {
+			procedures.add(fuelPower);
+			procedures.add(fuelSuccessCondition);
+		}
+		if (hasDispenseBehavior) {
+			procedures.add(dispenseSuccessCondition);
+			procedures.add(dispenseResultItemstack);
+		}
+		return procedures;
 	}
 }

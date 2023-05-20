@@ -28,10 +28,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 
 @SuppressWarnings("unused") public class Tag extends NamespacedGeneratableElement
 		implements IOtherModElementsDependent {
@@ -63,15 +60,16 @@ import java.util.Locale;
 	}
 
 	@Override public Collection<String> getUsedElementNames() {
-		return functions.stream().map(e -> "CUSTOM:" + e).toList();
+		return "Functions".equals(type) ? functions.stream().map(e -> "CUSTOM:" + e).toList() : Collections.emptyList();
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>();
-		elements.addAll(items);
-		elements.addAll(blocks);
-		elements.addAll(entities);
-		elements.addAll(biomes);
-		return elements;
+		return switch (type) {
+			case "Items" -> new ArrayList<>(items);
+			case "Blocks" -> new ArrayList<>(blocks);
+			case "Entities" -> new ArrayList<>(entities);
+			case "Biomes" -> new ArrayList<>(biomes);
+			default -> Collections.emptyList();
+		};
 	}
 }

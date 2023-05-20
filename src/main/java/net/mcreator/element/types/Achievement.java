@@ -111,7 +111,7 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return Arrays.asList(achievementIcon, parent);
+		return disableDisplay ? Collections.emptyList() : Arrays.asList(achievementIcon, parent);
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

@@ -175,7 +175,11 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return Arrays.asList(creativeTab, dripParticle);
+		List<MappableElement> elements = new ArrayList<>();
+		elements.add(dripParticle);
+		if (generateBucket)
+			elements.add(creativeTab);
+		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
@@ -184,11 +188,11 @@ import java.util.*;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {
-		return switch (type) {
-			case BLOCK -> Arrays.asList(textureStill, textureFlowing);
-			case ITEM -> Collections.singletonList(textureBucket);
-			default -> Collections.emptyList();
-		};
+		if (type == TextureType.BLOCK)
+			return Arrays.asList(textureStill, textureFlowing);
+		else if (type == TextureType.ITEM && generateBucket)
+			return Collections.singletonList(textureBucket);
+		return Collections.emptyList();
 	}
 
 	@Override public Collection<Sound> getSounds() {

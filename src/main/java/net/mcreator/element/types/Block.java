@@ -364,20 +364,46 @@ import java.util.stream.Collectors;
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		List<MappableElement> elements = new ArrayList<>();
 		elements.add(creativeTab);
-		elements.add(customDrop);
 		elements.add(creativePickItem);
 		elements.add(soundOnStep);
-		elements.addAll(fluidRestrictions);
-		elements.addAll(restrictionBiomes);
-		elements.addAll(blocksToReplace);
+		if (!useLootTableForDrops)
+			elements.add(customDrop);
+		if (hasInventory)
+			elements.addAll(fluidRestrictions);
+		if (doesGenerateInWorld()) {
+			elements.addAll(restrictionBiomes);
+			elements.addAll(blocksToReplace);
+		}
 		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(emittedRedstonePower, placingCondition, generateCondition, isBonemealTargetCondition,
-				bonemealSuccessCondition, onBonemealSuccess, onRightClicked, onBlockAdded, onNeighbourBlockChanges,
-				onTickUpdate, onRandomUpdateEvent, onDestroyedByPlayer, onDestroyedByExplosion, onStartToDestroy,
-				onEntityCollides, onEntityWalksOn, onBlockPlayedBy, onRedstoneOn, onRedstoneOff, onHitByProjectile);
+		List<Procedure> procedures = new ArrayList<>();
+		procedures.add(placingCondition);
+		procedures.add(onRightClicked);
+		procedures.add(onBlockAdded);
+		procedures.add(onNeighbourBlockChanges);
+		procedures.add(onTickUpdate);
+		procedures.add(onRandomUpdateEvent);
+		procedures.add(onDestroyedByPlayer);
+		procedures.add(onDestroyedByExplosion);
+		procedures.add(onStartToDestroy);
+		procedures.add(onEntityCollides);
+		procedures.add(onEntityWalksOn);
+		procedures.add(onBlockPlayedBy);
+		procedures.add(onRedstoneOn);
+		procedures.add(onRedstoneOff);
+		procedures.add(onHitByProjectile);
+		if (canProvidePower)
+			procedures.add(emittedRedstonePower);
+		if (doesGenerateInWorld())
+			procedures.add(generateCondition);
+		if (isBonemealable) {
+			procedures.add(isBonemealTargetCondition);
+			procedures.add(bonemealSuccessCondition);
+			procedures.add(onBonemealSuccess);
+		}
+		return procedures;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {
@@ -394,6 +420,8 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public Collection<Sound> getSounds() {
-		return Arrays.asList(breakSound, fallSound, hitSound, placeSound, stepSound);
+		return isCustomSoundType ?
+				Arrays.asList(breakSound, fallSound, hitSound, placeSound, stepSound) :
+				Collections.emptyList();
 	}
 }

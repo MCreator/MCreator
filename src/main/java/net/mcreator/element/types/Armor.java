@@ -362,17 +362,50 @@ import java.util.*;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {
-		return switch (type) {
-			case ARMOR -> Collections.singletonList(armorTextureFile);
-			case ITEM -> Arrays.asList(textureHelmet, textureBody, textureLeggings, textureBoots);
-			case ENTITY -> Arrays.asList(helmetModelTexture, bodyModelTexture, leggingsModelTexture, bootsModelTexture);
-			default -> Collections.emptyList();
-		};
+		if (type == TextureType.ARMOR) {
+			return Collections.singletonList(armorTextureFile);
+		} else if (type == TextureType.ITEM) {
+			List<String> textures = new ArrayList<>();
+			if (enableHelmet)
+				textures.add(textureHelmet);
+			if (enableBody)
+				textures.add(textureBody);
+			if (enableLeggings)
+				textures.add(textureLeggings);
+			if (enableBoots)
+				textures.add(textureBoots);
+			return textures;
+		} else if (type == TextureType.ENTITY) {
+			List<String> textures = new ArrayList<>();
+			if (enableHelmet)
+				textures.add(helmetModelTexture);
+			if (enableBody)
+				textures.add(bodyModelTexture);
+			if (enableLeggings)
+				textures.add(leggingsModelTexture);
+			if (enableBoots)
+				textures.add(bootsModelTexture);
+			return textures;
+		}
+		return Collections.emptyList();
 	}
 
 	@Override public Collection<Model> getModels() {
-		return Arrays.asList(getHelmetModel(), getBodyModel(), getLeggingsModel(), getBootsModel(),
-				getHelmetItemModel(), getBodyItemModel(), getLeggingsItemModel(), getBootsItemModel());
+		List<Model> models = new ArrayList<>();
+		if (enableHelmet) {
+			models.add(getHelmetModel());
+			models.add(getHelmetItemModel());
+		} if (enableBody) {
+			models.add(getBodyModel());
+			models.add(getBodyItemModel());
+		} if (enableLeggings) {
+			models.add(getLeggingsModel());
+			models.add(getLeggingsItemModel());
+		} if (enableBoots) {
+			models.add(getBootsModel());
+			models.add(getBootsItemModel());
+		}
+		return models;
 	}
 
 	@Override public Collection<Sound> getSounds() {

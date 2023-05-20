@@ -160,13 +160,29 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return Arrays.asList(creativeTab, recipeRemainder, eatResultItem);
+		List<MappableElement> elements = new ArrayList<>();
+		elements.add(creativeTab);
+		elements.add(recipeRemainder);
+		if (isFood)
+			elements.add(eatResultItem);
+		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(glowCondition, onRightClickedInAir, onRightClickedOnBlock, onCrafted, onEntityHitWith,
-				onItemInInventoryTick, onItemInUseTick, onStoppedUsing, onEntitySwing, onDroppedByPlayer,
-				onFinishUsingItem);
+		List<Procedure> procedures = new ArrayList<>();
+		procedures.add(onRightClickedInAir);
+		procedures.add(onRightClickedOnBlock);
+		procedures.add(onCrafted);
+		procedures.add(onEntityHitWith);
+		procedures.add(onItemInInventoryTick);
+		procedures.add(onItemInUseTick);
+		procedures.add(onStoppedUsing);
+		procedures.add(onEntitySwing);
+		procedures.add(onDroppedByPlayer);
+		procedures.add(onFinishUsingItem);
+		if (hasGlow)
+			procedures.add(glowCondition);
+		return procedures;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

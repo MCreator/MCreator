@@ -238,18 +238,38 @@ import java.util.stream.Collectors;
 		List<MappableElement> elements = new ArrayList<>();
 		elements.add(creativeTab);
 		elements.add(soundOnStep);
-		elements.add(customDrop);
+		if (!useLootTableForDrops)
+			elements.add(customDrop);
 		elements.add(creativePickItem);
 		elements.addAll(canBePlacedOn);
-		elements.addAll(restrictionBiomes);
+		if (doesGenerateInWorld())
+			elements.addAll(restrictionBiomes);
 		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(placingCondition, isBonemealTargetCondition, bonemealSuccessCondition, onBonemealSuccess,
-				generateCondition, onBlockAdded, onNeighbourBlockChanges, onTickUpdate, onRandomUpdateEvent,
-				onDestroyedByPlayer, onDestroyedByExplosion, onStartToDestroy, onEntityCollides, onBlockPlacedBy,
-				onRightClicked, onEntityWalksOn, onHitByProjectile);
+		List<Procedure> procedures = new ArrayList<>();
+		procedures.add(placingCondition);
+		procedures.add(onBlockAdded);
+		procedures.add(onNeighbourBlockChanges);
+		procedures.add(onTickUpdate);
+		procedures.add(onRandomUpdateEvent);
+		procedures.add(onDestroyedByPlayer);
+		procedures.add(onDestroyedByExplosion);
+		procedures.add(onStartToDestroy);
+		procedures.add(onEntityCollides);
+		procedures.add(onBlockPlacedBy);
+		procedures.add(onRightClicked);
+		procedures.add(onEntityWalksOn);
+		procedures.add(onHitByProjectile);
+		if (isBonemealable) {
+			procedures.add(isBonemealTargetCondition);
+			procedures.add(bonemealSuccessCondition);
+			procedures.add(onBonemealSuccess);
+		}
+		if (doesGenerateInWorld())
+			procedures.add(generateCondition);
+		return procedures;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {
@@ -265,6 +285,8 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public Collection<Sound> getSounds() {
-		return Arrays.asList(breakSound, stepSound, placeSound, hitSound, fallSound);
+		return isCustomSoundType ?
+				Arrays.asList(breakSound, fallSound, hitSound, placeSound, stepSound) :
+				Collections.emptyList();
 	}
 }

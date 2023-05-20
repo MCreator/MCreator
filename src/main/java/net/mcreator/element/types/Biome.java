@@ -200,11 +200,14 @@ import java.util.stream.Collectors;
 		elements.add(groundBlock);
 		elements.add(undergroundBlock);
 		elements.add(underwaterBlock);
-		elements.add(particleToSpawn);
-		elements.add(treeStem);
-		elements.add(treeBranch);
-		elements.add(treeVines);
-		elements.add(treeFruits);
+		if (spawnParticles)
+			elements.add(particleToSpawn);
+		if (treeType == TREES_CUSTOM) {
+			elements.add(treeStem);
+			elements.add(treeBranch);
+			elements.add(treeVines);
+			elements.add(treeFruits);
+		}
 		for (SpawnEntry entry : spawnEntries)
 			elements.add(entry.entity);
 		return elements;
