@@ -1,0 +1,49 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "ground",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "input_value",
+      "name": "stem",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "input_value",
+      "name": "hat",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "input_value",
+      "name": "decor",
+      "check": "MCItemBlock"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "planted"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Feature",
+  "colour": 0,
+  "mcreator": {
+    "toolbox_id": "features",
+    "toolbox_init": [
+      "<value name=\"ground\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"stem\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"hat\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"decor\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "ground",
+      "stem",
+      "hat",
+      "decor"
+    ],
+    "fields": [
+      "planted"
+    ]
+  }
+}

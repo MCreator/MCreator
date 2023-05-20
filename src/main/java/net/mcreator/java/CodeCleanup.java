@@ -44,8 +44,8 @@ public class CodeCleanup {
 
 	public CodeCleanup() {
 		formatPorperties = new Properties();
-		formatPorperties.setProperty("org.eclipse.jdt.core.compiler.source", "16");
-		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.lineSplit", "150");
+		formatPorperties.setProperty("org.eclipse.jdt.core.compiler.source", "17");
+		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.lineSplit", "250");
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.blank_lines_before_imports", "1");
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.blank_lines_after_imports", "1");
 		formatPorperties.setProperty("org.eclipse.jdt.core.formatter.blank_lines_after_package", "1");

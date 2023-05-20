@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "carver",
+      "options": [
+        [
+          "air",
+          "air"
+        ],
+        [
+          "liquid",
+          "liquid"
+        ]
+      ]
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": "Placement",
+  "colour": 130,
+  "mcreator": {
+    "toolbox_id": "placements",
+    "fields": [
+      "carver"
+    ]
+  }
+}

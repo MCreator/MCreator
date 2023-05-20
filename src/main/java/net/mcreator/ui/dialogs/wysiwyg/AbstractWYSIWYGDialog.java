@@ -60,20 +60,19 @@ public class AbstractWYSIWYGDialog<T extends GUIComponent> extends MCreatorDialo
 	 * This method is not thread safe!
 	 *
 	 * @param componentList List of existing components to check for duplicates
-	 * @param prefix Optional prefix
-	 * @param text Input UI text to transform. Can be empty.
+	 * @param prefix        Optional prefix
+	 * @param text          Input UI text to transform. Can be empty.
 	 * @return UI text transformed to a machine name
 	 */
-	@Nonnull public static String textToMachineName(Collection<GUIComponent> componentList, @Nullable String prefix, @Nonnull String text) {
+	@Nonnull public static String textToMachineName(Collection<GUIComponent> componentList, @Nullable String prefix,
+			@Nonnull String text) {
 		// limit text length to 32 characters
 		text = StringUtils.left(text, 32);
 
 		// cleanup the text (transliterate, lowercase, remove spaces)
 		String name = RegistryNameFixer.fix(text)
 				// then remove Java-incompatible parts that could remain
-				.replace(".", "")
-				.replace("-", "")
-				.replace("/", "");
+				.replace(".", "").replace("-", "").replace("/", "");
 
 		// remove multiple underscores
 		name = name.replaceAll("_{2,}", "_");

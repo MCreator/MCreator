@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.workspace;
 
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.Transliteration;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreatorApplication;
@@ -44,23 +45,22 @@ import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
+class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
-	private final WorkspacePanel workspacePanel;
 	private final TableRowSorter<TableModel> sorter;
 	private final JTable elements;
 
 	private volatile boolean storingEdits = false;
 
 	WorkspacePanelVariables(WorkspacePanel workspacePanel) {
-		super(new BorderLayout(0, 5));
-		setOpaque(false);
-
-		this.workspacePanel = workspacePanel;
+		super(workspacePanel);
+		setLayout(new BorderLayout(0, 5));
 
 		elements = new JTable(new DefaultTableModel(
 				new Object[] { L10N.t("workspace.variables.variable_name"), L10N.t("workspace.variables.variable_type"),
@@ -84,7 +84,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 					return;
 
 				if (column != 3) {
-					int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
+					int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 							L10N.t("workspace.variables.change_type"), L10N.t("common.confirmation"),
 							JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 					if (n == JOptionPane.YES_OPTION) {
@@ -98,7 +98,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 							} else if (type == VariableTypeLoader.BuiltInTypes.STRING) {
 								elements.setValueAt("", row, 3);
 							} else {
-								elements.setValueAt(type.getDefaultValue(workspacePanel.getMcreator().getWorkspace()),
+								elements.setValueAt(type.getDefaultValue(workspacePanel.getMCreator().getWorkspace()),
 										row, 3);
 							}
 						}
@@ -113,16 +113,16 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				VariableType variableType = VariableTypeLoader.INSTANCE.fromName((String) elements.getValueAt(row, 1));
 				if (modelColumn == 2) {
 					return new DefaultCellEditor(new JComboBox<>(variableType.getSupportedScopesWithoutLocal(
-							workspacePanel.getMcreator().getGeneratorConfiguration())));
+							workspacePanel.getMCreator().getGeneratorConfiguration())));
 				} else if (modelColumn == 1) {
 					return new DefaultCellEditor(new JComboBox<>(VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
-									workspacePanel.getMcreator().getGeneratorConfiguration()).stream()
+									workspacePanel.getMCreator().getGeneratorConfiguration()).stream()
 							.map(VariableType::getName).toArray(String[]::new)));
 				} else if (modelColumn == 0) {
 					VTextField name = new VTextField();
 					name.enableRealtimeValidation();
-					UniqueNameValidator validator = new UniqueNameValidator(name,
-							L10N.t("workspace.variables.variable_name"), Transliteration::transliterateString,
+					UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
+							() -> Transliteration.transliterateString(name.getText()),
 							() -> TableUtil.getColumnContents(elements, 0).stream(),
 							new JavaMemberNameValidator(name, false));
 					name.setValidator(validator);
@@ -226,39 +226,32 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 		add("North", bar);
 
 		addvar.addActionListener(e -> {
-			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMcreator(), true,
+			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
-							UniqueNameValidator validator = new UniqueNameValidator((VTextField) component,
-									L10N.t("workspace.variables.variable_name"), Transliteration::transliterateString,
+							UniqueNameValidator validator = new UniqueNameValidator(
+									L10N.t("workspace.variables.variable_name"),
+									() -> Transliteration.transliterateString(((VTextField) component).getText()),
 									() -> TableUtil.getColumnContents(elements, 0).stream(),
 									new JavaMemberNameValidator((VTextField) component, false));
 							validator.setIsPresentOnList(false);
 							return validator.validate();
 						}
 					}, VariableTypeLoader.INSTANCE.getGlobalVariableTypes(
-							workspacePanel.getMcreator().getGeneratorConfiguration()));
+							workspacePanel.getMCreator().getGeneratorConfiguration()));
 			if (element != null) {
-				workspacePanel.getMcreator().getWorkspace().addVariableElement(element);
+				workspacePanel.getMCreator().getWorkspace().addVariableElement(element);
 				reloadElements();
 			}
 		});
 
-		delvar.addActionListener(e -> {
-			if (elements.getSelectedRow() == -1)
-				return;
+		delvar.addActionListener(a -> deleteCurrentlySelected());
 
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMcreator(),
-					L10N.t("workspace.variables.remove_variable_confirmation"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (n == JOptionPane.YES_OPTION) {
-				Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
-						.forEach(el -> {
-							VariableElement element = new VariableElement();
-							element.setName(el);
-							workspacePanel.getMcreator().getWorkspace().removeVariableElement(element);
-						});
-				reloadElements();
+		elements.addKeyListener(new KeyAdapter() {
+			@Override public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+					deleteCurrentlySelected();
+				}
 			}
 		});
 
@@ -271,7 +264,7 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 				storingEdits = true;
 				elements.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-				Workspace workspace = workspacePanel.getMcreator().getWorkspace();
+				Workspace workspace = workspacePanel.getMCreator().getWorkspace();
 
 				List<VariableElement> todelete = new ArrayList<>(workspace.getVariableElements());
 				for (VariableElement variableElement : todelete)
@@ -296,13 +289,36 @@ class WorkspacePanelVariables extends JPanel implements IReloadableFilterable {
 
 	}
 
+	private void deleteCurrentlySelected() {
+		if (elements.getSelectedRow() == -1)
+			return;
+
+		int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+				L10N.t("workspace.variables.remove_variable_confirmation"), L10N.t("common.confirmation"),
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (n == JOptionPane.YES_OPTION) {
+			Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
+					.forEach(el -> {
+						VariableElement element = new VariableElement();
+						element.setName(el);
+						workspacePanel.getMCreator().getWorkspace().removeVariableElement(element);
+					});
+			reloadElements();
+		}
+	}
+
+	@Override public boolean isSupportedInWorkspace() {
+		return workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("variables")
+				!= GeneratorStats.CoverageStatus.NONE;
+	}
+
 	@Override public void reloadElements() {
 		int row = elements.getSelectedRow();
 
 		DefaultTableModel model = (DefaultTableModel) elements.getModel();
 		model.setRowCount(0);
 
-		for (VariableElement variable : workspacePanel.getMcreator().getWorkspace().getVariableElements()) {
+		for (VariableElement variable : workspacePanel.getMCreator().getWorkspace().getVariableElements()) {
 			model.addRow(new Object[] { variable.getName(), variable.getType().getName(), variable.getScope(),
 					variable.getValue() });
 		}

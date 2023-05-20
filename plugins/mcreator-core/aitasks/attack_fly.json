@@ -9,10 +9,11 @@
       "type": "field_number",
       "name": "radius",
       "value": 16
+    },
+    {
+      "type": "field_ai_condition_selector",
+      "name": "condition"
     }
-  ],
-  "extensions": [
-    "ai_condition_selector"
   ],
   "inputsInline": true,
   "previousStatement": null,

@@ -1,6 +1,9 @@
 {
-  "extensions": [
-    "ai_condition_selector"
+  "args0": [
+    {
+      "type": "field_ai_condition_selector",
+      "name": "condition"
+    }
   ],
   "inputsInline": true,
   "previousStatement": null,

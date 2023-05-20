@@ -1,0 +1,21 @@
+{
+  "mutator": "block_list_mutator",
+  "output": "BlockHolderSet",
+  "colour": "45",
+  "mcreator": {
+    "toolbox_id": "blocks",
+    "toolbox_init": [
+      "<mutation inputs=\"2\"></mutation>"
+    ],
+    "repeating_fields": [
+      {
+        "name": "block",
+        "field_definition": {
+          "testCount": 2,
+          "type": "field_mcitem_selector",
+          "supported_mcitems": "allblocks"
+        }
+      }
+    ]
+  }
+}

@@ -31,9 +31,7 @@ import java.util.jar.Manifest;
 public class MCreatorVersionNumber {
 
 	private static final String buildFormat = "wwuHH";
-
-	private static final String buildVersion = StringUtils.repeat('9',
-			buildFormat.length()); // by default use the largest to prevent regenerating workspace and updating during development;
+	private static final String buildVersion = "99999"; // by default use the largest possible value to prevent regenerating workspace and updating during development
 
 	public String full;
 	public String major;
@@ -48,7 +46,6 @@ public class MCreatorVersionNumber {
 	public MCreatorVersionNumber(Properties properties) {
 		major = properties.getProperty("mcreator");
 
-		String snapshotText = FileIO.readResourceToString("/snapshot.conf");
 		build = buildVersion;
 
 		try {
@@ -59,14 +56,18 @@ public class MCreatorVersionNumber {
 				if (attributes.getValue("MCreator-Version") != null) {
 					String buildDateManifest = attributes.getValue("Build-Date");
 					if (buildDateManifest != null)
-						build = buildDateManifest;
+						this.build = buildDateManifest;
+
+					String snapshotFlagManifest = attributes.getValue("Build-Is-Snapshot");
+					if (snapshotFlagManifest != null) {
+						this.snapshot = Boolean.parseBoolean(snapshotFlagManifest);
+					}
+
 					break;
 				}
 			}
 		} catch (Exception ignored) {
 		}
-
-		this.snapshot = snapshotText != null && !snapshotText.isEmpty();
 
 		this.full = this.major + "." + this.build;
 

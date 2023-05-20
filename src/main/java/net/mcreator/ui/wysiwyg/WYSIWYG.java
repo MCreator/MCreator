@@ -28,8 +28,8 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
-import org.eclipse.jgit.annotations.Nullable;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
@@ -247,7 +247,8 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 		toDraw.stream().sorted().forEach(component -> {
 			g.setColor(Color.gray.brighter().brighter());
-			Font tmp = g.getFont();
+			Font originalFont = g.getFont();
+			Stroke originalStroke = g.getStroke();
 
 			int cx = component.getX(), cy = component.getY();
 			if (component.equals(selected) && componentMoveMode) {
@@ -258,7 +259,8 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 			// paint actual component
 			component.paintComponent(cx, cy, wysiwygEditor, g);
 
-			g.setFont(tmp);
+			g.setFont(originalFont);
+			g.setStroke(originalStroke);
 		});
 	}
 

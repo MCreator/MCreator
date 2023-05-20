@@ -41,7 +41,7 @@ public class TextField extends SizedComponent {
 	}
 
 	@Override public int getWeight() {
-		return 1;
+		return 0;
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {

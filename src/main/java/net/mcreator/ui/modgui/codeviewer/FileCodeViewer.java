@@ -38,8 +38,8 @@ public class FileCodeViewer<T extends GeneratableElement> extends JPanel {
 	public FileCodeViewer(ModElementCodeViewer<T> modElementCodeViewer, GeneratorFile file) {
 		super(new BorderLayout());
 
-		cev = new CodeEditorView(modElementCodeViewer.getModElementGUI().getMCreator(), "", file.file().getName(),
-				file.file(), true);
+		cev = new CodeEditorView(modElementCodeViewer.getModElementGUI().getMCreator(), "", file.getFile().getName(),
+				file.getFile(), true);
 		cev.hideNotice();
 		add(cev);
 

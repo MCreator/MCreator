@@ -18,7 +18,7 @@
 
 package net.mcreator.workspace.settings;
 
-import net.mcreator.util.GSONCompare;
+import net.mcreator.util.diff.GSONCompare;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;

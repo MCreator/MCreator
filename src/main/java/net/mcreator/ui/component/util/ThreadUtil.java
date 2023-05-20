@@ -41,12 +41,15 @@ public class ThreadUtil {
 		}
 	}
 
-	public static void runOnSwingThreadAndWait(Runnable runnable)
-			throws InvocationTargetException, InterruptedException {
+	public static void runOnSwingThreadAndWait(Runnable runnable) {
 		if (SwingUtilities.isEventDispatchThread()) {
 			runnable.run();
 		} else {
-			SwingUtilities.invokeAndWait(runnable);
+			try {
+				SwingUtilities.invokeAndWait(runnable);
+			} catch (InterruptedException | InvocationTargetException e) {
+				throw new RuntimeException(e);
+			}
 		}
 	}
 

@@ -32,6 +32,7 @@ import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.WorkspaceFileManager;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -39,9 +40,12 @@ import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class Procedure extends GeneratableElement {
+
+	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"><field name=\"trigger\">no_ext_trigger</field></block></xml>";
 
 	public String procedurexml;
 
@@ -118,7 +122,7 @@ public class Procedure extends GeneratableElement {
 				this.getModElement().clearMetadata().putMetadata("dependencies", blocklyToJava.getDependencies())
 						.putMetadata("return_type", blocklyToJava.getReturnType() == null ?
 								null :
-								blocklyToJava.getReturnType().getName().toLowerCase());
+								blocklyToJava.getReturnType().getName().toLowerCase(Locale.ENGLISH));
 			}
 
 			additionalData.put("dependencies", reloadDependencies());
@@ -140,12 +144,14 @@ public class Procedure extends GeneratableElement {
 	public BlocklyToProcedure getBlocklyToProcedure(Map<String, Object> additionalData)
 			throws TemplateGeneratorException {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
-				BlocklyLoader.INSTANCE.getProcedureBlockLoader().getDefinedBlocks(),
-				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"), additionalData);
+				BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE).getDefinedBlocks(),
+				getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.PROCEDURE),
+				getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.PROCEDURE.registryName()),
+				additionalData);
 
 		// load BlocklyToProcedure with custom generators loaded
 		return new BlocklyToProcedure(this.getModElement().getWorkspace(), this.getModElement(), this.procedurexml,
-				getModElement().getGenerator().getTemplateGeneratorFromName("procedures"),
+				getModElement().getGenerator().getTemplateGeneratorFromName(BlocklyEditorType.PROCEDURE.registryName()),
 				new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator),
 				new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 	}

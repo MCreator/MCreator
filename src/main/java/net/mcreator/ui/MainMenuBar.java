@@ -49,7 +49,7 @@ public class MainMenuBar extends JMenuBar {
 
 		JMenu logo = new JMenu("  MCreator");
 		logo.setMnemonic('M');
-		logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.getBuiltIn("icon").getImage(), 14, 14)));
+		logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.getAppIcon().getImage(), 14, 14)));
 
 		logo.add(mcreator.actionRegistry.mcreatorWebsite);
 		logo.add(mcreator.actionRegistry.mcreatorCommunity);
@@ -177,7 +177,6 @@ public class MainMenuBar extends JMenuBar {
 		build.setMnemonic('B');
 		build.add(mcreator.actionRegistry.buildWorkspace);
 		build.add(mcreator.actionRegistry.buildGradleOnly);
-		build.add(mcreator.actionRegistry.buildClean);
 		build.addSeparator();
 		build.add(mcreator.actionRegistry.regenerateCode);
 		build.addSeparator();
@@ -253,6 +252,7 @@ public class MainMenuBar extends JMenuBar {
 		help.add(mcreator.actionRegistry.donate);
 		help.addSeparator();
 		help.add(mcreator.actionRegistry.checkForUpdates);
+		help.add(mcreator.actionRegistry.checkForPluginUpdates);
 		help.add(mcreator.actionRegistry.aboutMCreator);
 		help.setMnemonic('H');
 		add(help);

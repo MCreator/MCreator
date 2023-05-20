@@ -30,6 +30,7 @@ import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
 import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.CodeErrorDialog;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.ide.ProjectFileOpener;
@@ -59,6 +60,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -110,6 +112,10 @@ public class GradleConsole extends JPanel {
 					try {
 						ProjectJarManager jarManager = ref.getGenerator().getProjectJarManager();
 						if (jarManager != null) {
+							if (fileurl.contains("/")) { // we don't have just FQDN but also module definition which we need to remove
+								fileurl = fileurl.substring(fileurl.lastIndexOf("/") + 1);
+							}
+
 							DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(
 									ref.getWorkspace(), fileurl, "mod.mcreator", jarManager);
 
@@ -313,10 +319,10 @@ public class GradleConsole extends JPanel {
 
 		long millis = System.currentTimeMillis();
 
-		if (PreferencesManager.PREFERENCES.gradle.offline && gradleSetupTaskRunning) {
+		if (PreferencesManager.PREFERENCES.gradle.offline.get() && gradleSetupTaskRunning) {
 			JOptionPane.showMessageDialog(ref, L10N.t("dialog.gradle_console.offline_mode_message"),
 					L10N.t("dialog.gradle_console.offline_mode_title"), JOptionPane.WARNING_MESSAGE);
-			PreferencesManager.PREFERENCES.gradle.offline = false;
+			PreferencesManager.PREFERENCES.gradle.offline.set(false);
 		}
 
 		String[] commandTokens = command.split(" ");
@@ -326,7 +332,7 @@ public class GradleConsole extends JPanel {
 
 		BuildLauncher task = GradleUtils.getGradleTaskLauncher(ref.getWorkspace(), commands);
 
-		if (PreferencesManager.PREFERENCES.gradle.offline)
+		if (PreferencesManager.PREFERENCES.gradle.offline.get())
 			arguments.add("--offline");
 
 		task.addArguments(arguments);
@@ -435,7 +441,7 @@ public class GradleConsole extends JPanel {
 
 			@Override public void onFailure(GradleConnectionException failure) {
 				SwingUtilities.invokeLater(() -> {
-					boolean errorhandled = false;
+					AtomicBoolean errorhandled = new AtomicBoolean(false);
 
 					boolean workspaceReportedFailingGradleDependencies = ref.getWorkspace()
 							.checkFailingGradleDependenciesAndClear();
@@ -454,24 +460,31 @@ public class GradleConsole extends JPanel {
 							}
 						} else if (workspaceReportedFailingGradleDependencies
 								|| GradleErrorDecoder.isErrorCausedByCorruptedCaches(taskErr.toString() + taskOut)) {
-							Object[] options = { "Clear Gradle caches", "Clear entire Gradle folder",
-									"<html><font color=gray>Do nothing" };
-							int reply = JOptionPane.showOptionDialog(ref,
-									L10N.t("dialog.gradle_console.gradle_caches_corrupted_message"),
-									L10N.t("dialog.gradle_console.gradle_caches_corrupted_title"),
-									JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-							if (reply == 0 || reply == 1) {
-								taskComplete(GradleErrorCodes.GRADLE_CACHEDATA_ERROR);
+							AtomicBoolean shouldReturn = new AtomicBoolean(false);
+							ThreadUtil.runOnSwingThreadAndWait(() -> {
+								Object[] options = { "Clear Gradle caches", "Clear entire Gradle folder",
+										"<html><font color=gray>Do nothing" };
+								int reply = JOptionPane.showOptionDialog(ref,
+										L10N.t("dialog.gradle_console.gradle_caches_corrupted_message"),
+										L10N.t("dialog.gradle_console.gradle_caches_corrupted_title"),
+										JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+								if (reply == 0 || reply == 1) {
+									taskComplete(GradleErrorCodes.GRADLE_CACHEDATA_ERROR);
 
-								ClearAllGradleCachesAction.clearAllGradleCaches(ref, reply == 1,
-										workspaceReportedFailingGradleDependencies);
+									ClearAllGradleCachesAction.clearAllGradleCaches(ref, reply == 1,
+											workspaceReportedFailingGradleDependencies);
 
+									shouldReturn.set(true);
+								}
+								errorhandled.set(true);
+							});
+
+							if (shouldReturn.get())
 								return;
-							}
-							errorhandled = true;
 						} else if (taskErr.toString().contains("compileJava FAILED") || taskOut.toString()
 								.contains("compileJava FAILED")) {
-							errorhandled = CodeErrorDialog.showCodeErrorDialog(ref, taskErr.toString() + taskOut);
+							ThreadUtil.runOnSwingThreadAndWait(() -> errorhandled.set(
+									CodeErrorDialog.showCodeErrorDialog(ref, taskErr.toString() + taskOut)));
 						}
 						append(" ");
 						append("BUILD FAILED", new Color(0xF98771));
@@ -508,7 +521,7 @@ public class GradleConsole extends JPanel {
 
 					int resultcode = 0;
 
-					if (!errorhandled)
+					if (!errorhandled.get())
 						resultcode = GradleErrorDecoder.processErrorAndShowMessage(taskOut.toString(),
 								taskErr.toString(), ref);
 

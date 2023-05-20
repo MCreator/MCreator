@@ -1,0 +1,26 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "count",
+      "check": "IntProvider"
+    }
+  ],
+  "extensions": [
+    "count_placement_validator"
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": "Placement",
+  "colour": 130,
+  "mcreator": {
+    "group": "repeatingCount",
+    "toolbox_id": "placements",
+    "toolbox_init": [
+      "<value name=\"count\"><block type=\"int_provider_constant\"><field name=\"value\">4</field></block></value>"
+    ],
+    "inputs": [
+      "count"
+    ]
+  }
+}

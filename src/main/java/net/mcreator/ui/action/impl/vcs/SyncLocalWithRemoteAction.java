@@ -27,9 +27,10 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.vcs.MCreatorWorkspaceSyncHandler;
 import net.mcreator.ui.vcs.VCSCommitDialog;
-import net.mcreator.util.GSONClone;
+import net.mcreator.vcs.util.GSONClone;
 import net.mcreator.vcs.ICustomSyncHandler;
 import net.mcreator.vcs.SyncTwoRefsWithMerge;
+import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.TooNewWorkspaceVerisonException;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
@@ -64,11 +65,11 @@ public class SyncLocalWithRemoteAction extends VCSAction {
 			// generate base at this point too
 			actionRegistry.getMCreator().getGenerator().generateBase();
 
-			Git git = actionRegistry.getMCreator().getWorkspace().getVCS().getGit();
+			WorkspaceVCS workspaceVCS = WorkspaceVCS.getVCSWorkspace(actionRegistry.getMCreator().getWorkspace());
+			Git git = workspaceVCS.getGit();
 
-			CredentialsProvider credentialsProvider = actionRegistry.getMCreator().getWorkspace().getVCS()
-					.getCredentialsProvider(actionRegistry.getMCreator().getWorkspaceFolder(),
-							actionRegistry.getMCreator());
+			CredentialsProvider credentialsProvider = workspaceVCS.getCredentialsProvider(
+					actionRegistry.getMCreator().getWorkspaceFolder(), actionRegistry.getMCreator());
 
 			ICustomSyncHandler mergeHandler = new MCreatorWorkspaceSyncHandler(actionRegistry.getMCreator());
 
@@ -91,8 +92,7 @@ public class SyncLocalWithRemoteAction extends VCSAction {
 						// first commit our changes
 						CommitCommand commitCommand = git.commit().setAll(true).setMessage(commitMessage);
 						try {
-							commitCommand = commitCommand.setAuthor(
-									actionRegistry.getMCreator().getWorkspace().getVCS().getInfo().getUsername(),
+							commitCommand = commitCommand.setAuthor(workspaceVCS.getInfo().getUsername(),
 									new PersonIdent(git.getRepository()).getEmailAddress());
 						} catch (Exception ignored) {
 						}

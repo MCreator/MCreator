@@ -51,8 +51,8 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 
 		VTextField nameField = new VTextField(20);
 		nameField.setPreferredSize(new Dimension(200, 28));
-		UniqueNameValidator validator = new UniqueNameValidator(nameField, L10N.t("dialog.gui.checkbox_name_validator"),
-				Transliteration::transliterateString,
+		UniqueNameValidator validator = new UniqueNameValidator(L10N.t("dialog.gui.checkbox_name_validator"),
+				() -> Transliteration.transliterateString(nameField.getText()),
 				() -> editor.getComponentList().stream().map(GUIComponent::getName),
 				new JavaMemberNameValidator(nameField, false));
 		validator.setIsPresentOnList(checkbox != null);
@@ -95,7 +95,8 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 				String checkBoxName = nameField.getText();
 				if (!checkBoxName.equals("")) {
 					if (checkbox == null) {
-						Checkbox component = new Checkbox(checkBoxName, 0, 0, checkboxText.getText(), isCheckedProcedure.getSelectedProcedure());
+						Checkbox component = new Checkbox(checkBoxName, 0, 0, checkboxText.getText(),
+								isCheckedProcedure.getSelectedProcedure());
 
 						setEditingComponent(component);
 						editor.editor.addComponent(component);

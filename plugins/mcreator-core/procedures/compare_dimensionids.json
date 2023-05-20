@@ -16,6 +16,10 @@
   "colour": 123,
   "mcreator": {
     "toolbox_id": "logicoperations",
+    "toolbox_init": [
+      "~<value name=\"a\"><block type=\"provided_dimensionid\"></block></value>",
+      "~<value name=\"b\"><block type=\"provided_dimensionid\"></block></value>"
+    ],
     "inputs": [
       "a",
       "b"

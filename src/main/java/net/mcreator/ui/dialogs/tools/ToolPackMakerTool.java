@@ -42,7 +42,7 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.UniqueNameValidator;
+import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -103,7 +103,7 @@ public class ToolPackMakerTool {
 		props.add(L10N.label("dialog.tools.tool_pack_power_factor"));
 		props.add(power);
 
-		name.setValidator(UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(), name,
+		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
 				L10N.t("dialog.tools.tool_pack_name_validator")));
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
@@ -233,6 +233,7 @@ public class ToolPackMakerTool {
 
 		Recipe pickaxeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "PickaxeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		pickaxeRecipe.craftingBookCategory = "EQUIPMENT";
 		pickaxeRecipe.recipeSlots[0] = base;
 		pickaxeRecipe.recipeSlots[1] = base;
 		pickaxeRecipe.recipeSlots[2] = base;
@@ -248,6 +249,7 @@ public class ToolPackMakerTool {
 
 		Recipe axeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "AxeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		axeRecipe.craftingBookCategory = "EQUIPMENT";
 		axeRecipe.recipeSlots[0] = base;
 		axeRecipe.recipeSlots[1] = base;
 		axeRecipe.recipeSlots[3] = base;
@@ -263,6 +265,7 @@ public class ToolPackMakerTool {
 
 		Recipe swordRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "SwordRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		swordRecipe.craftingBookCategory = "EQUIPMENT";
 		swordRecipe.recipeSlots[1] = base;
 		swordRecipe.recipeSlots[4] = base;
 		swordRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
@@ -276,6 +279,7 @@ public class ToolPackMakerTool {
 
 		Recipe shovelRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "ShovelRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		shovelRecipe.craftingBookCategory = "EQUIPMENT";
 		shovelRecipe.recipeSlots[1] = base;
 		shovelRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
@@ -289,6 +293,7 @@ public class ToolPackMakerTool {
 
 		Recipe hoeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "HoeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		hoeRecipe.craftingBookCategory = "EQUIPMENT";
 		hoeRecipe.recipeSlots[0] = base;
 		hoeRecipe.recipeSlots[1] = base;
 		hoeRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
