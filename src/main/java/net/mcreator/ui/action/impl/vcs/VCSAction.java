@@ -21,6 +21,7 @@ package net.mcreator.ui.action.impl.vcs;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.vcs.WorkspaceVCS;
 
 import java.awt.event.ActionListener;
 
@@ -45,7 +46,7 @@ public class VCSAction extends BasicAction implements VCSStateChangeListener {
 	}
 
 	@Override public boolean isEnabled() {
-		return actionRegistry.getMCreator().getWorkspace().getVCS() != null;
+		return WorkspaceVCS.getVCSWorkspace(actionRegistry.getMCreator().getWorkspace()) != null;
 	}
 
 	@Override public void vcsStateChanged() {

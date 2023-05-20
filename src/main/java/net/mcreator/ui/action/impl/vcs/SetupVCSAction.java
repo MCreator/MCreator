@@ -43,20 +43,18 @@ public class SetupVCSAction extends VCSAction {
 	}
 
 	@Override public boolean isEnabled() {
-		return actionRegistry.getMCreator().getWorkspace().getVCS() == null;
+		return WorkspaceVCS.getVCSWorkspace(actionRegistry.getMCreator().getWorkspace()) == null;
 	}
 
 	public static boolean setupVCSForWorkspaceIfNotYet(MCreator mcreator) {
-		WorkspaceVCS vcs = mcreator.getWorkspace().getVCS();
-		if (vcs == null) {
+		if (WorkspaceVCS.getVCSWorkspace(mcreator.getWorkspace()) == null) {
 			VCSInfo vcsInfo = VCSSetupDialogs.getVCSInfoDialog(mcreator, L10N.t("dialog.vcs.setup.message"));
 			if (vcsInfo != null) {
 				try {
-					mcreator.getWorkspace().setVCS(WorkspaceVCS.initNewVCSWorkspace(mcreator.getWorkspace(), vcsInfo));
+					WorkspaceVCS.initNewVCSWorkspace(mcreator.getWorkspace(), vcsInfo);
 					mcreator.actionRegistry.getActions().stream()
 							.filter(action -> action instanceof VCSStateChangeListener)
 							.forEach(action -> ((VCSStateChangeListener) action).vcsStateChanged());
-					mcreator.statusBar.reloadVCSStatus();
 				} catch (WorkspaceNotEmptyException e) {
 					JOptionPane.showMessageDialog(mcreator,
 							L10N.t("dialog.vcs.setup.workspace_folder_not_empty.message"),

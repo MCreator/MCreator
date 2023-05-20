@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "blockstate",
+      "check": "MCItemBlock"
+    }
+  ],
+  "output": "RuleTest",
+  "colour": "80",
+  "mcreator": {
+    "toolbox_id": "orefeatures",
+    "toolbox_init": [
+      "<value name=\"blockstate\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "blockstate"
+    ]
+  }
+}
