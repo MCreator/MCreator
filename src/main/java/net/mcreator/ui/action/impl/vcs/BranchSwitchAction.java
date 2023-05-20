@@ -24,7 +24,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.FilenameUtilsPatched;
-import net.mcreator.util.GSONClone;
+import net.mcreator.vcs.util.GSONClone;
 import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
@@ -83,8 +83,6 @@ public class BranchSwitchAction {
 
 				mcreator.statusBar.setPersistentMessage(L10N.t("statusbar.vcs.switched_working_branch",
 						FilenameUtilsPatched.getName(branchToSwitchTo)));
-
-				mcreator.statusBar.reloadVCSStatus();
 
 				mcreator.mv.updateMods();
 			} catch (GitAPIException e) {

@@ -1,0 +1,28 @@
+{
+  "mutator": "weighted_int_provider_mutator",
+  "output": "IntProvider",
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_id": "intproviders",
+    "toolbox_init": [
+      "<mutation inputs=\"2\"></mutation>",
+      "~<value name=\"entry0\"><block type=\"int_provider_constant\"><field name=\"value\">2</field></block></value>",
+      "~<value name=\"entry1\"><block type=\"int_provider_constant\"><field name=\"value\">2</field></block></value>"
+    ],
+    "repeating_inputs": [
+      "entry"
+    ],
+    "repeating_fields": [
+      {
+        "name": "weight",
+        "field_definition": {
+          "testCount": 2,
+          "type": "field_number",
+          "value": 1,
+          "min": 1,
+          "precision": 1
+        }
+      }
+    ]
+  }
+}

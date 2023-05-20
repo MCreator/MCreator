@@ -395,7 +395,8 @@ public class BlocklyBlockCodeGenerator {
 		}
 
 		if (templateGenerator != null) {
-			dataModel.put("customBlockIndex", customBlockIndex);
+			dataModel.put("customBlockIndex", customBlockIndex); // kept for backwards compatibility
+			dataModel.put("cbi", customBlockIndex);
 
 			if (additionalData != null) {
 				dataModel.putAll(additionalData);

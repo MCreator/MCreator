@@ -53,7 +53,8 @@ public class FromTemplateDialog extends MCreatorDialog {
 	private static final Logger LOG = LogManager.getLogger("From Template Dialog");
 
 	private static final String[] templateList = new String[] { "Random", "Sword", "Pickaxe", "Axe", "Shovel", "Hoe",
-			"Shears", "Music disc", "Drinkable potion", "Splash potion", "Lingering potion", "Ore", "Block" };
+			"Shears", "Music disc", "Drinkable potion", "Splash potion", "Lingering potion", "Ore", "Block", "Gem",
+			"Dye" };
 
 	private static final Color[] presetColors = new Color[] { Color.red, Color.green, Color.blue,
 			(Color) UIManager.get("MCreatorLAF.MAIN_TINT"), Color.magenta, Color.cyan, new Color(244, 67, 54),
@@ -533,6 +534,37 @@ public class FromTemplateDialog extends MCreatorDialog {
 					randomTexture);
 			cbs2.setSelectedItem(randomTexture);
 			cbs3.setSelectedItem(randomTexture.toString().contains("machine") ? randomNoise : noimage);
+			cbs4.setSelectedItem(noimage);
+			col1.setColor(ListUtils.getRandomItem(presetColors));
+			col2.setColor(ListUtils.getRandomItem(presetColors));
+			type1.setSelected(Math.random() < 0.4);
+			type2.setSelected(Math.random() < 0.4);
+			ang1.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 90, 0, 0 }));
+			ang2.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 90, 0, 0 }));
+			break;
+		case "Gem":
+			ResourcePointer randomGem = ListUtils.getRandomItem(
+					templatesSorted.stream().filter(e -> e.toString().contains("Gem") || e.toString().contains("gem"))
+							.toList());
+			cbs.setSelectedItem(randomGem);
+			cbs2.setSelectedItem(randomGem);
+			cbs3.setSelectedItem(noimage);
+			cbs4.setSelectedItem(noimage);
+			col1.setColor(ListUtils.getRandomItem(presetColors));
+			type1.setSelected(Math.random() < 0.4);
+			ang1.setValue(ListUtils.getRandomItem(new Integer[] { 0, 90, 180, 90, 0, 0 }));
+			break;
+		case "Dye":
+			ResourcePointer randomDye = ListUtils.getRandomItem(templatesSorted.stream()
+					.filter(e -> e.toString().contains("dye") && !e.toString().contains("full") && !e.toString()
+							.contains("top")).toList());
+			ResourcePointer randomTopDye = ListUtils.getRandomItem(
+					templatesSorted.stream().filter(e -> e.toString().contains("dye") && e.toString().contains("top"))
+							.toList());
+			cbs.setSelectedItem(randomDye);
+			cbs2.setSelectedItem(randomDye);
+			// If the "randomDye" is a bottom type, we set cbs & cbs2 to be that bottom, and the cbs3 to be its top
+			cbs3.setSelectedItem(randomDye.toString().contains("bottom") ? randomTopDye : noimage);
 			cbs4.setSelectedItem(noimage);
 			col1.setColor(ListUtils.getRandomItem(presetColors));
 			col2.setColor(ListUtils.getRandomItem(presetColors));

@@ -25,6 +25,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.vcs.BranchesPopup;
+import net.mcreator.vcs.WorkspaceVCS;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.jgit.api.Git;
@@ -32,6 +33,7 @@ import org.eclipse.jgit.api.MergeCommand;
 import org.eclipse.jgit.api.errors.GitAPIException;
 import org.eclipse.jgit.lib.Constants;
 import org.eclipse.jgit.lib.ObjectId;
+import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.merge.MergeStrategy;
 import org.eclipse.jgit.revwalk.RevCommit;
 
@@ -87,8 +89,9 @@ class WorkspacePanelVCS extends AbstractWorkspacePanel {
 		switchBranch.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(switchBranch);
 
-		switchBranch.addActionListener(e -> new BranchesPopup(workspacePanel.getMCreator().getWorkspace().getVCS(),
-				workspacePanel.getMCreator()).show(switchBranch, 4, 20));
+		switchBranch.addActionListener(
+				e -> new BranchesPopup(WorkspaceVCS.getVCSWorkspace(workspacePanel.getMCreator().getWorkspace()),
+						workspacePanel.getMCreator()).show(switchBranch, 4, 20));
 
 		bar.add(switchBranch);
 
@@ -150,11 +153,11 @@ class WorkspacePanelVCS extends AbstractWorkspacePanel {
 	}
 
 	private void checkoutToSelectedCommit() {
+		WorkspaceVCS workspaceVCS = WorkspaceVCS.getVCSWorkspace(workspacePanel.getMCreator().getWorkspace());
 		String shortCommitId = commits.getValueAt(commits.getSelectedRow(), 0).toString();
-
-		if (shortCommitId != null && workspacePanel.getMCreator().getWorkspace().getVCS() != null) {
+		if (shortCommitId != null && workspaceVCS != null) {
 			try {
-				Git git = workspacePanel.getMCreator().getWorkspace().getVCS().getGit();
+				Git git = workspaceVCS.getGit();
 				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
 						.call()) {
 					if (commit.abbreviate(7).name().equals(shortCommitId)) {
@@ -214,22 +217,23 @@ class WorkspacePanelVCS extends AbstractWorkspacePanel {
 	}
 
 	@Override public void reloadElements() {
-		if (workspacePanel.getMCreator().getWorkspace().getVCS() != null) {
+		WorkspaceVCS workspaceVCS = WorkspaceVCS.getVCSWorkspace(workspacePanel.getMCreator().getWorkspace());
+		if (workspaceVCS != null) {
 			int row = commits.getSelectedRow();
 
 			DefaultTableModel model = (DefaultTableModel) commits.getModel();
 			model.setRowCount(0);
 
-			Git git = workspacePanel.getMCreator().getWorkspace().getVCS().getGit();
+			Git git = workspaceVCS.getGit();
 			try {
-				for (RevCommit commit : git.log().add(git.getRepository().resolve(git.getRepository().getFullBranch()))
-						.call()) {
+				Repository repository = git.getRepository();
+
+				switchBranch.setText(L10N.t("workspace.vcs.current_branch", repository.getBranch()));
+
+				for (RevCommit commit : git.log().add(repository.resolve(repository.getFullBranch())).call()) {
 					model.addRow(new Object[] { commit.abbreviate(7).name(), "<html><b>" + commit.getShortMessage(),
 							commit.getAuthorIdent().getName(), commit.getAuthorIdent().getWhen() });
 				}
-
-				switchBranch.setText(L10N.t("workspace.vcs.current_branch",
-						git.getRepository().getFullBranch().replace("refs/heads/", "")));
 			} catch (Exception ignored) {
 			}
 
@@ -243,7 +247,7 @@ class WorkspacePanelVCS extends AbstractWorkspacePanel {
 	}
 
 	@Override public void refilterElements() {
-		if (workspacePanel.getMCreator().getWorkspace().getVCS() != null)
+		if (WorkspaceVCS.getVCSWorkspace(workspacePanel.getMCreator().getWorkspace()) != null)
 			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
 	}
 

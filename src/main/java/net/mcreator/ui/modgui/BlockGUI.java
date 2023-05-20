@@ -267,7 +267,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		fluidRestrictions = new FluidListField(mcreator);
 
-		boundingBoxList = new JBoundingBoxList(mcreator, this);
+		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 
 		// emulate base_stone_overworld
 		blocksToReplace.setListElements(List.of(
@@ -1163,6 +1163,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		renderType.addActionListener(e -> {
 			Model selected = renderType.getSelectedItem();
 			if (selected != null) {
+				boundingBoxList.modelChanged();
 				if (!selected.equals(normal) && !selected.equals(singleTexture) && !selected.equals(grassBlock)) {
 					hasTransparency.setSelected(true);
 					lightOpacity.setValue(0);
