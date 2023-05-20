@@ -1,12 +1,13 @@
 {
-  "extensions": [
-    "ai_condition_selector"
-  ],
   "args0": [
     {
       "type": "field_number",
       "name": "speed",
       "value": 1
+    },
+    {
+      "type": "field_ai_condition_selector",
+      "name": "condition"
     }
   ],
   "inputsInline": true,

@@ -19,6 +19,8 @@
 package net.mcreator.plugin;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
@@ -26,6 +28,7 @@ import net.mcreator.io.net.WebIO;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
+import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.reflections.Reflections;
@@ -57,10 +60,14 @@ public class PluginLoader extends URLClassLoader {
 		INSTANCE = new PluginLoader();
 	}
 
-	private final List<Plugin> plugins;
-	private final List<PluginUpdateInfo> pluginUpdates;
+	private final Set<Plugin> plugins;
 
-	private final List<JavaPlugin> javaPlugins;
+	private final Set<JavaPlugin> javaPlugins;
+
+	// list of plugins that failed to load and are thus not present on plugins list
+	private final Set<PluginLoadFailure> failedPlugins;
+
+	private final Set<PluginUpdateInfo> pluginUpdates;
 
 	private final Reflections reflections;
 
@@ -70,12 +77,10 @@ public class PluginLoader extends URLClassLoader {
 	public PluginLoader() {
 		super(new URL[] {}, null);
 
-		this.plugins = new ArrayList<>();
-		this.javaPlugins = new ArrayList<>();
-		this.pluginUpdates = new ArrayList<>();
-
-		DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(new URL[] {},
-				Thread.currentThread().getContextClassLoader());
+		this.plugins = new HashSet<>();
+		this.failedPlugins = new HashSet<>();
+		this.javaPlugins = new HashSet<>();
+		this.pluginUpdates = new HashSet<>();
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 
@@ -88,14 +93,14 @@ public class PluginLoader extends URLClassLoader {
 
 		Collections.sort(pluginsLoadList);
 
-		List<String> idList = pluginsLoadList.stream().map(Plugin::getID).toList();
+		Set<String> idList = pluginsLoadList.stream().map(Plugin::getID).collect(Collectors.toSet());
 
 		for (Plugin plugin : pluginsLoadList) {
 			if (plugin.getInfo().getDependencies() != null) {
 				if (!idList.containsAll(plugin.getInfo().getDependencies())) {
 					LOG.warn(plugin.getInfo().getName() + " can not be loaded. The plugin needs " + plugin.getInfo()
 							.getDependencies());
-					plugin.loaded = false;
+					plugin.loaded_failure = "missing dependencies";
 					continue;
 				}
 			}
@@ -105,17 +110,35 @@ public class PluginLoader extends URLClassLoader {
 						+ plugin.getWeight());
 				addURL(plugin.toURL());
 
-				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins && plugin.getJavaPlugin() != null) {
+				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get() && plugin.getJavaPlugin() != null) {
+					@SuppressWarnings("resource") DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(
+							"PluginClassLoader-" + plugin.getID(), new URL[] {},
+							Thread.currentThread().getContextClassLoader()) {
+						@Override protected Class<?> findClass(String name) throws ClassNotFoundException {
+							try {
+								return super.findClass(name);
+							} catch (Exception e) {
+								plugin.loaded_failure =
+										"internal error: " + e.getClass().getSimpleName() + ": " + e.getMessage();
+								LOG.error("Failed to load class " + name + " for plugin " + plugin.getID(), e);
+								throw e;
+							}
+						}
+					};
+
 					javaPluginCL.addURL(plugin.toURL());
 
 					Class<?> clazz = javaPluginCL.loadClass(plugin.getJavaPlugin());
 					Constructor<?> ctor = clazz.getConstructor(Plugin.class);
 					JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
 					javaPlugins.add(javaPlugin);
-				}
+				} else if (plugin.getJavaPlugin() != null) {
+					LOG.warn(plugin.getID() + " is Java plugin, but Java plugins are disabled in preferences");
 
-				plugin.loaded = true;
+					plugin.loaded_failure = "Java plugins disabled";
+				}
 			} catch (Exception e) {
+				plugin.loaded_failure = "Load error: " + e.getMessage();
 				LOG.error("Failed to load plugin " + plugin.getID(), e);
 			}
 		}
@@ -159,22 +182,22 @@ public class PluginLoader extends URLClassLoader {
 	/**
 	 * @return <p> A {@link List} of all loaded plugins.</p>
 	 */
-	public List<Plugin> getPlugins() {
-		return plugins;
+	public Collection<Plugin> getPlugins() {
+		return Collections.unmodifiableCollection(plugins);
 	}
 
 	/**
 	 * @return <p> A {@link List} of all loaded Java plugins.</p>
 	 */
-	protected List<JavaPlugin> getJavaPlugins() {
-		return javaPlugins;
+	protected Collection<JavaPlugin> getJavaPlugins() {
+		return Collections.unmodifiableCollection(javaPlugins);
 	}
 
 	/**
 	 * @return <p>A list of all plugin updates detected.</p>
 	 */
-	public List<PluginUpdateInfo> getPluginUpdates() {
-		return pluginUpdates;
+	public Collection<PluginUpdateInfo> getPluginUpdates() {
+		return Collections.unmodifiableCollection(pluginUpdates);
 	}
 
 	synchronized private List<Plugin> listPluginsFromFolder(File folder, boolean builtin) {
@@ -209,6 +232,8 @@ public class PluginLoader extends URLClassLoader {
 					plugin.file = pluginFile;
 					return validatePlugin(plugin);
 				} catch (Exception e) {
+					failedPlugins.add(new PluginLoadFailure(FilenameUtils.getBaseName(pluginFile.getName()), pluginFile,
+							"IO error: " + e.getMessage()));
 					LOG.error("Failed to load plugin from " + pluginFile, e);
 				}
 			} else {
@@ -226,6 +251,8 @@ public class PluginLoader extends URLClassLoader {
 				plugin.file = pluginFile;
 				return validatePlugin(plugin);
 			} catch (Exception e) {
+				failedPlugins.add(new PluginLoadFailure(FilenameUtils.getBaseName(pluginFile.getName()), pluginFile,
+						"IO error: " + e.getMessage()));
 				LOG.error("Failed to load plugin from " + pluginFile, e);
 			}
 		}
@@ -234,12 +261,14 @@ public class PluginLoader extends URLClassLoader {
 
 	@Nullable private Plugin validatePlugin(Plugin plugin) {
 		if (!plugin.isCompatible()) {
+			failedPlugins.add(new PluginLoadFailure(plugin, "incompatible version"));
 			LOG.warn("Plugin " + plugin.getID()
 					+ " is not compatible with this MCreator version! Skipping this plugin.");
 			return null;
 		}
 
 		if (plugin.getMinVersion() < 0) {
+			failedPlugins.add(new PluginLoadFailure(plugin, "missing minversion"));
 			LOG.warn("Plugin " + plugin.getID() + " does not specify minversion. Skipping this plugin.");
 			return null;
 		}
@@ -248,16 +277,21 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	private void checkForPluginUpdates() {
-		if (MCreatorApplication.isInternet) {
-			pluginUpdates.addAll(plugins.stream().parallel().map(plugin -> {
+		if (MCreatorApplication.isInternet
+				&& PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPluginUpdates.get()) {
+			pluginUpdates.addAll(plugins.parallelStream().map(plugin -> {
 				if (plugin.getInfo().getUpdateJSONURL() != null) {
 					if (!plugin.getInfo().getVersion().equals(PluginInfo.VERSION_NOT_SPECIFIED)) {
 						try {
 							String updateJSON = WebIO.readURLToString(plugin.getInfo().getUpdateJSONURL());
-							String version = JsonParser.parseString(updateJSON).getAsJsonObject().get(plugin.getID())
-									.getAsJsonObject().get("latest").getAsString();
+							JsonObject updateData = JsonParser.parseString(updateJSON).getAsJsonObject()
+									.get(plugin.getID()).getAsJsonObject();
+							String version = updateData.get("latest").getAsString();
 							if (!version.equals(plugin.getPluginVersion())) {
-								return new PluginUpdateInfo(plugin, version);
+								return new PluginUpdateInfo(plugin, version, updateData.has("changes") ?
+										updateData.get("changes").getAsJsonArray().asList().stream()
+												.map(JsonElement::getAsString).toList() :
+										null);
 							}
 						} catch (Exception e) {
 							LOG.warn("Failed to parse update info for plugin: " + plugin.getID(), e);
@@ -267,6 +301,17 @@ public class PluginLoader extends URLClassLoader {
 				return null;
 			}).filter(Objects::nonNull).toList());
 		}
+	}
+
+	public Collection<PluginLoadFailure> getFailedPlugins() {
+		Set<PluginLoadFailure> failedPluginsAggregated = new HashSet<>(this.failedPlugins);
+
+		for (Plugin plugin : plugins) {
+			if (!plugin.isLoaded())
+				failedPluginsAggregated.add(new PluginLoadFailure(plugin, plugin.getLoadFailure()));
+		}
+
+		return Collections.unmodifiableCollection(failedPluginsAggregated);
 	}
 
 }

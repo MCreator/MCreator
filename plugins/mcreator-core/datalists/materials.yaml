@@ -34,12 +34,8 @@
   texture: CARPET#3
 - GLASS:
   texture: GLASS
-- REDSTONE_LIGHT:
-  texture: LIT_REDSTONE_LAMP
 - TNT:
   texture: TNT
-- CORAL:
-  texture: WATERLILY
 - ICE:
   texture: ICE
 - PACKED_ICE:
@@ -96,5 +92,9 @@
   texture: POWDER_SNOW
 - BUILDABLE_GLASS:
   texture: REDSTONE_LAMP
-- FROGSPAWN
-- FROGLIGHT
+- FROGSPAWN:
+  texture: FROGSPAWN
+- FROGLIGHT:
+  texture: OCHRE_FROGLIGHT
+- DECORATED_POT:
+  texture: DECORATED_POT

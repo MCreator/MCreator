@@ -32,33 +32,36 @@ import java.util.Locale;
 
 class MergeHandleComponent extends JPanel {
 
-	protected final JRadioButton local;
-	protected final JRadioButton remote;
+	protected final JRadioButton local, remote;
 
 	MergeHandleComponent(List<MergeHandleComponent> mergeHandleComponents, MergeHandle<?> mergeHandle) {
 		super(new BorderLayout(40, 2));
+		setOpaque(false);
 		setMinimumSize(new Dimension(400, 10));
 		local = L10N.radiobutton("dialog.vcs.merge_handle_accept_mine",
-				mergeHandle.getLocalChange().name().toLowerCase(Locale.ENGLISH));
+				L10N.t("dialog.vcs.diff_change_type." + mergeHandle.getLocalChange().name()
+						.toLowerCase(Locale.ENGLISH)));
 		remote = L10N.radiobutton("dialog.vcs.merge_handle_accept_theirs",
-				mergeHandle.getLocalChange().name().toLowerCase(Locale.ENGLISH));
+				L10N.t("dialog.vcs.diff_change_type." + mergeHandle.getRemoteChange().name()
+						.toLowerCase(Locale.ENGLISH)));
 
-		if (mergeHandle.getLocal() instanceof FileSyncHandle) {
-			add("Center",
-					PanelUtils.centerInPanel(new JLabel(((FileSyncHandle) mergeHandle.getLocal()).getLocalPath())));
-		} else if (mergeHandle.getLocal() instanceof WorkspaceSettings) {
-			add("Center", PanelUtils.centerInPanel(L10N.label("dialog.vcs.merge_handle_workspace_settings")));
-		} else {
-			add("Center", PanelUtils.centerInPanel(new JLabel(mergeHandle.getLocal().toString())));
-		}
+		JLabel label;
+		if (mergeHandle.getLocal() instanceof FileSyncHandle fsh)
+			label = new JLabel(fsh.getLocalPath());
+		else if (mergeHandle.getLocal() instanceof WorkspaceSettings)
+			label = L10N.label("dialog.vcs.merge_handle_workspace_settings");
+		else
+			label = new JLabel(mergeHandle.getLocal().toString());
+		add("Center", PanelUtils.centerInPanel(label));
+
+		local.setOpaque(false);
+		remote.setOpaque(false);
 
 		add("West", local);
 		add("East", remote);
 
 		local.addActionListener(e -> mergeHandle.selectResultSide(ResultSide.LOCAL));
 		remote.addActionListener(e -> mergeHandle.selectResultSide(ResultSide.REMOTE));
-
-		local.setSelected(true);
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 		buttonGroup.add(local);
@@ -70,5 +73,4 @@ class MergeHandleComponent extends JPanel {
 
 		mergeHandleComponents.add(this);
 	}
-
 }

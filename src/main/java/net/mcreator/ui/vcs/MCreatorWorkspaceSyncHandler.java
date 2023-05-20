@@ -23,8 +23,11 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreator;
-import net.mcreator.util.GSONCompare;
+import net.mcreator.util.diff.DiffResult;
+import net.mcreator.util.diff.GSONCompare;
 import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.util.diff.ListDiff;
+import net.mcreator.util.diff.MapDiff;
 import net.mcreator.vcs.FileSyncHandle;
 import net.mcreator.vcs.ICustomSyncHandler;
 import net.mcreator.vcs.diff.*;
@@ -45,7 +48,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("ClassCanBeRecord") public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
+public class MCreatorWorkspaceSyncHandler implements ICustomSyncHandler {
 
 	private final MCreator mcreator;
 
@@ -465,8 +468,8 @@ import java.util.stream.Collectors;
 		// process workspace base files
 		List<GeneratorTemplate> modBaseTemplates = localWorkspace.getGenerator().getModBaseGeneratorTemplatesList(true);
 		for (GeneratorTemplate generatorTemplate : modBaseTemplates) {
-			if (((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock") != null
-					&& ((Map<?, ?>) generatorTemplate.getTemplateData()).get("canLock")
+			if (generatorTemplate.getTemplateDefinition().get("canLock") != null
+					&& generatorTemplate.getTemplateDefinition().get("canLock")
 					.equals("true")) // can this file be locked
 				if (localWorkspace.getWorkspaceSettings()
 						.isLockBaseModFiles()) // are mod base file locked in local workspace

@@ -198,8 +198,15 @@ public class MinecraftImageGenerator {
 	public static ImageIcon generateFluidBucketIcon(ImageIcon fluid) {
 		ImageIcon bucket = TiledImageCache.bucket;
 		BufferedImage bucketMask = ImageUtils.toBufferedImage(TiledImageCache.bucketMask.getImage());
-		BufferedImage fluidOverlay = ImageUtils.toBufferedImage(fluid.getImage());
+		// The fluid image is resized to avoid issues with animated textures
+		BufferedImage fluidOverlay = ImageUtils.resizeAndCrop(fluid.getImage(), 32);
 		return ImageUtils.drawOver(bucket, new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
+	}
+
+	public static ImageIcon generateSpawnEggIcon(Color baseColor, Color dotColor) {
+		ImageIcon base = ImageUtils.colorize(TiledImageCache.spawnEggBase, baseColor, false);
+		ImageIcon dots = ImageUtils.colorize(TiledImageCache.spawnEggDots, dotColor, true);
+		return ImageUtils.drawOver(base, dots);
 	}
 
 	public static class Preview {
@@ -213,7 +220,7 @@ public class MinecraftImageGenerator {
 			g.drawRect(0, 0, 159, 77);
 			g.drawString("BOOTS", 5, 155);
 			g.drawRect(0, 79, 78, 80);
-			g.drawString("BODY", 87, 155);
+			g.drawString("CHESTPLATE", 87, 155);
 			g.drawRect(80, 79, 205, 80);
 			return image;
 		}

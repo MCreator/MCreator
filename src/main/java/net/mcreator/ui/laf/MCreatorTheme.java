@@ -65,10 +65,10 @@ public class MCreatorTheme extends OceanTheme {
 				LOG.warn(colorScheme.getInterfaceAccentColor()
 								+ " in the current theme is not a valid hexadecimal number. The color defined by the user will be used.",
 						exception.getMessage());
-				MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
+				MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get();
 			}
 		} else {
-			MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor;
+			MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get();
 		}
 
 		try {
@@ -265,7 +265,7 @@ public class MCreatorTheme extends OceanTheme {
 
 		table.put("TabbedPane.contentAreaColor", colorScheme.getBackgroundColor());
 		table.put("TabbedPane.contentBorderInsets", new Insets(4, 2, 3, 3));
-		table.put("TabbedPane.selected", colorScheme.getAltBackgroundColor());
+		table.put("TabbedPane.selected", colorScheme.getBackgroundColor());
 		table.put("TabbedPane.tabAreaBackground", colorScheme.getAltBackgroundColor());
 		table.put("TabbedPane.tabAreaInsets", new Insets(2, 2, 0, 6));
 		table.put("TabbedPane.unselectedBackground", colorScheme.getBackgroundColor());

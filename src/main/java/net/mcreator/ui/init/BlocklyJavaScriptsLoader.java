@@ -31,7 +31,7 @@ import java.util.regex.Pattern;
 
 public class BlocklyJavaScriptsLoader {
 
-	private static final Logger LOG = LogManager.getLogger("Blockly JS loader");
+	private static final Logger LOG = LogManager.getLogger("Blockly JavaScript Files loader");
 
 	public static BlocklyJavaScriptsLoader INSTANCE;
 
@@ -44,7 +44,7 @@ public class BlocklyJavaScriptsLoader {
 	public BlocklyJavaScriptsLoader() {
 		LOG.debug("Loading Blockly JavaScript files from plugins");
 
-		Set<String> fileNames = PluginLoader.INSTANCE.getResources("blockly", Pattern.compile("^[^$].*\\.js"));
+		Set<String> fileNames = PluginLoader.INSTANCE.getResources("blockly.js", Pattern.compile("^[^$].*\\.js"));
 		for (String fileName : fileNames)
 			SCRIPTS.add(FileIO.readResourceToString(PluginLoader.INSTANCE, fileName));
 	}

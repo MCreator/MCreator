@@ -20,6 +20,8 @@ package net.mcreator.ui.dialogs.workspace;
 
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.io.net.analytics.AnalyticsConstants;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -28,6 +30,7 @@ import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
@@ -75,6 +78,16 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		ok.addActionListener(e -> {
 			WorkspaceSettings workspaceSettings = current.getWorkspaceSettings();
 			if (workspaceSettings != null) {
+				if (w instanceof WorkspaceSelector workspaceSelector) {
+					if (workspaceSelector.getApplication() != null)
+						workspaceSelector.getApplication().getAnalytics()
+								.trackEvent(AnalyticsConstants.EVENT_NEW_WORKSPACE,
+										workspaceSettings.getCurrentGenerator());
+				} else if (w instanceof MCreator mcreator) {
+					mcreator.getApplication().getAnalytics().trackEvent(AnalyticsConstants.EVENT_NEW_WORKSPACE,
+							workspaceSettings.getCurrentGenerator());
+				}
+
 				workspaceFile = new File(new File(current.getWorkspaceFolder()),
 						workspaceSettings.getModID() + ".mcreator");
 				Workspace.createWorkspace(workspaceFile, workspaceSettings);

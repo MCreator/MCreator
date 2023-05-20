@@ -22,8 +22,8 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.blockly.data.ExternalBlockLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.data.ToolboxType;
 import net.mcreator.blockly.feature.BlocklyToFeature;
 import net.mcreator.element.types.Feature;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -108,16 +108,15 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 
 		propertiesAndCondition.setOpaque(false);
 
-		externalBlocks = BlocklyLoader.INSTANCE.getFeatureBlockLoader().getDefinedBlocks();
-		blocklyPanel = new BlocklyPanel(mcreator);
+		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks();
+		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.FEATURE);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			BlocklyLoader.INSTANCE.getFeatureBlockLoader()
-					.loadBlocksAndCategoriesInPanel(blocklyPanel, ExternalBlockLoader.ToolboxType.EMPTY);
+			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
+					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
 			blocklyPanel.getJSBridge()
 					.setJavaScriptEventListener(() -> new Thread(FeatureGUI.this::regenerateFeature).start());
 			if (!isEditingMode()) {
-				blocklyPanel.setXML("""
-						<xml><block type="feature_container" deletable="false" x="40" y="40"/></xml>""");
+				blocklyPanel.setXML(Feature.XML_BASE);
 			}
 		});
 
@@ -125,7 +124,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 		blocklyAndToolbarPanel.setOpaque(false);
 		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE,
 				blocklyPanel);
-		blocklyEditorToolbar.setTemplateLibButtonWidth(156);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(174);
 		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 
 		JPanel featureProcedure = (JPanel) PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);
@@ -134,17 +133,18 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 				L10N.t("elementgui.feature.feature_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
 
-		featureProcedure.setPreferredSize(new Dimension(0,460));
+		featureProcedure.setPreferredSize(new Dimension(0, 460));
 
-		page1.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, propertiesAndCondition), featureProcedure));
+		page1.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, propertiesAndCondition),
+				featureProcedure));
 
 		page1.setOpaque(false);
 		addPage(page1);
 	}
 
-	private void regenerateFeature() {
+	private synchronized void regenerateFeature() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
-				mcreator.getGeneratorStats().getFeatureProcedures());
+				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.FEATURE));
 
 		BlocklyToFeature blocklyToFeature;
 		try {

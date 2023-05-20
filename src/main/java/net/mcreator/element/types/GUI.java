@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.parts.gui.Button;
 import net.mcreator.element.parts.gui.GUIComponent;
+import net.mcreator.element.parts.gui.ImageButton;
 import net.mcreator.element.parts.gui.Slot;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IGUI;
@@ -85,10 +86,15 @@ import java.util.List;
 	}
 
 	public boolean hasButtonEvents() {
-		for (GUIComponent component : components)
-			if (component instanceof Button)
-				if (((Button) component).onClick != null && ((Button) component).onClick.getName() != null)
+		for (GUIComponent component : components) {
+			if (component instanceof Button button) {
+				if (button.onClick != null && button.onClick.getName() != null)
 					return true;
+			} else if (component instanceof ImageButton imageButton) {
+				if (imageButton.onClick != null && imageButton.onClick.getName() != null)
+					return true;
+			}
+		}
 		return false;
 	}
 
@@ -105,10 +111,10 @@ import java.util.List;
 	}
 
 	@Override public void finalizeModElementGeneration() {
-		File guiTextureFile = getModElement().getFolderManager()
-				.getTextureFile(getModElement().getRegistryName(), TextureType.SCREEN);
-
 		if (renderBgLayer) {
+			File guiTextureFile = getModElement().getFolderManager()
+					.getTextureFile(getModElement().getRegistryName(), TextureType.SCREEN);
+
 			int mx = WYSIWYG.W - width;
 			int my = WYSIWYG.H - height;
 
@@ -134,9 +140,17 @@ import java.util.List;
 
 				FileIO.writeImageToPNGFile(resizedImage, guiTextureFile);
 			}
-		} else {
-			guiTextureFile.delete();
 		}
+
+		// Create the texture atlas for image buttons that will be used by Minecraft
+		components.stream().filter(c -> c instanceof ImageButton).map(c -> (ImageButton) c).forEach(imageButton -> {
+			Image normal = imageButton.getImage(getModElement().getWorkspace());
+			Image hovered = imageButton.getHoveredImage(getModElement().getWorkspace());
+			FileIO.writeImageToPNGFile(
+					ImageUtils.mergeTwoImages(normal, hovered, normal.getWidth(null), normal.getHeight(null) * 2, 0, 0,
+							0, normal.getHeight(null)), getModElement().getWorkspace().getFolderManager()
+							.getTextureFile("atlas/" + imageButton.getName(), TextureType.SCREEN));
+		});
 	}
 
 	@Override public List<GUIComponent> getComponents() {

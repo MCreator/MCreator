@@ -40,13 +40,15 @@ import java.util.stream.Collectors;
 	public transient UUID uuid;
 
 	private static final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<>() {{
-		put("button", Button.class);
-		put("image", Image.class);
-		put("inputslot", InputSlot.class);
-		put("outputslot", OutputSlot.class);
-		put("label", Label.class);
-		put("textfield", TextField.class);
-		put("checkbox", Checkbox.class);
+		put("entitymodel", EntityModel.class); //weight -10
+		put("textfield", TextField.class); // weight 0
+		put("label", Label.class); // weight 10
+		put("checkbox", Checkbox.class); //weight 20
+		put("imagebutton", ImageButton.class); //weight 25
+		put("button", Button.class);// weight 30
+		put("image", Image.class);// weight 40
+		put("inputslot", InputSlot.class); // weight 50
+		put("outputslot", OutputSlot.class); // weight 50
 	}};
 
 	private static final Map<Class<? extends GUIComponent>, String> typeMappingsReverse = typeMappings.entrySet()
@@ -77,6 +79,11 @@ import java.util.stream.Collectors;
 
 	public abstract int getHeight(Workspace workspace);
 
+	/**
+	 * Returns the priority for when this component should be drawn in the UI, to represent how Minecraft draws components in the game.
+	 *
+	 * @return The priority of the component (lower means it will be rendered closer to the screen and higher means it will "sink" more behind other components)
+	 */
 	public abstract int getWeight();
 
 	public boolean isSizeKnown() {
@@ -124,8 +131,12 @@ import java.util.stream.Collectors;
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
 			String elementType = jsonElement.getAsJsonObject().get("type").getAsString();
 
+			Class<? extends GUIComponent> typeMapping = typeMappings.get(elementType);
+			if (typeMapping == null)
+				typeMapping = Unknown.class; // fallback to Unknown (e.g. plugin component that no longer exists)
+
 			GUIComponent component = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("data"),
-					typeMappings.get(elementType));
+					typeMapping);
 			component.uuid = UUID.randomUUID(); // init UUID for deserialized component
 			return component;
 		}
@@ -134,11 +145,39 @@ import java.util.stream.Collectors;
 		public JsonElement serialize(GUIComponent element, Type type,
 				JsonSerializationContext jsonSerializationContext) {
 			JsonObject root = new JsonObject();
-			root.add("type", new JsonPrimitive(typeMappingsReverse.get(element.getClass())));
+
+			String typeMapping = typeMappingsReverse.get(element.getClass());
+			if (typeMapping == null)
+				typeMapping = "unknown";
+
+			root.add("type", new JsonPrimitive(typeMapping));
 			root.add("data", gson.toJsonTree(element));
 			return root;
 		}
 
+	}
+
+	public static final class Unknown extends GUIComponent {
+
+		@Override public String getName() {
+			return "unknown_element";
+		}
+
+		@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
+
+		}
+
+		@Override public int getWidth(Workspace workspace) {
+			return 0;
+		}
+
+		@Override public int getHeight(Workspace workspace) {
+			return 0;
+		}
+
+		@Override public int getWeight() {
+			return 0;
+		}
 	}
 
 }

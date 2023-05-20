@@ -41,7 +41,17 @@ import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <#compress>
-public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block<#if data.hasTileEntity> implements EntityBlock</#if>{
+<#assign interfaces = []>
+<#if data.hasTileEntity>
+	<#assign interfaces += ["EntityBlock"]>
+</#if>
+<#if data.isBonemealable>
+	<#assign interfaces += ["BonemealableBlock"]>
+</#if>
+public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif data.plantType == "growapable">SugarCane<#elseif data.plantType == "double">DoublePlant</#if>Block
+	<#if interfaces?size gt 0>
+		implements ${interfaces?join(",")}
+	</#if>{
 	public ${name}Block() {
 		super(<#if data.plantType == "normal">${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
@@ -53,11 +63,13 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		.randomTicks()
 		</#if>
 		<#if data.isCustomSoundType>
-			.sound(new ForgeSoundType(1.0f, 1.0f, () -> new SoundEvent(new ResourceLocation("${data.breakSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.stepSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.placeSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.hitSound}")),
-			() -> new SoundEvent(new ResourceLocation("${data.fallSound}"))))
+			.sound(new ForgeSoundType(1.0f, 1.0f,
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.breakSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}")))
+			)
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
 		</#if>
@@ -296,6 +308,10 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	<@onEntityWalksOn data.onEntityWalksOn/>
 
 	<@onHitByProjectile data.onHitByProjectile/>
+
+	<#if data.isBonemealable>
+	<@bonemealEvents data.isBonemealTargetCondition, data.bonemealSuccessCondition, data.onBonemealSuccess/>
+	</#if>
 
 	<#if data.hasTileEntity>
 	@Override public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {

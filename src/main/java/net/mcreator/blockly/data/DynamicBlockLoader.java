@@ -19,6 +19,7 @@
 
 package net.mcreator.blockly.data;
 
+import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -38,6 +39,7 @@ public class DynamicBlockLoader {
 			};
 			getBlock.machine_name = "variables_get_" + varType.getName();
 			getBlock.toolbox_id = "customvariables";
+			getBlock.type = IBlockGenerator.BlockType.OUTPUT;
 			list.add(getBlock);
 
 			ToolboxBlock setBlock = new DynamicToolboxBlock() {
@@ -47,21 +49,25 @@ public class DynamicBlockLoader {
 			};
 			setBlock.machine_name = "variables_set_" + varType.getName();
 			setBlock.toolbox_id = "customvariables";
+			setBlock.type = IBlockGenerator.BlockType.PROCEDURAL;
 			list.add(setBlock);
 
 			ToolboxBlock customDependencyBlock = new DynamicToolboxBlock();
 			customDependencyBlock.machine_name = "custom_dependency_" + varType.getName();
 			customDependencyBlock.toolbox_id = "advanced";
+			customDependencyBlock.type = IBlockGenerator.BlockType.OUTPUT;
 			list.add(customDependencyBlock);
 
 			ToolboxBlock procedureRetvalBlock = new DynamicToolboxBlock();
 			procedureRetvalBlock.machine_name = "procedure_retval_" + varType.getName();
 			procedureRetvalBlock.toolbox_id = "advanced";
+			procedureRetvalBlock.type = IBlockGenerator.BlockType.OUTPUT;
 			list.add(procedureRetvalBlock);
 
 			ToolboxBlock returnBlock = new DynamicToolboxBlock();
 			returnBlock.machine_name = "return_" + varType.getName();
 			returnBlock.toolbox_id = "logicloops";
+			returnBlock.type = IBlockGenerator.BlockType.PROCEDURAL;
 			list.add(returnBlock);
 		}
 		return list;

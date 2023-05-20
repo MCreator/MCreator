@@ -9,10 +9,11 @@
       "type": "field_data_list_selector",
       "name": "entity",
       "datalist": "entity"
+    },
+    {
+      "type": "field_ai_condition_selector",
+      "name": "condition"
     }
-  ],
-  "extensions": [
-    "ai_condition_selector"
   ],
   "inputsInline": true,
   "previousStatement": null,

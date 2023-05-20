@@ -20,10 +20,7 @@ package net.mcreator.ui.action;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.action.impl.AboutAction;
-import net.mcreator.ui.action.impl.CheckForUpdatesAction;
-import net.mcreator.ui.action.impl.MinecraftFolderActions;
-import net.mcreator.ui.action.impl.ShowDataListAction;
+import net.mcreator.ui.action.impl.*;
 import net.mcreator.ui.action.impl.gradle.*;
 import net.mcreator.ui.action.impl.vcs.*;
 import net.mcreator.ui.action.impl.workspace.*;
@@ -79,6 +76,7 @@ public class ActionRegistry {
 	// Help actions
 	public final BasicAction aboutMCreator;
 	public final BasicAction checkForUpdates;
+	public final BasicAction checkForPluginUpdates;
 	public final BasicAction showShortcuts;
 	public final BasicAction help;
 	public final BasicAction support;
@@ -89,7 +87,6 @@ public class ActionRegistry {
 	public final BasicAction runClient;
 	public final BasicAction runServer;
 	public final BasicAction runGradleTask;
-	public final BasicAction buildClean;
 	public final BasicAction buildGradleOnly;
 	public final BasicAction reloadGradleProject;
 	public final BasicAction clearAllGradleCaches;
@@ -201,8 +198,6 @@ public class ActionRegistry {
 		this.runClient = new RunClientAction(this).setIcon(UIRES.get("16px.runclient"));
 		this.runServer = new RunServerAction(this).setIcon(UIRES.get("16px.runserver"));
 		this.runGradleTask = new RunGradleTaskAction(this);
-		this.buildClean = new GradleAction(this, L10N.t("action.gradle.clean_build"),
-				e -> mcreator.getGradleConsole().exec("clean"));
 		this.exportToJAR = new ExportWorkspaceForDistAction(this).setIcon(UIRES.get("16px.exporttojar"));
 		this.exportToDeobfJAR = new ExportWorkspaceForDistAction.Deobf(this);
 		this.workspaceSettings = new WorkspaceSettingsAction(this).setIcon(UIRES.get("16px.wrksett"));
@@ -218,6 +213,7 @@ public class ActionRegistry {
 				e -> mcreator.getApplication().closeApplication());
 		this.aboutMCreator = new AboutAction(this);
 		this.checkForUpdates = new CheckForUpdatesAction(this);
+		this.checkForPluginUpdates = new CheckForPluginUpdatesAction(this);
 		this.help = new VisitURIAction(this, L10N.t("action.wiki"), MCreatorApplication.SERVER_DOMAIN + "/wiki");
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");

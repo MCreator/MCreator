@@ -20,6 +20,7 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.locale.LocaleRegistration;
@@ -109,7 +110,7 @@ public class L10N {
 
 	public static Locale getLocale() {
 		if (selectedLocale == null)
-			selectedLocale = PreferencesManager.PREFERENCES.ui.language;
+			selectedLocale = PreferencesManager.PREFERENCES.ui.language.get();
 
 		return selectedLocale;
 	}
@@ -118,7 +119,14 @@ public class L10N {
 		return getLocale().toString();
 	}
 
-	public static String getLangString() {
+	public static String getBlocklyLangName() {
+		Locale locale = getLocale();
+
+		if (new Locale("zh", "TW").equals(locale)) // Chinese Traditional
+			return "zh-hant";
+		else if (new Locale("zh", "CN").equals(locale)) // Chinese Simplified
+			return "zh-hans";
+
 		return getLocaleString().split("_")[0].replace("iw", "he");
 	}
 
@@ -173,6 +181,10 @@ public class L10N {
 
 	public static JButton button(String key, Object... parameter) {
 		return new JButton(t(key, parameter));
+	}
+
+	public static TechnicalButton technicalbutton(String key, Object... parameter) {
+		return new TechnicalButton(t(key, parameter));
 	}
 
 	public static JRadioButton radiobutton(String key, Object... parameter) {

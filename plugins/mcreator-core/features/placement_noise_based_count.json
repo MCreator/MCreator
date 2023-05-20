@@ -1,0 +1,33 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "ratio",
+      "value": 2,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "factor",
+      "value": 200
+    },
+    {
+      "type": "field_number",
+      "name": "offset",
+      "value": 0
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": "Placement",
+  "colour": 130,
+  "mcreator": {
+    "group": "repeatingNoise",
+    "toolbox_id": "placements",
+    "fields": [
+      "ratio",
+      "factor",
+      "offset"
+    ]
+  }
+}

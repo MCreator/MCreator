@@ -40,12 +40,10 @@ public class GTProcedureTriggers {
 			return;
 		}
 
-		Set<String> generatorTriggers = workspace.getGeneratorStats().getGeneratorTriggers();
+		Set<String> generatorTriggers = workspace.getGeneratorStats().getProcedureTriggers();
 
 		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()) {
 			if (!generatorTriggers.contains(externalTrigger.getID())) {
-				LOG.warn("[" + generatorName + "] Skipping procedure trigger that is not defined by generator: "
-						+ externalTrigger.getID());
 				continue;
 			}
 

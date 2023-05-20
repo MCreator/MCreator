@@ -37,7 +37,7 @@ import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
-import net.mcreator.ui.validation.validators.UniqueNameValidator;
+import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.views.ArmorImageMakerView;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -97,7 +97,7 @@ public class ArmorPackMakerTool {
 		props.add(L10N.label("dialog.tools.armor_pack_power_factor"));
 		props.add(power);
 
-		name.setValidator(UniqueNameValidator.createModElementNameValidator(mcreator.getWorkspace(), name,
+		name.setValidator(new ModElementNameValidator(mcreator.getWorkspace(), name,
 				L10N.t("dialog.tools.armor_pack_name_validator")));
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
@@ -161,18 +161,11 @@ public class ArmorPackMakerTool {
 		mcreator.getGenerator().generateElement(armor);
 		mcreator.getModElementManager().storeModElement(armor);
 
-		// after mod element stored
-		armor.getModElement().clearMetadata();
-		armor.getModElement().putMetadata("eh", true);
-		armor.getModElement().putMetadata("ec", true);
-		armor.getModElement().putMetadata("el", true);
-		armor.getModElement().putMetadata("eb", true);
-		armor.getModElement().reinit();
-
 		// generate recipes
 		Recipe armorHelmetRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 						new ModElement(workspace, name + "ArmorHelmetRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
+		armorHelmetRecipe.craftingBookCategory = "EQUIPMENT";
 		armorHelmetRecipe.recipeSlots[0] = base;
 		armorHelmetRecipe.recipeSlots[1] = base;
 		armorHelmetRecipe.recipeSlots[2] = base;
@@ -187,7 +180,9 @@ public class ArmorPackMakerTool {
 		mcreator.getModElementManager().storeModElement(armorHelmetRecipe);
 
 		Recipe armorBodyRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
-				new ModElement(workspace, name + "ArmorBodyRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+						new ModElement(workspace, name + "ArmorChestplateRecipe", ModElementType.RECIPE), false)
+				.getElementFromGUI();
+		armorBodyRecipe.craftingBookCategory = "EQUIPMENT";
 		armorBodyRecipe.recipeSlots[0] = base;
 		armorBodyRecipe.recipeSlots[2] = base;
 		armorBodyRecipe.recipeSlots[3] = base;
@@ -207,6 +202,7 @@ public class ArmorPackMakerTool {
 		Recipe armorLeggingsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 						new ModElement(workspace, name + "ArmorLeggingsRecipe", ModElementType.RECIPE), false)
 				.getElementFromGUI();
+		armorLeggingsRecipe.craftingBookCategory = "EQUIPMENT";
 		armorLeggingsRecipe.recipeSlots[0] = base;
 		armorLeggingsRecipe.recipeSlots[1] = base;
 		armorLeggingsRecipe.recipeSlots[2] = base;
@@ -224,6 +220,7 @@ public class ArmorPackMakerTool {
 
 		Recipe armorBootsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "ArmorBootsRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		armorBootsRecipe.craftingBookCategory = "EQUIPMENT";
 		armorBootsRecipe.recipeSlots[3] = base;
 		armorBootsRecipe.recipeSlots[5] = base;
 		armorBootsRecipe.recipeSlots[6] = base;
