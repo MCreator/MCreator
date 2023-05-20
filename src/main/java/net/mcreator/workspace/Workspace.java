@@ -31,7 +31,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
@@ -46,7 +45,6 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -73,7 +71,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private transient boolean changed = false;
 	transient WorkspaceFileManager fileManager;
 	protected transient Generator generator;
-	@Nullable private transient WorkspaceVCS vcs;
 	private transient boolean regenerateRequired = false;
 	private transient boolean failingGradleDependencies = false;
 
@@ -349,14 +346,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		}
 	}
 
-	public WorkspaceVCS getVCS() {
-		return vcs;
-	}
-
-	public void setVCS(WorkspaceVCS vcs) {
-		this.vcs = vcs;
-	}
-
 	public void switchGenerator(String generatorName) {
 		this.getWorkspaceSettings().setCurrentGenerator(generatorName);
 
@@ -416,17 +405,19 @@ public class Workspace implements Closeable, IGeneratorProvider {
 								L10N.t("dialog.workspace.unknown_generator_message", currentGenerator),
 								L10N.t("dialog.workspace.unknown_generator_title"), JOptionPane.WARNING_MESSAGE);
 						generatorConfiguration.set(GeneratorSelector.getGeneratorSelector(ui,
-								GeneratorConfiguration.getRecommendedGeneratorForFlavor(Generator.GENERATOR_CACHE.values(),
-										currentFlavor), currentFlavor, false));
+								GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+										Generator.GENERATOR_CACHE.values(), currentFlavor), currentFlavor, false));
 					});
 					if (generatorConfiguration.get() != null) {
-						retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.get().getGeneratorName());
+						// Call generator cleanup for switch before new generator is set for the workspace
+						WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(retval,
+								Generator.GENERATOR_CACHE.get(generatorConfiguration.get().getGeneratorName()));
+
+						retval.getWorkspaceSettings()
+								.setCurrentGenerator(generatorConfiguration.get().getGeneratorName());
 
 						retval.generator = new Generator(retval);
 						retval.regenerateRequired = true;
-
-						WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(retval,
-								Generator.GENERATOR_CACHE.get(retval.workspaceSettings.getCurrentGenerator()));
 
 						WorkspaceGeneratorSetup.requestSetup(retval);
 					} else {
@@ -482,13 +473,14 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		if (Generator.GENERATOR_CACHE.get(retval.getWorkspaceSettings().getCurrentGenerator())
 				!= generatorConfiguration) {
+			// Call generator cleanup for switch before new generator is set for the workspace
+			WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(retval,
+					Generator.GENERATOR_CACHE.get(generatorConfiguration.getGeneratorName()));
+
 			retval.getWorkspaceSettings().setCurrentGenerator(generatorConfiguration.getGeneratorName());
 
 			retval.generator = new Generator(retval);
 			retval.regenerateRequired = true;
-
-			WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(retval,
-					Generator.GENERATOR_CACHE.get(retval.workspaceSettings.getCurrentGenerator()));
 
 			WorkspaceGeneratorSetup.requestSetup(retval);
 		} else {

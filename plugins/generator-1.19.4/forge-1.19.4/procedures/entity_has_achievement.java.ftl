@@ -1,2 +1,3 @@
-(${input$entity} instanceof ServerPlayer _plr && _plr.level instanceof ServerLevel && _plr.getAdvancements()
-        .getOrStartProgress(_plr.server.getAdvancements().getAdvancement(new ResourceLocation("${generator.map(field$achievement, "achievements")}"))).isDone())
+<#assign plr = "_plr" + cbi>
+(${input$entity} instanceof ServerPlayer ${plr} && ${plr}.level instanceof ServerLevel && ${plr}.getAdvancements()
+        .getOrStartProgress(${plr}.server.getAdvancements().getAdvancement(new ResourceLocation("${generator.map(field$achievement, "achievements")}"))).isDone())

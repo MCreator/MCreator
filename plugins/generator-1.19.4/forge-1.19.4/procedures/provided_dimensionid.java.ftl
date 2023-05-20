@@ -1,1 +1,1 @@
-(dimension)
+dimension

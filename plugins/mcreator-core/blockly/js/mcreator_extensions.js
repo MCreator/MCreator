@@ -130,6 +130,27 @@ function getIntProviderMinMax(providerBlock) {
         let blockValue = providerBlock.getField('value').getValue();
         return [blockValue, blockValue];
     }
+    // Check the values for the weighted list int provider
+    else if (providerBlock.type === 'int_provider_weighted') {
+        // Weighted lists always have at least one input, so the actual returned value won't be [Infinity, -Infinity]
+        let retval = [Infinity, -Infinity];
+        for (let i = 0, input; input = providerBlock.inputList[i]; i++) {
+            if (!input.connection) {
+                continue;
+            }
+            const targetBlockMinMax = getIntProviderMinMax(input.connection.targetBlock());
+            // One of the inputs is missing or not properly defined, return undefined
+            if (!targetBlockMinMax)
+                return undefined;
+            // Compare the min values
+            if (targetBlockMinMax[0] < retval[0])
+                retval[0] = targetBlockMinMax[0];
+            // Compare the max values
+            if (targetBlockMinMax[1] > retval[1])
+                retval[1] = targetBlockMinMax[1]
+        }
+        return retval;
+    }
     // Check the values for the other "terminal" int providers
     else if (providerBlock.type !== 'int_provider_clamped') {
         let blockMin = providerBlock.getField('min').getValue();
@@ -211,7 +232,7 @@ Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs
 // The input provider is a function that accepts the block being mutated, the input name and the input index
 // If the input provider returns a dummy input (i.e. only repeating fields are being added), isProperInput must be set to false
 function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputProvider, isProperInput = true,
-                                   fieldNames = []) {
+                                   fieldNames = [], disableIfEmpty) {
     return {
         // Store number of inputs in XML as '<mutation inputs="inputCount_"></mutation>'
         mutationToDom: function () {
@@ -315,12 +336,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
 
         // Add/remove inputs from this block
         updateShape_: function () {
-            // Handle the dummy "empty" input for when there are no proper inputs
-            if (this.inputCount_ && this.getInput('EMPTY')) {
-                this.removeInput('EMPTY');
-            } else if (!this.inputCount_ && !this.getInput('EMPTY')) {
-                this.appendDummyInput('EMPTY').appendField(javabridge.t('blockly.block.' + this.type + '.empty'));
-            }
+            this.handleEmptyInput_(disableIfEmpty);
             // Add proper inputs
             for (let i = 0; i < this.inputCount_; i++) {
                 if (!this.getInput(inputName + i))
@@ -330,8 +346,33 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
             for (let i = this.inputCount_; this.getInput(inputName + i); i++) {
                 this.removeInput(inputName + i);
             }
+        },
+
+        // Handle the dummy "empty" input or warning for when there are no proper inputs
+        handleEmptyInput_: function (disableIfEmpty) {
+            if (disableIfEmpty === undefined) {
+                if (this.inputCount_ && this.getInput('EMPTY')) {
+                    this.removeInput('EMPTY');
+                } else if (!this.inputCount_ && !this.getInput('EMPTY')) {
+                    this.appendDummyInput('EMPTY').appendField(javabridge.t('blockly.block.' + this.type + '.empty'));
+                }
+            } else if (disableIfEmpty) {
+                this.setWarningText(this.inputCount_ ? null : javabridge.t('blockly.block.' + this.type + '.empty'));
+                this.setEnabled(this.inputCount_);
+            }
         }
     }
+}
+
+// Helper function to provide mixins for weighted list mutators
+function weightedListMutatorMixin(inputType) {
+    return simpleRepeatingInputMixin('weighted_list_mutator_container', 'weighted_list_mutator_input', 'entry',
+        function(thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck(inputType).setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.weighted_list.weight'))
+                .appendField(new Blockly.FieldNumber(1, 1, null, 1), 'weight' + index)
+                .appendField(javabridge.t('blockly.block.weighted_list.entry'));
+        }, true, ['weight'], true);
 }
 
 Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepeatingInputMixin(
@@ -351,6 +392,29 @@ Blockly.Extensions.registerMutator('block_list_mutator', simpleRepeatingInputMix
         }, false, ['block']),
     undefined, ['block_list_mutator_input']);
 
+Blockly.Extensions.registerMutator('geode_crystal_mutator', simpleRepeatingInputMixin(
+        'geode_crystal_mutator_container', 'geode_crystal_mutator_input', 'crystal',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('MCItemBlock')
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+        }, true, [], true),
+    undefined, ['geode_crystal_mutator_input']);
+
+Blockly.Extensions.registerMutator('ore_feature_mutator', simpleRepeatingInputMixin(
+        'ore_mutator_container', 'ore_mutator_input', 'target',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('OreTarget').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t(
+                    index == 0 ? 'blockly.block.ore_mutator.try' : 'blockly.block.ore_mutator.else_try'));
+        }),
+    undefined, ['ore_mutator_input']);
+
+Blockly.Extensions.registerMutator('weighted_height_provider_mutator', weightedListMutatorMixin('HeightProvider'),
+        undefined, ['weighted_list_mutator_input']);
+
+Blockly.Extensions.registerMutator('weighted_int_provider_mutator', weightedListMutatorMixin('IntProvider'),
+        undefined, ['weighted_list_mutator_input']);
+
 // Helper function for extensions that validate one or more resource location text fields
 function validateResourceLocationFields(...fields) {
     return function () {
@@ -367,3 +431,6 @@ function validateResourceLocationFields(...fields) {
 }
 
 Blockly.Extensions.register('tag_input_field_validator', validateResourceLocationFields('tag'));
+
+Blockly.Extensions.register('geode_tag_fields_validator',
+        validateResourceLocationFields('cannot_replace_tag', 'invalid_blocks_tag'));

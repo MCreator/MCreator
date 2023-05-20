@@ -18,9 +18,9 @@
 
 package net.mcreator.ui.vcs;
 
-import net.mcreator.vcs.diff.DiffResult;
+import net.mcreator.util.diff.DiffResult;
 import net.mcreator.vcs.diff.DiffResultToBaseConflictFinder;
-import net.mcreator.vcs.diff.ListDiff;
+import net.mcreator.util.diff.ListDiff;
 import net.mcreator.vcs.diff.MergeHandle;
 import net.mcreator.workspace.elements.FolderElement;
 

@@ -38,6 +38,8 @@ import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.notifications.INotificationConsumer;
+import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.MCreatorVersionNumber;
@@ -62,7 +64,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider {
+public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider, INotificationConsumer {
 
 	private static final Logger LOG = LogManager.getLogger("MCreator");
 
@@ -90,6 +92,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	private final long windowUID;
 
+	private final NotificationsRenderer notificationsRenderer;
+
 	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		LOG.info("Opening MCreator workspace: " + workspace.getWorkspaceSettings().getModID());
 
@@ -97,11 +101,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		this.workspace = workspace;
 		this.application = application;
 
-		WorkspaceVCS vcs = WorkspaceVCS.loadVCSWorkspace(this.workspace);
-		if (vcs != null) {
-			this.workspace.setVCS(vcs);
+		if (WorkspaceVCS.loadVCSWorkspace(this.workspace))
 			LOG.info("Loaded VCS for current workspace");
-		}
 
 		this.gradleConsole = new GradleConsole(this);
 		this.gradleConsole.addGradleStateListener(new GradleStateListener() {
@@ -143,10 +144,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (OS.getOS() == OS.MAC)
 			getRootPane().putClientProperty("apple.awt.fullscreenable", true);
 
-		if (PreferencesManager.PREFERENCES.hidden.fullScreen)
+		if (PreferencesManager.PREFERENCES.hidden.fullScreen.get())
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-		setIconImage(UIRES.getBuiltIn("icon").getImage());
+		setIconImage(UIRES.getAppIcon().getImage());
 		setLocationRelativeTo(null);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -173,7 +174,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		// Load backgrounds depending on the background source
 		List<Image> bgimages = new ArrayList<>();
-		switch (PreferencesManager.PREFERENCES.ui.backgroundSource) {
+		switch (PreferencesManager.PREFERENCES.ui.backgroundSource.get()) {
 		case "All":
 			bgimages.addAll(BackgroundLoader.loadThemeBackgrounds());
 			bgimages.addAll(BackgroundLoader.loadUserBackgrounds());
@@ -262,9 +263,11 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		splitPane.setOneTouchExpandable(true);
 
 		splitPane.setDividerLocation(280);
-		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos);
+		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.get());
 
 		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
+
+		this.notificationsRenderer = new NotificationsRenderer(splitPane);
 
 		add("South", statusBar);
 		add("North", toolBar);
@@ -287,7 +290,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 			// backup if new version and backups are enabled
 			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
-					&& PreferencesManager.PREFERENCES.backups.backupOnVersionSwitch) {
+					&& PreferencesManager.PREFERENCES.backups.backupOnVersionSwitch.get()) {
 				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
 						new File(workspace.getFolderManager().getWorkspaceCacheDir(),
 								"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
@@ -296,7 +299,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			// if we need to set up the workspace, we do so
 			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
 				WorkspaceGeneratorSetupDialog.runSetup(this,
-						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage
+						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage.get()
 								&& !Launcher.version.isDevelopment());
 			}
 
@@ -335,6 +338,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		return workspace;
 	}
 
+	@Override public NotificationsRenderer getNotificationsRenderer() {
+		return notificationsRenderer;
+	}
+
 	public StatusBar getStatusBar() {
 		return statusBar;
 	}
@@ -360,9 +367,9 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		if (safetoexit) {
 			LOG.info("Closing MCreator window ...");
-			PreferencesManager.PREFERENCES.hidden.fullScreen = getExtendedState() == MAXIMIZED_BOTH;
+			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
 			if (splitPane != null)
-				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos = splitPane.getDividerLocation(); // this one could be stored per workspace in the future
+				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.set(splitPane.getDividerLocation()); // this one could be stored per workspace in the future
 
 			workspace.close();
 

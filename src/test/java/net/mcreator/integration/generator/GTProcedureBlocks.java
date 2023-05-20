@@ -299,13 +299,26 @@ public class GTProcedureBlocks {
 				String rettype = procedureBlock.getOutputType();
 				switch (rettype) {
 				case "Number":
-					procedure.procedurexml = wrapWithBaseTestXML(
-							"<block type=\"return_number\"><value name=\"return\">" + testXML + "</value></block>");
+					procedure.procedurexml = wrapWithBaseTestXML("""
+							<block type="return_number"><value name="return">
+								<block type="math_dual_ops">
+									<field name="OP">ADD</field>
+									<value name="A">%s</value>
+									<value name="B">%s</value>
+								</block>
+							</value></block>
+							""".formatted(testXML, testXML));
 					break;
 				case "Boolean":
-					procedure.procedurexml = wrapWithBaseTestXML(
-							"<block type=\"return_logic\"><value name=\"return\">" + testXML + "</value></block>");
-
+					procedure.procedurexml = wrapWithBaseTestXML("""
+							<block type="return_logic"><value name="return">
+								<block type="logic_binary_ops">
+									<field name="OP">OR</field>
+									<value name="A">%s</value>
+									<value name="B">%s</value>
+								</block>
+							</value></block>
+							""".formatted(testXML, testXML));
 					break;
 				case "String":
 					procedure.procedurexml = wrapWithBaseTestXML(

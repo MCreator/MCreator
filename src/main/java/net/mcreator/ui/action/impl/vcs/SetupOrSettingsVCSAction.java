@@ -28,8 +28,7 @@ public class SetupOrSettingsVCSAction extends BasicAction implements VCSStateCha
 
 	public SetupOrSettingsVCSAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.vcs.setup_settings"), e -> {
-			WorkspaceVCS vcs = actionRegistry.getMCreator().getWorkspace().getVCS();
-			if (vcs == null) {
+			if (WorkspaceVCS.getVCSWorkspace(actionRegistry.getMCreator().getWorkspace()) == null) {
 				actionRegistry.setupVCS.doAction();
 			} else {
 				actionRegistry.remoteWorkspaceSettings.doAction();
@@ -41,7 +40,7 @@ public class SetupOrSettingsVCSAction extends BasicAction implements VCSStateCha
 	}
 
 	@Override public void vcsStateChanged() {
-		if (actionRegistry.getMCreator().getWorkspace().getVCS() == null) {
+		if (WorkspaceVCS.getVCSWorkspace(actionRegistry.getMCreator().getWorkspace()) == null) {
 			setIcon(UIRES.get("16px.setupvcs"));
 		} else {
 			setIcon(UIRES.get("16px.vcs"));

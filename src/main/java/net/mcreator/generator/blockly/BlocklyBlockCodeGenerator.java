@@ -46,16 +46,16 @@ public class BlocklyBlockCodeGenerator {
 
 	private String templateExtension = "java";
 
-	@Nullable private Set<String> supportedBlocksGenerator;
+	private final Set<String> supportedBlocksGenerator;
 
-	public BlocklyBlockCodeGenerator(Map<String, ToolboxBlock> blocks, @Nullable Set<String> supportedBlocksGenerator) {
-		this(blocks, null, null);
-		this.supportedBlocksGenerator = supportedBlocksGenerator;
+	public BlocklyBlockCodeGenerator(Map<String, ToolboxBlock> blocks, Set<String> supportedBlocksGenerator) {
+		this(blocks, supportedBlocksGenerator, null, null);
 	}
 
-	public BlocklyBlockCodeGenerator(Map<String, ToolboxBlock> blocks, @Nullable TemplateGenerator templateGenerator,
-			@Nullable Map<String, Object> additionalData) {
+	public BlocklyBlockCodeGenerator(Map<String, ToolboxBlock> blocks, Set<String> supportedBlocksGenerator,
+			@Nullable TemplateGenerator templateGenerator, @Nullable Map<String, Object> additionalData) {
 		this.blocks = blocks;
+		this.supportedBlocksGenerator = supportedBlocksGenerator;
 		this.templateGenerator = templateGenerator;
 		this.additionalData = additionalData;
 	}
@@ -71,22 +71,6 @@ public class BlocklyBlockCodeGenerator {
 		ToolboxBlock toolboxBlock = blocks.get(type);
 		if (toolboxBlock == null)
 			return;
-
-		if (supportedBlocksGenerator != null) {
-			if (toolboxBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
-				if (!supportedBlocksGenerator.contains(type)) {
-					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-							L10N.t("blockly.warnings.block_not_supported", type)));
-					return;
-				}
-			} else if (toolboxBlock.getType() == IBlockGenerator.BlockType.OUTPUT) {
-				if (!supportedBlocksGenerator.contains(type)) {
-					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-							L10N.t("blockly.errors.block_not_supported", type)));
-					return;
-				}
-			}
-		}
 
 		// check if the block does work inside statement blocks
 		if (toolboxBlock.error_in_statement_blocks && !master.getStatementInputsMatching(si -> true).isEmpty()) {
@@ -393,8 +377,26 @@ public class BlocklyBlockCodeGenerator {
 			}
 		}
 
+		// Some other generator may support this block, so we check if it is supported last in the chain before generating actual code
+		// This way dependency structure is not generator dependant and also if there are problems with sub-blocks (inputs, statements, ...),
+		// they are reported as those problems may be relevant for some other generator when/if it is switched
+		if (toolboxBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
+			if (!supportedBlocksGenerator.contains(type)) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("blockly.warnings.block_not_supported", type)));
+				return;
+			}
+		} else if (toolboxBlock.getType() == IBlockGenerator.BlockType.OUTPUT) {
+			if (!supportedBlocksGenerator.contains(type)) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+						L10N.t("blockly.errors.block_not_supported", type)));
+				return;
+			}
+		}
+
 		if (templateGenerator != null) {
-			dataModel.put("customBlockIndex", customBlockIndex);
+			dataModel.put("customBlockIndex", customBlockIndex); // kept for backwards compatibility
+			dataModel.put("cbi", customBlockIndex);
 
 			if (additionalData != null) {
 				dataModel.putAll(additionalData);
