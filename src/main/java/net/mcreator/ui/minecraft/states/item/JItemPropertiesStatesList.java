@@ -88,12 +88,12 @@ public class JItemPropertiesStatesList extends JEntriesList {
 			String name = VOptionPane.showInputDialog(mcreator, L10N.t("elementgui.item.custom_properties.add.message"),
 					L10N.t("elementgui.item.custom_properties.add.input"), null, new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
-							VTextField holder = (VTextField) component;
 							return new UniqueNameValidator(L10N.t("elementgui.item.custom_properties.add.input"),
-									holder::getText,
+									((VTextField) component)::getText,
 									() -> propertiesList.stream().map(JItemPropertiesListEntry::getPropertyName),
-									builtinPropertyNames, new RegistryNameValidator(holder,
-									L10N.t("elementgui.item.custom_properties.add.input"))).validate();
+									builtinPropertyNames, new RegistryNameValidator((VTextField) component,
+									L10N.t("elementgui.item.custom_properties.add.input"))).setIsPresentOnList(false)
+									.validate();
 						}
 					});
 			if (name != null)
