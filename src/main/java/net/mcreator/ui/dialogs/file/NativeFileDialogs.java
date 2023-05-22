@@ -73,20 +73,6 @@ class NativeFileDialogs {
 		return new File[] {};
 	}
 
-	protected static File getDirectoryChooserDialog(File file) {
-		SynchronousJFXDirectoryChooser chooser = new SynchronousJFXDirectoryChooser(null, () -> {
-			DirectoryChooser ch = new DirectoryChooser();
-
-			File initialDir = file == null ? prevDir : file;
-			if (initialDir != null && initialDir.isDirectory())
-				ch.setInitialDirectory(initialDir);
-
-			return ch;
-		});
-
-		return chooser.showDialog();
-	}
-
 	protected static File getWorkspaceDirectorySelectDialog(Window f, File file) {
 		SynchronousJFXDirectoryChooser chooser = new SynchronousJFXDirectoryChooser(null, () -> {
 			DirectoryChooser ch = new DirectoryChooser();
