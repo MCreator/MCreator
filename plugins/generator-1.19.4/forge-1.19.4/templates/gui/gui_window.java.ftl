@@ -119,7 +119,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#list data.getComponentsOfType("Image") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
 				RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
-				<#if component.isAnimated(w.getWorkspace())>
+				<#if hasProcedure(component.animatedFrame)>
 				int frame = (int) <@procedureOBJToNumberCode component.animatedFrame />;
 				this.blit(ms, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 					0, ${component.getWidth(w.getWorkspace())} * frame,
