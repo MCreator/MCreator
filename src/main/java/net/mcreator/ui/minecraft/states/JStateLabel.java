@@ -123,8 +123,7 @@ public class JStateLabel extends JPanel {
 	}
 
 	public void setStateMap(StateMap stateMap) {
-		this.stateMap = new StateMap();
-		this.stateMap.putAll(stateMap);
+		this.stateMap = stateMap;
 		refreshState();
 	}
 
