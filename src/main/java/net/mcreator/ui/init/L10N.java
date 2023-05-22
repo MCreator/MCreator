@@ -142,7 +142,7 @@ public class L10N {
 			return null;
 
 		if (rb.containsKey(key))
-			return MessageFormat.format(rb.getString(key), parameters);
+			return MessageFormat.format(rb.getString(key).replace("'", "''"), parameters);
 		else if (key.startsWith("blockly.") && (key.endsWith(".tooltip") || key.endsWith(".tip") || key.endsWith(
 				".description")))
 			return null;
