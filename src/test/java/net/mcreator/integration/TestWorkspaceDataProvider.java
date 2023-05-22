@@ -522,8 +522,9 @@ public class TestWorkspaceDataProvider {
 			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
 					Color.white, new Procedure("condition4")));
 
-			components.add(new Image(20, 30, "pricture1", true, new Procedure("condition1")));
-			components.add(new Image(22, 31, "pricture2", false, new Procedure("condition2")));
+			components.add(new Image(20, 30, "pricture1", true, new Procedure("condition1"), new Procedure("number1")));
+			components.add(
+					new Image(22, 31, "pricture2", false, new Procedure("condition2"), new Procedure("number2")));
 			components.add(
 					new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false));
 			components.add(
@@ -562,8 +563,10 @@ public class TestWorkspaceDataProvider {
 						new StringProcedure(!_true ? "string2" : null, "fixed value 2"), Color.white,
 						new Procedure("condition4")));
 
-				components.add(new Image(20, 30, "picture1", true, new Procedure("condition1")));
-				components.add(new Image(22, 31, "picture2", false, new Procedure("condition2")));
+				components.add(
+						new Image(20, 30, "picture1", true, new Procedure("condition1"), new Procedure("number1")));
+				components.add(
+						new Image(22, 31, "picture2", false, new Procedure("condition2"), new Procedure("number2")));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button1", 100, 200, new Procedure("procedure10"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));

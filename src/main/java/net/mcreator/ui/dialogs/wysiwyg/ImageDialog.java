@@ -40,7 +40,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 
 	public ImageDialog(WYSIWYGEditor editor, @Nullable Image image) {
 		super(editor, image);
-		setSize(560, 180);
+		setSize(480, 240);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
 
@@ -64,7 +64,20 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		displayCondition.refreshList();
 
-		add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerAndEastElement(options, displayCondition, 20, 5)));
+		ProcedureSelector animatedFrame = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/image_animated_frame"),
+				editor.mcreator, L10N.t("dialog.gui.image_animated_frame"), ProcedureSelector.Side.CLIENT, false,
+				VariableTypeLoader.BuiltInTypes.NUMBER,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+		animatedFrame.refreshList();
+		animatedFrame.setEnabled(
+				new File(editor.mcreator.getWorkspace().getFolderManager().getTexturesFolder(TextureType.SCREEN),
+						textureSelector.getSelectedItem() + ".mcmeta").exists());
+		textureSelector.addActionListener(e -> animatedFrame.setEnabled(
+				new File(editor.mcreator.getWorkspace().getFolderManager().getTexturesFolder(TextureType.SCREEN),
+						textureSelector.getSelectedItem() + ".mcmeta").exists()));
+
+		add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.centerAndSouthElement(options, PanelUtils.join(displayCondition, animatedFrame), 20, 5)));
 
 		setTitle(L10N.t("dialog.gui.image_title"));
 
@@ -80,6 +93,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			textureSelector.setSelectedItem(image.image);
 			scale1x.setSelected(image.use1Xscale);
 			displayCondition.setSelectedProcedure(image.displayCondition);
+			animatedFrame.setSelectedProcedure(image.animatedFrame);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
@@ -89,7 +103,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			if (imageTxt != null) {
 				if (image == null) {
 					Image component = new Image(0, 0, imageTxt, scale1x.isSelected(),
-							displayCondition.getSelectedProcedure());
+							displayCondition.getSelectedProcedure(), animatedFrame.getSelectedProcedure());
 
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
@@ -99,7 +113,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 					int idx = editor.components.indexOf(image);
 					editor.components.remove(image);
 					Image labelNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
-							displayCondition.getSelectedProcedure());
+							displayCondition.getSelectedProcedure(), animatedFrame.getSelectedProcedure());
 					editor.components.add(idx, labelNew);
 					setEditingComponent(labelNew);
 				}

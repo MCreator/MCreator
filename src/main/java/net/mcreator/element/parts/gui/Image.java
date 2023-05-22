@@ -33,12 +33,14 @@ public class Image extends GUIComponent {
 	public boolean use1Xscale;
 
 	public Procedure displayCondition;
+	public Procedure animatedFrame;
 
-	public Image(int x, int y, String image, boolean use1Xscale, Procedure displayCondition) {
+	public Image(int x, int y, String image, boolean use1Xscale, Procedure displayCondition, Procedure animatedFrame) {
 		super(x, y);
 		this.image = image;
 		this.use1Xscale = use1Xscale;
 		this.displayCondition = displayCondition;
+		this.animatedFrame = animatedFrame;
 	}
 
 	@Override public String getName() {
@@ -53,10 +55,8 @@ public class Image extends GUIComponent {
 	}
 
 	@Override public int getHeight(Workspace workspace) {
-		if (use1Xscale)
-			return getImage(workspace).getHeight(null) / 2;
-		else
-			return getImage(workspace).getHeight(null);
+		int height = animatedFrame != null ? getImage(workspace).getWidth(null) : getImage(workspace).getHeight(null);
+		return use1Xscale ? height / 2 : height;
 	}
 
 	public java.awt.Image getImage(Workspace workspace) {
@@ -74,10 +74,10 @@ public class Image extends GUIComponent {
 		int cw, ch;
 		if (this.use1Xscale) {
 			cw = actualImage.getWidth(null) / 2;
-			ch = actualImage.getHeight(null) / 2;
+			ch = animatedFrame != null ? cw : actualImage.getHeight(null) / 2;
 		} else {
 			cw = actualImage.getWidth(null);
-			ch = actualImage.getHeight(null);
+			ch = animatedFrame != null ? cw : actualImage.getHeight(null);
 		}
 		g.drawImage(actualImage, cx, cy, cw, ch, wysiwygEditor);
 	}

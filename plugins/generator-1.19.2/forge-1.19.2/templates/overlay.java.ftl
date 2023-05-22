@@ -88,9 +88,17 @@ package ${package}.client.screens;
                         if (<@procedureOBJToConditionCode component.displayCondition/>) {
                 </#if>
                     RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
+					<#if component.isAnimated(w.getWorkspace())>
+					int frame = (int) <@procedureOBJToNumberCode component.animatedFrame />;
+				    Minecraft.getInstance().gui.blit(event.getPoseStack(), posX + ${x}, posY + ${y},
+						0, ${component.getWidth(w.getWorkspace())} * frame,
+						${component.getWidth(w.getWorkspace())}, ${component.getWidth(w.getWorkspace())},
+						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+					<#else>
                     Minecraft.getInstance().gui.blit(event.getPoseStack(), posX + ${x}, posY + ${y}, 0, 0,
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
+					</#if>
                 <#if hasProcedure(component.displayCondition)>}</#if>
             </#list>
 
