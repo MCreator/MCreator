@@ -43,16 +43,18 @@ import java.util.stream.Collectors;
  * @param <T> Type of values this property can take.
  */
 @JsonAdapter(PropertyData.GSONAdapter.class) public abstract class PropertyData<T> {
+
 	private static final Map<String, Class<? extends PropertyData<?>>> typeMappings = new HashMap<>() {{
 		put("logic", PropertyData.LogicType.class);
 		put("integer", PropertyData.IntegerType.class);
 		put("number", PropertyData.NumberType.class);
 		put("string", PropertyData.StringType.class);
 	}};
-	private static final Map<Class<? extends PropertyData<?>>, String> typeMappingsReverse = typeMappings.entrySet().stream()
-			.collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
 
-	@SuppressWarnings("FieldMayBeFinal") private String name;
+	private static final Map<Class<? extends PropertyData<?>>, String> typeMappingsReverse = typeMappings.entrySet()
+			.stream().collect(Collectors.toMap(Map.Entry::getValue, Map.Entry::getKey));
+
+	private final String name;
 
 	/**
 	 * The sole constructor.
@@ -139,31 +141,6 @@ import java.util.stream.Collectors;
 
 	@Override public final String toString() {
 		return getName();
-	}
-
-	/**
-	 * We need a custom serializer/deserializer for this class because we need to store the type of property.
-	 * Technically type could be determined from properties list, but we don't have a reference to it, and it also
-	 * depends on the ME type, so this is second-best option. There is minimal overhead in storing the type.
-	 */
-	static class GSONAdapter implements JsonSerializer<PropertyData<?>>, JsonDeserializer<PropertyData<?>> {
-
-		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
-				.create();
-
-		@Override
-		public PropertyData<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
-				throws JsonParseException {
-			JsonObject jsonObject = json.getAsJsonObject();
-			return gson.fromJson(jsonObject, typeMappings.get(jsonObject.get("type").getAsString()));
-		}
-
-		@Override
-		public JsonElement serialize(PropertyData<?> propertyData, Type typeOfSrc, JsonSerializationContext context) {
-			JsonObject retVal = gson.toJsonTree(propertyData).getAsJsonObject();
-			retVal.addProperty("type", typeMappingsReverse.get(propertyData.getClass()));
-			return retVal;
-		}
 	}
 
 	/**
@@ -322,4 +299,29 @@ import java.util.stream.Collectors;
 			return (String) ((JComboBox<?>) component).getSelectedItem();
 		}
 	}
+
+	/**
+	 * We need a custom serializer/deserializer for this class because we need to store the type of property.
+	 * Technically type could be determined from properties list, but we don't have a reference to it, and it also
+	 * depends on the ME type, so this is second-best option. There is minimal overhead in storing the type.
+	 */
+	static class GSONAdapter implements JsonSerializer<PropertyData<?>>, JsonDeserializer<PropertyData<?>> {
+
+		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
+				.create();
+
+		@Override public PropertyData<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+				throws JsonParseException {
+			JsonObject jsonObject = json.getAsJsonObject();
+			return gson.fromJson(jsonObject, typeMappings.get(jsonObject.get("type").getAsString()));
+		}
+
+		@Override
+		public JsonElement serialize(PropertyData<?> propertyData, Type typeOfSrc, JsonSerializationContext context) {
+			JsonObject retVal = gson.toJsonTree(propertyData).getAsJsonObject();
+			retVal.addProperty("type", typeMappingsReverse.get(propertyData.getClass()));
+			return retVal;
+		}
+	}
+
 }
