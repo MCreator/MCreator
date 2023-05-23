@@ -81,14 +81,14 @@ public class Image extends GUIComponent {
 		int cw, ch;
 		if (this.use1Xscale) {
 			cw = actualImage.getWidth(null) / 2;
-			ch = animatedFrame != null ? cw : actualImage.getHeight(null) / 2;
+			ch = actualImage.getHeight(null) / 2;
 		} else {
 			cw = actualImage.getWidth(null);
-			ch = animatedFrame != null ? cw : actualImage.getHeight(null);
+			ch = actualImage.getHeight(null);
 		}
 		if (animatedFrame != null)
 			actualImage = ImageUtils.crop(ImageUtils.toBufferedImage(actualImage), new Rectangle(cw, cw));
-		g.drawImage(actualImage, cx, cy, cw, ch, wysiwygEditor);
+		g.drawImage(actualImage, cx, cy, cw, animatedFrame != null ? cw : ch, wysiwygEditor);
 	}
 
 }
