@@ -56,8 +56,14 @@ public class Image extends GUIComponent {
 	}
 
 	@Override public int getHeight(Workspace workspace) {
-		int height = animatedFrame != null ? getImage(workspace).getWidth(null) : getImage(workspace).getHeight(null);
-		return use1Xscale ? height / 2 : height;
+		return animatedFrame != null ? getWidth(workspace) : getActualHeight(workspace);
+	}
+
+	public int getActualHeight(Workspace workspace) {
+		if (use1Xscale)
+			return getImage(workspace).getHeight(null) / 2;
+		else
+			return getImage(workspace).getHeight(null);
 	}
 
 	public java.awt.Image getImage(Workspace workspace) {
