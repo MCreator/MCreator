@@ -22,6 +22,7 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -79,6 +80,8 @@ public class Image extends GUIComponent {
 			cw = actualImage.getWidth(null);
 			ch = animatedFrame != null ? cw : actualImage.getHeight(null);
 		}
+		if (animatedFrame != null)
+			actualImage = ImageUtils.crop(ImageUtils.toBufferedImage(actualImage), new Rectangle(cw, cw));
 		g.drawImage(actualImage, cx, cy, cw, ch, wysiwygEditor);
 	}
 
