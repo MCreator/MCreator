@@ -25,6 +25,7 @@ import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.dialogs.file.FileChooserType;
 import net.mcreator.ui.dialogs.file.FileDialogs;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.util.StringUtils;
 
 import javax.swing.*;
@@ -64,13 +65,22 @@ public class FileEntry extends PreferencesEntry<File> {
 	}
 
 	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
-		String path = StringUtils.abbreviateStringInverse(value.getAbsolutePath(), 35);
-		JButton button = new JButton(path);
-		button.setToolTipText(path);
+		String path;
+		JButton button;
+		if (value.getAbsolutePath().endsWith("None")) {
+			value = null;
+			path = "None";
+			button = new JButton(L10N.t("common.none"));
+			button.setToolTipText("");
+		} else {
+			path = StringUtils.abbreviateStringInverse(value.getAbsolutePath(), 35);
+			button = new JButton(path);
+			button.setToolTipText(path);
+		}
 		button.addActionListener(actionEvent -> {
 			File file;
 			if (isFolder)
-				file = FileDialogs.getDirectoryChooser(new File(button.getText()));
+				file = FileDialogs.getDirectoryChooser(new File(button.getToolTipText()));
 			else
 				file = FileDialogs.getFileChooserDialog(parent, FileChooserType.OPEN, false, filters)[0];
 
@@ -80,13 +90,16 @@ public class FileEntry extends PreferencesEntry<File> {
 					button.setText(StringUtils.abbreviateStringInverse(file.getAbsolutePath(), 35));
 					button.setToolTipText(file.getAbsolutePath());
 				}
+			} else if (file == null) {
+				button.setText(L10N.t("common.none"));
+				button.setToolTipText("None"); // The tooltip is not translated to avoid problems with the language
 			}
 		});
 
 		return button;
 	}
 
-	@Override public void setValueFromComponent(JComponent component) {
+		@Override public void setValueFromComponent(JComponent component) {
 		this.value = new File(component.getToolTipText());
 	}
 
