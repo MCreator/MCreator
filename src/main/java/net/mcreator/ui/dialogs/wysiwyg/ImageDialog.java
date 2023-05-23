@@ -20,6 +20,7 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Image;
+import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -69,12 +70,8 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 				VariableTypeLoader.BuiltInTypes.NUMBER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		animatedFrame.refreshList();
-		animatedFrame.setEnabled(
-				new File(editor.mcreator.getWorkspace().getFolderManager().getTexturesFolder(TextureType.SCREEN),
-						textureSelector.getSelectedItem() + ".mcmeta").exists());
-		textureSelector.addActionListener(e -> animatedFrame.setEnabled(
-				new File(editor.mcreator.getWorkspace().getFolderManager().getTexturesFolder(TextureType.SCREEN),
-						textureSelector.getSelectedItem() + ".mcmeta").exists()));
+		animatedFrame.setEnabled(isAnimated(textureSelector.getSelectedItem()));
+		textureSelector.addActionListener(e -> animatedFrame.setEnabled(isAnimated(textureSelector.getSelectedItem())));
 
 		add("Center", PanelUtils.totalCenterInPanel(
 				PanelUtils.centerAndSouthElement(options, PanelUtils.join(displayCondition, animatedFrame), 20, 5)));
@@ -101,9 +98,10 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			setVisible(false);
 			String imageTxt = textureSelector.getSelectedItem();
 			if (imageTxt != null) {
+				Procedure frame = isAnimated(imageTxt) ? animatedFrame.getSelectedProcedure() : null;
 				if (image == null) {
 					Image component = new Image(0, 0, imageTxt, scale1x.isSelected(),
-							displayCondition.getSelectedProcedure(), animatedFrame.getSelectedProcedure());
+							displayCondition.getSelectedProcedure(), frame);
 
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
@@ -113,7 +111,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 					int idx = editor.components.indexOf(image);
 					editor.components.remove(image);
 					Image labelNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
-							displayCondition.getSelectedProcedure(), animatedFrame.getSelectedProcedure());
+							displayCondition.getSelectedProcedure(), frame);
 					editor.components.add(idx, labelNew);
 					setEditingComponent(labelNew);
 				}
@@ -123,4 +121,8 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 		setVisible(true);
 	}
 
+	private boolean isAnimated(String image) {
+		return new File(getEditor().mcreator.getFolderManager().getTexturesFolder(TextureType.SCREEN),
+				image + ".mcmeta").exists();
+	}
 }
