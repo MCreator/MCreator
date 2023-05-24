@@ -65,7 +65,8 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 		namePane.add("North", HelpUtils.wrapWithHelpButton(gui.withEntry("item/custom_property_name"),
 				L10N.label("elementgui.item.custom_property.name")));
 		namePane.add("Center", nameLabel);
-		add("Center", PanelUtils.join(FlowLayout.LEFT, namePane));
+		namePane.setPreferredSize(new Dimension(240, 0));
+		add("West", namePane);
 
 		value = new ProcedureSelector(gui.withEntry("item/custom_property_value"), listPanel.getMCreator(),
 				L10N.t("elementgui.item.custom_property.value"), ProcedureSelector.Side.CLIENT, true,
@@ -73,10 +74,11 @@ public class JItemPropertiesListEntry extends JPanel implements IValidable {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		value.setValidator(new ProcedureSelectorValidator(value));
 		reloadDataLists(); // we make sure that selector can be properly shown
+		add("Center", value);
 
 		remove.setText(L10N.t("elementgui.item.custom_property.remove"));
 		remove.addActionListener(e -> listPanel.removeProperty(this));
-		add("East", PanelUtils.westAndEastElement(value, PanelUtils.pullElementUp(remove), 5, 0));
+		add("East", PanelUtils.pullElementUp(remove));
 
 		propertiesList.add(this);
 		propertyEntries.add(this);
