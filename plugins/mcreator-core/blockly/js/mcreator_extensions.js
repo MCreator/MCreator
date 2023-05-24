@@ -37,6 +37,15 @@ Blockly.Extensions.register('is_custom_loop',
         Blockly.libraryBlocks.loops.loopTypes.add(this.type);
     });
 
+// Extension to append the marker image to all blockstate provider inputs
+Blockly.Extensions.register('add_image_to_bsp_inputs',
+    function () {
+        for (let i = 0, input; input = this.inputList[i]; i++) {
+            if (input.connection && input.connection.getCheck() && input.connection.getCheck()[0] == 'BlockStateProvider')
+                input.appendField(new Blockly.FieldImage("./res/bsp_input.png", 8, 20));
+        }
+    });
+
 // marks in the xml if the block is attached to a block/item input, for proper mapping
 Blockly.Extensions.registerMutator('mark_attached_to_block_item',
     {

@@ -23,7 +23,8 @@
     }
   ],
   "extensions": [
-    "state_provider_int_property_validator"
+    "state_provider_int_property_validator",
+    "add_image_to_bsp_inputs"
   ],
   "inputsInline": true,
   "output": "BlockStateProvider",
