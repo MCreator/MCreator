@@ -479,7 +479,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#if>
 
 		<#if data.ridable>
-		sourceentity.startRiding(this);
+		if (!this.level.isClientSide)
+			sourceentity.startRiding(this);
 	    </#if>
 
 		<#if hasProcedure(data.onRightClickedOn)>
