@@ -357,7 +357,8 @@ import java.util.stream.Collectors;
 
 	@Override public Collection<String> getUsedElementNames() {
 		List<String> elements = new ArrayList<>(spawnWorldTypes);
-		elements.add("CUSTOM:" + guiBoundTo);
+		if (guiBoundTo != null && !guiBoundTo.equals("<NONE>"))
+			elements.add("CUSTOM:" + guiBoundTo);
 		return elements;
 	}
 

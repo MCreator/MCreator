@@ -104,7 +104,8 @@ import java.util.*;
 
 	@Override public Collection<String> getUsedElementNames() {
 		List<String> elements = new ArrayList<>();
-		elements.add("CUSTOM:" + rewardFunction);
+		if (rewardFunction != null && !rewardFunction.equals("No function"))
+			elements.add("CUSTOM:" + rewardFunction);
 		rewardLoot.forEach(e -> elements.add("CUSTOM:" + e));
 		rewardRecipes.forEach(e -> elements.add("CUSTOM:" + e));
 		return elements;

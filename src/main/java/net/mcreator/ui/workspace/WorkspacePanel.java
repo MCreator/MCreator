@@ -1209,6 +1209,8 @@ import java.util.stream.Collectors;
 					if (el instanceof ModElement mod)
 						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
 				}
+				list.getSelectedValuesList().stream() // exclude usages by other mod elements being removed
+						.filter(e -> e instanceof ModElement).map(e -> (ModElement) e).forEach(references::remove);
 
 				mcreator.setCursor(Cursor.getDefaultCursor());
 

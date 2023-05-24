@@ -230,7 +230,7 @@ import java.util.stream.Collectors;
 
 	@Override public Collection<String> getUsedElementNames() {
 		List<String> elements = new ArrayList<>(spawnWorldTypes);
-		elements.add("CUSTOM:" + suspiciousStewEffect);
+		elements.add(suspiciousStewEffect);
 		return elements;
 	}
 
