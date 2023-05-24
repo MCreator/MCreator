@@ -226,6 +226,8 @@ Blockly.Extensions.register('replace_sphere_validator', validateIntProviderInput
 
 Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs(['height', 0, Infinity]));
 
+Blockly.Extensions.register('state_provider_int_property_validator', validateIntProviderInputs(['value', 0, Infinity]));
+
 // Helper function to provide a mixin for mutators that add a single repeating (dummy) input with additional fields
 // The mutator container block must have a "STACK" statement input for this to work
 // The empty message is localized as "blockly.block.block_type.empty"
@@ -413,6 +415,9 @@ Blockly.Extensions.registerMutator('weighted_height_provider_mutator', weightedL
         undefined, ['weighted_list_mutator_input']);
 
 Blockly.Extensions.registerMutator('weighted_int_provider_mutator', weightedListMutatorMixin('IntProvider'),
+        undefined, ['weighted_list_mutator_input']);
+
+Blockly.Extensions.registerMutator('weighted_state_provider_mutator', weightedListMutatorMixin('MCItemBlock'),
         undefined, ['weighted_list_mutator_input']);
 
 // Helper function for extensions that validate one or more resource location text fields

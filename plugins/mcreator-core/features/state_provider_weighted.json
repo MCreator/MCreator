@@ -1,0 +1,36 @@
+{
+  "args0": [
+    {
+      "type": "field_image",
+      "src": "./res/bsp.png",
+      "width": 8,
+      "height": 12
+    }
+  ],
+  "mutator": "weighted_state_provider_mutator",
+  "output": "BlockStateProvider",
+  "colour": 30,
+  "mcreator": {
+    "toolbox_id": "blocks",
+    "toolbox_init": [
+      "<mutation inputs=\"2\"></mutation>",
+      "<value name=\"entry0\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"entry1\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+    ],
+    "repeating_inputs": [
+      "entry"
+    ],
+    "repeating_fields": [
+      {
+        "name": "weight",
+        "field_definition": {
+          "testCount": 2,
+          "type": "field_number",
+          "value": 1,
+          "min": 1,
+          "precision": 1
+        }
+      }
+    ]
+  }
+}
