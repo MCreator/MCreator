@@ -778,7 +778,6 @@ import java.util.stream.Collectors;
 		addVerticalTab("res", L10N.t("workspace.category.resources"), resourcesPan);
 		addVerticalTab("locales", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
 		addVerticalTab("variables", L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
-		addVerticalTab("vcs", L10N.t("workspace.category.remote_workspace"), new WorkspacePanelVCS(this));
 
 		verticalTabs.get(0).doClick();
 

@@ -134,7 +134,7 @@ tasks.register('exportMac') {
     group 'export'
 
     dependsOn exportMacX64
-    dependsOn exportMacAarch64
+    //dependsOn exportMacAarch64
 
     doLast {
         delete 'build/export/mac_x64'
