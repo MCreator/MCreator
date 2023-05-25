@@ -123,8 +123,12 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 	}
 
 	private boolean isAnimated(String image) {
+		if (image == null)
+			return false;
+
 		ImageIcon icon = getEditor().mcreator.getFolderManager()
 				.getTextureImageIcon(FilenameUtilsPatched.removeExtension(image), TextureType.SCREEN);
 		return icon.getIconWidth() != icon.getIconHeight() && icon.getIconHeight() % icon.getIconWidth() == 0;
 	}
+
 }
