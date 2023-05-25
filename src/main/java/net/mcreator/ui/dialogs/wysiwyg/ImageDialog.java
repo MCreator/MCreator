@@ -71,12 +71,6 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 				VariableTypeLoader.BuiltInTypes.NUMBER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		animatedFrame.refreshList();
-		animatedFrame.setEnabled(isAnimated(textureSelector.getSelectedItem()));
-		textureSelector.addActionListener(e -> {
-			animatedFrame.setEnabled(isAnimated(textureSelector.getSelectedItem()));
-			if (!animatedFrame.isEnabled())
-				animatedFrame.selectDefault();
-		});
 
 		add("Center", PanelUtils.totalCenterInPanel(
 				PanelUtils.centerAndSouthElement(options, PanelUtils.join(displayCondition, animatedFrame), 20, 5)));
@@ -97,6 +91,10 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			displayCondition.setSelectedProcedure(image.displayCondition);
 			animatedFrame.setSelectedProcedure(image.animatedFrame);
 		}
+
+		// Listener after values are set
+		animatedFrame.setEnabled(isAnimated(textureSelector.getSelectedItem()));
+		textureSelector.addActionListener(e -> animatedFrame.setEnabled(isAnimated(textureSelector.getSelectedItem())));
 
 		cancel.addActionListener(arg01 -> setVisible(false));
 		ok.addActionListener(arg01 -> {
