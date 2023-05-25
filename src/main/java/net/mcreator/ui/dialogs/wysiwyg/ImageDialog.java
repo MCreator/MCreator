@@ -30,6 +30,7 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
+import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
@@ -122,7 +123,8 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 	}
 
 	private boolean isAnimated(String image) {
-		return new File(getEditor().mcreator.getFolderManager().getTexturesFolder(TextureType.SCREEN),
-				image + ".mcmeta").exists();
+		ImageIcon icon = getEditor().mcreator.getFolderManager()
+				.getTextureImageIcon(FilenameUtilsPatched.removeExtension(image), TextureType.SCREEN);
+		return icon.getIconWidth() != icon.getIconHeight() && icon.getIconHeight() % icon.getIconWidth() == 0;
 	}
 }
