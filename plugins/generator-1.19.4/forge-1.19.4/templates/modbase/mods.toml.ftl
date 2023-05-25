@@ -18,9 +18,7 @@ logoFile="logo.png"
 authors="${settings.getAuthor()}"
 </#if>
 <#if settings.getDescription()?has_content>
-description='''
-${settings.getDescription()}
-'''
+description="${settings.getDescription()}"
 </#if>
 
 [[dependencies.${settings.getModID()}]]

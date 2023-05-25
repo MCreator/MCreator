@@ -17,7 +17,6 @@ templates:
   - template: json/item_cmodel_obj.json.ftl
     writer: json
     condition: "renderType #= 2"
-    variables: "type=item"
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
 localizationkeys:
