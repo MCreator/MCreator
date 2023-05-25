@@ -182,6 +182,10 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		return selected;
 	}
 
+	public void selectDefault() {
+		setSelectedProcedure(defaultName);
+	}
+
 	public Procedure getSelectedProcedure() {
 		CBoxEntry selected = procedures.getSelectedItem();
 		if (selected == null || selected.string.equals(defaultName))

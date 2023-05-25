@@ -72,7 +72,11 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
 		animatedFrame.refreshList();
 		animatedFrame.setEnabled(isAnimated(textureSelector.getSelectedItem()));
-		textureSelector.addActionListener(e -> animatedFrame.setEnabled(isAnimated(textureSelector.getSelectedItem())));
+		textureSelector.addActionListener(e -> {
+			animatedFrame.setEnabled(isAnimated(textureSelector.getSelectedItem()));
+			if (!animatedFrame.isEnabled())
+				animatedFrame.selectDefault();
+		});
 
 		add("Center", PanelUtils.totalCenterInPanel(
 				PanelUtils.centerAndSouthElement(options, PanelUtils.join(displayCondition, animatedFrame), 20, 5)));
