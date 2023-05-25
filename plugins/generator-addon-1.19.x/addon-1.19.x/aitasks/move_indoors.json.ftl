@@ -1,3 +1,3 @@
 "minecraft:behavior.move_indoors": {
-    "priority": ${customBlockIndex+1}
+    "priority": ${cbi+1}
 },

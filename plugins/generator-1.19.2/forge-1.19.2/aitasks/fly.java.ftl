@@ -1,6 +1,6 @@
 <#-- @formatter:off -->
 <#include "aiconditions.java.ftl">
-this.goalSelector.addGoal(${customBlockIndex+1}, new RandomStrollGoal(this, ${field$speed}, 20) {
+this.goalSelector.addGoal(${cbi+1}, new RandomStrollGoal(this, ${field$speed}, 20) {
 
     @Override protected Vec3 getPosition() {
 		RandomSource random = ${name}Entity.this.getRandom();

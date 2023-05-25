@@ -22,7 +22,6 @@ import club.minnced.discord.rpc.DiscordEventHandlers;
 import club.minnced.discord.rpc.DiscordRPC;
 import club.minnced.discord.rpc.DiscordRichPresence;
 import com.sun.jna.Native;
-import net.mcreator.io.OS;
 import net.mcreator.preferences.PreferencesManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -99,8 +98,7 @@ public class DiscordClient implements Closeable {
 	}
 
 	private boolean isDisabled() {
-		return !PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable.get() || OS.AARCH64.equals(
-				OS.getArchitecture());
+		return !PreferencesManager.PREFERENCES.ui.discordRichPresenceEnable.get();
 	}
 
 }
