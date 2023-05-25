@@ -86,9 +86,12 @@ public class Image extends GUIComponent {
 			cw = actualImage.getWidth(null);
 			ch = actualImage.getHeight(null);
 		}
-		if (animatedFrame != null)
+		if (animatedFrame != null) {
 			actualImage = ImageUtils.crop(ImageUtils.toBufferedImage(actualImage), new Rectangle(cw, cw));
-		g.drawImage(actualImage, cx, cy, cw, animatedFrame != null ? cw : ch, wysiwygEditor);
+			g.drawImage(actualImage, cx, cy, cw, cw, wysiwygEditor);
+		} else {
+			g.drawImage(actualImage, cx, cy, cw, ch, wysiwygEditor);
+		}
 	}
 
 }
