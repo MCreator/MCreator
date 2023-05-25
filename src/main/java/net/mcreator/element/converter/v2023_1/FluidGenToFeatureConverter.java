@@ -33,6 +33,8 @@ import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.File;
+
 public class FluidGenToFeatureConverter implements IConverter {
 	private static final Logger LOG = LogManager.getLogger(FluidGenToFeatureConverter.class);
 
@@ -97,6 +99,13 @@ public class FluidGenToFeatureConverter implements IConverter {
 				workspace.addModElement(feature.getModElement());
 				workspace.getGenerator().generateElement(feature);
 				workspace.getModElementManager().storeModElement(feature);
+
+				// If porting 1.19.2 FG workspace, there may be biome modifier present that break workspaces
+				// 2022.3 does not cache files to remove yet, so we need to do a hacky removal here
+				// Fixes #3641
+				new File(workspace.getGenerator().getModDataRoot(),
+						"forge/biome_modifier/" + input.getModElement().getRegistryName()
+								+ "_biome_modifier.json").delete();
 			}
 		} catch (Exception e) {
 			LOG.warn("Failed to move fluid generation settings to feature mod element", e);

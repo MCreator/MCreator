@@ -35,13 +35,15 @@ public class GTBuild {
 
 		buildLauncher.setStandardError(
 				new OutputStreamEventHandler(line -> sb.append(line).append(System.lineSeparator())));
-		buildLauncher.setStandardOutput(
-				new OutputStreamEventHandler(line -> sb.append(line).append(System.lineSeparator())));
 
 		try {
 			buildLauncher.run();
+
+			if (sb.toString().contains(": warning:") || sb.toString().contains(": error: ")) {
+				LOG.warn("Gradle build for " + generatorName + " generator produced log:\n" + sb);
+			}
 		} catch (GradleConnectionException | IllegalStateException e) {
-			LOG.error("[" + generatorName + "] " + sb);
+			LOG.error("Gradle build failed for " + generatorName + " generator with log:\n" + sb, e);
 			throw e;
 		}
 
