@@ -1,3 +1,3 @@
 "minecraft:behavior.door_interact": {
-    "priority": ${customBlockIndex+1}
+    "priority": ${cbi+1}
 },
