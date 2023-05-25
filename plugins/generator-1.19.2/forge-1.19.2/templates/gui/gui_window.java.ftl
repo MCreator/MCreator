@@ -123,7 +123,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				this.blit(ms, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
 					0, ${component.getWidth(w.getWorkspace())} * (int) <@procedureOBJToNumberCode component.animatedFrame />,
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-					${component.getWidth(w.getWorkspace())}, ${component.getActualHeight(w.getWorkspace())});
+					${component.getWidth(w.getWorkspace())}, ${component.getImageHeight(w.getWorkspace())});
 				<#else>
 				this.blit(ms, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, 0, 0,
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},

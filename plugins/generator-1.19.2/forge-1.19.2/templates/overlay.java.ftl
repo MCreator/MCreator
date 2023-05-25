@@ -92,7 +92,7 @@ package ${package}.client.screens;
 				    Minecraft.getInstance().gui.blit(event.getPoseStack(), posX + ${x}, posY + ${y},
 						0, ${component.getWidth(w.getWorkspace())} * (int) <@procedureOBJToNumberCode component.animatedFrame />,
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-						${component.getWidth(w.getWorkspace())}, ${component.getActualHeight(w.getWorkspace())});
+						${component.getWidth(w.getWorkspace())}, ${component.getImageHeight(w.getWorkspace())});
 					<#else>
                     Minecraft.getInstance().gui.blit(event.getPoseStack(), posX + ${x}, posY + ${y}, 0, 0,
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
