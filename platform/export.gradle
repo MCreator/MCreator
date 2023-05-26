@@ -64,8 +64,9 @@ tasks.register('generateExportReport') {
         report += 'builddate=' + project.builddate.toString() + '\n'
         report += 'minecraft=Minecraft Forge ' + String.join("/", fg) + ', Data Packs ' + String.join("/", dp) + ', and Bedrock Edition ' + String.join("/", bd) + '\n'
 
+        new File("build").mkdirs()
         new File("build/reports").mkdirs()
-        new File("build/reports/export.txt").text = report
+        file("build/reports/export.txt") << report
     }
 }
 
