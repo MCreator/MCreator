@@ -258,7 +258,6 @@ import java.util.*;
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		List<MappableElement> elements = new ArrayList<>();
-		elements.add(creativeTab);
 		elements.add(equipmentMainHand);
 		elements.add(equipmentOffHand);
 		elements.add(equipmentHelmet);
@@ -266,6 +265,8 @@ import java.util.*;
 		elements.add(equipmentLeggings);
 		elements.add(equipmentBoots);
 		elements.add(mobDrop);
+		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
+			elements.add(creativeTab);
 		if (ranged)
 			elements.add(rangedAttackItem);
 		if (breedable)

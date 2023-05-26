@@ -47,6 +47,7 @@ import java.util.List;
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		List<MappableElement> elements = new ArrayList<>();
 		for (CustomTradeEntry tradeEntry : tradeEntries) {
+			elements.add(tradeEntry.villagerProfession);
 			for (CustomTradeEntry.Entry entry : tradeEntry.entries) {
 				elements.add(entry.price1);
 				elements.add(entry.price2);

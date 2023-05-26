@@ -236,12 +236,13 @@ import java.util.stream.Collectors;
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		List<MappableElement> elements = new ArrayList<>();
-		elements.add(creativeTab);
 		elements.add(soundOnStep);
-		if (!useLootTableForDrops)
-			elements.add(customDrop);
 		elements.add(creativePickItem);
 		elements.addAll(canBePlacedOn);
+		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
+			elements.add(creativeTab);
+		if (!useLootTableForDrops)
+			elements.add(customDrop);
 		if (doesGenerateInWorld())
 			elements.addAll(restrictionBiomes);
 		return elements;

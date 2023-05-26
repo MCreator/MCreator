@@ -112,7 +112,13 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return disableDisplay ? Collections.emptyList() : Arrays.asList(achievementIcon, parent);
+		if (disableDisplay)
+			return Collections.emptyList();
+		List<MappableElement> elements = new ArrayList<>();
+		elements.add(achievementIcon);
+		if (!parent.getUnmappedValue().equals("No parent: root"))
+			elements.add(parent);
+		return elements;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

@@ -121,11 +121,11 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>();
-		elements.add(creativeTab);
+		List<MappableElement> elements = new ArrayList<>(repairItems);
+		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
+			elements.add(creativeTab);
 		if ("Special".equals(toolType))
 			elements.addAll(blocksAffected);
-		elements.addAll(repairItems);
 		return elements;
 	}
 

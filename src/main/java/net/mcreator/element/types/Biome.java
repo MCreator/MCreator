@@ -33,7 +33,6 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Biome extends GeneratableElement
 		implements IOtherModElementsDependent, IResourcesDependent {

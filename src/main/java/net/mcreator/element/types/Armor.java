@@ -351,9 +351,9 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>();
-		elements.add(creativeTab);
-		elements.addAll(repairItems);
+		List<MappableElement> elements = new ArrayList<>(repairItems);
+		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
+			elements.add(creativeTab);
 		return elements;
 	}
 
@@ -395,13 +395,16 @@ import java.util.*;
 		if (enableHelmet) {
 			models.add(getHelmetModel());
 			models.add(getHelmetItemModel());
-		} if (enableBody) {
+		}
+		if (enableBody) {
 			models.add(getBodyModel());
 			models.add(getBodyItemModel());
-		} if (enableLeggings) {
+		}
+		if (enableLeggings) {
 			models.add(getLeggingsModel());
 			models.add(getLeggingsItemModel());
-		} if (enableBoots) {
+		}
+		if (enableBoots) {
 			models.add(getBootsModel());
 			models.add(getBootsItemModel());
 		}

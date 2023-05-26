@@ -192,13 +192,19 @@ import java.util.List;
 		});
 		getComponentsOfType("Image").forEach(
 				e -> procedures.add(((net.mcreator.element.parts.gui.Image) e).displayCondition));
-		getComponentsOfType("Slot").forEach(e -> {
-			procedures.add(((Slot) e).disablePickup);
-			procedures.add(((Slot) e).onSlotChanged);
-			procedures.add(((Slot) e).onTakenFromSlot);
-			procedures.add(((Slot) e).onStackTransfer);
+		getComponentsOfType("InputSlot").forEach(e -> {
+			procedures.add(((InputSlot) e).disablePickup);
+			procedures.add(((InputSlot) e).disablePlacement);
+			procedures.add(((InputSlot) e).onSlotChanged);
+			procedures.add(((InputSlot) e).onTakenFromSlot);
+			procedures.add(((InputSlot) e).onStackTransfer);
 		});
-		getComponentsOfType("InputSlot").forEach(e -> procedures.add(((InputSlot) e).disablePlacement));
+		getComponentsOfType("OutputSlot").forEach(e -> {
+			procedures.add(((OutputSlot) e).disablePickup);
+			procedures.add(((OutputSlot) e).onSlotChanged);
+			procedures.add(((OutputSlot) e).onTakenFromSlot);
+			procedures.add(((OutputSlot) e).onStackTransfer);
+		});
 		return procedures;
 	}
 

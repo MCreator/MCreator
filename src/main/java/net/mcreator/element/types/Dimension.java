@@ -130,10 +130,11 @@ import java.util.*;
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		List<MappableElement> elements = new ArrayList<>(biomesInDimension);
-		if (/*enableIgniter*/enablePortal) // #3672
-			elements.add(igniterTab);
 		elements.add(mainFillerBlock);
 		elements.add(fluidBlock);
+		// #3672
+		if (/*enableIgniter*/enablePortal && !igniterTab.getUnmappedValue().equals("No creative tab entry"))
+			elements.add(igniterTab);
 		if (enablePortal) {
 			elements.add(portalFrame);
 			elements.add(portalParticles);

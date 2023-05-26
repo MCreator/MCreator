@@ -81,7 +81,9 @@ public class MusicDisc extends GeneratableElement
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return Collections.singletonList(creativeTab);
+		return !creativeTab.getUnmappedValue().equals("No creative tab entry") ?
+				Collections.singletonList(creativeTab) :
+				Collections.emptyList();
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {

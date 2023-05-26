@@ -136,7 +136,12 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return Arrays.asList(creativeTab, ammoItem, bulletItemTexture);
+		List<MappableElement> elements = new ArrayList<>();
+		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
+			elements.add(creativeTab);
+		elements.add(ammoItem);
+		elements.add(bulletItemTexture);
+		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {

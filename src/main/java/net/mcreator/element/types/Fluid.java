@@ -177,7 +177,7 @@ import java.util.*;
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		List<MappableElement> elements = new ArrayList<>();
 		elements.add(dripParticle);
-		if (generateBucket)
+		if (generateBucket && !creativeTab.getUnmappedValue().equals("No creative tab entry"))
 			elements.add(creativeTab);
 		return elements;
 	}

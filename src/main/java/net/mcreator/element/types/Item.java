@@ -161,8 +161,9 @@ import java.util.*;
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		List<MappableElement> elements = new ArrayList<>();
-		elements.add(creativeTab);
 		elements.add(recipeRemainder);
+		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
+			elements.add(creativeTab);
 		if (isFood)
 			elements.add(eatResultItem);
 		return elements;

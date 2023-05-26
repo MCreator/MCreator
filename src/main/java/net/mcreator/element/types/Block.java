@@ -364,9 +364,10 @@ import java.util.stream.Collectors;
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		List<MappableElement> elements = new ArrayList<>();
-		elements.add(creativeTab);
 		elements.add(creativePickItem);
 		elements.add(soundOnStep);
+		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
+			elements.add(creativeTab);
 		if (!useLootTableForDrops)
 			elements.add(customDrop);
 		if (hasInventory)
