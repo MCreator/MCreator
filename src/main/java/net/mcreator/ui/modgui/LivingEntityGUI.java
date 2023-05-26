@@ -341,7 +341,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.t("condition.common.false")).makeInline();
 		solidBoundingBox = new LogicProcedureSelector(this.withEntry("entity/condition_solid_bounding_box"), mcreator,
 				L10N.t("elementgui.living_entity.condition_solid_bounding_box"), AbstractProcedureSelector.Side.BOTH,
-				L10N.checkbox("elementgui.common.enable"), 300,
+				L10N.checkbox("elementgui.common.enable"), 160,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		restrictionBiomes = new BiomeListField(mcreator);
@@ -386,6 +386,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		JPanel pane3 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane4 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane5 = new JPanel(new BorderLayout(0, 0));
+		JPanel pane6 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
 
 		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
@@ -485,7 +486,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
 
-		JPanel spo2 = new JPanel(new GridLayout(15, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(11, 2, 2, 2));
 
 		spo2.setOpaque(false);
 
@@ -496,6 +497,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/model"),
 				L10N.label("elementgui.living_entity.entity_model")));
 		spo2.add(mobModel);
+
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
+				L10N.label("elementgui.living_entity.bounding_box")));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(2, 2), modelHeight,
+				new JEmptyBox(2, 2), modelShadowSize, new JEmptyBox(2, 2), mountedYOffset, new JEmptyBox(2, 2),
+				disableCollisions));
+
+		spo2.add(new JEmptyBox());
+		spo2.add(solidBoundingBox);
 
 		spo2.add(new JEmptyBox());
 		spo2.add(transparentModelCondition);
@@ -537,10 +547,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		spawnEggBaseColor.setOpaque(false);
 		spawnEggDotColor.setOpaque(false);
 
-		modelWidth.setPreferredSize(new Dimension(85, 32));
-		mountedYOffset.setPreferredSize(new Dimension(85, 32));
-		modelHeight.setPreferredSize(new Dimension(85, 32));
-		modelShadowSize.setPreferredSize(new Dimension(85, 32));
+		modelWidth.setPreferredSize(new Dimension(85, 41));
+		mountedYOffset.setPreferredSize(new Dimension(85, 41));
+		modelHeight.setPreferredSize(new Dimension(85, 41));
+		modelShadowSize.setPreferredSize(new Dimension(85, 41));
 
 		armorBaseValue.setPreferredSize(new Dimension(250, 32));
 		movementSpeed.setPreferredSize(new Dimension(250, 32));
@@ -607,51 +617,51 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			}
 		});
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
-				L10N.label("elementgui.living_entity.bounding_box")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(7, 7), modelHeight,
-				new JEmptyBox(7, 7), modelShadowSize, new JEmptyBox(7, 7), mountedYOffset, new JEmptyBox(7, 7),
-				disableCollisions));
-
-		spo2.add(new JEmptyBox());
-		spo2.add(solidBoundingBox);
+		creativeTab.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXX"));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_egg_options"),
 				L10N.label("elementgui.living_entity.spawn_egg_options")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, hasSpawnEgg, spawnEggBaseColor, spawnEggDotColor, creativeTab));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, hasSpawnEgg, new JEmptyBox(2, 2), spawnEggBaseColor,
+				new JEmptyBox(2, 2), spawnEggDotColor, new JEmptyBox(5, 5), creativeTab));
 
 		bossBarColor.setEnabled(false);
 		bossBarType.setEnabled(false);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
 				L10N.label("elementgui.living_entity.mob_boss")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, isBoss, bossBarColor, bossBarType));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, isBoss, new JEmptyBox(5, 5), bossBarColor, new JEmptyBox(5, 5),
+				bossBarType));
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/label"),
 				L10N.label("elementgui.living_entity.label")));
 		spo2.add(mobLabel);
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/sound"),
-				L10N.label("elementgui.living_entity.sound")));
-		spo2.add(livingSound);
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/step_sound"),
-				L10N.label("elementgui.living_entity.step_sound")));
-		spo2.add(stepSound);
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/hurt_sound"),
-				L10N.label("elementgui.living_entity.hurt_sound")));
-		spo2.add(hurtSound);
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/death_sound"),
-				L10N.label("elementgui.living_entity.death_sound")));
-		spo2.add(deathSound);
-
 		ComponentUtils.deriveFont(mobLabel, 16);
 
 		pane2.setOpaque(false);
-
 		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
+
+		JPanel spo6 = new JPanel(new GridLayout(4, 2, 2, 2));
+		spo6.setOpaque(false);
+
+		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/sound"),
+				L10N.label("elementgui.living_entity.sound")));
+		spo6.add(livingSound);
+
+		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/step_sound"),
+				L10N.label("elementgui.living_entity.step_sound")));
+		spo6.add(stepSound);
+
+		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/hurt_sound"),
+				L10N.label("elementgui.living_entity.hurt_sound")));
+		spo6.add(hurtSound);
+
+		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/death_sound"),
+				L10N.label("elementgui.living_entity.death_sound")));
+		spo6.add(deathSound);
+
+		pane6.setOpaque(false);
+		pane6.add("Center", PanelUtils.totalCenterInPanel(spo6));
 
 		JPanel aitop = new JPanel(new GridLayout(3, 1, 0, 2));
 		aitop.setOpaque(false);
@@ -857,7 +867,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane1.setOpaque(false);
 
-		addPage(L10N.t("elementgui.living_entity.page_visual_and_sound"), pane2);
+		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2);
+		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
@@ -922,9 +933,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0) {
 			return new AggregatedValidationResult(mobModelTexture, mobName);
-		} else if (page == 4 && hasErrors)
-			return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-					.map(compileNote -> "Living entity AI builder: " + compileNote.message()).toList());
+		} else if (page == 5) {
+			if (hasErrors)
+				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
+						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
+						.collect(Collectors.toList()));
+		}
 		return new AggregatedValidationResult.PASS();
 	}
 
