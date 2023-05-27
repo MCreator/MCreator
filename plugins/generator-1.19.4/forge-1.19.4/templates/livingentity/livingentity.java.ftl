@@ -188,6 +188,16 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
     </#if>
 
+	<#if data.mobModelName == "Biped">
+	@Override public double getMyRidingOffset() {
+		return -0.35D;
+	}
+	<#elseif data.mobModelName == "Silverfish">
+	@Override public double getMyRidingOffset() {
+		return 0.1D;
+	}
+	</#if>
+
 	<#if data.mountedYOffset != 0>
 	@Override public double getPassengersRidingOffset() {
 		return super.getPassengersRidingOffset() + ${data.mountedYOffset};
