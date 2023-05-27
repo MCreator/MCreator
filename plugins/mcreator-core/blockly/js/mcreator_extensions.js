@@ -69,7 +69,7 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
                     this.getFieldValue('procedure'), this.getFieldValue('name' + i)));
                 const newType = this.getInput('arg' + i).connection.getCheck();
                 // Fire change event if block existed earlier and previous input type was different
-                if (changeEvent.type !== Blockly.Events.BLOCK_CREATE &&
+                if (changeEvent.type == Blockly.Events.BLOCK_CHANGE &&
                     JSON.stringify(prevType) !== JSON.stringify(newType)) {
                     Blockly.Events.fire(new InputCheckChange(this, 'arg' + i, prevType, newType));
                 }
