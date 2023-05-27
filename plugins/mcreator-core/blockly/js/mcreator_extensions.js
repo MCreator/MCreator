@@ -267,6 +267,105 @@ Blockly.Extensions.register('replace_sphere_validator', validateIntProviderInput
 
 Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs(['height', 0, Infinity]));
 
+Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
+    mutationToDom: function () {
+        var container = document.createElement('mutation');
+        container.setAttribute('inputs', this.inputCount_);
+        return container;
+    },
+
+    domToMutation: function (xmlElement) {
+        this.inputCount_ = parseInt(xmlElement.getAttribute('inputs'), 10);
+        this.updateShape_();
+    },
+
+    saveExtraState: function () {
+        return {
+            'inputCount': this.inputCount_
+        };
+    },
+
+    loadExtraState: function (state) {
+        this.inputCount_ = state['inputCount'];
+        this.updateShape_();
+    },
+
+    decompose: function (workspace) {
+        const containerBlock = workspace.newBlock('procedure_dependencies_mutator_container');
+        containerBlock.initSvg();
+        var connection = containerBlock.getInput('STACK').connection;
+        for (let i = 0; i < this.inputCount_; i++) {
+            const inputBlock = workspace.newBlock('procedure_dependencies_mutator_input');
+            inputBlock.nameValue_ = null;
+            inputBlock.initSvg();
+            connection.connect(inputBlock.previousConnection);
+            connection = inputBlock.nextConnection;
+        }
+        return containerBlock;
+    },
+
+    compose: function (containerBlock) {
+        let inputBlock = containerBlock.getInputTargetBlock('STACK');
+        const connections = [];
+        const fieldValues = [];
+        while (inputBlock && !inputBlock.isInsertionMarker()) {
+            connections.push(inputBlock.valueConnection_);
+            fieldValues.push(inputBlock.nameValue_);
+            inputBlock = inputBlock.nextConnection && inputBlock.nextConnection.targetBlock();
+        }
+        for (let i = 0; i < this.inputCount_; i++) {
+            const connection = this.getInput('arg' + i) && this.getInput('arg' + i).connection.targetConnection;
+            if (connection && connections.indexOf(connection) == -1)
+                connection.disconnect();
+        }
+        this.inputCount_ = connections.length;
+        this.updateShape_();
+        for (let i = 0; i < this.inputCount_; i++) {
+            Blockly.Mutator.reconnect(connections[i], this, 'arg' + i);
+            if (fieldValues[i])
+                this.getField('name' + i).setValue(fieldValues[i] ?? '');
+        }
+    },
+
+    saveConnections: function (containerBlock) {
+        let inputBlock = containerBlock.getInputTargetBlock('STACK');
+        let i = 0;
+        while (inputBlock) {
+            if (!inputBlock.isInsertionMarker()) {
+                const input = this.getInput('arg' + i);
+                if (input) {
+                    inputBlock.valueConnection_ = input.connection.targetConnection;
+                    inputBlock.nameValue_ = this.getFieldValue('name' + i);
+                }
+                i++;
+            }
+            inputBlock = inputBlock.getNextBlock();
+        }
+    },
+
+    updateShape_: function () {
+        for (let i = 0; i < this.inputCount_; i++) {
+            if (!this.getInput('arg' + i)) {
+                this.appendValueInput('arg' + i).setAlign(Blockly.Input.Align.RIGHT)
+                    .appendField(javabridge.t('blockly.block.call_procedure.name'))
+                    .appendField(validOnLoad(new FieldJavaName("dependency" + i,
+                        uniqueValueValidator('name', function () {
+                            return 'dependency' + firstFreeIndex(this, 'name', i, function (nextIndex) {
+                                return "dependency" + nextIndex;
+                            });
+                        }))), 'name' + i)
+                    .appendField(javabridge.t('blockly.block.call_procedure.arg'));
+                const currentField = this.getField('name' + i);
+                currentField.mutationInProcess_ = true;
+                currentField.setValue(currentField.getValue());
+                currentField.mutationInProcess_ = false;
+            }
+        }
+        for (let i = this.inputCount_; this.getInput('arg' + i); i++)
+            this.removeInput('arg' + i);
+    }
+}, undefined, ['procedure_dependencies_mutator_input']);
+
 // Helper function to provide a mixin for mutators that add a single repeating (dummy) input with additional fields
 // The mutator container block must have a "STACK" statement input for this to work
 // The empty message is localized as "blockly.block.block_type.empty"
@@ -417,72 +516,6 @@ function weightedListMutatorMixin(inputType) {
                 .appendField(javabridge.t('blockly.block.weighted_list.entry'));
         }, true, ['weight'], true);
 }
-
-const PROCEDURE_DEPENDENCIES_MUTATOR = simpleRepeatingInputMixin(
-        'procedure_dependencies_mutator_container', 'procedure_dependencies_mutator_input', 'arg',
-        function(thisBlock, inputName, index) {
-            thisBlock.appendValueInput(inputName + index).setAlign(Blockly.Input.Align.RIGHT)
-                .appendField(javabridge.t('blockly.block.call_procedure.name'))
-                .appendField(validOnLoad(new FieldJavaName("dependency" + index,
-                    uniqueValueValidator('name', function () {
-                        return 'dependency' + firstFreeIndex(thisBlock, 'name', index, function (nextIndex) {
-                            return "dependency" + nextIndex;
-                        });
-                    }))), 'name' + index)
-                .appendField(javabridge.t('blockly.block.call_procedure.arg'));
-            const currentField = thisBlock.getField('name' + index);
-            currentField.mutationInProcess_ = true;
-            currentField.setValue(currentField.getValue());
-            currentField.mutationInProcess_ = false;
-        }, true, ['name'], false);
-PROCEDURE_DEPENDENCIES_MUTATOR.compose = function (containerBlock) {
-    let inputBlock = containerBlock.getInputTargetBlock('STACK');
-    // Count number of inputs.
-    const connections = [];
-    const fieldValues = [];
-    while (inputBlock && !inputBlock.isInsertionMarker()) {
-        connections.push(inputBlock.valueConnection_);
-        fieldValues.push(inputBlock.fieldValues_);
-        inputBlock = inputBlock.nextConnection && inputBlock.nextConnection.targetBlock();
-    }
-    // Disconnect any children that don't belong. This is skipped if the provided input is a dummy input
-    for (let i = 0; i < this.inputCount_; i++) {
-        const connection = this.getInput('arg' + i) && this.getInput('arg' + i).connection.targetConnection;
-        if (connection && connections.indexOf(connection) == -1) {
-            connection.disconnect();
-        }
-    }
-    this.inputCount_ = connections.length;
-    this.updateShape_();
-    // Reconnect any child blocks and update the field values
-    for (let i = 0; i < this.inputCount_; i++)
-        Blockly.Mutator.reconnect(connections[i], this, 'arg' + i);
-    const validators = [];
-    for (let i = 0; i < this.inputCount_; i++) {
-        const currentField = this.getField('name' + i);
-        validators.push(currentField.getValidator());
-        currentField.setValidator(null); // Detach validators from fields to force setting previous values
-        currentField.mutationInProcess_ = true;
-    }
-    const newValues = [];
-    for (let i = 0; i < this.inputCount_; i++) {
-        const currentField = this.getField('name' + i);
-        if (fieldValues[i]) // If fields existed before, restore their values unconditionally
-            currentField.setValue(fieldValues[i][0] ?? '');
-        currentField.setValidator(validators[i]);
-        if (fieldValues[i] == null) // Make sure values of newly created fields are validated
-            currentField.setValue(currentField.getValue());
-        newValues.push(currentField.getValue());
-    }
-    for (let i = 0; i < this.inputCount_; i++) {
-        const currentField = this.getField('name' + i);
-        if (newValues.indexOf(currentField.getValue()) != -1)
-            currentField.setValue(currentField.getValue()); // Prevent duplicated initial values
-        currentField.mutationInProcess_ = false;
-    }
-}
-Blockly.Extensions.registerMutator('procedure_dependencies_mutator', PROCEDURE_DEPENDENCIES_MUTATOR,
-    undefined, ['procedure_dependencies_mutator_input']);
 
 Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepeatingInputMixin(
         'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition',
