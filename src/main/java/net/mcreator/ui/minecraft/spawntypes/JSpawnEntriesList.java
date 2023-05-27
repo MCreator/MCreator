@@ -58,7 +58,20 @@ public class JSpawnEntriesList extends JEntriesList {
 			registerEntryUI(entry);
 		});
 
-		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
+		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(entries)) {
+			@Override protected void paintComponent(Graphics g) {
+				Graphics2D g2d = (Graphics2D) g.create();
+				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+				g2d.dispose();
+				super.paintComponent(g);
+			}
+		};
+		scrollPane.getViewport().setOpaque(false);
+		scrollPane.setOpaque(false);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(15);
+		add("Center", scrollPane);
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),

@@ -18,6 +18,9 @@
 
 package net.mcreator.io.net.api.update;
 
+import net.mcreator.Launcher;
+import net.mcreator.util.MCreatorVersionNumber;
+
 import java.util.Map;
 
 public class UpdateInfo {
@@ -32,4 +35,28 @@ public class UpdateInfo {
 	public Map<String, Release> getReleases() {
 		return releases;
 	}
+
+	public boolean isNewUpdateAvailable() {
+		long newMajor = MCreatorVersionNumber.majorStringToLong(latestMajor);
+		return newMajor > Launcher.version.majorlong;
+	}
+
+	public boolean isNewPatchAvailable() {
+		Release thisRelease = releases.get(Launcher.version.major);
+		if (thisRelease != null) {
+			return Long.parseLong(thisRelease.getLatestBuild()) > Launcher.version.buildlong;
+		} else {
+			return false;
+		}
+	}
+
+	public String getLatestPatchVersion() {
+		Release thisRelease = releases.get(Launcher.version.major);
+		if (thisRelease != null) {
+			return thisRelease.getLatestBuild();
+		} else {
+			return null;
+		}
+	}
+
 }

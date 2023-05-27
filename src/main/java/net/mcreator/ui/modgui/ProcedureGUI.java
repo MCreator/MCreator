@@ -274,7 +274,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : col.brighter());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
-			setToolTipText(value.getName() + ", type: " + value.getRawType());
+			setToolTipText(value.toString());
 			return this;
 		}
 	}
