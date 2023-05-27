@@ -138,8 +138,7 @@ import java.util.*;
 		List<MappableElement> elements = new ArrayList<>(biomesInDimension);
 		elements.add(mainFillerBlock);
 		elements.add(fluidBlock);
-		// #3672
-		if (/*enableIgniter*/enablePortal && !igniterTab.getUnmappedValue().equals("No creative tab entry"))
+		if (enableIgniter && !igniterTab.getUnmappedValue().equals("No creative tab entry"))
 			elements.add(igniterTab);
 		if (enablePortal) {
 			elements.add(portalFrame);
@@ -154,7 +153,7 @@ import java.util.*;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {
-		if (type == TextureType.ITEM && /*enableIgniter*/enablePortal) // #3672
+		if (type == TextureType.ITEM && enableIgniter)
 			return Collections.singletonList(texture);
 		else if (type == TextureType.BLOCK && enablePortal)
 			return Collections.singletonList(portalTexture);
