@@ -28,8 +28,8 @@ public class DamageSourceDependencyBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
 		master.append("/*@DamageSource*/");
-		master.append("source");
-		master.addDependency(new Dependency("source", "damagesource"));
+		master.append("damagesource");
+		master.addDependency(new Dependency("damagesource", "damagesource"));
 	}
 
 	@Override public String[] getSupportedBlocks() {
