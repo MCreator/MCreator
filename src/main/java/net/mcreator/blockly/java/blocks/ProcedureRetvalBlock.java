@@ -67,7 +67,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 				for (int i = 0; i < depCount; i++) {
 					names.put(i, fields.get("name" + i).getTextContent());
 					if (inputs.containsKey("arg" + i)) {
-						args.put(i, BlocklyToCode.directProcessOutputBlock(master, inputs.get("arg" + i)));
+						args.put(i, master.directProcessOutputBlockWithoutParentheses(inputs.get("arg" + i)));
 					} else {
 						args.put(i, "");
 						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,

@@ -56,7 +56,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				for (int i = 0; i < depCount; i++) {
 					names.put(i, fields.remove("name" + i).getTextContent());
 					if (inputs.containsKey("arg" + i)) {
-						args.put(i, BlocklyToCode.directProcessOutputBlock(master, inputs.remove("arg" + i)));
+						args.put(i, master.directProcessOutputBlockWithoutParentheses(inputs.remove("arg" + i)));
 					} else {
 						args.put(i, "");
 						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,

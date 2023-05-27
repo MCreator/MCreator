@@ -68,9 +68,8 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
                 this.getInput('arg' + i).setCheck(javabridge.getDependencyType(
                     this.getFieldValue('procedure'), this.getFieldValue('name' + i)));
                 const newType = this.getInput('arg' + i).connection.getCheck();
-                if (changeEvent.type !== Blockly.Events.BLOCK_CREATE && ((prevType && newType) ?
-                    JSON.stringify(prevType) !== JSON.stringify(newType) :
-                    (prevType == null) !== (newType == null))) {
+                if (changeEvent.type !== Blockly.Events.BLOCK_CREATE &&
+                    JSON.stringify(prevType) !== JSON.stringify(newType)) {
                     Blockly.Events.fire(new InputCheckChange(this, 'arg' + i, prevType, newType));
                 }
             }
