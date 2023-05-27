@@ -62,12 +62,13 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
             const group = Blockly.Events.getGroup();
             // Makes it so the block change and the unplug event get undone together.
             Blockly.Events.setGroup(changeEvent.group);
-            // For each passed input, we check if it's within bounds
             for (var i = 0; this.getField('name' + i); i++) {
                 const prevType = this.getInput('arg' + i).connection.getCheck();
+                // Set input checks from dependency type
                 this.getInput('arg' + i).setCheck(javabridge.getDependencyType(
                     this.getFieldValue('procedure'), this.getFieldValue('name' + i)));
                 const newType = this.getInput('arg' + i).connection.getCheck();
+                // Fire change event if block existed earlier and previous input type was different
                 if (changeEvent.type !== Blockly.Events.BLOCK_CREATE &&
                     JSON.stringify(prevType) !== JSON.stringify(newType)) {
                     Blockly.Events.fire(new InputCheckChange(this, 'arg' + i, prevType, newType));
