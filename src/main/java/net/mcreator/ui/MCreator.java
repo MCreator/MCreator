@@ -44,7 +44,6 @@ import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
@@ -100,9 +99,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		this.windowUID = System.currentTimeMillis();
 		this.workspace = workspace;
 		this.application = application;
-
-		if (WorkspaceVCS.loadVCSWorkspace(this.workspace))
-			LOG.info("Loaded VCS for current workspace");
 
 		this.gradleConsole = new GradleConsole(this);
 		this.gradleConsole.addGradleStateListener(new GradleStateListener() {
