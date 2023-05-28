@@ -39,7 +39,6 @@ public class ${name}Feature extends OreFeature {
 	public static ${name}Feature FEATURE = null;
 	public static Holder<ConfiguredFeature<OreConfiguration, ?>> CONFIGURED_FEATURE = null;
 	public static Holder<PlacedFeature> PLACED_FEATURE = null;
-	private static final BlockState REPLACED_BLOCK = ${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState();
 
 	public static Feature<?> feature() {
 		FEATURE = new ${name}Feature();
@@ -49,12 +48,14 @@ public class ${name}Feature extends OreFeature {
 					<#list data.blocksToReplace as replacementBlock>
 						OreConfiguration.target(
 							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
-								new TagMatchTest(BlockTags.create(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}"))), REPLACED_BLOCK)
+								new TagMatchTest(BlockTags.create(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}"))),
 							<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
-								new TagMatchTest(BlockTags.create(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))), REPLACED_BLOCK)
+								new TagMatchTest(BlockTags.create(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))),
 							<#else>
-								new BlockStateMatchTest(${mappedBlockToBlockStateCode(replacementBlock)}), REPLACED_BLOCK)
-							</#if><#sep>,
+								new BlockStateMatchTest(${mappedBlockToBlockStateCode(replacementBlock)}),
+							</#if>
+							${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState()
+						)<#sep>,
 					</#list>
 				),
 				${data.frequencyOnChunk}
