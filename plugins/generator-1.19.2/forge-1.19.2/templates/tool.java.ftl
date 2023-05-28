@@ -29,7 +29,6 @@
 -->
 
 <#-- @formatter:off -->
-<#include "itemlists.java.ftl">
 <#include "mcitems.ftl">
 <#include "procedures.java.ftl">
 <#include "triggers.java.ftl">
@@ -169,7 +168,7 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-        return <@blockListBasedOnDirectChecks data.blocksAffected "blockstate"/> ? ${data.efficiency}f : 1;
+        return <@containsAnyOfBlocks data.blocksAffected "blockstate"/> ? ${data.efficiency}f : 1;
     }
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
