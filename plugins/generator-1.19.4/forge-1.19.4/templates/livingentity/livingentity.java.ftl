@@ -246,7 +246,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				"y": "this.getY()",
 				"z": "this.getZ()",
 				"entity": "this",
-				"world": "this.level"
+				"world": "this.level",
+				"damagesource": "source"
 			}/>
 		</#if>
 
@@ -270,7 +271,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				"z": "this.getZ()",
 				"entity": "this",
 				"world": "this.level",
-				"sourceentity": "source.getEntity()"
+				"sourceentity": "source.getEntity()",
+				"damagesource": "source"
 			}/>
 		</#if>
 		<#if data.immuneToFire>
@@ -340,7 +342,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"z": "this.getZ()",
 			"sourceentity": "source.getEntity()",
 			"entity": "this",
-			"world": "this.level"
+			"world": "this.level",
+			"damagesource": "source"
 		}/>
 	}
     </#if>
@@ -509,7 +512,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"z": "this.getZ()",
 			"entity": "entity",
 			"sourceentity": "this",
-			"world": "this.level"
+			"world": "this.level",
+			"damagesource": "damageSource"
 		}/>
 	}
     </#if>
