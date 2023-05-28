@@ -207,20 +207,20 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#assign btid = 0>
 
 		<#list data.getComponentsOfType("Button") as component>
-		    <#if component.isUndecorated>
-                ${component.getName()} = new PlainTextButton(
-                    this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-                    ${component.width}, ${component.height},
-                    Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
-                    <@buttonOnClick component/>, this.font
-                )<@buttonDisplayCondition component/>;
-		    <#else>
-                ${component.getName()} = new Button(
-                    this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-                    ${component.width}, ${component.height},
-                    Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
-                    <@buttonOnClick component/>
-                )<@buttonDisplayCondition component/>;
+			<#if component.isUndecorated>
+				${component.getName()} = new PlainTextButton(
+                	this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+                	${component.width}, ${component.height},
+                	Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
+                	<@buttonOnClick component/>, this.font
+				)<@buttonDisplayCondition component/>;
+			<#else>
+				${component.getName()} = new Button(
+                	this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+                	${component.width}, ${component.height},
+                	Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
+                	<@buttonOnClick component/>
+				)<@buttonDisplayCondition component/>;
 		    </#if>
 
 			guistate.put("button:${component.getName()}", ${component.getName()});
