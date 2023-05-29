@@ -53,7 +53,7 @@ public class ListEditorDialog {
 		MCreatorDialog dialog = new MCreatorDialog(parent, L10N.t("dialog.list_editor.title"), true);
 
 		List<ListEntry> entryList = new ArrayList<>();
-		JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
+		JPanel entries = new JPanel(new GridLayout(0, 1, 2, 3));
 		for (String entry : textList)
 			new ListEntry(entryList, entries, entry, validator, uniqueEntries);
 
@@ -61,9 +61,13 @@ public class ListEditorDialog {
 		add.setText(L10N.t("dialog.list_editor.add"));
 		add.addActionListener(e -> new ListEntry(entryList, entries, "", validator, uniqueEntries));
 
+		JScrollPane scrollList = new JScrollPane(PanelUtils.pullElementUp(entries));
+		scrollList.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollList.getVerticalScrollBar().setUnitIncrement(15);
+
 		JPanel listPanel = new JPanel(new BorderLayout());
 		listPanel.add("North", PanelUtils.join(new JLabel(), add, new JLabel()));
-		listPanel.add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
+		listPanel.add("Center", scrollList);
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -96,8 +100,9 @@ public class ListEditorDialog {
 
 		private ListEntry(List<ListEntry> entryList, JPanel parent, String value,
 				@Nullable Function<VTextField, Validator> validator, boolean uniqueEntries) {
-			super(new FlowLayout(FlowLayout.LEFT));
+			super(new BorderLayout(5, 0));
 			setOpaque(false);
+			setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 
 			Validator lev = validator == null ? null : validator.apply(valueField);
 			if (uniqueEntries)
@@ -123,8 +128,8 @@ public class ListEditorDialog {
 				parent.repaint();
 			});
 
-			add(valueField);
-			add(remove);
+			add("Center", valueField);
+			add("East", remove);
 
 			parent.revalidate();
 			parent.repaint();

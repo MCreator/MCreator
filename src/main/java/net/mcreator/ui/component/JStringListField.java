@@ -77,17 +77,17 @@ public class JStringListField extends JPanel {
 		super(new BorderLayout());
 		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
-		label.setOpaque(false);
 		ComponentUtils.deriveFont(label, 16);
 		ToolTipManager.sharedInstance().registerComponent(label);
 
 		JScrollPane scrollPane = new JScrollPane(label);
 		scrollPane.setOpaque(false);
 		scrollPane.getViewport().setOpaque(false);
+		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		scrollPane.setPreferredSize(new Dimension(200, 30));
 
 		back.setMargin(new Insets(0, 0, 0, 0));
-		back.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		back.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		back.setFocusPainted(false);
 		back.setContentAreaFilled(false);
 		back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -101,7 +101,7 @@ public class JStringListField extends JPanel {
 		});
 
 		forward.setMargin(new Insets(0, 0, 0, 0));
-		forward.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		forward.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		forward.setFocusPainted(false);
 		forward.setContentAreaFilled(false);
 		forward.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
