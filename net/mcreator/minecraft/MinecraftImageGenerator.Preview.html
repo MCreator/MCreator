@@ -187,10 +187,11 @@ loadScripts(document, 'script');</script>
 <div class="block">This method generates creative tab images.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link">BufferedImage</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#generateDimensionPreviewPicture(net.mcreator.workspace.Workspace,java.io.File,java.io.File,net.mcreator.element.parts.MItemBlock)" class="member-name-link">generateDimensionPreviewPicture</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#generateDimensionPreviewPicture(net.mcreator.workspace.Workspace,java.io.File,java.io.File,net.mcreator.element.parts.MItemBlock,boolean)" class="member-name-link">generateDimensionPreviewPicture</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;portalTexture,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;triggerTexture,
- <a href="../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;portalFrameTexture)</code></div>
+ <a href="../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;portalFrameTexture,
+ boolean&nbsp;isIgniterEnabled)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">This method generates dimension images.</div>
 </div>
@@ -549,18 +550,20 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="generateDimensionPreviewPicture(net.mcreator.workspace.Workspace,java.io.File,java.io.File,net.mcreator.element.parts.MItemBlock)">
+<section class="detail" id="generateDimensionPreviewPicture(net.mcreator.workspace.Workspace,java.io.File,java.io.File,net.mcreator.element.parts.MItemBlock,boolean)">
 <h3>generateDimensionPreviewPicture</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link">BufferedImage</a></span>&nbsp;<span class="element-name">generateDimensionPreviewPicture</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;portalTexture,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;triggerTexture,
- <a href="../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;portalFrameTexture)</span></div>
+ <a href="../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;portalFrameTexture,
+ boolean&nbsp;isIgniterEnabled)</span></div>
 <div class="block"><p>This method generates dimension images.</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>portalTexture</code> - <p>This texture is used for portal's inner filler.</p></dd>
 <dd><code>triggerTexture</code> - <p>This texture is used for portal's igniter texture above portal.</p></dd>
 <dd><code>portalFrameTexture</code> - <p>The item provided is used to calculate it's average color for portal's frame.</p></dd>
+<dd><code>isIgniterEnabled</code> - <p>Wether the portal's igniter is enabled or not.</p></dd>
 <dt>Returns:</dt>
 <dd><p>Returns generated image.</p></dd>
 </dl>

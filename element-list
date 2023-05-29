@@ -58,7 +58,6 @@ net.mcreator.ui
 net.mcreator.ui.action
 net.mcreator.ui.action.impl
 net.mcreator.ui.action.impl.gradle
-net.mcreator.ui.action.impl.vcs
 net.mcreator.ui.action.impl.workspace
 net.mcreator.ui.action.impl.workspace.resources
 net.mcreator.ui.blockly
@@ -102,7 +101,6 @@ net.mcreator.ui.validation
 net.mcreator.ui.validation.component
 net.mcreator.ui.validation.optionpane
 net.mcreator.ui.validation.validators
-net.mcreator.ui.vcs
 net.mcreator.ui.views
 net.mcreator.ui.views.editor.image
 net.mcreator.ui.views.editor.image.action
@@ -125,9 +123,6 @@ net.mcreator.util.diff
 net.mcreator.util.image
 net.mcreator.util.locale
 net.mcreator.util.math
-net.mcreator.vcs
-net.mcreator.vcs.diff
-net.mcreator.vcs.util
 net.mcreator.workspace
 net.mcreator.workspace.elements
 net.mcreator.workspace.misc
