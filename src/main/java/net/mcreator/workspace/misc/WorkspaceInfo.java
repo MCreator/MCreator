@@ -259,6 +259,7 @@ import java.util.*;
 						return true;
 			}
 		}
+		return false;
 	}
 	
 	public boolean hasBiomesInVanillaDimensions() {
