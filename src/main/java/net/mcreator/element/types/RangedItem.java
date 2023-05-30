@@ -159,15 +159,18 @@ import java.util.*;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {
-		return switch (type) {
-			case ITEM -> Collections.singletonList(texture);
-			case ENTITY -> Collections.singletonList(customBulletModelTexture);
-			default -> Collections.emptyList();
-		};
+		if (type == TextureType.ENTITY && !customBulletModelTexture.equals(""))
+			return Collections.singletonList(customBulletModelTexture);
+		return type == TextureType.ITEM ? Collections.singletonList(texture) : Collections.emptyList();
 	}
 
 	@Override public Collection<Model> getModels() {
-		return Arrays.asList(getItemModel(), getEntityModel());
+		List<Model> models = new ArrayList<>();
+		if (!customModelName.equals("Normal"))
+			models.add(getItemModel());
+		if (!bulletModel.equals("Default"))
+			models.add(getEntityModel());
+		return models;
 	}
 
 	@Override public Collection<Sound> getSounds() {

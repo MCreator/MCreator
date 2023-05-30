@@ -38,7 +38,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class VillagerProfession extends GeneratableElement
-		implements IOtherModElementsDependent, IPOIProvider, IResourcesDependent {
+		implements IPOIProvider, IOtherModElementsDependent, IResourcesDependent {
 
 	public String displayName;
 	public MItemBlock pointOfInterest;

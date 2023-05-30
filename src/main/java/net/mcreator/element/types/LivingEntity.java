@@ -296,13 +296,20 @@ import java.util.*;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {
-		return type == TextureType.ENTITY ?
-				Arrays.asList(mobModelTexture, mobModelGlowTexture) :
-				Collections.emptyList();
+		if (type != TextureType.ENTITY)
+			return Collections.emptyList();
+		List<String> textures = new ArrayList<>();
+		textures.add(mobModelTexture);
+		if (!mobModelGlowTexture.equals(""))
+			textures.add(mobModelGlowTexture);
+		return textures;
 	}
 
 	@Override public Collection<Model> getModels() {
-		return Collections.singletonList(getEntityModel());
+		return Arrays.stream(LivingEntityGUI.builtinmobmodels)
+				.noneMatch(e -> e.getReadableName().equals(mobModelName)) ?
+				Collections.singletonList(getEntityModel()) :
+				Collections.emptyList();
 	}
 
 	@Override public Collection<Sound> getSounds() {

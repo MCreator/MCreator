@@ -377,13 +377,13 @@ import java.util.*;
 			return textures;
 		} else if (type == TextureType.ENTITY) {
 			List<String> textures = new ArrayList<>();
-			if (enableHelmet)
+			if (enableHelmet && !helmetModelTexture.equals("From armor"))
 				textures.add(helmetModelTexture);
-			if (enableBody)
+			if (enableBody && !bodyModelTexture.equals("From armor"))
 				textures.add(bodyModelTexture);
-			if (enableLeggings)
+			if (enableLeggings && !leggingsModelTexture.equals("From armor"))
 				textures.add(leggingsModelTexture);
-			if (enableBoots)
+			if (enableBoots && !bootsModelTexture.equals("From armor"))
 				textures.add(bootsModelTexture);
 			return textures;
 		}
@@ -393,20 +393,28 @@ import java.util.*;
 	@Override public Collection<Model> getModels() {
 		List<Model> models = new ArrayList<>();
 		if (enableHelmet) {
-			models.add(getHelmetModel());
-			models.add(getHelmetItemModel());
+			if (!Arrays.asList("Default", "From armor").contains(helmetModelName))
+				models.add(getHelmetModel());
+			if (!Arrays.asList("Normal", "Tool").contains(helmetItemCustomModelName))
+				models.add(getHelmetItemModel());
 		}
 		if (enableBody) {
-			models.add(getBodyModel());
-			models.add(getBodyItemModel());
+			if (!Arrays.asList("Default", "From armor").contains(bodyModelName))
+				models.add(getBodyModel());
+			if (!Arrays.asList("Normal", "Tool").contains(bodyItemCustomModelName))
+				models.add(getBodyItemModel());
 		}
 		if (enableLeggings) {
-			models.add(getLeggingsModel());
-			models.add(getLeggingsItemModel());
+			if (!Arrays.asList("Default", "From armor").contains(leggingsModelName))
+				models.add(getLeggingsModel());
+			if (!Arrays.asList("Normal", "Tool").contains(leggingsItemCustomModelName))
+				models.add(getLeggingsItemModel());
 		}
 		if (enableBoots) {
-			models.add(getBootsModel());
-			models.add(getBootsItemModel());
+			if (!Arrays.asList("Default", "From armor").contains(bootsModelName))
+				models.add(getBootsModel());
+			if (!Arrays.asList("Normal", "Tool").contains(bootsItemCustomModelName))
+				models.add(getBootsItemModel());
 		}
 		return models;
 	}

@@ -117,7 +117,8 @@ import java.util.List;
 	@Override public Collection<String> getTextures(TextureType type) {
 		if (type == TextureType.SCREEN) {
 			List<String> textures = new ArrayList<>();
-			textures.add(baseTexture);
+			if (!baseTexture.equals(""))
+				textures.add(baseTexture);
 			getComponentsOfType("Image").forEach(e -> textures.add(((Image) e).image));
 			return textures;
 		}

@@ -122,7 +122,9 @@ import java.util.*;
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {
-		return type == TextureType.SCREEN ? Collections.singletonList(background) : Collections.emptyList();
+		return type == TextureType.SCREEN && !background.equals("Default") ?
+				Collections.singletonList(background) :
+				Collections.emptyList();
 	}
 
 	@Override public String getXML() {

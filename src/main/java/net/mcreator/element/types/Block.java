@@ -418,7 +418,8 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public Collection<Model> getModels() {
-		return Collections.singletonList(getItemModel());
+		return !Arrays.asList("Normal", "Single texture", "Cross model", "Crop model", "Grass block")
+				.contains(customModelName) ? Collections.singletonList(getItemModel()) : Collections.emptyList();
 	}
 
 	@Override public Collection<Sound> getSounds() {

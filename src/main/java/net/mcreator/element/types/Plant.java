@@ -282,7 +282,9 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public Collection<Model> getModels() {
-		return Collections.singletonList(getItemModel());
+		return !Arrays.asList("Cross model", "Crop model").contains(customModelName) ?
+				Collections.singletonList(getItemModel()) :
+				Collections.emptyList();
 	}
 
 	@Override public Collection<Sound> getSounds() {

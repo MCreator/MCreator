@@ -214,7 +214,8 @@ import java.util.List;
 			getComponentsOfType("Image").forEach(e -> textures.add(((net.mcreator.element.parts.gui.Image) e).image));
 			getComponentsOfType("ImageButton").forEach(e -> {
 				textures.add(((ImageButton) e).image);
-				textures.add(((ImageButton) e).hoveredImage);
+				if (!((ImageButton) e).hoveredImage.equals(""))
+					textures.add(((ImageButton) e).hoveredImage);
 			});
 		}
 		return textures;

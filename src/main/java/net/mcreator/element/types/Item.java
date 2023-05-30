@@ -191,6 +191,8 @@ import java.util.*;
 	}
 
 	@Override public Collection<Model> getModels() {
-		return Collections.singletonList(getItemModel());
+		return !Arrays.asList("Normal", "Tool").contains(customModelName) ?
+				Collections.singletonList(getItemModel()) :
+				Collections.emptyList();
 	}
 }
