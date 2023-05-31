@@ -562,9 +562,9 @@ public class WorkspaceDialogs {
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
 				packageName.setText(workspace.getWorkspaceSettings().getModElementsPackage());
 
-				requiredMods.setTextList(new ArrayList<>(workspace.getWorkspaceSettings().requiredMods));
-				dependencies.setTextList(new ArrayList<>(workspace.getWorkspaceSettings().dependencies));
-				dependants.setTextList(new ArrayList<>(workspace.getWorkspaceSettings().dependants));
+				requiredMods.setTextList(workspace.getWorkspaceSettings().requiredMods);
+				dependencies.setTextList(workspace.getWorkspaceSettings().dependencies);
+				dependants.setTextList(workspace.getWorkspaceSettings().dependants);
 
 				for (String mcrdep : workspace.getWorkspaceSettings().getMCreatorDependenciesRaw()) {
 					JCheckBox box = apis.get(mcrdep);

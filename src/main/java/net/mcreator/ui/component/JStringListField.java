@@ -32,6 +32,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
@@ -120,9 +121,9 @@ public class JStringListField extends JPanel {
 		edit.setContentAreaFilled(false);
 		edit.setToolTipText(L10N.t("components.string_list.edit"));
 		edit.addActionListener(e -> {
-			List<String> newList = ListEditorDialog.open(parent, textList, validator, uniqueEntries);
-			if (newList != null)
-				setTextList(newList);
+			List<String> newTextList = ListEditorDialog.open(parent, textList, validator, uniqueEntries);
+			if (newTextList != null)
+				setTextList(newTextList);
 		});
 
 		TechnicalButton copy = new TechnicalButton(UIRES.get("16px.copyclipboard")) {
@@ -182,15 +183,15 @@ public class JStringListField extends JPanel {
 	}
 
 	/**
-	 * @param textList List of string entries to be stored in this component.
+	 * @param newTextList List of string entries to be stored in this component.
 	 */
-	public void setTextList(List<String> textList) {
-		if (this.textList.isEmpty() != textList.isEmpty())
-			index = textList.isEmpty() ? -1 : 0;
-		else if (!textList.isEmpty())
-			index = Math.min(index, textList.size() - 1);
+	public void setTextList(Collection<String> newTextList) {
+		if (this.textList.isEmpty() != newTextList.isEmpty())
+			index = newTextList.isEmpty() ? -1 : 0;
+		else if (!newTextList.isEmpty())
+			index = Math.min(index, newTextList.size() - 1);
 		this.textList.clear();
-		this.textList.addAll(textList);
+		this.textList.addAll(newTextList);
 		refreshVisibleText();
 	}
 
