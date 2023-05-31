@@ -162,12 +162,9 @@ public class WorkspaceDialogs {
 		WorkspaceDialogPanel(Window parent, @Nullable Workspace workspace) {
 			setLayout(new BorderLayout());
 
-			requiredMods = new JStringListField(parent, NamespaceValidator::new).setJoinEntries(true)
-					.setUniqueEntries(true);
-			dependencies = new JStringListField(parent, NamespaceValidator::new).setJoinEntries(true)
-					.setUniqueEntries(true);
-			dependants = new JStringListField(parent, NamespaceValidator::new).setJoinEntries(true)
-					.setUniqueEntries(true);
+			requiredMods = new JStringListField(parent, NamespaceValidator::new).setUniqueEntries(true);
+			dependencies = new JStringListField(parent, NamespaceValidator::new).setUniqueEntries(true);
+			dependants = new JStringListField(parent, NamespaceValidator::new).setUniqueEntries(true);
 
 			if (workspace != null) { // prevent modid autofill on existing workspaces
 				modIDManuallyEntered = true;
@@ -529,7 +526,9 @@ public class WorkspaceDialogs {
 			advancedSettings.add(L10N.label("dialog.workspace_settings.update_url"));
 			advancedSettings.add(updateJSON);
 
-			JPanel dependencySettings = new JPanel(new GridLayout(3, 2, 5, 2));
+			JPanel dependencySettings = new JPanel(new GridLayout(3, 2, 7, 5));
+			dependencySettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+			dependencySettings.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			dependencySettings.add(L10N.label("dialog.workspace_settings.required_mods"));
 			dependencySettings.add(requiredMods);
 			dependencySettings.add(L10N.label("dialog.workspace_settings.dependencies"));

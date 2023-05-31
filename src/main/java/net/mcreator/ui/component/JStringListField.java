@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.component;
 
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ListEditorDialog;
 import net.mcreator.ui.init.L10N;
@@ -31,8 +30,10 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.datatransfer.StringSelection;
-import java.util.ArrayList;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseWheelEvent;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -41,31 +42,11 @@ import java.util.function.Function;
  */
 public class JStringListField extends JPanel {
 
-	private final List<String> textList = new ArrayList<>();
-	private int index = -1;
-	private boolean joinEntries = false, uniqueEntries = false;
+	private final DefaultListModel<String> entriesListModel = new DefaultListModel<>();
 
-	private final JLabel label = new JLabel() {
-		@Override public String getToolTipText() {
-			return joinEntries || index < 0 ? null : L10N.t("components.string_list.item", index + 1);
-		}
-	};
+	private final TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit.gif"));
 
-	private final TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit.gif")) {
-		@Override public String getName() {
-			return "TechnicalButton";
-		}
-	};
-	private final TechnicalButton back = new TechnicalButton(UIRES.get("previous")) {
-		@Override public String getName() {
-			return "TechnicalButton";
-		}
-	};
-	private final TechnicalButton forward = new TechnicalButton(UIRES.get("next")) {
-		@Override public String getName() {
-			return "TechnicalButton";
-		}
-	};
+	private boolean uniqueEntries = false;
 
 	/**
 	 * Sole constructor.
@@ -76,42 +57,31 @@ public class JStringListField extends JPanel {
 	 */
 	public JStringListField(Window parent, @Nullable Function<VTextField, Validator> validator) {
 		super(new BorderLayout());
-		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
-		ComponentUtils.deriveFont(label, 16);
-		ToolTipManager.sharedInstance().registerComponent(label);
+		JList<String> entriesList = new JList<>(entriesListModel);
+		entriesList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
+		entriesList.setVisibleRowCount(1);
+		entriesList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		entriesList.setCellRenderer(new CustomListCellRenderer());
 
-		JScrollPane scrollPane = new JScrollPane(label);
-		scrollPane.setOpaque(false);
-		scrollPane.getViewport().setOpaque(false);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		scrollPane.setPreferredSize(new Dimension(200, 30));
-
-		back.setMargin(new Insets(0, 0, 0, 0));
-		back.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		back.setFocusPainted(false);
-		back.setContentAreaFilled(false);
-		back.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		back.addActionListener(e -> {
-			if (!joinEntries) {
-				if (index <= 0)
-					index = textList.size();
-				index--;
-				refreshVisibleText();
-			}
-		});
-
-		forward.setMargin(new Insets(0, 0, 0, 0));
-		forward.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		forward.setFocusPainted(false);
-		forward.setContentAreaFilled(false);
-		forward.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-		forward.addActionListener(e -> {
-			if (!joinEntries) {
-				index++;
-				if (index >= textList.size())
-					index = 0;
-				refreshVisibleText();
+		JScrollPane pane = new JScrollPane(PanelUtils.totalCenterInPanel(entriesList));
+		pane.setPreferredSize(getPreferredSize());
+		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
+		pane.setWheelScrollingEnabled(false);
+		pane.addMouseWheelListener(new MouseAdapter() {
+			@Override public void mouseWheelMoved(MouseWheelEvent evt) {
+				int value = pane.getHorizontalScrollBar().getValue();
+				if (evt.getWheelRotation() == 1) {
+					value += pane.getHorizontalScrollBar().getBlockIncrement() * evt.getScrollAmount();
+					if (value > pane.getHorizontalScrollBar().getMaximum())
+						value = pane.getHorizontalScrollBar().getMaximum();
+				} else if (evt.getWheelRotation() == -1) {
+					value -= pane.getHorizontalScrollBar().getBlockIncrement() * evt.getScrollAmount();
+					if (value < 0)
+						value = 0;
+				}
+				pane.getHorizontalScrollBar().setValue(value);
 			}
 		});
 
@@ -121,49 +91,32 @@ public class JStringListField extends JPanel {
 		edit.setContentAreaFilled(false);
 		edit.setToolTipText(L10N.t("components.string_list.edit"));
 		edit.addActionListener(e -> {
-			List<String> newTextList = ListEditorDialog.open(parent, textList, validator, uniqueEntries);
+			List<String> newTextList = ListEditorDialog.open(parent, getTextList(), validator, uniqueEntries);
 			if (newTextList != null)
 				setTextList(newTextList);
 		});
 
-		TechnicalButton copy = new TechnicalButton(UIRES.get("16px.copyclipboard")) {
-			@Override public String getName() {
-				return "TechnicalButton";
-			}
-		};
+		TechnicalButton copy = new TechnicalButton(UIRES.get("16px.copyclipboard"));
 		copy.setOpaque(false);
 		copy.setMargin(new Insets(0, 0, 0, 0));
 		copy.setBorder(BorderFactory.createEmptyBorder());
 		copy.setContentAreaFilled(false);
 		copy.setToolTipText(L10N.t("components.string_list.copy"));
 		copy.addActionListener(e -> Toolkit.getDefaultToolkit().getSystemClipboard()
-				.setContents(new StringSelection(String.join(System.lineSeparator(), textList)), null));
+				.setContents(new StringSelection(String.join(System.lineSeparator(), getTextList())), null));
 
-		JPanel controls = new JPanel();
-		controls.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		controls.add(edit);
-		controls.add(copy);
+		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, copy));
+		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+		controls.setOpaque(true);
+		controls.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		add("West", back);
-		add("Center", scrollPane);
-		add("East", PanelUtils.westAndEastElement(forward, PanelUtils.centerInPanel(controls)));
+		add("Center", pane);
+		add("East", controls);
 	}
 
 	@Override public void setEnabled(boolean b) {
 		super.setEnabled(b);
 		edit.setEnabled(b);
-	}
-
-	/**
-	 * @param joinEntries Whether string entries should be joined using commas and shown together.
-	 * @return This field instance.
-	 */
-	public JStringListField setJoinEntries(boolean joinEntries) {
-		this.joinEntries = joinEntries;
-		back.setVisible(!joinEntries);
-		forward.setVisible(!joinEntries);
-		refreshVisibleText();
-		return this;
 	}
 
 	/**
@@ -179,26 +132,36 @@ public class JStringListField extends JPanel {
 	 * @return List of string entries stored in this component.
 	 */
 	public List<String> getTextList() {
-		return textList;
+		return Collections.list(entriesListModel.elements());
 	}
 
 	/**
 	 * @param newTextList List of string entries to be stored in this component.
 	 */
 	public void setTextList(Collection<String> newTextList) {
-		if (this.textList.isEmpty() != newTextList.isEmpty())
-			index = newTextList.isEmpty() ? -1 : 0;
-		else if (!newTextList.isEmpty())
-			index = Math.min(index, newTextList.size() - 1);
-		this.textList.clear();
-		this.textList.addAll(newTextList);
-		refreshVisibleText();
+		entriesListModel.clear();
+		entriesListModel.addAll(newTextList);
 	}
 
-	private void refreshVisibleText() {
-		if (joinEntries)
-			label.setText(String.join(", ", textList));
-		else
-			label.setText(index >= 0 && index < textList.size() ? textList.get(index) : "");
+	private static class CustomListCellRenderer extends JLabel implements ListCellRenderer<String> {
+
+		@Override
+		public Component getListCellRendererComponent(JList<? extends String> list, String value, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			setOpaque(true);
+			setBackground(isSelected ?
+					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
+					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			setForeground(isSelected ?
+					(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT") :
+					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setBorder(BorderFactory.createCompoundBorder(
+					BorderFactory.createMatteBorder(0, 5, 0, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+					BorderFactory.createEmptyBorder(2, 5, 2, 5)));
+			setHorizontalAlignment(JLabel.CENTER);
+			setVerticalAlignment(JLabel.CENTER);
+			setText(value);
+			return this;
+		}
 	}
 }
