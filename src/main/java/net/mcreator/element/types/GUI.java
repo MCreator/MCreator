@@ -165,7 +165,8 @@ import java.util.List;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return getComponentsOfType("InputSlot").stream().map(e -> ((InputSlot) e).inputLimit).toList();
+		return getComponentsOfType("InputSlot").stream().map(e -> ((InputSlot) e).inputLimit)
+				.filter(e -> e != null && !e.isEmpty()).toList();
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
@@ -205,7 +206,7 @@ import java.util.List;
 			procedures.add(((OutputSlot) e).onTakenFromSlot);
 			procedures.add(((OutputSlot) e).onStackTransfer);
 		});
-		return procedures;
+		return filterProcedures(procedures);
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

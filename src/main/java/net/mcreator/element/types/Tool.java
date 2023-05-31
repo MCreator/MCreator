@@ -142,7 +142,7 @@ import java.util.*;
 		procedures.add(onEntitySwing);
 		if (hasGlow)
 			procedures.add(glowCondition);
-		return procedures;
+		return filterProcedures(procedures);
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

@@ -235,17 +235,16 @@ import java.util.stream.Collectors;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>();
+		List<MappableElement> elements = new ArrayList<>(canBePlacedOn);
 		elements.add(soundOnStep);
 		elements.add(creativePickItem);
-		elements.addAll(canBePlacedOn);
 		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
 			elements.add(creativeTab);
 		if (!useLootTableForDrops)
 			elements.add(customDrop);
 		if (doesGenerateInWorld())
 			elements.addAll(restrictionBiomes);
-		return elements;
+		return filterMappings(elements);
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
@@ -270,7 +269,7 @@ import java.util.stream.Collectors;
 		}
 		if (doesGenerateInWorld())
 			procedures.add(generateCondition);
-		return procedures;
+		return filterProcedures(procedures);
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

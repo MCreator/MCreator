@@ -176,15 +176,16 @@ import java.util.*;
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		List<MappableElement> elements = new ArrayList<>();
-		elements.add(dripParticle);
+		if (spawnParticles)
+			elements.add(dripParticle);
 		if (generateBucket && !creativeTab.getUnmappedValue().equals("No creative tab entry"))
 			elements.add(creativeTab);
 		return elements;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(onBlockAdded, onNeighbourChanges, onTickUpdate, onEntityCollides, onRandomUpdateEvent,
-				onDestroyedByExplosion, flowCondition, beforeReplacingBlock);
+		return filterProcedures(Arrays.asList(onBlockAdded, onNeighbourChanges, onTickUpdate, onEntityCollides,
+				onRandomUpdateEvent, onDestroyedByExplosion, flowCondition, beforeReplacingBlock));
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

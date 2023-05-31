@@ -273,7 +273,7 @@ import java.util.*;
 			elements.addAll(breedTriggerItems);
 		if (spawnThisMob)
 			elements.addAll(restrictionBiomes);
-		return elements;
+		return filterMappings(elements);
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
@@ -292,7 +292,7 @@ import java.util.*;
 		procedures.add(onInitialSpawn);
 		if (spawnThisMob)
 			procedures.add(spawningCondition);
-		return procedures;
+		return filterProcedures(procedures);
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

@@ -64,6 +64,6 @@ public class ItemExtension extends GeneratableElement implements IOtherModElemen
 			procedures.add(dispenseSuccessCondition);
 			procedures.add(dispenseResultItemstack);
 		}
-		return procedures;
+		return filterProcedures(procedures);
 	}
 }

@@ -106,7 +106,7 @@ import java.util.List;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Collections.singletonList(generateCondition);
+		return filterProcedures(Collections.singletonList(generateCondition));
 	}
 
 	@Override public String getXML() {

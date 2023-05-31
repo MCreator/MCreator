@@ -54,7 +54,7 @@ import java.util.List;
 				elements.add(entry.offer);
 			}
 		}
-		return elements;
+		return filterMappings(elements);
 	}
 
 	public static class CustomTradeEntry {

@@ -161,12 +161,13 @@ import java.util.*;
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
 		List<MappableElement> elements = new ArrayList<>();
-		elements.add(recipeRemainder);
 		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
 			elements.add(creativeTab);
+		if (stayInGridWhenCrafting)
+			elements.add(recipeRemainder);
 		if (isFood)
 			elements.add(eatResultItem);
-		return elements;
+		return filterMappings(elements);
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
@@ -183,7 +184,7 @@ import java.util.*;
 		procedures.add(onFinishUsingItem);
 		if (hasGlow)
 			procedures.add(glowCondition);
-		return procedures;
+		return filterProcedures(procedures);
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

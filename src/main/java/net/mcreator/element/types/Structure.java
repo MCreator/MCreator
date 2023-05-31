@@ -95,7 +95,7 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(generateCondition, onStructureGenerated);
+		return filterProcedures(Arrays.asList(generateCondition, onStructureGenerated));
 	}
 
 	@Override public Collection<String> getStructures() {

@@ -52,6 +52,6 @@ import java.util.Collection;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(onKeyPressed, onKeyReleased);
+		return filterProcedures(Arrays.asList(onKeyPressed, onKeyReleased));
 	}
 }

@@ -178,7 +178,7 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return switch (recipeType) {
+		return filterMappings(switch (recipeType) {
 			case "Crafting" -> {
 				List<MappableElement> elements = new ArrayList<>(Arrays.asList(recipeSlots));
 				elements.add(recipeReturnStack);
@@ -192,6 +192,6 @@ import java.util.*;
 			case "Smithing" -> Arrays.asList(smithingInputStack, smithingInputAdditionStack, smithingReturnStack);
 			case "Brewing" -> Arrays.asList(brewingInputStack, brewingIngredientStack, brewingReturnStack);
 			default -> Collections.emptyList();
-		};
+		});
 	}
 }

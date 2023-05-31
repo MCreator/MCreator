@@ -46,15 +46,12 @@ public class ReferencesFinder {
 			if (ge instanceof IXMLProvider provider && provider.getXML().contains(query)) {
 				elements.add(me);
 			} else if (ge instanceof IOtherModElementsDependent mod) {
-				if (mod.getUsedElementNames().contains(query)) {
+				if (mod.getUsedElementNames().contains(query))
 					elements.add(me);
-				} else if (mod.getUsedElementMappings().stream()
-						.anyMatch(e -> e != null && e.getUnmappedValue().equals(query))) {
+				else if (mod.getUsedElementMappings().stream().anyMatch(e -> e.getUnmappedValue().equals(query)))
 					elements.add(me);
-				} else if (mod.getUsedProcedures().stream()
-						.anyMatch(e -> e != null && element.getName().equals(e.getName()))) {
+				else if (mod.getUsedProcedures().stream().anyMatch(e -> element.getName().equals(e.getName())))
 					elements.add(me);
-				}
 			}
 		}
 

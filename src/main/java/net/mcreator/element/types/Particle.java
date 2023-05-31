@@ -116,7 +116,7 @@ public class Particle extends GeneratableElement implements IOtherModElementsDep
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Collections.singletonList(additionalExpiryCondition);
+		return filterProcedures(Collections.singletonList(additionalExpiryCondition));
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

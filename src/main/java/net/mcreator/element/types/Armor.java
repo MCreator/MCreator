@@ -358,7 +358,7 @@ import java.util.*;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(onHelmetTick, onBodyTick, onLeggingsTick, onBootsTick);
+		return filterProcedures(Arrays.asList(onHelmetTick, onBodyTick, onLeggingsTick, onBootsTick));
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

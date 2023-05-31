@@ -376,7 +376,7 @@ import java.util.stream.Collectors;
 			elements.addAll(restrictionBiomes);
 			elements.addAll(blocksToReplace);
 		}
-		return elements;
+		return filterMappings(elements);
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
@@ -405,7 +405,7 @@ import java.util.stream.Collectors;
 			procedures.add(bonemealSuccessCondition);
 			procedures.add(onBonemealSuccess);
 		}
-		return procedures;
+		return filterProcedures(procedures);
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

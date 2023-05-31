@@ -111,7 +111,7 @@ import java.util.List;
 			procedures.add(((Label) e).displayCondition);
 		});
 		getComponentsOfType("Image").forEach(e -> procedures.add(((Image) e).displayCondition));
-		return procedures;
+		return filterProcedures(procedures);
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

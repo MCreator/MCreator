@@ -78,7 +78,7 @@ import java.util.Collections;
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(onStarted, onActiveTick, onExpired, activeTickCondition);
+		return filterProcedures(Arrays.asList(onStarted, onActiveTick, onExpired, activeTickCondition));
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

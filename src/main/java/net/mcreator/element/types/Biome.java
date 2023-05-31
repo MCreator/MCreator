@@ -209,7 +209,7 @@ import java.util.*;
 		}
 		for (SpawnEntry entry : spawnEntries)
 			elements.add(entry.entity);
-		return elements;
+		return filterMappings(elements);
 	}
 
 	@Override public Collection<Sound> getSounds() {

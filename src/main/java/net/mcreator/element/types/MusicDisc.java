@@ -87,8 +87,8 @@ public class MusicDisc extends GeneratableElement
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(onRightClickedInAir, onRightClickedOnBlock, onCrafted, onEntityHitWith,
-				onItemInInventoryTick, onItemInUseTick, onStoppedUsing, onEntitySwing);
+		return filterProcedures(Arrays.asList(onRightClickedInAir, onRightClickedOnBlock, onCrafted, onEntityHitWith,
+				onItemInInventoryTick, onItemInUseTick, onStoppedUsing, onEntitySwing));
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {

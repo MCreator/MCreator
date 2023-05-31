@@ -144,12 +144,20 @@ import java.util.*;
 			elements.add(portalFrame);
 			elements.add(portalParticles);
 		}
-		return elements;
+		return filterMappings(elements);
 	}
 
 	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return Arrays.asList(onPlayerEntersDimension, onPlayerLeavesDimension, portalMakeCondition, portalUseCondition,
-				whenPortaTriggerlUsed, onPortalTickUpdate);
+		List<Procedure> procedures = new ArrayList<>();
+		procedures.add(onPlayerEntersDimension);
+		procedures.add(onPlayerLeavesDimension);
+		procedures.add(whenPortaTriggerlUsed);
+		procedures.add(onPortalTickUpdate);
+		if (enablePortal) {
+			procedures.add(portalMakeCondition);
+			procedures.add(portalUseCondition);
+		}
+		return filterProcedures(procedures);
 	}
 
 	@Override public Collection<String> getTextures(TextureType type) {
