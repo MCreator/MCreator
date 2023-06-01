@@ -47,7 +47,7 @@ public class ListEditorDialog {
 	 * @param validator     Function that returns a validator for each list entry, {@code null} means no validation.
 	 * @param uniqueEntries If {@code true}, duplicate list entries will not be allowed.
 	 * @return The resulting strings entries list after editing session is complete, or {@code null} if the operation
-	 * has been canceled (via cancel/close button).
+	 * has been canceled (via cancel/close button) or if validation failed for some entries.
 	 */
 	public static List<String> open(Window parent, Enumeration<String> textList,
 			@Nullable Function<VTextField, Validator> validator, boolean uniqueEntries) {
