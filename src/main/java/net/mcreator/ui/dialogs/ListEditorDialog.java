@@ -46,7 +46,8 @@ public class ListEditorDialog {
 	 * @param textList      List of string entries that are about to be edited.
 	 * @param validator     Function that returns a validator for each list entry, {@code null} means no validation.
 	 * @param uniqueEntries If {@code true}, duplicate list entries will not be allowed.
-	 * @return True if user chose OK option after editing strings list, false if it was cancel/close option.
+	 * @return The resulting strings entries list after editing session is complete, or {@code null} if the operation
+	 * has been canceled (via cancel/close button).
 	 */
 	public static List<String> open(Window parent, Enumeration<String> textList,
 			@Nullable Function<VTextField, Validator> validator, boolean uniqueEntries) {
@@ -121,7 +122,6 @@ public class ListEditorDialog {
 			entryList.add(this);
 
 			JButton remove = new JButton(UIRES.get("16px.clear"));
-			remove.setText(L10N.t("dialog.list_editor.remove"));
 			remove.addActionListener(e -> {
 				entryList.remove(this);
 				parent.remove(container);
