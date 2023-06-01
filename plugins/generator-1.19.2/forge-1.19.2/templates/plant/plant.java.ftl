@@ -144,23 +144,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
-	<#if data.specialInformation?has_content || hasProcedure(data.specialInformation)>
- 	@Override public void appendHoverText(ItemStack itemstack, BlockGetter blockGetter, List<Component> list, TooltipFlag flag) {
- 		super.appendHoverText(itemstack, blockGetter, list, flag);
- 		<#if hasProcedure(data.specialInformation)>
- 			Entity entity = itemstack.getEntityRepresentation();
- 			Level world = (Level) blockGetter;
- 			double x = entity != null ? entity.getX() : 0.0;
- 			double y = entity != null ? entity.getY() : 0.0;
- 			double z = entity != null ? entity.getZ() : 0.0;
- 			list.add(Component.literal(<@procedureOBJToStringCode data.specialInformation/>));
- 		<#else>
- 			<#list thelper.splitCommaSeparatedStringListWithEscapes(data.specialInformation.getFixedValue()) as entry>
- 			list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
- 			</#list>
- 		</#if>
- 	}
- 	</#if>
+	<@addSpecialInformation data.specialInformation, true/>
 
 	<#if data.fireSpreadSpeed != 0>
 	@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {
