@@ -186,18 +186,18 @@ public class WorkspaceDialogs {
 
 			if (workspace != null) {
 				JTabbedPane master = new JTabbedPane();
-				master.setBorder(BorderFactory.createEmptyBorder());
+				master.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 				master.setForeground(Color.white);
 				master.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
 					@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 					}
 				});
 				master.addTab(L10N.t("dialog.workspace_settings.tab.general"),
-						PanelUtils.centerInPanel(_basicSettings));
-				master.addTab(L10N.t("dialog.workspace_settings.tab.apis"), PanelUtils.centerInPanel(_external_apis));
+						PanelUtils.pullElementUp(_basicSettings));
+				master.addTab(L10N.t("dialog.workspace_settings.tab.apis"), PanelUtils.pullElementUp(_external_apis));
 				master.addTab(L10N.t("dialog.workspace_settings.tab.advanced"),
-						PanelUtils.centerInPanel(_advancedSettings));
-				add("Center", PanelUtils.centerInPanel(master));
+						PanelUtils.pullElementUp(_advancedSettings));
+				add("Center", master);
 			} else {
 				add("Center", _basicSettings);
 			}
@@ -386,7 +386,7 @@ public class WorkspaceDialogs {
 			generalSettings.add(L10N.label("dialog.workspace_settings.generator"));
 			generalSettings.add(generatorSelector);
 
-			_basicSettings.add(new JEmptyBox(5, 15));
+			_basicSettings.add(new JEmptyBox(5, 5));
 
 			JPanel descriptionSettings = new JPanel(new GridLayout(workspace != null ? 7 : 2, 2, 5, 2));
 			descriptionSettings.setBorder(
@@ -409,7 +409,7 @@ public class WorkspaceDialogs {
 				descriptionSettings.add(L10N.label("dialog.workspace_settings.license"));
 				descriptionSettings.add(license);
 
-				_basicSettings.add(new JEmptyBox(5, 15));
+				_basicSettings.add(new JEmptyBox(5, 5));
 
 				credits.setValidator(
 						new TextFieldValidatorJSON(credits, L10N.t("dialog.workspace_settings.credits.error"), true));
@@ -503,7 +503,6 @@ public class WorkspaceDialogs {
 						PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.workspace_settings.plugins_tip"),
 								explorePlugins));
 
-				_external_apis.add(new JEmptyBox(5, 15));
 				_external_apis.add(apiSettings);
 			}
 
@@ -513,7 +512,7 @@ public class WorkspaceDialogs {
 					BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 							L10N.t("dialog.workspace_settings.version_check")));
 			_advancedSettings.add(forgeVersionCheckPan);
-			_advancedSettings.add(new JEmptyBox(5, 15));
+			_advancedSettings.add(new JEmptyBox(5, 5));
 
 			JPanel advancedSettings = new JPanel(new GridLayout(3, 2, 5, 2));
 			advancedSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
@@ -537,7 +536,7 @@ public class WorkspaceDialogs {
 			dependencySettings.add(dependants);
 
 			if (workspace != null) {
-				_external_apis.add(new JEmptyBox(5, 15));
+				_external_apis.add(new JEmptyBox(5, 5));
 				_external_apis.add(dependencySettings);
 			}
 
