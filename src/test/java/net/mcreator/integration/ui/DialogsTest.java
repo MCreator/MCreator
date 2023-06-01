@@ -52,6 +52,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -168,7 +169,8 @@ public class DialogsTest {
 
 	@Test public void testListEditor() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> ListEditorDialog.open(mcreator,
-				Arrays.asList("info 1", "info 2", "test \\, is this", "another one"), null, false));
+				Collections.enumeration(Arrays.asList("info 1", "info 2", "test \\, is this", "another one")), null,
+				false));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {
