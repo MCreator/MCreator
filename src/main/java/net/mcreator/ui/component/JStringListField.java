@@ -42,7 +42,7 @@ import java.util.function.Function;
  */
 public class JStringListField extends JPanel {
 
-	private final DefaultListModel<String> entriesListModel = new DefaultListModel<>();
+	private final DefaultListModel<String> entriesModel = new DefaultListModel<>();
 
 	private final TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit.gif"));
 
@@ -58,7 +58,7 @@ public class JStringListField extends JPanel {
 	public JStringListField(Window parent, @Nullable Function<VTextField, Validator> validator) {
 		super(new BorderLayout());
 
-		JList<String> entriesList = new JList<>(entriesListModel);
+		JList<String> entriesList = new JList<>(entriesModel);
 		entriesList.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
 		entriesList.setVisibleRowCount(1);
 		entriesList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -91,7 +91,7 @@ public class JStringListField extends JPanel {
 		edit.setContentAreaFilled(false);
 		edit.setToolTipText(L10N.t("components.string_list.edit"));
 		edit.addActionListener(e -> {
-			List<String> newTextList = ListEditorDialog.open(parent, getTextList(), validator, uniqueEntries);
+			List<String> newTextList = ListEditorDialog.open(parent, entriesModel.elements(), validator, uniqueEntries);
 			if (newTextList != null)
 				setTextList(newTextList);
 		});
@@ -132,15 +132,15 @@ public class JStringListField extends JPanel {
 	 * @return List of string entries stored in this component.
 	 */
 	public List<String> getTextList() {
-		return Collections.list(entriesListModel.elements());
+		return Collections.list(entriesModel.elements());
 	}
 
 	/**
 	 * @param newTextList List of string entries to be stored in this component.
 	 */
 	public void setTextList(Collection<String> newTextList) {
-		entriesListModel.clear();
-		entriesListModel.addAll(newTextList);
+		entriesModel.clear();
+		entriesModel.addAll(newTextList);
 	}
 
 	private static class CustomListCellRenderer extends JLabel implements ListCellRenderer<String> {

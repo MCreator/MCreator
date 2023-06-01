@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
@@ -47,15 +48,15 @@ public class ListEditorDialog {
 	 * @param uniqueEntries If {@code true}, duplicate list entries will not be allowed.
 	 * @return True if user chose OK option after editing strings list, false if it was cancel/close option.
 	 */
-	public static List<String> open(Window parent, List<String> textList,
+	public static List<String> open(Window parent, Enumeration<String> textList,
 			@Nullable Function<VTextField, Validator> validator, boolean uniqueEntries) {
 		AtomicReference<List<String>> retVal = new AtomicReference<>();
 		MCreatorDialog dialog = new MCreatorDialog(parent, L10N.t("dialog.list_editor.title"), true);
 
 		List<ListEntry> entryList = new ArrayList<>();
 		JPanel entries = new JPanel(new GridLayout(0, 1, 2, 3));
-		for (String entry : textList)
-			new ListEntry(entryList, entries, entry, validator, uniqueEntries);
+		while (textList.hasMoreElements())
+			new ListEntry(entryList, entries, textList.nextElement(), validator, uniqueEntries);
 
 		JButton add = new JButton(UIRES.get("16px.add.gif"));
 		add.setText(L10N.t("dialog.list_editor.add"));
