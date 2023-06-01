@@ -42,6 +42,7 @@ import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -119,8 +120,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JSpinner rangedAttackRadius = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 0.1));
 
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
-	private final JSpinner minNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
-	private final JSpinner maxNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
+	private final JMinMaxSpinner numberOfMobsPerGroup = new JMinMaxSpinner(4, 4, 1, 1000, 1);
 
 	private final JSpinner modelWidth = new JSpinner(new SpinnerNumberModel(0.6, 0, 1024, 0.1));
 	private final JSpinner modelHeight = new JSpinner(new SpinnerNumberModel(1.8, 0, 1024, 0.1));
@@ -347,6 +347,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
+		numberOfMobsPerGroup.setAllowEqualValues(true);
 
 		mobModelTexture.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
@@ -788,7 +789,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane4.setOpaque(false);
 
-		JPanel selp = new JPanel(new GridLayout(8, 2, 30, 2));
+		JPanel selp = new JPanel(new GridLayout(7, 2, 30, 2));
 
 		ComponentUtils.deriveFont(mobName, 16);
 
@@ -817,12 +818,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		selp.add(mobSpawningType);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_group_size"),
-				L10N.label("elementgui.living_entity.min_spawn_group_size")));
-		selp.add(minNumberOfMobsPerGroup);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_group_size"),
-				L10N.label("elementgui.living_entity.max_spawn_group_size")));
-		selp.add(maxNumberOfMobsPerGroup);
+				L10N.label("elementgui.living_entity.spawn_group_size")));
+		selp.add(numberOfMobsPerGroup);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
 				L10N.label("elementgui.living_entity.restrict_to_biomes")));
@@ -945,11 +942,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
 						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
 						.collect(Collectors.toList()));
-		} else if (page == 6) {
-			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("validator.minimal_lower_than_maximal", L10N.t("elementgui.living_entity.group_size")));
-			}
 		}
 		return new AggregatedValidationResult.PASS();
 	}
@@ -1018,8 +1010,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		disableCollisions.setSelected(livingEntity.disableCollisions);
 		aiBase.setSelectedItem(livingEntity.aiBase);
 		spawningProbability.setValue(livingEntity.spawningProbability);
-		minNumberOfMobsPerGroup.setValue(livingEntity.minNumberOfMobsPerGroup);
-		maxNumberOfMobsPerGroup.setValue(livingEntity.maxNumberOfMobsPerGroup);
+		numberOfMobsPerGroup.setMinValue(livingEntity.minNumberOfMobsPerGroup);
+		numberOfMobsPerGroup.setMaxValue(livingEntity.maxNumberOfMobsPerGroup);
 		spawnInDungeons.setSelected(livingEntity.spawnInDungeons);
 		restrictionBiomes.setListElements(livingEntity.restrictionBiomes);
 		spawningCondition.setSelectedProcedure(livingEntity.spawningCondition);
@@ -1162,8 +1154,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.spawningProbability = (int) spawningProbability.getValue();
 		livingEntity.mobSpawningType = (String) mobSpawningType.getSelectedItem();
 		livingEntity.rangedItemType = (String) rangedItemType.getSelectedItem();
-		livingEntity.minNumberOfMobsPerGroup = (int) minNumberOfMobsPerGroup.getValue();
-		livingEntity.maxNumberOfMobsPerGroup = (int) maxNumberOfMobsPerGroup.getValue();
+		livingEntity.minNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMinValue();
+		livingEntity.maxNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMaxValue();
 		livingEntity.restrictionBiomes = restrictionBiomes.getListElements();
 		livingEntity.spawnInDungeons = spawnInDungeons.isSelected();
 		livingEntity.modelWidth = (double) modelWidth.getValue();
