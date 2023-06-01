@@ -3,8 +3,8 @@
 <#-- Item-related triggers -->
 <#macro addSpecialInformation procedure="" isBlock=false>
 	<#if procedure?has_content || hasProcedure(procedure)>
-		@Override public void appendHoverText(ItemStack itemstack, <#if isBlock>BlockGetter blockGetter<#else>Level world</#if>, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, <#if isBlock>blockGetter<#else>world</#if>, list, flag);
+		@Override public void appendHoverText(ItemStack itemstack, <#if isBlock>BlockGetter<#else>Level</#if> world, List<Component> list, TooltipFlag flag) {
+		super.appendHoverText(itemstack, world, list, flag);
 		<#if hasProcedure(procedure)>
 			Entity entity = itemstack.getEntityRepresentation();
 			double x = entity != null ? entity.getX() : 0.0;
