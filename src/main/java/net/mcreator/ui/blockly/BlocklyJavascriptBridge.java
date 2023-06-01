@@ -280,7 +280,7 @@ public class BlocklyJavascriptBridge {
 		if (me != null && me.getGeneratableElement() instanceof Procedure procedure) {
 			Optional<String> dependency = procedure.getDependencies().stream()
 					.filter(e -> e.getName().equals(dependencyName)).map(Dependency::getRawType).findFirst();
-			if (dependency.isPresent())
+			if (dependency.isPresent() && VariableTypeLoader.INSTANCE.fromName(dependency.get()) != null)
 				return VariableTypeLoader.INSTANCE.fromName(dependency.get()).getBlocklyVariableType();
 		}
 		return null;
