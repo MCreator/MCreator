@@ -21,7 +21,6 @@ package net.mcreator.ui.component;
 
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ListEditorDialog;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -29,7 +28,6 @@ import net.mcreator.ui.validation.component.VTextField;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.datatransfer.StringSelection;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.util.Collection;
@@ -89,23 +87,13 @@ public class JStringListField extends JPanel {
 		edit.setMargin(new Insets(0, 0, 0, 0));
 		edit.setBorder(BorderFactory.createEmptyBorder());
 		edit.setContentAreaFilled(false);
-		edit.setToolTipText(L10N.t("components.string_list.edit"));
 		edit.addActionListener(e -> {
 			List<String> newTextList = ListEditorDialog.open(parent, entriesModel.elements(), validator, uniqueEntries);
 			if (newTextList != null)
 				setTextList(newTextList);
 		});
 
-		TechnicalButton copy = new TechnicalButton(UIRES.get("16px.copyclipboard"));
-		copy.setOpaque(false);
-		copy.setMargin(new Insets(0, 0, 0, 0));
-		copy.setBorder(BorderFactory.createEmptyBorder());
-		copy.setContentAreaFilled(false);
-		copy.setToolTipText(L10N.t("components.string_list.copy"));
-		copy.addActionListener(e -> Toolkit.getDefaultToolkit().getSystemClipboard()
-				.setContents(new StringSelection(String.join(System.lineSeparator(), getTextList())), null));
-
-		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, copy));
+		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(edit));
 		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 		controls.setOpaque(true);
 		controls.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
