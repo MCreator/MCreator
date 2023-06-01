@@ -56,20 +56,29 @@ public class ListEditorDialog {
 
 		List<ListEntry> entryList = new ArrayList<>();
 		JPanel entries = new JPanel(new GridLayout(0, 1, 2, 3));
-		while (textList.hasMoreElements())
+
+		boolean anyAdded = false;
+		while (textList.hasMoreElements()) {
 			new ListEntry(entryList, entries, textList.nextElement(), validator, uniqueEntries);
+			anyAdded = true;
+		}
+
+		// If no entries present, add one to "guide" the user
+		if (!anyAdded) {
+			new ListEntry(entryList, entries, "", validator, uniqueEntries);
+		}
 
 		JButton add = new JButton(UIRES.get("16px.add.gif"));
 		add.setText(L10N.t("dialog.list_editor.add"));
 		add.addActionListener(e -> new ListEntry(entryList, entries, "", validator, uniqueEntries));
 
-		JScrollPane scrollList = new JScrollPane(PanelUtils.pullElementUp(entries));
-		scrollList.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollList.getVerticalScrollBar().setUnitIncrement(15);
+		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(entries));
+		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPane.getVerticalScrollBar().setUnitIncrement(15);
 
 		JPanel listPanel = new JPanel(new BorderLayout());
-		listPanel.add("North", PanelUtils.join(new JLabel(), add, new JLabel()));
-		listPanel.add("Center", scrollList);
+		listPanel.add("North", PanelUtils.join(FlowLayout.LEFT, add));
+		listPanel.add("Center", scrollPane);
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -90,7 +99,7 @@ public class ListEditorDialog {
 		cancel.addActionListener(e -> dialog.setVisible(false));
 
 		dialog.getContentPane().add(PanelUtils.centerAndSouthElement(listPanel, PanelUtils.join(ok, cancel)));
-		dialog.setSize(420, 350);
+		dialog.setSize(470, 350);
 		dialog.setLocationRelativeTo(parent);
 		dialog.setVisible(true);
 
@@ -102,9 +111,11 @@ public class ListEditorDialog {
 
 		private ListEntry(List<ListEntry> entryList, JPanel parent, String value,
 				@Nullable Function<VTextField, Validator> validator, boolean uniqueEntries) {
-			super(new BorderLayout(5, 0));
+			super(new BorderLayout(0, 0));
 			setOpaque(false);
 			setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+
+			valueField.setPreferredSize(new Dimension(0, 28));
 
 			Validator lev = validator == null ? null : validator.apply(valueField);
 			if (uniqueEntries)
@@ -121,7 +132,9 @@ public class ListEditorDialog {
 			parent.add(container);
 			entryList.add(this);
 
-			JButton remove = new JButton(UIRES.get("16px.clear"));
+			JButton remove = new JButton(UIRES.get("18px.remove"));
+			remove.setOpaque(false);
+			remove.setMargin(new Insets(0, 3, 0, 3));
 			remove.addActionListener(e -> {
 				entryList.remove(this);
 				parent.remove(container);
