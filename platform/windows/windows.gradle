@@ -5,8 +5,8 @@ launch4j {
     mainClassName = 'net.mcreator.Launcher'
     dontWrapJar = true
     copyConfigurable = []
-    classpath.set(["./lib/*"])
-    jvmOptions.set(["--add-opens=java.base/java.lang=ALL-UNNAMED"])
+    classpath = ["./lib/*"]
+    jvmOptions = ["--add-opens=java.base/java.lang=ALL-UNNAMED"]
     libraryDir = "null"
     stayAlive = true
 
