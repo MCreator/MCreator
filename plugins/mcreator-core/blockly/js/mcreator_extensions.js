@@ -71,12 +71,14 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
                 this.getInput('arg' + i).setCheck(javabridge.getDependencyType(
                     this.getFieldValue('procedure'), this.getFieldValue('name' + i)));
                 const newType = this.getInput('arg' + i).connection.getCheck();
-                if (!newType && this.getInputTargetBlock('arg' + i) &&
+                // Disable the block if procedure is defined and invalid dependencies are present
+                if ((!this.getFieldValue('procedure') || this.getFieldValue('procedure') !== '') &&
+                    !newType && this.getInputTargetBlock('arg' + i) &&
                     this.getInputTargetBlock('arg' + i).outputConnection.getCheck()) {
                     valid = false;
                 }
                 // Fire change event if block existed earlier and previous input type was different
-                if (changeEvent.type == Blockly.Events.BLOCK_CHANGE &&
+                if (changeEvent.type === Blockly.Events.BLOCK_CHANGE &&
                     JSON.stringify(prevType) !== JSON.stringify(newType)) {
                     Blockly.Events.fire(new InputCheckChange(this, 'arg' + i, prevType, newType));
                 }
