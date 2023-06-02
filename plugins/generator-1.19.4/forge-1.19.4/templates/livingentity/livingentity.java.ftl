@@ -81,6 +81,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world<#if data.hasVillagerTrade()>, VillagerType villagerType</#if>) {
     	super(type, world<#if data.hasVillagerTrade()>, villagerType</#if>);
+		maxUpStep = ${data.stepHeight}f;
 		xpReward = ${data.xpAmount};
 		setNoAi(${(!data.hasAI)});
 
@@ -203,6 +204,16 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		return false;
 	}
     </#if>
+
+	<#if data.mobModelName == "Biped">
+	@Override public double getMyRidingOffset() {
+		return -0.35D;
+	}
+	<#elseif data.mobModelName == "Silverfish">
+	@Override public double getMyRidingOffset() {
+		return 0.1D;
+	}
+	</#if>
 
 	<#if data.mountedYOffset != 0>
 	@Override public double getPassengersRidingOffset() {
@@ -848,7 +859,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.setRot(this.getYRot(), this.getXRot());
 				this.yBodyRot = entity.getYRot();
 				this.yHeadRot = entity.getYRot();
-				this.maxUpStep = 1.0F;
 
 				if (entity instanceof LivingEntity passenger) {
 					this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
@@ -877,7 +887,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.calculateEntityAnimation(true);
 				return;
 			}
-			this.maxUpStep = 0.5F;
 			</#if>
 
 			super.travel(dir);

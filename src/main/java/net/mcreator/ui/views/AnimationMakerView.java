@@ -263,9 +263,11 @@ public class AnimationMakerView extends ViewBase {
 							p1.ok();
 						else {
 							p1.err();
-							dial.setTopInfoText(L10N.t("dialog.animation_maker.gif_format_unsupported"));
-							Thread.sleep(3500);
 							dial.hideAll();
+
+							JOptionPane.showMessageDialog(fra, L10N.t("dialog.animation_maker.gif_format_unsupported"),
+									L10N.t("common.warning"), JOptionPane.ERROR_MESSAGE);
+
 							return;
 						}
 						dial.refreshDisplay();
