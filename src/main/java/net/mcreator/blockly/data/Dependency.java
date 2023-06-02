@@ -19,6 +19,7 @@
 package net.mcreator.blockly.data;
 
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -48,6 +49,10 @@ public class Dependency implements Comparable<Dependency> {
 
 	@Override public int hashCode() {
 		return name.hashCode();
+	}
+
+	@Override public String toString() {
+		return L10N.t("common.dependency", name, type);
 	}
 
 	public String getType(Workspace workspace) {
