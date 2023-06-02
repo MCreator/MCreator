@@ -112,6 +112,10 @@ public class GradleConsole extends JPanel {
 					try {
 						ProjectJarManager jarManager = ref.getGenerator().getProjectJarManager();
 						if (jarManager != null) {
+							if (fileurl.contains("/")) { // we don't have just FQDN but also module definition which we need to remove
+								fileurl = fileurl.substring(fileurl.lastIndexOf("/") + 1);
+							}
+
 							DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(
 									ref.getWorkspace(), fileurl, "mod.mcreator", jarManager);
 

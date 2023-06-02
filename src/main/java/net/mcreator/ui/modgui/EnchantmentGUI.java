@@ -23,6 +23,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -51,8 +52,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	private final JComboBox<String> rarity = new JComboBox<>(
 			new String[] { "COMMON", "UNCOMMON", "RARE", "VERY_RARE" });
 
-	private final JSpinner minLevel = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
-	private final JSpinner maxLevel = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
+	private final JMinMaxSpinner level = new JMinMaxSpinner(1, 1, 0, 64000, 1);
 
 	private final JSpinner damageModifier = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 
@@ -74,6 +74,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	}
 
 	@Override protected void initGUI() {
+		level.setAllowEqualValues(true);
 		compatibleItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems, true);
 		compatibleEnchantments = new EnchantmentListField(mcreator);
 
@@ -93,7 +94,7 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 
 		ComponentUtils.deriveFont(name, 16);
 
-		JPanel selp = new JPanel(new GridLayout(13, 2, 100, 2));
+		JPanel selp = new JPanel(new GridLayout(12, 2, 100, 2));
 		selp.setOpaque(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/name"),
@@ -108,13 +109,9 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 				L10N.label("elementgui.enchantment.rarity")));
 		selp.add(rarity);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/min_level"),
-				L10N.label("elementgui.enchantment.min_level")));
-		selp.add(minLevel);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/max_level"),
-				L10N.label("elementgui.enchantment.max_level")));
-		selp.add(maxLevel);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/level"),
+				L10N.label("elementgui.enchantment.level")));
+		selp.add(level);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("enchantment/damage_modifier"),
 				L10N.label("elementgui.enchantment.damage_modifier")));
@@ -171,10 +168,6 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if ((int) minLevel.getValue() > (int) maxLevel.getValue()) {
-			return new AggregatedValidationResult.FAIL(
-					L10N.t("validator.minimal_lower_than_maximal", L10N.t("elementgui.enchantment.level")));
-		}
 		return new AggregatedValidationResult(page1group);
 	}
 
@@ -182,8 +175,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		name.setText(enchantment.name);
 		type.setSelectedItem(enchantment.type);
 		rarity.setSelectedItem(enchantment.rarity);
-		minLevel.setValue(enchantment.minLevel);
-		maxLevel.setValue(enchantment.maxLevel);
+		level.setMinValue(enchantment.minLevel);
+		level.setMaxValue(enchantment.maxLevel);
 		damageModifier.setValue(enchantment.damageModifier);
 		compatibleEnchantments.setListElements(enchantment.compatibleEnchantments);
 		compatibleEnchantments.setExclusionMode(enchantment.excludeEnchantments);
@@ -201,8 +194,8 @@ public class EnchantmentGUI extends ModElementGUI<Enchantment> {
 		enchantment.name = name.getText();
 		enchantment.type = (String) type.getSelectedItem();
 		enchantment.rarity = (String) rarity.getSelectedItem();
-		enchantment.minLevel = (int) minLevel.getValue();
-		enchantment.maxLevel = (int) maxLevel.getValue();
+		enchantment.minLevel = level.getIntMinValue();
+		enchantment.maxLevel = level.getIntMaxValue();
 		enchantment.damageModifier = (int) damageModifier.getValue();
 		enchantment.compatibleEnchantments = compatibleEnchantments.getListElements();
 		enchantment.excludeEnchantments = compatibleEnchantments.isExclusionMode();
