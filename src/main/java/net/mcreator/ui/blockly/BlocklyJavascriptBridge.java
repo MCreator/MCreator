@@ -303,11 +303,14 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadCustomEntities(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "entitydata_logic":
-			return ElementUtil.loadEntityDataListFromCustomEntity(workspace, source, "Logic");
+			retval = ElementUtil.loadEntityDataListFromCustomEntity(workspace, source, "Logic");
+			break;
 		case "entitydata_number":
-			return ElementUtil.loadEntityDataListFromCustomEntity(workspace, source, "Number");
+			retval = ElementUtil.loadEntityDataListFromCustomEntity(workspace, source, "Number");
+			break;
 		case "entitydata_string":
-			return ElementUtil.loadEntityDataListFromCustomEntity(workspace, source, "String");
+			retval = ElementUtil.loadEntityDataListFromCustomEntity(workspace, source, "String");
+			break;
 		case "gui":
 			retval = ElementUtil.loadBasicGUI(workspace);
 			break;

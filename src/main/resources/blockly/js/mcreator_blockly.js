@@ -126,14 +126,20 @@ function appendAutoReloadingDropDown(sourceName, sourceList, targetName, targetL
         const sourceFromXml = source.fromXml;
         source.fromXml = function (fieldElement) {
             sourceFromXml.call(this, fieldElement);
-            dummy.removeField(targetName);
-            dummy.appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(targetData.call(this))), targetName);
+            if (this.getValue()) {
+                dummy.removeField(targetName);
+                dummy.appendField(new Blockly.FieldDropdown(
+                    arrayToBlocklyDropDownArray(targetData.call(this))), targetName);
+            }
         };
         const sourceOnItemSelected = source.onItemSelected_;
         source.onItemSelected_ = function (menu, menuItem) {
             sourceOnItemSelected.call(this, menu, menuItem);
-            dummy.removeField(targetName);
-            dummy.appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(targetData.call(this))), targetName);
+            if (this.getValue()) {
+                dummy.removeField(targetName);
+                dummy.appendField(new Blockly.FieldDropdown(
+                    arrayToBlocklyDropDownArray(targetData.call(this))), targetName);
+            }
         };
     };
 }
