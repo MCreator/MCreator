@@ -268,22 +268,28 @@ public class BlocklyJavascriptBridge {
 		ext_triggers.put(external_trigger.getID(), external_trigger.getName());
 	}
 
-	@SuppressWarnings("unused") public String[] getAllDependencies(String procedureName) {
+	@SuppressWarnings("unused") public boolean hasDependency(String procedureName, String dependencyName) {
 		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
-		return me != null && me.getGeneratableElement() instanceof Procedure procedure ?
-				procedure.getDependencies().stream().map(Object::toString).toArray(String[]::new) :
-				new String[0];
+		return me != null && me.getGeneratableElement() instanceof Procedure procedure && procedure.getDependencies()
+				.stream().anyMatch(e -> e.getName().equals(dependencyName));
 	}
 
 	@SuppressWarnings("unused") public String getDependencyType(String procedureName, String dependencyName) {
 		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
 		if (me != null && me.getGeneratableElement() instanceof Procedure procedure) {
-			Optional<String> dependency = procedure.getDependencies().stream()
-					.filter(e -> e.getName().equals(dependencyName)).map(Dependency::getRawType).findFirst();
-			if (dependency.isPresent() && VariableTypeLoader.INSTANCE.fromName(dependency.get()) != null)
-				return VariableTypeLoader.INSTANCE.fromName(dependency.get()).getBlocklyVariableType();
+			Optional<Dependency> dependency = procedure.getDependencies().stream()
+					.filter(e -> e.getName().equals(dependencyName)).findFirst();
+			if (dependency.isPresent() && VariableTypeLoader.INSTANCE.fromName(dependency.get().getRawType()) != null)
+				return VariableTypeLoader.INSTANCE.fromName(dependency.get().getRawType()).getBlocklyVariableType();
 		}
 		return null;
+	}
+
+	@SuppressWarnings("unused") public String[] getAllDependencies(String procedureName) {
+		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
+		return me != null && me.getGeneratableElement() instanceof Procedure procedure ?
+				procedure.getDependencies().stream().map(Object::toString).toArray(String[]::new) :
+				new String[0];
 	}
 
 	@SuppressWarnings("unused") public String t(String key) {

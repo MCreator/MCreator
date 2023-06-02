@@ -65,15 +65,16 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
             // Makes it so the block change and the unplug event get undone together.
             Blockly.Events.setGroup(changeEvent.group);
             let valid = true;
+            const procedure = this.getFieldValue('procedure');
             for (var i = 0; this.getField('name' + i); i++) {
                 const prevType = this.getInput('arg' + i).connection.getCheck();
                 // Set input checks from dependency type
                 this.getInput('arg' + i).setCheck(javabridge.getDependencyType(
                     this.getFieldValue('procedure'), this.getFieldValue('name' + i)));
                 const newType = this.getInput('arg' + i).connection.getCheck();
-                // Disable the block if procedure is defined and invalid dependencies are present
-                if ((!this.getFieldValue('procedure') || this.getFieldValue('procedure') !== '') &&
-                    !newType && this.getInputTargetBlock('arg' + i) &&
+                // Disable the block if procedure is defined and invalid used dependencies are present
+                if (javabridge.hasDependency(procedure, this.getFieldValue('name' + i)) &&
+                    (!procedure || procedure !== '') && !newType && this.getInputTargetBlock('arg' + i) &&
                     this.getInputTargetBlock('arg' + i).outputConnection.getCheck()) {
                     valid = false;
                 }
