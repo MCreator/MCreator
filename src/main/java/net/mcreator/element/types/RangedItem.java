@@ -40,8 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class RangedItem extends GeneratableElement
-		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture,
-		ISpecialInformationHolder {
+		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
 	public String texture;
@@ -126,14 +125,6 @@ import java.util.Map;
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		return List.of(BaseType.ITEM, BaseType.ENTITY);
-	}
-
-	@Override public StringProcedure getSpecialInformation() {
-		return specialInformation;
-	}
-
-	@Override public void setSpecialInformation(String name, String fixedValue) {
-		specialInformation = new StringProcedure(name, fixedValue);
 	}
 
 	@Override public List<MCItem> providedMCItems() {

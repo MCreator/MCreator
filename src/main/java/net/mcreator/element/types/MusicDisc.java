@@ -24,7 +24,6 @@ import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.interfaces.IItem;
-import net.mcreator.element.types.interfaces.ISpecialInformationHolder;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -34,7 +33,7 @@ import net.mcreator.workspace.elements.ModElement;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class MusicDisc extends GeneratableElement implements IItem, ITabContainedElement, ISpecialInformationHolder {
+public class MusicDisc extends GeneratableElement implements IItem, ITabContainedElement {
 
 	public String name;
 	public String texture;
@@ -67,14 +66,6 @@ public class MusicDisc extends GeneratableElement implements IItem, ITabContaine
 
 	@Override public TabEntry getCreativeTab() {
 		return creativeTab;
-	}
-
-	@Override public StringProcedure getSpecialInformation() {
-		return specialInformation;
-	}
-
-	@Override public void setSpecialInformation(String name, String fixedValue) {
-		specialInformation = new StringProcedure(name, fixedValue);
 	}
 
 	@Override public List<MCItem> providedMCItems() {

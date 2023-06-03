@@ -26,7 +26,6 @@ import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.element.types.interfaces.IBlock;
-import net.mcreator.element.types.interfaces.ISpecialInformationHolder;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -41,8 +40,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Fluid extends GeneratableElement
-		implements IBlock, ITabContainedElement, ISpecialInformationHolder {
+@SuppressWarnings("unused") public class Fluid extends GeneratableElement implements IBlock, ITabContainedElement {
 
 	public String name;
 	public String bucketName;
@@ -144,14 +142,6 @@ import java.util.List;
 			baseTypes.add(BaseType.ITEM);
 
 		return baseTypes;
-	}
-
-	@Override public StringProcedure getSpecialInformation() {
-		return specialInformation;
-	}
-
-	@Override public void setSpecialInformation(String name, String fixedValue) {
-		specialInformation = new StringProcedure(name, fixedValue);
 	}
 
 	@Override public List<MCItem> providedMCItems() {

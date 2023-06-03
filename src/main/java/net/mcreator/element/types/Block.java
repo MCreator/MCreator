@@ -43,7 +43,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
-		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox, ISpecialInformationHolder {
+		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public String texture;
 	public String textureTop;
@@ -352,14 +352,6 @@ import java.util.stream.Collectors;
 			baseTypes.add(BaseType.BLOCKENTITY);
 
 		return baseTypes;
-	}
-
-	@Override public StringProcedure getSpecialInformation() {
-		return specialInformation;
-	}
-
-	@Override public void setSpecialInformation(String name, String fixedValue) {
-		specialInformation = new StringProcedure(name, fixedValue);
 	}
 
 }

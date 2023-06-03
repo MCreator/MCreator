@@ -23,7 +23,10 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
-import net.mcreator.element.types.interfaces.*;
+import net.mcreator.element.types.interfaces.IItem;
+import net.mcreator.element.types.interfaces.IItemWithModel;
+import net.mcreator.element.types.interfaces.IItemWithTexture;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -37,7 +40,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class Item extends GeneratableElement
-		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture, ISpecialInformationHolder {
+		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
 	public String texture;
@@ -158,13 +161,5 @@ import java.util.Map;
 
 	public boolean hasEatResultItem() {
 		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
-	}
-
-	@Override public StringProcedure getSpecialInformation() {
-		return specialInformation;
-	}
-
-	@Override public void setSpecialInformation(String name, String fixedValue) {
-		specialInformation = new StringProcedure(name, fixedValue);
 	}
 }

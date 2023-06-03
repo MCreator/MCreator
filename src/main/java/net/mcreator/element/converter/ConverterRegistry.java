@@ -51,7 +51,7 @@ public class ConverterRegistry {
 
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
 		put(ModElementType.ADVANCEMENT, List.of(new AchievementFixer(), new AdvancementTextureConverter()));
-		put(ModElementType.ARMOR, List.of(new ArmorTexturesConverter(), new ArmorSpecialInformationConverter()));
+		put(ModElementType.ARMOR, List.of(new ArmorTexturesConverter(), new SpecialInformationConverter<Armor>()));
 		put(ModElementType.BIOME, List.of(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
 				new BiomeFrozenTopLayerConverter(), new BiomeGenParametersConverter(),
 				new BiomeCustomFeaturesConverter()));
