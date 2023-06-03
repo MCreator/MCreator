@@ -25,6 +25,7 @@ import net.mcreator.io.Transliteration;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -69,8 +70,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 	private final JSpinner spawnOffsetX = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
 	private final JSpinner spawnOffsetZ = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
 
-	private final JSpinner minCountPerChunk = new JSpinner(new SpinnerNumberModel(1, 1, 16, 1));
-	private final JSpinner maxCountPerChunk = new JSpinner(new SpinnerNumberModel(1, 1, 16, 1));
+	private final JMinMaxSpinner countPerChunk = new JMinMaxSpinner(1, 1, 1, 16, 1);
 
 	private BiomeListField restrictionBiomes;
 	private MCItemListField restrictionBlocks;
@@ -106,6 +106,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		restrictionBiomes = new BiomeListField(mcreator);
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
+		countPerChunk.setAllowEqualValues(true);
 
 		JPanel pane5 = new JPanel(new BorderLayout(3, 3));
 
@@ -140,8 +141,8 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		params.add(spawnProbability);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/group_size"),
-				L10N.label("elementgui.structuregen.structure_group")));
-		params.add(PanelUtils.gridElements(1, 2, 5, 5, minCountPerChunk, maxCountPerChunk));
+				L10N.label("elementgui.structuregen.structure_group_size")));
+		params.add(countPerChunk);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/random_rotation"),
 				L10N.label("elementgui.structuregen.random_structure_rotation")));
@@ -202,14 +203,9 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().toString().equals("")) {
+		if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().toString().equals(""))
 			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.structuregen.error_select_structure_spawn"));
-		} else if ((int) minCountPerChunk.getValue() > (int) maxCountPerChunk.getValue()) {
-			return new AggregatedValidationResult.FAIL(L10N.t("validator.minimal_lower_than_maximal",
-					L10N.t("elementgui.structuregen.structure_group_size")));
-		} else {
-			return new AggregatedValidationResult(page1group);
-		}
+		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public void openInEditingMode(Structure structure) {
@@ -217,8 +213,8 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		spawnHeightOffset.setValue(structure.spawnHeightOffset);
 		spawnOffsetX.setValue(structure.spawnXOffset);
 		spawnOffsetZ.setValue(structure.spawnZOffset);
-		minCountPerChunk.setValue(structure.minCountPerChunk);
-		maxCountPerChunk.setValue(structure.maxCountPerChunk);
+		countPerChunk.setMinValue(structure.minCountPerChunk);
+		countPerChunk.setMaxValue(structure.maxCountPerChunk);
 		spawnLocation.setSelectedItem(structure.spawnLocation);
 		ignoreBlocks.setSelectedItem(structure.ignoreBlocks);
 		surfaceDetectionType.setSelectedItem(structure.surfaceDetectionType);
@@ -237,8 +233,8 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		structure.spawnHeightOffset = (int) spawnHeightOffset.getValue();
 		structure.spawnXOffset = (int) spawnOffsetX.getValue();
 		structure.spawnZOffset = (int) spawnOffsetZ.getValue();
-		structure.minCountPerChunk = (int) minCountPerChunk.getValue();
-		structure.maxCountPerChunk = (int) maxCountPerChunk.getValue();
+		structure.minCountPerChunk = countPerChunk.getIntMinValue();
+		structure.maxCountPerChunk = countPerChunk.getIntMaxValue();
 		structure.spawnWorldTypes = spawnWorldTypes.getListElements();
 		structure.spawnLocation = (String) spawnLocation.getSelectedItem();
 		structure.ignoreBlocks = (String) ignoreBlocks.getSelectedItem();
