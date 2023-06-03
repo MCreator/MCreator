@@ -42,7 +42,8 @@ public class JStringListField extends JPanel {
 
 	private final DefaultListModel<String> entriesModel = new DefaultListModel<>();
 
-	private final TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit.gif"));
+	private final TechnicalButton edit = new TechnicalButton(UIRES.get("18px.edit"));
+	private final TechnicalButton clear = new TechnicalButton(UIRES.get("18px.removeall"));
 
 	private boolean uniqueEntries = false;
 
@@ -93,7 +94,13 @@ public class JStringListField extends JPanel {
 				setTextList(newTextList);
 		});
 
-		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(edit));
+		clear.setOpaque(false);
+		clear.setMargin(new Insets(0, 0, 0, 0));
+		clear.setBorder(BorderFactory.createEmptyBorder());
+		clear.setContentAreaFilled(false);
+		clear.addActionListener(e -> entriesModel.clear());
+
+		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, clear));
 		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 		controls.setOpaque(true);
 		controls.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -105,6 +112,7 @@ public class JStringListField extends JPanel {
 	@Override public void setEnabled(boolean b) {
 		super.setEnabled(b);
 		edit.setEnabled(b);
+		clear.setEnabled(b);
 	}
 
 	/**

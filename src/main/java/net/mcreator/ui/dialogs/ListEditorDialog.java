@@ -68,12 +68,21 @@ public class ListEditorDialog {
 		add.setText(L10N.t("dialog.list_editor.add"));
 		add.addActionListener(e -> new ListEntry(entryList, entries, "", validator, uniqueEntries));
 
+		JButton clear = new JButton(UIRES.get("16px.clear"));
+		clear.setText(L10N.t("dialog.list_editor.clear"));
+		clear.addActionListener(e -> {
+			entryList.clear();
+			entries.removeAll();
+			entries.revalidate();
+			entries.repaint();
+		});
+
 		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(entries));
 		scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(15);
 
 		JPanel listPanel = new JPanel(new BorderLayout());
-		listPanel.add("North", PanelUtils.join(FlowLayout.LEFT, add));
+		listPanel.add("North", PanelUtils.join(FlowLayout.LEFT, add, clear));
 		listPanel.add("Center", scrollPane);
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
