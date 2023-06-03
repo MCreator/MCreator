@@ -42,6 +42,7 @@ import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -107,6 +108,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private final JSpinner attackStrength = new JSpinner(new SpinnerNumberModel(3, 0, 10000, 1));
 	private final JSpinner movementSpeed = new JSpinner(new SpinnerNumberModel(0.3, 0, 50, 0.1));
+	private final JSpinner stepHeight = new JSpinner(new SpinnerNumberModel(0.6, 0, 255, 0.1));
 	private final JSpinner armorBaseValue = new JSpinner(new SpinnerNumberModel(0.0, 0, 100, 0.1));
 	private final JSpinner health = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 1));
 	private final JSpinner knockbackResistance = new JSpinner(new SpinnerNumberModel(0, 0, 1000, 0.1));
@@ -119,8 +121,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JSpinner rangedAttackRadius = new JSpinner(new SpinnerNumberModel(10, 0, 1024, 0.1));
 
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
-	private final JSpinner minNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
-	private final JSpinner maxNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
+	private final JMinMaxSpinner numberOfMobsPerGroup = new JMinMaxSpinner(4, 4, 1, 1000, 1);
 
 	private final JSpinner modelWidth = new JSpinner(new SpinnerNumberModel(0.6, 0, 1024, 0.1));
 	private final JSpinner modelHeight = new JSpinner(new SpinnerNumberModel(1.8, 0, 1024, 0.1));
@@ -351,6 +352,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		restrictionBiomes = new BiomeListField(mcreator);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		entityDataList = new JEntityDataList(mcreator, this);
+		numberOfMobsPerGroup.setAllowEqualValues(true);
 
 		mobModelTexture.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
@@ -422,10 +424,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/creature_type"),
 				L10N.label("elementgui.living_entity.creature_type")));
 		subpane1.add(mobCreatureType);
-
-		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/movement_speed"),
-				L10N.label("elementgui.living_entity.movement_speed")));
-		subpane1.add(movementSpeed);
+		
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.movement_speed_step_height"),
+				HelpUtils.helpButton(this.withEntry("entity/movement_speed")),
+				HelpUtils.helpButton(this.withEntry("entity/step_height"))));
+		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, movementSpeed, stepHeight));
+		
 
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.health_xp_amount"),
 				HelpUtils.helpButton(this.withEntry("entity/health")),
@@ -570,6 +574,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		armorBaseValue.setPreferredSize(new Dimension(250, 32));
 		movementSpeed.setPreferredSize(new Dimension(250, 32));
+		stepHeight.setPreferredSize(new Dimension(250, 32));
 		trackingRange.setPreferredSize(new Dimension(250, 32));
 		attackStrength.setPreferredSize(new Dimension(250, 32));
 		attackKnockback.setPreferredSize(new Dimension(250, 32));
@@ -801,7 +806,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane4.setOpaque(false);
 
-		JPanel selp = new JPanel(new GridLayout(8, 2, 30, 2));
+		JPanel selp = new JPanel(new GridLayout(7, 2, 30, 2));
 
 		ComponentUtils.deriveFont(mobName, 16);
 
@@ -830,12 +835,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		selp.add(mobSpawningType);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_group_size"),
-				L10N.label("elementgui.living_entity.min_spawn_group_size")));
-		selp.add(minNumberOfMobsPerGroup);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_group_size"),
-				L10N.label("elementgui.living_entity.max_spawn_group_size")));
-		selp.add(maxNumberOfMobsPerGroup);
+				L10N.label("elementgui.living_entity.spawn_group_size")));
+		selp.add(numberOfMobsPerGroup);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
 				L10N.label("elementgui.living_entity.restrict_to_biomes")));
@@ -959,11 +960,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
 						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
 						.collect(Collectors.toList()));
-		} else if (page == 6) {
-			if ((int) minNumberOfMobsPerGroup.getValue() > (int) maxNumberOfMobsPerGroup.getValue()) {
-				return new AggregatedValidationResult.FAIL(
-						L10N.t("validator.minimal_lower_than_maximal", L10N.t("elementgui.living_entity.group_size")));
-			}
 		}
 		return new AggregatedValidationResult.PASS();
 	}
@@ -998,6 +994,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		attackKnockback.setValue(livingEntity.attackKnockback);
 		knockbackResistance.setValue(livingEntity.knockbackResistance);
 		movementSpeed.setValue(livingEntity.movementSpeed);
+		stepHeight.setValue(livingEntity.stepHeight);
 		mobDrop.setBlock(livingEntity.mobDrop);
 		equipmentMainHand.setBlock(livingEntity.equipmentMainHand);
 		equipmentHelmet.setBlock(livingEntity.equipmentHelmet);
@@ -1031,8 +1028,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		disableCollisions.setSelected(livingEntity.disableCollisions);
 		aiBase.setSelectedItem(livingEntity.aiBase);
 		spawningProbability.setValue(livingEntity.spawningProbability);
-		minNumberOfMobsPerGroup.setValue(livingEntity.minNumberOfMobsPerGroup);
-		maxNumberOfMobsPerGroup.setValue(livingEntity.maxNumberOfMobsPerGroup);
+		numberOfMobsPerGroup.setMinValue(livingEntity.minNumberOfMobsPerGroup);
+		numberOfMobsPerGroup.setMaxValue(livingEntity.maxNumberOfMobsPerGroup);
 		spawnInDungeons.setSelected(livingEntity.spawnInDungeons);
 		restrictionBiomes.setListElements(livingEntity.restrictionBiomes);
 		spawningCondition.setSelectedProcedure(livingEntity.spawningCondition);
@@ -1126,6 +1123,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.attackKnockback = (double) attackKnockback.getValue();
 		livingEntity.knockbackResistance = (double) knockbackResistance.getValue();
 		livingEntity.movementSpeed = (double) movementSpeed.getValue();
+		livingEntity.stepHeight = (double) stepHeight.getValue();
 		livingEntity.health = (int) health.getValue();
 		livingEntity.trackingRange = (int) trackingRange.getValue();
 		livingEntity.followRange = (int) followRange.getValue();
@@ -1176,8 +1174,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.spawningProbability = (int) spawningProbability.getValue();
 		livingEntity.mobSpawningType = (String) mobSpawningType.getSelectedItem();
 		livingEntity.rangedItemType = (String) rangedItemType.getSelectedItem();
-		livingEntity.minNumberOfMobsPerGroup = (int) minNumberOfMobsPerGroup.getValue();
-		livingEntity.maxNumberOfMobsPerGroup = (int) maxNumberOfMobsPerGroup.getValue();
+		livingEntity.minNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMinValue();
+		livingEntity.maxNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMaxValue();
 		livingEntity.restrictionBiomes = restrictionBiomes.getListElements();
 		livingEntity.spawnInDungeons = spawnInDungeons.isSelected();
 		livingEntity.modelWidth = (double) modelWidth.getValue();

@@ -89,6 +89,7 @@ import java.util.*;
 	public double attackKnockback;
 	public double knockbackResistance;
 	public double movementSpeed;
+	public double stepHeight;
 	public double armorBaseValue;
 	public int trackingRange;
 	public int followRange;
@@ -177,7 +178,7 @@ import java.util.*;
 		this.rangedItemType = "Default item";
 		this.rangedAttackInterval = 20;
 		this.rangedAttackRadius = 10;
-
+		this.stepHeight = 0.6;
 		this.followRange = 16;
 
 		this.inventorySize = 9;

@@ -192,7 +192,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		JPanel southcenterleft = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-		JLabel version = L10N.label("dialog.workspace_selector.version", Launcher.version.getMajorString());
+		JLabel version = L10N.label("dialog.workspace_selector.version",
+				Launcher.version.isSnapshot() ? Launcher.version.getMajorString() : Launcher.version.getFullString());
 		version.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				AboutAction.showDialog(WorkspaceSelector.this);
