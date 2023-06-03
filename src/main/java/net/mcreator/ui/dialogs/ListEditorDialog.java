@@ -57,16 +57,12 @@ public class ListEditorDialog {
 		List<ListEntry> entryList = new ArrayList<>();
 		JPanel entries = new JPanel(new GridLayout(0, 1, 2, 3));
 
-		boolean anyAdded = false;
-		while (textList.hasMoreElements()) {
+		while (textList.hasMoreElements())
 			new ListEntry(entryList, entries, textList.nextElement(), validator, uniqueEntries);
-			anyAdded = true;
-		}
 
 		// If no entries present, add one to "guide" the user
-		if (!anyAdded) {
+		if (entryList.isEmpty())
 			new ListEntry(entryList, entries, "", validator, uniqueEntries);
-		}
 
 		JButton add = new JButton(UIRES.get("16px.add.gif"));
 		add.setText(L10N.t("dialog.list_editor.add"));
