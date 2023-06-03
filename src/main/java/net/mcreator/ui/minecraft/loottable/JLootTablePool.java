@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.loottable;
 import net.mcreator.element.types.LootTable;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
@@ -35,10 +36,8 @@ import java.util.Objects;
 
 public class JLootTablePool extends JEntriesList {
 
-	private final JSpinner minrolls = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
-	private final JSpinner maxrolls = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
-	private final JSpinner minbonusrolls = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
-	private final JSpinner maxbonusrolls = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
+	private final JMinMaxSpinner rolls = new JMinMaxSpinner(1, 1, 0, 64000, 1);
+	private final JMinMaxSpinner bonusrolls = new JMinMaxSpinner(1, 1, 0, 64000, 1);
 	private final JCheckBox hasbonusrolls = L10N.checkbox("elementgui.loot_table.enable_pool_rolls");
 
 	private final List<JLootTableEntry> entryList = new ArrayList<>();
@@ -56,23 +55,27 @@ public class JLootTablePool extends JEntriesList {
 
 		setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
 
+		rolls.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
+				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+		rolls.setAllowEqualValues(true);
+		bonusrolls.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
+				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+		bonusrolls.setAllowEqualValues(true);
 		hasbonusrolls.setOpaque(false);
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setOpaque(false);
 
-		topbar.add(L10N.label("elementgui.loot_table.min_rolls"));
-		topbar.add(minrolls);
-		topbar.add(L10N.label("elementgui.loot_table.max_rolls"));
-		topbar.add(maxrolls);
+		topbar.add(L10N.label("elementgui.loot_table.rolls"));
+		topbar.add(rolls);
 
 		topbar.add(new JEmptyBox(15, 5));
 
 		topbar.add(hasbonusrolls);
-		topbar.add(L10N.label("elementgui.loot_table.min_bonus_rolls"));
-		topbar.add(minbonusrolls);
-		topbar.add(L10N.label("elementgui.loot_table.max_bonus_rolls"));
-		topbar.add(maxbonusrolls);
+		topbar.add(L10N.label("elementgui.loot_table.bonus_rolls"));
+		topbar.add(bonusrolls);
 
 		topbar.add(Box.createHorizontalGlue());
 
@@ -125,10 +128,10 @@ public class JLootTablePool extends JEntriesList {
 	public LootTable.Pool getPool() {
 		LootTable.Pool pool = new LootTable.Pool();
 		pool.hasbonusrolls = hasbonusrolls.isSelected();
-		pool.minrolls = (int) minrolls.getValue();
-		pool.maxrolls = (int) maxrolls.getValue();
-		pool.minbonusrolls = (int) minbonusrolls.getValue();
-		pool.maxbonusrolls = (int) maxbonusrolls.getValue();
+		pool.minrolls = rolls.getIntMinValue();
+		pool.maxrolls = rolls.getIntMaxValue();
+		pool.minbonusrolls = bonusrolls.getIntMinValue();
+		pool.maxbonusrolls = bonusrolls.getIntMaxValue();
 		pool.entries = entryList.stream().map(JLootTableEntry::getEntry).filter(Objects::nonNull).toList();
 
 		return pool.entries.isEmpty() ? null : pool;
@@ -136,10 +139,10 @@ public class JLootTablePool extends JEntriesList {
 
 	public void setPool(LootTable.Pool pool) {
 		hasbonusrolls.setSelected(pool.hasbonusrolls);
-		minrolls.setValue(pool.minrolls);
-		maxrolls.setValue(pool.maxrolls);
-		minbonusrolls.setValue(pool.minbonusrolls);
-		maxbonusrolls.setValue(pool.maxbonusrolls);
+		rolls.setMinValue(pool.minrolls);
+		rolls.setMaxValue(pool.maxrolls);
+		bonusrolls.setMinValue(pool.minbonusrolls);
+		bonusrolls.setMaxValue(pool.maxbonusrolls);
 
 		if (pool.entries != null) {
 			pool.entries.forEach(e -> {
