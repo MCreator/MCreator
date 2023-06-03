@@ -25,7 +25,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.AdaptiveGridLayout;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -47,7 +46,6 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 
 public class RecipeGUI extends ModElementGUI<Recipe> {
 
@@ -62,7 +60,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 	private final JCheckBox recipeShapeless = L10N.checkbox("elementgui.common.enable");
 
-	private final JSpinner xpReward = new JSpinner(new SpinnerNumberModel(1.0, 0, 256, 1));
+	private final JSpinner xpReward = new JSpinner(new SpinnerNumberModel(1.0, 0, 256, 0.1));
 	private final JSpinner cookingTime = new JSpinner(new SpinnerNumberModel(200, 0, 1000000, 1));
 
 	private final JComboBox<String> namespace = new JComboBox<>(new String[] { "mod", "minecraft" });

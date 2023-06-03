@@ -78,15 +78,13 @@ public class MainToolBar extends JToolBar {
 		add(mcreator.actionRegistry.setCreativeTabItemOrder);
 		add(mcreator.actionRegistry.injectDefaultTags);
 
+		addSeparator(new Dimension(10, 4));
+
 		add(pluginToolbarLeft);
 
 		add(Box.createHorizontalGlue()); // split left and right toolbar sections
 
 		add(pluginToolbarRight);
-
-		add(mcreator.actionRegistry.setupVCSOrSettings);
-		add(mcreator.actionRegistry.syncFromRemote);
-		add(mcreator.actionRegistry.syncToRemote);
 
 		addSeparator(new Dimension(10, 4));
 
