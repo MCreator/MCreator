@@ -208,14 +208,14 @@ public class BlocklyPanel extends JFXPanel {
 		int index = cleanXML.indexOf("</block><block"); // Look for separator between two chains of blocks
 		if (index == -1) { // The separator wasn't found
 			executeJavaScriptSynchronously(
-					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML + "'), workspace)");
+					"Blockly.Xml.appendDomToWorkspace(Blockly.utils.xml.textToDom('" + cleanXML + "'), workspace)");
 		} else { // We add the blocks separately so that they don't overlap, currently used by feature editor where two chains of blocks are possible
 			index += 8; //We add the length of "</block>" to the index
 			executeJavaScriptSynchronously(
-					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('" + cleanXML.substring(0, index)
+					"Blockly.Xml.appendDomToWorkspace(Blockly.utils.xml.textToDom('" + cleanXML.substring(0, index)
 							+ "</xml>'), workspace)");
 			executeJavaScriptSynchronously(
-					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('<xml>" + cleanXML.substring(index)
+					"Blockly.Xml.appendDomToWorkspace(Blockly.utils.xml.textToDom('<xml>" + cleanXML.substring(index)
 							+ "'), workspace)");
 		}
 	}
@@ -223,7 +223,7 @@ public class BlocklyPanel extends JFXPanel {
 	public void setXML(String xml) {
 		this.currentXML = xml;
 		executeJavaScriptSynchronously(
-				"Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom('" + escapeXML(xml) + "'), workspace)");
+				"Blockly.Xml.domToWorkspace(Blockly.utils.xml.textToDom('" + escapeXML(xml) + "'), workspace)");
 		executeJavaScriptSynchronously("workspace.clearUndo()");
 	}
 
