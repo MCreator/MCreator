@@ -40,16 +40,12 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
-import net.mcreator.ui.vcs.VCSSetupDialogs;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.vcs.CloneWorkspace;
-import net.mcreator.vcs.VCSInfo;
 import net.mcreator.workspace.ShareableZIPManager;
-import net.mcreator.workspace.WorkspaceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -129,32 +125,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			}
 		});
 
-		addWorkspaceButton(L10N.t("dialog.workspace_selector.clone"), UIRES.get("vcsclone"), e -> {
-			VCSInfo vcsInfo = VCSSetupDialogs.getVCSInfoDialog(this, L10N.t("dialog.workspace_selector.vcs_info"));
-			if (vcsInfo != null) {
-				File workspaceFolder = FileDialogs.getWorkspaceDirectorySelectDialog(this, null);
-				if (workspaceFolder != null) {
-					try {
-						setCursor(new Cursor(Cursor.WAIT_CURSOR));
-						CloneWorkspace.cloneWorkspace(this, vcsInfo, workspaceFolder);
-						try {
-							File workspaceFile = WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(workspaceFolder);
-							workspaceOpenListener.workspaceOpened(workspaceFile);
-						} catch (Exception ex) {
-							throw new Exception("The remote repository is not a MCreator workspace or is corrupted");
-						}
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(this,
-								L10N.t("dialog.workspace_selector.clone.setup_failed", ex.getMessage()),
-								L10N.t("dialog.workspace_selector.clone.setup_failed.title"),
-								JOptionPane.ERROR_MESSAGE);
-					} finally {
-						setCursor(Cursor.getDefaultCursor());
-					}
-				}
-			}
-		});
-
 		JPanel logoPanel = new JPanel(new BorderLayout(5, 5));
 		JLabel logo = new JLabel(new ImageIcon(
 				ImageUtils.resizeAA(UIRES.getBuiltIn("logo").getImage(), 250, (int) (250 * (63 / 350.0)))));
@@ -222,7 +192,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		JPanel southcenterleft = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-		JLabel version = L10N.label("dialog.workspace_selector.version", Launcher.version.getMajorString());
+		JLabel version = L10N.label("dialog.workspace_selector.version",
+				Launcher.version.isSnapshot() ? Launcher.version.getMajorString() : Launcher.version.getFullString());
 		version.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				AboutAction.showDialog(WorkspaceSelector.this);
