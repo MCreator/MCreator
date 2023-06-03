@@ -22,7 +22,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.*;
 import net.mcreator.ui.action.impl.gradle.*;
-import net.mcreator.ui.action.impl.vcs.*;
 import net.mcreator.ui.action.impl.workspace.*;
 import net.mcreator.ui.action.impl.workspace.resources.ImportSoundAction;
 import net.mcreator.ui.action.impl.workspace.resources.ModelImportActions;
@@ -138,15 +137,6 @@ public class ActionRegistry {
 	public final BasicAction importJavaModel;
 	public final BasicAction importJSONModel;
 	public final BasicAction importOBJModel;
-
-	// VCS actions
-	public final BasicAction setupVCS;
-	public final BasicAction unlinkVCS;
-	public final BasicAction setupVCSOrSettings;
-	public final BasicAction syncToRemote;
-	public final BasicAction syncFromRemote;
-	public final BasicAction showUnsyncedChanges;
-	public final BasicAction remoteWorkspaceSettings;
 
 	// Window actions
 	public final BasicAction showWorkspaceBrowser;
@@ -302,13 +292,6 @@ public class ActionRegistry {
 		this.importWorkspace = new ImportWorkspaceAction(this);
 		this.openWorkspaceFolder = new BasicAction(this, L10N.t("action.open_workspace_folder"),
 				e -> DesktopUtils.openSafe(mcreator.getWorkspaceFolder()));
-		this.setupVCS = new SetupVCSAction(this);
-		this.unlinkVCS = new UnlinkVCSAction(this);
-		this.setupVCSOrSettings = new SetupOrSettingsVCSAction(this);
-		this.syncToRemote = new SyncLocalWithRemoteAction(this);
-		this.syncFromRemote = new SyncRemoteToLocalAction(this);
-		this.showUnsyncedChanges = new ShowLocalChangesAction(this);
-		this.remoteWorkspaceSettings = new VCSInfoSettingsAction(this);
 		this.openMaterialPackMaker = MaterialPackMakerTool.getAction(this);
 		this.openOrePackMaker = OrePackMakerTool.getAction(this);
 		this.openToolPackMaker = ToolPackMakerTool.getAction(this);
