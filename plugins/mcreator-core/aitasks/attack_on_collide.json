@@ -6,8 +6,13 @@
       "value": 1.2
     },
     {
+      "type": "field_number",
+      "name": "speed",
+      "value": 1.2
+    },
+    {
       "type": "field_checkbox",
-      "name": "longmemory",
+      "name": "multiplier",
       "checked": false
     },
     {
@@ -24,6 +29,7 @@
     "fields": [
       "speed",
       "longmemory",
+      "multiplier",
       "condition"
     ]
   }
