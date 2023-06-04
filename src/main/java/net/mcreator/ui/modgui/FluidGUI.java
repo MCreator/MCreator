@@ -22,7 +22,6 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Fluid;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -37,6 +36,7 @@ import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -143,7 +143,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.event_before_replacing_block"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 
-		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
+		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.fluid.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		fluidtype.setRenderer(new ItemTexturesComboBoxRenderer());
@@ -214,6 +216,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.tint_type")));
 		destal.add(tintType);
 
+		JPanel bcProp = new JPanel(new BorderLayout(5, 2));
+		bcProp.setOpaque(false);
+
 		JPanel bucketProperties = new JPanel(new GridLayout(7, 2, 5, 2));
 		bucketProperties.setOpaque(false);
 
@@ -245,9 +250,12 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
 		bucketProperties.add(rarity);
 
-		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.fluid.special_information")));
-		bucketProperties.add(specialInformation);
+		JPanel infos = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		infos.setOpaque(false);
+		infos.add(specialInformation);
+
+		bcProp.add("Center", bucketProperties);
+		bcProp.add("South", infos);
 
 		generateBucket.setSelected(true);
 
@@ -260,7 +268,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 			specialInformation.setEnabled(generateBucket.isSelected());
 		});
 
-		bucketProperties.setBorder(BorderFactory.createTitledBorder(
+		bcProp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.fluid.bucket_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
@@ -273,8 +281,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.fluid_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent fluidBucketProperties = PanelUtils.westAndEastElement(destala,
-				PanelUtils.pullElementUp(bucketProperties));
+		JComponent fluidBucketProperties = PanelUtils.westAndEastElement(destala, PanelUtils.pullElementUp(bcProp));
 		fluidBucketProperties.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(destalx, fluidBucketProperties)));
 
