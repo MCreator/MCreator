@@ -37,6 +37,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -145,7 +146,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow",
 				ProcedureSelector.Side.CLIENT, true, VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
-		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
+		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.tool.tool_special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocks);
@@ -190,18 +193,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.t("elementgui.tool.tool_3d_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		pane2.setOpaque(false);
-		pane2.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), PanelUtils.gridElements(1, 2,
-						HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-								L10N.label("elementgui.tool.tool_special_information")), specialInformation))));
 		JComponent glow = PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
 						L10N.label("elementgui.tool.glowing_effect")), hasGlow, glowCondition);
 
-		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-						L10N.label("elementgui.tool.tooltip_tip")), specialInformation), glow, 10, 10);
+		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 1, specialInformation),
+				glow, 10, 10);
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(

@@ -39,6 +39,7 @@ import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -228,7 +229,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.common.event_on_bonemeal_success"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
-		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
+		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.plant.special_information_tip"), AbstractProcedureSelector.Side.CLIENT,
+				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
@@ -273,7 +276,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		particleTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 		particleTexture.setOpaque(false);
 
-		JPanel tintPanel = new JPanel(new GridLayout(1, 2, 0, 2));
+		JPanel tintPanel = new JPanel(new GridLayout(1, 1, 0, 2));
 		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
 		tintPanel.setBorder(BorderFactory.createTitledBorder(
@@ -281,8 +284,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.plant_info"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.plant.special_information_tip")));
 		tintPanel.add(specialInformation);
 
 		JPanel rent = new JPanel(new GridLayout(5, 2, 2, 2));
