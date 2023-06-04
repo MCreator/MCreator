@@ -16,6 +16,11 @@
       "checked": false
     },
     {
+      "type": "field_number",
+      "name": "multiplier",
+      "value": 2
+    },
+    {
       "type": "field_ai_condition_selector",
       "name": "condition"
     }
@@ -30,6 +35,7 @@
       "speed",
       "range",
       "longmemory",
+      "multiplier",
       "condition"
     ]
   }
