@@ -70,8 +70,8 @@ public class SpecialInformationConverter<T extends GeneratableElement> implement
 
 				specialInformationField.set(object, new StringProcedure(null,
 						specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(","))));
-			} catch (IllegalAccessException | NoSuchFieldException ignored) {
-				LOG.error(ignored.getMessage(), ignored);
+			} catch (IllegalAccessException | NoSuchFieldException exception) {
+				LOG.warn(exception.getMessage(), exception);
 			}
 		}
 		if (!helmetSpecialInfo.isEmpty()) {
@@ -82,8 +82,8 @@ public class SpecialInformationConverter<T extends GeneratableElement> implement
 				helmetSecialInformationField.set(object, new StringProcedure(null,
 						helmetSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
 								.collect(Collectors.joining(","))));
-			} catch (IllegalAccessException | NoSuchFieldException ignored) {
-				LOG.error(ignored.getMessage(), ignored);
+			} catch (IllegalAccessException | NoSuchFieldException exception) {
+				LOG.warn(exception.getMessage(), exception);
 			}
 		}
 		if (!bodySpecialInfo.isEmpty()) {
@@ -94,8 +94,8 @@ public class SpecialInformationConverter<T extends GeneratableElement> implement
 				bodySecialInformationField.set(object, new StringProcedure(null,
 						bodySpecialInfo.stream().map(info -> info.replace(",", "\\,"))
 								.collect(Collectors.joining(","))));
-			} catch (IllegalAccessException | NoSuchFieldException ignored) {
-				LOG.error(ignored.getMessage(), ignored);
+			} catch (IllegalAccessException | NoSuchFieldException exception) {
+				LOG.warn(exception.getMessage(), exception);
 			}
 		}
 		if (!leggingsSpecialInfo.isEmpty()) {
@@ -106,8 +106,8 @@ public class SpecialInformationConverter<T extends GeneratableElement> implement
 				leggingsSecialInformationField.set(object, new StringProcedure(null,
 						leggingsSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
 								.collect(Collectors.joining(","))));
-			} catch (IllegalAccessException | NoSuchFieldException ignored) {
-				LOG.error(ignored.getMessage(), ignored);
+			} catch (IllegalAccessException | NoSuchFieldException exception) {
+				LOG.warn(exception.getMessage(), exception);
 			}
 		}
 		if (!bootsSpecialInfo.isEmpty()) {
@@ -118,8 +118,8 @@ public class SpecialInformationConverter<T extends GeneratableElement> implement
 				bootsSecialInformationField.set(object, new StringProcedure(null,
 						bootsSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
 								.collect(Collectors.joining(","))));
-			} catch (IllegalAccessException | NoSuchFieldException ignored) {
-				LOG.error(ignored.getMessage(), ignored);
+			} catch (IllegalAccessException | NoSuchFieldException exception) {
+				LOG.warn(exception.getMessage(), exception);
 			}
 		}
 
