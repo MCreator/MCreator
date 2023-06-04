@@ -24,7 +24,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -39,6 +38,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -162,7 +162,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
+		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.item.tooltip_tip"), AbstractProcedureSelector.Side.CLIENT, new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
@@ -201,14 +202,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))));
 		destal2.add("North", destal3);
 
-		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
+		JPanel destal = new JPanel(new GridLayout(1, 1, 15, 15));
 		destal.setOpaque(false);
 		JComponent destal1 = PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
 						L10N.label("elementgui.item.glowing_effect")), hasGlow, glowCondition);
 
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.item.tooltip_tip")));
 		destal.add(specialInformation);
 
 		hasGlow.setOpaque(false);

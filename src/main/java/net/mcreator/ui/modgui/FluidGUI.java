@@ -216,9 +216,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.tint_type")));
 		destal.add(tintType);
 
-		JPanel bcProp = new JPanel(new BorderLayout(5, 2));
-		bcProp.setOpaque(false);
-
 		JPanel bucketProperties = new JPanel(new GridLayout(7, 2, 5, 2));
 		bucketProperties.setOpaque(false);
 
@@ -250,12 +247,11 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
 		bucketProperties.add(rarity);
 
-		JPanel infos = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		infos.setOpaque(false);
-		infos.add(specialInformation);
+		JPanel bcProp = new JPanel(new BorderLayout(5, 0));
+		bcProp.setOpaque(false);
 
 		bcProp.add("Center", bucketProperties);
-		bcProp.add("South", infos);
+		bcProp.add("South", specialInformation);
 
 		generateBucket.setSelected(true);
 

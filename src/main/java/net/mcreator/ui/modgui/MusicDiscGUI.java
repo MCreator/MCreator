@@ -34,6 +34,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -112,8 +113,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
-				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator, L10N.t("elementgui.music_disc.disc_description_tip"), AbstractProcedureSelector.Side.CLIENT, new JTextField(25), 0, Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 
@@ -158,9 +158,10 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.music_disc.has_glowing_effect")));
 		subpane2.add(hasGlow);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.music_disc.disc_description_tip")));
-		subpane2.add(specialInformation);
+		JPanel subpane3 = new JPanel(new BorderLayout(5, 0));
+		subpane3.setOpaque(false);
+		subpane3.add("Center", subpane2);
+		subpane3.add("South", specialInformation);
 
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
@@ -168,7 +169,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.music_disc.disc_texture"))));
 
 		pane3.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(destal3), subpane2, 40, 40)));
+				PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(destal3), subpane3, 40, 40)));
 		pane3.setOpaque(false);
 
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
