@@ -305,17 +305,3 @@
     </#if>
     <#return '{ "Name": "minecraft:air" }'>
 </#function>
-
-<#function damageTypeToDamageSource source>
-    <#if !source?starts_with("/*@DamageSource*/")>
-        <#return "new DamageSource(world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getHolderOrThrow(" + source?replace("/*@DamageSource*/","") + "))">
-    </#if>
-    <#return source>
-</#function>
-
-<#function damageSourceToDamageType source>
-    <#if source?starts_with("/*@DamageSource*/")>
-        <#return "world.registryAccess().registryOrThrow(Registries.DAMAGE_TYPE).getResourceKey(" + source?replace("/*@DamageSource*/","") + ".type()).orElseThrow()">
-    </#if>
-    <#return source>
-</#function>
