@@ -25,6 +25,8 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -32,6 +34,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class SpecialInformationConverter<T extends GeneratableElement> implements IConverter {
+
+	private static final Logger LOG = LogManager.getLogger("SpecialInformationConverter");
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
@@ -67,7 +71,7 @@ public class SpecialInformationConverter<T extends GeneratableElement> implement
 				specialInformationField.set(object, new StringProcedure(null,
 						specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(","))));
 			} catch (IllegalAccessException | NoSuchFieldException ignored) {
-
+				LOG.error(ignored.getMessage(), ignored);
 			}
 		}
 		if (!helmetSpecialInfo.isEmpty()) {
@@ -79,7 +83,7 @@ public class SpecialInformationConverter<T extends GeneratableElement> implement
 						helmetSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
 								.collect(Collectors.joining(","))));
 			} catch (IllegalAccessException | NoSuchFieldException ignored) {
-
+				LOG.error(ignored.getMessage(), ignored);
 			}
 		}
 		if (!bodySpecialInfo.isEmpty()) {
@@ -91,7 +95,7 @@ public class SpecialInformationConverter<T extends GeneratableElement> implement
 						bodySpecialInfo.stream().map(info -> info.replace(",", "\\,"))
 								.collect(Collectors.joining(","))));
 			} catch (IllegalAccessException | NoSuchFieldException ignored) {
-
+				LOG.error(ignored.getMessage(), ignored);
 			}
 		}
 		if (!leggingsSpecialInfo.isEmpty()) {
@@ -103,7 +107,7 @@ public class SpecialInformationConverter<T extends GeneratableElement> implement
 						leggingsSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
 								.collect(Collectors.joining(","))));
 			} catch (IllegalAccessException | NoSuchFieldException ignored) {
-
+				LOG.error(ignored.getMessage(), ignored);
 			}
 		}
 		if (!bootsSpecialInfo.isEmpty()) {
@@ -115,7 +119,7 @@ public class SpecialInformationConverter<T extends GeneratableElement> implement
 						bootsSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
 								.collect(Collectors.joining(","))));
 			} catch (IllegalAccessException | NoSuchFieldException ignored) {
-
+				LOG.error(ignored.getMessage(), ignored);
 			}
 		}
 
