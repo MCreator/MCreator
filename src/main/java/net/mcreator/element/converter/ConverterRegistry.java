@@ -40,7 +40,11 @@ import net.mcreator.element.converter.v2022_1.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.v2022_2.*;
 import net.mcreator.element.converter.v2022_3.BiomeDictionaryProcedureConverter;
 import net.mcreator.element.converter.v2023_1.*;
-import net.mcreator.element.converter.v2023_2.*;
+import net.mcreator.element.converter.v2023_2.BiomeCustomFeaturesConverter;
+import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
+import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
+import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
+import net.mcreator.element.converter.v2023_3.CallProcedureAtBlockConverter;
 
 import java.util.HashMap;
 import java.util.List;
