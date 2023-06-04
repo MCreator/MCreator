@@ -332,7 +332,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)), 130, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate"));
 
-		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
+		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.block.special_information_tip"), AbstractProcedureSelector.Side.CLIENT,
+				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
@@ -532,8 +534,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.special_information_title"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		txblock3.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.block.special_information_tip")));
 		txblock3.add(specialInformation);
 
 		sbbp2.add("Center", topnbot);
