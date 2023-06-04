@@ -18,7 +18,7 @@
     {
       "type": "field_number",
       "name": "multiplier",
-      "value": 2
+      "value": 1
     },
     {
       "type": "field_ai_condition_selector",
