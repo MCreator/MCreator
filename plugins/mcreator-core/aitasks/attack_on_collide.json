@@ -11,7 +11,7 @@
       "checked": false
     },
     {
-      "type": "field_checkbox",
+      "type": "field_number",
       "name": "multiplier",
       "value": 1
     },
