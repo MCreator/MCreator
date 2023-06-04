@@ -7,13 +7,13 @@
     },
     {
       "type": "field_number",
-      "name": "speed",
-      "value": 1.2
+      "name": "longmemory",
+      "checked": false
     },
     {
       "type": "field_checkbox",
       "name": "multiplier",
-      "checked": false
+      "value": 1
     },
     {
       "type": "field_ai_condition_selector",
