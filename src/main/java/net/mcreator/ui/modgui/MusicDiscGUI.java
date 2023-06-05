@@ -113,7 +113,10 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator, L10N.t("elementgui.music_disc.disc_description_tip"), AbstractProcedureSelector.Side.CLIENT, new JTextField(25), 0, Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.music_disc.disc_description_tip"), AbstractProcedureSelector.Side.CLIENT,
+				new JTextField(25), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 

@@ -1,4 +1,4 @@
-This parameter adds a tooltip to the block when you hold your icon over the block in your inventory.
+This parameter adds a tooltip to the item when you hold your icon over the block in your inventory.
 
 Tips:
 

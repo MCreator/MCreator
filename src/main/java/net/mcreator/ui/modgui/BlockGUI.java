@@ -332,7 +332,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)), 130, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate"));
 
-		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+		specialInformation = new StringProcedureSelector(this.withEntry("block/special_information"), mcreator,
 				L10N.t("elementgui.block.special_information_tip"), AbstractProcedureSelector.Side.CLIENT,
 				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));

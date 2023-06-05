@@ -229,7 +229,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.common.event_on_bonemeal_success"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
-		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+		specialInformation = new StringProcedureSelector(this.withEntry("block/special_information"), mcreator,
 				L10N.t("elementgui.plant.special_information_tip"), AbstractProcedureSelector.Side.CLIENT,
 				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
