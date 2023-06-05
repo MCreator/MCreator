@@ -148,7 +148,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
 				L10N.t("elementgui.tool.tool_special_information"), AbstractProcedureSelector.Side.CLIENT,
-				new JTextField(25), 0,
+				new JTextField(35), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocks);
@@ -161,9 +161,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		JPanel destal = new JPanel();
-		destal.setOpaque(false);
-
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
@@ -173,8 +170,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		immuneToFire.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
-
-		destal.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")));
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
@@ -197,12 +192,13 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
 						L10N.label("elementgui.tool.glowing_effect")), hasGlow, glowCondition);
 
-		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 1, specialInformation),
-				glow, 10, 10);
+		JComponent visualBottom = PanelUtils.centerAndSouthElement(specialInformation, glow, 10, 10);
 
 		pane2.setOpaque(false);
-		pane2.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), visualBottom)));
+		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
+				PanelUtils.westAndCenterElement(
+						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")), rent), visualBottom,
+				10, 10)));
 
 		JPanel selp = new JPanel(new GridLayout(14, 2, 10, 2));
 		selp.setOpaque(false);
