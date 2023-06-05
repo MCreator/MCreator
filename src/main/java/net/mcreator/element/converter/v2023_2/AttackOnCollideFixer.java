@@ -12,5 +12,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 public class AttackOnCollideFixer implements IConverter {
-
+  
+	@Override public int getVersionConvertingTo() {
+		return 41;
+	}
 }
