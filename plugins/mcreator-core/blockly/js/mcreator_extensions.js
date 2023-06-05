@@ -357,13 +357,14 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
     },
 
     updateShape_: function () {
+        const thisBlock = this;
         for (let i = 0; i < this.inputCount_; i++) {
             if (!this.getInput('arg' + i)) {
                 this.appendValueInput('arg' + i).setAlign(Blockly.Input.Align.RIGHT)
                     .appendField(javabridge.t('blockly.block.call_procedure.name'))
                     .appendField(validOnLoad(new FieldJavaName("dependency" + i,
                         uniqueValueValidator('name', function () {
-                            return 'dependency' + firstFreeIndex(this, 'name', i, function (nextIndex) {
+                            return 'dependency' + firstFreeIndex(thisBlock, 'name', i, function (nextIndex) {
                                 return "dependency" + nextIndex;
                             });
                         }))), 'name' + i)
