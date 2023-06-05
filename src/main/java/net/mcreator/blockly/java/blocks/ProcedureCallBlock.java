@@ -40,9 +40,13 @@ public class ProcedureCallBlock implements IBlockGenerator {
 		String type = block.getAttribute("type");
 
 		if (element != null && !"".equals(element.getTextContent())) {
+			Procedure procedure = new Procedure(element.getTextContent());
+			List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
+			Map<String, String> depTypes = dependencies.stream()
+					.collect(Collectors.toMap(Dependency::getName, Dependency::getRawType));
+
 			int depCount = 0;
-			Map<Integer, String> names = new HashMap<>();
-			Map<Integer, String> args = new HashMap<>();
+			Map<Integer, String> names = new HashMap<>(), args = new HashMap<>(), types = new HashMap<>();
 			Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 			if (mutation != null && mutation.hasAttribute("inputs")
 					&& !mutation.getAttribute("inputs").equals("undefined")) {
@@ -62,11 +66,10 @@ public class ProcedureCallBlock implements IBlockGenerator {
 						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 								L10N.t("blockly.errors.call_procedure.missing_inputs", names.get(i))));
 					}
+					types.put(i, depTypes.get(names.get(i)));
 				}
 			}
 
-			Procedure procedure = new Procedure(element.getTextContent());
-			List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
 			dependencies.stream().filter(e -> !names.containsValue(e.getName())).forEach(master::addDependency);
 
 			if (!procedure.exists) {
@@ -77,7 +80,6 @@ public class ProcedureCallBlock implements IBlockGenerator {
 
 			List<String> overridden = new ArrayList<>(names.values());
 			dependencies.stream().map(Dependency::getName).forEach(overridden::remove);
-
 			if (!overridden.isEmpty()) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 						L10N.t("blockly.warnings.call_procedure.extra_deps", procedure.getName(),
@@ -119,6 +121,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				if (type.equals("call_procedure")) {
 					dataModel.put("depCount", depCount);
 					dataModel.put("names", names.keySet().stream().sorted().map(names::get).toArray(String[]::new));
+					dataModel.put("types", types.keySet().stream().sorted().map(types::get).toArray(String[]::new));
 					dataModel.put("args", args.keySet().stream().sorted().map(args::get).toArray(String[]::new));
 				}
 
