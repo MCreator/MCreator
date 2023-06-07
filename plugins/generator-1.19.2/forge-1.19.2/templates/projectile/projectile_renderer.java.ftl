@@ -35,11 +35,11 @@ public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 
 	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customModelTexture}");
 
-	private final ${data.model} model;
+	private final ${data.entityModel} model;
 
 	public ${name}Renderer(EntityRendererProvider.Context context) {
 		super(context);
-		model = new ${data.model}(context.bakeLayer(${data.model}.LAYER_LOCATION));
+		model = new ${data.entityModel}(context.bakeLayer(${data.entityModel}.LAYER_LOCATION));
 	}
 
 	@Override public void render(${name}Entity entityIn, float entityYaw, float partialTicks, PoseStack poseStack, MultiBufferSource bufferIn, int packedLightIn) {
