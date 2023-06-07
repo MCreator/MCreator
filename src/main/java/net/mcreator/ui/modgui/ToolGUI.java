@@ -309,6 +309,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
+
+		updateGlowElements();
+		updateFields();
 	}
 
 	private void updateFields() {
