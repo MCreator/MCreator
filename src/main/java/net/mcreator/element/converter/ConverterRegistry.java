@@ -44,6 +44,8 @@ import net.mcreator.element.converter.v2023_2.BiomeCustomFeaturesConverter;
 import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
 import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
+import net.mcreator.element.converter.v2023_3.ProcedureArrowProjectileFixer;
+import net.mcreator.element.converter.v2023_3.RangedItemToProjectileAndItemConverter;
 
 import java.util.HashMap;
 import java.util.List;

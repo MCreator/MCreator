@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.v2023_1;
+package net.mcreator.element.converter.v2023_3;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -153,6 +153,6 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 39;
+		return 45;
 	}
 }
