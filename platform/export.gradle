@@ -45,10 +45,13 @@ tasks.register('generateExportReport') {
     doLast {
         def report = ""
 
-        def fg = new LinkedHashSet<String>()
-        def bd = new LinkedHashSet<String>()
-        def dp = new LinkedHashSet<String>()
+        def fg = new HashSet<String>()
+        def bd = new HashSet<String>()
+        def dp = new HashSet<String>()
         file('plugins').traverse([maxDepth: 1, type: groovy.io.FileType.DIRECTORIES]) {
+            if(it.getPath().contains("mcreator-link"))
+                return // do not include mcreator-link generator folders in version checks
+
             def fn = it.getName()
             if (fn.startsWith("addon-")) {
                 bd.add(fn.substring(fn.lastIndexOf("-") + 1))
@@ -59,6 +62,14 @@ tasks.register('generateExportReport') {
             }
         }
 
+        fg = new ArrayList<>(fg)
+        bd = new ArrayList<>(bd)
+        dp = new ArrayList<>(dp)
+
+        fg.sort { a, b -> b <=> a }
+        bd.sort { a, b -> b <=> a }
+        dp.sort { a, b -> b <=> a }
+
         report += 'mcreator=' + version.toString() + '.' + project.builddate.toString() + '\n'
         report += 'version=' + (String) project.mcreatorconf.getProperty('mcreator').toString() + '\n'
         report += 'builddate=' + project.builddate.toString() + '\n'
@@ -66,7 +77,7 @@ tasks.register('generateExportReport') {
 
         new File("build").mkdirs()
         new File("build/reports").mkdirs()
-        file("build/reports/export.txt") << report
+        file("build/reports/export.txt").write(report)
     }
 }
 
