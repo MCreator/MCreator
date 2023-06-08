@@ -69,7 +69,7 @@ public class ConverterRegistry {
 		put(ModElementType.GUI,
 				List.of(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
 						new GUIComponentNamer(), new SlotInteractionsConverter()));
-		put(ModElementType.LIVINGENTITY, List.of(new EntityTexturesConverter()));
+		put(ModElementType.LIVINGENTITY, List.of(new EntityTexturesConverter(), new AttackOnCollideFixer()));
 		put(ModElementType.OVERLAY,
 				List.of(new OverlayCoordinateConverter(), new OverlayTexturesConverter(), new GUIComponentNamer()));
 		put(ModElementType.PAINTING, List.of(new PaintingFieldsFixer()));
