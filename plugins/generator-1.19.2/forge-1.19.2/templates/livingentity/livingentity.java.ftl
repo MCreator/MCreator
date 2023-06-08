@@ -50,6 +50,10 @@ import javax.annotation.Nullable;
 	<#assign extendsClass = data.mobBehaviourType?replace("Mob", "Monster")?replace("Creature", "PathfinderMob")>
 </#if>
 
+<#if data.mobBehaviourType = "Golem">
+	<#assign extendsClass = "AbstractGolem">
+</#if>
+
 <#if data.breedable>
 	<#assign extendsClass = "Animal">
 </#if>
