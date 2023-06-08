@@ -1,1 +1,1 @@
-The text that will be displayed in the tooltip.
+The text that will be displayed in the tooltip for a player that hovers area covered by this component.
