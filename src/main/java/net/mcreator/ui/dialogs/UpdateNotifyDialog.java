@@ -21,7 +21,6 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.Launcher;
 import net.mcreator.io.net.api.update.Release;
 import net.mcreator.io.net.api.update.UpdateInfo;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -39,100 +38,78 @@ import java.util.Map;
 
 public class UpdateNotifyDialog {
 
-	public static void showUpdateDialogIfUpdateExists(Window parent, boolean showNoUpdates) {
-		if (MCreatorApplication.isInternet) {
-			long oldMajor = Launcher.version.majorlong;
-			UpdateInfo updateInfo = MCreatorApplication.WEB_API.getUpdateInfo();
-			if (updateInfo != null) {
-				long newMajor = MCreatorVersionNumber.majorStringToLong(updateInfo.getLatestMajor());
-				if (newMajor > oldMajor && (PreferencesManager.PREFERENCES.notifications.checkAndNotifyForUpdates.get()
-						|| Launcher.version.isSnapshot())) {
-					JPanel pan = new JPanel(new BorderLayout());
-					JLabel upde = L10N.label("dialog.update_notify.message", Launcher.version.major,
-							updateInfo.getLatestMajor());
+	public static void showUpdateDialogIfUpdateExists(Window parent, boolean notifyForUpdates, boolean notifyForPatches,
+			boolean showNoUpdates) {
+		UpdateInfo updateInfo = MCreatorApplication.WEB_API.getUpdateInfo();
+		if (MCreatorApplication.isInternet && updateInfo != null) {
+			if (updateInfo.isNewUpdateAvailable() && notifyForUpdates) {
+				JPanel pan = new JPanel(new BorderLayout());
+				JLabel upde = L10N.label("dialog.update_notify.message", Launcher.version.major,
+						updateInfo.getLatestMajor());
 
-					ComponentUtils.deriveFont(upde, 13);
-					pan.add("North", upde);
-					JTextPane ar = new JTextPane();
-					ar.setFont(MCreatorTheme.console_font);
-					ar.setEnabled(false);
-					ar.setMargin(new Insets(5, 10, 5, 5));
-					DefaultCaret caret = (DefaultCaret) ar.getCaret();
-					caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-					ar.setContentType("text/html");
-					JScrollPane pane = new JScrollPane(ar);
-					pan.add(new JLabel("   "));
-					pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
-					pan.setPreferredSize(new Dimension(585, 290));
-					ar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+				ComponentUtils.deriveFont(upde, 13);
+				pan.add("North", upde);
+				JTextPane ar = new JTextPane();
+				ar.setFont(MCreatorTheme.console_font);
+				ar.setEnabled(false);
+				ar.setMargin(new Insets(5, 10, 5, 5));
+				DefaultCaret caret = (DefaultCaret) ar.getCaret();
+				caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+				ar.setContentType("text/html");
+				JScrollPane pane = new JScrollPane(ar);
+				pan.add(new JLabel("   "));
+				pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
+				pan.setPreferredSize(new Dimension(585, 290));
+				ar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-					ar.setText(fullChangelog(updateInfo));
+				ar.setText(fullChangelog(updateInfo));
 
-					Object[] options = { L10N.t("dialog.update_notify.open_download_page"),
-							L10N.t("dialog.update_notify.remind_later") };
-					int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
-							JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-					if (option == 0) {
-						DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#update");
-					}
-				} else {
-					Release thisRelease = updateInfo.getReleases().get(Launcher.version.major);
-					if (thisRelease != null) {
-						if (Launcher.version.buildlong < Long.parseLong(thisRelease.getLatestBuild()) && (
-								PreferencesManager.PREFERENCES.notifications.checkAndNotifyForPatches.get()
-										|| Launcher.version.isSnapshot())) {
-							JPanel pan = new JPanel(new BorderLayout());
-							JLabel upde = L10N.label("dialog.update_notify.more_recent_build", Launcher.version.major,
-									Launcher.version.build,
-									updateInfo.getReleases().get(Launcher.version.major).getLatestBuild(),
-									Launcher.version.major);
+				Object[] options = { L10N.t("dialog.update_notify.open_download_page"),
+						L10N.t("dialog.update_notify.remind_later") };
+				int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+				if (option == 0) {
+					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#update");
+				}
+			} else if (updateInfo.isNewPatchAvailable() && notifyForPatches) {
+				JPanel pan = new JPanel(new BorderLayout());
+				JLabel upde = L10N.label("dialog.update_notify.more_recent_build", Launcher.version.major,
+						Launcher.version.build, updateInfo.getLatestPatchVersion(), Launcher.version.major);
 
-							ComponentUtils.deriveFont(upde, 13);
-							pan.add("North", upde);
-							JTextPane ar = new JTextPane();
-							ar.setFont(MCreatorTheme.console_font);
-							ar.setEnabled(false);
-							ar.setMargin(new Insets(5, 10, 5, 5));
-							DefaultCaret caret = (DefaultCaret) ar.getCaret();
-							caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
-							ar.setContentType("text/html");
-							JScrollPane pane = new JScrollPane(ar);
-							pan.add(new JLabel("   "));
-							pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
-							pan.setPreferredSize(new Dimension(585, 290));
-							ar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+				ComponentUtils.deriveFont(upde, 13);
+				pan.add("North", upde);
+				JTextPane ar = new JTextPane();
+				ar.setFont(MCreatorTheme.console_font);
+				ar.setEnabled(false);
+				ar.setMargin(new Insets(5, 10, 5, 5));
+				DefaultCaret caret = (DefaultCaret) ar.getCaret();
+				caret.setUpdatePolicy(DefaultCaret.NEVER_UPDATE);
+				ar.setContentType("text/html");
+				JScrollPane pane = new JScrollPane(ar);
+				pan.add(new JLabel("   "));
+				pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
+				pan.setPreferredSize(new Dimension(585, 290));
+				ar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-							ar.setText(
-									releaseChangelog(updateInfo.getReleases().get(Launcher.version.major).getBuilds(),
-											Launcher.version.buildlong));
+				ar.setText(releaseChangelog(updateInfo.getReleases().get(Launcher.version.major).getBuilds(),
+						Launcher.version.buildlong));
 
-							Object[] options = { L10N.t("dialog.update_notify.open_download_page"),
-									L10N.t("dialog.update_notify.remind_later") };
-							int option = JOptionPane.showOptionDialog(parent, pan,
-									L10N.t("dialog.update_notify.update_title"), JOptionPane.YES_NO_CANCEL_OPTION,
-									JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-							if (option == 0) {
-								DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#updatebuild");
-							}
-						} else if (showNoUpdates) {
-							showNoUpdates(parent);
-						}
-					} else if (showNoUpdates) {
-						showNoUpdates(parent);
-					}
+				Object[] options = { L10N.t("dialog.update_notify.open_download_page"),
+						L10N.t("dialog.update_notify.remind_later") };
+				int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+				if (option == 0) {
+					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#updatebuild");
 				}
 			} else if (showNoUpdates) {
-				showNoUpdates(parent);
+				JOptionPane.showMessageDialog(parent, L10N.t("dialog.update_notify.no_update_message"),
+						L10N.t("dialog.update_notify.no_update_title"), JOptionPane.INFORMATION_MESSAGE);
 			}
 		} else if (showNoUpdates) {
 			JOptionPane.showMessageDialog(parent, L10N.t("dialog.update_notify.error_failed_check_internet_message"),
 					L10N.t("dialog.update_notify.error_failed_check_internet_title"), JOptionPane.WARNING_MESSAGE);
 		}
-	}
 
-	private static void showNoUpdates(Window parent) {
-		JOptionPane.showMessageDialog(parent, L10N.t("dialog.update_notify.no_update_message"),
-				L10N.t("dialog.update_notify.no_update_title"), JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	private static String fullChangelog(UpdateInfo updateInfo) {

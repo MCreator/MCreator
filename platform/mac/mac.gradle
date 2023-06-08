@@ -16,9 +16,12 @@ tasks.register('exportMacX64', Copy.class) {
     dependsOn jar
     dependsOn exportPlugins
 
-    def exportPathX64 = 'build/export/mac_x64/MCreator.app/Contents/'
+    def exportPathX64 = 'build/export/mac_x64/MCreator.app'
 
-    into exportPathX64
+    def appIcon = project.snapshot ? "mcreatorapp_eap.icns" : "mcreatorapp.icns"
+    def icon = project.snapshot ? "mcreator_eap.icns" : "mcreator.icns"
+
+    into(exportPathX64 + '/Contents/')
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
             line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
@@ -26,37 +29,44 @@ tasks.register('exportMacX64', Copy.class) {
         from file('LICENSE.txt')
     }
     into('Resources') {
-        from file('platform/mac/mcreatorapp.icns')
-        from file('platform/mac/mcreator.icns')
+        from file('platform/mac/' + appIcon) rename(appIcon, 'mcreatorapp.icns')
+        from file('platform/mac/' + icon) rename(icon, 'mcreator.icns')
     }
     into('MacOS') {
         from file('platform/mac/mcreator_x64') rename('mcreator_x64', 'mcreator')
-        from file('LICENSE.txt')
     }
-    into('MacOS/plugins') { from 'build/plugins/' }
-    into('MacOS/license') { from 'license' }
-    into('MacOS/lib') {
+    into('plugins') { from 'build/plugins/' }
+    into('license') { from 'license' }
+    into('lib') {
         from 'build/libs'
         from configurations.export
         from configurations.macX64
     }
-    into('MacOS/jdk') { from 'jdk/jdk17_mac_x64/' }
+    into('jdk.bundle') { from 'jdk/jdk17_mac_x64/' }
+
     doLast {
         // fix line endings where needed
-        convertCRLF(file(exportPathX64 + '/Info.plistdos'), file(exportPathX64 + '/Info.plist'))
-        delete exportPathX64 + '/Info.plistdos'
+        convertCRLF(file(exportPathX64 + '/Contents/Info.plistdos'), file(exportPathX64 + '/Contents/Info.plist'))
+        delete exportPathX64 + '/Contents/Info.plistdos'
 
         // chmod needed on executable as mkisofs does not +x on Nix systems
         if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-            exec { commandLine('chmod', '+x', exportPathX64 + '/MacOS/mcreator') }
+            exec { commandLine('chmod', '+x', exportPathX64 + '/Contents/MacOS/mcreator') }
         }
+
+        // If we are on MacOS, we can also ad-hoc sign the executable
+        if (Os.isFamily(Os.FAMILY_MAC)) {
+            exec { commandLine('codesign', '--force', '--deep', '--sign', '-', exportPathX64) }
+        }
+
+        def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
 
         // Create x64 DMG
         ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
             arg(value: '-D')
             arg(value: '-o')
-            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg')
+            arg(value: dmgFile)
             arg(value: '-mac-name')
             arg(value: '-V')
             arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
@@ -73,9 +83,12 @@ tasks.register('exportMacAarch64', Copy.class) {
     dependsOn jar
     dependsOn exportPlugins
 
-    def exportPathAarch64 = 'build/export/mac_aarch64/MCreator.app/Contents/'
+    def exportPathAarch64 = 'build/export/mac_aarch64/MCreator.app'
 
-    into exportPathAarch64
+    def appIcon = project.snapshot ? "mcreatorapp_eap.icns" : "mcreatorapp.icns"
+    def icon = project.snapshot ? "mcreator_eap.icns" : "mcreator.icns"
+
+    into(exportPathAarch64 + '/Contents/')
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
             line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
@@ -83,37 +96,44 @@ tasks.register('exportMacAarch64', Copy.class) {
         from file('LICENSE.txt')
     }
     into('Resources') {
-        from file('platform/mac/mcreatorapp.icns')
-        from file('platform/mac/mcreator.icns')
+        from file('platform/mac/' + appIcon) rename(appIcon, 'mcreatorapp.icns')
+        from file('platform/mac/' + icon) rename(icon, 'mcreator.icns')
     }
     into('MacOS') {
         from file('platform/mac/mcreator_aarch64') rename('mcreator_aarch64', 'mcreator')
-        from file('LICENSE.txt')
     }
-    into('MacOS/plugins') { from 'build/plugins/' }
-    into('MacOS/license') { from 'license' }
-    into('MacOS/lib') {
+    into('plugins') { from 'build/plugins/' }
+    into('license') { from 'license' }
+    into('lib') {
         from 'build/libs'
         from configurations.export
         from configurations.macAarch64
     }
-    into('MacOS/jdk/') { from 'jdk/jdk17_mac_aarch64/' }
+    into('jdk.bundle') { from 'jdk/jdk17_mac_aarch64/' }
+
     doLast {
         // fix line endings where needed
-        convertCRLF(file(exportPathAarch64 + '/Info.plistdos'), file(exportPathAarch64 + '/Info.plist'))
-        delete exportPathAarch64 + '/Info.plistdos'
+        convertCRLF(file(exportPathAarch64 + '/Contents/Info.plistdos'), file(exportPathAarch64 + '/Contents/Info.plist'))
+        delete exportPathAarch64 + '/Contents/Info.plistdos'
 
         // chmod needed on executable as mkisofs does not +x on Nix systems
         if (!Os.isFamily(Os.FAMILY_WINDOWS)) {
-            exec { commandLine('chmod', '+x', exportPathAarch64 + '/MacOS/mcreator') }
+            exec { commandLine('chmod', '+x', exportPathAarch64 + '/Contents/MacOS/mcreator') }
         }
+
+        // If we are on MacOS, we can also ad-hoc sign the executable
+        if (Os.isFamily(Os.FAMILY_MAC)) {
+            exec { commandLine('codesign', '--force', '--deep', '--sign', '-', exportPathAarch64) }
+        }
+
+        def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
 
         // Create Aarch64 DMG
         ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
             arg(value: '-D')
             arg(value: '-o')
-            arg(value: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg')
+            arg(value: dmgFile)
             arg(value: '-mac-name')
             arg(value: '-V')
             arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))

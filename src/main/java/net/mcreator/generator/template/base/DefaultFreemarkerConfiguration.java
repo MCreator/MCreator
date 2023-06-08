@@ -39,7 +39,7 @@ public class DefaultFreemarkerConfiguration extends Configuration {
 		setAutoEscapingPolicy(Configuration.DISABLE_AUTO_ESCAPING_POLICY);
 		setDefaultEncoding("UTF-8");
 		setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
-		setNumberFormat("computer");
+		setNumberFormat("0.##########");
 		setBooleanFormat("c");
 		setCFormat(JSONCFormat.INSTANCE);
 		setTemplateUpdateDelayMilliseconds(Integer.MAX_VALUE);

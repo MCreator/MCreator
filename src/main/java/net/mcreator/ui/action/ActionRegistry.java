@@ -20,12 +20,8 @@ package net.mcreator.ui.action;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.action.impl.AboutAction;
-import net.mcreator.ui.action.impl.CheckForUpdatesAction;
-import net.mcreator.ui.action.impl.MinecraftFolderActions;
-import net.mcreator.ui.action.impl.ShowDataListAction;
+import net.mcreator.ui.action.impl.*;
 import net.mcreator.ui.action.impl.gradle.*;
-import net.mcreator.ui.action.impl.vcs.*;
 import net.mcreator.ui.action.impl.workspace.*;
 import net.mcreator.ui.action.impl.workspace.resources.ImportSoundAction;
 import net.mcreator.ui.action.impl.workspace.resources.ModelImportActions;
@@ -79,6 +75,7 @@ public class ActionRegistry {
 	// Help actions
 	public final BasicAction aboutMCreator;
 	public final BasicAction checkForUpdates;
+	public final BasicAction checkForPluginUpdates;
 	public final BasicAction showShortcuts;
 	public final BasicAction help;
 	public final BasicAction support;
@@ -140,15 +137,6 @@ public class ActionRegistry {
 	public final BasicAction importJavaModel;
 	public final BasicAction importJSONModel;
 	public final BasicAction importOBJModel;
-
-	// VCS actions
-	public final BasicAction setupVCS;
-	public final BasicAction unlinkVCS;
-	public final BasicAction setupVCSOrSettings;
-	public final BasicAction syncToRemote;
-	public final BasicAction syncFromRemote;
-	public final BasicAction showUnsyncedChanges;
-	public final BasicAction remoteWorkspaceSettings;
 
 	// Window actions
 	public final BasicAction showWorkspaceBrowser;
@@ -215,6 +203,7 @@ public class ActionRegistry {
 				e -> mcreator.getApplication().closeApplication());
 		this.aboutMCreator = new AboutAction(this);
 		this.checkForUpdates = new CheckForUpdatesAction(this);
+		this.checkForPluginUpdates = new CheckForPluginUpdatesAction(this);
 		this.help = new VisitURIAction(this, L10N.t("action.wiki"), MCreatorApplication.SERVER_DOMAIN + "/wiki");
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");
@@ -303,13 +292,6 @@ public class ActionRegistry {
 		this.importWorkspace = new ImportWorkspaceAction(this);
 		this.openWorkspaceFolder = new BasicAction(this, L10N.t("action.open_workspace_folder"),
 				e -> DesktopUtils.openSafe(mcreator.getWorkspaceFolder()));
-		this.setupVCS = new SetupVCSAction(this);
-		this.unlinkVCS = new UnlinkVCSAction(this);
-		this.setupVCSOrSettings = new SetupOrSettingsVCSAction(this);
-		this.syncToRemote = new SyncLocalWithRemoteAction(this);
-		this.syncFromRemote = new SyncRemoteToLocalAction(this);
-		this.showUnsyncedChanges = new ShowLocalChangesAction(this);
-		this.remoteWorkspaceSettings = new VCSInfoSettingsAction(this);
 		this.openMaterialPackMaker = MaterialPackMakerTool.getAction(this);
 		this.openOrePackMaker = OrePackMakerTool.getAction(this);
 		this.openToolPackMaker = ToolPackMakerTool.getAction(this);

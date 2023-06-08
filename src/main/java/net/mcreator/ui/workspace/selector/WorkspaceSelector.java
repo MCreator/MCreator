@@ -24,6 +24,8 @@ import net.mcreator.Launcher;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.WorkspaceSelectorLoadedEvent;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.ImagePanel;
@@ -36,16 +38,14 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.vcs.VCSSetupDialogs;
+import net.mcreator.ui.notifications.INotificationConsumer;
+import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.vcs.CloneWorkspace;
-import net.mcreator.vcs.VCSInfo;
 import net.mcreator.workspace.ShareableZIPManager;
-import net.mcreator.workspace.WorkspaceUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -66,7 +66,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
-public final class WorkspaceSelector extends JFrame implements DropTargetListener {
+public final class WorkspaceSelector extends JFrame implements DropTargetListener, INotificationConsumer {
 
 	private static final Logger LOG = LogManager.getLogger("Workspace Selector");
 
@@ -78,12 +78,14 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 	private final JPanel subactions = new JPanel(new GridLayout(-1, 1, 0, 2));
 
+	private final NotificationsRenderer notificationsRenderer;
+
 	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
 		this.application = application;
 
 		setTitle("MCreator " + Launcher.version.getMajorString());
-		setIconImage(UIRES.getBuiltIn("icon").getImage());
+		setIconImage(UIRES.getAppIcon().getImage());
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		if (application != null)
@@ -119,32 +121,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 					File workspaceFile = ShareableZIPManager.importZIP(file, workspaceDir, this);
 					if (workspaceFile != null)
 						workspaceOpenListener.workspaceOpened(workspaceFile);
-				}
-			}
-		});
-
-		addWorkspaceButton(L10N.t("dialog.workspace_selector.clone"), UIRES.get("vcsclone"), e -> {
-			VCSInfo vcsInfo = VCSSetupDialogs.getVCSInfoDialog(this, L10N.t("dialog.workspace_selector.vcs_info"));
-			if (vcsInfo != null) {
-				File workspaceFolder = FileDialogs.getWorkspaceDirectorySelectDialog(this, null);
-				if (workspaceFolder != null) {
-					try {
-						setCursor(new Cursor(Cursor.WAIT_CURSOR));
-						CloneWorkspace.cloneWorkspace(this, vcsInfo, workspaceFolder);
-						try {
-							File workspaceFile = WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(workspaceFolder);
-							workspaceOpenListener.workspaceOpened(workspaceFile);
-						} catch (Exception ex) {
-							throw new Exception("The remote repository is not a MCreator workspace or is corrupted");
-						}
-					} catch (Exception ex) {
-						JOptionPane.showMessageDialog(this,
-								L10N.t("dialog.workspace_selector.clone.setup_failed", ex.getMessage()),
-								L10N.t("dialog.workspace_selector.clone.setup_failed.title"),
-								JOptionPane.ERROR_MESSAGE);
-					} finally {
-						setCursor(Cursor.getDefaultCursor());
-					}
 				}
 			}
 		});
@@ -216,7 +192,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		JPanel southcenterleft = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-		JLabel version = L10N.label("dialog.workspace_selector.version", Launcher.version.getMajorString());
+		JLabel version = L10N.label("dialog.workspace_selector.version",
+				Launcher.version.isSnapshot() ? Launcher.version.getMajorString() : Launcher.version.getFullString());
 		version.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				AboutAction.showDialog(WorkspaceSelector.this);
@@ -236,6 +213,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JComponent centerComponent = PanelUtils.centerAndSouthElement(
 				PanelUtils.northAndCenterElement(logoPanel, PanelUtils.totalCenterInPanel(actions)), southSubComponent);
 
+		notificationsRenderer = new NotificationsRenderer(centerComponent);
+
 		add("Center", centerComponent);
 
 		recentPanel.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -246,6 +225,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		add("West", recentPanel);
 
 		new DropTarget(this, DnDConstants.ACTION_MOVE, this, true, null);
+
+		MCREvent.event(new WorkspaceSelectorLoadedEvent(this));
 
 		setSize(795, 460);
 		setResizable(false);
@@ -539,4 +520,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	@Nullable public MCreatorApplication getApplication() {
 		return application;
 	}
+
+	@Override public NotificationsRenderer getNotificationsRenderer() {
+		return notificationsRenderer;
+	}
+
 }
