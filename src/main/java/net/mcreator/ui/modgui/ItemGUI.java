@@ -430,6 +430,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
+
+		updateGlowElements();
+		updateFoodPanel();
 	}
 
 	private void updateFoodPanel() {
