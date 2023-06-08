@@ -92,12 +92,17 @@ import java.util.List;
 		this.sleepResult = "ALLOW";
 	}
 
+	public boolean hasIgniter() {
+		// igniter needs portal and igniter enabled
+		return enablePortal && enableIgniter;
+	}
+
 	@Override public BufferedImage generateModElementPicture() {
 		return this.enablePortal ?
 				MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
 						getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
 						getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame,
-						enableIgniter) :
+						this.hasIgniter()) :
 				null;
 	}
 
@@ -109,7 +114,7 @@ import java.util.List;
 		List<BaseType> baseTypes = new ArrayList<>();
 		if (enablePortal)
 			baseTypes.add(BaseType.BLOCK);
-		if (enableIgniter)
+		if (this.hasIgniter())
 			baseTypes.add(BaseType.ITEM);
 		return baseTypes;
 	}
@@ -118,13 +123,13 @@ import java.util.List;
 		ArrayList<MCItem> retval = new ArrayList<>();
 		if (this.enablePortal)
 			retval.add(new MCItem.Custom(this.getModElement(), "portal", "block", "Portal block"));
-		if (this.enableIgniter)
+		if (this.hasIgniter())
 			retval.add(new MCItem.Custom(this.getModElement(), null, "item", "Portal igniter"));
 		return retval;
 	}
 
 	@Override public List<MCItem> getCreativeTabItems() {
-		if (this.enableIgniter)
+		if (this.hasIgniter())
 			return List.of(new MCItem.Custom(this.getModElement(), null, "item", "Portal igniter"));
 		return Collections.emptyList();
 	}
