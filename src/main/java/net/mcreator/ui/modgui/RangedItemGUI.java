@@ -41,6 +41,7 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -152,7 +153,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				L10N.t("elementgui.ranged_item.swinged_by_entity"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		specialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
+		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.ranged_item.special_informations"), AbstractProcedureSelector.Side.CLIENT,
+				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition"), mcreator,
 				L10N.t("elementgui.ranged_item.can_use"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -192,15 +195,16 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		sbbp2.add("North", PanelUtils.centerInPanel(
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.ranged_item.texture"))));
 
-		sbbp2.add("South", PanelUtils.westAndEastElement(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-						L10N.label("elementgui.ranged_item.enable_glowing")), PanelUtils.join(hasGlow, glowCondition)));
+		sbbp2.add("South", PanelUtils.centerAndSouthElement(PanelUtils.westAndEastElement(
+						HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+								L10N.label("elementgui.ranged_item.enable_glowing")), PanelUtils.join(hasGlow, glowCondition)),
+				specialInformation));
 
 		pane1.setOpaque(false);
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel selp = new JPanel(new GridLayout(11, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(10, 2, 5, 2));
 		selp.setOpaque(false);
 
 		JPanel selp2 = new JPanel(new GridLayout(8, 2, 10, 2));
@@ -220,10 +224,6 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.ranged_item.special_informations")));
-		selp.add(specialInformation);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
