@@ -14,6 +14,6 @@ import java.util.Set;
 public class AttackOnCollideFixer implements IConverter {
   
 	@Override public int getVersionConvertingTo() {
-		return 41;
+		return 43;
 	}
 }
