@@ -36,12 +36,13 @@ public class JLootTablePoolsList extends JEntriesList {
 
 	private final List<JLootTablePool> poolList = new ArrayList<>();
 
-	private final JPanel pools = new JPanel(new GridLayout(0, 1, 5, 5));
+	private final JPanel pools = new JPanel();
 
 	public JLootTablePoolsList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
 
+		pools.setLayout(new BoxLayout(pools, BoxLayout.PAGE_AXIS));
 		pools.setOpaque(false);
 
 		JToolBar bar = new JToolBar();
