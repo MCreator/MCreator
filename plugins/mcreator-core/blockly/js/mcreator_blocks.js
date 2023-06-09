@@ -576,6 +576,28 @@ Blockly.Blocks['ore_mutator_input'] = {
     }
 };
 
+// Mutator block for "Weighted list" mixins
+Blockly.Blocks['weighted_list_mutator_container'] = {
+    init: function() {
+        this.appendDummyInput().appendField(javabridge.t('blockly.block.weighted_list_mutator.container'));
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+        this.setColour('#888888');
+    }
+};
+
+// Mutator block for "Weighted list" mixins
+Blockly.Blocks['weighted_list_mutator_input'] = {
+    init: function() {
+      this.appendDummyInput().appendField(javabridge.t('blockly.block.weighted_list_mutator.input'));
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.contextMenu = false;
+      this.fieldValues_ = [];
+      this.setColour('#888888');
+    }
+};
+
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "logic_binary_ops",

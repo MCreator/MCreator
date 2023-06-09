@@ -648,6 +648,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.attackKnockback = 1.5;
 			livingEntity.knockbackResistance = 0.5;
 			livingEntity.movementSpeed = 0.76;
+			livingEntity.stepHeight = 2.24;
 			livingEntity.armorBaseValue = 0.123;
 			livingEntity.health = 42;
 			livingEntity.trackingRange = 27;
@@ -763,6 +764,7 @@ public class TestWorkspaceDataProvider {
 			Dimension dimension = new Dimension(modElement);
 			dimension.texture = "test";
 			dimension.portalTexture = "test2";
+			dimension.enableIgniter = true; // we always want it as it can be referenced in other tests
 			dimension.portalParticles = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			dimension.igniterTab = new TabEntry(modElement.getWorkspace(),
