@@ -1,5 +1,5 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-status: stable
+status: dev
 buildfileversion: 46.0.2
 
 import:
@@ -24,7 +24,7 @@ mod_assets_root: "@RESROOT/assets/@modid"
 mod_data_root: "@RESROOT/data/@modid"
 
 # specific resource folders
-#sounds_dir: "@MODASSETSROOT/sounds"
+sounds_dir: "@MODASSETSROOT/sounds"
 #structures_dir: "@MODDATAROOT/structures"
 #block_textures_dir: "@MODASSETSROOT/textures/block"
 #item_textures_dir: "@MODASSETSROOT/textures/item"
@@ -36,22 +36,22 @@ mod_data_root: "@RESROOT/data/@modid"
 #other_textures_dir: "@MODASSETSROOT/textures"
 
 base_templates:
-#  - template: modbase/mod.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
-#    canLock: true
-#  - template: modbase/mods.toml.ftl
-#    writer: file
-#    name: "@RESROOT/META-INF/mods.toml"
-#  - template: modbase/pack.mcmeta.ftl
-#    writer: json
-#    name: "@RESROOT/pack.mcmeta"
-#  - template: modbase/sounds.json.ftl
-#    writer: json
-#    name: "@MODASSETSROOT/sounds.json"
-#    condition: hasSounds()
-#  - template: elementinits/sounds.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
-#    condition: hasSounds()
+  - template: modbase/mod.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
+    canLock: true
+  - template: modbase/mods.toml.ftl
+    writer: file
+    name: "@RESROOT/META-INF/mods.toml"
+  - template: pack.mcmeta.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/pack.mcmeta"
+  - template: modbase/sounds.json.ftl
+    writer: json
+    name: "@MODASSETSROOT/sounds.json"
+    condition: hasSounds()
+  - template: elementinits/sounds.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
+    condition: hasSounds()
 #  - template: modbase/variableslist.java.ftl
 #    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
 #    condition: hasVariables()
