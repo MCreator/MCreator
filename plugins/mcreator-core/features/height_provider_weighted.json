@@ -1,0 +1,28 @@
+{
+  "mutator": "weighted_height_provider_mutator",
+  "output": "HeightProvider",
+  "colour": 190,
+  "mcreator": {
+    "toolbox_id": "heightplacements",
+    "toolbox_init": [
+      "<mutation inputs=\"2\"></mutation>",
+      "~<value name=\"entry0\"><block type=\"height_provider_constant\"><value name=\"value\"><block type=\"vertical_anchor_absolute\"><field name=\"value\">64</field></block></value></block></value>",
+      "~<value name=\"entry1\"><block type=\"height_provider_constant\"><value name=\"value\"><block type=\"vertical_anchor_absolute\"><field name=\"value\">64</field></block></value></block></value>"
+    ],
+    "repeating_inputs": [
+      "entry"
+    ],
+    "repeating_fields": [
+      {
+        "name": "weight",
+        "field_definition": {
+          "testCount": 2,
+          "type": "field_number",
+          "value": 1,
+          "min": 1,
+          "precision": 1
+        }
+      }
+    ]
+  }
+}

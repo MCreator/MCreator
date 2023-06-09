@@ -184,9 +184,13 @@ public class Model {
 	}
 
 	public static List<Model> getJavaModels(Workspace workspace) {
+		return getJavaModels(workspace, workspace.getGeneratorConfiguration().getCompatibleJavaModelKeys());
+	}
+
+	public static List<Model> getJavaModels(Workspace workspace, List<String> compatibleJavaModelKeys) {
 		Set<Model> models = new HashSet<>();
 
-		for (String modelKey : workspace.getGeneratorConfiguration().getCompatibleJavaModelKeys()) {
+		for (String modelKey : compatibleJavaModelKeys) {
 			File[] candidates;
 			if (modelKey.equals("legacy")) {
 				candidates = workspace.getFolderManager().getModelsDir().listFiles();

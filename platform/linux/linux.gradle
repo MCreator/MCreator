@@ -7,11 +7,13 @@ tasks.register('exportLinux64', Copy.class) {
     dependsOn jar
     dependsOn exportPlugins
 
+    def icon = project.snapshot ? "icon_eap.png" : "icon.png"
+
     into 'build/export/linux64'
     into('') {
         from file('LICENSE.txt')
         from file('platform/linux/mcreator.sh') rename('mcreator.sh', 'mcreator.shdos')
-        from file('src/main/resources/net/mcreator/ui/res/icon.png')
+        from file('src/main/resources/net/mcreator/ui/res/' + icon) rename(icon, 'icon.png')
     }
     into('lib') {
         from 'build/libs'

@@ -18,8 +18,7 @@
 
 package net.mcreator.unit.util;
 
-import net.mcreator.util.GSONClone;
-import net.mcreator.util.GSONCompare;
+import net.mcreator.util.diff.GSONCompare;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -37,12 +36,6 @@ public class GSONUtilsTest {
 		assertTrue(GSONCompare.deepEquals(objA, objB));
 		assertFalse(GSONCompare.deepEquals(objA, objC));
 		assertFalse(GSONCompare.deepEquals(objB, objC));
-	}
-
-	@Test public void testGSONClone() {
-		TestObject objA = new TestObject("test", 1);
-		TestObject objA_clone = GSONClone.deepClone(objA, TestObject.class);
-		assertTrue(GSONCompare.deepEquals(objA, objA_clone));
 	}
 
 	private static class TestObject {

@@ -31,7 +31,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
@@ -72,7 +71,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private transient boolean changed = false;
 	transient WorkspaceFileManager fileManager;
 	protected transient Generator generator;
-	@Nullable private transient WorkspaceVCS vcs;
 	private transient boolean regenerateRequired = false;
 	private transient boolean failingGradleDependencies = false;
 
@@ -346,14 +344,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 				}
 			}
 		}
-	}
-
-	public WorkspaceVCS getVCS() {
-		return vcs;
-	}
-
-	public void setVCS(WorkspaceVCS vcs) {
-		this.vcs = vcs;
 	}
 
 	public void switchGenerator(String generatorName) {
