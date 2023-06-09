@@ -67,6 +67,7 @@ import java.util.List;
 	public Particle portalParticles;
 	public int portalLuminance;
 	public Sound portalSound;
+	public boolean enableIgniter;
 	public String igniterName;
 	public TabEntry igniterTab;
 	public String texture;
@@ -86,13 +87,17 @@ import java.util.List;
 
 		// DEFAULT VALUES
 		this.enablePortal = true;
+		this.enableIgniter = true;
 		this.sleepResult = "ALLOW";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
-				getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
-				getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame);
+		return this.enablePortal ?
+				MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
+						getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
+						getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame,
+						enableIgniter) :
+				null;
 	}
 
 	@Override public TabEntry getCreativeTab() {
@@ -127,7 +132,8 @@ import java.util.List;
 	}
 
 	@Override public List<MItemBlock> poiBlocks() {
-		return List.of(new MItemBlock(this.getModElement().getWorkspace(), "CUSTOM:" + this.getModElement().getName() + ".portal"));
+		return List.of(new MItemBlock(this.getModElement().getWorkspace(),
+				"CUSTOM:" + this.getModElement().getName() + ".portal"));
 	}
 
 }

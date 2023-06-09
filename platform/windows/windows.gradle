@@ -1,23 +1,18 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-createExe {
+launch4j {
     outfile = 'mcreator.exe'
     mainClassName = 'net.mcreator.Launcher'
     dontWrapJar = true
     copyConfigurable = []
-    classpath = [
-            "./lib/*"
-    ]
-    jvmOptions = [
-            "--add-opens=java.base/java.lang=ALL-UNNAMED"
-    ]
+    classpath = ["./lib/*"]
+    jvmOptions = ["--add-opens=java.base/java.lang=ALL-UNNAMED"]
     libraryDir = "null"
     stayAlive = true
-    jdkPreference = "jdkOnly"
-    bundledJrePath = 'jdk'
 
-    bundledJre64Bit = true
-    jreRuntimeBits = 64
+    bundledJrePath = 'jdk'
+    requiresJdk = true
+    requires64Bit = true
 
     errTitle = 'MCreator'
     supportUrl = 'https://mcreator.net/support'
@@ -25,13 +20,14 @@ createExe {
     fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator')
     productName = "MCreator"
     companyName = "Pylo"
+    copyright = "Pylo"
 
-    icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/icon.ico"
+    icon = "${projectDir}/src/main/resources/net/mcreator/ui/res/" + (project.snapshot ? "icon_eap.ico" : "icon.ico")
 }
 
 tasks.register('exportWin64', Copy.class) {
     dependsOn downloadJDKWin64
-    dependsOn createExe
+    dependsOn createAllExecutables
     dependsOn jar
     dependsOn exportPlugins
 
@@ -51,7 +47,7 @@ tasks.register('exportWin64', Copy.class) {
     into('jdk') { from 'jdk/jdk17_win_64' }
 }
 
-tasks.register('zipWin64', Zip.class) {
+tasks.register('exportWindowsZip', Zip.class) {
     dependsOn exportWin64
 
     from 'build/export/win64/'
@@ -85,21 +81,16 @@ tasks.register('buildInstallerWin64', Exec.class) {
     doLast { delete 'build/export/install64.nsi' }
 }
 
-tasks.register('exportWindowsAll') {
+tasks.register('exportWindows') {
     group 'export'
 
-    dependsOn zipWin64
-    dependsOn buildInstallerWin64
+    dependsOn exportWindowsZip
 
-    doLast {
-        delete 'build/export/win64'
+    // Add installer only if this is not a snapshot build (and not MacOS that does not support makensis)
+    if (!project.snapshot && !Os.isFamily(Os.FAMILY_MAC)) {
+        dependsOn buildInstallerWin64
     }
-}
 
-tasks.register('exportWindowsZIP') {
-    group 'export'
-
-    dependsOn zipWin64
     doLast {
         delete 'build/export/win64'
     }

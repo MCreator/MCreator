@@ -2,27 +2,36 @@
  * This class represents a data list field that can be double-clicked to open a list entry selector.
  * The behaviour is similar to block/item selectors or condition selectors for entity AI blocks
  */
-class FieldDataListSelector extends Blockly.FieldLabelSerializable {
+class FieldDataListSelector extends Blockly.Field {
+
+    EDITABLE = true;
+    SERIALIZABLE = true;
+    CURSOR = 'default';
+
     constructor(datalist = '', opt_validator, opt_config) {
-        super(javabridge.t('blockly.extension.data_list_selector.no_entry'), 'entry-label');
+        super('', opt_validator, opt_config);
         this.type = datalist;
         this.typeFilter = null;
         this.customEntryProviders = null;
-        this.entry = FieldDataListSelector.getDefaultEntry();
-        this.setTooltip(this.getText_());
 
-        this.EDITABLE = true;
+        this.maxDisplayLength = 75;
 
         if (opt_config)
             this.configure_(opt_config);
-        if (opt_validator)
-            this.setValidator(opt_validator);
-    }
 
-    // The default entry is ",No entry selected". Since the value is an empty string, the procedure editor will show a compile error
-    static getDefaultEntry() {
-        return ',' + javabridge.t('blockly.extension.data_list_selector.no_entry');
-    }
+        // Show the full name of the selected value, or the "Double click to select value" message
+        let thisField = this;
+        this.setTooltip(function () {
+            return thisField.getValue() ?
+                thisField.readableName :
+                javabridge.t('blockly.field_data_list_selector.tooltip.empty');
+        });
+    };
+
+    // Get the default text for when no value is selected
+    static getDefaultText() {
+        return javabridge.t('blockly.extension.data_list_selector.no_entry');
+    };
 
     // Configure the field given a map of settings
     configure_(config) {
@@ -37,36 +46,11 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
         let opt_customEntryProviders = config['customEntryProviders'];
         if (opt_customEntryProviders)
             this.customEntryProviders = opt_customEntryProviders;
-    }
+    };
 
     // Create the field from the json definition
     static fromJson(options) {
         return new this(Blockly.utils.parsing.replaceMessageReferences(options['datalist']), undefined, options);
-    }
-
-    // Initialize the field with a rectangle surrounding the text
-    initView() {
-        this.createBorderRect_();
-        this.createTextElement_();
-
-        if (workspace.getRenderer().name === "thrasos") {
-            this.textElement_.setAttribute("y", 8);
-            this.textElement_.setAttribute("x", this.textElement_.getAttribute("x") + 4);
-        } else {
-            this.textElement_.setAttribute("y", 13);
-            this.textElement_.setAttribute("x", this.textElement_.getAttribute("x") + 5);
-        }
-
-        if (this.class_)
-            Blockly.utils.dom.addClass(this.textElement_, this.class_);
-
-        if (this.textElement_)
-            this.borderRect_.setAttribute('width', Blockly.utils.dom.getTextWidth(this.textElement_) + 8);
-        else
-            this.borderRect_.setAttribute('width', 93);
-        this.borderRect_.setAttribute('height', 15);
-
-        this.lastClickTime = -1;
     };
 
     // Function to handle clicking
@@ -76,15 +60,10 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
                 e.stopPropagation(); // fix so the block does not "stick" to the mouse when the field is clicked
                 let thisField = this; // reference to this field, to use in the callback function
                 javabridge.openEntrySelector(this.type, this.typeFilter, this.customEntryProviders, {
-                    'callback': function (data) {
-                        if (data !== undefined) {
-                            thisField.entry = data;
-                        } else {
-                            thisField.entry = FieldDataListSelector.getDefaultEntry();
-                        }
-
+                    'callback': function (value, readableName) {
+                        thisField.cachedReadableName = readableName || value;
+                        thisField.setValue(value);
                         javabridge.triggerEvent();
-                        thisField.updateDisplay();
                     }
                 });
             } else {
@@ -93,48 +72,32 @@ class FieldDataListSelector extends Blockly.FieldLabelSerializable {
         }
     };
 
-    // We store only the actual value in the text content, the readable name is loaded with the procedure
-    toXml(fieldElement) {
-        fieldElement.textContent = this.getValue();
-        return fieldElement;
+    // Update the value of this selector
+    doValueUpdate_(newValue) {
+        if (newValue !== this.value_) { // If the value is different, update the readable name
+            this.updateReadableName(newValue);
+        }
+        super.doValueUpdate_(newValue);
     };
 
-    // We load the readable name again after opening the procedure, in case the entry has a new readable name
-    fromXml(fieldElement) {
-        if (fieldElement && fieldElement.textContent) {
-            let readableName = javabridge.getReadableNameOf(fieldElement.textContent, this.type);
-            if (!readableName) // The readable name is an empty string because it couldn't be found
-                readableName = fieldElement.textContent; // In this case, we use the actual value
-            this.entry = fieldElement.textContent + ',' + readableName;
-        } else
-            this.entry = FieldDataListSelector.getDefaultEntry();
-        this.updateDisplay();
-    };
-
-    // Returns the readable text
+    // Get the text that is shown in the Blockly editor
     getText_() {
-        if (this.entry && this.entry.split(',').length === 2) {
-            return this.entry.split(',')[1];
-        }
-        return javabridge.t('blockly.extension.data_list_selector.no_entry');
-    }
+        return this.readableName || FieldDataListSelector.getDefaultText();
+    };
 
-    // Returns the actual value of the selected entry. Only this value is saved in the procedure XML
-    getValue() {
-        if (this.entry && this.entry.split(',').length === 2) {
-            return this.entry.split(',')[0];
+    // Update the readable name of this field
+    updateReadableName(value) {
+        // First check if there's a cached readable name (after selecting a value)
+        if (this.cachedReadableName) {
+            this.readableName = this.cachedReadableName;
+            this.cachedReadableName = null;
         }
-        return '';
-    }
-
-    updateDisplay() {
-        if (this.entry.split(',').length === 2) {
-            this.setValue(this.entry.split(',')[0]);
+        // If there isn't (for example after opening a saved procedure), try to get the readable name from the value
+        else if (value) {
+            this.readableName = javabridge.getReadableNameOf(value, this.type) || value;
         } else {
-            this.setValue('');
+            this.readableName = FieldDataListSelector.getDefaultText(); // Fallback to the "No entry selected" message
         }
-        this.setTooltip(this.getText_()); // Update the field tooltip
-        this.forceRerender(); // Update the selected text and shape
     };
 }
 

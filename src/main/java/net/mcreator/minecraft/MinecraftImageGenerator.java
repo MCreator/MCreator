@@ -220,7 +220,7 @@ public class MinecraftImageGenerator {
 			g.drawRect(0, 0, 159, 77);
 			g.drawString("BOOTS", 5, 155);
 			g.drawRect(0, 79, 78, 80);
-			g.drawString("BODY", 87, 155);
+			g.drawString("CHESTPLATE", 87, 155);
 			g.drawRect(80, 79, 205, 80);
 			return image;
 		}
@@ -672,10 +672,11 @@ public class MinecraftImageGenerator {
 		 * @param portalTexture      <p>This texture is used for portal's inner filler.</p>
 		 * @param triggerTexture     <p>This texture is used for portal's igniter texture above portal.</p>
 		 * @param portalFrameTexture <p>The item provided is used to calculate it's average color for portal's frame.</p>
+		 * @param isIgniterEnabled   <p>Wether the portal's igniter is enabled or not.</p>
 		 * @return <p>Returns generated image.</p>
 		 */
 		public static BufferedImage generateDimensionPreviewPicture(Workspace workspace, File portalTexture,
-				File triggerTexture, MItemBlock portalFrameTexture) {
+				File triggerTexture, MItemBlock portalFrameTexture, boolean isIgniterEnabled) {
 			if (!portalTexture.isFile())
 				return null;
 
@@ -703,8 +704,10 @@ public class MinecraftImageGenerator {
 				graphics2D.drawImage(tex, 8, 17, 6, 6, null);
 				graphics2D.drawImage(tex, 14, 17, 6, 6, null);
 
-				BufferedImage igniter = ImageUtils.autoCropTile(ImageIO.read(triggerTexture));
-				graphics2D.drawImage(igniter, 2, 2, 24, 24, null);
+				if (isIgniterEnabled) {
+					BufferedImage igniter = ImageUtils.autoCropTile(ImageIO.read(triggerTexture));
+					graphics2D.drawImage(igniter, 2, 2, 24, 24, null);
+				}
 			} catch (IOException e) {
 				LOG.error(e.getMessage(), e);
 			}

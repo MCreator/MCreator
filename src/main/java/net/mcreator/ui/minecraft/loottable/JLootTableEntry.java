@@ -22,6 +22,7 @@ import net.mcreator.element.types.LootTable;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -36,11 +37,9 @@ public class JLootTableEntry extends JPanel {
 	private final MCItemHolder item;
 	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
 
-	private final JSpinner mincount = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
-	private final JSpinner maxcount = new JSpinner(new SpinnerNumberModel(1, 0, 64000, 1));
+	private final JMinMaxSpinner count = new JMinMaxSpinner(1, 1, 0, 64000, 1);
 
-	private final JSpinner minEnchantmentsLevel = new JSpinner(new SpinnerNumberModel(0, 0, 64000, 1));
-	private final JSpinner maxEnchantmentsLevel = new JSpinner(new SpinnerNumberModel(0, 0, 64000, 1));
+	private final JMinMaxSpinner enchantmentsLevel = new JMinMaxSpinner(0, 0, 0, 64000, 1);
 
 	private final JCheckBox affectedByFortune = L10N.checkbox("elementgui.loot_table.affected_by_fortune");
 	private final JCheckBox explosionDecay = L10N.checkbox("elementgui.loot_table.enable_explosion_decay");
@@ -54,6 +53,14 @@ public class JLootTableEntry extends JPanel {
 		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
 		item = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
+		count.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+		count.setAllowEqualValues(true);
+		enchantmentsLevel.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+		enchantmentsLevel.setAllowEqualValues(true);
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
 
@@ -70,10 +77,8 @@ public class JLootTableEntry extends JPanel {
 
 		line1.add(new JEmptyBox(15, 5));
 
-		line1.add(L10N.label("elementgui.loot_table.min_count"));
-		line1.add(mincount);
-		line1.add(L10N.label("elementgui.loot_table.max_count"));
-		line1.add(maxcount);
+		line1.add(L10N.label("elementgui.loot_table.count"));
+		line1.add(count);
 
 		line1.add(new JEmptyBox(15, 5));
 
@@ -100,10 +105,8 @@ public class JLootTableEntry extends JPanel {
 		JPanel line2 = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		line2.setOpaque(false);
 
-		line2.add(L10N.label("elementgui.loot_table.enchantments_level_min"));
-		line2.add(minEnchantmentsLevel);
-		line2.add(L10N.label("elementgui.loot_table.enchantments_level_max"));
-		line2.add(maxEnchantmentsLevel);
+		line2.add(L10N.label("elementgui.loot_table.enchantments_level"));
+		line2.add(enchantmentsLevel);
 
 		add(PanelUtils.centerAndEastElement(line1, PanelUtils.join(remove)));
 		add(line2);
@@ -125,11 +128,11 @@ public class JLootTableEntry extends JPanel {
 
 		entry.weight = (int) weight.getValue();
 
-		entry.minCount = (int) mincount.getValue();
-		entry.maxCount = (int) maxcount.getValue();
+		entry.minCount = count.getIntMinValue();
+		entry.maxCount = count.getIntMaxValue();
 
-		entry.minEnchantmentLevel = (int) minEnchantmentsLevel.getValue();
-		entry.maxEnchantmentLevel = (int) maxEnchantmentsLevel.getValue();
+		entry.minEnchantmentLevel = enchantmentsLevel.getIntMinValue();
+		entry.maxEnchantmentLevel = enchantmentsLevel.getIntMaxValue();
 
 		entry.affectedByFortune = affectedByFortune.isSelected();
 		entry.explosionDecay = explosionDecay.isSelected();
@@ -143,11 +146,11 @@ public class JLootTableEntry extends JPanel {
 		item.setBlock(e.item);
 		weight.setValue(e.weight);
 
-		mincount.setValue(e.minCount);
-		maxcount.setValue(e.maxCount);
+		count.setMinValue(e.minCount);
+		count.setMaxValue(e.maxCount);
 
-		minEnchantmentsLevel.setValue(e.minEnchantmentLevel);
-		maxEnchantmentsLevel.setValue(e.maxEnchantmentLevel);
+		enchantmentsLevel.setMinValue(e.minEnchantmentLevel);
+		enchantmentsLevel.setMaxValue(e.maxEnchantmentLevel);
 
 		affectedByFortune.setSelected(e.affectedByFortune);
 		explosionDecay.setSelected(e.explosionDecay);

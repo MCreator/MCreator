@@ -183,7 +183,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		restrictionBiomes = new BiomeListField(mcreator);
 		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
-		boundingBoxList = new JBoundingBoxList(mcreator, this);
+		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
+		renderType.addActionListener(e -> boundingBoxList.modelChanged());
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.plant.event_on_added"), Dependency.fromString(

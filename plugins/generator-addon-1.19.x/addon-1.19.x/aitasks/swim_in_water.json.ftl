@@ -1,3 +1,3 @@
 "minecraft:behavior.random_swim": {
-    "priority": ${customBlockIndex+1}
+    "priority": ${cbi+1}
 },
