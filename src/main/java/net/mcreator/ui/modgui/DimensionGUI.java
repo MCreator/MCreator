@@ -269,16 +269,15 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
 						L10N.label("elementgui.dimension.portal_igniter_texture")), PanelUtils.join(texture)));
 
-		igniterPanel.add("South" , PanelUtils.totalCenterInPanel(proper22));
+		igniterPanel.add("South" , PanelUtils.centerAndSouthElement(proper22, portalMakeCondition));
 
 		igniterPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.dimension.portal_igniter_properties"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JPanel conditions = new JPanel(new GridLayout(2, 1, 5, 2));
+		JPanel conditions = new JPanel(new GridLayout(1, 1, 5, 2));
 		conditions.setOpaque(false);
-		conditions.add(portalMakeCondition);
 		conditions.add(portalUseCondition);
 
 		JPanel propertiesPanel = new JPanel(new BorderLayout(5, 2));
