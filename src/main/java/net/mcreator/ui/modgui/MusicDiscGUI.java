@@ -128,7 +128,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel subpane2 = new JPanel(new GridLayout(8, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(7, 2, 45, 2));
 		subpane2.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);

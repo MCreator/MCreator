@@ -216,7 +216,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.tint_type")));
 		destal.add(tintType);
 
-		JPanel bucketProperties = new JPanel(new GridLayout(7, 2, 5, 2));
+		JPanel bucketProperties = new JPanel(new GridLayout(6, 2, 5, 2));
 		bucketProperties.setOpaque(false);
 
 		textureBucket = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
