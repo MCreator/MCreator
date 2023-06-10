@@ -48,22 +48,22 @@ tasks.register('exportMacX64', Copy.class) {
         }
 
         // Create x64 DMG
+        def x64Location = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
         exec {
             commandLine 'create-dmg',
-                    'build/export/mac_x86_64.dmg',
                     '--volname', 'MCreator',
-                    '--volicon', 'platform/mac/disk/volume.icns',
-                    '--background', 'platform/mac/disk/bg.tiff',
-                    '--window-pos', '200 120',
-                    '--window-size', '720 480',
+                    '--volicon', './platform/mac/disk/volume.icns',
+                    '--background', './platform/mac/disk/bg.tiff',
+                    '--window-pos', '200', '120',
+                    '--window-size', '720', '480',
                     '--text-size', '12',
                     '--icon-size', '150',
-                    '--icon', 'MCreator.app',
-                    '--hide-extension', 'MCreator.app',
-                    '--app-drop-link', '492 208',
-                    '--eula', 'LICENSE.txt',
+                    '--icon', 'MCreator.app', '230', '208',
+                    '--app-drop-link', '492', '208',
+                    '--eula', './LICENSE.txt',
                     '--format', 'ULMO',
-                    'build/export/mac_x86_64'
+                    x64Location,
+                    './build/export/mac_x64/'
         }
     }
 }
@@ -112,22 +112,23 @@ tasks.register('exportMacAarch64', Copy.class) {
         }
 
         // Create Aarch64 DMG
+        def aarchLocation = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
+
         exec {
             commandLine 'create-dmg',
-                    'build/export/mac_aarch64.dmg',
                     '--volname', 'MCreator',
-                    '--volicon', 'platform/mac/disk/volume.icns',
-                    '--background', 'platform/mac/disk/bg.tiff',
-                    '--window-pos', '200 120',
-                    '--window-size', '720 480',
+                    '--volicon', './platform/mac/disk/volume.icns',
+                    '--background', './platform/mac/disk/bg.tiff',
+                    '--window-pos', '200', '120',
+                    '--window-size', '720', '480',
                     '--text-size', '12',
                     '--icon-size', '150',
-                    '--icon', 'MCreator.app',
-                    '--hide-extension', 'MCreator.app',
-                    '--app-drop-link', '492 208',
-                    '--eula', 'LICENSE.txt',
+                    '--icon', 'MCreator.app', '230', '208',
+                    '--app-drop-link', '492', '208',
+                    '--eula', './LICENSE.txt',
                     '--format', 'ULMO',
-                    'build/export/mac_aarch64'
+                    aarchLocation,
+                    './build/export/mac_aarch64/'
         }
     }
 }
