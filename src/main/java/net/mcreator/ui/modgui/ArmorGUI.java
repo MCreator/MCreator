@@ -51,6 +51,7 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -201,13 +202,21 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.t("elementgui.armor.boots_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		helmetSpecialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
+		helmetSpecialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.armor.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
-		bodySpecialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
+		bodySpecialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.armor.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
-		leggingsSpecialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
+		leggingsSpecialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.armor.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
-		bootsSpecialInformation = new StringProcedureSelector(null, mcreator, new JTextField(25),
+		bootsSpecialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.armor.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
@@ -339,7 +348,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setOpaque(false);
 		bootsImmuneToFire.setOpaque(false);
 
-		JPanel helmetSubPanel = new JPanel(new GridLayout(5, 2, 4, 4));
+		JPanel helmetSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 		helmetSubPanel.setOpaque(false);
 
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
@@ -352,14 +361,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		helmetSubPanel.add(helmetItemRenderType);
 
-		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
-		helmetSubPanel.add(helmetSpecialInformation);
-
 		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		helmetSubPanel.add(helmetImmuneToFire);
 
-		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), helmetSubPanel);
+		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"),
+				PanelUtils.northAndCenterElement(helmetSubPanel, helmetSpecialInformation));
 
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
 				enableHelmet);
@@ -386,7 +393,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						PanelUtils.join(FlowLayout.RIGHT, L10N.label("elementgui.armor.part_arm_left"), armsModelPartL,
 								L10N.label("elementgui.armor.part_arm_right"), armsModelPartR)));
 
-		JPanel bodySubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
+		JPanel bodySubPanel = new JPanel(new GridLayout(3, 2, 4, 4));
 		bodySubPanel.setOpaque(false);
 
 		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
@@ -396,15 +403,13 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		bodySubPanel.add(bodyItemRenderType);
 
-		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
-		bodySubPanel.add(bodySpecialInformation);
-
 		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bodySubPanel.add(bodyImmuneToFire);
 
 		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"),
-				PanelUtils.northAndCenterElement(bodyModelComponent, bodySubPanel));
+				PanelUtils.northAndCenterElement(bodyModelComponent,
+						PanelUtils.centerAndSouthElement(bodySubPanel, bodySpecialInformation)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.chestplate_name"), bodyName),
@@ -423,7 +428,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				PanelUtils.join(FlowLayout.RIGHT, leggingsModel, new JLabel(": L"), leggingsModelPartL, new JLabel("R"),
 						leggingsModelPartR));
 
-		JPanel leggingsSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
+		JPanel leggingsSubPanel = new JPanel(new GridLayout(3, 2, 4, 4));
 		leggingsSubPanel.setOpaque(false);
 
 		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
@@ -433,15 +438,13 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		leggingsSubPanel.add(leggingsItemRenderType);
 
-		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
-		leggingsSubPanel.add(leggingsSpecialInformation);
-
 		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		leggingsSubPanel.add(leggingsImmuneToFire);
 
 		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
-				PanelUtils.northAndCenterElement(leggingsModelComponent, leggingsSubPanel));
+				PanelUtils.northAndCenterElement(leggingsModelComponent,
+						PanelUtils.centerAndSouthElement(leggingsSubPanel, leggingsSpecialInformation)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
@@ -460,7 +463,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				PanelUtils.join(FlowLayout.RIGHT, bootsModel, new JLabel(": L"), bootsModelPartL, new JLabel("R"),
 						bootsModelPartR));
 
-		JPanel bootsSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
+		JPanel bootsSubPanel = new JPanel(new GridLayout(3, 2, 4, 4));
 		bootsSubPanel.setOpaque(false);
 
 		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
@@ -470,15 +473,13 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		bootsSubPanel.add(bootsItemRenderType);
 
-		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
-		bootsSubPanel.add(bootsSpecialInformation);
-
 		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bootsSubPanel.add(bootsImmuneToFire);
 
 		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
-				PanelUtils.northAndCenterElement(bootsModelComponent, bootsSubPanel));
+				PanelUtils.northAndCenterElement(bootsModelComponent,
+						PanelUtils.centerAndSouthElement(bootsSubPanel, bootsSpecialInformation)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
