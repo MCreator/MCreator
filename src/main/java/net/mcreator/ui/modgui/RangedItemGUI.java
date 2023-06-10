@@ -410,6 +410,8 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
+
+		updateGlowElements();
 	}
 
 	private void updateGlowElements() {
