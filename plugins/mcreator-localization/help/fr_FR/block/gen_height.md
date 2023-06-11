@@ -1,10 +1,11 @@
 Ce paramètre contrôle la hauteur Y à laquelle ce bloc peut se générer.
 
 Niveaux Y vanilla:
-* Minerai de charbon - 1 à 125
-* Minerai de fer - 5 à 40
-* Minerai d'or - 1 à 32
-* Minerai de Redstone - 1 à 16
-* Minerai de diamant - 1 à 16
-* Minerai d'émeraude - 4 à 32
-* Lapis Lazuli - 1 à 31
+* Minerais de charbon - 0 à 256
+* Minerais de cuivre - -16 to 112
+* Minerais de fer - -32 à 256
+* Minerais d'or - -64 à 32
+* Minerais de redstone - -64 à -32
+* Minerais de diamant - -64 à 16
+* Minerais d'émeraude - -16 à 256
+* Lapis Lazuli - -64 à 64
