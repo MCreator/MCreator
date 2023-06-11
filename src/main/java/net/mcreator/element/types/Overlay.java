@@ -21,33 +21,28 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.GridSettings;
 import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.element.parts.gui.Image;
-import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IGUI;
-import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
-import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Overlay extends GeneratableElement
-		implements IGUI, IOtherModElementsDependent, IResourcesDependent {
+@SuppressWarnings("unused") public class Overlay extends GeneratableElement implements IGUI {
 
 	private static final Logger LOG = LogManager.getLogger(Overlay.class);
 
 	public String priority;
+	@TextureReference(TextureType.SCREEN)
 	public List<GUIComponent> components;
 
+	@TextureReference(TextureType.SCREEN)
 	public String baseTexture;
 	public String overlayTarget;
 
@@ -103,25 +98,4 @@ import java.util.List;
 		return components;
 	}
 
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		List<Procedure> procedures = new ArrayList<>();
-		procedures.add(displayCondition);
-		getComponentsOfType("Label").forEach(e -> {
-			procedures.add(((Label) e).text);
-			procedures.add(((Label) e).displayCondition);
-		});
-		getComponentsOfType("Image").forEach(e -> procedures.add(((Image) e).displayCondition));
-		return filterProcedures(procedures);
-	}
-
-	@Override public Collection<String> getTextures(TextureType type) {
-		if (type == TextureType.SCREEN) {
-			List<String> textures = new ArrayList<>();
-			if (!baseTexture.equals(""))
-				textures.add(baseTexture);
-			getComponentsOfType("Image").forEach(e -> textures.add(((Image) e).image));
-			return textures;
-		}
-		return Collections.emptyList();
-	}
 }

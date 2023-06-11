@@ -24,16 +24,14 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IItem;
-import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
-import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -42,16 +40,19 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.*;
 
-@SuppressWarnings("unused") public class Armor extends GeneratableElement
-		implements IItem, ITabContainedElement, IOtherModElementsDependent, IResourcesDependent {
+@SuppressWarnings("unused") public class Armor extends GeneratableElement implements IItem, ITabContainedElement {
 
 	public boolean enableHelmet;
+	@TextureReference(TextureType.ITEM)
 	public String textureHelmet;
 	public boolean enableBody;
+	@TextureReference(TextureType.ITEM)
 	public String textureBody;
 	public boolean enableLeggings;
+	@TextureReference(TextureType.ITEM)
 	public String textureLeggings;
 	public boolean enableBoots;
+	@TextureReference(TextureType.ITEM)
 	public String textureBoots;
 
 	public Procedure onHelmetTick;
@@ -60,6 +61,7 @@ import java.util.*;
 	public Procedure onBootsTick;
 
 	public TabEntry creativeTab;
+	@TextureReference(TextureType.ARMOR)
 	public String armorTextureFile;
 
 	public String helmetName;
@@ -74,22 +76,26 @@ import java.util.*;
 
 	public String helmetModelName;
 	public String helmetModelPart;
+	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor")
 	public String helmetModelTexture;
 
 	public String bodyModelName;
 	public String bodyModelPart;
 	public String armsModelPartL;
 	public String armsModelPartR;
+	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor")
 	public String bodyModelTexture;
 
 	public String leggingsModelName;
 	public String leggingsModelPartL;
 	public String leggingsModelPartR;
+	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor")
 	public String leggingsModelTexture;
 
 	public String bootsModelName;
 	public String bootsModelPartL;
 	public String bootsModelPartR;
+	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor")
 	public String bootsModelTexture;
 
 	public int helmetItemRenderType;
@@ -350,76 +356,4 @@ import java.util.*;
 		return creativeTab;
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>(repairItems);
-		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
-			elements.add(creativeTab);
-		return elements;
-	}
-
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return filterProcedures(Arrays.asList(onHelmetTick, onBodyTick, onLeggingsTick, onBootsTick));
-	}
-
-	@Override public Collection<String> getTextures(TextureType type) {
-		if (type == TextureType.ARMOR) {
-			return Collections.singletonList(armorTextureFile);
-		} else if (type == TextureType.ITEM) {
-			List<String> textures = new ArrayList<>();
-			if (enableHelmet)
-				textures.add(textureHelmet);
-			if (enableBody)
-				textures.add(textureBody);
-			if (enableLeggings)
-				textures.add(textureLeggings);
-			if (enableBoots)
-				textures.add(textureBoots);
-			return textures;
-		} else if (type == TextureType.ENTITY) {
-			List<String> textures = new ArrayList<>();
-			if (enableHelmet && !helmetModelTexture.equals("From armor"))
-				textures.add(helmetModelTexture);
-			if (enableBody && !bodyModelTexture.equals("From armor"))
-				textures.add(bodyModelTexture);
-			if (enableLeggings && !leggingsModelTexture.equals("From armor"))
-				textures.add(leggingsModelTexture);
-			if (enableBoots && !bootsModelTexture.equals("From armor"))
-				textures.add(bootsModelTexture);
-			return textures;
-		}
-		return Collections.emptyList();
-	}
-
-	@Override public Collection<Model> getModels() {
-		List<Model> models = new ArrayList<>();
-		if (enableHelmet) {
-			if (!Arrays.asList("Default", "From armor").contains(helmetModelName))
-				models.add(getHelmetModel());
-			if (!Arrays.asList("Normal", "Tool").contains(helmetItemCustomModelName))
-				models.add(getHelmetItemModel());
-		}
-		if (enableBody) {
-			if (!Arrays.asList("Default", "From armor").contains(bodyModelName))
-				models.add(getBodyModel());
-			if (!Arrays.asList("Normal", "Tool").contains(bodyItemCustomModelName))
-				models.add(getBodyItemModel());
-		}
-		if (enableLeggings) {
-			if (!Arrays.asList("Default", "From armor").contains(leggingsModelName))
-				models.add(getLeggingsModel());
-			if (!Arrays.asList("Normal", "Tool").contains(leggingsItemCustomModelName))
-				models.add(getLeggingsItemModel());
-		}
-		if (enableBoots) {
-			if (!Arrays.asList("Default", "From armor").contains(bootsModelName))
-				models.add(getBootsModel());
-			if (!Arrays.asList("Normal", "Tool").contains(bootsItemCustomModelName))
-				models.add(getBootsItemModel());
-		}
-		return models;
-	}
-
-	@Override public Collection<Sound> getSounds() {
-		return Collections.singletonList(equipSound);
-	}
 }

@@ -20,16 +20,11 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class LootTable extends NamespacedGeneratableElement
-		implements IOtherModElementsDependent {
+@SuppressWarnings("unused") public class LootTable extends NamespacedGeneratableElement {
 
 	public String type;
 
@@ -37,15 +32,6 @@ import java.util.List;
 
 	public LootTable(ModElement element) {
 		super(element);
-	}
-
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>();
-		for (Pool pool : pools) {
-			for (Pool.Entry entry : pool.entries)
-				elements.add(entry.item);
-		}
-		return elements;
 	}
 
 	public static class Pool {

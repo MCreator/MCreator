@@ -23,11 +23,12 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ElementReference;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -37,15 +38,18 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Plant extends GeneratableElement
-		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox, IOtherModElementsDependent,
-		IResourcesDependent {
+		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public int renderType;
+	@TextureReference(TextureType.BLOCK)
 	public String texture;
+	@TextureReference(TextureType.BLOCK)
 	public String textureBottom;
 	public String customModelName;
 
+	@TextureReference(TextureType.ITEM)
 	public String itemTexture;
+	@TextureReference(TextureType.BLOCK)
 	public String particleTexture;
 
 	public String tintType;
@@ -54,6 +58,7 @@ import java.util.stream.Collectors;
 	public String plantType;
 
 	public String staticPlantGenerationType;
+	@ElementReference
 	public String suspiciousStewEffect;
 	public int suspiciousStewDuration;
 
@@ -111,6 +116,7 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public int frequencyOnChunks;
+	@ElementReference
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
@@ -228,67 +234,4 @@ import java.util.stream.Collectors;
 		return providedMCItems();
 	}
 
-	@Override public Collection<String> getUsedElementNames() {
-		List<String> elements = new ArrayList<>(spawnWorldTypes);
-		elements.add(suspiciousStewEffect);
-		return elements;
-	}
-
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>(canBePlacedOn);
-		elements.add(soundOnStep);
-		elements.add(creativePickItem);
-		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
-			elements.add(creativeTab);
-		if (!useLootTableForDrops)
-			elements.add(customDrop);
-		if (doesGenerateInWorld())
-			elements.addAll(restrictionBiomes);
-		return filterMappings(elements);
-	}
-
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		List<Procedure> procedures = new ArrayList<>();
-		procedures.add(placingCondition);
-		procedures.add(onBlockAdded);
-		procedures.add(onNeighbourBlockChanges);
-		procedures.add(onTickUpdate);
-		procedures.add(onRandomUpdateEvent);
-		procedures.add(onDestroyedByPlayer);
-		procedures.add(onDestroyedByExplosion);
-		procedures.add(onStartToDestroy);
-		procedures.add(onEntityCollides);
-		procedures.add(onBlockPlacedBy);
-		procedures.add(onRightClicked);
-		procedures.add(onEntityWalksOn);
-		procedures.add(onHitByProjectile);
-		if (isBonemealable) {
-			procedures.add(isBonemealTargetCondition);
-			procedures.add(bonemealSuccessCondition);
-			procedures.add(onBonemealSuccess);
-		}
-		if (doesGenerateInWorld())
-			procedures.add(generateCondition);
-		return filterProcedures(procedures);
-	}
-
-	@Override public Collection<String> getTextures(TextureType type) {
-		return switch (type) {
-			case BLOCK -> Arrays.asList(texture, textureBottom, particleTexture);
-			case ITEM -> Collections.singletonList(itemTexture);
-			default -> Collections.emptyList();
-		};
-	}
-
-	@Override public Collection<Model> getModels() {
-		return !Arrays.asList("Cross model", "Crop model").contains(customModelName) ?
-				Collections.singletonList(getItemModel()) :
-				Collections.emptyList();
-	}
-
-	@Override public Collection<Sound> getSounds() {
-		return isCustomSoundType ?
-				Arrays.asList(breakSound, fallSound, hitSound, placeSound, stepSound) :
-				Collections.emptyList();
-	}
 }

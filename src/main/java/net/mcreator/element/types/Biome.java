@@ -23,9 +23,6 @@ import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
-import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
-import net.mcreator.element.types.interfaces.IResourcesDependent;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -34,8 +31,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.*;
 
-@SuppressWarnings("unused") public class Biome extends GeneratableElement
-		implements IOtherModElementsDependent, IResourcesDependent {
+@SuppressWarnings("unused") public class Biome extends GeneratableElement {
 
 	public final transient int TREES_VANILLA;
 	public final transient int TREES_CUSTOM;
@@ -192,28 +188,6 @@ import java.util.*;
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateBiomePreviewPicture(getModElement().getWorkspace(), airColor,
 				grassColor, waterColor, groundBlock, undergroundBlock, treesPerChunk, treeType, treeStem, treeBranch);
-	}
-
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>();
-		elements.add(groundBlock);
-		elements.add(undergroundBlock);
-		elements.add(underwaterBlock);
-		if (spawnParticles)
-			elements.add(particleToSpawn);
-		if (treeType == TREES_CUSTOM) {
-			elements.add(treeStem);
-			elements.add(treeBranch);
-			elements.add(treeVines);
-			elements.add(treeFruits);
-		}
-		for (SpawnEntry entry : spawnEntries)
-			elements.add(entry.entity);
-		return filterMappings(elements);
-	}
-
-	@Override public Collection<Sound> getSounds() {
-		return Arrays.asList(ambientSound, additionsSound, music, moodSound);
 	}
 
 	public static class SpawnEntry {

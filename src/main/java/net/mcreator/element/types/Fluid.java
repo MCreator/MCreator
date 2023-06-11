@@ -25,28 +25,27 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IBlock;
-import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
-import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-@SuppressWarnings("unused") public class Fluid extends GeneratableElement
-		implements IBlock, ITabContainedElement, IOtherModElementsDependent, IResourcesDependent {
+@SuppressWarnings("unused") public class Fluid extends GeneratableElement implements IBlock, ITabContainedElement {
 
 	public String name;
 	public String bucketName;
 
+	@TextureReference(TextureType.BLOCK)
 	public String textureStill;
+	@TextureReference(TextureType.BLOCK)
 	public String textureFlowing;
 
 	public String tintType;
@@ -66,6 +65,7 @@ import java.util.*;
 	public String type;
 
 	public boolean generateBucket;
+	@TextureReference(TextureType.ITEM)
 	public String textureBucket;
 	public TabEntry creativeTab;
 	public Sound emptySound;
@@ -172,31 +172,5 @@ import java.util.*;
 					workspace.getFolderManager().getTextureImageIcon(textureStill, TextureType.BLOCK));
 		}
 		return null;
-	}
-
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>();
-		if (spawnParticles)
-			elements.add(dripParticle);
-		if (generateBucket && !creativeTab.getUnmappedValue().equals("No creative tab entry"))
-			elements.add(creativeTab);
-		return elements;
-	}
-
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return filterProcedures(Arrays.asList(onBlockAdded, onNeighbourChanges, onTickUpdate, onEntityCollides,
-				onRandomUpdateEvent, onDestroyedByExplosion, flowCondition, beforeReplacingBlock));
-	}
-
-	@Override public Collection<String> getTextures(TextureType type) {
-		if (type == TextureType.BLOCK)
-			return Arrays.asList(textureStill, textureFlowing);
-		else if (type == TextureType.ITEM && generateBucket)
-			return Collections.singletonList(textureBucket);
-		return Collections.emptyList();
-	}
-
-	@Override public Collection<Sound> getSounds() {
-		return Collections.singletonList(emptySound);
 	}
 }

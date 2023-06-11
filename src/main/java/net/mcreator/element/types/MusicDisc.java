@@ -23,19 +23,19 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-public class MusicDisc extends GeneratableElement
-		implements IItem, IItemWithTexture, ITabContainedElement, IOtherModElementsDependent, IResourcesDependent {
+public class MusicDisc extends GeneratableElement implements IItem, IItemWithTexture, ITabContainedElement {
 
 	public String name;
+	@TextureReference(TextureType.ITEM)
 	public String texture;
 	public String description;
 	public TabEntry creativeTab;
@@ -80,22 +80,4 @@ public class MusicDisc extends GeneratableElement
 		return providedMCItems();
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return !creativeTab.getUnmappedValue().equals("No creative tab entry") ?
-				Collections.singletonList(creativeTab) :
-				Collections.emptyList();
-	}
-
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return filterProcedures(Arrays.asList(onRightClickedInAir, onRightClickedOnBlock, onCrafted, onEntityHitWith,
-				onItemInInventoryTick, onItemInUseTick, onStoppedUsing, onEntitySwing));
-	}
-
-	@Override public Collection<String> getTextures(TextureType type) {
-		return type == TextureType.ITEM ? Collections.singletonList(texture) : new ArrayList<>();
-	}
-
-	@Override public Collection<Sound> getSounds() {
-		return Collections.singletonList(music);
-	}
 }

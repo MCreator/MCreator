@@ -23,11 +23,11 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -35,10 +35,10 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 @SuppressWarnings("unused") public class Tool extends GeneratableElement
-		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture, IOtherModElementsDependent,
-		IResourcesDependent {
+		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
+	@TextureReference(TextureType.ITEM)
 	public String texture;
 	public String customModelName;
 
@@ -118,34 +118,5 @@ import java.util.*;
 
 	@Override public List<MCItem> getCreativeTabItems() {
 		return providedMCItems();
-	}
-
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>(repairItems);
-		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
-			elements.add(creativeTab);
-		if ("Special".equals(toolType))
-			elements.addAll(blocksAffected);
-		return elements;
-	}
-
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		List<Procedure> procedures = new ArrayList<>();
-		procedures.add(onRightClickedInAir);
-		procedures.add(onRightClickedOnBlock);
-		procedures.add(onCrafted);
-		procedures.add(onEntityHitWith);
-		procedures.add(onItemInInventoryTick);
-		procedures.add(onItemInUseTick);
-		procedures.add(onStoppedUsing);
-		procedures.add(onBlockDestroyedWithTool);
-		procedures.add(onEntitySwing);
-		if (hasGlow)
-			procedures.add(glowCondition);
-		return filterProcedures(procedures);
-	}
-
-	@Override public Collection<String> getTextures(TextureType type) {
-		return type == TextureType.ITEM ? Collections.singletonList(texture) : new ArrayList<>();
 	}
 }

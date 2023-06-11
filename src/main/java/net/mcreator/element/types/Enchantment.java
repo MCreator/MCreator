@@ -20,15 +20,11 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Enchantment extends GeneratableElement implements IOtherModElementsDependent {
+@SuppressWarnings("unused") public class Enchantment extends GeneratableElement {
 
 	public String name;
 	public String type;
@@ -62,10 +58,4 @@ import java.util.List;
 		canVillagerTrade = true;
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>();
-		elements.addAll(compatibleEnchantments);
-		elements.addAll(compatibleItems);
-		return elements;
-	}
 }

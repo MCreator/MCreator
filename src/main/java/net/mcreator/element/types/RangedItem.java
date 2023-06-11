@@ -25,11 +25,11 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -37,10 +37,10 @@ import java.awt.image.BufferedImage;
 import java.util.*;
 
 @SuppressWarnings("unused") public class RangedItem extends GeneratableElement
-		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture,
-		IOtherModElementsDependent, IResourcesDependent {
+		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
+	@TextureReference(TextureType.ITEM)
 	public String texture;
 	public String customModelName;
 	public String name;
@@ -67,6 +67,7 @@ import java.util.*;
 	public boolean bulletIgnitesFire;
 	public MItemBlock bulletItemTexture;
 	public String bulletModel;
+	@TextureReference(TextureType.ENTITY)
 	public String customBulletModelTexture;
 
 	public Procedure onBulletHitsBlock;
@@ -135,45 +136,4 @@ import java.util.*;
 		return providedMCItems();
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>();
-		elements.add(ammoItem);
-		elements.add(bulletItemTexture);
-		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
-			elements.add(creativeTab);
-		return filterMappings(elements);
-	}
-
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		List<Procedure> procedures = new ArrayList<>();
-		procedures.add(onRangedItemUsed);
-		procedures.add(onEntitySwing);
-		procedures.add(useCondition);
-		procedures.add(onBulletHitsBlock);
-		procedures.add(onBulletHitsPlayer);
-		procedures.add(onBulletHitsEntity);
-		procedures.add(onBulletFlyingTick);
-		if (hasGlow)
-			procedures.add(glowCondition);
-		return filterProcedures(procedures);
-	}
-
-	@Override public Collection<String> getTextures(TextureType type) {
-		if (type == TextureType.ENTITY && !customBulletModelTexture.equals(""))
-			return Collections.singletonList(customBulletModelTexture);
-		return type == TextureType.ITEM ? Collections.singletonList(texture) : Collections.emptyList();
-	}
-
-	@Override public Collection<Model> getModels() {
-		List<Model> models = new ArrayList<>();
-		if (!customModelName.equals("Normal"))
-			models.add(getItemModel());
-		if (!bulletModel.equals("Default"))
-			models.add(getEntityModel());
-		return models;
-	}
-
-	@Override public Collection<Sound> getSounds() {
-		return Collections.singletonList(actionSound);
-	}
 }

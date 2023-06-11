@@ -17,15 +17,14 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.types.interfaces;
+package net.mcreator.workspace.references;
 
-/**
- * These methods are used by {@link net.mcreator.workspace.ReferencesFinder ReferencesFinder}.
- */
-public interface IXMLProvider {
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-	/**
-	 * @return XML data on a mod element instance used by Blockly editors.
-	 */
-	String getXML();
+@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface ElementReference {
+	String[] defaultValues() default "";
+	String customPrefix() default "";
 }

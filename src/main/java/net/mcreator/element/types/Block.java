@@ -25,12 +25,13 @@ import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ElementReference;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -43,14 +44,19 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @SuppressWarnings("unused") public class Block extends GeneratableElement
-		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox, IOtherModElementsDependent,
-		IResourcesDependent {
+		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
+	@TextureReference(TextureType.BLOCK)
 	public String texture;
+	@TextureReference(TextureType.BLOCK)
 	public String textureTop;
+	@TextureReference(TextureType.BLOCK)
 	public String textureLeft;
+	@TextureReference(TextureType.BLOCK)
 	public String textureFront;
+	@TextureReference(TextureType.BLOCK)
 	public String textureRight;
+	@TextureReference(TextureType.BLOCK)
 	public String textureBack;
 	public int renderType;
 	public String customModelName;
@@ -59,7 +65,9 @@ import java.util.stream.Collectors;
 	public boolean emissiveRendering;
 	public boolean displayFluidOverlay;
 
+	@TextureReference(TextureType.ITEM)
 	public String itemTexture;
+	@TextureReference(TextureType.BLOCK)
 	public String particleTexture;
 
 	public String blockBase;
@@ -137,6 +145,7 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public boolean hasInventory;
+	@ElementReference(customPrefix = "CUSTOM:", defaultValues = "<NONE>")
 	public String guiBoundTo;
 	public boolean openGUIOnRightClick;
 	public int inventorySize;
@@ -171,6 +180,7 @@ import java.util.stream.Collectors;
 	public Procedure onRedstoneOff;
 	public Procedure onHitByProjectile;
 
+	@ElementReference
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
 	public List<MItemBlock> blocksToReplace;
@@ -355,76 +365,4 @@ import java.util.stream.Collectors;
 		return baseTypes;
 	}
 
-	@Override public Collection<String> getUsedElementNames() {
-		List<String> elements = new ArrayList<>(spawnWorldTypes);
-		if (guiBoundTo != null && !guiBoundTo.equals("<NONE>"))
-			elements.add("CUSTOM:" + guiBoundTo);
-		return elements;
-	}
-
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>();
-		elements.add(creativePickItem);
-		elements.add(soundOnStep);
-		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
-			elements.add(creativeTab);
-		if (!useLootTableForDrops)
-			elements.add(customDrop);
-		if (hasInventory)
-			elements.addAll(fluidRestrictions);
-		if (doesGenerateInWorld()) {
-			elements.addAll(restrictionBiomes);
-			elements.addAll(blocksToReplace);
-		}
-		return filterMappings(elements);
-	}
-
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		List<Procedure> procedures = new ArrayList<>();
-		procedures.add(placingCondition);
-		procedures.add(onRightClicked);
-		procedures.add(onBlockAdded);
-		procedures.add(onNeighbourBlockChanges);
-		procedures.add(onTickUpdate);
-		procedures.add(onRandomUpdateEvent);
-		procedures.add(onDestroyedByPlayer);
-		procedures.add(onDestroyedByExplosion);
-		procedures.add(onStartToDestroy);
-		procedures.add(onEntityCollides);
-		procedures.add(onEntityWalksOn);
-		procedures.add(onBlockPlayedBy);
-		procedures.add(onRedstoneOn);
-		procedures.add(onRedstoneOff);
-		procedures.add(onHitByProjectile);
-		if (canProvidePower)
-			procedures.add(emittedRedstonePower);
-		if (doesGenerateInWorld())
-			procedures.add(generateCondition);
-		if (isBonemealable) {
-			procedures.add(isBonemealTargetCondition);
-			procedures.add(bonemealSuccessCondition);
-			procedures.add(onBonemealSuccess);
-		}
-		return filterProcedures(procedures);
-	}
-
-	@Override public Collection<String> getTextures(TextureType type) {
-		return switch (type) {
-			case BLOCK -> Arrays.asList(texture, textureTop, textureLeft, textureFront, textureRight, textureBack,
-					particleTexture);
-			case ITEM -> Collections.singletonList(itemTexture);
-			default -> Collections.emptyList();
-		};
-	}
-
-	@Override public Collection<Model> getModels() {
-		return !Arrays.asList("Normal", "Single texture", "Cross model", "Crop model", "Grass block")
-				.contains(customModelName) ? Collections.singletonList(getItemModel()) : Collections.emptyList();
-	}
-
-	@Override public Collection<Sound> getSounds() {
-		return isCustomSoundType ?
-				Arrays.asList(breakSound, fallSound, hitSound, placeSound, stepSound) :
-				Collections.emptyList();
-	}
 }

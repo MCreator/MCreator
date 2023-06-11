@@ -23,30 +23,28 @@ import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
-import net.mcreator.element.types.interfaces.IResourcesDependent;
-import net.mcreator.element.types.interfaces.IXMLProvider;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ElementReference;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-@SuppressWarnings("unused") public class Achievement extends GeneratableElement
-		implements IOtherModElementsDependent, IResourcesDependent, IXMLProvider {
+@SuppressWarnings("unused") public class Achievement extends GeneratableElement {
 
 	public String achievementName;
 	public String achievementDescription;
 
 	public MItemBlock achievementIcon;
 
+	@TextureReference(value = TextureType.SCREEN, defaultValues = "Default")
 	public String background;
 
 	public boolean disableDisplay;
@@ -55,8 +53,11 @@ import java.util.*;
 	public boolean announceToChat;
 	public boolean hideIfNotCompleted;
 
+	@ElementReference(customPrefix = "CUSTOM:")
 	public List<String> rewardLoot;
+	@ElementReference(customPrefix = "CUSTOM:")
 	public List<String> rewardRecipes;
+	@ElementReference(customPrefix = "CUSTOM:", defaultValues = "No function")
 	public String rewardFunction;
 	public int rewardXP;
 
@@ -102,32 +103,4 @@ import java.util.*;
 		};
 	}
 
-	@Override public Collection<String> getUsedElementNames() {
-		List<String> elements = new ArrayList<>();
-		if (rewardFunction != null && !rewardFunction.equals("No function"))
-			elements.add("CUSTOM:" + rewardFunction);
-		rewardLoot.forEach(e -> elements.add("CUSTOM:" + e));
-		rewardRecipes.forEach(e -> elements.add("CUSTOM:" + e));
-		return elements;
-	}
-
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		if (disableDisplay)
-			return Collections.emptyList();
-		List<MappableElement> elements = new ArrayList<>();
-		elements.add(achievementIcon);
-		if (!parent.getUnmappedValue().equals("No parent: root"))
-			elements.add(parent);
-		return elements;
-	}
-
-	@Override public Collection<String> getTextures(TextureType type) {
-		return type == TextureType.SCREEN && !background.equals("Default") ?
-				Collections.singletonList(background) :
-				Collections.emptyList();
-	}
-
-	@Override public String getXML() {
-		return triggerxml;
-	}
 }

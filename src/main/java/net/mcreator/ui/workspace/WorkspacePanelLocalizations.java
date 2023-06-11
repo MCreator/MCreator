@@ -32,7 +32,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.workspace.ReferencesFinder;
+import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.imageio.ImageIO;

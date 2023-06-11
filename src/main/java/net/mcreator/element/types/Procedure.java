@@ -25,7 +25,6 @@ import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyToProcedure;
 import net.mcreator.blockly.java.ProcedureCodeOptimizer;
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.types.interfaces.IXMLProvider;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -44,7 +43,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class Procedure extends GeneratableElement implements IXMLProvider {
+public class Procedure extends GeneratableElement {
 
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"><field name=\"trigger\">no_ext_trigger</field></block></xml>";
 
@@ -161,7 +160,4 @@ public class Procedure extends GeneratableElement implements IXMLProvider {
 		this.skipDependencyRegeneration = true;
 	}
 
-	@Override public String getXML() {
-		return procedurexml;
-	}
 }

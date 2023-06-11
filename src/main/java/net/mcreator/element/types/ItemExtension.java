@@ -23,16 +23,9 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-
-public class ItemExtension extends GeneratableElement implements IOtherModElementsDependent {
+public class ItemExtension extends GeneratableElement {
 
 	public MItemBlock item;
 
@@ -48,22 +41,5 @@ public class ItemExtension extends GeneratableElement implements IOtherModElemen
 
 	public ItemExtension(ModElement element) {
 		super(element);
-	}
-
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return Collections.singletonList(item);
-	}
-
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		List<Procedure> procedures = new ArrayList<>();
-		if (enableFuel) {
-			procedures.add(fuelPower);
-			procedures.add(fuelSuccessCondition);
-		}
-		if (hasDispenseBehavior) {
-			procedures.add(dispenseSuccessCondition);
-			procedures.add(dispenseResultItemstack);
-		}
-		return filterProcedures(procedures);
 	}
 }

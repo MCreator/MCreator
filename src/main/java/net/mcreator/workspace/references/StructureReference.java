@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,27 +17,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.types;
+package net.mcreator.workspace.references;
 
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.workspace.elements.ModElement;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.awt.image.BufferedImage;
-
-public class Tab extends GeneratableElement {
-
-	public String name;
-	public MItemBlock icon;
-	public boolean showSearch;
-
-	public Tab(ModElement element) {
-		super(element);
-	}
-
-	@Override public BufferedImage generateModElementPicture() {
-		return MinecraftImageGenerator.Preview.generateCreativeTabPreviewPicture(getModElement().getWorkspace(), icon);
-	}
-
-}
+@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface StructureReference {}

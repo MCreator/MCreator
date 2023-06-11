@@ -20,8 +20,6 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
-import net.mcreator.element.types.interfaces.IResourcesDependent;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -30,17 +28,17 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collection;
-import java.util.Collections;
 
-public class Particle extends GeneratableElement implements IOtherModElementsDependent, IResourcesDependent {
+public class Particle extends GeneratableElement {
 
+	@TextureReference(TextureType.PARTICLE)
 	public String texture;
 
 	public boolean animate;
@@ -115,11 +113,4 @@ public class Particle extends GeneratableElement implements IOtherModElementsDep
 				getTextureTileCount() > 1, getModElement().getName());
 	}
 
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return filterProcedures(Collections.singletonList(additionalExpiryCondition));
-	}
-
-	@Override public Collection<String> getTextures(TextureType type) {
-		return type == TextureType.PARTICLE ? Collections.singletonList(texture) : Collections.emptyList();
-	}
 }

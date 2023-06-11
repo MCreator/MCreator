@@ -26,15 +26,13 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
-import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
-import net.mcreator.element.types.interfaces.IXMLProvider;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ElementReference;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -42,12 +40,12 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Feature extends GeneratableElement
-		implements ICommonType, IOtherModElementsDependent, IXMLProvider {
+@SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType {
 
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 
 	public String generationStep;
+	@ElementReference
 	public List<String> restrictionDimensions;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
@@ -95,21 +93,5 @@ import java.util.List;
 			return List.of(BaseType.FEATURE);
 		}
 		return Collections.emptyList();
-	}
-
-	@Override public Collection<String> getUsedElementNames() {
-		return new ArrayList<>(restrictionDimensions);
-	}
-
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return new ArrayList<>(restrictionBiomes);
-	}
-
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		return filterProcedures(Collections.singletonList(generateCondition));
-	}
-
-	@Override public String getXML() {
-		return featurexml;
 	}
 }

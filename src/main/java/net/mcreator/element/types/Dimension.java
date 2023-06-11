@@ -24,12 +24,12 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,8 +38,7 @@ import java.util.List;
 import java.util.*;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
-		implements ICommonType, ITabContainedElement, IMCItemProvider, IPOIProvider, IOtherModElementsDependent,
-		IResourcesDependent {
+		implements ICommonType, ITabContainedElement, IMCItemProvider, IPOIProvider {
 
 	public List<BiomeEntry> biomesInDimension;
 
@@ -68,7 +67,9 @@ import java.util.*;
 	public boolean enableIgniter;
 	public String igniterName;
 	public TabEntry igniterTab;
+	@TextureReference(TextureType.ITEM)
 	public String texture;
+	@TextureReference(TextureType.BLOCK)
 	public String portalTexture;
 	public boolean enablePortal;
 	public Procedure portalMakeCondition;
@@ -143,41 +144,4 @@ import java.util.*;
 				"CUSTOM:" + this.getModElement().getName() + ".portal"));
 	}
 
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>(biomesInDimension);
-		elements.add(mainFillerBlock);
-		elements.add(fluidBlock);
-		if (hasIgniter() && !igniterTab.getUnmappedValue().equals("No creative tab entry"))
-			elements.add(igniterTab);
-		if (enablePortal) {
-			elements.add(portalFrame);
-			elements.add(portalParticles);
-		}
-		return filterMappings(elements);
-	}
-
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		List<Procedure> procedures = new ArrayList<>();
-		procedures.add(onPlayerEntersDimension);
-		procedures.add(onPlayerLeavesDimension);
-		procedures.add(whenPortaTriggerlUsed);
-		procedures.add(onPortalTickUpdate);
-		if (enablePortal) {
-			procedures.add(portalMakeCondition);
-			procedures.add(portalUseCondition);
-		}
-		return filterProcedures(procedures);
-	}
-
-	@Override public Collection<String> getTextures(TextureType type) {
-		if (type == TextureType.ITEM && hasIgniter())
-			return Collections.singletonList(texture);
-		else if (type == TextureType.BLOCK && enablePortal)
-			return Collections.singletonList(portalTexture);
-		return Collections.emptyList();
-	}
-
-	@Override public Collection<Sound> getSounds() {
-		return Collections.singletonList(portalSound);
-	}
 }

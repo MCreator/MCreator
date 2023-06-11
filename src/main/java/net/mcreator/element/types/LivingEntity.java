@@ -32,7 +32,6 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -41,6 +40,7 @@ import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nullable;
@@ -51,14 +51,15 @@ import java.util.List;
 import java.util.*;
 
 @SuppressWarnings("unused") public class LivingEntity extends GeneratableElement
-		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider, IOtherModElementsDependent,
-		IResourcesDependent, IXMLProvider {
+		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
 
 	public String mobName;
 	public String mobLabel;
 
 	public String mobModelName;
+	@TextureReference(TextureType.ENTITY)
 	public String mobModelTexture;
+	@TextureReference(TextureType.ENTITY)
 	public String mobModelGlowTexture;
 	public Procedure transparentModelCondition;
 	public Procedure isShakingCondition;
@@ -255,69 +256,5 @@ import java.util.*;
 		}
 
 		return null;
-	}
-
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		List<MappableElement> elements = new ArrayList<>();
-		elements.add(equipmentMainHand);
-		elements.add(equipmentOffHand);
-		elements.add(equipmentHelmet);
-		elements.add(equipmentBody);
-		elements.add(equipmentLeggings);
-		elements.add(equipmentBoots);
-		elements.add(mobDrop);
-		if (!creativeTab.getUnmappedValue().equals("No creative tab entry"))
-			elements.add(creativeTab);
-		if (ranged)
-			elements.add(rangedAttackItem);
-		if (breedable)
-			elements.addAll(breedTriggerItems);
-		if (spawnThisMob)
-			elements.addAll(restrictionBiomes);
-		return filterMappings(elements);
-	}
-
-	@Override public Collection<? extends Procedure> getUsedProcedures() {
-		List<Procedure> procedures = new ArrayList<>();
-		procedures.add(transparentModelCondition);
-		procedures.add(isShakingCondition);
-		procedures.add(solidBoundingBox);
-		procedures.add(onStruckByLightning);
-		procedures.add(whenMobFalls);
-		procedures.add(whenMobDies);
-		procedures.add(whenMobIsHurt);
-		procedures.add(onRightClickedOn);
-		procedures.add(whenThisMobKillsAnother);
-		procedures.add(onMobTickUpdate);
-		procedures.add(onPlayerCollidesWith);
-		procedures.add(onInitialSpawn);
-		if (spawnThisMob)
-			procedures.add(spawningCondition);
-		return filterProcedures(procedures);
-	}
-
-	@Override public Collection<String> getTextures(TextureType type) {
-		if (type != TextureType.ENTITY)
-			return Collections.emptyList();
-		List<String> textures = new ArrayList<>();
-		textures.add(mobModelTexture);
-		if (!mobModelGlowTexture.equals(""))
-			textures.add(mobModelGlowTexture);
-		return textures;
-	}
-
-	@Override public Collection<Model> getModels() {
-		return Arrays.stream(LivingEntityGUI.builtinmobmodels)
-				.noneMatch(e -> e.getReadableName().equals(mobModelName)) ?
-				Collections.singletonList(getEntityModel()) :
-				Collections.emptyList();
-	}
-
-	@Override public Collection<Sound> getSounds() {
-		return Arrays.asList(livingSound, hurtSound, deathSound, stepSound);
-	}
-
-	@Override public String getXML() {
-		return aixml;
 	}
 }

@@ -22,21 +22,20 @@ import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.types.interfaces.IOtherModElementsDependent;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ElementReference;
 
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-@SuppressWarnings("unused") public class Tag extends NamespacedGeneratableElement
-		implements IOtherModElementsDependent {
+@SuppressWarnings("unused") public class Tag extends NamespacedGeneratableElement {
 
 	public String type;
 
 	public List<MItemBlock> items;
 	public List<MItemBlock> blocks;
+	@ElementReference(customPrefix = "CUSTOM:")
 	public List<String> functions;
 	public List<EntityEntry> entities;
 	public List<BiomeEntry> biomes;
@@ -59,17 +58,4 @@ import java.util.*;
 		return MinecraftImageGenerator.Preview.generateTagPreviewPicture(type);
 	}
 
-	@Override public Collection<String> getUsedElementNames() {
-		return "Functions".equals(type) ? functions.stream().map(e -> "CUSTOM:" + e).toList() : Collections.emptyList();
-	}
-
-	@Override public Collection<? extends MappableElement> getUsedElementMappings() {
-		return switch (type) {
-			case "Items" -> new ArrayList<>(items);
-			case "Blocks" -> new ArrayList<>(blocks);
-			case "Entities" -> new ArrayList<>(entities);
-			case "Biomes" -> new ArrayList<>(biomes);
-			default -> Collections.emptyList();
-		};
-	}
 }
