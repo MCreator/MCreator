@@ -35,7 +35,7 @@ import net.mcreator.workspace.references.TextureReference;
 
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.List;
 
 @SuppressWarnings("unused") public class Achievement extends GeneratableElement {
 

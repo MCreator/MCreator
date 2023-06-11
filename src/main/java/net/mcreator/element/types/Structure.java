@@ -28,7 +28,8 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ElementReference;
 import net.mcreator.workspace.references.StructureReference;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 
 @SuppressWarnings("unused") public class Structure extends GeneratableElement implements ICommonType {
 

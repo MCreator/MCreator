@@ -36,7 +36,9 @@ import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @SuppressWarnings("unused") public class Fluid extends GeneratableElement implements IBlock, ITabContainedElement {
 

@@ -23,7 +23,10 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.*;
+import net.mcreator.element.types.interfaces.ICommonType;
+import net.mcreator.element.types.interfaces.IMCItemProvider;
+import net.mcreator.element.types.interfaces.IPOIProvider;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -34,8 +37,10 @@ import net.mcreator.workspace.references.TextureReference;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
-import java.util.*;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
 		implements ICommonType, ITabContainedElement, IMCItemProvider, IPOIProvider {

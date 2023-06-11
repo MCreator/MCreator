@@ -56,7 +56,7 @@ import java.util.List;
 
 			public int silkTouchMode;
 
-			// initialize default values
+			// initiate default values
 			public Entry() {
 				this.weight = 1;
 				this.minCount = 1;
@@ -66,4 +66,5 @@ import java.util.List;
 		}
 
 	}
+
 }

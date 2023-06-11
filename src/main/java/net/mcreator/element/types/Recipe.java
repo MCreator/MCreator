@@ -25,7 +25,7 @@ import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.Arrays;
 
 @SuppressWarnings("unused") public class Recipe extends NamespacedGeneratableElement {
 

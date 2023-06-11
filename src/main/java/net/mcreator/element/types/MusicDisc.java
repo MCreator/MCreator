@@ -22,7 +22,9 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.*;
+import net.mcreator.element.types.interfaces.IItem;
+import net.mcreator.element.types.interfaces.IItemWithTexture;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -30,7 +32,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
 
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.List;
 
 public class MusicDisc extends GeneratableElement implements IItem, IItemWithTexture, ITabContainedElement {
 
