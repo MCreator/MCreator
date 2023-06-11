@@ -19,6 +19,7 @@
 
 package net.mcreator.workspace.references;
 
+import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.procedure.Procedure;
