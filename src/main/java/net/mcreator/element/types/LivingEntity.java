@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
@@ -141,6 +142,7 @@ import java.util.*;
 
 	public boolean hasAI;
 	public String aiBase;
+	@BlocklyXML("aitasks")
 	public String aixml;
 
 	public boolean breedable;
