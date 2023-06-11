@@ -49,22 +49,22 @@ public class ReferencesFinder {
 		String query = new DataListEntry.Custom(element).getName();
 		for (ModElement me : workspace.getModElements()) {
 			GeneratableElement ge = me.getGeneratableElement();
-			if (!matchFieldsAndMethods(ge, String.class, (a, t) -> {
+			if (!matchFields(ge, String.class, (a, t) -> {
 				ElementReference ref = a.getAnnotation(ElementReference.class);
 				return ref != null && !List.of(ref.defaultValues()).contains(t) ? ref.customPrefix() + t : null;
-			}).isEmpty()) {
+			}, false).isEmpty()) {
 				elements.add(me);
-			} else if (matchFieldsAndMethods(ge, MappableElement.class, (a, t) -> t).stream()
+			} else if (matchFields(ge, MappableElement.class, (a, t) -> t, false).stream()
 					.anyMatch(e -> e.getUnmappedValue().equals(query))) {
 				elements.add(me);
-			} else if (matchFieldsAndMethods(ge, Procedure.class, (a, t) -> {
+			} else if (matchFields(ge, Procedure.class, (a, t) -> {
 				if (t.getName() != null && t.getName().equals("") && t.getName().equals("null"))
 					return t;
 				return null;
-			}).stream().anyMatch(e -> element.getName().equals(e.getName()))) {
+			}, false).stream().anyMatch(e -> element.getName().equals(e.getName()))) {
 				elements.add(me);
-			} else if (!matchFieldsAndMethods(ge, String.class,
-					(a, t) -> a.isAnnotationPresent(BlocklyXML.class) && t.contains(query) ? t : null).isEmpty()) {
+			} else if (!matchFields(ge, String.class,
+					(a, t) -> a.isAnnotationPresent(BlocklyXML.class) && t.contains(query) ? t : null, false).isEmpty()) {
 				elements.add(me);
 			}
 		}
@@ -76,12 +76,12 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		for (ModElement me : workspace.getModElements()) {
-			if (matchFieldsAndMethods(me.getGeneratableElement(), String.class, (a, t) -> {
+			if (matchFields(me.getGeneratableElement(), String.class, (a, t) -> {
 				TextureReference ref = a.getAnnotation(TextureReference.class);
 				if (ref != null && ref.value() == type && !List.of(ref.defaultValues()).contains(t))
 					return t;
 				return null;
-			}).stream().anyMatch(
+			}, false).stream().anyMatch(
 					e -> workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(e), type)
 							.equals(texture))) {
 				elements.add(me);
@@ -95,11 +95,11 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		for (ModElement me : workspace.getModElements()) {
-			if (!matchFieldsAndMethods(me.getGeneratableElement(), Model.class, (a, t) -> {
+			if (!matchFields(me.getGeneratableElement(), Model.class, (a, t) -> {
 				if (model.equals(t) || TexturedModel.getModelTextureMapVariations(model).contains(t))
 					return t;
 				return null;
-			}).isEmpty()) {
+			}, true).isEmpty()) {
 				elements.add(me);
 			}
 		}
@@ -111,7 +111,7 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		for (ModElement me : workspace.getModElements()) {
-			if (matchFieldsAndMethods(me.getGeneratableElement(), Sound.class, (a, t) -> t).stream()
+			if (matchFields(me.getGeneratableElement(), Sound.class, (a, t) -> t, false).stream()
 					.anyMatch(e -> e.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())))
 				elements.add(me);
 		}
@@ -123,8 +123,8 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		for (ModElement me : workspace.getModElements()) {
-			if (matchFieldsAndMethods(me.getGeneratableElement(), String.class,
-					(a, t) -> a.isAnnotationPresent(StructureReference.class) ? t : null).contains(structure))
+			if (matchFields(me.getGeneratableElement(), String.class,
+					(a, t) -> a.isAnnotationPresent(StructureReference.class) ? t : null, false).contains(structure))
 				elements.add(me);
 		}
 
@@ -135,12 +135,12 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		for (ModElement me : workspace.getModElements()) {
-			if (!matchFieldsAndMethods(me.getGeneratableElement(), String.class, (a, t) -> {
+			if (!matchFields(me.getGeneratableElement(), String.class, (a, t) -> {
 				if (a.isAnnotationPresent(BlocklyXML.class) && t.contains(
 						"<field name=\"VAR\">global:" + variableName + "</field>"))
 					return t;
 				return null;
-			}).isEmpty()) {
+			}, false).isEmpty()) {
 				elements.add(me);
 			}
 		}
@@ -155,11 +155,11 @@ public class ReferencesFinder {
 			GeneratableElement ge = me.getGeneratableElement();
 			if (ge != null && workspace.getGenerator().getElementLocalizationKeys(ge).contains(localizationKey)) {
 				elements.add(me);
-			} else if (!matchFieldsAndMethods(ge, String.class, (a, t) -> {
+			} else if (!matchFields(ge, String.class, (a, t) -> {
 				if (a.isAnnotationPresent(BlocklyXML.class) && t.contains(localizationKey))
 					return t;
 				return null;
-			}).isEmpty()) {
+			}, false).isEmpty()) {
 				elements.add(me);
 			}
 		}
@@ -167,28 +167,29 @@ public class ReferencesFinder {
 		return elements;
 	}
 
-	private static <T> List<T> matchFieldsAndMethods(@Nullable Object source, Class<T> clazz,
-			BiFunction<AccessibleObject, T, T> condition) {
+	private static <T> List<T> matchFields(@Nullable Object source, Class<T> clazz,
+			BiFunction<AccessibleObject, T, T> condition, boolean methods) {
 		List<T> retVal = new ArrayList<>();
 		if (source == null)
 			return retVal;
 
-		org.apache.logging.log4j.LogManager.getLogger("REF").trace(source.getClass().getName() + clazz.getName());
 		for (Field field : source.getClass().getFields()) {
 			if (!Modifier.isStatic(field.getModifiers())) {
 				try {
 					field.setAccessible(true);
-					checkValue(retVal, field.get(source), field, clazz, condition);
+					checkValue(retVal, field.get(source), field, clazz, condition, methods);
 				} catch (IllegalAccessException | IllegalArgumentException ignored) {
 				}
 			}
 		}
-		for (Method method : source.getClass().getMethods()) {
-			if (!Modifier.isStatic(method.getModifiers())) {
-				try {
-					method.setAccessible(true);
-					checkValue(retVal, method.invoke(source), method, clazz, condition);
-				} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ignored) {
+		if (methods) {
+			for (Method method : source.getClass().getMethods()) {
+				if (!Modifier.isStatic(method.getModifiers())) {
+					try {
+						method.setAccessible(true);
+						checkValue(retVal, method.invoke(source), method, clazz, condition, true);
+					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ignored) {
+					}
 				}
 			}
 		}
@@ -198,7 +199,7 @@ public class ReferencesFinder {
 
 	@SuppressWarnings("unchecked")
 	private static <T> void checkValue(List<T> valuesList, Object value, AccessibleObject field, Class<T> clazz,
-			BiFunction<AccessibleObject, T, T> condition) {
+			BiFunction<AccessibleObject, T, T> condition, boolean methods) {
 		if (value == null)
 			return;
 
@@ -206,21 +207,23 @@ public class ReferencesFinder {
 			T t = condition == null ? (T) value : condition.apply(field, (T) value);
 			if (t != null)
 				valuesList.add(t);
-		} else if (Collection.class.isAssignableFrom(value.getClass())) {
-			for (Object obj : (Collection<?>) value) {
-				if (obj == null)
-					continue;
+		} else if (!methods) { // prevent calling e.g. close() methods
+			if (Collection.class.isAssignableFrom(value.getClass())) {
+				for (Object obj : (Collection<?>) value) {
+					if (obj == null)
+						continue;
 
-				if (clazz.isAssignableFrom(obj.getClass())) {
-					T t = condition == null ? (T) obj : condition.apply(field, (T) obj);
-					if (t != null)
-						valuesList.add(t);
-				} else {
-					valuesList.addAll(matchFieldsAndMethods(obj, clazz, condition));
+					if (clazz.isAssignableFrom(obj.getClass())) {
+						T t = condition == null ? (T) obj : condition.apply(field, (T) obj);
+						if (t != null)
+							valuesList.add(t);
+					} else {
+						valuesList.addAll(matchFields(obj, clazz, condition, false));
+					}
 				}
+			} else if (value.getClass().getModule() != Object.class.getModule()) {
+				valuesList.addAll(matchFields(value, clazz, condition, false));
 			}
-		} else if (value.getClass().getModule() != Object.class.getModule()) {
-			valuesList.addAll(matchFieldsAndMethods(value, clazz, condition));
 		}
 	}
 }
