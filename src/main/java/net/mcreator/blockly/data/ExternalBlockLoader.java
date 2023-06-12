@@ -219,7 +219,6 @@ public class ExternalBlockLoader {
 			return null;
 
 		return translation.replace("'", "\\'").replace("\"", "&quot;");
-		//return translation.replace("\\", "\\\\").replace("\"", "\\\"").replace("'", "\\'");
 	}
 
 }
