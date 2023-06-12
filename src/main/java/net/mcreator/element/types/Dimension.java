@@ -72,10 +72,8 @@ import java.util.List;
 	public boolean enableIgniter;
 	public String igniterName;
 	public TabEntry igniterTab;
-	@TextureReference(TextureType.ITEM)
-	public String texture;
-	@TextureReference(TextureType.BLOCK)
-	public String portalTexture;
+	@TextureReference(TextureType.ITEM) public String texture;
+	@TextureReference(TextureType.BLOCK) public String portalTexture;
 	public boolean enablePortal;
 	public Procedure portalMakeCondition;
 	public Procedure portalUseCondition;

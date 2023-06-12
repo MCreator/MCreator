@@ -45,10 +45,8 @@ import java.util.List;
 	public String name;
 	public String bucketName;
 
-	@TextureReference(TextureType.BLOCK)
-	public String textureStill;
-	@TextureReference(TextureType.BLOCK)
-	public String textureFlowing;
+	@TextureReference(TextureType.BLOCK) public String textureStill;
+	@TextureReference(TextureType.BLOCK) public String textureFlowing;
 
 	public String tintType;
 
@@ -67,8 +65,7 @@ import java.util.List;
 	public String type;
 
 	public boolean generateBucket;
-	@TextureReference(TextureType.ITEM)
-	public String textureBucket;
+	@TextureReference(TextureType.ITEM) public String textureBucket;
 	public TabEntry creativeTab;
 	public Sound emptySound;
 	public String rarity;

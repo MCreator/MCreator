@@ -37,8 +37,7 @@ import java.util.List;
 public class MusicDisc extends GeneratableElement implements IItem, IItemWithTexture, ITabContainedElement {
 
 	public String name;
-	@TextureReference(TextureType.ITEM)
-	public String texture;
+	@TextureReference(TextureType.ITEM) public String texture;
 	public String description;
 	public TabEntry creativeTab;
 	public List<String> specialInfo;

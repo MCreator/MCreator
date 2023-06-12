@@ -44,16 +44,12 @@ import java.util.stream.Collectors;
 		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public int renderType;
-	@TextureReference(TextureType.BLOCK)
-	public String texture;
-	@TextureReference(TextureType.BLOCK)
-	public String textureBottom;
+	@TextureReference(TextureType.BLOCK) public String texture;
+	@TextureReference(TextureType.BLOCK) public String textureBottom;
 	public String customModelName;
 
-	@TextureReference(TextureType.ITEM)
-	public String itemTexture;
-	@TextureReference(TextureType.BLOCK)
-	public String particleTexture;
+	@TextureReference(TextureType.ITEM) public String itemTexture;
+	@TextureReference(TextureType.BLOCK) public String particleTexture;
 
 	public String tintType;
 	public boolean isItemTinted;
@@ -61,8 +57,7 @@ import java.util.stream.Collectors;
 	public String plantType;
 
 	public String staticPlantGenerationType;
-	@ElementReference
-	public String suspiciousStewEffect;
+	@ElementReference public String suspiciousStewEffect;
 	public int suspiciousStewDuration;
 
 	public String growapableSpawnType;
@@ -119,8 +114,7 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public int frequencyOnChunks;
-	@ElementReference
-	public List<String> spawnWorldTypes;
+	@ElementReference public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
 	public int patchSize;

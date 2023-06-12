@@ -36,8 +36,7 @@ import java.util.Locale;
 
 	public List<MItemBlock> items;
 	public List<MItemBlock> blocks;
-	@ElementReference(customPrefix = "CUSTOM:")
-	public List<String> functions;
+	@ElementReference(customPrefix = "CUSTOM:") public List<String> functions;
 	public List<EntityEntry> entities;
 	public List<BiomeEntry> biomes;
 

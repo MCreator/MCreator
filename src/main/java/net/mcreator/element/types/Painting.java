@@ -31,8 +31,7 @@ import java.io.File;
 
 public class Painting extends GeneratableElement {
 
-	@TextureReference(TextureType.OTHER)
-	public String texture;
+	@TextureReference(TextureType.OTHER) public String texture;
 	public int width;
 	public int height;
 	public String title;

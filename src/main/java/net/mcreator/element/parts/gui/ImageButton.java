@@ -35,8 +35,7 @@ public class ImageButton extends GUIComponent {
 
 	public String name;
 
-	@TextureReference(TextureType.SCREEN)
-	public String image, hoveredImage;
+	@TextureReference(TextureType.SCREEN) public String image, hoveredImage;
 
 	public Procedure onClick, displayCondition;
 

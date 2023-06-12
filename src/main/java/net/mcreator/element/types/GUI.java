@@ -50,8 +50,7 @@ import java.util.List;
 	public boolean renderBgLayer;
 	public boolean doesPauseGame;
 
-	@TextureReference(TextureType.SCREEN)
-	public List<GUIComponent> components;
+	@TextureReference(TextureType.SCREEN) public List<GUIComponent> components;
 
 	public Procedure onOpen;
 	public Procedure onTick;

@@ -38,8 +38,7 @@ import java.io.IOException;
 
 public class Particle extends GeneratableElement {
 
-	@TextureReference(TextureType.PARTICLE)
-	public String texture;
+	@TextureReference(TextureType.PARTICLE) public String texture;
 
 	public boolean animate;
 	public int frameDuration;

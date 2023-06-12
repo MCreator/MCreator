@@ -49,18 +49,12 @@ import java.util.stream.Collectors;
 @SuppressWarnings("unused") public class Block extends GeneratableElement
 		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
-	@TextureReference(TextureType.BLOCK)
-	public String texture;
-	@TextureReference(TextureType.BLOCK)
-	public String textureTop;
-	@TextureReference(TextureType.BLOCK)
-	public String textureLeft;
-	@TextureReference(TextureType.BLOCK)
-	public String textureFront;
-	@TextureReference(TextureType.BLOCK)
-	public String textureRight;
-	@TextureReference(TextureType.BLOCK)
-	public String textureBack;
+	@TextureReference(TextureType.BLOCK) public String texture;
+	@TextureReference(TextureType.BLOCK) public String textureTop;
+	@TextureReference(TextureType.BLOCK) public String textureLeft;
+	@TextureReference(TextureType.BLOCK) public String textureFront;
+	@TextureReference(TextureType.BLOCK) public String textureRight;
+	@TextureReference(TextureType.BLOCK) public String textureBack;
 	public int renderType;
 	public String customModelName;
 	public int rotationMode;
@@ -68,10 +62,8 @@ import java.util.stream.Collectors;
 	public boolean emissiveRendering;
 	public boolean displayFluidOverlay;
 
-	@TextureReference(TextureType.ITEM)
-	public String itemTexture;
-	@TextureReference(TextureType.BLOCK)
-	public String particleTexture;
+	@TextureReference(TextureType.ITEM) public String itemTexture;
+	@TextureReference(TextureType.BLOCK) public String particleTexture;
 
 	public String blockBase;
 
@@ -148,8 +140,7 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public boolean hasInventory;
-	@ElementReference(customPrefix = "CUSTOM:", defaultValues = "<NONE>")
-	public String guiBoundTo;
+	@ElementReference(customPrefix = "CUSTOM:", defaultValues = "<NONE>") public String guiBoundTo;
 	public boolean openGUIOnRightClick;
 	public int inventorySize;
 	public int inventoryStackSize;
@@ -183,8 +174,7 @@ import java.util.stream.Collectors;
 	public Procedure onRedstoneOff;
 	public Procedure onHitByProjectile;
 
-	@ElementReference
-	public List<String> spawnWorldTypes;
+	@ElementReference public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
 	public List<MItemBlock> blocksToReplace;
 	public String generationShape;

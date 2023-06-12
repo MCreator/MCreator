@@ -44,8 +44,7 @@ import java.util.List;
 
 	public MItemBlock achievementIcon;
 
-	@TextureReference(value = TextureType.SCREEN, defaultValues = "Default")
-	public String background;
+	@TextureReference(value = TextureType.SCREEN, defaultValues = "Default") public String background;
 
 	public boolean disableDisplay;
 
@@ -53,12 +52,9 @@ import java.util.List;
 	public boolean announceToChat;
 	public boolean hideIfNotCompleted;
 
-	@ElementReference(customPrefix = "CUSTOM:")
-	public List<String> rewardLoot;
-	@ElementReference(customPrefix = "CUSTOM:")
-	public List<String> rewardRecipes;
-	@ElementReference(customPrefix = "CUSTOM:", defaultValues = "No function")
-	public String rewardFunction;
+	@ElementReference(customPrefix = "CUSTOM:") public List<String> rewardLoot;
+	@ElementReference(customPrefix = "CUSTOM:") public List<String> rewardRecipes;
+	@ElementReference(customPrefix = "CUSTOM:", defaultValues = "No function") public String rewardFunction;
 	public int rewardXP;
 
 	public String achievementType;

@@ -33,8 +33,7 @@ import java.util.List;
 
 @SuppressWarnings("unused") public class Structure extends GeneratableElement implements ICommonType {
 
-	@StructureReference
-	public String structure;
+	@StructureReference public String structure;
 
 	public boolean randomlyRotateStructure;
 
@@ -49,8 +48,7 @@ import java.util.List;
 	public int spawnHeightOffset;
 	public int spawnXOffset;
 	public int spawnZOffset;
-	@ElementReference
-	public List<String> spawnWorldTypes;
+	@ElementReference public List<String> spawnWorldTypes;
 
 	public List<MItemBlock> restrictionBlocks;
 	public List<BiomeEntry> restrictionBiomes;

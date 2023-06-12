@@ -35,8 +35,7 @@ import java.io.File;
 @SuppressWarnings("unused") public class PotionEffect extends GeneratableElement {
 
 	public String effectName;
-	@TextureReference(TextureType.EFFECT)
-	public String icon;
+	@TextureReference(TextureType.EFFECT) public String icon;
 	public Color color;
 	public boolean isInstant;
 	public boolean isBad;

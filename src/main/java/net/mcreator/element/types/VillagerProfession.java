@@ -38,10 +38,8 @@ public class VillagerProfession extends GeneratableElement implements IPOIProvid
 	public MItemBlock pointOfInterest;
 	public Sound actionSound;
 	public String hat;
-	@TextureReference(TextureType.ENTITY)
-	public String professionTextureFile;
-	@TextureReference(TextureType.ENTITY)
-	public String zombifiedProfessionTextureFile;
+	@TextureReference(TextureType.ENTITY) public String professionTextureFile;
+	@TextureReference(TextureType.ENTITY) public String zombifiedProfessionTextureFile;
 
 	public VillagerProfession(ModElement element) {
 		super(element);

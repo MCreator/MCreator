@@ -43,17 +43,13 @@ import java.util.*;
 @SuppressWarnings("unused") public class Armor extends GeneratableElement implements IItem, ITabContainedElement {
 
 	public boolean enableHelmet;
-	@TextureReference(TextureType.ITEM)
-	public String textureHelmet;
+	@TextureReference(TextureType.ITEM) public String textureHelmet;
 	public boolean enableBody;
-	@TextureReference(TextureType.ITEM)
-	public String textureBody;
+	@TextureReference(TextureType.ITEM) public String textureBody;
 	public boolean enableLeggings;
-	@TextureReference(TextureType.ITEM)
-	public String textureLeggings;
+	@TextureReference(TextureType.ITEM) public String textureLeggings;
 	public boolean enableBoots;
-	@TextureReference(TextureType.ITEM)
-	public String textureBoots;
+	@TextureReference(TextureType.ITEM) public String textureBoots;
 
 	public Procedure onHelmetTick;
 	public Procedure onBodyTick;
@@ -61,8 +57,7 @@ import java.util.*;
 	public Procedure onBootsTick;
 
 	public TabEntry creativeTab;
-	@TextureReference(TextureType.ARMOR)
-	public String armorTextureFile;
+	@TextureReference(TextureType.ARMOR) public String armorTextureFile;
 
 	public String helmetName;
 	public String bodyName;
@@ -76,27 +71,23 @@ import java.util.*;
 
 	public String helmetModelName;
 	public String helmetModelPart;
-	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor")
-	public String helmetModelTexture;
+	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String helmetModelTexture;
 
 	public String bodyModelName;
 	public String bodyModelPart;
 	public String armsModelPartL;
 	public String armsModelPartR;
-	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor")
-	public String bodyModelTexture;
+	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String bodyModelTexture;
 
 	public String leggingsModelName;
 	public String leggingsModelPartL;
 	public String leggingsModelPartR;
-	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor")
-	public String leggingsModelTexture;
+	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String leggingsModelTexture;
 
 	public String bootsModelName;
 	public String bootsModelPartL;
 	public String bootsModelPartR;
-	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor")
-	public String bootsModelTexture;
+	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String bootsModelTexture;
 
 	public int helmetItemRenderType;
 	public String helmetItemCustomModelName;

@@ -39,11 +39,9 @@ import java.util.List;
 	private static final Logger LOG = LogManager.getLogger(Overlay.class);
 
 	public String priority;
-	@TextureReference(TextureType.SCREEN)
-	public List<GUIComponent> components;
+	@TextureReference(TextureType.SCREEN) public List<GUIComponent> components;
 
-	@TextureReference(TextureType.SCREEN)
-	public String baseTexture;
+	@TextureReference(TextureType.SCREEN) public String baseTexture;
 	public String overlayTarget;
 
 	public Procedure displayCondition;

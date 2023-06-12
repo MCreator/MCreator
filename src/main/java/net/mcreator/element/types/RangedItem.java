@@ -40,8 +40,7 @@ import java.util.*;
 		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
-	@TextureReference(TextureType.ITEM)
-	public String texture;
+	@TextureReference(TextureType.ITEM) public String texture;
 	public String customModelName;
 	public String name;
 	public List<String> specialInfo;
@@ -67,8 +66,7 @@ import java.util.*;
 	public boolean bulletIgnitesFire;
 	public MItemBlock bulletItemTexture;
 	public String bulletModel;
-	@TextureReference(TextureType.ENTITY)
-	public String customBulletModelTexture;
+	@TextureReference(TextureType.ENTITY) public String customBulletModelTexture;
 
 	public Procedure onBulletHitsBlock;
 	public Procedure onBulletHitsPlayer;

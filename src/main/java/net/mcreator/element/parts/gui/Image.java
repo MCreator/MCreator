@@ -30,8 +30,7 @@ import java.awt.*;
 
 public class Image extends GUIComponent {
 
-	@TextureReference(TextureType.SCREEN)
-	public String image;
+	@TextureReference(TextureType.SCREEN) public String image;
 	public boolean use1Xscale;
 
 	public Procedure displayCondition;

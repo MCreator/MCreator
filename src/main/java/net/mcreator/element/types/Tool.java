@@ -44,8 +44,7 @@ import java.util.Map;
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
-	@TextureReference(TextureType.ITEM)
-	public String texture;
+	@TextureReference(TextureType.ITEM) public String texture;
 	public String customModelName;
 
 	public String name;

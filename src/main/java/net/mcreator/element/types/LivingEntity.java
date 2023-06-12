@@ -60,10 +60,8 @@ import java.util.*;
 	public String mobLabel;
 
 	public String mobModelName;
-	@TextureReference(TextureType.ENTITY)
-	public String mobModelTexture;
-	@TextureReference(TextureType.ENTITY)
-	public String mobModelGlowTexture;
+	@TextureReference(TextureType.ENTITY) public String mobModelTexture;
+	@TextureReference(TextureType.ENTITY) public String mobModelGlowTexture;
 	public Procedure transparentModelCondition;
 	public Procedure isShakingCondition;
 	public LogicProcedure solidBoundingBox;
