@@ -161,10 +161,10 @@ public class ExternalBlockLoader {
 		// Handle other and API categories
 		for (ToolboxCategory category : toolboxCategories) {
 			StringBuilder categoryBuilder = new StringBuilder();
-			categoryBuilder.append("<category name=\"").append(category.getName()).append("\" colour=\"")
-					.append(category.color).append("\">");
+			categoryBuilder.append("<category name=\"").append(category.getName().replace("'", "\\'"))
+					.append("\" colour=\"").append(category.color).append("\">");
 			if (category.getDescription() != null) {
-				categoryBuilder.append("<label text=\"").append(category.getDescription())
+				categoryBuilder.append("<label text=\"").append(category.getDescription().replace("'", "\\'"))
 						.append("\" web-class=\"whlab\"/>");
 			}
 			for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
