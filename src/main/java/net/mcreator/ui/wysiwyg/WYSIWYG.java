@@ -306,11 +306,10 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		ex = (int) Math.round(ex / 2.0);
 		ey = (int) Math.round(ey / 2.0);
 
-		if (positioningModeSettingWidth && !positioningModeSettingHeight) {
+		if (positioningModeSettingWidth) {
 			ow = Math.abs(ox - ex);
-		} else if (positioningModeSettingWidth && positioningModeSettingHeight) {
-			ow = Math.abs(ox - ex);
-			oh = Math.abs(oy - ey);
+			if (positioningModeSettingHeight)
+				ow = Math.abs(ox - ex);
 		} else if (componentMoveMode) {
 			ox = ex;
 			oy = ey;
