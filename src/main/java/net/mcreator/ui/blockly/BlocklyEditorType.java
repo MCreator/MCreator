@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public record BlocklyEditorType(String registryName, String extension, String startBlockName) {
+
 	private static final Map<String, BlocklyEditorType> TYPES = new HashMap<>();
 
 	public static BlocklyEditorType fromName(String registryName) {
