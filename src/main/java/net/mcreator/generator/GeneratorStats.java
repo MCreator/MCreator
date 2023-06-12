@@ -229,7 +229,7 @@ public class GeneratorStats {
 		LEGACY("dialog.generator_selector.generator_status.legacy"),
 		LTS("dialog.generator_selector.generator_status.lts"),
 		STABLE("dialog.generator_selector.generator_status.stable"),
-		BETA("dialog.generator_selector.generator_status.beta"),;
+		BETA("dialog.generator_selector.generator_status.beta");
 
 		private final String key;
 
