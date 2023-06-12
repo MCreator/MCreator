@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import javafx.stage.FileChooser;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.ui.component.JFileSelector;
 import net.mcreator.ui.dialogs.file.FileChooserType;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
@@ -30,6 +31,8 @@ import net.mcreator.util.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.EventObject;
 import java.util.function.Consumer;
@@ -68,44 +71,16 @@ public class FileEntry extends PreferencesEntry<File> {
 	}
 
 	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
-		String path;
-		JButton button;
-		if (value == null || value.getAbsolutePath().endsWith("Not specified")) {
-			value = null;
-			path = "Not specified";
-			button = new JButton(L10N.t("common.not_specified"));
-			button.setToolTipText("");
-		} else {
-			path = StringUtils.abbreviateStringInverse(value.getAbsolutePath(), 35);
-			button = new JButton(path);
-			button.setToolTipText(path);
-		}
-
-		button.addActionListener(actionEvent -> {
-			File file;
-			if (isFolder)
-				file = FileDialogs.getDirectoryChooser(new File(path));
-			else
-				file = FileDialogs.getFileChooserDialog(parent, FileChooserType.OPEN, false, filters)[0];
-
-			if (file == null && allowNullValue) {
-				fct.accept(actionEvent);
-				button.setText(L10N.t("common.not_specified"));
-				button.setToolTipText("Not specified"); // The tooltip is not translated to avoid problems with the language
-			} else if (file != null && file.exists()) {
-				if ((isFolder && file.isDirectory()) || (!isFolder && file.isFile())) {
-					fct.accept(actionEvent);
-					button.setText(StringUtils.abbreviateStringInverse(file.getAbsolutePath(), 35));
-					button.setToolTipText(file.getAbsolutePath());
-				}
-			}
-		});
-
-		return button;
+		return new JFileSelector(parent, value, allowNullValue, isFolder, fct, filters);
 	}
 
-		@Override public void setValueFromComponent(JComponent component) {
-		this.value = new File(component.getToolTipText());
+	@SuppressWarnings("ReplaceNullCheck")
+	@Override public void setValueFromComponent(JComponent component) {
+		File file = ((JFileSelector) component).getFile();
+		if (file != null)
+			this.value = file;
+		else
+			this.value = new File("Not specified"); // we don't use null as the old value is kept
 	}
 
 	@Override public void setValueFromJsonElement(JsonElement object) {
