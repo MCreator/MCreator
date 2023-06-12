@@ -41,8 +41,7 @@ import java.util.Locale;
 
 	public String permissionLevel;
 
-	@BlocklyXML("cmdargs")
-	public String argsxml;
+	@BlocklyXML("cmdargs") public String argsxml;
 
 	private Command() {
 		this(null);

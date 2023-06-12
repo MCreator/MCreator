@@ -48,8 +48,7 @@ import java.util.List;
 	public List<String> restrictionDimensions;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
-	@BlocklyXML("features")
-	public String featurexml;
+	@BlocklyXML("features") public String featurexml;
 
 	public Feature(ModElement element) {
 		super(element);

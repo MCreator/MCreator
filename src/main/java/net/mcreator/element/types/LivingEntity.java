@@ -142,8 +142,7 @@ import java.util.*;
 
 	public boolean hasAI;
 	public String aiBase;
-	@BlocklyXML("aitasks")
-	public String aixml;
+	@BlocklyXML("aitasks") public String aixml;
 
 	public boolean breedable;
 	public boolean tameable;

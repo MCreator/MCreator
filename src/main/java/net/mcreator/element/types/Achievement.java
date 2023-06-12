@@ -58,8 +58,7 @@ import java.util.List;
 	public String achievementType;
 	public AchievementEntry parent;
 
-	@BlocklyXML("jsontriggers")
-	public String triggerxml;
+	@BlocklyXML("jsontriggers") public String triggerxml;
 
 	public Achievement(ModElement element) {
 		super(element);
