@@ -114,6 +114,8 @@
   readable_name: "Deep dark"
 - meadow:
   readable_name: "Meadow"
+- cherry_grove:
+  readable_name: "Cherry grove"
 - grove:
   readable_name: "Grove"
 - snowy_slopes:
