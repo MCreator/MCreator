@@ -1,7 +1,7 @@
-Use this for copy+paste base for 1.20 generator.
+Use this for copy+paste base for 1.20.x generator.
 
 IMPORTANT: Make sure to sync files here if any changes to 1.19.4 generator are made so
-the latest base is used for 1.20 generator.
+the latest base is used for 1.20.x generator.
 
 Primers below:
 
