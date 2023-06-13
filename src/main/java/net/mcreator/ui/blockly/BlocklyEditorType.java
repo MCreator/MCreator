@@ -42,4 +42,5 @@ public record BlocklyEditorType(String registryName, String extension, String st
 			throw new IllegalArgumentException("Blockly editor " + registryName + " is already registered");
 		TYPES.put(registryName, this);
 	}
+
 }
