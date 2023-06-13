@@ -531,7 +531,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		txblock3.setOpaque(false);
 		txblock3.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.block.special_information_title"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.common.special_information"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		txblock3.add(specialInformation);

@@ -281,7 +281,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isItemTinted.setOpaque(false);
 		tintPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.plant.plant_info"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.common.special_information"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
 		tintPanel.add(specialInformation);

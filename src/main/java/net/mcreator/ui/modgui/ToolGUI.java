@@ -192,7 +192,16 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
 						L10N.label("elementgui.tool.glowing_effect")), hasGlow, glowCondition);
 
-		JComponent visualBottom = PanelUtils.centerAndSouthElement(specialInformation, glow, 10, 10);
+		JPanel destal = new JPanel(new GridLayout(1, 1, 15, 15));
+		destal.setOpaque(false);
+		destal.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.common.special_information"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		destal.add(specialInformation);
+
+		JComponent visualBottom = PanelUtils.centerAndSouthElement(destal, glow, 10, 10);
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
