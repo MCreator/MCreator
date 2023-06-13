@@ -1,9 +1,9 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 46.0.2
+buildfileversion: 47.0.1
 
 import:
-  - datapack-1.20
+  - datapack-1.20.1
 
 #java_models:
 #  key: mojmap-1.20.x
