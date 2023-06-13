@@ -5,7 +5,7 @@
 - GRASS:
   texture: GRASS
 - SAND:
-  texture: SAND
+  texture: SAND#0
 - CLOTH:
   texture: WOOL#0
 - TNT:
@@ -68,6 +68,8 @@
   texture: LAPIS_BLOCK
 - EMERALD:
   texture: EMERALD_BLOCK
+- PODZOL:
+  texture: DIRT#2
 - NETHERRACK:
   texture: NETHERRACK
 - WHITE_TERRACOTTA:
@@ -119,6 +121,6 @@
 - DEEPSLATE_GRAY:
   texture: DEEPSLATE
 - RAW_IRON_PINK:
-  texture: RAW_IRON
+  texture: RAW_IRON_BLOCK
 - LICHEN_GREEN:
   texture: GLOW_LICHEN
