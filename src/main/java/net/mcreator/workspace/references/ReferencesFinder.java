@@ -168,7 +168,7 @@ public class ReferencesFinder {
 	}
 
 	private static <T> List<T> matchFields(@Nullable Object source, Class<T> clazz,
-			BiFunction<AccessibleObject, T, T> condition, boolean methods) {
+			BiFunction<AccessibleObject, T, T> mapper, boolean methods) {
 		List<T> retVal = new ArrayList<>();
 		if (source == null)
 			return retVal;
@@ -177,7 +177,7 @@ public class ReferencesFinder {
 			if (!Modifier.isStatic(field.getModifiers())) {
 				try {
 					field.setAccessible(true);
-					checkValue(retVal, field.get(source), field, clazz, condition, methods);
+					checkValue(retVal, field.get(source), field, clazz, mapper, methods);
 				} catch (IllegalAccessException | IllegalArgumentException ignored) {
 				}
 			}
@@ -187,7 +187,7 @@ public class ReferencesFinder {
 				if (!Modifier.isStatic(method.getModifiers())) {
 					try {
 						method.setAccessible(true);
-						checkValue(retVal, method.invoke(source), method, clazz, condition, true);
+						checkValue(retVal, method.invoke(source), method, clazz, mapper, true);
 					} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException ignored) {
 					}
 				}
@@ -199,12 +199,12 @@ public class ReferencesFinder {
 
 	@SuppressWarnings("unchecked")
 	private static <T> void checkValue(List<T> valuesList, Object value, AccessibleObject field, Class<T> clazz,
-			BiFunction<AccessibleObject, T, T> condition, boolean methods) {
+			BiFunction<AccessibleObject, T, T> mapper, boolean methods) {
 		if (value == null)
 			return;
 
 		if (clazz.isAssignableFrom(value.getClass())) {
-			T t = condition == null ? (T) value : condition.apply(field, (T) value);
+			T t = mapper != null ? mapper.apply(field, (T) value) : (T) value;
 			if (t != null)
 				valuesList.add(t);
 		} else if (!methods) { // prevent calling e.g. close() methods
@@ -214,15 +214,15 @@ public class ReferencesFinder {
 						continue;
 
 					if (clazz.isAssignableFrom(obj.getClass())) {
-						T t = condition == null ? (T) obj : condition.apply(field, (T) obj);
+						T t = mapper != null ? mapper.apply(field, (T) obj) : (T) obj;
 						if (t != null)
 							valuesList.add(t);
 					} else {
-						valuesList.addAll(matchFields(obj, clazz, condition, false));
+						valuesList.addAll(matchFields(obj, clazz, mapper, false));
 					}
 				}
 			} else if (value.getClass().getModule() != Object.class.getModule()) {
-				valuesList.addAll(matchFields(value, clazz, condition, false));
+				valuesList.addAll(matchFields(value, clazz, mapper, false));
 			}
 		}
 	}
