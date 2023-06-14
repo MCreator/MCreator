@@ -112,10 +112,10 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 					this.customSlots.put(${component.id}, this.addSlot(new SlotItemHandler(internal, ${component.id},
 						${(component.x - mx)?int + 1},
 						${(component.y - my)?int + 1}) {
+						private final int slot = ${component.id};
 
 						<#if hasProcedure(component.disablePickup) || component.disablePickup.getFixedValue()>
 						@Override public boolean mayPickup(Player entity) {
-							int slot = ${component.id};
 							return <@procedureOBJToConditionCode component.disablePickup false true/>;
 						}
 						</#if>
@@ -144,7 +144,6 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 						<#if component.getClass().getSimpleName() == "InputSlot">
 							<#if hasProcedure(component.disablePlacement) || component.disablePlacement.getFixedValue()>
 								@Override public boolean mayPlace(ItemStack itemstack) {
-									int slot = ${component.id};
 									return <@procedureOBJToConditionCode component.disablePlacement false true/>;
 								}
 							<#elseif component.inputLimit.toString()?has_content>
