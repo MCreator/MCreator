@@ -115,6 +115,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 
 						<#if hasProcedure(component.disablePickup) || component.disablePickup.getFixedValue()>
 						@Override public boolean mayPickup(Player entity) {
+							int slot = ${component.id};
 							return <@procedureOBJToConditionCode component.disablePickup false true/>;
 						}
 						</#if>
@@ -143,6 +144,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 						<#if component.getClass().getSimpleName() == "InputSlot">
 							<#if hasProcedure(component.disablePlacement) || component.disablePlacement.getFixedValue()>
 								@Override public boolean mayPlace(ItemStack itemstack) {
+									int slot = ${component.id};
 									return <@procedureOBJToConditionCode component.disablePlacement false true/>;
 								}
 							<#elseif component.inputLimit.toString()?has_content>
