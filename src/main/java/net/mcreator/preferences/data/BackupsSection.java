@@ -21,7 +21,10 @@ package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
+import net.mcreator.preferences.entries.FileEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
+
+import java.io.File;
 
 public class BackupsSection extends PreferencesSection {
 
@@ -37,6 +40,7 @@ public class BackupsSection extends PreferencesSection {
 		automatedBackupInterval = addEntry(new IntegerEntry("automatedBackupInterval", 5, 3, 120));
 		numberOfBackupsToStore = addEntry(new IntegerEntry("numberOfBackupsToStore", 10, 2, 20));
 		backupOnVersionSwitch = addEntry(new BooleanEntry("backupOnVersionSwitch", true));
+		addEntry(new FileEntry("dsrgv", new File("C:/Asus"), true));
 	}
 
 	@Override public String getSectionKey() {

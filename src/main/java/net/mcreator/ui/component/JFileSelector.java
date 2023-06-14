@@ -20,6 +20,7 @@
 package net.mcreator.ui.component;
 
 import javafx.stage.FileChooser;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.file.FileChooserType;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
@@ -54,12 +55,17 @@ public class JFileSelector extends JPanel {
 		setLayout(new BorderLayout(2, 0));
 		setOpaque(false);
 
-		JButton button;
-		if (value == null || value.getAbsolutePath().endsWith("Not specified"))
-			button = new JButton(L10N.t("common.not_specified"));
-		else
-			button = new JButton(StringUtils.abbreviateStringInverse(value.getAbsolutePath(), 35));
+		JTextField pathField = new JTextField(15);
+		pathField.setEditable(false);
+		pathField.setHorizontalAlignment(JTextField.CENTER);
+		pathField.setOpaque(true);
 
+		if (value == null || value.getAbsolutePath().endsWith("Not specified"))
+			pathField.setText(L10N.t("common.not_specified"));
+		else
+			pathField.setText(StringUtils.abbreviateStringInverse(value.getAbsolutePath(), 35));
+
+		JButton button = new JButton("...");
 		button.addActionListener(actionEvent -> {
 			File file = null;
 			if (isFolder) {
@@ -73,15 +79,14 @@ public class JFileSelector extends JPanel {
 			if (file != null && file.exists()) {
 				if ((isFolder && file.isDirectory()) || (!isFolder && file.isFile())) {
 					value = file;
-					button.setText(StringUtils.abbreviateStringInverse(file.getAbsolutePath(), 35));
-					button.setToolTipText(file.getAbsolutePath());
+					pathField.setText(file.getAbsolutePath());
 					if (fct != null)
 						fct.accept(actionEvent);
 				}
 			}
 		});
 
-		add("Center", button);
+		add("Center", PanelUtils.westAndCenterElement(pathField, button));
 
 		if (allowNullValue) {
 			JButton nullButton = new JButton(UIRES.get("16px.delete.gif"));
@@ -89,8 +94,7 @@ public class JFileSelector extends JPanel {
 			nullButton.setOpaque(false);
 			nullButton.addActionListener(actionEvent -> {
 				value = null;
-				button.setText(L10N.t("common.not_specified"));
-				button.setToolTipText(L10N.t("common.not_specified"));
+				pathField.setText(L10N.t("common.not_specified"));
 				if (fct != null)
 					fct.accept(actionEvent);
 			});
