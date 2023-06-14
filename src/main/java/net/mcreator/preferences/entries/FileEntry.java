@@ -24,15 +24,9 @@ import javafx.stage.FileChooser;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.JFileSelector;
-import net.mcreator.ui.dialogs.file.FileChooserType;
-import net.mcreator.ui.dialogs.file.FileDialogs;
-import net.mcreator.ui.init.L10N;
-import net.mcreator.util.StringUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.EventObject;
 import java.util.function.Consumer;
@@ -46,7 +40,7 @@ public class FileEntry extends PreferencesEntry<File> {
 	/**
 	 * The constructor used to add a new preference entry to select the location of a folder.
 	 *
-	 * @param id The preference entry's ID
+	 * @param id    The preference entry's ID
 	 * @param value The default value of the entry
 	 */
 	public FileEntry(String id, File value, boolean allowNullValue) {
@@ -59,8 +53,8 @@ public class FileEntry extends PreferencesEntry<File> {
 	/**
 	 * The constructor used to add a new preference entry to select the location of a file
 	 *
-	 * @param id The preference entry's ID
-	 * @param value The default value of the entry
+	 * @param id      The preference entry's ID
+	 * @param value   The default value of the entry
 	 * @param filters One or multiple filters to apply to the {@link FileChooser} dialog
 	 */
 	public FileEntry(String id, File value, boolean allowNullValue, FileChooser.ExtensionFilter... filters) {
@@ -71,10 +65,12 @@ public class FileEntry extends PreferencesEntry<File> {
 	}
 
 	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
-		return new JFileSelector(parent, value, allowNullValue, isFolder, fct, filters);
+		if (isFolder)
+			return new JFileSelector(parent, value, allowNullValue, fct);
+		else
+			return new JFileSelector(parent, value, allowNullValue, fct, filters);
 	}
 
-	@SuppressWarnings("ReplaceNullCheck")
 	@Override public void setValueFromComponent(JComponent component) {
 		File file = ((JFileSelector) component).getFile();
 		if (file != null)

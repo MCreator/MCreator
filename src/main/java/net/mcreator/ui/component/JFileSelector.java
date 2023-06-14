@@ -37,21 +37,53 @@ import java.util.function.Consumer;
 public class JFileSelector extends JPanel {
 
 	private File value;
+	private final boolean isFolder;
+	private final Window parent;
+	private final boolean allowNullValue;
+	private final Consumer<EventObject> fct;
+	private final FileChooser.ExtensionFilter[] filters;
 
 	/**
-	 * Create a custom file selector component to allow or not the usage of a null value for the desired file or folder.
+	 * Create a custom file selector component to allow or not the usage of a null value for the desired folder.
 	 *
-	 * @param parent The file chooser's parent
-	 * @param defaultValue The value that will be set to the component at its creation
+	 * @param parent         The file chooser's parent
+	 * @param defaultValue   The value that will be set to the component at its creation
 	 * @param allowNullValue If true, another button will be added to make the returned value null
-	 * @param isFolder If true, the user will only be able to choose a folder.
-	 * @param fct This is mainly used to change the status of the {@link PreferencesDialog} buttons, so we can click on "Apply"
-	 * @param filters If the user needs to choose a file, you can define the file chooser's filters
+	 * @param fct            This is mainly used to change the status of the {@link PreferencesDialog} buttons, so we can click on "Apply"
 	 */
-	public JFileSelector(Window parent, File defaultValue, boolean allowNullValue, boolean isFolder,
-			Consumer<EventObject> fct, FileChooser.ExtensionFilter... filters) {
+	public JFileSelector(Window parent, File defaultValue, boolean allowNullValue, Consumer<EventObject> fct) {
+		this.isFolder = true;
 		this.value = defaultValue;
+		this.parent = parent;
+		this.allowNullValue = allowNullValue;
+		this.fct = fct;
+		this.filters = new FileChooser.ExtensionFilter[] {};
 
+		createComponent();
+	}
+
+	/**
+	 * Create a custom file selector component to allow or not the usage of a null value for the desired file.
+	 *
+	 * @param parent         The file chooser's parent
+	 * @param defaultValue   The value that will be set to the component at its creation
+	 * @param allowNullValue If true, another button will be added to make the returned value null
+	 * @param fct            This is mainly used to change the status of the {@link PreferencesDialog} buttons, so we can click on "Apply"
+	 * @param filters        If the user needs to choose a file, you can define the file chooser's filters
+	 */
+	public JFileSelector(Window parent, File defaultValue, boolean allowNullValue, Consumer<EventObject> fct,
+			FileChooser.ExtensionFilter... filters) {
+		this.isFolder = false;
+		this.value = defaultValue;
+		this.parent = parent;
+		this.allowNullValue = allowNullValue;
+		this.fct = fct;
+		this.filters = filters;
+
+		createComponent();
+	}
+
+	private void createComponent() {
 		setLayout(new BorderLayout(2, 0));
 		setOpaque(false);
 
