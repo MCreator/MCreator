@@ -41,7 +41,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 	public OutputSlotDialog(WYSIWYGEditor editor, @Nullable OutputSlot slot) {
 		super(editor, slot);
 		setModal(true);
-		setSize(850, 350);
+		setSize(842, 350);
 		setLocationRelativeTo(editor.mcreator);
 
 		JPanel options = new JPanel();
@@ -105,7 +105,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 				"x:number/y:number/z:number/world:world/entity:entity/guistate:map/slot:number/amount:number"));
 		eh3.refreshList();
 
-		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 9, 5, eh, eh2, eh3))));
+		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 5, 5, eh, eh2, eh3))));
 
 		add("North", PanelUtils.join(FlowLayout.LEFT, options));
 

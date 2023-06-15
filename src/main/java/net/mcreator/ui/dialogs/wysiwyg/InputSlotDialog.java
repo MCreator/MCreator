@@ -43,7 +43,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 	public InputSlotDialog(WYSIWYGEditor editor, @Nullable InputSlot slot) {
 		super(editor, slot);
 		setModal(true);
-		setSize(850, 470);
+		setSize(842, 470);
 		setLocationRelativeTo(editor.mcreator);
 
 		JPanel options = new JPanel();
@@ -120,7 +120,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 				"x:number/y:number/z:number/world:world/entity:entity/guistate:map/slot:number/amount:number"));
 		eh3.refreshList();
 
-		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 9, 5, eh, eh2, eh3))));
+		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 5, 5, eh, eh2, eh3))));
 
 		add("North", PanelUtils.join(FlowLayout.LEFT, options));
 
