@@ -254,6 +254,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		new File(fileManager.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
 		new File(fileManager.getFolderManager().getModElementPicturesCacheDir(), element.getName() + ".png").delete();
 
+		// we flush the icon, so it doesn't stay in the memory and make it appears if a new mod element with the same name is re-created (without restarting)
+		element.getElementIcon().getImage().flush();
+
 		// finally remove element form the list
 		mod_elements.remove(element);
 
