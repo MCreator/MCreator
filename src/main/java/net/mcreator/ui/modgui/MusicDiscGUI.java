@@ -25,6 +25,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -161,10 +162,10 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.music_disc.has_glowing_effect")));
 		subpane2.add(hasGlow);
 
-		JPanel subpane3 = new JPanel(new BorderLayout(5, 0));
+		JPanel subpane3 = new JPanel(new BorderLayout(5, 2));
 		subpane3.setOpaque(false);
 		subpane3.add("Center", subpane2);
-		subpane3.add("South", specialInformation);
+		subpane3.add("South", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), specialInformation));
 
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);

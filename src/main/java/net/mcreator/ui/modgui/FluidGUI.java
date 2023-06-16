@@ -247,9 +247,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
 		bucketProperties.add(rarity);
 
-		JPanel bcProp = new JPanel(new BorderLayout(5, 0));
+		JPanel bcProp = new JPanel(new BorderLayout(5, 2));
 		bcProp.setOpaque(false);
-
 		bcProp.add("Center", bucketProperties);
 		bcProp.add("South", specialInformation);
 
