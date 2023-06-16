@@ -75,8 +75,6 @@ public class NBTEditorView extends ViewBase {
 			addTagToNode(tag, root);
 
 			model.setRoot(root);
-
-			TreeUtils.expandAllNodes(tree, 0, tree.getRowCount());
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
 		}
