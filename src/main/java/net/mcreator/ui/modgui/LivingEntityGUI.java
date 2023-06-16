@@ -54,6 +54,8 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.modellayers.JModelLayerList;
+import net.mcreator.ui.minecraft.potions.JPotionList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -243,6 +245,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private boolean disableMobModelCheckBoxListener = false;
 
+	private JModelLayerList modelLayerList;
+
 	private final List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator()
 			.getGeneratorConfiguration().getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
 			.get("unmodifiable_ai_bases");
@@ -382,13 +386,16 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		equipmentOffHand = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		rangedAttackItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
+		modelLayerList = new JModelLayerList(mcreator, this);
+
 		JPanel pane1 = new JPanel(new BorderLayout(0, 0));
-		JPanel pane2 = new JPanel(new BorderLayout(0, 0));
+		JPanel pane2 = new JPanel(new GridLayout());
 		JPanel pane3 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane4 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane6 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
+		JPanel pane8 = new JPanel(new BorderLayout(0, 0));
 
 		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
 
@@ -645,6 +652,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
 
+		JComponent component = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("potion/effects"), L10N.label("elementgui.living_entity.model_layers")),
+				modelLayerList);
+
+		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		pane8.setOpaque(false);
+		pane8.add(component);
+
 		JPanel spo6 = new JPanel(new GridLayout(4, 2, 2, 2));
 		spo6.setOpaque(false);
 
@@ -872,6 +888,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		pane1.setOpaque(false);
 
 		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2);
+		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8);
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);

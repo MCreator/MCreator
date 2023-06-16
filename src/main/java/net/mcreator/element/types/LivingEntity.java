@@ -162,6 +162,7 @@ import java.util.*;
 	public int maxNumberOfMobsPerGroup;
 	public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
+	public List<ModelLayerEntry> modelLayers;
 
 	private LivingEntity() {
 		this(null);
@@ -181,6 +182,10 @@ import java.util.*;
 
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
+	}
+
+	public static class ModelLayerEntry {
+
 	}
 
 	@Override public Model getEntityModel() {
