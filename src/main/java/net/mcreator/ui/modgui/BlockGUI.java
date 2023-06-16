@@ -474,7 +474,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destal.add(ComponentUtils.squareAndBorder(textureBack, L10N.t("elementgui.block.texture_place_back")));
 
 		textureLeft.setActionListener(event -> {
-			if (!(texture.has() || textureTop.has() || textureBack.has() || textureFront.has() || textureRight.has())) {
+			if (!(texture.hasTexture() || textureTop.hasTexture() || textureBack.hasTexture() || textureFront.hasTexture() || textureRight.hasTexture())) {
 				texture.setTextureFromTextureName(textureLeft.getID());
 				textureTop.setTextureFromTextureName(textureLeft.getID());
 				textureBack.setTextureFromTextureName(textureLeft.getID());

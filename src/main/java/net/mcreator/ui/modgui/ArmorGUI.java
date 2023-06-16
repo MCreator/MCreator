@@ -588,28 +588,28 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		pane5.add("Center", PanelUtils.totalCenterInPanel(clopa));
 
 		textureHelmet.setValidator(() -> {
-			if (enableHelmet.isSelected() && !textureHelmet.has())
+			if (enableHelmet.isSelected() && !textureHelmet.hasTexture())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
 			return Validator.ValidationResult.PASSED;
 		});
 
 		textureBody.setValidator(() -> {
-			if (enableBody.isSelected() && !textureBody.has())
+			if (enableBody.isSelected() && !textureBody.hasTexture())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
 			return Validator.ValidationResult.PASSED;
 		});
 
 		textureLeggings.setValidator(() -> {
-			if (enableLeggings.isSelected() && !textureLeggings.has())
+			if (enableLeggings.isSelected() && !textureLeggings.hasTexture())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
 			return Validator.ValidationResult.PASSED;
 		});
 
 		textureBoots.setValidator(() -> {
-			if (enableBoots.isSelected() && !textureBoots.has())
+			if (enableBoots.isSelected() && !textureBoots.hasTexture())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
 			return Validator.ValidationResult.PASSED;
