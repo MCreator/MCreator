@@ -20,7 +20,6 @@ package net.mcreator.ui.views;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.component.util.TreeUtils;
 import net.mcreator.ui.laf.SlickTreeUI;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -75,6 +74,8 @@ public class NBTEditorView extends ViewBase {
 			addTagToNode(tag, root);
 
 			model.setRoot(root);
+
+			tree.expandRow(1);
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
 		}
