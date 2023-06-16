@@ -8,3 +8,4 @@ Primers below:
 * General: https://feedback.minecraft.net/hc/en-us/articles/16499677456781-Minecraft-Java-Edition-1-20-Trails-Tales-
 * Data packs: https://misode.github.io/versions/?id=1.20&tab=changelog
 * Forge: https://gist.github.com/ChampionAsh5357/cf818acc53ffea6f4387fe28c2977d56
+* Materials: https://gist.github.com/GizmoTheMoonPig/77a90a48e0aeecd15b4c524e1c7f0a4a
