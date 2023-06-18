@@ -2,187 +2,125 @@
   readable_name: "Default"
 - AIR:
   readable_name: "None"
-  texture: IRON_BARS
 - GRASS:
   readable_name: "Grass"
-  texture: GRASS
 - SAND:
   readable_name: "Sand"
-  texture: SAND#0
 - CLOTH:
   readable_name: "Wool"
-  texture: CANDLE#0
 - TNT:
   readable_name: "Tnt / Fire"
-  texture: TNT
 - ICE:
   readable_name: "Ice"
-  texture: ICE
 - IRON:
   readable_name: "Iron"
-  texture: IRON_BLOCK
 - FOLIAGE:
   readable_name: "Plant"
-  texture: LEAVES#0
 - SNOW:
   readable_name: "Snow"
-  texture: SNOW
 - CLAY:
   readable_name: "Clay"
-  texture: CLAY
 - DIRT:
   readable_name: "Dirt"
-  texture: DIRT
 - STONE:
   readable_name: "Stone"
-  texture: STONE#0
 - WATER:
   readable_name: "Water"
-  texture: WATER
 - WOOD:
   readable_name: "Wood"
-  texture: OAK_WOOD
 - QUARTZ:
   readable_name: "Quartz"
-  texture: QUARTZ_BLOCK
 - ADOBE:
   readable_name: "Orange"
-  texture: WOOL#1
 - MAGENTA:
   readable_name: "Magenta"
-  texture: WOOL#2
 - LIGHT_BLUE:
   readable_name: "Light blue"
-  texture: WOOL#3
 - YELLOW:
   readable_name: "Yellow"
-  texture: WOOL#4
 - LIME:
   readable_name: "Lime"
-  texture: WOOL#5
 - PINK:
   readable_name: "Pink"
-  texture: WOOL#6
 - GRAY:
   readable_name: "Pink"
-  texture: WOOL#7
 - SILVER:
   readable_name: "Light gray"
-  texture: WOOL#8
 - CYAN:
   readable_name: "Cyan"
-  texture: WOOL#9
 - PURPLE:
   readable_name: "Purple"
-  texture: WOOL#10
 - BLUE:
   readable_name: "Blue"
-  texture: WOOL#11
 - BROWN:
   readable_name: "Brown"
-  texture: WOOL#12
 - GREEN:
   readable_name: "Green"
-  texture: WOOL#13
 - RED:
   readable_name: "Red"
-  texture: WOOL#14
 - BLACK:
   readable_name: "Black"
-  texture: WOOL#15
 - GOLD:
   readable_name: "Gold"
-  texture: GOLD_BLOCK
 - DIAMOND:
   readable_name: "Diamond"
-  texture: DIAMOND_BLOCK
 - LAPIS:
   readable_name: "Lapis"
-  texture: LAPIS_BLOCK
 - EMERALD:
   readable_name: "Emerald"
-  texture: EMERALD_BLOCK
 - PODZOL:
   readable_name: "Podzol"
-  texture: DIRT#2
 - NETHERRACK:
   readable_name: "Nether"
-  texture: NETHERRACK
 - WHITE_TERRACOTTA:
   readable_name: "Terracotta white"
-  texture: STAINED_HARDENED_CLAY#0
 - ORANGE_TERRACOTTA:
   readable_name: "Terracotta orange"
-  texture: STAINED_HARDENED_CLAY#1
 - MAGENTA_TERRACOTTA:
   readable_name: "Terracotta magenta"
-  texture: STAINED_HARDENED_CLAY#2
 - LIGHT_BLUE_TERRACOTTA:
   readable_name: "Terracotta light blue"
-  texture: STAINED_HARDENED_CLAY#3
 - YELLOW_TERRACOTTA:
   readable_name: "Terracotta yellow"
-  texture: STAINED_HARDENED_CLAY#4
 - LIME_TERRACOTTA:
   readable_name: "Terracotta lime"
-  texture: STAINED_HARDENED_CLAY#5
 - PINK_TERRACOTTA:
   readable_name: "Terracotta pink"
-  texture: STAINED_HARDENED_CLAY#6
 - GRAY_TERRACOTTA:
   readable_name: "Terracotta gray"
-  texture: STAINED_HARDENED_CLAY#7
 - LIGHT_GRAY_TERRACOTTA:
   readable_name: "Terracotta light gray"
-  texture: STAINED_HARDENED_CLAY#8
 - CYAN_TERRACOTTA:
   readable_name: "Terracotta cyan"
-  texture: STAINED_HARDENED_CLAY#9
 - PURPLE_TERRACOTTA:
   readable_name: "Terracotta purple"
-  texture: STAINED_HARDENED_CLAY#10
 - BLUE_TERRACOTTA:
   readable_name: "Terracotta blue"
-  texture: STAINED_HARDENED_CLAY#11
 - BROWN_TERRACOTTA:
   readable_name: "Terracotta brown"
-  texture: STAINED_HARDENED_CLAY#12
 - GREEN_TERRACOTTA:
   readable_name: "Terracotta green"
-  texture: STAINED_HARDENED_CLAY#13
 - RED_TERRACOTTA:
   readable_name: "Terracotta red"
-  texture: STAINED_HARDENED_CLAY#14
 - BLACK_TERRACOTTA:
   readable_name: "Terracotta black"
-  texture: STAINED_HARDENED_CLAY#15
 - CRIMSON_NYLIUM:
   readable_name: "Crimson nylium"
-  texture: CRIMSON_NYLIUM
 - CRIMSON_STEM:
   readable_name: "Crimson stem"
-  texture: CRIMSON_STEM
 - CRIMSON_HYPHAE:
   readable_name: "Crimson hyphae"
-  texture: CRIMSON_HYPHAE
 - WARPED_NYLIUM:
   readable_name: "Warped nylium"
-  texture: WARPED_NYLIUM
 - WARPED_STEM:
   readable_name: "Warped stem"
-  texture: WARPED_STEM
 - WARPED_HYPHAE:
   readable_name: "Warped hyphae"
-  texture: WARPED_HYPHAE
 - WARPED_WART:
   readable_name: "Warped wart"
-  texture: WARPED_WART_BLOCK
 - DEEPSLATE_GRAY:
   readable_name: "Deepslate"
-  texture: DEEPSLATE
 - RAW_IRON_PINK:
   readable_name: "Raw iron"
-  texture: RAW_IRON_BLOCK
 - LICHEN_GREEN:
   readable_name: "Glow lichen"
-  texture: GLOW_LICHEN
