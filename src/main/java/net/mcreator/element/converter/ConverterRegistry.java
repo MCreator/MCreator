@@ -40,8 +40,11 @@ import net.mcreator.element.converter.v2022_1.ProcedureShootArrowFixer;
 import net.mcreator.element.converter.v2022_2.*;
 import net.mcreator.element.converter.v2022_3.BiomeDictionaryProcedureConverter;
 import net.mcreator.element.converter.v2023_1.*;
-import net.mcreator.element.converter.v2023_2.*;
-import net.mcreator.element.types.*;
+import net.mcreator.element.converter.v2023_2.BiomeCustomFeaturesConverter;
+import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
+import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
+import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
+import net.mcreator.element.converter.v2023_3.SpecialInformationConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,28 +54,28 @@ public class ConverterRegistry {
 
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
 		put(ModElementType.ADVANCEMENT, List.of(new AchievementFixer(), new AdvancementTextureConverter()));
-		put(ModElementType.ARMOR, List.of(new ArmorTexturesConverter(), new SpecialInformationConverter<Armor>()));
+		put(ModElementType.ARMOR, List.of(new ArmorTexturesConverter(), new SpecialInformationConverter()));
 		put(ModElementType.BIOME, List.of(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
 				new BiomeFrozenTopLayerConverter(), new BiomeGenParametersConverter(),
 				new BiomeCustomFeaturesConverter()));
 		put(ModElementType.BLOCK,
 				List.of(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
 						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer(),
-						new SpecialInformationConverter<Block>()));
+						new SpecialInformationConverter()));
 		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer()));
-		put(ModElementType.FLUID, List.of(new FluidNameFixer(), new FluidGenToFeatureConverter(),
-				new SpecialInformationConverter<Fluid>()));
+		put(ModElementType.FLUID,
+				List.of(new FluidNameFixer(), new FluidGenToFeatureConverter(), new SpecialInformationConverter()));
 		put(ModElementType.COMMAND, List.of(new CommandParameterBlockFixer()));
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.GUI,
 				List.of(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
 						new GUIComponentNamer(), new SlotInteractionsConverter()));
 		put(ModElementType.ITEM,
-				List.of(new ItemDispenseBehaviorToItemExtensionConverter(), new SpecialInformationConverter<Item>()));
+				List.of(new ItemDispenseBehaviorToItemExtensionConverter(), new SpecialInformationConverter()));
 		put(ModElementType.LIVINGENTITY, List.of(new EntityTexturesConverter()));
-		put(ModElementType.MUSICDISC, List.of(new SpecialInformationConverter<MusicDisc>()));
+		put(ModElementType.MUSICDISC, List.of(new SpecialInformationConverter()));
 		put(ModElementType.OVERLAY,
 				List.of(new OverlayCoordinateConverter(), new OverlayTexturesConverter(), new GUIComponentNamer()));
 		put(ModElementType.PAINTING, List.of(new PaintingFieldsFixer()));
@@ -86,10 +89,9 @@ public class ConverterRegistry {
 				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
 				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(),
 				new ToolToItemTypeProcedureConverter(), new ExplodeProcedureConverter()));
-		put(ModElementType.RANGEDITEM,
-				List.of(new RangedItemTextureConverter(), new SpecialInformationConverter<RangedItem>()));
+		put(ModElementType.RANGEDITEM, List.of(new RangedItemTextureConverter(), new SpecialInformationConverter()));
 		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
-		put(ModElementType.TOOL, List.of(new SpecialInformationConverter<Tool>()));
+		put(ModElementType.TOOL, List.of(new SpecialInformationConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one

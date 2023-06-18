@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.v2023_2;
+package net.mcreator.element.converter.v2023_3;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -33,13 +33,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class SpecialInformationConverter<T extends GeneratableElement> implements IConverter {
+public class SpecialInformationConverter implements IConverter {
 
 	private static final Logger LOG = LogManager.getLogger("SpecialInformationConverter");
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		T object = (T) input;
+		GeneratableElement object = input;
 		JsonObject oldObject = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
 		List<String> specialInfo = new ArrayList<>();
