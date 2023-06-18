@@ -29,6 +29,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.EventObject;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class FileEntry extends PreferencesEntry<File> {
@@ -73,10 +74,8 @@ public class FileEntry extends PreferencesEntry<File> {
 
 	@Override public void setValueFromComponent(JComponent component) {
 		File file = ((JFileSelector) component).getFile();
-		if (file != null)
-			this.value = file;
-		else
-			this.value = new File("Not specified"); // we don't use null as the old value is kept
+		// we don't use null as the old value is kept
+		this.value = Objects.requireNonNullElseGet(file, () -> new File("Not specified"));
 	}
 
 	@Override public void setValueFromJsonElement(JsonElement object) {
