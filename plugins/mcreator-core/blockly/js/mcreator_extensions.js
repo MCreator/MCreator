@@ -426,8 +426,17 @@ Blockly.Extensions.registerMutator('weighted_height_provider_mutator', weightedL
 Blockly.Extensions.registerMutator('weighted_int_provider_mutator', weightedListMutatorMixin('IntProvider'),
         undefined, ['weighted_list_mutator_input']);
 
-Blockly.Extensions.registerMutator('weighted_state_provider_mutator', weightedListMutatorMixin('MCItemBlock'),
-        undefined, ['weighted_list_mutator_input']);
+// We cannot use the weighted mutator function, as we need to add image fields too
+Blockly.Extensions.registerMutator('weighted_state_provider_mutator', simpleRepeatingInputMixin(
+        'weighted_list_mutator_container', 'weighted_list_mutator_input', 'entry',
+        function(thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('MCItemBlock').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.weighted_list.weight'))
+                .appendField(new Blockly.FieldNumber(1, 1, null, 1), 'weight' + index)
+                .appendField(javabridge.t('blockly.block.weighted_list.entry'))
+                .appendField(new Blockly.FieldImage("./res/b_input.png", 8, 10));
+        }, true, ['weight'], true),
+    undefined, ['weighted_list_mutator_input']);
 
 // Helper function for extensions that validate one or more resource location text fields
 function validateResourceLocationFields(...fields) {
