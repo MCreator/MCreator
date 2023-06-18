@@ -22,7 +22,8 @@
     }
   ],
   "extensions": [
-    "delta_feature_validator"
+    "delta_feature_validator",
+    "add_image_to_blockstate_inputs"
   ],
   "inputsInline": true,
   "output": "Feature",

@@ -46,6 +46,15 @@ Blockly.Extensions.register('add_image_to_bsp_inputs',
         }
     });
 
+// Extension to append the marker image to all plain blockstate inputs
+Blockly.Extensions.register('add_image_to_blockstate_inputs',
+    function () {
+        for (let i = 0, input; input = this.inputList[i]; i++) {
+            if (input.connection && input.connection.getCheck() && input.connection.getCheck()[0] == 'MCItemBlock')
+                input.appendField(new Blockly.FieldImage("./res/b_input.png", 8, 10));
+        }
+    });
+
 // marks in the xml if the block is attached to a block/item input, for proper mapping
 Blockly.Extensions.registerMutator('mark_attached_to_block_item',
     {
@@ -407,7 +416,8 @@ Blockly.Extensions.registerMutator('geode_crystal_mutator', simpleRepeatingInput
         'geode_crystal_mutator_container', 'geode_crystal_mutator_input', 'crystal',
         function (thisBlock, inputName, index) {
             thisBlock.appendValueInput(inputName + index).setCheck('MCItemBlock')
-                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
+                .appendField(new Blockly.FieldImage("./res/b_input.png", 8, 10));
         }, true, [], true),
     undefined, ['geode_crystal_mutator_input']);
 
