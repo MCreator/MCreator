@@ -245,7 +245,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	private boolean disableMobModelCheckBoxListener = false;
 
-	private JModelLayerList modelLayerList;
+	private JModelLayerList modelLayers;
 
 	private final List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator()
 			.getGeneratorConfiguration().getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
@@ -386,7 +386,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		equipmentOffHand = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		rangedAttackItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-		modelLayerList = new JModelLayerList(mcreator, this);
+		modelLayers = new JModelLayerList(mcreator, this);
 
 		JPanel pane1 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane2 = new JPanel(new GridLayout());
@@ -654,7 +654,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		JComponent component = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("potion/effects"), L10N.label("elementgui.living_entity.model_layers")),
-				modelLayerList);
+				modelLayers);
 
 		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -923,6 +923,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		isShakingCondition.refreshListKeepSelected();
 		solidBoundingBox.refreshListKeepSelected();
 
+		modelLayers.reloadDataLists();
+
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
 				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
@@ -954,6 +956,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0) {
 			return new AggregatedValidationResult(mobModelTexture, mobName);
+		} else if (page == 1) {
+			return modelLayers.getValidationResult();
 		} else if (page == 5) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
@@ -1057,6 +1061,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
+		modelLayers.setModelLayers(livingEntity.modelLayers);
 
 		if (livingEntity.creativeTab != null)
 			creativeTab.setSelectedItem(livingEntity.creativeTab);
@@ -1187,6 +1192,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.inventorySize = (int) inventorySize.getValue();
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.guiBoundTo = (String) guiBoundTo.getSelectedItem();
+		livingEntity.modelLayers = modelLayers.getModelLayers();
 		return livingEntity;
 	}
 

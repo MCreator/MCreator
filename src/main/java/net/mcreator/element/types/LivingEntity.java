@@ -186,6 +186,13 @@ import java.util.*;
 
 	public static class ModelLayerEntry {
 
+		public String model;
+		public String texture;
+
+		public boolean glow;
+
+		public Procedure condition;
+
 	}
 
 	@Override public Model getEntityModel() {

@@ -27,6 +27,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.potions.JPotionListEntry;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.swing.*;
 import java.awt.*;
@@ -74,15 +75,25 @@ public class JModelLayerList extends JEntriesList {
 		add.setEnabled(false);
 	}
 
-	public List<LivingEntity.ModelLayerEntry> getEffects() {
+	public void reloadDataLists() {
+		entryList.forEach(JModelLayerListEntry::reloadDataLists);
+	}
+
+	public List<LivingEntity.ModelLayerEntry> getModelLayers() {
 		return entryList.stream().map(JModelLayerListEntry::getEntry).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
-	public void setEffects(List<LivingEntity.ModelLayerEntry> pool) {
+	public void setModelLayers(List<LivingEntity.ModelLayerEntry> pool) {
 		pool.forEach(e -> {
 			JModelLayerListEntry entry = new JModelLayerListEntry(mcreator, gui, entries, entryList);
 			registerEntryUI(entry);
 			entry.setEntry(e);
 		});
+	}
+
+	public AggregatedValidationResult getValidationResult() {
+		AggregatedValidationResult validationResult = new AggregatedValidationResult();
+		entryList.forEach(validationResult::addValidationElement);
+		return validationResult;
 	}
 }
