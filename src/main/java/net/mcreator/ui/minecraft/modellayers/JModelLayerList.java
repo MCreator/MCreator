@@ -20,13 +20,11 @@
 package net.mcreator.ui.minecraft.modellayers;
 
 import net.mcreator.element.types.LivingEntity;
-import net.mcreator.element.types.Potion;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.JEntriesList;
-import net.mcreator.ui.minecraft.potions.JPotionListEntry;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.swing.*;
