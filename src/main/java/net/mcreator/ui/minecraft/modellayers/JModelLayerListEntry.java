@@ -60,7 +60,7 @@ public class JModelLayerListEntry extends JPanel implements IValidable {
 		super(new FlowLayout(FlowLayout.LEFT));
 		this.mcreator = mcreator;
 
-		condition = new ProcedureSelector(gui.withEntry("item/condition_glow"), mcreator,
+		condition = new ProcedureSelector(gui.withEntry("entity/condition_display_model_layer"), mcreator,
 				L10N.t("elementgui.living_entity.layer_display_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity")).makeInline();

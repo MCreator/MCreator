@@ -653,7 +653,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
 
 		JComponent component = PanelUtils.northAndCenterElement(
-				HelpUtils.wrapWithHelpButton(this.withEntry("potion/effects"), L10N.label("elementgui.living_entity.model_layers")),
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/model_layers"), L10N.label("elementgui.living_entity.model_layers")),
 				modelLayers);
 
 		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));

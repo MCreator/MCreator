@@ -112,15 +112,21 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 			<#list data.modelLayers as layer>
 				this.addLayer(new RenderLayer<${name}Entity, ${model}>(this) {
 					@Override
-                	public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light, ${name}Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+					public void render(PoseStack poseStack, MultiBufferSource bufferSource, int light, ${name}Entity entity, float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
+						<#if hasProcedure(layer.condition)>
+							Level world = entity.level;
+							double x = entity.getX();
+							double y = entity.getY();
+							double z = entity.getZ();
+						</#if>
 						if (<@procedureOBJToConditionCode layer.condition/>) {
 							VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.<#if layer.glow>eyes<#else>entityCutoutNoCull</#if>(new ResourceLocation("${modid}:textures/entities/${layer.texture}")));
 							<#if layer.model != "Default">
-                    			EntityModel model = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
-                    			this.getParentModel().copyPropertiesTo(model);
-                    			model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
-                    			model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
-                    			model.renderToBuffer(poseStack, vertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
+								EntityModel model = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
+								this.getParentModel().copyPropertiesTo(model);
+								model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
+								model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
+								model.renderToBuffer(poseStack, vertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 							<#else>
 								this.getParentModel().renderToBuffer(poseStack, vertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 							</#if>
