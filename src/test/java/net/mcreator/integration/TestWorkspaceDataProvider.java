@@ -758,6 +758,13 @@ public class TestWorkspaceDataProvider {
 			livingEntity.modelHeight = 1.3;
 			livingEntity.mountedYOffset = -3.1;
 			livingEntity.modelShadowSize = 1.8;
+			if (!emptyLists) {
+				LivingEntity.ModelLayerEntry modelLayer = new LivingEntity.ModelLayerEntry();
+				modelLayer.model = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
+				modelLayer.texture = "test.png";
+				modelLayer.glow = _true;
+				modelLayer.condition = new Procedure("condition4");
+			}
 			return livingEntity;
 		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
 			Dimension dimension = new Dimension(modElement);
