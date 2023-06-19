@@ -759,6 +759,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.mountedYOffset = -3.1;
 			livingEntity.modelShadowSize = 1.8;
 			if (!emptyLists) {
+				livingEntity.modelLayers = new ArrayList<>();
 				LivingEntity.ModelLayerEntry modelLayer = new LivingEntity.ModelLayerEntry();
 				modelLayer.model = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 				modelLayer.texture = "test.png";
