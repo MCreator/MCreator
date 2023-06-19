@@ -761,7 +761,7 @@ public class TestWorkspaceDataProvider {
 			if (!emptyLists) {
 				livingEntity.modelLayers = new ArrayList<>();
 				LivingEntity.ModelLayerEntry modelLayer = new LivingEntity.ModelLayerEntry();
-				modelLayer.model = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
+				modelLayer.model = "Default";
 				modelLayer.texture = "test.png";
 				modelLayer.glow = _true;
 				modelLayer.condition = new Procedure("condition4");
