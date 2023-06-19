@@ -20,6 +20,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.feature.BlocklyToFeature;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
@@ -47,7 +48,7 @@ import java.util.List;
 	public List<String> restrictionDimensions;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
-	public String featurexml;
+	@BlocklyXML("features") public String featurexml;
 
 	public Feature(ModElement element) {
 		super(element);
