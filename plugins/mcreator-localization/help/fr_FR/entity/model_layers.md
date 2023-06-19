@@ -1,0 +1,1 @@
+Les couches de modèle dans la liste ci-dessous sera appliqué par-dessus le modèle de l'entité.
