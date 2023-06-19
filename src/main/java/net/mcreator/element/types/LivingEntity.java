@@ -183,6 +183,8 @@ import java.util.*;
 
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
+
+		this.modelLayers = new ArrayList<>();
 	}
 
 	public static class ModelLayerEntry {
