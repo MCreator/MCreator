@@ -764,6 +764,7 @@ public class TestWorkspaceDataProvider {
 				modelLayer.texture = "test.png";
 				modelLayer.glow = _true;
 				modelLayer.condition = new Procedure("condition4");
+				livingEntity.modelLayers.add(modelLayer);
 			}
 			return livingEntity;
 		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
