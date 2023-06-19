@@ -389,7 +389,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		modelLayers = new JModelLayerList(mcreator, this);
 
 		JPanel pane1 = new JPanel(new BorderLayout(0, 0));
-		JPanel pane2 = new JPanel(new GridLayout());
+		JPanel pane2 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane3 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane4 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane5 = new JPanel(new BorderLayout(0, 0));
