@@ -2,6 +2,10 @@ _default:
   - NoOpFeature
   - NoneFeatureConfiguration
   - "minecraft:no_op"
+feature_no_op:
+  - NoOpFeature
+  - NoneFeatureConfiguration
+  - "minecraft:no_op"
 feature_lake:
   - LakeFeature
   - LakeFeature.Configuration
