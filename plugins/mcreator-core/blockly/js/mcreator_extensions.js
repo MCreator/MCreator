@@ -403,6 +403,15 @@ Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepe
         }),
     undefined, ['block_predicate_mutator_input']);
 
+Blockly.Extensions.registerMutator('feature_simple_random_mutator', simpleRepeatingInputMixin(
+        'feature_simple_random_mutator_container', 'feature_simple_random_mutator_input', 'feature',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck(['Feature', 'PlacedFeature'])
+                .setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+        }, true, [], true),
+    undefined, ['feature_simple_random_mutator_input']);
+
 Blockly.Extensions.registerMutator('block_list_mutator', simpleRepeatingInputMixin(
         'block_list_mutator_container', 'block_list_mutator_input', 'condition',
         function (thisBlock, inputName, index) {
