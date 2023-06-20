@@ -18,6 +18,7 @@
 
 package net.mcreator.generator.blockly;
 
+import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
@@ -118,6 +119,8 @@ public class BlocklyBlockCodeGenerator {
 						found = true;
 						String generatedCode = BlocklyToCode.directProcessOutputBlock(master, element);
 						dataModel.put("input$" + inputName, generatedCode);
+						// We also pass the type of the block that is attached to the input
+						dataModel.put("input_type$" + inputName, BlocklyBlockUtil.getInputBlockType(element));
 						break; // found, no need to look other elements
 					}
 				}
@@ -155,6 +158,8 @@ public class BlocklyBlockCodeGenerator {
 						master.popDepProviderInputStack();
 
 						dataModel.put("input$" + advancedInput.name(), generatedCode);
+						// We also pass the type of the block that is attached to the input
+						dataModel.put("input_type$" + advancedInput.name(), BlocklyBlockUtil.getInputBlockType(element));
 
 						break; // found, no need to look other elements
 					}
@@ -247,15 +252,19 @@ public class BlocklyBlockCodeGenerator {
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
 				Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 				Map<Integer, String> processedElements = new HashMap<>();
+				Map<Integer, String> processedElementTypes = new HashMap<>();
 				for (int i = 0; mutation != null && mutation.hasAttribute("inputs") ?
 						i < Integer.parseInt(mutation.getAttribute("inputs")) :
 						!matchingElements.isEmpty(); i++) {
 					if (matchingElements.containsKey(inputName + i)) {
-						String generatedCode = BlocklyToCode.directProcessOutputBlock(master,
-								matchingElements.remove(inputName + i));
+						Element currentInput = matchingElements.remove(inputName + i);
+						String generatedCode = BlocklyToCode.directProcessOutputBlock(master, currentInput);
 						processedElements.put(i, generatedCode);
+						processedElementTypes.put(i, BlocklyBlockUtil.getInputBlockType(currentInput));
 					} else {
-						processedElements.put(i, null); // we add null at this index to not shift other elements
+						// we add null at this index to not shift other elements
+						processedElements.put(i, null);
+						processedElementTypes.put(i, null);
 						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 								L10N.t("blockly.errors.input_empty", inputName + i, type)));
 					}
@@ -265,6 +274,9 @@ public class BlocklyBlockCodeGenerator {
 
 				dataModel.put("input_list$" + inputName,
 						processedElements.entrySet().stream().sorted(Map.Entry.comparingByKey())
+								.map(Map.Entry::getValue).toArray(String[]::new));
+				dataModel.put("input_type_list$" + inputName,
+						processedElementTypes.entrySet().stream().sorted(Map.Entry.comparingByKey())
 								.map(Map.Entry::getValue).toArray(String[]::new));
 			}
 		}
@@ -278,6 +290,7 @@ public class BlocklyBlockCodeGenerator {
 						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
 				Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 				Map<Integer, String> processedElements = new HashMap<>();
+				Map<Integer, String> processedElementTypes = new HashMap<>();
 				for (int i = 0; mutation != null && mutation.hasAttribute("inputs") ?
 						i < Integer.parseInt(mutation.getAttribute("inputs")) :
 						!matchingElements.isEmpty(); i++) {
@@ -296,13 +309,16 @@ public class BlocklyBlockCodeGenerator {
 						}
 
 						master.pushDepProviderInputStack(advancedInput);
-						String generatedCode = BlocklyToCode.directProcessOutputBlock(master,
-								matchingElements.remove(advancedInput.name() + i));
+						Element currentInput = matchingElements.remove(advancedInput.name() + i);
+						String generatedCode = BlocklyToCode.directProcessOutputBlock(master, currentInput);
 						master.popDepProviderInputStack();
 
 						processedElements.put(i, generatedCode);
+						processedElementTypes.put(i, BlocklyBlockUtil.getInputBlockType(currentInput));
 					} else {
-						processedElements.put(i, null); // we add null at this index to not shift other elements
+						// we add null at this index to not shift other elements
+						processedElements.put(i, null);
+						processedElementTypes.put(i, null);
 						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 								L10N.t("blockly.errors.input_empty", advancedInput.name() + i, type)));
 					}
@@ -312,6 +328,9 @@ public class BlocklyBlockCodeGenerator {
 
 				dataModel.put("input_list$" + advancedInput.name(),
 						processedElements.entrySet().stream().sorted(Map.Entry.comparingByKey())
+								.map(Map.Entry::getValue).toArray(String[]::new));
+				dataModel.put("input_type_list$" + advancedInput.name(),
+						processedElementTypes.entrySet().stream().sorted(Map.Entry.comparingByKey())
 								.map(Map.Entry::getValue).toArray(String[]::new));
 			}
 		}
