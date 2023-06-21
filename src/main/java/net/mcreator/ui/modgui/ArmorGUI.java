@@ -360,7 +360,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				enableHelmet);
 		helText.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-				BorderFactory.createEmptyBorder(15, 12, 0, 12)));
+				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
+		helText.setPreferredSize(new Dimension(145, 110));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(helText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.helmet_name"), helmetName),
@@ -372,7 +373,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				enableBody);
 		bodText.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-				BorderFactory.createEmptyBorder(15, 17, 0, 17)));
+				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
+		bodText.setPreferredSize(new Dimension(145, 110));
 
 		JComponent bodyModelComponent = PanelUtils.westAndCenterElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
@@ -411,7 +413,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				enableLeggings);
 		legText.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-				BorderFactory.createEmptyBorder(15, 8, 0, 8)));
+				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
+		legText.setPreferredSize(new Dimension(145, 110));
 
 		JComponent leggingsModelComponent = PanelUtils.westAndCenterElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
@@ -448,7 +451,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				enableBoots);
 		bootText.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-				BorderFactory.createEmptyBorder(15, 16, 0, 15)));
+				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
+		bootText.setPreferredSize(new Dimension(145, 110));
 
 		JComponent bootsModelComponent = PanelUtils.westAndCenterElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),

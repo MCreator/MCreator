@@ -269,6 +269,14 @@ public class GTFeatureBlocks {
 							<value name="target0">%s</value>
 						</block></value><next><block type="placement_in_square"></block></next></block></xml>
 						""".formatted(testXML);
+				// Blockstate providers are tested with the simple block feature
+				case "BlockStateProvider" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_simple_block">
+							<value name="block">%s</value>
+						</block></value><next><block type="placement_in_square"></block></next></block></xml>
+						""".formatted(testXML);
 				// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block
 				case "HeightProvider" -> feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
 				case "BlockPredicate" ->

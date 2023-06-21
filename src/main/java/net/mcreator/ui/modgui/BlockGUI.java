@@ -172,7 +172,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox canProvidePower = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> colorOnMap = new JComboBox<>();
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -1340,8 +1340,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 
-		ComboBoxUtil.updateComboBoxContents(colorOnMap,
-				Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
 		ComboBoxUtil.updateComboBoxContents(aiPathNodeType,
 				Arrays.asList(ElementUtil.getDataListAsStringArray("pathnodetypes")), "DEFAULT");
 	}
@@ -1612,7 +1610,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		block.isReplaceable = isReplaceable.isSelected();
 		block.canProvidePower = canProvidePower.isSelected();
-		block.colorOnMap = (String) colorOnMap.getSelectedItem();
+		block.colorOnMap = colorOnMap.getSelectedItem().toString();
 		block.offsetType = (String) offsetType.getSelectedItem();
 		block.aiPathNodeType = (String) aiPathNodeType.getSelectedItem();
 		block.creativePickItem = creativePickItem.getBlock();
