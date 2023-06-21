@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2021, Pylo, opensource contributors
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,17 +17,11 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.types.interfaces;
+package net.mcreator.workspace.references;
 
-import net.mcreator.workspace.references.ObjectReference;
-import net.mcreator.workspace.resources.Model;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
-import java.util.Map;
-
-@SuppressWarnings("unused") public interface IItemWithModel {
-
-	@ObjectReference Model getItemModel();
-
-	Map<String, String> getTextureMap();
-
-}
+@Target(ElementType.METHOD) @Retention(RetentionPolicy.RUNTIME) public @interface ObjectReference {}

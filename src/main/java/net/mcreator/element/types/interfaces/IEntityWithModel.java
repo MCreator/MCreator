@@ -19,11 +19,12 @@
 package net.mcreator.element.types.interfaces;
 
 import net.mcreator.io.FileIO;
+import net.mcreator.workspace.references.ObjectReference;
 import net.mcreator.workspace.resources.Model;
 
 @SuppressWarnings("unused") public interface IEntityWithModel {
 
-	Model getEntityModel();
+	@ObjectReference Model getEntityModel();
 
 	default String getModelCode() {
 		Model model = getEntityModel();

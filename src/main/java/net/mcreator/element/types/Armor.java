@@ -31,6 +31,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ObjectReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
@@ -155,35 +156,35 @@ import java.util.*;
 		return MinecraftImageGenerator.Preview.generateArmorPreviewPicture(armorPieces);
 	}
 
-	public Model getHelmetModel() {
+	@ObjectReference public Model getHelmetModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (!helmetModelName.equals("Default"))
 			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), helmetModelName, modelType);
 	}
 
-	public Model getBodyModel() {
+	@ObjectReference public Model getBodyModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (!bodyModelName.equals("Default"))
 			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), bodyModelName, modelType);
 	}
 
-	public Model getLeggingsModel() {
+	@ObjectReference public Model getLeggingsModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (!leggingsModelName.equals("Default"))
 			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), leggingsModelName, modelType);
 	}
 
-	public Model getBootsModel() {
+	@ObjectReference public Model getBootsModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (!bootsModelName.equals("Default"))
 			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), bootsModelName, modelType);
 	}
 
-	public Model getHelmetItemModel() {
+	@ObjectReference public Model getHelmetItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (helmetItemRenderType == 1)
 			modelType = Model.Type.JSON;
@@ -192,7 +193,7 @@ import java.util.*;
 		return Model.getModelByParams(getModElement().getWorkspace(), helmetItemCustomModelName, modelType);
 	}
 
-	public Model getBodyItemModel() {
+	@ObjectReference public Model getBodyItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (bodyItemRenderType == 1)
 			modelType = Model.Type.JSON;
@@ -201,7 +202,7 @@ import java.util.*;
 		return Model.getModelByParams(getModElement().getWorkspace(), bodyItemCustomModelName, modelType);
 	}
 
-	public Model getLeggingsItemModel() {
+	@ObjectReference public Model getLeggingsItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (leggingsItemRenderType == 1)
 			modelType = Model.Type.JSON;
@@ -210,7 +211,7 @@ import java.util.*;
 		return Model.getModelByParams(getModElement().getWorkspace(), leggingsItemCustomModelName, modelType);
 	}
 
-	public Model getBootsItemModel() {
+	@ObjectReference public Model getBootsItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (bootsItemRenderType == 1)
 			modelType = Model.Type.JSON;
