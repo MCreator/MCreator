@@ -43,6 +43,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.function.BiPredicate;
+import java.util.function.Predicate;
 
 public class ReferencesFinder {
 
@@ -52,20 +53,20 @@ public class ReferencesFinder {
 		String query = new DataListEntry.Custom(element).getName();
 		for (ModElement me : workspace.getModElements()) {
 			GeneratableElement ge = me.getGeneratableElement();
-			if (anyFieldMatches(ge, String.class, (a, t) -> {
+			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ElementReference.class), (a, t) -> {
 				ElementReference ref = a.getAnnotation(ElementReference.class);
-				return ref != null && !List.of(ref.defaultValues()).contains(t) && element.getName()
-						.equals(ref.customPrefix() + t);
+				return !List.of(ref.defaultValues()).contains(t) && query.equals(ref.customPrefix() + t);
 			})) {
 				elements.add(me);
-			} else if (anyFieldMatches(ge, MappableElement.class, (a, t) -> t.getUnmappedValue().equals(query))) {
+			} else if (anyValueMatches(ge, MappableElement.class, e -> true,
+					(a, t) -> t.getUnmappedValue().equals(query))) {
 				elements.add(me);
-			} else if (anyFieldMatches(ge, Procedure.class,
+			} else if (anyValueMatches(ge, Procedure.class, e -> true,
 					(a, t) -> t.getName() != null && !t.getName().equals("") && !t.getName().equals("null")
 							&& element.getName().equals(t.getName()))) {
 				elements.add(me);
-			} else if (anyFieldMatches(ge, String.class,
-					(a, t) -> a.isAnnotationPresent(BlocklyXML.class) && t.contains(query))) {
+			} else if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
+					(a, t) -> t.contains(query) || t.contains(element.getName()))) {
 				elements.add(me);
 			}
 		}
@@ -77,11 +78,13 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		for (ModElement me : workspace.getModElements()) {
-			if (anyFieldMatches(me.getGeneratableElement(), String.class, (a, t) -> {
+			if (anyValueMatches(me.getGeneratableElement(), String.class, e -> {
+				TextureReference ref = e.getAnnotation(TextureReference.class);
+				return ref != null && ref.value() == type;
+			}, (a, t) -> {
 				TextureReference ref = a.getAnnotation(TextureReference.class);
-				return ref != null && ref.value() == type && !List.of(ref.defaultValues()).contains(t)
-						&& workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(t), type)
-						.equals(texture);
+				return !List.of(ref.defaultValues()).contains(t) && workspace.getFolderManager()
+						.getTextureFile(FilenameUtilsPatched.removeExtension(t), type).equals(texture);
 			})) {
 				elements.add(me);
 			}
@@ -94,7 +97,8 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		for (ModElement me : workspace.getModElements()) {
-			if (anyFieldMatches(me.getGeneratableElement(), Model.class,
+			if (anyValueMatches(me.getGeneratableElement(), Model.class,
+					e -> e.isAnnotationPresent(ModelReference.class),
 					(a, t) -> model.equals(t) || TexturedModel.getModelTextureMapVariations(model).contains(t))) {
 				elements.add(me);
 			}
@@ -107,7 +111,7 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		for (ModElement me : workspace.getModElements()) {
-			if (anyFieldMatches(me.getGeneratableElement(), Sound.class,
+			if (anyValueMatches(me.getGeneratableElement(), Sound.class, e -> true,
 					(a, t) -> t.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())))
 				elements.add(me);
 		}
@@ -119,8 +123,8 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		for (ModElement me : workspace.getModElements()) {
-			if (anyFieldMatches(me.getGeneratableElement(), String.class,
-					(a, t) -> a.isAnnotationPresent(StructureReference.class) && t.equals(structure)))
+			if (anyValueMatches(me.getGeneratableElement(), String.class,
+					e -> e.isAnnotationPresent(StructureReference.class), (a, t) -> t.equals(structure)))
 				elements.add(me);
 		}
 
@@ -131,9 +135,8 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		for (ModElement me : workspace.getModElements()) {
-			if (anyFieldMatches(me.getGeneratableElement(), String.class,
-					(a, t) -> a.isAnnotationPresent(BlocklyXML.class) && t.contains(
-							"<field name=\"VAR\">global:" + variableName + "</field>"))) {
+			if (anyValueMatches(me.getGeneratableElement(), String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
+					(a, t) -> t.contains("<field name=\"VAR\">global:" + variableName + "</field>"))) {
 				elements.add(me);
 			}
 		}
@@ -148,8 +151,8 @@ public class ReferencesFinder {
 			GeneratableElement ge = me.getGeneratableElement();
 			if (ge != null && workspace.getGenerator().getElementLocalizationKeys(ge).contains(localizationKey)) {
 				elements.add(me);
-			} else if (anyFieldMatches(ge, String.class,
-					(a, t) -> a.isAnnotationPresent(BlocklyXML.class) && t.contains(localizationKey))) {
+			} else if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
+					(a, t) -> t.contains(localizationKey))) {
 				elements.add(me);
 			}
 		}
@@ -157,27 +160,26 @@ public class ReferencesFinder {
 		return elements;
 	}
 
-	private static <T> boolean anyFieldMatches(@Nullable Object source, Class<T> clazz,
-			BiPredicate<AccessibleObject, T> mapper) {
+	private static <T> boolean anyValueMatches(@Nullable Object source, Class<T> clazz,
+			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
 		if (source == null)
 			return false;
 
 		for (Field field : source.getClass().getFields()) {
-			if (!Modifier.isStatic(field.getModifiers())) {
+			if (!Modifier.isStatic(field.getModifiers()) && validIf.test(field)) {
 				try {
 					field.setAccessible(true);
-					if (checkValue(field.get(source), field, clazz, mapper))
+					if (checkValue(field.get(source), field, clazz, validIf, condition))
 						return true;
 				} catch (IllegalAccessException | IllegalArgumentException ignored) {
 				}
 			}
 		}
 		for (Method method : source.getClass().getMethods()) {
-			if (!Modifier.isStatic(method.getModifiers()) && clazz.isAssignableFrom(method.getReturnType())
-					&& method.isAnnotationPresent(SafeToCallMethod.class)) {
+			if (!Modifier.isStatic(method.getModifiers()) && validIf.test(method)) {
 				try {
 					method.setAccessible(true);
-					if (checkValue(method.invoke(source), method, clazz, mapper))
+					if (checkValue(method.invoke(source), method, clazz, validIf, condition))
 						return true;
 				} catch (IllegalArgumentException | ReflectiveOperationException ignored) {
 				}
@@ -189,23 +191,23 @@ public class ReferencesFinder {
 
 	@SuppressWarnings("unchecked")
 	private static <T> boolean checkValue(@Nullable Object value, AccessibleObject field, Class<T> clazz,
-			BiPredicate<AccessibleObject, T> mapper) {
+			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
 		if (value == null)
 			return false;
 
 		if (clazz.isAssignableFrom(value.getClass())) {
-			return mapper == null || mapper.test(field, (T) value);
+			return condition == null || condition.test(field, (T) value);
 		} else if (Collection.class.isAssignableFrom(value.getClass())) {
 			for (Object obj : (Collection<?>) value) {
 				if (obj != null && clazz.isAssignableFrom(obj.getClass())) {
-					if (mapper == null || mapper.test(field, (T) obj))
+					if (condition == null || condition.test(field, (T) obj))
 						return true;
-				} else if (anyFieldMatches(obj, clazz, mapper)) {
+				} else if (anyValueMatches(obj, clazz, validIf, condition)) {
 					return true;
 				}
 			}
 		} else if (value.getClass().getModule() != Object.class.getModule()) {
-			return anyFieldMatches(value, clazz, mapper);
+			return anyValueMatches(value, clazz, validIf, condition);
 		}
 
 		return false;

@@ -19,14 +19,14 @@
 
 package net.mcreator.element.types.interfaces;
 
-import net.mcreator.workspace.references.SafeToCallMethod;
+import net.mcreator.workspace.references.ModelReference;
 import net.mcreator.workspace.resources.Model;
 
 import java.util.Map;
 
 @SuppressWarnings("unused") public interface IItemWithModel {
 
-	@SafeToCallMethod Model getItemModel();
+	@ModelReference Model getItemModel();
 
 	Map<String, String> getTextureMap();
 

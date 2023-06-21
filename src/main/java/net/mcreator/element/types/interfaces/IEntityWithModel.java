@@ -19,12 +19,12 @@
 package net.mcreator.element.types.interfaces;
 
 import net.mcreator.io.FileIO;
-import net.mcreator.workspace.references.SafeToCallMethod;
+import net.mcreator.workspace.references.ModelReference;
 import net.mcreator.workspace.resources.Model;
 
 @SuppressWarnings("unused") public interface IEntityWithModel {
 
-	@SafeToCallMethod Model getEntityModel();
+	@ModelReference Model getEntityModel();
 
 	default String getModelCode() {
 		Model model = getEntityModel();
