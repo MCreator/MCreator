@@ -174,7 +174,7 @@ public class ReferencesFinder {
 		}
 		for (Method method : source.getClass().getMethods()) {
 			if (!Modifier.isStatic(method.getModifiers()) && clazz.isAssignableFrom(method.getReturnType())
-					&& method.isAnnotationPresent(ObjectReference.class)) {
+					&& method.isAnnotationPresent(SafeToCallMethod.class)) {
 				try {
 					method.setAccessible(true);
 					if (checkValue(method.invoke(source), method, clazz, mapper))
