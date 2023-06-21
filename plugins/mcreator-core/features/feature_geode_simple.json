@@ -63,7 +63,8 @@
   "output": "Feature",
   "colour": 0,
   "extensions": [
-    "geode_tag_fields_validator"
+    "geode_tag_fields_validator",
+    "add_image_to_bsp_inputs"
   ],
   "mutator": "geode_crystal_mutator",
   "mcreator": {
