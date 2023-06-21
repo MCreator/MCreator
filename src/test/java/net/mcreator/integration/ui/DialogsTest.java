@@ -159,6 +159,9 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new LabelDialog(editor, null));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new OutputSlotDialog(editor, null));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new TextFieldDialog(editor, null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new EntityModelDialog(editor, null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new ImageButtonDialog(editor, null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new TooltipDialog(editor, null));
 	}
 
 	@Test public void testAIConditionEditor() throws Throwable {
