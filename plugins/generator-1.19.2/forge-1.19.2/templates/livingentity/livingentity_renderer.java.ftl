@@ -118,8 +118,8 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 							double x = entity.getX();
 							double y = entity.getY();
 							double z = entity.getZ();
-						</#if>
 						if (<@procedureOBJToConditionCode layer.condition/>) {
+						</#if>
 							VertexConsumer vertexConsumer = bufferSource.getBuffer(RenderType.<#if layer.glow>eyes<#else>entityCutoutNoCull</#if>(new ResourceLocation("${modid}:textures/entities/${layer.texture}")));
 							<#if layer.model != "Default">
 								EntityModel model = new ${layer.model}(Minecraft.getInstance().getEntityModels().bakeLayer(${layer.model}.LAYER_LOCATION));
@@ -130,7 +130,9 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 							<#else>
 								this.getParentModel().renderToBuffer(poseStack, vertexConsumer, 15728640, OverlayTexture.NO_OVERLAY, 1.0F, 1.0F, 1.0F, 1.0F);
 							</#if>
+						<#if hasProcedure(layer.condition)>
 						}
+						</#if>
 					}
 				});
 			</#list>
