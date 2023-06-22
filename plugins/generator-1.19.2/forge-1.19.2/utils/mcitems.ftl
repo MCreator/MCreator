@@ -112,6 +112,8 @@
 <#function containsAnyOfBlocks elements blockToCheck>
     <#assign blocks = []>
     <#assign tags = []>
+    <#assign retval = "">
+
     <#list elements as block>
         <#if block.getUnmappedValue().startsWith("TAG:")>
             <#assign tags += [block.getUnmappedValue().replace("TAG:", "")]>
@@ -121,32 +123,31 @@
             <#assign blocks += [mappedBlockToBlock(block)]>
         </#if>
     </#list>
+
     <#if !blocks?has_content && !tags?has_content>
         <#return "false">
     <#elseif blocks?has_content>
-    	<#assign retval = "List.of(">
+        <#assign retval += "List.of(">
         <#list blocks as block>
-        	<#assign retval += block>
-			<#if block?has_next>
-				<#assign retval += ",">
-			</#if>
+            <#assign retval += block>
+            <#if block?has_next><#assign retval += ","></#if>
         </#list>
-
         <#assign retval += ").contains("+ blockToCheck + ".getBlock())">
+
         <#if tags?has_content>
-        	<#assign retval += "||">
+            <#assign retval += "||">
         </#if>
     </#if>
+
     <#if tags?has_content>
-    	<#assign retval += "Stream.of(">
+        <#assign retval += "Stream.of(">
         <#list tags as tag>
-        	<#assign retval += "BlockTags.create(new ResourceLocation(\"" + tag + "\"))">
-            <#if tag?has_next>
-            	<#assign retval += ",">
-            </#if>
+            <#assign retval += "BlockTags.create(new ResourceLocation(\"" + tag + "\"))">
+            <#if tag?has_next><#assign retval += ","></#if>
         </#list>
         <#assign retval += ").anyMatch(" + blockToCheck + "::is)">
     </#if>
+
     <#return retval>
 </#function>
 
