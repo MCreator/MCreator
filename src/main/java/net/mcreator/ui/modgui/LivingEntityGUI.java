@@ -199,7 +199,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 	private final JComboBox<Model> mobModel = new JComboBox<>(builtinmobmodels);
 
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
-	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
 
 	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(
 			BlocklyCompileNote.Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
@@ -354,8 +353,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		mobModelTexture.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
-		mobModelGlowTexture.setRenderer(
-				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
@@ -374,7 +371,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		spawnInDungeons.setOpaque(false);
 		mobModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
-		mobModelGlowTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 		mobDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		equipmentMainHand = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -495,7 +491,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
 
-		JPanel spo2 = new JPanel(new GridLayout(11, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(10, 2, 2, 2));
 
 		spo2.setOpaque(false);
 
@@ -531,22 +527,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			mobModelTexture.addItem("");
 			mcreator.getFolderManager().getTexturesList(TextureType.ENTITY)
 					.forEach(el -> mobModelTexture.addItem(el.getName()));
-			mobModelGlowTexture.removeAllItems();
-			mobModelGlowTexture.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureType.ENTITY)
-					.forEach(el -> mobModelGlowTexture.addItem(el.getName()));
 		});
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/texture"),
 				L10N.label("elementgui.living_entity.texture")));
 		spo2.add(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture, 0, 0));
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
-				L10N.label("elementgui.living_entity.glow_texture")));
-		spo2.add(mobModelGlowTexture);
-
 		ComponentUtils.deriveFont(mobModelTexture, 16);
-		ComponentUtils.deriveFont(mobModelGlowTexture, 16);
 		ComponentUtils.deriveFont(aiBase, 16);
 		ComponentUtils.deriveFont(mobModel, 16);
 		ComponentUtils.deriveFont(rangedItemType, 16);
@@ -928,10 +915,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
-		ComboBoxUtil.updateComboBoxContents(mobModelGlowTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
-						.collect(Collectors.toList())), "");
-
 		ComboBoxUtil.updateComboBoxContents(mobModel, ListUtils.merge(Arrays.asList(builtinmobmodels),
 				Model.getModels(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JAVA || el.getType() == Model.Type.MCREATOR)
@@ -972,7 +955,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 		mobName.setText(livingEntity.mobName);
 		mobModelTexture.setSelectedItem(livingEntity.mobModelTexture);
-		mobModelGlowTexture.setSelectedItem(livingEntity.mobModelGlowTexture);
 		transparentModelCondition.setSelectedProcedure(livingEntity.transparentModelCondition);
 		isShakingCondition.setSelectedProcedure(livingEntity.isShakingCondition);
 		solidBoundingBox.setSelectedProcedure(livingEntity.solidBoundingBox);
@@ -1101,7 +1083,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.mobName = mobName.getText();
 		livingEntity.mobLabel = mobLabel.getText();
 		livingEntity.mobModelTexture = mobModelTexture.getSelectedItem();
-		livingEntity.mobModelGlowTexture = mobModelGlowTexture.getSelectedItem();
 		livingEntity.spawnEggBaseColor = spawnEggBaseColor.getColor();
 		livingEntity.transparentModelCondition = transparentModelCondition.getSelectedProcedure();
 		livingEntity.isShakingCondition = isShakingCondition.getSelectedProcedure();

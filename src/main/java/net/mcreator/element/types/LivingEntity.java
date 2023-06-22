@@ -60,7 +60,6 @@ import java.util.*;
 
 	public String mobModelName;
 	public String mobModelTexture;
-	public String mobModelGlowTexture;
 	public Procedure transparentModelCondition;
 	public Procedure isShakingCondition;
 	public LogicProcedure solidBoundingBox;
