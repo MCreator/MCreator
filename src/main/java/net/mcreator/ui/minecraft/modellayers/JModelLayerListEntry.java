@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -52,7 +53,7 @@ public class JModelLayerListEntry extends JPanel implements IValidable {
 	private final JComboBox<Model> model = new JComboBox<>(new Model[] { default_model });
 	private final VComboBox<String> texture = new SearchableComboBox<>();
 	private final JCheckBox glow = L10N.checkbox("elementgui.living_entity.layer_should_glow");
-	private ProcedureSelector condition;
+	private final ProcedureSelector condition;
 	private final MCreator mcreator;
 
 	public JModelLayerListEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JModelLayerListEntry> entryList) {
@@ -86,7 +87,7 @@ public class JModelLayerListEntry extends JPanel implements IValidable {
 		add(L10N.label("elementgui.living_entity.layer_texture"));
 		add(texture);
 
-		add(glow);
+		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/glow_texture"), glow));
 
 		add(condition);
 
@@ -127,8 +128,10 @@ public class JModelLayerListEntry extends JPanel implements IValidable {
 	}
 
 	public void setEntry(LivingEntity.ModelLayerEntry e) {
-		if (e.model != null && !e.model.isEmpty())
-			model.setSelectedItem(Model.getModelByParams(mcreator.getWorkspace(), e.model, e.model != "Default" ? Model.Type.JAVA : Model.Type.BUILTIN));
+		if (e.model != null && !e.model.isEmpty()) {
+			model.setSelectedItem(Model.getModelByParams(mcreator.getWorkspace(), e.model,
+					e.model.equals("Default") ? Model.Type.BUILTIN : Model.Type.JAVA));
+		}
 		texture.setSelectedItem(e.texture);
 		glow.setSelected(e.glow);
 		condition.setSelectedProcedure(e.condition);

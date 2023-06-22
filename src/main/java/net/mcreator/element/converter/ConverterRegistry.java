@@ -44,6 +44,7 @@ import net.mcreator.element.converter.v2023_2.BiomeCustomFeaturesConverter;
 import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
 import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
+import net.mcreator.element.converter.v2023_3.EntityGlowLayerConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -69,7 +70,7 @@ public class ConverterRegistry {
 		put(ModElementType.GUI,
 				List.of(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
 						new GUIComponentNamer(), new SlotInteractionsConverter()));
-		put(ModElementType.LIVINGENTITY, List.of(new EntityTexturesConverter()));
+		put(ModElementType.LIVINGENTITY, List.of(new EntityTexturesConverter(), new EntityGlowLayerConverter()));
 		put(ModElementType.OVERLAY,
 				List.of(new OverlayCoordinateConverter(), new OverlayTexturesConverter(), new GUIComponentNamer()));
 		put(ModElementType.PAINTING, List.of(new PaintingFieldsFixer()));
