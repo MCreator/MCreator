@@ -168,7 +168,7 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-        return <@containsAnyOfBlocks data.blocksAffected "blockstate"/> ? ${data.efficiency}f : 1;
+        return ${containsAnyOfBlocks(data.blocksAffected "blockstate")} ? ${data.efficiency}f : 1;
     }
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>

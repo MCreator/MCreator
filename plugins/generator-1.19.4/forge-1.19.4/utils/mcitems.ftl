@@ -109,7 +109,7 @@
     </#if>
 </#function>
 
-<#macro containsAnyOfBlocks elements blockToCheck>
+<#function containsAnyOfBlocks elements blockToCheck>
     <#assign blocks = []>
     <#assign tags = []>
     <#list elements as block>
@@ -122,23 +122,34 @@
         </#if>
     </#list>
     <#if !blocks?has_content && !tags?has_content>
-        false
+        <#return "false">
     <#elseif blocks?has_content>
-        List.of(
+    	<#assign retval = "List.of(">
         <#list blocks as block>
-            ${block}<#sep>,
+        	<#assign retval += block>
+			<#if block?has_next>
+				<#assign retval += ",">
+			</#if>
         </#list>
-        ).contains(${blockToCheck}.getBlock())
-        <#if tags?has_content> || </#if>
+
+        <#assign retval += ").contains("+ blockToCheck + ".getBlock())">
+        <#if tags?has_content>
+        	<#assign retval += "||">
+        </#if>
+
+        <#return retval>
     </#if>
     <#if tags?has_content>
-        Stream.of(
+    	<#assign retval = "Stream.of(">
         <#list tags as tag>
-            BlockTags.create(new ResourceLocation("${tag}"))<#sep>,
+        	<#assign retval += "BlockTags.create(new ResourceLocation(\"" + tag + "\"))">
+            <#if tag?has_next>
+            	<#assign retval += ",">
+            </#if>
         </#list>
-        ).anyMatch(${blockToCheck}::is)
+        <#assign retval += ").anyMatch(" + blockToCheck + "::is)">
     </#if>
-</#macro>
+</#function>
 
 <#function mappedBlockToBlockStateProvider mappedBlock>
     <#if mappedBlock?starts_with("/*@BlockStateProvider*/")>
