@@ -52,6 +52,9 @@ public class ReferencesFinder {
 
 		String query = new DataListEntry.Custom(element).getName();
 		for (ModElement me : workspace.getModElements()) {
+			if (me.equals(element))
+				continue;
+
 			GeneratableElement ge = me.getGeneratableElement();
 			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ElementReference.class), (a, t) -> {
 				ElementReference ref = a.getAnnotation(ElementReference.class);
@@ -160,7 +163,17 @@ public class ReferencesFinder {
 		return elements;
 	}
 
-	private static <T> boolean anyValueMatches(@Nullable Object source, Class<T> clazz,
+	/**
+	 * Checks if values acquired from any valid fields or methods meet the specified condition.
+	 *
+	 * @param source    The object to extract values from.
+	 * @param clazz     The class of values to be checked.
+	 * @param validIf   The predicate used to check if a field/method is considered valid.
+	 * @param condition The predicate defining the condition that the acquired values should pass.
+	 * @param <T>       The type of values to be checked.
+	 * @return Whether any value extracted from valid fields/methods on the {@code source} object pass the condition.
+	 */
+	public static <T> boolean anyValueMatches(@Nullable Object source, Class<T> clazz,
 			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
 		if (source == null)
 			return false;
@@ -189,6 +202,18 @@ public class ReferencesFinder {
 		return false;
 	}
 
+	/**
+	 * Checks if the value (or its components) acquired from the given field/method passes the specified condition.
+	 *
+	 * @param value     The extracted value that should be checked.
+	 * @param field     The field/method the {@code value} was acquired.
+	 * @param clazz     The class of values to be checked.
+	 * @param validIf   The predicate used to check if the field/method is considered valid.
+	 * @param condition The predicate defining the condition that the acquired values should pass.
+	 * @param <T>       The type of values to be checked.
+	 * @return Whether the provided value or any value extracted from valid fields/methods on the {@code value} object
+	 * passes the provided condition.
+	 */
 	@SuppressWarnings("unchecked")
 	private static <T> boolean checkValue(@Nullable Object value, AccessibleObject field, Class<T> clazz,
 			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
