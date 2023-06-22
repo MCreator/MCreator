@@ -27,6 +27,7 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -220,22 +221,38 @@ public class ReferencesFinder {
 		if (value == null)
 			return false;
 
-		if (clazz.isAssignableFrom(value.getClass())) {
+		if (clazz.isInstance(value)) { // value of specified type
 			return condition == null || condition.test(field, (T) value);
-		} else if (Collection.class.isAssignableFrom(value.getClass())) {
-			for (Object obj : (Collection<?>) value) {
-				if (obj != null && clazz.isAssignableFrom(obj.getClass())) {
+		} else if (value instanceof Collection<?> list) { // list of values
+			for (Object obj : list) {
+				if (clazz.isInstance(obj)) { // value of specified type
 					if (condition == null || condition.test(field, (T) obj))
 						return true;
-				} else if (anyValueMatches(obj, clazz, validIf, condition)) {
-					return true;
+				} else if (isCustomObject(value)) { // value of unknown type
+					System.err.println(value.getClass() + ", " + field);
+					if (anyValueMatches(obj, clazz, validIf, condition))
+						return true;
 				}
 			}
-		} else if (value.getClass().getModule() != Object.class.getModule()) {
+		} else if (isCustomObject(value)) { // value of unknown type
+			System.out.println(value.getClass() + ", " + field);
 			return anyValueMatches(value, clazz, validIf, condition);
 		}
 
 		return false;
+	}
+
+	/**
+	 * Checks if class of the passed value is from this module and not related to the technical part of the application.
+	 * Scanning values that do not pass this condition will most probably lead to a {@link StackOverflowError}.
+	 * <br>NOTE: If needed values are instances of a class not contained in this module, they will still be checked.
+	 *
+	 * @param value The value that should be checked.
+	 * @return Whether it is safe to scan the {@code value} object deeper.
+	 */
+	private static boolean isCustomObject(Object value) {
+		return value.getClass().getModule() == ReferencesFinder.class.getModule()
+				&& !(value instanceof IWorkspaceProvider); // prevent from being stuck in app structure
 	}
 
 }
