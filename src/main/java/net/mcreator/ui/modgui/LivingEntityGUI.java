@@ -651,14 +651,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
 
-		JComponent component = PanelUtils.northAndCenterElement(
+		JComponent layerList = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/model_layers"), L10N.label("elementgui.living_entity.model_layers")),
 				modelLayers);
 
-		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		layerList.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		pane8.setOpaque(false);
-		pane8.add(component);
+		pane8.add(layerList);
 
 		JPanel spo6 = new JPanel(new GridLayout(4, 2, 2, 2));
 		spo6.setOpaque(false);
