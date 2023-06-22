@@ -136,11 +136,9 @@
         <#if tags?has_content>
         	<#assign retval += "||">
         </#if>
-
-        <#return retval>
     </#if>
     <#if tags?has_content>
-    	<#assign retval = "Stream.of(">
+    	<#assign retval += "Stream.of(">
         <#list tags as tag>
         	<#assign retval += "BlockTags.create(new ResourceLocation(\"" + tag + "\"))">
             <#if tag?has_next>
@@ -149,6 +147,7 @@
         </#list>
         <#assign retval += ").anyMatch(" + blockToCheck + "::is)">
     </#if>
+    <#return retval>
 </#function>
 
 <#function mappedBlockToBlockStateProvider mappedBlock>
