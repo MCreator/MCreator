@@ -37,7 +37,7 @@
       "type": "entity"
     },
     {
-      "name": "source",
+      "name": "damagesource",
       "type": "damagesource"
     }
   ],
