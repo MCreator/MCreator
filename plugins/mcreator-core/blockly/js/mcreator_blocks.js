@@ -182,6 +182,14 @@ Blockly.Blocks['entity_none'] = {
     }
 };
 
+Blockly.Blocks['damagesource_from_deps'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.damagesource_from_deps"));
+        this.setColour(306);
+        this.setOutput(true, 'DamageSource');
+    }
+}
+
 Blockly.Blocks['direction_from_deps'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.direction_from_deps"));
@@ -800,5 +808,14 @@ Blockly.defineBlocksWithJsonArray([
         ],
         "output": "Direction",
         "colour": "20"
+    },
+    {
+        "type": "damagesource_constant",
+        "message0": "",
+        "extensions": [
+            "damagesource_list_provider"
+        ],
+        "output": "DamageSource",
+        "colour": "306"
     }
 ]);
