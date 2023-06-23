@@ -1,6 +1,6 @@
 {
   "extensions": [
-    "disable_biome_filter_inside_inline_placed_feature"
+    "disable_inside_inline_placed_feature"
   ],
   "inputsInline": true,
   "previousStatement": null,

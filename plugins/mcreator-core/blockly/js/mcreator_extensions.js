@@ -138,7 +138,7 @@ Blockly.Extensions.register('min_max_fields_validator',
     });
 
 // Mutator to disable the "biome filter" placement inside the "inline placed feature" block
-Blockly.Extensions.registerMixin('disable_biome_filter_inside_inline_placed_feature',
+Blockly.Extensions.registerMixin('disable_inside_inline_placed_feature',
     {
         // Check if this block is inside the inline placed feature statement
         getSurroundLoop: function() {
@@ -158,7 +158,7 @@ Blockly.Extensions.registerMixin('disable_biome_filter_inside_inline_placed_feat
                 return;
             }
             const enabled = !(this.getSurroundLoop(this));
-            this.setWarningText(enabled ? null : javabridge.t('blockly.block.placement_biome_filter.warning'));
+            this.setWarningText(enabled ? null : javabridge.t('blockly.block.placed_feature_inline.disabled_placement'));
             if (!this.isInFlyout) {
                 const group = Blockly.Events.getGroup();
                 // Makes it so the move and the disable event get undone together.
