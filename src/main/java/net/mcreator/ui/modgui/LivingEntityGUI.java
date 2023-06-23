@@ -81,7 +81,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
+public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlocklyPanelHolder {
 
 	private ProcedureSelector onStruckByLightning;
 	private ProcedureSelector whenMobFalls;
@@ -265,7 +265,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				</block></next></block></next></block></next></block></next></block></xml>""");
 	}
 
-	private synchronized void regenerateAITasks() {
+	@Override public synchronized void regenerateBlocklyXML() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK));
 
@@ -685,7 +685,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		aiBase.setPreferredSize(new Dimension(250, 32));
 		aiBase.addActionListener(e -> {
 			if (editorReady)
-				regenerateAITasks();
+				regenerateBlocklyXML();
 		});
 
 		JPanel aitopoveral = new JPanel(new BorderLayout(5, 0));
@@ -721,7 +721,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
 			blocklyPanel.getJSBridge()
-					.setJavaScriptEventListener(() -> new Thread(LivingEntityGUI.this::regenerateAITasks).start());
+					.setJavaScriptEventListener(() -> new Thread(LivingEntityGUI.this::regenerateBlocklyXML).start());
 			if (!isEditingMode()) {
 				setDefaultAISet();
 			}
@@ -1052,7 +1052,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(livingEntity.aixml);
-			regenerateAITasks();
+			regenerateBlocklyXML();
 		});
 
 		if (breedable.isSelected()) {
@@ -1175,6 +1175,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-mob");
+	}
+
+	@Override public List<BlocklyPanel> getBlocklyPanels() {
+		return List.of(blocklyPanel);
 	}
 
 }

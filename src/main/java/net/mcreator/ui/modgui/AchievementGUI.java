@@ -66,7 +66,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class AchievementGUI extends ModElementGUI<Achievement> {
+public class AchievementGUI extends ModElementGUI<Achievement> implements IBlocklyPanelHolder {
 
 	private final VTextField achievementName = new VTextField(20);
 	private final VTextField achievementDescription = new VTextField(20);
@@ -216,7 +216,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
 			blocklyPanel.getJSBridge()
-					.setJavaScriptEventListener(() -> new Thread(AchievementGUI.this::regenerateTrigger).start());
+					.setJavaScriptEventListener(() -> new Thread(AchievementGUI.this::regenerateBlocklyXML).start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(
 						"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
@@ -245,7 +245,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		}
 	}
 
-	private synchronized void regenerateTrigger() {
+	@Override public synchronized void regenerateBlocklyXML() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.JSON_TRIGGER));
 
@@ -321,7 +321,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(achievement.triggerxml);
 
-			regenerateTrigger();
+			regenerateBlocklyXML();
 		});
 	}
 
@@ -349,6 +349,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-achievement");
+	}
+
+	@Override public List<BlocklyPanel> getBlocklyPanels() {
+		return List.of(blocklyPanel);
 	}
 
 }
