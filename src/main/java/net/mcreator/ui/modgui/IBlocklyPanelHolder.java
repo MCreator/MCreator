@@ -36,10 +36,4 @@ public interface IBlocklyPanelHolder {
 		return null;
 	}
 
-	/**
-	 * @implNote The method should be declared as {@code synchronized} to ensure its thread-safety.
-	 */
-	default void regenerateBlocklyXML() {
-	}
-
 }

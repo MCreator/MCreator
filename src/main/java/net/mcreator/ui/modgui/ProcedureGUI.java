@@ -103,7 +103,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		super.finalizeGUI(false);
 	}
 
-	@Override public synchronized void regenerateBlocklyXML() {
+	private synchronized void regenerateProcedure() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.PROCEDURE));
 		BlocklyToProcedure blocklyToJava;
@@ -574,7 +574,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
-			blocklyPanel.getJSBridge().setJavaScriptEventListener(() -> new Thread(this::regenerateBlocklyXML).start());
+			blocklyPanel.getJSBridge().setJavaScriptEventListener(() -> new Thread(this::regenerateProcedure).start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(net.mcreator.element.types.Procedure.XML_BASE);
 			}
@@ -660,7 +660,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			blocklyPanel.setXML(procedure.procedurexml);
 			localVars.removeAllElements();
 			blocklyPanel.getLocalVariablesList().forEach(localVars::addElement);
-			regenerateBlocklyXML();
+			regenerateProcedure();
 		});
 	}
 

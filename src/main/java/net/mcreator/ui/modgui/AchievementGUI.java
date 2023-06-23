@@ -216,7 +216,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
 			blocklyPanel.getJSBridge()
-					.setJavaScriptEventListener(() -> new Thread(AchievementGUI.this::regenerateBlocklyXML).start());
+					.setJavaScriptEventListener(() -> new Thread(AchievementGUI.this::regenerateTrigger).start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(
 						"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
@@ -245,7 +245,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		}
 	}
 
-	@Override public synchronized void regenerateBlocklyXML() {
+	private synchronized void regenerateTrigger() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.JSON_TRIGGER));
 
@@ -321,7 +321,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(achievement.triggerxml);
 
-			regenerateBlocklyXML();
+			regenerateTrigger();
 		});
 	}
 
