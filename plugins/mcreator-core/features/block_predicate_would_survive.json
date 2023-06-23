@@ -32,6 +32,9 @@
   ],
   "output": "BlockPredicate",
   "colour": "%{BKY_LOGIC_HUE}",
+  "extensions": [
+    "add_image_to_blockstate_inputs"
+  ],
   "mcreator": {
     "toolbox_id": "blockpredicates",
     "toolbox_init": [

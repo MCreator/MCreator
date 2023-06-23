@@ -14,6 +14,9 @@
   "inputsInline": true,
   "output": "Feature",
   "colour": 0,
+  "extensions": [
+    "add_image_to_bsp_inputs"
+  ],
   "mcreator": {
     "toolbox_id": "features",
     "toolbox_init": [

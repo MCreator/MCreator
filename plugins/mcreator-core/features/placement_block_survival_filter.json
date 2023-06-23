@@ -10,6 +10,9 @@
   "previousStatement": null,
   "nextStatement": "Placement",
   "colour": 130,
+  "extensions": [
+    "add_image_to_blockstate_inputs"
+  ],
   "mcreator": {
     "group": "filter",
     "toolbox_id": "placements",
