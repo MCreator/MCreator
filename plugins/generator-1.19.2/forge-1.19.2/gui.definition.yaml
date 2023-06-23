@@ -20,6 +20,9 @@ localizationkeys:
   - fromlist: data.getFixedTextLabels()
     key: gui.@modid.@registryname.@[getName()]
     mapto: getRenderText()
+  - fromlist: data.getFixedTooltips()
+    key: gui.@modid.@registryname.@[getName()]
+    mapto: getRenderText()
   - fromlist: data.getComponentsOfType('TextField')
     key: gui.@modid.@registryname.@[getName()]
     mapto: placeholder
