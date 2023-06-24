@@ -529,7 +529,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
     </#if>
 
-	<#if hasProcedure(data.onMobTickUpdate) || data.boundingBoxScale.getFixedValue() != 1 || hasProcedure(data.boundingBoxScale)>
+	<#if hasProcedure(data.onMobTickUpdate) || (data.boundingBoxScale?? && (data.boundingBoxScale.getFixedValue() != 1 || hasProcedure(data.boundingBoxScale)))>
 	@Override public void baseTick() {
 		super.baseTick();
 		<#if hasProcedure(data.onMobTickUpdate)>
@@ -703,7 +703,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
     </#if>
 
-	<#if data.boundingBoxScale.getFixedValue() != 1 || hasProcedure(data.boundingBoxScale)>
+	<#if data.boundingBoxScale?? && (data.boundingBoxScale.getFixedValue() != 1 || hasProcedure(data.boundingBoxScale))>
 	@Override public EntityDimensions getDimensions(Pose entityPose) {
 		<#if hasProcedure(data.boundingBoxScale)>
 			Entity entity = this;
