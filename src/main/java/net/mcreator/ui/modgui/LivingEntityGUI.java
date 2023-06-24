@@ -975,8 +975,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		transparentModelCondition.setSelectedProcedure(livingEntity.transparentModelCondition);
 		isShakingCondition.setSelectedProcedure(livingEntity.isShakingCondition);
 		solidBoundingBox.setSelectedProcedure(livingEntity.solidBoundingBox);
-		visualScale.refreshListKeepSelected();
-		boundingBoxScale.refreshListKeepSelected();
+		visualScale.setSelectedProcedure(livingEntity.visualScale);
+		boundingBoxScale.setSelectedProcedure(livingEntity.boundingBoxScale);
 		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType);
 		rangedItemType.setSelectedItem(livingEntity.rangedItemType);
 		spawnEggBaseColor.setColor(livingEntity.spawnEggBaseColor);
