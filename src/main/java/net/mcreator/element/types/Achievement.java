@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.AchievementEntry;
@@ -57,7 +58,7 @@ import java.util.List;
 	public String achievementType;
 	public AchievementEntry parent;
 
-	public String triggerxml;
+	@BlocklyXML("jsontriggers") public String triggerxml;
 
 	public Achievement(ModElement element) {
 		super(element);

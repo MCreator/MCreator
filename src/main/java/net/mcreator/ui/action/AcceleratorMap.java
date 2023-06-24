@@ -65,11 +65,6 @@ public class AcceleratorMap {
 		actionKeyStrokeMap.put(actionRegistry.hideWorkspaceBrowser, KeyStroke.getKeyStroke(KeyEvent.VK_A,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 
-		actionKeyStrokeMap.put(actionRegistry.syncToRemote,
-				KeyStroke.getKeyStroke(KeyEvent.VK_K, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.syncFromRemote,
-				KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-
 		actionKeyStrokeMap.put(actionRegistry.newWorkspace, KeyStroke.getKeyStroke(KeyEvent.VK_N,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 

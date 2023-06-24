@@ -1,0 +1,15 @@
+{
+  "mutator": "ore_feature_mutator",
+  "output": "Feature",
+  "colour": 0,
+  "mcreator": {
+    "toolbox_id": "orefeatures",
+    "toolbox_init": [
+      "<mutation inputs=\"1\"></mutation>",
+      "<value name=\"target0\"><block type=\"ore_target\"><value name=\"target\"><block type=\"rule_test_tag_match\"><field name=\"tag\">stone_ore_replaceables</field></block></value><value name=\"state\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value></block></value>"
+    ],
+    "repeating_inputs": [
+      "target"
+    ]
+  }
+}

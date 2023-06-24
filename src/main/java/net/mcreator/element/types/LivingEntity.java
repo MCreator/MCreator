@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
@@ -92,6 +93,7 @@ import java.util.*;
 	public double attackKnockback;
 	public double knockbackResistance;
 	public double movementSpeed;
+	public double stepHeight;
 	public double armorBaseValue;
 	public int trackingRange;
 	public int followRange;
@@ -143,7 +145,7 @@ import java.util.*;
 
 	public boolean hasAI;
 	public String aiBase;
-	public String aixml;
+	@BlocklyXML("aitasks") public String aixml;
 
 	public boolean breedable;
 	public boolean tameable;
@@ -178,7 +180,7 @@ import java.util.*;
 		this.rangedItemType = "Default item";
 		this.rangedAttackInterval = 20;
 		this.rangedAttackRadius = 10;
-
+		this.stepHeight = 0.6;
 		this.followRange = 16;
 
 		this.inventorySize = 9;

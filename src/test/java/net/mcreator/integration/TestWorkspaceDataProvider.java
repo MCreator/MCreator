@@ -606,6 +606,9 @@ public class TestWorkspaceDataProvider {
 				components.add(
 						new EntityModel(60, 20, new Procedure("entity1"), new Procedure(!_true ? "condition4" : null),
 								30, 270, !_true));
+				components.add(new Tooltip(AbstractWYSIWYGDialog.textToMachineName(components, null,
+						"This is --...p a test string ŽĐĆ @ /test//\" tes___"), 20, 40, 70, 10,
+							new StringProcedure(_true ? "string1" : null, "fixed value 1"), new Procedure("condition4")));
 			}
 			gui.components = components;
 			return gui;
@@ -649,6 +652,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.attackKnockback = 1.5;
 			livingEntity.knockbackResistance = 0.5;
 			livingEntity.movementSpeed = 0.76;
+			livingEntity.stepHeight = 2.24;
 			livingEntity.armorBaseValue = 0.123;
 			livingEntity.health = 42;
 			livingEntity.trackingRange = 27;
@@ -764,6 +768,7 @@ public class TestWorkspaceDataProvider {
 			Dimension dimension = new Dimension(modElement);
 			dimension.texture = "test";
 			dimension.portalTexture = "test2";
+			dimension.enableIgniter = true; // we always want it as it can be referenced in other tests
 			dimension.portalParticles = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
 			dimension.igniterTab = new TabEntry(modElement.getWorkspace(),

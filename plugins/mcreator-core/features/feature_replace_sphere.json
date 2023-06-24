@@ -17,7 +17,8 @@
     }
   ],
   "extensions": [
-    "replace_sphere_validator"
+    "replace_sphere_validator",
+    "add_image_to_blockstate_inputs"
   ],
   "inputsInline": true,
   "output": "Feature",
