@@ -1105,6 +1105,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 		livingEntity.spawnEggBaseColor = spawnEggBaseColor.getColor();
 		livingEntity.transparentModelCondition = transparentModelCondition.getSelectedProcedure();
 		livingEntity.isShakingCondition = isShakingCondition.getSelectedProcedure();
+		livingEntity.solidBoundingBox = solidBoundingBox.getSelectedProcedure();
 		livingEntity.visualScale = visualScale.getSelectedProcedure();
 		livingEntity.boundingBoxScale = boundingBoxScale.getSelectedProcedure();
 		livingEntity.spawnEggDotColor = spawnEggDotColor.getColor();
