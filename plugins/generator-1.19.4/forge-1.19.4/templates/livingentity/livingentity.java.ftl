@@ -541,7 +541,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				"world": "this.level"
 			}/>
 		</#if>
-		<#if data.boundingBoxScale.getFixedValue() != 1 || hasProcedure(data.boundingBoxScale)>
+		<#if data.boundingBoxScale?? && (data.boundingBoxScale.getFixedValue() != 1 || hasProcedure(data.boundingBoxScale))>
 			this.refreshDimensions();
 		</#if>
 	}
