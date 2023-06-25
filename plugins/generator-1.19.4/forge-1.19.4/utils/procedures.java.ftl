@@ -12,8 +12,8 @@
     <#list deps_filtered as value>${value}<#if value?has_next>,</#if></#list>
 </#macro>
 
-<#macro procedureCode object dependencies={}>
-    ${object.getName()}Procedure.execute(<@procedureDependenciesCode object.getDependencies(generator.getWorkspace()) dependencies/>);
+<#macro procedureCode object dependencies={} semicolon=true>
+    ${object.getName()}Procedure.execute(<@procedureDependenciesCode object.getDependencies(generator.getWorkspace()) dependencies/>)<#if semicolon>;</#if>
 </#macro>
 
 <#macro procedureCodeWithOptResult object type defaultResult dependencies={}>

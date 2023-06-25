@@ -12,3 +12,4 @@ advancement: Advancement
 dimensiontype: ResourceKey<Level>
 actionresulttype: InteractionResult
 cmdcontext: CommandContext<CommandSourceStack>
+damagesource: DamageSource
