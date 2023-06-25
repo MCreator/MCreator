@@ -279,6 +279,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				"entity": "this",
 				"world": "this.level",
 				"sourceentity": "source.getEntity()",
+				"immediatesourceentity": "source.getDirectEntity()",
 				"damagesource": "source"
 			}/>
 		</#if>
@@ -344,6 +345,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"y": "this.getY()",
 			"z": "this.getZ()",
 			"sourceentity": "source.getEntity()",
+			"immediatesourceentity": "source.getDirectEntity()",
 			"entity": "this",
 			"world": "this.level",
 			"damagesource": "source"
@@ -515,6 +517,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"z": "this.getZ()",
 			"entity": "entity",
 			"sourceentity": "this",
+			"immediatesourceentity": "damageSource.getDirectEntity()",
 			"world": "this.level",
 			"damagesource": "damageSource"
 		}/>
