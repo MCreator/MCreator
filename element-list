@@ -92,6 +92,8 @@ net.mcreator.ui.minecraft.loottable
 net.mcreator.ui.minecraft.potions
 net.mcreator.ui.minecraft.recipemakers
 net.mcreator.ui.minecraft.spawntypes
+net.mcreator.ui.minecraft.states
+net.mcreator.ui.minecraft.states.item
 net.mcreator.ui.minecraft.villagers
 net.mcreator.ui.modgui
 net.mcreator.ui.modgui.codeviewer
