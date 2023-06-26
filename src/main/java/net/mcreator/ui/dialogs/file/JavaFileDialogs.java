@@ -118,7 +118,7 @@ class JavaFileDialogs {
 		return null;
 	}
 
-	protected static File getDirectoryChooserDialog(File file) {
+	protected static File getDirectoryChooserDialog(Window parent, File file) {
 		JFileChooser fc = new JFileChooser();
 		fc.setPreferredSize(FILEDIALOG_SIZE);
 		fc.setCurrentDirectory(file);
@@ -136,7 +136,7 @@ class JavaFileDialogs {
 			}
 		});
 
-		int result = fc.showOpenDialog(null);
+		int result = fc.showOpenDialog(parent);
 		if (result == JFileChooser.APPROVE_OPTION) {
 			// store last dir shown after the dialog is closed
 			prevDir = fc.getCurrentDirectory();

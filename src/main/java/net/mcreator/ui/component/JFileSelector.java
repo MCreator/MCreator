@@ -101,7 +101,7 @@ public class JFileSelector extends JPanel {
 		button.addActionListener(actionEvent -> {
 			File file = null;
 			if (isFolder) {
-				file = FileDialogs.getDirectoryChooser(value);
+				file = FileDialogs.getDirectoryChooser(parent, value);
 			} else {
 				File[] files = FileDialogs.getFileChooserDialog(parent, FileChooserType.OPEN, false, filters);
 				if (files != null)

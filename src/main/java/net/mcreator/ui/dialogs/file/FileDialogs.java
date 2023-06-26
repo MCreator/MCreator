@@ -67,11 +67,11 @@ public class FileDialogs {
 		}
 	}
 
-	public static File getDirectoryChooser(File file) {
+	public static File getDirectoryChooser(Window parent, File file) {
 		if (useNativeFileChooser()) {
 			return NativeFileDialogs.getDirectoryChooserDialog(file);
 		} else {
-			return JavaFileDialogs.getDirectoryChooserDialog(file);
+			return JavaFileDialogs.getDirectoryChooserDialog(parent, file);
 		}
 	}
 
