@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 47.0.1
+buildfileversion: 47.0.19
 
 import:
   - datapack-1.20.1
@@ -27,13 +27,13 @@ mod_data_root: "@RESROOT/data/@modid"
 sounds_dir: "@MODASSETSROOT/sounds"
 structures_dir: "@MODDATAROOT/structures"
 #block_textures_dir: "@MODASSETSROOT/textures/block"
-#item_textures_dir: "@MODASSETSROOT/textures/item"
+item_textures_dir: "@MODASSETSROOT/textures/item"
 #entity_textures_dir: "@MODASSETSROOT/textures/entities"
 #effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
 #screen_textures_dir: "@MODASSETSROOT/textures/screens"
 #armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
-#other_textures_dir: "@MODASSETSROOT/textures"
+other_textures_dir: "@MODASSETSROOT/textures"
 
 base_templates:
   - template: modbase/mod.java.ftl
