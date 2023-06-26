@@ -183,6 +183,10 @@ public class ElementUtil {
 		return DataListLoader.loadDataList("materials");
 	}
 
+	public static List<DataListEntry> loadMapColors() {
+		return DataListLoader.loadDataList("mapcolors");
+	}
+
 	public static List<DataListEntry> loadEnchantmentTypes() {
 		return DataListLoader.loadDataList("enchantmenttypes");
 	}

@@ -45,6 +45,9 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
+import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.StateMap;
+import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
@@ -606,6 +609,9 @@ public class TestWorkspaceDataProvider {
 				components.add(
 						new EntityModel(60, 20, new Procedure("entity1"), new Procedure(!_true ? "condition4" : null),
 								30, 270, !_true));
+				components.add(new Tooltip(AbstractWYSIWYGDialog.textToMachineName(components, null,
+						"This is --...p a test string ŽĐĆ @ /test//\" tes___"), 20, 40, 70, 10,
+							new StringProcedure(_true ? "string1" : null, "fixed value 1"), new Procedure("condition4")));
 			}
 			gui.components = components;
 			return gui;
@@ -1067,7 +1073,35 @@ public class TestWorkspaceDataProvider {
 			}
 			item.texture = "test2";
 			item.renderType = 0;
-			item.customModelName = "Normal";
+			item.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
+
+			item.customProperties = new HashMap<>();
+			item.states = new ArrayList<>();
+			if (!emptyLists) {
+				int size1 = random.nextInt(3) + 1;
+				for (int i = 1; i <= size1; i++)
+					item.customProperties.put("property" + i, new Procedure("number" + i));
+
+				int size2 = random.nextInt(4) + 1;
+				for (int i = 0; i < size2; i++) {
+					StateMap stateMap = new StateMap();
+
+					for (int j = 2; j <= size1; j++) {
+						if (random.nextBoolean()) {
+							stateMap.put(new PropertyData.NumberType("CUSTOM:property" + j), random.nextDouble());
+						}
+					}
+
+					Item.StateEntry stateEntry = new Item.StateEntry();
+					stateEntry.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
+					stateEntry.texture = i == 0 ? "test" : "test" + i;
+					stateEntry.renderType = 0;
+					stateEntry.stateMap = stateMap;
+
+					item.states.add(stateEntry);
+				}
+			}
+
 			item.isFood = _true;
 			item.nutritionalValue = 5;
 			item.saturation = 0.8f;

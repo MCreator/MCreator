@@ -26,6 +26,7 @@ import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.Command;
 import net.mcreator.element.types.GUI;
+import net.mcreator.element.types.Item;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -629,6 +630,17 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 							}
 						}
 						if (procedureUsedByGUI || Procedure.isElementUsingProcedure(generatableElement,
+								modElement.getName()))
+							mcreator.getGenerator().generateElement(generatableElement);
+					} else if (generatableElement instanceof Item item) {
+						boolean procedureUsedByItem = false;
+						for (Procedure procedure : item.customProperties.values()) {
+							if (modElement.getName().equals(procedure.getName())) {
+								procedureUsedByItem = true;
+								break;
+							}
+						}
+						if (procedureUsedByItem || Procedure.isElementUsingProcedure(generatableElement,
 								modElement.getName()))
 							mcreator.getGenerator().generateElement(generatableElement);
 					} else if (generatableElement != null && element.getType().hasProcedureTriggers()) {
