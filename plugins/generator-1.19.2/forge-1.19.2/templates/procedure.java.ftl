@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -43,7 +43,8 @@ import javax.annotation.Nullable;
 		&& dependency.getType(generator.getWorkspace()) != "BlockState"
 		&& dependency.getType(generator.getWorkspace()) != "InteractionResult"
 		&& dependency.getType(generator.getWorkspace()) != "boolean"
-		&& dependency.getType(generator.getWorkspace()) != "CommandContext<CommandSourceStack>">
+		&& dependency.getType(generator.getWorkspace()) != "CommandContext<CommandSourceStack>"
+		&& dependency.getType(generator.getWorkspace()) != "DamageSource">
 		<#assign nullableDependencies += [dependency.getName()]/>
 	</#if>
 </#list>

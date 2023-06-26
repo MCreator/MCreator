@@ -110,7 +110,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final SoundSelector fallSound = new SoundSelector(mcreator);
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
-	private final JComboBox<String> colorOnMap = new JComboBox<>();
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -834,8 +834,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ComboBoxUtil.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(),
 				new DataListEntry.Dummy("PLANT"));
 
-		ComboBoxUtil.updateComboBoxContents(colorOnMap,
-				Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
 		ComboBoxUtil.updateComboBoxContents(growapableSpawnType,
 				Arrays.asList(ElementUtil.getDataListAsStringArray("planttypes")), "Plains");
 
@@ -1040,7 +1038,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.generateAtAnyHeight = generateAtAnyHeight.isSelected();
 		plant.canBePlacedOn = canBePlacedOn.getListElements();
 		plant.isReplaceable = isReplaceable.isSelected();
-		plant.colorOnMap = (String) colorOnMap.getSelectedItem();
+		plant.colorOnMap = colorOnMap.getSelectedItem().toString();
 		plant.offsetType = (String) offsetType.getSelectedItem();
 		plant.aiPathNodeType = (String) aiPathNodeType.getSelectedItem();
 		plant.creativePickItem = creativePickItem.getBlock();

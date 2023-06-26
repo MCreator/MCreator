@@ -27,17 +27,20 @@ import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
+import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("unused") public class Item extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
@@ -45,6 +48,9 @@ import java.util.Map;
 	public int renderType;
 	public String texture;
 	public String customModelName;
+
+	public Map<String, Procedure> customProperties;
+	public List<StateEntry> states;
 
 	public String name;
 	public String rarity;
@@ -99,6 +105,9 @@ import java.util.Map;
 	public Item(ModElement element) {
 		super(element);
 
+		this.customProperties = new LinkedHashMap<>();
+		this.states = new ArrayList<>();
+
 		this.rarity = "COMMON";
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
@@ -112,18 +121,12 @@ import java.util.Map;
 	}
 
 	@Override public Model getItemModel() {
-		Model.Type modelType = Model.Type.BUILTIN;
-		if (renderType == 1)
-			modelType = Model.Type.JSON;
-		else if (renderType == 2)
-			modelType = Model.Type.OBJ;
-		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
+		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, decodeModelType(renderType));
 	}
 
 	@Override public Map<String, String> getTextureMap() {
-		Model model = getItemModel();
-		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
-			return ((TexturedModel) model).getTextureMapping().getTextureMap();
+		if (getItemModel() instanceof TexturedModel textured && textured.getTextureMapping() != null)
+			return textured.getTextureMapping().getTextureMap();
 		return new HashMap<>();
 	}
 
@@ -144,11 +147,11 @@ import java.util.Map;
 	}
 
 	public boolean hasNormalModel() {
-		return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Normal");
+		return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Normal");
 	}
 
 	public boolean hasToolModel() {
-		return getItemModel().getType() == Model.Type.BUILTIN && getItemModel().getReadableName().equals("Tool");
+		return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Tool");
 	}
 
 	public boolean hasInventory() {
@@ -162,4 +165,89 @@ import java.util.Map;
 	public boolean hasEatResultItem() {
 		return isFood && eatResultItem != null && !eatResultItem.isEmpty();
 	}
+
+	/**
+	 * Returns a copy of {@link #states} referencing only properties supported in the current workspace.
+	 * Should only be used by generators to filter invalid data.
+	 * <p>
+	 * Also populates models with Workspace reference for the use in templates
+	 *
+	 * @return Models with contents matching current generator.
+	 */
+	public List<StateEntry> getModels() {
+		List<StateEntry> models = new ArrayList<>();
+		List<String> builtinProperties = DataListLoader.loadDataList("itemproperties").stream()
+				.filter(e -> e.isSupportedInWorkspace(getModElement().getWorkspace())).map(DataListEntry::getName)
+				.toList();
+
+		states.forEach(state -> {
+			StateEntry model = new StateEntry();
+			model.setWorkspace(getModElement().getWorkspace());
+			model.renderType = state.renderType;
+			model.texture = state.texture;
+			model.customModelName = state.customModelName;
+
+			model.stateMap = new StateMap();
+			state.stateMap.forEach((prop, value) -> {
+				if (customProperties.containsKey(prop.getName().replace("CUSTOM:", "")) || builtinProperties.contains(
+						prop.getName()))
+					model.stateMap.put(prop, value);
+			});
+
+			// only add this state if at least one supported property is present
+			if (!model.stateMap.isEmpty())
+				models.add(model);
+		});
+		return models;
+	}
+
+	public static class StateEntry {
+
+		public int renderType;
+		public String texture;
+		public String customModelName;
+
+		public StateMap stateMap;
+
+		@Nullable Workspace workspace;
+
+		void setWorkspace(@Nullable Workspace workspace) {
+			this.workspace = workspace;
+		}
+
+		public Model getItemModel() {
+			return Model.getModelByParams(workspace, customModelName, decodeModelType(renderType));
+		}
+
+		public Map<String, String> getTextureMap() {
+			if (getItemModel() instanceof TexturedModel textured && textured.getTextureMapping() != null)
+				return textured.getTextureMapping().getTextureMap();
+			return null;
+		}
+
+		public boolean hasNormalModel() {
+			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Normal");
+		}
+
+		public boolean hasToolModel() {
+			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Tool");
+		}
+	}
+
+	public static int encodeModelType(Model.Type modelType) {
+		return switch (modelType) {
+			case JSON -> 1;
+			case OBJ -> 2;
+			default -> 0;
+		};
+	}
+
+	public static Model.Type decodeModelType(int modelType) {
+		return switch (modelType) {
+			case 1 -> Model.Type.JSON;
+			case 2 -> Model.Type.OBJ;
+			default -> Model.Type.BUILTIN;
+		};
+	}
+
 }

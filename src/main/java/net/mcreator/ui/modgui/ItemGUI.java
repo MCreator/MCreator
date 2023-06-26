@@ -38,6 +38,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
@@ -90,9 +91,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
-	private final Model normal = new Model.BuiltInModel("Normal");
-	private final Model tool = new Model.BuiltInModel("Tool");
-	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal, tool });
+	private static final Model normal = new Model.BuiltInModel("Normal");
+	private static final Model tool = new Model.BuiltInModel("Tool");
+	public static final Model[] builtinitemmodels = new Model[] { normal, tool };
+	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
+	private JItemPropertiesStatesList customProperties;
 
 	private ProcedureSelector onRightClickedInAir;
 	private ProcedureSelector onCrafted;
@@ -170,6 +173,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 
+		customProperties = new JItemPropertiesStatesList(mcreator, this);
+		customProperties.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
+
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
 				String selected = (String) guiBoundTo.getSelectedItem();
@@ -186,6 +192,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		});
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
+		JPanel cipp = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel foodProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
@@ -196,11 +203,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		JPanel destal2 = new JPanel(new BorderLayout(0, 10));
 		destal2.setOpaque(false);
-		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
-		destal3.setOpaque(false);
-		destal3.add("West", PanelUtils.totalCenterInPanel(
-				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture"))));
-		destal2.add("North", destal3);
 
 		JPanel destal = new JPanel(new GridLayout(1, 1, 15, 15));
 		destal.setOpaque(false);
@@ -222,7 +224,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		destal2.add("Center", PanelUtils.northAndCenterElement(destal, destal1, 10, 10));
 
-		ComponentUtils.deriveFont(renderType, 16.0f);
+		ComponentUtils.deriveFont(renderType, 16);
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
@@ -235,12 +237,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		destal3.add("Center", rent);
-
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.item.item_3d_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		destal2.add("North", PanelUtils.totalCenterInPanel(
+				PanelUtils.join(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 		sbbp2.setOpaque(false);
@@ -250,6 +252,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(sbbp2)));
 
 		pane2.setOpaque(false);
+
+		cipp.setOpaque(false);
+		cipp.add("Center", customProperties);
 
 		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 2, 2));
 
@@ -421,6 +426,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		name.enableRealtimeValidation();
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
+		addPage(L10N.t("elementgui.item.page_item_states"), cipp);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
@@ -470,9 +476,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 		specialInformation.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 
+		customProperties.reloadDataLists();
+
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 
-		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(normal, tool),
+		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
@@ -483,10 +491,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (page == 1)
-			return new AggregatedValidationResult(name);
-		else if (page == 0)
+		if (page == 0)
 			return new AggregatedValidationResult(page1group);
+		else if (page == 1)
+			return customProperties.getValidationResult();
+		else if (page == 2)
+			return new AggregatedValidationResult(name);
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -537,6 +547,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		Model model = item.getItemModel();
 		if (model != null)
 			renderType.setSelectedItem(model);
+
+		customProperties.setProperties(item.customProperties);
+		customProperties.setStates(item.states);
 	}
 
 	@Override public Item getElementFromGUI() {
@@ -581,13 +594,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.eatResultItem = eatResultItem.getBlock();
 
 		item.texture = texture.getID();
-		Model.Type modelType = Objects.requireNonNull(renderType.getSelectedItem()).getType();
-		item.renderType = 0;
-		if (modelType == Model.Type.JSON)
-			item.renderType = 1;
-		else if (modelType == Model.Type.OBJ)
-			item.renderType = 2;
+		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
+
+		item.customProperties = customProperties.getProperties();
+		item.states = customProperties.getStates();
 
 		return item;
 	}
