@@ -185,9 +185,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
-		renderType.addActionListener(e -> {
-			updateFields();
-		});
+		renderType.addActionListener(e -> updateFields());
 
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -330,7 +328,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private void updateFields() {
 		if (toolType.getSelectedItem() != null) {
 			blockingModel.setEnabled(true);
-			if (!toolType.getSelectedItem().equals("Shield") || (renderType.getSelectedItem() == null || renderType.getSelectedItem().getType() == Model.Type.BUILTIN)) {
+			if (!toolType.getSelectedItem().equals("Shield") || (renderType.getSelectedItem() == null
+					|| renderType.getSelectedItem().getType() == Model.Type.BUILTIN)) {
 				blockingModel.setEnabled(false);
 				blockingModel.setSelectedItem(normalBlocking);
 			}
@@ -488,13 +487,13 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			tool.renderType = 2;
 		tool.customModelName = (Objects.requireNonNull(renderType.getSelectedItem())).getReadableName();
 
-		Model.Type blockingModelType = (Objects.requireNonNull(blockingModel.getSelectedItem().getType()));
+		Model.Type blockingModelType = Objects.requireNonNull(blockingModel.getSelectedItem()).getType();
 		tool.blockingRenderType = 0;
 		if (blockingModelType == Model.Type.JSON)
 			tool.blockingRenderType = 1;
 		else if (blockingModelType == Model.Type.OBJ)
 			tool.blockingRenderType = 2;
-		tool.blockingModelName = (Objects.requireNonNull(blockingModel.getSelectedItem().getReadableName()));
+		tool.blockingModelName = Objects.requireNonNull(blockingModel.getSelectedItem()).getReadableName();
 
 		return tool;
 	}

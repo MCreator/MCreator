@@ -27,6 +27,8 @@ import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -34,10 +36,7 @@ import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("unused") public class Tool extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
@@ -126,6 +125,22 @@ import java.util.Map;
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return new HashMap<>();
+	}
+
+	public List<Item.StateEntry> getModels() {
+		if (!toolType.equals("Shield"))
+			return Collections.emptyList();
+
+		Item.StateEntry model = new Item.StateEntry();
+		model.setWorkspace(getModElement().getWorkspace());
+		model.renderType = Tool.this.blockingRenderType;
+		model.texture = Tool.this.texture;
+		model.customModelName = Tool.this.blockingModelName;
+
+		model.stateMap = new StateMap();
+		model.stateMap.put(new PropertyData.LogicType("blocking"), true);
+
+		return Collections.singletonList(model);
 	}
 
 	@Override public TabEntry getCreativeTab() {

@@ -1,6 +1,6 @@
 {
 <#if data.blockingRenderType == 0>
-    "parent": "${modid}:item/handheld",
+    "parent": "item/handheld",
     "textures": {
         "layer0": "${modid}:item/${data.texture}"
     },

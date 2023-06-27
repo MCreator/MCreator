@@ -22,7 +22,7 @@ templates:
   - template: json/item_model_blocking.json.ftl
     writer: json
     condition: "toolType %= Shield"
-    name: "@MODASSETSROOT/models/item/@registryname_blocking.json"
+    name: "@MODASSETSROOT/models/item/@registryname_0.json"
 
 global_templates:
   - template: elementinits/shield_properties.java.ftl
