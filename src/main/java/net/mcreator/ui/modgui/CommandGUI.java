@@ -52,14 +52,14 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CommandGUI extends ModElementGUI<Command> {
 
 	private final VTextField commandName = new VTextField(25);
-	private final JCheckBox isClientSide = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> serverType = new JComboBox<>(
-			new String[] { "Both", "Multi players only", "Single player only" });
+	private final JComboBox<String> type = new JComboBox<>(
+			new String[] { "Standard", "Multiplayer only", "Singleplayer only", "Client-side" });
 	private final JComboBox<String> permissionLevel = new JComboBox<>(
 			new String[] { "No requirement", "1", "2", "3", "4" });
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
@@ -77,21 +77,15 @@ public class CommandGUI extends ModElementGUI<Command> {
 	@Override protected void initGUI() {
 		ComponentUtils.deriveFont(commandName, 16);
 
-		JPanel enderpanel = new JPanel(new GridLayout(4, 2, 10, 2));
+		JPanel enderpanel = new JPanel(new GridLayout(3, 2, 10, 2));
 
 		enderpanel.add(
 				HelpUtils.wrapWithHelpButton(this.withEntry("command/name"), L10N.label("elementgui.command.name")));
 		enderpanel.add(commandName);
 
-		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("command/is_client_side"),
-				L10N.label("elementgui.command.is_client_side")));
-		isClientSide.setOpaque(false);
-		isClientSide.addActionListener(e -> updateServerEnvironmentType());
-		enderpanel.add(isClientSide);
-
-		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("command/server_type"),
-				L10N.label("elementgui.command.server_type")));
-		enderpanel.add(serverType);
+		enderpanel.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("command/type"), L10N.label("elementgui.command.type")));
+		enderpanel.add(type);
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("command/permission_level"),
 				L10N.label("elementgui.command.permission_level")));
@@ -132,14 +126,9 @@ public class CommandGUI extends ModElementGUI<Command> {
 		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, enderpanel),
 				PanelUtils.maxMargin(args, 10, true, true, true, true)));
 
-		updateServerEnvironmentType();
 		if (!isEditingMode()) {
 			commandName.setText(modElement.getName().toLowerCase(Locale.ENGLISH));
 		}
-	}
-
-	private void updateServerEnvironmentType() {
-		serverType.setEnabled(!isClientSide.isSelected());
 	}
 
 	private synchronized void regenerateArgs() {
@@ -172,8 +161,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 	@Override public void openInEditingMode(Command command) {
 		commandName.setText(command.commandName);
-		isClientSide.setSelected(command.isClientSide);
-		serverType.setSelectedItem(command.serverType);
+		type.setSelectedItem(command.type);
 		permissionLevel.setSelectedItem(command.permissionLevel);
 
 		blocklyPanel.setXMLDataOnly(command.argsxml);
@@ -187,8 +175,14 @@ public class CommandGUI extends ModElementGUI<Command> {
 	@Override public Command getElementFromGUI() {
 		Command command = new Command(modElement);
 		command.commandName = commandName.getText();
-		command.isClientSide = isClientSide.isSelected();
-		command.serverType = (String) serverType.getSelectedItem();
+		String commandType = Objects.requireNonNull((String) type.getSelectedItem());
+		switch (commandType) {
+		case "Standard" -> command.type = command.TYPE_STANDARD;
+		case "Multiplayer only" -> command.type = command.TYPE_MULTIPLAYER;
+		case "Singleplayer only" -> command.type = command.TYPE_SINGLEPLAYER;
+		case "Client-side" -> command.type = command.TYPE_CLIENT_SIDE;
+		}
+
 		command.permissionLevel = (String) permissionLevel.getSelectedItem();
 		command.argsxml = blocklyPanel.getXML();
 		return command;

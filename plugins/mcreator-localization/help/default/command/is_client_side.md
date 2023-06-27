@@ -1,1 +1,0 @@
-By enabling this option, the command will be exclusively on the client side, meaning that only actions on the client can be performed.

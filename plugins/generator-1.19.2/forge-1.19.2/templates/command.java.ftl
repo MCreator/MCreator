@@ -33,19 +33,19 @@
 
 package ${package}.command;
 
-@Mod.EventBusSubscriber<#if data.isClientSide>(value = Dist.CLIENT)</#if> public class ${name}Command {
+@Mod.EventBusSubscriber<#if data.type == 3>(value = Dist.CLIENT)</#if> public class ${name}Command {
 
-	<#if data.isClientSide>
+	<#if data.type == 3>
 		@SubscribeEvent public static void registerCommand(RegisterClientCommandsEvent event) {
 			<@commandCode/>
 		}
 	<#else>
 		@SubscribeEvent public static void registerCommand(RegisterCommandsEvent event) {
-			<#if data.serverType == "Multi players only">
+			<#if data.type == 1>
 				if (event.getCommandSelection() == Commands.CommandSelection.DEDICATED) {
 					<@commandCode/>
 				}
-			<#elseif data.serverType == "Single player only">
+			<#elseif data.type == 2>
 				if (event.getCommandSelection() == Commands.CommandSelection.INTEGRATED) {
 					<@commandCode/>
 				}
