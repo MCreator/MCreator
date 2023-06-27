@@ -82,7 +82,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
+public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlocklyPanelHolder {
 
 	private ProcedureSelector onStruckByLightning;
 	private ProcedureSelector whenMobFalls;
@@ -1178,6 +1178,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-mob");
+	}
+
+	@Override public List<BlocklyPanel> getBlocklyPanels() {
+		return List.of(blocklyPanel);
 	}
 
 }
