@@ -29,6 +29,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
 
 /*
  *    MCreator note: This file will be REGENERATED on each build.
@@ -39,6 +40,9 @@ package ${package}.init;
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
 
+<#if w.hasItemsWithCustomProperties()>
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+</#if>
 public class ${JavaModName}Items {
 
 	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(ForgeRegistries.ITEMS, ${JavaModName}.MODID);
@@ -99,6 +103,36 @@ public class ${JavaModName}Items {
 		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties().tab(tab)));
 	}
 	</#if>
+
+	<#if w.hasItemsWithCustomProperties()>
+	<#compress>
+	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
+		event.enqueueWork(() -> {
+		<#list items as item>
+			<#if item.getModElement().getTypeString() == "item">
+				<#list item.customProperties.entrySet() as property>
+				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(),
+					new ResourceLocation("${modid}:${item.getModElement().getRegistryName()}_${property.getKey()}"),
+					(itemStackToRender, clientWorld, entity, itemEntityId) ->
+						<#if hasProcedure(property.getValue())>
+							(float) <@procedureCode property.getValue(), {
+								"x": "entity != null ? entity.getX() : 0",
+								"y": "entity != null ? entity.getY() : 0",
+								"z": "entity != null ? entity.getZ() : 0",
+								"world": "entity != null ? entity.level : clientWorld",
+								"entity": "entity",
+								"itemstack": "itemStackToRender"
+							}, false/>
+						<#else>0</#if>
+				);
+				</#list>
+			</#if>
+		</#list>
+		});
+	}
+	</#compress>
+	</#if>
+
 }
 
 <#-- @formatter:on -->

@@ -1,26 +1,31 @@
 {
-    <#if var_item??> <#-- used by armor where item type is specified (helmet, body, ...) -->
-    "parent": "${modid}:custom/${data.getItemCustomModelNameFor(var_item)}",
-    "textures": {
-        <@textures data.getItemModelTextureMap(var_item)/>
-        "particle": "${modid}:items/${data.getItemTextureFor(var_item)}"
-    }
-    <#else>
-    "parent": "${modid}:custom/${data.customModelName.split(":")[0]}",
-    "textures": {
-        <@textures data.getTextureMap()/>
-        "particle": "${modid}:items/${data.texture}"
-    }
-    <#if data.getModElement().getTypeString() == "tool" && data.toolType == "Shield">,
+<#if var_item??> <#-- used by armor where item type is specified (helmet, body, ...) -->
+  "parent": "${modid}:custom/${data.getItemCustomModelNameFor(var_item)}",
+  "textures": {
+    <@textures data.getItemModelTextureMap(var_item)/>
+    "particle": "${modid}:items/${data.getItemTextureFor(var_item)}"
+  }
+<#else>
+  "parent": "${modid}:custom/${data.customModelName.split(":")[0]}",
+  "textures": {
+    <@textures data.getTextureMap()/>
+    "particle": "${modid}:items/${data.texture}"
+  }
+</#if>
+    <#if data.getModels?? && data.getModels()?has_content>,
     "overrides": [
+        <#list data.getModels() as model>
         {
             "predicate": {
-                "blocking": 1
+                <#list model.stateMap.keySet() as property>
+                    <#assign value = model.stateMap.get(property)>
+                    "${generator.map(property.getPrefixedName(registryname + "_"), "itemproperties")}": ${value?is_boolean?then(value?then("1", "0"), value)}<#sep>,
+                </#list>
             },
-            "model": "${modid}:item/${registryname}_blocking"
-        }
+            "model": "${modid}:item/${registryname}_${model?index}"
+        }<#sep>,
+        </#list>
     ]
-    </#if>
     </#if>
 }
 

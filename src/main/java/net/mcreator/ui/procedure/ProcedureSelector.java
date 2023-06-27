@@ -56,28 +56,81 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 	private final JComponent componentA;
 	private final JComponent componentB;
 
+	/**
+	 * @param helpContext          Help tip explaining how is the selected procedure used.
+	 * @param mcreator             Workspace window inside which this selector is to be created.
+	 * @param eventName            Name of the event calling the selected procedure.
+	 * @param providedDependencies List of dependencies the selected procedure is provided upon its call.
+	 */
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
 			Dependency... providedDependencies) {
 		this(helpContext, mcreator, eventName, Side.BOTH, providedDependencies);
 	}
 
+	/**
+	 * @param helpContext          Help tip explaining how is the selected procedure used.
+	 * @param mcreator             Workspace window inside which this selector is to be created.
+	 * @param eventName            Name of the event calling the selected procedure.
+	 * @param side                 Side of the game on which the event may occur (CLIENT, SERVER or BOTH).
+	 * @param providedDependencies List of dependencies the selected procedure is provided upon its call.
+	 */
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			Dependency... providedDependencies) {
 		this(helpContext, mcreator, eventName, side, true, null, providedDependencies);
 	}
 
+	/**
+	 * @param helpContext          Help tip explaining how is the selected procedure used.
+	 * @param mcreator             Workspace window inside which this selector is to be created.
+	 * @param eventName            Name of the event calling the selected procedure.
+	 * @param side                 Side of the game on which the event may occur (CLIENT, SERVER or BOTH).
+	 * @param allowInlineEditor    Whether layout of this selector can adapt to low height values.
+	 * @param providedDependencies List of dependencies the selected procedure is provided upon its call.
+	 */
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			boolean allowInlineEditor, Dependency... providedDependencies) {
 		this(helpContext, mcreator, eventName, side, allowInlineEditor, null, providedDependencies);
 	}
 
+	/**
+	 * @param helpContext          Help tip explaining how is the selected procedure used.
+	 * @param mcreator             Workspace window inside which this selector is to be created.
+	 * @param eventName            Name of the event calling the selected procedure.
+	 * @param returnType           The type of value the selected procedure should return.
+	 * @param providedDependencies List of dependencies the selected procedure is provided upon its call.
+	 */
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
 			@Nullable VariableType returnType, Dependency... providedDependencies) {
 		this(helpContext, mcreator, eventName, Side.BOTH, true, returnType, providedDependencies);
 	}
 
+	/**
+	 * @param helpContext          Help tip explaining how is the selected procedure used.
+	 * @param mcreator             Workspace window inside which this selector is to be created.
+	 * @param eventName            Name of the event calling the selected procedure.
+	 * @param side                 Side of the game on which the event may occur (CLIENT, SERVER or BOTH).
+	 * @param allowInlineEditor    Whether layout of this selector can adapt to low height values.
+	 * @param returnType           The type of value the selected procedure should return.
+	 * @param providedDependencies List of dependencies the selected procedure is provided upon its call.
+	 */
 	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName, Side side,
 			boolean allowInlineEditor, @Nullable VariableType returnType, Dependency... providedDependencies) {
+		this(helpContext, mcreator, eventName, eventName, side, allowInlineEditor, returnType, providedDependencies);
+	}
+
+	/**
+	 * @param helpContext          Help tip explaining how is the selected procedure used.
+	 * @param mcreator             Workspace window inside which this selector is to be created.
+	 * @param eventName            Name of the event calling the selected procedure.
+	 * @param procedureName        Suggested name of procedure mod element this selector can create
+	 * @param side                 Side of the game on which the event may occur (CLIENT, SERVER or BOTH).
+	 * @param allowInlineEditor    Whether layout of this selector can adapt to low height values.
+	 * @param returnType           The type of value the selected procedure should return.
+	 * @param providedDependencies List of dependencies the selected procedure is provided upon its call.
+	 */
+	public ProcedureSelector(@Nullable IHelpContext helpContext, MCreator mcreator, String eventName,
+			String procedureName, Side side, boolean allowInlineEditor, @Nullable VariableType returnType,
+			Dependency... providedDependencies) {
 		super(mcreator, returnType, providedDependencies);
 
 		setLayout(new BorderLayout(0, 0));
@@ -164,15 +217,15 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			add.addActionListener(e -> {
 				String procedureNameString = "";
 				if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI) {
-					StringBuilder procedureName = new StringBuilder(
+					StringBuilder procedureNameBuilder = new StringBuilder(
 							((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).getModElement()
 									.getName());
-					String[] parts = eventName.replaceAll("\\(.*\\)", "").split(" ");
+					String[] parts = procedureName.replaceAll("\\(.*\\)", "").split(" ");
 					for (String part : parts) {
-						procedureName.append(StringUtils.uppercaseFirstLetter(part));
+						procedureNameBuilder.append(StringUtils.uppercaseFirstLetter(part));
 					}
 					procedureNameString = JavaConventions.convertToValidClassName(
-							procedureName.toString().replace("When", ""));
+							procedureNameBuilder.toString().replace("When", ""));
 				}
 
 				procedureNameString = VOptionPane.showInputDialog(mcreator,
