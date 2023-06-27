@@ -733,15 +733,16 @@ public class TestWorkspaceDataProvider {
 			livingEntity.breedTriggerItems = new ArrayList<>();
 			if (!emptyLists) {
 				livingEntity.breedTriggerItems.add(
-						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 				livingEntity.breedTriggerItems.add(
-						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 				livingEntity.breedTriggerItems.add(
-						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 				livingEntity.breedTriggerItems.add(
-						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 				livingEntity.breedTriggerItems.add(
-						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
+				livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 			}
 			livingEntity.ranged = _true;
 			livingEntity.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),
@@ -833,8 +834,9 @@ public class TestWorkspaceDataProvider {
 			structure.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				structure.restrictionBlocks.addAll(
-						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
+						blocksAndTags.stream().skip(_true ? 0 : ((blocksAndTags.size() / 4) * valueIndex)).limit(blocksAndTags.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				structure.excludeRestrictionBlocks = _true;
 			}
 			if (_true) {
 				structure.generateCondition = new Procedure("condition1");
@@ -997,8 +999,10 @@ public class TestWorkspaceDataProvider {
 			plant.canBePlacedOn = new ArrayList<>();
 			if (!emptyLists) {
 				plant.canBePlacedOn.addAll(
-						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
+						blocksAndTags.stream().skip(_true ? 0 : ((blocksAndTags.size() / 4) * valueIndex)).limit(blocksAndTags.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				plant.canBePlacedOn.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
+				plant.excludePlaceableBlocks = _true;
 			}
 			plant.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
