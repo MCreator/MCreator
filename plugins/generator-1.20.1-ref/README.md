@@ -1,5 +1,11 @@
 Use this for copy+paste base for 1.20.x generator.
 
+How to port:
+
+* Cut files from reference folder and paste them into the generator.
+* This folder is copy of 1.19.4 generator and is used to easier track what changed and what
+  just needs a copy+paste
+
 IMPORTANT: Make sure to sync files here if any changes to 1.19.4 generator are made so
 the latest base is used for 1.20.x generator.
 
