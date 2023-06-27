@@ -272,7 +272,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		|| data.immuneToDragonBreath || data.immuneToWither>
 	@Override public boolean hurt(DamageSource source, float amount) {
 		<#if hasProcedure(data.whenMobIsHurt)>
-			<@procedureCode data.whenMobIsHurt, {
+			<#assign whenEntityHurtProcedure><#compress>
+			${data.whenMobIsHurt.getName()}Procedure.execute(<@procedureDependenciesCode data.whenMobIsHurt.getDependencies(generator.getWorkspace()), {
 				"x": "this.getX()",
 				"y": "this.getY()",
 				"z": "this.getZ()",
@@ -281,7 +282,15 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				"sourceentity": "source.getEntity()",
 				"immediatesourceentity": "source.getDirectEntity()",
 				"damagesource": "source"
-			}/>
+			}/>)
+			</#compress></#assign>
+
+			<#if hasReturnValueOf(data.whenMobIsHurt, "logic")>
+			if (!${whenEntityHurtProcedure})
+				return false;
+			<#else>
+			${whenEntityHurtProcedure};
+			</#if>
 		</#if>
 		<#if data.immuneToArrows>
 			if (source.getDirectEntity() instanceof AbstractArrow)
