@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 47.0.19
+buildfileversion: 47.0.1
 
 import:
   - datapack-1.20.1
@@ -31,7 +31,7 @@ item_textures_dir: "@MODASSETSROOT/textures/item"
 #entity_textures_dir: "@MODASSETSROOT/textures/entities"
 #effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
-#screen_textures_dir: "@MODASSETSROOT/textures/screens"
+screen_textures_dir: "@MODASSETSROOT/textures/screens"
 #armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
 
@@ -55,9 +55,9 @@ base_templates:
   - template: modbase/variableslist.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
     condition: hasVariables()
-#  - template: elementinits/tabs.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
-#    condition: hasItemsInTabs()
+  - template: elementinits/tabs.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
+    condition: hasItemsInTabs()
   - template: modbase/accesstransformer.cfg.ftl
     writer: file
     name: "@RESROOT/META-INF/accesstransformer.cfg"
