@@ -1,0 +1,1 @@
+En activant cette option, la commande sera exclusivement sur le côté client, signifiant qu'uniquement des actions sur le client peuvent être effectuées.

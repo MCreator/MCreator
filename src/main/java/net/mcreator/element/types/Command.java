@@ -38,6 +38,8 @@ import java.util.Locale;
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"><field name=\"procedure\"></field></block></next></block></xml>";
 
 	public String commandName;
+	public boolean isClientSide;
+	public String serverType;
 
 	public String permissionLevel;
 
@@ -51,6 +53,7 @@ import java.util.Locale;
 		super(element);
 
 		this.permissionLevel = "4";
+		this.serverType = "Both";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
