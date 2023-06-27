@@ -161,7 +161,7 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 	@Override public void openInEditingMode(Command command) {
 		commandName.setText(command.commandName);
-		type.setSelectedItem(command.type);
+		type.setSelectedIndex(command.type);
 		permissionLevel.setSelectedItem(command.permissionLevel);
 
 		blocklyPanel.setXMLDataOnly(command.argsxml);
