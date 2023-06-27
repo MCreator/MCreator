@@ -49,6 +49,7 @@ import java.util.List;
 	public List<String> spawnWorldTypes;
 
 	public List<MItemBlock> restrictionBlocks;
+	public boolean excludeRestrictionBlocks;
 	public List<BiomeEntry> restrictionBiomes;
 
 	public String ignoreBlocks;

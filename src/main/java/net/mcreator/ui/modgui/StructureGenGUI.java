@@ -102,7 +102,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional"));
 
-		restrictionBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
+		restrictionBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, true, true);
 		restrictionBiomes = new BiomeListField(mcreator);
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
@@ -222,6 +222,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		randomlyRotateStructure.setSelected(structure.randomlyRotateStructure);
 		structureSelector.setSelectedItem(structure.structure);
 		restrictionBlocks.setListElements(structure.restrictionBlocks);
+		restrictionBlocks.setExclusionMode(structure.excludeRestrictionBlocks);
 		restrictionBiomes.setListElements(structure.restrictionBiomes);
 		onStructureGenerated.setSelectedProcedure(structure.onStructureGenerated);
 		generateCondition.setSelectedProcedure(structure.generateCondition);
@@ -240,6 +241,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		structure.ignoreBlocks = (String) ignoreBlocks.getSelectedItem();
 		structure.surfaceDetectionType = (String) surfaceDetectionType.getSelectedItem();
 		structure.restrictionBlocks = restrictionBlocks.getListElements();
+		structure.excludeRestrictionBlocks = restrictionBlocks.isExclusionMode();
 		structure.randomlyRotateStructure = randomlyRotateStructure.isSelected();
 		structure.restrictionBiomes = restrictionBiomes.getListElements();
 		structure.structure = (String) structureSelector.getSelectedItem();
