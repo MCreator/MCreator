@@ -181,7 +181,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	@Override protected void initGUI() {
 		restrictionBiomes = new BiomeListField(mcreator);
-		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
+		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, true, true);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 		renderType.addActionListener(e -> boundingBoxList.modelChanged());
@@ -896,6 +896,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		spawnWorldTypes.setListElements(plant.spawnWorldTypes);
 		restrictionBiomes.setListElements(plant.restrictionBiomes);
 		canBePlacedOn.setListElements(plant.canBePlacedOn);
+		canBePlacedOn.setExclusionMode(plant.excludePlaceableBlocks);
 		isReplaceable.setSelected(plant.isReplaceable);
 		colorOnMap.setSelectedItem(plant.colorOnMap);
 		offsetType.setSelectedItem(plant.offsetType);
@@ -1032,6 +1033,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.patchSize = (int) patchSize.getValue();
 		plant.generateAtAnyHeight = generateAtAnyHeight.isSelected();
 		plant.canBePlacedOn = canBePlacedOn.getListElements();
+		plant.excludePlaceableBlocks = canBePlacedOn.isExclusionMode();
 		plant.isReplaceable = isReplaceable.isSelected();
 		plant.colorOnMap = colorOnMap.getSelectedItem().toString();
 		plant.offsetType = (String) offsetType.getSelectedItem();

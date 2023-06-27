@@ -104,6 +104,7 @@ import java.util.stream.Collectors;
 	public double speedFactor;
 
 	public List<MItemBlock> canBePlacedOn;
+	public boolean excludePlaceableBlocks;
 	public Procedure placingCondition;
 
 	public boolean isBonemealable;

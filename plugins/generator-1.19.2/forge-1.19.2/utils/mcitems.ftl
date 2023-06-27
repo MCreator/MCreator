@@ -109,7 +109,7 @@
     </#if>
 </#function>
 
-<#function containsAnyOfBlocks elements blockToCheck>
+<#function containsAnyOfBlocks elements blockToCheck exclusionMode=false>
     <#assign blocks = []>
     <#assign tags = []>
     <#assign retval = "">
@@ -127,6 +127,9 @@
     <#if !blocks?has_content && !tags?has_content>
         <#return "false">
     <#elseif blocks?has_content>
+    	<#if exclusionMode>
+    		<#assign retval += "!">
+    	</#if>
         <#assign retval += "List.of(">
         <#list blocks as block>
             <#assign retval += block>
@@ -135,7 +138,11 @@
         <#assign retval += ").contains("+ blockToCheck + ".getBlock())">
 
         <#if tags?has_content>
-            <#assign retval += "||">
+        	<#if exclusionMode>
+        		<#assign retval += "&&">
+        	<#else>
+        		<#assign retval += "||">
+        	</#if>
         </#if>
     </#if>
 
@@ -145,7 +152,11 @@
             <#assign retval += "BlockTags.create(new ResourceLocation(\"" + tag + "\"))">
             <#if tag?has_next><#assign retval += ","></#if>
         </#list>
-        <#assign retval += ").anyMatch(" + blockToCheck + "::is)">
+    	<#if exclusionMode>
+        	<#assign retval += ").noneMatch(" + blockToCheck + "::is)">
+        <#else>
+        	<#assign retval += ").anyMatch(" + blockToCheck + "::is)">
+    	</#if>
     </#if>
 
     <#return retval>
