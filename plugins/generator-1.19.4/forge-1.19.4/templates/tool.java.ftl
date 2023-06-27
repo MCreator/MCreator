@@ -75,9 +75,9 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			</#if>
 
 				new Item.Properties()
-			 	<#if data.immuneToFire>
-			 	.fireResistant()
-			 	</#if>
+				<#if data.immuneToFire>
+				.fireResistant()
+				</#if>
 		<#elseif data.toolType == "Shears" || data.toolType == "Shield">
 			new Item.Properties()
 				.durability(${data.usageCount})
