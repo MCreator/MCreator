@@ -102,10 +102,10 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 		} else if (type == ModElementType.COMMAND) {
-			generatableElements.add(getCommandExample(me(workspace, type, "1"), "Both", random, true));
-			generatableElements.add(getCommandExample(me(workspace, type, "2"), "Both", random, false));
-			generatableElements.add(getCommandExample(me(workspace, type, "3"), "Multi players only", random, false));
-			generatableElements.add(getCommandExample(me(workspace, type, "4"), "Single player only", random, false));
+			generatableElements.add(getCommandExample(me(workspace, type, "1"), 0, random));
+			generatableElements.add(getCommandExample(me(workspace, type, "2"), 1, random));
+			generatableElements.add(getCommandExample(me(workspace, type, "3"), 2, random));
+			generatableElements.add(getCommandExample(me(workspace, type, "4"), 3, random));
 		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING
 				|| type == ModElementType.KEYBIND || type == ModElementType.PROCEDURE || type == ModElementType.FEATURE
 				|| type == ModElementType.CODE) {
@@ -1688,11 +1688,10 @@ public class TestWorkspaceDataProvider {
 		return null;
 	}
 
-	private static GeneratableElement getCommandExample(ModElement modElement, String serverType, Random random, boolean _true) {
+	private static GeneratableElement getCommandExample(ModElement modElement, int type, Random random) {
 		Command command = new Command(modElement);
 		command.commandName = modElement.getName();
-		command.isClientSide = _true;
-		command.serverType = serverType;
+		command.type = type;
 		command.permissionLevel = getRandomString(random, List.of("No requirement", "1", "2", "3", "4"));
 		command.argsxml = Command.XML_BASE;
 		return command;
