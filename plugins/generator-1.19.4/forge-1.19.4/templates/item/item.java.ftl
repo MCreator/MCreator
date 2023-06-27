@@ -283,8 +283,7 @@ public class ${name}Item extends Item {
 	</#if>
 
 	<#if data.enableRanged && data.shootConstantly>
-		@Override public void onUsingTick(ItemStack itemstack, LivingEntity entity, int count) {
-			Level world = entity.level;
+		@Override public void onUseTick(Level world, LivingEntity entity, ItemStack itemstack, int count) {
 			if (!world.isClientSide() && entity instanceof ServerPlayer player) {
 				double x = entity.getX();
 				double y = entity.getY();
