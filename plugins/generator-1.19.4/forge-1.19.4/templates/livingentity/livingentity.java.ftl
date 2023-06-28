@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -71,6 +71,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
     	super(type, world);
+		maxUpStep = ${data.stepHeight}f;
 		xpReward = ${data.xpAmount};
 		setNoAi(${(!data.hasAI)});
 
@@ -188,6 +189,16 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
     </#if>
 
+	<#if data.mobModelName == "Biped">
+	@Override public double getMyRidingOffset() {
+		return -0.35D;
+	}
+	<#elseif data.mobModelName == "Silverfish">
+	@Override public double getMyRidingOffset() {
+		return 0.1D;
+	}
+	</#if>
+
 	<#if data.mountedYOffset != 0>
 	@Override public double getPassengersRidingOffset() {
 		return super.getPassengersRidingOffset() + ${data.mountedYOffset};
@@ -246,7 +257,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				"y": "this.getY()",
 				"z": "this.getZ()",
 				"entity": "this",
-				"world": "this.level"
+				"world": "this.level",
+				"damagesource": "source"
 			}/>
 		</#if>
 
@@ -270,7 +282,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				"z": "this.getZ()",
 				"entity": "this",
 				"world": "this.level",
-				"sourceentity": "source.getEntity()"
+				"sourceentity": "source.getEntity()",
+				"damagesource": "source"
 			}/>
 		</#if>
 		<#if data.immuneToFire>
@@ -340,7 +353,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"z": "this.getZ()",
 			"sourceentity": "source.getEntity()",
 			"entity": "this",
-			"world": "this.level"
+			"world": "this.level",
+			"damagesource": "source"
 		}/>
 	}
     </#if>
@@ -509,12 +523,13 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"z": "this.getZ()",
 			"entity": "entity",
 			"sourceentity": "this",
-			"world": "this.level"
+			"world": "this.level",
+			"damagesource": "damageSource"
 		}/>
 	}
     </#if>
 
-	<#if hasProcedure(data.onMobTickUpdate) || data.boundingBoxScale??>
+	<#if hasProcedure(data.onMobTickUpdate) || (data.boundingBoxScale?? && (data.boundingBoxScale.getFixedValue() != 1 || hasProcedure(data.boundingBoxScale)))>
 	@Override public void baseTick() {
 		super.baseTick();
 		<#if hasProcedure(data.onMobTickUpdate)>
@@ -526,7 +541,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				"world": "this.level"
 			}/>
 		</#if>
-		<#if data.boundingBoxScale??>
+		<#if data.boundingBoxScale?? && (data.boundingBoxScale.getFixedValue() != 1 || hasProcedure(data.boundingBoxScale))>
 			this.refreshDimensions();
 		</#if>
 	}
@@ -654,7 +669,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.setRot(this.getYRot(), this.getXRot());
 				this.yBodyRot = entity.getYRot();
 				this.yHeadRot = entity.getYRot();
-				this.maxUpStep = 1.0F;
 
 				if (entity instanceof LivingEntity passenger) {
 					this.setSpeed((float) this.getAttributeValue(Attributes.MOVEMENT_SPEED));
@@ -683,14 +697,13 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.calculateEntityAnimation(true);
 				return;
 			}
-			this.maxUpStep = 0.5F;
 			</#if>
 
 			super.travel(dir);
 		}
     </#if>
 
-	<#if data.boundingBoxScale??>
+	<#if data.boundingBoxScale?? && (data.boundingBoxScale.getFixedValue() != 1 || hasProcedure(data.boundingBoxScale))>
 	@Override public EntityDimensions getDimensions(Pose entityPose) {
 		<#if hasProcedure(data.boundingBoxScale)>
 			Entity entity = this;

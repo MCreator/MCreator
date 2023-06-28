@@ -24,16 +24,13 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.vcs.BranchesPopup;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.StringUtils;
-import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.io.IOException;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
@@ -48,8 +45,6 @@ public class StatusBar extends JPanel {
 
 	private final MCreator mcreator;
 
-	private final JLabel currentBranch = new JLabel();
-
 	public StatusBar(MCreator mcreator) {
 		super(new BorderLayout(0, 0));
 
@@ -57,19 +52,6 @@ public class StatusBar extends JPanel {
 
 		JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 1));
 		left.setOpaque(false);
-
-		currentBranch.setVisible(false);
-		currentBranch.setIcon(
-				new ImageIcon(ImageUtils.darken(ImageUtils.toBufferedImage(UIRES.get("16px.vcs").getImage()))));
-		currentBranch.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				super.mouseClicked(e);
-				new BranchesPopup(mcreator.getWorkspace().getVCS(), mcreator).show(currentBranch, 0, 0);
-			}
-		});
-		currentBranch.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
-		currentBranch.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
-		ComponentUtils.deriveFont(currentBranch, 12);
 
 		left.add(new JEmptyBox(5, 5));
 
@@ -103,8 +85,6 @@ public class StatusBar extends JPanel {
 		left.add(preferences);
 		left.add(new JEmptyBox(10, 10));
 
-		left.add(currentBranch);
-
 		messages.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		left.add(messages);
 
@@ -133,8 +113,6 @@ public class StatusBar extends JPanel {
 				((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker()));
 
 		addToolTipReader();
-
-		reloadVCSStatus();
 	}
 
 	private void addToolTipReader() {
@@ -164,18 +142,6 @@ public class StatusBar extends JPanel {
 	public void setPersistentMessage(String message) {
 		this.persistentMessage = message;
 		setMessage(message);
-	}
-
-	public void reloadVCSStatus() {
-		if (mcreator.getWorkspace().getVCS() != null) {
-			currentBranch.setVisible(true);
-			try {
-				currentBranch.setText(mcreator.getWorkspace().getVCS().getGit().getRepository().getBranch());
-			} catch (IOException ignored) {
-			}
-		} else {
-			currentBranch.setVisible(false);
-		}
 	}
 
 	public void setGradleMessage(String message) {

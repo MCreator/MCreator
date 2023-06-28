@@ -233,6 +233,7 @@ public class ToolPackMakerTool {
 
 		Recipe pickaxeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "PickaxeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		pickaxeRecipe.craftingBookCategory = "EQUIPMENT";
 		pickaxeRecipe.recipeSlots[0] = base;
 		pickaxeRecipe.recipeSlots[1] = base;
 		pickaxeRecipe.recipeSlots[2] = base;
@@ -248,6 +249,7 @@ public class ToolPackMakerTool {
 
 		Recipe axeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "AxeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		axeRecipe.craftingBookCategory = "EQUIPMENT";
 		axeRecipe.recipeSlots[0] = base;
 		axeRecipe.recipeSlots[1] = base;
 		axeRecipe.recipeSlots[3] = base;
@@ -263,6 +265,7 @@ public class ToolPackMakerTool {
 
 		Recipe swordRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "SwordRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		swordRecipe.craftingBookCategory = "EQUIPMENT";
 		swordRecipe.recipeSlots[1] = base;
 		swordRecipe.recipeSlots[4] = base;
 		swordRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
@@ -276,6 +279,7 @@ public class ToolPackMakerTool {
 
 		Recipe shovelRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "ShovelRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		shovelRecipe.craftingBookCategory = "EQUIPMENT";
 		shovelRecipe.recipeSlots[1] = base;
 		shovelRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");
 		shovelRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
@@ -289,6 +293,7 @@ public class ToolPackMakerTool {
 
 		Recipe hoeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "HoeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		hoeRecipe.craftingBookCategory = "EQUIPMENT";
 		hoeRecipe.recipeSlots[0] = base;
 		hoeRecipe.recipeSlots[1] = base;
 		hoeRecipe.recipeSlots[4] = new MItemBlock(workspace, "Items.STICK");

@@ -109,7 +109,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		</#if>
 	}
 
-	<#if data.visualScale??>
+	<#if data.visualScale?? && (data.visualScale.getFixedValue() != 1 || hasProcedure(data.visualScale))>
 	@Override protected void scale(${name}Entity entity, PoseStack poseStack, float f) {
 		<#if hasProcedure(data.visualScale)>
 			Level world = entity.level;
