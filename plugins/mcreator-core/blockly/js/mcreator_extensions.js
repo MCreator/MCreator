@@ -15,9 +15,21 @@ Blockly.Extensions.register('material_list_provider', appendDropDown('material',
 
 Blockly.Extensions.register('plant_type_list_provider', appendDropDown('planttypes', 'planttype'));
 
+Blockly.Extensions.register('gui_list_provider', appendDropDown('gui', 'guiname'));
+
+Blockly.Extensions.register('dimension_list_provider', appendDropDown('dimension', 'dimension'));
+
+Blockly.Extensions.register('gamerulesboolean_list_provider', appendDropDown('gamerulesboolean', 'gamerulesboolean'));
+
+Blockly.Extensions.register('gamerulesnumber_list_provider', appendDropDown('gamerulesnumber', 'gamerulesnumber'));
+
 Blockly.Extensions.register('schematic_list_provider', appendDropDown('schematic', 'schematic'));
 
+Blockly.Extensions.register('fluid_list_provider', appendDropDown('fluid', 'fluid'));
+
 Blockly.Extensions.register('direction_list_provider', appendDropDown('direction', 'direction'));
+
+Blockly.Extensions.register('dimension_custom_list_provider', appendDropDown('dimension_custom', 'dimension'));
 
 // Extension to mark a procedure block as a custom loop
 Blockly.Extensions.register('is_custom_loop',

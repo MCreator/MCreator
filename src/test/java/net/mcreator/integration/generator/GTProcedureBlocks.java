@@ -159,6 +159,18 @@ public class GTProcedureBlocks {
 						String suggestedFieldName = extension.replace("_list_provider", "");
 						String suggestedDataListName = suggestedFieldName;
 
+						// convert to proper field names in some extension cases
+						switch (extension) {
+						case "gui_list_provider":
+							suggestedFieldName = "guiname";
+							suggestedDataListName = "gui";
+							break;
+						case "dimension_custom_list_provider":
+							suggestedFieldName = "dimension";
+							suggestedDataListName = "dimension_custom";
+							break;
+						}
+
 						if (suggestedDataListName.equals("sound_category")) {
 							suggestedDataListName = "soundcategories";
 							suggestedFieldName = "soundcategory";
