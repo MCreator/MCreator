@@ -46,7 +46,7 @@ Blocks.DIRT:
   - "dirt"
 Blocks.DIRT#0:
   - Blocks.DIRT
-  - "dirt"
+  - "#minecraft:dirt"
 Blocks.DIRT#1:
   - Blocks.COARSE_DIRT
   - "coarse_dirt"
@@ -238,7 +238,7 @@ Blocks.SLIME_BLOCK:
   - "slime_block"
 Blocks.LOG:
   - Blocks.OAK_LOG
-  - "oak_log"
+  - "#minecraft:logs"
 Blocks.LOG#0:
   - Blocks.OAK_LOG
   - "oak_log"
@@ -253,7 +253,7 @@ Blocks.LOG#3:
   - "jungle_log"
 Blocks.LOG2:
   - Blocks.ACACIA_LOG
-  - "acacia_log"
+  - "#minecraft:logs"
 Blocks.LOG2#0:
   - Blocks.ACACIA_LOG
   - "acacia_log"
@@ -265,7 +265,7 @@ Blocks.MANGROVE_LOG:
   - "mangrove_log"
 Blocks.LEAVES:
   - Blocks.OAK_LEAVES
-  - "oak_leaves"
+  - "#minecraft:leaves"
 Blocks.LEAVES#0:
   - Blocks.OAK_LEAVES
   - "oak_leaves"
@@ -280,7 +280,7 @@ Blocks.LEAVES#3:
   - "jungle_leaves"
 Blocks.LEAVES2:
   - Blocks.ACACIA_LEAVES
-  - "acacia_leaves"
+  - "#minecraft:leaves"
 Blocks.LEAVES2#0:
   - Blocks.ACACIA_LEAVES
   - "acacia_leaves"
