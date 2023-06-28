@@ -91,11 +91,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 
 	<#if data.toolType == "Shield" && data.repairItems?has_content>
 	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
-		return List.of(
-			<#list data.repairItems as repairItem>
-				${mappedMCItemToItem(repairItem)}<#sep>,
-			</#list>
-		).contains(repairitem.getItem());
+		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
 	}
 	</#if>
 
