@@ -10,7 +10,7 @@ Blocks.AIR:
   - "air"
 Blocks.STONE:
   - Blocks.STONE
-  - "#forge:stone"
+  - "#minecraft:stone"
 Blocks.STONE#0:
   - Blocks.STONE
   - "stone"
@@ -313,7 +313,7 @@ Blocks.SPONGE#1:
   - "wet_sponge"
 Blocks.SANDSTONE:
   - Blocks.SANDSTONE
-  - "#forge:sandstone"
+  - "#minecraft:sandstone"
 Blocks.SANDSTONE#0:
   - Blocks.SANDSTONE
   - "sandstone"
@@ -325,7 +325,7 @@ Blocks.SANDSTONE#2:
   - "cut_sandstone"
 Blocks.RED_SANDSTONE:
   - Blocks.RED_SANDSTONE
-  - "#forge:sandstone"
+  - "#minecraft:sandstone"
 Blocks.RED_SANDSTONE#0:
   - Blocks.RED_SANDSTONE
   - "red_sandstone"
