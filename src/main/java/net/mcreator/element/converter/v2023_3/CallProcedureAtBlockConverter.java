@@ -71,27 +71,27 @@ public class CallProcedureAtBlockConverter implements IConverter {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
 			if ("call_procedure_at".equals(element.getAttribute("type"))) {
-				Element xField = bh.createField("name0", "x");
-				Element xValue = bh.createValue("arg0", null);
-				Element yField = bh.createField("name1", "y");
-				Element yValue = bh.createValue("arg1", null);
-				Element zField = bh.createField("name2", "z");
-				Element zValue = bh.createValue("arg2", null);
-
+				// Rename the value inputs
 				for (Element value : XMLUtil.getChildrenWithName(element, "value")) {
 					switch (value.getAttribute("name")) {
-						case "x" -> xValue.appendChild(value);
-						case "y" -> yValue.appendChild(value);
-						case "z" -> zValue.appendChild(value);
+						case "x" -> value.setAttribute("name", "arg0");
+						case "y" -> value.setAttribute("name", "arg1");
+						case "z" -> value.setAttribute("name", "arg2");
 					}
 				}
 
+				// Create the mutation element
 				Element mutationXML = doc.createElement("mutation");
 				mutationXML.setAttribute("inputs", "3");
 
-				Element callProcedureBlock = bh.createBlock("call_procedure", mutationXML, xField, xValue,
-						yField, yValue, zField, zValue);
-				doc.replaceChild(callProcedureBlock, element);
+				// Append the mutation and field elements
+				element.appendChild(mutationXML);
+				element.appendChild(bh.createField("name0", "x"));
+				element.appendChild(bh.createField("name1", "y"));
+				element.appendChild(bh.createField("name2", "z"));
+
+				// Convert the block
+				element.setAttribute("type", "call_procedure");
 			}
 		}
 
