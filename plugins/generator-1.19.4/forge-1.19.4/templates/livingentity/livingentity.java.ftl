@@ -274,26 +274,20 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		|| data.immuneToCactus || data.immuneToDrowning || data.immuneToLightning || data.immuneToPotions
 		|| data.immuneToPlayer || data.immuneToExplosion || data.immuneToTrident || data.immuneToAnvil
 		|| data.immuneToDragonBreath || data.immuneToWither>
-	@Override public boolean hurt(DamageSource source, float amount) {
+	@Override public boolean hurt(DamageSource damagesource, float amount) {
 		<#if hasProcedure(data.whenMobIsHurt)>
-			<#assign whenEntityHurtProcedure><#compress>
-			${data.whenMobIsHurt.getName()}Procedure.execute(<@procedureDependenciesCode data.whenMobIsHurt.getDependencies(generator.getWorkspace()), {
-				"x": "this.getX()",
-				"y": "this.getY()",
-				"z": "this.getZ()",
-				"entity": "this",
-				"world": "this.level",
-				"sourceentity": "source.getEntity()",
-				"immediatesourceentity": "source.getDirectEntity()",
-				"damagesource": "source"
-			}/>)
-			</#compress></#assign>
-
+			double x = this.getX();
+			double y = this.getY();
+			double z = this.getZ();
+			Level world = this.level;
+			Entity entity = this;
+			Entity sourceentity = damagesource.getEntity();
+			Entity immediatesourceentity = damagesource.getDirectEntity();
 			<#if hasReturnValueOf(data.whenMobIsHurt, "logic")>
-			if (!${whenEntityHurtProcedure})
+			if (<@procedureOBJToConditionCode data.whenMobIsHurt false true/>)
 				return false;
 			<#else>
-			${whenEntityHurtProcedure};
+			<@procedureOBJToCode data.whenMobIsHurt/>
 			</#if>
 		</#if>
 		<#if data.immuneToFire>
