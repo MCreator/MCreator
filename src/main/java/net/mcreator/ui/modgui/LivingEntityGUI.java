@@ -519,13 +519,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				disableCollisions));
 
 		spo2.add(new JEmptyBox());
-		spo2.add(solidBoundingBox);
-
-		spo2.add(new JEmptyBox());
 		spo2.add(visualScale);
 
 		spo2.add(new JEmptyBox());
 		spo2.add(boundingBoxScale);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(solidBoundingBox);
 
 		spo2.add(new JEmptyBox());
 		spo2.add(transparentModelCondition);
