@@ -287,56 +287,56 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			</#if>
 		</#if>
 		<#if data.immuneToArrows>
-			if (source.getDirectEntity() instanceof AbstractArrow)
+			if (damagesource.getDirectEntity() instanceof AbstractArrow)
 				return false;
 		</#if>
 		<#if data.immuneToPlayer>
-			if (source.getDirectEntity() instanceof Player)
+			if (damagesource.getDirectEntity() instanceof Player)
 				return false;
 		</#if>
 		<#if data.immuneToPotions>
-			if (source.getDirectEntity() instanceof ThrownPotion || source.getDirectEntity() instanceof AreaEffectCloud)
+			if (damagesource.getDirectEntity() instanceof ThrownPotion || damagesource.getDirectEntity() instanceof AreaEffectCloud)
 				return false;
 		</#if>
 		<#if data.immuneToFallDamage>
-			if (source == DamageSource.FALL)
+			if (damagesource == DamageSource.FALL)
 				return false;
 		</#if>
 		<#if data.immuneToCactus>
-			if (source == DamageSource.CACTUS)
+			if (damagesource == DamageSource.CACTUS)
 				return false;
 		</#if>
 		<#if data.immuneToDrowning>
-			if (source == DamageSource.DROWN)
+			if (damagesource == DamageSource.DROWN)
 				return false;
 		</#if>
 		<#if data.immuneToLightning>
-			if (source == DamageSource.LIGHTNING_BOLT)
+			if (damagesource == DamageSource.LIGHTNING_BOLT)
 				return false;
 		</#if>
 		<#if data.immuneToExplosion>
-			if (source.isExplosion())
+			if (damagesource.isExplosion())
 				return false;
 		</#if>
 		<#if data.immuneToTrident>
-			if (source.getMsgId().equals("trident"))
+			if (damagesource.getMsgId().equals("trident"))
 				return false;
 		</#if>
 		<#if data.immuneToAnvil>
-			if (source == DamageSource.ANVIL)
+			if (damagesource == DamageSource.ANVIL)
 				return false;
 		</#if>
 		<#if data.immuneToDragonBreath>
-			if (source == DamageSource.DRAGON_BREATH)
+			if (damagesource == DamageSource.DRAGON_BREATH)
 				return false;
 		</#if>
 		<#if data.immuneToWither>
-			if (source == DamageSource.WITHER)
+			if (damagesource == DamageSource.WITHER)
 				return false;
-			if (source.getMsgId().equals("witherSkull"))
+			if (damagesource.getMsgId().equals("witherSkull"))
 				return false;
 		</#if>
-		return super.hurt(source, amount);
+		return super.hurt(damagesource, amount);
 	}
     </#if>
 

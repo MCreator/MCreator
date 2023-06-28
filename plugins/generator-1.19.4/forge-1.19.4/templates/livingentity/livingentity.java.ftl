@@ -291,60 +291,60 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			</#if>
 		</#if>
 		<#if data.immuneToFire>
-			if (source.is(DamageTypes.IN_FIRE))
+			if (damagesource.is(DamageTypes.IN_FIRE))
 				return false;
 		</#if>
 		<#if data.immuneToArrows>
-			if (source.getDirectEntity() instanceof AbstractArrow)
+			if (damagesource.getDirectEntity() instanceof AbstractArrow)
 				return false;
 		</#if>
 		<#if data.immuneToPlayer>
-			if (source.getDirectEntity() instanceof Player)
+			if (damagesource.getDirectEntity() instanceof Player)
 				return false;
 		</#if>
 		<#if data.immuneToPotions>
-			if (source.getDirectEntity() instanceof ThrownPotion || source.getDirectEntity() instanceof AreaEffectCloud)
+			if (damagesource.getDirectEntity() instanceof ThrownPotion || damagesource.getDirectEntity() instanceof AreaEffectCloud)
 				return false;
 		</#if>
 		<#if data.immuneToFallDamage>
-			if (source.is(DamageTypes.FALL))
+			if (damagesource.is(DamageTypes.FALL))
 				return false;
 		</#if>
 		<#if data.immuneToCactus>
-			if (source.is(DamageTypes.CACTUS))
+			if (damagesource.is(DamageTypes.CACTUS))
 				return false;
 		</#if>
 		<#if data.immuneToDrowning>
-			if (source.is(DamageTypes.DROWN))
+			if (damagesource.is(DamageTypes.DROWN))
 				return false;
 		</#if>
 		<#if data.immuneToLightning>
-			if (source.is(DamageTypes.LIGHTNING_BOLT))
+			if (damagesource.is(DamageTypes.LIGHTNING_BOLT))
 				return false;
 		</#if>
 		<#if data.immuneToExplosion>
-			if (source.is(DamageTypes.EXPLOSION))
+			if (damagesource.is(DamageTypes.EXPLOSION))
 				return false;
 		</#if>
 		<#if data.immuneToTrident>
-			if (source.is(DamageTypes.TRIDENT))
+			if (damagesource.is(DamageTypes.TRIDENT))
 				return false;
 		</#if>
 		<#if data.immuneToAnvil>
-			if (source.is(DamageTypes.FALLING_ANVIL))
+			if (damagesource.is(DamageTypes.FALLING_ANVIL))
 				return false;
 		</#if>
 		<#if data.immuneToDragonBreath>
-			if (source.is(DamageTypes.DRAGON_BREATH))
+			if (damagesource.is(DamageTypes.DRAGON_BREATH))
 				return false;
 		</#if>
 		<#if data.immuneToWither>
-			if (source.is(DamageTypes.WITHER))
+			if (damagesource.is(DamageTypes.WITHER))
 				return false;
-			if (source.is(DamageTypes.WITHER_SKULL))
+			if (damagesource.is(DamageTypes.WITHER_SKULL))
 				return false;
 		</#if>
-		return super.hurt(source, amount);
+		return super.hurt(damagesource, amount);
 	}
     </#if>
 
