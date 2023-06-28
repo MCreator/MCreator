@@ -171,11 +171,7 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public float getDestroySpeed(ItemStack itemstack, BlockState blockstate) {
-		return List.of(
-			<#list data.blocksAffected as restrictionBlock>
-			${mappedBlockToBlock(restrictionBlock)}<#sep>,
-			</#list>
-		).contains(blockstate.getBlock()) ? ${data.efficiency}f : 1;
+		return ${containsAnyOfBlocks(data.blocksAffected "blockstate")} ? ${data.efficiency}f : 1;
 	}
 
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
@@ -215,13 +211,9 @@ public class ${name}Item extends FishingRodItem {
 	}
 
 	<#if data.repairItems?has_content>
-	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
-		return List.of(
-			<#list data.repairItems as repairItem>
-				${mappedMCItemToItem(repairItem)}<#sep>,
-				</#list>
-		).contains(repairitem.getItem());
-	}
+    	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+			return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
+    	}
 	</#if>
 
 	@Override public int getEnchantmentValue() {

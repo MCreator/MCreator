@@ -30,6 +30,7 @@ import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -313,15 +314,17 @@ import java.util.*;
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
 				TabEntry tabEntry = tabElement.getCreativeTab();
-				if (tabEntry != null) {
+				List<MCItem> tabItems = tabElement.getCreativeTabItems();
+
+				if (tabEntry != null && tabItems != null && !tabItems.isEmpty()) {
 					String tab = tabEntry.getUnmappedValue();
 					if (tab != null && !tab.equals("No creative tab entry")) {
 						if (!tabMap.containsKey(tab)) {
 							tabMap.put(tab, new ArrayList<>());
 						}
 
-						tabMap.get(tab).addAll(tabElement.getCreativeTabItems().stream()
-								.map(e -> new MItemBlock(workspace, e.getName())).toList());
+						tabMap.get(tab)
+								.addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName())).toList());
 					}
 				}
 			}
