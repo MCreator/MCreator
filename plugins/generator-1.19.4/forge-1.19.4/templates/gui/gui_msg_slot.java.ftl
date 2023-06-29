@@ -80,7 +80,7 @@ package ${package}.network;
 		context.setPacketHandled(true);
 	}
 
-	public static void handleSlotAction(Player entity, int slotID, int changeType, int meta, int x, int y, int z) {
+	public static void handleSlotAction(Player entity, int slot, int changeType, int meta, int x, int y, int z) {
 		Level world = entity.level;
 		HashMap guistate = ${name}Menu.guistate;
 
@@ -91,17 +91,17 @@ package ${package}.network;
 		<#list data.components as component>
 			<#if component.getClass().getSimpleName()?ends_with("Slot")>
 				<#if hasProcedure(component.onSlotChanged)>
-					if (slotID == ${component.id} && changeType == 0) {
+					if (slot == ${component.id} && changeType == 0) {
 						<@procedureOBJToCode component.onSlotChanged/>
 					}
 				</#if>
 				<#if hasProcedure(component.onTakenFromSlot)>
-					if (slotID == ${component.id} && changeType == 1) {
+					if (slot == ${component.id} && changeType == 1) {
 						<@procedureOBJToCode component.onTakenFromSlot/>
 					}
 				</#if>
 				<#if hasProcedure(component.onStackTransfer)>
-					if (slotID == ${component.id} && changeType == 2) {
+					if (slot == ${component.id} && changeType == 2) {
 						int amount = meta;
 						<@procedureOBJToCode component.onStackTransfer/>
 					}
