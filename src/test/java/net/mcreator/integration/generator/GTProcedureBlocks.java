@@ -375,8 +375,21 @@ public class GTProcedureBlocks {
 		case "spawnableEntity":
 			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
+		case "gui":
+			return ElementUtil.loadBasicGUI(workspace).toArray(String[]::new);
 		case "biome":
 			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
+		case "dimension":
+			return ElementUtil.loadAllDimensions(workspace);
+		case "dimensionCustom":
+			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
+					.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new);
+		case "gamerulesboolean":
+			return ElementUtil.getAllBooleanGameRules(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "gamerulesnumber":
+			return ElementUtil.getAllNumberGameRules(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
 		case "procedure":
