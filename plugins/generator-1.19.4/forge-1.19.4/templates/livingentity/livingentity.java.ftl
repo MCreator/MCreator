@@ -287,7 +287,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			if (<@procedureOBJToConditionCode data.whenMobIsHurt false true/>)
 				return false;
 			<#else>
-			<@procedureOBJToCode data.whenMobIsHurt/>
+				<@procedureOBJToCode data.whenMobIsHurt/>
 			</#if>
 		</#if>
 		<#if data.immuneToFire>
