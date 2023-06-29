@@ -120,7 +120,7 @@ public class BlocklyBlockCodeGenerator {
 						String generatedCode = BlocklyToCode.directProcessOutputBlock(master, element);
 						dataModel.put("input$" + inputName, generatedCode);
 						// We also pass the type of the block that is attached to the input
-						dataModel.put("input_type$" + inputName, BlocklyBlockUtil.getInputBlockType(element));
+						dataModel.put("input_id$" + inputName, BlocklyBlockUtil.getInputBlockType(element));
 						break; // found, no need to look other elements
 					}
 				}
@@ -159,7 +159,7 @@ public class BlocklyBlockCodeGenerator {
 
 						dataModel.put("input$" + advancedInput.name(), generatedCode);
 						// We also pass the type of the block that is attached to the input
-						dataModel.put("input_type$" + advancedInput.name(), BlocklyBlockUtil.getInputBlockType(element));
+						dataModel.put("input_id$" + advancedInput.name(), BlocklyBlockUtil.getInputBlockType(element));
 
 						break; // found, no need to look other elements
 					}
@@ -275,7 +275,7 @@ public class BlocklyBlockCodeGenerator {
 				dataModel.put("input_list$" + inputName,
 						processedElements.entrySet().stream().sorted(Map.Entry.comparingByKey())
 								.map(Map.Entry::getValue).toArray(String[]::new));
-				dataModel.put("input_type_list$" + inputName,
+				dataModel.put("input_id_list$" + inputName,
 						processedElementTypes.entrySet().stream().sorted(Map.Entry.comparingByKey())
 								.map(Map.Entry::getValue).toArray(String[]::new));
 			}
@@ -329,7 +329,7 @@ public class BlocklyBlockCodeGenerator {
 				dataModel.put("input_list$" + advancedInput.name(),
 						processedElements.entrySet().stream().sorted(Map.Entry.comparingByKey())
 								.map(Map.Entry::getValue).toArray(String[]::new));
-				dataModel.put("input_type_list$" + advancedInput.name(),
+				dataModel.put("input_id_list$" + advancedInput.name(),
 						processedElementTypes.entrySet().stream().sorted(Map.Entry.comparingByKey())
 								.map(Map.Entry::getValue).toArray(String[]::new));
 			}

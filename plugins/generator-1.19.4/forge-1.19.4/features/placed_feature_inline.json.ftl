@@ -1,2 +1,2 @@
 <#include "mcelements.ftl">
-${toPlacedFeature(input_type$feature, input$feature, statement$placement)}
+${toPlacedFeature(input_id$feature, input$feature, statement$placement)}
