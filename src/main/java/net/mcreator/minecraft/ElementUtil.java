@@ -161,6 +161,22 @@ public class ElementUtil {
 		return elements;
 	}
 
+	/**
+	 * Loads all mod elements and all Minecraft blocks, including elements
+	 * that are wildcard elements to subtypes (wood -&gt; oak wood, birch wood, ...)
+	 *
+	 * @return All Blocks from both Minecraft and custom elements with or without metadata
+	 */
+	public static List<MCItem> loadBlocksAndTags(Workspace workspace) {
+		List<MCItem> elements = new ArrayList<>();
+		workspace.getModElements().forEach(modElement -> elements.addAll(
+				modElement.getMCItems().stream().filter(e -> e.getType().equals("block")).toList()));
+		elements.addAll(
+				DataListLoader.loadDataList("blocksitems").stream().filter(e -> e.isSupportedInWorkspace(workspace))
+						.filter(typeMatches("block")).map(e -> (MCItem) e).toList());
+		return elements;
+	}
+
 	public static List<DataListEntry> loadAllAchievements(Workspace workspace) {
 		return loadDataListAndElements(workspace, "achievements", false, null, "achievement");
 	}
@@ -182,6 +198,10 @@ public class ElementUtil {
 
 	public static List<DataListEntry> loadMaterials() {
 		return DataListLoader.loadDataList("materials");
+	}
+
+	public static List<DataListEntry> loadMapColors() {
+		return DataListLoader.loadDataList("mapcolors");
 	}
 
 	public static List<DataListEntry> loadEnchantmentTypes() {

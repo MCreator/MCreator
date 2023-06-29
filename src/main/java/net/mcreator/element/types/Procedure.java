@@ -20,6 +20,7 @@ package net.mcreator.element.types;
 
 import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyToProcedure;
@@ -47,7 +48,7 @@ public class Procedure extends GeneratableElement {
 
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"event_trigger\" deletable=\"false\" x=\"40\" y=\"40\"><field name=\"trigger\">no_ext_trigger</field></block></xml>";
 
-	public String procedurexml;
+	@BlocklyXML("procedures") public String procedurexml;
 
 	private transient List<Dependency> dependencies = null;
 

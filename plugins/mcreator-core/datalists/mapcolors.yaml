@@ -1,62 +1,126 @@
-- DEFAULT
-- AIR
-- GRASS
-- SAND
-- CLOTH
-- TNT
-- ICE
-- IRON
-- FOLIAGE
-- SNOW
-- CLAY
-- DIRT
-- STONE
-- WATER
-- WOOD
-- QUARTZ
-- ADOBE
-- MAGENTA
-- LIGHT_BLUE
-- YELLOW
-- LIME
-- PINK
-- GRAY
-- SILVER
-- CYAN
-- PURPLE
-- BLUE
-- BROWN
-- GREEN
-- RED
-- BLACK
-- GOLD
-- DIAMOND
-- LAPIS
-- EMERALD
-- NETHERRACK
-- WHITE_TERRACOTTA
-- ORANGE_TERRACOTTA
-- MAGENTA_TERRACOTTA
-- LIGHT_BLUE_TERRACOTTA
-- YELLOW_TERRACOTTA
-- LIME_TERRACOTTA
-- PINK_TERRACOTTA
-- GRAY_TERRACOTTA
-- LIGHT_GRAY_TERRACOTTA
-- CYAN_TERRACOTTA
-- PURPLE_TERRACOTTA
-- BLUE_TERRACOTTA
-- BROWN_TERRACOTTA
-- GREEN_TERRACOTTA
-- RED_TERRACOTTA
-- BLACK_TERRACOTTA
-- CRIMSON_NYLIUM
-- CRIMSON_STEM
-- CRIMSON_HYPHAE
-- WARPED_NYLIUM
-- WARPED_STEM
-- WARPED_HYPHAE
-- WARPED_WART
-- DEEPSLATE_GRAY
-- RAW_IRON_PINK
-- LICHEN_GREEN
+- DEFAULT:
+  readable_name: "Default"
+- AIR:
+  readable_name: "None"
+- GRASS:
+  readable_name: "Grass"
+- SAND:
+  readable_name: "Sand"
+- CLOTH:
+  readable_name: "Wool"
+- TNT:
+  readable_name: "Tnt / Fire"
+- ICE:
+  readable_name: "Ice"
+- IRON:
+  readable_name: "Iron"
+- FOLIAGE:
+  readable_name: "Plant"
+- SNOW:
+  readable_name: "Snow"
+- CLAY:
+  readable_name: "Clay"
+- DIRT:
+  readable_name: "Dirt"
+- STONE:
+  readable_name: "Stone"
+- WATER:
+  readable_name: "Water"
+- WOOD:
+  readable_name: "Wood"
+- QUARTZ:
+  readable_name: "Quartz"
+- ADOBE:
+  readable_name: "Orange"
+- MAGENTA:
+  readable_name: "Magenta"
+- LIGHT_BLUE:
+  readable_name: "Light blue"
+- YELLOW:
+  readable_name: "Yellow"
+- LIME:
+  readable_name: "Lime"
+- PINK:
+  readable_name: "Pink"
+- GRAY:
+  readable_name: "Pink"
+- SILVER:
+  readable_name: "Light gray"
+- CYAN:
+  readable_name: "Cyan"
+- PURPLE:
+  readable_name: "Purple"
+- BLUE:
+  readable_name: "Blue"
+- BROWN:
+  readable_name: "Brown"
+- GREEN:
+  readable_name: "Green"
+- RED:
+  readable_name: "Red"
+- BLACK:
+  readable_name: "Black"
+- GOLD:
+  readable_name: "Gold"
+- DIAMOND:
+  readable_name: "Diamond"
+- LAPIS:
+  readable_name: "Lapis"
+- EMERALD:
+  readable_name: "Emerald"
+- PODZOL:
+  readable_name: "Podzol"
+- NETHERRACK:
+  readable_name: "Nether"
+- WHITE_TERRACOTTA:
+  readable_name: "Terracotta white"
+- ORANGE_TERRACOTTA:
+  readable_name: "Terracotta orange"
+- MAGENTA_TERRACOTTA:
+  readable_name: "Terracotta magenta"
+- LIGHT_BLUE_TERRACOTTA:
+  readable_name: "Terracotta light blue"
+- YELLOW_TERRACOTTA:
+  readable_name: "Terracotta yellow"
+- LIME_TERRACOTTA:
+  readable_name: "Terracotta lime"
+- PINK_TERRACOTTA:
+  readable_name: "Terracotta pink"
+- GRAY_TERRACOTTA:
+  readable_name: "Terracotta gray"
+- LIGHT_GRAY_TERRACOTTA:
+  readable_name: "Terracotta light gray"
+- CYAN_TERRACOTTA:
+  readable_name: "Terracotta cyan"
+- PURPLE_TERRACOTTA:
+  readable_name: "Terracotta purple"
+- BLUE_TERRACOTTA:
+  readable_name: "Terracotta blue"
+- BROWN_TERRACOTTA:
+  readable_name: "Terracotta brown"
+- GREEN_TERRACOTTA:
+  readable_name: "Terracotta green"
+- RED_TERRACOTTA:
+  readable_name: "Terracotta red"
+- BLACK_TERRACOTTA:
+  readable_name: "Terracotta black"
+- CRIMSON_NYLIUM:
+  readable_name: "Crimson nylium"
+- CRIMSON_STEM:
+  readable_name: "Crimson stem"
+- CRIMSON_HYPHAE:
+  readable_name: "Crimson hyphae"
+- WARPED_NYLIUM:
+  readable_name: "Warped nylium"
+- WARPED_STEM:
+  readable_name: "Warped stem"
+- WARPED_HYPHAE:
+  readable_name: "Warped hyphae"
+- WARPED_WART:
+  readable_name: "Warped wart"
+- DEEPSLATE_GRAY:
+  readable_name: "Deepslate"
+- RAW_IRON_PINK:
+  readable_name: "Raw iron"
+- LICHEN_GREEN:
+  readable_name: "Glow lichen"
