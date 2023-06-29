@@ -1003,6 +1003,7 @@
   readable_name: "Oak/Spruce/Birch/Jungle Wood"
   type: block
   texture: LOG
+  subtypes: true
 
 - Blocks.LOG#0:
   readable_name: "Oak Wood"
@@ -1028,6 +1029,7 @@
   readable_name: "Acacia/Dark Oak Wood"
   type: block
   texture: LOG2
+  subtypes: true
 
 - Blocks.LOG2#0:
   readable_name: "Acacia Wood"
@@ -1203,6 +1205,7 @@
   readable_name: "Oak/Spruce/Birch/Jungle Leaves"
   type: block
   texture: LEAVES
+  subtypes: true
 
 - Blocks.LEAVES#0:
   readable_name: "Oak Leaves"
@@ -1228,6 +1231,7 @@
   readable_name: "Acacia/Dark Leaves"
   type: block
   texture: LEAVES2
+  subtypes: true
 
 - Blocks.LEAVES2#0:
   readable_name: "Acacia Leaves"
@@ -1523,6 +1527,7 @@
   readable_name: "Shrub/Tall Grass/Fern"
   type: block
   texture: TALLGRASS
+  subtypes: true
 
 - Blocks.TALLGRASS#0:
   readable_name: "Shrub"
