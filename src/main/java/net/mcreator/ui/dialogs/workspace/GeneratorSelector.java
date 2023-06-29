@@ -24,7 +24,6 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
-import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -126,8 +125,36 @@ public class GeneratorSelector {
 			genStats.add(new JEmptyBox(20, 20));
 
 			JPanel supportedElements = new JPanel(new GridLayout(-1, 6, 7, 3));
-			DataListLoader.getCache().entrySet().stream().filter(e -> !e.getValue().isEmpty()).map(Map.Entry::getKey)
-					.sorted().forEach(e -> addStatsBar(L10N.t(covpfx + e), e, supportedElements, stats));
+
+			addStatsBar(L10N.t(covpfx + "achievements"), "achievements", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "biomes"), "biomes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "blocksitems"), "blocksitems", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "tabs"), "tabs", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "item_properties"), "itemproperties", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "damage_sources"), "damagesources", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "def_biome_features"), "defaultfeatures", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "enchantments"), "enchantments", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "enchantment_types"), "enchantmenttypes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "entities"), "entities", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "projectiles"), "projectiles", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "mobspawntypes"), "mobspawntypes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "fluids"), "fluids", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "game_modes"), "gamemodes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "game_rules"), "gamerules", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "generation_steps"), "generationsteps", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "map_colors"), "mapcolors", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "materials"), "materials", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "particles"), "particles", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "path_node_types"), "pathnodetypes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "effects"), "effects", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "potions"), "potions", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "sounds"), "sounds", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "sound_categories"), "soundcategories", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "step_sounds"), "stepsounds", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "plant_types"), "planttypes", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "screens"), "screens", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "villager_professions"), "villagerprofessions", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "item_types"), "itemtypes", supportedElements, stats);
 
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"),
 					supportedElements, 10, 10));
