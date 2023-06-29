@@ -43,10 +43,10 @@ Blocks.MYCELIUM:
   - "mycelium"
 Blocks.DIRT:
   - Blocks.DIRT
-  - "dirt"
+  - "#minecraft:dirt"
 Blocks.DIRT#0:
   - Blocks.DIRT
-  - "#minecraft:dirt"
+  - "dirt"
 Blocks.DIRT#1:
   - Blocks.COARSE_DIRT
   - "coarse_dirt"
