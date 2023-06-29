@@ -3629,12 +3629,6 @@
   type: block
   texture: BLACK_GLAZED_TERRACOTTA
 
-- Blocks.CONCRETE_POWDER:
-  readable_name: "Any Concrete Powder"
-  type: block
-  subtypes: true
-  texture: CONCRETE_POWDER
-
 - Blocks.CONCRETE_POWDER#0:
   readable_name: "White Concrete Powder"
   type: block
@@ -3714,12 +3708,6 @@
   readable_name: "Black Concrete Powder"
   type: block
   texture: CONCRETE_POWDER#15
-
-- Blocks.CONCRETE:
-  readable_name: "Any Concrete"
-  type: block
-  subtypes: true
-  texture: CONCRETE
 
 - Blocks.CONCRETE#0:
   readable_name: "White Concrete"

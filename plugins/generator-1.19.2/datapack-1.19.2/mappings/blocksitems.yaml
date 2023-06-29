@@ -1145,9 +1145,6 @@ Blocks.RED_GLAZED_TERRACOTTA:
 Blocks.BLACK_GLAZED_TERRACOTTA:
   - Blocks.BLACK_GLAZED_TERRACOTTA
   - "black_glazed_terracotta"
-Blocks.CONCRETE_POWDER:
-  - Blocks.WHITE_CONCRETE_POWDER
-  - "white_concrete_powder"
 Blocks.CONCRETE_POWDER#0:
   - Blocks.WHITE_CONCRETE_POWDER
   - "white_concrete_powder"
@@ -1196,9 +1193,6 @@ Blocks.CONCRETE_POWDER#14:
 Blocks.CONCRETE_POWDER#15:
   - Blocks.BLACK_CONCRETE_POWDER
   - "black_concrete_powder"
-Blocks.CONCRETE:
-  - Blocks.WHITE_CONCRETE
-  - "white_concrete"
 Blocks.CONCRETE#0:
   - Blocks.WHITE_CONCRETE
   - "white_concrete"
