@@ -119,7 +119,7 @@ public class BlocklyBlockCodeGenerator {
 						found = true;
 						String generatedCode = BlocklyToCode.directProcessOutputBlock(master, element);
 						dataModel.put("input$" + inputName, generatedCode);
-						// We also pass the type of the block that is attached to the input
+						// We also pass the machine_name (id) of the block that is attached to the input
 						dataModel.put("input_id$" + inputName, BlocklyBlockUtil.getInputBlockType(element));
 						break; // found, no need to look other elements
 					}
@@ -158,7 +158,7 @@ public class BlocklyBlockCodeGenerator {
 						master.popDepProviderInputStack();
 
 						dataModel.put("input$" + advancedInput.name(), generatedCode);
-						// We also pass the type of the block that is attached to the input
+						// We also pass the machine_name (id) of the block that is attached to the input
 						dataModel.put("input_id$" + advancedInput.name(), BlocklyBlockUtil.getInputBlockType(element));
 
 						break; // found, no need to look other elements
