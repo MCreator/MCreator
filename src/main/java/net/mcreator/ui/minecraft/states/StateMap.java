@@ -32,8 +32,7 @@ import java.util.Map;
 @JsonAdapter(StateMap.GSONAdapter.class) public class StateMap extends LinkedHashMap<PropertyData<?>, Object> {
 
 	private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
-			.registerTypeHierarchyAdapter(PropertyData.class, new PropertyData.GSONAdapter())
-			.registerTypeAdapter(DefaultPropertyValue.class, new DefaultPropertyValue.GSONAdapter()).create();
+			.registerTypeHierarchyAdapter(PropertyData.class, new PropertyData.GSONAdapter()).create();
 
 	public static class GSONAdapter implements JsonSerializer<StateMap>, JsonDeserializer<StateMap> {
 

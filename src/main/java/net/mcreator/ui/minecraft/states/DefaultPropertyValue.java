@@ -29,7 +29,7 @@ import java.lang.reflect.Type;
 																						   @Nonnull T defaultValue) {
 
 	@SuppressWarnings("unchecked")
-	private static <T> DefaultPropertyValue<T> create(PropertyData<T> property, Object defaultValue) {
+	public static <T> DefaultPropertyValue<T> create(PropertyData<T> property, Object defaultValue) {
 		return new DefaultPropertyValue<>(property, (T) defaultValue);
 	}
 
@@ -37,20 +37,20 @@ import java.lang.reflect.Type;
 			implements JsonSerializer<DefaultPropertyValue<?>>, JsonDeserializer<DefaultPropertyValue<?>> {
 
 		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
-				.create();
+				.registerTypeHierarchyAdapter(PropertyData.class, new PropertyData.GSONAdapter()).create();
 
 		@Override
 		public DefaultPropertyValue<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			JsonObject jsonObject = json.getAsJsonObject();
 			PropertyData<?> data = gson.fromJson(jsonObject, PropertyData.class);
-			return create(data, gson.fromJson(jsonObject.get("defaultValue"), data.getDefaultValue().getClass()));
+			return create(data, data.parseObj(jsonObject.get("defaultValue")));
 		}
 
 		@Override
 		public JsonElement serialize(DefaultPropertyValue<?> value, Type typeOfSrc, JsonSerializationContext context) {
 			JsonObject retVal = gson.toJsonTree(value.property).getAsJsonObject();
-			retVal.addProperty("defaultValue", gson.toJson(value.defaultValue));
+			retVal.add("defaultValue", gson.toJsonTree(value.defaultValue));
 			return retVal;
 		}
 

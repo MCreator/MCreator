@@ -293,10 +293,16 @@ import java.util.stream.Collectors;
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			JComboBox<String> box = arrayData != null ? new JComboBox<>(arrayData) : new JComboBox<>();
-			box.setEditable(arrayData == null);
-			box.setSelectedItem(Objects.requireNonNullElse((String) value, getDefaultValue()));
-			return box;
+			if (arrayData != null) {
+				JComboBox<String> box = new JComboBox<>(arrayData);
+				box.setEditable(false);
+				box.setSelectedItem(Objects.requireNonNullElse((String) value, getDefaultValue()));
+				return box;
+			} else {
+				JTextField box = new JTextField(10);
+				box.setText(Objects.requireNonNullElse((String) value, getDefaultValue()));
+				return box;
+			}
 		}
 
 		@Override public String getValue(JComponent component) {
