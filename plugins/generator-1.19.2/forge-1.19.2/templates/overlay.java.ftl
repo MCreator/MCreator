@@ -89,7 +89,7 @@ package ${package}.client.screens;
                 </#if>
                     RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
 					<#if hasProcedure(component.animatedFrame)>
-				    Minecraft.getInstance().gui.blit(event.getPoseStack(), posX + ${x}, posY + ${y},
+					Minecraft.getInstance().gui.blit(event.getPoseStack(), posX + ${x}, posY + ${y},
 						0, ${component.getWidth(w.getWorkspace())} * (int) <@procedureOBJToNumberCode component.animatedFrame />,
 						${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 						${component.getWidth(w.getWorkspace())}, ${component.getImageHeight(w.getWorkspace())});
