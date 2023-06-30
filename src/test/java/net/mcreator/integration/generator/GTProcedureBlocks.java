@@ -384,6 +384,8 @@ public class GTProcedureBlocks {
 		case "dimensionCustom":
 			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
 					.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new);
+		case "fluid":
+			return ElementUtil.loadAllFluids(workspace);
 		case "gamerulesboolean":
 			return ElementUtil.getAllBooleanGameRules(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);

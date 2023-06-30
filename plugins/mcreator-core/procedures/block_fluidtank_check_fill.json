@@ -31,8 +31,7 @@
     {
       "type": "field_data_list_selector",
       "name": "fluid",
-      "datalist": "fluids",
-      "customEntryProviders": "fluid"
+      "datalist": "fluid"
     }
   ],
   "fields": [
