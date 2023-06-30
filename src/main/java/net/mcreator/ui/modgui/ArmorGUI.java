@@ -723,8 +723,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				new ConditionalTextFieldValidator(bootsName, L10N.t("elementgui.armor.boots_need_name"), enableBoots,
 						true));
 		bodyName.setValidator(
-				new ConditionalTextFieldValidator(bodyName, L10N.t("elementgui.armor.chestplate_needs_name"), enableBody,
-						true));
+				new ConditionalTextFieldValidator(bodyName, L10N.t("elementgui.armor.chestplate_needs_name"),
+						enableBody, true));
 		leggingsName.setValidator(
 				new ConditionalTextFieldValidator(leggingsName, L10N.t("elementgui.armor.leggings_need_name"),
 						enableLeggings, true));
@@ -954,13 +954,17 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsModelPartR.setSelectedItem(armor.bootsModelPartR);
 
 		helmetCollapsiblePanel.toggleVisibility(
-				helmetModel.getSelectedItem() != defaultModel || helmetSpecialInformation.getSelectedProcedure() != null);
+				helmetModel.getSelectedItem() != defaultModel || armor.helmetSpecialInformation.getName() != null
+						|| !armor.helmetSpecialInformation.getFixedValue().equals(""));
 		bodyCollapsiblePanel.toggleVisibility(
-				bodyModel.getSelectedItem() != defaultModel || bodySpecialInformation.getSelectedProcedure() != null);
+				bodyModel.getSelectedItem() != defaultModel || armor.bodySpecialInformation.getName() != null
+						|| !armor.bodySpecialInformation.getFixedValue().equals(""));
 		leggingsCollapsiblePanel.toggleVisibility(
-				leggingsModel.getSelectedItem() != defaultModel || leggingsSpecialInformation.getSelectedProcedure() != null);
+				leggingsModel.getSelectedItem() != defaultModel || armor.leggingsSpecialInformation.getName() != null
+						|| !armor.leggingsSpecialInformation.getFixedValue().equals(""));
 		bootsCollapsiblePanel.toggleVisibility(
-				bootsModel.getSelectedItem() != defaultModel || bootsSpecialInformation.getSelectedProcedure() != null);
+				bootsModel.getSelectedItem() != defaultModel || armor.bootsSpecialInformation.getName() != null
+						|| !armor.bootsSpecialInformation.getFixedValue().equals(""));
 
 		helmetImmuneToFire.setSelected(armor.helmetImmuneToFire);
 		bodyImmuneToFire.setSelected(armor.bodyImmuneToFire);
