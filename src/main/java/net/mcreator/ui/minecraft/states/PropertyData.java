@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
  */
 @JsonAdapter(PropertyData.GSONAdapter.class) public abstract class PropertyData<T> {
 
-	private static final Map<String, Class<? extends PropertyData<?>>> typeMappings = new HashMap<>() {{
+	static final Map<String, Class<? extends PropertyData<?>>> typeMappings = new HashMap<>() {{
 		put("logic", PropertyData.LogicType.class);
 		put("integer", PropertyData.IntegerType.class);
 		put("number", PropertyData.NumberType.class);
