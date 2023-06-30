@@ -219,7 +219,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
-		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
+		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 
 		armorTextureFile.setRenderer(new WTextureComboBoxRenderer(element -> {
 			File[] armorTextures = mcreator.getFolderManager().getArmorTextureFilesForName(element);
