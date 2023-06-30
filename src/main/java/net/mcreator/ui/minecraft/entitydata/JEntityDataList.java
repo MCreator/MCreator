@@ -19,14 +19,18 @@
 
 package net.mcreator.ui.minecraft.entitydata;
 
-import net.mcreator.element.types.LivingEntity;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.JEntriesList;
-import net.mcreator.ui.minecraft.spawntypes.JSpawnListEntry;
+import net.mcreator.ui.minecraft.states.DefaultPropertyValue;
+import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.validation.Validator;
+import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 
 import javax.swing.*;
 import java.awt.*;
@@ -37,7 +41,7 @@ import java.util.stream.Collectors;
 
 public class JEntityDataList extends JEntriesList {
 
-	private final List<JEntityDataEntry> entryList = new ArrayList<>();
+	private final List<JEntityDataEntry<?>> entryList = new ArrayList<>();
 
 	private final JPanel entries = new JPanel();
 
@@ -58,10 +62,7 @@ public class JEntityDataList extends JEntriesList {
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 		entries.setOpaque(false);
 
-		add.addActionListener(e -> {
-			JEntityDataEntry entry = new JEntityDataEntry(gui, entries, entryList);
-			registerEntryUI(entry);
-		});
+		add.addActionListener(e -> showNewEntryDialog());
 
 		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
 
@@ -75,18 +76,54 @@ public class JEntityDataList extends JEntriesList {
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 
-		add.setEnabled(false);
+		add.setEnabled(enabled);
 	}
 
-	public List<LivingEntity.EntityDataEntry> getEntries() {
-		return entryList.stream().map(JEntityDataEntry::getEntry).filter(Objects::nonNull).collect(Collectors.toList());
+	private void showNewEntryDialog() {
+		MCreatorDialog dialog = new MCreatorDialog(mcreator,
+				L10N.t("elementgui.living_entity.entity_data_entries.add_entry.title"), true);
+
+		VTextField name = new VTextField(20);
+		name.setValidator(new JavaMemberNameValidator(name, false));
+		name.enableRealtimeValidation();
+		JComboBox<String> type = new JComboBox<>(new String[] { "Number", "Logic", "String" });
+
+		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+		dialog.getRootPane().setDefaultButton(ok);
+
+		ok.addActionListener(e -> {
+			if (name.getValidationStatus().getValidationResultType() == Validator.ValidationResultType.PASSED) {
+				dialog.setVisible(false);
+				PropertyData<?> data = switch (Objects.requireNonNullElse((String) type.getSelectedItem(), "Number")) {
+					case "Logic" -> new PropertyData.LogicType(name.getText());
+					case "String" -> new PropertyData.StringType(name.getText());
+					default -> new PropertyData.IntegerType(name.getText());
+				};
+				JEntityDataEntry<?> entry = new JEntityDataEntry<>(mcreator, gui, entries, entryList, data);
+				registerEntryUI(entry);
+			}
+		});
+		cancel.addActionListener(e -> dialog.setVisible(false));
+
+		dialog.getContentPane().add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 2, 50, 20,
+				L10N.label("elementgui.living_entity.entity_data_entries.add_entry.name"), name,
+				L10N.label("elementgui.living_entity.entity_data_entries.add_entry.type"), type)));
+		dialog.getContentPane().add("South", PanelUtils.join(ok, cancel));
+		dialog.setSize(360, 180);
+		dialog.setLocationRelativeTo(mcreator);
+		dialog.setVisible(true);
 	}
 
-	public void setEntries(List<LivingEntity.EntityDataEntry> pool) {
+	public List<DefaultPropertyValue<?>> getEntries() {
+		return entryList.stream().map(JEntityDataEntry::getEntry).collect(Collectors.toList());
+	}
+
+	public void setEntries(List<DefaultPropertyValue<?>> pool) {
 		pool.forEach(e -> {
-			JEntityDataEntry entry = new JEntityDataEntry(gui, entries, entryList);
+			JEntityDataEntry<?> entry = new JEntityDataEntry<>(mcreator, gui, entries, entryList, e.property());
 			registerEntryUI(entry);
-			entry.setEntry(e);
+			entry.setEntry(e.defaultValue());
 		});
 	}
 

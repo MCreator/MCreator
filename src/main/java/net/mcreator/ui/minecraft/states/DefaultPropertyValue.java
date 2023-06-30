@@ -29,7 +29,7 @@ import java.lang.reflect.Type;
 																						   @Nonnull T defaultValue) {
 
 	@SuppressWarnings("unchecked")
-	public static <T> DefaultPropertyValue<T> create(PropertyData<T> property, Object defaultValue) {
+	private static <T> DefaultPropertyValue<T> create(PropertyData<T> property, Object defaultValue) {
 		return new DefaultPropertyValue<>(property, (T) defaultValue);
 	}
 

@@ -45,6 +45,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
+import net.mcreator.ui.minecraft.states.DefaultPropertyValue;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.modgui.ItemGUI;
@@ -768,20 +769,12 @@ public class TestWorkspaceDataProvider {
 			livingEntity.modelShadowSize = 1.8;
 
 			if (!emptyLists) {
-				for (int i = 0; i < 3; i++) {
-					LivingEntity.EntityDataEntry entry = new LivingEntity.EntityDataEntry();
-					entry.name = "test" + i;
-					if (i == 0)
-						entry.type = "Number";
-					else if (i == 1)
-						entry.type = "Logic";
-					else
-						entry.type = "String";
-					entry.defaultNumberValue = i;
-					entry.defaultLogicValue = i > 1;
-					entry.defaultStringValue = String.valueOf(i);
-					livingEntity.entityDataEntries.add(entry);
-				}
+				livingEntity.entityDataEntries.add(
+						new DefaultPropertyValue<>(new PropertyData.LogicType("Logic"), _true));
+				livingEntity.entityDataEntries.add(
+						new DefaultPropertyValue<>(new PropertyData.IntegerType("Number"), random.nextInt()));
+				livingEntity.entityDataEntries.add(new DefaultPropertyValue<>(new PropertyData.StringType("String"),
+						getRandomItem(random, new String[] { "Number", "Logic", "String" })));
 			}
 
 			return livingEntity;

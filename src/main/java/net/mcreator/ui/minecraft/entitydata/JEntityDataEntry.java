@@ -19,57 +19,73 @@
 
 package net.mcreator.ui.minecraft.entitydata;
 
-import net.mcreator.element.types.LivingEntity;
+import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.modgui.ModElementGUI;
-import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
+import net.mcreator.ui.minecraft.states.DefaultPropertyValue;
+import net.mcreator.ui.minecraft.states.PropertyData;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class JEntityDataEntry extends JPanel {
+public class JEntityDataEntry<T> extends JPanel {
 
-	private final VTextField name = new VTextField(20);
-	private final JComboBox<String> entryType = new JComboBox<>(new String[] { "Number", "Logic", "String" });
-	private final JSpinner defaultNumberValue = new JSpinner(
-			new SpinnerNumberModel(0, Integer.MIN_VALUE, Integer.MAX_VALUE, 1));
-	private final JComboBox<String> defaultLogicValue = new JComboBox<>(new String[] { "false", "true" });
-	private final JTextField defaultStringValue = new JTextField(15);
+	private final MCreator mcreator;
+	private final PropertyData<T> data;
 
-	private final CardLayout cl = new CardLayout();
-	private final JPanel defaultValue = new JPanel(cl);
+	private final JPanel defValuePane = new JPanel();
+	private JComponent defaultValue;
 
-	public JEntityDataEntry(IHelpContext gui, JPanel parent, List<JEntityDataEntry> entryList) {
-		super(new FlowLayout(FlowLayout.LEFT));
+	public JEntityDataEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JEntityDataEntry<?>> entryList,
+			PropertyData<T> data) {
+		super(new BorderLayout());
+		this.mcreator = mcreator;
+		this.data = data;
+		this.defaultValue = data.getComponent(mcreator, null);
+
+		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		final JComponent container = PanelUtils.expandHorizontally(this);
 
 		parent.add(container);
 		entryList.add(this);
 
-		name.setValidator(new JavaMemberNameValidator(name, false));
-		name.enableRealtimeValidation();
-		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_name"), L10N.label("dialog.entity_data.name")));
-		add(name);
+		JLabel nameLabel = new JLabel(data.getName());
+		nameLabel.setPreferredSize(new Dimension(0, 28));
+		ComponentUtils.deriveFont(nameLabel, 16);
 
-		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_type"), L10N.label("dialog.entity_data.type")));
-		entryType.addActionListener(e -> updateDefaultValueUI());
-		add(entryType);
+		JPanel namePane = new JPanel(new BorderLayout());
+		namePane.setOpaque(false);
+		namePane.add("North", HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_name"),
+				L10N.label("elementgui.living_entity.entity_data_entries.name")));
+		namePane.add("Center", nameLabel);
+		namePane.setPreferredSize(new Dimension(240, 0));
 
-		defaultValue.add(defaultNumberValue, "Number");
-		defaultValue.add(defaultLogicValue, "Logic");
-		defaultValue.add(defaultStringValue, "String");
+		JLabel typeLabel = new JLabel(switch (data.getClass().getSimpleName()) {
+			case "LogicType" -> "Logic";
+			case "StringType" -> "String";
+			default -> "Number";
+		});
+		typeLabel.setPreferredSize(new Dimension(0, 28));
+		ComponentUtils.deriveFont(typeLabel, 16);
 
-		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_default_value"),
-				L10N.label("dialog.entity_data.default_value")));
-		add(defaultValue);
+		JPanel typePane = new JPanel(new BorderLayout());
+		typePane.setOpaque(false);
+		typePane.add("North", HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_type"),
+				L10N.label("elementgui.living_entity.entity_data_entries.type")));
+		typePane.add("Center", typeLabel);
+		typePane.setPreferredSize(new Dimension(80, 0));
+		add("West", PanelUtils.westAndEastElement(namePane, typePane));
+
+		defValuePane.add(defaultValue);
+		add("Center", PanelUtils.join(FlowLayout.LEFT, PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_default_value"),
+						L10N.label("elementgui.living_entity.entity_data_entries.default_value")), defValuePane)));
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("elementgui.common.remove_entry"));
@@ -79,32 +95,18 @@ public class JEntityDataEntry extends JPanel {
 			parent.revalidate();
 			parent.repaint();
 		});
-		add(remove);
+		add("East", PanelUtils.centerInPanel(remove));
 
-		updateDefaultValueUI();
 		parent.revalidate();
 		parent.repaint();
 	}
 
-	private void updateDefaultValueUI() {
-		cl.show(defaultValue, (String) entryType.getSelectedItem());
+	public DefaultPropertyValue<?> getEntry() {
+		return new DefaultPropertyValue<>(data, data.getValue(defaultValue));
 	}
 
-	public LivingEntity.EntityDataEntry getEntry() {
-		LivingEntity.EntityDataEntry entry = new LivingEntity.EntityDataEntry();
-		entry.name = name.getText().replace(" ", "_");
-		entry.type = (String) entryType.getSelectedItem();
-		entry.defaultNumberValue = (int) defaultNumberValue.getValue();
-		entry.defaultLogicValue = Boolean.parseBoolean((String) defaultLogicValue.getSelectedItem());
-		entry.defaultStringValue = defaultStringValue.getText();
-		return entry;
-	}
-
-	public void setEntry(LivingEntity.EntityDataEntry entry) {
-		name.setText(entry.name);
-		entryType.setSelectedItem(entry.type);
-		defaultNumberValue.setValue(entry.defaultNumberValue);
-		defaultLogicValue.setSelectedItem(Boolean.toString(entry.defaultLogicValue));
-		defaultStringValue.setText(entry.defaultStringValue);
+	public void setEntry(Object defaultValue) {
+		defValuePane.removeAll();
+		defValuePane.add(this.defaultValue = data.getComponent(mcreator, defaultValue));
 	}
 }

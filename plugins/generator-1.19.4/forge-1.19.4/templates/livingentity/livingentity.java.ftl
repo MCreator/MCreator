@@ -63,12 +63,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.entityDataEntries?has_content>
 		<#list data.entityDataEntries as entry>
-			<#if entry.type == "Number">
-				public static final EntityDataAccessor<Integer> ${entry.name} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.INT);
-			<#elseif entry.type == "Logic">
-				public static final EntityDataAccessor<Boolean> ${entry.name} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.BOOLEAN);
-			<#elseif entry.type == "String">
-				public static final EntityDataAccessor<String> ${entry.name} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.STRING);
+			<#if entry.defaultValue().getClass().getSimpleName() == "Integer">
+				public static final EntityDataAccessor<Integer> ${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.INT);
+			<#elseif entry.defaultValue().getClass().getSimpleName() == "Boolean">
+				public static final EntityDataAccessor<Boolean> ${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.BOOLEAN);
+			<#elseif entry.defaultValue().getClass().getSimpleName() == "String">
+				public static final EntityDataAccessor<String> ${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.STRING);
 			</#if>
 		</#list>
 	</#if>
@@ -165,19 +165,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 
 	<#if data.entityDataEntries?has_content>
-		@Override
-			protected void defineSynchedData() {
-				super.defineSynchedData();
-				<#list data.entityDataEntries as entry>
-					<#if entry.type == "Number">
-						this.entityData.define(${entry.name}, ${entry.defaultNumberValue});
-					<#elseif entry.type == "Logic">
-						this.entityData.define(${entry.name}, ${entry.defaultLogicValue});
-					<#elseif entry.type == "String">
-						this.entityData.define(${entry.name}, "${entry.defaultStringValue}");
-					</#if>
-				</#list>
-			}
+		@Override protected void defineSynchedData() {
+			super.defineSynchedData();
+			<#list data.entityDataEntries as entry>
+				this.entityData.define(${entry.property().getName()}, ${entry.defaultValue()?is_string?then("\"" + entry.defaultValue() + "\"", entry.defaultValue())});
+			</#list>
+		}
 	</#if>
 
 	<#if data.flyingMob>

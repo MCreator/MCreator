@@ -239,10 +239,13 @@ public class ElementUtil {
 	}
 
 	public static List<String> loadEntityDataListFromCustomEntity(Workspace workspace, String entityName, String type) {
-		LivingEntity entity = ((LivingEntity) workspace.getModElementByName(entityName.replace("CUSTOM:", ""))
-				.getGeneratableElement());
-		if (entity != null)
-			return entity.entityDataEntries.stream().filter(e -> type.equals(e.type)).map(e -> e.name).toList();
+		LivingEntity entity = (LivingEntity) workspace.getModElementByName(entityName.replace("CUSTOM:", ""))
+				.getGeneratableElement();
+		if (entity != null) {
+			return entity.entityDataEntries.stream()
+					.filter(e -> e.property().getDefaultValue().getClass().getSimpleName().equals(type))
+					.map(e -> e.property().getName()).toList();
+		}
 		return new ArrayList<>();
 	}
 

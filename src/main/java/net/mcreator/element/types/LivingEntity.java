@@ -40,6 +40,7 @@ import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.minecraft.states.DefaultPropertyValue;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -130,7 +131,7 @@ import java.util.*;
 	public Sound deathSound;
 	public Sound stepSound;
 
-	public List<EntityDataEntry> entityDataEntries;
+	public List<DefaultPropertyValue<?>> entityDataEntries;
 
 	public Procedure onStruckByLightning;
 	public Procedure whenMobFalls;
@@ -186,15 +187,6 @@ import java.util.*;
 		this.inventoryStackSize = 64;
 
 		this.entityDataEntries = new ArrayList<>();
-	}
-
-	public static class EntityDataEntry {
-		public String name;
-		public String type;
-
-		public int defaultNumberValue;
-		public boolean defaultLogicValue;
-		public String defaultStringValue;
 	}
 
 	@Override public Model getEntityModel() {
