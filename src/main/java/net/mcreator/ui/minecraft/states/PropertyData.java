@@ -306,7 +306,9 @@ import java.util.stream.Collectors;
 		}
 
 		@Override public String getValue(JComponent component) {
-			return (String) ((JComboBox<?>) component).getSelectedItem();
+			return (String) (component instanceof JComboBox<?> ?
+					((JComboBox<?>) component).getSelectedItem() :
+					((JTextField) component).getText());
 		}
 	}
 
