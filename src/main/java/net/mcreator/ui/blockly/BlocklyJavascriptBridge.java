@@ -134,29 +134,31 @@ public class BlocklyJavascriptBridge {
 			@Nullable String customEntryProviders, JSObject callback) {
 		String[] retval = switch (type) {
 			case "entity" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList());
+					w -> ElementUtil.loadAllEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					"entity");
 			case "spawnableEntity" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w))
-							.toList());
+							.toList(), "entity");
 			case "biome" -> openDataListEntrySelector(
-					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList());
-			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds);
+					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					"biome");
+			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
 			case "procedure" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
-							.map(ModElement::getName).toArray(String[]::new));
+							.map(ModElement::getName).toArray(String[]::new), "procedure");
 			case "arrowProjectile" -> openDataListEntrySelector(
-					w -> ElementUtil.loadArrowProjectiles(w).stream().filter(e -> e.isSupportedInWorkspace(w))
-							.toList());
+					w -> ElementUtil.loadArrowProjectiles(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					"projectiles");
 			default -> {
 				if (type.startsWith("procedure_retval_")) {
 					var variableType = VariableTypeLoader.INSTANCE.fromName(
 							StringUtils.removeStart(type, "procedure_retval_"));
-					yield openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType));
+					yield openStringEntrySelector(w -> ElementUtil.getProceduresOfType(w, variableType), "procedure");
 				}
 
 				if (!DataListLoader.loadDataList(type).isEmpty()) {
 					yield openDataListEntrySelector(w -> ElementUtil.loadDataListAndElements(w, type, true, typeFilter,
-							StringUtils.split(customEntryProviders, ',')));
+							StringUtils.split(customEntryProviders, ',')), type);
 				}
 
 				yield new String[]{"", L10N.t("blockly.extension.data_list_selector.no_entry")};
@@ -170,11 +172,20 @@ public class BlocklyJavascriptBridge {
 	 * Opens a data list selector window for the searchable Blockly selectors
 	 *
 	 * @param entryProvider The function that provides the entries from a given workspace
+	 * @param type          The type of the data list, used for the selector title and message
 	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
 	 */
-	private String[] openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider) {
+	private String[] openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
 		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
-		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector.message");
+		String title, message;
+		if (DataListLoader.getCache().containsKey(type)) {
+			String dataList = L10N.t("dialog.generator_selector.coverage." + type);
+			title = L10N.t("dialog.selector.title", dataList);
+			message = L10N.t("dialog.selector.message", dataList);
+		} else {
+			title = L10N.t("dialog.selector." + type + ".title");
+			message = L10N.t("dialog.selector." + type + ".message");
+		}
 
 		if (SwingUtilities.isEventDispatchThread()
 				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
@@ -204,11 +215,20 @@ public class BlocklyJavascriptBridge {
 	 * Opens a string selector window for the searchable Blockly selectors
 	 *
 	 * @param entryProvider The function that provides the strings from a given workspace
+	 * @param type          The type of the data list, used for the selector title and message
 	 * @return A {"value", "value"} pair (strings don't have readable names!), or the default entry if no string was selected
 	 */
-	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider) {
+	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
 		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
-		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector.message");
+		String title, message;
+		if (DataListLoader.getCache().containsKey(type)) {
+			String dataList = L10N.t("dialog.generator_selector.coverage." + type);
+			title = L10N.t("dialog.selector.title", dataList);
+			message = L10N.t("dialog.selector.message", dataList);
+		} else {
+			title = L10N.t("dialog.selector." + type + ".title");
+			message = L10N.t("dialog.selector." + type + ".message");
+		}
 
 		if (SwingUtilities.isEventDispatchThread()
 				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
