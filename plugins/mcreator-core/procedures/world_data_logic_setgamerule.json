@@ -8,8 +8,7 @@
     {
       "type": "field_data_list_selector",
       "name": "gamerulesboolean",
-      "datalist": "gamerulesboolean",
-      "customEntryProviders": "gamerule"
+      "datalist": "gamerulesboolean"
     }
   ],
   "inputsInline": true,
