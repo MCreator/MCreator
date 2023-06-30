@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
  */
 @JsonAdapter(PropertyData.GSONAdapter.class) public abstract class PropertyData<T> {
 
-	static final Map<String, Class<? extends PropertyData<?>>> typeMappings = new HashMap<>() {{
+	private static final Map<String, Class<? extends PropertyData<?>>> typeMappings = new HashMap<>() {{
 		put("logic", PropertyData.LogicType.class);
 		put("integer", PropertyData.IntegerType.class);
 		put("number", PropertyData.NumberType.class);
@@ -271,6 +271,10 @@ import java.util.stream.Collectors;
 	public static class StringType extends PropertyData<String> {
 		private final String[] arrayData;
 
+		public StringType(String name) {
+			this(name, null);
+		}
+
 		public StringType(String name, String[] arrayData) {
 			super(name);
 			this.arrayData = arrayData;
@@ -289,8 +293,8 @@ import java.util.stream.Collectors;
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			JComboBox<String> box = new JComboBox<>(arrayData);
-			box.setEditable(false);
+			JComboBox<String> box = arrayData != null ? new JComboBox<>(arrayData) : new JComboBox<>();
+			box.setEditable(arrayData == null);
 			box.setSelectedItem(Objects.requireNonNullElse((String) value, getDefaultValue()));
 			return box;
 		}

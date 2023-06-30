@@ -43,8 +43,7 @@ import java.lang.reflect.Type;
 		public DefaultPropertyValue<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			JsonObject jsonObject = json.getAsJsonObject();
-			PropertyData<?> data = gson.fromJson(jsonObject,
-					PropertyData.typeMappings.get(jsonObject.get("type").getAsString()));
+			PropertyData<?> data = gson.fromJson(jsonObject, PropertyData.class);
 			return create(data, gson.fromJson(jsonObject.get("defaultValue"), data.getDefaultValue().getClass()));
 		}
 
