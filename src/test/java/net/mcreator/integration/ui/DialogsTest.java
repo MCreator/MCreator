@@ -24,6 +24,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.integration.TestSetup;
+import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.AboutAction;
@@ -35,6 +36,9 @@ import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.states.JStateLabel;
+import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -51,6 +55,9 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 import java.util.Arrays;
 import java.util.Collections;
 
@@ -161,10 +168,38 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new LabelDialog(editor, null));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new OutputSlotDialog(editor, null));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new TextFieldDialog(editor, null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new EntityModelDialog(editor, null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new ImageButtonDialog(editor, null));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new TooltipDialog(editor, null));
 	}
 
 	@Test public void testAIConditionEditor() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AIConditionEditor.open(mcreator, null));
+	}
+
+	@Test public void testStateEditorDialog() throws Throwable {
+		List<PropertyData<?>> testProps = new ArrayList<>();
+		testProps.add(new PropertyData.LogicType("logic"));
+		testProps.add(new PropertyData.IntegerType("integer"));
+		testProps.add(new PropertyData.IntegerType("integer2", -100, 100));
+		testProps.add(new PropertyData.NumberType("number"));
+		testProps.add(new PropertyData.NumberType("number2", -0.0001, 1000000));
+		testProps.add(new PropertyData.StringType("text", ElementUtil.loadDirections()));
+		Random rng = new Random();
+		StateMap testState = new StateMap();
+		if (rng.nextBoolean())
+			testState.put(testProps.get(0), rng.nextBoolean());
+		if (rng.nextBoolean())
+			testState.put(testProps.get(1), rng.nextInt());
+		if (rng.nextBoolean())
+			testState.put(testProps.get(2), rng.nextInt());
+		if (rng.nextBoolean())
+			testState.put(testProps.get(3), rng.nextDouble());
+		if (rng.nextBoolean())
+			testState.put(testProps.get(4), rng.nextDouble());
+		if (rng.nextBoolean())
+			testState.put(testProps.get(5), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> StateEditorDialog.open(mcreator, testProps, testState, JStateLabel.NumberMatchType.EQUAL));
 	}
 
 	@Test public void testListEditor() throws Throwable {

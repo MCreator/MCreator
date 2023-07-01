@@ -45,6 +45,9 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
+import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.StateMap;
+import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
@@ -283,7 +286,9 @@ public class TestWorkspaceDataProvider {
 	private static GeneratableElement getExampleFor(ModElement modElement, boolean uiTest, Random random, boolean _true,
 			boolean emptyLists, int valueIndex) {
 		List<MCItem> blocksAndItems = ElementUtil.loadBlocksAndItems(modElement.getWorkspace());
+		List<MCItem> blocksAndItemsAndTags = ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace());
 		List<MCItem> blocks = ElementUtil.loadBlocks(modElement.getWorkspace());
+		List<MCItem> blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
 		List<DataListEntry> biomes = ElementUtil.loadAllBiomes(modElement.getWorkspace());
 
 		if (ModElementType.ADVANCEMENT.equals(modElement.getType())) {
@@ -606,6 +611,9 @@ public class TestWorkspaceDataProvider {
 				components.add(
 						new EntityModel(60, 20, new Procedure("entity1"), new Procedure(!_true ? "condition4" : null),
 								30, 270, !_true));
+				components.add(new Tooltip(AbstractWYSIWYGDialog.textToMachineName(components, null,
+						"This is --...p a test string ŽĐĆ @ /test//\" tes___"), 20, 40, 70, 10,
+							new StringProcedure(_true ? "string1" : null, "fixed value 1"), new Procedure("condition4")));
 			}
 			gui.components = components;
 			return gui;
@@ -897,10 +905,11 @@ public class TestWorkspaceDataProvider {
 			armor.knockbackResistance = 3.148;
 			armor.repairItems = new ArrayList<>();
 			if (!emptyLists) {
-				armor.repairItems.addAll(
-						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
-								.limit(blocksAndItems.size() / 4)
+				armor.repairItems = new ArrayList<>(
+						blocksAndItemsAndTags.stream().skip(_true ? 0 : ((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
+								.limit(blocksAndItemsAndTags.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				armor.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 			}
 			return armor;
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
@@ -1067,7 +1076,35 @@ public class TestWorkspaceDataProvider {
 			}
 			item.texture = "test2";
 			item.renderType = 0;
-			item.customModelName = "Normal";
+			item.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
+
+			item.customProperties = new HashMap<>();
+			item.states = new ArrayList<>();
+			if (!emptyLists) {
+				int size1 = random.nextInt(3) + 1;
+				for (int i = 1; i <= size1; i++)
+					item.customProperties.put("property" + i, new Procedure("number" + i));
+
+				int size2 = random.nextInt(4) + 1;
+				for (int i = 0; i < size2; i++) {
+					StateMap stateMap = new StateMap();
+
+					for (int j = 2; j <= size1; j++) {
+						if (random.nextBoolean()) {
+							stateMap.put(new PropertyData.NumberType("CUSTOM:property" + j), random.nextDouble());
+						}
+					}
+
+					Item.StateEntry stateEntry = new Item.StateEntry();
+					stateEntry.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
+					stateEntry.texture = i == 0 ? "test" : "test" + i;
+					stateEntry.renderType = 0;
+					stateEntry.stateMap = stateMap;
+
+					item.states.add(stateEntry);
+				}
+			}
+
 			item.isFood = _true;
 			item.nutritionalValue = 5;
 			item.saturation = 0.8f;
@@ -1307,9 +1344,10 @@ public class TestWorkspaceDataProvider {
 			}
 			block.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
-				block.blocksToReplace.addAll(
-						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
+				block.blocksToReplace = new ArrayList<>(
+						blocksAndTags.stream().skip(_true ? 0 : ((blocksAndTags.size() / 4) * valueIndex)).limit(blocksAndTags.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				block.blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 			}
 			block.generationShape = _true ? "UNIFORM" : "TRIANGLE";
 			block.frequencyPerChunks = 6;
@@ -1488,10 +1526,11 @@ public class TestWorkspaceDataProvider {
 			enchantment.canVillagerTrade = _true;
 			enchantment.compatibleItems = new ArrayList<>();
 			if (!emptyLists) {
-				enchantment.compatibleItems.addAll(
-						blocksAndItems.stream().skip(_true ? 0 : ((long) (blocksAndItems.size() / 4) * valueIndex))
-								.limit(blocksAndItems.size() / 4)
+				enchantment.compatibleItems = new ArrayList<>(
+						blocksAndItemsAndTags.stream().skip(_true ? 0 : ((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
+								.limit(blocksAndItemsAndTags.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				enchantment.compatibleItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 				enchantment.excludeEnchantments = _true;
 			}
 			enchantment.compatibleEnchantments = new ArrayList<>();
@@ -1682,62 +1721,64 @@ public class TestWorkspaceDataProvider {
 		}
 		if (!emptyLists) {
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocks(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 		}
 		tool.repairItems = new ArrayList<>();
 		if (!emptyLists) {
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName()));
+					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 		}
 		tool.onRightClickedInAir = new Procedure("procedure1");
 		tool.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
