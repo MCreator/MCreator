@@ -314,7 +314,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	public static boolean isFileSupported(String fileName) {
-		return Arrays.asList("png", "gif").contains(FilenameUtilsPatched.getExtension(fileName));
+		return Arrays.asList("bmp", "gif", "jpeg", "jpg", "png", "tiff", "tif", "wbmp").contains(FilenameUtilsPatched.getExtension(fileName));
 	}
 
 	@Override public ViewBase showView() {
