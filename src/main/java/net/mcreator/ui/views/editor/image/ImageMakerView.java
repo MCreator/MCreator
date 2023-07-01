@@ -184,7 +184,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		}
 	}
 
-	public void openInViewMode(FileNode image) {
+	public void openInReadOnlyMode(FileNode image) {
 		String[] path = image.splitPath();
 		name = FilenameUtilsPatched.getName(path[1]);
 		canEdit = false;

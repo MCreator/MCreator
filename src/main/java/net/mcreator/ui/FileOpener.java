@@ -38,7 +38,7 @@ public class FileOpener {
 		} else if (ImageMakerView.isFileSupported(file.toString())) {
 			ImageMakerView imageMakerView = new ImageMakerView(mcreator);
 			if (file instanceof FileNode node)
-				imageMakerView.openInViewMode(node);
+				imageMakerView.openInReadOnlyMode(node);
 			else if (file instanceof File pic)
 				imageMakerView.openInEditMode(pic);
 			else
