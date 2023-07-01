@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
@@ -48,8 +49,8 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("unused") public class LivingEntity extends GeneratableElement
 		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
@@ -89,6 +90,7 @@ import java.util.List;
 	public double attackKnockback;
 	public double knockbackResistance;
 	public double movementSpeed;
+	public double stepHeight;
 	public double armorBaseValue;
 	public int trackingRange;
 	public int followRange;
@@ -140,7 +142,7 @@ import java.util.List;
 
 	public boolean hasAI;
 	public String aiBase;
-	public String aixml;
+	@BlocklyXML("aitasks") public String aixml;
 
 	public boolean breedable;
 	public boolean tameable;
@@ -175,7 +177,7 @@ import java.util.List;
 		this.rangedItemType = "Default item";
 		this.rangedAttackInterval = 20;
 		this.rangedAttackRadius = 10;
-
+		this.stepHeight = 0.6;
 		this.followRange = 16;
 
 		this.inventorySize = 9;
@@ -218,6 +220,7 @@ import java.util.List;
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks(),
+					getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK),
 					this.getModElement().getGenerator()
 							.getTemplateGeneratorFromName(BlocklyEditorType.AI_TASK.registryName()),
 					additionalData).setTemplateExtension(
@@ -241,6 +244,10 @@ import java.util.List;
 		if (hasSpawnEgg)
 			return List.of(new MCItem.Custom(this.getModElement(), "spawn_egg", "item", "Spawn egg"));
 		return Collections.emptyList();
+	}
+
+	@Override public List<MCItem> getCreativeTabItems() {
+		return providedMCItems();
 	}
 
 	@Override public ImageIcon getIconForMCItem(Workspace workspace, String suffix) {

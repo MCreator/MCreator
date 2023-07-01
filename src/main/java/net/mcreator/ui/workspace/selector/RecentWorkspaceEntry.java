@@ -19,7 +19,6 @@
 package net.mcreator.ui.workspace.selector;
 
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;

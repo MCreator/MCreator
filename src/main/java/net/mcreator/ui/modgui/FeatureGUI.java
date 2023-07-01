@@ -57,7 +57,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class FeatureGUI extends ModElementGUI<Feature> {
+public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelHolder {
+
 	private ProcedureSelector generateCondition;
 	private BiomeListField restrictionBiomes;
 	private DimensionListField restrictionDimensions;
@@ -109,7 +110,7 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 		propertiesAndCondition.setOpaque(false);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE).getDefinedBlocks();
-		blocklyPanel = new BlocklyPanel(mcreator);
+		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.FEATURE);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
@@ -209,4 +210,9 @@ public class FeatureGUI extends ModElementGUI<Feature> {
 
 		return feature;
 	}
+
+	@Override public List<BlocklyPanel> getBlocklyPanels() {
+		return List.of(blocklyPanel);
+	}
+
 }

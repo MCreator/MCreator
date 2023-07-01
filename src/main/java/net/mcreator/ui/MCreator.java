@@ -38,14 +38,16 @@ import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.notifications.INotificationConsumer;
+import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.vcs.WorkspaceVCS;
 import net.mcreator.workspace.IWorkspaceProvider;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -61,7 +63,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider {
+public final class MCreator extends JFrame implements IWorkspaceProvider, IGeneratorProvider, INotificationConsumer {
 
 	private static final Logger LOG = LogManager.getLogger("MCreator");
 
@@ -89,18 +91,14 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	private final long windowUID;
 
+	private final NotificationsRenderer notificationsRenderer;
+
 	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		LOG.info("Opening MCreator workspace: " + workspace.getWorkspaceSettings().getModID());
 
 		this.windowUID = System.currentTimeMillis();
 		this.workspace = workspace;
 		this.application = application;
-
-		WorkspaceVCS vcs = WorkspaceVCS.loadVCSWorkspace(this.workspace);
-		if (vcs != null) {
-			this.workspace.setVCS(vcs);
-			LOG.info("Loaded VCS for current workspace");
-		}
 
 		this.gradleConsole = new GradleConsole(this);
 		this.gradleConsole.addGradleStateListener(new GradleStateListener() {
@@ -142,10 +140,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (OS.getOS() == OS.MAC)
 			getRootPane().putClientProperty("apple.awt.fullscreenable", true);
 
-		if (PreferencesManager.PREFERENCES.hidden.fullScreen)
+		if (PreferencesManager.PREFERENCES.hidden.fullScreen.get())
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-		setIconImage(UIRES.getBuiltIn("icon").getImage());
+		setIconImage(UIRES.getAppIcon().getImage());
 		setLocationRelativeTo(null);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -172,7 +170,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		// Load backgrounds depending on the background source
 		List<Image> bgimages = new ArrayList<>();
-		switch (PreferencesManager.PREFERENCES.ui.backgroundSource) {
+		switch (PreferencesManager.PREFERENCES.ui.backgroundSource.get()) {
 		case "All":
 			bgimages.addAll(BackgroundLoader.loadThemeBackgrounds());
 			bgimages.addAll(BackgroundLoader.loadUserBackgrounds());
@@ -261,9 +259,11 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		splitPane.setOneTouchExpandable(true);
 
 		splitPane.setDividerLocation(280);
-		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos);
+		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.get());
 
 		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
+
+		this.notificationsRenderer = new NotificationsRenderer(splitPane);
 
 		add("South", statusBar);
 		add("North", toolBar);
@@ -282,20 +282,21 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 						Launcher.version.versionlong); // if we open dev version, store new version number in it
 			}
 
-			new Thread(this.workspaceFileBrowser::reloadTree).start();
+			new Thread(this.workspaceFileBrowser::reloadTree, "File browser preloader").start();
 
 			// backup if new version and backups are enabled
 			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
-					&& PreferencesManager.PREFERENCES.backups.backupOnVersionSwitch) {
+					&& PreferencesManager.PREFERENCES.backups.backupOnVersionSwitch.get()) {
 				ShareableZIPManager.exportZIP(L10N.t("dialog.workspace.export_backup"),
 						new File(workspace.getFolderManager().getWorkspaceCacheDir(),
 								"FullBackup" + workspace.getMCreatorVersion() + ".zip"), this, true);
 			}
 
-			// if we need to setup MCreator, we do so
+			// if we need to set up the workspace, we do so
 			if (WorkspaceGeneratorSetup.shouldSetupBeRan(workspace.getGenerator())) {
 				WorkspaceGeneratorSetupDialog.runSetup(this,
-						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage);
+						PreferencesManager.PREFERENCES.notifications.openWhatsNextPage.get()
+								&& !Launcher.version.isDevelopment());
 			}
 
 			if (workspace.getMCreatorVersion()
@@ -303,9 +304,15 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				RegenerateCodeAction.regenerateCode(this, true, true);
 				workspace.setMCreatorVersion(Launcher.version.versionlong);
 				workspace.getFileManager().saveWorkspaceDirectlyAndWait();
-			} else if (workspace.isRegenerateRequired()) {
+			} else if (workspace.isRegenerateRequired()) { // if workspace is marked for regeneration, we do so
 				RegenerateCodeAction.regenerateCode(this, true, true);
 			}
+
+			// reinit (preload) MCItems so workspace is more snappy when loaded
+			new Thread(() -> {
+				workspace.getModElements().forEach(ModElement::getMCItems);
+				LOG.debug("MCItems preload for mod elements completed");
+			}, "ME preloader").start();
 
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
@@ -325,6 +332,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	@Override public @Nonnull Workspace getWorkspace() {
 		return workspace;
+	}
+
+	@Override public NotificationsRenderer getNotificationsRenderer() {
+		return notificationsRenderer;
 	}
 
 	public StatusBar getStatusBar() {
@@ -352,9 +363,9 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		if (safetoexit) {
 			LOG.info("Closing MCreator window ...");
-			PreferencesManager.PREFERENCES.hidden.fullScreen = getExtendedState() == MAXIMIZED_BOTH;
+			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
 			if (splitPane != null)
-				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos = splitPane.getDividerLocation(); // this one could be stored per workspace in the future
+				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.set(splitPane.getDividerLocation()); // this one could be stored per workspace in the future
 
 			workspace.close();
 

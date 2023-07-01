@@ -66,7 +66,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class AchievementGUI extends ModElementGUI<Achievement> {
+public class AchievementGUI extends ModElementGUI<Achievement> implements IBlocklyPanelHolder {
 
 	private final VTextField achievementName = new VTextField(20);
 	private final VTextField achievementDescription = new VTextField(20);
@@ -211,7 +211,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 		page1group.addValidationElement(achievementDescription);
 
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER).getDefinedBlocks();
-		blocklyPanel = new BlocklyPanel(mcreator);
+		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.JSON_TRIGGER);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
@@ -349,6 +349,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> {
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-achievement");
+	}
+
+	@Override public List<BlocklyPanel> getBlocklyPanels() {
+		return List.of(blocklyPanel);
 	}
 
 }

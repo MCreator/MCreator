@@ -22,6 +22,7 @@ import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.types.Biome;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -37,8 +38,7 @@ import java.util.List;
 public class JSpawnListEntry extends JPanel {
 
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
-	private final JSpinner minNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
-	private final JSpinner maxNumberOfMobsPerGroup = new JSpinner(new SpinnerNumberModel(4, 1, 1000, 1));
+	private final JMinMaxSpinner numberOfMobsPerGroup = new JMinMaxSpinner(4, 4, 1, 1000, 1);
 	private final JComboBox<String> mobSpawningType = new SearchableComboBox<>(
 			ElementUtil.getDataListAsStringArray("mobspawntypes"));
 	private final JComboBox<String> entityType = new SearchableComboBox<>();
@@ -56,6 +56,10 @@ public class JSpawnListEntry extends JPanel {
 		entryList.add(this);
 
 		ElementUtil.loadAllSpawnableEntities(workspace).forEach(e -> entityType.addItem(e.getName()));
+		numberOfMobsPerGroup.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+		numberOfMobsPerGroup.setAllowEqualValues(true);
 
 		add(L10N.label("dialog.spawn_list_entry.entity"));
 		add(entityType);
@@ -69,12 +73,8 @@ public class JSpawnListEntry extends JPanel {
 		add(spawningProbability);
 
 		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/spawn_group_size"),
-				L10N.label("dialog.spawn_list_entry.min_group_size")));
-		add(minNumberOfMobsPerGroup);
-
-		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/spawn_group_size"),
-				L10N.label("dialog.spawn_list_entry.max_group_size")));
-		add(maxNumberOfMobsPerGroup);
+				L10N.label("dialog.spawn_list_entry.group_size")));
+		add(numberOfMobsPerGroup);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
 		remove.setText(L10N.t("dialog.spawn_list_entry.remove_entry"));
@@ -95,8 +95,8 @@ public class JSpawnListEntry extends JPanel {
 		entry.entity = new EntityEntry(workspace, (String) entityType.getSelectedItem());
 		entry.spawnType = (String) mobSpawningType.getSelectedItem();
 		entry.weight = (int) spawningProbability.getValue();
-		entry.minGroup = (int) minNumberOfMobsPerGroup.getValue();
-		entry.maxGroup = (int) maxNumberOfMobsPerGroup.getValue();
+		entry.minGroup = numberOfMobsPerGroup.getIntMinValue();
+		entry.maxGroup = numberOfMobsPerGroup.getIntMaxValue();
 		return entry;
 	}
 
@@ -104,7 +104,7 @@ public class JSpawnListEntry extends JPanel {
 		entityType.setSelectedItem(e.entity.getUnmappedValue());
 		mobSpawningType.setSelectedItem(e.spawnType);
 		spawningProbability.setValue(e.weight);
-		minNumberOfMobsPerGroup.setValue(e.minGroup);
-		maxNumberOfMobsPerGroup.setValue(e.maxGroup);
+		numberOfMobsPerGroup.setMinValue(e.minGroup);
+		numberOfMobsPerGroup.setMaxValue(e.maxGroup);
 	}
 }

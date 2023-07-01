@@ -22,20 +22,34 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
+import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
 
-public class WorkspacePanelResources extends JTabbedPane {
+public class WorkspacePanelResources extends AbstractWorkspacePanel {
 
-	public WorkspacePanelTextures workspacePanelTextures;
-	public WorkspacePanelSounds workspacePanelSounds;
-	public WorkspacePanelModels workspacePanelModels;
-	public WorkspacePanelStructures workspacePanelStructures;
-	private final WorkspacePanelScreenshots workspacePanelScreenshots;
+	public final WorkspacePanelTextures workspacePanelTextures;
+	public final WorkspacePanelSounds workspacePanelSounds;
+	public final WorkspacePanelModels workspacePanelModels;
+	public final WorkspacePanelStructures workspacePanelStructures;
+	public final WorkspacePanelScreenshots workspacePanelScreenshots;
+
+	private final JTabbedPane resourceTabs;
 
 	public WorkspacePanelResources(WorkspacePanel workspacePanel) {
-		setOpaque(false);
+		super(workspacePanel);
+		resourceTabs = new JTabbedPane() {
+			@Override protected void paintComponent(Graphics g) {
+				Graphics2D g2d = (Graphics2D) g.create();
+				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
+				g2d.fillRect(0, 0, getWidth(), getHeight());
+				g2d.dispose();
+				super.paintComponent(g);
+			}
+		};
 
 		this.workspacePanelTextures = new WorkspacePanelTextures(workspacePanel);
 		this.workspacePanelSounds = new WorkspacePanelSounds(workspacePanel);
@@ -45,7 +59,7 @@ public class WorkspacePanelResources extends JTabbedPane {
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
 				!= GeneratorStats.CoverageStatus.NONE)
-			addTab(L10N.t("workspace.resources.tab.textures"), workspacePanelTextures);
+			addResourcesTab(L10N.t("workspace.resources.tab.textures"), workspacePanelTextures);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_json")
 				!= GeneratorStats.CoverageStatus.NONE
@@ -53,57 +67,63 @@ public class WorkspacePanelResources extends JTabbedPane {
 				!= GeneratorStats.CoverageStatus.NONE
 				|| workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 				!= GeneratorStats.CoverageStatus.NONE)
-			addTab(L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
+			addResourcesTab(L10N.t("workspace.resources.tab.3d_models"), workspacePanelModels);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("sounds")
 				!= GeneratorStats.CoverageStatus.NONE)
-			addTab(L10N.t("workspace.resources.tab.sounds"), workspacePanelSounds);
+			addResourcesTab(L10N.t("workspace.resources.tab.sounds"), workspacePanelSounds);
 
 		if (workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("structures")
 				!= GeneratorStats.CoverageStatus.NONE)
-			addTab(L10N.t("workspace.resources.tab.structures"), workspacePanelStructures);
+			addResourcesTab(L10N.t("workspace.resources.tab.structures"), workspacePanelStructures);
 
 		if (workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
 				&& !workspacePanel.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
 				.contains("@"))
-			addTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
+			addResourcesTab(L10N.t("workspace.resources.tab.screenshots"), workspacePanelScreenshots);
 
-		for (int i = 0; i < getTabCount(); i++) {
-			setBackgroundAt(i, new Color(0, 0, 0, 0));
+		for (int i = 0; i < resourceTabs.getTabCount(); i++) {
+			resourceTabs.setBackgroundAt(i, new Color(0, 0, 0, 0));
 		}
 
-		setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
+		resourceTabs.setOpaque(false);
+		resourceTabs.setUI(new BasicTabbedPaneUI() {
 			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 			}
 		});
-
-		addChangeListener(changeEvent -> reloadElements());
+		resourceTabs.addChangeListener(changeEvent -> reloadElements());
+		add(resourceTabs);
 	}
 
-	@Override protected void paintComponent(Graphics g) {
-		Graphics2D g2d = (Graphics2D) g.create();
-		g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-		g2d.fillRect(0, 0, getWidth(), getHeight());
-		g2d.dispose();
-		super.paintComponent(g);
+	/**
+	 * Adds a new resource section to this panel.
+	 *
+	 * @param title     The name of the section shown in the workspace.
+	 * @param component The panel representing contents of the resources tab being added.
+	 */
+	public void addResourcesTab(String title, Component component) {
+		resourceTabs.addTab(title, component);
 	}
 
-	public void reloadElements() {
-		if (getSelectedIndex() < 0)
+	@Override public boolean isSupportedInWorkspace() {
+		return resourceTabs.getTabCount() > 0;
+	}
+
+	@Override public void reloadElements() {
+		if (resourceTabs.getSelectedIndex() < 0)
 			return;
 
-		Component component = getComponentAt(getSelectedIndex());
+		Component component = resourceTabs.getComponentAt(resourceTabs.getSelectedIndex());
 		if (component instanceof IReloadableFilterable) {
 			((IReloadableFilterable) component).reloadElements();
 		}
 	}
 
-	public void refilter() {
-		if (getSelectedIndex() < 0)
+	@Override public void refilterElements() {
+		if (resourceTabs.getSelectedIndex() < 0)
 			return;
 
-		Component component = getComponentAt(getSelectedIndex());
+		Component component = resourceTabs.getComponentAt(resourceTabs.getSelectedIndex());
 		if (component instanceof IReloadableFilterable) {
 			((IReloadableFilterable) component).refilterElements();
 		}

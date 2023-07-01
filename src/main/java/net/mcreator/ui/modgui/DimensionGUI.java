@@ -78,6 +78,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 			"elementgui.dimension.imitate_overworld_behaviour");
 
 	private final JCheckBox enablePortal = L10N.checkbox("elementgui.dimension.enable_portal");
+	private final JCheckBox enableIgniter = L10N.checkbox("elementgui.common.enable");
 
 	private final SoundSelector portalSound = new SoundSelector(mcreator);
 	private final JColor airColor = new JColor(mcreator, true, false);
@@ -210,24 +211,19 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalTexture.setOpaque(false);
 		texture.setOpaque(false);
 		enablePortal.setOpaque(false);
+		enableIgniter.setOpaque(false);
 
 		// Currently only Java based mods support dimension portals
 		enablePortal.setSelected(modElement.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
 				== GeneratorFlavor.BaseLanguage.JAVA);
+		enableIgniter.setSelected(modElement.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+				== GeneratorFlavor.BaseLanguage.JAVA);
 
-		JPanel proper = new JPanel(new GridLayout(7, 2, 5, 2));
+		JPanel proper = new JPanel(new GridLayout(4, 2, 5, 2));
+		proper.setOpaque(false);
 
 		JPanel proper22 = new JPanel(new GridLayout(2, 2, 5, 2));
-		proper.setOpaque(false);
 		proper22.setOpaque(false);
-
-		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_portal"),
-				L10N.label("elementgui.dimension.enable_dimension_portal")));
-		proper.add(PanelUtils.join(enablePortal));
-
-		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_frame_block"),
-				L10N.label("elementgui.dimension.portal_frame_block")));
-		proper.add(PanelUtils.join(portalFrame));
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_particles"),
 				L10N.label("elementgui.dimension.portal_particles")));
@@ -241,42 +237,77 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.portal_luminance")));
 		proper.add(luminance);
 
-		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
+		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_frame_block"),
+				L10N.label("elementgui.dimension.portal_frame_block")));
+		proper.add(PanelUtils.join(portalFrame));
+
+		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.dimension.portal_igniter_name")));
-		proper.add(igniterName);
+		proper22.add(igniterName);
 
-		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
+		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.dimension.portal_igniter_tab")));
-		proper.add(igniterTab);
-
-		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
-				L10N.label("elementgui.dimension.portal_igniter_texture")));
-		proper22.add(PanelUtils.join(texture));
-
-		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_texture"),
-				L10N.label("elementgui.dimension.portal_block_texture")));
-		proper22.add(PanelUtils.join(portalTexture));
+		proper22.add(igniterTab);
 
 		portalSound.setText("block.portal.ambient");
 
 		portalParticles.setFont(portalParticles.getFont().deriveFont(16.0f));
 
+		JPanel igniterPanel = new JPanel(new BorderLayout(5, 5));
+		igniterPanel.setOpaque(false);
+
+		igniterPanel.add("North" , PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_igniter"),
+						L10N.label("elementgui.dimension.enable_new_igniter")), enableIgniter));
+
+		igniterPanel.add("Center" , PanelUtils.gridElements(1, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
+						L10N.label("elementgui.dimension.portal_igniter_texture")), PanelUtils.join(texture)));
+
+		igniterPanel.add("South" , PanelUtils.centerAndSouthElement(proper22, portalMakeCondition));
+
+		igniterPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.dimension.portal_igniter_properties"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		JPanel conditions = new JPanel(new GridLayout(1, 1, 5, 2));
+		conditions.setOpaque(false);
+		conditions.add(portalUseCondition);
+
+		JPanel propertiesPanel = new JPanel(new BorderLayout(5, 2));
+		propertiesPanel.setOpaque(false);
+		propertiesPanel.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
+				PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_texture"),
+						L10N.label("elementgui.dimension.portal_block_texture")), PanelUtils.join(portalTexture)),
+				proper)));
+		propertiesPanel.add("South", conditions);
+
+		propertiesPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.dimension.portal_properties"), 0, 0, getFont().deriveFont(12.0f),
+				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
 		JPanel dsg = new JPanel(new BorderLayout(5, 2));
-
 		dsg.setOpaque(false);
+		dsg.add("West", propertiesPanel);
+		dsg.add("East", PanelUtils.pullElementUp(igniterPanel));
 
-		dsg.add("North", proper);
-		dsg.add("South", proper22);
-		dsg.add("Center", PanelUtils.westAndCenterElement(new JEmptyBox(5, 5),
-				PanelUtils.gridElements(2, 1, 5, 2, portalMakeCondition, portalUseCondition)));
+		JPanel portalPanel = new JPanel(new BorderLayout(5, 2));
+		portalPanel.setOpaque(false);
+		portalPanel.add("North", PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_portal"),
+						L10N.label("elementgui.dimension.enable_dimension_portal")), enablePortal));
+		portalPanel.add("Center", dsg);
 
 		pane2.setOpaque(false);
 
-		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(dsg)));
+		pane2.add(PanelUtils.totalCenterInPanel(portalPanel));
 
 		ComponentUtils.deriveFont(igniterName, 16);
 
 		enablePortal.addActionListener(e -> updatePortalElements());
+		enableIgniter.addActionListener(e -> updateIgniterElements(enableIgniter.isSelected()));
 
 		JPanel events = new JPanel(new GridLayout(1, 4, 8, 8));
 		events.add(whenPortaTriggerlUsed);
@@ -288,9 +319,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane5.setOpaque(false);
 
 		igniterName.setValidator(new ConditionalTextFieldValidator(igniterName,
-				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), enablePortal, true));
+				L10N.t("elementgui.dimension.error_portal_igniter_needs_name"), enableIgniter, true));
 		portalTexture.setValidator(new TileHolderValidator(portalTexture, enablePortal));
-		texture.setValidator(new TileHolderValidator(texture, enablePortal));
+		texture.setValidator(new TileHolderValidator(texture, enableIgniter));
 		portalFrame.setValidator(new MCItemHolderValidator(portalFrame, enablePortal));
 		igniterName.enableRealtimeValidation();
 
@@ -323,12 +354,17 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalParticles.setEnabled(enablePortal.isSelected());
 		portalSound.setEnabled(enablePortal.isSelected());
 		luminance.setEnabled(enablePortal.isSelected());
-		igniterName.setEnabled(enablePortal.isSelected());
-		igniterTab.setEnabled(enablePortal.isSelected());
-		texture.setEnabled(enablePortal.isSelected());
 		portalTexture.setEnabled(enablePortal.isSelected());
-		portalMakeCondition.setEnabled(enablePortal.isSelected());
 		portalUseCondition.setEnabled(enablePortal.isSelected());
+		enableIgniter.setEnabled(enablePortal.isSelected());
+		updateIgniterElements(enablePortal.isSelected() && enableIgniter.isSelected());
+	}
+
+	private void updateIgniterElements(boolean enabled) {
+		igniterName.setEnabled(enabled);
+		igniterTab.setEnabled(enabled);
+		texture.setEnabled(enabled);
+		portalMakeCondition.setEnabled(enabled);
 	}
 
 	@Override public void reloadDataLists() {
@@ -361,6 +397,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		mainFillerBlock.setBlock(dimension.mainFillerBlock);
 		fluidBlock.setBlock(dimension.fluidBlock);
 		portalSound.setSound(dimension.portalSound);
+		enableIgniter.setSelected(dimension.enableIgniter);
 		igniterName.setText(dimension.igniterName);
 		portalTexture.setTextureFromTextureName(dimension.portalTexture);
 		texture.setTextureFromTextureName(dimension.texture);
@@ -404,6 +441,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.hasSkyLight = hasSkyLight.isSelected();
 		dimension.enablePortal = enablePortal.isSelected();
 		dimension.portalFrame = portalFrame.getBlock();
+		dimension.enableIgniter = enableIgniter.isSelected();
 		dimension.igniterName = igniterName.getText();
 		dimension.worldGenType = (String) worldGenType.getSelectedItem();
 		dimension.sleepResult = (String) sleepResult.getSelectedItem();

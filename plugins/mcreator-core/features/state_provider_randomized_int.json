@@ -1,0 +1,49 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "source",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "field_input",
+      "name": "property",
+      "text": "age"
+    },
+    {
+      "type": "input_value",
+      "name": "value",
+      "check": "IntProvider"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/bsp.png",
+      "width": 8,
+      "height": 12
+    }
+  ],
+  "extensions": [
+    "state_provider_int_property_validator",
+    "add_image_to_bsp_inputs"
+  ],
+  "inputsInline": true,
+  "output": "BlockStateProvider",
+  "colour": 30,
+  "mcreator": {
+    "toolbox_id": "blocks",
+    "inputs": [
+      "source",
+      "value"
+    ],
+    "fields": [
+      "property"
+    ],
+    "warnings": [
+      "state_provider_int_property_warning"
+    ],
+    "toolbox_init": [
+      "<value name=\"source\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"value\"><block type=\"int_provider_constant\"><field name=\"value\">2</field></block></value>"
+    ]
+  }
+}

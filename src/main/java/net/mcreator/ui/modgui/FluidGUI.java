@@ -34,7 +34,9 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
-import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.DataListComboBox;
+import net.mcreator.ui.minecraft.SoundSelector;
+import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -94,7 +96,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 0, 9999999, 1));
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JComboBox<String> colorOnMap = new JComboBox<>();
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourChanges;
@@ -421,11 +423,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
-				new DataListEntry.Dummy("MISC"));
-
-		ComboBoxUtil.updateComboBoxContents(colorOnMap,
-				Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
+		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -515,7 +513,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.tickRate = (int) tickRate.getValue();
 		fluid.flammability = (int) flammability.getValue();
 		fluid.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
-		fluid.colorOnMap = (String) colorOnMap.getSelectedItem();
+		fluid.colorOnMap = colorOnMap.getSelectedItem().toString();
 		fluid.onBlockAdded = onBlockAdded.getSelectedProcedure();
 		fluid.onNeighbourChanges = onNeighbourChanges.getSelectedProcedure();
 		fluid.onTickUpdate = onTickUpdate.getSelectedProcedure();

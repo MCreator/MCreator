@@ -222,7 +222,6 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 	@Override Predicate<MCItem> getFilter(String term) {
 		String lowercaseTerm = term.toLowerCase(Locale.ENGLISH);
 		return item -> item.getName().toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getReadableName()
-				.toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getDescription()
 				.toLowerCase(Locale.ENGLISH).contains(lowercaseTerm) || item.getType().toLowerCase(Locale.ENGLISH)
 				.contains(lowercaseTerm);
 	}
@@ -238,7 +237,11 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 	}
 
 	public static List<MCItem> openMultiSelectorDialog(MCreator parent, MCItem.ListProvider blocks) {
-		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, false);
+		return openMultiSelectorDialog(parent, blocks, false);
+	}
+
+	public static List<MCItem> openMultiSelectorDialog(MCreator parent, MCItem.ListProvider blocks, boolean supportTags) {
+		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, supportTags);
 		bsd.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		bsd.setVisible(true);
 		return bsd.list.getSelectedValuesList();

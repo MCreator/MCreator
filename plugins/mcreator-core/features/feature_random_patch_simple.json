@@ -12,6 +12,7 @@
       "name": "xzSpread",
       "value": 7,
       "min": 0,
+      "max": 16,
       "precision": 1
     },
     {
@@ -35,6 +36,9 @@
   "inputsInline": true,
   "output": "Feature",
   "colour": 0,
+  "extensions": [
+    "add_image_to_bsp_inputs"
+  ],
   "mcreator": {
     "toolbox_id": "features",
     "toolbox_init": [

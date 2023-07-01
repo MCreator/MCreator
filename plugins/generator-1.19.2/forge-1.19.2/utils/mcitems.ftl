@@ -60,6 +60,97 @@
     </#if>
 </#function>
 
+<#function mappedMCItemToIngredient mappedBlock>
+    <#if mappedBlock.getUnmappedValue().startsWith("TAG:")>
+        <#return "Ingredient.of(ItemTags.create(new ResourceLocation(\"" + mappedBlock.getUnmappedValue().replace("TAG:", "") + "\")))">
+    <#elseif generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+        <#return "Ingredient.of(ItemTags.create(new ResourceLocation(\"" + generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "") + "\")))">
+    <#else>
+        <#return "Ingredient.of(" + mappedMCItemToItemStackCode(mappedBlock, 1) + ")">
+    </#if>
+</#function>
+
+<#function mappedMCItemsToIngredient mappedBlocks=[]>
+    <#if !mappedBlocks??>
+        <#return "Ingredient.EMPTY">
+    <#elseif mappedBlocks?size == 1>
+        <#return mappedMCItemToIngredient(mappedBlocks[0])>
+    <#else>
+        <#assign itemsOnly = true>
+
+        <#list mappedBlocks as mappedBlock>
+            <#if mappedBlock.getUnmappedValue().startsWith("TAG:") || generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+                <#assign itemsOnly = false>
+                <#break>
+            </#if>
+        </#list>
+
+        <#if itemsOnly>
+            <#assign retval = "Ingredient.of(">
+            <#list mappedBlocks as mappedBlock>
+                <#assign retval += mappedMCItemToItemStackCode(mappedBlock, 1)>
+
+                <#if mappedBlock?has_next>
+                    <#assign retval += ",">
+                </#if>
+            </#list>
+            <#return retval + ")">
+        <#else>
+            <#assign retval = "CompoundIngredient.of(">
+            <#list mappedBlocks as mappedBlock>
+                <#assign retval += mappedMCItemToIngredient(mappedBlock)>
+
+                <#if mappedBlock?has_next>
+                    <#assign retval += ",">
+                </#if>
+            </#list>
+            <#return retval + ")">
+        </#if>
+    </#if>
+</#function>
+
+<#function containsAnyOfBlocks elements blockToCheck>
+    <#assign blocks = []>
+    <#assign tags = []>
+    <#assign retval = "">
+
+    <#list elements as block>
+        <#if block.getUnmappedValue().startsWith("TAG:")>
+            <#assign tags += [block.getUnmappedValue().replace("TAG:", "")]>
+        <#elseif generator.map(block.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+            <#assign tags += [generator.map(block.getUnmappedValue(), "blocksitems", 1).replace("#", "")]>
+        <#else>
+            <#assign blocks += [mappedBlockToBlock(block)]>
+        </#if>
+    </#list>
+
+    <#if !blocks?has_content && !tags?has_content>
+        <#return "false">
+    <#elseif blocks?has_content>
+        <#assign retval += "List.of(">
+        <#list blocks as block>
+            <#assign retval += block>
+            <#if block?has_next><#assign retval += ","></#if>
+        </#list>
+        <#assign retval += ").contains("+ blockToCheck + ".getBlock())">
+
+        <#if tags?has_content>
+            <#assign retval += "||">
+        </#if>
+    </#if>
+
+    <#if tags?has_content>
+        <#assign retval += "Stream.of(">
+        <#list tags as tag>
+            <#assign retval += "BlockTags.create(new ResourceLocation(\"" + tag + "\"))">
+            <#if tag?has_next><#assign retval += ","></#if>
+        </#list>
+        <#assign retval += ").anyMatch(" + blockToCheck + "::is)">
+    </#if>
+
+    <#return retval>
+</#function>
+
 <#function mappedBlockToBlockStateProvider mappedBlock>
     <#if mappedBlock?starts_with("/*@BlockStateProvider*/")>
         <#return mappedBlock?replace("/*@BlockStateProvider*/", "")>
@@ -255,8 +346,4 @@
         </#if>
     </#if>
     <#return '{ "Name": "minecraft:air" }'>
-</#function>
-
-<#function toMappedMCItem unmappedValue>
-    <#return generator.toMappedMItemBlock(unmappedValue)>
 </#function>

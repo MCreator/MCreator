@@ -36,8 +36,8 @@ import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
-import net.mcreator.vcs.diff.DiffResult;
-import net.mcreator.vcs.diff.ListDiff;
+import net.mcreator.util.diff.DiffResult;
+import net.mcreator.util.diff.ListDiff;
 import net.mcreator.workspace.ShareableZIPManager;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
@@ -137,7 +137,8 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 				// add new modid workspace to the recent workspaces so it does not get removed from the list
 				mcreator.getApplication().getWorkspaceSelector().addOrUpdateRecentWorkspace(
-						new RecentWorkspaceEntry(mcreator.getWorkspace(), newWorkspaceFile, Launcher.version.getFullString()));
+						new RecentWorkspaceEntry(mcreator.getWorkspace(), newWorkspaceFile,
+								Launcher.version.getFullString()));
 			}
 
 			// handle change of generator in a different manner
@@ -172,7 +173,9 @@ public class WorkspaceSettingsAction extends GradleAction {
 						if (Generator.GENERATOR_CACHE.get(change.workspaceSettings.getCurrentGenerator())
 								.getGeneratorStats().getBaseCoverageInfo().get("model_java")
 								!= GeneratorStats.CoverageStatus.NONE) {
-							List<Model> javaModelsOld = Model.getJavaModels(mcreator.getWorkspace());
+							List<Model> javaModelsOld = Model.getJavaModels(mcreator.getWorkspace(),
+									Generator.GENERATOR_CACHE.get(change.oldSettings.getCurrentGenerator())
+											.getCompatibleJavaModelKeys());
 							List<Model> javaModelsNew = Model.getJavaModels(mcreator.getWorkspace());
 
 							DiffResult<Model> diffResult = ListDiff.getListDiff(javaModelsOld, javaModelsNew);

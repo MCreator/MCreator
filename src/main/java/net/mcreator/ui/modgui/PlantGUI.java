@@ -108,7 +108,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final SoundSelector fallSound = new SoundSelector(mcreator);
 
 	private final JCheckBox isReplaceable = L10N.checkbox("elementgui.plant.is_replaceable");
-	private final JComboBox<String> colorOnMap = new JComboBox<>();
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
 	private final MCItemHolder creativePickItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -183,7 +183,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		restrictionBiomes = new BiomeListField(mcreator);
 		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
-		boundingBoxList = new JBoundingBoxList(mcreator, this);
+		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
+		renderType.addActionListener(e -> boundingBoxList.modelChanged());
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.plant.event_on_added"), Dependency.fromString(
@@ -236,8 +237,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("condition.common.no_additional")).makeInline();
 		isBonemealTargetCondition = new ProcedureSelector(this.withEntry("block/bonemeal_target_condition"), mcreator,
 				L10N.t("elementgui.common.event_is_bonemeal_target"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate/clientSide:logic"))
-				.makeInline();
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/blockstate:blockstate/clientSide:logic")).makeInline();
 		bonemealSuccessCondition = new ProcedureSelector(this.withEntry("block/bonemeal_success_condition"), mcreator,
 				L10N.t("elementgui.common.event_bonemeal_success_condition"), ProcedureSelector.Side.SERVER, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -624,8 +625,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.common.properties_bonemeal"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(PanelUtils.pullElementUp(
-				PanelUtils.northAndCenterElement(selp, bonemealMerger)),
+		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
+				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(selp, bonemealMerger)),
 				PanelUtils.centerAndSouthElement(selp2, soundProperties))));
 		pane3.setOpaque(false);
 
@@ -828,8 +829,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ComboBoxUtil.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(),
 				new DataListEntry.Dummy("PLANT"));
 
-		ComboBoxUtil.updateComboBoxContents(colorOnMap,
-				Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
 		ComboBoxUtil.updateComboBoxContents(growapableSpawnType,
 				Arrays.asList(ElementUtil.getDataListAsStringArray("planttypes")), "Plains");
 
@@ -1034,7 +1033,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.generateAtAnyHeight = generateAtAnyHeight.isSelected();
 		plant.canBePlacedOn = canBePlacedOn.getListElements();
 		plant.isReplaceable = isReplaceable.isSelected();
-		plant.colorOnMap = (String) colorOnMap.getSelectedItem();
+		plant.colorOnMap = colorOnMap.getSelectedItem().toString();
 		plant.offsetType = (String) offsetType.getSelectedItem();
 		plant.aiPathNodeType = (String) aiPathNodeType.getSelectedItem();
 		plant.creativePickItem = creativePickItem.getBlock();

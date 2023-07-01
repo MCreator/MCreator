@@ -37,6 +37,24 @@ Blockly.Extensions.register('is_custom_loop',
         Blockly.libraryBlocks.loops.loopTypes.add(this.type);
     });
 
+// Extension to append the marker image to all blockstate provider inputs
+Blockly.Extensions.register('add_image_to_bsp_inputs',
+    function () {
+        for (let i = 0, input; input = this.inputList[i]; i++) {
+            if (input.connection && input.connection.getCheck() && input.connection.getCheck()[0] == 'BlockStateProvider')
+                input.appendField(new Blockly.FieldImage("./res/bsp_input.png", 8, 20));
+        }
+    });
+
+// Extension to append the marker image to all plain blockstate inputs
+Blockly.Extensions.register('add_image_to_blockstate_inputs',
+    function () {
+        for (let i = 0, input; input = this.inputList[i]; i++) {
+            if (input.connection && input.connection.getCheck() && input.connection.getCheck()[0] == 'MCItemBlock')
+                input.appendField(new Blockly.FieldImage("./res/b_input.png", 8, 10));
+        }
+    });
+
 // marks in the xml if the block is attached to a block/item input, for proper mapping
 Blockly.Extensions.registerMutator('mark_attached_to_block_item',
     {
@@ -130,6 +148,27 @@ function getIntProviderMinMax(providerBlock) {
         let blockValue = providerBlock.getField('value').getValue();
         return [blockValue, blockValue];
     }
+    // Check the values for the weighted list int provider
+    else if (providerBlock.type === 'int_provider_weighted') {
+        // Weighted lists always have at least one input, so the actual returned value won't be [Infinity, -Infinity]
+        let retval = [Infinity, -Infinity];
+        for (let i = 0, input; input = providerBlock.inputList[i]; i++) {
+            if (!input.connection) {
+                continue;
+            }
+            const targetBlockMinMax = getIntProviderMinMax(input.connection.targetBlock());
+            // One of the inputs is missing or not properly defined, return undefined
+            if (!targetBlockMinMax)
+                return undefined;
+            // Compare the min values
+            if (targetBlockMinMax[0] < retval[0])
+                retval[0] = targetBlockMinMax[0];
+            // Compare the max values
+            if (targetBlockMinMax[1] > retval[1])
+                retval[1] = targetBlockMinMax[1]
+        }
+        return retval;
+    }
     // Check the values for the other "terminal" int providers
     else if (providerBlock.type !== 'int_provider_clamped') {
         let blockMin = providerBlock.getField('min').getValue();
@@ -147,7 +186,7 @@ function getIntProviderMinMax(providerBlock) {
         // Otherwise, compare the endpoints of the int provider ranges, then clamp them accordingly
         else
             return [Math.min(Math.max(blockMin, clampedBlockMinMax[0]), blockMax),
-                    Math.max(Math.min(blockMax, clampedBlockMinMax[1]), blockMin)];
+                Math.max(Math.min(blockMax, clampedBlockMinMax[1]), blockMin)];
     }
 }
 
@@ -205,42 +244,44 @@ Blockly.Extensions.register('replace_sphere_validator', validateIntProviderInput
 
 Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs(['height', 0, Infinity]));
 
+Blockly.Extensions.register('state_provider_int_property_validator', validateIntProviderInputs(['value', 0, Infinity]));
+
 // Helper function to provide a mixin for mutators that add a single repeating (dummy) input with additional fields
 // The mutator container block must have a "STACK" statement input for this to work
 // The empty message is localized as "blockly.block.block_type.empty"
 // The input provider is a function that accepts the block being mutated, the input name and the input index
 // If the input provider returns a dummy input (i.e. only repeating fields are being added), isProperInput must be set to false
 function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputProvider, isProperInput = true,
-        fieldNames = []) {
+                                   fieldNames = [], disableIfEmpty) {
     return {
         // Store number of inputs in XML as '<mutation inputs="inputCount_"></mutation>'
-        mutationToDom: function() {
+        mutationToDom: function () {
             var container = document.createElement('mutation');
             container.setAttribute('inputs', this.inputCount_);
             return container;
         },
 
         // Retrieve number of inputs from XML
-        domToMutation: function(xmlElement) {
+        domToMutation: function (xmlElement) {
             this.inputCount_ = parseInt(xmlElement.getAttribute('inputs'), 10);
             this.updateShape_();
         },
 
         // Store number of inputs in JSON
-        saveExtraState: function() {
+        saveExtraState: function () {
             return {
                 'inputCount': this.inputCount_
             };
         },
 
         // Retrieve number of inputs from JSON
-        loadExtraState: function(state) {
+        loadExtraState: function (state) {
             this.inputCount_ = state['inputCount'];
             this.updateShape_();
         },
 
         // "Split" this block into the correct number of inputs in the mutator UI
-        decompose: function(workspace) {
+        decompose: function (workspace) {
             const containerBlock = workspace.newBlock(mutatorContainer);
             containerBlock.initSvg();
             var connection = containerBlock.getInput('STACK').connection;
@@ -254,7 +295,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
         },
 
         // Rebuild this block based on the number of inputs in the mutator UI
-        compose: function(containerBlock) {
+        compose: function (containerBlock) {
             let inputBlock = containerBlock.getInputTargetBlock('STACK');
             // Count number of inputs.
             const connections = [];
@@ -291,7 +332,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
 
         // Keep track of the connected blocks, so that they don't get disconnected whenever an input is added or moved
         // This also keeps track of the field values
-        saveConnections: function(containerBlock) {
+        saveConnections: function (containerBlock) {
             let inputBlock = containerBlock.getInputTargetBlock('STACK');
             let i = 0;
             while (inputBlock) {
@@ -314,13 +355,8 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
         },
 
         // Add/remove inputs from this block
-        updateShape_: function() {
-            // Handle the dummy "empty" input for when there are no proper inputs
-            if (this.inputCount_ && this.getInput('EMPTY')) {
-                this.removeInput('EMPTY');
-            } else if (!this.inputCount_ && !this.getInput('EMPTY')) {
-                this.appendDummyInput('EMPTY').appendField(javabridge.t('blockly.block.' + this.type + '.empty'));
-            }
+        updateShape_: function () {
+            this.handleEmptyInput_(disableIfEmpty);
             // Add proper inputs
             for (let i = 0; i < this.inputCount_; i++) {
                 if (!this.getInput(inputName + i))
@@ -330,34 +366,95 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
             for (let i = this.inputCount_; this.getInput(inputName + i); i++) {
                 this.removeInput(inputName + i);
             }
+        },
+
+        // Handle the dummy "empty" input or warning for when there are no proper inputs
+        handleEmptyInput_: function (disableIfEmpty) {
+            if (disableIfEmpty === undefined) {
+                if (this.inputCount_ && this.getInput('EMPTY')) {
+                    this.removeInput('EMPTY');
+                } else if (!this.inputCount_ && !this.getInput('EMPTY')) {
+                    this.appendDummyInput('EMPTY').appendField(javabridge.t('blockly.block.' + this.type + '.empty'));
+                }
+            } else if (disableIfEmpty) {
+                this.setWarningText(this.inputCount_ ? null : javabridge.t('blockly.block.' + this.type + '.empty'));
+                this.setEnabled(this.inputCount_);
+            }
         }
     }
 }
 
+// Helper function to provide mixins for weighted list mutators
+function weightedListMutatorMixin(inputType) {
+    return simpleRepeatingInputMixin('weighted_list_mutator_container', 'weighted_list_mutator_input', 'entry',
+        function(thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck(inputType).setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.weighted_list.weight'))
+                .appendField(new Blockly.FieldNumber(1, 1, null, 1), 'weight' + index)
+                .appendField(javabridge.t('blockly.block.weighted_list.entry'));
+        }, true, ['weight'], true);
+}
+
 Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepeatingInputMixin(
         'block_predicate_mutator_container', 'block_predicate_mutator_input', 'condition',
-        function(thisBlock, inputName, index) {
+        function (thisBlock, inputName, index) {
             thisBlock.appendValueInput(inputName + index).setCheck('BlockPredicate').setAlign(Blockly.Input.Align.RIGHT)
-                    .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }),
-        undefined, ['block_predicate_mutator_input']);
+    undefined, ['block_predicate_mutator_input']);
 
 Blockly.Extensions.registerMutator('block_list_mutator', simpleRepeatingInputMixin(
         'block_list_mutator_container', 'block_list_mutator_input', 'condition',
-        function(thisBlock, inputName, index) {
+        function (thisBlock, inputName, index) {
             thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.Input.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
                 .appendField(new FieldMCItemSelector('allblocks'), 'block' + index);
         }, false, ['block']),
-        undefined, ['block_list_mutator_input']);
+    undefined, ['block_list_mutator_input']);
+
+Blockly.Extensions.registerMutator('geode_crystal_mutator', simpleRepeatingInputMixin(
+        'geode_crystal_mutator_container', 'geode_crystal_mutator_input', 'crystal',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('MCItemBlock')
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
+                .appendField(new Blockly.FieldImage("./res/b_input.png", 8, 10));
+        }, true, [], true),
+    undefined, ['geode_crystal_mutator_input']);
+
+Blockly.Extensions.registerMutator('ore_feature_mutator', simpleRepeatingInputMixin(
+        'ore_mutator_container', 'ore_mutator_input', 'target',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('OreTarget').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t(
+                    index == 0 ? 'blockly.block.ore_mutator.try' : 'blockly.block.ore_mutator.else_try'));
+        }),
+    undefined, ['ore_mutator_input']);
+
+Blockly.Extensions.registerMutator('weighted_height_provider_mutator', weightedListMutatorMixin('HeightProvider'),
+        undefined, ['weighted_list_mutator_input']);
+
+Blockly.Extensions.registerMutator('weighted_int_provider_mutator', weightedListMutatorMixin('IntProvider'),
+        undefined, ['weighted_list_mutator_input']);
+
+// We cannot use the weighted mutator function, as we need to add image fields too
+Blockly.Extensions.registerMutator('weighted_state_provider_mutator', simpleRepeatingInputMixin(
+        'weighted_list_mutator_container', 'weighted_list_mutator_input', 'entry',
+        function(thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('MCItemBlock').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.weighted_list.weight'))
+                .appendField(new Blockly.FieldNumber(1, 1, null, 1), 'weight' + index)
+                .appendField(javabridge.t('blockly.block.weighted_list.entry'))
+                .appendField(new Blockly.FieldImage("./res/b_input.png", 8, 10));
+        }, true, ['weight'], true),
+    undefined, ['weighted_list_mutator_input']);
 
 // Helper function for extensions that validate one or more resource location text fields
 function validateResourceLocationFields(...fields) {
-    return function() {
+    return function () {
         for (let i = 0; i < fields.length; i++) {
             let field = this.getField(fields[i]);
             // The validator checks if the new input value is a valid resource location
-            field.setValidator(function(newValue) {
+            field.setValidator(function (newValue) {
                 if (/^([a-z0-9_\-\.]+:)?[a-z0-9_\-\.\/]+$/.test(newValue))
                     return newValue;
                 return null;
@@ -367,3 +464,6 @@ function validateResourceLocationFields(...fields) {
 }
 
 Blockly.Extensions.register('tag_input_field_validator', validateResourceLocationFields('tag'));
+
+Blockly.Extensions.register('geode_tag_fields_validator',
+        validateResourceLocationFields('cannot_replace_tag', 'invalid_blocks_tag'));

@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -40,7 +41,7 @@ import java.util.Locale;
 
 	public String permissionLevel;
 
-	public String argsxml;
+	@BlocklyXML("cmdargs") public String argsxml;
 
 	private Command() {
 		this(null);
@@ -60,6 +61,7 @@ import java.util.Locale;
 		return additionalData -> {
 			BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(
 					BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG).getDefinedBlocks(),
+					getModElement().getGenerator().getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG),
 					this.getModElement().getGenerator()
 							.getTemplateGeneratorFromName(BlocklyEditorType.COMMAND_ARG.registryName()),
 					additionalData).setTemplateExtension(
