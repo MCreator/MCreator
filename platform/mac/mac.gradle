@@ -4,10 +4,36 @@ static void convertCRLF(File input, File out) {
     out << input.text.replaceAll('\r\n', '\n')
 }
 
-// locate mkisofs
-def mkisofs_binary = 'mkisofs'
-if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-    mkisofs_binary = projectDir.toString() + '/build/tools/mkisofs/Sample/mkisofs'
+void makeDMG(File directory, File outputDMGFile, String volumeName) {
+    if (Os.isFamily(Os.FAMILY_MAC)) {
+        ant.exec(executable: 'hdiutil', failonerror: true) {
+            arg(value: 'create')
+            arg(value: '-srcfolder')
+            arg(value: directory)
+            arg(value: '-volname')
+            arg(value: volumeName)
+            arg(value: '-ov') // read-only disk image
+            arg(value: '-format')
+            arg(value: 'UDZO') // UDZ0 zlib-compressed image
+            arg(value: '-imagekey')
+            arg(value: 'zlib-level=9') // maximum compression
+            arg(value: outputDMGFile)
+        }
+    } else {
+        def mkisofs_binary = Os.isFamily(Os.FAMILY_WINDOWS) ? '/build/tools/mkisofs/Sample/mkisofs' : 'mkisofs'
+        ant.exec(executable: mkisofs_binary, failonerror: true) {
+            arg(value: '-r')
+            arg(value: '-D')
+            arg(value: '-o')
+            arg(value: outputDMGFile)
+            arg(value: '-mac-name')
+            arg(value: '-V')
+            arg(value: volumeName)
+            arg(value: '-apple')
+            arg(value: '-v')
+            arg(value: directory)
+        }
+    }
 }
 
 tasks.register('exportMacX64', Copy.class) {
@@ -60,20 +86,7 @@ tasks.register('exportMacX64', Copy.class) {
         }
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
-
-        // Create x64 DMG
-        ant.exec(executable: mkisofs_binary, failonerror: true) {
-            arg(value: '-r')
-            arg(value: '-D')
-            arg(value: '-o')
-            arg(value: dmgFile)
-            arg(value: '-mac-name')
-            arg(value: '-V')
-            arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
-            arg(value: '-apple')
-            arg(value: '-v')
-            arg(value: new File(buildDir, 'export/mac_x64'))
-        }
+        makeDMG(new File(buildDir, 'export/mac_x64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
 
@@ -127,20 +140,7 @@ tasks.register('exportMacAarch64', Copy.class) {
         }
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
-
-        // Create Aarch64 DMG
-        ant.exec(executable: mkisofs_binary, failonerror: true) {
-            arg(value: '-r')
-            arg(value: '-D')
-            arg(value: '-o')
-            arg(value: dmgFile)
-            arg(value: '-mac-name')
-            arg(value: '-V')
-            arg(value: 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
-            arg(value: '-apple')
-            arg(value: '-v')
-            arg(value: new File(buildDir, 'export/mac_aarch64'))
-        }
+        makeDMG(new File(buildDir, 'export/mac_aarch64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
 

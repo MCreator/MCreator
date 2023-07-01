@@ -9,6 +9,9 @@
   "inputsInline": true,
   "output": "Feature",
   "colour": 0,
+  "extensions": [
+    "add_image_to_blockstate_inputs"
+  ],
   "mcreator": {
     "toolbox_id": "features",
     "toolbox_init": [

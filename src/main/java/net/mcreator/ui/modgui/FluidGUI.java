@@ -96,7 +96,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 0, 9999999, 1));
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JComboBox<String> colorOnMap = new JComboBox<>();
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourChanges;
@@ -424,9 +424,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
-
-		ComboBoxUtil.updateComboBoxContents(colorOnMap,
-				Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -516,7 +513,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.tickRate = (int) tickRate.getValue();
 		fluid.flammability = (int) flammability.getValue();
 		fluid.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
-		fluid.colorOnMap = (String) colorOnMap.getSelectedItem();
+		fluid.colorOnMap = colorOnMap.getSelectedItem().toString();
 		fluid.onBlockAdded = onBlockAdded.getSelectedProcedure();
 		fluid.onNeighbourChanges = onNeighbourChanges.getSelectedProcedure();
 		fluid.onTickUpdate = onTickUpdate.getSelectedProcedure();
