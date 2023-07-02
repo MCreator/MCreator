@@ -45,7 +45,7 @@ public class JSpawnEntriesList extends JEntriesList {
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
-		add.setText(L10N.t("elementgui.common.add_entry"));
+		add.setText(L10N.t("elementgui.spawnlist.add_entry"));
 		topbar.add(add);
 
 		add("North", topbar);
