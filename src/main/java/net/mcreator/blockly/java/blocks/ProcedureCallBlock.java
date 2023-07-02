@@ -36,56 +36,71 @@ import java.util.stream.Collectors;
 public class ProcedureCallBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
+		Element procedureField = XMLUtil.getFirstChildrenWithName(block, "field");
 		String type = block.getAttribute("type");
 
-		if (element != null && !"".equals(element.getTextContent())) {
-			Procedure procedure = new Procedure(element.getTextContent());
+		if (procedureField != null && !"".equals(procedureField.getTextContent())) {
+			Procedure procedure = new Procedure(procedureField.getTextContent());
 			List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
-			Map<String, String> depTypes = dependencies.stream()
-					.collect(Collectors.toMap(Dependency::getName, Dependency::getRawType));
 
-			int depCount = 0;
-			Map<Integer, String> names = new HashMap<>(), args = new HashMap<>(), types = new HashMap<>();
-			Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
-			if (mutation != null && mutation.hasAttribute("inputs")
-					&& !mutation.getAttribute("inputs").equals("undefined")) {
-				depCount = Integer.parseInt(mutation.getAttribute("inputs"));
-				Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
-						.filter(e -> e.getAttribute("name").matches("name\\d+"))
-						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
-				Map<String, Element> inputs = XMLUtil.getChildrenWithName(block, "value").stream()
-						.filter(e -> e.getAttribute("name").matches("arg\\d+"))
-						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
-				for (int i = 0; i < depCount; i++) {
-					names.put(i, fields.remove("name" + i).getTextContent());
-					if (inputs.containsKey("arg" + i)) {
-						args.put(i, master.directProcessOutputBlockWithoutParentheses(inputs.remove("arg" + i)));
-					} else {
-						args.put(i, "");
-						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-								L10N.t("blockly.errors.call_procedure.missing_inputs", names.get(i))));
-					}
-					types.put(i, depTypes.get(names.get(i)));
-				}
-			}
-
-			dependencies.stream().filter(e -> !names.containsValue(e.getName())).forEach(master::addDependency);
-
+			// If the procedure doesn't actually exist, add a warning and skip this block
 			if (!procedure.exists) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 						L10N.t("blockly.warnings.call_procedure.nonexistent", procedure.getName())));
 				return;
 			}
 
-			List<String> overridden = new ArrayList<>(names.values());
-			dependencies.stream().map(Dependency::getName).forEach(overridden::remove);
-			if (!overridden.isEmpty()) {
-				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-						L10N.t("blockly.warnings.call_procedure.extra_deps", procedure.getName(),
-								String.join(", ", overridden))));
+			// The procedure dependencies, in a flattened {"name": "type"} map
+			Map<String, String> flattenedDeps = dependencies.stream()
+					.collect(Collectors.toMap(Dependency::getName, Dependency::getRawType));
+			List<DependencyInput> depInputs = new ArrayList<>();
+			List<String> skippedDepsNames = new ArrayList<>(), processedDepsNames = new ArrayList<>();
+
+			Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
+			if (mutation != null && mutation.hasAttribute("inputs")
+					&& !mutation.getAttribute("inputs").equals("undefined")) {
+				int depCount = Integer.parseInt(mutation.getAttribute("inputs"));
+				Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
+						.filter(e -> e.getAttribute("name").matches("name\\d+"))
+						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+				Map<String, Element> inputs = XMLUtil.getChildrenWithName(block, "value").stream()
+						.filter(e -> e.getAttribute("name").matches("arg\\d+"))
+						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+
+				for (int i = 0; i < depCount; i++) {
+					String currentName = fields.get("name" + i).getTextContent();
+					String currentArg;
+					if (inputs.containsKey("arg" + i)) {
+						// If the procedure actually has this dependency, also generate the code
+						if (flattenedDeps.containsKey(currentName)) {
+							currentArg = master.directProcessOutputBlockWithoutParentheses(inputs.get("arg" + i));
+						} else {
+							// We don't need to do any further processing, skip this dependency
+							skippedDepsNames.add(currentName);
+							continue;
+						}
+					} else {
+						// Keep processing to look for other missing inputs
+						currentArg = "";
+						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+								L10N.t("blockly.errors.call_procedure.missing_inputs", currentName)));
+					}
+					depInputs.add(new DependencyInput(currentName, flattenedDeps.get(currentName), currentArg));
+					processedDepsNames.add(currentName);
+				}
 			}
 
+			// Add to master all the dependencies that weren't processed
+			dependencies.stream().filter(e -> !processedDepsNames.contains(e.getName())).forEach(master::addDependency);
+
+			// Add a warning for the passed dependencies that aren't used by the selected procedure
+			if (!skippedDepsNames.isEmpty()) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("blockly.warnings.call_procedure.extra_deps", procedure.getName(),
+								String.join(", ", skippedDepsNames))));
+			}
+
+			// Handle dependencies in the command editor
 			if (master instanceof BlocklyToJava blocklyToJava
 					&& blocklyToJava.getEditorType() == BlocklyEditorType.COMMAND_ARG) {
 				List<Dependency> dependenciesProvided;
@@ -119,14 +134,13 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				dataModel.put("procedure", procedure.getName());
 				dataModel.put("dependencies", dependencies);
 				if (type.equals("call_procedure")) {
-					dataModel.put("depCount", depCount);
-					dataModel.put("names", names.keySet().stream().sorted().map(names::get).toArray(String[]::new));
-					dataModel.put("types", types.keySet().stream().sorted().map(types::get).toArray(String[]::new));
-					dataModel.put("args", args.keySet().stream().sorted().map(args::get).toArray(String[]::new));
+					dataModel.put("depCount", depInputs.size());
+					dataModel.put("names", depInputs.stream().map(DependencyInput::name).toArray(String[]::new));
+					dataModel.put("types", depInputs.stream().map(DependencyInput::type).toArray(String[]::new));
+					dataModel.put("args", depInputs.stream().map(DependencyInput::arg).toArray(String[]::new));
 				}
 
-				if (master instanceof BlocklyToJava btj && btj.getEditorType() == BlocklyEditorType.COMMAND_ARG
-						&& type.equals("old_command")) {
+				if (type.equals("old_command")) {
 					master.append(
 							master.getTemplateGenerator().generateFromTemplate("_old_command.java.ftl", dataModel));
 				} else {
@@ -135,6 +149,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				}
 			}
 		} else {
+			// No procedure is selected, skip this block
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.call_procedure.empty")));
 		}
@@ -147,4 +162,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
 	}
+
+	// The record holds info about a single dependency row in the block (name, type, input code)
+	private record DependencyInput(String name, String type, String arg) {}
 }
