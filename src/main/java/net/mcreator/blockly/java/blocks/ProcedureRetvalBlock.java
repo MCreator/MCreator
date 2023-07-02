@@ -115,10 +115,7 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 				dataModel.put("procedure", procedure.getName());
 				dataModel.put("type", type);
 				dataModel.put("dependencies", procedure.getDependencies(master.getWorkspace()));
-				dataModel.put("depCount", depInputs.size());
-				dataModel.put("names", depInputs.stream().map(DependencyInput::name).toArray(String[]::new));
-				dataModel.put("types", depInputs.stream().map(DependencyInput::type).toArray(String[]::new));
-				dataModel.put("args", depInputs.stream().map(DependencyInput::arg).toArray(String[]::new));
+				dataModel.put("depInputs", depInputs.toArray(DependencyInput[]::new));
 
 				String code = master.getTemplateGenerator()
 						.generateFromTemplate("_procedure_retval.java.ftl", dataModel);
@@ -140,5 +137,5 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 	}
 
 	// The record holds info about a single dependency row in the block (name, type, input code)
-	private record DependencyInput(String name, String type, String arg) {}
+	public record DependencyInput(String name, String type, String arg) {}
 }

@@ -134,10 +134,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				dataModel.put("procedure", procedure.getName());
 				dataModel.put("dependencies", dependencies);
 				if (type.equals("call_procedure")) {
-					dataModel.put("depCount", depInputs.size());
-					dataModel.put("names", depInputs.stream().map(DependencyInput::name).toArray(String[]::new));
-					dataModel.put("types", depInputs.stream().map(DependencyInput::type).toArray(String[]::new));
-					dataModel.put("args", depInputs.stream().map(DependencyInput::arg).toArray(String[]::new));
+					dataModel.put("depInputs", depInputs.toArray(DependencyInput[]::new));
 				}
 
 				if (type.equals("old_command")) {
@@ -164,5 +161,5 @@ public class ProcedureCallBlock implements IBlockGenerator {
 	}
 
 	// The record holds info about a single dependency row in the block (name, type, input code)
-	private record DependencyInput(String name, String type, String arg) {}
+	public record DependencyInput(String name, String type, String arg) {}
 }
