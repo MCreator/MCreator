@@ -1,1 +1,0 @@
-Cette option contrôle le type de la variable de l'entité. Les types de variable supportés sont logique, nombre and String.
