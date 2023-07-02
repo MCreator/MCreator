@@ -7,7 +7,9 @@ How to port:
   just needs a copy+paste
 
 IMPORTANT: Make sure to sync files here if any changes to 1.19.4 generator are made so
-the latest base is used for 1.20.x generator.
+the latest base is used for 1.20.x generator. If file is not synced with lates changes from 1.19.4
+generator, make one commit syncing the file to the ref folder and then another commit for 
+actual file move + port.
 
 Primers below:
 
