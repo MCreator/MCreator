@@ -65,20 +65,19 @@ public class JEntityDataList extends JEntriesList {
 		entries = new JTable(entriesModel) {
 			@Override public TableCellEditor getCellEditor(int row, int column) {
 				if (convertColumnIndexToModel(column) == 2) {
-					String name = (String) getValueAt(row, 0);
-					Object value = convertValue(row);
+					DefaultPropertyValue<?> data = toPropertyData(row);
 					switch ((String) getValueAt(row, 1)) {
 					case "Number" -> {
 						return new SpinnerCellEditor(
-								(JSpinner) new PropertyData.IntegerType(name).getComponent(mcreator, value));
+								(JSpinner) data.property().getComponent(mcreator, data.defaultValue()));
 					}
 					case "Logic" -> {
 						return new CheckBoxCellEditor(
-								(JCheckBox) new PropertyData.LogicType(name).getComponent(mcreator, value));
+								(JCheckBox) data.property().getComponent(mcreator, data.defaultValue()));
 					}
 					case "String" -> {
 						return new DefaultCellEditor(
-								(JTextField) new PropertyData.StringType(name).getComponent(mcreator, value));
+								(JTextField) data.property().getComponent(mcreator, data.defaultValue()));
 					}
 					}
 				}
@@ -167,26 +166,20 @@ public class JEntityDataList extends JEntriesList {
 		dialog.setVisible(true);
 	}
 
-	private Object convertValue(int row) {
-		Object value = entries.getValueAt(row, 2);
+	private DefaultPropertyValue<?> toPropertyData(int row) {
+		String name = (String) entries.getValueAt(row, 0);
+		String value = entries.getValueAt(row, 2).toString();
 		return switch ((String) entries.getValueAt(row, 1)) {
-			case "Number" -> Integer.parseInt(value.toString());
-			case "Logic" -> Boolean.parseBoolean(value.toString());
-			default -> value;
+			case "Number" -> new DefaultPropertyValue<>(new PropertyData.IntegerType(name), Integer.parseInt(value));
+			case "Logic" -> new DefaultPropertyValue<>(new PropertyData.LogicType(name), Boolean.parseBoolean(value));
+			default -> new DefaultPropertyValue<>(new PropertyData.StringType(name), value);
 		};
 	}
 
 	public List<DefaultPropertyValue<?>> getEntries() {
 		List<DefaultPropertyValue<?>> retVal = new ArrayList<>();
-		for (int i = 0; i < entriesModel.getRowCount(); i++) {
-			String name = (String) entries.getValueAt(i, 0);
-			PropertyData<?> data = switch ((String) entries.getValueAt(i, 1)) {
-				case "Logic" -> new PropertyData.LogicType(name);
-				case "String" -> new PropertyData.StringType(name);
-				default -> new PropertyData.IntegerType(name);
-			};
-			retVal.add(DefaultPropertyValue.create(data, convertValue(i)));
-		}
+		for (int i = 0; i < entriesModel.getRowCount(); i++)
+			retVal.add(toPropertyData(i));
 		return retVal;
 	}
 
