@@ -35,17 +35,17 @@ package ${package}.command;
 
 @Mod.EventBusSubscriber<#if data.type == 3>(value = Dist.CLIENT)</#if> public class ${name}Command {
 
-	<#if data.type == 3>
+	<#if data.type == data.TYPE_CLIENT_SIDE>
 		@SubscribeEvent public static void registerCommand(RegisterClientCommandsEvent event) {
 			<@commandCode/>
 		}
 	<#else>
 		@SubscribeEvent public static void registerCommand(RegisterCommandsEvent event) {
-			<#if data.type == 1>
+			<#if data.type == data.TYPE_MULTIPLAYER>
 				if (event.getCommandSelection() == Commands.CommandSelection.DEDICATED) {
 					<@commandCode/>
 				}
-			<#elseif data.type == 2>
+			<#elseif data.type == data.TYPE_SINGLEPLAYER>
 				if (event.getCommandSelection() == Commands.CommandSelection.INTEGRATED) {
 					<@commandCode/>
 				}
