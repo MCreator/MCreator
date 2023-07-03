@@ -217,21 +217,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#assign btid = 0>
 
 		<#list data.getComponentsOfType("Button") as component>
-			<#if component.isUndecorated>
-				${component.getName()} = new PlainTextButton(
-                	this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-                	${component.width}, ${component.height},
-                	Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
-                	<@buttonOnClick component/>, this.font
-				)<@buttonDisplayCondition component/>;
-			<#else>
-				${component.getName()} = new Button(
-                	this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-                	${component.width}, ${component.height},
-                	Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
-                	<@buttonOnClick component/>
-				)<@buttonDisplayCondition component/>;
-		    </#if>
+			${component.getName()} = new <#if component.isUndecorated>PlainTextButton<#else>Button</#if>(
+				this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+				${component.width}, ${component.height},
+				Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
+				<@buttonOnClick component/><#if component.isUndecorated>, this.font</#if>
+			)<@buttonDisplayCondition component/>;
 
 			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
