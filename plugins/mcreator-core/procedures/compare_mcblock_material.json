@@ -10,10 +10,12 @@
       "src": "./res/b.png",
       "width": 8,
       "height": 36
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "material",
+      "datalist": "materials"
     }
-  ],
-  "extensions": [
-    "material_list_provider"
   ],
   "inputsInline": true,
   "output": "Boolean",
