@@ -42,11 +42,17 @@ public abstract class PreferencesEntry<T> {
 	private transient final T defaultValue;
 
 	private transient PreferencesSection section;
+	private final transient boolean allowNullValue;
 
 	public PreferencesEntry(String id, T value) {
+		this(id, value, false);
+	}
+
+	public PreferencesEntry(String id, T value, boolean allowNullValue) {
 		this.id = id;
 		this.value = value;
 		this.defaultValue = value;
+		this.allowNullValue = allowNullValue;
 	}
 
 	void setSection(PreferencesSection section) {
@@ -90,6 +96,10 @@ public abstract class PreferencesEntry<T> {
 
 	public PreferencesSection getSection() {
 		return section;
+	}
+
+	public boolean allowsNullValue() {
+		return allowNullValue;
 	}
 
 	@Override public String toString() {

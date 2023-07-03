@@ -20,6 +20,7 @@
 package net.mcreator.preferences.entries;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonNull;
 import javafx.stage.FileChooser;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
@@ -45,7 +46,7 @@ public class FileEntry extends PreferencesEntry<File> {
 	 * @param value The default value of the entry
 	 */
 	public FileEntry(String id, File value, boolean allowNullValue) {
-		super(id, value);
+		super(id, value, allowNullValue);
 		this.isFolder = true;
 		this.allowNullValue = allowNullValue;
 		this.filters = new FileChooser.ExtensionFilter[] {};
@@ -59,7 +60,7 @@ public class FileEntry extends PreferencesEntry<File> {
 	 * @param filters One or multiple filters to apply to the {@link FileChooser} dialog
 	 */
 	public FileEntry(String id, File value, boolean allowNullValue, FileChooser.ExtensionFilter... filters) {
-		super(id, value);
+		super(id, value, allowNullValue);
 		this.isFolder = false;
 		this.allowNullValue = allowNullValue;
 		this.filters = filters;
@@ -73,13 +74,14 @@ public class FileEntry extends PreferencesEntry<File> {
 	}
 
 	@Override public void setValueFromComponent(JComponent component) {
-		File file = ((JFileSelector) component).getFile();
-		// we don't use null as the old value is kept
-		this.value = Objects.requireNonNullElseGet(file, () -> new File("Not specified"));
+		this.value = ((JFileSelector) component).getFile();
 	}
 
 	@Override public void setValueFromJsonElement(JsonElement object) {
-		this.value = new File(object.getAsJsonObject().get("path").getAsString());
+		if (object != null && object != JsonNull.INSTANCE)
+			this.value = new File(object.getAsJsonObject().get("path").getAsString());
+		else
+			this.value = null;
 
 	}
 

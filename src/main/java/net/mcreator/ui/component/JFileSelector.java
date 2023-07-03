@@ -92,7 +92,7 @@ public class JFileSelector extends JPanel {
 		pathField.setHorizontalAlignment(JTextField.CENTER);
 		pathField.setOpaque(true);
 
-		if (value == null || value.getAbsolutePath().endsWith("Not specified"))
+		if (value == null)
 			pathField.setText(L10N.t("common.not_specified"));
 		else
 			pathField.setText(StringUtils.abbreviateStringInverse(value.getAbsolutePath(), 35));

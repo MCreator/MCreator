@@ -40,7 +40,7 @@ public class PreferencesManager {
 
 	private static final File PREFERENCES_FILE = UserFolderManager.getFileFromUserFolder("userpreferences");
 
-	public static final Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().create();
+	public static final Gson gson = new GsonBuilder().setPrettyPrinting().setLenient().serializeNulls().create();
 
 	/**
 	 * <p>Stores values when the preferences file is loaded</p>
@@ -108,7 +108,8 @@ public class PreferencesManager {
 								.filter(preference -> preference.getID().equals(entryKey) && preference.getSectionKey()
 										.equals(section)).forEach(preference -> {
 									JsonElement value = entries.get(entryKey);
-									if (value != null && value != JsonNull.INSTANCE) {
+									if (((value == null || value == JsonNull.INSTANCE) && preference.allowsNullValue())
+											|| (value != null && value != JsonNull.INSTANCE)) {
 										preference.setValueFromJsonElement(value);
 									}
 								})));
