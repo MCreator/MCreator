@@ -51,7 +51,7 @@ public class ButtonDialog extends AbstractWYSIWYGDialog<Button> {
 
 		options.add(PanelUtils.join(L10N.label("dialog.gui.button_text"), buttonText));
 		isUndecoratedButton.setOpaque(false);
-		options.add(PanelUtils.join(L10N.label("dialog.gui.is_undecorated_button"), isUndecoratedButton));
+		options.add(PanelUtils.join(L10N.label("dialog.gui.button_is_undecorated"), isUndecoratedButton));
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/on_button_clicked"),
 				editor.mcreator, L10N.t("dialog.gui.button_event_on_clicked"), ProcedureSelector.Side.BOTH, false,
