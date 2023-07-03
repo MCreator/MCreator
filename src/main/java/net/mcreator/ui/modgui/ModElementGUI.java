@@ -100,6 +100,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	@Override public ImageIcon getViewIcon() {
+		if (!editingMode)
+			return modElement.getType().getIcon();
+
 		ImageIcon modIcon = modElement.getElementIcon();
 		if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0 && modIcon.getIconHeight() > 0
 				&& modIcon != MCItem.DEFAULT_ICON)
@@ -565,18 +568,19 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		changed = false;
 
-		if (this.tabIn != null && closeTab)
-			mcreator.mcreatorTabs.closeTab(tabIn);
-		else
-			mcreator.mcreatorTabs.getTabs().stream().filter(e -> e.getContent() == this)
-					.forEach(e -> e.setIcon(((ModElementGUI<?>) e.getContent()).getViewIcon()));
-
 		if (!editingMode && modElementCreatedListener
 				!= null) // only call this event if listener is registered and we are not in editing mode
 			modElementCreatedListener.modElementCreated(element);
 
 		// at this point, ME is stored so if session was not marked as editingMode before, now it is
 		editingMode = true;
+
+		// handle tab changes
+		if (this.tabIn != null && closeTab)
+			mcreator.mcreatorTabs.closeTab(tabIn);
+		else
+			mcreator.mcreatorTabs.getTabs().stream().filter(e -> e.getContent() == this)
+					.forEach(e -> e.setIcon(((ModElementGUI<?>) e.getContent()).getViewIcon()));
 	}
 
 	public @Nonnull ModElement getModElement() {

@@ -14,6 +14,9 @@
   "inputsInline": true,
   "output": "OreTarget",
   "colour": "#888888",
+  "extensions": [
+    "add_image_to_blockstate_inputs"
+  ],
   "mcreator": {
     "toolbox_id": "orefeatures",
     "toolbox_init": [

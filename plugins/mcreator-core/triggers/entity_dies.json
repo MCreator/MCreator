@@ -23,6 +23,10 @@
     {
       "name": "z",
       "type": "number"
+    },
+    {
+      "name": "damagesource",
+      "type": "damagesource"
     }
   ],
   "cancelable": "true"
