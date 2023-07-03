@@ -88,11 +88,12 @@ loadScripts(document, 'script');</script>
 <section class="class-description" id="class-description">
 <dl class="notes">
 <dt>All Implemented Interfaces:</dt>
-<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a></code>, <code><a href="../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></code></dd>
+<dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/image/ImageObserver.html" title="class or interface in java.awt.image" class="external-link">ImageObserver</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/MenuContainer.html" title="class or interface in java.awt" class="external-link">MenuContainer</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></code>, <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/accessibility/Accessible.html" title="class or interface in javax.accessibility" class="external-link">Accessible</a></code>, <code><a href="../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></code>, <code><a href="IBlocklyPanelHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder</a></code></dd>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">CommandGUI</span>
-<span class="extends-implements">extends <a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/Command.html" title="class in net.mcreator.element.types">Command</a>&gt;</span></div>
+<span class="extends-implements">extends <a href="ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="../../element/types/Command.html" title="class in net.mcreator.element.types">Command</a>&gt;
+implements <a href="IBlocklyPanelHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder</a></span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -178,20 +179,23 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#contextURL()" class="member-name-link">contextURL</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../element/types/Command.html" title="class in net.mcreator.element.types">Command</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementFromGUI()" class="member-name-link">getElementFromGUI</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">BlocklyPanel</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBlocklyPanels()" class="member-name-link">getBlocklyPanels</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initGUI()" class="member-name-link">initGUI</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../element/types/Command.html" title="class in net.mcreator.element.types">Command</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementFromGUI()" class="member-name-link">getElementFromGUI</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openInEditingMode(net.mcreator.element.types.Command)" class="member-name-link">openInEditingMode</a><wbr>(<a href="../../element/types/Command.html" title="class in net.mcreator.element.types">Command</a>&nbsp;command)</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#initGUI()" class="member-name-link">initGUI</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#openInEditingMode(net.mcreator.element.types.Command)" class="member-name-link">openInEditingMode</a><wbr>(<a href="../../element/types/Command.html" title="class in net.mcreator.element.types">Command</a>&nbsp;command)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">This method is called to open a mod element in the GUI</div>
 </div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../validation/AggregatedValidationResult.html" title="class in net.mcreator.ui.validation">AggregatedValidationResult</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validatePage(int)" class="member-name-link">validatePage</a><wbr>(int&nbsp;page)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="../validation/AggregatedValidationResult.html" title="class in net.mcreator.ui.validation">AggregatedValidationResult</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validatePage(int)" class="member-name-link">validatePage</a><wbr>(int&nbsp;page)</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -216,6 +220,9 @@ loadScripts(document, 'script');</script>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-net.mcreator.ui.modgui.IBlocklyPanelHolder">Methods inherited from interface&nbsp;net.mcreator.ui.modgui.<a href="IBlocklyPanelHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder</a></h3>
+<code><a href="IBlocklyPanelHolder.html#getSpecificBlocklyPanel(net.mcreator.ui.blockly.BlocklyEditorType)">getSpecificBlocklyPanel</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.help.IHelpContext">Methods inherited from interface&nbsp;net.mcreator.ui.help.<a href="../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></h3>
 <code><a href="../help/IHelpContext.html#entry()">entry</a></code></div>
@@ -295,8 +302,20 @@ loadScripts(document, 'script');</script>
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URI.html" title="class or interface in java.net" class="external-link">URI</a></span>&nbsp;<span class="element-name">contextURL</span>()
                throws <span class="exceptions"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URISyntaxException.html" title="class or interface in java.net" class="external-link">URISyntaxException</a></span></div>
 <dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="../help/IHelpContext.html#contextURL()">contextURL</a></code>&nbsp;in interface&nbsp;<code><a href="../help/IHelpContext.html" title="interface in net.mcreator.ui.help">IHelpContext</a></code></dd>
 <dt>Throws:</dt>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/net/URISyntaxException.html" title="class or interface in java.net" class="external-link">URISyntaxException</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getBlocklyPanels()">
+<h3>getBlocklyPanels</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">BlocklyPanel</a>&gt;</span>&nbsp;<span class="element-name">getBlocklyPanels</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="IBlocklyPanelHolder.html#getBlocklyPanels()">getBlocklyPanels</a></code>&nbsp;in interface&nbsp;<code><a href="IBlocklyPanelHolder.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder</a></code></dd>
 </dl>
 </section>
 </li>
