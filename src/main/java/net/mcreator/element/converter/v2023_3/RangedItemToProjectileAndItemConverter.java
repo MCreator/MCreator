@@ -153,6 +153,6 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 45;
+		return 46;
 	}
 }
