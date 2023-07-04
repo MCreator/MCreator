@@ -1,6 +1,10 @@
 {
-  "extensions": [
-    "gamerulesnumber_list_provider"
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "gamerulesnumber",
+      "datalist": "gamerulesnumber"
+    }
   ],
   "inputsInline": true,
   "output": "Number",

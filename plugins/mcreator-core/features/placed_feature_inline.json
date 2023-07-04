@@ -1,0 +1,30 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "feature",
+      "check": "Feature"
+    },
+    {
+      "type": "input_statement",
+      "name": "placement",
+      "check": "Placement"
+    }
+  ],
+  "output": "PlacedFeature",
+  "colour": 340,
+  "mcreator": {
+    "toolbox_id": "advancedfeatures",
+    "toolbox_init": [
+      "~<value name=\"feature\"><block type=\"feature_no_op\"></block></value>"
+    ],
+    "inputs": [
+      "feature"
+    ],
+    "statements": [
+      {
+        "name": "placement"
+      }
+    ]
+  }
+}
