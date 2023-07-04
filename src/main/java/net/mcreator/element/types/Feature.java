@@ -88,7 +88,7 @@ import java.util.List;
 		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC)
 			return List.of(BaseType.FEATURE); // Fabric needs to be handled differently than Forge
 		else if (hasGenerationConditions())
-				return List.of(BaseType.FEATURE);
+			return List.of(BaseType.FEATURE);
 		else
 			return Collections.emptyList();
 	}
