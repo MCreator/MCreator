@@ -56,7 +56,7 @@ import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure> {
+public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure> implements IBlocklyPanelHolder {
 
 	private final JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 
@@ -637,6 +637,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(modElement);
 		procedure.procedurexml = blocklyPanel.getXML();
 		return procedure;
+	}
+
+	@Override public List<BlocklyPanel> getBlocklyPanels() {
+		return List.of(blocklyPanel);
 	}
 
 }

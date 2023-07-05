@@ -69,6 +69,7 @@ public class Generator implements IGenerator, Closeable {
 
 	private final Workspace workspace;
 
+	@Nullable private GradleConnector gradleConnector;
 	@Nullable private ProjectConnection gradleProjectConnection;
 	@Nullable private GeneratorGradleCache generatorGradleCache;
 
@@ -624,9 +625,9 @@ public class Generator implements IGenerator, Closeable {
 	@Nullable public ProjectConnection getGradleProjectConnection() {
 		if (gradleProjectConnection == null) {
 			try {
-				gradleProjectConnection = GradleConnector.newConnector()
-						.forProjectDirectory(workspace.getWorkspaceFolder())
-						.useGradleUserHomeDir(UserFolderManager.getGradleHome()).connect();
+				gradleConnector = GradleConnector.newConnector().forProjectDirectory(workspace.getWorkspaceFolder())
+						.useGradleUserHomeDir(UserFolderManager.getGradleHome());
+				gradleProjectConnection = gradleConnector.connect();
 			} catch (Exception e) {
 				LOG.warn("Failed to load Gradle project", e);
 			}
@@ -643,8 +644,13 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	@Override public void close() {
-		if (gradleProjectConnection != null)
+		if (gradleProjectConnection != null) {
+			LOG.info("Closing Gradle project connection");
 			gradleProjectConnection.close();
+
+			if (gradleConnector != null)
+				gradleConnector.disconnect();
+		}
 	}
 
 	public void loadOrCreateGradleCaches() throws GradleCacheImportFailedException {

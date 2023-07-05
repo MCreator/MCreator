@@ -130,6 +130,7 @@ public class GeneratorSelector {
 			addStatsBar(L10N.t(covpfx + "biomes"), "biomes", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "blocksitems"), "blocksitems", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "tabs"), "tabs", supportedElements, stats);
+			addStatsBar(L10N.t(covpfx + "item_properties"), "itemproperties", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "damage_sources"), "damagesources", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "def_biome_features"), "defaultfeatures", supportedElements, stats);
 			addStatsBar(L10N.t(covpfx + "enchantments"), "enchantments", supportedElements, stats);

@@ -4,10 +4,12 @@
       "type": "input_value",
       "name": "gameruleValue",
       "check": "Boolean"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "gamerulesboolean",
+      "datalist": "gamerulesboolean"
     }
-  ],
-  "extensions": [
-    "gamerulesboolean_list_provider"
   ],
   "inputsInline": true,
   "previousStatement": null,
