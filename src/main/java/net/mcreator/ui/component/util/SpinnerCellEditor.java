@@ -24,6 +24,7 @@ import java.awt.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.util.EventObject;
 
 public class SpinnerCellEditor extends AbstractCellEditor implements TableCellEditor {
@@ -65,6 +66,8 @@ public class SpinnerCellEditor extends AbstractCellEditor implements TableCellEd
 		} else {
 			initialValSet = false;
 		}
+		if (eo instanceof MouseEvent event)
+			return event.getClickCount() >= 2;
 		return true;
 	}
 

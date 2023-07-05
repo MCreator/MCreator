@@ -22,6 +22,8 @@ package net.mcreator.ui.component.util;
 import javax.swing.*;
 import javax.swing.table.TableCellEditor;
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.EventObject;
 
 public class CheckBoxCellEditor extends AbstractCellEditor implements TableCellEditor {
 
@@ -34,6 +36,12 @@ public class CheckBoxCellEditor extends AbstractCellEditor implements TableCellE
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row, int column) {
 		return box;
+	}
+
+	@Override public boolean isCellEditable(EventObject eo) {
+		if (eo instanceof MouseEvent event)
+			return event.getClickCount() >= 2;
+		return true;
 	}
 
 	@Override public Object getCellEditorValue() {
