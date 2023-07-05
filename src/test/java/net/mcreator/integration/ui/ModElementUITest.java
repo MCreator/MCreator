@@ -30,6 +30,7 @@ import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyPanel;
+import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.Workspace;
@@ -65,6 +66,9 @@ public class ModElementUITest {
 
 		TestSetup.setupIntegrationTestEnvironment();
 
+		// may be needed to generate icons for MCItems (eg. generation of potion icons)
+		ImageMakerTexturesCache.init();
+
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
@@ -98,7 +102,7 @@ public class ModElementUITest {
 							new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
 		}
 
-		for (int i = 1; i <= 2; i++) {
+		for (int i = 1; i <= 3; i++) {
 			workspace.addModElement(
 					new ModElement(workspace, "number" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
 							new ArrayList<String>()).putMetadata("return_type", "NUMBER"));

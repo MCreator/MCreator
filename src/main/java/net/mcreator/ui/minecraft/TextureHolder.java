@@ -125,7 +125,7 @@ public class TextureHolder extends VButton {
 		}
 	}
 
-	public boolean has() {
+	public boolean hasTexture() {
 		return id != null && !id.equals("");
 	}
 
