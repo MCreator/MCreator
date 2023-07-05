@@ -1,4 +1,7 @@
 {
+  "extensions": [
+    "disable_inside_inline_placed_feature"
+  ],
   "inputsInline": true,
   "previousStatement": null,
   "nextStatement": "Placement",

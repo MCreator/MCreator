@@ -41,14 +41,10 @@ public class ProjectFileOpener {
 	}
 
 	public static void openCodeFileRO(MCreator mcreator, FileNode node) {
-		if (CodeEditorView.isFileSupported(node.incrementalPath)) {
-			File libFile = new File(node.incrementalPath.split(":%:")[0]);
-			String path = node.incrementalPath.split(":%:")[1];
-			if (path.startsWith("/"))
-				path = path.substring(1);
-
-			String code = ZipIO.readCodeInZip(libFile, path);
-			CodeEditorView cev = new CodeEditorView(mcreator, code, node.data, new File(path), true);
+		String[] path = node.splitPath();
+		if (CodeEditorView.isFileSupported(path[1])) {
+			String code = ZipIO.readCodeInZip(new File(path[0]), path[1]);
+			CodeEditorView cev = new CodeEditorView(mcreator, code, node.data, new File(path[1]), true);
 			cev.showView();
 		}
 	}
