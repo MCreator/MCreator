@@ -511,28 +511,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/model"),
 				L10N.label("elementgui.living_entity.entity_model")));
 		spo2.add(mobModel);
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
-				L10N.label("elementgui.living_entity.bounding_box")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(2, 2), modelHeight,
-				new JEmptyBox(2, 2), modelShadowSize, new JEmptyBox(2, 2), mountedYOffset, new JEmptyBox(2, 2),
-				disableCollisions));
-
-		spo2.add(new JEmptyBox());
-		spo2.add(visualScale);
-
-		spo2.add(new JEmptyBox());
-		spo2.add(boundingBoxScale);
-
-		spo2.add(new JEmptyBox());
-		spo2.add(solidBoundingBox);
-
-		spo2.add(new JEmptyBox());
-		spo2.add(transparentModelCondition);
-
-		spo2.add(new JEmptyBox());
-		spo2.add(isShakingCondition);
-
+		
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
 		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
 		importmobtexture.setOpaque(false);
@@ -555,6 +534,27 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
 				L10N.label("elementgui.living_entity.glow_texture")));
 		spo2.add(mobModelGlowTexture);
+
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
+				L10N.label("elementgui.living_entity.bounding_box")));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(2, 2), modelHeight,
+				new JEmptyBox(2, 2), modelShadowSize, new JEmptyBox(2, 2), mountedYOffset, new JEmptyBox(2, 2),
+				disableCollisions));
+
+		spo2.add(new JEmptyBox());
+		spo2.add(visualScale);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(boundingBoxScale);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(solidBoundingBox);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(transparentModelCondition);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(isShakingCondition);
 
 		ComponentUtils.deriveFont(mobModelTexture, 16);
 		ComponentUtils.deriveFont(mobModelGlowTexture, 16);
