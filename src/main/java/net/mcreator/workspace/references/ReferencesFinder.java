@@ -43,6 +43,7 @@ import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
 
@@ -224,21 +225,41 @@ public class ReferencesFinder {
 		if (clazz.isInstance(value)) { // value of specified type
 			return condition == null || condition.test(field, (T) value);
 		} else if (value instanceof Collection<?> list) { // list of values
-			for (Object obj : list) {
-				if (clazz.isInstance(obj)) { // value of specified type
-					if (condition == null || condition.test(field, (T) obj))
-						return true;
-				} else if (isCustomObject(value)) { // value of unknown type
-					System.err.println(value.getClass() + ", " + field);
-					if (anyValueMatches(obj, clazz, validIf, condition))
-						return true;
-				}
-			}
+			return listHasMatches(list, field, clazz, validIf, condition);
+		} else if (value instanceof Map<?, ?> map) { // map with values
+			return listHasMatches(map.keySet(), field, clazz, validIf, condition) || listHasMatches(map.values(), field,
+					clazz, validIf, condition);
 		} else if (isCustomObject(value)) { // value of unknown type
-			System.out.println(value.getClass() + ", " + field);
 			return anyValueMatches(value, clazz, validIf, condition);
 		}
 
+		return false;
+	}
+
+	/**
+	 * Checks if any value (or its components) on the list acquired from the passed field/method meets given condition.
+	 *
+	 * @param list      The extracted list of values that should be checked.
+	 * @param field     The field/method the {@code value} was acquired.
+	 * @param clazz     The class of values to be checked.
+	 * @param validIf   The predicate used to check if the field/method is considered valid.
+	 * @param condition The predicate defining the condition that the acquired values should pass.
+	 * @param <T>       The type of values to be checked.
+	 * @return Whether the provided value or any value extracted from valid fields/methods on the {@code value} object
+	 * passes the provided condition.
+	 */
+	@SuppressWarnings("unchecked")
+	private static <T> boolean listHasMatches(Collection<?> list, AccessibleObject field, Class<T> clazz,
+			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
+		for (Object obj : list) {
+			if (clazz.isInstance(obj)) { // value of specified type
+				if (condition == null || condition.test(field, (T) obj))
+					return true;
+			} else if (isCustomObject(obj)) { // value of unknown type
+				if (anyValueMatches(obj, clazz, validIf, condition))
+					return true;
+			}
+		}
 		return false;
 	}
 
