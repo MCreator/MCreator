@@ -16,7 +16,7 @@
       "check": "Number"
     },
     {
-      "type": "field_data_list_selector",
+      "type": "field_data_list_dropdown",
       "name": "planttype",
       "datalist": "planttypes"
     }

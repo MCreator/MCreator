@@ -31,7 +31,7 @@
       "datalist": "sound"
     },
     {
-      "type": "field_data_list_selector",
+      "type": "field_data_list_dropdown",
       "name": "soundcategory",
       "datalist": "soundcategories"
     }

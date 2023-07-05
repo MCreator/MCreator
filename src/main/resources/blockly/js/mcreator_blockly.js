@@ -90,23 +90,6 @@ function jsonToBlocklyDropDownArray(json) {
     return retval;
 }
 
-// Helper function to use in Blockly extensions that append a dropdown
-function appendDropDown(listType, fieldName) {
-    return function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf(listType))), fieldName);
-    };
-}
-
-// Helper function to use in Blockly extensions that append a message and a dropdown
-function appendDropDownWithMessage(messageKey, listType, fieldName) {
-    return function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.extension." + messageKey))
-            .appendField(new Blockly.FieldDropdown(
-                arrayToBlocklyDropDownArray(javabridge.getListOf(listType))), fieldName);
-    };
-}
-
 // A function to properly convert workspace to XML (google/blockly#6738)
 function workspaceToXML() {
     const treeXml = Blockly.Xml.workspaceToDom(workspace, true);

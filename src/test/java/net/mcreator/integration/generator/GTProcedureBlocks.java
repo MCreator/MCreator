@@ -450,14 +450,17 @@ public class GTProcedureBlocks {
 			additionalXML.append("<field name=\"").append(field).append("\">Blocks.COBBLESTONE</field>");
 			processed++;
 		}
-		case "field_data_list_selector" -> {
+		case "field_data_list_selector", "field_data_list_dropdown" -> {
 			String type = arg.get("datalist").getAsString();
 
 			// Get the optional properties
-			JsonElement optTypeFilter = arg.get("typeFilter");
-			String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
+			JsonElement optTypeFilter = null, optCustomEntryProviders = null;
+			if (arg.get("type").getAsString().equals("field_data_list_selector")) {
+				optTypeFilter = arg.get("typeFilter");
+				optCustomEntryProviders = arg.get("customEntryProviders");
+			}
 
-			JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
+			String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
 			String customEntryProviders =
 					optCustomEntryProviders == null ? null : optCustomEntryProviders.getAsString();
 

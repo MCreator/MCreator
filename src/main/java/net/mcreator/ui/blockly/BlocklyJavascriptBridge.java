@@ -155,7 +155,6 @@ public class BlocklyJavascriptBridge {
 					w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "gamerules");
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
-			case "directions" -> openStringEntrySelector(w -> ElementUtil.loadDirections(), "direction");
 			case "structures" ->
 					openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
 							"structure");
@@ -400,9 +399,7 @@ public class BlocklyJavascriptBridge {
 		case "entity", "spawnableEntity" -> datalist = "entities";
 		case "biome" -> datalist = "biomes";
 		case "arrowProjectile", "projectiles" -> datalist = "projectiles";
-		default -> {
-			return "";
-		}
+		default -> datalist = type;
 		}
 		return DataListLoader.loadDataMap(datalist).containsKey(value) ?
 				DataListLoader.loadDataMap(datalist).get(value).getReadableName() :

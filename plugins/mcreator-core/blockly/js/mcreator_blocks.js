@@ -797,9 +797,9 @@ Blockly.defineBlocksWithJsonArray([
         "message0": "%1",
         "args0": [
             {
-                "type": "field_data_list_selector",
+                "type": "field_data_list_dropdown",
                 "name": "direction",
-                "datalist": "directions"
+                "datalist": "direction"
             }
         ],
         "output": "Direction",

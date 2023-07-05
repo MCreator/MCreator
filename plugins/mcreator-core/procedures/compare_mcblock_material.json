@@ -12,7 +12,7 @@
       "height": 36
     },
     {
-      "type": "field_data_list_selector",
+      "type": "field_data_list_dropdown",
       "name": "material",
       "datalist": "materials"
     }

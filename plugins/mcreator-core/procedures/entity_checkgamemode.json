@@ -6,7 +6,7 @@
       "check": "Entity"
     },
     {
-      "type": "field_data_list_selector",
+      "type": "field_data_list_dropdown",
       "name": "gamemode",
       "datalist": "gamemodes"
     }
