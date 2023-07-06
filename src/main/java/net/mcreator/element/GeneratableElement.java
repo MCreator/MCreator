@@ -22,7 +22,6 @@ import com.google.gson.*;
 import net.mcreator.element.converter.ConverterRegistry;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.workspace.Workspace;
@@ -38,6 +37,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class GeneratableElement {
@@ -216,39 +216,54 @@ public abstract class GeneratableElement {
 			for (Field field : object.getClass().getDeclaredFields()) {
 				field.setAccessible(true);
 
-				if (Modifier.isTransient(field.getModifiers()))
+				if (Modifier.isStatic(field.getModifiers()) || Modifier.isTransient(field.getModifiers()))
 					continue;
 
 				try {
 					Object subobject = field.get(object);
-					if (subobject instanceof MappableElement) {
-						((MappableElement) subobject).mapper.setWorkspace(workspace);
-					} else if (subobject instanceof Object[]) {
-						for (Object element : ((Object[]) subobject)) {
-							if (element instanceof MappableElement) {
-								((MappableElement) element).mapper.setWorkspace(workspace);
-							} else {
-								if (element != null && element.getClass().getPackage().getName()
-										.startsWith("net.mcreator"))
-									passWorkspaceToFields(element, workspace);
+					if (subobject instanceof IWorkspaceDependent iws) {
+						iws.setWorkspace(workspace);
+					} else if (subobject instanceof Object[] array) {
+						for (Object element : array) {
+							if (element instanceof IWorkspaceDependent iws) {
+								iws.setWorkspace(workspace);
+							} else if (element != null
+									&& element.getClass().getModule() == GeneratableElement.class.getModule()) {
+								passWorkspaceToFields(element, workspace);
 							}
 						}
-					} else if (subobject instanceof Iterable) {
-						for (Object element : ((Iterable<?>) subobject)) {
-							if (element instanceof MappableElement) {
-								((MappableElement) element).mapper.setWorkspace(workspace);
-							} else {
-								if (element != null && element.getClass().getPackage().getName()
-										.startsWith("net.mcreator"))
-									passWorkspaceToFields(element, workspace);
+					} else if (subobject instanceof Iterable<?> list) {
+						for (Object element : list) {
+							if (element instanceof IWorkspaceDependent iws) {
+								iws.setWorkspace(workspace);
+							} else if (element != null
+									&& element.getClass().getModule() == GeneratableElement.class.getModule()) {
+								passWorkspaceToFields(element, workspace);
 							}
 						}
-					} else {
-						if (subobject != null && subobject.getClass().getPackage().getName().startsWith("net.mcreator"))
-							passWorkspaceToFields(subobject, workspace);
+					} else if (subobject instanceof Map<?, ?> map) {
+						for (Object element : map.keySet()) {
+							if (element instanceof IWorkspaceDependent iws) {
+								iws.setWorkspace(workspace);
+							} else if (element != null
+									&& element.getClass().getModule() == GeneratableElement.class.getModule()) {
+								passWorkspaceToFields(element, workspace);
+							}
+						}
+						for (Object element : map.values()) {
+							if (element instanceof IWorkspaceDependent iws) {
+								iws.setWorkspace(workspace);
+							} else if (element != null
+									&& element.getClass().getModule() == GeneratableElement.class.getModule()) {
+								passWorkspaceToFields(element, workspace);
+							}
+						}
+					} else if (subobject != null
+							&& subobject.getClass().getModule() == GeneratableElement.class.getModule()) {
+						passWorkspaceToFields(subobject, workspace);
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.error(e.getMessage(), e);
 				}
 			}
 		}
