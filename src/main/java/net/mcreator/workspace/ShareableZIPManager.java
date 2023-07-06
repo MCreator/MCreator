@@ -98,7 +98,7 @@ public class ShareableZIPManager {
 
 				workspace.close(); // we need to close the workspace!
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error(e.getMessage(), e);
 			}
 
 			p2.ok();

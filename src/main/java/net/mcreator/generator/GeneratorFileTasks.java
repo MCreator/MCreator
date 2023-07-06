@@ -156,7 +156,7 @@ public class GeneratorFileTasks {
 															"modelregistryname",
 															RegistryNameFixer.fromCamelCase(model.getReadableName()))));
 								} catch (TemplateGeneratorException e) {
-									e.printStackTrace();
+									generator.getLogger().error(e.getMessage(), e);
 								}
 								ClassWriter.writeClassToFileWithoutQueue(generator.getWorkspace(), modelCode,
 										new File(to, model.getReadableName() + ".java"), true);

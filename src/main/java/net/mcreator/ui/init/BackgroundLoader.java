@@ -45,8 +45,8 @@ public class BackgroundLoader {
 				try {
 					images.add(ImageIO.read(f));
 				} catch (IOException e) {
-					LOG.error("Can not load " + f.getName(), e.getMessage());
-					e.printStackTrace();
+					LOG.error("Can not load " + f.getName());
+					LOG.error(e.getMessage(), e);
 				}
 			});
 			return images;
