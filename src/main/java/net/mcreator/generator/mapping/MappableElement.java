@@ -18,24 +18,21 @@
 
 package net.mcreator.generator.mapping;
 
-import net.mcreator.element.IWorkspaceDependent;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
-import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.Optional;
 
-public abstract class MappableElement implements IWorkspaceDependent {
+public abstract class MappableElement {
 
 	private static final Logger LOG = LogManager.getLogger("Mappable Element");
 
 	protected String value;
 
-	protected transient NameMapper mapper;
+	public transient NameMapper mapper;
 
 	public MappableElement(NameMapper mapper) {
 		this.mapper = mapper;
@@ -78,10 +75,6 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		}
 
 		return Optional.empty();
-	}
-
-	@Override public void setWorkspace(@Nullable Workspace workspace) {
-		mapper.setWorkspace(workspace);
 	}
 
 	@Override public int hashCode() {

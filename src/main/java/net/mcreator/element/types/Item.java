@@ -19,11 +19,13 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.IWorkspaceDependent;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.*;
+import net.mcreator.element.types.interfaces.IItem;
+import net.mcreator.element.types.interfaces.IItemWithModel;
+import net.mcreator.element.types.interfaces.IItemWithTexture;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.MCItem;
@@ -200,7 +202,7 @@ import java.util.*;
 		return models;
 	}
 
-	public static class StateEntry implements IWorkspaceDependent {
+	public static class StateEntry {
 
 		public int renderType;
 		@TextureReference(TextureType.ITEM) public String texture;
@@ -208,9 +210,9 @@ import java.util.*;
 
 		public StateMap stateMap;
 
-		@Nullable transient Workspace workspace;
+		@Nullable Workspace workspace;
 
-		@Override public void setWorkspace(@Nullable Workspace workspace) {
+		void setWorkspace(@Nullable Workspace workspace) {
 			this.workspace = workspace;
 		}
 
