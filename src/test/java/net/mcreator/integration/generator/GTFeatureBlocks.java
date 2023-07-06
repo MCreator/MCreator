@@ -126,7 +126,7 @@ public class GTFeatureBlocks {
 						for (int i = 0; i < args0.size(); i++) {
 							JsonObject arg = args0.get(i).getAsJsonObject();
 							if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
-								processed += appendFieldXML(additionalXML, arg, field);
+								processed += appendFieldXML(workspace, additionalXML, arg, field);
 								break;
 							}
 						}
@@ -173,7 +173,7 @@ public class GTFeatureBlocks {
 						}
 						totalFields += count;
 						for (int i = 0; i < count; i++) {
-							processedFields += appendFieldXML(additionalXML, fieldEntry.field_definition(),
+							processedFields += appendFieldXML(workspace, additionalXML, fieldEntry.field_definition(),
 									fieldEntry.name() + i);
 						}
 					} else {
@@ -321,7 +321,7 @@ public class GTFeatureBlocks {
 				""".formatted(placementType, valueName, testXML);
 	}
 
-	private static int appendFieldXML(StringBuilder additionalXML, JsonObject arg, String field) {
+	private static int appendFieldXML(Workspace workspace, StringBuilder additionalXML, JsonObject arg, String field) {
 		int processed = 0;
 		switch (arg.get("type").getAsString()) {
 		case "field_checkbox" -> {
@@ -346,6 +346,15 @@ public class GTFeatureBlocks {
 		case "field_mcitem_selector" -> {
 			additionalXML.append("<field name=\"").append(field).append("\">Blocks.COBBLESTONE</field>");
 			processed++;
+		}
+		case "field_data_list_dropdown" -> {
+			String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
+					arg.get("datalist").getAsString());
+			if (values.length > 0 && !values[0].equals("")) {
+				String value = values[(int) (Math.random() * values.length)];
+				additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
+				processed++;
+			}
 		}
 		}
 		return processed;

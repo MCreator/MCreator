@@ -3,10 +3,6 @@
  */
 class FieldDataListDropdown extends Blockly.FieldDropdown {
 
-    EDITABLE = true;
-    SERIALIZABLE = true;
-    CURSOR = 'default';
-
     constructor(datalist = '', opt_validator, opt_config) {
         super(function () {
             return arrayToBlocklyDropDownArray(javabridge.getListOf(datalist));
@@ -24,18 +20,14 @@ class FieldDataListDropdown extends Blockly.FieldDropdown {
     // Update the value of this selector
     doValueUpdate_(newValue) {
         if (newValue !== this.value_) { // If the value is different, update the readable name
-            if (newValue) { // Try to get the readable name from the value
-                this.readableName = javabridge.getReadableNameOf(newValue, this.type) || newValue;
-            } else { // Fallback to the "No entry selected" message
-                this.readableName = FieldDataListSelector.getDefaultText();
-            }
+            this.readableName = javabridge.getReadableNameOf(newValue, this.type) || newValue;
         }
         super.doValueUpdate_(newValue);
     };
 
     // Get the text that is shown in the Blockly editor
     getText_() {
-        return this.readableName || FieldDataListDropdown.getDefaultText();
+        return this.readableName;
     };
 }
 
