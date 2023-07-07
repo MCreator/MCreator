@@ -1113,9 +1113,8 @@ public class TestWorkspaceDataProvider {
 			item.isAlwaysEdible = _true;
 			item.animation = getRandomItem(random,
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
-			item.eatResultItem = new MItemBlock(modElement.getWorkspace(), emptyLists ?
-					"" :
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+			item.eatResultItem = new MItemBlock(modElement.getWorkspace(),
+					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			item.onFinishUsingItem = new Procedure("procedure3");
 			return item;
 		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
@@ -1466,7 +1465,7 @@ public class TestWorkspaceDataProvider {
 						entry.maxEnchantmentLevel = new int[] { 3, 9, 5, 6 }[valueIndex];
 
 						entry.item = new MItemBlock(modElement.getWorkspace(),
-								getRandomMCItem(random, blocksAndItems).getName());
+								getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 
 						pool.entries.add(entry);
 					}
@@ -1612,14 +1611,12 @@ public class TestWorkspaceDataProvider {
 					int entries = random.nextInt(10) + 1;
 					for (int j = 0; j < entries; j++) {
 						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
-						entry.price1 = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ?
-								getRandomMCItem(random,
-										ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() :
-								"");
-						entry.offer = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price1 = new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, filterAir(blocksAndItems)).getName());
+						entry.price2 = new MItemBlock(modElement.getWorkspace(),
+								_true ? getRandomMCItem(random, blocksAndItems).getName() : "");
+						entry.offer = new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
 						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
 						entry.countOffer = new int[] { 8, 13, 23, 60 }[valueIndex];
@@ -1638,14 +1635,12 @@ public class TestWorkspaceDataProvider {
 					int wanderingEntries = random.nextInt(10) + 1;
 					for (int j = 0; j < wanderingEntries; j++) {
 						VillagerTrade.CustomTradeEntry.Entry entry = new VillagerTrade.CustomTradeEntry.Entry();
-						entry.price1 = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
-						entry.price2 = new MItemBlock(modElement.getWorkspace(), _true ?
-								getRandomMCItem(random,
-										ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName() :
-								"");
-						entry.offer = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-								ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+						entry.price1 = new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, filterAir(blocksAndItems)).getName());
+						entry.price2 = new MItemBlock(modElement.getWorkspace(),
+								_true ? getRandomMCItem(random, blocksAndItems).getName() : "");
+						entry.offer = new MItemBlock(modElement.getWorkspace(),
+								getRandomMCItem(random, filterAir(blocksAndItems)).getName());
 						entry.countPrice1 = new int[] { 3, 57, 34, 28 }[valueIndex];
 						entry.countPrice2 = new int[] { 9, 61, 17, 45 }[valueIndex];
 						entry.countOffer = new int[] { 8, 13, 23, 60 }[valueIndex];
@@ -1721,65 +1716,20 @@ public class TestWorkspaceDataProvider {
 			tool.specialInfo = new ArrayList<>();
 		}
 		if (!emptyLists) {
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
-			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndTags(modElement.getWorkspace())).getName()));
+			List<MCItem> blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
+			tool.blocksAffected.addAll(
+					blocksAndTags.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
+			tool.blocksAffected.add(new MItemBlock(modElement.getWorkspace(), "TAG:minecraft/test/path"));
 		}
 		tool.repairItems = new ArrayList<>();
 		if (!emptyLists) {
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
-			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName()));
+			List<MCItem> blocksAndItemsAndTags = ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace());
+			tool.repairItems.addAll(
+					blocksAndItemsAndTags.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
+							.toList());
 			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
+			tool.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:minecraft/test/path"));
 		}
 		tool.onRightClickedInAir = new Procedure("procedure1");
 		tool.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
@@ -1806,91 +1756,95 @@ public class TestWorkspaceDataProvider {
 		recipe.craftingBookCategory = getRandomItem(random,
 				new String[] { "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" });
 		recipe.recipeType = recipeType;
+
+		List<MCItem> blocksAndItemsAndTags = ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace());
+		List<MCItem> blocksAndItems = ElementUtil.loadBlocksAndItems(modElement.getWorkspace());
+
 		if ("Crafting".equals(recipe.recipeType)) {
 			MItemBlock[] recipeSlots = new MItemBlock[9];
 
 			Arrays.fill(recipeSlots, new MItemBlock(modElement.getWorkspace(), ""));
 
-			recipeSlots[0] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+			recipeSlots[0] = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 
 			if (random.nextBoolean())
-				recipeSlots[3] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+				recipeSlots[3] = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			if (random.nextBoolean())
-				recipeSlots[6] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+				recipeSlots[6] = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			if (random.nextBoolean())
-				recipeSlots[1] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+				recipeSlots[1] = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			if (random.nextBoolean())
-				recipeSlots[4] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+				recipeSlots[4] = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			if (random.nextBoolean())
-				recipeSlots[7] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+				recipeSlots[7] = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			if (random.nextBoolean())
-				recipeSlots[2] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+				recipeSlots[2] = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			if (random.nextBoolean())
-				recipeSlots[5] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+				recipeSlots[5] = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			if (random.nextBoolean())
-				recipeSlots[8] = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-						ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+				recipeSlots[8] = new MItemBlock(modElement.getWorkspace(),
+						getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.recipeRetstackSize = 11;
 			recipe.recipeShapeless = _true;
 			recipe.recipeReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			recipe.recipeSlots = recipeSlots;
 		} else if ("Smelting".equals(recipe.recipeType)) {
-			recipe.smeltingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+			recipe.smeltingInputStack = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.smeltingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			recipe.xpReward = 1.234;
 			recipe.cookingTime = 123;
 		} else if ("Smoking".equals(recipe.recipeType)) {
-			recipe.smokingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+			recipe.smokingInputStack = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.smokingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			recipe.xpReward = 12.34;
 			recipe.cookingTime = 42;
 		} else if ("Blasting".equals(recipe.recipeType)) {
-			recipe.blastingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+			recipe.blastingInputStack = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.blastingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			recipe.xpReward = 21.234;
 			recipe.cookingTime = 1000;
 		} else if ("Stone cutting".equals(recipe.recipeType)) {
-			recipe.stoneCuttingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+			recipe.stoneCuttingInputStack = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.stoneCuttingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			recipe.recipeRetstackSize = 32;
 		} else if ("Campfire cooking".equals(recipe.recipeType)) {
-			recipe.campfireCookingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+			recipe.campfireCookingInputStack = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.campfireCookingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 			recipe.xpReward = 21.234;
 			recipe.cookingTime = 2983;
 		} else if ("Smithing".equals(recipe.recipeType)) {
-			recipe.smithingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
-			recipe.smithingInputAdditionStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
+			recipe.smithingInputStack = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName());
+			recipe.smithingInputAdditionStack = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					getRandomMCItem(random, blocksAndItems).getName());
 		} else if ("Brewing".equals(recipe.recipeType)) {
 			recipe.brewingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
-			recipe.brewingIngredientStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace())).getName());
-			recipe.brewingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, ElementUtil.loadBlocksAndItems(modElement.getWorkspace())).getName());
+					ElementUtil.loadBlocksAndItemsAndTagsAndPotions(modElement.getWorkspace())).getName());
+			recipe.brewingIngredientStack = new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName());
+			recipe.brewingReturnStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
+					ElementUtil.loadBlocksAndItemsAndPotions(modElement.getWorkspace())).getName());
 		} else {
 			throw new RuntimeException("Unknown recipe type");
 		}
@@ -1928,6 +1882,11 @@ public class TestWorkspaceDataProvider {
 		int listSize = list.size();
 		int randomIndex = random.nextInt(listSize);
 		return list.get(randomIndex);
+	}
+
+	private static List<MCItem> filterAir(List<MCItem> source) {
+		return source.stream().filter(e -> !(e.getName().equals("Blocks.AIR") || e.getName().equals("Blocks.VOID_AIR")
+				|| e.getName().equals("Blocks.CAVE_AIR"))).toList();
 	}
 
 }
