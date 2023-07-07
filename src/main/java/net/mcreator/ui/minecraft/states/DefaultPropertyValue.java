@@ -25,11 +25,11 @@ import com.google.gson.annotations.JsonAdapter;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
 
-@JsonAdapter(DefaultPropertyValue.GSONAdapter.class) public record DefaultPropertyValue<T>(PropertyData<T> property,
-																						   @Nonnull T defaultValue) {
+@JsonAdapter(DefaultPropertyValue.GSONAdapter.class)
+public record DefaultPropertyValue<T>(PropertyData<T> property, @Nonnull T defaultValue) {
 
 	@SuppressWarnings("unchecked")
-	public static <T> DefaultPropertyValue<T> create(PropertyData<T> property, Object defaultValue) {
+	private static <T> DefaultPropertyValue<T> create(PropertyData<T> property, Object defaultValue) {
 		return new DefaultPropertyValue<>(property, (T) defaultValue);
 	}
 
