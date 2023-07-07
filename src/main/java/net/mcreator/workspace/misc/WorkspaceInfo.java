@@ -117,6 +117,20 @@ import java.util.*;
 		}
 	}
 
+	public List<GeneratableElement> getRawElementsOfType(String typestring) {
+		return getRawElementsOfType(ModElementTypeLoader.getModElementType(typestring));
+	}
+
+	public List<GeneratableElement> getRawElementsOfType(ModElementType<?> type) {
+		try {
+			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
+					.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
+		} catch (IllegalArgumentException e) {
+			LOG.warn("Failed to list elements of non-existent type", e);
+			return Collections.emptyList();
+		}
+	}
+
 	public List<ModElement> getRecipesOfType(String typestring) {
 		try {
 			return workspace.getModElements().parallelStream().filter(e -> e.getType() == ModElementType.RECIPE)

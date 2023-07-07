@@ -6,9 +6,9 @@ templates:
 global_templates:
   - template: elementinits/fuels.java.ftl
     writer: java
-    condition: ${w.hasFuels()}
+    condition: "${w.getRawElementsOfType('itemextension')?filter(e -> e.enableFuel)?has_content}"
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFuels.java"
   - template: elementinits/compostable_items.java.ftl
     writer: java
-    condition: ${w.hasCompostableItems()}
+    condition: "${w.getRawElementsOfType('itemextension')?filter(e -> e.compostLayerChance gt 0)?has_content}"
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameCompostableItems.java"

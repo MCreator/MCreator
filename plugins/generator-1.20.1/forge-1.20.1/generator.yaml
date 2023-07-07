@@ -63,7 +63,7 @@ base_templates:
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
 #      - ${w.hasElementsOfType('feature')}
-      - hasBiomesInVanillaDimensions()
+      - "${w.getRawElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?has_content}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
