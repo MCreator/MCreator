@@ -15,21 +15,9 @@ Blockly.Extensions.register('material_list_provider', appendDropDown('material',
 
 Blockly.Extensions.register('plant_type_list_provider', appendDropDown('planttypes', 'planttype'));
 
-Blockly.Extensions.register('gui_list_provider', appendDropDown('gui', 'guiname'));
-
-Blockly.Extensions.register('dimension_list_provider', appendDropDown('dimension', 'dimension'));
-
-Blockly.Extensions.register('gamerulesboolean_list_provider', appendDropDown('gamerulesboolean', 'gamerulesboolean'));
-
-Blockly.Extensions.register('gamerulesnumber_list_provider', appendDropDown('gamerulesnumber', 'gamerulesnumber'));
-
 Blockly.Extensions.register('schematic_list_provider', appendDropDown('schematic', 'schematic'));
 
-Blockly.Extensions.register('fluid_list_provider', appendDropDown('fluid', 'fluid'));
-
 Blockly.Extensions.register('direction_list_provider', appendDropDown('direction', 'direction'));
-
-Blockly.Extensions.register('dimension_custom_list_provider', appendDropDown('dimension_custom', 'dimension'));
 
 Blockly.Extensions.register('entity_data_logic_list_provider',
     appendAutoReloadingDropDown('customEntity', 'customentity', 'accessor', 'entitydata_logic'));
@@ -144,6 +132,38 @@ Blockly.Extensions.register('min_max_fields_validator',
             }
             return newValue;
         });
+    });
+
+// Mutator to disable the "biome filter" placement inside the "inline placed feature" block
+Blockly.Extensions.registerMixin('disable_inside_inline_placed_feature',
+    {
+        // Check if this block is inside the inline placed feature statement
+        getSurroundLoop: function() {
+            let block = this;
+            do {
+                if (block.type == 'placed_feature_inline') {
+                    return block;
+                }
+                block = block.getSurroundParent();
+            } while (block);
+            return null;
+        },
+
+        onchange: function(e) {
+            // Don't change state if it's at the start of a drag and it's not a move event
+            if (!this.workspace.isDragging || this.workspace.isDragging() || e.type !== Blockly.Events.BLOCK_MOVE) {
+                return;
+            }
+            const enabled = !(this.getSurroundLoop(this));
+            this.setWarningText(enabled ? null : javabridge.t('blockly.block.placed_feature_inline.disabled_placement'));
+            if (!this.isInFlyout) {
+                const group = Blockly.Events.getGroup();
+                // Makes it so the move and the disable event get undone together.
+                Blockly.Events.setGroup(e.group);
+                this.setEnabled(enabled);
+                Blockly.Events.setGroup(group);
+            }
+        }
     });
 
 // Helper function to get the min and max values of a given int provider as an array of [min, max]
@@ -411,6 +431,15 @@ Blockly.Extensions.registerMutator('block_predicate_all_any_mutator', simpleRepe
                 .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
         }),
     undefined, ['block_predicate_mutator_input']);
+
+Blockly.Extensions.registerMutator('feature_simple_random_mutator', simpleRepeatingInputMixin(
+        'feature_simple_random_mutator_container', 'feature_simple_random_mutator_input', 'feature',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck(['Feature', 'PlacedFeature'])
+                .setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'));
+        }, true, [], true),
+    undefined, ['feature_simple_random_mutator_input']);
 
 Blockly.Extensions.registerMutator('block_list_mutator', simpleRepeatingInputMixin(
         'block_list_mutator_container', 'block_list_mutator_input', 'condition',

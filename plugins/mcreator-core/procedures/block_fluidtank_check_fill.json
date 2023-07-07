@@ -27,10 +27,12 @@
         "Direction",
         "Null"
       ]
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "fluid",
+      "datalist": "fluid"
     }
-  ],
-  "extensions": [
-    "fluid_list_provider"
   ],
   "fields": [
     "fluid"
