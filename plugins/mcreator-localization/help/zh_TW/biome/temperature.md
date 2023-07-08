@@ -11,4 +11,4 @@
 
 具有相同溫度的生態域在生成時將爭奪世界上相同的位置。
 
-原版生態域可參見[這裏](https://minecraft.fandom.com/zh/wiki/生物群系?variant=zh-tw#气候列表)
+原版生態域可參見:https://minecraft.fandom.com/zh/wiki/生物群系?variant=zh-tw#气候列表
