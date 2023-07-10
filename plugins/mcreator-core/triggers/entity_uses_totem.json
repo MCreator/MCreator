@@ -29,6 +29,10 @@
       "type": "entity"
     },
     {
+      "name": "itemstack",
+      "type": "itemstack"
+    },
+    {
       "name": "damagesource",
       "type": "damagesource"
     }
