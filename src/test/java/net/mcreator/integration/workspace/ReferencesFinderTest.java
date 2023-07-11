@@ -121,7 +121,7 @@ public class ReferencesFinderTest {
 	}
 
 	@Test void testTextureUsagesSearch() throws Throwable {
-		TextureType section = ListUtils.getRandomItem(TextureType.getTypes(true));
+		TextureType section = ListUtils.getRandomItem(TextureType.getSupportedTypes(workspace, true));
 		File texture = ListUtils.getRandomItem(workspace.getFolderManager().getTexturesList(section));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.texture"),
