@@ -14,3 +14,15 @@ feature_simple_block:
   - SimpleBlockFeature
   - SimpleBlockConfiguration
   - "minecraft:simple_block"
+feature_ore:
+  - OreFeature
+  - OreConfiguration
+  - "minecraft:ore"
+feature_scattered_ore:
+  - ScatteredOreFeature
+  - OreConfiguration
+  - "minecraft:scattered_ore"
+feature_replace_single_block:
+  - ReplaceBlockFeature
+  - ReplaceBlockConfiguration
+  - "minecraft:replace_single_block"
