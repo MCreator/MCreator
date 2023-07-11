@@ -1,0 +1,20 @@
+- damaged:
+  type: Logic
+- damage:
+  type: Number
+  other:
+    min: 0
+    max: 1
+- lefthanded:
+  type: Logic
+- cooldown:
+  type: Number
+  other:
+    min: 0
+    max: 1
+- custom_model_data
+- trim_type:
+  type: Number
+  other:
+    min: 0
+    max: 1
