@@ -27,6 +27,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -84,9 +85,11 @@ import java.util.List;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
-		if (hasGenerationConditions()) {
+		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC)
+			return List.of(BaseType.FEATURE); // Fabric needs to be handled differently than Forge
+		else if (hasGenerationConditions())
 			return List.of(BaseType.FEATURE);
-		}
-		return Collections.emptyList();
+		else
+			return Collections.emptyList();
 	}
 }

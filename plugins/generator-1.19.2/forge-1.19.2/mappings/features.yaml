@@ -2,6 +2,10 @@ _default:
   - NoOpFeature
   - NoneFeatureConfiguration
   - "minecraft:no_op"
+feature_no_op:
+  - NoOpFeature
+  - NoneFeatureConfiguration
+  - "minecraft:no_op"
 feature_lake:
   - LakeFeature
   - LakeFeature.Configuration
@@ -62,6 +66,10 @@ feature_random_patch_simple:
   - RandomPatchFeature
   - RandomPatchConfiguration
   - "minecraft:random_patch"
+feature_random_patch:
+  - RandomPatchFeature
+  - RandomPatchConfiguration
+  - "minecraft:random_patch"
 feature_block_column_simple:
   - BlockColumnFeature
   - BlockColumnConfiguration
@@ -82,3 +90,7 @@ feature_replace_single_block:
   - ReplaceBlockFeature
   - ReplaceBlockConfiguration
   - "minecraft:replace_single_block"
+feature_simple_random_selector:
+  - SimpleRandomSelectorFeature
+  - SimpleRandomFeatureConfiguration
+  - "minecraft:simple_random_selector"
