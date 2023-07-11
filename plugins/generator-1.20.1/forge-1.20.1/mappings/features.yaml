@@ -14,6 +14,10 @@ feature_simple_block:
   - SimpleBlockFeature
   - SimpleBlockConfiguration
   - "minecraft:simple_block"
+feature_random_patch:
+  - RandomPatchFeature
+  - RandomPatchConfiguration
+  - "minecraft:random_patch"
 feature_ore:
   - OreFeature
   - OreConfiguration
@@ -26,3 +30,7 @@ feature_replace_single_block:
   - ReplaceBlockFeature
   - ReplaceBlockConfiguration
   - "minecraft:replace_single_block"
+feature_simple_random_selector:
+  - SimpleRandomSelectorFeature
+  - SimpleRandomFeatureConfiguration
+  - "minecraft:simple_random_selector"
