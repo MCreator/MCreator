@@ -25,9 +25,9 @@ import net.mcreator.ui.dialogs.SoundElementDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 
-public class ImportSoundAction extends BasicAction {
+public class SoundImportAction extends BasicAction {
 
-	public ImportSoundAction(ActionRegistry actionRegistry) {
+	public SoundImportAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.workspace.resources.import_sound"),
 				actionEvent -> SoundElementDialog.importSound(actionRegistry.getMCreator()));
 
