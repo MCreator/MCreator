@@ -239,7 +239,7 @@ import java.util.stream.Collectors;
 		}
 
 		@Override public final String toString(Object value) {
-			return df.format(value);
+			return df.format((double) (Double) value);
 		}
 
 		@Override public final Double parseObj(JsonElement value) {
