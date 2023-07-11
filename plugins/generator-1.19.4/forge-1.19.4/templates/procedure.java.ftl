@@ -43,7 +43,8 @@ import javax.annotation.Nullable;
 		&& dependency.getType(generator.getWorkspace()) != "BlockState"
 		&& dependency.getType(generator.getWorkspace()) != "InteractionResult"
 		&& dependency.getType(generator.getWorkspace()) != "boolean"
-		&& dependency.getType(generator.getWorkspace()) != "CommandContext<CommandSourceStack>">
+		&& dependency.getType(generator.getWorkspace()) != "CommandContext<CommandSourceStack>"
+		&& dependency.getType(generator.getWorkspace()) != "DamageSource">
 		<#assign nullableDependencies += [dependency.getName()]/>
 	</#if>
 </#list>

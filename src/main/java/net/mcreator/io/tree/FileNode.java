@@ -40,6 +40,14 @@ public class FileNode {
 		return childs.isEmpty() && leafs.isEmpty();
 	}
 
+	public String[] splitPath() {
+		String[] path = incrementalPath.split(":%:");
+		int idx = path.length - 1;
+		if (path[idx].startsWith("/"))
+			path[idx] = path[idx].substring(1);
+		return path;
+	}
+
 	public void addElement(String currentPath, String[] list) {
 		while (list[0] == null || list[0].equals(""))
 			list = Arrays.copyOfRange(list, 1, list.length);

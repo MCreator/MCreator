@@ -606,6 +606,27 @@ Blockly.Blocks['weighted_list_mutator_input'] = {
     }
 };
 
+// Mutator block for ore features mixin
+Blockly.Blocks['feature_simple_random_mutator_container'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.feature_simple_random_mutator.container"));
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+        this.setColour(340);
+    }
+};
+
+// Mutator block for ore features mixin
+Blockly.Blocks['feature_simple_random_mutator_input'] = {
+    init: function () {
+      this.appendDummyInput().appendField(javabridge.t("blockly.block.feature_simple_random_mutator.input"));
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.contextMenu = false;
+      this.setColour(340);
+    }
+};
+
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "logic_binary_ops",
