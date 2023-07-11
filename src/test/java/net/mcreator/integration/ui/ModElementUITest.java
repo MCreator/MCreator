@@ -66,9 +66,6 @@ public class ModElementUITest {
 
 		TestSetup.setupIntegrationTestEnvironment();
 
-		// may be needed to generate icons for MCItems (eg. generation of potion icons)
-		ImageMakerTexturesCache.init();
-
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
