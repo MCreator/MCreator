@@ -47,12 +47,12 @@ public class TextureImportDialogs {
 	 * @param message  <p>The message to display on the option dialog</p>
 	 */
 	public static void importSingleTexture(final MCreator mcreator, File file, String message) {
-		Object[] options = TextureType.getTypes(false);
+		TextureType[] options = TextureType.getSupportedTypes(mcreator.getWorkspace(), false);
 		int n = JOptionPane.showOptionDialog(mcreator, message, L10N.t("dialog.textures_import.texture_type"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
 
 		if (n >= 0) {
-			saveTextures(mcreator, TextureType.getTextureType(n, false), new File[] { file });
+			saveTextures(mcreator, options[n], new File[] { file });
 		}
 	}
 
