@@ -21,16 +21,29 @@ package net.mcreator.ui.action.impl.workspace.resources;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
+import net.mcreator.ui.workspace.resources.TextureType;
 
+import javax.annotation.Nullable;
 import java.awt.event.ActionListener;
 
 public class TextureAction extends BasicAction {
 
+	@Nullable private final TextureType textureType;
+
 	public TextureAction(ActionRegistry actionRegistry, String name, ActionListener listener) {
+		this(actionRegistry, name, listener, null);
+	}
+
+	public TextureAction(ActionRegistry actionRegistry, String name, ActionListener listener,
+			@Nullable TextureType textureType) {
 		super(actionRegistry, name, listener);
+		this.textureType = textureType;
 	}
 
 	@Override public boolean isEnabled() {
+		if (textureType != null && !textureType.isSupported(actionRegistry.getMCreator().getWorkspace()))
+			return false;
+
 		return actionRegistry.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("textures")
 				!= GeneratorStats.CoverageStatus.NONE;
 	}

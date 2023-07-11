@@ -4,10 +4,12 @@
       "type": "input_value",
       "name": "gameruleValue",
       "check": "Number"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "gamerulesnumber",
+      "datalist": "gamerulesnumber"
     }
-  ],
-  "extensions": [
-    "gamerulesnumber_list_provider"
   ],
   "inputsInline": true,
   "previousStatement": null,

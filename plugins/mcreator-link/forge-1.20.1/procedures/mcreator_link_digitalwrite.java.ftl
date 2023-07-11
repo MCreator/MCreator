@@ -1,0 +1,1 @@
+CurrentDevice.digitalWrite((int)${input$pin},(${input$value})?(byte)1:(byte)0);
