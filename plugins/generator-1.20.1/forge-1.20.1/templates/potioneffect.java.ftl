@@ -58,7 +58,7 @@ public class ${name}MobEffect extends MobEffect {
 					"x": "entity.getX()",
 					"y": "entity.getY()",
 					"z": "entity.getZ()",
-					"world": "entity.level",
+					"world": "entity.level()",
 					"entity": "entity",
 					"amplifier": "amplifier"
 				}/>
@@ -69,7 +69,7 @@ public class ${name}MobEffect extends MobEffect {
 					"x": "entity.getX()",
 					"y": "entity.getY()",
 					"z": "entity.getZ()",
-					"world": "entity.level",
+					"world": "entity.level()",
 					"entity": "entity",
 					"amplifier": "amplifier"
 				}/>
@@ -83,7 +83,7 @@ public class ${name}MobEffect extends MobEffect {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
 				"z": "entity.getZ()",
-				"world": "entity.level",
+				"world": "entity.level()",
 				"entity": "entity",
 				"amplifier": "amplifier"
 			}/>
@@ -97,7 +97,7 @@ public class ${name}MobEffect extends MobEffect {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
 				"z": "entity.getZ()",
-				"world": "entity.level",
+				"world": "entity.level()",
 				"entity": "entity",
 				"amplifier": "amplifier"
 			}/>
@@ -120,7 +120,7 @@ public class ${name}MobEffect extends MobEffect {
 						return false;
 					}
 		
-					@Override public boolean renderInventoryText(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, PoseStack poseStack, int x, int y, int blitOffset) {
+					@Override public boolean renderInventoryText(MobEffectInstance instance, EffectRenderingInventoryScreen<?> screen, GuiGraphics guiGraphics, int x, int y, int blitOffset) {
 						return false;
 					}
 				</#if>
