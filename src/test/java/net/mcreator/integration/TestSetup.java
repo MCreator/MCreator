@@ -113,6 +113,9 @@ public class TestSetup {
 		// some mod element guis use icons
 		TiledImageCache.loadAndTileImages();
 
+		// may be needed to generate icons for MCItems (e.g. generation of potion icons)
+		ImageMakerTexturesCache.init();
+
 		// load apis defined by plugins after plugins are loaded
 		ModAPIManager.initAPIs();
 
