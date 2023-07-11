@@ -98,7 +98,7 @@ public class RSTAIcons {
 
 			return newIcon;
 		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Failed to load icon: " + icon, e);
 		}
 
 		return icon;

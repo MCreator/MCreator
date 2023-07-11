@@ -56,7 +56,7 @@ public class JModLibraryInfo extends LibraryInfo {
 		try {
 			bulkCreateZip.close();
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Failed to end class file creation", e);
 		}
 	}
 
@@ -64,7 +64,7 @@ public class JModLibraryInfo extends LibraryInfo {
 		try {
 			bulkCreateZip = new ZipFile(jmodFile);
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Failed to start class file creation", e);
 		}
 	}
 

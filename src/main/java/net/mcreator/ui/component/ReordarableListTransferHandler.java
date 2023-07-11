@@ -105,7 +105,7 @@ public class ReordarableListTransferHandler extends TransferHandler {
 			addCount = values.length;
 			return true;
 		} catch (UnsupportedFlavorException | IOException ex) {
-			LOG.error(ex.getMessage(), ex);
+			LOG.error("Failed to load transfer data", ex);
 		}
 
 		return false;
