@@ -19,7 +19,9 @@
 
 package net.mcreator.ui.workspace.resources;
 
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.workspace.Workspace;
 
 import java.util.Arrays;
 
@@ -43,21 +45,17 @@ public enum TextureType {
 	 * @param withArmor <p>Set to true to include the armor texture type into the possible types.</p>
 	 * @return <p>A list of {@link TextureType}s</p>
 	 */
-	public static TextureType[] getTypes(boolean withArmor) {
+	public static TextureType[] getSupportedTypes(Workspace workspace, boolean withArmor) {
 		return withArmor ?
 				TextureType.values() :
-				Arrays.stream(TextureType.values()).filter(t -> t != TextureType.ARMOR).toArray(TextureType[]::new);
+				Arrays.stream(TextureType.values()).filter(t -> t != TextureType.ARMOR && t.isSupported(workspace))
+						.toArray(TextureType[]::new);
 	}
 
-	/**
-	 * <p>Get the {@link TextureType} in the enum depending on {@param position} and {@param withArmor}.</p>
-	 *
-	 * @param position  <p>The position of the texture type in the enum.</p>
-	 * @param withArmor <p>Set to true to include the armor texture type into the possible types.</p>
-	 * @return <p>The corresponding {@link TextureType}</p>
-	 */
-	public static TextureType getTextureType(int position, boolean withArmor) {
-		return getTypes(withArmor)[position];
+	public boolean isSupported(Workspace workspace) {
+		return workspace.getGeneratorStats().getTextureCoverageInfo().containsKey(this)
+				&& workspace.getGeneratorStats().getTextureCoverageInfo().get(this)
+				== GeneratorStats.CoverageStatus.FULL;
 	}
 
 	@Override public String toString() {

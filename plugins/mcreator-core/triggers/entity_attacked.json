@@ -31,6 +31,10 @@
     {
       "name": "immediatesourceentity",
       "type": "entity"
+    },
+    {
+      "name": "damagesource",
+      "type": "damagesource"
     }
   ],
   "cancelable": "true",

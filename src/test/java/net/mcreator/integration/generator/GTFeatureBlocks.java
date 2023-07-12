@@ -227,6 +227,15 @@ public class GTFeatureBlocks {
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature">%s</value><next><block type="placement_in_square"></block></next></block></xml>
 						""".formatted(testXML);
+				// Placed features are tested with the "Random patch" feature
+				case "PlacedFeature" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_random_patch">
+							<value name="feature">%s</value>
+							<field name="tries">128</field><field name="xzSpread">7</field><field name="ySpread">3</field>
+						</block></value><next><block type="placement_in_square"></block></next></block></xml>
+						""".formatted(testXML);
 				// Vertical anchors are tested with the "Height: At constant height" placement
 				case "VerticalAnchor" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
@@ -267,6 +276,14 @@ public class GTFeatureBlocks {
 						<value name="feature"><block type="feature_replace_single_block">
 							<mutation inputs="1"></mutation>
 							<value name="target0">%s</value>
+						</block></value><next><block type="placement_in_square"></block></next></block></xml>
+						""".formatted(testXML);
+				// Blockstate providers are tested with the simple block feature
+				case "BlockStateProvider" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_simple_block">
+							<value name="block">%s</value>
 						</block></value><next><block type="placement_in_square"></block></next></block></xml>
 						""".formatted(testXML);
 				// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block

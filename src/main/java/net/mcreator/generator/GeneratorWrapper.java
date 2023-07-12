@@ -43,6 +43,10 @@ import java.util.stream.Collectors;
 		return generator.getGeneratorBuildFileVersion();
 	}
 
+	public String getGeneratorMinecraftVersion() {
+		return generator.getGeneratorMinecraftVersion();
+	}
+
 	public int getStartIDFor(String baseType) {
 		return generator.getStartIDFor(baseType);
 	}
