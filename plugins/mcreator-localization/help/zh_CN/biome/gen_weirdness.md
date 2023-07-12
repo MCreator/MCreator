@@ -6,6 +6,6 @@
 
 扩展链接:
 
-- 噪声算法(https://www.cnblogs.com/KillerAery/p/10765897.html)
-- 奇异噪声(https://wiki.biligame.com/mc/%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0#terrain_shaper_spline)
+- [噪声算法](https://www.cnblogs.com/KillerAery/p/10765897.html)
+- [奇异噪声](https://wiki.biligame.com/mc/%E5%AF%86%E5%BA%A6%E5%87%BD%E6%95%B0#terrain_shaper_spline)
 
