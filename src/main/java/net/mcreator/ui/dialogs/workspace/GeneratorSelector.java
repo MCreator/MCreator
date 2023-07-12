@@ -126,8 +126,8 @@ public class GeneratorSelector {
 			genStats.add(new JEmptyBox(20, 20));
 
 			JPanel supportedElements = new JPanel(new GridLayout(-1, 6, 7, 3));
-			DataListLoader.getFiles().stream().sorted()
-					.forEach(e -> addStatsBar(L10N.t(covpfx + e), e, supportedElements, stats));
+			DataListLoader.getCache().entrySet().stream().filter(e -> !e.getValue().isEmpty()).map(Map.Entry::getKey)
+					.sorted().forEach(e -> addStatsBar(L10N.t(covpfx + e), e, supportedElements, stats));
 
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"),
 					supportedElements, 10, 10));

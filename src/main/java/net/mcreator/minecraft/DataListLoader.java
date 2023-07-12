@@ -37,23 +37,17 @@ public class DataListLoader {
 	private static final Logger LOG = LogManager.getLogger("Data List Loader");
 
 	private static final Map<String, LinkedHashMap<String, DataListEntry>> cache = new HashMap<>();
-	private static final List<String> files = new ArrayList<>();
 
 	public static void preloadCache() {
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources("datalists", Pattern.compile(".*\\.yaml"));
 		for (String res : fileNames) {
 			String datalistname = res.split("datalists/")[1].replace(".yaml", "");
-			files.add(datalistname);
 			loadDataList(datalistname);
 		}
 	}
 
 	public static Map<String, LinkedHashMap<String, DataListEntry>> getCache() {
 		return cache;
-	}
-
-	public static List<String> getFiles() {
-		return files;
 	}
 
 	public static List<DataListEntry> loadDataList(String listName) {
