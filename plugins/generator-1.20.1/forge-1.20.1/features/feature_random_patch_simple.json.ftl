@@ -11,10 +11,12 @@
       }
     },
     "placement": [
+      <#if input_id$condition != "block_predicate_true">
       {
         "type": "minecraft:block_predicate_filter",
         "predicate": ${input$condition}
       }
+      </#if>
     ]
   }
 }
