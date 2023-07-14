@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -33,85 +33,74 @@
 
 package ${package}.network;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}SlotMessage {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ButtonMessage {
 
-	private final int slotID, x, y, z, changeType, meta;
+	private final int buttonID, x, y, z;
 
-	public ${name}SlotMessage(int slotID, int x, int y, int z, int changeType, int meta) {
-		this.slotID = slotID;
-		this.x = x;
-		this.y = y;
-		this.z = z;
-		this.changeType = changeType;
-		this.meta = meta;
-	}
-
-	public ${name}SlotMessage(FriendlyByteBuf buffer) {
-		this.slotID = buffer.readInt();
+	public ${name}ButtonMessage(FriendlyByteBuf buffer) {
+		this.buttonID = buffer.readInt();
 		this.x = buffer.readInt();
 		this.y = buffer.readInt();
 		this.z = buffer.readInt();
-		this.changeType = buffer.readInt();
-		this.meta = buffer.readInt();
 	}
 
-	public static void buffer(${name}SlotMessage message, FriendlyByteBuf buffer) {
-		buffer.writeInt(message.slotID);
+	public ${name}ButtonMessage(int buttonID, int x, int y, int z) {
+		this.buttonID = buttonID;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+
+	public static void buffer(${name}ButtonMessage message, FriendlyByteBuf buffer) {
+		buffer.writeInt(message.buttonID);
 		buffer.writeInt(message.x);
 		buffer.writeInt(message.y);
 		buffer.writeInt(message.z);
-		buffer.writeInt(message.changeType);
-		buffer.writeInt(message.meta);
 	}
 
-	public static void handler(${name}SlotMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
+	public static void handler(${name}ButtonMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
 		NetworkEvent.Context context = contextSupplier.get();
 		context.enqueueWork(() -> {
 			Player entity = context.getSender();
-			int slotID = message.slotID;
-			int changeType = message.changeType;
-			int meta = message.meta;
+			int buttonID = message.buttonID;
 			int x = message.x;
 			int y = message.y;
 			int z = message.z;
 
-			handleSlotAction(entity, slotID, changeType, meta, x, y, z);
+			handleButtonAction(entity, buttonID, x, y, z);
 		});
 		context.setPacketHandled(true);
 	}
 
-	public static void handleSlotAction(Player entity, int slot, int changeType, int meta, int x, int y, int z) {
-		Level world = entity.level;
+	public static void handleButtonAction(Player entity, int buttonID, int x, int y, int z) {
+		Level world = entity.level();
 		HashMap guistate = ${name}Menu.guistate;
 
 		// security measure to prevent arbitrary chunk generation
 		if (!world.hasChunkAt(new BlockPos(x, y, z)))
 			return;
 
-		<#list data.components as component>
-			<#if component.getClass().getSimpleName()?ends_with("Slot")>
-				<#if hasProcedure(component.onSlotChanged)>
-					if (slot == ${component.id} && changeType == 0) {
-						<@procedureOBJToCode component.onSlotChanged/>
+		<#assign btid = 0>
+		<#list data.getComponentsOfType("Button") as component>
+				<#if hasProcedure(component.onClick)>
+					if (buttonID == ${btid}) {
+						<@procedureOBJToCode component.onClick/>
 					}
 				</#if>
-				<#if hasProcedure(component.onTakenFromSlot)>
-					if (slot == ${component.id} && changeType == 1) {
-						<@procedureOBJToCode component.onTakenFromSlot/>
+				<#assign btid +=1>
+		</#list>
+		<#list data.getComponentsOfType("ImageButton") as component>
+				<#if hasProcedure(component.onClick)>
+					if (buttonID == ${btid}) {
+						<@procedureOBJToCode component.onClick/>
 					}
 				</#if>
-				<#if hasProcedure(component.onStackTransfer)>
-					if (slot == ${component.id} && changeType == 2) {
-						int amount = meta;
-						<@procedureOBJToCode component.onStackTransfer/>
-					}
-				</#if>
-			</#if>
+				<#assign btid +=1>
 		</#list>
 	}
 
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
-		${JavaModName}.addNetworkMessage(${name}SlotMessage.class, ${name}SlotMessage::buffer, ${name}SlotMessage::new, ${name}SlotMessage::handler);
+		${JavaModName}.addNetworkMessage(${name}ButtonMessage.class, ${name}ButtonMessage::buffer, ${name}ButtonMessage::new, ${name}ButtonMessage::handler);
 	}
 
 }
