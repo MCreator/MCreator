@@ -34,13 +34,12 @@
 
 package ${package}.block;
 
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 public class ${name}PortalBlock extends NetherPortalBlock {
 
 	public ${name}PortalBlock() {
-		super(BlockBehaviour.Properties.of(Material.PORTAL).noCollission().randomTicks()
+		super(BlockBehaviour.Properties.of().noCollission().randomTicks().pushReaction(PushReaction.BLOCK)
 				.strength(-1.0F).sound(SoundType.GLASS).lightLevel(s -> ${data.portalLuminance}).noLootTable());
 	}
 
@@ -100,11 +99,10 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 	}
 
 	@Override public void entityInside(BlockState state, Level world, BlockPos pos, Entity entity) {
-		if (!entity.isPassenger() && !entity.isVehicle() && entity.canChangeDimensions()
-				&& !entity.level.isClientSide() && <@procedureOBJToConditionCode data.portalUseCondition/>) {
+		if (entity.canChangeDimensions() && !entity.level().isClientSide() && <@procedureOBJToConditionCode data.portalUseCondition/>) {
 			if (entity.isOnPortalCooldown()) {
 				entity.setPortalCooldown();
-			} else if (entity.level.dimension() != ResourceKey.create(Registries.DIMENSION, new ResourceLocation("${modid}:${registryname}"))) {
+			} else if (entity.level().dimension() != ResourceKey.create(Registries.DIMENSION, new ResourceLocation("${modid}:${registryname}"))) {
 				entity.setPortalCooldown();
 				teleportToDimension(entity, pos, ResourceKey.create(Registries.DIMENSION, new ResourceLocation("${modid}:${registryname}")));
 			} else {

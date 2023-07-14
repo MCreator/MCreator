@@ -73,13 +73,11 @@ package ${package}.world.teleporter;
 		PortalInfo portalinfo = getPortalInfo(entity, server);
 
 		if (entity instanceof ServerPlayer player) {
-			player.setLevel(server);
+			player.setServerLevel(server);
 			server.addDuringPortalTeleport(player);
 
-			entity.setYRot(portalinfo.yRot % 360.0F);
-			entity.setXRot(portalinfo.xRot % 360.0F);
-
-			entity.moveTo(portalinfo.pos.x, portalinfo.pos.y, portalinfo.pos.z);
+			player.connection.teleport(portalinfo.pos.x, portalinfo.pos.y, portalinfo.pos.z, portalinfo.yRot, portalinfo.xRot);
+			player.connection.resetPosition();
 
 			CriteriaTriggers.CHANGED_DIMENSION.trigger(player, currentWorld.dimension(), server.dimension());
 
@@ -98,21 +96,17 @@ package ${package}.world.teleporter;
 
 	private PortalInfo getPortalInfo(Entity entity, ServerLevel server) {
 		WorldBorder worldborder = server.getWorldBorder();
-		double d0 = Math.max(-2.9999872E7D, worldborder.getMinX() + 16.);
-		double d1 = Math.max(-2.9999872E7D, worldborder.getMinZ() + 16.);
-		double d2 = Math.min(2.9999872E7D, worldborder.getMaxX() - 16.);
-		double d3 = Math.min(2.9999872E7D, worldborder.getMaxZ() - 16.);
-		double d4 = DimensionType.getTeleportationScale(entity.level.dimensionType(), server.dimensionType());
-		BlockPos blockpos1 = BlockPos.containing(Mth.clamp(entity.getX() * d4, d0, d2), entity.getY(), Mth.clamp(entity.getZ() * d4, d1, d3));
+		double d0 = DimensionType.getTeleportationScale(entity.level().dimensionType(), server.dimensionType());
+		BlockPos blockpos1 = worldborder.clampToBounds(entity.getX() * d0, entity.getY(), entity.getZ() * d0);
 		return this.getExitPortal(entity, blockpos1, worldborder).map(repositioner -> {
-			BlockState blockstate = entity.level.getBlockState(this.entityEnterPos);
+			BlockState blockstate = entity.level().getBlockState(this.entityEnterPos);
 			Direction.Axis direction$axis;
 			Vec3 vector3d;
 
 			if (blockstate.hasProperty(BlockStateProperties.HORIZONTAL_AXIS)) {
 				direction$axis = blockstate.getValue(BlockStateProperties.HORIZONTAL_AXIS);
 				BlockUtil.FoundRectangle teleportationrepositioner$result = BlockUtil.getLargestRectangleAround(this.entityEnterPos, direction$axis, 21, Direction.Axis.Y, 21,
-								pos -> entity.level.getBlockState(pos) == blockstate);
+								pos -> entity.level().getBlockState(pos) == blockstate);
 				vector3d = ${name}PortalShape.getRelativePosition(teleportationrepositioner$result, direction$axis, entity.position(), entity.getDimensions(entity.getPose()));
 			} else {
 				direction$axis = Direction.Axis.X;
@@ -130,7 +124,7 @@ package ${package}.world.teleporter;
 			if (optional.isPresent()) {
 				return optional;
 			} else {
-				Direction.Axis direction$axis = entity.level.getBlockState(this.entityEnterPos).getOptionalValue(NetherPortalBlock.AXIS).orElse(Direction.Axis.X);
+				Direction.Axis direction$axis = entity.level().getBlockState(this.entityEnterPos).getOptionalValue(NetherPortalBlock.AXIS).orElse(Direction.Axis.X);
 				return this.createPortal(pos, direction$axis);
 			}
 		} else {
