@@ -201,6 +201,22 @@
 }
 </#macro>
 
+<#-- Armor triggers -->
+<#macro onArmorTick procedure="">
+	<#if hasProcedure(procedure)>
+@Override public void onArmorTick(ItemStack itemstack, Level world, Player entity) {
+	<@procedureCode procedure, {
+	"x": "entity.getX()",
+	"y": "entity.getY()",
+	"z": "entity.getZ()",
+	"world": "world",
+	"entity": "entity",
+	"itemstack": "itemstack"
+	}/>
+			}
+	</#if>
+</#macro>
+
 <#-- Block-related triggers -->
 <#macro onDestroyedByExplosion procedure="">
 <#if hasProcedure(procedure)>
