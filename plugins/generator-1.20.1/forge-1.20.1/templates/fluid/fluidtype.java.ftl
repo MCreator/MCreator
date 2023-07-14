@@ -41,14 +41,13 @@ public class ${name}FluidType extends FluidType {
 			.canExtinguish(true)
 			.supportsBoating(true)
 			.canHydrate(true)
-			<#if data.flowStrength != 1>.motionScale(${0.007 * data.flowStrength}D)</#if>
 			<#else>
 			.canSwim(false)
 			.canDrown(false)
 			.pathType(BlockPathTypes.LAVA)
 			.adjacentPathType(null)
-			.motionScale(${0.007 * data.flowStrength}D)
 			</#if>
+			.motionScale(${0.007 * data.flowStrength}D)
 			<#if data.luminosity != 0>.lightLevel(${(data.luminosity lt 15)?then(data.luminosity, 15)})</#if>
 			<#if data.density != 1000>.density(${data.density})</#if>
 			<#if data.viscosity != 1000>.viscosity(${data.viscosity})</#if>
