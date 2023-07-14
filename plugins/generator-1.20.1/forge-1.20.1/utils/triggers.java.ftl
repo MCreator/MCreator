@@ -205,7 +205,7 @@
 <#macro onDestroyedByExplosion procedure="">
 <#if hasProcedure(procedure)>
 @Override public void wasExploded(Level world, BlockPos pos, Explosion e) {
-			super.wasExploded(world, pos, e);
+	super.wasExploded(world, pos, e);
 	<@procedureCode procedure, {
 	"x": "pos.getX()",
 	"y": "pos.getY()",
@@ -219,7 +219,7 @@
 <#macro onEntityCollides procedure="">
 <#if hasProcedure(procedure)>
 @Override public void entityInside(BlockState blockstate, Level world, BlockPos pos, Entity entity) {
-			super.entityInside(blockstate, world, pos, entity);
+	super.entityInside(blockstate, world, pos, entity);
 	<@procedureCode procedure, {
 	"x": "pos.getX()",
 	"y": "pos.getY()",
@@ -235,7 +235,7 @@
 <#macro onBlockAdded procedure="" scheduleTick=false tickRate=0>
 <#if scheduleTick || hasProcedure(procedure)>
 @Override public void onPlace(BlockState blockstate, Level world, BlockPos pos, BlockState oldState, boolean moving) {
-			super.onPlace(blockstate, world, pos, oldState, moving);
+	super.onPlace(blockstate, world, pos, oldState, moving);
 	<#if scheduleTick>
 		world.scheduleTick(pos, this, ${tickRate});
 	</#if>
@@ -257,7 +257,7 @@
 <#macro onRedstoneOrNeighborChanged onRedstoneOn="" onRedstoneOff="" onNeighborChanged="">
 <#if hasProcedure(onRedstoneOn) || hasProcedure(onRedstoneOff) || hasProcedure(onNeighborChanged)>
 @Override public void neighborChanged(BlockState blockstate, Level world, BlockPos pos, Block neighborBlock, BlockPos fromPos, boolean moving) {
-			super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, moving);
+	super.neighborChanged(blockstate, world, pos, neighborBlock, fromPos, moving);
 	<#if hasProcedure(onRedstoneOn) || hasProcedure(onRedstoneOff)>
 		if (world.getBestNeighborSignal(pos) > 0) {
 		<#if hasProcedure(onRedstoneOn)>
@@ -297,7 +297,7 @@
 <#macro onAnimateTick procedure="">
 <#if hasProcedure(procedure)>
 @Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, RandomSource random) {
-			super.animateTick(blockstate, world, pos, random);
+	super.animateTick(blockstate, world, pos, random);
 	<@procedureCode procedure, {
 	"x": "pos.getX()",
 	"y": "pos.getY()",
@@ -313,7 +313,7 @@
 <#macro onBlockTick procedure="" scheduleTick=false tickRate=0>
 <#if hasProcedure(procedure)>
 @Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
-			super.tick(blockstate, world, pos, random);
+	super.tick(blockstate, world, pos, random);
 	<@procedureCode procedure, {
 	"x": "pos.getX()",
 	"y": "pos.getY()",
