@@ -38,6 +38,10 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("villagerprofession")>${JavaModName}VillagerProfessions.PROFESSIONS.register(bus);</#if>
+		<#if w.hasElementsOfType("fluid")>
+			${JavaModName}Fluids.REGISTRY.register(bus);
+			${JavaModName}FluidTypes.REGISTRY.register(bus);
+		</#if>
 	}
 
 	private static final String PROTOCOL_VERSION = "1";
