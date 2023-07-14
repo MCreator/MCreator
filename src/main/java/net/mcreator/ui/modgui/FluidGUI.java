@@ -22,7 +22,6 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Fluid;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -54,7 +53,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
