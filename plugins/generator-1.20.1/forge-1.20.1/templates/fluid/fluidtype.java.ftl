@@ -41,7 +41,7 @@ public class ${name}FluidType extends FluidType {
 			.canExtinguish(true)
 			.supportsBoating(true)
 			.canHydrate(true)
-			<#if data.flowStrength != 1>.motionScale(${0.014 * data.flowStrength}D)</#if>
+			<#if data.flowStrength != 1>.motionScale(${0.007 * data.flowStrength}D)</#if>
 			<#else>
 			.canSwim(false)
 			.canDrown(false)

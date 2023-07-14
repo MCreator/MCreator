@@ -34,22 +34,22 @@
 
 package ${package}.block;
 
-import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <#compress>
 public class ${name}Block extends LiquidBlock {
 	public ${name}Block() {
 		super(() -> ${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
+			BlockBehaviour.Properties.of()
 			<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-			BlockBehaviour.Properties.of(Material.${data.type}, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
+			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
 			<#else>
-			BlockBehaviour.Properties.of(Material.${data.type})
+			.mapColor(MapColor.${(data.type=="WATER")?then("WATER","FIRE")})
 			</#if>
 			.strength(${data.resistance}f)
 			<#if data.emissiveRendering>.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)</#if>
 			<#if data.luminance != 0>.lightLevel(s -> ${data.luminance})</#if>
-			.noCollission().noLootTable()
+			.noCollission().noLootTable().liquid().pushReaction(PushReaction.DESTROY).sound(SoundType.EMPTY).replaceable()
 		);
 	}
 
