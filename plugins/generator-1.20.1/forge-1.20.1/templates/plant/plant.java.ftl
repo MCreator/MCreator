@@ -36,7 +36,6 @@
 
 package ${package}.block;
 
-import net.minecraft.world.level.material.Material;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
@@ -54,10 +53,11 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	</#if>{
 	public ${name}Block() {
 		super(<#if data.plantType == "normal">() -> ${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
+		BlockBehaviour.Properties.of()
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-		BlockBehaviour.Properties.of(Material.PLANT, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
+		.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
 		<#else>
-		BlockBehaviour.Properties.of(Material.PLANT)
+		.mapColor(MapColor.PLANT)
 		</#if>
 		<#if data.plantType == "growapable" || data.forceTicking>
 		.randomTicks()
@@ -113,9 +113,10 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		<#else>
 		.noCollission()
 		</#if>
-		<#if data.offsetType != "XZ">
-		.offsetType(BlockBehaviour.OffsetType.${data.offsetType})
+		<#if data.isReplaceable>
+		.replaceable()
 		</#if>
+		.offsetType(BlockBehaviour.OffsetType.${data.offsetType}).pushReaction(PushReaction.DESTROY)
 		);
 	}
 
@@ -133,12 +134,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	<#if (data.plantType == "normal") && (data.suspiciousStewDuration > 0)>
 	@Override public int getEffectDuration() {
 		return ${data.suspiciousStewDuration};
-	}
-	</#if>
-
-	<#if data.isReplaceable>
-	@Override public boolean canBeReplaced(BlockState state, BlockPlaceContext useContext) {
-		return useContext.getItemInHand().getItem() != this.asItem();
 	}
 	</#if>
 
@@ -177,7 +172,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<#if !(data.useLootTableForDrops || (data.dropAmount == 0))>
 		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+		@Override public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 			<#if data.plantType == "double">
 			if(state.getValue(HALF) != DoubleBlockHalf.LOWER)
 				return Collections.emptyList();
@@ -189,7 +184,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
 		}
 		<#elseif data.customDrop?? && !data.customDrop.isEmpty()>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+		@Override public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 			<#if data.plantType == "double">
 			if(state.getValue(HALF) != DoubleBlockHalf.LOWER)
 				return Collections.emptyList();
@@ -201,7 +196,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
 		}
 		<#else>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+		@Override public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 			<#if data.plantType == "double">
 			if(state.getValue(HALF) != DoubleBlockHalf.LOWER)
 				return Collections.emptyList();
