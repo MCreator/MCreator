@@ -1,0 +1,42 @@
+{
+  "type": "custom_animation",
+  "message0": "play animation on %1 at %2 speed %3",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "input_value",
+      "name": "animation_file",
+      "check": "File"
+    },
+    {
+      "type": "input_value",
+      "name": "speed",
+      "check": "Number"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 175,
+  "mcreator": {
+    "toolbox_id": "entitymanagement",
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
+      "<value name=\"animation_file\"><block type=\"text\"><field name=\"TEXT\">animations/animation.json</field></block></value>",
+      "<value name=\"speed\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>"
+    ],
+    "generator_settings": {
+      "create_animations_folder": true,
+      "animations_folder_message": "Place animations in the \"animations\" folder."
+    },
+    "inputs": [
+      "entity",
+      "animation_file",
+      "speed"
+    ]
+  }
+}
