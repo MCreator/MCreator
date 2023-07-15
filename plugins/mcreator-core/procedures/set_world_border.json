@@ -1,0 +1,51 @@
+{
+  "type": "set_world_border",
+  "message0": "set world border with center at x:%1 y:%2 z:%3 to size %4",
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "center_x",
+      "check": "Number",
+      "align": "RIGHT"
+    },
+    {
+      "type": "input_value",
+      "name": "center_y",
+      "check": "Number",
+      "align": "RIGHT"
+    },
+    {
+      "type": "input_value",
+      "name": "center_z",
+      "check": "Number",
+      "align": "RIGHT"
+    },
+    {
+      "type": "input_value",
+      "name": "size",
+      "check": "Number",
+      "align": "RIGHT"
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 230,
+  "tooltip": "Sets the world border with a center at the specified coordinates.",
+  "helpUrl": "",
+  "mcreator": {
+    "toolbox_id": "worldmanagement",
+    "toolbox_init": [
+      "<value name=\"center_x\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"center_y\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"center_z\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"size\"><block type=\"math_number\"><field name=\"NUM\">1000</field></block></value>"
+    ],
+    "inputs": [
+      "center_x",
+      "center_y",
+      "center_z",
+      "size"
+    ]
+  }
+}
