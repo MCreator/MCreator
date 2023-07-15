@@ -217,55 +217,32 @@ public abstract class GeneratableElement {
 			for (Field field : object.getClass().getDeclaredFields()) {
 				field.setAccessible(true);
 
-				if (Modifier.isStatic(field.getModifiers()) || Modifier.isTransient(field.getModifiers()))
-					continue;
-
-				try {
-					Object subobject = field.get(object);
-					if (subobject instanceof IWorkspaceDependent iws) {
-						iws.setWorkspace(workspace);
-					} else if (subobject instanceof Object[] array) {
-						for (Object element : array) {
-							if (element instanceof IWorkspaceDependent iws) {
-								iws.setWorkspace(workspace);
-							} else if (element != null
-									&& element.getClass().getModule() == GeneratableElement.class.getModule()) {
-								passWorkspaceToFields(element, workspace);
-							}
-						}
-					} else if (subobject instanceof Iterable<?> list) {
-						for (Object element : list) {
-							if (element instanceof IWorkspaceDependent iws) {
-								iws.setWorkspace(workspace);
-							} else if (element != null
-									&& element.getClass().getModule() == GeneratableElement.class.getModule()) {
-								passWorkspaceToFields(element, workspace);
-							}
-						}
-					} else if (subobject instanceof Map<?, ?> map) {
-						for (Object element : map.keySet()) {
-							if (element instanceof IWorkspaceDependent iws) {
-								iws.setWorkspace(workspace);
-							} else if (element != null
-									&& element.getClass().getModule() == GeneratableElement.class.getModule()) {
-								passWorkspaceToFields(element, workspace);
-							}
-						}
-						for (Object element : map.values()) {
-							if (element instanceof IWorkspaceDependent iws) {
-								iws.setWorkspace(workspace);
-							} else if (element != null
-									&& element.getClass().getModule() == GeneratableElement.class.getModule()) {
-								passWorkspaceToFields(element, workspace);
-							}
-						}
-					} else if (subobject != null
-							&& subobject.getClass().getModule() == GeneratableElement.class.getModule()) {
-						passWorkspaceToFields(subobject, workspace);
+				if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers())) {
+					try {
+						tryPassToObject(field.get(object), workspace);
+					} catch (Exception e) {
+						LOG.error(e.getMessage(), e);
 					}
-				} catch (Exception e) {
-					LOG.error(e.getMessage(), e);
 				}
+			}
+		}
+
+		private void tryPassToObject(Object object, Workspace workspace) {
+			if (object instanceof IWorkspaceDependent iws) {
+				iws.setWorkspace(workspace);
+			} else if (object instanceof Object[] array) {
+				for (Object element : array)
+					tryPassToObject(element, workspace);
+			} else if (object instanceof Iterable<?> list) {
+				for (Object element : list)
+					tryPassToObject(element, workspace);
+			} else if (object instanceof Map<?, ?> map) {
+				for (Object element : map.keySet())
+					tryPassToObject(element, workspace);
+				for (Object element : map.values())
+					tryPassToObject(element, workspace);
+			} else if (object != null && object.getClass().getModule() != Object.class.getModule()) {
+				passWorkspaceToFields(object, workspace);
 			}
 		}
 
