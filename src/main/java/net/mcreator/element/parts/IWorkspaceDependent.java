@@ -17,12 +17,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element;
+package net.mcreator.element.parts;
 
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 
+/**
+ * Mod element parameters represented by instances of classes implementing this interface gather some used data
+ * from the configured workspace. In other words, these objects need workspace reference defined
+ * before they can be used by workspace managers or code generators.
+ */
 public interface IWorkspaceDependent {
 
 	void setWorkspace(@Nullable Workspace workspace);

@@ -18,7 +18,7 @@
 
 package net.mcreator.generator.mapping;
 
-import net.mcreator.element.IWorkspaceDependent;
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.workspace.Workspace;
