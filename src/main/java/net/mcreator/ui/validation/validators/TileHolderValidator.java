@@ -39,7 +39,7 @@ public class TileHolderValidator implements Validator {
 	}
 
 	@Override public ValidationResult validate() {
-		if (holder.has() || (requirement != null && !requirement.isSelected()))
+		if (holder.hasTexture() || (requirement != null && !requirement.isSelected()))
 			return Validator.ValidationResult.PASSED;
 		else
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,

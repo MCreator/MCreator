@@ -55,7 +55,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
 
@@ -93,7 +92,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(1, 0, 15, 1));
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 0, 9999999, 1));
+	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());

@@ -383,7 +383,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		name.setValidator(new TextFieldValidator(name, L10N.t("elementgui.ranged_item.error_item_needs_name")));
 		name.enableRealtimeValidation();
 		bulletItemTexture.setValidator(() -> {
-			if (bulletItemTexture.containsItem() || !adefault.equals(bulletModel.getSelectedItem()))
+			if (bulletItemTexture.containsItemOrAir() || !adefault.equals(bulletModel.getSelectedItem()))
 				return Validator.ValidationResult.PASSED;
 			else
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,

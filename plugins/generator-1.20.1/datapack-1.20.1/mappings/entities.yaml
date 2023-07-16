@@ -1,0 +1,53 @@
+_default:
+  - Zombie
+  - EntityType.ZOMBIE
+  - zombie
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template:
+  - "@NAMEEntity"
+  - "@JavaModNameEntities.@REGISTRYNAME.get()"
+  - "@modid:@registryname"
+EntityAllay:
+  - Allay
+  - EntityType.ALLAY
+  - allay
+EntityAreaEffectCloud:
+  - AreaEffectCloud
+  - EntityType.AREA_EFFECT_CLOUD
+  - area_effect_cloud
+EntityArmorStand:
+  - ArmorStand
+  - EntityType.ARMOR_STAND
+  - armor_stand
+EntityArrow:
+  - Arrow
+  - EntityType.ARROW
+  - arrow
+EntityAxolotl:
+  - Axolotl
+  - EntityType.AXOLOTL
+  - axolotl
+EntityBat:
+  - Bat
+  - EntityType.BAT
+  - bat
+EntityBee:
+  - Bee
+  - EntityType.BEE
+  - bee
+EntityBlaze:
+  - Blaze
+  - EntityType.BLAZE
+  - blaze
+EntityBlockDisplay:
+  - Display.BlockDisplay
+  - EntityType.BLOCK_DISPLAY
+  - block_display
+EntityBoat:
+  - Boat
+  - EntityType.BOAT
+  - boat
+EntityCat:
+  - Cat
+  - EntityType.CAT
+  - cat
