@@ -86,6 +86,7 @@ public class MCreatorTheme extends OceanTheme {
 							PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/secondary_font.ttf"));
 					LOG.info("Main font from default_dark will be used.");
 				}
+				GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(secondary_font);
 			}
 
 			InputStream consoleFontStream = PluginLoader.INSTANCE.getResourceAsStream(
