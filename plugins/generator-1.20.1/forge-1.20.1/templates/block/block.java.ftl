@@ -38,7 +38,6 @@ package ${package}.block;
 
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-import net.minecraft.world.level.material.Material;
 
 <#compress>
 public class ${name}Block extends
@@ -80,10 +79,10 @@ public class ${name}Block extends
 	</#if>
 
 	<#macro blockProperties>
+		BlockBehaviour.Properties.of()
+		${data.material}
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
-			BlockBehaviour.Properties.of(Material.${data.material}, MaterialColor.${generator.map(data.colorOnMap, "mapcolors")})
-		<#else>
-			BlockBehaviour.Properties.of(Material.${data.material})
+			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new ForgeSoundType(1.0f, 1.0f,
@@ -138,6 +137,9 @@ public class ${name}Block extends
 		</#if>
 		<#if data.tickRandomly>
 			.randomTicks()
+		</#if>
+		<#if data.reactionToPushing != "NORMAL">
+			.pushReaction(PushReaction.${data.reactionToPushing})
 		</#if>
 		<#if data.emissiveRendering>
 			.hasPostProcess((bs, br, bp) -> true).emissiveRendering((bs, br, bp) -> true)
@@ -465,12 +467,6 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.reactionToPushing != "NORMAL">
-	@Override public PushReaction getPistonPushReaction(BlockState state) {
-		return PushReaction.${data.reactionToPushing};
-	}
-	</#if>
-
 	<#if data.canRedstoneConnect>
 	@Override
 	public boolean canConnectRedstone(BlockState state, BlockGetter world, BlockPos pos, Direction side) {
@@ -493,7 +489,7 @@ public class ${name}Block extends
 
 	<#if !(data.useLootTableForDrops || (data.dropAmount == 0))>
 		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+		@Override public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 			<#if data.blockBase?has_content && data.blockBase == "Door">
 			if(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
 				return Collections.emptyList();
@@ -505,7 +501,7 @@ public class ${name}Block extends
 			return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
 		}
 		<#elseif data.customDrop?? && !data.customDrop.isEmpty()>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+		@Override public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 			<#if data.blockBase?has_content && data.blockBase == "Door">
 			if(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
 				return Collections.emptyList();
@@ -517,14 +513,14 @@ public class ${name}Block extends
 			return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
 		}
 		<#elseif data.blockBase?has_content && data.blockBase == "Slab">
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+		@Override public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
 			if(!dropsOriginal.isEmpty())
 				return dropsOriginal;
 			return Collections.singletonList(new ItemStack(this, state.getValue(TYPE) == SlabType.DOUBLE ? 2 : 1));
 		}
 		<#else>
-		@Override public List<ItemStack> getDrops(BlockState state, LootContext.Builder builder) {
+		@Override public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
 			<#if data.blockBase?has_content && data.blockBase == "Door">
 			if(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
 				return Collections.emptyList();

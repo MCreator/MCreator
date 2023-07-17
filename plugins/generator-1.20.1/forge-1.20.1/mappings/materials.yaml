@@ -1,7 +1,7 @@
 # This is backwards-compatibility mapping for materials that no longer exist.
 # Parameters already controlled by other UI elements (e.g. replaceable, redstone conductor, push reaction)
 # are not covered here and should be manually ported by the user.
-_default:
+_default: ""
 AIR: .air()
 STRUCTURE_VOID: .air()
 PORTAL:
