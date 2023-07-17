@@ -50,8 +50,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ModElementUITest {
 
@@ -168,6 +167,9 @@ public class ModElementUITest {
 			InterruptedException {
 		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
 
+			if (modElementType == ModElementType.CODE)
+				continue; // does not have regular handling so skip it
+
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
 					modElementType, true, random);
 
@@ -186,11 +188,7 @@ public class ModElementUITest {
 				generatableElement = workspace.getModElementManager()
 						.fromJSONtoGeneratableElement(exportedJSON, modElement);// from JSON to generatableelement
 
-				if (generatableElement == null) {
-					LOG.warn("This mod element type does not support generatable elements: " + modElement.getType()
-							.getReadableName());
-					continue;
-				}
+				assertNotNull(generatableElement);
 
 				ModElementGUI<?> modElementGUI = modElementType.getModElementGUI(mcreator, modElement, false);
 
