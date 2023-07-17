@@ -167,6 +167,7 @@ public class RegenerateCodeAction extends GradleAction {
 
 			// now we create a new thread for each list and run them at the same time
 			modElementsLists.forEach((j, modElements) -> new Thread(() -> {
+				Thread.currentThread().setPriority(Thread.MAX_PRIORITY);
 				for (ModElement mod : modElements) {
 					if (mod.isCodeLocked()) {
 						hasLockedElements.set(true);
@@ -227,12 +228,15 @@ public class RegenerateCodeAction extends GradleAction {
 					counter.i++;
 				}
 				finishedThreads.add(true);
+				Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
 			}, "Regenerate#" + j).start());
 
 			// we wait all threads to finish before continuing
+			Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 			do {
 				System.out.println(); // we "print" nothing, so it can end
 			} while (finishedThreads.size() != PreferencesManager.PREFERENCES.gradle.maxRegenCodeThreads.get());
+			Thread.currentThread().setPriority(Thread.NORM_PRIORITY);
 
 			// save all updated generatable mod elements
 			generatableElementsToSave.parallelStream().forEach(mcreator.getModElementManager()::storeModElement);

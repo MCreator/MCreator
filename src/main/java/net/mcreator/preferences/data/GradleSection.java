@@ -49,7 +49,7 @@ public class GradleSection extends PreferencesSection {
 		xms = addEntry(new IntegerEntry("xms", OS.getBundledJVMBits() == OS.BIT64 ? 625 : 512, 128, MAX_RAM));
 		xmx = addEntry(new IntegerEntry("xmx", OS.getBundledJVMBits() == OS.BIT64 ? 2048 : 1500, 128, MAX_RAM));
 		offline = addEntry(new BooleanEntry("offline", false));
-		maxRegenCodeThreads= addEntry(new IntegerEntry("maxRegenCodeThreads", 2, 1, MAX_PROCESSORS));
+		maxRegenCodeThreads= addEntry(new IntegerEntry("maxRegenCodeThreads", 1, 1, MAX_PROCESSORS));
 
 	}
 
