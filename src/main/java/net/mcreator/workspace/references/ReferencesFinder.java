@@ -248,17 +248,11 @@ public class ReferencesFinder {
 	 * @return Whether the provided value or any value extracted from valid fields/methods on the {@code value} object
 	 * passes the provided condition.
 	 */
-	@SuppressWarnings("unchecked")
 	private static <T> boolean listHasMatches(Collection<?> list, AccessibleObject field, Class<T> clazz,
 			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
 		for (Object obj : list) {
-			if (clazz.isInstance(obj)) { // value of specified type
-				if (condition == null || condition.test(field, (T) obj))
-					return true;
-			} else if (isCustomObject(obj)) { // value of unknown type
-				if (anyValueMatches(obj, clazz, validIf, condition))
-					return true;
-			}
+			if (checkValue(obj, field, clazz, validIf, condition))
+				return true;
 		}
 		return false;
 	}
