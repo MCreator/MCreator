@@ -136,17 +136,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getID()" class="member-name-link">getID</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getTextureType(int,boolean)" class="member-name-link">getTextureType</a><wbr>(int&nbsp;position,
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a>[]</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSupportedTypes(net.mcreator.workspace.Workspace,boolean)" class="member-name-link">getSupportedTypes</a><wbr>(<a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
  boolean&nbsp;withArmor)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
-<div class="block">Get the <a href="TextureType.html" title="enum class in net.mcreator.ui.workspace.resources"><code>TextureType</code></a> in the enum depending on  and .</div>
-</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getTypes(boolean)" class="member-name-link">getTypes</a><wbr>(boolean&nbsp;withArmor)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">Get all <a href="TextureType.html" title="enum class in net.mcreator.ui.workspace.resources"><code>TextureType</code></a>s of the enum as a list</div>
 </div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#isSupported(net.mcreator.workspace.Workspace)" class="member-name-link">isSupported</a><wbr>(<a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -275,9 +273,10 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getTypes(boolean)">
-<h3>getTypes</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a>[]</span>&nbsp;<span class="element-name">getTypes</span><wbr><span class="parameters">(boolean&nbsp;withArmor)</span></div>
+<section class="detail" id="getSupportedTypes(net.mcreator.workspace.Workspace,boolean)">
+<h3>getSupportedTypes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a>[]</span>&nbsp;<span class="element-name">getSupportedTypes</span><wbr><span class="parameters">(<a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ boolean&nbsp;withArmor)</span></div>
 <div class="block"><p>Get all <a href="TextureType.html" title="enum class in net.mcreator.ui.workspace.resources"><code>TextureType</code></a>s of the enum as a list</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
@@ -288,18 +287,9 @@ not permitted.)</div>
 </section>
 </li>
 <li>
-<section class="detail" id="getTextureType(int,boolean)">
-<h3>getTextureType</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="TextureType.html" title="enum class in net.mcreator.ui.workspace.resources">TextureType</a></span>&nbsp;<span class="element-name">getTextureType</span><wbr><span class="parameters">(int&nbsp;position,
- boolean&nbsp;withArmor)</span></div>
-<div class="block"><p>Get the <a href="TextureType.html" title="enum class in net.mcreator.ui.workspace.resources"><code>TextureType</code></a> in the enum depending on  and .</p></div>
-<dl class="notes">
-<dt>Parameters:</dt>
-<dd><code>position</code> - <p>The position of the texture type in the enum.</p></dd>
-<dd><code>withArmor</code> - <p>Set to true to include the armor texture type into the possible types.</p></dd>
-<dt>Returns:</dt>
-<dd><p>The corresponding <a href="TextureType.html" title="enum class in net.mcreator.ui.workspace.resources"><code>TextureType</code></a></p></dd>
-</dl>
+<section class="detail" id="isSupported(net.mcreator.workspace.Workspace)">
+<h3>isSupported</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isSupported</span><wbr><span class="parameters">(<a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace)</span></div>
 </section>
 </li>
 <li>
