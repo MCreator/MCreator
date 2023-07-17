@@ -26,6 +26,7 @@ import net.mcreator.gradle.GradleTaskFinishedListener;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.gradle.GradleAction;
@@ -39,10 +40,9 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.lang.management.ManagementFactory;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 public class RegenerateCodeAction extends GradleAction {
@@ -115,13 +115,15 @@ public class RegenerateCodeAction extends GradleAction {
 					L10N.t("dialog.workspace.regenerate_and_build.progress.loading_mod_elements"));
 			dial.addProgress(p10);
 			List<ModElement> modElementsOld = new ArrayList<>(mcreator.getWorkspace().getModElements());
-			int modstoload = modElementsOld.size();
-			int i = 0;
+			var counter = new Object() {
+				int modstoload = modElementsOld.size();
+				int i = 0;
+			};
 			for (ModElement mod : modElementsOld) {
 				mod.getGeneratableElement();
-				p10.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
+				p10.setPercent((int) (((float) counter.i / (float) counter.modstoload) * 100.0f));
 				dial.refreshDisplay();
-				i++;
+				counter.i++;
 			}
 			p10.ok();
 			dial.refreshDisplay();
@@ -131,73 +133,106 @@ public class RegenerateCodeAction extends GradleAction {
 			dial.addProgress(p1);
 
 			Set<ModElement> skippedElements = new HashSet<>(0);
-			boolean skipAll = !warnMissingDefinitions; // if warnMissingDefinitions is false, we skip all by default without warnings
-			boolean hasLockedElements = false;
+			var skipAll = new Object() {
+				boolean skipAll = !warnMissingDefinitions;
+			};
+			AtomicBoolean hasLockedElements = new AtomicBoolean(false);
 
 			// list of generatablemodelements to save after rebuild
 			List<GeneratableElement> generatableElementsToSave = new ArrayList<>();
 			Set<File> filesToReformat = new HashSet<>();
 
-			modstoload = mcreator.getWorkspace().getModElements().size();
-			i = 0;
-			for (ModElement mod : mcreator.getWorkspace().getModElements()) {
-				if (mod.isCodeLocked()) {
-					hasLockedElements = true;
-				}
+			counter.modstoload = mcreator.getWorkspace().getModElements().size();
+			counter.i = 0;
 
-				if (!mcreator.getModElementManager().hasModElementGeneratableElement(mod)) {
-					if (!skipAll) {
-						int opt = JOptionPane.showOptionDialog(mcreator,
-								L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.message",
-										mod.getName(), skippedElements.size()),
-								L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.title"),
-								JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {
-										L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.option.skip_one"),
-										L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.option.skip_all") },
-								0);
-						if (opt == 1)
-							skipAll = true;
+			// used to store finished threads, so we know when to continue the regen process
+			List<Boolean> finishedThreads = new ArrayList<>();
+			// we split all mod elements in multiple lists, so we can run multiple threads (1 list/thread)
+			Map<Integer, List<ModElement>> modElementsLists = new HashMap<>();
+			var threadNbVar = new Object() {
+				int threadNb = 1; // the thread's number where the next ME will be added
+			};
+			// we split all mod elements into the different lists
+			mcreator.getWorkspace().getModElements().forEach(me -> {
+				if (!modElementsLists.containsKey(threadNbVar.threadNb))
+					modElementsLists.put(threadNbVar.threadNb, new ArrayList<>());
+				modElementsLists.get(threadNbVar.threadNb).add(me);
+
+				// we increment the thread counter for the next ME
+				threadNbVar.threadNb++;
+				// if we are at the max value, we return to the first thread
+				if (threadNbVar.threadNb > PreferencesManager.PREFERENCES.gradle.maxRegenCodeThreads.get())
+					threadNbVar.threadNb = 1;
+			});
+
+			// now we create a new thread for each list and run them at the same time
+			modElementsLists.forEach((j, modElements) -> new Thread(() -> {
+				for (ModElement mod : modElements) {
+					if (mod.isCodeLocked()) {
+						hasLockedElements.set(true);
 					}
-					skippedElements.add(mod);
-					continue;
-				}
 
-				try {
-					GeneratableElement generatableElement = mod.getGeneratableElement();
-
-					if (generatableElement != null) {
-						LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: " + mod.getName());
-
-						// generate mod element code
-						List<GeneratorFile> generatedFiles = mcreator.getGenerator()
-								.generateElement(generatableElement, false);
-
-						if (!mod.isCodeLocked()) {
-							filesToReformat.addAll(
-									generatedFiles.stream().map(GeneratorFile::getFile).collect(Collectors.toSet()));
+					if (!mcreator.getModElementManager().hasModElementGeneratableElement(mod)) {
+						if (!skipAll.skipAll) {
+							int opt = JOptionPane.showOptionDialog(mcreator,
+									L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.message",
+											mod.getName(), skippedElements.size()),
+									L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.title"),
+									JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {
+											L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.option.skip_one"),
+											L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.option.skip_all") },
+									0);
+							if (opt == 1)
+								skipAll.skipAll = true;
 						}
-
-						// save custom mod element picture if it has one
-						mcreator.getModElementManager().storeModElementPicture(generatableElement);
-
-						// add mod element to workspace again, so the icons get reloaded
-						mcreator.getWorkspace().addModElement(generatableElement.getModElement());
-
-						// we reinit the mod to load new icons etc.
-						generatableElement.getModElement().reinit(mcreator.getWorkspace());
-
-						generatableElementsToSave.add(generatableElement);
-					} else {
-						LOG.warn("Failed to regenerate: " + mod.getName() + " as it has no generatable element");
+						skippedElements.add(mod);
+						continue;
 					}
-				} catch (Exception e) {
-					LOG.error("Failed to regenerate: " + mod.getName(), e);
-				}
 
-				p1.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
-				dial.refreshDisplay();
-				i++;
-			}
+					try {
+						GeneratableElement generatableElement = mod.getGeneratableElement();
+
+						if (generatableElement != null) {
+							LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: "
+									+ mod.getName());
+
+							// generate mod element code
+							List<GeneratorFile> generatedFiles = mcreator.getGenerator()
+									.generateElement(generatableElement, false);
+
+							if (!mod.isCodeLocked()) {
+								filesToReformat.addAll(generatedFiles.stream().map(GeneratorFile::getFile)
+										.collect(Collectors.toSet()));
+							}
+
+							// save custom mod element picture if it has one
+							mcreator.getModElementManager().storeModElementPicture(generatableElement);
+
+							// add mod element to workspace again, so the icons get reloaded
+							mcreator.getWorkspace().addModElement(generatableElement.getModElement());
+
+							// we reinit the mod to load new icons etc.
+							generatableElement.getModElement().reinit(mcreator.getWorkspace());
+
+							generatableElementsToSave.add(generatableElement);
+						} else {
+							LOG.warn("Failed to regenerate: " + mod.getName() + " as it has no generatable element");
+						}
+					} catch (Exception e) {
+						LOG.error("Failed to regenerate: " + mod.getName(), e);
+					}
+
+					p1.setPercent((int) (((float) counter.i / (float) counter.modstoload) * 100.0f));
+					dial.refreshDisplay();
+					counter.i++;
+				}
+				finishedThreads.add(true);
+			}, "Regenerate#" + j).start());
+
+			// we wait all threads to finish before continuing
+			do {
+				System.out.println(); // we "print" nothing, so it can end
+			} while (finishedThreads.size() != PreferencesManager.PREFERENCES.gradle.maxRegenCodeThreads.get());
 
 			// save all updated generatable mod elements
 			generatableElementsToSave.parallelStream().forEach(mcreator.getModElementManager()::storeModElement);
@@ -216,7 +251,7 @@ public class RegenerateCodeAction extends GradleAction {
 						JOptionPane.WARNING_MESSAGE);
 			}
 
-			if (warnLockedCode && hasLockedElements)
+			if (warnLockedCode && hasLockedElements.get())
 				JOptionPane.showMessageDialog(dial,
 						L10N.t("dialog.workspace.regenerate_and_build.warning.elements_with_locked_code.message"),
 						L10N.t("dialog.workspace.regenerate_and_build.warning.elements_with_locked_code.title"),

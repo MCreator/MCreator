@@ -32,12 +32,14 @@ public class GradleSection extends PreferencesSection {
 	public static final int MAX_RAM =
 			(int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
 					/ 1048576) - 1024;
+	public static final int MAX_PROCESSORS = ManagementFactory.getOperatingSystemMXBean().getAvailableProcessors();
 
 	public BooleanEntry compileOnSave;
 	public BooleanEntry passLangToMinecraft;
 	public IntegerEntry xms;
 	public IntegerEntry xmx;
 	public BooleanEntry offline;
+	public IntegerEntry maxRegenCodeThreads;
 
 	GradleSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -47,6 +49,8 @@ public class GradleSection extends PreferencesSection {
 		xms = addEntry(new IntegerEntry("xms", OS.getBundledJVMBits() == OS.BIT64 ? 625 : 512, 128, MAX_RAM));
 		xmx = addEntry(new IntegerEntry("xmx", OS.getBundledJVMBits() == OS.BIT64 ? 2048 : 1500, 128, MAX_RAM));
 		offline = addEntry(new BooleanEntry("offline", false));
+		maxRegenCodeThreads= addEntry(new IntegerEntry("maxRegenCodeThreads", 2, 1, MAX_PROCESSORS));
+
 	}
 
 	@Override public String getSectionKey() {
