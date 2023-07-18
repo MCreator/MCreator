@@ -71,11 +71,12 @@ public final class ModElementManager {
 		this.gson = gsonBuilder.create();
 	}
 
-	public void invalidateCache() {
-		cache.clear();
-	}
-
 	public void storeModElement(GeneratableElement element) {
+		if (element == null) {
+			LOG.warn("Attempted to store null generatable element. Something went wrong previously for this to happen!");
+			return;
+		}
+
 		cache.put(element.getModElement(), element);
 
 		FileIO.writeStringToFile(generatableElementToJSON(element),
@@ -116,9 +117,11 @@ public final class ModElementManager {
 
 		GeneratableElement generatableElement = fromJSONtoGeneratableElement(importJSON, element);
 		if (generatableElement != null && element.getType() != ModElementType.UNKNOWN) {
+			// Store the mod element in case the conversion was applied
 			if (generatableElement.wasConversionApplied())
 				storeModElement(generatableElement);
 
+			// Add it to the cache
 			cache.put(element, generatableElement);
 		}
 
