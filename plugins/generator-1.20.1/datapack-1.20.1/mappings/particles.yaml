@@ -86,15 +86,6 @@ FISHING:
 FLAME:
   - ParticleTypes.FLAME
   - "flame"
-DRIPPING_CHERRY_LEAVES:
-  - ParticleTypes.CHERRY_LEAVES
-  - "cherry_leaves"
-FALLING_CHERRY_LEAVES:
-  - ParticleTypes.CHERRY_LEAVES
-  - "cherry_leaves"
-LANDING_CHERRY_LEAVES:
-  - ParticleTypes.CHERRY_LEAVES
-  - "cherry_leaves"
 CHERRY_LEAVES:
   - ParticleTypes.CHERRY_LEAVES
   - "cherry_leaves"
@@ -287,3 +278,14 @@ ELECTRIC_SPARK:
 SCRAPE:
   - ParticleTypes.SCRAPE
   - "scrape"
+
+#LEGACY
+DRIPPING_CHERRY_LEAVES:
+  - ParticleTypes.CHERRY_LEAVES
+  - "cherry_leaves"
+FALLING_CHERRY_LEAVES:
+  - ParticleTypes.CHERRY_LEAVES
+  - "cherry_leaves"
+LANDING_CHERRY_LEAVES:
+  - ParticleTypes.CHERRY_LEAVES
+  - "cherry_leaves"
