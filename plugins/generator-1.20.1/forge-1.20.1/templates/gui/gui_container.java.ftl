@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -62,7 +62,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 		super(${JavaModName}Menus.${data.getModElement().getRegistryNameUpper()}.get(), id);
 
 		this.entity = inv.player;
-		this.world = inv.player.level;
+		this.world = inv.player.level();
 
 		this.internal = new ItemStackHandler(${data.getMaxSlotID() + 1});
 
@@ -96,7 +96,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 							this.bound = true;
 						});
 				} else { // might be bound to block
-					BlockEntity ent = inv.player != null ? inv.player.level.getBlockEntity(pos) : null;
+					BlockEntity ent = inv.player != null ? inv.player.level().getBlockEntity(pos) : null;
 					if (ent != null) {
 						ent.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
 							this.internal = capability;
@@ -285,7 +285,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 		@SubscribeEvent public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
 			Player entity = event.player;
 			if(event.phase == TickEvent.Phase.END && entity.containerMenu instanceof ${name}Menu) {
-				Level world = entity.level;
+				Level world = entity.level();
 				double x = entity.getX();
 				double y = entity.getY();
 				double z = entity.getZ();
