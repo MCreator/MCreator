@@ -152,7 +152,7 @@ public class RegenerateCodeAction extends GradleAction {
 
 						if (!skipAll) {
 							int opt = JOptionPane.showOptionDialog(mcreator,
-									L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.message" ,
+									L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.message",
 											mod.getName(), skippedElements.size()),
 									L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.title"),
 									JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {
@@ -207,7 +207,7 @@ public class RegenerateCodeAction extends GradleAction {
 					}
 				});
 				JOptionPane.showMessageDialog(dial,
-						L10N.t("dialog.workspace.regenerate_and_build.warning.skipped_import_of.message" ,
+						L10N.t("dialog.workspace.regenerate_and_build.warning.skipped_import_of.message",
 								skippedElements.size()),
 						L10N.t("dialog.workspace.regenerate_and_build.warning.skipped_import_of.title"),
 						JOptionPane.WARNING_MESSAGE);
@@ -269,7 +269,7 @@ public class RegenerateCodeAction extends GradleAction {
 			mcreator.getGradleConsole().markRunning(); // so console gets locked while we generate code already
 			try {
 				mcreator.getGenerator().generateBase();
-				mcreator.getGradleConsole().exec("build" , taskSpecificListener);
+				mcreator.getGradleConsole().exec("build", taskSpecificListener);
 			} catch (Exception e) { // if something fails, we still need to free the gradle console
 				LOG.error(e.getMessage(), e);
 				mcreator.getGradleConsole().markReady();
@@ -279,7 +279,8 @@ public class RegenerateCodeAction extends GradleAction {
 			dial.refreshDisplay();
 
 			dial.hideAll();
-		}); thread.start();
+		});
+		thread.start();
 		dial.setVisible(true);
 	}
 

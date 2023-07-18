@@ -28,7 +28,7 @@ import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-@SuppressWarnings({ "unused" , "NotNullFieldNotInitialized" }) public class Recipe extends NamespacedGeneratableElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Recipe extends NamespacedGeneratableElement {
 
 	@Nonnull public String recipeType;
 

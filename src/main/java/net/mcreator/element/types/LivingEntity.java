@@ -53,7 +53,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.*;
 
-@SuppressWarnings({ "unused" , "NotNullFieldNotInitialized" }) public class LivingEntity extends GeneratableElement
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class LivingEntity extends GeneratableElement
 		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
 
 	public String mobName;

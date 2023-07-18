@@ -30,7 +30,7 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Locale;
 
-@SuppressWarnings({ "unused" , "NotNullFieldNotInitialized" }) public class Tag extends NamespacedGeneratableElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tag extends NamespacedGeneratableElement {
 
 	@Nonnull public String type;
 

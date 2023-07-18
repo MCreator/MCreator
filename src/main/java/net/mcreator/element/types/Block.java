@@ -44,7 +44,7 @@ import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({ "unused" , "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement
 		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public String texture;

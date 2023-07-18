@@ -42,7 +42,7 @@ import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-@SuppressWarnings({ "unused" , "NotNullFieldNotInitialized" }) public class Item extends GeneratableElement
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Item extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;

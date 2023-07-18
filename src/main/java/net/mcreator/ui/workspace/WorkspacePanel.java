@@ -532,7 +532,7 @@ import java.util.stream.Collectors;
 		modElementsBar.add(ComponentUtils.deriveFont(elementsCount, 12));
 		modElementsBar.add(new JEmptyBox(5, 1));
 
-		se.add("East" , modElementsBar);
+		se.add("East", modElementsBar);
 
 		JPanel leftPan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		leftPan.setOpaque(false);
@@ -556,7 +556,7 @@ import java.util.stream.Collectors;
 		leftPan.add(new JEmptyBox(2, 2));
 		leftPan.add(sort);
 
-		se.add("West" , leftPan);
+		se.add("West", leftPan);
 
 		JScrollablePopupMenu filterPopup = new JScrollablePopupMenu();
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
@@ -568,7 +568,7 @@ import java.util.stream.Collectors;
 		filterPopup.addSeparator();
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(), e -> togglefilter(
-					"f:" + type.getReadableName().replace(" " , "").toLowerCase(Locale.ENGLISH))).setIcon(
+					"f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))).setIcon(
 					new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
 		}
 		filter.addActionListener(e -> filterPopup.show(filter, 0, 26));
@@ -632,28 +632,28 @@ import java.util.stream.Collectors;
 		slo.setOpaque(false);
 		se.setOpaque(false);
 
-		slo.add("North" , se);
+		slo.add("North", se);
 
 		mainp.setOpaque(false);
 
-		detailsbar.add("Center" , PanelUtils.gridElements(1, 6, L10N.label("workspace.elements.details.name"),
+		detailsbar.add("Center", PanelUtils.gridElements(1, 6, L10N.label("workspace.elements.details.name"),
 				L10N.label("workspace.elements.details.id"), L10N.label("workspace.elements.details.type"),
 				L10N.label("workspace.elements.details.lock"), L10N.label("workspace.elements.details.compile")));
 		detailsbar.setBorder(BorderFactory.createEmptyBorder(4, 47, 4, 8));
 		detailsbar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		modElementsPanel.add("North" , PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0));
-		modElementsPanel.add("Center" , mainp);
+		modElementsPanel.add("North", PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0));
+		modElementsPanel.add("Center", mainp);
 
-		slo.add("Center" , panels);
+		slo.add("Center", panels);
 
 		slo.setBorder(null);
 
 		rotatablePanel.setLayout(new BoxLayout(rotatablePanel, BoxLayout.PAGE_AXIS));
 		rotatablePanel.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		slo.add("West" , rotatablePanel);
+		slo.add("West", rotatablePanel);
 
-		add("Center" , slo);
+		add("Center", slo);
 
 		setOpaque(false);
 
@@ -749,7 +749,7 @@ import java.util.stream.Collectors;
 		};
 		toolp.setOpaque(false);
 		toolp.setBorder(BorderFactory.createEmptyBorder(3, 5, 0, 5));
-		toolp.add("North" , pne);
+		toolp.add("North", pne);
 
 		JPanel emptct = new JPanel();
 		emptct.setLayout(new BoxLayout(emptct, BoxLayout.LINE_AXIS));
@@ -762,17 +762,17 @@ import java.util.stream.Collectors;
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
 		emptbtpd.setOpaque(false);
-		emptbtpd.add("Center" , emptct);
-		emptbtpd.add("South" , new JEmptyBox(1, 40));
+		emptbtpd.add("Center", emptct);
+		emptbtpd.add("South", new JEmptyBox(1, 40));
 
-		mainp.add("ep" , PanelUtils.totalCenterInPanel(emptbtpd));
-		mainp.add("sp" , sp);
+		mainp.add("ep", PanelUtils.totalCenterInPanel(emptbtpd));
+		mainp.add("sp", sp);
 
-		addVerticalTab("mods" , L10N.t("workspace.category.mod_elements"),
+		addVerticalTab("mods", L10N.t("workspace.category.mod_elements"),
 				new WorkspacePanelMods(PanelUtils.westAndCenterElement(toolp, modElementsPanel)));
-		addVerticalTab("res" , L10N.t("workspace.category.resources"), resourcesPan);
-		addVerticalTab("locales" , L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
-		addVerticalTab("variables" , L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
+		addVerticalTab("res", L10N.t("workspace.category.resources"), resourcesPan);
+		addVerticalTab("locales", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
+		addVerticalTab("variables", L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
 
 		verticalTabs.get(0).doClick();
 
@@ -904,7 +904,7 @@ import java.util.stream.Collectors;
 	private void togglefilter(String filter) {
 		String currentSearchText = search.getText().trim();
 		if (currentSearchText.contains(filter)) {
-			search.setText(currentSearchText.replace(filter, "").replaceAll("\\s{2,}" , " ").trim());
+			search.setText(currentSearchText.replace(filter, "").replaceAll("\\s{2,}", " ").trim());
 		} else {
 			search.setText(filter + " " + currentSearchText);
 		}
@@ -1065,8 +1065,8 @@ import java.util.stream.Collectors;
 
 			if (generatableElementOriginal != null) {
 				String modName = VOptionPane.showInputDialog(mcreator,
-						L10N.t("workspace.elements.duplicate_message" , mu.getName()),
-						L10N.t("workspace.elements.duplicate_element" , mu.getName()), mu.getElementIcon(),
+						L10N.t("workspace.elements.duplicate_message", mu.getName()),
+						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
 						new OptionPaneValidatior() {
 							@Override public Validator.ValidationResult validate(JComponent component) {
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
@@ -1178,7 +1178,7 @@ import java.util.stream.Collectors;
 		if (but3.isEnabled()) {
 			if (list.getSelectedValue() != null) {
 				int n = JOptionPane.showConfirmDialog(mcreator,
-						L10N.t("workspace.elements.confirm_delete_message" , list.getSelectedValuesList().size()),
+						L10N.t("workspace.elements.confirm_delete_message", list.getSelectedValuesList().size()),
 						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 
 				if (n == 0) {
@@ -1302,11 +1302,11 @@ import java.util.stream.Collectors;
 			}
 
 			if (mcreator.getWorkspace().getModElements().isEmpty()) {
-				elementsCount.setText(L10N.t("workspace.stats.empty" , mcreator.getWorkspaceSettings().getModName(),
+				elementsCount.setText(L10N.t("workspace.stats.empty", mcreator.getWorkspaceSettings().getModName(),
 						mcreator.getGenerator().getGeneratorName()));
 			} else {
 				elementsCount.setText(
-						L10N.t("workspace.stats.current_workspace" , mcreator.getWorkspaceSettings().getModName(),
+						L10N.t("workspace.stats.current_workspace", mcreator.getWorkspaceSettings().getModName(),
 								mcreator.getGenerator().getGeneratorName(),
 								mcreator.getWorkspace().getModElements().size()));
 			}
@@ -1388,16 +1388,16 @@ import java.util.stream.Collectors;
 			while (m.find()) {
 				String pat = m.group(1);
 				if (pat.contains("f:")) {
-					pat = pat.replaceFirst("f:" , "");
+					pat = pat.replaceFirst("f:", "");
 					if (pat.equals("locked") || pat.equals("ok") || pat.equals("err"))
 						filters.add(pat);
 					for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
-						if (pat.equals(type.getReadableName().replace(" " , "").toLowerCase(Locale.ENGLISH))) {
+						if (pat.equals(type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))) {
 							metfilters.add(type);
 						}
 					}
 				} else
-					keyWords.add(pat.replace("\"" , ""));
+					keyWords.add(pat.replace("\"", ""));
 			}
 
 			boolean flattenFolders = !searchInput.isEmpty();

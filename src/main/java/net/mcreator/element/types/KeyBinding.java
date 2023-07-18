@@ -26,7 +26,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 
-@SuppressWarnings({ "unused" , "NotNullFieldNotInitialized" }) public class KeyBinding extends GeneratableElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class KeyBinding extends GeneratableElement {
 
 	@Nonnull public String triggerKey;
 	public String keyBindingName;

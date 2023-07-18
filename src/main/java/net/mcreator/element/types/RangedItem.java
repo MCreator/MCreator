@@ -36,7 +36,7 @@ import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-@SuppressWarnings({ "unused" , "NotNullFieldNotInitialized" }) public class RangedItem extends GeneratableElement
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class RangedItem extends GeneratableElement
 		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
