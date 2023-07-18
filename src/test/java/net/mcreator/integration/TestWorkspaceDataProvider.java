@@ -608,160 +608,12 @@ public class TestWorkspaceDataProvider {
 								30, 270, !_true));
 				components.add(new Tooltip(AbstractWYSIWYGDialog.textToMachineName(components, null,
 						"This is --...p a test string ŽĐĆ @ /test//\" tes___"), 20, 40, 70, 10,
-							new StringProcedure(_true ? "string1" : null, "fixed value 1"), new Procedure("condition4")));
+						new StringProcedure(_true ? "string1" : null, "fixed value 1"), new Procedure("condition4")));
 			}
 			gui.components = components;
 			return gui;
 		} else if (ModElementType.LIVINGENTITY.equals(modElement.getType())) {
-			LivingEntity livingEntity = new LivingEntity(modElement);
-			livingEntity.mobName = modElement.getName();
-			livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
-			livingEntity.mobModelTexture = "test.png";
-			livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
-			livingEntity.transparentModelCondition = new Procedure("condition1");
-			livingEntity.isShakingCondition = new Procedure("condition2");
-			livingEntity.solidBoundingBox = new LogicProcedure(_true ? "condition3" : null, _true);
-			livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
-			livingEntity.spawnEggBaseColor = Color.red;
-			livingEntity.spawnEggDotColor = Color.green;
-			livingEntity.isBoss = _true;
-			livingEntity.creativeTab = new TabEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			livingEntity.bossBarColor = getRandomItem(random,
-					new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
-			livingEntity.bossBarType = getRandomItem(random,
-					new String[] { "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" });
-			livingEntity.equipmentMainHand = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
-			livingEntity.equipmentOffHand = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
-			livingEntity.equipmentHelmet = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
-			livingEntity.equipmentBody = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
-			livingEntity.equipmentLeggings = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
-			livingEntity.equipmentBoots = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
-			livingEntity.mobBehaviourType = _true ? "Creature" : "Mob";
-			livingEntity.mobCreatureType = getRandomItem(random,
-					new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
-			livingEntity.attackStrength = 4;
-			livingEntity.attackKnockback = 1.5;
-			livingEntity.knockbackResistance = 0.5;
-			livingEntity.movementSpeed = 0.76;
-			livingEntity.stepHeight = 2.24;
-			livingEntity.armorBaseValue = 0.123;
-			livingEntity.health = 42;
-			livingEntity.trackingRange = 27;
-			livingEntity.followRange = 11;
-			livingEntity.waterMob = !_true;
-			livingEntity.flyingMob = !_true;
-			livingEntity.inventorySize = 10;
-			livingEntity.inventoryStackSize = 42;
-			livingEntity.disableCollisions = !_true;
-			livingEntity.immuneToFire = _true;
-			livingEntity.immuneToArrows = !_true;
-			livingEntity.immuneToFallDamage = !_true;
-			livingEntity.immuneToCactus = !_true;
-			livingEntity.immuneToDrowning = !_true;
-			livingEntity.immuneToLightning = !_true;
-			livingEntity.immuneToPotions = !_true;
-			livingEntity.immuneToPlayer = !_true;
-			livingEntity.immuneToExplosion = !_true;
-			livingEntity.immuneToTrident = !_true;
-			livingEntity.immuneToAnvil = !_true;
-			livingEntity.immuneToDragonBreath = !_true;
-			livingEntity.immuneToWither = !_true;
-			livingEntity.hasSpawnEgg = !_true;
-			livingEntity.xpAmount = 8;
-			livingEntity.ridable = _true;
-			livingEntity.canControlStrafe = !_true;
-			livingEntity.canControlForward = _true;
-			livingEntity.guiBoundTo = "<NONE>";
-			livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
-			livingEntity.livingSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			livingEntity.hurtSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			livingEntity.deathSound = new Sound(modElement.getWorkspace(),
-					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			livingEntity.stepSound = new Sound(modElement.getWorkspace(),
-					emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			livingEntity.rangedItemType = "Default item";
-			if (!emptyLists) {
-				livingEntity.spawningCondition = new Procedure("condition3");
-				livingEntity.onStruckByLightning = new Procedure("procedure1");
-				livingEntity.whenMobFalls = new Procedure("procedure2");
-				livingEntity.whenMobDies = new Procedure("procedure3");
-				livingEntity.whenMobIsHurt = new Procedure("procedure4");
-				livingEntity.onRightClickedOn = _true ?
-						new Procedure("actionresulttype1") :
-						new Procedure("procedure5");
-				livingEntity.whenThisMobKillsAnother = new Procedure("procedure6");
-				livingEntity.onMobTickUpdate = new Procedure("procedure7");
-				livingEntity.onPlayerCollidesWith = new Procedure("procedure8");
-				livingEntity.onInitialSpawn = new Procedure("procedure9");
-			}
-			livingEntity.hasAI = _true;
-			livingEntity.aiBase = "(none)";
-			if (!emptyLists) {
-				Set<String> aiTasks = modElement.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK);
-				if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks.contains(
-						"panic_when_attacked") && aiTasks.contains("attack_action") && aiTasks.contains(
-						"swim_in_water")) {
-					livingEntity.aixml =
-							"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\">"
-									+ "<next><block type=\"wander\"><field name=\"speed\">1</field><field name=\"condition\">null,null</field>"
-									+ "<next><block type=\"look_around\"><field name=\"condition\">null,null</field>"
-									+ "<next><block type=\"swim_in_water\"><field name=\"condition\">null,null</field>"
-									+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field><field name=\"condition\">null,null</field>"
-									+ "<next><block type=\"attack_action\"><field name=\"callhelp\">TRUE</field><field name=\"condition\">null,null</field>"
-									+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
-				}
-			}
-			if (livingEntity.aixml == null) // fallback
-				livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
-			livingEntity.breedable = _true;
-			livingEntity.tameable = _true;
-			livingEntity.breedTriggerItems = new ArrayList<>();
-			if (!emptyLists) {
-				livingEntity.breedTriggerItems.add(
-						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
-				livingEntity.breedTriggerItems.add(
-						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
-				livingEntity.breedTriggerItems.add(
-						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
-				livingEntity.breedTriggerItems.add(
-						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
-				livingEntity.breedTriggerItems.add(
-						new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
-			}
-			livingEntity.ranged = _true;
-			livingEntity.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
-			livingEntity.rangedAttackInterval = 15;
-			livingEntity.rangedAttackRadius = 8;
-			livingEntity.spawnThisMob = !_true;
-			livingEntity.doesDespawnWhenIdle = _true;
-			livingEntity.spawningProbability = 23;
-			livingEntity.mobSpawningType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
-			livingEntity.minNumberOfMobsPerGroup = 4;
-			livingEntity.maxNumberOfMobsPerGroup = 40;
-			livingEntity.restrictionBiomes = new ArrayList<>();
-			if (!emptyLists) {
-				livingEntity.restrictionBiomes.addAll(
-						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
-								.limit(biomes.size() / 4)
-								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-			}
-			livingEntity.spawnInDungeons = _true;
-			livingEntity.modelWidth = 0.4;
-			livingEntity.modelHeight = 1.3;
-			livingEntity.mountedYOffset = -3.1;
-			livingEntity.modelShadowSize = 1.8;
-			return livingEntity;
+			return getLivingEntity(modElement, random, _true, emptyLists, valueIndex, blocksAndItems, biomes);
 		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
 			Dimension dimension = new Dimension(modElement);
 			dimension.texture = "test";
@@ -893,10 +745,10 @@ public class TestWorkspaceDataProvider {
 			armor.knockbackResistance = 3.148;
 			armor.repairItems = new ArrayList<>();
 			if (!emptyLists) {
-				armor.repairItems = new ArrayList<>(
-						blocksAndItemsAndTags.stream().skip(_true ? 0 : ((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
-								.limit(blocksAndItemsAndTags.size() / 4)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				armor.repairItems = new ArrayList<>(blocksAndItemsAndTags.stream()
+						.skip(_true ? 0 : ((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
+						.limit(blocksAndItemsAndTags.size() / 4)
+						.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 				armor.repairItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 			}
 			return armor;
@@ -1317,7 +1169,8 @@ public class TestWorkspaceDataProvider {
 			block.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
 				block.blocksToReplace = new ArrayList<>(
-						blocksAndTags.stream().skip(_true ? 0 : ((blocksAndTags.size() / 4) * valueIndex)).limit(blocksAndTags.size() / 4)
+						blocksAndTags.stream().skip(_true ? 0 : ((blocksAndTags.size() / 4) * valueIndex))
+								.limit(blocksAndTags.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 				block.blocksToReplace.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 			}
@@ -1489,10 +1342,10 @@ public class TestWorkspaceDataProvider {
 			enchantment.canVillagerTrade = _true;
 			enchantment.compatibleItems = new ArrayList<>();
 			if (!emptyLists) {
-				enchantment.compatibleItems = new ArrayList<>(
-						blocksAndItemsAndTags.stream().skip(_true ? 0 : ((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
-								.limit(blocksAndItemsAndTags.size() / 4)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				enchantment.compatibleItems = new ArrayList<>(blocksAndItemsAndTags.stream()
+						.skip(_true ? 0 : ((long) (blocksAndItemsAndTags.size() / 4) * valueIndex))
+						.limit(blocksAndItemsAndTags.size() / 4)
+						.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 				enchantment.compatibleItems.add(new MItemBlock(modElement.getWorkspace(), "TAG:flowers"));
 				enchantment.excludeEnchantments = _true;
 			}
@@ -1651,6 +1504,155 @@ public class TestWorkspaceDataProvider {
 			return feature;
 		}
 		return null;
+	}
+
+	public static LivingEntity getLivingEntity(ModElement modElement, Random random, boolean _true, boolean emptyLists,
+			int valueIndex, List<MCItem> blocksAndItems, List<DataListEntry> biomes) {
+		LivingEntity livingEntity = new LivingEntity(modElement);
+		livingEntity.mobName = modElement.getName();
+		livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
+		livingEntity.mobModelTexture = "test.png";
+		livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
+		livingEntity.transparentModelCondition = new Procedure("condition1");
+		livingEntity.isShakingCondition = new Procedure("condition2");
+		livingEntity.solidBoundingBox = new LogicProcedure(_true ? "condition3" : null, _true);
+		livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
+		livingEntity.spawnEggBaseColor = Color.red;
+		livingEntity.spawnEggDotColor = Color.green;
+		livingEntity.isBoss = _true;
+		livingEntity.creativeTab = new TabEntry(modElement.getWorkspace(),
+				getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
+		livingEntity.bossBarColor = getRandomItem(random,
+				new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
+		livingEntity.bossBarType = getRandomItem(random,
+				new String[] { "PROGRESS", "NOTCHED_6", "NOTCHED_10", "NOTCHED_12", "NOTCHED_20" });
+		livingEntity.equipmentMainHand = new MItemBlock(modElement.getWorkspace(),
+				getRandomMCItem(random, blocksAndItems).getName());
+		livingEntity.equipmentOffHand = new MItemBlock(modElement.getWorkspace(),
+				getRandomMCItem(random, blocksAndItems).getName());
+		livingEntity.equipmentHelmet = new MItemBlock(modElement.getWorkspace(),
+				getRandomMCItem(random, blocksAndItems).getName());
+		livingEntity.equipmentBody = new MItemBlock(modElement.getWorkspace(),
+				getRandomMCItem(random, blocksAndItems).getName());
+		livingEntity.equipmentLeggings = new MItemBlock(modElement.getWorkspace(),
+				getRandomMCItem(random, blocksAndItems).getName());
+		livingEntity.equipmentBoots = new MItemBlock(modElement.getWorkspace(),
+				getRandomMCItem(random, blocksAndItems).getName());
+		livingEntity.mobBehaviourType = _true ? "Creature" : "Mob";
+		livingEntity.mobCreatureType = getRandomItem(random,
+				new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
+		livingEntity.attackStrength = 4;
+		livingEntity.attackKnockback = 1.5;
+		livingEntity.knockbackResistance = 0.5;
+		livingEntity.movementSpeed = 0.76;
+		livingEntity.stepHeight = 2.24;
+		livingEntity.armorBaseValue = 0.123;
+		livingEntity.health = 42;
+		livingEntity.trackingRange = 27;
+		livingEntity.followRange = 11;
+		livingEntity.waterMob = !_true;
+		livingEntity.flyingMob = !_true;
+		livingEntity.inventorySize = 10;
+		livingEntity.inventoryStackSize = 42;
+		livingEntity.disableCollisions = !_true;
+		livingEntity.immuneToFire = _true;
+		livingEntity.immuneToArrows = !_true;
+		livingEntity.immuneToFallDamage = !_true;
+		livingEntity.immuneToCactus = !_true;
+		livingEntity.immuneToDrowning = !_true;
+		livingEntity.immuneToLightning = !_true;
+		livingEntity.immuneToPotions = !_true;
+		livingEntity.immuneToPlayer = !_true;
+		livingEntity.immuneToExplosion = !_true;
+		livingEntity.immuneToTrident = !_true;
+		livingEntity.immuneToAnvil = !_true;
+		livingEntity.immuneToDragonBreath = !_true;
+		livingEntity.immuneToWither = !_true;
+		livingEntity.hasSpawnEgg = !_true;
+		livingEntity.xpAmount = 8;
+		livingEntity.ridable = _true;
+		livingEntity.canControlStrafe = !_true;
+		livingEntity.canControlForward = _true;
+		livingEntity.guiBoundTo = "<NONE>";
+		livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
+				getRandomMCItem(random, blocksAndItems).getName());
+		livingEntity.livingSound = new Sound(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+		livingEntity.hurtSound = new Sound(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+		livingEntity.deathSound = new Sound(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+		livingEntity.stepSound = new Sound(modElement.getWorkspace(),
+				emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+		livingEntity.rangedItemType = "Default item";
+		if (!emptyLists) {
+			livingEntity.spawningCondition = new Procedure("condition3");
+			livingEntity.onStruckByLightning = new Procedure("procedure1");
+			livingEntity.whenMobFalls = new Procedure("procedure2");
+			livingEntity.whenMobDies = new Procedure("procedure3");
+			livingEntity.whenMobIsHurt = new Procedure("procedure4");
+			livingEntity.onRightClickedOn = _true ? new Procedure("actionresulttype1") : new Procedure("procedure5");
+			livingEntity.whenThisMobKillsAnother = new Procedure("procedure6");
+			livingEntity.onMobTickUpdate = new Procedure("procedure7");
+			livingEntity.onPlayerCollidesWith = new Procedure("procedure8");
+			livingEntity.onInitialSpawn = new Procedure("procedure9");
+		}
+		livingEntity.hasAI = _true;
+		livingEntity.aiBase = "(none)";
+		if (!emptyLists) {
+			Set<String> aiTasks = modElement.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK);
+			if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks.contains("panic_when_attacked")
+					&& aiTasks.contains("attack_action") && aiTasks.contains("swim_in_water")) {
+				livingEntity.aixml =
+						"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\">"
+								+ "<next><block type=\"wander\"><field name=\"speed\">1</field><field name=\"condition\">null,null</field>"
+								+ "<next><block type=\"look_around\"><field name=\"condition\">null,null</field>"
+								+ "<next><block type=\"swim_in_water\"><field name=\"condition\">null,null</field>"
+								+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field><field name=\"condition\">null,null</field>"
+								+ "<next><block type=\"attack_action\"><field name=\"callhelp\">TRUE</field><field name=\"condition\">null,null</field>"
+								+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
+			}
+		}
+		if (livingEntity.aixml == null) // fallback
+			livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+		livingEntity.breedable = _true;
+		livingEntity.tameable = _true;
+		livingEntity.breedTriggerItems = new ArrayList<>();
+		if (!emptyLists) {
+			livingEntity.breedTriggerItems.add(
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+			livingEntity.breedTriggerItems.add(
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+			livingEntity.breedTriggerItems.add(
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+			livingEntity.breedTriggerItems.add(
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+			livingEntity.breedTriggerItems.add(
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+		}
+		livingEntity.ranged = _true;
+		livingEntity.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),
+				getRandomMCItem(random, blocksAndItems).getName());
+		livingEntity.rangedAttackInterval = 15;
+		livingEntity.rangedAttackRadius = 8;
+		livingEntity.spawnThisMob = !_true;
+		livingEntity.doesDespawnWhenIdle = _true;
+		livingEntity.spawningProbability = 23;
+		livingEntity.mobSpawningType = getRandomItem(random, ElementUtil.getDataListAsStringArray("mobspawntypes"));
+		livingEntity.minNumberOfMobsPerGroup = 4;
+		livingEntity.maxNumberOfMobsPerGroup = 40;
+		livingEntity.restrictionBiomes = new ArrayList<>();
+		if (!emptyLists) {
+			livingEntity.restrictionBiomes.addAll(
+					biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
+							.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+		}
+		livingEntity.spawnInDungeons = _true;
+		livingEntity.modelWidth = 0.4;
+		livingEntity.modelHeight = 1.3;
+		livingEntity.mountedYOffset = -3.1;
+		livingEntity.modelShadowSize = 1.8;
+		return livingEntity;
 	}
 
 	private static GeneratableElement getToolExample(ModElement modElement, String toolType, Random random,
@@ -1841,8 +1843,9 @@ public class TestWorkspaceDataProvider {
 	}
 
 	private static List<MCItem> filterAir(List<MCItem> source) {
-		return source.stream().filter(e -> !(e.getName().equals("Blocks.AIR") || e.getName().equals("Blocks.VOID_AIR")
-				|| e.getName().equals("Blocks.CAVE_AIR"))).toList();
+		return source.stream()
+				.filter(e -> !(e.getName().equals("Blocks.AIR") || e.getName().equals("Blocks.VOID_AIR") || e.getName()
+						.equals("Blocks.CAVE_AIR"))).toList();
 	}
 
 }
