@@ -19,11 +19,8 @@
 
 package net.mcreator.integration.generator;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.RepeatingField;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -32,8 +29,6 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
-import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
@@ -42,7 +37,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -62,130 +56,14 @@ public class GTFeatureBlocks {
 				.getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
-			if (!generatorBlocks.contains(featureBlock.getMachineName())) {
-				continue;
-			}
+			if (!BlocklyTestUtil.validateToolboxBlock(featureBlock, generatorBlocks, workspace))
+				continue; // block is not supported by this generator
 
-			if (featureBlock.getToolboxTestXML() == null) {
-				LOG.warn("[" + generatorName + "] Skipping feature block without default XML defined: "
-						+ featureBlock.getMachineName());
-				continue;
-			}
+			if (!BlocklyTestUtil.validateInputs(featureBlock))
+				continue; // failed to validate inputs
 
-			if (!featureBlock.getAllInputs().isEmpty() || !featureBlock.getAllRepeatingInputs().isEmpty()) {
-				boolean templatesDefined = true;
-
-				if (featureBlock.getToolboxInitStatements() != null) {
-					for (String input : featureBlock.getAllInputs()) {
-						boolean match = false;
-						for (String toolboxtemplate : featureBlock.getToolboxInitStatements()) {
-							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
-								match = true;
-								break;
-							}
-						}
-
-						if (!match) {
-							templatesDefined = false;
-							break;
-						}
-					}
-
-					for (String input : featureBlock.getAllRepeatingInputs()) {
-						Pattern pattern = Pattern.compile("<value name=\"" + input + "\\d+\">");
-						boolean match = false;
-						for (String toolboxtemplate : featureBlock.getToolboxInitStatements()) {
-							if (pattern.matcher(toolboxtemplate).find()) {
-								match = true;
-								break;
-							}
-						}
-
-						if (!match) {
-							templatesDefined = false;
-							break;
-						}
-					}
-				} else {
-					templatesDefined = false;
-				}
-
-				if (!templatesDefined) {
-					LOG.warn("[" + generatorName + "] Skipping feature block with incomplete template: "
-							+ featureBlock.getMachineName());
-					continue;
-				}
-			}
-
-			if (featureBlock.getFields() != null) {
-				int processed = 0;
-
-				if (featureBlock.getBlocklyJSON().has("args0")) {
-					for (String field : featureBlock.getFields()) {
-						JsonArray args0 = featureBlock.getBlocklyJSON().get("args0").getAsJsonArray();
-						for (int i = 0; i < args0.size(); i++) {
-							JsonObject arg = args0.get(i).getAsJsonObject();
-							if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
-								processed += appendFieldXML(additionalXML, arg, field);
-								break;
-							}
-						}
-					}
-				}
-
-				if (featureBlock.getBlocklyJSON().get("extensions") != null) {
-					JsonArray extensions = featureBlock.getBlocklyJSON().get("extensions").getAsJsonArray();
-					for (int i = 0; i < extensions.size(); i++) {
-						String extension = extensions.get(i).getAsString();
-						String fieldName = extension.replace("_list_provider", "");
-						// Unlike for procedures, we can skip the conversion to proper field names because those extensions aren't used by features
-
-						if (featureBlock.getFields().contains(fieldName)) {
-							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, fieldName);
-
-							if (values.length == 0 || values[0].equals(""))
-								values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace, fieldName + "s");
-
-							if (values.length > 0 && !values[0].equals("")) {
-								additionalXML.append("<field name=\"").append(fieldName).append("\">")
-										.append(ListUtils.getRandomItem(random, values)).append("</field>");
-								processed++;
-							}
-						}
-					}
-				}
-
-				if (processed != featureBlock.getFields().size()) {
-					LOG.warn("[" + generatorName + "] Skipping feature block with special fields: "
-							+ featureBlock.getMachineName());
-					continue;
-				}
-			}
-
-			if (featureBlock.getRepeatingFields() != null) {
-				int processedFields = 0;
-				int totalFields = 0;
-				for (RepeatingField fieldEntry : featureBlock.getRepeatingFields()) {
-					if (fieldEntry.field_definition() != null) {
-						int count = 3;
-						if (fieldEntry.field_definition().has("testCount")) {
-							count = fieldEntry.field_definition().get("testCount").getAsInt();
-						}
-						totalFields += count;
-						for (int i = 0; i < count; i++) {
-							processedFields += appendFieldXML(additionalXML, fieldEntry.field_definition(),
-									fieldEntry.name() + i);
-						}
-					} else {
-						totalFields++; // increase total fields by 1 if field definition is null, so warning is emmited
-					}
-				}
-				if (processedFields != totalFields) {
-					LOG.warn("[" + generatorName + "] Skipping procedure block with incorrectly "
-							+ "defined repeating field: " + featureBlock.getMachineName());
-					continue;
-				}
-			}
+			if (!BlocklyTestUtil.populateFields(featureBlock, workspace, random, additionalXML))
+				continue; // failed to populate all fields
 
 			ModElement modElement = new ModElement(workspace, "TestFeatureBlock" + featureBlock.getMachineName(),
 					ModElementType.FEATURE);
@@ -330,33 +208,4 @@ public class GTFeatureBlocks {
 				""".formatted(placementType, valueName, testXML);
 	}
 
-	private static int appendFieldXML(StringBuilder additionalXML, JsonObject arg, String field) {
-		int processed = 0;
-		switch (arg.get("type").getAsString()) {
-		case "field_checkbox" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
-			processed++;
-		}
-		case "field_number" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">4</field>");
-			processed++;
-		}
-		case "field_input", "field_javaname" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">test</field>");
-			processed++;
-		}
-		case "field_dropdown" -> {
-			JsonArray opts = arg.get("options").getAsJsonArray();
-			JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
-			additionalXML.append("<field name=\"").append(field).append("\">").append(opt.get(1).getAsString())
-					.append("</field>");
-			processed++;
-		}
-		case "field_mcitem_selector" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">Blocks.COBBLESTONE</field>");
-			processed++;
-		}
-		}
-		return processed;
-	}
 }
