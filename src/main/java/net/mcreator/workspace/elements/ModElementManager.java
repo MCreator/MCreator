@@ -117,6 +117,10 @@ public final class ModElementManager {
 
 		GeneratableElement generatableElement = fromJSONtoGeneratableElement(importJSON, element);
 		if (generatableElement != null && element.getType() != ModElementType.UNKNOWN) {
+			// Make sure after conversion and importing, no Nonnull fields are null to prevent NPEs and check GE integrity
+			if (!generatableElement.performQuickValidation())
+				return null;
+
 			// Store the mod element in case the conversion was applied
 			if (generatableElement.wasConversionApplied())
 				storeModElement(generatableElement);
@@ -141,17 +145,6 @@ public final class ModElementManager {
 					+ " from JSON. This can lead to errors further down the road!", e);
 			return null;
 		}
-	}
-
-	public boolean hasModElementGeneratableElement(ModElement element) {
-		if (element == null)
-			return false;
-
-		// custom code mod element does not actually have one, but is provided by this manager
-		if (element.getType() == ModElementType.CODE)
-			return true;
-
-		return new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").isFile();
 	}
 
 	public boolean requiresElementGradleBuild(GeneratableElement generatableElement) {

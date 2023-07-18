@@ -90,6 +90,24 @@ public abstract class GeneratableElement {
 		return conversionApplied;
 	}
 
+	public final boolean performQuickValidation() {
+		for (Field field : getClass().getDeclaredFields()) {
+			if (field.isAnnotationPresent(Nonnull.class)) {
+				field.setAccessible(true);
+				try {
+					if (field.get(this) == null) {
+						LOG.warn("Field " + field.getName() + " of mod element " + this.element.getName()
+								+ " is null, but should not be. Assuming invalid generatable element.");
+						return false;
+					}
+				} catch (IllegalAccessException ignored) {
+				}
+			}
+		}
+
+		return true;
+	}
+
 	public static class GSONAdapter
 			implements JsonSerializer<GeneratableElement>, JsonDeserializer<GeneratableElement> {
 

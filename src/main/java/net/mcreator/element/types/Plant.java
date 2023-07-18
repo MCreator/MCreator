@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 	public int renderType;
 	public String texture;
 	public String textureBottom;
-	public String customModelName;
+	@Nonnull public String customModelName;
 
 	public String itemTexture;
 	public String particleTexture;
