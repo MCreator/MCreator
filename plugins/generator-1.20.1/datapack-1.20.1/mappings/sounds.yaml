@@ -170,7 +170,8 @@ block.brewing_stand.brew: block.brewing_stand.brew
 item.brush.brushing: item.brush.brushing.generic
 item.brush.brushing.sand: item.brush.brushing.sand
 item.brush.brushing.gravel: item.brush.brushing.gravel
-item.brush.brush_sand_completed: item.brush.brushing.sand.completed
+item.brush.brush_sand_completed: item.brush.brushing.sand.complete
+
 item.brush.brushing.gravel.completed: item.brush.brushing.gravel.completed
 block.bubble_column.bubble_pop: block.bubble_column.bubble_pop
 block.bubble_column.upwards_ambient: block.bubble_column.upwards_ambient
