@@ -34,6 +34,7 @@ block.amethyst_block.chime: block.amethyst_block.chime
 block.amethyst_block.fall: block.amethyst_block.fall
 block.amethyst_block.hit: block.amethyst_block.hit
 block.amethyst_block.place: block.amethyst_block.place
+block.amethyst_block.resonate: block.amethyst_block.resonate
 block.amethyst_block.step: block.amethyst_block.step
 block.amethyst_cluster.break: block.amethyst_cluster.break
 block.amethyst_cluster.fall: block.amethyst_cluster.fall
@@ -166,8 +167,13 @@ item.bottle.empty: item.bottle.empty
 item.bottle.fill: item.bottle.fill
 item.bottle.fill_dragonbreath: item.bottle.fill_dragonbreath
 block.brewing_stand.brew: block.brewing_stand.brew
-item.brush.brushing: item.brush.brushing
-item.brush.brush_sand_completed: item.brush.brush_sand_completed
+item.brush.brushing: item.brush.brushing.generic
+item.brush.brushing.sand: item.brush.brushing.sand
+item.brush.brushing.gravel: item.brush.brushing.gravel
+item.brush.brush_sand_completed: item.brush.brushing.sand.complete
+
+item.brush.brushing.gravel.completed: item.brush.brushing.gravel.complete
+
 block.bubble_column.bubble_pop: block.bubble_column.bubble_pop
 block.bubble_column.upwards_ambient: block.bubble_column.upwards_ambient
 block.bubble_column.upwards_inside: block.bubble_column.upwards_inside
@@ -479,6 +485,11 @@ block.suspicious_sand.step: block.suspicious_sand.step
 block.suspicious_sand.place: block.suspicious_sand.place
 block.suspicious_sand.hit: block.suspicious_sand.hit
 block.suspicious_sand.fall: block.suspicious_sand.fall
+block.suspicious_gravel.break: block.suspicious_gravel.break
+block.suspicious_gravel.step: block.suspicious_gravel.step
+block.suspicious_gravel.place: block.suspicious_gravel.place
+block.suspicious_gravel.hit: block.suspicious_gravel.hit
+block.suspicious_gravel.fall: block.suspicious_gravel.fall
 block.froglight.break: block.froglight.break
 block.froglight.fall: block.froglight.fall
 block.froglight.hit: block.froglight.hit
@@ -793,6 +804,7 @@ record.strad: music_disc.strad
 record.wait: music_disc.wait
 record.ward: music_disc.ward
 record.otherside: music_disc.otherside
+record.relic: music_disc.relic
 music.dragon: music.dragon
 music.end: music.end
 music.game: music.game
@@ -805,7 +817,7 @@ music.overworld.grove: music.overworld.grove
 music.overworld.jagged_peaks: music.overworld.jagged_peaks
 music.overworld.lush_caves: music.overworld.lush_caves
 music.overworld.swamp: music.overworld.swamp
-music.overworld.jungle_and_forest: music.overworld.jungle_and_forest
+music.overworld.jungle_and_forest: music.overworld.forest
 music.overworld.old_growth_taiga: music.overworld.old_growth_taiga
 music.overworld.meadow: music.overworld.meadow
 music.overworld.cherry_grove: music.overworld.cherry_grove
@@ -815,6 +827,12 @@ music.overworld.snow_slopes: music.overworld.snowy_slopes
 music.nether.soul_sand_valley: music.nether.soul_sand_valley
 music.overworld.stony_peaks: music.overworld.stony_peaks
 music.nether.warped_forest: music.nether.warped_forest
+music.overworld.flower_forest: music.overworld.flower_forest
+music.overworld.desert: music.overworld.desert
+music.overworld.badlands: music.overworld.badlands
+music.overworld.jungle: music.overworld.jungle
+music.overworld.sparse_jungle: music.overworld.sparse_jungle
+music.overworld.bamboo_jungle: music.overworld.bamboo_jungle
 music.under_water: music.under_water
 block.nether_bricks.break: block.nether_bricks.break
 block.nether_bricks.step: block.nether_bricks.step
@@ -1228,6 +1246,9 @@ entity.sniffer.searching: entity.sniffer.searching
 entity.sniffer.digging: entity.sniffer.digging
 entity.sniffer.digging_stop: entity.sniffer.digging_stop
 entity.sniffer.happy: entity.sniffer.happy
+block.sniffer_egg.plop: block.sniffer_egg.plop
+block.sniffer_egg.crack: block.sniffer_egg.crack
+block.sniffer_egg.hatch: block.sniffer_egg.hatch
 entity.snowball.throw: entity.snowball.throw
 block.snow.break: block.snow.break
 block.snow.fall: block.snow.fall
@@ -1380,6 +1401,7 @@ entity.warden.sonic_boom: entity.warden.sonic_boom
 entity.warden.sonic_charge: entity.warden.sonic_charge
 entity.warden.step: entity.warden.step
 entity.warden.tendril_clicks: entity.warden.tendril_clicks
+block.sign.waxed_interact_fail: block.sign.waxed_interact_fail
 block.water.ambient: block.water.ambient
 weather.rain: weather.rain
 weather.rain.above: weather.rain.above
