@@ -10,6 +10,6 @@ if (world instanceof ServerLevel _level) {
 	</#if>
 	<#if input$pitch != "/*@int*/0">
 		entityToSpawn.setXRot(${opt.toFloat(input$pitch)});
-    </#if>
+	</#if>
 }
 </#if>
