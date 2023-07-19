@@ -11,19 +11,41 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: Pylo/crowdin-github-action@1.5.1
-        name: Pull translations
+        name: Pull translations (texts)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
         with:
-          config: crowdin.yml
+          config: .github/crowdin_texts.yml
           crowdin_branch_name: master
           upload_sources: false
           upload_translations: false
           download_translations: true
-          skip_untranslated_strings: false
-          skip_untranslated_files: true
+          skip_untranslated_strings: true
+          skip_untranslated_files: false
+          github_user_name: "github-actions"
+          github_user_email: "<>"
+          commit_message: "New Crowdin translations"
+          localization_branch_name: localization
+          pull_request_base_branch_name: master
+          create_pull_request: true
+          pull_request_title: "New Crowdin translations"
+          pull_request_body: "New Crowdin translations"
+      - uses: Pylo/crowdin-github-action@1.5.1
+        name: Pull translations (tips)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+        with:
+          config: .github/crowdin_tips.yml
+          crowdin_branch_name: master
+          upload_sources: false
+          upload_translations: false
+          download_translations: true
+          skip_untranslated_strings: true
+          skip_untranslated_files: false
           github_user_name: "github-actions"
           github_user_email: "<>"
           commit_message: "New Crowdin translations"
