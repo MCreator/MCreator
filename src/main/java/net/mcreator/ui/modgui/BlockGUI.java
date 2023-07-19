@@ -261,7 +261,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	@Override protected void initGUI() {
 		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
 
-		blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocks);
+		blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
 		restrictionBiomes = new BiomeListField(mcreator);
 		spawnWorldTypes = new DimensionListField(mcreator);
 
@@ -474,7 +474,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destal.add(ComponentUtils.squareAndBorder(textureBack, L10N.t("elementgui.block.texture_place_back")));
 
 		textureLeft.setActionListener(event -> {
-			if (!(texture.has() || textureTop.has() || textureBack.has() || textureFront.has() || textureRight.has())) {
+			if (!(texture.hasTexture() || textureTop.hasTexture() || textureBack.hasTexture() || textureFront.hasTexture() || textureRight.hasTexture())) {
 				texture.setTextureFromTextureName(textureLeft.getID());
 				textureTop.setTextureFromTextureName(textureLeft.getID());
 				textureBack.setTextureFromTextureName(textureLeft.getID());

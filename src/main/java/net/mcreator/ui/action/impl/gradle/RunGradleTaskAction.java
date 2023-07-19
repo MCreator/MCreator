@@ -30,9 +30,7 @@ public class RunGradleTaskAction extends GradleAction {
 		super(actionRegistry, L10N.t("action.gradle.run_gradle_task"), e -> {
 			JPanel bas = new JPanel(new BorderLayout(5, 5));
 			bas.add("North", L10N.label("action.gradle.run_gradle_task.dialog.instructions"));
-			JComboBox<String> ba = new JComboBox<>(new String[] { L10N.t("dialog.gradle.run_gradle_task.options.build"),
-					L10N.t("dialog.gradle.run_gradle_task.options.tasks"),
-					L10N.t("dialog.gradle.run_gradle_task.options.clean") });
+			JComboBox<String> ba = new JComboBox<>(new String[] { "build", "tasks", "clean" });
 			ba.setEditable(true);
 			bas.add("Center", ba);
 			int retval = JOptionPane.showConfirmDialog(actionRegistry.getMCreator(), bas,
