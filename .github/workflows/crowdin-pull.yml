@@ -22,6 +22,7 @@ jobs:
           upload_sources: false
           upload_translations: false
           download_translations: true
+          skip_untranslated_strings: false
           skip_untranslated_files: true
           github_user_name: "github-actions"
           github_user_email: "<>"
