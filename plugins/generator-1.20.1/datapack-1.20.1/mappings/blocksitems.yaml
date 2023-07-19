@@ -83,6 +83,15 @@ Blocks.PLANKS#5:
 Blocks.MANGROVE_PLANKS:
   - Blocks.MANGROVE_PLANKS
   - "mangrove_planks"
+Blocks.CHERRY_PLANKS:
+  - Blocks.CHERRY_PLANKS
+  - "cherry_planks"
+Blocks.BAMBOO_PLANKS:
+  - Blocks.BAMBOO_PLANKS
+  - "bamboo_planks"
+Blocks.BAMBOO_MOSAIC:
+  - Blocks.BAMBOO_MOSAIC
+  - "bamboo_mosaic"
 Blocks.SAPLING:
   - Blocks.OAK_SAPLING
   - "#minecraft:saplings"
@@ -107,6 +116,9 @@ Blocks.SAPLING#5:
 Blocks.MANGROVE_PROPAGULE:
   - Blocks.MANGROVE_PROPAGULE
   - "mangrove_propagule"
+Blocks.CHERRY_SAPLING:
+  - Blocks.CHERRY_SAPLING
+  - "cherry_sapling"
 Blocks.REEDS:
   - Blocks.SUGAR_CANE
   - "sugar_cane"
@@ -122,9 +134,15 @@ Blocks.SAND#0:
 Blocks.SAND#1:
   - Blocks.RED_SAND
   - "red_sand"
+Blocks.SUSPICIOUS_SAND:
+  - Blocks.SUSPICIOUS_SAND
+  - "suspicious_sand"
 Blocks.GRAVEL:
   - Blocks.GRAVEL
   - "gravel"
+Blocks.SUSPICIOUS_GRAVEL:
+  - Blocks.SUSPICIOUS_GRAVEL
+  - "suspicious_gravel"
 Blocks.FLOWING_WATER:
   - Blocks.WATER
   - "water"
@@ -263,6 +281,12 @@ Blocks.LOG2#1:
 Blocks.MANGROVE_LOG:
   - Blocks.MANGROVE_LOG
   - "mangrove_log"
+Blocks.CHERRY_LOG:
+  - Blocks.CHERRY_LOG
+  - "cherry_log"
+Blocks.BAMBOO_BLOCK:
+  - Blocks.BAMBOO_BLOCK
+  - "bamboo_block"
 Blocks.LEAVES:
   - Blocks.OAK_LEAVES
   - "#minecraft:leaves"
@@ -296,6 +320,9 @@ Blocks.FLOWERING_AZALEA_LEAVES:
 Blocks.MANGROVE_LEAVES:
   - Blocks.MANGROVE_LEAVES
   - "mangrove_leaves"
+Blocks.CHERRY_LEAVES:
+  - Blocks.CHERRY_LEAVES
+  - "cherry_leaves"
 Blocks.MANGROVE_ROOTS:
   - Blocks.MANGROVE_ROOTS
   - "mangrove_roots"
@@ -416,6 +443,12 @@ Blocks.RED_FLOWER#7:
 Blocks.RED_FLOWER#8:
   - Blocks.OXEYE_DAISY
   - "oxeye_daisy"
+Blocks.TORCHFLOWER:
+  - Blocks.TORCHFLOWER
+  - "torchflower"
+Blocks.PINK_PETALS:
+  - Blocks.PINK_PETALS
+  - "pink_petals"
 Blocks.DOUBLE_PLANT:
   - Blocks.SUNFLOWER
   - "#minecraft:small_flowers"
@@ -437,6 +470,9 @@ Blocks.DOUBLE_PLANT#4:
 Blocks.DOUBLE_PLANT#5:
   - Blocks.PEONY
   - "peony"
+Blocks.PITCHER_PLANT:
+  - Blocks.PITCHER_PLANT
+  - "pitcher_plant"
 Blocks.BROWN_MUSHROOM:
   - Blocks.BROWN_MUSHROOM
   - "brown_mushroom"
@@ -458,6 +494,9 @@ Blocks.TNT:
 Blocks.BOOKSHELF:
   - Blocks.BOOKSHELF
   - "bookshelf"
+Blocks.CHISELED_BOOKSHELF:
+  - Blocks.CHISELED_BOOKSHELF
+  - "chiseled_bookshelf"
 Blocks.TORCH:
   - Blocks.TORCH
   - "torch"
@@ -488,6 +527,15 @@ Blocks.DARK_OAK_STAIRS:
 Blocks.MANGROVE_STAIRS:
   - Blocks.MANGROVE_STAIRS
   - "mangrove_stairs"
+Blocks.CHERRY_STAIRS:
+  - Blocks.CHERRY_STAIRS
+  - "cherry_stairs"
+Blocks.BAMBOO_STAIRS:
+  - Blocks.BAMBOO_STAIRS
+  - "bamboo_stairs"
+Blocks.BAMBOO_MOSAIC_STAIRS:
+  - Blocks.BAMBOO_MOSAIC_STAIRS
+  - "bamboo_mosaic_stairs"
 Blocks.SANDSTONE_STAIRS:
   - Blocks.SANDSTONE_STAIRS
   - "sandstone_stairs"
@@ -560,6 +608,12 @@ Blocks.DARK_OAK_DOOR:
 Blocks.MANGROVE_DOOR:
   - Blocks.MANGROVE_DOOR
   - "mangrove_door"
+Blocks.CHERRY_DOOR:
+  - Blocks.CHERRY_DOOR
+  - "cherry_door"
+Blocks.BAMBOO_DOOR:
+  - Blocks.BAMBOO_DOOR
+  - "bamboo_door"
 Blocks.IRON_DOOR:
   - Blocks.IRON_DOOR
   - "iron_door"
@@ -698,6 +752,12 @@ Blocks.DARK_OAK_FENCE:
 Blocks.MANGROVE_FENCE:
   - Blocks.MANGROVE_FENCE
   - "mangrove_fence"
+Blocks.CHERRY_FENCE:
+  - Blocks.CHERRY_FENCE
+  - "cherry_fence"
+Blocks.BAMBOO_FENCE:
+  - Blocks.BAMBOO_FENCE
+  - "bamboo_fence"
 Blocks.OAK_FENCE_GATE:
   - Blocks.OAK_FENCE_GATE
   - "oak_fence_gate"
@@ -719,6 +779,12 @@ Blocks.DARK_OAK_FENCE_GATE:
 Blocks.MANGROVE_FENCE_GATE:
   - Blocks.MANGROVE_FENCE_GATE
   - "mangrove_fence_gate"
+Blocks.CHERRY_FENCE_GATE:
+  - Blocks.CHERRY_FENCE_GATE
+  - "cherry_fence_gate"
+Blocks.BAMBOO_FENCE_GATE:
+  - Blocks.BAMBOO_FENCE_GATE
+  - "bamboo_fence_gate"
 Blocks.NETHER_BRICK_FENCE:
   - Blocks.NETHER_BRICK_FENCE
   - "nether_brick_fence"
@@ -899,6 +965,15 @@ Blocks.WOODEN_SLAB#5:
 Blocks.MANGROVE_SLAB:
   - Blocks.MANGROVE_SLAB
   - "mangrove_slab"
+Blocks.CHERRY_SLAB:
+  - Blocks.CHERRY_SLAB
+  - "cherry_slab"
+Blocks.BAMBOO_SLAB:
+  - Blocks.BAMBOO_SLAB
+  - "bamboo_mosaic_slab"
+Blocks.BAMBOO_MOSAIC_SLAB:
+  - Blocks.BAMBOO_MOSAIC_SLAB
+  - "bamboo_mosaic_slab"
 Blocks.STONE_SLAB:
   - Blocks.COBBLESTONE_SLAB
   - "#minecraft:slabs"
@@ -992,6 +1067,9 @@ Blocks.SKULL#4:
 Blocks.SKULL#5:
   - Blocks.DRAGON_HEAD
   - "dragon_head"
+Blocks.PIGLIN_HEAD:
+  - Blocks.PIGLIN_HEAD
+  - "piglin_head"
 Blocks.WOOL:
   - Blocks.WHITE_WOOL
   - "#minecraft:wool"
@@ -1514,6 +1592,9 @@ Blocks.CREEPER_WALL_HEAD:
 Blocks.DRAGON_WALL_HEAD:
   - Blocks.DRAGON_WALL_HEAD
   - "dragon_wall_head"
+Blocks.PIGLIN_WALL_HEAD:
+  - Blocks.PIGLIN_WALL_HEAD
+  - "piglin_wall_head"
 Blocks.STRIPPED_SPRUCE_LOG:
   - Blocks.STRIPPED_SPRUCE_LOG
   - "stripped_spruce_log"
@@ -1535,6 +1616,12 @@ Blocks.STRIPPED_OAK_LOG:
 Blocks.STRIPPED_MANGROVE_LOG:
   - Blocks.STRIPPED_MANGROVE_LOG
   - "stripped_mangrove_log"
+Blocks.STRIPPED_CHERRY_LOG:
+  - Blocks.STRIPPED_CHERRY_LOG
+  - "stripped_cherry_log"
+Blocks.STRIPPED_BAMBOO_BLOCK:
+  - Blocks.STRIPPED_BAMBOO_BLOCK
+  - "stripped_bamboo_block"
 Blocks.OAK_WOOD:
   - Blocks.OAK_WOOD
   - "oak_wood"
@@ -1556,6 +1643,9 @@ Blocks.DARK_OAK_WOOD:
 Blocks.MANGROVE_WOOD:
   - Blocks.MANGROVE_WOOD
   - "mangrove_wood"
+Blocks.CHERRY_WOOD:
+  - Blocks.CHERRY_WOOD
+  - "cherry_wood"
 Blocks.STRIPPED_OAK_WOOD:
   - Blocks.STRIPPED_OAK_WOOD
   - "stripped_oak_wood"
@@ -1577,6 +1667,9 @@ Blocks.STRIPPED_DARK_OAK_WOOD:
 Blocks.STRIPPED_MANGROVE_WOOD:
   - Blocks.STRIPPED_MANGROVE_WOOD
   - "stripped_mangrove_wood"
+Blocks.STRIPPED_CHERRY_WOOD:
+  - Blocks.STRIPPED_CHERRY_WOOD
+  - "stripped_cherry_wood"
 Blocks.ORANGE_BED:
   - Blocks.ORANGE_BED
   - "orange_bed"
@@ -1658,6 +1751,12 @@ Blocks.DARK_OAK_SIGN:
 Blocks.MANGROVE_SIGN:
   - Blocks.MANGROVE_SIGN
   - "mangrove_sign"
+Blocks.CHERRY_SIGN:
+  - Blocks.CHERRY_SIGN
+  - "cherry_sign"
+Blocks.BAMBOO_SIGN:
+  - Blocks.BAMBOO_SIGN
+  - "bamboo_sign"
 Blocks.SPRUCE_WALL_SIGN:
   - Blocks.SPRUCE_WALL_SIGN
   - "spruce_wall_sign"
@@ -1676,6 +1775,78 @@ Blocks.DARK_OAK_WALL_SIGN:
 Blocks.MANGROVE_WALL_SIGN:
   - Blocks.MANGROVE_WALL_SIGN
   - "mangrove_wall_sign"
+Blocks.CHERRY_WALL_SIGN:
+  - Blocks.CHERRY_WALL_SIGN
+  - "cherry_wall_sign"
+Blocks.BAMBOO_WALL_SIGN:
+  - Blocks.BAMBOO_WALL_SIGN
+  - "bamboo_wall_sign"
+Blocks.OAK_HANGING_SIGN:
+  - Blocks.OAK_HANGING_SIGN
+  - "oak_hanging_sign"
+Blocks.SPRUCE_HANGING_SIGN:
+  - Blocks.SPRUCE_HANGING_SIGN
+  - "spruce_hanging_sign"
+Blocks.BIRCH_HANGING_SIGN:
+  - Blocks.BIRCH_HANGING_SIGN
+  - "birch_hanging_sign"
+Blocks.ACACIA_HANGING_SIGN:
+  - Blocks.ACACIA_HANGING_SIGN
+  - "acacia_hanging_sign"
+Blocks.JUNGLE_HANGING_SIGN:
+  - Blocks.JUNGLE_HANGING_SIGN
+  - "jungle_hanging_sign"
+Blocks.DARK_OAK_HANGING_SIGN:
+  - Blocks.DARK_OAK_HANGING_SIGN
+  - "dark_oak_hanging_sign"
+Blocks.CRIMSON_HANGING_SIGN:
+  - Blocks.CRIMSON_HANGING_SIGN
+  - "crimson_hanging_sign"
+Blocks.WARPED_HANGING_SIGN:
+  - Blocks.WARPED_HANGING_SIGN
+  - "warped_hanging_sign"
+Blocks.MANGROVE_HANGING_SIGN:
+  - Blocks.MANGROVE_HANGING_SIGN
+  - "mangrove_hanging_sign"
+Blocks.CHERRY_HANGING_SIGN:
+  - Blocks.CHERRY_HANGING_SIGN
+  - "cherry_hanging_sign"
+Blocks.BAMBOO_HANGING_SIGN:
+  - Blocks.BAMBOO_HANGING_SIGN
+  - "bamboo_hanging_sign"
+Blocks.OAK_WALL_HANGING_SIGN:
+  - Blocks.OAK_WALL_HANGING_SIGN
+  - "oak_wall_hanging_sign"
+Blocks.SPRUCE_WALL_HANGING_SIGN:
+  - Blocks.SPRUCE_WALL_HANGING_SIGN
+  - "spruce_wall_hanging_sign"
+Blocks.BIRCH_WALL_HANGING_SIGN:
+  - Blocks.BIRCH_WALL_HANGING_SIGN
+  - "birch_wall_hanging_sign"
+Blocks.ACACIA_WALL_HANGING_SIGN:
+  - Blocks.ACACIA_WALL_HANGING_SIGN
+  - "acacia_wall_hanging_sign"
+Blocks.JUNGLE_WALL_HANGING_SIGN:
+  - Blocks.JUNGLE_WALL_HANGING_SIGN
+  - "jungle_wall_hanging_sign"
+Blocks.DARK_OAK_WALL_HANGING_SIGN:
+  - Blocks.DARK_OAK_WALL_HANGING_SIGN
+  - "dark_oak_wall_hanging_sign"
+Blocks.CRIMSON_WALL_HANGING_SIGN:
+  - Blocks.CRIMSON_WALL_HANGING_SIGN
+  - "crimson_wall_hanging_sign"
+Blocks.WARPED_WALL_HANGING_SIGN:
+  - Blocks.WARPED_WALL_HANGING_SIGN
+  - "warped_wall_hanging_sign"
+Blocks.MANGROVE_WALL_HANGING_SIGN:
+  - Blocks.MANGROVE_WALL_HANGING_SIGN
+  - "mangrove_wall_hanging_sign"
+Blocks.CHERRY_WALL_HANGING_SIGN:
+  - Blocks.CHERRY_WALL_HANGING_SIGN
+  - "cherry_wall_hanging_sign"
+Blocks.BAMBOO_WALL_HANGING_SIGN:
+  - Blocks.BAMBOO_WALL_HANGING_SIGN
+  - "bamboo_wall_hanging_sign"
 Blocks.SPRUCE_PRESSURE_PLATE:
   - Blocks.SPRUCE_PRESSURE_PLATE
   - "spruce_pressure_plate"
@@ -1694,6 +1865,12 @@ Blocks.DARK_OAK_PRESSURE_PLATE:
 Blocks.MANGROVE_PRESSURE_PLATE:
   - Blocks.MANGROVE_PRESSURE_PLATE
   - "mangrove_pressure_plate"
+Blocks.CHERRY_PRESSURE_PLATE:
+  - Blocks.CHERRY_PRESSURE_PLATE
+  - "cherry_pressure_plate"
+Blocks.BAMBOO_PRESSURE_PLATE:
+  - Blocks.BAMBOO_PRESSURE_PLATE
+  - "bamboo_pressure_plate"
 Blocks.REDSTONE_WALL_TORCH:
   - Blocks.REDSTONE_WALL_TORCH
   - "redstone_wall_torch"
@@ -1718,6 +1895,12 @@ Blocks.DARK_OAK_TRAPDOOR:
 Blocks.MANGROVE_TRAPDOOR:
   - Blocks.MANGROVE_TRAPDOOR
   - "mangrove_trapdoor"
+Blocks.CHERRY_TRAPDOOR:
+  - Blocks.CHERRY_TRAPDOOR
+  - "cherry_trapdoor"
+Blocks.BAMBOO_TRAPDOOR:
+  - Blocks.BAMBOO_TRAPDOOR
+  - "bamboo_trapdoor"
 Blocks.MUSHROOM_STEM:
   - Blocks.MUSHROOM_STEM
   - "mushroom_stem"
@@ -1817,6 +2000,12 @@ Blocks.DARK_OAK_BUTTON:
 Blocks.MANGROVE_BUTTON:
   - Blocks.MANGROVE_BUTTON
   - "mangrove_button"
+Blocks.CHERRY_BUTTON:
+  - Blocks.CHERRY_BUTTON
+  - "cherry_button"
+Blocks.BAMBOO_BUTTON:
+  - Blocks.BAMBOO_BUTTON
+  - "cherry_button"
 Blocks.PRISMARINE_STAIRS:
   - Blocks.PRISMARINE_STAIRS
   - "prismarine_stairs"
@@ -2678,6 +2867,9 @@ Blocks.POWDER_SNOW:
 Blocks.SCULK_SENSOR:
   - Blocks.SCULK_SENSOR
   - "sculk_sensor"
+Blocks.CALIBRATED_SCULK_SENSOR:
+  - Blocks.CALIBRATED_SCULK_SENSOR
+  - "calibrated_sculk_sensor"
 Blocks.SCULK:
   - Blocks.SCULK
   - "sculk"
@@ -2945,6 +3137,24 @@ Blocks.PEARLESCENT_FROGLIGHT:
 Blocks.FROGSPAWN:
   - Blocks.FROGSPAWN
   - "frogspawn"
+Blocks.POTTED_CHERRY_SAPLING:
+  - Blocks.POTTED_CHERRY_SAPLING
+  - "potted_cherry_sapling"
+Blocks.POTTED_TORCHFLOWER:
+  - Blocks.POTTED_TORCHFLOWER
+  - "potted_torchflower"
+Blocks.DECORATED_POT:
+  - Blocks.DECORATED_POT
+  - "decorated_pot"
+Blocks.TORCHFLOWER_CROP:
+  - Blocks.TORCHFLOWER_CROP
+  - "torchflower_crop"
+Blocks.PITCHER_CROP:
+  - Blocks.PITCHER_CROP
+  - "pitcher_crop"
+Blocks.SNIFFER_EGG:
+  - Blocks.SNIFFER_EGG
+  - "sniffer_egg"
 Items.DYE:
   - Items.INK_SAC
   - "#forge:dyes"
@@ -3338,6 +3548,12 @@ Items.DARK_OAK_DOOR:
 Items.MANGROVE_DOOR:
   - Items.MANGROVE_DOOR
   - "mangrove_door"
+Items.CHERRY_DOOR:
+  - Items.CHERRY_DOOR
+  - "cherry_door"
+Items.BAMBOO_DOOR:
+  - Items.BAMBOO_DOOR
+  - "bamboo_door"
 Items.IRON_DOOR:
   - Items.IRON_DOOR
   - "iron_door"
@@ -3398,6 +3614,12 @@ Items.DARK_OAK_BOAT:
 Items.MANGROVE_BOAT:
   - Items.MANGROVE_BOAT
   - "mangrove_boat"
+Items.CHERRY_BOAT:
+  - Items.CHERRY_BOAT
+  - "cherry_boat"
+Items.BAMBOO_RAFT:
+  - Items.BAMBOO_RAFT
+  - "bamboo_raft"
 Items.OAK_CHEST_BOAT:
   - Items.OAK_CHEST_BOAT
   - "oak_chest_boat"
@@ -3419,6 +3641,12 @@ Items.DARK_OAK_CHEST_BOAT:
 Items.MANGROVE_CHEST_BOAT:
   - Items.MANGROVE_CHEST_BOAT
   - "mangrove_chest_boat"
+Items.CHERRY_CHEST_BOAT:
+  - Items.CHERRY_CHEST_BOAT
+  - "cherry_chest_boat"
+Items.BAMBOO_CHEST_RAFT:
+  - Items.BAMBOO_CHEST_RAFT
+  - "bamboo_chest_raft"
 Items.REPEATER:
   - Items.REPEATER
   - "repeater"
@@ -3830,6 +4058,9 @@ Items.MUSIC_DISC_OTHERSIDE:
 Items.MUSIC_DISC_5:
   - Items.MUSIC_DISC_5
   - "music_disc_5"
+Items.MUSIC_DISC_RELIC:
+  - Items.MUSIC_DISC_RELIC
+  - "music_disc_relic"
 Items.DISC_FRAGMENT_5:
   - Items.DISC_FRAGMENT_5
   - "disc_fragment_5"
@@ -3854,6 +4085,9 @@ Items.SKULL#4:
 Items.SKULL#5:
   - Items.DRAGON_HEAD
   - "dragon_head"
+Items.PIGLIN_HEAD:
+  - Items.PIGLIN_HEAD
+  - "piglin_head"
 Items.FIREWORK_CHARGE:
   - Items.FIREWORK_STAR
   - "firework_star"
@@ -3884,6 +4118,45 @@ Items.DARK_OAK_SIGN:
 Items.MANGROVE_SIGN:
   - Items.MANGROVE_SIGN
   - "mangrove_sign"
+Items.CHERRY_SIGN:
+  - Items.CHERRY_SIGN
+  - "cherry_sign"
+Items.BAMBOO_SIGN:
+  - Items.BAMBOO_SIGN
+  - "bamboo_sign"
+Items.OAK_HANGING_SIGN:
+  - Items.OAK_HANGING_SIGN
+  - "oak_hanging_sign"
+Items.SPRUCE_HANGING_SIGN:
+  - Items.SPRUCE_HANGING_SIGN
+  - "spruce_hanging_sign"
+Items.BIRCH_HANGING_SIGN:
+  - Items.BIRCH_HANGING_SIGN
+  - "birch_hanging_sign"
+Items.JUNGLE_HANGING_SIGN:
+  - Items.JUNGLE_HANGING_SIGN
+  - "jungle_hanging_sign"
+Items.ACACIA_HANGING_SIGN:
+  - Items.ACACIA_HANGING_SIGN
+  - "acacia_hanging_sign"
+Items.DARK_OAK_HANGING_SIGN:
+  - Items.DARK_OAK_HANGING_SIGN
+  - "dark_oak_hanging_sign"
+Items.CRIMSON_HANGING_SIGN:
+  - Items.CRIMSON_HANGING_SIGN
+  - "crimson_hanging_sign"
+Items.WARPED_HANGING_SIGN:
+  - Items.WARPED_HANGING_SIGN
+  - "warped_hanging_sign"
+Items.MANGROVE_HANGING_SIGN:
+  - Items.MANGROVE_HANGING_SIGN
+  - "mangrove_hanging_sign"
+Items.CHERRY_HANGING_SIGN:
+  - Items.CHERRY_HANGING_SIGN
+  - "cherry_hanging_sign"
+Items.BAMBOO_HANGING_SIGN:
+  - Items.BAMBOO_HANGING_SIGN
+  - "bamboo_hanging_sign"
 Items.PUFFERFISH_BUCKET:
   - Items.PUFFERFISH_BUCKET
   - "pufferfish_bucket"
@@ -4178,3 +4451,129 @@ Items.WITHER_SPAWN_EGG:
 Items.ENDER_DRAGON_SPAWN_EGG:
   - Items.ENDER_DRAGON_SPAWN_EGG
   - "ender_dragon_spawn_egg"
+Items.BRUSH:
+  - Items.BRUSH
+  - "brush"
+Items.TORCHFLOWER_SEEDS:
+  - Items.TORCHFLOWER_SEEDS
+  - "torchflower_seeds"
+Items.PITCHER_POD:
+  - Items.PITCHER_POD
+  - "pitcher_pod"
+Items.CAMEL_SPAWN_EGG:
+  - Items.CAMEL_SPAWN_EGG
+  - "camel_spawn_egg"
+Items.SNIFFER_SPAWN_EGG:
+  - Items.SNIFFER_SPAWN_EGG
+  - "sniffer_spawn_egg"
+Items.NETHERITE_UPGRADE:
+  - Items.NETHERITE_UPGRADE_SMITHING_TEMPLATE
+  - "netherite_upgrade_smithing_template"
+Items.SENTRY_ARMOR_TRIM:
+  - Items.SENTRY_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "sentry_armor_trim_smithing_template"
+Items.DUNE_ARMOR_TRIM:
+  - Items.DUNE_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "dune_armor_trim_smithing_template"
+Items.COAST_ARMOR_TRIM:
+  - Items.COAST_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "coast_armor_trim_smithing_template"
+Items.WILD_ARMOR_TRIM:
+  - Items.WILD_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "wild_armor_trim_smithing_template"
+Items.WARD_ARMOR_TRIM:
+  - Items.WARD_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "ward_armor_trim_smithing_template"
+Items.EYE_ARMOR_TRIM:
+  - Items.EYE_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "eye_armor_trim_smithing_template"
+Items.VEX_ARMOR_TRIM:
+  - Items.VEX_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "vex_armor_trim_smithing_template"
+Items.TIDE_ARMOR_TRIM:
+  - Items.TIDE_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "tide_armor_trim_smithing_template"
+Items.SNOUT_ARMOR_TRIM:
+  - Items.SNOUT_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "snout_armor_trim_smithing_template"
+Items.RIB_ARMOR_TRIM:
+  - Items.RIB_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "rib_armor_trim_smithing_template"
+Items.SPIRE_ARMOR_TRIM:
+  - Items.SPIRE_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "spire_armor_trim_smithing_template"
+Items.WAYFINDER_ARMOR_TRIM:
+  - Items.WAYFINDER_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "wayfinder_armor_trim_smithing_template"
+Items.SHAPER_ARMOR_TRIM:
+  - Items.SHAPER_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "shaper_armor_trim_smithing_template"
+Items.SILENCE_ARMOR_TRIM:
+  - Items.SILENCE_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "silence_armor_trim_smithing_template"
+Items.RAISER_ARMOR_TRIM:
+  - Items.RAISER_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "raiser_armor_trim_smithing_template"
+Items.HOST_ARMOR_TRIM:
+  - Items.HOST_ARMOR_TRIM_SMITHING_TEMPLATE
+  - "host_armor_trim_smithing_template"
+Items.ANGLER_POTTERY_SHERD:
+  - Items.ANGLER_POTTERY_SHERD
+  - "angler_pottery_sherd"
+Items.ARCHER_POTTERY_SHERD:
+  - Items.ARCHER_POTTERY_SHERD
+  - "archer_pottery_sherd"
+Items.ARMS_UP_POTTERY_SHERD:
+  - Items.ARMS_UP_POTTERY_SHERD
+  - "arms_up_pottery_sherd"
+Items.BLADE_POTTERY_SHERD:
+  - Items.BLADE_POTTERY_SHERD
+  - "blade_pottery_sherd"
+Items.BREWER_POTTERY_SHERD:
+  - Items.BREWER_POTTERY_SHERD
+  - "brewer_pottery_sherd"
+Items.BURN_POTTERY_SHERD:
+  - Items.BURN_POTTERY_SHERD
+  - "burn_pottery_sherd"
+Items.DANGER_POTTERY_SHERD:
+  - Items.DANGER_POTTERY_SHERD
+  - "danger_pottery_sherd"
+Items.EXPLORER_POTTERY_SHERD:
+  - Items.EXPLORER_POTTERY_SHERD
+  - "explorer_pottery_sherd"
+Items.FRIEND_POTTERY_SHERD:
+  - Items.FRIEND_POTTERY_SHERD
+  - "friend_pottery_sherd"
+Items.HEART_POTTERY_SHERD:
+  - Items.HEART_POTTERY_SHERD
+  - "heart_pottery_sherd"
+Items.HEARTBREAK_POTTERY_SHERD:
+  - Items.HEARTBREAK_POTTERY_SHERD
+  - "heartbreak_pottery_sherd"
+Items.HOWL_POTTERY_SHERD:
+  - Items.HOWL_POTTERY_SHERD
+  - "howl_pottery_sherd"
+Items.MINER_POTTERY_SHERD:
+  - Items.MINER_POTTERY_SHERD
+  - "miner_pottery_sherd"
+Items.MOURNER_POTTERY_SHERD:
+  - Items.MOURNER_POTTERY_SHERD
+  - "mourner_pottery_sherd"
+Items.PLENTY_POTTERY_SHERD:
+  - Items.PLENTY_POTTERY_SHERD
+  - "plenty_pottery_sherd"
+Items.PRIZE_POTTERY_SHERD:
+  - Items.PRIZE_POTTERY_SHERD
+  - "prize_pottery_sherd"
+Items.SHEAF_POTTERY_SHERD:
+  - Items.SHEAF_POTTERY_SHERD
+  - "sheaf_pottery_sherd"
+Items.SHELTER_POTTERY_SHERD:
+  - Items.SHELTER_POTTERY_SHERD
+  - "shelter_pottery_sherd"
+Items.SKULL_POTTERY_SHERD:
+  - Items.SKULL_POTTERY_SHERD
+  - "skull_pottery_sherd"
+Items.SNORT_POTTERY_SHERD:
+  - Items.SNORT_POTTERY_SHERD
+  - "snort_pottery_sherd"

@@ -7731,10 +7731,10 @@
   type: item
   texture: MINER_POTTERY_SHERD
 
-- Items.MOURN_POTTERY_SHERD:
-  readable_name: "Mourn Pottery Sherd"
+- Items.MOURNER_POTTERY_SHERD:
+  readable_name: "Mourner Pottery Sherd"
   type: item
-  texture: MOURN_POTTERY_SHERD
+  texture: MOURNER_POTTERY_SHERD
 
 - Items.PLENTY_POTTERY_SHERD:
   readable_name: "Plenty Pottery Sherd"
