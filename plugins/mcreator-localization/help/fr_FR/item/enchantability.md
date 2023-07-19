@@ -1,5 +1,4 @@
-La chance d'avoir des enchantements rares sur cet item/outil.
-Plus l'enchantabilité est élevée, plus vous obtiendrez de bons enchantements lorsque vous enchanterez l'item/outil.
+La chance d'avoir des enchantements rares sur cet item/outil. Plus l'enchantabilité est élevée, plus vous obtiendrez de bons enchantements lorsque vous enchanterez l'item/outil.
 
 Valeurs vanilla :
 

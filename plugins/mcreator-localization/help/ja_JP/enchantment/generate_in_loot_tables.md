@@ -1,0 +1,1 @@
+Check this option if you want your enchantment to be able to generate in loot tables.

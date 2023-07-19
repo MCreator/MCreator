@@ -1,0 +1,1 @@
+This is how many experience the player will receive after completing the advancement.

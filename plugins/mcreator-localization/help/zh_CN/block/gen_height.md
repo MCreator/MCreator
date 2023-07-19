@@ -1,11 +1,11 @@
-This parameter controls the Y height range that this block can generate in.
+此参数控制此方块可以生成的 Y 轴高度范围。
 
-Vanilla generation height ranges:
-* Coal Ore - 0 to 256
-* Copper Ore - -16 to 112
-* Iron Ore - -32 to 256
-* Gold Ore - -64 to 32
-* Redstone Ore - -64 to -32
-* Diamond Ore - -64 to 16
-* Emerald Ore - -16 to 256
-* Lapis Lazuli - -64 to 64
+原版生成高度范围：
+* 煤矿 - 0 至 256
+* 铜矿 - -16 至 112
+* 铁矿石 -32 至 256
+* 金矿 - -64 至 32
+* 红石矿 - -64 到 -32
+* 钻石矿 - -64 至 16
+* 绿宝石矿石 - -16 至 256
+* 青金石矿 - -64 至 64

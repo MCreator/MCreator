@@ -1,3 +1,1 @@
-當村民工作時所會產生的音效
-
-工作是指村民使用它的工作站點方塊
+Villager sound when they use their profession block.

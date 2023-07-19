@@ -1,5 +1,4 @@
-此參數控製如何生成靜態植物。
+This parameter controls how your static plant will be generated.
 
-***花:**植物將產生莖脈。
-
-***草:**植物將大量產生。
+* **Flower:** The plant will be generated like veins.
+* **Grass:** The plant will be generated in masses.

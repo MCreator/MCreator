@@ -1,0 +1,1 @@
+When the ranged item is used, the selected procedure will be triggered.

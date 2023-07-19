@@ -1,5 +1,5 @@
-這個參數定義了如何渲染這個粒子:
+This parameter defines how this particle should be rendered:
 
-** *不透明:**沒有透明(類似於死亡粒子)
-** *半透明:**部分透明和資源最重的選項(類似於藥水效果粒子)
-** *可發光:**在其生命周期內發光的發光粒子(類似於爆炸粒子)
+* **Opaque:** Transparent without mipmapping (similar to death particles)
+* **Translucent:** Partially transparent and the most resource heavy option (similar to potion effect particles)
+* **Lit:** Glowing particle that emits light during its lifetime (similar to explosion particles)

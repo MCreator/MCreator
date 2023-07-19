@@ -1,0 +1,1 @@
+Check this parameter to enable the spawn of ambient particles in the biome.

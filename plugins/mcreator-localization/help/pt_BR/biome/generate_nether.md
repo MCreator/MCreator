@@ -1,0 +1,1 @@
+Check this to make this biome spawn in the nether dimension.

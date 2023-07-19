@@ -1,3 +1,1 @@
-当玩家将物品从该槽位拿走时，触发此流程。
-
-注意：漏斗不会触发此流程。也会同时触发 2-3 次左侧的“变化”流程。
+Triggers a procedure when an item is put into/taken from this slot.

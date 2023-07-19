@@ -1,3 +1,4 @@
-如果選中，該實體會使用遠程物品攻擊（類似骷髏）。
-
-您可以選擇列表中自己建立的遠程物品，也可以使用預設（箭）。
+If checked, your entity will attack with a ranged item (similar to the Skeleton). You can select:
+* Your own ranged item from the list (or use default - arrow);
+* The interval between ranged attacks (in ticks);
+* The radius in which the entity will still target another entity after that entity leaves it's follow range.

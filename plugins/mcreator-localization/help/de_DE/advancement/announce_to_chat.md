@@ -1,0 +1,1 @@
+Schreibt eine Nachricht in den Chat, wenn der Spieler ein Erfolg kriegt.

@@ -1,0 +1,1 @@
+Crafting book category defines under which tab the recipe will be shown in the crafting book.

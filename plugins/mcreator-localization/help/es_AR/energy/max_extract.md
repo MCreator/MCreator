@@ -1,0 +1,1 @@
+This value is the maximal value of energy the energy element (block, item, ...) can extract from another energy element.
