@@ -1000,44 +1000,44 @@
   texture: SMALL_AMETHYST_BUD
 
 - Blocks.LOG:
-  readable_name: "Oak/Spruce/Birch/Jungle Wood"
+  readable_name: "Oak/Spruce/Birch/Jungle Log"
   type: block
   texture: LOG
   subtypes: true
 
 - Blocks.LOG#0:
-  readable_name: "Oak Wood"
+  readable_name: "Oak Log"
   type: block
   texture: LOG#0
 
 - Blocks.LOG#1:
-  readable_name: "Spruce Wood"
+  readable_name: "Spruce Log"
   type: block
   texture: LOG#1
 
 - Blocks.LOG#2:
-  readable_name: "Birch Wood"
+  readable_name: "Birch Log"
   type: block
   texture: LOG#2
 
 - Blocks.LOG#3:
-  readable_name: "Jungle Wood"
+  readable_name: "Jungle Log"
   type: block
   texture: LOG#3
 
 - Blocks.LOG2:
-  readable_name: "Acacia/Dark Oak Wood"
+  readable_name: "Acacia/Dark Oak Log"
   type: block
   texture: LOG2
   subtypes: true
 
 - Blocks.LOG2#0:
-  readable_name: "Acacia Wood"
+  readable_name: "Acacia Log"
   type: block
   texture: LOG2#0
 
 - Blocks.LOG2#1:
-  readable_name: "Dark Oak Wood"
+  readable_name: "Dark Oak Log"
   type: block
   texture: LOG2#1
 
@@ -7001,7 +7001,7 @@
 
 - Items.MUSIC_DISC_OTHERSIDE:
   readable_name: "Music Disc"
-  description: "Otherside"
+  description: "Lena Raine - Otherside"
   type: item
   texture: MUSIC_DISC_OTHERSIDE
 
@@ -7013,7 +7013,7 @@
 
 - Items.MUSIC_DISC_PIGSTEP:
   readable_name: "Music Disc"
-  description: "Pigstep"
+  description: "Lena Raine - Pigstep"
   type: item
   texture: MUSIC_DISC_PIGSTEP
 
