@@ -41,12 +41,6 @@ DRIP_WATER:
 WATER_DROP:
   - ParticleTypes.FALLING_WATER
   - "falling_water"
-DUST:
-  - ParticleTypes.DUST
-  - "dust"
-DUST_COLOR_TRANSITION:
-  - ParticleTypes.DUST_COLOR_TRANSITION
-  - "dust_color_transition"
 SPELL:
   - ParticleTypes.EFFECT
   - "effect"
@@ -74,9 +68,6 @@ EXPLOSION_NORMAL:
 SONIC_BOOM:
   - ParticleTypes.SONIC_BOOM
   - "sonic_boom"
-FALLING_DUST:
-  - ParticleTypes.FALLING_DUST
-  - "falling_dust"
 FIREWORKS_SPARK:
   - ParticleTypes.FIREWORK
   - "firework"
@@ -92,9 +83,6 @@ CHERRY_LEAVES:
 SCULK_SOUL:
   - ParticleTypes.SCULK_SOUL
   - "sculk_soul"
-SCULK_CHARGE:
-  - ParticleTypes.SCULK_CHARGE
-  - "sculk_charge"
 SCULK_CHARGE_POP:
   - ParticleTypes.SCULK_CHARGE_POP
   - "sculk_charge_pop"
@@ -119,12 +107,6 @@ HEART:
 SPELL_INSTANT:
   - ParticleTypes.INSTANT_EFFECT
   - "instant_effect"
-ITEM:
-  - ParticleTypes.ITEM
-  - "item"
-VIBRATION:
-  - ParticleTypes.VIBRATION
-  - "vibration"
 SLIME:
   - ParticleTypes.ITEM_SLIME
   - "item_slime"
@@ -278,6 +260,9 @@ ELECTRIC_SPARK:
 SCRAPE:
   - ParticleTypes.SCRAPE
   - "scrape"
+EGG_CRACK:
+  - ParticleTypes.EGG_CRACK
+  - "egg_crack"
 
 #LEGACY
 DRIPPING_CHERRY_LEAVES:
