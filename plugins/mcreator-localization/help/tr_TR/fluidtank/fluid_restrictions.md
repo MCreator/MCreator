@@ -1,0 +1,1 @@
+To restrict your block to specific fluids, choose them in this option.

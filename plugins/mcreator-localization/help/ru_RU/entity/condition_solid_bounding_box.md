@@ -1,2 +1,3 @@
-Пока это условие выполняется, с данной сущностью можно сталкиваться.
-К примеру, этот параметр используется лодками.
+If this feature is enabled, the entity's bounding box will act similar to the bounding box of a block(solid collision).
+
+Used by boats and shulkers in vanilla Minecraft.

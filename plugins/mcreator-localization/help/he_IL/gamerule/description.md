@@ -1,0 +1,1 @@
+This is the game rule description. It is used on the game rules setting screen when hovered over.

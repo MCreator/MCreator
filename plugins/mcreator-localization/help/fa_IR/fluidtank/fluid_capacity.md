@@ -1,0 +1,1 @@
+It is the maximal milibuckets (1 bucket = 1 000 milibuckets) the block can store.

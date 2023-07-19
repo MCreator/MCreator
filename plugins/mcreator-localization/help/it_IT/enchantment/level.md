@@ -1,0 +1,1 @@
+The minimal and maximal level your enchantment supports.

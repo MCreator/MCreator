@@ -1,0 +1,1 @@
+The ambient sound is constantly played in the biome.

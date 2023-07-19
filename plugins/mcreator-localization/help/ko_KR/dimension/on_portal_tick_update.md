@@ -1,0 +1,1 @@
+When the portal block is present in the world, the procedure will be executed each tick.

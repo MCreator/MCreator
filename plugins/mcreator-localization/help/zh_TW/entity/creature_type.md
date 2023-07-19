@@ -1,5 +1,5 @@
 允許您設定生物的型別，會帶來特定變化。
-* **不死（Undead）** 會受到不死剋星的額外傷害，被立即傷害藥水治療，立即治療藥水傷害，無視中毒和恢復藥水效果。
-* **節肢（Arthropods）** 會受到節肢剋星的額外傷害。
+* **Undead** take extra damage from the Smite enchantment, are healed by Harming and harmed by Healing, and are unaffected by Poison or Regeneration.
+* **Arthropods** take extra damage from the Bane of Arthropods enchantment.
 * **窳民（Illager）** 原版似乎沒有任何效果。
-* **水生（Water）** 會受到魚叉附魔的額外傷害。
+* **水生（Water）** 會受到魚叉附魔的額外傷害。 

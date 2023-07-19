@@ -7,3 +7,4 @@
 `#of ticks needed = #of items you want the fuel to smelt * 200`
 
 点击[这里](https://mcreator.net/wiki/burn-time-fuels)查看原版中熔炼常用物品的燃烧时间表。
+

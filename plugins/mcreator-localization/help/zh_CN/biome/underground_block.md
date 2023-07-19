@@ -2,5 +2,4 @@
 
 一般来说，原版泥土或自定义泥土在这里被用于大多数生物群系。
 
-这个块应该标记在 <b>minecraft:dirt</b> Blocks标签中
-Forge模组的植物和树木在生物群系中正常生成。
+这个块应该标记在 <b>minecraft:dirt</b> Blocks标签中 Forge模组的植物和树木在生物群系中正常生成。

@@ -1,1 +1,3 @@
-追蹤範圍控制生物會從多少個方塊遠的距離開始追蹤玩家（意味著 AI 在工作狀態）。
+This parameter controls how many blocks far the entity is tracked by the players.
+
+Setting this parameter to 0 will disable rendering and collisions of the entity entirely.

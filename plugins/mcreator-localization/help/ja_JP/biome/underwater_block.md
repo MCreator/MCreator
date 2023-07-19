@@ -1,0 +1,1 @@
+This parameter controls the block that generates under the water. Most vanilla biomes use dirt or gravel block for this.
