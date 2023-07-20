@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -31,8 +31,6 @@
 <#-- @formatter:off -->
 <#include "procedures.java.ftl">
 
-<#assign stackMethodName = "getPoseStack">
-
 package ${package}.client.screens;
 
 @Mod.EventBusSubscriber({Dist.CLIENT}) public class ${name}Overlay {
@@ -59,7 +57,7 @@ package ${package}.client.screens;
 
         Player entity = Minecraft.getInstance().player;
         if (entity != null) {
-            world = entity.level;
+            world = entity.level();
             x = entity.getX();
             y = entity.getY();
             z = entity.getZ();
@@ -77,8 +75,7 @@ package ${package}.client.screens;
 
         if (<@procedureOBJToConditionCode data.displayCondition/>) {
             <#if data.baseTexture?has_content>
-                RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${data.baseTexture}"));
-                Minecraft.getInstance().gui.blit(event.getPoseStack(), 0, 0, 0, 0, w, h, w, h);
+                event.getGuiGraphics().blit(new ResourceLocation("${modid}:textures/screens/${data.baseTexture}"), 0, 0, 0, 0, w, h, w, h);
             </#if>
 
             <#list data.getComponentsOfType("Image") as component>
@@ -87,8 +84,7 @@ package ${package}.client.screens;
                 <#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>) {
                 </#if>
-                    RenderSystem.setShaderTexture(0, new ResourceLocation("${modid}:textures/screens/${component.image}"));
-                    Minecraft.getInstance().gui.blit(event.getPoseStack(), posX + ${x}, posY + ${y}, 0, 0,
+                    event.getGuiGraphics().blit(new ResourceLocation("${modid}:textures/screens/${component.image}"), posX + ${x}, posY + ${y}, 0, 0,
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
                 <#if hasProcedure(component.displayCondition)>}</#if>
@@ -100,7 +96,7 @@ package ${package}.client.screens;
                     <#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-                    Minecraft.getInstance().font.draw(event.getPoseStack(),
+                    event.getGuiGraphics().drawString(Minecraft.getInstance().font,
                         <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
                         posX + ${x}, posY + ${y}, ${component.color.getRGB()});
             </#list>
@@ -110,7 +106,7 @@ package ${package}.client.screens;
 			    	<#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-			        InventoryScreen.renderEntityInInventoryFollowsAngle(event.getPoseStack(), posX + ${component.x - 202}, posY + ${component.y - 100},
+			        InventoryScreen.renderEntityInInventoryFollowsAngle(event.getGuiGraphics(), posX + ${component.x - 202}, posY + ${component.y - 100},
                         ${component.scale}, ${component.rotationX / 20.0}f, 0, livingEntity);
 			    }
 			</#list>
