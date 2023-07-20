@@ -970,7 +970,8 @@ Blocks.CHERRY_SLAB:
   - "cherry_slab"
 Blocks.BAMBOO_SLAB:
   - Blocks.BAMBOO_SLAB
-  - "bamboo_mosaic_slab"
+  - "bamboo_slab"
+
 Blocks.BAMBOO_MOSAIC_SLAB:
   - Blocks.BAMBOO_MOSAIC_SLAB
   - "bamboo_mosaic_slab"
