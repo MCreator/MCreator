@@ -1,7 +1,0 @@
-project_id_env: CROWDIN_PROJECT_ID
-api_token_env: CROWDIN_PERSONAL_TOKEN
-commit_message: '[skip ci]'
-files:
-  - source: /plugins/mcreator-localization/help/default/**/*.md
-    translation: /plugins/mcreator-localization/help/%locale_with_underscore%/**/%original_file_name%
-    content_segmentation: 0
