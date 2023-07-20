@@ -17,11 +17,12 @@ jobs:
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
         with:
-          config: .github/crowdin_texts.yml
+          config: ".github/crowdin_texts.yml"
           crowdin_branch_name: master
           upload_sources: false
           upload_translations: false
           download_translations: true
+          download_translations_args: "--verbose"
           skip_untranslated_strings: true
           skip_untranslated_files: false
           github_user_name: "github-actions"
@@ -39,13 +40,14 @@ jobs:
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
           CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
         with:
-          config: .github/crowdin_tips.yml
+          config: ".github/crowdin_tips.yml"
           crowdin_branch_name: master
           upload_sources: false
           upload_translations: false
           download_translations: true
-          skip_untranslated_strings: true
-          skip_untranslated_files: false
+          download_translations_args: "--verbose"
+          skip_untranslated_strings: false
+          skip_untranslated_files: true
           github_user_name: "github-actions"
           github_user_email: "<>"
           commit_message: "New Crowdin translations"
