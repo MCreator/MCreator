@@ -20,6 +20,5 @@ api_token_env: CROWDIN_PERSONAL_TOKEN
     source: "/plugins/mcreator-localization/help/default/**/*.md",
     translation: "/plugins/mcreator-localization/help/%locale_with_underscore%/**/%original_file_name%",
     content_segmentation: 0,
-    skip_untranslated_files: true,
   },
 ]
