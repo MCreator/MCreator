@@ -2005,7 +2005,8 @@ Blocks.CHERRY_BUTTON:
   - "cherry_button"
 Blocks.BAMBOO_BUTTON:
   - Blocks.BAMBOO_BUTTON
-  - "cherry_button"
+  - "bamboo_button"
+
 Blocks.PRISMARINE_STAIRS:
   - Blocks.PRISMARINE_STAIRS
   - "prismarine_stairs"
