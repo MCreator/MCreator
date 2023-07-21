@@ -78,7 +78,6 @@ Stonecutter: StonecutterScreen
 KeyBinds: KeyBindsScreen
 AccessibilityOnboarding: AccessibilityOnboardingScreen
 AccessibilityOptions: AccessibilityOptionsScreen
-BanNotice: BanNoticeScreen
 CreditsAndAttribution: CreditsAndAttributionScreen
 GenericWaiting: GenericWaitingScreen
 OnlineOptions: OnlineOptionsScreen

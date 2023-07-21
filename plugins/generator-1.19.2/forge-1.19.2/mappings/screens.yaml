@@ -77,7 +77,6 @@ Smoker: SmokerScreen
 Stonecutter: StonecutterScreen
 KeyBinds: KeyBindsScreen
 AccessibilityOptions: AccessibilityOptionsScreen
-BanNotice: BanNoticeScreen
 GenericWaiting: GenericWaitingScreen
 OnlineOptions: OnlineOptionsScreen
 Win: WinScreen
