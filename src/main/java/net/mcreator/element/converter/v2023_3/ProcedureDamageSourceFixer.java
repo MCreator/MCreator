@@ -59,7 +59,7 @@ public class ProcedureDamageSourceFixer implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 44;
+		return 45;
 	}
 
 	protected String fixXML(String xml) throws Exception {
