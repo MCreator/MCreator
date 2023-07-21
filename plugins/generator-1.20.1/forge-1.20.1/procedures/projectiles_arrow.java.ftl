@@ -13,4 +13,5 @@ new Object() {
 		<#if field$particles == "TRUE">entityToSpawn.setCritArrow(true);</#if>
 		<#if field$pickup != "DISALLOWED">entityToSpawn.pickup = AbstractArrow.Pickup.${field$pickup};</#if>
 		return entityToSpawn;
-}}.getArrow(projectileLevel<#if hasShooter>, ${input$shooter}</#if>, ${opt.toFloat(input$damage)}, ${opt.toInt(input$knockback)}<#if isPiercing>, (byte) ${input$piercing}</#if>)
+	}
+}.getArrow(projectileLevel<#if hasShooter>, ${input$shooter}</#if>, ${opt.toFloat(input$damage)}, ${opt.toInt(input$knockback)}<#if isPiercing>, (byte) ${input$piercing}</#if>)
