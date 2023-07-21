@@ -340,7 +340,7 @@ public class AnimationMakerView extends ViewBase {
 	}
 
 	protected void use() {
-		Object[] options = TextureType.getTypes(false);
+		TextureType[] options = TextureType.getSupportedTypes(mcreator.getWorkspace(), false);
 		int n = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.animation_maker.kind_of_texture"),
 				L10N.t("dialog.animation_maker.type_of_texture"), JOptionPane.YES_NO_CANCEL_OPTION,
 				JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
@@ -350,7 +350,7 @@ public class AnimationMakerView extends ViewBase {
 		String namec = JOptionPane.showInputDialog(L10N.t("dialog.animation_maker.enter_texture_name"));
 		if (namec != null) {
 			namec = RegistryNameFixer.fix(namec);
-			File exportFile = mcreator.getFolderManager().getTextureFile(namec, TextureType.getTextureType(n, false));
+			File exportFile = mcreator.getFolderManager().getTextureFile(namec, options[n]);
 
 			if (exportFile.isFile()) {
 				JOptionPane.showMessageDialog(mcreator,

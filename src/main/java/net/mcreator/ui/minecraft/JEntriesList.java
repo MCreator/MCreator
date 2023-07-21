@@ -53,4 +53,8 @@ public abstract class JEntriesList extends JPanel {
 		entryListeners.forEach(l -> l.accept(entry));
 	}
 
+	public MCreator getMCreator() {
+		return mcreator;
+	}
+
 }

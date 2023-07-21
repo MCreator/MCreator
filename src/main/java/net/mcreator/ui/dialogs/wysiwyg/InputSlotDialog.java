@@ -43,7 +43,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 	public InputSlotDialog(WYSIWYGEditor editor, @Nullable InputSlot slot) {
 		super(editor, slot);
 		setModal(true);
-		setSize(850, 435);
+		setSize(842, 470);
 		setLocationRelativeTo(editor.mcreator);
 
 		JPanel options = new JPanel();
@@ -87,14 +87,14 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 				IHelpContext.NONE.withEntry("gui/slot_pickup_condition"), editor.mcreator,
 				L10N.t("dialog.gui.disable_pickup"), ProcedureSelector.Side.BOTH, false,
 				L10N.checkbox("condition.common.disable"), 0,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map/slot:number"));
 		disablePickup.refreshList();
 
 		LogicProcedureSelector disablePlacement = new LogicProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/slot_placement_condition"), editor.mcreator,
 				L10N.t("dialog.gui.disable_placement"), ProcedureSelector.Side.BOTH, false,
-				L10N.checkbox("condition.common.disable"), 0,
-				Dependency.fromString("x:number/y:number/z:number/world:world/itemstack:itemstack/guistate:map"));
+				L10N.checkbox("condition.common.disable"), 0, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/itemstack:itemstack/guistate:map/slot:number"));
 		disablePlacement.refreshList();
 
 		options.add(PanelUtils.join(FlowLayout.LEFT, disablePickup));
@@ -104,18 +104,20 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 
 		ProcedureSelector eh = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_changed"),
 				editor.mcreator, L10N.t("dialog.gui.slot_event_slot_content_changes"), ProcedureSelector.Side.BOTH,
-				false, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				false,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map/slot:number"));
 		eh.refreshList();
 
 		ProcedureSelector eh2 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_slot_item_taken"),
 				editor.mcreator, L10N.t("dialog.gui.slot_event_item_taken_from_slot"), ProcedureSelector.Side.BOTH,
-				false, Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map"));
+				false,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/guistate:map/slot:number"));
 		eh2.refreshList();
 
 		ProcedureSelector eh3 = new ProcedureSelector(IHelpContext.NONE.withEntry("gui/when_transferred_from_slot"),
 				editor.mcreator, L10N.t("dialog.gui.slot_event_transferred_from_slot"), ProcedureSelector.Side.BOTH,
 				false, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/guistate:map/amount:number"));
+				"x:number/y:number/z:number/world:world/entity:entity/guistate:map/slot:number/amount:number"));
 		eh3.refreshList();
 
 		add("Center", new JScrollPane(PanelUtils.centerInPanel(PanelUtils.gridElements(1, 3, 5, 5, eh, eh2, eh3))));

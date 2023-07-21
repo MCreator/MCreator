@@ -87,7 +87,7 @@ public class TemplateGenerator {
 
 		extractVariables(fixedVariables, dataModel);
 
-		dataModel.put("item", item);
+		dataModel.put("data", item);
 		dataModel.put("itemindex", itemIndex);
 		dataModel.put("parent", element);
 		dataModel.put("registryname", element.getModElement().getRegistryName());

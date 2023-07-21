@@ -167,6 +167,9 @@ public class GeneratorsTest {
 				LOG.info("[" + generator + "] ----- Testing feature blocks");
 				GTFeatureBlocks.runTest(LOG, generator, random, workspace);
 
+				LOG.info("[" + generator + "] ----- Testing AI task blocks");
+				GTAITaskBlocks.runTest(LOG, generator, random, workspace);
+
 				LOG.info("[" + generator + "] ----- Re-generating base to include generated mod elements");
 				assertTrue(workspace.getGenerator().generateBase());
 

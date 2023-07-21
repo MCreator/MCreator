@@ -24,6 +24,7 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
+import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -41,7 +42,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 43;
+	public static final int formatVersion = 44;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -98,6 +99,8 @@ public abstract class GeneratableElement {
 			GsonBuilder gsonBuilder = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient();
 
 			RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
+
+			gsonBuilder.registerTypeAdapter(StateMap.class, new StateMap.GSONAdapter());
 
 			gson = gsonBuilder.create();
 		}
