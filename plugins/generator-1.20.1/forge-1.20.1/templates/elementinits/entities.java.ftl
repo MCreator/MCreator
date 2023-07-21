@@ -40,13 +40,17 @@ package ${package}.init;
 
 	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ${JavaModName}.MODID);
 
+	<#assign hasLivingEntities = false>
+
 	<#list entities as entity>
 		<#if entity.getModElement().getTypeString() == "rangeditem">
 			public static final RegistryObject<EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
 				register("projectile_${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
 						of(${entity.getModElement().getName()}Entity::new, MobCategory.MISC).setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
 						.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5f, 0.5f));
-		<#else>
+		<#elseif entity.getModElement().getTypeString() == "livingentity">
+			<#assign hasLivingEntities = true>
+
 			public static final RegistryObject<EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
 				register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
 						of(${entity.getModElement().getName()}Entity::new, ${generator.map(entity.mobSpawningType, "mobspawntypes")})
@@ -68,6 +72,7 @@ package ${package}.init;
 		return REGISTRY.register(registryname, () -> (EntityType<T>) entityTypeBuilder.build(registryname));
 	}
 
+	<#if hasLivingEntities>
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
 		<#list entities as entity>
@@ -85,6 +90,7 @@ package ${package}.init;
 			</#if>
 		</#list>
 	}
+	</#if>
 
 }
 <#-- @formatter:on -->

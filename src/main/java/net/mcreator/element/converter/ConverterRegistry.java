@@ -44,6 +44,7 @@ import net.mcreator.element.converter.v2023_2.BiomeCustomFeaturesConverter;
 import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
 import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
+import net.mcreator.element.converter.v2023_3.HugeFungusFeatureConverter;
 import net.mcreator.element.converter.v2023_3.SpecialInformationConverter;
 
 import java.util.HashMap;
@@ -92,6 +93,7 @@ public class ConverterRegistry {
 		put(ModElementType.RANGEDITEM, List.of(new RangedItemTextureConverter(), new SpecialInformationConverter()));
 		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
 		put(ModElementType.TOOL, List.of(new SpecialInformationConverter()));
+		put(ModElementType.FEATURE, List.of(new HugeFungusFeatureConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one

@@ -1,6 +1,6 @@
 {
 	Entity _shootFrom = ${input$entity};
-	Level projectileLevel = _shootFrom.level;
+	Level projectileLevel = _shootFrom.level();
 	if (!projectileLevel.isClientSide()) {
 		Projectile _entityToSpawn = ${input$projectile};
 		_entityToSpawn.setPos(_shootFrom.getX(), _shootFrom.getEyeY() - 0.1, _shootFrom.getZ());

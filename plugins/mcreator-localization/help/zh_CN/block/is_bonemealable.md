@@ -1,1 +1,1 @@
-If this option is enabled, the block can be fertilized with bone meal.
+如果启用该项，则该方块可以被骨粉催熟

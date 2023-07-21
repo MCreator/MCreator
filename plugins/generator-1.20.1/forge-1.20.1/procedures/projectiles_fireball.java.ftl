@@ -13,5 +13,6 @@ new Object() {
 		entityToSpawn.zPower = az;
 		</#if>
 		return entityToSpawn;
-}}.getFireball(projectileLevel<#if hasShooter>, ${input$shooter}</#if><#if hasAcceleration>, ${input$ax}, ${input$ay}, ${input$az}</#if>)
+	}
+}.getFireball(projectileLevel<#if hasShooter>, ${input$shooter}</#if><#if hasAcceleration>, ${input$ax}, ${input$ay}, ${input$az}</#if>)
 </#if>
