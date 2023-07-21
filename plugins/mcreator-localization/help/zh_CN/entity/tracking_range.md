@@ -1,1 +1,3 @@
-追踪范围控制生物会从多少个方块远的距离开始追踪玩家（意味着 AI 在工作状态）。
+This parameter controls how many blocks far the entity is tracked by the players.
+
+Setting this parameter to 0 will disable rendering and collisions of the entity entirely.

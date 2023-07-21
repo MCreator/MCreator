@@ -1,3 +1,1 @@
-如果條件返回為真，玩家將無法拿這個槽內的物品。
-
-然而，他們仍然可以不受任限製地放置物品。
+If the condition returns true, players will not be able to take the items inside this slot. However, they will still be able to place items without any restriction.

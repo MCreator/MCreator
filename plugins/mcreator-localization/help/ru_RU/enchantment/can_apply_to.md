@@ -3,3 +3,5 @@
 Можно также указать предметы, не соотносящиеся с указанным типом зачарования.
 
 Если оставить этот список пустым, то совместимость будет определяться встроенной в MC логикой.
+
+**Include** will allow selected items to receive this enchantment. **Exclude** will not allow selected items to receive this enchantment

@@ -1,3 +1,1 @@
-當玩家執行能量密集型行動時（例如疾跑），飽和度是第一個下降的統計資料。
-
-它必須在可見的飢餓表開始下降之前完全耗盡。
+Saturation is the first statistic to decrease when a player performs energy-intensive actions, and it must be completely depleted before the visible hunger meter begins decreasing.

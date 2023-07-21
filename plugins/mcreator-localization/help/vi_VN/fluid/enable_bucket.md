@@ -1,0 +1,1 @@
+This parameter controls whether this fluid can be put in a bucket.

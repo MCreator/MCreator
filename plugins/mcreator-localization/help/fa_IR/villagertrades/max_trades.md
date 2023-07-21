@@ -1,0 +1,1 @@
+Maximal number of this trade the Villager can do without recharging itself.

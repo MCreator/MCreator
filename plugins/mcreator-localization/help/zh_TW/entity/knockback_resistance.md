@@ -1,3 +1,1 @@
-該參數定義實體對攻擊的擊退抗性。
-
-總體來說，大多數原版實體不使用它，而劫掠獸有 0.5 的擊退抗性。
+The knockback resistance defines the resistance to the attack knockback of the entity. In general, most of vanilla entities don't use it, but as a reference, the ravager has 0.5.

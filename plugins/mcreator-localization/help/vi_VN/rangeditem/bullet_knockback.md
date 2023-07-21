@@ -1,0 +1,1 @@
+The higher the number, the further the entity hit will be pushed by the ranged item.

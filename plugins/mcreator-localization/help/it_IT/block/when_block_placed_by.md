@@ -1,0 +1,1 @@
+Triggers a procedure when something places the block (entity/block) besides this block.

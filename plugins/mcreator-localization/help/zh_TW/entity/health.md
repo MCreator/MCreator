@@ -1,3 +1,1 @@
-該參數設定該生物的初始血量和血量上限。
-
-2 點生命值 = 1 顆心
+This parameter sets the initial (and maximal base) health of the mob. 2 health = 1 heart

@@ -1,9 +1,6 @@
 * **No rotation:** Фиксированная ориентация блока;
-* **Y-axis rotation (N/W/S/E):** Блок повёрнут по вертикальной оси в ту сторону, в которую смотрел игрок при его
-  установке;
-* **D/U/N/S/W/E rotation:** Блок повёрнут в ту сторону, в которую смотрел игрок при его установке;
-* **Y-axis rotation (N/W/S/E):** Блок повёрнут по вертикальной оси в противоположную сторону от блока, относительно
-  которого его устанавливал игрок;
-* **D/U/N/S/W/E rotation:** Блок повёрнут в противоположную сторону от блока, относительно которого его устанавливал
-  игрок;
-* **Log rotation (X/Y/Z):** Блок поворачивается подобно брёвнам и колоннам.
+* **Y-axis rotation (S/W/N/E):** Rotates only the sides based on the way the player is facing.
+* **D/U/N/S/W/E rotation:** Rotates all sides based on the way the player is facing.
+* **Y-axis rotation (S/W/N/E):** Rotates only the sides based on the block face the block is clicked on.
+* **D/U/N/S/W/E rotation:** Rotates all sides based on the block face the block is clicked on.
+* **Log rotation (X/Y/Z):** Rotates the block like vanilla logs.

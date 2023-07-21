@@ -1,0 +1,1 @@
+If checked, the entity will spawn in the world naturally via mob spawning process.

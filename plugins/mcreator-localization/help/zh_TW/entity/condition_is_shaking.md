@@ -1,3 +1,1 @@
-當返回值為真時，該實體會顫抖。
-
-殭屍村民在被治療時使用此特性。
+While the returned value is true, the entity will be shaking. Zombie villagers use this feature during their curing.

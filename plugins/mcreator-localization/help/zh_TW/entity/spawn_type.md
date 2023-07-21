@@ -1,8 +1,8 @@
 該參數控制生物將會屬於什麼生成型別。
 
 * 標記為“怪物”（Monster）的生物只會在黑暗處或晚上生成。
-* 標記為“生物”（Creature）的生物只會在陽光直射下的草質方塊上生成。不要對怪物使用這個型別，這樣會阻止它們生成。
-* 標記為“環境”（Ambient）的生物會在任何條件下生成，除非方塊型別不允許。但是這個型別應當僅用於沒什麼遊戲影響的生物，比如蝙蝠。
-* 標記為“水生生物”（WaterCreature）的生物將會在水中生成，但是沒有其它限制。
+* A mob marked as Creature will spawn under direct sunlight on grass material blocks only. Do not use this spawn type with mob type living entities as they will not spawn
+* A mob marked as Ambient will spawn under any conditions except if block type prevents it, but this category should be used for mobs with no gameplay effect such as bats
+* WaterCreature will spawn in water, but with no other limitations
 
 生成型別系統在 [此處](https://mcreator.net/wiki/mob-spawning-parameters) 有著深入的介紹。

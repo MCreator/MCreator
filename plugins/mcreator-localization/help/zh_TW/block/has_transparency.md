@@ -1,1 +1,10 @@
-如果您的方塊不是實心的，但具有自訂模型或透明部分，請勾選此項。
+Check this parameter if your block:
+
+* is not a solid cube / has custom shape,
+* or transparent parts of the texture.
+
+If you check this box, the block will:
+
+* not conduct redstone power,
+* have occlusion disabled,
+* have visual bounding box set to empty.

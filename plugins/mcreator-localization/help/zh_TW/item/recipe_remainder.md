@@ -1,3 +1,1 @@
-此參數控制在製作表中使用時將被替換的物品。
-
-這意味著該物品將是配方的一部分，但將被另一個物品取代。
+This parameter controls the item that will be replaced when used in crafting table. This means the item will be part of the recipe, but will be replaced with another item.

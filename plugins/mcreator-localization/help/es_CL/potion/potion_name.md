@@ -1,0 +1,1 @@
+This parameter controls the name of the normal potion bottle.

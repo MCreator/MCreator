@@ -1,0 +1,1 @@
+If condition is specified, the player needs to pass it to travel to this dimension.

@@ -1,4 +1,4 @@
-* 此参数控制如何生成静态植物。
+This parameter controls how your static plant will be generated.
 
-  * **花:**植物将产生静脉，植物的分布会呈现出曲线状的路径。
-  * **草:**植物将大量生成。
+* **Flower:** The plant will be generated like veins.
+* **Grass:** The plant will be generated in masses.

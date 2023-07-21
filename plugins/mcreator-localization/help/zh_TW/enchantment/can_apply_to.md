@@ -3,3 +3,5 @@
 您也可以增加附魔類型限定之外的物品。
 
 大多數情況下請留空（用原版的判斷邏輯）。
+
+**Include** will allow selected items to receive this enchantment. **Exclude** will not allow selected items to receive this enchantment

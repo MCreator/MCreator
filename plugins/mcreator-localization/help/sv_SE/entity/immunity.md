@@ -1,0 +1,1 @@
+Any attack types you choose here will not affect the mob.

@@ -1,3 +1,1 @@
-定義該生物每次攻擊造成的擊退力度。
-
-大多數原版生物不使用，除了劫毀獸的擊退力度值為 1.5。
+The attack knockback defines the knockback value of each attack of this entity Most vanilla entities do not use it. Some do, such as the ravager, which has a knockback value of 1.5.
