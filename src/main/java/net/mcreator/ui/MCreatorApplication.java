@@ -63,6 +63,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.regex.Pattern;
 
@@ -347,15 +348,20 @@ public final class MCreatorApplication {
 	public void closeApplication() {
 		LOG.debug("Closing any potentially open MCreator windows");
 
+		AtomicBoolean canNotClose = new AtomicBoolean();
 		ThreadUtil.runOnSwingThreadAndWait(() -> {
 			// create list copy, so we don't modify the list we iterate
 			List<MCreator> mcreatorsTmp = new ArrayList<>(openMCreators);
 			for (MCreator mcreator : mcreatorsTmp) {
 				LOG.info("Attempting to close MCreator window with workspace: " + mcreator.getWorkspace());
-				if (!mcreator.closeThisMCreator(false))
-					return; // if we fail to close all windows, we cancel the application close
+				if (!mcreator.closeThisMCreator(false)) {
+					canNotClose.set(true);
+					return;
+				}
 			}
 		});
+		if (canNotClose.get())
+			return; // if we fail to close all windows, we cancel the application close
 
 		LOG.debug("Performing exit tasks");
 		PreferencesManager.savePreferences(); // store any potential preferences changes
