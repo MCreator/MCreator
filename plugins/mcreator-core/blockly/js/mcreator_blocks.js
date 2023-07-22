@@ -829,14 +829,5 @@ Blockly.defineBlocksWithJsonArray([
         ],
         "output": "Direction",
         "colour": "20"
-    },
-    {
-        "type": "damagesource_constant",
-        "message0": "",
-        "extensions": [
-            "damagesource_list_provider"
-        ],
-        "output": "DamageSource",
-        "colour": "306"
     }
 ]);

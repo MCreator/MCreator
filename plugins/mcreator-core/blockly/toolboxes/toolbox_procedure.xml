@@ -12,7 +12,6 @@
         <block type="immediate_source_entity_from_deps"/>
         <block type="entity_iterator"/>
         <block type="damagesource_from_deps"/>
-        <block type="damagesource_constant"/>
         <block type="direction_constant"/>
         <block type="direction_from_deps"/>
         <custom-mcelements/>
