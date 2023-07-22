@@ -10,7 +10,7 @@
   "output": "DamageSource",
   "colour": "306",
   "mcreator": {
-    "toolbox_id": "logicoperations",
+    "toolbox_id": "mcelements",
     "fields": [
       "damagesource"
     ],
