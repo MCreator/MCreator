@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -127,6 +127,12 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
+		<#if data.helmetPiglinNeutral>
+		@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+			return true;
+		}
+		</#if>
+
 		<@onArmorTick data.onHelmetTick/>
 	}
 	</#if>
@@ -176,6 +182,12 @@ public abstract class ${name}Item extends ArmorItem {
 			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
 			</#if>
 		}
+
+		<#if data.bodyPiglinNeutral>
+		@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+			return true;
+		}
+		</#if>
 
 		<@onArmorTick data.onBodyTick/>
 	}
@@ -227,6 +239,12 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
+		<#if data.leggingsPiglinNeutral>
+		@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+			return true;
+		}
+		</#if>
+
 		<@onArmorTick data.onLeggingsTick/>
 	}
 	</#if>
@@ -276,6 +294,12 @@ public abstract class ${name}Item extends ArmorItem {
 			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
 			</#if>
 		}
+
+		<#if data.bootsPiglinNeutral>
+		@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+			return true;
+		}
+		</#if>
 
 		<@onArmorTick data.onBootsTick/>
 	}

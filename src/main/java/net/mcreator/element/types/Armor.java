@@ -102,6 +102,11 @@ import java.util.*;
 	public boolean leggingsImmuneToFire;
 	public boolean bootsImmuneToFire;
 
+	public boolean helmetPiglinNeutral;
+	public boolean bodyPiglinNeutral;
+	public boolean leggingsPiglinNeutral;
+	public boolean bootsPiglinNeutral;
+
 	public int maxDamage;
 	public int damageValueHelmet;
 	public int damageValueBody;
