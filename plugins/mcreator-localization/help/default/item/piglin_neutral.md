@@ -1,1 +1,1 @@
-This parameter controls if the item makes piglins around neutrals, like Gold stuff.
+This parameter controls if the item makes piglins around neutrals, like gold items.
