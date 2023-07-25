@@ -1,1 +1,0 @@
-Ce paramètre contrôle si l'item rend les piglins autour neutres, comme les items en or.

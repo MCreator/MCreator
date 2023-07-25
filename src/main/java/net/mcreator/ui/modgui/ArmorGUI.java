@@ -357,7 +357,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setOpaque(false);
 		bootsImmuneToFire.setOpaque(false);
 
-		JPanel helmetSubPanel = new JPanel(new GridLayout(6, 2, 4, 4));
+		JPanel helmetSubPanel = new JPanel(new GridLayout(5, 2, 4, 4));
 		helmetSubPanel.setOpaque(false);
 
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
@@ -377,11 +377,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		helmetSubPanel.add(helmetImmuneToFire);
 
-		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/piglin_neutral"),
-				L10N.label("elementgui.item.is_piglin_neutral")));
-		helmetSubPanel.add(helmetPiglinNeutral);
-
-		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), helmetSubPanel);
+		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"),
+				PanelUtils.northAndCenterElement(helmetSubPanel, helmetPiglinNeutral));
 
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
 				enableHelmet);
@@ -410,7 +407,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 						PanelUtils.join(FlowLayout.RIGHT, L10N.label("elementgui.armor.part_arm_left"), armsModelPartL,
 								L10N.label("elementgui.armor.part_arm_right"), armsModelPartR)));
 
-		JPanel bodySubPanel = new JPanel(new GridLayout(5, 2, 4, 4));
+		JPanel bodySubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 		bodySubPanel.setOpaque(false);
 
 		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
@@ -427,12 +424,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bodySubPanel.add(bodyImmuneToFire);
 
-		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/piglin_neutral"),
-				L10N.label("elementgui.item.is_piglin_neutral")));
-		bodySubPanel.add(bodyPiglinNeutral);
-
 		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"),
-				PanelUtils.northAndCenterElement(bodyModelComponent, bodySubPanel));
+				PanelUtils.northAndCenterElement(bodyModelComponent,
+						PanelUtils.centerAndSouthElement(bodySubPanel, bodyPiglinNeutral)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.chestplate_name"), bodyName),
@@ -452,7 +446,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				PanelUtils.join(FlowLayout.RIGHT, leggingsModel, new JLabel(": L"), leggingsModelPartL, new JLabel("R"),
 						leggingsModelPartR));
 
-		JPanel leggingsSubPanel = new JPanel(new GridLayout(5, 2, 4, 4));
+		JPanel leggingsSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 		leggingsSubPanel.setOpaque(false);
 
 		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
@@ -469,12 +463,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		leggingsSubPanel.add(leggingsImmuneToFire);
 
-		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/piglin_neutral"),
-				L10N.label("elementgui.item.is_piglin_neutral")));
-		leggingsSubPanel.add(leggingsPiglinNeutral);
-
 		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
-				PanelUtils.northAndCenterElement(leggingsModelComponent, leggingsSubPanel));
+				PanelUtils.northAndCenterElement(leggingsModelComponent,
+						PanelUtils.centerAndSouthElement(leggingsSubPanel, leggingsPiglinNeutral)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
@@ -494,7 +485,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				PanelUtils.join(FlowLayout.RIGHT, bootsModel, new JLabel(": L"), bootsModelPartL, new JLabel("R"),
 						bootsModelPartR));
 
-		JPanel bootsSubPanel = new JPanel(new GridLayout(5, 2, 4, 4));
+		JPanel bootsSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
 		bootsSubPanel.setOpaque(false);
 
 		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
@@ -511,12 +502,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bootsSubPanel.add(bootsImmuneToFire);
 
-		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/piglin_neutral"),
-				L10N.label("elementgui.item.is_piglin_neutral")));
-		bootsSubPanel.add(bootsPiglinNeutral);
-
 		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
-				PanelUtils.northAndCenterElement(bootsModelComponent, bootsSubPanel));
+				PanelUtils.northAndCenterElement(bootsModelComponent,
+						PanelUtils.centerAndSouthElement(bootsSubPanel, bootsPiglinNeutral)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
