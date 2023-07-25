@@ -734,10 +734,10 @@ public class TestWorkspaceDataProvider {
 			armor.bodyImmuneToFire = !_true;
 			armor.leggingsImmuneToFire = _true;
 			armor.bootsImmuneToFire = !_true;
-			armor.helmetPiglinNeutral = _true;
-			armor.bodyPiglinNeutral = !_true;
-			armor.leggingsPiglinNeutral = _true;
-			armor.bootsPiglinNeutral = !_true;
+			armor.helmetPiglinNeutral = new LogicProcedure(_true ? "condition1" : null, _true);
+			armor.bodyPiglinNeutral = new LogicProcedure(!_true ? "condition2" : null, !_true);
+			armor.leggingsPiglinNeutral = new LogicProcedure(_true ? "condition3" : null, _true);
+			armor.bootsPiglinNeutral = new LogicProcedure(!_true ? "condition4" : null, !_true);
 			armor.equipSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			armor.onHelmetTick = new Procedure("procedure1");

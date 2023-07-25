@@ -51,6 +51,8 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -147,10 +149,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final JCheckBox leggingsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bootsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 
-	private final JCheckBox helmetPiglinNeutral = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox bodyPiglinNeutral = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox leggingsPiglinNeutral = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox bootsPiglinNeutral = L10N.checkbox("elementgui.common.enable");
+	private LogicProcedureSelector helmetPiglinNeutral;
+	private LogicProcedureSelector bodyPiglinNeutral;
+	private LogicProcedureSelector leggingsPiglinNeutral;
+	private LogicProcedureSelector bootsPiglinNeutral;
 
 	private final JLabel clo1 = new JLabel();
 	private final JLabel clo2 = new JLabel();
@@ -192,6 +194,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	}
 
 	@Override protected void initGUI() {
+		helmetPiglinNeutral = new LogicProcedureSelector(this.withEntry("armor/piglin_neutral"), mcreator,
+				L10N.t("elementgui.armor.piglin_neutral"), AbstractProcedureSelector.Side.BOTH,
+				L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("entity:entity/x:number/y:number/z:number"));
+		bodyPiglinNeutral = new LogicProcedureSelector(this.withEntry("armor/piglin_neutral"), mcreator,
+				L10N.t("elementgui.armor.piglin_neutral"), AbstractProcedureSelector.Side.BOTH,
+				L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("entity:entity/x:number/y:number/z:number"));
+		leggingsPiglinNeutral = new LogicProcedureSelector(this.withEntry("armor/piglin_neutral"), mcreator,
+				L10N.t("elementgui.armor.piglin_neutral"), AbstractProcedureSelector.Side.BOTH,
+				L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("entity:entity/x:number/y:number/z:number"));
+		bootsPiglinNeutral = new LogicProcedureSelector(this.withEntry("armor/piglin_neutral"), mcreator,
+				L10N.t("elementgui.armor.piglin_neutral"), AbstractProcedureSelector.Side.BOTH,
+				L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("entity:entity/x:number/y:number/z:number"));
 		onHelmetTick = new ProcedureSelector(this.withEntry("armor/helmet_tick"), mcreator,
 				L10N.t("elementgui.armor.helmet_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -338,11 +356,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodyImmuneToFire.setOpaque(false);
 		leggingsImmuneToFire.setOpaque(false);
 		bootsImmuneToFire.setOpaque(false);
-
-		helmetPiglinNeutral.setOpaque(false);
-		bootsPiglinNeutral.setOpaque(false);
-		leggingsPiglinNeutral.setOpaque(false);
-		bootsPiglinNeutral.setOpaque(false);
 
 		JPanel helmetSubPanel = new JPanel(new GridLayout(6, 2, 4, 4));
 		helmetSubPanel.setOpaque(false);
@@ -743,8 +756,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				new ConditionalTextFieldValidator(bootsName, L10N.t("elementgui.armor.boots_need_name"), enableBoots,
 						true));
 		bodyName.setValidator(
-				new ConditionalTextFieldValidator(bodyName, L10N.t("elementgui.armor.chestplate_needs_name"), enableBody,
-						true));
+				new ConditionalTextFieldValidator(bodyName, L10N.t("elementgui.armor.chestplate_needs_name"),
+						enableBody, true));
 		leggingsName.setValidator(
 				new ConditionalTextFieldValidator(leggingsName, L10N.t("elementgui.armor.leggings_need_name"),
 						enableLeggings, true));
@@ -796,6 +809,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodyModel.removeActionListener(bodyModelListener);
 		leggingsModel.removeActionListener(leggingsModelListener);
 		bootsModel.removeActionListener(bootsModelListener);
+
+		helmetPiglinNeutral.refreshListKeepSelected();
+		bodyPiglinNeutral.refreshListKeepSelected();
+		leggingsPiglinNeutral.refreshListKeepSelected();
+		bootsPiglinNeutral.refreshListKeepSelected();
 
 		onHelmetTick.refreshListKeepSelected();
 		onBodyTick.refreshListKeepSelected();
@@ -988,10 +1006,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setSelected(armor.leggingsImmuneToFire);
 		bootsImmuneToFire.setSelected(armor.bootsImmuneToFire);
 
-		helmetPiglinNeutral.setSelected(armor.helmetPiglinNeutral);
-		bodyPiglinNeutral.setSelected(armor.bodyPiglinNeutral);
-		leggingsPiglinNeutral.setSelected(armor.leggingsPiglinNeutral);
-		bootsPiglinNeutral.setSelected(armor.bootsPiglinNeutral);
+		helmetPiglinNeutral.setSelectedProcedure(armor.helmetPiglinNeutral);
+		bodyPiglinNeutral.setSelectedProcedure(armor.bodyPiglinNeutral);
+		leggingsPiglinNeutral.setSelectedProcedure(armor.leggingsPiglinNeutral);
+		bootsPiglinNeutral.setSelectedProcedure(armor.bootsPiglinNeutral);
 
 		Model helmetItemModel = armor.getHelmetItemModel();
 		if (helmetItemModel != null)
@@ -1063,10 +1081,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodyImmuneToFire = bodyImmuneToFire.isSelected();
 		armor.leggingsImmuneToFire = leggingsImmuneToFire.isSelected();
 		armor.bootsImmuneToFire = bootsImmuneToFire.isSelected();
-		armor.helmetPiglinNeutral = helmetPiglinNeutral.isSelected();
-		armor.bodyPiglinNeutral = bodyPiglinNeutral.isSelected();
-		armor.leggingsPiglinNeutral = leggingsPiglinNeutral.isSelected();
-		armor.bootsPiglinNeutral = bootsPiglinNeutral.isSelected();
+		armor.helmetPiglinNeutral = helmetPiglinNeutral.getSelectedProcedure();
+		armor.bodyPiglinNeutral = bodyPiglinNeutral.getSelectedProcedure();
+		armor.leggingsPiglinNeutral = leggingsPiglinNeutral.getSelectedProcedure();
+		armor.bootsPiglinNeutral = bootsPiglinNeutral.getSelectedProcedure();
 
 		Model.Type helmetModelType = Objects.requireNonNull(helmetItemRenderType.getSelectedItem()).getType();
 		armor.helmetItemRenderType = 0;

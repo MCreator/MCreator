@@ -127,11 +127,7 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
-		<#if data.helmetPiglinNeutral>
-		@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
-			return true;
-		}
-		</#if>
+		<@piglinNeutral data.helmetPiglinNeutral>
 
 		<@onArmorTick data.onHelmetTick/>
 	}
@@ -183,11 +179,7 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
-		<#if data.bodyPiglinNeutral>
-		@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
-			return true;
-		}
-		</#if>
+		<@piglinNeutral data.bodyPiglinNeutral>
 
 		<@onArmorTick data.onBodyTick/>
 	}
@@ -239,11 +231,7 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
-		<#if data.leggingsPiglinNeutral>
-		@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
-			return true;
-		}
-		</#if>
+		<@piglinNeutral data.leggingsPiglinNeutral>
 
 		<@onArmorTick data.onLeggingsTick/>
 	}
@@ -295,11 +283,7 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
-		<#if data.bootsPiglinNeutral>
-		@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
-			return true;
-		}
-		</#if>
+		<@piglinNeutral data.bootsPiglinNeutral>
 
 		<@onArmorTick data.onBootsTick/>
 	}
