@@ -36,7 +36,6 @@ package ${package}.entity;
 
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import net.minecraft.world.level.material.Material;
 import net.minecraft.nbt.Tag;
 import net.minecraft.sounds.SoundEvent;
 
@@ -44,18 +43,14 @@ import javax.annotation.Nullable;
 
 <#assign extendsClass = "PathfinderMob">
 
-<#if data.aiBase != "(none)" >
+<#if data.aiBase != "(none)">
 	<#assign extendsClass = data.aiBase?replace("Enderman", "EnderMan")>
 <#else>
 	<#assign extendsClass = data.mobBehaviourType?replace("Mob", "Monster")?replace("Creature", "PathfinderMob")>
 </#if>
 
 <#if data.breedable>
-	<#assign extendsClass = "Animal">
-</#if>
-
-<#if (data.tameable && data.breedable)>
-	<#assign extendsClass = "TamableAnimal">
+	<#assign extendsClass = data.tameable?then("TamableAnimal", "Animal")>
 </#if>
 
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
@@ -71,11 +66,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
     	super(type, world);
-		maxUpStep = ${data.stepHeight}f;
+		setMaxUpStep(${data.stepHeight}f);
 		xpReward = ${data.xpAmount};
 		setNoAi(${(!data.hasAI)});
 
-		<#if data.mobLabel?has_content >
+		<#if data.mobLabel?has_content>
         	setCustomName(Component.literal("${data.mobLabel}"));
         	setCustomNameVisible(true);
         </#if>
@@ -165,10 +160,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override protected void registerGoals() {
 		super.registerGoals();
 
-		<#if aicode??>
-            ${aicode}
-        </#if>
-
         <#if data.ranged>
             this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25, ${data.rangedAttackInterval}, ${data.rangedAttackRadius}f) {
 				@Override public boolean canContinueToUse() {
@@ -176,6 +167,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				}
 			});
         </#if>
+
+		<#if aicode??>
+			${aicode}
+		</#if>
 	}
 	</#if>
 
@@ -244,7 +239,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"y": "this.getY()",
 			"z": "this.getZ()",
 			"entity": "this",
-			"world": "this.level"
+			"world": "this.level()"
 		}/>
 	}
     </#if>
@@ -257,12 +252,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				"y": "this.getY()",
 				"z": "this.getZ()",
 				"entity": "this",
-				"world": "this.level",
+				"world": "this.level()",
 				"damagesource": "source"
 			}/>
 		</#if>
 
-		<#if data.flyingMob >
+		<#if data.flyingMob>
 			return false;
 		<#else>
 			return super.causeFallDamage(l, d, source);
@@ -281,7 +276,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				"y": "this.getY()",
 				"z": "this.getZ()",
 				"entity": "this",
-				"world": "this.level",
+				"world": "this.level()",
 				"sourceentity": "source.getEntity()",
 				"damagesource": "source"
 			}/>
@@ -353,7 +348,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"z": "this.getZ()",
 			"sourceentity": "source.getEntity()",
 			"entity": "this",
-			"world": "this.level",
+			"world": "this.level()",
 			"damagesource": "source"
 		}/>
 	}
@@ -408,7 +403,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override public void readAdditionalSaveData(CompoundTag compound) {
     	super.readAdditionalSaveData(compound);
 		Tag inventoryCustom = compound.get("InventoryCustom");
-		if(inventoryCustom instanceof CompoundTag inventoryTag)
+		if (inventoryCustom instanceof CompoundTag inventoryTag)
 			inventory.deserializeNBT(inventoryTag);
     }
     </#if>
@@ -416,13 +411,13 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 	@Override public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
 		ItemStack itemstack = sourceentity.getItemInHand(hand);
-		InteractionResult retval = InteractionResult.sidedSuccess(this.level.isClientSide());
+		InteractionResult retval = InteractionResult.sidedSuccess(this.level().isClientSide());
 
 		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 			<#if data.ridable>
 				if (sourceentity.isSecondaryUseActive()) {
 			</#if>
-				if(sourceentity instanceof ServerPlayer serverPlayer) {
+				if (sourceentity instanceof ServerPlayer serverPlayer) {
 					NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
 
 						@Override public Component getDisplayName() {
@@ -444,7 +439,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					});
 				}
 			<#if data.ridable>
-					return InteractionResult.sidedSuccess(this.level.isClientSide());
+					return InteractionResult.sidedSuccess(this.level().isClientSide());
 				}
 			</#if>
 		</#if>
@@ -453,20 +448,20 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			Item item = itemstack.getItem();
 			if (itemstack.getItem() instanceof SpawnEggItem) {
 				retval = super.mobInteract(sourceentity, hand);
-			} else if (this.level.isClientSide()) {
+			} else if (this.level().isClientSide()) {
 				retval = (this.isTame() && this.isOwnedBy(sourceentity) || this.isFood(itemstack))
-						? InteractionResult.sidedSuccess(this.level.isClientSide()) : InteractionResult.PASS;
+						? InteractionResult.sidedSuccess(this.level().isClientSide()) : InteractionResult.PASS;
 			} else {
 				if (this.isTame()) {
 					if (this.isOwnedBy(sourceentity)) {
 						if (item.isEdible() && this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.usePlayerItem(sourceentity, hand, itemstack);
 							this.heal((float)item.getFoodProperties().getNutrition());
-							retval = InteractionResult.sidedSuccess(this.level.isClientSide());
+							retval = InteractionResult.sidedSuccess(this.level().isClientSide());
 						} else if (this.isFood(itemstack) && this.getHealth() < this.getMaxHealth()) {
 							this.usePlayerItem(sourceentity, hand, itemstack);
 							this.heal(4);
-							retval = InteractionResult.sidedSuccess(this.level.isClientSide());
+							retval = InteractionResult.sidedSuccess(this.level().isClientSide());
 						} else {
 							retval = super.mobInteract(sourceentity, hand);
 						}
@@ -475,13 +470,13 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					this.usePlayerItem(sourceentity, hand, itemstack);
 					if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, sourceentity)) {
 						this.tame(sourceentity);
-						this.level.broadcastEntityEvent(this, (byte) 7);
+						this.level().broadcastEntityEvent(this, (byte) 7);
 					} else {
-						this.level.broadcastEntityEvent(this, (byte) 6);
+						this.level().broadcastEntityEvent(this, (byte) 6);
 					}
 
 					this.setPersistenceRequired();
-					retval = InteractionResult.sidedSuccess(this.level.isClientSide());
+					retval = InteractionResult.sidedSuccess(this.level().isClientSide());
 				} else {
 					retval = super.mobInteract(sourceentity, hand);
 					if (retval == InteractionResult.SUCCESS || retval == InteractionResult.CONSUME)
@@ -501,7 +496,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			double y = this.getY();
 			double z = this.getZ();
 			Entity entity = this;
-			Level world = this.level;
+			Level world = this.level();
 			<#if hasReturnValueOf(data.onRightClickedOn, "actionresulttype")>
 				return <@procedureOBJToInteractionResultCode data.onRightClickedOn/>;
 			<#else>
@@ -523,7 +518,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"z": "this.getZ()",
 			"entity": "entity",
 			"sourceentity": "this",
-			"world": "this.level",
+			"world": "this.level()",
 			"damagesource": "damageSource"
 		}/>
 	}
@@ -537,7 +532,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"y": "this.getY()",
 			"z": "this.getZ()",
 			"entity": "this",
-			"world": "this.level"
+			"world": "this.level()"
 		}/>
 	}
     </#if>
@@ -551,7 +546,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"z": "this.getZ()",
 			"entity": "this",
 			"sourceentity": "sourceentity",
-			"world": "this.level"
+			"world": "this.level()"
 		}/>
 	}
     </#if>
@@ -560,15 +555,15 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	    @Override public void performRangedAttack(LivingEntity target, float flval) {
 			<#if data.rangedItemType == "Default item">
 				<#if !data.rangedAttackItem.isEmpty()>
-				${name}EntityProjectile entityarrow = new ${name}EntityProjectile(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), this, this.level);
+				${name}EntityProjectile entityarrow = new ${name}EntityProjectile(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), this, this.level());
 				<#else>
-				Arrow entityarrow = new Arrow(this.level, this);
+				Arrow entityarrow = new Arrow(this.level(), this);
 				</#if>
 				double d0 = target.getY() + target.getEyeHeight() - 1.1;
 				double d1 = target.getX() - this.getX();
 				double d3 = target.getZ() - this.getZ();
 				entityarrow.shoot(d1, d0 - entityarrow.getY() + Math.sqrt(d1 * d1 + d3 * d3) * 0.2F, d3, 1.6F, 12.0F);
-				level.addFreshEntity(entityarrow);
+				this.level().addFreshEntity(entityarrow);
 			<#else>
 				${data.rangedItemType}Entity.shoot(this, target);
 			</#if>
@@ -583,7 +578,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
 
 		@Override public boolean isFood(ItemStack stack) {
-			return List.of(<#list data.breedTriggerItems as breedTriggerItem>${mappedMCItemToItem(breedTriggerItem)}<#if breedTriggerItem?has_next>,</#if></#list>).contains(stack.getItem());
+			return List.of(<#list data.breedTriggerItems as breedTriggerItem>${mappedMCItemToItem(breedTriggerItem)}<#sep>,</#list>).contains(stack.getItem());
 		}
     </#if>
 
@@ -623,7 +618,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	public boolean canBeCollidedWith() {
 		<#if hasProcedure(data.solidBoundingBox)>
 		Entity entity = this;
-		Level world = entity.level;
+		Level world = entity.level();
 		double x = entity.getX();
 		double y = entity.getY();
 		double z = entity.getZ();
@@ -729,7 +724,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					}
 				<#else>
 					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos.below()).getMaterial() == Material.GRASS && world.getRawBrightness(pos, 0) > 8)
+							(world.getBlockState(pos.below()).is(BlockTags.DIRT) && world.getRawBrightness(pos, 0) > 8)
 				</#if>
 			);
 			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
