@@ -24,6 +24,7 @@ import net.mcreator.blockly.datapack.BlocklyToJSONTrigger;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.interfaces.IXMLProvider;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
@@ -35,7 +36,7 @@ import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Achievement extends GeneratableElement {
+@SuppressWarnings("unused") public class Achievement extends GeneratableElement implements IXMLProvider {
 
 	public String achievementName;
 	public String achievementDescription;
@@ -95,6 +96,10 @@ import java.util.List;
 
 			additionalData.put("triggercode", triggerCode);
 		};
+	}
+
+	@Override public String getXML(BlocklyEditorType type) {
+		return type == BlocklyEditorType.JSON_TRIGGER ? triggerxml : null;
 	}
 
 }

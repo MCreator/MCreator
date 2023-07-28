@@ -129,6 +129,10 @@ import java.util.Objects;
 		return machine_name;
 	}
 
+	@Nullable public String getGroup() {
+		return group;
+	}
+
 	@Nullable public List<String> getToolboxInitStatements() {
 		return toolbox_init;
 	}
