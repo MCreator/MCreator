@@ -10,6 +10,7 @@
   "nextStatement": null,
   "colour": 50,
   "mcreator": {
+    "group": "open_doors",
     "toolbox_id": "villagetasks",
     "fields": [
       "condition"

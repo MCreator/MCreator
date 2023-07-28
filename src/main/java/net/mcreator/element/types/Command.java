@@ -22,6 +22,7 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.types.interfaces.IXMLProvider;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
@@ -33,7 +34,7 @@ import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.Locale;
 
-@SuppressWarnings("unused") public class Command extends GeneratableElement {
+@SuppressWarnings("unused") public class Command extends GeneratableElement implements IXMLProvider {
 
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"><field name=\"procedure\"></field></block></next></block></xml>";
 
@@ -74,6 +75,10 @@ import java.util.Locale;
 
 			additionalData.put("argscode", blocklyToJava.getGeneratedCode());
 		};
+	}
+
+	@Override public String getXML(BlocklyEditorType type) {
+		return type == BlocklyEditorType.COMMAND_ARG ? argsxml : null;
 	}
 
 }
