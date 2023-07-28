@@ -31,6 +31,10 @@ public class ToolboxCategory {
 	String id, name, description, color;
 	boolean api;
 
+	public String getId() {
+		return id;
+	}
+
 	public String getName() {
 		String localized_name = L10N.t("blockly.category." + id);
 		if (localized_name != null)

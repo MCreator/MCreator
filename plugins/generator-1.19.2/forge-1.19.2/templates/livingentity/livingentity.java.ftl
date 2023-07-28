@@ -166,7 +166,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		super.registerGoals();
 
 		<#if aicode??>
-			<#if !data.flyingMob && !data.waterMob && data.hasGroupBlocks("aitasks", "open_doors")>
+			<#if !data.flyingMob && !data.waterMob && data.hasSpecificBlocks("aitasks", "doors_open", "doors_close")>
 				((GroundPathNavigation) this.getNavigation()).setCanOpenDoors(true);
 				((GroundPathNavigation) this.getNavigation()).setCanPassDoors(true);
 			</#if>

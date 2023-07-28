@@ -59,15 +59,15 @@ import java.util.List;
 	default boolean hasCategoryBlocks(String editor, String... categories) {
 		BlocklyEditorType bet = BlocklyEditorType.fromName(editor);
 		String xml = getXML(bet);
-		if (xml == null)
-			return false;
-		xml = xml.replaceAll("(deletable|movable|enabled)=\"(true|false)\" ", "");
-		List<String> categoryList = Arrays.asList(categories);
-		for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(bet).getDefinedBlocks().values()) {
-			if (block.getToolboxCategory() != null && categoryList.contains(block.getToolboxCategory().getName())) {
-				String type = "type=\"" + block.getMachineName() + "\"";
-				if (xml.contains("<block " + type) || xml.contains("<shadow " + type))
-					return true;
+		if (xml != null) {
+			xml = xml.replaceAll("(deletable|movable|enabled)=\"(true|false)\" ", "");
+			List<String> categoryList = Arrays.asList(categories);
+			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(bet).getDefinedBlocks().values()) {
+				if (block.getToolboxCategory() != null && categoryList.contains(block.getToolboxCategory().getId())) {
+					String type = "type=\"" + block.getMachineName() + "\"";
+					if (xml.contains("<block " + type) || xml.contains("<shadow " + type))
+						return true;
+				}
 			}
 		}
 		return false;
@@ -81,15 +81,15 @@ import java.util.List;
 	default boolean hasGroupBlocks(String editor, String... groups) {
 		BlocklyEditorType bet = BlocklyEditorType.fromName(editor);
 		String xml = getXML(bet);
-		if (xml == null)
-			return false;
-		xml = xml.replaceAll("(deletable|movable|enabled)=\"(true|false)\" ", "");
-		List<String> groupList = Arrays.asList(groups);
-		for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(bet).getDefinedBlocks().values()) {
-			if (groupList.contains(block.getGroup())) {
-				String type = "type=\"" + block.getMachineName() + "\"";
-				if (xml.contains("<block " + type) || xml.contains("<shadow " + type))
-					return true;
+		if (xml != null) {
+			xml = xml.replaceAll("(deletable|movable|enabled)=\"(true|false)\" ", "");
+			List<String> groupList = Arrays.asList(groups);
+			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(bet).getDefinedBlocks().values()) {
+				if (groupList.contains(block.getGroup())) {
+					String type = "type=\"" + block.getMachineName() + "\"";
+					if (xml.contains("<block " + type) || xml.contains("<shadow " + type))
+						return true;
+				}
 			}
 		}
 		return false;
