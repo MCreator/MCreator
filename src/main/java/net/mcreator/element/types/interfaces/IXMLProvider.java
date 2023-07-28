@@ -41,12 +41,12 @@ import java.util.List;
 	 */
 	default boolean hasSpecificBlocks(String editor, String... blocks) {
 		String xml = getXML(BlocklyEditorType.fromName(editor));
-		if (xml == null)
-			return false;
-		xml = xml.replaceAll("(deletable|movable|enabled)=\"(true|false)\" ", "");
-		for (String block : blocks) {
-			if (xml.contains("<block type=\"" + block + "\"") || xml.contains("<shadow type=\"" + block + "\""))
-				return true;
+		if (xml != null) {
+			xml = xml.replaceAll("(deletable|movable|enabled)=\"(true|false)\" ", "");
+			for (String block : blocks) {
+				if (xml.contains("<block type=\"" + block + "\"") || xml.contains("<shadow type=\"" + block + "\""))
+					return true;
+			}
 		}
 		return false;
 	}
@@ -59,7 +59,7 @@ import java.util.List;
 	default boolean hasCategoryBlocks(String editor, String... categories) {
 		BlocklyEditorType bet = BlocklyEditorType.fromName(editor);
 		String xml = getXML(bet);
-		if (xml != null) {
+		if (xml != null && bet != null) {
 			xml = xml.replaceAll("(deletable|movable|enabled)=\"(true|false)\" ", "");
 			List<String> categoryList = Arrays.asList(categories);
 			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(bet).getDefinedBlocks().values()) {
@@ -81,7 +81,7 @@ import java.util.List;
 	default boolean hasGroupBlocks(String editor, String... groups) {
 		BlocklyEditorType bet = BlocklyEditorType.fromName(editor);
 		String xml = getXML(bet);
-		if (xml != null) {
+		if (xml != null && bet != null) {
 			xml = xml.replaceAll("(deletable|movable|enabled)=\"(true|false)\" ", "");
 			List<String> groupList = Arrays.asList(groups);
 			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(bet).getDefinedBlocks().values()) {
