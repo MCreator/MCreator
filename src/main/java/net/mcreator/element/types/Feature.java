@@ -27,7 +27,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
-import net.mcreator.element.types.interfaces.IXMLProvider;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
@@ -42,7 +41,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType, IXMLProvider {
+@SuppressWarnings("unused") public class Feature extends GeneratableElement implements ICommonType {
 
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 
@@ -93,9 +92,4 @@ import java.util.List;
 		else
 			return Collections.emptyList();
 	}
-
-	@Override public String getXML(BlocklyEditorType type) {
-		return type == BlocklyEditorType.FEATURE ? featurexml : null;
-	}
-
 }
