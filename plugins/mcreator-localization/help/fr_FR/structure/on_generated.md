@@ -1,3 +1,3 @@
-Cette procédure est exécutée chaque fois que la structure est générée dans le monde.
+The procedure is executed each time the structure is generated in the world.
 
-Gardez en tête que quelques blocs de procédure pourraient ne pas fonctionner normalement dans ce déclencheur durant la génération du monde.
+Keep in mind some procedure blocks might not work properly in this trigger during early world generation.
