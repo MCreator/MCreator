@@ -63,8 +63,6 @@ import java.util.stream.Collectors;
 
 public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure> implements IBlocklyPanelHolder {
 
-	private final JPanel pane5 = new JPanel(new BorderLayout(0, 0));
-
 	private BlocklyPanel blocklyPanel;
 
 	public final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
@@ -297,6 +295,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	}
 
 	@Override protected void initGUI() {
+		JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 		pane5.setOpaque(false);
 
 		localVarsList.setOpaque(false);
@@ -374,7 +373,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		bar.setOpaque(false);
 
 		JLabel lab = L10N.label("elementgui.procedure.local_variables");
-		lab.setToolTipText(L10N.t("elementgui.procedure.local_variables"));
 
 		JButton addvar = new JButton(UIRES.get("16px.add.gif"));
 		addvar.setContentAreaFilled(false);
@@ -563,9 +561,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		eastPan.add(depsPan);
 		eastPan.add(triggerDepsPan);
 
-		pane5.add("East", PanelUtils.centerAndSouthElement(eastPan, returnType));
-		pane5.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
-
 		externalBlocks = BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE).getDefinedBlocks();
 
 		blocklyPanel = new BlocklyPanel(mcreator, BlocklyEditorType.PROCEDURE);
@@ -595,7 +590,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
 		pane5.add("North", blocklyEditorToolbar);
 
-		addPage(PanelUtils.gridElements(1, 1, pane5));
+		JSplitPane pane4 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, pane5,
+				PanelUtils.centerAndSouthElement(eastPan, returnType));
+		pane4.setOpaque(false);
+		pane4.setOneTouchExpandable(true);
+		pane4.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+		addPage(PanelUtils.gridElements(1, 1, pane4));
+
+		SwingUtilities.invokeLater(() -> pane4.setDividerLocation(0.9));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
