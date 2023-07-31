@@ -1,2 +1,1 @@
-Cocher cette option si vous voulez personnalisé la boîte de collision de cette plante.
-Si elle n'est pas activée, la boîte de collision sera basée sur le type de plante.
+Check this option if you want to customize the bounding box of this plant. If this isn't enabled, the bounding box will be based on the plant type. 
