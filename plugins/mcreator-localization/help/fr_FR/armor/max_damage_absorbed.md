@@ -1,14 +1,14 @@
-Ce paramètre définit la durabilité de l'armure et est effectivement appliqué comme:
+This parameter defines armor durability and is effectively applied as:
 
-* casque: dégâts_maximum_absorbés * 13
-* plastron: dégâts_maximum_absorbés * 15
-* jambières: dégâts_maximum_absorbés * 16
-* bottes: dégâts_maximum_absorbés * 11
+* helmet: max_damage_absorbed * 13
+* chestplate: max_damage_absorbed * 15
+* leggings: max_damage_absorbed * 16
+* boots:  max_damage_absorbed * 11
 
-L'armure vanilla utilise les facteurs suivants:
+Vanilla armor uses the following factors:
 
-* Armure en cuir: 5
-* Armure de cotte de mailles: 15
-* Armure d'or: 7
-* Armure de diamant: 33
-* Armure de netherite: 37
+* Leather armor: 5
+* Chainmail armor: 15
+* Gold armor: 7
+* Diamond armor: 33
+* Netherite armor: 37
