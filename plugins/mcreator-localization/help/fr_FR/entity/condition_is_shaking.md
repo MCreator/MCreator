@@ -1,2 +1,1 @@
-Tant que la valeur renvoyée est vraie, l'entité tremblera.
-Les villageois zombies utilisent cette fonctionnalité pendant leur traitement.
+While the returned value is true, the entity will be shaking. Zombie villagers use this feature during their curing.
