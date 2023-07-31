@@ -1,1 +1,1 @@
-Si ce paramètre est coché, le bloc tombera comme du sable.
+If this parameter is checked, the block will fall down like sand.
