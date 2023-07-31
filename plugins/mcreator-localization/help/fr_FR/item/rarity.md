@@ -1,5 +1,5 @@
-La rareté n'affecte que la couleur du nom de l'item.
-* Commun: Blanc
-* Non commun: Jaune
-* Rare: Cyan
-* Épique: Violet clair
+The rarity affects only the color of the item's name.
+* Common: White
+* Uncommon: Yellow
+* Rare: Aqua
+* Epic: Light Purple
