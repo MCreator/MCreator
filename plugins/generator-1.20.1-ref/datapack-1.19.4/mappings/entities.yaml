@@ -379,14 +379,14 @@ EntitySmallFireball:
   - SmallFireball
   - EntityType.SMALL_FIREBALL
   - small_fireball
-EntitySnowball:
-  - Snowball
-  - EntityType.SNOWBALL
-  - snowball
 EntitySnowman:
   - SnowGolem
   - EntityType.SNOW_GOLEM
   - snow_golem
+EntitySnowball:
+  - Snowball
+  - EntityType.SNOWBALL
+  - snowball
 EntityMinecartMobSpawner:
   - MinecartSpawner
   - EntityType.SPAWNER_MINECART
