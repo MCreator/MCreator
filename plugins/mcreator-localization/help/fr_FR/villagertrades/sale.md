@@ -1,1 +1,1 @@
-L'item obtenu comme résultat de l'échange.
+The item you obtain in result of the trade.
