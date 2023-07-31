@@ -1,1 +1,1 @@
-Le texte qui sera affiché sur cette info-bulle lorsqu'un joueur pointera la zone couverte par ce composant.
+The text that will be displayed in the tooltip for a player that hovers area covered by this component.
