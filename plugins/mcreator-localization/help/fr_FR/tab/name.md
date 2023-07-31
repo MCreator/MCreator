@@ -1,1 +1,1 @@
-Le nom affiché dans l'onglet du menu créatif.
+The name shown in the creative menu tab.

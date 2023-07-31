@@ -1,3 +1,3 @@
-El ícono para identificar la pestaña de creative, como por ejemplo el polvo de redstone es para la pestaña de redstone.
+The icon to identify the creative tab like the redstone powder for the redstone tab.
 
-Solo items tienen que estar aquí. Bloques sin item no se verán como íconos.
+Only items are supported here. Blocks without item can not be shown as icon.

@@ -1,1 +1,1 @@
-Задаёт имя данной творческой вкладки для отображения в инвентаре.
+The name shown in the creative menu tab.
