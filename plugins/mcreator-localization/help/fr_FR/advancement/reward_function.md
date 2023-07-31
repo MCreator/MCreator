@@ -1,1 +1,1 @@
-Vous pouvez choisir une fonction à exécuter lorsque le joueur termine l'avancement avec ce paramètre.
+You can choose a function to execute when the player completes the advancement with this parameter.
