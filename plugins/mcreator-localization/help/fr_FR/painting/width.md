@@ -1,1 +1,1 @@
-Ce paramètre contrôle la largeur de ce tableau (en pixels).
+This parameter controls how wide this painting is (in block units).
