@@ -1,1 +1,1 @@
-Utilisez ce champ pour définir l'endroit où l’apparition doit avoir lieu.
+Use this field to define where the spawning should happen.
