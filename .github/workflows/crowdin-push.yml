@@ -1,4 +1,4 @@
-name: Crowdin Pull
+name: Crowdin Push
 
 on:
   push:
