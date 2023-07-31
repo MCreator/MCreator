@@ -1,1 +1,1 @@
-Sélectionner ce paramètre pour générer des trésors enfouis dans le biome.
+Select this setting to have buried treasures in your biome.
