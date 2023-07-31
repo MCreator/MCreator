@@ -17,10 +17,11 @@ api_token_env: CROWDIN_PERSONAL_TOKEN
     "translation": "/plugins/mcreator-link/lang/texts_%locale_with_underscore%.properties",
     "skip_untranslated_strings": true,
   },
-#  {
-#    source: "/plugins/mcreator-localization/help/default/**/*.md",
-#    translation: "/plugins/mcreator-localization/help/%locale_with_underscore%/**/%original_file_name%",
-#    content_segmentation: 0,
-#    skip_untranslated_files: true,
-#  },
+  {
+    # For now only send MD tab help tips
+    source: "/plugins/mcreator-localization/help/default/tab/**/*.md",
+    translation: "/plugins/mcreator-localization/help/%locale_with_underscore%/tab/**/%original_file_name%",
+    content_segmentation: 0,
+    skip_untranslated_files: true,
+  },
 ]
