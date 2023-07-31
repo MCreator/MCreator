@@ -121,23 +121,23 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 
 	<#if hasProcedure(data.transparentModelCondition)>
 	@Override protected boolean isBodyVisible(${name}Entity _ent) {
-	    Entity entity = _ent;
-	    Level world = entity.level();
-	    double x = entity.getX();
-	    double y = entity.getY();
-	    double z = entity.getZ();
-	    return <@procedureOBJToConditionCode data.transparentModelCondition true true/>;
+		Entity entity = _ent;
+		Level world = entity.level();
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		return <@procedureOBJToConditionCode data.transparentModelCondition true true/>;
 	}
 	</#if>
 
 	<#if hasProcedure(data.isShakingCondition)>
 	@Override protected boolean isShaking(${name}Entity _ent) {
-	    Entity entity = _ent;
-	    Level world = entity.level();
-	    double x = entity.getX();
-	    double y = entity.getY();
-	    double z = entity.getZ();
-	    return <@procedureOBJToConditionCode data.isShakingCondition/>;
+		Entity entity = _ent;
+		Level world = entity.level();
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		return <@procedureOBJToConditionCode data.isShakingCondition/>;
 	}
 	</#if>
 
