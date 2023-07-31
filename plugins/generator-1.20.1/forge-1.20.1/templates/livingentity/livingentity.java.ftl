@@ -724,7 +724,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					}
 				<#else>
 					(entityType, world, reason, pos, random) ->
-							(world.getBlockState(pos.below()).is(BlockTags.DIRT) && world.getRawBrightness(pos, 0) > 8)
+							(world.getBlockState(pos.below()).is(BlockTags.ANIMALS_SPAWNABLE_ON) && world.getRawBrightness(pos, 0) > 8)
 				</#if>
 			);
 			<#elseif data.mobSpawningType == "ambient" || data.mobSpawningType == "misc">
