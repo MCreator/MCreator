@@ -1,5 +1,5 @@
-Une entité réglée sur "Mob" sera capable d'attaquer, tandis qu'une entité réglée sur "Creature" sera passive.
+Living entity set to Mob will be able to attack, while a living entity set to Creature will be passive.
 
-Ce paramètre est remplacé par la base d'IA lorsqu'il est utilisé.
+This parameter is overridden by the AI base when used.
 
-Gardez à l'esprit que si vous sélectionnez le type "Creature", le type "attaque" d'IA feront en sorte que l'entité plante le jeu dans la plupart des cas.
+Keep in mind that if you select Creature type here, attack AI types will make the entity crash the game in most cases.
