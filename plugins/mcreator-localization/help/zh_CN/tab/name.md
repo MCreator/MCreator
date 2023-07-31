@@ -1,1 +1,1 @@
-在创造模式选项卡中显示的名称。
+The name shown in the creative menu tab.

@@ -1,4 +1,3 @@
-Указывает предмет, определяющий иконку данной творческой вкладки (для вкладки "Механизмы" таковым является редстоуновая
-пыль).
+The icon to identify the creative tab like the redstone powder for the redstone tab.
 
-Поддерживаются только предметы. Технические блоки (воздух, портал в Незер и др.) не могут являться иконкой вкладки.
+Only items are supported here. Blocks without item can not be shown as icon.

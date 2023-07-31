@@ -1,2 +1,1 @@
-При установленном флажке в верхней части данной вкладки будет иметься строка поиска, позволяющая искать предметы во
-вкладке.
+Check this box to enable search bar at top of the tab for searching inside this creative tab.

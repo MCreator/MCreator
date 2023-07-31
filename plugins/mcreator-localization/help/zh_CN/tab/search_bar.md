@@ -1,1 +1,1 @@
-选中此框可启用选项卡顶部的搜索栏，以便在此创造模式选项卡内搜索。
+Check this box to enable search bar at top of the tab for searching inside this creative tab.

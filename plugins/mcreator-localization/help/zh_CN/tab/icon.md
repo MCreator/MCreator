@@ -1,3 +1,3 @@
-这个图标用于创造模式标签栏，如红石标签栏的红石粉。
+The icon to identify the creative tab like the redstone powder for the redstone tab.
 
-这里只支持物品。没有物品的方块不能显示为图标。
+Only items are supported here. Blocks without item can not be shown as icon.

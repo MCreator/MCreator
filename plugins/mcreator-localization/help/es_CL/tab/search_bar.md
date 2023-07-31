@@ -1,1 +1,1 @@
-Activa esta casilla para habilitar la barra de búsqueda de la pestaña para buscar en esta pestaña de creativo. 
+Check this box to enable search bar at top of the tab for searching inside this creative tab.

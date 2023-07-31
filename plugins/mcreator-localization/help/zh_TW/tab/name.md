@@ -1,1 +1,1 @@
-在創造模式里標籤中顯示的名稱。
+The name shown in the creative menu tab.

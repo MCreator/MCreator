@@ -1,3 +1,3 @@
-用於識別創造模式標籤的圖示，如創造模式中紅石標籤頁使用紅石粉以作為該標籤的圖示。
+The icon to identify the creative tab like the redstone powder for the redstone tab.
 
-這裏只支援物品。沒有物品形式的方塊不能以圖示的方式顯示。
+Only items are supported here. Blocks without item can not be shown as icon.
