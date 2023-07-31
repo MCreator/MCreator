@@ -1,1 +1,1 @@
-Ce paramètre définit si des particules apparaissent près du joueur.
+This parameter defines if particles are shown near the player.
