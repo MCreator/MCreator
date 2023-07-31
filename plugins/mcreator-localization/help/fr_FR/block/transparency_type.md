@@ -1,5 +1,4 @@
-**Cochez cette case si votre bloc a de la transparence** -
-Laissez décoché pour un bloc solide, vérifiez-le si votre bloc est similaire à des feuilles, du verre, des barres de fer, etc.
+**Cochez cette case si votre bloc a de la transparence** - Laissez décoché pour un bloc solide, vérifiez-le si votre bloc est similaire à des feuilles, du verre, des barres de fer, etc.
 
 Types de transparence:
 
