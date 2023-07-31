@@ -1,1 +1,1 @@
-Les slots de sortie ne seront pas utilisés comme entrée pour la transmission d'items d'un entonnoir.
+Output slots will not be used as input for hopper item transmission.
