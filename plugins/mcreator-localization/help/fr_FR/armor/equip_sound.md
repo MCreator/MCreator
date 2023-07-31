@@ -1,1 +1,1 @@
-Le son lorsque le joueur équipe une pièce de l'armure.
+The sound when the player equips a piece of the armor.
