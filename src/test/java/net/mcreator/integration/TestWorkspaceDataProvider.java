@@ -1599,22 +1599,7 @@ public class TestWorkspaceDataProvider {
 		}
 		livingEntity.hasAI = _true;
 		livingEntity.aiBase = "(none)";
-		if (!emptyLists) {
-			Set<String> aiTasks = modElement.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK);
-			if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks.contains("panic_when_attacked")
-					&& aiTasks.contains("attack_action") && aiTasks.contains("swim_in_water")) {
-				livingEntity.aixml =
-						"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\">"
-								+ "<next><block type=\"wander\"><field name=\"speed\">1</field><field name=\"condition\">null,null</field>"
-								+ "<next><block type=\"look_around\"><field name=\"condition\">null,null</field>"
-								+ "<next><block type=\"swim_in_water\"><field name=\"condition\">null,null</field>"
-								+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field><field name=\"condition\">null,null</field>"
-								+ "<next><block type=\"attack_action\"><field name=\"callhelp\">TRUE</field><field name=\"condition\">null,null</field>"
-								+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
-			}
-		}
-		if (livingEntity.aixml == null) // fallback
-			livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+		livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 		livingEntity.breedable = _true;
 		livingEntity.tameable = _true;
 		livingEntity.breedTriggerItems = new ArrayList<>();
