@@ -4,6 +4,7 @@
 
 要计算你需要使用多少刻，请使用以下公式:
 
-`#of ticks needed = #of items you want the fuel to smelt * 200`
+`#物品熔炼所需的刻数=#你想要的燃料熔炼的物品数 * 200`
 
 点击[这里](https://mcreator.net/wiki/burn-time-fuels)查看原版中熔炼常用物品的燃烧时间表。
+
