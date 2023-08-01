@@ -6,12 +6,12 @@ on:
   workflow_dispatch: {}
 
 jobs:
-  crowdin-sync:
+  crowdin-pull:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: Pylo/crowdin-github-action@1.5.1
-        name: Pull translations
+      - uses: crowdin/github-action@v1
+        name: Pull Crowdin translations
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
@@ -22,7 +22,6 @@ jobs:
           upload_sources: false
           upload_translations: false
           download_translations: true
-          skip_untranslated_strings: true
           github_user_name: "github-actions"
           github_user_email: "<>"
           commit_message: "New Crowdin translations"
