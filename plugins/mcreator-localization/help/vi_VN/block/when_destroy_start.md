@@ -1,0 +1,1 @@
+Kích hoạt một quy trình khi người chơi bắt đầu phá hủy khối.
