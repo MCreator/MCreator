@@ -414,7 +414,8 @@ import java.util.stream.Collectors;
 				updateElementListRenderer();
 			}
 		});
-		tilesIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get() == HiddenSection.IconSize.TILES);
+		tilesIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
+				== HiddenSection.IconSize.TILES);
 		Arrays.stream(tilesIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(tilesIcons)));
 		ComponentUtils.deriveFont(tilesIcons, 12);
 		tilesIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
@@ -465,8 +466,8 @@ import java.util.stream.Collectors;
 				updateElementListRenderer();
 			}
 		});
-		listIcons.setSelected(PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
-				== HiddenSection.IconSize.LIST);
+		listIcons.setSelected(
+				PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get() == HiddenSection.IconSize.LIST);
 		Arrays.stream(listIcons.getChangeListeners()).forEach(e -> e.stateChanged(new ChangeEvent(listIcons)));
 		ComponentUtils.deriveFont(listIcons, 12);
 		listIcons.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 5));
@@ -622,8 +623,7 @@ import java.util.stream.Collectors;
 			sortName.setSelected(true);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceSortType.get() == HiddenSection.SortType.TYPE) {
 			sortType.setSelected(true);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceSortType.get()
-				== HiddenSection.SortType.LOADORDER) {
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceSortType.get() == HiddenSection.SortType.LOADORDER) {
 			sortLoadingOrder.setSelected(true);
 		} else {
 			sortDateCreated.setSelected(true);
@@ -848,8 +848,8 @@ import java.util.stream.Collectors;
 	 * Adds a new section to this workspace as well as a vertical tab button on the left that switches
 	 * to the section panel when clicked.
 	 *
-	 * @param id    The unique identifier of the section used for reloading/filtering contained elements.
-	 * @param name  The name of the section shown in the workspace.
+	 * @param id      The unique identifier of the section used for reloading/filtering contained elements.
+	 * @param name    The name of the section shown in the workspace.
 	 * @param section The panel representing contents of the vertical tab being added.
 	 */
 	public void addVerticalTab(String id, String name, AbstractWorkspacePanel section) {
@@ -927,8 +927,7 @@ import java.util.stream.Collectors;
 	}
 
 	private void updateElementListRenderer() {
-		if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
-				== HiddenSection.IconSize.TILES) {
+		if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get() == HiddenSection.IconSize.TILES) {
 			list.setCellRenderer(new TilesModListRender());
 			list.setFixedCellHeight(72);
 			list.setFixedCellWidth(287);
@@ -1062,7 +1061,9 @@ import java.util.stream.Collectors;
 
 	private void duplicateCurrentlySelectedModElement() {
 		if (list.getSelectedValue() instanceof ModElement mu) {
-			if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
+			GeneratableElement generatableElementOriginal = mu.getGeneratableElement();
+
+			if (generatableElementOriginal != null) {
 				String modName = VOptionPane.showInputDialog(mcreator,
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
@@ -1075,75 +1076,73 @@ import java.util.stream.Collectors;
 				if (modName != null && !modName.equals("")) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
-					GeneratableElement generatableElementOriginal = mu.getGeneratableElement();
-					if (generatableElementOriginal != null) {
-						ModElement duplicateModElement = new ModElement(mcreator.getWorkspace(), mu, modName);
+					ModElement duplicateModElement = new ModElement(mcreator.getWorkspace(), mu, modName);
 
-						GeneratableElement generatableElementDuplicate = mcreator.getModElementManager()
-								.fromJSONtoGeneratableElement(mcreator.getModElementManager()
-										.generatableElementToJSON(generatableElementOriginal), duplicateModElement);
+					GeneratableElement generatableElementDuplicate = mcreator.getModElementManager()
+							.fromJSONtoGeneratableElement(mcreator.getModElementManager()
+									.generatableElementToJSON(generatableElementOriginal), duplicateModElement);
 
-						if (generatableElementDuplicate instanceof NamespacedGeneratableElement) {
-							((NamespacedGeneratableElement) generatableElementDuplicate).name = RegistryNameFixer.fromCamelCase(
-									modName);
-						}
+					if (generatableElementDuplicate instanceof NamespacedGeneratableElement) {
+						((NamespacedGeneratableElement) generatableElementDuplicate).name = RegistryNameFixer.fromCamelCase(
+								modName);
+					}
 
-						mcreator.getGenerator().generateElement(generatableElementDuplicate);
-						mcreator.getModElementManager().storeModElementPicture(generatableElementDuplicate);
-						mcreator.getModElementManager().storeModElement(generatableElementDuplicate);
+					mcreator.getGenerator().generateElement(generatableElementDuplicate);
+					mcreator.getModElementManager().storeModElementPicture(generatableElementDuplicate);
+					mcreator.getModElementManager().storeModElement(generatableElementDuplicate);
 
-						if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
-							List<GeneratorTemplate> originalFiles = mcreator.getGenerator()
-									.getModElementGeneratorTemplatesList(generatableElementOriginal);
-							List<GeneratorTemplate> duplicateFiles = mcreator.getGenerator()
-									.getModElementGeneratorTemplatesList(generatableElementDuplicate);
+					if (mu.getType() == ModElementType.CODE || mu.isCodeLocked()) {
+						List<GeneratorTemplate> originalFiles = mcreator.getGenerator()
+								.getModElementGeneratorTemplatesList(generatableElementOriginal);
+						List<GeneratorTemplate> duplicateFiles = mcreator.getGenerator()
+								.getModElementGeneratorTemplatesList(generatableElementDuplicate);
 
-							for (GeneratorTemplate originalTemplate : originalFiles) {
-								File originalFile = originalTemplate.getFile();
-								File duplicateFile = null;
-								for (GeneratorTemplate newCandidate : duplicateFiles) {
-									if (newCandidate.getTemplateIdentifier()
-											.equals(originalTemplate.getTemplateIdentifier())) {
-										duplicateFile = newCandidate.getFile();
-										break;
-									}
-								}
-								if (duplicateFile != null) {
-									FileIO.copyFile(originalFile, duplicateFile);
+						for (GeneratorTemplate originalTemplate : originalFiles) {
+							File originalFile = originalTemplate.getFile();
+							File duplicateFile = null;
+							for (GeneratorTemplate newCandidate : duplicateFiles) {
+								if (newCandidate.getTemplateIdentifier()
+										.equals(originalTemplate.getTemplateIdentifier())) {
+									duplicateFile = newCandidate.getFile();
+									break;
 								}
 							}
-
-							duplicateModElement.setCodeLock(true);
+							if (duplicateFile != null) {
+								FileIO.copyFile(originalFile, duplicateFile);
+							}
 						}
 
-						// if we are not in the root folder, specify the folder of the mod element
-						if (!currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
-							duplicateModElement.setParentFolder(currentFolder);
-
-						mcreator.getWorkspace().addModElement(duplicateModElement);
-
-						updateMods();
+						duplicateModElement.setCodeLock(true);
 					}
+
+					// if we are not in the root folder, specify the folder of the mod element
+					if (!currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
+						duplicateModElement.setParentFolder(currentFolder);
+
+					mcreator.getWorkspace().addModElement(duplicateModElement);
+
+					updateMods();
 				}
 			}
 		}
 	}
 
-	public void editCurrentlySelectedModElement(ModElement mu, JComponent component, int x, int y) {
-		if (mcreator.getModElementManager().hasModElementGeneratableElement(mu)) {
-			if (mu.isCodeLocked()) {
-				editCurrentlySelectedModElementAsCode(mu, component, x, y);
+	public void editCurrentlySelectedModElement(ModElement modElement, JComponent component, int x, int y) {
+		if (modElement.getGeneratableElement() != null) {
+			if (modElement.isCodeLocked()) {
+				editCurrentlySelectedModElementAsCode(modElement, component, x, y);
 			} else {
-				ModElementGUI<?> modeditor = mu.getType().getModElementGUI(mcreator, mu, true);
-				if (modeditor != null) {
-					modeditor.showView();
+				ModElementGUI<?> modElementGUI = modElement.getType().getModElementGUI(mcreator, modElement, true);
+				if (modElementGUI != null) {
+					modElementGUI.showView();
 				}
 			}
 		} else {
-			if (mu.isCodeLocked()) {
-				editCurrentlySelectedModElementAsCode(mu, component, x, y);
+			if (modElement.isCodeLocked()) {
+				editCurrentlySelectedModElementAsCode(modElement, component, x, y);
 			} else {
-				JOptionPane.showMessageDialog(null, L10N.t("workspace.elements.edit_modelement_nosavedinstance"));
+				JOptionPane.showMessageDialog(null, L10N.t("workspace.elements.edit_modelement_nosavedinstance"),
+						L10N.t("workspace.elements.edit_modelement_nosavedinstance.title"), JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
