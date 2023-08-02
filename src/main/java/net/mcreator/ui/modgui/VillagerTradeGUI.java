@@ -45,6 +45,8 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 
 		villagerTradeProfessions = new JVillagerTradeProfessionsList(mcreator, this);
 
+		pane.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+
 		pane.add(villagerTradeProfessions);
 		addPage(pane);
 
