@@ -180,11 +180,11 @@ public class RegenerateCodeAction extends GradleAction {
 						// save custom mod element picture if it has one
 						mcreator.getModElementManager().storeModElementPicture(generatableElement);
 
-						// add mod element to workspace again, so the icons get reloaded
-						mcreator.getWorkspace().addModElement(generatableElement.getModElement());
-
-						// we reinit the mod to load new icons etc.
+						// we reinit the mod to reload ME icon
 						generatableElement.getModElement().reinit(mcreator.getWorkspace());
+
+						// preload/update MCItem cache and MCItem icons
+						generatableElement.getModElement().getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush());
 
 						generatableElementsToSave.add(generatableElement);
 					} else {
@@ -277,6 +277,9 @@ public class RegenerateCodeAction extends GradleAction {
 				LOG.error(e.getMessage(), e);
 				mcreator.getGradleConsole().markReady();
 			}
+
+			// Make sure to store any potential changes to the workspace
+			mcreator.getWorkspace().markDirty();
 
 			p3.ok();
 			dial.refreshDisplay();

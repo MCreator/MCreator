@@ -71,16 +71,29 @@ public final class ModElementManager {
 		this.gson = gsonBuilder.create();
 	}
 
-	public void invalidateCache() {
-		cache.clear();
-	}
-
 	public void storeModElement(GeneratableElement element) {
 		cache.put(element.getModElement(), element);
 
 		FileIO.writeStringToFile(generatableElementToJSON(element),
 				new File(workspace.getFolderManager().getModElementsDir(),
 						element.getModElement().getName() + ".mod.json"));
+	}
+
+	public void removeModElement(ModElement element) {
+		cache.remove(element);
+
+		// first we ask generator to remove all related files
+		if (element.getType() != ModElementType.UNKNOWN) {
+			GeneratableElement generatableElement = element.getGeneratableElement();
+			if (generatableElement != null && workspace.getGenerator() != null)
+				workspace.getGenerator().removeElementFilesAndLangKeys(generatableElement);
+			else
+				LOG.warn("Failed to remove element files for element " + element);
+		}
+
+		// after we don't need the definition anymore, remove actual files
+		new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
+		new File(workspace.getFolderManager().getModElementPicturesCacheDir(), element.getName() + ".png").delete();
 	}
 
 	/**
@@ -190,6 +203,13 @@ public final class ModElementManager {
 		if (icon == null || icon.getImage() == null || icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0)
 			icon = element.getType().getIcon();
 		return icon;
+	}
+
+	/**
+	 * Invalidates the cache of this manager. May be used by some plugins.
+	 */
+	@SuppressWarnings("unused") public void invalidateCache() {
+		cache.clear();
 	}
 
 }

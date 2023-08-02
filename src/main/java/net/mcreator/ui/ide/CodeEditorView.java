@@ -670,7 +670,7 @@ public class CodeEditorView extends ViewBase {
 
 				if (n == 0) {
 					this.fileOwner.setCodeLock(true);
-					mcreator.getWorkspace().updateModElement(this.fileOwner);
+					mcreator.getWorkspace().markDirty();
 					ro.setVisible(false);
 				} else {
 					setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()),
