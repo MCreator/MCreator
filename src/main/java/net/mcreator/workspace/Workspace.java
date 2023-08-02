@@ -186,7 +186,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			mod_elements.add(element);
 			markDirty();
 		} else {
-			updateModElement(element); // if exists, we store new version
+			LOG.warn("Trying to add already existing mod element: " + element.getName() + " of type " + element.getTypeString());
 		}
 	}
 
@@ -194,6 +194,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!variable_elements.contains(element)) {
 			variable_elements.add(element);
 			markDirty();
+		} else {
+			LOG.warn("Trying to add already existing variable element: " + element.getName());
 		}
 	}
 
@@ -201,20 +203,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!sound_elements.contains(element)) {
 			sound_elements.add(element);
 			markDirty();
+		} else {
+			LOG.warn("Trying to add already existing sound element: " + element.getName());
 		}
-	}
-
-	public void updateModElement(ModElement element) {
-		for (ModElement el : mod_elements) {
-			if (el == element || el.getName().equals(element.getName())) {
-				el.loadDataFrom(element);
-				el.reloadElementIcon(); // update ME icon
-				el.getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush()); // update MCItem icons
-
-				break; // there can be only one element with given name so no need to iterate further
-			}
-		}
-		markDirty();
 	}
 
 	public void removeModElement(ModElement element) {
@@ -494,12 +485,25 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.workspaceSettings.setWorkspace(this);
 	}
 
-	public void setFoldersRoot(FolderElement foldersRoot) {
+	@SuppressWarnings("unused") public void setFoldersRoot(FolderElement foldersRoot) {
 		this.foldersRoot = foldersRoot;
 		markDirty();
 	}
 
-	public void updateSoundElement(SoundElement originalElement, SoundElement updatedElement) {
+	@SuppressWarnings("unused") public void updateModElement(ModElement element) {
+		for (ModElement el : mod_elements) {
+			if (el == element || el.getName().equals(element.getName())) {
+				el.loadDataFrom(element);
+				el.reloadElementIcon(); // update ME icon
+				el.getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush()); // update MCItem icons
+
+				break; // there can be only one element with given name so no need to iterate further
+			}
+		}
+		markDirty();
+	}
+
+	@SuppressWarnings("unused") public void updateSoundElement(SoundElement originalElement, SoundElement updatedElement) {
 		Set<SoundElement> tmp = new HashSet<>(sound_elements);
 		for (SoundElement el : tmp) {
 			if (el.getName().equals(originalElement.getName())) {
@@ -510,7 +514,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		markDirty();
 	}
 
-	public void updateVariableElement(VariableElement originalElement, VariableElement updatedElement) {
+	@SuppressWarnings("unused") public void updateVariableElement(VariableElement originalElement, VariableElement updatedElement) {
 		Set<VariableElement> tmp = new HashSet<>(variable_elements);
 		for (VariableElement el : tmp) {
 			if (el.getName().equals(originalElement.getName())) {
@@ -521,7 +525,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		markDirty();
 	}
 
-	public void reloadFromFS() {
+	@SuppressWarnings("unused") public void reloadFromFS() {
 		String workspace_string = FileIO.readFileToString(fileManager.getWorkspaceFile());
 		Workspace workspace_on_fs = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
 		loadStoredDataFrom(workspace_on_fs);
@@ -530,7 +534,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		LOG.info("Reloaded current workspace from the workspace file");
 	}
 
-	public final static class VirtualWorkspace extends Workspace {
+	@SuppressWarnings("unused") public final static class VirtualWorkspace extends Workspace {
 
 		public VirtualWorkspace(Workspace original, String workspace_string) throws IOException {
 			super(null);
