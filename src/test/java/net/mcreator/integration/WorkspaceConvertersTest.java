@@ -91,8 +91,6 @@ public class WorkspaceConvertersTest {
 
 					// Check if all MEs have valid GE definition
 					for (ModElement mod : workspace.getModElements()) {
-						assertTrue(workspace.getModElementManager().hasModElementGeneratableElement(mod));
-
 						GeneratableElement ge = mod.getGeneratableElement();
 
 						assertNotNull(ge);

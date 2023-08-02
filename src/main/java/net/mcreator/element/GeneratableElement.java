@@ -90,6 +90,24 @@ public abstract class GeneratableElement {
 		return conversionApplied;
 	}
 
+	public final boolean performQuickValidation() {
+		for (Field field : getClass().getDeclaredFields()) {
+			if (field.isAnnotationPresent(Nonnull.class)) {
+				field.setAccessible(true);
+				try {
+					if (field.get(this) == null) {
+						LOG.warn("Field " + field.getName() + " of mod element " + this.element.getName()
+								+ " is null, but should not be. Assuming invalid generatable element.");
+						return false;
+					}
+				} catch (IllegalAccessException ignored) {
+				}
+			}
+		}
+
+		return true;
+	}
+
 	public static class GSONAdapter
 			implements JsonSerializer<GeneratableElement>, JsonDeserializer<GeneratableElement> {
 
@@ -134,14 +152,20 @@ public abstract class GeneratableElement {
 
 				ModElementType<?> modElementType = ModElementTypeLoader.getModElementType(newType);
 
+				JsonObject jsonObject = jsonElement.getAsJsonObject().get("definition").getAsJsonObject();
+				if (jsonObject.keySet().isEmpty()) {
+					LOG.warn("Mod element " + this.lastModElement.getName() + " (" + modElementType
+							+ ") has no definition so we can not deserialize it");
+					return null;
+				}
+
 				final GeneratableElement[] generatableElement = {
-						gson.fromJson(jsonElement.getAsJsonObject().get("definition"),
-								modElementType.getModElementStorageClass()) };
+						gson.fromJson(jsonObject, modElementType.getModElementStorageClass()) };
 
 				generatableElement[0].setModElement(this.lastModElement); // set the mod element reference
 				passWorkspaceToFields(generatableElement[0], workspace);
 
-				if (importedFormatVersion != GeneratableElement.formatVersion) {
+				if (importedFormatVersion < GeneratableElement.formatVersion) {
 					List<IConverter> converters = ConverterRegistry.getConvertersForModElementType(modElementType);
 					if (converters != null) {
 						AtomicInteger versionIncrementer = new AtomicInteger(importedFormatVersion);
@@ -158,11 +182,17 @@ public abstract class GeneratableElement {
 									versionIncrementer.set(converter.getVersionConvertingTo());
 								});
 					}
+				} else if (importedFormatVersion > GeneratableElement.formatVersion) {
+					LOG.warn(
+							"Mod element " + this.lastModElement.getName() + " (" + modElementType + ") was saved in FV"
+									+ importedFormatVersion + " but current FV is " + GeneratableElement.formatVersion
+									+ " so we can not deserialize it");
+					return null;
 				}
 
 				return generatableElement[0];
 			} catch (IllegalArgumentException e) { // we may be dealing with mod element type no longer existing
-				if (importedFormatVersion != GeneratableElement.formatVersion) {
+				if (importedFormatVersion < GeneratableElement.formatVersion) {
 					IConverter converter = ConverterRegistry.getConverterForModElementType(newType);
 					if (converter != null) {
 						try {
@@ -188,9 +218,14 @@ public abstract class GeneratableElement {
 							}
 						} catch (Exception e2) {
 							LOG.warn("Failed to convert mod element " + this.lastModElement.getName() + " of type "
-									+ newType + " to a potential alternative.", e2);
+									+ newType + " to a potential alternative." , e2);
 						}
 					}
+				} else if (importedFormatVersion > GeneratableElement.formatVersion) {
+					LOG.warn("Mod element " + this.lastModElement.getName() + " (" + newType + ") was saved in FV"
+							+ importedFormatVersion + " but current FV is " + GeneratableElement.formatVersion
+							+ " so we can not deserialize it");
+					return null;
 				}
 
 				return null;
@@ -206,9 +241,19 @@ public abstract class GeneratableElement {
 		public JsonElement serialize(GeneratableElement modElement, Type type,
 				JsonSerializationContext jsonSerializationContext) {
 			JsonObject root = new JsonObject();
-			root.add("_fv", new JsonPrimitive(GeneratableElement.formatVersion));
-			root.add("_type", gson.toJsonTree(modElement.getModElement().getType().getRegistryName()));
-			root.add("definition", gson.toJsonTree(modElement));
+			root.add("_fv" , new JsonPrimitive(GeneratableElement.formatVersion));
+			root.add("_type" , gson.toJsonTree(modElement.getModElement().getType().getRegistryName()));
+
+			JsonObject definition = gson.toJsonTree(modElement).getAsJsonObject();
+
+			if (definition.keySet().isEmpty()) {
+				LOG.warn("Mod element " + modElement.getModElement().getName() + " (" + modElement.getModElement()
+						.getType() + ") has no definition so we can't serialize it");
+				return null;
+			}
+
+			root.add("definition" , definition);
+
 			return root;
 		}
 
