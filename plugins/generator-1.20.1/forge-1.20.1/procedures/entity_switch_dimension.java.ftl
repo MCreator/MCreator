@@ -1,5 +1,5 @@
 <#if field$dimension??><#--Here for legacy reasons as field$dimension does not exist in older workspaces-->
-if (${input$entity} instanceof ServerPlayer _player && !_player.level.isClientSide()) {
+if (${input$entity} instanceof ServerPlayer _player && !_player.level().isClientSide()) {
 	<#if field$dimension=="Surface">
 		ResourceKey<Level> destinationType = Level.OVERWORLD;
 	<#elseif field$dimension=="Nether">
@@ -10,7 +10,7 @@ if (${input$entity} instanceof ServerPlayer _player && !_player.level.isClientSi
 		ResourceKey<Level> destinationType = ResourceKey.create(Registries.DIMENSION,
 			new ResourceLocation("${generator.getResourceLocationForModElement(field$dimension.replace("CUSTOM:", ""))}"));
 	</#if>
-	if (_player.level.dimension() == destinationType) return;
+	if (_player.level().dimension() == destinationType) return;
 
 	ServerLevel nextLevel = _player.server.getLevel(destinationType);
 	if (nextLevel != null) {
