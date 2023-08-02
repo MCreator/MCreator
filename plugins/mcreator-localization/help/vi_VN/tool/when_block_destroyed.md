@@ -1,0 +1,1 @@
+Nếu công cụ phá hủy một khối, quy trình này sẽ được thực thi.
