@@ -48,18 +48,18 @@ public class PotionToEffectConverter implements IConverter {
 
 		String originalName = input.getModElement().getName();
 
-		String displayName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
-				.getAsString();
-
-		if (displayName.isEmpty())
-			displayName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("effectName")
-					.getAsString();
-
-		if (displayName.isEmpty())
-			displayName = originalName;
-
 		if (workspace.getModElementByName(originalName + "PotionEffect") == null) {
 			try {
+				String displayName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
+						.getAsString();
+
+				if (displayName.isEmpty())
+					displayName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("effectName")
+							.getAsString();
+
+				if (displayName.isEmpty())
+					displayName = originalName;
+
 				potion.potionName = displayName;
 				potion.splashName = "Splash " + displayName;
 				potion.lingeringName = "Lingering " + displayName;
