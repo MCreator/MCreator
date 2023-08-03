@@ -127,8 +127,13 @@ public final class ModElementManager {
 			return new CustomElement(element);
 		}
 
-		if (cache.containsKey(element))
-			return cache.get(element);
+		if (cache.containsKey(element)) {
+			if (cache.get(element).getModElement() == element) {
+				return cache.get(element);
+			} else {
+				LOG.error("GeneratableElement cache contains element with same name but different object. This should not happen!");
+			}
+		}
 
 		File genFile = new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json");
 
