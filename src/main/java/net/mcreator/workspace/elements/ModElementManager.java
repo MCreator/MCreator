@@ -32,13 +32,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -50,27 +50,33 @@ public final class ModElementManager {
 	private static final Logger LOG = LogManager.getLogger("ModElementManager");
 
 	private final Gson gson;
-	private final GeneratableElement.GSONAdapter gsonAdapter;
 
 	private final Map<ModElement, GeneratableElement> cache = new ConcurrentHashMap<>();
 
 	@Nonnull private final Workspace workspace;
 
-	@Nullable private ModElement modElementInConversion = null;
+	private final Stack<ModElement> modElementsInConversion = new Stack<>();
 
 	public ModElementManager(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
 
-		this.gsonAdapter = new GeneratableElement.GSONAdapter(this.workspace);
-
 		GsonBuilder gsonBuilder = new GsonBuilder().registerTypeHierarchyAdapter(GeneratableElement.class,
-				this.gsonAdapter).disableHtmlEscaping().setPrettyPrinting().setLenient();
-
+						new GeneratableElement.GSONAdapter(this.workspace)).disableHtmlEscaping().setPrettyPrinting()
+				.setLenient();
 		RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
 
 		this.gson = gsonBuilder.create();
 	}
 
+	public ModElement getLastElementInConversion() {
+		return modElementsInConversion.peek();
+	}
+
+	/**
+	 * Also stores to cache. Is thread safe.
+	 *
+	 * @param element GeneratableElement to convert to store
+	 */
 	public void storeModElement(GeneratableElement element) {
 		if (element == null) {
 			LOG.warn("Attempted to store null generatable element. Something went wrong previously for this to happen!");
@@ -84,21 +90,10 @@ public final class ModElementManager {
 						element.getModElement().getName() + ".mod.json"));
 	}
 
-	/**
-	 * Mod element passed here will be used to prevent circular reference when converting the generatable element.
-	 * Make sure to call this method again with null argument after the conversion is done or this ME will not be
-	 * loadable anymore in the current session.
-	 *
-	 * @param modElementInConversion ME being converted or null if conversion is complete
-	 */
-	public void setModElementInConversion(@Nullable ModElement modElementInConversion) {
-		this.modElementInConversion = modElementInConversion;
-	}
-
 	GeneratableElement loadGeneratableElement(ModElement element) {
 		// To prevent circular reference (and thus stack overflow), we return Unknown GE if we are loading the
 		// mod element that is being converted as otherwise this will try to start the conversion again
-		if (element.equals(modElementInConversion))
+		if (modElementsInConversion.contains(element))
 			return new GeneratableElement.Unknown(element);
 
 		if (element.getType() == ModElementType.CODE) {
@@ -137,13 +132,16 @@ public final class ModElementManager {
 	}
 
 	public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement) {
+		this.modElementsInConversion.push(modElement);
+
 		try {
-			this.gsonAdapter.setLastModElement(modElement);
 			return gson.fromJson(json, GeneratableElement.class);
 		} catch (JsonSyntaxException e) {
 			LOG.warn("Failed to load generatable element " + modElement.getName()
 					+ " from JSON. This can lead to errors further down the road!", e);
 			return null;
+		} finally {
+			this.modElementsInConversion.pop();
 		}
 	}
 
