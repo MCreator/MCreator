@@ -71,6 +71,11 @@ public final class ModElementManager {
 		this.gson = gsonBuilder.create();
 	}
 
+	/**
+	 * Also stores to cache. Is thread safe.
+	 *
+	 * @param element GeneratableElement to convert to store
+	 */
 	public void storeModElement(GeneratableElement element) {
 		if (element == null) {
 			LOG.warn("Attempted to store null generatable element. Something went wrong previously for this to happen!");
