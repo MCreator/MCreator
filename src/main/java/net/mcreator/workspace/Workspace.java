@@ -186,7 +186,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			mod_elements.add(element);
 			markDirty();
 		} else {
-			LOG.warn("Trying to add already existing mod element: " + element.getName() + " of type " + element.getTypeString());
+			LOG.warn("Trying to add existing mod element: " + element.getName() + " of type " + element.getTypeString());
 		}
 	}
 
@@ -195,7 +195,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			variable_elements.add(element);
 			markDirty();
 		} else {
-			LOG.warn("Trying to add already existing variable element: " + element.getName());
+			LOG.warn("Trying to add existing variable element: " + element.getName());
 		}
 	}
 
@@ -204,7 +204,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			sound_elements.add(element);
 			markDirty();
 		} else {
-			LOG.warn("Trying to add already existing sound element: " + element.getName());
+			LOG.warn("Trying to add existing sound element: " + element.getName());
 		}
 	}
 
