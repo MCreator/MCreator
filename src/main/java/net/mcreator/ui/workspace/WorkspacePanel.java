@@ -731,7 +731,7 @@ import java.util.stream.Collectors;
 					if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
 						ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
 						if (modified != null)
-							mcreator.getWorkspace().updateModElement(modified);
+							mcreator.getWorkspace().markDirty();
 					}
 				}
 			}
@@ -814,7 +814,7 @@ import java.util.stream.Collectors;
 			if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
 				ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
 				if (modified != null)
-					mcreator.getWorkspace().updateModElement(modified);
+					mcreator.getWorkspace().markDirty();
 			}
 		});
 
@@ -1013,12 +1013,12 @@ import java.util.stream.Collectors;
 					if (el instanceof ModElement mu) {
 						if (mu.isCodeLocked()) {
 							mu.setCodeLock(false);
-							mcreator.getWorkspace().updateModElement(mu);
 							elementsThatGotUnlocked.add(mu); // code got unlocked, add to the list
 						} else {
 							mu.setCodeLock(true);
-							mcreator.getWorkspace().updateModElement(mu);
 						}
+
+						mcreator.getWorkspace().markDirty();
 					}
 				});
 				updateMods();
