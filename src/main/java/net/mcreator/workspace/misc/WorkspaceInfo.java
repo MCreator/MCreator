@@ -50,7 +50,7 @@ import java.util.*;
 	}
 
 	public boolean hasJavaModels() {
-		return Model.getModels(workspace).stream().anyMatch(model -> model.getType() == Model.Type.JAVA);
+		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
 	public boolean hasSounds() {
@@ -58,7 +58,7 @@ import java.util.*;
 	}
 
 	public boolean hasVariablesOfScope(String type) {
-		return workspace.getVariableElements().stream().anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
+		return workspace.getVariableElements().parallelStream().anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
 	}
 
 	public Map<String, String> getItemTextureMap() {
