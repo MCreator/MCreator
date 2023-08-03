@@ -154,15 +154,16 @@ public final class ModElementManager {
 	}
 
 	public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement) {
+		this.modElementsInConversion.push(modElement);
+
 		try {
-			this.modElementsInConversion.push(modElement);
-			GeneratableElement retval = gson.fromJson(json, GeneratableElement.class);
-			this.modElementsInConversion.pop();
-			return retval;
+			return gson.fromJson(json, GeneratableElement.class);
 		} catch (JsonSyntaxException e) {
 			LOG.warn("Failed to load generatable element " + modElement.getName()
 					+ " from JSON. This can lead to errors further down the road!", e);
 			return null;
+		} finally {
+			this.modElementsInConversion.pop();
 		}
 	}
 
