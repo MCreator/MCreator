@@ -83,18 +83,20 @@ public class ShareableZIPManager {
 					GeneratableElement generatableElement = mod.getGeneratableElement();
 
 					if (generatableElement != null) {
-						workspace.getModElementManager().storeModElementPicture(
-								generatableElement); // save custom mod element picture if it has one
-						workspace.addModElement(
-								generatableElement.getModElement()); // add mod element to workspace again, so the icons get reloaded
-						generatableElement.getModElement()
-								.reinit(workspace); // we reinit the mod to load new icons etc.
+						// save custom mod element picture if it has one
+						workspace.getModElementManager().storeModElementPicture(generatableElement);
+
+						// we reinit the mod to load new ME icon
+						generatableElement.getModElement().reinit(workspace);
 					}
 
 					i++;
 					p1.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
 					dial.refreshDisplay();
 				}
+
+				// make sure we store any potential changes made to the workspace
+				workspace.markDirty();
 
 				workspace.close(); // we need to close the workspace!
 			} catch (Exception e) {
