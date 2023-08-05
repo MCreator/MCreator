@@ -41,7 +41,7 @@ public class DesktopUtils {
 					browse(new URI(uri));
 				} catch (Exception ignored) {
 				}
-			}).start();
+			}, "DesktopUtils").start();
 		} catch (Exception ignored) {
 		}
 	}
@@ -57,7 +57,7 @@ public class DesktopUtils {
 					open(file, selectOnly);
 				} catch (Exception ignored) {
 				}
-			}).start();
+			}, "DesktopUtils").start();
 		} catch (Exception ignored) {
 		}
 	}
