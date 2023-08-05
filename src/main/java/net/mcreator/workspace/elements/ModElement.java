@@ -38,7 +38,7 @@ import java.util.*;
 
 public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider, IElement {
 
-	private String name;
+	private final String name;
 	private String type;
 
 	private Integer sortid = null;
@@ -198,10 +198,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	@Override public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public ModElementType<?> getType() {

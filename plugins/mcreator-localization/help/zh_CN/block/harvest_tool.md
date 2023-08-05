@@ -2,4 +2,4 @@
 
 矿石用镐子(pickaxe)，木头用斧头(axe)，土用铲子(shovel)。
 
-如果设置为“Not specified”，玩家将能够用手打破这个方块。
+如果设置为“Not specified（未指定）”，玩家将能够用手打破这个方块。

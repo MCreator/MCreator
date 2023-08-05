@@ -38,16 +38,17 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-@SuppressWarnings("unused") public class Item extends GeneratableElement
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Item extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
 	public String texture;
-	public String customModelName;
+	@Nonnull public String customModelName;
 
 	public Map<String, Procedure> customProperties;
 	public List<StateEntry> states;
@@ -74,7 +75,7 @@ import java.util.*;
 	public boolean hasGlow;
 	public Procedure glowCondition;
 
-	public String guiBoundTo;
+	@Nullable public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
 

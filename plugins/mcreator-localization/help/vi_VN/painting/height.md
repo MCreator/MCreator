@@ -1,0 +1,1 @@
+Tham số này điều khiển chiều cao của bức tranh (đơn vị là khối).

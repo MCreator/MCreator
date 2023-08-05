@@ -33,18 +33,19 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
+import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused") public class RangedItem extends GeneratableElement
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class RangedItem extends GeneratableElement
 		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
 	public String texture;
-	public String customModelName;
+	@Nonnull public String customModelName;
 	public String name;
 	public StringProcedure specialInformation;
 	public TabEntry creativeTab;
@@ -68,7 +69,7 @@ import java.util.Map;
 	public boolean bulletParticles;
 	public boolean bulletIgnitesFire;
 	public MItemBlock bulletItemTexture;
-	public String bulletModel;
+	@Nonnull public String bulletModel;
 	public String customBulletModelTexture;
 
 	public Procedure onBulletHitsBlock;

@@ -34,22 +34,24 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
+import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused") public class Tool extends GeneratableElement
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
+
+	@Nonnull public String toolType;
 
 	public int renderType;
 	public String texture;
-	public String customModelName;
+	@Nonnull public String customModelName;
 
 	public String name;
 	public StringProcedure specialInformation;
 	public TabEntry creativeTab;
-	public String toolType;
 	public int harvestLevel;
 	public double efficiency;
 	public double attackSpeed;

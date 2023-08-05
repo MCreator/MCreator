@@ -65,7 +65,7 @@ public class CodeErrorDialog {
 			if (modElementWithError != null) {
 				problematicMods.add(modElementWithError);
 				modElementWithError.setCompiles(false);
-				mcreator.getWorkspace().updateModElement(modElementWithError);
+				mcreator.getWorkspace().markDirty();
 			} else if (FileIO.isFileOnFileList(mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).stream()
 					.map(GeneratorTemplate::getFile).collect(Collectors.toList()), problematicFile)) {
 				moddefinitionfileerrors = true;
