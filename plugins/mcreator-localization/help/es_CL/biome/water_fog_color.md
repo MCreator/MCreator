@@ -1,0 +1,1 @@
+Este parámetro controla la difuminación dentro del agua en el bioma

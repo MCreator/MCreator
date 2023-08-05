@@ -2,4 +2,4 @@
 
 不过，这只会设置碰撞箱，而不是模型形状与大小。
 
-要了解碰撞箱参数的具体信息，请点击[这里](https://mcreator.net/wiki/block-dimensions-and-bonding-box)。
+要了解碰撞箱参数的具体信息，请点击[这里](https：//mcreator.net/wiki/block-dimensions-and-bonding-box)。

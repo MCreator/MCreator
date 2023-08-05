@@ -23,24 +23,37 @@
     {
       "type": "field_checkbox",
       "name": "planted"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "replaceable_blocks",
+      "check": "BlockPredicate"
     }
   ],
-  "inputsInline": true,
+  "inputsInline": false,
   "output": "Feature",
   "colour": 0,
+  "extensions": [
+    "add_image_to_blockstate_inputs"
+  ],
   "mcreator": {
     "toolbox_id": "features",
     "toolbox_init": [
       "<value name=\"ground\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
       "<value name=\"stem\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
       "<value name=\"hat\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"decor\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+      "<value name=\"decor\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"replaceable_blocks\"><block type=\"block_predicate_matching_blocks\"><field name=\"x\">0</field><field name=\"y\">0</field><field name=\"z\">0</field><value name=\"blockSet\"><block type=\"block_holderset_tag\"><field name=\"tag\">replaceable_by_trees</field></block></value></block></value>"
     ],
     "inputs": [
       "ground",
       "stem",
       "hat",
-      "decor"
+      "decor",
+      "replaceable_blocks"
     ],
     "fields": [
       "planted"

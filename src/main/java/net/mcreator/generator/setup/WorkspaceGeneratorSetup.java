@@ -60,7 +60,7 @@ public class WorkspaceGeneratorSetup {
 			// close gradle connection so no files are locked
 			currentGenerator.close();
 		} else if (workspace.getWorkspaceSettings().getCurrentGenerator() != null) {
-			LOG.warn("Cleaning up generator for switch to " + newGenerator.getGeneratorName()
+			LOG.info("Cleaning up generator for switch to " + newGenerator.getGeneratorName()
 					+ " from non-existent generator " + workspace.getWorkspaceSettings().getCurrentGenerator());
 		}
 
