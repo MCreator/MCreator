@@ -127,7 +127,7 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
-		<@piglinNeutral data.helmetPiglinNeutral>
+		<@piglinNeutral data.helmetPiglinNeutral/>
 
 		<@onArmorTick data.onHelmetTick/>
 	}
@@ -179,7 +179,7 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
-		<@piglinNeutral data.bodyPiglinNeutral>
+		<@piglinNeutral data.bodyPiglinNeutral/>
 
 		<@onArmorTick data.onBodyTick/>
 	}
@@ -231,7 +231,7 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
-		<@piglinNeutral data.leggingsPiglinNeutral>
+		<@piglinNeutral data.leggingsPiglinNeutral/>
 
 		<@onArmorTick data.onLeggingsTick/>
 	}
@@ -283,7 +283,7 @@ public abstract class ${name}Item extends ArmorItem {
 			</#if>
 		}
 
-		<@piglinNeutral data.bootsPiglinNeutral>
+		<@piglinNeutral data.bootsPiglinNeutral/>
 
 		<@onArmorTick data.onBootsTick/>
 	}
