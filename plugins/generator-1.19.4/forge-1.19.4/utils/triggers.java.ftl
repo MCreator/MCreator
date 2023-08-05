@@ -221,7 +221,7 @@
     <#if procedure?has_content || hasProcedure(procedure)>
 	@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
         <#if hasProcedure(procedure)>
-			Entity entity = stack.getEntityRepresentation();
+			Entity entity = (Entity) wearer;
 			double x = entity != null ? entity.getX() : 0.0;
 			double y = entity != null ? entity.getY() : 0.0;
 			double z = entity != null ? entity.getZ() : 0.0;
