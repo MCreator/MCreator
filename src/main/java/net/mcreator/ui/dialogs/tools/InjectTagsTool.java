@@ -116,6 +116,7 @@ public class InjectTagsTool {
 			dialog.setVisible(false);
 		});
 
+		dialog.getRootPane().setDefaultButton(ok);
 		dialog.setSize(740, 420);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
