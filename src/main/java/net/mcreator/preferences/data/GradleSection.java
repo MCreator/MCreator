@@ -20,7 +20,6 @@
 package net.mcreator.preferences.data;
 
 import com.sun.management.OperatingSystemMXBean;
-import net.mcreator.io.OS;
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 import net.mcreator.preferences.entries.IntegerEntry;
@@ -44,8 +43,8 @@ public class GradleSection extends PreferencesSection {
 
 		compileOnSave = addEntry(new BooleanEntry("compileOnSave", true));
 		passLangToMinecraft = addEntry(new BooleanEntry("passLangToMinecraft", true));
-		xms = addEntry(new IntegerEntry("xms", OS.getBundledJVMBits() == OS.BIT64 ? 625 : 512, 128, MAX_RAM));
-		xmx = addEntry(new IntegerEntry("xmx", OS.getBundledJVMBits() == OS.BIT64 ? 2048 : 1500, 128, MAX_RAM));
+		xms = addEntry(new IntegerEntry("Xms", Math.min(1024, MAX_RAM), 128, MAX_RAM));
+		xmx = addEntry(new IntegerEntry("Xmx", Math.min(3072, MAX_RAM), 128, MAX_RAM));
 		offline = addEntry(new BooleanEntry("offline", false));
 	}
 

@@ -7,6 +7,7 @@ EntityBat: bat
 EntityBlaze: blaze
 EntityBoat: boat
 EntityCat: cat
+EntityCamel: camel
 EntityCaveSpider: cave_spider
 EntityChicken: chicken
 EntityCod: cod
@@ -64,6 +65,7 @@ EntitySkeleton: skeleton
 EntitySkeletonHorse: skeleton_horse
 EntitySlime: slime
 EntitySmallFireball: small_fireball
+EntitySniffer: sniffer
 EntitySnowman: snow_golem
 EntitySnowball: snowball
 EntitySpectralArrow: arrow

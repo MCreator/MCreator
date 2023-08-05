@@ -1,5 +1,4 @@
-La fréquence à laquelle des enchantements rares peuvent être enchantés sur cette armure.
-Plus l'enchantabilité est élevée, meilleurs sont les enchantements que vous obtiendrez lors de l'enchantement de l'armure.
+La fréquence à laquelle des enchantements rares peuvent être enchantés sur cette armure. Plus l'enchantabilité est élevée, meilleurs sont les enchantements que vous obtiendrez lors de l'enchantement de l'armure.
 
 Valeurs Vanilla:
 

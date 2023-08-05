@@ -1,5 +1,4 @@
-Qué tan común los encantamientos raros pueden encantarse en esta armadura.
-Cuanto más alta sea la encantabilidad, los mejores encantamientos que conseguirás encantando la armadura.
+Qué tan común los encantamientos raros pueden encantarse en esta armadura. Cuanto más alta sea la encantabilidad, los mejores encantamientos que conseguirás encantando la armadura.
 
 Valores de vanilla:
 
