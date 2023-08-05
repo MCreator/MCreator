@@ -1,1 +1,0 @@
-Cette condition contrôle si la pièce d'armure rend les piglins autour neutres, comme celles en or.
