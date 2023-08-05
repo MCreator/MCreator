@@ -2,4 +2,4 @@
 
 如果你打算使用矿石方块类型，选择岩石材料，以便适当地应用收获等级。
 
-点击[这里](https://mcreator.net/wiki/materials)来阅读更多有关资料。
+点击[这里](https：//mcreator.net/wiki/materials)来阅读更多有关资料。
