@@ -24,6 +24,7 @@ import net.mcreator.io.OutputStreamEventHandler;
 import net.mcreator.java.ClassFinder;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.ProjectJarManager;
+import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
@@ -69,7 +70,7 @@ public class GradleConsole extends JPanel {
 
 	private static final Logger LOG = LogManager.getLogger("Gradle Console");
 
-	ConsolePane pan = new ConsolePane();
+	private final ConsolePane pan = new ConsolePane();
 
 	private final List<GradleStateListener> stateListeners = new ArrayList<>();
 
@@ -93,6 +94,9 @@ public class GradleConsole extends JPanel {
 
 	// a flag to prevent infinite re-runs in case when re-run does not solve the build problem
 	public boolean rerunFlag = false;
+
+	// Gradle console may be associated with a debug client
+	@Nullable private JVMDebugClient debugClient = null;
 
 	public GradleConsole(MCreator ref) {
 		this.ref = ref;
@@ -279,6 +283,10 @@ public class GradleConsole extends JPanel {
 	}
 
 	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener) {
+		exec(command, taskSpecificListener, null);
+	}
+
+	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener, @Nullable JVMDebugClient optionalDebugClient) {
 		status = RUNNING;
 
 		ref.consoleTab.repaint();
@@ -331,6 +339,11 @@ public class GradleConsole extends JPanel {
 				.collect(Collectors.toList());
 
 		BuildLauncher task = GradleUtils.getGradleTaskLauncher(ref.getWorkspace(), commands);
+
+		if (optionalDebugClient != null) {
+			this.debugClient = optionalDebugClient;
+			this.debugClient.init(task, cancellationSource.token());
+		}
 
 		if (PreferencesManager.PREFERENCES.gradle.offline.get())
 			arguments.add("--offline");
@@ -454,7 +467,7 @@ public class GradleConsole extends JPanel {
 								LOG.warn("Gradle task suggested re-run. Attempting re-running task: " + command);
 
 								// Re-run the same command with the same listener
-								GradleConsole.this.exec(command, taskSpecificListener);
+								GradleConsole.this.exec(command, taskSpecificListener, debugClient);
 
 								return;
 							}
@@ -556,6 +569,11 @@ public class GradleConsole extends JPanel {
 				append("Task completed in " + TimeUtils.millisToLongDHMS(System.currentTimeMillis() - millis),
 						Color.gray, true);
 				append(" ");
+
+				if (debugClient != null) {
+					debugClient.stop();
+					debugClient = null;
+				}
 
 				if (taskSpecificListener != null)
 					taskSpecificListener.onTaskFinished(new GradleTaskResult("", mcreatorGradleStatus));
