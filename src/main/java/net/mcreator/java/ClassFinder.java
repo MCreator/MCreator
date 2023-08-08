@@ -24,14 +24,18 @@ import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.JarManager;
+import org.fife.rsta.ac.java.JavaParser;
 import org.fife.rsta.ac.java.buildpath.SourceLocation;
 import org.fife.rsta.ac.java.buildpath.ZipSourceLocation;
 import org.fife.rsta.ac.java.rjc.ast.CompilationUnit;
 import org.fife.rsta.ac.java.rjc.ast.ImportDeclaration;
+import org.fife.rsta.ac.java.rjc.ast.NormalClassDeclaration;
+import org.fife.rsta.ac.java.rjc.ast.TypeDeclaration;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
@@ -39,6 +43,17 @@ import java.util.zip.ZipFile;
 public class ClassFinder {
 
 	private static final Logger LOG = LogManager.getLogger("Class Finder");
+
+	public static String getCurrentFQDN(JavaParser parser) {
+		Iterator<TypeDeclaration> i = parser.getCompilationUnit().getTypeDeclarationIterator();
+		while (i.hasNext()) {
+			TypeDeclaration td = i.next();
+			if (td instanceof NormalClassDeclaration normalClassDeclaration) {
+				return normalClassDeclaration.getPackage() + "." + normalClassDeclaration.getName();
+			}
+		}
+		return null;
+	}
 
 	public static DeclarationFinder.InClassPosition fqdnToInClassPosition(Workspace workspace, String classIn,
 			String packagefqdn, JarManager jarManager) {

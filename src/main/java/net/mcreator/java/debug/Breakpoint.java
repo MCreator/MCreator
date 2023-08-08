@@ -29,7 +29,7 @@ public class Breakpoint {
 	public final String classname;
 	public final int line;
 
-	@Nullable BreakpointListener listener = null;
+	@Nullable BreakpointListener listener;
 
 	@Nullable BreakpointRequest breakpointRequest = null;
 
@@ -55,10 +55,27 @@ public class Breakpoint {
 		return breakpointRequest;
 	}
 
+	@Override public boolean equals(Object o) {
+		if (this == o)
+			return true;
+		if (o == null || getClass() != o.getClass())
+			return false;
+
+		Breakpoint that = (Breakpoint) o;
+
+		if (line != that.line)
+			return false;
+		return classname.equals(that.classname);
+	}
+
+	@Override public int hashCode() {
+		int result = classname.hashCode();
+		result = 31 * result + line;
+		return result;
+	}
+
 	public interface BreakpointListener {
-
-		void breakpointHit(BreakpointEvent event);
-
+		boolean breakpointHit(BreakpointEvent event);
 	}
 
 }

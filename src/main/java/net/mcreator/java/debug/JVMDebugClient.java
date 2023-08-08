@@ -36,8 +36,7 @@ import org.gradle.tooling.CancellationToken;
 import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.ServerSocket;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.TimeoutException;
 
 public class JVMDebugClient {
@@ -50,6 +49,10 @@ public class JVMDebugClient {
 	@Nullable private VirtualMachine virtualMachine;
 	private int vmDebugPort;
 
+	private final Set<Breakpoint> breakpoints = new HashSet<>();
+
+	private final List<JVMEventListener> eventListeners = new ArrayList<>();
+
 	public void init(BuildLauncher task, CancellationToken token) {
 		this.gradleTaskCancellationToken = token;
 		this.vmDebugPort = findAvailablePort();
@@ -60,23 +63,35 @@ public class JVMDebugClient {
 			try {
 				virtualMachine = connectToRemoteVM(vmDebugPort);
 				if (virtualMachine != null) {
-					LOG.info("Connected to remote VM: " + virtualMachine.name() + "host: localhost, port: " + vmDebugPort);
+					LOG.info("Connected to remote VM: " + virtualMachine.name() + "host: localhost, port: "
+							+ vmDebugPort);
 
 					// Start listening for events (e.g., watchpoint hits)
 					EventQueue eventQueue = virtualMachine.eventQueue();
 					while (isActive()) {
 						EventSet eventSet = eventQueue.remove();
+						boolean shouldEventBlock = false;
+						boolean shouldResumeOnBreakpoints = false;
 						for (Event event : eventSet) {
 							LOG.debug("Received event: " + event.toString());
-
 							if (event instanceof BreakpointEvent breakpointEvent) {
-								// Handle the breakpoint event
-								System.out.println("Breakpoint hit at line: " + breakpointEvent.location().lineNumber());
+								shouldEventBlock = true;
+								for (Breakpoint breakpoint : breakpoints) {
+									if (breakpoint.getBreakpointRequest() == breakpointEvent.request()) {
+										if (breakpoint.listener != null) {
+											if (breakpoint.listener.breakpointHit(breakpointEvent))
+												shouldResumeOnBreakpoints = true;
+										}
+									}
+								}
 							}
-
-							// TODO: handle event
 						}
-						eventSet.resume();
+
+						boolean resume = !shouldEventBlock || shouldResumeOnBreakpoints;
+						if (resume)
+							eventSet.resume();
+
+						eventListeners.forEach(e -> e.event(virtualMachine, eventSet, resume));
 					}
 
 					LOG.info("Disconnecting from remote VM");
@@ -102,7 +117,7 @@ public class JVMDebugClient {
 		arguments.get("port").setValue(String.valueOf(port));
 
 		try {
-			long endTime = System.currentTimeMillis() + 10 * 1000;
+			long endTime = System.currentTimeMillis() + 20 * 1000;
 			while (System.currentTimeMillis() < endTime && isActive()) {
 				try {
 					return connector.attach(arguments);
@@ -154,21 +169,36 @@ public class JVMDebugClient {
 		}
 	}
 
-	public void setBreakpoint(Breakpoint breakpoint) throws AbsentInformationException {
+	public void addBreakpoint(Breakpoint breakpoint)
+			throws AbsentInformationException, IllegalArgumentException, IndexOutOfBoundsException {
 		if (virtualMachine != null) {
-			ReferenceType classType = virtualMachine.classesByName(breakpoint.getClassname()).get(0);
+			if (breakpoints.add(breakpoint)) {
+				ReferenceType classType = virtualMachine.classesByName(breakpoint.getClassname()).get(0);
 
-			List<Location> locations = classType.locationsOfLine(breakpoint.getLine());
-			if (locations.isEmpty())
-				throw new IllegalArgumentException("Invalid line number: " + breakpoint.getLine());
+				List<Location> locations = classType.locationsOfLine(breakpoint.getLine());
+				if (locations.isEmpty())
+					throw new IllegalArgumentException("Invalid line number: " + breakpoint.getLine());
 
-			Location location = locations.get(0);
+				Location location = locations.get(0);
 
-			EventRequestManager eventRequestManager = virtualMachine.eventRequestManager();
-			BreakpointRequest breakpointRequest = eventRequestManager.createBreakpointRequest(location);
-			breakpointRequest.enable();
-			breakpoint.setBreakpointRequest(breakpointRequest);
+				EventRequestManager eventRequestManager = virtualMachine.eventRequestManager();
+				BreakpointRequest breakpointRequest = eventRequestManager.createBreakpointRequest(location);
+				breakpointRequest.enable();
+				breakpoint.setBreakpointRequest(breakpointRequest);
+			}
 		}
+	}
+
+	public void removeBreakpoint(Breakpoint breakpoint) {
+		if (breakpoints.remove(breakpoint)) {
+			if (breakpoint.getBreakpointRequest() != null) {
+				breakpoint.getBreakpointRequest().disable();
+			}
+		}
+	}
+
+	public void addEventListener(JVMEventListener listener) {
+		eventListeners.add(listener);
 	}
 
 }

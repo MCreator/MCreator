@@ -809,4 +809,12 @@ public class GradleConsole extends JPanel {
 		scrollToBottom();
 	}
 
+	@Nullable public JVMDebugClient getDebugClient() {
+		return debugClient;
+	}
+
+	public DebugPanel getDebugPanel() {
+		return debugPanel;
+	}
+
 }
