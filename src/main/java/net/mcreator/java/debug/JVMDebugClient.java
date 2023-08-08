@@ -28,6 +28,7 @@ import com.sun.jdi.event.EventQueue;
 import com.sun.jdi.event.EventSet;
 import com.sun.jdi.request.BreakpointRequest;
 import com.sun.jdi.request.EventRequestManager;
+import net.mcreator.gradle.GradleUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.BuildLauncher;
@@ -57,8 +58,9 @@ public class JVMDebugClient {
 		this.gradleTaskCancellationToken = token;
 		this.vmDebugPort = findAvailablePort();
 
-		// TODO: this is not ok as this will connect to the Gradle JVM, not the Minecraft one
-		task.addJvmArguments("-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort);
+		Map<String, String> environment = GradleUtils.getEnvironment(GradleUtils.getJavaHome());
+		environment.put("JAVA_TOOL_OPTIONS", "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort);
+		task.setEnvironmentVariables(environment);
 
 		new Thread(() -> {
 			try {
@@ -104,6 +106,22 @@ public class JVMDebugClient {
 				LOG.warn("Failed to connect to remote VM", e);
 			}
 		}, "JVMDebugClient").start();
+
+		new Thread(() -> {
+			while (isActive()) {
+				if (virtualMachine != null) {
+					virtualMachine.allThreads().forEach(thread -> System.out.println(thread.name() + " - " + thread.status()));
+					System.out.println("==============================\n");
+				}
+
+				try {
+					//noinspection BusyWait
+					Thread.sleep(1000);
+				} catch (InterruptedException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}).start();
 	}
 
 	private VirtualMachine connectToRemoteVM(int port) {
@@ -165,7 +183,11 @@ public class JVMDebugClient {
 
 	public void stop() {
 		if (virtualMachine != null) {
-			virtualMachine.dispose();
+			try {
+				virtualMachine.dispose();
+			} catch (Exception ignored) {
+				// VM may be already disconnected at this point
+			}
 			this.stopRequested = true;
 		}
 	}
