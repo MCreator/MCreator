@@ -6,12 +6,12 @@ on:
   workflow_dispatch: {}
 
 jobs:
-  crowdin-sync:
+  crowdin-pull:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - uses: crowdin/github-action@v1
-        name: Pull translations
+        name: Pull Crowdin translations
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}

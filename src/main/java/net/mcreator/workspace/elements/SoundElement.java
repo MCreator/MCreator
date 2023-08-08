@@ -29,7 +29,8 @@ import java.util.List;
 
 public class SoundElement implements IElement {
 
-	private String name;
+	private final String name;
+
 	private List<String> files;
 	private String category;
 
@@ -56,10 +57,6 @@ public class SoundElement implements IElement {
 
 	@Override public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public List<String> getFiles() {

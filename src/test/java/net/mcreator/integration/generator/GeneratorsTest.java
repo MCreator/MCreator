@@ -71,7 +71,7 @@ public class GeneratorsTest {
 		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
 
 		// This test is RAM intensive, so we may need more RAM
-		PreferencesManager.PREFERENCES.gradle.xmx.set(3000); // 3G
+		PreferencesManager.PREFERENCES.gradle.xmx.set(3072); // 3G
 	}
 
 	public @TestFactory Stream<DynamicTest> testGenerators() {

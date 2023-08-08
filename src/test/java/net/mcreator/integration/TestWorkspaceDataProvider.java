@@ -125,8 +125,7 @@ public class TestWorkspaceDataProvider {
 	public static void fillWorkspaceWithTestData(Workspace workspace) {
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")
 				== GeneratorStats.CoverageStatus.FULL) {
-			VariableElement sampleVariable1 = new VariableElement();
-			sampleVariable1.setName("test");
+			VariableElement sampleVariable1 = new VariableElement("test");
 			sampleVariable1.setValue("true");
 			sampleVariable1.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
 			sampleVariable1.setScope(VariableType.Scope.GLOBAL_WORLD);
@@ -135,8 +134,7 @@ public class TestWorkspaceDataProvider {
 			int idx = 0;
 			for (VariableType.Scope scope : VariableType.Scope.values()) {
 				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement();
-					variable.setName("logic" + (idx++));
+					VariableElement variable = new VariableElement("logic" + (idx++));
 					variable.setValue("true");
 					variable.setType(VariableTypeLoader.BuiltInTypes.LOGIC);
 					variable.setScope(scope);
@@ -147,8 +145,7 @@ public class TestWorkspaceDataProvider {
 			idx = 0;
 			for (VariableType.Scope scope : VariableType.Scope.values()) {
 				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement();
-					variable.setName("number" + (idx++));
+					VariableElement variable = new VariableElement("number" + (idx++));
 					variable.setValue("12");
 					variable.setType(VariableTypeLoader.BuiltInTypes.NUMBER);
 					variable.setScope(scope);
@@ -159,8 +156,7 @@ public class TestWorkspaceDataProvider {
 			idx = 0;
 			for (VariableType.Scope scope : VariableType.Scope.values()) {
 				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement();
-					variable.setName("string" + (idx++));
+					VariableElement variable = new VariableElement("string" + (idx++));
 					variable.setValue("test");
 					variable.setType(VariableTypeLoader.BuiltInTypes.STRING);
 					variable.setScope(scope);
@@ -171,8 +167,7 @@ public class TestWorkspaceDataProvider {
 			idx = 0;
 			for (VariableType.Scope scope : VariableType.Scope.values()) {
 				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement();
-					variable.setName("itemstack" + (idx++));
+					VariableElement variable = new VariableElement("itemstack" + (idx++));
 					variable.setValue("ItemStack.EMPTY");
 					variable.setType(VariableTypeLoader.BuiltInTypes.ITEMSTACK);
 					variable.setScope(scope);
@@ -183,8 +178,7 @@ public class TestWorkspaceDataProvider {
 			idx = 0;
 			for (VariableType.Scope scope : VariableType.Scope.values()) {
 				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement();
-					variable.setName("direction" + (idx++));
+					VariableElement variable = new VariableElement("direction" + (idx++));
 					variable.setValue("UP");
 					variable.setType(VariableTypeLoader.BuiltInTypes.DIRECTION);
 					variable.setScope(scope);
@@ -195,8 +189,7 @@ public class TestWorkspaceDataProvider {
 			idx = 0;
 			for (VariableType.Scope scope : VariableType.Scope.values()) {
 				if (scope != VariableType.Scope.LOCAL) {
-					VariableElement variable = new VariableElement();
-					variable.setName("blockstate" + (idx++));
+					VariableElement variable = new VariableElement("blockstate" + (idx++));
 					variable.setValue("Blocks.AIR");
 					variable.setType(VariableTypeLoader.BuiltInTypes.BLOCKSTATE);
 					variable.setScope(scope);
@@ -1657,22 +1650,7 @@ public class TestWorkspaceDataProvider {
 		}
 		livingEntity.hasAI = _true;
 		livingEntity.aiBase = "(none)";
-		if (!emptyLists) {
-			Set<String> aiTasks = modElement.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK);
-			if (aiTasks.contains("wander") && aiTasks.contains("look_around") && aiTasks.contains("panic_when_attacked")
-					&& aiTasks.contains("attack_action") && aiTasks.contains("swim_in_water")) {
-				livingEntity.aixml =
-						"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\">"
-								+ "<next><block type=\"wander\"><field name=\"speed\">1</field><field name=\"condition\">null,null</field>"
-								+ "<next><block type=\"look_around\"><field name=\"condition\">null,null</field>"
-								+ "<next><block type=\"swim_in_water\"><field name=\"condition\">null,null</field>"
-								+ "<next><block type=\"panic_when_attacked\"><field name=\"speed\">1.2</field><field name=\"condition\">null,null</field>"
-								+ "<next><block type=\"attack_action\"><field name=\"callhelp\">TRUE</field><field name=\"condition\">null,null</field>"
-								+ "</block></next></block></next></block></next></block></next></block></next></block></xml>";
-			}
-		}
-		if (livingEntity.aixml == null) // fallback
-			livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
+		livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 		livingEntity.breedable = _true;
 		livingEntity.tameable = _true;
 		livingEntity.breedTriggerItems = new ArrayList<>();

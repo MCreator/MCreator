@@ -761,7 +761,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
 			blocklyPanel.getJSBridge()
-					.setJavaScriptEventListener(() -> new Thread(LivingEntityGUI.this::regenerateAITasks).start());
+					.setJavaScriptEventListener(() -> new Thread(LivingEntityGUI.this::regenerateAITasks, "AITasksRegenerate").start());
 			if (!isEditingMode()) {
 				setDefaultAISet();
 			}
