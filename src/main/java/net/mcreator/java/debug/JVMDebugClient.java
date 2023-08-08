@@ -33,6 +33,7 @@ import org.apache.logging.log4j.Logger;
 import org.gradle.tooling.BuildLauncher;
 import org.gradle.tooling.CancellationToken;
 
+import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.List;
@@ -46,7 +47,7 @@ public class JVMDebugClient {
 	private CancellationToken gradleTaskCancellationToken;
 	private boolean stopRequested = false;
 
-	private VirtualMachine virtualMachine;
+	@Nullable private VirtualMachine virtualMachine;
 	private int vmDebugPort;
 
 	public void init(BuildLauncher task, CancellationToken token) {
@@ -147,22 +148,27 @@ public class JVMDebugClient {
 	}
 
 	public void stop() {
-		virtualMachine.dispose();
-		this.stopRequested = true;
+		if (virtualMachine != null) {
+			virtualMachine.dispose();
+			this.stopRequested = true;
+		}
 	}
 
-	public void setBreakpoint(String className, int lineNumber) throws AbsentInformationException {
-		ReferenceType classType = virtualMachine.classesByName(className).get(0);
+	public void setBreakpoint(Breakpoint breakpoint) throws AbsentInformationException {
+		if (virtualMachine != null) {
+			ReferenceType classType = virtualMachine.classesByName(breakpoint.getClassname()).get(0);
 
-		List<Location> locations = classType.locationsOfLine(lineNumber);
-		if (locations.isEmpty())
-			throw new IllegalArgumentException("Invalid line number: " + lineNumber);
+			List<Location> locations = classType.locationsOfLine(breakpoint.getLine());
+			if (locations.isEmpty())
+				throw new IllegalArgumentException("Invalid line number: " + breakpoint.getLine());
 
-		Location location = locations.get(0);
+			Location location = locations.get(0);
 
-		EventRequestManager eventRequestManager = virtualMachine.eventRequestManager();
-		BreakpointRequest breakpointRequest = eventRequestManager.createBreakpointRequest(location);
-		breakpointRequest.enable();
+			EventRequestManager eventRequestManager = virtualMachine.eventRequestManager();
+			BreakpointRequest breakpointRequest = eventRequestManager.createBreakpointRequest(location);
+			breakpointRequest.enable();
+			breakpoint.setBreakpointRequest(breakpointRequest);
+		}
 	}
 
 }

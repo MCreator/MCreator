@@ -29,6 +29,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
 import net.mcreator.ui.component.ConsolePane;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
@@ -98,6 +99,8 @@ public class GradleConsole extends JPanel {
 	// Gradle console may be associated with a debug client
 	@Nullable private JVMDebugClient debugClient = null;
 
+	private final DebugPanel debugPanel = new DebugPanel();
+
 	public GradleConsole(MCreator ref) {
 		this.ref = ref;
 
@@ -116,7 +119,8 @@ public class GradleConsole extends JPanel {
 					try {
 						ProjectJarManager jarManager = ref.getGenerator().getProjectJarManager();
 						if (jarManager != null) {
-							if (fileurl.contains("/")) { // we don't have just FQDN but also module definition which we need to remove
+							if (fileurl.contains(
+									"/")) { // we don't have just FQDN but also module definition which we need to remove
 								fileurl = fileurl.substring(fileurl.lastIndexOf("/") + 1);
 							}
 
@@ -253,6 +257,12 @@ public class GradleConsole extends JPanel {
 
 		holder.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		add("Center", holder);
+		add("North", debugPanel);
+
+		// To prevent from placing the debug panel here
+		add("West", new JEmptyBox(0, 0));
+		add("East", new JEmptyBox(0, 0));
+		add("South", new JEmptyBox(0, 0));
 
 		searchen.addChangeListener(e -> searchBar.setVisible(searchen.isSelected()));
 
@@ -286,7 +296,8 @@ public class GradleConsole extends JPanel {
 		exec(command, taskSpecificListener, null);
 	}
 
-	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener, @Nullable JVMDebugClient optionalDebugClient) {
+	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener,
+			@Nullable JVMDebugClient optionalDebugClient) {
 		status = RUNNING;
 
 		ref.consoleTab.repaint();
@@ -343,6 +354,7 @@ public class GradleConsole extends JPanel {
 		if (optionalDebugClient != null) {
 			this.debugClient = optionalDebugClient;
 			this.debugClient.init(task, cancellationSource.token());
+			this.debugPanel.startDebug(this.debugClient);
 		}
 
 		if (PreferencesManager.PREFERENCES.gradle.offline.get())
@@ -480,7 +492,8 @@ public class GradleConsole extends JPanel {
 								int reply = JOptionPane.showOptionDialog(ref,
 										L10N.t("dialog.gradle_console.gradle_caches_corrupted_message"),
 										L10N.t("dialog.gradle_console.gradle_caches_corrupted_title"),
-										JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+										JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
+										options[0]);
 								if (reply == 0 || reply == 1) {
 									taskComplete(GradleErrorCodes.GRADLE_CACHEDATA_ERROR);
 
@@ -571,6 +584,7 @@ public class GradleConsole extends JPanel {
 				append(" ");
 
 				if (debugClient != null) {
+					debugPanel.stopDebug();
 					debugClient.stop();
 					debugClient = null;
 				}

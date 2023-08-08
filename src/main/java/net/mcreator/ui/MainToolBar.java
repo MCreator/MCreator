@@ -98,6 +98,7 @@ public class MainToolBar extends JToolBar {
 		addSeparator(new Dimension(10, 4));
 
 		add(mcreator.actionRegistry.runClient);
+		add(mcreator.actionRegistry.debugClient);
 		add(mcreator.actionRegistry.runServer);
 		add(mcreator.actionRegistry.cancelGradleTaskAction);
 
