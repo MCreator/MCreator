@@ -57,6 +57,7 @@ public class JVMDebugClient {
 		this.gradleTaskCancellationToken = token;
 		this.vmDebugPort = findAvailablePort();
 
+		// TODO: this is not ok as this will connect to the Gradle JVM, not the Minecraft one
 		task.addJvmArguments("-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort);
 
 		new Thread(() -> {
