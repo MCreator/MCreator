@@ -1,1 +1,0 @@
-Le son joué quand il n'y a pas de nouvel échange disponible.

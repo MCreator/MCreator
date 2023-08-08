@@ -1,1 +1,0 @@
-Cochez ce paramètre pour activer les échanges avec l'entité.

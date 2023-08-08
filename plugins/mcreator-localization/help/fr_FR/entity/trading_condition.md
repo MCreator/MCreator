@@ -1,1 +1,0 @@
-Condition additionnelle pour désactiver les échanges avec l'entité, même si la boite est cochée.
