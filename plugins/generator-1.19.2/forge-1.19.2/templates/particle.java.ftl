@@ -117,6 +117,7 @@ package ${package}.client.particle;
 		</#if>
 
 		<#if hasProcedure(data.additionalExpiryCondition)>
+		Level world = this.level;
 		double x = this.x;
 		double y = this.y;
 		double z = this.z;
