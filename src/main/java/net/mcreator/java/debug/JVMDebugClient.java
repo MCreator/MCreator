@@ -22,11 +22,9 @@ package net.mcreator.java.debug;
 import com.sun.jdi.*;
 import com.sun.jdi.connect.AttachingConnector;
 import com.sun.jdi.connect.Connector;
-import com.sun.jdi.event.BreakpointEvent;
-import com.sun.jdi.event.Event;
-import com.sun.jdi.event.EventQueue;
-import com.sun.jdi.event.EventSet;
+import com.sun.jdi.event.*;
 import com.sun.jdi.request.BreakpointRequest;
+import com.sun.jdi.request.ClassPrepareRequest;
 import com.sun.jdi.request.EventRequestManager;
 import net.mcreator.gradle.GradleUtils;
 import org.apache.logging.log4j.LogManager;
@@ -69,6 +67,8 @@ public class JVMDebugClient {
 					LOG.info("Connected to remote VM: " + virtualMachine.name() + "host: localhost, port: "
 							+ vmDebugPort);
 
+					virtualMachine.eventRequestManager().createClassPrepareRequest().enable();
+
 					// Start listening for events (e.g., watchpoint hits)
 					EventQueue eventQueue = virtualMachine.eventQueue();
 					while (isActive()) {
@@ -76,17 +76,29 @@ public class JVMDebugClient {
 						boolean shouldEventBlock = false;
 						boolean shouldResumeOnBreakpoints = false;
 						for (Event event : eventSet) {
-							LOG.debug("Received event: " + event.toString());
 							if (event instanceof BreakpointEvent breakpointEvent) {
 								shouldEventBlock = true;
 								for (Breakpoint breakpoint : breakpoints) {
 									if (breakpoint.getBreakpointRequest() == breakpointEvent.request()) {
-										if (breakpoint.listener != null) {
-											if (breakpoint.listener.breakpointHit(breakpointEvent))
+										if (breakpoint.getListener() != null) {
+											if (breakpoint.getListener().breakpointHit(breakpointEvent))
 												shouldResumeOnBreakpoints = true;
 										}
 									}
 								}
+							} else if (event instanceof ClassPrepareEvent classPrepareEvent) {
+								for (Breakpoint breakpoint : breakpoints) {
+									if (classPrepareEvent.referenceType().name().equals(breakpoint.getClassname())) {
+										try {
+											loadBreakpoint(classPrepareEvent.referenceType(), breakpoint.getLine());
+											breakpoint.setLoaded(true);
+										} catch (Exception e) {
+											LOG.warn("Failed to load breakpoint", e);
+										}
+									}
+								}
+
+								classPrepareEvent.request().disable();
 							}
 						}
 
@@ -176,27 +188,40 @@ public class JVMDebugClient {
 		}
 	}
 
-	public void addBreakpoint(Breakpoint breakpoint)
-			throws AbsentInformationException, IllegalArgumentException, IndexOutOfBoundsException {
+	public void addBreakpoint(Breakpoint breakpoint) throws Exception {
 		if (virtualMachine != null) {
 			if (!breakpoints.contains(breakpoint)) {
-				ReferenceType classType = virtualMachine.classesByName(breakpoint.getClassname()).get(0);
-
-				List<Location> locations = classType.locationsOfLine(breakpoint.getLine());
-				if (locations.isEmpty())
-					throw new IllegalArgumentException("Invalid line number: " + breakpoint.getLine());
-
-				Location location = locations.get(0);
-
-				EventRequestManager eventRequestManager = virtualMachine.eventRequestManager();
-				BreakpointRequest breakpointRequest = eventRequestManager.createBreakpointRequest(location);
-				breakpointRequest.enable();
-				breakpoint.setBreakpointRequest(breakpointRequest);
+				List<ReferenceType> classes = virtualMachine.classesByName(breakpoint.getClassname());
+				if (!classes.isEmpty()) {
+					ReferenceType classType = classes.get(0);
+					BreakpointRequest breakpointRequest = loadBreakpoint(classType, breakpoint.getLine());
+					breakpoint.setBreakpointRequest(breakpointRequest);
+					breakpoint.setLoaded(true);
+				} else {
+					ClassPrepareRequest request = virtualMachine.eventRequestManager().createClassPrepareRequest();
+					request.addClassFilter(breakpoint.getClassname());
+					request.enable();
+				}
 				breakpoints.add(breakpoint);
 			} else {
 				throw new IllegalArgumentException("Breakpoint already added: " + breakpoint.toString());
 			}
 		}
+	}
+
+	private BreakpointRequest loadBreakpoint(ReferenceType classType, int line) throws Exception {
+		if (virtualMachine == null)
+			throw new IllegalStateException("Virtual machine is not connected");
+
+		List<Location> locations = classType.locationsOfLine(line);
+		if (locations.isEmpty())
+			throw new IllegalArgumentException("Invalid line number: " + line);
+
+		Location location = locations.get(0);
+
+		BreakpointRequest breakpointRequest = virtualMachine.eventRequestManager().createBreakpointRequest(location);
+		breakpointRequest.enable();
+		return breakpointRequest;
 	}
 
 	public void removeBreakpoint(Breakpoint breakpoint) {

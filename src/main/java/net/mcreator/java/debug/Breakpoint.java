@@ -26,12 +26,14 @@ import javax.annotation.Nullable;
 
 public class Breakpoint {
 
-	public final String classname;
-	public final int line;
+	private final String classname;
+	private final int line;
 
-	@Nullable BreakpointListener listener;
+	private boolean loaded = false;
 
-	@Nullable BreakpointRequest breakpointRequest = null;
+	@Nullable private BreakpointListener listener;
+
+	@Nullable private BreakpointRequest breakpointRequest = null;
 
 	public Breakpoint(String classname, int line, @Nullable BreakpointListener listener) {
 		this.classname = classname;
@@ -74,8 +76,34 @@ public class Breakpoint {
 		return result;
 	}
 
+	public void setListener(@Nullable BreakpointListener listener) {
+		this.listener = listener;
+	}
+
+	@Nullable public BreakpointListener getListener() {
+		return listener;
+	}
+
 	public interface BreakpointListener {
+
+		void breakpointLoaded();
+
 		boolean breakpointHit(BreakpointEvent event);
+
+	}
+
+	public boolean isLoaded() {
+		return loaded;
+	}
+
+	public void setLoaded(boolean loaded) {
+		if (!this.loaded && loaded) {
+			if (listener != null) {
+				listener.breakpointLoaded();
+			}
+		}
+
+		this.loaded = loaded;
 	}
 
 }

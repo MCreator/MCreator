@@ -20,13 +20,10 @@ package net.mcreator.ui.ide;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
-import com.sun.jdi.AbsentInformationException;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.JSONWriter;
-import net.mcreator.java.ClassFinder;
 import net.mcreator.java.CodeCleanup;
 import net.mcreator.java.DeclarationFinder;
-import net.mcreator.java.debug.Breakpoint;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
@@ -35,10 +32,10 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
 import net.mcreator.ui.ide.autocomplete.StringCompletitionProvider;
+import net.mcreator.ui.ide.debug.BreakpointHandler;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
@@ -60,9 +57,6 @@ import org.fife.ui.autocomplete.AutoCompletion;
 import org.fife.ui.autocomplete.DefaultCompletionProvider;
 import org.fife.ui.rsyntaxtextarea.*;
 import org.fife.ui.rsyntaxtextarea.focusabletip.FocusableTip;
-import org.fife.ui.rtextarea.Gutter;
-import org.fife.ui.rtextarea.GutterIconInfo;
-import org.fife.ui.rtextarea.IconRowHeader;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.annotation.Nullable;
@@ -85,8 +79,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CodeEditorView extends ViewBase {
 
@@ -101,7 +93,9 @@ public class CodeEditorView extends ViewBase {
 	private AbstractSourceTree tree;
 	public ChangeListener cl;
 
-	public RSyntaxTextArea te = new RSyntaxTextArea() {
+	private final RTextScrollPane sp;
+
+	public final RSyntaxTextArea te = new RSyntaxTextArea() {
 		@Override public void setCursor(Cursor c) {
 			if (jumpToMode)
 				return;
@@ -130,10 +124,6 @@ public class CodeEditorView extends ViewBase {
 	@Nullable private ModElement fileOwner = null;
 
 	private final JPanel rightDummy = new JPanel();
-
-	@Nullable JavaParser parser = null;
-
-	private final Map<Integer, GutterBreakpointInfo> breakpoints = new HashMap<>();
 
 	public CodeEditorView(MCreator fa, File fs) {
 		this(fa, FileIO.readFileToString(fs), fs.getName(), fs, false);
@@ -182,7 +172,7 @@ public class CodeEditorView extends ViewBase {
 
 		ToolTipManager.sharedInstance().registerComponent(te);
 
-		RTextScrollPane sp = new RTextScrollPane(te, PreferencesManager.PREFERENCES.ide.lineNumbers.get());
+		sp = new RTextScrollPane(te, PreferencesManager.PREFERENCES.ide.lineNumbers.get());
 
 		RSyntaxTextAreaStyler.style(te, sp, PreferencesManager.PREFERENCES.ide.fontSize.get());
 
@@ -198,84 +188,6 @@ public class CodeEditorView extends ViewBase {
 		sp.setBorder(null);
 
 		sp.getGutter().setShowCollapsedRegionToolTips(true);
-
-		// use reflection to get the icon row header from sp.getGutter()
-		try {
-			Field field = Gutter.class.getDeclaredField("iconArea");
-			field.setAccessible(true);
-			IconRowHeader iconRowHeader = (IconRowHeader) field.get(sp.getGutter());
-			iconRowHeader.addMouseListener(new MouseAdapter() {
-
-				private int viewToModelLine(Point p) throws BadLocationException {
-					int offs = te.viewToModel2D(p);
-					return offs > -1 ? te.getLineOfOffset(offs) : -1;
-				}
-
-				@Override public void mousePressed(MouseEvent e) {
-					// TODO: for now only allow breakpoints while in debug session
-					if (mcreator.getGradleConsole().getDebugClient() == null)
-						return;
-
-					// only allow breakpoints on Java files
-					if (parser == null)
-						return;
-
-					try {
-						int line = viewToModelLine(e.getPoint());
-						if (line > -1) {
-							if (breakpoints.containsKey(line)) {
-								sp.getGutter().removeTrackingIcon(breakpoints.get(line).getGutterIconInfo());
-								if (breakpoints.get(line).getBreakpoint() != null
-										&& mcreator.getGradleConsole().getDebugClient() != null) {
-									mcreator.getGradleConsole().getDebugClient()
-											.removeBreakpoint(breakpoints.get(line).getBreakpoint());
-								}
-								breakpoints.remove(line);
-							} else {
-								GutterIconInfo gutterIconInfo = sp.getGutter()
-										.addLineTrackingIcon(line, UIRES.get("16px.breakpoint"));
-								GutterBreakpointInfo gutterBreakpointInfo = new GutterBreakpointInfo(gutterIconInfo);
-								if (mcreator.getGradleConsole().getDebugClient() != null) {
-									try {
-										Breakpoint breakpoint = new Breakpoint(ClassFinder.getCurrentFQDN(parser), line, breakpointEvent -> {
-											MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(
-													fileWorkingOn);
-											CodeEditorView cev = null;
-											if (existing == null) {
-												// TODO: open new code editor
-											} else {
-												mcreator.mcreatorTabs.showTab(existing);
-												cev = (CodeEditorView) existing.getContent();
-											}
-
-											try {
-												if (cev != null) {
-													int startOffset = cev.te.getLineStartOffset(
-															breakpointEvent.location().lineNumber());
-													cev.te.setCaretPosition(startOffset);
-												}
-											} catch (BadLocationException ignored) {
-											}
-
-											return false;
-										});
-										mcreator.getGradleConsole().getDebugClient().addBreakpoint(breakpoint);
-										gutterBreakpointInfo.setBreakpoint(breakpoint);
-									} catch (Exception ex) {
-										LOG.warn("Failed to add breakpoint", ex);
-										sp.getGutter().removeTrackingIcon(gutterIconInfo);
-										return;
-									}
-								}
-								breakpoints.put(line, gutterBreakpointInfo);
-							}
-						}
-					} catch (BadLocationException ignored) {
-					}
-				}
-			});
-		} catch (NoSuchFieldException | IllegalAccessException ignored) {
-		}
 
 		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
 				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
@@ -509,7 +421,9 @@ public class CodeEditorView extends ViewBase {
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
 
-			parser = jls.getParser(te);
+			JavaParser parser = jls.getParser(te);
+
+			new BreakpointHandler(this, sp, te, parser);
 
 			te.addKeyListener(new KeyAdapter() {
 				final boolean smartAutocomplete = PreferencesManager.PREFERENCES.ide.autocompleteMode.get()
@@ -833,7 +747,7 @@ public class CodeEditorView extends ViewBase {
 
 	public void jumpToLine(int linenum) {
 		new Thread(() -> {
-			SwingUtilities.invokeLater(() -> te.requestFocus());
+			SwingUtilities.invokeLater(te::requestFocus);
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException e) {
