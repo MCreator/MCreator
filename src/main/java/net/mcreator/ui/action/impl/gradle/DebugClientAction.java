@@ -18,8 +18,8 @@
 
 package net.mcreator.ui.action.impl.gradle;
 
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.java.debug.JVMDebugClient;
-import net.mcreator.minecraft.BedrockUtils;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.init.L10N;
@@ -63,8 +63,8 @@ public class DebugClientAction extends GradleAction {
 
 	@Override public boolean isEnabled() {
 		return actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null
-				&& !actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
-				.equals("@bedrock_run_client") && super.isEnabled();
+				&& actionRegistry.getMCreator().getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
+				== GeneratorFlavor.BaseLanguage.JAVA && super.isEnabled();
 	}
 
 }

@@ -106,22 +106,6 @@ public class JVMDebugClient {
 				LOG.warn("Failed to connect to remote VM", e);
 			}
 		}, "JVMDebugClient").start();
-
-		new Thread(() -> {
-			while (isActive()) {
-				if (virtualMachine != null) {
-					virtualMachine.allThreads().forEach(thread -> System.out.println(thread.name() + " - " + thread.status()));
-					System.out.println("==============================\n");
-				}
-
-				try {
-					//noinspection BusyWait
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					throw new RuntimeException(e);
-				}
-			}
-		}).start();
 	}
 
 	private VirtualMachine connectToRemoteVM(int port) {
@@ -195,7 +179,7 @@ public class JVMDebugClient {
 	public void addBreakpoint(Breakpoint breakpoint)
 			throws AbsentInformationException, IllegalArgumentException, IndexOutOfBoundsException {
 		if (virtualMachine != null) {
-			if (breakpoints.add(breakpoint)) {
+			if (!breakpoints.contains(breakpoint)) {
 				ReferenceType classType = virtualMachine.classesByName(breakpoint.getClassname()).get(0);
 
 				List<Location> locations = classType.locationsOfLine(breakpoint.getLine());
@@ -208,6 +192,9 @@ public class JVMDebugClient {
 				BreakpointRequest breakpointRequest = eventRequestManager.createBreakpointRequest(location);
 				breakpointRequest.enable();
 				breakpoint.setBreakpointRequest(breakpointRequest);
+				breakpoints.add(breakpoint);
+			} else {
+				throw new IllegalArgumentException("Breakpoint already added: " + breakpoint.toString());
 			}
 		}
 	}

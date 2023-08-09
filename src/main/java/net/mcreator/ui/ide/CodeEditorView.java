@@ -259,7 +259,6 @@ public class CodeEditorView extends ViewBase {
 
 											return false;
 										});
-										System.err.println("Added breakpoint " + breakpoint.getClassname());
 										mcreator.getGradleConsole().getDebugClient().addBreakpoint(breakpoint);
 										gutterBreakpointInfo.setBreakpoint(breakpoint);
 									} catch (Exception ex) {
