@@ -117,9 +117,7 @@ package ${package}.client.particle;
 		</#if>
 
 		<#if hasProcedure(data.additionalExpiryCondition)>
-		double x = this.x;
-		double y = this.y;
-		double z = this.z;
+		Level world = this.level;
 		if (<@procedureOBJToConditionCode data.additionalExpiryCondition/>)
 			this.remove();
 		</#if>
