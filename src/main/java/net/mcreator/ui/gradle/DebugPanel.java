@@ -19,45 +19,61 @@
 
 package net.mcreator.ui.gradle;
 
-import com.sun.jdi.VirtualMachine;
 import com.sun.jdi.event.Event;
-import com.sun.jdi.event.EventSet;
-import com.sun.jdi.event.VMDisconnectEvent;
 import com.sun.jdi.event.VMStartEvent;
 import net.mcreator.java.debug.JVMDebugClient;
-import net.mcreator.java.debug.JVMEventListener;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.ide.CodeEditorView;
-import net.mcreator.ui.ide.debug.GutterBreakpointInfo;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.PlainToolbarBorder;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
 public class DebugPanel extends JToolBar {
 
+	private static final String WAITING_TO_CONNECT = "waiting to connect";
+	private static final String DEBUGGING = "debugging";
+
 	private final MCreator mcreator;
 
 	@Nullable private JVMDebugClient debugClient = null;
+
+	private final CardLayout cardLayout = new CardLayout();
 
 	public DebugPanel(MCreator mcreator) {
 		this.mcreator = mcreator;
 
 		setBorder(new PlainToolbarBorder());
-		setMinimumSize(new Dimension(0, 200));
-		setLayout(new CardLayout());
+		setLayout(cardLayout);
 
-		// cards: no debug session, waiting to connect, debugging
+		setPreferredSize(new Dimension(0, 320));
+
+		JPanel waitingToConnect = new JPanel(new BorderLayout());
+		JLabel loading = L10N.label("debug.loading");
+		loading.setFont(loading.getFont().deriveFont(16f));
+		loading.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		loading.setIcon(UIRES.get("16px.loading.gif"));
+		waitingToConnect.add("Center", PanelUtils.totalCenterInPanel(loading));
+		add(waitingToConnect, WAITING_TO_CONNECT);
+
+		JPanel debugging = new JPanel();
+		add(debugging, DEBUGGING);
+
+		setVisible(false);
 	}
 
-	public void startDebug(JVMDebugClient debugClient) {
+	public void startDebug(@Nonnull JVMDebugClient debugClient) {
 		this.debugClient = debugClient;
-
 		this.debugClient.addEventListener((vm, eventSet, resumed) -> {
 			for (Event event : eventSet) {
 				if (event instanceof VMStartEvent) {
+					cardLayout.show(this, DEBUGGING);
+
 					mcreator.mcreatorTabs.getTabs().forEach(tab -> {
 						if (tab.getContent() instanceof CodeEditorView cev) {
 							if (cev.getBreakpointHandler() != null) {
@@ -69,12 +85,12 @@ public class DebugPanel extends JToolBar {
 			}
 		});
 
+		cardLayout.show(this, WAITING_TO_CONNECT);
 		setVisible(true);
 	}
 
 	public void stopDebug() {
 		this.debugClient = null;
-
 		setVisible(false);
 	}
 
