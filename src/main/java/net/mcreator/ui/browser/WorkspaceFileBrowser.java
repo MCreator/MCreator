@@ -158,7 +158,7 @@ public class WorkspaceFileBrowser extends JPanel {
 							mods.setFilter(jtf1.getText().trim());
 							SwingUtilities.invokeLater(() -> TreeUtils.expandAllNodes(tree, 0, tree.getRowCount()));
 							searchInAction = false;
-						}).start();
+						}, "ReferenceSearch").start();
 					}
 				} else {
 					mods.setFilter("");

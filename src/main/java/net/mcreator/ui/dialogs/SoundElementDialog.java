@@ -66,11 +66,7 @@ public class SoundElementDialog {
 		ui.add(soundName);
 
 		ui.add(L10N.label("dialog.sounds.files"));
-		if (element == null) {
-			ui.add(fileListField);
-		} else {
-			ui.add(new JLabel(String.join(", ", element.getFiles())));
-		}
+		ui.add(fileListField);
 
 		ui.add(L10N.label("dialog.sounds.category"));
 		ui.add(soundCategory);
@@ -82,6 +78,12 @@ public class SoundElementDialog {
 			soundCategory.setSelectedItem(element.getCategory());
 			soundName.setText(element.getName());
 			subtitle.setText(element.getSubtitle());
+			fileListField.setListElements(element.getFiles().stream()
+					.map(e -> new File(mcreator.getFolderManager().getSoundsDir(), e + ".ogg"))
+					.collect(Collectors.toList()));
+
+			fileListField.setEnabled(false);
+			soundName.setEnabled(false);
 		}
 
 		int option = JOptionPane.showOptionDialog(mcreator, ui, L10N.t("dialog.sounds.edit"),
@@ -121,8 +123,9 @@ public class SoundElementDialog {
 
 					mcreator.getWorkspace().setLocalization("subtitles." + registryname, subtitle.getText());
 
-					return new SoundElement(registryname, element.getFiles(), (String) soundCategory.getSelectedItem(),
-							subtitle.getText());
+					element.setCategory((String) soundCategory.getSelectedItem());
+					element.setSubtitle(subtitle.getText());
+					return element;
 				}
 			}
 		} else {

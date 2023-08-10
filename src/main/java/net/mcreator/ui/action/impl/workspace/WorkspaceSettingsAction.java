@@ -194,7 +194,7 @@ public class WorkspaceSettingsAction extends GradleAction {
 
 					// we need to regenerate the whole code after new generator is selected, no need to reload gradle caches as runSetup already did this
 					RegenerateCodeAction.regenerateCode(mcreator, true, true);
-				});
+				}, "WorkspaceRefactor");
 				t.start();
 			} else { // in any other case, we need to regenerate the whole code
 				if (change.gradleCachesRebuildNeeded()) { // and rebuild caches when needed

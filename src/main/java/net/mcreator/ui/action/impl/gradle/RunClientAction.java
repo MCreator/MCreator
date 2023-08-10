@@ -57,7 +57,7 @@ public class RunClientAction extends GradleAction {
 				LOG.error(e.getMessage(), e);
 				actionRegistry.getMCreator().getGradleConsole().markReady();
 			}
-		}).start());
+		}, "RunClientAction").start());
 	}
 
 	@Override public boolean isEnabled() {

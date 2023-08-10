@@ -421,6 +421,21 @@
   type: block
   texture: MANGROVE_PLANKS
 
+- Blocks.CHERRY_PLANKS:
+  readable_name: "Cherry Planks"
+  type: block
+  texture: CHERRY_PLANKS
+
+- Blocks.BAMBOO_PLANKS:
+  readable_name: "Bamboo Planks"
+  type: block
+  texture: BAMBOO_PLANKS
+
+- Blocks.BAMBOO_MOSAIC:
+  readable_name: "Bamboo Mosaic"
+  type: block
+  texture: BAMBOO_MOSAIC
+
 - Blocks.SAPLING:
   readable_name: "Any Sapling"
   type: block
@@ -462,6 +477,11 @@
   type: block
   texture: MANGROVE_PROPAGULE
 
+- Blocks.CHERRY_SAPLING:
+  readable_name: "Cherry Sapling"
+  type: block
+  texture: CHERRY_SAPLING
+
 - Blocks.REEDS:
   readable_name: "Sugar Cane"
   type: block
@@ -488,10 +508,20 @@
   type: block
   texture: SAND#1
 
+- Blocks.SUSPICIOUS_SAND:
+  readable_name: "Suspicious Sand"
+  type: block
+  texture: SUSPICIOUS_SAND
+
 - Blocks.GRAVEL:
   readable_name: "Gravel"
   type: block
   texture: GRAVEL
+
+- Blocks.SUSPICIOUS_GRAVEL:
+  readable_name: "Suspicious Gravel"
+  type: block
+  texture: SUSPICIOUS_GRAVEL
 
 - Blocks.FLOWING_WATER:
   readable_name: "Water"
@@ -1000,44 +1030,44 @@
   texture: SMALL_AMETHYST_BUD
 
 - Blocks.LOG:
-  readable_name: "Oak/Spruce/Birch/Jungle Wood"
+  readable_name: "Oak/Spruce/Birch/Jungle Log"
   type: block
   texture: LOG
   subtypes: true
 
 - Blocks.LOG#0:
-  readable_name: "Oak Wood"
+  readable_name: "Oak Log"
   type: block
   texture: LOG#0
 
 - Blocks.LOG#1:
-  readable_name: "Spruce Wood"
+  readable_name: "Spruce Log"
   type: block
   texture: LOG#1
 
 - Blocks.LOG#2:
-  readable_name: "Birch Wood"
+  readable_name: "Birch Log"
   type: block
   texture: LOG#2
 
 - Blocks.LOG#3:
-  readable_name: "Jungle Wood"
+  readable_name: "Jungle Log"
   type: block
   texture: LOG#3
 
 - Blocks.LOG2:
-  readable_name: "Acacia/Dark Oak Wood"
+  readable_name: "Acacia/Dark Oak Log"
   type: block
   texture: LOG2
   subtypes: true
 
 - Blocks.LOG2#0:
-  readable_name: "Acacia Wood"
+  readable_name: "Acacia Log"
   type: block
   texture: LOG2#0
 
 - Blocks.LOG2#1:
-  readable_name: "Dark Oak Wood"
+  readable_name: "Dark Oak Log"
   type: block
   texture: LOG2#1
 
@@ -1055,6 +1085,16 @@
   readable_name: "Mangrove Log"
   type: block
   texture: MANGROVE_LOG
+
+- Blocks.CHERRY_LOG:
+  readable_name: "Cherry Log"
+  type: block
+  texture: CHERRY_LOG
+
+- Blocks.BAMBOO_BLOCK:
+  readable_name: "Block of Bamboo"
+  type: block
+  texture: BAMBOO_BLOCK
 
 - Blocks.MANGROVE_ROOTS:
   readable_name: "Mangrove Roots"
@@ -1111,6 +1151,16 @@
   type: block
   texture: STRIPPED_MANGROVE_LOG
 
+- Blocks.STRIPPED_CHERRY_LOG:
+  readable_name: "Stripped Cherry Log"
+  type: block
+  texture: STRIPPED_CHERRY_LOG
+
+- Blocks.STRIPPED_BAMBOO_BLOCK:
+  readable_name: "Block of Stripped Bamboo"
+  type: block
+  texture: STRIPPED_BAMBOO_BLOCK
+
 - Blocks.OAK_WOOD:
   readable_name: "Oak Wood"
   type: block
@@ -1156,6 +1206,11 @@
   type: block
   texture: MANGROVE_WOOD
 
+- Blocks.CHERRY_WOOD:
+  readable_name: "Cherry Wood"
+  type: block
+  texture: CHERRY_WOOD
+
 - Blocks.STRIPPED_OAK_WOOD:
   readable_name: "Stripped Oak Wood"
   type: block
@@ -1200,6 +1255,11 @@
   readable_name: "Stripped Mangrove Wood"
   type: block
   texture: STRIPPED_MANGROVE_WOOD
+
+- Blocks.STRIPPED_CHERRY_WOOD:
+  readable_name: "Stripped Cherry Wood"
+  type: block
+  texture: STRIPPED_CHERRY_WOOD
 
 - Blocks.LEAVES:
   readable_name: "Oak/Spruce/Birch/Jungle Leaves"
@@ -1257,6 +1317,11 @@
   readable_name: "Flowering Azalea Leaves"
   type: block
   texture: FLOWERING_AZALEA_LEAVES
+
+- Blocks.CHERRY_LEAVES:
+  readable_name: "Cherry Leaves"
+  type: block
+  texture: CHERRY_LEAVES
 
 - Blocks.SPONGE:
   readable_name: "Any Sponge"
@@ -1635,6 +1700,16 @@
   type: block
   texture: WITHER_ROSE
 
+- Blocks.TORCHFLOWER:
+  readable_name: "Torchflower"
+  type: block
+  texture: TORCHFLOWER
+
+- Blocks.PINK_PETALS:
+  readable_name: "Pink Petals"
+  type: block
+  texture: PINK_PETALS
+
 - Blocks.DOUBLE_PLANT:
   readable_name: "Any Large Flower"
   type: block
@@ -1670,6 +1745,11 @@
   readable_name: "Peony"
   type: block
   texture: DOUBLE_PLANT#5
+
+- Blocks.PITCHER_PLANT:
+  readable_name: "Pitcher Plant"
+  type: block
+  texture: PITCHER_PLANT
 
 - Blocks.BROWN_MUSHROOM:
   readable_name: "Brown Mushroom"
@@ -1730,6 +1810,11 @@
   readable_name: "Bookshelf"
   type: block
   texture: BOOKSHELF
+
+- Blocks.CHISELED_BOOKSHELF:
+  readable_name: "Chiseled Bookshelf"
+  type: block
+  texture: CHISELED_BOOKSHELF
 
 - Blocks.TORCH:
   readable_name: "Torch"
@@ -1932,6 +2017,21 @@
   type: block
   texture: MANGROVE_STAIRS
 
+- Blocks.CHERRY_STAIRS:
+  readable_name: "Cherry Stairs"
+  type: block
+  texture: CHERRY_STAIRS
+
+- Blocks.BAMBOO_STAIRS:
+  readable_name: "Bamboo Stairs"
+  type: block
+  texture: BAMBOO_STAIRS
+
+- Blocks.BAMBOO_MOSAIC_STAIRS:
+  readable_name: "Bamboo Mosaic Stairs"
+  type: block
+  texture: BAMBOO_MOSAIC_STAIRS
+
 - Blocks.STONE_STAIRS:
   readable_name: "Cobblestone Stairs"
   type: block
@@ -2042,6 +2142,16 @@
   type: block
   texture: STANDING_MANGROVE_SIGN
 
+- Blocks.CHERRY_SIGN:
+  readable_name: "Cherry Sign"
+  type: block
+  texture: STANDING_CHERRY_SIGN
+
+- Blocks.BAMBOO_SIGN:
+  readable_name: "Bamboo Sign"
+  type: block
+  texture: STANDING_BAMBOO_SIGN
+
 - Blocks.WALL_SIGN:
   readable_name: "Oak Wall Sign"
   type: block
@@ -2087,6 +2197,126 @@
   type: block
   texture: MANGROVE_WALL_SIGN
 
+- Blocks.CHERRY_WALL_SIGN:
+  readable_name: "Cherry Wall Sign"
+  type: block
+  texture: CHERRY_WALL_SIGN
+
+- Blocks.BAMBOO_WALL_SIGN:
+  readable_name: "Bamboo Wall Sign"
+  type: block
+  texture: BAMBOO_WALL_SIGN
+
+- Blocks.OAK_HANGING_SIGN:
+  readable_name: "Oak Hanging Sign"
+  type: block
+  texture: OAK_HANGING_SIGN
+
+- Blocks.SPRUCE_HANGING_SIGN:
+  readable_name: "Spruce Hanging Sign"
+  type: block
+  texture: SPRUCE_HANGING_SIGN
+
+- Blocks.BIRCH_HANGING_SIGN:
+  readable_name: "Birch Hanging Sign"
+  type: block
+  texture: BIRCH_HANGING_SIGN
+
+- Blocks.ACACIA_HANGING_SIGN:
+  readable_name: "Acacia Hanging Sign"
+  type: block
+  texture: ACACIA_HANGING_SIGN
+
+- Blocks.JUNGLE_HANGING_SIGN:
+  readable_name: "Jungle Hanging Sign"
+  type: block
+  texture: JUNGLE_HANGING_SIGN
+
+- Blocks.DARK_OAK_HANGING_SIGN:
+  readable_name: "Dark Oak Hanging Sign"
+  type: block
+  texture: DARK_OAK_HANGING_SIGN
+
+- Blocks.CRIMSON_HANGING_SIGN:
+  readable_name: "Crimson Hanging Sign"
+  type: block
+  texture: CRIMSON_HANGING_SIGN
+
+- Blocks.WARPED_HANGING_SIGN:
+  readable_name: "Warped Hanging Sign"
+  type: block
+  texture: WARPED_HANGING_SIGN
+
+- Blocks.MANGROVE_HANGING_SIGN:
+  readable_name: "Mangrove Hanging Sign"
+  type: block
+  texture: MANGROVE_HANGING_SIGN
+
+- Blocks.CHERRY_HANGING_SIGN:
+  readable_name: "Cherry Hanging Sign"
+  type: block
+  texture: CHERRY_HANGING_SIGN
+
+- Blocks.BAMBOO_HANGING_SIGN:
+  readable_name: "Bamboo Hanging Sign"
+  type: block
+  texture: BAMBOO_HANGING_SIGN
+
+- Blocks.OAK_WALL_HANGING_SIGN:
+  readable_name: "Oak Wall Hanging Sign"
+  type: block
+  texture: OAK_WALL_HANGING_SIGN
+
+- Blocks.SPRUCE_WALL_HANGING_SIGN:
+  readable_name: "Spruce Wall Hanging Sign"
+  type: block
+  texture: SPRUCE_WALL_HANGING_SIGN
+
+- Blocks.BIRCH_WALL_HANGING_SIGN:
+  readable_name: "Birch Wall Hanging Sign"
+  type: block
+  texture: BIRCH_WALL_HANGING_SIGN
+
+- Blocks.ACACIA_WALL_HANGING_SIGN:
+  readable_name: "Acacia Wall Hanging Sign"
+  type: block
+  texture: ACACIA_WALL_HANGING_SIGN
+
+- Blocks.JUNGLE_WALL_HANGING_SIGN:
+  readable_name: "Jungle Wall Hanging Sign"
+  type: block
+  texture: JUNGLE_WALL_HANGING_SIGN
+
+- Blocks.DARK_OAK_WALL_HANGING_SIGN:
+  readable_name: "Dark Oak Wall Hanging Sign"
+  type: block
+  texture: DARK_OAK_WALL_HANGING_SIGN
+
+- Blocks.CRIMSON_WALL_HANGING_SIGN:
+  readable_name: "Crimson Wall Hanging Sign"
+  type: block
+  texture: CRIMSON_WALL_HANGING_SIGN
+
+- Blocks.WARPED_WALL_HANGING_SIGN:
+  readable_name: "Warped Wall Hanging Sign"
+  type: block
+  texture: WARPED_WALL_HANGING_SIGN
+
+- Blocks.MANGROVE_WALL_HANGING_SIGN:
+  readable_name: "Mangrove Wall Hanging Sign"
+  type: block
+  texture: MANGROVE_WALL_HANGING_SIGN
+
+- Blocks.CHERRY_WALL_HANGING_SIGN:
+  readable_name: "Cherry Wall Hanging Sign"
+  type: block
+  texture: CHERRY_WALL_HANGING_SIGN
+
+- Blocks.BAMBOO_WALL_HANGING_SIGN:
+  readable_name: "Bamboo Wall Hanging Sign"
+  type: block
+  texture: BAMBOO_WALL_HANGING_SIGN
+
 - Blocks.OAK_DOOR:
   readable_name: "Oak Door"
   type: block
@@ -2131,6 +2361,16 @@
   readable_name: "Mangrove Door"
   type: block
   texture: MANGROVE_DOOR
+
+- Blocks.CHERRY_DOOR:
+  readable_name: "Cherry Door"
+  type: block
+  texture: CHERRY_DOOR
+
+- Blocks.BAMBOO_DOOR:
+  readable_name: "Bamboo Door"
+  type: block
+  texture: BAMBOO_DOOR
 
 - Blocks.IRON_DOOR:
   readable_name: "Iron Door"
@@ -2181,6 +2421,16 @@
   readable_name: "Mangrove Trapdoor"
   type: block
   texture: MANGROVE_TRAPDOOR
+
+- Blocks.CHERRY_TRAPDOOR:
+  readable_name: "Cherry Trapdoor"
+  type: block
+  texture: CHERRY_TRAPDOOR
+
+- Blocks.BAMBOO_TRAPDOOR:
+  readable_name: "Bamboo Trapdoor"
+  type: block
+  texture: BAMBOO_TRAPDOOR
 
 - Blocks.IRON_TRAPDOOR:
   readable_name: "Iron Trapdoor"
@@ -2252,6 +2502,16 @@
   type: block
   texture: MANGROVE_BUTTON
 
+- Blocks.CHERRY_BUTTON:
+  readable_name: "Cherry Button"
+  type: block
+  texture: CHERRY_BUTTON
+
+- Blocks.BAMBOO_BUTTON:
+  readable_name: "Bamboo Button"
+  type: block
+  texture: BAMBOO_BUTTON
+
 - Blocks.WOODEN_PRESSURE_PLATE:
   readable_name: "Oak Pressure Plate"
   type: block
@@ -2296,6 +2556,16 @@
   readable_name: "Mangrove Pressure Plate"
   type: block
   texture: MANGROVE_PRESSURE_PLATE
+
+- Blocks.CHERRY_PRESSURE_PLATE:
+  readable_name: "Cherry Pressure Plate"
+  type: block
+  texture: CHERRY_PRESSURE_PLATE
+
+- Blocks.BAMBOO_PRESSURE_PLATE:
+  readable_name: "Bamboo Pressure Plate"
+  type: block
+  texture: BAMBOO_PRESSURE_PLATE
 
 - Blocks.STONE_PRESSURE_PLATE:
   readable_name: "Stone Pressure Plate"
@@ -2423,6 +2693,11 @@
   readable_name: "Sculk Sensor"
   type: block
   texture: SCULK_SENSOR
+
+- Blocks.CALIBRATED_SCULK_SENSOR:
+  readable_name: "Calibrated Sculk Sensor"
+  type: block
+  texture: CALIBRATED_SCULK_SENSOR
 
 - Blocks.SCULK:
   readable_name: "Sculk"
@@ -2554,6 +2829,16 @@
   type: block
   texture: MANGROVE_FENCE
 
+- Blocks.CHERRY_FENCE:
+  readable_name: "Cherry Fence"
+  type: block
+  texture: CHERRY_FENCE
+
+- Blocks.BAMBOO_FENCE:
+  readable_name: "Bamboo Fence"
+  type: block
+  texture: BAMBOO_FENCE
+
 - Blocks.OAK_FENCE_GATE:
   readable_name: "Oak Fence Gate"
   type: block
@@ -2598,6 +2883,16 @@
   readable_name: "Mangrove Fence Gate"
   type: block
   texture: MANGROVE_FENCE_GATE
+
+- Blocks.CHERRY_FENCE_GATE:
+  readable_name: "Cherry Fence Gate"
+  type: block
+  texture: CHERRY_FENCE_GATE
+
+- Blocks.BAMBOO_FENCE_GATE:
+  readable_name: "Bamboo Fence Gate"
+  type: block
+  texture: BAMBOO_FENCE_GATE
 
 - Blocks.NETHER_BRICK_FENCE:
   readable_name: "Nether Brick Fence"
@@ -3021,6 +3316,21 @@
   type: block
   texture: MANGROVE_SLAB
 
+- Blocks.CHERRY_SLAB:
+  readable_name: "Cherry Slab"
+  type: block
+  texture: CHERRY_SLAB
+
+- Blocks.BAMBOO_SLAB:
+  readable_name: "Bamboo Slab"
+  type: block
+  texture: BAMBOO_SLAB
+
+- Blocks.BAMBOO_MOSAIC_SLAB:
+  readable_name: "Bamboo Mosaic Slab"
+  type: block
+  texture: BAMBOO_MOSAIC_SLAB
+
 - Blocks.STONE_SLAB:
   readable_name: "Any Stone Slab"
   type: block
@@ -3291,6 +3601,21 @@
   type: block
   texture: POTTED_FLOWERING_AZALEA_BUSH
 
+- Blocks.POTTED_CHERRY_SAPLING:
+  readable_name: "Potted Cherry Sapling"
+  type: block
+  texture: POTTED_CHERRY_SAPLING
+
+- Blocks.POTTED_TORCHFLOWER:
+  readable_name: "Potted Torchflower"
+  type: block
+  texture: POTTED_TORCHFLOWER
+
+- Blocks.DECORATED_POT:
+  readable_name: "Decorated Pot"
+  type: block
+  texture: DECORATED_POT
+
 - Blocks.CARROTS:
   readable_name: "Carrots Plant Block"
   type: block
@@ -3300,6 +3625,16 @@
   readable_name: "Potatoes Plant Block"
   type: block
   texture: POTATOES
+
+- Blocks.TORCHFLOWER_CROP:
+  readable_name: "Torchflower Crop"
+  type: block
+  texture: TORCHFLOWER_CROP
+
+- Blocks.PITCHER_CROP:
+  readable_name: "Pitcher Crop"
+  type: block
+  texture: PITCHER_CROP
 
 - Blocks.HAY_BLOCK:
   readable_name: "Hay Block"
@@ -3342,6 +3677,11 @@
   type: block
   texture: SKULL#5
 
+- Blocks.PIGLIN_HEAD:
+  readable_name: "Piglin Head"
+  type: block
+  texture: PIGLIN_HEAD
+
 - Blocks.SKELETON_WALL_SKULL:
   readable_name: "Skeleton Wall Skull"
   type: block
@@ -3371,6 +3711,11 @@
   readable_name: "Dragon Wall Head"
   type: block
   texture: SKULL#5
+
+- Blocks.PIGLIN_WALL_HEAD:
+  readable_name: "Piglin Wall Head"
+  type: block
+  texture: PIGLIN_WALL_HEAD
 
 - Blocks.WOOL:
   readable_name: "Any Wool"
@@ -4448,6 +4793,11 @@
   type: block
   texture: TURTLE_EGG
 
+- Blocks.SNIFFER_EGG:
+  readable_name: "Sniffer Egg"
+  type: block
+  texture: SNIFFER_EGG
+
 - Blocks.BAMBOO_SAPLING:
   readable_name: "Bamboo Sapling"
   type: block
@@ -5225,6 +5575,11 @@
   type: item
   texture: FILLED_MAP
 
+- Items.BRUSH:
+  readable_name: "Brush"
+  type: item
+  texture: BRUSH
+
 - Items.FLOWER_BANNER_PATTERN:
   readable_name: "Banner Pattern"
   description: "Flower"
@@ -5752,6 +6107,71 @@
   type: item
   texture: MANGROVE_SIGN
 
+- Items.CHERRY_SIGN:
+  readable_name: "Cherry Sign"
+  type: item
+  texture: CHERRY_SIGN
+
+- Items.BAMBOO_SIGN:
+  readable_name: "Bamboo Sign"
+  type: item
+  texture: BAMBOO_SIGN
+
+- Items.OAK_HANGING_SIGN:
+  readable_name: "Oak Hanging Sign"
+  type: item
+  texture: OAK_HANGING_SIGN_ITEM
+
+- Items.SPRUCE_HANGING_SIGN:
+  readable_name: "Spruce Hanging Sign"
+  type: item
+  texture: SPRUCE_HANGING_SIGN_ITEM
+
+- Items.BIRCH_HANGING_SIGN:
+  readable_name: "Birch Hanging Sign"
+  type: item
+  texture: BIRCH_HANGING_SIGN_ITEM
+
+- Items.JUNGLE_HANGING_SIGN:
+  readable_name: "Jungle Hanging Sign"
+  type: item
+  texture: JUNGLE_HANGING_SIGN_ITEM
+
+- Items.ACACIA_HANGING_SIGN:
+  readable_name: "Acacia Hanging Sign"
+  type: item
+  texture: ACACIA_HANGING_SIGN_ITEM
+
+- Items.DARK_OAK_HANGING_SIGN:
+  readable_name: "Dark Oak Hanging Sign"
+  type: item
+  texture: DARK_OAK_HANGING_SIGN_ITEM
+
+- Items.CRIMSON_HANGING_SIGN:
+  readable_name: "Crimson Hanging Sign"
+  type: item
+  texture: CRIMSON_HANGING_SIGN_ITEM
+
+- Items.WARPED_HANGING_SIGN:
+  readable_name: "Warped Hanging Sign"
+  type: item
+  texture: WARPED_HANGING_SIGN_ITEM
+
+- Items.MANGROVE_HANGING_SIGN:
+  readable_name: "Mangrove Hanging Sign"
+  type: item
+  texture: MANGROVE_HANGING_SIGN_ITEM
+
+- Items.CHERRY_HANGING_SIGN:
+  readable_name: "Cherry Hanging Sign"
+  type: item
+  texture: CHERRY_HANGING_SIGN_ITEM
+
+- Items.BAMBOO_HANGING_SIGN:
+  readable_name: "Bamboo Hanging Sign"
+  type: item
+  texture: BAMBOO_HANGING_SIGN_ITEM
+
 - Items.OAK_DOOR:
   readable_name: "Oak Door"
   type: item
@@ -5801,6 +6221,16 @@
   readable_name: "Mangrove Door"
   type: item
   texture: MANGROVE_DOOR
+
+- Items.CHERRY_DOOR:
+  readable_name: "Cherry Door"
+  type: item
+  texture: CHERRY_DOOR
+
+- Items.BAMBOO_DOOR:
+  readable_name: "Bamboo Door"
+  type: item
+  texture: BAMBOO_DOOR
 
 - Items.BUCKET:
   readable_name: "Bucket"
@@ -5922,6 +6352,16 @@
   type: item
   texture: MANGROVE_BOAT
 
+- Items.CHERRY_BOAT:
+  readable_name: "Cherry Boat"
+  type: item
+  texture: CHERRY_BOAT
+
+- Items.BAMBOO_RAFT:
+  readable_name: "Bamboo Raft"
+  type: item
+  texture: BAMBOO_RAFT
+
 - Items.OAK_CHEST_BOAT:
   readable_name: "Oak Boat with Chest"
   type: item
@@ -5956,6 +6396,16 @@
   readable_name: "Mangrove Boat with Chest"
   type: item
   texture: MANGROVE_CHEST_BOAT
+
+- Items.CHERRY_CHEST_BOAT:
+  readable_name: "Cherry Boat with Chest"
+  type: item
+  texture: CHERRY_CHEST_BOAT
+
+- Items.BAMBOO_CHEST_RAFT:
+  readable_name: "Bamboo Raft with Chest"
+  type: item
+  texture: BAMBOO_CHEST_RAFT
 
 - Items.REPEATER:
   readable_name: "Redstone Repeater"
@@ -6077,6 +6527,16 @@
   readable_name: "Pumpkin Seeds"
   type: item
   texture: PUMPKIN_SEEDS
+
+- Items.TORCHFLOWER_SEEDS:
+  readable_name: "Torchflower Seeds"
+  type: item
+  texture: TORCHFLOWER_SEEDS
+
+- Items.PITCHER_POD:
+  readable_name: "Pitcher Pod"
+  type: item
+  texture: PITCHER_POD
 
 - Items.FLINT:
   readable_name: "Flint"
@@ -6887,6 +7347,16 @@
   type: item
   texture: ENDER_DRAGON_SPAWN_EGG
 
+- Items.CAMEL_SPAWN_EGG:
+  readable_name: "Camel Spawn Egg"
+  type: item
+  texture: CAMEL_SPAWN_EGG
+
+- Items.SNIFFER_SPAWN_EGG:
+  readable_name: "Sniffer Spawn Egg"
+  type: item
+  texture: SNIFFER_SPAWN_EGG
+
 - Items.EXPERIENCE_BOTTLE:
   readable_name: "Bottle o' Enchanting"
   type: item
@@ -7001,7 +7471,7 @@
 
 - Items.MUSIC_DISC_OTHERSIDE:
   readable_name: "Music Disc"
-  description: "Otherside"
+  description: "Lena Raine - Otherside"
   type: item
   texture: MUSIC_DISC_OTHERSIDE
 
@@ -7013,9 +7483,15 @@
 
 - Items.MUSIC_DISC_PIGSTEP:
   readable_name: "Music Disc"
-  description: "Pigstep"
+  description: "Lena Raine - Pigstep"
   type: item
   texture: MUSIC_DISC_PIGSTEP
+
+- Items.MUSIC_DISC_RELIC:
+  readable_name: "Music Disc"
+  description: "Aaron Cherof - Relic"
+  type: item
+  texture: MUSIC_DISC_RELIC
 
 - Items.DISC_FRAGMENT_5:
   readable_name: "Disc Fragment 5"
@@ -7058,6 +7534,11 @@
   type: item
   texture: SKULL#5
 
+- Items.PIGLIN_HEAD:
+  readable_name: "Piglin Head"
+  type: item
+  texture: PIGLIN_HEAD
+
 - Items.FIREWORK_CHARGE:
   readable_name: "Firework Charge"
   type: item
@@ -7082,3 +7563,205 @@
   readable_name: "Goat Horn"
   type: item
   texture: GOAT_HORN
+
+- Items.NETHERITE_UPGRADE:
+  readable_name: "Smithing Template"
+  description: "Netherite Upgrade"
+  type: item
+  texture: NETHERITE_UPGRADE
+
+- Items.SENTRY_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Sentry Armor Trim"
+  type: item
+  texture: SENTRY_ARMOR_TRIM
+
+- Items.DUNE_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Dune Armor Trim"
+  type: item
+  texture: DUNE_ARMOR_TRIM
+
+- Items.COAST_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Coast Armor Trim"
+  type: item
+  texture: COAST_ARMOR_TRIM
+
+- Items.WILD_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Wild Armor Trim"
+  type: item
+  texture: WILD_ARMOR_TRIM
+
+- Items.WARD_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Ward Armor Trim"
+  type: item
+  texture: WARD_ARMOR_TRIM
+
+- Items.EYE_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Eye Armor Trim"
+  type: item
+  texture: EYE_ARMOR_TRIM
+
+- Items.VEX_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Vex Armor Trim"
+  type: item
+  texture: VEX_ARMOR_TRIM
+
+- Items.TIDE_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Tide Armor Trim"
+  type: item
+  texture: TIDE_ARMOR_TRIM
+
+- Items.SNOUT_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Snout Armor Trim"
+  type: item
+  texture: SNOUT_ARMOR_TRIM
+
+- Items.RIB_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Rib Armor Trim"
+  type: item
+  texture: RIB_ARMOR_TRIM
+
+- Items.SPIRE_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Spire Armor Trim"
+  type: item
+  texture: SPIRE_ARMOR_TRIM
+
+- Items.WAYFINDER_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Wayfinder Armor Trim"
+  type: item
+  texture: WAYFINDER_ARMOR_TRIM
+
+- Items.SHAPER_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Shaper Armor Trim"
+  type: item
+  texture: SHAPER_ARMOR_TRIM
+
+- Items.SILENCE_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Silence Armor Trim"
+  type: item
+  texture: SILENCE_ARMOR_TRIM
+
+- Items.RAISER_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Raiser Armor Trim"
+  type: item
+  texture: RAISER_ARMOR_TRIM
+
+- Items.HOST_ARMOR_TRIM:
+  readable_name: "Smithing Template"
+  description: "Host Armor Trim"
+  type: item
+  texture: HOST_ARMOR_TRIM
+
+- Items.ANGLER_POTTERY_SHERD:
+  readable_name: "Angler Pottery Sherd"
+  type: item
+  texture: ANGLER_POTTERY_SHERD
+
+- Items.ARCHER_POTTERY_SHERD:
+  readable_name: "Archer Pottery Sherd"
+  type: item
+  texture: ARCHER_POTTERY_SHERD
+
+- Items.ARMS_UP_POTTERY_SHERD:
+  readable_name: "Arms Up Pottery Sherd"
+  type: item
+  texture: ARMS_UP_POTTERY_SHERD
+
+- Items.BLADE_POTTERY_SHERD:
+  readable_name: "Blade Pottery Sherd"
+  type: item
+  texture: BLADE_POTTERY_SHERD
+
+- Items.BREWER_POTTERY_SHERD:
+  readable_name: "Brewer Pottery Sherd"
+  type: item
+  texture: BREWER_POTTERY_SHERD
+
+- Items.BURN_POTTERY_SHERD:
+  readable_name: "Burn Pottery Sherd"
+  type: item
+  texture: BURN_POTTERY_SHERD
+
+- Items.DANGER_POTTERY_SHERD:
+  readable_name: "Danger Pottery Sherd"
+  type: item
+  texture: DANGER_POTTERY_SHERD
+
+- Items.EXPLORER_POTTERY_SHERD:
+  readable_name: "Explorer Pottery Sherd"
+  type: item
+  texture: EXPLORER_POTTERY_SHERD
+
+- Items.FRIEND_POTTERY_SHERD:
+  readable_name: "Friend Pottery Sherd"
+  type: item
+  texture: FRIEND_POTTERY_SHERD
+
+- Items.HEART_POTTERY_SHERD:
+  readable_name: "Heart Pottery Sherd"
+  type: item
+  texture: HEART_POTTERY_SHERD
+
+- Items.HEARTBREAK_POTTERY_SHERD:
+  readable_name: "Heartbreak Pottery Sherd"
+  type: item
+  texture: HEARTBREAK_POTTERY_SHERD
+
+- Items.HOWL_POTTERY_SHERD:
+  readable_name: "Howl Pottery Sherd"
+  type: item
+  texture: HOWL_POTTERY_SHERD
+
+- Items.MINER_POTTERY_SHERD:
+  readable_name: "Miner Pottery Sherd"
+  type: item
+  texture: MINER_POTTERY_SHERD
+
+- Items.MOURNER_POTTERY_SHERD:
+  readable_name: "Mourner Pottery Sherd"
+  type: item
+  texture: MOURNER_POTTERY_SHERD
+
+- Items.PLENTY_POTTERY_SHERD:
+  readable_name: "Plenty Pottery Sherd"
+  type: item
+  texture: PLENTY_POTTERY_SHERD
+
+- Items.PRIZE_POTTERY_SHERD:
+  readable_name: "Prize Pottery Sherd"
+  type: item
+  texture: PRIZE_POTTERY_SHERD
+
+- Items.SHEAF_POTTERY_SHERD:
+  readable_name: "Sheaf Pottery Sherd"
+  type: item
+  texture: SHEAF_POTTERY_SHERD
+
+- Items.SHELTER_POTTERY_SHERD:
+  readable_name: "Shelter Pottery Sherd"
+  type: item
+  texture: SHELTER_POTTERY_SHERD
+
+- Items.SKULL_POTTERY_SHERD:
+  readable_name: "Skull Pottery Sherd"
+  type: item
+  texture: SKULL_POTTERY_SHERD
+
+- Items.SNORT_POTTERY_SHERD:
+  readable_name: "Snort Pottery Sherd"
+  type: item
+  texture: SNORT_POTTERY_SHERD
