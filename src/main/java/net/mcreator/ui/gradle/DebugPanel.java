@@ -19,7 +19,17 @@
 
 package net.mcreator.ui.gradle;
 
+import com.sun.jdi.VirtualMachine;
+import com.sun.jdi.event.Event;
+import com.sun.jdi.event.EventSet;
+import com.sun.jdi.event.VMDisconnectEvent;
+import com.sun.jdi.event.VMStartEvent;
 import net.mcreator.java.debug.JVMDebugClient;
+import net.mcreator.java.debug.JVMEventListener;
+import net.mcreator.ui.MCreator;
+import net.mcreator.ui.ide.CodeEditorView;
+import net.mcreator.ui.ide.debug.GutterBreakpointInfo;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.PlainToolbarBorder;
 
 import javax.annotation.Nullable;
@@ -28,18 +38,36 @@ import java.awt.*;
 
 public class DebugPanel extends JToolBar {
 
+	private final MCreator mcreator;
+
 	@Nullable private JVMDebugClient debugClient = null;
 
-	public DebugPanel() {
+	public DebugPanel(MCreator mcreator) {
+		this.mcreator = mcreator;
+
 		setBorder(new PlainToolbarBorder());
+		setMinimumSize(new Dimension(0, 200));
+		setLayout(new CardLayout());
 
-		setLayout(new BorderLayout());
-
-		add(new JLabel("Test"));
+		// cards: no debug session, waiting to connect, debugging
 	}
 
 	public void startDebug(JVMDebugClient debugClient) {
 		this.debugClient = debugClient;
+
+		this.debugClient.addEventListener((vm, eventSet, resumed) -> {
+			for (Event event : eventSet) {
+				if (event instanceof VMStartEvent) {
+					mcreator.mcreatorTabs.getTabs().forEach(tab -> {
+						if (tab.getContent() instanceof CodeEditorView cev) {
+							if (cev.getBreakpointHandler() != null) {
+								cev.getBreakpointHandler().newDebugClient(debugClient);
+							}
+						}
+					});
+				}
+			}
+		});
 
 		setVisible(true);
 	}

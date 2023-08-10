@@ -99,10 +99,12 @@ public class GradleConsole extends JPanel {
 	// Gradle console may be associated with a debug client
 	@Nullable private JVMDebugClient debugClient = null;
 
-	private final DebugPanel debugPanel = new DebugPanel();
+	private final DebugPanel debugPanel;
 
 	public GradleConsole(MCreator ref) {
 		this.ref = ref;
+
+		this.debugPanel = new DebugPanel(ref);
 
 		JPanel holder = new JPanel(new BorderLayout());
 		setLayout(new BorderLayout());

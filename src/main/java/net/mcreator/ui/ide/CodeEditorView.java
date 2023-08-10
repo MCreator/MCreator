@@ -125,6 +125,10 @@ public class CodeEditorView extends ViewBase {
 
 	private final JPanel rightDummy = new JPanel();
 
+	@Nullable private JavaParser parser = null;
+
+	@Nullable private BreakpointHandler breakpointHandler = null;
+
 	public CodeEditorView(MCreator fa, File fs) {
 		this(fa, FileIO.readFileToString(fs), fs.getName(), fs, false);
 	}
@@ -421,9 +425,9 @@ public class CodeEditorView extends ViewBase {
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
 
-			JavaParser parser = jls.getParser(te);
+			this.parser = jls.getParser(te);
 
-			new BreakpointHandler(this, sp, te, parser);
+			this.breakpointHandler = new BreakpointHandler(this, sp, parser);
 
 			te.addKeyListener(new KeyAdapter() {
 				final boolean smartAutocomplete = PreferencesManager.PREFERENCES.ide.autocompleteMode.get()
@@ -761,6 +765,14 @@ public class CodeEditorView extends ViewBase {
 				}
 			});
 		}, "JumpToLine").start();
+	}
+
+	@Nullable public JavaParser getParser() {
+		return parser;
+	}
+
+	@Nullable public BreakpointHandler getBreakpointHandler() {
+		return breakpointHandler;
 	}
 
 }

@@ -49,7 +49,7 @@ public class Breakpoint {
 		return classname;
 	}
 
-	public int getLine() {
+	protected int getLine() {
 		return line;
 	}
 
@@ -86,20 +86,20 @@ public class Breakpoint {
 
 	public interface BreakpointListener {
 
-		void breakpointLoaded();
+		void breakpointLoaded(Breakpoint breakpoint);
 
-		boolean breakpointHit(BreakpointEvent event);
+		boolean breakpointHit(Breakpoint breakpoint, BreakpointEvent event);
 
 	}
 
-	public boolean isLoaded() {
+	protected boolean isLoaded() {
 		return loaded;
 	}
 
-	public void setLoaded(boolean loaded) {
+	protected void setLoaded(boolean loaded) {
 		if (!this.loaded && loaded) {
 			if (listener != null) {
-				listener.breakpointLoaded();
+				listener.breakpointLoaded(this);
 			}
 		}
 

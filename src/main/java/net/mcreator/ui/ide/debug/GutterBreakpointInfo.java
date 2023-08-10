@@ -20,9 +20,11 @@
 package net.mcreator.ui.ide.debug;
 
 import net.mcreator.java.debug.Breakpoint;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
 import org.fife.ui.rtextarea.GutterIconInfo;
 
 import javax.annotation.Nullable;
+import javax.swing.text.BadLocationException;
 
 public class GutterBreakpointInfo {
 
@@ -36,6 +38,14 @@ public class GutterBreakpointInfo {
 
 	public GutterIconInfo getGutterIconInfo() {
 		return gutterIconInfo;
+	}
+
+	public int getCurrentLine(RSyntaxTextArea te) {
+		try {
+			return te.getLineOfOffset(gutterIconInfo.getMarkedOffset());
+		} catch (BadLocationException e) {
+			return -1;
+		}
 	}
 
 	@Nullable public Breakpoint getBreakpoint() {

@@ -22,10 +22,10 @@ package net.mcreator.java.debug;
 import com.sun.jdi.*;
 import com.sun.jdi.connect.AttachingConnector;
 import com.sun.jdi.connect.Connector;
+import com.sun.jdi.connect.IllegalConnectorArgumentsException;
 import com.sun.jdi.event.*;
 import com.sun.jdi.request.BreakpointRequest;
 import com.sun.jdi.request.ClassPrepareRequest;
-import com.sun.jdi.request.EventRequestManager;
 import net.mcreator.gradle.GradleUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,7 +36,6 @@ import javax.annotation.Nullable;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.util.*;
-import java.util.concurrent.TimeoutException;
 
 public class JVMDebugClient {
 
@@ -57,7 +56,8 @@ public class JVMDebugClient {
 		this.vmDebugPort = findAvailablePort();
 
 		Map<String, String> environment = GradleUtils.getEnvironment(GradleUtils.getJavaHome());
-		environment.put("JAVA_TOOL_OPTIONS", "-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort);
+		environment.put("JAVA_TOOL_OPTIONS",
+				"-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=" + vmDebugPort);
 		task.setEnvironmentVariables(environment);
 
 		new Thread(() -> {
@@ -81,16 +81,19 @@ public class JVMDebugClient {
 								for (Breakpoint breakpoint : breakpoints) {
 									if (breakpoint.getBreakpointRequest() == breakpointEvent.request()) {
 										if (breakpoint.getListener() != null) {
-											if (breakpoint.getListener().breakpointHit(breakpointEvent))
+											if (breakpoint.getListener().breakpointHit(breakpoint, breakpointEvent))
 												shouldResumeOnBreakpoints = true;
 										}
 									}
 								}
 							} else if (event instanceof ClassPrepareEvent classPrepareEvent) {
 								for (Breakpoint breakpoint : breakpoints) {
-									if (classPrepareEvent.referenceType().name().equals(breakpoint.getClassname())) {
+									if (!breakpoint.isLoaded() && classPrepareEvent.referenceType().name()
+											.equals(breakpoint.getClassname())) {
 										try {
-											loadBreakpoint(classPrepareEvent.referenceType(), breakpoint.getLine());
+											BreakpointRequest breakpointRequest = loadBreakpoint(
+													classPrepareEvent.referenceType(), breakpoint.getLine());
+											breakpoint.setBreakpointRequest(breakpointRequest);
 											breakpoint.setLoaded(true);
 										} catch (Exception e) {
 											LOG.warn("Failed to load breakpoint", e);
@@ -106,7 +109,7 @@ public class JVMDebugClient {
 						if (resume)
 							eventSet.resume();
 
-						eventListeners.forEach(e -> e.event(virtualMachine, eventSet, resume));
+						new ArrayList<>(eventListeners).forEach(e -> e.event(virtualMachine, eventSet, resume));
 					}
 
 					LOG.info("Disconnecting from remote VM");
@@ -131,22 +134,21 @@ public class JVMDebugClient {
 		arguments.get("hostname").setValue("localhost");
 		arguments.get("port").setValue(String.valueOf(port));
 
-		try {
-			long endTime = System.currentTimeMillis() + 20 * 1000;
-			while (System.currentTimeMillis() < endTime && isActive()) {
+		// try to connect until connection is established or task is cancelled
+		while (isActive()) {
+			try {
+				return connector.attach(arguments);
+			} catch (IOException | IllegalConnectorArgumentsException e) {
 				try {
-					return connector.attach(arguments);
-				} catch (IOException e) {
 					//noinspection BusyWait
-					Thread.sleep(1000); // Wait for 1 second before retrying
+					Thread.sleep(2000);
+				} catch (InterruptedException ignored) {
 				}
 			}
-
-			throw new TimeoutException("Failed to connect to remote VM in a given time");
-		} catch (Exception e) {
-			LOG.warn("Failed to connect to remote VM", e);
-			return null;
 		}
+		LOG.warn("Failed to connect to remote VM, task was cancelled before we could connect");
+
+		return null;
 	}
 
 	private AttachingConnector findConnector() {
@@ -173,18 +175,15 @@ public class JVMDebugClient {
 		return !gradleTaskCancellationToken.isCancellationRequested() && !stopRequested;
 	}
 
-	public VirtualMachine getVirtualMachine() {
-		return virtualMachine;
-	}
-
 	public void stop() {
+		this.stopRequested = true;
+
 		if (virtualMachine != null) {
 			try {
 				virtualMachine.dispose();
 			} catch (Exception ignored) {
 				// VM may be already disconnected at this point
 			}
-			this.stopRequested = true;
 		}
 	}
 
@@ -234,6 +233,10 @@ public class JVMDebugClient {
 
 	public void addEventListener(JVMEventListener listener) {
 		eventListeners.add(listener);
+	}
+
+	public VirtualMachine getVirtualMachine() {
+		return virtualMachine;
 	}
 
 }

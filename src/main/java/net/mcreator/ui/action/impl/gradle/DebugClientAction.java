@@ -47,8 +47,6 @@ public class DebugClientAction extends GradleAction {
 
 				JVMDebugClient debugClient = new JVMDebugClient();
 
-				// TODO: setup breakpoints here?
-
 				SwingUtilities.invokeLater(() -> actionRegistry.getMCreator().getGradleConsole()
 						.exec(actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client"),
 								null, debugClient));
