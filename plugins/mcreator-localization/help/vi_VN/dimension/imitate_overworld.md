@@ -1,0 +1,1 @@
+Tham số này điều khiển một vài khía cạnh của chiều không gian liên quan đến thời tiết, cách la bàn vận hành và sự sinh đẻ của sinh vật.

@@ -1,0 +1,1 @@
+El sonido de ambiente esta siendo constantemente reproducido en el bioma.

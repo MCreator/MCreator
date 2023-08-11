@@ -1,0 +1,1 @@
+Dies erlaubt dem Mob einen Namen zu setzen, der über seinem Kopf angezeigt wird, ähnlich wie der Spieler Namen oder Nametags angezeigt werden.

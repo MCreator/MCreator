@@ -1,0 +1,1 @@
+Dies ist der Standardwert der Spielregel. Die Spielregel wird diesen Wert haben, bis etwas im Spiel (Spieler oder Befehl) geändert wird.

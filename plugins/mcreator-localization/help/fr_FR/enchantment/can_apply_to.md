@@ -4,5 +4,4 @@ Vous pouvez également ajouter des objets qui ne sont pas dans le type d'enchant
 
 Dans la plupart des cas, vous souhaitez garder ce champ vide (une logique de détection de compatibilité vanille est utilisée).
 
-**Inclure** autorisera les items sélectionnés à recevoir cet enchantement.
-**Exclure** n'autorisera pas les items sélectionnés à recevoir cet enchantement.
+**Inclure** autorisera les items sélectionnés à recevoir cet enchantement. **Exclure** n'autorisera pas les items sélectionnés à recevoir cet enchantement.

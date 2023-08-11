@@ -7,3 +7,4 @@ Pour mesurer le nombre de graduations à utiliser, utilisez cette équation:
 `# de ticks besoins = # d'objets que vous voulez que votre carburant fond * 200`
 
 Cliquez [ici](https://mcreator.net/wiki/burn-time-fuels) pour une liste des temps de combustion des éléments couramment utilisés pour la fusion dans Minecraft.
+

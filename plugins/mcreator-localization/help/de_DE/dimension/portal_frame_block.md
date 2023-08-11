@@ -1,0 +1,1 @@
+Portalrahmenblock ist der Block, der benutzt wird, um den Portalrahmen für die Dimension zu machen, wenn das Portal aktiviert ist.

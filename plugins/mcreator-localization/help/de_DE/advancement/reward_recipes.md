@@ -1,0 +1,1 @@
+Rezepte, die freigeschaltet werden sollen, wenn der Spieler den Fortschritt erhalten hat.
