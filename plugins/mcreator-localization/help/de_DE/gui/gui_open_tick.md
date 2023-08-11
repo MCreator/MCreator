@@ -1,0 +1,1 @@
+Triggert jeden Tick einen Prozess, während diese GUI geöffnet ist.

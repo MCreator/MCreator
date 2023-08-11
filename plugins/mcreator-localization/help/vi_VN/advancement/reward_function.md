@@ -1,0 +1,1 @@
+Bạn có thể chọn một chức năng để thực thi khi người chơi hoàn thành thành tựu với tham số này.

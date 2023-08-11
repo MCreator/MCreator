@@ -1,0 +1,1 @@
+Quy trình này sẽ được thực thi khi hiệu ứng thuốc được áp dụng vào một thực thể. 

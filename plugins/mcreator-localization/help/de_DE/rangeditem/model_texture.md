@@ -1,0 +1,1 @@
+Diese Textur ist die Textur des Kugelmodells, wenn benutzerdefiniertes Modell verwendet wird.
