@@ -1,0 +1,1 @@
+Diese Prozedur wird ausgeführt, wenn der Trank Effekt auf eine Entität angewendet wird. 

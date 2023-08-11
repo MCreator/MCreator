@@ -1,0 +1,1 @@
+Wenn dieser Parameter aktiviert ist, kann jede Pflanze platziert und wachsen auf dem Block.

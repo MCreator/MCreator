@@ -1,0 +1,1 @@
+Folge-Bereich legt fest, ab welcher Distanz Spieler / Ziel verfolgt werden soll

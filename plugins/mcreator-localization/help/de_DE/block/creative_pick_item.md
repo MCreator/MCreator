@@ -1,0 +1,1 @@
+Dies legt fest, welches Element ausgewählt wird, wenn Sie den Block "wählen" (mittlere Maustaste mit der Maus) wählen. Wenn leer, ist das kreative Objekt der Block selbst.
