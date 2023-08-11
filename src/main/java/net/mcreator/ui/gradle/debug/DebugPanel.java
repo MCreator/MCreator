@@ -75,7 +75,7 @@ public class DebugPanel extends JToolBar {
 
 		JScrollPane threadsScroll = new JScrollPane(debugThreadView);
 		threadsScroll.setBorder(BorderFactory.createTitledBorder("Threads list"));
-		threadsScroll.setPreferredSize(new Dimension(290, 0));
+		threadsScroll.setPreferredSize(new Dimension(340, 0));
 		debugging.add("West", threadsScroll);
 		add(debugging, DEBUGGING);
 
@@ -134,15 +134,15 @@ public class DebugPanel extends JToolBar {
 
 		new Thread(() -> {
 			while (this.debugClient != null) {
-				VirtualMachine vm = this.debugClient.getVirtualMachine();
-				if (vm != null) {
-					debugThreadView.updateThreadList(vm.allThreads());
-				}
-
 				try {
+					VirtualMachine vm = this.debugClient.getVirtualMachine();
+					if (vm != null) {
+						debugThreadView.updateThreadList(vm.allThreads());
+					}
+
 					//noinspection BusyWait
 					Thread.sleep(1000);
-				} catch (InterruptedException ignored) {
+				} catch (Exception ignored) {
 				}
 			}
 		}, "DebugPanelUpdater").start();

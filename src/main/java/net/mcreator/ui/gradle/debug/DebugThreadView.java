@@ -30,17 +30,21 @@ public class DebugThreadView extends JList<ThreadReference> {
 
 	public DebugThreadView() {
 		setCellRenderer(new ThreadRenderer());
+
+		ListSelectionModel selectionModel = new DefaultListSelectionModel() {
+			@Override
+			public void setSelectionInterval(int index0, int index1) {
+			}
+		};
+
+		setSelectionModel(selectionModel);
 	}
 
 	public void updateThreadList(List<ThreadReference> threadList) {
-		ThreadReference selectedThread = getSelectedValue();
-
 		DefaultListModel<ThreadReference> model = new DefaultListModel<>();
 		for (ThreadReference thread : threadList)
 			model.addElement(thread);
 		setModel(model);
-
-		setSelectedValue(selectedThread, true);
 	}
 
 	private static class ThreadRenderer extends JLabel implements ListCellRenderer<ThreadReference> {
@@ -57,10 +61,6 @@ public class DebugThreadView extends JList<ThreadReference> {
 				if (thread.isAtBreakpoint()) {
 					setBackground(new Color(255, 90, 90));
 					setForeground(new Color(42, 42, 42));
-				} else if (isSelected) {
-					setOpaque(true);
-					setBackground(list.getSelectionBackground());
-					setForeground(list.getSelectionForeground());
 				} else {
 					setBackground(list.getBackground());
 					setForeground(list.getForeground());
