@@ -176,6 +176,7 @@ public class BreakpointHandler {
 									} catch (BadLocationException ignored) {
 									}
 									bpCev.te.requestFocusInWindow();
+									bpCev.getMCreator().toFront();
 									bpCev.getMCreator().requestFocus();
 								}
 
