@@ -81,8 +81,9 @@ public class JVMDebugClient {
 								for (Breakpoint breakpoint : breakpoints) {
 									if (breakpoint.getBreakpointRequest() == breakpointEvent.request()) {
 										if (breakpoint.getListener() != null) {
-											if (breakpoint.getListener().breakpointHit(breakpoint, breakpointEvent))
+											if (breakpoint.getListener().breakpointHit(breakpoint, breakpointEvent)) {
 												shouldResumeOnBreakpoints = true;
+											}
 										}
 									}
 								}
@@ -235,7 +236,7 @@ public class JVMDebugClient {
 		eventListeners.add(listener);
 	}
 
-	public VirtualMachine getVirtualMachine() {
+	@Nullable public VirtualMachine getVirtualMachine() {
 		return virtualMachine;
 	}
 

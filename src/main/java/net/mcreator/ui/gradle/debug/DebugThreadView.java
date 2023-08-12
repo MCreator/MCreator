@@ -20,6 +20,7 @@
 package net.mcreator.ui.gradle.debug;
 
 import com.sun.jdi.ThreadReference;
+import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import java.awt.*;
@@ -32,12 +33,12 @@ public class DebugThreadView extends JList<ThreadReference> {
 		setCellRenderer(new ThreadRenderer());
 
 		ListSelectionModel selectionModel = new DefaultListSelectionModel() {
-			@Override
-			public void setSelectionInterval(int index0, int index1) {
+			@Override public void setSelectionInterval(int index0, int index1) {
 			}
 		};
 
 		setSelectionModel(selectionModel);
+		setOpaque(false);
 	}
 
 	public void updateThreadList(List<ThreadReference> threadList) {
@@ -53,8 +54,9 @@ public class DebugThreadView extends JList<ThreadReference> {
 		public Component getListCellRendererComponent(JList<? extends ThreadReference> list, ThreadReference thread,
 				int index, boolean isSelected, boolean cellHasFocus) {
 			try {
-				setText("<html>Status: " + thread.name() + "<br><small>" + convertThreadStatus(thread.status()).toLowerCase(
-						Locale.ENGLISH) + "</small></html>");
+				setText("<html><font size=4>" + thread.name() + "</font><br><small>" + L10N.t("debug.threads.status",
+						thread.threadGroup().name(), convertThreadStatus(thread.status()).toLowerCase(Locale.ENGLISH))
+						+ "</small></html>");
 
 				setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0));
 
@@ -63,8 +65,16 @@ public class DebugThreadView extends JList<ThreadReference> {
 					setForeground(new Color(42, 42, 42));
 				} else {
 					setBackground(list.getBackground());
-					setForeground(list.getForeground());
+
+					switch (thread.status()) {
+					case ThreadReference.THREAD_STATUS_RUNNING -> setForeground(new Color(113, 136, 99));
+					case ThreadReference.THREAD_STATUS_SLEEPING -> setForeground(new Color(88, 94, 131));
+					case ThreadReference.THREAD_STATUS_WAIT -> setForeground(new Color(99, 129, 152));
+					default -> setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+					}
 				}
+
+				setOpaque(false);
 			} catch (Exception ignored) {
 				// VM may be gone when we try to update the renderer
 			}
