@@ -580,14 +580,14 @@ public class CodeEditorView extends ViewBase {
 			tree.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			tree.setForeground(Color.white);
 			tree.setRowHeight(18);
-			tree.setUI(new SlickTreeUI());
+			tree.setUI(new SlickTreeUI(treeSP));
 			treeSP.setViewportView(tree);
 			treeSP.addComponentListener(new ComponentAdapter() {
 				@Override public void componentResized(ComponentEvent componentEvent) {
 					super.componentResized(componentEvent);
 					tree.updateUI();
 					tree.setCellRenderer(new AstTreeCellRendererCustom());
-					tree.setUI(new SlickTreeUI());
+					tree.setUI(new SlickTreeUI(treeSP));
 				}
 			});
 			treeSP.revalidate();

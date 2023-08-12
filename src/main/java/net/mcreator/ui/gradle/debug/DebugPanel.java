@@ -19,7 +19,9 @@
 
 package net.mcreator.ui.gradle.debug;
 
+import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.VirtualMachine;
+import com.sun.jdi.event.BreakpointEvent;
 import com.sun.jdi.event.Event;
 import com.sun.jdi.event.EventSet;
 import com.sun.jdi.event.VMStartEvent;
@@ -42,6 +44,8 @@ import java.util.List;
 
 public class DebugPanel extends JToolBar {
 
+	public static final Color DEBUG_COLOR = new Color(239, 50, 61);
+
 	private static final String WAITING_TO_CONNECT = "waiting_to_connect";
 	private static final String DEBUGGING = "debugging";
 
@@ -52,6 +56,8 @@ public class DebugPanel extends JToolBar {
 	private final CardLayout cardLayout = new CardLayout();
 
 	private final DebugThreadView debugThreadView = new DebugThreadView();
+
+	private final DebugFramesView debugFramesView = new DebugFramesView();
 
 	private final JButton resume = L10N.button("debug.resume");
 
@@ -72,7 +78,7 @@ public class DebugPanel extends JToolBar {
 		setBorder(new PlainToolbarBorder());
 		setLayout(cardLayout);
 
-		setPreferredSize(new Dimension(800, 310));
+		setPreferredSize(new Dimension(1400, 340));
 
 		markersParent.setOpaque(false);
 
@@ -94,26 +100,37 @@ public class DebugPanel extends JToolBar {
 		threadsScroll.getViewport().setOpaque(false);
 		threadsScroll.setBorder(BorderFactory.createTitledBorder(L10N.t("debug.threads")));
 		threadsScroll.setPreferredSize(new Dimension(300, 0));
+
+		debugFramesView.setBorder(BorderFactory.createTitledBorder(L10N.t("debug.frames")));
+
 		debugging.add("West", threadsScroll);
-		add(debugging, DEBUGGING);
+		debugging.add("Center", debugFramesView);
 
 		JLabel nomarkers = L10N.label("debug.no_markers");
 		nomarkers.setFont(loading.getFont().deriveFont(14f));
 		nomarkers.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		JComponent nomarkerwrap = PanelUtils.totalCenterInPanel(nomarkers);
+		nomarkerwrap.setPreferredSize(new Dimension(475, 0));
 
 		markers.setOpaque(false);
-		JScrollPane markersScroll = new JScrollPane(markers);
+		JScrollPane markersScroll = new JScrollPane();
+		JViewport viewport = new JViewport() {
+			@Override public Dimension getPreferredSize() {
+				return new Dimension(475, super.getPreferredSize().height);
+			}
+		};
+		viewport.setView(markers);
+		markersScroll.setViewport(viewport);
 		markersScroll.setOpaque(false);
 		markersScroll.setBorder(null);
 		markersScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		markersScroll.getViewport().setOpaque(false);
-		debugging.add("West", markersScroll);
 
+		markersParent.setBorder(BorderFactory.createTitledBorder(L10N.t("debug.frames")));
 		markersParent.setLayout(markersLayout);
-		markersParent.add(markers, "markers");
-		markersParent.add(PanelUtils.totalCenterInPanel(nomarkers), "no_markers");
-		markersParent.setBorder(BorderFactory.createTitledBorder(L10N.t("debug.markers")));
-		debugging.add("Center", markersParent);
+		markersParent.add(markersScroll, "markers");
+		markersParent.add(nomarkerwrap, "no_markers");
+		debugging.add("East", markersParent);
 
 		markersLayout.show(markersParent, "no_markers");
 
@@ -140,6 +157,8 @@ public class DebugPanel extends JToolBar {
 
 		debugging.add("South", new JEmptyBox(2, 2));
 
+		add(debugging, DEBUGGING);
+
 		setVisible(false);
 	}
 
@@ -147,6 +166,15 @@ public class DebugPanel extends JToolBar {
 		this.debugClient = debugClient;
 		this.debugClient.addEventListener((vm, eventSet, resumed) -> {
 			if (!resumed) {
+				for (Event event : eventSet) {
+					if (event instanceof BreakpointEvent breakpointEvent) {
+						try {
+							debugFramesView.showFrames(breakpointEvent.thread().frames());
+						} catch (IncompatibleThreadStateException ignored) {
+						}
+						break;
+					}
+				}
 				lastEventSet = eventSet;
 				resume.setEnabled(true);
 			}

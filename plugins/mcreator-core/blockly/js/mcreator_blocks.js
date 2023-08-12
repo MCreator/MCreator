@@ -205,7 +205,7 @@ Blockly.Blocks['debug_marker'] = {
             .appendField(new FieldJavaName("marker1"), 'NAME');
         this.setPreviousStatement(true);
         this.setNextStatement(true);
-        this.setColour("#FF5A5A");
+        this.setColour("#ef323d");
     }
 };
 

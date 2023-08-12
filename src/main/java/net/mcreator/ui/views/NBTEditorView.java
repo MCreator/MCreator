@@ -54,10 +54,10 @@ public class NBTEditorView extends ViewBase {
 		tree.setRowHeight(18);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setOpaque(false);
-		tree.setUI(new SlickTreeUI());
 
 		JScrollPane scrollPane = new JScrollPane(tree);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+		tree.setUI(new SlickTreeUI(scrollPane));
 
 		add("Center", scrollPane);
 

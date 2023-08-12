@@ -22,10 +22,17 @@ import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalTreeUI;
+import javax.swing.tree.AbstractLayoutCache;
 import javax.swing.tree.TreePath;
 import java.awt.*;
 
 public class SlickTreeUI extends MetalTreeUI {
+
+	private final JScrollPane parentScrollPane;
+
+	public SlickTreeUI(JScrollPane parent) {
+		this.parentScrollPane = parent;
+	}
 
 	@Override public Icon getCollapsedIcon() {
 		return UIRES.get("16px.collapsed");
@@ -40,4 +47,16 @@ public class SlickTreeUI extends MetalTreeUI {
 
 	@Override protected void paintVerticalPartOfLeg(Graphics g, Rectangle clipBounds, Insets insets, TreePath path) {
 	}
+
+	@Override protected AbstractLayoutCache.NodeDimensions createNodeDimensions() {
+		return new NodeDimensionsHandler() {
+			@Override
+			public Rectangle getNodeDimensions(Object value, int row, int depth, boolean expanded, Rectangle size) {
+				Rectangle dimensions = super.getNodeDimensions(value, row, depth, expanded, size);
+				dimensions.width = parentScrollPane.getWidth() - getRowX(row, depth);
+				return dimensions;
+			}
+		};
+	}
+
 }

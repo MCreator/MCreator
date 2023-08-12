@@ -27,6 +27,8 @@ import java.awt.*;
 import java.util.List;
 import java.util.Locale;
 
+import static net.mcreator.ui.gradle.debug.DebugPanel.DEBUG_COLOR;
+
 public class DebugThreadView extends JList<ThreadReference> {
 
 	public DebugThreadView() {
@@ -54,22 +56,22 @@ public class DebugThreadView extends JList<ThreadReference> {
 		public Component getListCellRendererComponent(JList<? extends ThreadReference> list, ThreadReference thread,
 				int index, boolean isSelected, boolean cellHasFocus) {
 			try {
-				setText("<html><font size=4>" + thread.name() + "</font><br><small>" + L10N.t("debug.threads.status",
+				setText("<html>" + thread.name() + "<br><small>" + L10N.t("debug.threads.status",
 						thread.threadGroup().name(), convertThreadStatus(thread.status()).toLowerCase(Locale.ENGLISH))
 						+ "</small></html>");
 
 				setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0));
 
 				if (thread.isAtBreakpoint()) {
-					setBackground(new Color(255, 90, 90));
+					setBackground(DEBUG_COLOR);
 					setForeground(new Color(42, 42, 42));
 				} else {
 					setBackground(list.getBackground());
 
 					switch (thread.status()) {
-					case ThreadReference.THREAD_STATUS_RUNNING -> setForeground(new Color(113, 136, 99));
-					case ThreadReference.THREAD_STATUS_SLEEPING -> setForeground(new Color(88, 94, 131));
-					case ThreadReference.THREAD_STATUS_WAIT -> setForeground(new Color(99, 129, 152));
+					case ThreadReference.THREAD_STATUS_RUNNING -> setForeground((Color) UIManager.get("MCreatorLAF.BRIHT_COLOR"));
+					case ThreadReference.THREAD_STATUS_WAIT -> setForeground(new Color(168, 168, 168));
+					case ThreadReference.THREAD_STATUS_SLEEPING -> setForeground(new Color(108, 108, 108));
 					default -> setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 					}
 				}

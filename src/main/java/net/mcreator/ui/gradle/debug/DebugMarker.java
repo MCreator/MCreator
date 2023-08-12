@@ -28,15 +28,17 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
+import static net.mcreator.ui.gradle.debug.DebugPanel.DEBUG_COLOR;
+
 public class DebugMarker extends JPanel {
 
-	private final Border IDLE = BorderFactory.createLineBorder(
-			(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-	private final Border ACTIVE = BorderFactory.createLineBorder(new Color(255, 90, 90));
+	private final Border IDLE = BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+	private final Border ACTIVE = BorderFactory.createLineBorder(DEBUG_COLOR);
 
 	private boolean active = false;
 
@@ -83,6 +85,16 @@ public class DebugMarker extends JPanel {
 
 		updateDisplay();
 		setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+
+		addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(java.awt.event.MouseEvent evt) {
+				if (evt.getClickCount() == 2) {
+					hitCountClient.set(0);
+					hitCountServer.set(0);
+					hitCountOther.set(0);
+				}
+			}
+		});
 	}
 
 	protected void loaded() {
