@@ -161,10 +161,11 @@ public class ExternalBlockLoader {
 		// Handle other and API categories
 		for (ToolboxCategory category : toolboxCategories) {
 			StringBuilder categoryBuilder = new StringBuilder();
-			categoryBuilder.append("<category name=\"").append(category.getName()).append("\" colour=\"")
-					.append(category.color).append("\">");
+			categoryBuilder.append("<category name=\"").append(escapeTranslationForXMLAndJS(category.getName()))
+					.append("\" colour=\"").append(category.color).append("\">");
 			if (category.getDescription() != null) {
-				categoryBuilder.append("<label text=\"").append(category.getDescription())
+				categoryBuilder.append("<label text=\"")
+						.append(escapeTranslationForXMLAndJS(category.getDescription()))
 						.append("\" web-class=\"whlab\"/>");
 			}
 			for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
@@ -188,7 +189,7 @@ public class ExternalBlockLoader {
 
 		Matcher m = translationsMatcher.matcher(toolbox_xml);
 		while (m.find()) {
-			String m1 = L10N.t(m.group(1));
+			String m1 = escapeTranslationForXMLAndJS(L10N.t(m.group(1)));
 			if (m1 != null)
 				toolbox_xml = toolbox_xml.replace(m.group(), m1);
 		}
@@ -211,6 +212,13 @@ public class ExternalBlockLoader {
 
 	public Map<String, ToolboxBlock> getDefinedBlocks() {
 		return toolboxBlocks;
+	}
+
+	private String escapeTranslationForXMLAndJS(String translation) {
+		if (translation == null)
+			return null;
+
+		return translation.replace("'", "\\'").replace("\"", "&quot;");
 	}
 
 }

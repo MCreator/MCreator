@@ -48,6 +48,8 @@ public class GeneratorStats {
 
 	private final Map<String, Set<String>> generatorBlocklyBlocks;
 
+	private final Map<TextureType, CoverageStatus> textureCoverageInfo = new HashMap<>();
+
 	private final Set<String> procedureTriggers;
 
 	GeneratorStats(GeneratorConfiguration generatorConfiguration) {
@@ -99,7 +101,7 @@ public class GeneratorStats {
 			BlocklyLoader.INSTANCE.getAllBlockLoaders()
 					.forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
 			addGlobalTriggerFolder(generatorConfiguration);
-		}).start();
+		}, "GeneratorStats-Loader").start();
 
 		if (generatorConfiguration.getVariableTypes().getSupportedVariableTypes().isEmpty()) {
 			baseCoverageInfo.put("variables", CoverageStatus.NONE);
@@ -125,6 +127,7 @@ public class GeneratorStats {
 		int supportedTextureTypes = 0;
 		for (TextureType textureType : TextureType.values()) {
 			if (generatorConfiguration.getSpecificRoot(textureType.getID() + "_textures_dir") != null) {
+				textureCoverageInfo.put(textureType, CoverageStatus.FULL);
 				texturesCoverage = CoverageStatus.PARTIAL;
 				supportedTextureTypes++;
 			}
@@ -210,6 +213,10 @@ public class GeneratorStats {
 
 	public Map<String, CoverageStatus> getBaseCoverageInfo() {
 		return baseCoverageInfo;
+	}
+
+	public Map<TextureType, CoverageStatus> getTextureCoverageInfo() {
+		return textureCoverageInfo;
 	}
 
 	public Status getStatus() {

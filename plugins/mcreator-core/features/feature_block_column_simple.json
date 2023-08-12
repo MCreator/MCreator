@@ -12,7 +12,8 @@
     }
   ],
   "extensions": [
-    "simple_column_validator"
+    "simple_column_validator",
+    "add_image_to_bsp_inputs"
   ],
   "inputsInline": true,
   "output": "Feature",

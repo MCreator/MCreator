@@ -10,6 +10,7 @@
 				"world": "event.getEntity().level",
 				"amount": "event.getAmount()",
 				"entity": "event.getEntity()",
+				"damagesource": "event.getSource()",
 				"sourceentity": "event.getSource().getEntity()",
 				"event": "event"
 				}/>

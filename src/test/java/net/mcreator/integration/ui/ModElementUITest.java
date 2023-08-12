@@ -27,6 +27,7 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.integration.TestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
+import net.mcreator.integration.generator.GTSampleElements;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyPanel;
@@ -49,8 +50,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ModElementUITest {
 
@@ -84,49 +84,7 @@ public class ModElementUITest {
 		mcreator = new MCreator(null, workspace);
 
 		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
-
-		// generate some "dummy" procedures for dropdowns to work
-		for (int i = 1; i <= 15; i++) {
-			workspace.addModElement(
-					new ModElement(workspace, "procedure" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
-							new ArrayList<String>()));
-		}
-
-		for (int i = 1; i <= 4; i++) {
-			workspace.addModElement(
-					new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
-							new ArrayList<String>()).putMetadata("return_type", "LOGIC"));
-		}
-
-		for (int i = 1; i <= 2; i++) {
-			workspace.addModElement(
-					new ModElement(workspace, "number" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
-							new ArrayList<String>()).putMetadata("return_type", "NUMBER"));
-		}
-
-		for (int i = 1; i <= 2; i++) {
-			workspace.addModElement(
-					new ModElement(workspace, "string" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
-							new ArrayList<String>()).putMetadata("return_type", "STRING"));
-		}
-
-		for (int i = 1; i <= 2; i++) {
-			workspace.addModElement(
-					new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
-							new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK"));
-		}
-
-		for (int i = 1; i <= 1; i++) {
-			workspace.addModElement(
-					new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE).putMetadata(
-							"dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE"));
-		}
-
-		for (int i = 1; i <= 1; i++) {
-			workspace.addModElement(
-					new ModElement(workspace, "entity" + i, ModElementType.PROCEDURE).putMetadata("dependencies",
-							new ArrayList<String>()).putMetadata("return_type", "ENTITY"));
-		}
+		GTSampleElements.provideAndGenerateSampleElements(new Random(), workspace);
 
 		// reduce autosave interval for tests
 		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
@@ -167,6 +125,9 @@ public class ModElementUITest {
 			InterruptedException {
 		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
 
+			if (modElementType == ModElementType.CODE)
+				continue; // does not have regular handling so skip it
+
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
 					modElementType, true, random);
 
@@ -185,11 +146,7 @@ public class ModElementUITest {
 				generatableElement = workspace.getModElementManager()
 						.fromJSONtoGeneratableElement(exportedJSON, modElement);// from JSON to generatableelement
 
-				if (generatableElement == null) {
-					LOG.warn("This mod element type does not support generatable elements: " + modElement.getType()
-							.getReadableName());
-					continue;
-				}
+				assertNotNull(generatableElement);
 
 				ModElementGUI<?> modElementGUI = modElementType.getModElementGUI(mcreator, modElement, false);
 

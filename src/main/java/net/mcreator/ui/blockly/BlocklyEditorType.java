@@ -19,7 +19,16 @@
 
 package net.mcreator.ui.blockly;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public record BlocklyEditorType(String registryName, String extension, String startBlockName) {
+
+	private static final Map<String, BlocklyEditorType> TYPES = new HashMap<>();
+
+	public static BlocklyEditorType fromName(String registryName) {
+		return TYPES.get(registryName);
+	}
 
 	public static final BlocklyEditorType PROCEDURE = new BlocklyEditorType("procedures", "ptpl", "event_trigger");
 	public static final BlocklyEditorType AI_TASK = new BlocklyEditorType("aitasks", "aitpl", "aitasks_container");
@@ -27,5 +36,11 @@ public record BlocklyEditorType(String registryName, String extension, String st
 	public static final BlocklyEditorType FEATURE = new BlocklyEditorType("features", "ftpl", "feature_container");
 	public static final BlocklyEditorType JSON_TRIGGER = new BlocklyEditorType("jsontriggers", null,
 			"advancement_trigger");
+
+	public BlocklyEditorType {
+		if (TYPES.containsKey(registryName))
+			throw new IllegalArgumentException("Blockly editor " + registryName + " is already registered");
+		TYPES.put(registryName, this);
+	}
 
 }

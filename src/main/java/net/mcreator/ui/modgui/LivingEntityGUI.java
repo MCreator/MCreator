@@ -81,7 +81,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
+public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlocklyPanelHolder {
 
 	private ProcedureSelector onStruckByLightning;
 	private ProcedureSelector whenMobFalls;
@@ -301,21 +301,21 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 				L10N.t("elementgui.living_entity.event_struck_by_lightning"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		whenMobFalls = new ProcedureSelector(this.withEntry("entity/when_falls"), mcreator,
-				L10N.t("elementgui.living_entity.event_mob_falls"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+				L10N.t("elementgui.living_entity.event_mob_falls"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/damagesource:damagesource"));
 		whenMobDies = new ProcedureSelector(this.withEntry("entity/when_dies"), mcreator,
-				L10N.t("elementgui.living_entity.event_mob_dies"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
+				L10N.t("elementgui.living_entity.event_mob_dies"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/damagesource:damagesource"));
 		whenMobIsHurt = new ProcedureSelector(this.withEntry("entity/when_hurt"), mcreator,
-				L10N.t("elementgui.living_entity.event_mob_is_hurt"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
+				L10N.t("elementgui.living_entity.event_mob_is_hurt"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/damagesource:damagesource"));
 		onRightClickedOn = new ProcedureSelector(this.withEntry("entity/when_right_clicked"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_right_clicked"),
 				VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack")).makeReturnValueOptional();
 		whenThisMobKillsAnother = new ProcedureSelector(this.withEntry("entity/when_kills_another"), mcreator,
-				L10N.t("elementgui.living_entity.event_mob_kills_another"),
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity"));
+				L10N.t("elementgui.living_entity.event_mob_kills_another"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/damagesource:damagesource"));
 		onMobTickUpdate = new ProcedureSelector(this.withEntry("entity/on_tick_update"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_tick_update"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
@@ -721,7 +721,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
 			blocklyPanel.getJSBridge()
-					.setJavaScriptEventListener(() -> new Thread(LivingEntityGUI.this::regenerateAITasks).start());
+					.setJavaScriptEventListener(() -> new Thread(LivingEntityGUI.this::regenerateAITasks, "AITasksRegenerate").start());
 			if (!isEditingMode()) {
 				setDefaultAISet();
 			}
@@ -1175,6 +1175,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> {
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-mob");
+	}
+
+	@Override public List<BlocklyPanel> getBlocklyPanels() {
+		return List.of(blocklyPanel);
 	}
 
 }

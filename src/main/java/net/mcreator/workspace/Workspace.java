@@ -19,8 +19,6 @@
 package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -94,25 +92,26 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		markDirty();
 	}
 
-	public void setFoldersRoot(FolderElement foldersRoot) {
-		this.foldersRoot = foldersRoot;
-		markDirty();
-	}
-
 	/**
-	 * @return UNMODIFIABLE! list of mod elements
+	 * @return UNMODIFIABLE! collection of mod elements
 	 */
 	public Collection<ModElement> getModElements() {
 		return Collections.unmodifiableSet(new LinkedHashSet<>(mod_elements));
 	}
 
+	/**
+	 * @return UNMODIFIABLE! collection of variable elements
+	 */
 	public Collection<VariableElement> getVariableElements() {
-		// make sure that variable types are supported by generator
+		// make sure that variable types are supported (a fix for #2052)
 		return variable_elements.stream().filter(e -> e.getType() != null).toList();
 	}
 
+	/**
+	 * @return UNMODIFIABLE! collection of sound elements
+	 */
 	public Collection<SoundElement> getSoundElements() {
-		return sound_elements;
+		return Collections.unmodifiableSet(sound_elements);
 	}
 
 	public Map<String, ConcurrentHashMap<String, String>> getLanguageMap() {
@@ -186,14 +185,17 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
 			markDirty();
-		} else
-			updateModElement(element); // if exists, we store new version
+		} else {
+			LOG.warn("Trying to add existing mod element: " + element.getName() + " of type " + element.getTypeString());
+		}
 	}
 
 	public void addVariableElement(VariableElement element) {
 		if (!variable_elements.contains(element)) {
 			variable_elements.add(element);
 			markDirty();
+		} else {
+			LOG.warn("Trying to add existing variable element: " + element.getName());
 		}
 	}
 
@@ -201,58 +203,16 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!sound_elements.contains(element)) {
 			sound_elements.add(element);
 			markDirty();
+		} else {
+			LOG.warn("Trying to add existing sound element: " + element.getName());
 		}
-	}
-
-	public void updateModElement(ModElement element) {
-		for (ModElement el : mod_elements) {
-			if (el.getName().equals(element.getName())) {
-				el.loadDataFrom(element);
-				el.reloadElementIcon(); // update ME icon
-				el.getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush()); // update MCItem icons
-			}
-		}
-		markDirty();
-	}
-
-	public void updateSoundElement(SoundElement originalElement, SoundElement updatedElement) {
-		Set<SoundElement> tmp = new HashSet<>(sound_elements);
-		for (SoundElement el : tmp) {
-			if (el.getName().equals(originalElement.getName())) {
-				sound_elements.remove(el);
-				sound_elements.add(updatedElement);
-			}
-		}
-		markDirty();
-	}
-
-	public void updateVariableElement(VariableElement originalElement, VariableElement updatedElement) {
-		Set<VariableElement> tmp = new HashSet<>(variable_elements);
-		for (VariableElement el : tmp) {
-			if (el.getName().equals(originalElement.getName())) {
-				variable_elements.remove(el);
-				variable_elements.add(updatedElement);
-			}
-		}
-		markDirty();
 	}
 
 	public void removeModElement(ModElement element) {
 		if (!mod_elements.contains(element)) // skip element if it is not present on the list already
 			return;
 
-		// first we ask generator to remove all related files
-		if (element.getType() != ModElementType.UNKNOWN) {
-			GeneratableElement generatableElement = element.getGeneratableElement();
-			if (generatableElement != null && generator != null)
-				generator.removeElementFilesAndLangKeys(generatableElement);
-			else
-				LOG.warn("Failed to remove element files for element " + element);
-		}
-
-		// after we don't need the definition anymore, remove actual files
-		new File(fileManager.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
-		new File(fileManager.getFolderManager().getModElementPicturesCacheDir(), element.getName() + ".png").delete();
+		fileManager.getModElementManager().removeModElement(element);
 
 		// finally remove element form the list
 		mod_elements.remove(element);
@@ -508,14 +468,11 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return retval;
 	}
 
-	public void reloadFromFS() {
-		String workspace_string = FileIO.readFileToString(fileManager.getWorkspaceFile());
-		Workspace workspace_on_fs = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
-		loadStoredDataFrom(workspace_on_fs);
-		reloadModElements();
-		reloadFolderStructure();
-		LOG.info("Reloaded current workspace from the workspace file");
+	public boolean isRegenerateRequired() {
+		return regenerateRequired;
 	}
+
+	// Below are methods that may still be used by some plugins
 
 	public void loadStoredDataFrom(Workspace other) {
 		this.mod_elements = other.mod_elements;
@@ -528,11 +485,56 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.workspaceSettings.setWorkspace(this);
 	}
 
-	public boolean isRegenerateRequired() {
-		return regenerateRequired;
+	@SuppressWarnings("unused") public void setFoldersRoot(FolderElement foldersRoot) {
+		this.foldersRoot = foldersRoot;
+		markDirty();
 	}
 
-	public final static class VirtualWorkspace extends Workspace {
+	@SuppressWarnings("unused") public void updateModElement(ModElement element) {
+		for (ModElement el : mod_elements) {
+			if (el == element || el.getName().equals(element.getName())) {
+				el.loadDataFrom(element);
+				el.reloadElementIcon(); // update ME icon
+				el.getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush()); // update MCItem icons
+
+				break; // there can be only one element with given name so no need to iterate further
+			}
+		}
+		markDirty();
+	}
+
+	@SuppressWarnings("unused") public void updateSoundElement(SoundElement originalElement, SoundElement updatedElement) {
+		Set<SoundElement> tmp = new HashSet<>(sound_elements);
+		for (SoundElement el : tmp) {
+			if (el.getName().equals(originalElement.getName())) {
+				sound_elements.remove(el);
+				sound_elements.add(updatedElement);
+			}
+		}
+		markDirty();
+	}
+
+	@SuppressWarnings("unused") public void updateVariableElement(VariableElement originalElement, VariableElement updatedElement) {
+		Set<VariableElement> tmp = new HashSet<>(variable_elements);
+		for (VariableElement el : tmp) {
+			if (el.getName().equals(originalElement.getName())) {
+				variable_elements.remove(el);
+				variable_elements.add(updatedElement);
+			}
+		}
+		markDirty();
+	}
+
+	@SuppressWarnings("unused") public void reloadFromFS() {
+		String workspace_string = FileIO.readFileToString(fileManager.getWorkspaceFile());
+		Workspace workspace_on_fs = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
+		loadStoredDataFrom(workspace_on_fs);
+		reloadModElements();
+		reloadFolderStructure();
+		LOG.info("Reloaded current workspace from the workspace file");
+	}
+
+	@SuppressWarnings("unused") public final static class VirtualWorkspace extends Workspace {
 
 		public VirtualWorkspace(Workspace original, String workspace_string) throws IOException {
 			super(null);
