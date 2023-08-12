@@ -94,3 +94,25 @@ feature_simple_random_selector:
   - SimpleRandomSelectorFeature
   - SimpleRandomFeatureConfiguration
   - "minecraft:simple_random_selector"
+
+# Tree features
+feature_tree_acacia:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_dark_oak:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_jungle_bush:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_jungle_mega:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
+feature_tree_oak:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
