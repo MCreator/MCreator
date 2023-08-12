@@ -90,6 +90,23 @@ public final class ModElementManager {
 						element.getModElement().getName() + ".mod.json"));
 	}
 
+	public void removeModElement(ModElement element) {
+		cache.remove(element);
+
+		// first we ask generator to remove all related files
+		if (element.getType() != ModElementType.UNKNOWN) {
+			GeneratableElement generatableElement = element.getGeneratableElement();
+			if (generatableElement != null && workspace.getGenerator() != null)
+				workspace.getGenerator().removeElementFilesAndLangKeys(generatableElement);
+			else
+				LOG.warn("Failed to remove element files for element " + element);
+		}
+
+		// after we don't need the definition anymore, remove actual files
+		new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
+		new File(workspace.getFolderManager().getModElementPicturesCacheDir(), element.getName() + ".png").delete();
+	}
+
 	GeneratableElement loadGeneratableElement(ModElement element) {
 		// To prevent circular reference (and thus stack overflow), we return Unknown GE if we are loading the
 		// mod element that is being converted as otherwise this will try to start the conversion again
@@ -100,8 +117,13 @@ public final class ModElementManager {
 			return new CustomElement(element);
 		}
 
-		if (cache.containsKey(element))
-			return cache.get(element);
+		if (cache.containsKey(element)) {
+			if (cache.get(element).getModElement() == element) {
+				return cache.get(element);
+			} else {
+				LOG.error("GeneratableElement cache contains element with same name but different object. This should not happen!");
+			}
+		}
 
 		File genFile = new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json");
 
@@ -184,6 +206,13 @@ public final class ModElementManager {
 		if (icon == null || icon.getImage() == null || icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0)
 			icon = element.getType().getIcon();
 		return icon;
+	}
+
+	/**
+	 * Invalidates the cache of this manager. May be used by some plugins.
+	 */
+	@SuppressWarnings("unused") public void invalidateCache() {
+		cache.clear();
 	}
 
 }
