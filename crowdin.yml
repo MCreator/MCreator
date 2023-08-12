@@ -1,8 +1,26 @@
 project_id_env: CROWDIN_PROJECT_ID
 api_token_env: CROWDIN_PERSONAL_TOKEN
-commit_message: '[skip ci]'
-files:
-  - source: /plugins/mcreator-localization/lang/texts.properties
-    translation: /plugins/mcreator-localization/lang/texts_%locale_with_underscore%.properties
-  - source: /plugins/mcreator-link/lang/texts.properties
-    translation: /plugins/mcreator-link/lang/texts_%locale_with_underscore%.properties
+
+"base_path": "."
+"base_url": "https://api.crowdin.com"
+
+"preserve_hierarchy": true
+
+"files": [
+  {
+    "source": "/plugins/mcreator-localization/lang/texts.properties",
+    "translation": "/plugins/mcreator-localization/lang/texts_%locale_with_underscore%.properties",
+    "skip_untranslated_strings": true,
+  },
+  {
+    "source": "/plugins/mcreator-link/lang/texts.properties",
+    "translation": "/plugins/mcreator-link/lang/texts_%locale_with_underscore%.properties",
+    "skip_untranslated_strings": true,
+  },
+  {
+    source: "/plugins/mcreator-localization/help/default/**/*.md",
+    translation: "/plugins/mcreator-localization/help/%locale_with_underscore%/**/%original_file_name%",
+    content_segmentation: 0,
+    skip_untranslated_files: true,
+  },
+]

@@ -25,3 +25,5 @@ jobs:
           clean: true
           folder: build/docs/javadoc
           target-folder: .
+          git-config-name: "github-actions"
+          git-config-email: "<>"

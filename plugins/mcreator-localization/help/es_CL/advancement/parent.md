@@ -1,3 +1,3 @@
-Este es el logro que se continuará a tu logro en la rama.
+Este es el logro del cual se desprenderá tu logro.
 
-Puedes usar "Sin padre: raíz" para hacer una nueva rama (Nueva pestaña de logros)
+Puedes usar "No parent: root" que creará una nueva rama (Nueva pestaña de logros).

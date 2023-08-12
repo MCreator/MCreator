@@ -24,12 +24,14 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
 
-@SuppressWarnings("unused") public class Recipe extends NamespacedGeneratableElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Recipe extends NamespacedGeneratableElement {
 
-	public String recipeType;
+	@Nonnull public String recipeType;
+
 	public int recipeRetstackSize;
 	public String group;
 
