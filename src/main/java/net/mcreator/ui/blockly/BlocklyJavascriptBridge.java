@@ -139,9 +139,21 @@ public class BlocklyJavascriptBridge {
 			case "spawnableEntity" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "entity");
+			case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUI(w).toArray(String[]::new), "gui");
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"biome");
+			case "dimension" -> openStringEntrySelector(ElementUtil::loadAllDimensions, "dimension");
+			case "dimensionCustom" -> openStringEntrySelector(
+					w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
+							.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new), "dimension");
+			case "fluid" -> openStringEntrySelector(ElementUtil::loadAllFluids, "fluids");
+			case "gamerulesboolean" -> openDataListEntrySelector(
+					w -> ElementUtil.getAllBooleanGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+							.toList(), "gamerules");
+			case "gamerulesnumber" -> openDataListEntrySelector(
+					w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+							.toList(), "gamerules");
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
 			case "procedure" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
@@ -177,8 +189,7 @@ public class BlocklyJavascriptBridge {
 	 */
 	private String[] openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
 		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
-		String title = L10N.t("dialog.selector." + type + ".title");
-		String message = L10N.t("dialog.selector." + type + ".message");
+		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()
 				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
@@ -213,8 +224,7 @@ public class BlocklyJavascriptBridge {
 	 */
 	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
 		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
-		String title = L10N.t("dialog.selector." + type + ".title");
-		String message = L10N.t("dialog.selector." + type + ".message");
+		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()
 				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING

@@ -82,7 +82,7 @@ public class DiscordClient implements Closeable {
 			} catch (Exception e) {
 				LOG.warn("Failed to update presence", e);
 			}
-		}).start();
+		}, "DiscordPresenceUpdater").start();
 	}
 
 	@Override public void close() {

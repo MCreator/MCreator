@@ -1,0 +1,1 @@
+Dieser Parameter legt die ursprüngliche (und maximale Basis) Gesundheit des Mobs fest. 2 Gesundheit = 1 Herz

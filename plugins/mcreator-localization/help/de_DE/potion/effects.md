@@ -1,0 +1,1 @@
+Die Trankeffekte in der folgenden Liste werden auf die von deinem Trank betroffenen Einheiten angewendet.

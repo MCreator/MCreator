@@ -1,0 +1,1 @@
+Dieser Parameter steuert bestimmte Aspekte der Dimension in Bezug auf Wetter, Kompassfunktion und Kreaturen-Spawnen.

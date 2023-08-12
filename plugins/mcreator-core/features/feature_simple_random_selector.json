@@ -1,0 +1,16 @@
+{
+  "mutator": "feature_simple_random_mutator",
+  "output": "Feature",
+  "colour": 0,
+  "mcreator": {
+    "toolbox_id": "advancedfeatures",
+    "toolbox_init": [
+      "<mutation inputs=\"2\"></mutation>",
+      "~<value name=\"feature0\"><block type=\"feature_no_op\"></block></value>",
+      "~<value name=\"feature1\"><block type=\"feature_no_op\"></block></value>"
+    ],
+    "repeating_inputs": [
+      "feature"
+    ]
+  }
+}

@@ -212,7 +212,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 					}
 					workspacePanel.getMCreator().getWorkspace().updateLanguage(entry.getKey(), keyValueMap);
 				}
-			}).start());
+			}, "WorkspaceLocalizationsReload").start());
 
 			JScrollPane sp = new JScrollPane(elements);
 			sp.setOpaque(false);

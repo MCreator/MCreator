@@ -201,7 +201,7 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	synchronized private List<Plugin> listPluginsFromFolder(File folder, boolean builtin) {
-		LOG.debug("Loading plugins from: " + folder);
+		LOG.debug("Searching for plugins in: " + folder);
 
 		List<Plugin> loadList = new ArrayList<>();
 
@@ -236,7 +236,7 @@ public class PluginLoader extends URLClassLoader {
 							"IO error: " + e.getMessage()));
 					LOG.error("Failed to load plugin from " + pluginFile, e);
 				}
-			} else {
+			} else if (!builtin) { // we don't load builtin plugins recursively
 				File[] pluginFiles = pluginFile.listFiles();
 				for (File innerFile : pluginFiles != null ? pluginFiles : new File[0]) {
 					if (innerFile.isDirectory())

@@ -47,7 +47,13 @@ public class ${name}Feature extends OreFeature {
 				List.of(
 					<#list data.blocksToReplace as replacementBlock>
 						OreConfiguration.target(
-							new BlockStateMatchTest(${mappedBlockToBlockStateCode(replacementBlock)}),
+							<#if replacementBlock.getUnmappedValue().startsWith("TAG:")>
+								new TagMatchTest(BlockTags.create(new ResourceLocation("${replacementBlock.getUnmappedValue().replace("TAG:", "")}"))),
+							<#elseif generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).startsWith("#")>
+								new TagMatchTest(BlockTags.create(new ResourceLocation("${generator.map(replacementBlock.getUnmappedValue(), "blocksitems", 1).replace("#", "")}"))),
+							<#else>
+								new BlockStateMatchTest(${mappedBlockToBlockStateCode(replacementBlock)}),
+							</#if>
 							${JavaModName}Blocks.${data.getModElement().getRegistryNameUpper()}.get().defaultBlockState()
 						)<#sep>,
 					</#list>

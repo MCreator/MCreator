@@ -83,11 +83,10 @@ public class NewVariableDialog {
 		if (option == JOptionPane.OK_OPTION
 				&& textField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
 				&& type.getSelectedItem() != null) {
-			VariableElement element = new VariableElement();
 			VariableType variable = VariableTypeLoader.INSTANCE.fromName(
 					((VariableType) type.getSelectedItem()).getName());
 			if (variable != null) {
-				element.setName(Transliteration.transliterateString(textField.getText()));
+				VariableElement element = new VariableElement(Transliteration.transliterateString(textField.getText()));
 				element.setType((VariableType) type.getSelectedItem());
 				element.setValue(variable.getDefaultValue(mcreator.getWorkspace()));
 				if (showScope)

@@ -1,0 +1,1 @@
+Wenn die Bedingung angegeben ist, muss der Spieler sie übergeben, um ein Portal zu dieser Dimension zu bauen. Itemstack-Abhängigkeit ist das Element, das für die Portalaktivierung verwendet wird.
