@@ -1,0 +1,1 @@
+Wenn diese bedingte Prozedur wahr ist, wird die Entität Partikel, basierend auf den Einstellungen, erzeugen.

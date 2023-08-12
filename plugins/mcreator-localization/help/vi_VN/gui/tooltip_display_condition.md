@@ -1,0 +1,1 @@
+Nếu điều kiện được chỉ định, chú giải này sẽ chỉ được hiển thị trong trường hợp điều kiện thỏa mãn.
