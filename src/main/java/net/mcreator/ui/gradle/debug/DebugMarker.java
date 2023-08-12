@@ -22,6 +22,7 @@ package net.mcreator.ui.gradle.debug;
 import com.sun.jdi.event.BreakpointEvent;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -66,6 +67,16 @@ public class DebugMarker extends JPanel {
 		if (modElement != null) {
 			JLabel icon = new JLabel(modElement.getElementIcon());
 			icon.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 10));
+			icon.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+			icon.addMouseListener(new MouseAdapter() {
+				@Override public void mouseClicked(java.awt.event.MouseEvent evt) {
+					ModElementGUI<?> modElementGUI = modElement.getType()
+							.getModElementGUI(debugPanel.getMCreator(), modElement, true);
+					if (modElementGUI != null) {
+						modElementGUI.showView();
+					}
+				}
+			});
 			add("East", icon);
 		}
 
