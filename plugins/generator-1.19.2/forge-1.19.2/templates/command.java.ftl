@@ -33,34 +33,14 @@
 
 package ${package}.command;
 
-@Mod.EventBusSubscriber<#if data.type == 3>(value = Dist.CLIENT)</#if> public class ${name}Command {
+@Mod.EventBusSubscriber public class ${name}Command {
 
-	<#if data.type == data.TYPE_CLIENT_SIDE>
-		@SubscribeEvent public static void registerCommand(RegisterClientCommandsEvent event) {
-			<@commandCode/>
-		}
-	<#else>
-		@SubscribeEvent public static void registerCommand(RegisterCommandsEvent event) {
-			<#if data.type == data.TYPE_MULTIPLAYER>
-				if (event.getCommandSelection() == Commands.CommandSelection.DEDICATED) {
-					<@commandCode/>
-				}
-			<#elseif data.type == data.TYPE_SINGLEPLAYER>
-				if (event.getCommandSelection() == Commands.CommandSelection.INTEGRATED) {
-					<@commandCode/>
-				}
-			<#else>
-				<@commandCode/>
-			</#if>
-		}
-	</#if>
+	@SubscribeEvent public static void registerCommand(RegisterCommandsEvent event) {
+		event.getDispatcher().register(Commands.literal("${data.commandName}")
+			<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermission(${data.permissionLevel}))</#if>
+			${argscode}
+		);
+	}
 
 }
-
-<#macro commandCode>
-	event.getDispatcher().register(Commands.literal("${data.commandName}")
-		<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermission(${data.permissionLevel}))</#if>
-		${argscode}
-	);
-</#macro>
 <#-- @formatter:on -->
