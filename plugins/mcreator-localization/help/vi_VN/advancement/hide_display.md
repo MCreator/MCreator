@@ -1,0 +1,1 @@
+Tích tham số này để ẩn thành tựu khỏi tab thành tựu cho đến khi nó được hoàn thành.

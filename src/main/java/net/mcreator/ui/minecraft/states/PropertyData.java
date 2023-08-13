@@ -80,12 +80,7 @@ import java.util.stream.Collectors;
 	 * @return The name of this property with the prefix
 	 */
 	@SuppressWarnings("unused") public final String getPrefixedName(String prefix) {
-		String rawName = getName();
-
-		if (rawName.startsWith("CUSTOM:"))
-			return "CUSTOM:" + prefix + rawName.substring(7);
-		else
-			return prefix + rawName;
+		return !name.startsWith("CUSTOM:") ? name : "CUSTOM:" + prefix + name.substring(7);
 	}
 
 	/**
@@ -230,7 +225,7 @@ import java.util.stream.Collectors;
 		private final double min, max;
 
 		public NumberType(String name) {
-			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
+			this(name, -Double.MAX_VALUE, Double.MAX_VALUE);
 		}
 
 		public NumberType(String name, double min, double max) {

@@ -1,0 +1,1 @@
+Dies ist der Klang, der gespielt wird, wenn der Spieler den Block in der Welt platziert.

@@ -46,6 +46,7 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
@@ -53,13 +54,13 @@ import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.*;
 
-@SuppressWarnings("unused") public class LivingEntity extends GeneratableElement
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class LivingEntity extends GeneratableElement
 		implements IEntityWithModel, ITabContainedElement, ICommonType, IMCItemProvider {
 
 	public String mobName;
 	public String mobLabel;
 
-	public String mobModelName;
+	@Nonnull public String mobModelName;
 	public String mobModelTexture;
 	public String mobModelGlowTexture;
 	public Procedure transparentModelCondition;

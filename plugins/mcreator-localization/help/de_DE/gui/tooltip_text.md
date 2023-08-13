@@ -1,0 +1,1 @@
+Der Text, der im Tooltip für einen Spieler angezeigt wird, der den Bereich dieser Komponente verschiebt.

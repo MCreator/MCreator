@@ -239,7 +239,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		Image image = canvasRenderer.render();
 
-		JComboBox<TextureType> types = new JComboBox<>(TextureType.getTypes(false));
+		JComboBox<TextureType> types = new JComboBox<>(TextureType.getSupportedTypes(mcreator.getWorkspace(), false));
 		VTextField name = new VTextField(20);
 		name.setValidator(new RegistryNameValidator(name, L10N.t("dialog.image_maker.texture_name")));
 		name.enableRealtimeValidation();
