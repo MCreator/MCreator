@@ -39,6 +39,7 @@
 package net.mcreator.ui.debug;
 
 import com.sun.jdi.IncompatibleThreadStateException;
+import com.sun.jdi.ThreadReference;
 import com.sun.jdi.VirtualMachine;
 import com.sun.jdi.event.BreakpointEvent;
 import com.sun.jdi.event.Event;
@@ -77,7 +78,7 @@ public class DebugPanel extends JPanel {
 
 	private final DebugFramesView debugFramesView = new DebugFramesView();
 
-	private final JButton resume = L10N.button("debug.resume");
+	private final JButton resume = new JButton(UIRES.get("16px.debug_resume"));
 
 	private EventSet lastEventSet = null;
 
@@ -95,7 +96,7 @@ public class DebugPanel extends JPanel {
 
 		setLayout(cardLayout);
 
-		setPreferredSize(new Dimension(1400, 340));
+		setPreferredSize(new Dimension(1400, 280));
 
 		markersParent.setOpaque(false);
 
@@ -120,8 +121,7 @@ public class DebugPanel extends JPanel {
 
 		debugFramesView.setBorder(BorderFactory.createTitledBorder(L10N.t("debug.frames")));
 
-		debugging.add("West", threadsScroll);
-		debugging.add("Center", debugFramesView);
+		debugging.add("Center", PanelUtils.westAndCenterElement(threadsScroll, debugFramesView));
 
 		JLabel nomarkers = L10N.label("debug.no_markers");
 		nomarkers.setFont(loading.getFont().deriveFont(14f));
@@ -152,23 +152,33 @@ public class DebugPanel extends JPanel {
 		markersLayout.show(markersParent, "no_markers");
 
 		JToolBar bar = new JToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+		bar.setOrientation(JToolBar.VERTICAL);
+		bar.setOpaque(false);
+		bar.setBorder(BorderFactory.createEmptyBorder(8, 5, 0, 0));
 		bar.setFloatable(false);
-		debugging.add("North", bar);
+		debugging.add("West", bar);
 
-		resume.setIcon(UIRES.get("16px.fwd"));
+		resume.setToolTipText(L10N.t("debug.resume"));
 		resume.addActionListener(e -> {
 			if (debugClient != null) {
 				if (lastEventSet != null) {
 					lastEventSet.resume();
-					resume.setEnabled(false);
+					lastEventSet = null;
+				} else {
+					VirtualMachine vm = debugClient.getVirtualMachine();
+					if (vm != null) {
+						for (ThreadReference thread : vm.allThreads()) {
+							thread.resume();
+						}
+					}
 				}
+				markVMResumed();
 			}
 		});
 		bar.add(resume);
 
-		JButton stop = L10N.button("debug.stop");
-		stop.setIcon(UIRES.get("16px.stop.gif"));
+		JButton stop = new JButton(UIRES.get("16px.stop.gif"));
+		stop.setToolTipText(L10N.t("debug.stop"));
 		stop.addActionListener(e -> mcreator.getGradleConsole().cancelTask());
 		bar.add(stop);
 
@@ -193,7 +203,7 @@ public class DebugPanel extends JPanel {
 					}
 				}
 				lastEventSet = eventSet;
-				resume.setEnabled(true);
+				markVMSuspended();
 			}
 
 			for (Event event : eventSet) {
@@ -254,6 +264,14 @@ public class DebugPanel extends JPanel {
 		});
 
 		new Thread(() -> DebugMarkersHandler.handleDebugMarkers(this), "DebugMarkerLoader").start();
+	}
+
+	private void markVMSuspended() {
+		resume.setEnabled(true);
+	}
+
+	private void markVMResumed() {
+		resume.setEnabled(false);
 	}
 
 	public MCreator getMCreator() {

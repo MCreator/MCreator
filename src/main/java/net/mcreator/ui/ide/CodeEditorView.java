@@ -68,8 +68,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.*;
@@ -310,7 +308,7 @@ public class CodeEditorView extends ViewBase {
 		add("Center", spne);
 		setBorder(null);
 
-		if (!readOnly)
+		if (!readOnly) {
 			KeyStrokes.registerKeyStroke(
 					KeyStroke.getKeyStroke(KeyEvent.VK_B, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), te,
 					new AbstractAction() {
@@ -324,7 +322,6 @@ public class CodeEditorView extends ViewBase {
 						}
 					});
 
-		if (!readOnly)
 			KeyStrokes.registerKeyStroke(
 					KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), te,
 					new AbstractAction() {
@@ -337,7 +334,6 @@ public class CodeEditorView extends ViewBase {
 						}
 					});
 
-		if (!readOnly)
 			KeyStrokes.registerKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_M,
 							Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, false), te,
 					new AbstractAction() {
@@ -350,6 +346,20 @@ public class CodeEditorView extends ViewBase {
 										L10N.t("ide.tips.save_and_launch"));
 						}
 					});
+
+			KeyStrokes.registerKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_D,
+							Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, false), te,
+					new AbstractAction() {
+						@Override public void actionPerformed(ActionEvent actionEvent) {
+							disableJumpToMode();
+							saveCode();
+							fa.actionRegistry.debugClient.doAction();
+							if (CodeEditorView.this.mouseEvent != null)
+								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
+										L10N.t("ide.tips.save_and_debug"));
+						}
+					});
+		}
 
 		spne.setResizeWeight(1);
 

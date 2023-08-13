@@ -50,8 +50,6 @@ public class DebugClientAction extends GradleAction {
 				SwingUtilities.invokeLater(() -> actionRegistry.getMCreator().getGradleConsole()
 						.exec(actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client"),
 								null, debugClient));
-
-				actionRegistry.getMCreator().mcreatorTabs.showTab(actionRegistry.getMCreator().consoleTab);
 			} catch (Exception e) { // if something fails, we still need to free the gradle console
 				LOG.error(e.getMessage(), e);
 				actionRegistry.getMCreator().getGradleConsole().markReady();
