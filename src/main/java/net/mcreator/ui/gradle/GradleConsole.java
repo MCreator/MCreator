@@ -34,7 +34,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.CodeErrorDialog;
-import net.mcreator.ui.gradle.debug.DebugPanel;
+import net.mcreator.ui.debug.DebugPanel;
 import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
@@ -100,12 +100,8 @@ public class GradleConsole extends JPanel {
 	// Gradle console may be associated with a debug client
 	@Nullable private JVMDebugClient debugClient = null;
 
-	private final DebugPanel debugPanel;
-
 	public GradleConsole(MCreator ref) {
 		this.ref = ref;
-
-		this.debugPanel = new DebugPanel(ref);
 
 		JPanel holder = new JPanel(new BorderLayout());
 		setLayout(new BorderLayout());
@@ -260,7 +256,6 @@ public class GradleConsole extends JPanel {
 
 		holder.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		add("Center", holder);
-		add("North", debugPanel);
 
 		// To prevent from placing the debug panel here
 		add("West", new JEmptyBox(0, 0));
@@ -357,7 +352,7 @@ public class GradleConsole extends JPanel {
 		if (optionalDebugClient != null) {
 			this.debugClient = optionalDebugClient;
 			this.debugClient.init(task, cancellationSource.token());
-			this.debugPanel.startDebug(this.debugClient);
+			ref.getDebugPanel().startDebug(this.debugClient);
 		}
 
 		if (PreferencesManager.PREFERENCES.gradle.offline.get())
@@ -587,7 +582,7 @@ public class GradleConsole extends JPanel {
 				append(" ");
 
 				if (debugClient != null) {
-					debugPanel.stopDebug();
+					ref.getDebugPanel().stopDebug();
 					debugClient.stop();
 					debugClient = null;
 				}
@@ -814,10 +809,6 @@ public class GradleConsole extends JPanel {
 
 	@Nullable public JVMDebugClient getDebugClient() {
 		return debugClient;
-	}
-
-	public DebugPanel getDebugPanel() {
-		return debugPanel;
 	}
 
 }

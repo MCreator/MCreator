@@ -265,20 +265,7 @@ public class CodeEditorView extends ViewBase {
 		spne.setLeftComponent(cp);
 		spne.setContinuousLayout(true);
 
-		spne.setUI(new BasicSplitPaneUI() {
-			@Override public BasicSplitPaneDivider createDefaultDivider() {
-				return new BasicSplitPaneDivider(this) {
-					@Override public void setBorder(Border b) {
-					}
-
-					@Override public void paint(Graphics g) {
-						g.setColor((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-						g.fillRect(0, 0, getSize().width, getSize().height);
-						super.paint(g);
-					}
-				};
-			}
-		});
+		spne.setDividerSize(2);
 
 		spne.setBorder(null);
 
