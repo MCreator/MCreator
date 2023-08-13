@@ -1716,7 +1716,6 @@ public class TestWorkspaceDataProvider {
 		tool.onEntityHitWith = new Procedure("procedure5");
 		tool.onItemInInventoryTick = new Procedure("procedure6");
 		tool.onItemInUseTick = new Procedure("procedure7");
-		tool.onStoppedUsing = new Procedure("procedure8");
 		tool.onEntitySwing = new Procedure("procedure11");
 		tool.texture = "test";
 		tool.renderType = 0;
