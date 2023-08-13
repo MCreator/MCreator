@@ -1,0 +1,1 @@
+Wenn die Bedingung wahr ist, werden Spieler nicht in der Lage sein, die Gegenstände in diesem Feld einzunehmen. aber sie werden trotzdem in der Lage sein, Gegenstände ohne Einschränkungen zu platzieren.
