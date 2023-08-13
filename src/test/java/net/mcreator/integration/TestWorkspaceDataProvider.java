@@ -1341,7 +1341,6 @@ public class TestWorkspaceDataProvider {
 			musicDisc.onEntityHitWith = new Procedure("procedure4");
 			musicDisc.onItemInInventoryTick = new Procedure("procedure5");
 			musicDisc.onItemInUseTick = new Procedure("procedure6");
-			musicDisc.onStoppedUsing = new Procedure("procedure7");
 			musicDisc.onEntitySwing = new Procedure("procedure8");
 			musicDisc.lengthInTicks = 13;
 			musicDisc.analogOutput = 6;
