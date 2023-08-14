@@ -94,13 +94,11 @@ public class GTFeatureBlocks {
 			Feature feature = new Feature(modElement);
 			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));
-			feature.restrictionDimensions = random.nextBoolean() && disableGenerationConditions ?
+			feature.restrictionDimensions = random.nextBoolean() ?
 					new ArrayList<>() :
 					new ArrayList<>(Arrays.asList("Surface", "Nether"));
 			feature.restrictionBiomes = new ArrayList<>();
-			feature.generateCondition = random.nextBoolean() && !disableGenerationConditions ?
-					new Procedure("condition1") :
-					null;
+			feature.generateCondition = random.nextBoolean() ? new Procedure("condition1") : null;
 
 			if (featureBlock.getType()
 					== IBlockGenerator.BlockType.PROCEDURAL) { // It's a placement, we test with the lake feature
@@ -114,10 +112,12 @@ public class GTFeatureBlocks {
 			} else {
 				switch (featureBlock.getOutputType()) {
 				case "Feature" -> feature.featurexml = """
-						<xml xmlns="https://developers.google.com/blockly/xml">
+						<xml xmlns="https://developers.google.com/blockly/xml">%s
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature">%s</value></block></xml>
-						""".formatted(testXML);
+						""".formatted(disableGenerationConditions ?
+								"<mutation generation_conditions_disabled=\"true\"></mutation>" :
+								"", testXML);
 				// Placed features are tested with the "Random patch" feature
 				case "PlacedFeature" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
