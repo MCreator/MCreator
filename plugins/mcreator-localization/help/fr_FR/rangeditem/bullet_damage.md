@@ -1,0 +1,1 @@
+Plus le nombre est élevé, plus les dégâts infligés par la balle à l'entité touchée sont plus fortes.

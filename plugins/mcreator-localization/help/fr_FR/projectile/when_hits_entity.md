@@ -1,1 +1,0 @@
-Si le projectile touche une entité vivante (vache, creeper, joueur, etc.), elle exécutera la procédure sélectionnée.

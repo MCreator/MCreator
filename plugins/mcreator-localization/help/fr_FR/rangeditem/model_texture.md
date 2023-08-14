@@ -1,0 +1,1 @@
+Cette texture est la texture du modèle de balle si un modèle personnalisé est utilisé.

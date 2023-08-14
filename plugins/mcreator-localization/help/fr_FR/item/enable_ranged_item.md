@@ -1,1 +1,0 @@
-En activant, ce paramètre, cet item deviendra une arme à distance, lui permettant de lancer des projectiles, comme les arcs et les arbalètes.

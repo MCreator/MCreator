@@ -1,1 +1,0 @@
-Pendant que le projectile vole, la procédure sélectionnée sera exécutée à chaque tick.
