@@ -1053,7 +1053,7 @@ import java.util.stream.Collectors;
 					dial.refreshDisplay();
 				}
 				dial.hideAll();
-			});
+			}, "CodeLock");
 			t.start();
 			dial.setVisible(true);
 		}
@@ -1296,7 +1296,7 @@ import java.util.stream.Collectors;
 
 						this.refilterElements();
 					});
-				}).start();
+				}, "WorkspaceListReloader").start();
 			} else {
 				mainpcl.show(mainp, "ep");
 			}

@@ -39,7 +39,7 @@ import java.util.*;
 public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider, IElement {
 
 	private final String name;
-	private String type;
+	private final String type;
 
 	private Integer sortid = null;
 
@@ -99,7 +99,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public void loadDataFrom(ModElement other) {
-		this.type = other.type;
 		this.compiles = other.compiles;
 		this.locked_code = other.locked_code;
 		this.sortid = other.sortid;
@@ -210,10 +209,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public String getTypeString() {
 		return type == null ? null : type.toLowerCase(Locale.ENGLISH);
-	}
-
-	public void setType(ModElementType<?> type) {
-		this.type = type.getRegistryName();
 	}
 
 	public boolean isCodeLocked() {
