@@ -88,6 +88,10 @@ public class DebugFramesView extends JPanel {
 		add(framesScroll, "frames");
 	}
 
+	public void hideFrames() {
+		layout.show(this, "empty");
+	}
+
 	public void showFrames(List<StackFrame> stackFrames) {
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("Stack Frames");
 
@@ -127,6 +131,9 @@ public class DebugFramesView extends JPanel {
 
 		frames.setModel(new DefaultTreeModel(root));
 		TreeUtils.setExpansionState(frames, toExpand);
+
+		frames.revalidate();
+		frames.repaint();
 
 		layout.show(this, "frames");
 	}

@@ -103,6 +103,8 @@ public class JVMDebugClient {
 								}
 
 								classPrepareEvent.request().disable();
+							} else if (event instanceof StepEvent) {
+								shouldEventBlock = true;
 							}
 						}
 

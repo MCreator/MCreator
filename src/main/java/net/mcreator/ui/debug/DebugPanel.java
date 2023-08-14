@@ -41,18 +41,22 @@ package net.mcreator.ui.debug;
 import com.sun.jdi.IncompatibleThreadStateException;
 import com.sun.jdi.ThreadReference;
 import com.sun.jdi.VirtualMachine;
-import com.sun.jdi.event.BreakpointEvent;
 import com.sun.jdi.event.Event;
-import com.sun.jdi.event.EventSet;
-import com.sun.jdi.event.VMStartEvent;
+import com.sun.jdi.event.*;
+import com.sun.jdi.request.StepRequest;
+import net.mcreator.java.ClassFinder;
+import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.WrapLayout;
 import net.mcreator.ui.ide.CodeEditorView;
+import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -62,6 +66,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DebugPanel extends JPanel {
+
+	private static final Logger LOG = LogManager.getLogger("DebugPanel");
 
 	public static final Color DEBUG_COLOR = new Color(239, 50, 61);
 
@@ -79,8 +85,12 @@ public class DebugPanel extends JPanel {
 	private final DebugFramesView debugFramesView = new DebugFramesView();
 
 	private final JButton resume = new JButton(UIRES.get("16px.debug_resume"));
+	private final JButton stepOver = new JButton(UIRES.get("16px.debug_step_over"));
+	private final JButton stepInto = new JButton(UIRES.get("16px.debug_step_into"));
+	private final JButton stepOut = new JButton(UIRES.get("16px.debug_step_out"));
 
-	private EventSet lastEventSet = null;
+	private EventSet lastSuspendedEventSet = null;
+	private BreakpointEvent lastBreakpointEvent = null;
 
 	private final JPanel markers = new JPanel(new WrapLayout(FlowLayout.LEFT));
 
@@ -161,9 +171,8 @@ public class DebugPanel extends JPanel {
 		resume.setToolTipText(L10N.t("debug.resume"));
 		resume.addActionListener(e -> {
 			if (debugClient != null) {
-				if (lastEventSet != null) {
-					lastEventSet.resume();
-					lastEventSet = null;
+				if (lastSuspendedEventSet != null) {
+					lastSuspendedEventSet.resume();
 				} else {
 					VirtualMachine vm = debugClient.getVirtualMachine();
 					if (vm != null) {
@@ -182,6 +191,53 @@ public class DebugPanel extends JPanel {
 		stop.addActionListener(e -> mcreator.getGradleConsole().cancelTask());
 		bar.add(stop);
 
+		bar.addSeparator();
+
+		stepOver.setToolTipText(L10N.t("debug.step_over"));
+		stepOver.addActionListener(e -> {
+			if (debugClient != null) {
+				VirtualMachine vm = debugClient.getVirtualMachine();
+				if (vm != null) {
+					StepRequest stepRequest = vm.eventRequestManager()
+							.createStepRequest(lastBreakpointEvent.thread(), StepRequest.STEP_LINE,
+									StepRequest.STEP_OVER);
+					stepRequest.enable();
+					resume.doClick();
+				}
+			}
+		});
+		bar.add(stepOver);
+
+		stepInto.setToolTipText(L10N.t("debug.step_into"));
+		stepInto.addActionListener(e -> {
+			if (debugClient != null) {
+				VirtualMachine vm = debugClient.getVirtualMachine();
+				if (vm != null) {
+					StepRequest stepRequest = vm.eventRequestManager()
+							.createStepRequest(lastBreakpointEvent.thread(), StepRequest.STEP_LINE,
+									StepRequest.STEP_INTO);
+					stepRequest.enable();
+					resume.doClick();
+				}
+			}
+		});
+		bar.add(stepInto);
+
+		stepOut.setToolTipText(L10N.t("debug.step_out"));
+		stepOut.addActionListener(e -> {
+			if (debugClient != null) {
+				VirtualMachine vm = debugClient.getVirtualMachine();
+				if (vm != null) {
+					StepRequest stepRequest = vm.eventRequestManager()
+							.createStepRequest(lastBreakpointEvent.thread(), StepRequest.STEP_LINE,
+									StepRequest.STEP_OUT);
+					stepRequest.enable();
+					resume.doClick();
+				}
+			}
+		});
+		bar.add(stepOut);
+
 		debugging.add("South", new JEmptyBox(2, 2));
 
 		add(debugging, DEBUGGING);
@@ -199,10 +255,37 @@ public class DebugPanel extends JPanel {
 							debugFramesView.showFrames(breakpointEvent.thread().frames());
 						} catch (IncompatibleThreadStateException ignored) {
 						}
+						lastBreakpointEvent = breakpointEvent;
+						break;
+					} else if (event instanceof StepEvent stepEvent) {
+						stepEvent.request().disable();
+
+						try {
+							debugFramesView.showFrames(stepEvent.thread().frames());
+						} catch (IncompatibleThreadStateException ignored) {
+						}
+
+						try {
+							DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(
+									mcreator.getWorkspace(), stepEvent.location().declaringType().name(),
+									"mod.mcreator", mcreator.getGenerator().getProjectJarManager());
+							if (position != null) {
+								SwingUtilities.invokeLater(() -> {
+									CodeEditorView codeEditorView = ProjectFileOpener.openFileSpecific(mcreator,
+											position.classFileNode, position.openInReadOnly, position.carret,
+											position.virtualFile);
+									if (codeEditorView != null)
+										codeEditorView.jumpToLine(stepEvent.location().lineNumber());
+								});
+							}
+						} catch (Exception e) {
+							LOG.warn("Failed to open file", e);
+						}
+
 						break;
 					}
 				}
-				lastEventSet = eventSet;
+				lastSuspendedEventSet = eventSet;
 				markVMSuspended();
 			}
 
@@ -235,8 +318,6 @@ public class DebugPanel extends JPanel {
 		markers.removeAll();
 		markersLayout.show(markersParent, "no_markers");
 
-		resume.setEnabled(false);
-
 		cardLayout.show(this, WAITING_TO_CONNECT);
 		setVisible(true);
 	}
@@ -253,6 +334,10 @@ public class DebugPanel extends JPanel {
 	}
 
 	private void initiateDebugSession() {
+		markVMResumed();
+
+		new Thread(() -> DebugMarkersHandler.handleDebugMarkers(this), "DebugMarkerLoader").start();
+
 		cardLayout.show(this, DEBUGGING);
 
 		mcreator.mcreatorTabs.getTabs().forEach(tab -> {
@@ -262,16 +347,22 @@ public class DebugPanel extends JPanel {
 				}
 			}
 		});
-
-		new Thread(() -> DebugMarkersHandler.handleDebugMarkers(this), "DebugMarkerLoader").start();
 	}
 
 	private void markVMSuspended() {
 		resume.setEnabled(true);
+		stepOver.setEnabled(true);
+		stepInto.setEnabled(true);
+		stepOut.setEnabled(true);
 	}
 
 	private void markVMResumed() {
 		resume.setEnabled(false);
+		stepOver.setEnabled(false);
+		stepInto.setEnabled(false);
+		stepOut.setEnabled(false);
+
+		debugFramesView.hideFrames();
 	}
 
 	public MCreator getMCreator() {
