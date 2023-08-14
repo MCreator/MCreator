@@ -61,9 +61,11 @@ class FieldDataListSelector extends Blockly.Field {
                 let thisField = this; // reference to this field, to use in the callback function
                 javabridge.openEntrySelector(this.type, this.typeFilter, this.customEntryProviders, {
                     'callback': function (value, readableName) {
+                        const group = Blockly.Events.getGroup();
                         Blockly.Events.setGroup(true);
                         thisField.cachedReadableName = readableName || value;
                         thisField.setValue(value);
+                        Blockly.Events.setGroup(group);
                         javabridge.triggerEvent();
                     }
                 });
