@@ -284,7 +284,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				elements.setCursor(Cursor.getDefaultCursor());
 				storingEdits = false;
 			}
-		}).start());
+		}, "WorkspaceVariablesReload").start());
 
 	}
 

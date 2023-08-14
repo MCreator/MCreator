@@ -1,0 +1,1 @@
+Viết mô tả cho đĩa nhạc của bạn. Thông thường nó là nhà soạn nhạc - tên bản nhạc.

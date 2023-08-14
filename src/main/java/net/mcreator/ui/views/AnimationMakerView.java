@@ -163,7 +163,7 @@ public class AnimationMakerView extends ViewBase {
 					}
 				}
 			}
-		});
+		}, "AnimationRenderer");
 
 		JButton play = new JButton("");
 		play.setIcon(UIRES.get("16px.play"));
@@ -289,7 +289,7 @@ public class AnimationMakerView extends ViewBase {
 						LOG.error(e.getMessage(), e);
 					}
 
-				});
+				}, "GIFFramesLoader");
 				t.start();
 				dial.setVisible(true);
 			}

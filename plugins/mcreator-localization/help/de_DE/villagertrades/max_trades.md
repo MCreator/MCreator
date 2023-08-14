@@ -1,0 +1,1 @@
+Maximale Anzahl dieses Handels, die der Dorfbewohner ausführen kann, ohne sich selbst aufzuladen.

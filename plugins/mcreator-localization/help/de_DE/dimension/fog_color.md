@@ -1,0 +1,1 @@
+Die Farbe des Nebels innerhalb der Dimension. 
