@@ -113,7 +113,7 @@ public class PreferencesManager {
 									}
 								})));
 			} else {
-				LOG.warn("Preferences with identifier " + identifier
+				LOG.info("Preferences with identifier " + identifier
 						+ " have no saved values. Default values will be used.");
 				failedToLoad = true;
 			}

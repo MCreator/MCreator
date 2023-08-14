@@ -184,7 +184,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					setBackground(new Color(0x8D5C5C));
 				}
 				updateRunning = false;
-			}).start();
+			}, "CodePreviewReloader").start();
 		}
 	}
 

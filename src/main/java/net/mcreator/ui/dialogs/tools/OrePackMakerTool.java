@@ -110,6 +110,7 @@ public class OrePackMakerTool {
 			}
 		});
 
+		dialog.getRootPane().setDefaultButton(ok);
 		dialog.setSize(600, 260);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
@@ -117,6 +118,19 @@ public class OrePackMakerTool {
 
 	static MItemBlock addOrePackToWorkspace(MCreator mcreator, Workspace workspace, String name, String type,
 			Color color, double factor) {
+		String oreItemName;
+		if (type.equals("Dust based")) {
+			oreItemName = name + "Dust";
+		} else if (type.equals("Gem based")) {
+			oreItemName = name;
+		} else {
+			oreItemName = name + "Ingot";
+		}
+
+		if (!PackMakerToolUtils.checkIfNamesAvailable(workspace, oreItemName, name + "Ore", name + "Block",
+				name + "OreBlockRecipe", name + "BlockOreRecipe", name + "OreSmelting"))
+			return null;
+
 		// select folder the mod pack should be in
 		FolderElement folder = null;
 		if (!mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
@@ -163,25 +177,11 @@ public class OrePackMakerTool {
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(gem.getImage()),
 				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(gemTextureName), TextureType.ITEM));
 
-		String oreItemName;
-		if (type.equals("Dust based")) {
-			oreItemName = name + "Dust";
-		} else if (type.equals("Gem based")) {
-			oreItemName = name;
-		} else {
-			oreItemName = name + "Ingot";
-		}
-
 		Item oreItem = (Item) ModElementType.ITEM.getModElementGUI(mcreator,
 				new ModElement(workspace, oreItemName, ModElementType.ITEM), false).getElementFromGUI();
 		oreItem.name = name;
 		oreItem.texture = gemTextureName;
-
-		oreItem.getModElement().setParentFolder(folder);
-		mcreator.getModElementManager().storeModElementPicture(oreItem);
-		mcreator.getWorkspace().addModElement(oreItem.getModElement());
-		mcreator.getGenerator().generateElement(oreItem);
-		mcreator.getModElementManager().storeModElement(oreItem);
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreItem);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block oreBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
@@ -206,12 +206,7 @@ public class OrePackMakerTool {
 			oreBlock.dropAmount = 3;
 		}
 		oreBlock.customDrop = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
-
-		oreBlock.getModElement().setParentFolder(folder);
-		mcreator.getModElementManager().storeModElementPicture(oreBlock);
-		mcreator.getWorkspace().addModElement(oreBlock.getModElement());
-		mcreator.getGenerator().generateElement(oreBlock);
-		mcreator.getModElementManager().storeModElement(oreBlock);
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreBlock);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block oreBlockBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
@@ -227,12 +222,7 @@ public class OrePackMakerTool {
 		oreBlockBlock.breakHarvestLevel = (int) Math.round(2 * factor);
 		oreBlockBlock.requiresCorrectTool = true;
 		oreBlockBlock.renderType = 11; // single texture
-
-		oreBlockBlock.getModElement().setParentFolder(folder);
-		mcreator.getModElementManager().storeModElementPicture(oreBlockBlock);
-		mcreator.getWorkspace().addModElement(oreBlockBlock.getModElement());
-		mcreator.getGenerator().generateElement(oreBlockBlock);
-		mcreator.getModElementManager().storeModElement(oreBlockBlock);
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreBlockBlock);
 
 		Recipe itemToBlockRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "OreBlockRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -247,12 +237,7 @@ public class OrePackMakerTool {
 		itemToBlockRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		itemToBlockRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		itemToBlockRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Block");
-
-		itemToBlockRecipe.getModElement().setParentFolder(folder);
-		mcreator.getModElementManager().storeModElementPicture(itemToBlockRecipe);
-		mcreator.getWorkspace().addModElement(itemToBlockRecipe.getModElement());
-		mcreator.getGenerator().generateElement(itemToBlockRecipe);
-		mcreator.getModElementManager().storeModElement(itemToBlockRecipe);
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, itemToBlockRecipe);
 
 		Recipe blockToItemRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "BlockOreRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -260,12 +245,7 @@ public class OrePackMakerTool {
 		blockToItemRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		blockToItemRecipe.recipeShapeless = true;
 		blockToItemRecipe.recipeRetstackSize = 9;
-
-		blockToItemRecipe.getModElement().setParentFolder(folder);
-		mcreator.getModElementManager().storeModElementPicture(blockToItemRecipe);
-		mcreator.getWorkspace().addModElement(blockToItemRecipe.getModElement());
-		mcreator.getGenerator().generateElement(blockToItemRecipe);
-		mcreator.getModElementManager().storeModElement(blockToItemRecipe);
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, blockToItemRecipe);
 
 		Recipe oreSmeltingRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "OreSmelting", ModElementType.RECIPE), false).getElementFromGUI();
@@ -274,12 +254,7 @@ public class OrePackMakerTool {
 		oreSmeltingRecipe.smeltingReturnStack = new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 		oreSmeltingRecipe.xpReward = 0.7 * factor;
 		oreSmeltingRecipe.cookingTime = 200;
-
-		oreSmeltingRecipe.getModElement().setParentFolder(folder);
-		mcreator.getModElementManager().storeModElementPicture(oreSmeltingRecipe);
-		mcreator.getWorkspace().addModElement(oreSmeltingRecipe.getModElement());
-		mcreator.getGenerator().generateElement(oreSmeltingRecipe);
-		mcreator.getModElementManager().storeModElement(oreSmeltingRecipe);
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreSmeltingRecipe);
 
 		return new MItemBlock(workspace, "CUSTOM:" + oreItemName);
 	}
