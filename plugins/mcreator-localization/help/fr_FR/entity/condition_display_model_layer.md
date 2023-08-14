@@ -1,1 +1,0 @@
-Tant que la valeur retournée est vraie, cette couche sera visible.
