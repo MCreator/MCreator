@@ -139,16 +139,6 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		page1.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, propertiesAndCondition),
 				featureProcedure));
 
-		// Don't regenerate the code if the Blockly panel isn't loaded yet
-		restrictionDimensions.addChangeListener(e -> {
-			if (blocklyPanel.isLoaded())
-				new Thread(FeatureGUI.this::regenerateFeature, "FeatureRegenerate").start();
-		});
-		generateCondition.addActionListener(e -> {
-			if (blocklyPanel.isLoaded())
-				new Thread(FeatureGUI.this::regenerateFeature, "FeatureRegenerate").start();
-		});
-
 		page1.setOpaque(false);
 		addPage(page1);
 	}
@@ -166,10 +156,15 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 			return;
 		}
 
-		// Add a compile error if there are generation conditions, but they aren't allowed by the current feature
-		if (hasGenerationConditions() && blocklyPanel.getXML().contains("generation_conditions_disabled=\"true\"")) {
-			blocklyToFeature.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+		// Add a compile warning if the current feature doesn't allow generation conditions
+		if (blocklyPanel.getXML().contains("generation_conditions_disabled=\"true\"")) {
+			blocklyToFeature.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("elementgui.feature.generation_conditions_not_allowed")));
+			generateCondition.setEnabled(false);
+			restrictionDimensions.setEnabled(false);
+		} else {
+			generateCondition.setEnabled(true);
+			restrictionDimensions.setEnabled(true);
 		}
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToFeature.getCompileNotes();
@@ -206,6 +201,10 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		restrictionDimensions.setListElements(feature.restrictionDimensions);
 		restrictionBiomes.setListElements(feature.restrictionBiomes);
 		generateCondition.setSelectedProcedure(feature.generateCondition);
+		if (feature.featurexml.contains("generation_conditions_disabled=\"true\"")) {
+			restrictionDimensions.setEnabled(false);
+			generateCondition.setEnabled(false);
+		}
 
 		blocklyPanel.setXMLDataOnly(feature.featurexml);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
@@ -231,8 +230,4 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		return List.of(blocklyPanel);
 	}
 
-	private boolean hasGenerationConditions() {
-		return !this.restrictionDimensions.getListElements().isEmpty() ||
-				this.generateCondition.getSelectedProcedure() != null;
-	}
 }
