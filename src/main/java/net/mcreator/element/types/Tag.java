@@ -26,13 +26,14 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ElementReference;
 
+import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Locale;
 
-@SuppressWarnings("unused") public class Tag extends NamespacedGeneratableElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tag extends NamespacedGeneratableElement {
 
-	public String type;
+	@Nonnull public String type;
 
 	public List<MItemBlock> items;
 	public List<MItemBlock> blocks;

@@ -47,7 +47,7 @@ import java.util.stream.Collectors;
 	public int renderType;
 	@TextureReference(TextureType.BLOCK) public String texture;
 	@TextureReference(TextureType.BLOCK) public String textureBottom;
-	public String customModelName;
+	@Nonnull public String customModelName;
 
 	@TextureReference(TextureType.ITEM) public String itemTexture;
 	@TextureReference(TextureType.BLOCK) public String particleTexture;

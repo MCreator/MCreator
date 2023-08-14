@@ -364,17 +364,18 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		localVarsPan.add("Center", scrollPane);
 
 		JToolBar bar = new JToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(2, 2, 5, 0));
+		bar.setBorder(BorderFactory.createEmptyBorder(2, 0, 5, 0));
 		bar.setFloatable(false);
 		bar.setOpaque(false);
 
-		bar.add(ComponentUtils.deriveFont(L10N.label("elementgui.procedure.local_variables"), 13));
+		JLabel lab = L10N.label("elementgui.procedure.local_variables");
+		lab.setToolTipText(L10N.t("elementgui.procedure.local_variables"));
 
 		JButton addvar = new JButton(UIRES.get("16px.add.gif"));
 		addvar.setContentAreaFilled(false);
 		addvar.setOpaque(false);
 		ComponentUtils.deriveFont(addvar, 11);
-		addvar.setBorder(BorderFactory.createEmptyBorder(1, 6, 0, 2));
+		addvar.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 2));
 		bar.add(addvar);
 
 		JButton remvar = new JButton(UIRES.get("16px.delete.gif"));
@@ -462,10 +463,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			}
 		});
 
+		lab.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
+
 		JPanel varHeader = new JPanel(new GridLayout());
 		varHeader.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		varHeader.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		varHeader.add(bar);
+		varHeader.add(PanelUtils.northAndCenterElement(ComponentUtils.deriveFont(lab, 13), bar));
 		localVarsPan.add("North", varHeader);
 		localVarsPan.setOpaque(false);
 		localVarsPan.setPreferredSize(new Dimension(150, 0));
@@ -570,7 +573,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
-			blocklyPanel.getJSBridge().setJavaScriptEventListener(() -> new Thread(this::regenerateProcedure).start());
+			blocklyPanel.getJSBridge().setJavaScriptEventListener(() -> new Thread(this::regenerateProcedure, "ProcedureRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(net.mcreator.element.types.Procedure.XML_BASE);
 			}

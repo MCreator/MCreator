@@ -1,0 +1,1 @@
+Questo parametro controlla quanto l'età massima delle particelle può variare in valore positivo o negativo rispetto all'età massima specificata.

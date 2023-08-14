@@ -297,11 +297,10 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 					workspace.removeVariableElement(variableElement);
 
 				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
-					VariableElement element = new VariableElement();
 					VariableType elementType = VariableTypeLoader.INSTANCE.fromName((String) elements.getValueAt(i, 1));
 					if (elementType != null) {
+						VariableElement element = new VariableElement(Transliteration.transliterateString((String) elements.getValueAt(i, 0)));
 						element.setType(elementType);
-						element.setName(Transliteration.transliterateString((String) elements.getValueAt(i, 0)));
 						element.setValue(elements.getValueAt(i, 3));
 						element.setScope((VariableType.Scope) elements.getValueAt(i, 2));
 						workspace.addVariableElement(element);
@@ -311,7 +310,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				elements.setCursor(Cursor.getDefaultCursor());
 				storingEdits = false;
 			}
-		}).start());
+		}, "WorkspaceVariablesReload").start());
 
 	}
 
@@ -333,8 +332,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				new ArrayList<>(references), true)) {
 			Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 					.forEach(el -> {
-						VariableElement element = new VariableElement();
-						element.setName(el);
+						VariableElement element = new VariableElement(el);
 						workspacePanel.getMCreator().getWorkspace().removeVariableElement(element);
 					});
 			reloadElements();

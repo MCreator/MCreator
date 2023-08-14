@@ -1,0 +1,1 @@
+Wenn die Bedingung angegeben ist, wird dieses Entitätsmodell nur angezeigt, wenn die Bedingung übergeben wird.

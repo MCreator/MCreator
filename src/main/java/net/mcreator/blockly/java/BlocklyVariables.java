@@ -45,9 +45,8 @@ public record BlocklyVariables(BlocklyToJava generator) {
 				String type = variable.getAttribute("type");
 				String name = variable.getAttribute("id");
 				VariableType variableType = VariableTypeLoader.INSTANCE.fromName(type);
-				if (variableType != null && variableType.getBlocklyVariableType() != null && name != null) {
-					VariableElement element = new VariableElement();
-					element.setName(name);
+				if (variableType != null && variableType.getBlocklyVariableType() != null) {
+					VariableElement element = new VariableElement(name);
 					element.setType(variableType);
 					element.setScope(VariableType.Scope.LOCAL);
 					varlist.add(element); // add variable to the array of variables
@@ -82,8 +81,7 @@ public record BlocklyVariables(BlocklyToJava generator) {
 			try {
 				while (m.find()) {
 					if (m.group(1).startsWith("local:")) {
-						VariableElement element = new VariableElement();
-						element.setName(m.group(1).replaceFirst("local:", ""));
+						VariableElement element = new VariableElement(m.group(1).replaceFirst("local:", ""));
 						element.setType(elementType);
 						retval.add(element);
 					}

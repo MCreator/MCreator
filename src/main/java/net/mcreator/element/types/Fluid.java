@@ -34,13 +34,14 @@ import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.TextureReference;
 
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Fluid extends GeneratableElement implements IBlock, ITabContainedElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Fluid extends GeneratableElement implements IBlock, ITabContainedElement {
 
 	public String name;
 	public String bucketName;
@@ -62,7 +63,7 @@ import java.util.List;
 	public int density;
 	public int viscosity;
 	public int temperature;
-	public String type;
+	@Nonnull public String type;
 
 	public boolean generateBucket;
 	@TextureReference(TextureType.ITEM) public String textureBucket;

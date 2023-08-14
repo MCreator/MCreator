@@ -1,0 +1,1 @@
+Dies ist die Spielregelkategorie, die für die Klassifizierung der Spielregeln verwendet wird, je nachdem, was sie tun.

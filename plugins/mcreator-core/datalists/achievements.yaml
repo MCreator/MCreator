@@ -78,6 +78,11 @@
 - adventure/play_jukebox_in_meadows
 - adventure/trade_at_world_height
 - adventure/kill_mob_near_sculk_catalyst
+- adventure/craft_decorated_pot_using_only_sherds
+- adventure/read_power_of_chiseled_bookshelf
+- adventure/salvage_sherd
+- adventure/trim_with_all_exclusive_armor_patterns
+- adventure/trim_with_any_armor_pattern
 - husbandry/root
 - husbandry/allay_deliver_cake_to_note_block
 - husbandry/allay_deliver_item_to_player
@@ -86,12 +91,15 @@
 - husbandry/breed_all_animals
 - husbandry/breed_an_animal
 - husbandry/complete_catalogue
+- husbandry/feed_snifflet
 - husbandry/fishy_business
 - husbandry/froglights
 - husbandry/kill_axolotl_target
 - husbandry/leash_all_frog_variants
 - husbandry/make_a_sign_glow
 - husbandry/obtain_netherite_hoe
+- husbandry/obtain_sniffer_egg
+- husbandry/plant_any_sniffer_seed
 - husbandry/plant_seed
 - husbandry/ride_a_boat_with_a_goat
 - husbandry/safely_harvest_honey

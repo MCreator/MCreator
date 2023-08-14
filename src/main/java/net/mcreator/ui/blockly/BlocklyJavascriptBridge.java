@@ -189,8 +189,7 @@ public class BlocklyJavascriptBridge {
 	 */
 	private String[] openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
 		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
-		String title = L10N.t("dialog.selector." + type + ".title");
-		String message = L10N.t("dialog.selector." + type + ".message");
+		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()
 				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
@@ -225,8 +224,7 @@ public class BlocklyJavascriptBridge {
 	 */
 	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
 		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
-		String title = L10N.t("dialog.selector." + type + ".title");
-		String message = L10N.t("dialog.selector." + type + ".message");
+		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()
 				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING

@@ -192,8 +192,8 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 
 	private void editSelectedSound(SoundElement selectedValue) {
 		if (selectedValue != null) {
-			SoundElement newElement = SoundElementDialog.soundDialog(workspacePanel.getMCreator(), selectedValue, null);
-			workspacePanel.getMCreator().getWorkspace().updateSoundElement(selectedValue, newElement);
+			SoundElementDialog.soundDialog(workspacePanel.getMCreator(), selectedValue, null);
+			workspacePanel.getMCreator().getWorkspace().markDirty();
 			reloadElements();
 		}
 	}

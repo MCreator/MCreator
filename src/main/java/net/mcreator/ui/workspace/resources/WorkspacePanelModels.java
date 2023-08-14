@@ -263,7 +263,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 					dial.refreshDisplay();
 
 					dial.hideAll();
-				});
+				}, "WorkspaceModelsReload");
 				t.start();
 				dial.setVisible(true);
 			}

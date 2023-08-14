@@ -47,7 +47,7 @@ import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("unused") public class Block extends GeneratableElement
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement
 		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	@TextureReference(TextureType.BLOCK) public String texture;
@@ -57,7 +57,7 @@ import java.util.stream.Collectors;
 	@TextureReference(TextureType.BLOCK) public String textureRight;
 	@TextureReference(TextureType.BLOCK) public String textureBack;
 	public int renderType;
-	public String customModelName;
+	@Nonnull public String customModelName;
 	public int rotationMode;
 	public boolean enablePitch;
 	public boolean emissiveRendering;
@@ -86,7 +86,7 @@ import java.util.stream.Collectors;
 	public boolean isWaterloggable;
 	public TabEntry creativeTab;
 
-	public String destroyTool;
+	@Nonnull public String destroyTool;
 	public MItemBlock customDrop;
 	public int dropAmount;
 	public boolean useLootTableForDrops;

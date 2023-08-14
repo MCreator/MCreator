@@ -1,0 +1,25 @@
+name: Crowdin Push
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch: {}
+
+jobs:
+  crowdin-push:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: crowdin/github-action@v1
+        name: Push sources to Crowdin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+        with:
+          config: crowdin.yml
+          crowdin_branch_name: master
+          upload_sources: true
+          upload_translations: false
+          download_translations: false
