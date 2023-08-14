@@ -1,7 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
  * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2022, Pylo, opensource contributors
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -139,6 +139,16 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		page1.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, propertiesAndCondition),
 				featureProcedure));
 
+		// Don't regenerate the code if the Blockly panel isn't loaded yet
+		restrictionDimensions.addChangeListener(e -> {
+			if (blocklyPanel.isLoaded())
+				new Thread(FeatureGUI.this::regenerateFeature, "FeatureRegenerate").start();
+		});
+		generateCondition.addActionListener(e -> {
+			if (blocklyPanel.isLoaded())
+				new Thread(FeatureGUI.this::regenerateFeature, "FeatureRegenerate").start();
+		});
+
 		page1.setOpaque(false);
 		addPage(page1);
 	}
@@ -154,6 +164,12 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 					new OutputBlockCodeGenerator(blocklyBlockCodeGenerator));
 		} catch (TemplateGeneratorException e) {
 			return;
+		}
+
+		// Add a compile error if there are generation conditions, but they aren't allowed by the current feature
+		if (hasGenerationConditions() && blocklyPanel.getXML().contains("generation_conditions_disabled=\"true\"")) {
+			blocklyToFeature.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+					L10N.t("elementgui.feature.generation_conditions_not_allowed")));
 		}
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToFeature.getCompileNotes();
@@ -215,4 +231,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		return List.of(blocklyPanel);
 	}
 
+	private boolean hasGenerationConditions() {
+		return !this.restrictionDimensions.getListElements().isEmpty() ||
+				this.generateCondition.getSelectedProcedure() != null;
+	}
 }
