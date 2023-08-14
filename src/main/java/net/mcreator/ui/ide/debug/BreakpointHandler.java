@@ -163,22 +163,23 @@ public class BreakpointHandler {
 						@Override public boolean breakpointHit(Breakpoint breakpoint, BreakpointEvent breakpointEvent) {
 							MCreatorTabs.Tab existing = cev.getMCreator().mcreatorTabs.showTabOrGetExisting(
 									cev.fileWorkingOn);
-							CodeEditorView bpCev;
 							if (existing != null) {
-								bpCev = (CodeEditorView) existing.getContent();
-								if (bpCev == cev) {
-									bpCev.getMCreator().mcreatorTabs.showTab(existing);
-									try {
-										int breakpointLine = gutterBreakpointInfo.getCurrentLine(cev.te);
-										int startOffset = bpCev.te.getLineStartOffset(breakpointLine);
-										bpCev.te.setCaretPosition(startOffset);
-										bpCev.te.setActiveLineRange(breakpointLine, breakpointLine + 1);
-									} catch (BadLocationException ignored) {
+								SwingUtilities.invokeLater(() -> {
+									CodeEditorView bpCev = (CodeEditorView) existing.getContent();
+									if (bpCev == cev) {
+										bpCev.getMCreator().mcreatorTabs.showTab(existing);
+										try {
+											int breakpointLine = gutterBreakpointInfo.getCurrentLine(cev.te);
+											int startOffset = bpCev.te.getLineStartOffset(breakpointLine);
+											bpCev.te.setCaretPosition(startOffset);
+											bpCev.te.setActiveLineRange(breakpointLine, breakpointLine + 1);
+										} catch (BadLocationException ignored) {
+										}
+										bpCev.te.requestFocusInWindow();
+										bpCev.getMCreator().toFront();
+										bpCev.getMCreator().requestFocus();
 									}
-									bpCev.te.requestFocusInWindow();
-									bpCev.getMCreator().toFront();
-									bpCev.getMCreator().requestFocus();
-								}
+								});
 
 								return false;
 							} else {
