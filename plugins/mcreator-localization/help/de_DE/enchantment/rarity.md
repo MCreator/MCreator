@@ -1,0 +1,1 @@
+Es ist die Seltenheit der Verzauberung, auf einem Gegenstand zu erscheinen (innerhalb des verzaubernden Tisches und für Beutetische).

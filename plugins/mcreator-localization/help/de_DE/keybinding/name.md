@@ -1,0 +1,1 @@
+Dieser Parameter steuert den Namen der Taste, die in den Minecraft-Einstellungen auf der Registerkarte Steuerelemente angezeigt wird.

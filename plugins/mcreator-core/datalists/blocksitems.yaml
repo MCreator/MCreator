@@ -3715,7 +3715,7 @@
 - Blocks.PIGLIN_WALL_HEAD:
   readable_name: "Piglin Wall Head"
   type: block
-  texture: PIGLIN_WALL_HEAD
+  texture: PIGLIN_HEAD
 
 - Blocks.WOOL:
   readable_name: "Any Wool"
