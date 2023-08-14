@@ -270,73 +270,69 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		|| data.immuneToCactus || data.immuneToDrowning || data.immuneToLightning || data.immuneToPotions
 		|| data.immuneToPlayer || data.immuneToExplosion || data.immuneToTrident || data.immuneToAnvil
 		|| data.immuneToDragonBreath || data.immuneToWither>
-	@Override public boolean hurt(DamageSource damagesource, float amount) {
+	@Override public boolean hurt(DamageSource source, float amount) {
 		<#if hasProcedure(data.whenMobIsHurt)>
-			double x = this.getX();
-			double y = this.getY();
-			double z = this.getZ();
-			Level world = this.level;
-			Entity entity = this;
-			Entity sourceentity = damagesource.getEntity();
-			Entity immediatesourceentity = damagesource.getDirectEntity();
-			<#if hasReturnValueOf(data.whenMobIsHurt, "logic")>
-			if (<@procedureOBJToConditionCode data.whenMobIsHurt false true/>)
-				return false;
-			<#else>
-				<@procedureOBJToCode data.whenMobIsHurt/>
-			</#if>
+			<@procedureCode data.whenMobIsHurt, {
+				"x": "this.getX()",
+				"y": "this.getY()",
+				"z": "this.getZ()",
+				"entity": "this",
+				"world": "this.level",
+				"sourceentity": "source.getEntity()",
+				"damagesource": "source"
+			}/>
 		</#if>
 		<#if data.immuneToArrows>
-			if (damagesource.getDirectEntity() instanceof AbstractArrow)
+			if (source.getDirectEntity() instanceof AbstractArrow)
 				return false;
 		</#if>
 		<#if data.immuneToPlayer>
-			if (damagesource.getDirectEntity() instanceof Player)
+			if (source.getDirectEntity() instanceof Player)
 				return false;
 		</#if>
 		<#if data.immuneToPotions>
-			if (damagesource.getDirectEntity() instanceof ThrownPotion || damagesource.getDirectEntity() instanceof AreaEffectCloud)
+			if (source.getDirectEntity() instanceof ThrownPotion || damagesource.getDirectEntity() instanceof AreaEffectCloud)
 				return false;
 		</#if>
 		<#if data.immuneToFallDamage>
-			if (damagesource == DamageSource.FALL)
+			if (source == DamageSource.FALL)
 				return false;
 		</#if>
 		<#if data.immuneToCactus>
-			if (damagesource == DamageSource.CACTUS)
+			if (source == DamageSource.CACTUS)
 				return false;
 		</#if>
 		<#if data.immuneToDrowning>
-			if (damagesource == DamageSource.DROWN)
+			if (source == DamageSource.DROWN)
 				return false;
 		</#if>
 		<#if data.immuneToLightning>
-			if (damagesource == DamageSource.LIGHTNING_BOLT)
+			if (source == DamageSource.LIGHTNING_BOLT)
 				return false;
 		</#if>
 		<#if data.immuneToExplosion>
-			if (damagesource.isExplosion())
+			if (source.isExplosion())
 				return false;
 		</#if>
 		<#if data.immuneToTrident>
-			if (damagesource.getMsgId().equals("trident"))
+			if (source.getMsgId().equals("trident"))
 				return false;
 		</#if>
 		<#if data.immuneToAnvil>
-			if (damagesource == DamageSource.ANVIL)
+			if (source == DamageSource.ANVIL)
 				return false;
 		</#if>
 		<#if data.immuneToDragonBreath>
-			if (damagesource == DamageSource.DRAGON_BREATH)
+			if (source == DamageSource.DRAGON_BREATH)
 				return false;
 		</#if>
 		<#if data.immuneToWither>
-			if (damagesource == DamageSource.WITHER)
+			if (source == DamageSource.WITHER)
 				return false;
-			if (damagesource.getMsgId().equals("witherSkull"))
+			if (source.getMsgId().equals("witherSkull"))
 				return false;
 		</#if>
-		return super.hurt(damagesource, amount);
+		return super.hurt(source, amount);
 	}
     </#if>
 
@@ -348,7 +344,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"y": "this.getY()",
 			"z": "this.getZ()",
 			"sourceentity": "source.getEntity()",
-			"immediatesourceentity": "source.getDirectEntity()",
 			"entity": "this",
 			"world": "this.level",
 			"damagesource": "source"
@@ -520,7 +515,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			"z": "this.getZ()",
 			"entity": "entity",
 			"sourceentity": "this",
-			"immediatesourceentity": "damageSource.getDirectEntity()",
 			"world": "this.level",
 			"damagesource": "damageSource"
 		}/>
