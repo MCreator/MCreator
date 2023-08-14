@@ -1,0 +1,1 @@
+Wenn der Portalblock in der Welt vorhanden ist, wird jeder Tick ausgeführt.

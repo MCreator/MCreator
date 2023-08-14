@@ -1,0 +1,1 @@
+Wählen Sie diese Option, wenn Sie möchten, dass Ihre Verzauberung in Beutetabellen generiert werden kann.

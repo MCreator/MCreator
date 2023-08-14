@@ -5,4 +5,4 @@
 
 1.18版本的原版世界可以在[這裏](https://static.wikia.nocookie.net/minecraft_zh_gamepedia/images/d/da/1.18_ore_distribution.jpg/revision/latest?cb=20221023021107)找到。
 
-註意:只在Minecraft 1.18.x及更高版本中可用。
+註意:只在Minecraft 1.18.x及更高版本中可用，目前只有插件有1.18.2的生成器，因此此消息可能會在未來版本被移除。

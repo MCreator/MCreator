@@ -1,0 +1,1 @@
+Dieser Parameter steuert den gespielten Klang, wenn das Fernkampfelement verwendet wird.

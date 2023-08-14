@@ -1,0 +1,1 @@
+Selecciona esta opción para que aparezcan minas en tu bioma.

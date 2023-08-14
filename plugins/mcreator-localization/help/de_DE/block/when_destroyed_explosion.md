@@ -1,0 +1,1 @@
+Löst eine Prozedur aus, wenn der Block durch eine Explosion zerstört wird.
