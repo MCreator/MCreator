@@ -341,18 +341,12 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </section>
 </li>
 <li>
-<section class="detail" id="setFoldersRoot(net.mcreator.workspace.elements.FolderElement)">
-<h3>setFoldersRoot</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFoldersRoot</span><wbr><span class="parameters">(<a href="elements/FolderElement.html" title="class in net.mcreator.workspace.elements">FolderElement</a>&nbsp;foldersRoot)</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="getModElements()">
 <h3>getModElements</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&gt;</span>&nbsp;<span class="element-name">getModElements</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>UNMODIFIABLE! list of mod elements</dd>
+<dd>UNMODIFIABLE! collection of mod elements</dd>
 </dl>
 </section>
 </li>
@@ -360,12 +354,20 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getVariableElements()">
 <h3>getVariableElements</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&gt;</span>&nbsp;<span class="element-name">getVariableElements</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>UNMODIFIABLE! collection of variable elements</dd>
+</dl>
 </section>
 </li>
 <li>
 <section class="detail" id="getSoundElements()">
 <h3>getSoundElements</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&gt;</span>&nbsp;<span class="element-name">getSoundElements</span>()</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>UNMODIFIABLE! collection of sound elements</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -454,26 +456,6 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="addSoundElement(net.mcreator.workspace.elements.SoundElement)">
 <h3>addSoundElement</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addSoundElement</span><wbr><span class="parameters">(<a href="elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&nbsp;element)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="updateModElement(net.mcreator.workspace.elements.ModElement)">
-<h3>updateModElement</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateModElement</span><wbr><span class="parameters">(<a href="elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;element)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="updateSoundElement(net.mcreator.workspace.elements.SoundElement,net.mcreator.workspace.elements.SoundElement)">
-<h3>updateSoundElement</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateSoundElement</span><wbr><span class="parameters">(<a href="elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&nbsp;originalElement,
- <a href="elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&nbsp;updatedElement)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="updateVariableElement(net.mcreator.workspace.elements.VariableElement,net.mcreator.workspace.elements.VariableElement)">
-<h3>updateVariableElement</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateVariableElement</span><wbr><span class="parameters">(<a href="elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&nbsp;originalElement,
- <a href="elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&nbsp;updatedElement)</span></div>
 </section>
 </li>
 <li>
@@ -649,9 +631,9 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </section>
 </li>
 <li>
-<section class="detail" id="reloadFromFS()">
-<h3>reloadFromFS</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reloadFromFS</span>()</div>
+<section class="detail" id="isRegenerateRequired()">
+<h3>isRegenerateRequired</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isRegenerateRequired</span>()</div>
 </section>
 </li>
 <li>
@@ -661,9 +643,35 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 </section>
 </li>
 <li>
-<section class="detail" id="isRegenerateRequired()">
-<h3>isRegenerateRequired</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isRegenerateRequired</span>()</div>
+<section class="detail" id="setFoldersRoot(net.mcreator.workspace.elements.FolderElement)">
+<h3>setFoldersRoot</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setFoldersRoot</span><wbr><span class="parameters">(<a href="elements/FolderElement.html" title="class in net.mcreator.workspace.elements">FolderElement</a>&nbsp;foldersRoot)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="updateModElement(net.mcreator.workspace.elements.ModElement)">
+<h3>updateModElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateModElement</span><wbr><span class="parameters">(<a href="elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;element)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="updateSoundElement(net.mcreator.workspace.elements.SoundElement,net.mcreator.workspace.elements.SoundElement)">
+<h3>updateSoundElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateSoundElement</span><wbr><span class="parameters">(<a href="elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&nbsp;originalElement,
+ <a href="elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&nbsp;updatedElement)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="updateVariableElement(net.mcreator.workspace.elements.VariableElement,net.mcreator.workspace.elements.VariableElement)">
+<h3>updateVariableElement</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">updateVariableElement</span><wbr><span class="parameters">(<a href="elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&nbsp;originalElement,
+ <a href="elements/VariableElement.html" title="class in net.mcreator.workspace.elements">VariableElement</a>&nbsp;updatedElement)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="reloadFromFS()">
+<h3>reloadFromFS</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reloadFromFS</span>()</div>
 </section>
 </li>
 </ul>
