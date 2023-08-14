@@ -1,0 +1,1 @@
+Nazwa wyświetlana w zakładce menu trybu kreatywnego.

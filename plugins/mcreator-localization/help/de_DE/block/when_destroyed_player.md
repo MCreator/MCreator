@@ -1,0 +1,1 @@
+Löst eine Prozedur aus, wenn der Spieler den Block zerstört.

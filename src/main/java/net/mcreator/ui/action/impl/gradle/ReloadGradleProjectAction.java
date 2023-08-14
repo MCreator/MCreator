@@ -49,9 +49,9 @@ public class ReloadGradleProjectAction extends GradleAction {
 							p3.err();
 							progressDialog.hideAll();
 						}
-					}).start();
+					}, "GradleProjectCacheReload").start();
 				});
-			}).start();
+			}, "ReloadGradleProject").start();
 			progressDialog.setVisible(true);
 		});
 	}

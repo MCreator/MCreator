@@ -1,0 +1,1 @@
+Đây là tên luật chơi được hiển thị trong trò chơi dưới các dòng lệnh để thay đổi/kích hoạt các luật chơi.

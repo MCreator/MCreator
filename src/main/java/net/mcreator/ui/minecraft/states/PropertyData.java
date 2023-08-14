@@ -225,7 +225,7 @@ import java.util.stream.Collectors;
 		private final double min, max;
 
 		public NumberType(String name) {
-			this(name, Integer.MIN_VALUE, Integer.MAX_VALUE);
+			this(name, -Double.MAX_VALUE, Double.MAX_VALUE);
 		}
 
 		public NumberType(String name, double min, double max) {

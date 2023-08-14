@@ -1,4 +1,0 @@
-templates:
-  - template: tag.json.ftl # loaded from datapack generator
-    writer: json
-    name: "@RESROOT/data/@[getNamespace()]/tags/@[tagType()]/@[getName()].json"

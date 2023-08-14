@@ -1,0 +1,3 @@
+Um mehr Bedingungen zur Platzierung Ihrer Pflanze hinzuzufügen, trotz des Blocks, an dem sie sein muss füge hier deine Prozedur mit Rückgabewert hinzu.
+
+HINWEIS: Überschreibt den Zustand der Platzierung des Pflanzentyps und erweitert die Liste der Blöcke mit dieser zusätzlichen Bedingung. Wenn die "Kann platziert werden"-Bausteine leer sind, wird diese Prozedur als Hauptplatzierung/Wachstumsbedingung verwendet.

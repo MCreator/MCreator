@@ -1,5 +1,7 @@
 - GROUND:
   texture: DIRT
+- EMPTY:
+  texture: AIR
 - WOOD:
   texture: PLANKS#0
 - PLANT:
@@ -196,5 +198,9 @@
   texture: CHISELED_BOOKSHELF
 - SUSPICIOUS_SAND:
   texture: SUSPICIOUS_SAND
+- SUSPICIOUS_GRAVEL:
+  texture: SUSPICIOUS_GRAVEL
 - DECORATED_POT:
+  texture: DECORATED_POT
+- DECORATED_POT_CRACKED:
   texture: DECORATED_POT

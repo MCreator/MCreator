@@ -101,7 +101,7 @@ public class GeneratorStats {
 			BlocklyLoader.INSTANCE.getAllBlockLoaders()
 					.forEach((name, value) -> addBlocklyFolder(generatorConfiguration, name));
 			addGlobalTriggerFolder(generatorConfiguration);
-		}).start();
+		}, "GeneratorStats-Loader").start();
 
 		if (generatorConfiguration.getVariableTypes().getSupportedVariableTypes().isEmpty()) {
 			baseCoverageInfo.put("variables", CoverageStatus.NONE);

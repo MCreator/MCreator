@@ -1,0 +1,1 @@
+Usa questo campo per definire dove dovrebbe avvenire lo spawn.
