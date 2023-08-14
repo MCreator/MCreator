@@ -38,7 +38,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.*;
 
@@ -225,10 +224,6 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 				g.drawImage(UIRES.get("18px.remove").getImage(), 0, 0, 11, 11, null);
 			}
 		}
-	}
-
-	public void addActionListener(ActionListener l) {
-		this.procedures.addActionListener(l);
 	}
 
 	//validation code

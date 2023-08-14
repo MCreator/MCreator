@@ -303,8 +303,4 @@ public class BlocklyPanel extends JFXPanel {
 				.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r");
 	}
 
-	public boolean isLoaded() {
-		return loaded;
-	}
-
 }
