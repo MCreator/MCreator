@@ -223,28 +223,23 @@ public class BlocklyTestUtil {
 			additionalXML.append("<field name=\"").append(field).append("\">Blocks.STONE</field>");
 			processed++;
 		}
-		case "field_data_list_selector" -> {
+		case "field_data_list_selector", "field_data_list_dropdown" -> {
 			String type = arg.get("datalist").getAsString();
 
 			// Get the optional properties
-			JsonElement optTypeFilter = arg.get("typeFilter");
-			String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
+			JsonElement optTypeFilter = null, optCustomEntryProviders = null;
+			if (arg.get("type").getAsString().equals("field_data_list_selector")) {
+				optTypeFilter = arg.get("typeFilter");
+				optCustomEntryProviders = arg.get("customEntryProviders");
+			}
 
-			JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
+			String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
 			String customEntryProviders =
 					optCustomEntryProviders == null ? null : optCustomEntryProviders.getAsString();
 
-			JsonElement optTestValue = arg.get("testValue");
-			String value = optTestValue == null ? null : optTestValue.getAsString();
-
-			if (value == null) {
-				String[] values = getDataListFieldValues(workspace, type, typeFilter, customEntryProviders);
-				if (values.length > 0 && !values[0].equals("")) {
-					value = ListUtils.getRandomItem(random, values);
-				}
-			}
-
-			if (value != null && !value.equals("")) {
+			String[] values = getDataListFieldValues(workspace, type, typeFilter, customEntryProviders);
+			if (values.length > 0 && !values[0].equals("")) {
+				String value = ListUtils.getRandomItem(random, values);
 				additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
 				processed++;
 			}
