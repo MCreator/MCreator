@@ -20,32 +20,22 @@
 package net.mcreator.integration.generator;
 
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
-import net.mcreator.blockly.data.RepeatingField;
 import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestWorkspaceDataProvider;
-import net.mcreator.minecraft.DataListEntry;
-import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
-import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableTypeLoader;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -64,157 +54,14 @@ public class GTProcedureBlocks {
 				.getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
-			// silently skip procedure blocks not supported by this generator
-			if (!generatorBlocks.contains(procedureBlock.getMachineName())) {
-				continue;
-			}
+			if (!BlocklyTestUtil.validateToolboxBlock(procedureBlock, generatorBlocks, workspace))
+				continue; // block is not supported by this generator
 
-			if (procedureBlock.getToolboxTestXML() == null) {
-				LOG.warn("[" + generatorName + "] Skipping procedure block without default XML defined: "
-						+ procedureBlock.getMachineName());
-				continue;
-			}
+			if (!BlocklyTestUtil.validateInputs(procedureBlock))
+				continue; // failed to validate inputs
 
-			if (!procedureBlock.getAllInputs().isEmpty() || !procedureBlock.getAllRepeatingInputs().isEmpty()) {
-				boolean templatesDefined = true;
-
-				if (procedureBlock.getToolboxInitStatements() != null) {
-					for (String input : procedureBlock.getAllInputs()) {
-						boolean match = false;
-						for (String toolboxtemplate : procedureBlock.getToolboxInitStatements()) {
-							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
-								match = true;
-								break;
-							}
-						}
-
-						if (!match) {
-							templatesDefined = false;
-							break;
-						}
-					}
-
-					for (String input : procedureBlock.getAllRepeatingInputs()) {
-						Pattern pattern = Pattern.compile("<value name=\"" + input + "\\d+\">");
-						boolean match = false;
-						for (String toolboxtemplate : procedureBlock.getToolboxInitStatements()) {
-							if (pattern.matcher(toolboxtemplate).find()) {
-								match = true;
-								break;
-							}
-						}
-
-						if (!match) {
-							templatesDefined = false;
-							break;
-						}
-					}
-				} else {
-					templatesDefined = false;
-				}
-
-				if (!templatesDefined) {
-					LOG.warn("[" + generatorName + "] Skipping procedure block with incomplete template: "
-							+ procedureBlock.getMachineName());
-					continue;
-				}
-			}
-
-			if (procedureBlock.getRequiredAPIs() != null) {
-				boolean skip = false;
-
-				for (String required_api : procedureBlock.getRequiredAPIs()) {
-					if (!workspace.getWorkspaceSettings().getMCreatorDependencies().contains(required_api)) {
-						skip = true;
-						break;
-					}
-				}
-
-				if (skip) {
-					// We skip API specific blocks without any warnings logged as we do not intend to test them anyway
-					continue;
-				}
-			}
-
-			if (procedureBlock.getFields() != null) {
-				int processed = 0;
-
-				if (procedureBlock.getBlocklyJSON().has("args0")) {
-					for (String field : procedureBlock.getFields()) {
-						JsonArray args0 = procedureBlock.getBlocklyJSON().get("args0").getAsJsonArray();
-						for (int i = 0; i < args0.size(); i++) {
-							JsonObject arg = args0.get(i).getAsJsonObject();
-							if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
-								processed += appendFieldXML(workspace, random, additionalXML, arg, field);
-								break;
-							}
-						}
-					}
-				}
-
-				if (procedureBlock.getBlocklyJSON().get("extensions") != null) {
-					JsonArray extensions = procedureBlock.getBlocklyJSON().get("extensions").getAsJsonArray();
-					for (int i = 0; i < extensions.size(); i++) {
-						String extension = extensions.get(i).getAsString();
-						String suggestedFieldName = extension.replace("_list_provider", "");
-						String suggestedDataListName = suggestedFieldName;
-
-						if (suggestedDataListName.equals("sound_category")) {
-							suggestedDataListName = "soundcategories";
-							suggestedFieldName = "soundcategory";
-						}
-
-						if (suggestedDataListName.equals("plant_type")) {
-							suggestedDataListName = "planttype";
-							suggestedFieldName = "planttype";
-						}
-
-						if (procedureBlock.getFields().contains(suggestedFieldName)) {
-							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
-									suggestedDataListName);
-
-							if (values.length == 0 || values[0].equals(""))
-								values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
-										suggestedDataListName + "s");
-
-							if (values.length > 0 && !values[0].equals("")) {
-								additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
-										.append(ListUtils.getRandomItem(random, values)).append("</field>");
-								processed++;
-							}
-						}
-					}
-				}
-
-				if (processed != procedureBlock.getFields().size()) {
-					LOG.warn("[" + generatorName + "] Skipping procedure block with special fields: "
-							+ procedureBlock.getMachineName());
-					continue;
-				}
-			}
-
-			if (procedureBlock.getRepeatingFields() != null) {
-				int processedFields = 0;
-				int totalFields = 0;
-				for (RepeatingField fieldEntry : procedureBlock.getRepeatingFields()) {
-					if (fieldEntry.field_definition() != null) {
-						int count = 3;
-						if (fieldEntry.field_definition().has("testCount")) {
-							count = fieldEntry.field_definition().get("testCount").getAsInt();
-						}
-						totalFields += count;
-						for (int i = 0; i < count; i++) {
-							processedFields += appendFieldXML(workspace, random, additionalXML,
-									fieldEntry.field_definition(), fieldEntry.name() + i);
-						}
-					}
-				}
-				if (processedFields != totalFields) {
-					LOG.warn("[" + generatorName + "] Skipping procedure block with incorrectly "
-							+ "defined repeating field: " + procedureBlock.getMachineName());
-					continue;
-				}
-			}
+			if (!BlocklyTestUtil.populateFields(procedureBlock, workspace, random, additionalXML))
+				continue; // failed to populate all fields
 
 			if (procedureBlock.getStatements() != null) {
 				for (StatementInput statement : procedureBlock.getStatements()) {
@@ -367,104 +214,4 @@ public class GTProcedureBlocks {
 				+ "</next></block></next></block></next></block></next></block></xml>";
 	}
 
-	private static String[] getDataListFieldValues(Workspace workspace, String datalist, String typeFilter,
-			String customEntryProviders) {
-		switch (datalist) {
-		case "entity":
-			return ElementUtil.loadAllEntities(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "spawnableEntity":
-			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "gui":
-			return ElementUtil.loadBasicGUI(workspace).toArray(String[]::new);
-		case "biome":
-			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "dimension":
-			return ElementUtil.loadAllDimensions(workspace);
-		case "dimensionCustom":
-			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
-					.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new);
-		case "fluid":
-			return ElementUtil.loadAllFluids(workspace);
-		case "gamerulesboolean":
-			return ElementUtil.getAllBooleanGameRules(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "gamerulesnumber":
-			return ElementUtil.getAllNumberGameRules(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "sound":
-			return ElementUtil.getAllSounds(workspace);
-		case "procedure":
-			return workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
-					.map(ModElement::getName).toArray(String[]::new);
-		case "arrowProjectile":
-			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		default: {
-			if (datalist.startsWith("procedure_retval_")) {
-				var variableType = VariableTypeLoader.INSTANCE.fromName(
-						StringUtils.removeStart(datalist, "procedure_retval_"));
-				return ElementUtil.getProceduresOfType(workspace, variableType);
-			}
-			if (!DataListLoader.loadDataList(datalist).isEmpty()) {
-				return ElementUtil.loadDataListAndElements(workspace, datalist, false, typeFilter,
-								StringUtils.split(customEntryProviders, ',')).stream().map(DataListEntry::getName)
-						.toArray(String[]::new);
-			}
-		}
-		}
-		return new String[] { "" };
-	}
-
-	private static int appendFieldXML(Workspace workspace, Random random, StringBuilder additionalXML, JsonObject arg,
-			String field) {
-		int processed = 0;
-		switch (arg.get("type").getAsString()) {
-		case "field_checkbox" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
-			processed++;
-		}
-		case "field_number" -> {
-			if (arg.has("precision") && arg.get("precision").getAsInt() == 1)
-				additionalXML.append("<field name=\"").append(field).append("\">1</field>");
-			else
-				additionalXML.append("<field name=\"").append(field).append("\">1.23d</field>");
-			processed++;
-		}
-		case "field_input", "field_javaname" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">test</field>");
-			processed++;
-		}
-		case "field_dropdown" -> {
-			JsonArray opts = arg.get("options").getAsJsonArray();
-			JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
-			additionalXML.append("<field name=\"").append(field).append("\">").append(opt.get(1).getAsString())
-					.append("</field>");
-			processed++;
-		}
-		case "field_mcitem_selector" -> {
-			additionalXML.append("<field name=\"").append(field).append("\">Blocks.COBBLESTONE</field>");
-			processed++;
-		}
-		case "field_data_list_selector" -> {
-			String type = arg.get("datalist").getAsString();
-
-			// Get the optional properties
-			JsonElement optTypeFilter = arg.get("typeFilter");
-			String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
-
-			JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
-			String customEntryProviders =
-					optCustomEntryProviders == null ? null : optCustomEntryProviders.getAsString();
-
-			String[] values = getDataListFieldValues(workspace, type, typeFilter, customEntryProviders);
-			if (values.length > 0 && !values[0].equals("")) {
-				String value = ListUtils.getRandomItem(random, values);
-				additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
-				processed++;
-			}
-		}
-		}
-		return processed;
-	}
 }

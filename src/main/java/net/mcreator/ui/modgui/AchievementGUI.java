@@ -216,7 +216,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
 			blocklyPanel.getJSBridge()
-					.setJavaScriptEventListener(() -> new Thread(AchievementGUI.this::regenerateTrigger).start());
+					.setJavaScriptEventListener(() -> new Thread(AchievementGUI.this::regenerateTrigger, "TriggerRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(
 						"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");

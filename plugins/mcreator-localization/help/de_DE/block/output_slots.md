@@ -1,0 +1,1 @@
+Ausgabe-Slots werden nicht als Eingabe für die Übertragung von Trichtergegenständen verwendet.

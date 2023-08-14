@@ -1,0 +1,1 @@
+Aktivieren Sie diesen Parameter, damit der Effekt im Inventar des Spielers angezeigt wird, wenn er aktiv ist.

@@ -1,2 +1,1 @@
-Si votre bloc pivote horizontalement, cochez cette case pour lui permettre de faire face au sol, aux murs ou au plafond
-dans n'importe quelle direction. Cette option est utilisée par les leviers, la meule, etc.
+Si votre bloc pivote horizontalement, cochez cette case pour lui permettre de faire face au sol, aux murs ou au plafond dans n'importe quelle direction. Cette option est utilisée par les leviers, la meule, etc.
