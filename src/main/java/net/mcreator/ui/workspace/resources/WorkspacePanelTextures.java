@@ -279,7 +279,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				textureRender.invalidateIconCache();
 				refilterElements();
 			});
-		}).start();
+		}, "WorkspaceTexturesReload").start();
 	}
 
 	@Override public void refilterElements() {

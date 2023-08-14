@@ -1,0 +1,1 @@
+Wähle diese Einstellung, um Dschungeltempel in deinem Biom zu haben.

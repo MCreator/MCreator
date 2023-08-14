@@ -82,18 +82,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	@Override public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(guiGraphics);
-		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		this.renderTooltip(guiGraphics, mouseX, mouseY);
 
-		<#list data.getComponentsOfType("Tooltip") as component>
-			<#assign x = (component.x - mx/2)?int>
-			<#assign y = (component.y - my/2)?int>
-			<#if hasProcedure(component.displayCondition)>
-				if (<@procedureOBJToConditionCode component.displayCondition/>)
-			</#if>
-				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height})
-					guiGraphics.renderTooltip(font, <#if hasProcedure(component.text)>Component.literal(<@procedureOBJToStringCode component.text/>)<#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>, mouseX, mouseY);
-		</#list>
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 		<#list data.getComponentsOfType("TextField") as component>
 				${component.getName()}.render(guiGraphics, mouseX, mouseY, partialTicks);
@@ -113,6 +103,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					livingEntity
 				);
 			}
+		</#list>
+
+		this.renderTooltip(guiGraphics, mouseX, mouseY);
+
+		<#list data.getComponentsOfType("Tooltip") as component>
+			<#assign x = (component.x - mx/2)?int>
+			<#assign y = (component.y - my/2)?int>
+			<#if hasProcedure(component.displayCondition)>
+				if (<@procedureOBJToConditionCode component.displayCondition/>)
+			</#if>
+				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height})
+					guiGraphics.renderTooltip(font, <#if hasProcedure(component.text)>Component.literal(<@procedureOBJToStringCode component.text/>)<#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>, mouseX, mouseY);
 		</#list>
 	}
 

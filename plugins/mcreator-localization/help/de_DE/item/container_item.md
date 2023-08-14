@@ -1,0 +1,1 @@
+Dieser Parameter bestimmt, ob der Gegenstand im Herstellungsraster bleibt, wenn er hergestellt wird. Das bedeutet, dass der Gegenstand Teil des Rezepts ist, aber nicht konsumiert wird.

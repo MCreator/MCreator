@@ -1,5 +1,5 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-status: lts
+status: legacy
 buildfileversion: 43.2.0
 
 import:

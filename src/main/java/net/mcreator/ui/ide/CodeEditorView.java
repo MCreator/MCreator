@@ -367,7 +367,7 @@ public class CodeEditorView extends ViewBase {
 
 		te.discardAllEdits();
 
-		new Thread(() -> setupCodeSupport(fileName)).start();
+		new Thread(() -> setupCodeSupport(fileName), "CodeSupport-Loader").start();
 	}
 
 	private void setupCodeSupport(String fileName) {
@@ -442,7 +442,7 @@ public class CodeEditorView extends ViewBase {
 									}
 									completitionInAction = false;
 								}
-							}).start();
+							}, "AutoComplete").start();
 						}
 					}
 				}
@@ -753,7 +753,7 @@ public class CodeEditorView extends ViewBase {
 				} catch (BadLocationException ignored) {
 				}
 			});
-		}).start();
+		}, "JumpToLine").start();
 	}
 
 }

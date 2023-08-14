@@ -1,0 +1,1 @@
+Wenn du "${l10n.t("elementgui.item.container_item")}" aktiviert hast, kannst du diese Option aktivieren, um den Gegenstand stattdessen zu beschädigen, ihn einfach im Handwerksfeld zu halten.

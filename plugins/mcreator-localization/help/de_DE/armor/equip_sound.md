@@ -1,0 +1,1 @@
+Der Klang, wenn der Spieler ein Rüstungsteil ausrüstet.

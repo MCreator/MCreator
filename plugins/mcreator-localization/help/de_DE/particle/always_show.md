@@ -1,0 +1,1 @@
+Dieser Parameter bestimmt, ob das Partikeln in allen Fällen angezeigt wird,, auch wenn die Partikelanzeige in den Videoeinstellungen auf minimal eingestellt ist.

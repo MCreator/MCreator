@@ -1,0 +1,1 @@
+Diese optionale Eigenschaft ändert die Textur der Eimer im Inventar und ersetzt die automatisch generierte Eimer.

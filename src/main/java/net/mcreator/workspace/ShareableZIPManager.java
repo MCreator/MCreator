@@ -107,7 +107,7 @@ public class ShareableZIPManager {
 			dial.refreshDisplay();
 
 			dial.hideAll();
-		});
+		}, "ZIPImporter");
 		t.start();
 		dial.setVisible(true);
 
@@ -138,7 +138,7 @@ public class ShareableZIPManager {
 			p1.ok();
 			dial.refreshDisplay();
 			dial.hideAll();
-		});
+		}, "ZIPExporter");
 		t.start();
 		dial.setVisible(true);
 	}
