@@ -531,7 +531,15 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
 		// add it before generating so all references are loaded
-		mcreator.getWorkspace().addModElement(modElement);
+		if (!editingMode) {
+			mcreator.getWorkspace().addModElement(modElement);
+		} else {
+			modElement.reloadElementIcon();
+			modElement.getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush()); // update MCItem icons
+		}
+
+		// make sure workspace will also be saved
+		mcreator.getWorkspace().markDirty();
 
 		// save the GeneratableElement definition
 		mcreator.getModElementManager().storeModElement(element);

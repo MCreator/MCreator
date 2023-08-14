@@ -573,6 +573,12 @@
 - music.overworld.frozen_peaks
 - music.overworld.snow_slopes
 - music.overworld.stony_peaks
+- music.overworld.flower_forest
+- music.overworld.desert
+- music.overworld.badlands
+- music.overworld.jungle
+- music.overworld.sparse_jungle
+- music.overworld.bamboo_jungle
 - record.11
 - record.13
 - record.5
@@ -588,6 +594,7 @@
 - record.ward
 - record.pigstep
 - record.otherside
+- record.relic
 - ui.button.click
 - ui.toast.in
 - ui.toast.out
@@ -1025,6 +1032,7 @@
 - block.amethyst_block.fall
 - block.amethyst_block.hit
 - block.amethyst_block.place
+- block.amethyst_block.resonate
 - block.amethyst_block.step
 - block.amethyst_cluster.break
 - block.amethyst_cluster.fall
@@ -1341,7 +1349,10 @@
 - block.bamboo_wood_fence_gate.close
 - block.bamboo_wood_fence_gate.open
 - item.brush.brushing
+- item.brush.brushing.sand
+- item.brush.brushing.gravel
 - item.brush.brush_sand_completed
+- item.brush.brushing.gravel.completed
 - entity.camel.ambient
 - entity.camel.dash
 - entity.camel.dash_ready
@@ -1458,3 +1469,12 @@
 - entity.sniffer.digging
 - entity.sniffer.digging_stop
 - entity.sniffer.happy
+- block.suspicious_gravel.break
+- block.suspicious_gravel.step
+- block.suspicious_gravel.place
+- block.suspicious_gravel.hit
+- block.suspicious_gravel.fall
+- block.sniffer_egg.plop
+- block.sniffer_egg.crack
+- block.sniffer_egg.hatch
+- block.sign.waxed_interact_fail

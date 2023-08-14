@@ -31,6 +31,9 @@
 - EntityCat:
   readable_name: "Cat"
   type: spawnable
+- EntityCamel:
+  readable_name: "Camel"
+  type: spawnable
 - EntityCaveSpider:
   readable_name: "Cave spider"
   type: spawnable
@@ -257,6 +260,9 @@
   type: spawnable
 - EntitySmallFireball:
   readable_name: "Small fireball"
+  type: spawnable
+- EntitySniffer:
+  readable_name: "Sniffer"
   type: spawnable
 - EntitySnowball:
   readable_name: "Snowball"

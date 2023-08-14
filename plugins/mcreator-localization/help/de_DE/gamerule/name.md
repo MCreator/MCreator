@@ -1,0 +1,1 @@
+Dies ist der Name der Spielregel, der im Spiel in Befehlen angezeigt wird, um die Spielregeln zu ändern/zu aktivieren.

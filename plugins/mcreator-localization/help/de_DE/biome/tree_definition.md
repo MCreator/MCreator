@@ -1,0 +1,1 @@
+Dieser Parameter legt fest, ob Vanille-Baumhöhe und Blockdaten verwendet werden sollen oder ob die untenstehenden Felder die Daten verwenden.

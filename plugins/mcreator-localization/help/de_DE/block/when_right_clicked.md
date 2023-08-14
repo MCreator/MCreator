@@ -1,0 +1,3 @@
+Wenn ein Spieler mit der rechten Maustaste auf den Block klickt, wird der Vorgang ausgeführt.
+
+Das Verfahren sollte ein Aktionsergebnis des Typs SUCCESS/CONSUME zurückgeben, wenn es eine Interaktion mit der Entität gab, FAIL wenn die Interaktion fehlgeschlagen ist, und PASS, wenn es keine Interaktion gab. wenn die Prozedur keinen Wert zurückgibt der Aktionsergebnis-Typ wird durch die Entscheidung bestimmt, ob die Entität rideable, tameable ist oder eine GUI öffnet.
