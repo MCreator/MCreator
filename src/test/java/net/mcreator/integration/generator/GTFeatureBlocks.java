@@ -19,6 +19,7 @@
 
 package net.mcreator.integration.generator;
 
+import com.google.gson.JsonElement;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
@@ -70,6 +71,17 @@ public class GTFeatureBlocks {
 
 			String testXML = featureBlock.getToolboxTestXML();
 
+			// Don't add generation conditions if the current feature disables them
+			boolean disableGenerationConditions = false;
+			if (featureBlock.getBlocklyJSON().get("extensions") != null) {
+				for (JsonElement element : featureBlock.getBlocklyJSON().get("extensions").getAsJsonArray()) {
+					if (element.getAsString().equals("disables_generation_conditions")) {
+						disableGenerationConditions = true;
+						break;
+					}
+				}
+			}
+
 			// Set block selectors to some value
 			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
 					"<block type=\"mcitem_allblocks\"><field name=\"value\">"
@@ -82,11 +94,13 @@ public class GTFeatureBlocks {
 			Feature feature = new Feature(modElement);
 			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));
-			feature.restrictionDimensions = random.nextBoolean() ?
+			feature.restrictionDimensions = random.nextBoolean() && disableGenerationConditions ?
 					new ArrayList<>() :
 					new ArrayList<>(Arrays.asList("Surface", "Nether"));
 			feature.restrictionBiomes = new ArrayList<>();
-			feature.generateCondition = random.nextBoolean() ? new Procedure("condition1") : null;
+			feature.generateCondition = random.nextBoolean() && !disableGenerationConditions ?
+					new Procedure("condition1") :
+					null;
 
 			if (featureBlock.getType()
 					== IBlockGenerator.BlockType.PROCEDURAL) { // It's a placement, we test with the lake feature
