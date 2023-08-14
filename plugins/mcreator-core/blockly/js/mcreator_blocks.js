@@ -111,6 +111,7 @@ Blockly.Blocks['feature_container'] = {
         this.setColour(340);
         this.setInputsInline(false);
         this.setTooltip(javabridge.t("blockly.block.feature_container.tooltip"));
+        Blockly.Extensions.apply('mark_are_generation_conditions_disabled', this, true);
     }
 };
 

@@ -25,6 +25,31 @@ Blockly.Extensions.register('is_custom_loop',
         Blockly.libraryBlocks.loops.loopTypes.add(this.type);
     });
 
+// Extension to mark feature blocks that don't allow generation conditions
+Blockly.Extensions.register('disables_generation_conditions',
+    function () {
+        disable_generation_conditions.add(this.type);
+    });
+
+// Mutation used by the feature container block to keep track of whether generation conditions are allowed
+Blockly.Extensions.registerMutator('mark_are_generation_conditions_disabled',
+    {
+        mutationToDom: function () {
+            let container = document.createElement('mutation');
+            const featureInput = this.getInput('feature')
+            if (!featureInput.connection || !featureInput.connection.targetBlock()) { // No block is attached
+                return null;
+            } else {
+                var disabled = disable_generation_conditions.has(featureInput.connection.targetBlock().type);
+                container.setAttribute('generation_conditions_disabled', disabled)
+            }
+            return container;
+        },
+
+        domToMutation: function (xmlElement) {
+        }
+    });
+
 // Extension to append the marker image to all blockstate provider inputs
 Blockly.Extensions.register('add_image_to_bsp_inputs',
     function () {

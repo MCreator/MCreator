@@ -1,4 +1,6 @@
 let global_variables = [];
+// Set used to keep track of feature blocks that disable generation conditions
+let disable_generation_conditions = new Set();
 
 Blockly.HSV_SATURATION = 0.37;
 Blockly.HSV_VALUE = 0.6;
