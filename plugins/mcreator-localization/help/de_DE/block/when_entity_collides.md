@@ -1,0 +1,1 @@
+Löst eine Prozedur aus, wenn sich eine Entität innerhalb des Blocks befindet.

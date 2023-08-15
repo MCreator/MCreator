@@ -367,7 +367,7 @@ public class CodeEditorView extends ViewBase {
 
 		te.discardAllEdits();
 
-		new Thread(() -> setupCodeSupport(fileName)).start();
+		new Thread(() -> setupCodeSupport(fileName), "CodeSupport-Loader").start();
 	}
 
 	private void setupCodeSupport(String fileName) {
@@ -420,7 +420,8 @@ public class CodeEditorView extends ViewBase {
 			JavaParser parser = jls.getParser(te);
 
 			te.addKeyListener(new KeyAdapter() {
-				final boolean smartAutocomplete = PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart");
+				final boolean smartAutocomplete = PreferencesManager.PREFERENCES.ide.autocompleteMode.get()
+						.equals("Smart");
 
 				boolean completitionInAction = false;
 
@@ -442,7 +443,7 @@ public class CodeEditorView extends ViewBase {
 									}
 									completitionInAction = false;
 								}
-							}).start();
+							}, "AutoComplete").start();
 						}
 					}
 				}
@@ -753,7 +754,7 @@ public class CodeEditorView extends ViewBase {
 				} catch (BadLocationException ignored) {
 				}
 			});
-		}).start();
+		}, "JumpToLine").start();
 	}
 
 }

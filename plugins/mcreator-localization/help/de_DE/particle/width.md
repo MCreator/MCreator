@@ -1,0 +1,1 @@
+Dieser Parameter legt fest, wie weit dieses Partikel (in Blockeinheiten) ist.

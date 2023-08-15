@@ -19,6 +19,7 @@
 package net.mcreator.element;
 
 import com.google.gson.*;
+import net.mcreator.Launcher;
 import net.mcreator.element.converter.ConverterRegistry;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
@@ -42,7 +43,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 44;
+	public static final int formatVersion = 45;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -143,6 +144,19 @@ public abstract class GeneratableElement {
 			int importedFormatVersion = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("_fv"),
 					Integer.class);
 
+			// If GE was stored with newer FV, we can not deserialize it (we still allow this on development builds for testing purposes)
+			if (importedFormatVersion > formatVersion) {
+				if (Launcher.version.isDevelopment()) {
+					LOG.info("Mod element " + lastModElement.getName() + " was saved in FV " + importedFormatVersion
+							+ " but current FV is " + GeneratableElement.formatVersion + ". Things may not work well");
+				} else {
+					LOG.warn("Mod element " + lastModElement.getName() + " was saved in FV " + importedFormatVersion
+							+ " but current FV is " + GeneratableElement.formatVersion
+							+ " so we can not deserialize it");
+					return null;
+				}
+			}
+
 			try {
 				ModElementType<?> modElementType = ModElementTypeLoader.getModElementType(newType);
 
@@ -159,67 +173,49 @@ public abstract class GeneratableElement {
 				generatableElement[0].setModElement(lastModElement); // set the mod element reference
 				passWorkspaceToFields(generatableElement[0], workspace);
 
-				if (importedFormatVersion < GeneratableElement.formatVersion) {
-					List<IConverter> converters = ConverterRegistry.getConvertersForModElementType(modElementType);
-					if (converters != null) {
-						AtomicInteger versionIncrementer = new AtomicInteger(importedFormatVersion);
-						converters.stream()
-								.filter(converter -> importedFormatVersion < converter.getVersionConvertingTo())
-								.sorted().forEach(converter -> {
-									LOG.debug(
-											"Converting " + lastModElement.getName() + " (" + modElementType + ") from FV"
-													+ versionIncrementer.get() + " to FV" + converter.getVersionConvertingTo()
-													+ " using " + converter.getClass().getSimpleName());
-									generatableElement[0] = converter.convert(this.workspace, generatableElement[0],
-											jsonElement);
-									generatableElement[0].conversionApplied = true;
-									versionIncrementer.set(converter.getVersionConvertingTo());
-								});
-					}
-				} else if (importedFormatVersion > GeneratableElement.formatVersion) {
-					LOG.warn(
-							"Mod element " + lastModElement.getName() + " (" + modElementType + ") was saved in FV"
-									+ importedFormatVersion + " but current FV is " + GeneratableElement.formatVersion
-									+ " so we can not deserialize it");
-					return null;
+				List<IConverter> converters = ConverterRegistry.getConvertersForModElementType(modElementType);
+				if (converters != null) {
+					AtomicInteger versionIncrementer = new AtomicInteger(importedFormatVersion);
+					converters.stream().filter(converter -> importedFormatVersion < converter.getVersionConvertingTo())
+							.sorted().forEach(converter -> {
+								LOG.debug("Converting " + lastModElement.getName() + " (" + modElementType + ") from FV"
+										+ versionIncrementer.get() + " to FV" + converter.getVersionConvertingTo() + " using "
+										+ converter.getClass().getSimpleName());
+								generatableElement[0] = converter.convert(this.workspace, generatableElement[0], jsonElement);
+								generatableElement[0].conversionApplied = true;
+								versionIncrementer.set(converter.getVersionConvertingTo());
+							});
 				}
 
 				return generatableElement[0];
 			} catch (IllegalArgumentException e) { // we may be dealing with mod element type no longer existing
-				if (importedFormatVersion < GeneratableElement.formatVersion) {
-					IConverter converter = ConverterRegistry.getConverterForModElementType(newType);
-					if (converter != null) {
-						try {
-							GeneratableElement result = converter.convert(this.workspace,
-									new Unknown(lastModElement), jsonElement);
-							if (result != null) {
-								workspace.removeModElement(lastModElement);
+				IConverter converter = ConverterRegistry.getConverterForModElementType(newType);
+				if (converter != null && importedFormatVersion < converter.getVersionConvertingTo()) {
+					try {
+						GeneratableElement result = converter.convert(this.workspace, new Unknown(lastModElement),
+								jsonElement);
+						if (result != null) {
+							workspace.removeModElement(lastModElement);
 
-								result.getModElement().setParentFolder(
-										FolderElement.dummyFromPath(lastModElement.getFolderPath()));
-								workspace.getModElementManager().storeModElementPicture(result);
-								workspace.addModElement(result.getModElement());
-								workspace.getGenerator().generateElement(result);
-								workspace.getModElementManager().storeModElement(result);
+							result.getModElement()
+									.setParentFolder(FolderElement.dummyFromPath(lastModElement.getFolderPath()));
+							workspace.getModElementManager().storeModElementPicture(result);
+							workspace.addModElement(result.getModElement());
+							workspace.getGenerator().generateElement(result);
+							workspace.getModElementManager().storeModElement(result);
 
-								LOG.debug("Converted mod element " + lastModElement.getName() + " (" + newType
-										+ ") to " + result.getModElement().getType().getRegistryName() + " using "
-										+ converter.getClass().getSimpleName());
-							} else {
-								LOG.debug("Converted mod element " + lastModElement.getName() + " (" + newType
-										+ ") to data format that is not a mod element using " + converter.getClass()
-										.getSimpleName());
-							}
-						} catch (Exception e2) {
-							LOG.warn("Failed to convert mod element " + lastModElement.getName() + " of type "
-									+ newType + " to a potential alternative." , e2);
+							LOG.debug("Converted mod element " + lastModElement.getName() + " (" + newType + ") to "
+									+ result.getModElement().getType().getRegistryName() + " using "
+									+ converter.getClass().getSimpleName());
+						} else {
+							LOG.debug("Converted mod element " + lastModElement.getName() + " (" + newType
+									+ ") to data format that is not a mod element using " + converter.getClass()
+									.getSimpleName());
 						}
+					} catch (Exception e2) {
+						LOG.warn("Failed to convert mod element " + lastModElement.getName() + " of type " + newType
+								+ " to a potential alternative.", e2);
 					}
-				} else if (importedFormatVersion > GeneratableElement.formatVersion) {
-					LOG.warn("Mod element " + lastModElement.getName() + " (" + newType + ") was saved in FV"
-							+ importedFormatVersion + " but current FV is " + GeneratableElement.formatVersion
-							+ " so we can not deserialize it");
-					return null;
 				}
 
 				return null;
@@ -233,8 +229,8 @@ public abstract class GeneratableElement {
 		public JsonElement serialize(GeneratableElement modElement, Type type,
 				JsonSerializationContext jsonSerializationContext) {
 			JsonObject root = new JsonObject();
-			root.add("_fv" , new JsonPrimitive(GeneratableElement.formatVersion));
-			root.add("_type" , gson.toJsonTree(modElement.getModElement().getType().getRegistryName()));
+			root.add("_fv", new JsonPrimitive(GeneratableElement.formatVersion));
+			root.add("_type", gson.toJsonTree(modElement.getModElement().getType().getRegistryName()));
 
 			JsonObject definition = gson.toJsonTree(modElement).getAsJsonObject();
 
@@ -244,7 +240,7 @@ public abstract class GeneratableElement {
 				return null;
 			}
 
-			root.add("definition" , definition);
+			root.add("definition", definition);
 
 			return root;
 		}
@@ -285,7 +281,8 @@ public abstract class GeneratableElement {
 							passWorkspaceToFields(subobject, workspace);
 					}
 				} catch (Exception e) {
-					e.printStackTrace();
+					LOG.warn("Failed to pass workspace to field " + field.getName() + " of object " + object.getClass()
+							.getSimpleName());
 				}
 			}
 		}

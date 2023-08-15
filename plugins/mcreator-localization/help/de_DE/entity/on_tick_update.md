@@ -1,0 +1,1 @@
+Löscht die Prozedur jeden Tick aus, den die Entität in der Welt existiert.
