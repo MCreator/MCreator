@@ -22,8 +22,10 @@ import com.google.gson.Gson;
 import net.mcreator.util.StringUtils;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Random;
 
 @SuppressWarnings("unused") public class TemplateHelper {
 

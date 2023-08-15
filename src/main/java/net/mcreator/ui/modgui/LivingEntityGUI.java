@@ -419,12 +419,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/creature_type"),
 				L10N.label("elementgui.living_entity.creature_type")));
 		subpane1.add(mobCreatureType);
-		
+
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.movement_speed_step_height"),
 				HelpUtils.helpButton(this.withEntry("entity/movement_speed")),
 				HelpUtils.helpButton(this.withEntry("entity/step_height"))));
 		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, movementSpeed, stepHeight));
-		
 
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.health_xp_amount"),
 				HelpUtils.helpButton(this.withEntry("entity/health")),
@@ -720,8 +719,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
-			blocklyPanel.getJSBridge()
-					.setJavaScriptEventListener(() -> new Thread(LivingEntityGUI.this::regenerateAITasks, "AITasksRegenerate").start());
+			blocklyPanel.getJSBridge().setJavaScriptEventListener(
+					() -> new Thread(LivingEntityGUI.this::regenerateAITasks, "AITasksRegenerate").start());
 			if (!isEditingMode()) {
 				setDefaultAISet();
 			}

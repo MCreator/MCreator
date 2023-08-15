@@ -72,7 +72,7 @@ public class BiomeCustomFeaturesConverter implements IConverter {
 				}
 			}
 		} catch (Exception e) {
-			LOG.warn("Failed to update biome default features list" , e);
+			LOG.warn("Failed to update biome default features list", e);
 		}
 
 		return biome;

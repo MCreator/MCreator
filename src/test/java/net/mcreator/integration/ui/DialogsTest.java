@@ -197,7 +197,8 @@ public class DialogsTest {
 			testState.put(testProps.get(4), rng.nextDouble());
 		if (rng.nextBoolean())
 			testState.put(testProps.get(5), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> StateEditorDialog.open(mcreator, testProps, testState, JStateLabel.NumberMatchType.EQUAL));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> StateEditorDialog.open(mcreator, testProps, testState, JStateLabel.NumberMatchType.EQUAL));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {
