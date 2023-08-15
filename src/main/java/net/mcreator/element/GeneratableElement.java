@@ -25,6 +25,7 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
@@ -173,7 +174,7 @@ public abstract class GeneratableElement {
 						gson.fromJson(jsonObject, modElementType.getModElementStorageClass()) };
 
 				generatableElement[0].setModElement(lastModElement); // set the mod element reference
-				passWorkspaceToFields(generatableElement[0], workspace);
+				passWorkspace(generatableElement[0], workspace);
 
 				List<IConverter> converters = ConverterRegistry.getConvertersForModElementType(modElementType);
 				if (converters != null) {
@@ -247,44 +248,41 @@ public abstract class GeneratableElement {
 			return root;
 		}
 
-		private void passWorkspaceToFields(Object object, Workspace workspace) {
-			for (Field field : object.getClass().getDeclaredFields()) {
-				field.setAccessible(true);
+		private void passWorkspace(Object object, Workspace workspace) {
+			if (object == null)
+				return;
 
-				if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers())) {
-					try {
-						tryPassToObject(field.get(object), workspace);
-					} catch (Exception e) {
-						LOG.warn("Failed to pass workspace to field " + field.getName() + " of object " + object.getClass()
-								.getSimpleName());
+			// Pass workspace if IWorkspaceDependent
+			if (object instanceof IWorkspaceDependent iws)
+				iws.setWorkspace(workspace);
+
+			// Then check if we can pass workspace to any of the children
+			if (object instanceof Iterable<?> list) {
+				for (Object element : list)
+					passWorkspace(element, workspace);
+			} else if (object instanceof Map<?, ?> map) {
+				for (Object element : map.keySet())
+					passWorkspace(element, workspace);
+				for (Object element : map.values())
+					passWorkspace(element, workspace);
+			} else if (object.getClass().isArray()) {
+				int length = Array.getLength(object);
+				for (int i = 0; i < length; i++)
+					passWorkspace(Array.get(object, i), workspace);
+			} else if (object.getClass().getModule() == MCreator.class.getModule()) {
+				for (Field field : object.getClass().getDeclaredFields()) {
+					field.setAccessible(true);
+					if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers())) {
+						try {
+							passWorkspace(field.get(object), workspace);
+						} catch (Exception e) {
+							LOG.warn("Failed to pass workspace to field " + field.getName() + " of object "
+									+ object.getClass().getSimpleName());
+						}
 					}
 				}
 			}
 		}
-
-		private void tryPassToObject(Object object, Workspace workspace) {
-			if (object == null)
-				return;
-
-			if (object instanceof IWorkspaceDependent iws) {
-				iws.setWorkspace(workspace);
-			} else if (object instanceof Iterable<?> list) {
-				for (Object element : list)
-					tryPassToObject(element, workspace);
-			} else if (object instanceof Map<?, ?> map) {
-				for (Object element : map.keySet())
-					tryPassToObject(element, workspace);
-				for (Object element : map.values())
-					tryPassToObject(element, workspace);
-			} else if (object.getClass().isArray()) {
-				int length = Array.getLength(object);
-				for (int i = 0; i < length; i++)
-					tryPassToObject(Array.get(object, i), workspace);
-			} else if (object.getClass().getModule() != Object.class.getModule()) {
-				passWorkspaceToFields(object, workspace);
-			}
-		}
-
 	}
 
 	public static final class Unknown extends GeneratableElement {
