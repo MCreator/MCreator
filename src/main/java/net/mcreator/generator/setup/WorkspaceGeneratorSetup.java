@@ -89,7 +89,8 @@ public class WorkspaceGeneratorSetup {
 
 		AbstractFolderStructure folderStructure = AbstractFolderStructure.getFolderStructure(workspace);
 
-		LOG.info("Moving files to new locations while assuming " + folderStructure.getClass().getSimpleName() + " for the generator converting from");
+		LOG.info("Moving files to new locations while assuming " + folderStructure.getClass().getSimpleName()
+				+ " for the generator converting from");
 
 		// move folders to the new locations, starting from more nested folders down
 		moveFilesToAnotherDir(folderStructure.getStructuresDir(),

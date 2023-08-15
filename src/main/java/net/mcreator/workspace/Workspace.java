@@ -186,7 +186,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			mod_elements.add(element);
 			markDirty();
 		} else {
-			LOG.warn("Trying to add existing mod element: " + element.getName() + " of type " + element.getTypeString());
+			LOG.warn(
+					"Trying to add existing mod element: " + element.getName() + " of type " + element.getTypeString());
 		}
 	}
 
@@ -503,7 +504,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		markDirty();
 	}
 
-	@SuppressWarnings("unused") public void updateSoundElement(SoundElement originalElement, SoundElement updatedElement) {
+	@SuppressWarnings("unused")
+	public void updateSoundElement(SoundElement originalElement, SoundElement updatedElement) {
 		Set<SoundElement> tmp = new HashSet<>(sound_elements);
 		for (SoundElement el : tmp) {
 			if (el.getName().equals(originalElement.getName())) {
@@ -514,7 +516,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		markDirty();
 	}
 
-	@SuppressWarnings("unused") public void updateVariableElement(VariableElement originalElement, VariableElement updatedElement) {
+	@SuppressWarnings("unused")
+	public void updateVariableElement(VariableElement originalElement, VariableElement updatedElement) {
 		Set<VariableElement> tmp = new HashSet<>(variable_elements);
 		for (VariableElement el : tmp) {
 			if (el.getName().equals(originalElement.getName())) {

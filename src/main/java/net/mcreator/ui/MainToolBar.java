@@ -111,7 +111,7 @@ public class MainToolBar extends JToolBar {
 
 	/**
 	 * @implNote Plugins should use {@link #addToLeftToolbar(Action)} and {@link #addToRightToolbar(Action)}
-	 *           instead of this overridden method.
+	 * instead of this overridden method.
 	 */
 	@Override public JButton add(Action action) {
 		return decorateToolbarButton(super.add(action));
