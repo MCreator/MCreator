@@ -1027,7 +1027,7 @@ import java.util.stream.Collectors;
 				dial.refreshDisplay();
 
 				// if we have new unlocked elements, we recreate their code
-				if (elementsThatGotUnlocked.size() > 0) {
+				if (!elementsThatGotUnlocked.isEmpty()) {
 					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 							L10N.t("workspace.elements.lock_modelement_regeneration"));
 					dial.addProgress(p1);
@@ -1340,7 +1340,7 @@ import java.util.stream.Collectors;
 		}
 
 		@Override public IElement getElementAt(int index) {
-			if (filterItems.size() > 0 && index < filterItems.size())
+			if (!filterItems.isEmpty() && index < filterItems.size())
 				return filterItems.get(index);
 			else
 				return null;

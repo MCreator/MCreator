@@ -112,7 +112,8 @@ public class GradleConsole extends JPanel {
 					try {
 						ProjectJarManager jarManager = ref.getGenerator().getProjectJarManager();
 						if (jarManager != null) {
-							if (fileurl.contains("/")) { // we don't have just FQDN but also module definition which we need to remove
+							if (fileurl.contains(
+									"/")) { // we don't have just FQDN but also module definition which we need to remove
 								fileurl = fileurl.substring(fileurl.lastIndexOf("/") + 1);
 							}
 
@@ -467,7 +468,8 @@ public class GradleConsole extends JPanel {
 								int reply = JOptionPane.showOptionDialog(ref,
 										L10N.t("dialog.gradle_console.gradle_caches_corrupted_message"),
 										L10N.t("dialog.gradle_console.gradle_caches_corrupted_title"),
-										JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+										JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
+										options[0]);
 								if (reply == 0 || reply == 1) {
 									taskComplete(GradleErrorCodes.GRADLE_CACHEDATA_ERROR);
 

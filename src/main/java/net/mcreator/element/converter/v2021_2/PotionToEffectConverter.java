@@ -54,8 +54,8 @@ public class PotionToEffectConverter implements IConverter {
 						.getAsString();
 
 				if (displayName.isEmpty())
-					displayName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("effectName")
-							.getAsString();
+					displayName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+							.get("effectName").getAsString();
 
 				if (displayName.isEmpty())
 					displayName = originalName;

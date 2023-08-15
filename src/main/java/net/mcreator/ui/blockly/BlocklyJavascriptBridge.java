@@ -173,7 +173,7 @@ public class BlocklyJavascriptBridge {
 							StringUtils.split(customEntryProviders, ',')), type);
 				}
 
-				yield new String[]{"", L10N.t("blockly.extension.data_list_selector.no_entry")};
+				yield new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
 			}
 		};
 
@@ -188,7 +188,7 @@ public class BlocklyJavascriptBridge {
 	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
 	 */
 	private String[] openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
-		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
+		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
 		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()
@@ -223,7 +223,7 @@ public class BlocklyJavascriptBridge {
 	 * @return A {"value", "value"} pair (strings don't have readable names!), or the default entry if no string was selected
 	 */
 	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
-		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
+		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
 		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()

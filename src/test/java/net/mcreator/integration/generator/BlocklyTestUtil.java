@@ -45,7 +45,8 @@ public class BlocklyTestUtil {
 
 	private static final Logger LOG = LogManager.getLogger(BlocklyTestUtil.class);
 
-	protected static boolean validateToolboxBlock(ToolboxBlock toolboxBlock, Set<String> generatorBlocks, Workspace workspace) {
+	protected static boolean validateToolboxBlock(ToolboxBlock toolboxBlock, Set<String> generatorBlocks,
+			Workspace workspace) {
 		// skip procedure blocks not supported by this generator
 		if (!generatorBlocks.contains(toolboxBlock.getMachineName()))
 			return false;
