@@ -34,6 +34,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
@@ -228,11 +229,11 @@ public abstract class GeneratableElement {
 		}
 
 		private void tryPassToObject(Object object, Workspace workspace) {
+			if (object == null)
+				return;
+
 			if (object instanceof IWorkspaceDependent iws) {
 				iws.setWorkspace(workspace);
-			} else if (object instanceof Object[] array) {
-				for (Object element : array)
-					tryPassToObject(element, workspace);
 			} else if (object instanceof Iterable<?> list) {
 				for (Object element : list)
 					tryPassToObject(element, workspace);
@@ -241,7 +242,11 @@ public abstract class GeneratableElement {
 					tryPassToObject(element, workspace);
 				for (Object element : map.values())
 					tryPassToObject(element, workspace);
-			} else if (object != null && object.getClass().getModule() != Object.class.getModule()) {
+			} else if (object.getClass().isArray()) {
+				int length = Array.getLength(object);
+				for (int i = 0; i < length; i++)
+					tryPassToObject(Array.get(object, i), workspace);
+			} else if (object.getClass().getModule() != Object.class.getModule()) {
 				passWorkspaceToFields(object, workspace);
 			}
 		}
