@@ -28,7 +28,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -256,15 +255,15 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel igniterPanel = new JPanel(new BorderLayout(5, 5));
 		igniterPanel.setOpaque(false);
 
-		igniterPanel.add("North" , PanelUtils.gridElements(1, 2,
+		igniterPanel.add("North", PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_igniter"),
 						L10N.label("elementgui.dimension.enable_new_igniter")), enableIgniter));
 
-		igniterPanel.add("Center" , PanelUtils.gridElements(1, 2,
+		igniterPanel.add("Center", PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
 						L10N.label("elementgui.dimension.portal_igniter_texture")), PanelUtils.join(texture)));
 
-		igniterPanel.add("South" , PanelUtils.centerAndSouthElement(proper22, portalMakeCondition));
+		igniterPanel.add("South", PanelUtils.centerAndSouthElement(proper22, portalMakeCondition));
 
 		igniterPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),

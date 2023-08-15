@@ -160,7 +160,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		model.removeAllElements();
 		block.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
 		list.setSelectedIndex(0);
-		if (block.size() == 0) {
+		if (block.isEmpty()) {
 			layout.show(center, "help");
 		} else {
 			layout.show(center, "list");

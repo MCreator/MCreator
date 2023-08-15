@@ -81,7 +81,7 @@ import java.util.List;
 	}
 
 	public boolean hasGenerationConditions() {
-		return restrictionDimensions.size() > 0 || generateCondition != null;
+		return !restrictionDimensions.isEmpty() || generateCondition != null;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

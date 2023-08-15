@@ -53,7 +53,7 @@ public class VersionManager {
 	}
 
 	public void addRevision(Change change) {
-		while (((sizeOf() + change.sizeOf()) > MAX_HEAP_SIZE) && (changes.size() > 0)) {
+		while (((sizeOf() + change.sizeOf()) > MAX_HEAP_SIZE) && (!changes.isEmpty())) {
 			changes.removeFirst();
 			index--;
 		}

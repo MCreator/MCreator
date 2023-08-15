@@ -420,7 +420,8 @@ public class CodeEditorView extends ViewBase {
 			JavaParser parser = jls.getParser(te);
 
 			te.addKeyListener(new KeyAdapter() {
-				final boolean smartAutocomplete = PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart");
+				final boolean smartAutocomplete = PreferencesManager.PREFERENCES.ide.autocompleteMode.get()
+						.equals("Smart");
 
 				boolean completitionInAction = false;
 
