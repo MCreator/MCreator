@@ -371,7 +371,7 @@ public class BlocklyJavascriptBridge {
 			}).map(ModElement::getName).collect(Collectors.toList());
 		}
 
-		if (retval.size() == 0)
+		if (retval.isEmpty())
 			return new String[] { "" };
 
 		return retval.toArray(new String[0]);

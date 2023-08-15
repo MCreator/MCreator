@@ -1408,7 +1408,7 @@ import java.util.stream.Collectors;
 						if (!filters.isEmpty() || !metfilters.isEmpty())
 							return false;
 
-						if (keyWords.size() == 0)
+						if (keyWords.isEmpty())
 							return true;
 
 						for (String key : keyWords)
@@ -1422,7 +1422,7 @@ import java.util.stream.Collectors;
 					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders
 							&& currentFolder.getRecursiveFolderChildren().stream()
 							.anyMatch(folder -> folder.equals(item.getFolderPath())))).filter(item -> {
-						if (keyWords.size() == 0)
+						if (keyWords.isEmpty())
 							return true;
 
 						for (String key : keyWords) {
@@ -1435,7 +1435,7 @@ import java.util.stream.Collectors;
 
 						return false;
 					}).filter(item -> {
-						if (filters.size() == 0)
+						if (filters.isEmpty())
 							return true;
 
 						for (String f : filters) {
@@ -1450,7 +1450,7 @@ import java.util.stream.Collectors;
 						}
 						return false;
 					}).filter(item -> {
-						if (metfilters.size() == 0)
+						if (metfilters.isEmpty())
 							return true;
 
 						for (ModElementType<?> type : metfilters)

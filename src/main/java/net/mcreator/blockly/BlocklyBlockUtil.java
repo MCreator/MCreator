@@ -89,14 +89,14 @@ public class BlocklyBlockUtil {
 		while (true) {
 			// get next element if there is one
 			List<Element> nextchildren = XMLUtil.getChildrenWithName(current, "next");
-			if (nextchildren.size() == 0)
+			if (nextchildren.isEmpty())
 				break;
 			Element next = nextchildren.get(0);
 			if (next == null)
 				break;
 
 			List<Element> nextblock = XMLUtil.getChildrenWithName(next, "block");
-			if (nextblock.size() == 0)
+			if (nextblock.isEmpty())
 				break;
 			Element block = nextblock.get(0);
 			if (block != null) {
@@ -125,7 +125,7 @@ public class BlocklyBlockUtil {
 	 */
 	public static String getInputBlockType(Element input) {
 		List<Element> outputBlocks = XMLUtil.getChildrenWithName(input, "block", "shadow");
-		return outputBlocks.size() < 1 ? null : outputBlocks.get(0).getAttribute("type");
+		return outputBlocks.isEmpty() ? null : outputBlocks.get(0).getAttribute("type");
 	}
 
 }
