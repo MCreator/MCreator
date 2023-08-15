@@ -1,0 +1,1 @@
+Geben Sie Werte an, die von den Eigenschaften Ihres Elements für diesen Zustand akzeptiert werden sollen. Wenn Sie das Häkchen auf der linken Seite einer Eigenschaft deaktivieren, wird es diesen Zustand in keiner Weise beeinflussen.

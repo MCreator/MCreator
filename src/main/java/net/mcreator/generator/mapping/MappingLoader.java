@@ -65,14 +65,16 @@ public class MappingLoader {
 
 						boolean mergeWithExisting = true;
 						if (mappingsFromFile.containsKey("_merge_with_existing"))
-							mergeWithExisting = Boolean.parseBoolean(mappingsFromFile.get("_merge_with_existing").toString());
+							mergeWithExisting = Boolean.parseBoolean(
+									mappingsFromFile.get("_merge_with_existing").toString());
 
 						if (mappings.get(mappingName) == null) {
 							mappings.put(mappingName, mappingsFromFile);
 						} else if (mergeWithExisting) { // merge new mappings with existing (existing have priority), if mappings allow this
 							Map merged = Collections.synchronizedMap(new LinkedHashMap());
 							merged.putAll(mappingsFromFile); // put new mappings first
-							merged.putAll(mappings.get(mappingName)); // so they are overriden by old ones in this statement
+							merged.putAll(
+									mappings.get(mappingName)); // so they are overriden by old ones in this statement
 							mappings.put(mappingName, merged);
 						}
 					} catch (Exception e) {

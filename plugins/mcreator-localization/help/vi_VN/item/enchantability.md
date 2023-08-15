@@ -7,5 +7,5 @@ Các giá trị Vanilla:
 * Công cụ sắt: 14
 * Công cụ vàng: 22
 * Công cụ kim cương: 10
-* Công cụ Netherite: 15
+* Công cụ netherit: 15
 * Sách: 1
