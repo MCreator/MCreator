@@ -214,7 +214,7 @@ public final class MCreatorApplication {
 				workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
 
 				boolean directLaunch = false;
-				if (launchArguments.size() > 0) {
+				if (!launchArguments.isEmpty()) {
 					String lastArg = launchArguments.get(launchArguments.size() - 1);
 					if (lastArg.length() >= 2 && lastArg.charAt(0) == '"'
 							&& lastArg.charAt(lastArg.length() - 1) == '"')

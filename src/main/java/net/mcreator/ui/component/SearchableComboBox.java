@@ -93,7 +93,7 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 			}
 		}
 
-		if (entriesFiltered.size() > 0) {
+		if (!entriesFiltered.isEmpty()) {
 			super.removeAllItems();
 			entriesFiltered.forEach(super::addItem);
 		}

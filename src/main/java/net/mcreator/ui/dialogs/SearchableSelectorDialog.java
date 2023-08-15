@@ -21,7 +21,6 @@ package net.mcreator.ui.dialogs;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
