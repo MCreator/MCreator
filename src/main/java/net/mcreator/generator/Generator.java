@@ -156,7 +156,7 @@ public class Generator implements IGenerator, Closeable {
 	public boolean generateBase(boolean formatAndOrganiseImports) {
 		AtomicBoolean success = new AtomicBoolean(true);
 
-		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).parallelStream()
+		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).stream()
 				.map(generatorTemplate -> {
 					if (generatorTemplate.getTemplateDefinition().get("canLock") != null
 							&& generatorTemplate.getTemplateDefinition().get("canLock")

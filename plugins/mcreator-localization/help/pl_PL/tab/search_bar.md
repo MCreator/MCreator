@@ -1,0 +1,1 @@
+Zaznacz to pole, aby włączyć pasek wyszukiwania na górze zakładki, na potrzeby wyszukiwania wewnątrz tej zakładki menu trybu kreatywnego.

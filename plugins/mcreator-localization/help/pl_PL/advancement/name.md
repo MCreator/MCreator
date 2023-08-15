@@ -1,0 +1,1 @@
+Nazwa osiągnięcia. Jeżeli osiągnięcie nie posiada rodzica (nadrzędnego osiągnięcia), będzie to również nazwa danej ścieżki postępów.

@@ -1,5 +1,5 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-status: dev
+status: stable
 buildfileversion: 47.1.0
 
 import:
@@ -30,9 +30,9 @@ block_textures_dir: "@MODASSETSROOT/textures/block"
 item_textures_dir: "@MODASSETSROOT/textures/item"
 entity_textures_dir: "@MODASSETSROOT/textures/entities"
 effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
-#particle_textures_dir: "@MODASSETSROOT/textures/particle"
+particle_textures_dir: "@MODASSETSROOT/textures/particle"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
-#armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
 
 base_templates:
@@ -62,8 +62,8 @@ base_templates:
     writer: file
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
-#      - ${w.hasElementsOfType('feature')}
-      - hasBiomesInVanillaDimensions()
+     - ${w.hasElementsOfType('feature')}
+     - hasBiomesInVanillaDimensions()
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()

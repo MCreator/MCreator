@@ -1,4 +1,0 @@
-templates:
-  - template: loottable.json.ftl # loaded from datapack generator
-    writer: json
-    name: "@RESROOT/data/@[getNamespace()]/loot_tables/@[getName()].json"

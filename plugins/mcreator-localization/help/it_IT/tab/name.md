@@ -1,0 +1,1 @@
+Il nome mostrato nella scheda del menu creativo.
