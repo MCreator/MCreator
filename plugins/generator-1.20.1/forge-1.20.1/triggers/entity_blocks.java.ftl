@@ -9,9 +9,9 @@
 				"z": "event.getEntity().getZ()",
 				"world": "event.getEntity().level()",
 				"entity": "event.getEntity()",
-				"damagesource": "event.getSource()",
-				"sourceentity": "event.getSource().getEntity()",
-				"immediatesourceentity": "event.getSource().getDirectEntity()",
+				"damagesource": "event.getDamageSource()",
+				"sourceentity": "event.getDamageSource().getEntity()",
+				"immediatesourceentity": "event.getDamageSource().getDirectEntity()",
 				"originalblockedamount": "event.getOriginalBlockedDamage()",
 				"blockedamount": "event.getBlockedDamage()",
 				"event": "event"
