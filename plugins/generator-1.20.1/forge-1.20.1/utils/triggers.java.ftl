@@ -219,9 +219,8 @@
 
 <#macro piglinNeutral procedure="">
     <#if procedure?has_content || hasProcedure(procedure)>
-	@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity wearer) {
+	@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity entity) {
         <#if hasProcedure(procedure)>
-			Entity entity = (Entity) wearer;
 			double x = entity != null ? entity.getX() : 0.0;
 			double y = entity != null ? entity.getY() : 0.0;
 			double z = entity != null ? entity.getZ() : 0.0;
