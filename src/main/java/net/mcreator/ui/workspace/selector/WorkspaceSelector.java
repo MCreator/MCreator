@@ -253,7 +253,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			dtde.acceptDrop(dtde.getDropAction());
 			try {
 				List<?> transferData = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
-				if (transferData.size() > 0) {
+				if (!transferData.isEmpty()) {
 					Object transfObj = transferData.get(0);
 					if (transfObj instanceof File workspaceFile) {
 						if (workspaceFile.getName().endsWith(".mcreator")) {
@@ -325,7 +325,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		recentPanel.removeAll();
 
-		if (recentWorkspaces != null && recentWorkspaces.getList().size() > 0) {
+		if (recentWorkspaces != null && !recentWorkspaces.getList().isEmpty()) {
 			DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 			recentWorkspaces.getList().forEach(defaultListModel::addElement);
 			JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);

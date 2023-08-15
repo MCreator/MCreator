@@ -240,7 +240,8 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		return openMultiSelectorDialog(parent, blocks, false);
 	}
 
-	public static List<MCItem> openMultiSelectorDialog(MCreator parent, MCItem.ListProvider blocks, boolean supportTags) {
+	public static List<MCItem> openMultiSelectorDialog(MCreator parent, MCItem.ListProvider blocks,
+			boolean supportTags) {
 		MCItemSelectorDialog bsd = new MCItemSelectorDialog(parent, blocks, supportTags);
 		bsd.list.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		bsd.setVisible(true);

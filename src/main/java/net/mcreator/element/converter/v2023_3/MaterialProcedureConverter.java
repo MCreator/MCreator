@@ -52,50 +52,70 @@ public class MaterialProcedureConverter implements IConverter {
 	private static final Map<String, String> materialToProcedureBlockMap = new HashMap<>() {{
 		// AIR
 		// STRUCTURE_VOID
-		put("PORTAL", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:portals</field></block></value></block>");
-		put("CARPET", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:wool_carpets</field></block></value></block>");
-		put("PLANTS", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:replaceable_plants</field></block></value></block>");
-		put("OCEAN_PLANT", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:underwater_bonemeals</field></block></value></block>");
-		put("TALL_PLANTS", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:tall_flowers</field></block></value></block>");
+		put("PORTAL",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:portals</field></block></value></block>");
+		put("CARPET",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:wool_carpets</field></block></value></block>");
+		put("PLANTS",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:replaceable_plants</field></block></value></block>");
+		put("OCEAN_PLANT",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:underwater_bonemeals</field></block></value></block>");
+		put("TALL_PLANTS",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:tall_flowers</field></block></value></block>");
 		// NETHER_PLANTS
 		// SEA_GRASS
 		// WATER
 		// BUBBLE_COLUMN
 		// LAVA
-		put("SNOW", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:snow</field></block></value></block>");
-		put("FIRE", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:fire</field></block></value></block>");
+		put("SNOW",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:snow</field></block></value></block>");
+		put("FIRE",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:fire</field></block></value></block>");
 		// MISCELLANEOUS
 		// WEB
 		// SCULK
 		// BUILDABLE_GLASS
 		// CLAY
-		put("EARTH", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:dirt</field></block></value></block>");
-		put("GRASS", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:animals_spawnable_on</field></block></value></block>");
+		put("EARTH",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:dirt</field></block></value></block>");
+		put("GRASS",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:animals_spawnable_on</field></block></value></block>");
 		// PACKED_ICE
-		put("SAND", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:sand</field></block></value></block>");
+		put("SAND",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:sand</field></block></value></block>");
 		// SPONGE
-		put("SHULKER", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:shulker_boxes</field></block></value></block>");
-		put("WOOD", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:mineable/axe</field></block></value></block>");
+		put("SHULKER",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:shulker_boxes</field></block></value></block>");
+		put("WOOD",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:mineable/axe</field></block></value></block>");
 		// NETHER_WOOD
 		// BAMBOO_SAPLING
 		// BAMBOO
-		put("CLOTH", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:wool</field></block></value></block>");
+		put("CLOTH",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:wool</field></block></value></block>");
 		// TNT
-		put("LEAVES", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:leaves</field></block></value></block>");
-		put("GLASS", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:glass</field></block></value></block>");
-		put("ICE", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:ice</field></block></value></block>");
+		put("LEAVES",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:leaves</field></block></value></block>");
+		put("GLASS",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:glass</field></block></value></block>");
+		put("ICE",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:ice</field></block></value></block>");
 		// CACTUS
-		put("ROCK", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:mineable/pickaxe</field></block></value></block>");
-		put("IRON", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:ores/iron</field></block></value></block>");
+		put("ROCK",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:mineable/pickaxe</field></block></value></block>");
+		put("IRON",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:ores/iron</field></block></value></block>");
 		// CRAFTED_SNOW
-		put("ANVIL", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:anvil</field></block></value></block>");
+		put("ANVIL",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:anvil</field></block></value></block>");
 		// BARRIER
 		// PISTON
 		// MOSS_BLOCK
 		// GOURD
 		// DRAGON_EGG
 		// CAKE
-		put("AMETHYST", "<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:storage_blocks/amethyst</field></block></value></block>");
+		put("AMETHYST",
+				"<block type=\"block_is_tagged_in\"><value name=\"a\">[BLOCK]</value><value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:storage_blocks/amethyst</field></block></value></block>");
 		// POWDER_SNOW
 		// FROGSPAWN
 		// FROGLIGHT
