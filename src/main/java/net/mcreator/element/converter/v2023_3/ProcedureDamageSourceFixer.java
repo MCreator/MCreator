@@ -72,7 +72,7 @@ public class ProcedureDamageSourceFixer implements IConverter {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
 			String type = element.getAttribute("type");
-			if (type != null && type.equals("deal_damage")) {
+			if (type.equals("deal_damage")) {
 				Element damagesource = XMLUtil.getFirstChildrenWithName(element, "field");
 				if (damagesource != null) {
 					element.removeChild(damagesource);
@@ -81,10 +81,11 @@ public class ProcedureDamageSourceFixer implements IConverter {
 				Element value = doc.createElement("value");
 				value.setAttribute("name", "damagesource");
 
-				Element damagesource_block = doc.createElement("block");
-				damagesource_block.setAttribute("type", "damagesource_from_deps");
+				Element damagesource_from_type_block = doc.createElement("block");
+				damagesource_from_type_block.setAttribute("type", "damagesource_from_type");
+				damagesource_from_type_block.appendChild(damagesource);
 
-				value.appendChild(damagesource_block);
+				value.appendChild(damagesource_from_type_block);
 				element.appendChild(value);
 			}
 		}
