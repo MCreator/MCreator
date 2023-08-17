@@ -218,16 +218,16 @@
 </#macro>
 
 <#macro piglinNeutral procedure="">
-    <#if procedure?has_content || hasProcedure(procedure)>
-	@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity entity) {
-        <#if hasProcedure(procedure)>
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-        </#if>
-		return <@procedureOBJToConditionCode procedure procedure.getFixedValue() false/>;
-	}
-    </#if>
+<#if procedure?has_content || hasProcedure(procedure)>
+@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity entity) {
+	<#if hasProcedure(procedure)>
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+	</#if>
+	return <@procedureOBJToConditionCode procedure procedure.getFixedValue() false/>;
+}
+</#if>
 </#macro>
 
 <#-- Block-related triggers -->
