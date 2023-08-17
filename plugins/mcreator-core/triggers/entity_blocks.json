@@ -41,5 +41,6 @@
       "type": "damagesource"
     }
   ],
-  "cancelable": "true"
+  "cancelable": "true",
+  "side": "server"
 }
