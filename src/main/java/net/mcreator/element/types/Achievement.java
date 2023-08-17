@@ -94,6 +94,7 @@ import java.util.List;
 				triggerCode = "{\"trigger\": \"minecraft:impossible\"}";
 
 			additionalData.put("triggercode", triggerCode);
+			additionalData.put("triggerblocks", blocklyToJSONTrigger.getUsedBlocks());
 		};
 	}
 
