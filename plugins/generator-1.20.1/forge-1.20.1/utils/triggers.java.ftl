@@ -221,9 +221,9 @@
     <#if procedure?has_content || hasProcedure(procedure)>
 	@Override public boolean makesPiglinsNeutral(ItemStack stack, LivingEntity entity) {
         <#if hasProcedure(procedure)>
-			double x = entity != null ? entity.getX() : 0.0;
-			double y = entity != null ? entity.getY() : 0.0;
-			double z = entity != null ? entity.getZ() : 0.0;
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
         </#if>
 		return <@procedureOBJToConditionCode procedure procedure.getFixedValue() false/>;
 	}
