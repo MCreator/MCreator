@@ -97,7 +97,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private ProcedureSelector onEntityHitWith;
 	private ProcedureSelector onItemInInventoryTick;
 	private ProcedureSelector onItemInUseTick;
-	private ProcedureSelector onStoppedUsing;
 	private ProcedureSelector onEntitySwing;
 
 	private MCItemListField blocksAffected;
@@ -137,9 +136,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator,
 				L10N.t("elementgui.tool.event_in_hand_tick"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
-		onStoppedUsing = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
-				L10N.t("elementgui.tool.event_stopped_using"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.tool.event_swings"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -292,7 +288,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		events.add(onEntityHitWith);
 		events.add(onItemInInventoryTick);
 		events.add(onItemInUseTick);
-		events.add(onStoppedUsing);
 		events.add(onEntitySwing);
 		events.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(events));
@@ -360,7 +355,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onEntityHitWith.refreshListKeepSelected();
 		onItemInInventoryTick.refreshListKeepSelected();
 		onItemInUseTick.refreshListKeepSelected();
-		onStoppedUsing.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 		specialInformation.refreshListKeepSelected();
@@ -400,7 +394,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onEntityHitWith.setSelectedProcedure(tool.onEntityHitWith);
 		onItemInInventoryTick.setSelectedProcedure(tool.onItemInInventoryTick);
 		onItemInUseTick.setSelectedProcedure(tool.onItemInUseTick);
-		onStoppedUsing.setSelectedProcedure(tool.onStoppedUsing);
 		onEntitySwing.setSelectedProcedure(tool.onEntitySwing);
 		hasGlow.setSelected(tool.hasGlow);
 		glowCondition.setSelectedProcedure(tool.glowCondition);
@@ -442,7 +435,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.onEntityHitWith = onEntityHitWith.getSelectedProcedure();
 		tool.onItemInInventoryTick = onItemInInventoryTick.getSelectedProcedure();
 		tool.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
-		tool.onStoppedUsing = onStoppedUsing.getSelectedProcedure();
 		tool.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		tool.hasGlow = hasGlow.isSelected();
 		tool.glowCondition = glowCondition.getSelectedProcedure();

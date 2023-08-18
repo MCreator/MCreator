@@ -74,7 +74,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 	private ProcedureSelector onEntityHitWith;
 	private ProcedureSelector onItemInInventoryTick;
 	private ProcedureSelector onItemInUseTick;
-	private ProcedureSelector onStoppedUsing;
 	private ProcedureSelector onEntitySwing;
 
 	private final SoundSelector music = new SoundSelector(mcreator);
@@ -107,9 +106,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onItemInUseTick = new ProcedureSelector(this.withEntry("item/hand_tick"), mcreator,
 				L10N.t("elementgui.music_disc.event_inhand"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/slot:number"));
-		onStoppedUsing = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
-				L10N.t("elementgui.music_disc.event_stopped_using"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack/time:number"));
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -185,7 +181,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		events.add(onEntityHitWith);
 		events.add(onItemInInventoryTick);
 		events.add(onItemInUseTick);
-		events.add(onStoppedUsing);
 		events.add(onEntitySwing);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
 		pane4.setOpaque(false);
@@ -225,7 +220,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onEntityHitWith.refreshListKeepSelected();
 		onItemInInventoryTick.refreshListKeepSelected();
 		onItemInUseTick.refreshListKeepSelected();
-		onStoppedUsing.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
 		specialInformation.refreshListKeepSelected();
 
@@ -248,7 +242,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onEntityHitWith.setSelectedProcedure(musicDisc.onEntityHitWith);
 		onItemInInventoryTick.setSelectedProcedure(musicDisc.onItemInInventoryTick);
 		onItemInUseTick.setSelectedProcedure(musicDisc.onItemInUseTick);
-		onStoppedUsing.setSelectedProcedure(musicDisc.onStoppedUsing);
 		onEntitySwing.setSelectedProcedure(musicDisc.onEntitySwing);
 		specialInformation.setSelectedProcedure(musicDisc.specialInformation);
 		creativeTab.setSelectedItem(musicDisc.creativeTab);
@@ -270,7 +263,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		musicDisc.onEntityHitWith = onEntityHitWith.getSelectedProcedure();
 		musicDisc.onItemInInventoryTick = onItemInInventoryTick.getSelectedProcedure();
 		musicDisc.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
-		musicDisc.onStoppedUsing = onStoppedUsing.getSelectedProcedure();
 		musicDisc.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		musicDisc.specialInformation = specialInformation.getSelectedProcedure();
 		musicDisc.texture = texture.getID();

@@ -191,6 +191,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 			}
 		});
 
+		useDuration.addChangeListener(change -> onStoppedUsing.setEnabled((int) useDuration.getValue() > 0));
+
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel cipp = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
@@ -543,6 +545,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateGlowElements();
 		updateFoodPanel();
+		onStoppedUsing.setEnabled((int) useDuration.getValue() > 0);
 
 		Model model = item.getItemModel();
 		if (model != null)
