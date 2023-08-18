@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ShareableZIPManager {
 
-	private static final Logger LOG = LogManager.getLogger("Shareable ZIP Manager");
+	private static final Logger LOG = LogManager.getLogger("Shareable ZIP manager");
 
 	public static File importZIP(File file, File workspaceDir, Window window) {
 		AtomicReference<File> retval = new AtomicReference<>();
@@ -100,7 +100,7 @@ public class ShareableZIPManager {
 
 				workspace.close(); // we need to close the workspace!
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Failed to import workspace", e);
 			}
 
 			p2.ok();
@@ -132,7 +132,7 @@ public class ShareableZIPManager {
 							"#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/", ".settings/");
 				}
 			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
+				LOG.error("Failed to export workspace", e);
 			}
 
 			p1.ok();

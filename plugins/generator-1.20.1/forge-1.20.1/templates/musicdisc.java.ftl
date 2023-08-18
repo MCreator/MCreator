@@ -71,8 +71,6 @@ public class ${name}Item extends RecordItem {
 
 	<@onCrafted data.onCrafted/>
 
-	<@onStoppedUsing data.onStoppedUsing/>
-
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 }
 <#-- @formatter:on -->
