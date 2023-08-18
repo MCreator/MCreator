@@ -35,7 +35,7 @@
 </#macro>
 
 <#macro onStoppedUsing procedure="">
-<#if hasProcedure(procedure)>
+<#if hasProcedure(procedure) && (data.useDuration > 0)>
 @Override public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
 	<@procedureCode data.onStoppedUsing, {
 		"x": "entity.getX()",
