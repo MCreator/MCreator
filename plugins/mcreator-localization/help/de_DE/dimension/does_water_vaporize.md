@@ -1,0 +1,1 @@
+Dieser Parameter deaktiviert das Wasser in der Dimension. Wenn Wasser in eine solche Dimension gelegt wird, verschwindet es sofort, so dass die Platzierung des Wassers nicht möglich ist.
