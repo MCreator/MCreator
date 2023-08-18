@@ -77,6 +77,7 @@ import java.util.List;
 			additionalData.put("placementcode", blocklyToFeature.getGeneratedCode());
 			additionalData.put("configurationcode", blocklyToFeature.getFeatureConfigurationCode());
 			additionalData.put("featuretype", blocklyToFeature.getFeatureType());
+			additionalData.put("featureblocks", blocklyToFeature.getUsedBlocks());
 		};
 	}
 

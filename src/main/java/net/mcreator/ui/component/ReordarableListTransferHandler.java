@@ -18,6 +18,9 @@
 
 package net.mcreator.ui.component;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +32,8 @@ import java.io.IOException;
 import java.util.Objects;
 
 public class ReordarableListTransferHandler extends TransferHandler {
+
+	private static final Logger LOG = LogManager.getLogger(ReordarableListTransferHandler.class);
 
 	private final DataFlavor localObjectFlavor;
 	private int[] indices;
@@ -100,7 +105,7 @@ public class ReordarableListTransferHandler extends TransferHandler {
 			addCount = values.length;
 			return true;
 		} catch (UnsupportedFlavorException | IOException ex) {
-			ex.printStackTrace();
+			LOG.error("Failed to load transfer data", ex);
 		}
 
 		return false;
