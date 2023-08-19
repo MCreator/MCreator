@@ -1,0 +1,1 @@
+Tham số này xác định liệu hồ nên được khởi tạo trong quần xã này hay không.

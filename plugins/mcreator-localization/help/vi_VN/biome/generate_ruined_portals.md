@@ -1,0 +1,1 @@
+Cài đặt này cho phép bạn khởi tạo các tàn tích cổng trong quần xã của bạn.

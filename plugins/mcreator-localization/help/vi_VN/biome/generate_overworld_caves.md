@@ -1,0 +1,1 @@
+Tích hộp này để làm cho quần xã xuất hiện dưới lòng đất (trong hang) ở thế giới thực.
