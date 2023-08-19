@@ -49,7 +49,7 @@ public class FilterTreeNode extends DefaultMutableTreeNode {
 			passFilterDown(filter);
 		} else {
 			passFilterDown(filter);
-			passed = filteredChildren.size() != 0;
+			passed = !filteredChildren.isEmpty();
 		}
 	}
 
