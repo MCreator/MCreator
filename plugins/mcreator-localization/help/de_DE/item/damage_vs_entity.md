@@ -1,0 +1,1 @@
+Mit diesem Parameter kannst du Nahkampfschaden für deinen Gegenstand aktivieren und einen Schadenwert festlegen.
