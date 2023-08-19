@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.Procedure;
+import net.mcreator.util.BlocklyHelper;
 import net.mcreator.util.XMLUtil;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
@@ -67,6 +68,7 @@ public class ProcedureDamageSourceFixer implements IConverter {
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
 		doc.getDocumentElement().normalize();
+		BlocklyHelper bh = new BlocklyHelper(doc);
 
 		NodeList nodeList = doc.getElementsByTagName("block");
 		for (int i = 0; i < nodeList.getLength(); i++) {
@@ -78,15 +80,20 @@ public class ProcedureDamageSourceFixer implements IConverter {
 					element.removeChild(damagesource);
 				}
 
-				Element value = doc.createElement("value");
-				value.setAttribute("name", "damagesource");
+				Element damageValue = bh.createValue("damagesource", bh.createBlock("damagesource_from_type",
+						bh.createField("damagesource", damagesource == null ? "GENERIC" : damagesource.toString())));
+				element.appendChild(damageValue);
+			} else if (type.equals("damagesource_isequalto")) {
+				Element damagesource = XMLUtil.getFirstChildrenWithName(element, "field");
+				if (damagesource != null) {
+					element.removeChild(damagesource);
+				}
 
-				Element damagesource_from_type_block = doc.createElement("block");
-				damagesource_from_type_block.setAttribute("type", "damagesource_from_type");
-				damagesource_from_type_block.appendChild(damagesource);
-
-				value.appendChild(damagesource_from_type_block);
-				element.appendChild(value);
+				Element damageValue = bh.createValue("damagesource", bh.createBlock("damagesource_from_deps"));
+				Element damageField = bh.createField("damagetype",
+						damagesource == null ? "GENERIC" : damagesource.toString());
+				element.appendChild(damageValue);
+				element.appendChild(damageField);
 			}
 		}
 
