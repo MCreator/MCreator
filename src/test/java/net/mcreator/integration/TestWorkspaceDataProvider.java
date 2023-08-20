@@ -43,7 +43,6 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
-import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -645,6 +644,12 @@ public class TestWorkspaceDataProvider {
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			dimension.igniterName = modElement.getName();
+			if (!emptyLists) {
+				dimension.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
+			} else {
+				dimension.specialInfo = new ArrayList<>();
+			}
 			dimension.worldGenType = new String[] { "Nether like gen", "Normal world gen", "End like gen",
 					"Normal world gen" }[valueIndex];
 			dimension.mainFillerBlock = new MItemBlock(modElement.getWorkspace(),
@@ -1341,7 +1346,6 @@ public class TestWorkspaceDataProvider {
 			musicDisc.onEntityHitWith = new Procedure("procedure4");
 			musicDisc.onItemInInventoryTick = new Procedure("procedure5");
 			musicDisc.onItemInUseTick = new Procedure("procedure6");
-			musicDisc.onStoppedUsing = new Procedure("procedure7");
 			musicDisc.onEntitySwing = new Procedure("procedure8");
 			musicDisc.lengthInTicks = 13;
 			musicDisc.analogOutput = 6;
@@ -1717,7 +1721,6 @@ public class TestWorkspaceDataProvider {
 		tool.onEntityHitWith = new Procedure("procedure5");
 		tool.onItemInInventoryTick = new Procedure("procedure6");
 		tool.onItemInUseTick = new Procedure("procedure7");
-		tool.onStoppedUsing = new Procedure("procedure8");
 		tool.onEntitySwing = new Procedure("procedure11");
 		tool.texture = "test";
 		tool.renderType = 0;

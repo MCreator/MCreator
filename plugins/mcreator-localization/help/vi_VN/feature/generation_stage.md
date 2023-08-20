@@ -1,0 +1,1 @@
+Tùy chọn này xác định tính năng này nên được thêm vào giai đoạn nào của sự khởi tạo thế giới.

@@ -19,10 +19,15 @@
 
 package net.mcreator.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 public class TerribleModuleHacks {
+
+	private static final Logger LOG = LogManager.getLogger("Terrible module hacks");
 
 	public static void openAllUnnamed() {
 		ModuleLayer.boot().modules().forEach(module -> module.getPackages()
@@ -51,7 +56,7 @@ public class TerribleModuleHacks {
 			method.setAccessible(true);
 			method.invoke(where, pn, toadd, true, true);
 		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-			e.printStackTrace();
+			LOG.error("Failed to open module: " + where.getName(), e);
 		}
 	}
 

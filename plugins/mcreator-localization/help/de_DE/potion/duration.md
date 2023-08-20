@@ -1,0 +1,1 @@
+Dieser Parameter legt fest, wie lange dieser Effekt dauert.
