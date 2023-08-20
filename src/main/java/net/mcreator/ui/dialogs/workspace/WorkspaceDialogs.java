@@ -218,7 +218,7 @@ public class WorkspaceDialogs {
 			modID.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
 					super.keyReleased(e);
-					modIDManuallyEntered = !modID.getText().trim().equals("");
+					modIDManuallyEntered = !modID.getText().isBlank();
 					if (!packageNameManuallyEntered) {
 						packageName.setText("net.mcreator." + modID.getText().replaceAll("[^a-z]+", ""));
 						packageName.getValidationStatus();
@@ -229,7 +229,7 @@ public class WorkspaceDialogs {
 			packageName.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
 					super.keyReleased(e);
-					packageNameManuallyEntered = !packageName.getText().trim().equals("");
+					packageNameManuallyEntered = !packageName.getText().isBlank();
 				}
 			});
 

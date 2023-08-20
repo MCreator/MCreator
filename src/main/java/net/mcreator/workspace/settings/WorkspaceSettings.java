@@ -278,13 +278,13 @@ import java.util.stream.Stream;
 	}
 
 	public String getCredits() {
-		if (credits == null || credits.trim().equals(""))
+		if (credits == null || credits.isBlank())
 			return "Created using mod maker MCreator - https://mcreator.net/about";
 		return credits;
 	}
 
 	public String getWebsiteURL() {
-		if (websiteURL == null || websiteURL.trim().equals("") || !websiteURL.contains("http") || !websiteURL.contains(
+		if (websiteURL == null || websiteURL.isBlank() || !websiteURL.contains("http") || !websiteURL.contains(
 				"://") || !websiteURL.contains("."))
 			return MCreatorApplication.SERVER_DOMAIN;
 		return websiteURL;

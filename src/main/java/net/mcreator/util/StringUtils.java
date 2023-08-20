@@ -95,7 +95,7 @@ public class StringUtils {
 			String[] info = nonescapedCommaSplitter.split(specialInfoString);
 			for (String infoelement : info) {
 				String data = infoelement.trim().replace("\\,", ",");
-				if (!data.trim().equals(""))
+				if (!data.isBlank())
 					retval.add(data);
 			}
 		}

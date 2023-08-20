@@ -113,7 +113,7 @@ public class ArmorImageMakerView extends ViewBase {
 				true, true, false, true));
 		save.addActionListener(event -> {
 			String namec = JOptionPane.showInputDialog(L10N.t("dialog.armor_image_maker.name"));
-			if (namec != null && !namec.trim().equals("")) {
+			if (namec != null && !namec.isBlank()) {
 				namec = RegistryNameFixer.fix(namec);
 				File[] armorPars = mcreator.getFolderManager().getArmorTextureFilesForName(namec);
 				if (armorPars[0].isFile() || armorPars[1].isFile()) {

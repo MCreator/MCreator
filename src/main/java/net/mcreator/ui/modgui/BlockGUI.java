@@ -1561,12 +1561,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.inventoryStackSize = (int) inventoryStackSize.getValue();
 		block.inventoryDropWhenDestroyed = inventoryDropWhenDestroyed.isSelected();
 		block.inventoryComparatorPower = inventoryComparatorPower.isSelected();
-		if (outSlotIDs.getText().trim().equals(""))
+		if (outSlotIDs.getText().isBlank())
 			block.inventoryOutSlotIDs = new ArrayList<>();
 		else
 			block.inventoryOutSlotIDs = Stream.of(outSlotIDs.getText().split(",")).filter(e -> !e.equals(""))
 					.map(Integer::parseInt).collect(Collectors.toList());
-		if (inSlotIDs.getText().trim().equals(""))
+		if (inSlotIDs.getText().isBlank())
 			block.inventoryInSlotIDs = new ArrayList<>();
 		else
 			block.inventoryInSlotIDs = Stream.of(inSlotIDs.getText().split(",")).filter(e -> !e.equals(""))
