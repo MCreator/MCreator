@@ -19,6 +19,8 @@
 package net.mcreator.ui.views.editor.image;
 
 import net.mcreator.io.FileIO;
+import net.mcreator.io.tree.FileNode;
+import net.mcreator.io.zip.ZipIO;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
@@ -51,6 +53,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -58,7 +62,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	private static final Logger LOG = LogManager.getLogger("Image Maker View");
 
-	private String name = "Texture creator";
+	private String name = L10N.t("tab.image_maker");
 
 	private Canvas canvas;
 	private final CanvasRenderer canvasRenderer;
@@ -77,6 +81,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public static final ExecutorService toolExecutor = Executors.newSingleThreadExecutor();
 	private MCreatorTabs.Tab tab;
 	private File image;
+	private boolean canEdit = true;
 
 	public ImageMakerView(MCreator f) {
 		super(f);
@@ -173,10 +178,31 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			canvas.add(layer);
 			name = image.getName();
 			toolPanel.initTools();
-			updateInfobar(0, 0);
+			updateInfoBar(0, 0);
 		} catch (IOException e) {
 			LOG.error(e.getMessage(), e);
 		}
+	}
+
+	public void openInReadOnlyMode(FileNode image) {
+		String[] path = image.splitPath();
+		name = FilenameUtilsPatched.getName(path[1]);
+		canEdit = false;
+		Layer layer = Layer.toLayer(
+				Objects.requireNonNull(ZipIO.readFileInZip(new File(path[0]), path[1], (file, entry) -> {
+					try {
+						return ImageIO.read(file.getInputStream(entry));
+					} catch (IOException e) {
+						LOG.error(e.getMessage(), e);
+						return null;
+					}
+				}), "Could not read source image asset!"), name);
+		canvas = new Canvas(layer.getWidth(), layer.getHeight(), layerPanel, versionManager);
+		canvasRenderer.setCanvas(canvas);
+		toolPanel.setCanvas(canvas);
+		canvas.add(layer);
+		toolPanel.initTools();
+		updateInfoBar(0, 0);
 	}
 
 	public void setSaveLocation(File location) {
@@ -200,14 +226,21 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				saveAs();
 			}
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error(e.getMessage(), e);
 		}
 	}
 
 	public void saveAs() {
+		if (!canEdit) {
+			int option = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.image_maker.save.view_only"),
+					L10N.t("common.confirmation"), JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			if (option != JOptionPane.OK_OPTION)
+				return;
+		}
+
 		Image image = canvasRenderer.render();
 
-		JComboBox<TextureType> types = new JComboBox<>(TextureType.getTypes(false));
+		JComboBox<TextureType> types = new JComboBox<>(TextureType.getSupportedTypes(mcreator.getWorkspace(), false));
 		VTextField name = new VTextField(20);
 		name.setValidator(new RegistryNameValidator(name, L10N.t("dialog.image_maker.texture_name")));
 		name.enableRealtimeValidation();
@@ -268,7 +301,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		toolPanel.setCanvas(canvas);
 		this.name = name + ".png";
 		toolPanel.initTools();
-		updateInfobar(0, 0);
+		updateInfoBar(0, 0);
 	}
 
 	public void newImage(Layer layer) {
@@ -276,9 +309,14 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		canvasRenderer.setCanvas(canvas);
 		toolPanel.setCanvas(canvas);
 		canvas.add(layer);
-		this.name = "Image maker";
+		this.name = L10N.t("tab.image_maker");
 		toolPanel.initTools();
-		updateInfobar(0, 0);
+		updateInfoBar(0, 0);
+	}
+
+	public static boolean isFileSupported(String fileName) {
+		return Arrays.asList("bmp", "gif", "jpeg", "jpg", "png", "tiff", "tif", "wbmp")
+				.contains(FilenameUtilsPatched.getExtension(fileName));
 	}
 
 	@Override public ViewBase showView() {
@@ -292,7 +330,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			mcreator.mcreatorTabs.addTab(this.tab);
 			leftSplitPane.setDividerLocation(1.2 / 8);
 			rightSplitPane.setDividerLocation(5.7 / 7);
-			toolPanel.setDividerLocation(1.0 / 3);
+			toolPanel.setDividerLocation(1.2 / 3.1);
 			zoomPane.getZoomport().fitZoom();
 			refreshTab();
 			return this;
@@ -347,18 +385,24 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
 		canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseDragged(e));
-		updateInfobar(e.getX(), e.getY());
+		updateInfoBar(e.getX(), e.getY());
 	}
 
 	@Override public void mouseMoved(MouseEvent e) {
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseMoved(e));
-		updateInfobar(e.getX(), e.getY());
+		updateInfoBar(e.getX(), e.getY());
 	}
 
-	private void updateInfobar(int x, int y) {
-		imageInfo.setText(
-				"[" + (image == null ? "New image" : "File: " + image.getName()) + ", size: " + canvas.getWidth() + "x"
-						+ canvas.getHeight() + "] Mouse location: " + x + ", " + y);
+	private void updateInfoBar(int x, int y) {
+		String title;
+		if (image != null)
+			title = L10N.t("dialog.image_maker.info_bar.file", image.getName());
+		else if (!canEdit)
+			title = L10N.t("dialog.image_maker.info_bar.source_image", name);
+		else
+			title = L10N.t("dialog.image_maker.info_bar.new_image");
+
+		imageInfo.setText(L10N.t("dialog.image_maker.info_bar", title, canvas.getWidth(), canvas.getHeight(), x, y));
 	}
 
 	public VersionManager getVersionManager() {

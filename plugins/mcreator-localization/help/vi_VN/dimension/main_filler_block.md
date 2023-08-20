@@ -1,0 +1,1 @@
+Khối chính của chiều không gian như Đá đối với Thế giới thực

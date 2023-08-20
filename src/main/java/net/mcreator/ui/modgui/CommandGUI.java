@@ -54,7 +54,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class CommandGUI extends ModElementGUI<Command> {
+public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelHolder {
 
 	private final VTextField commandName = new VTextField(25);
 	private final JComboBox<String> permissionLevel = new JComboBox<>(
@@ -92,8 +92,8 @@ public class CommandGUI extends ModElementGUI<Command> {
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
-			blocklyPanel.getJSBridge()
-					.setJavaScriptEventListener(() -> new Thread(CommandGUI.this::regenerateArgs).start());
+			blocklyPanel.getJSBridge().setJavaScriptEventListener(
+					() -> new Thread(CommandGUI.this::regenerateArgs, "CommandRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(Command.XML_BASE);
 			}
@@ -174,6 +174,10 @@ public class CommandGUI extends ModElementGUI<Command> {
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/making-command");
+	}
+
+	@Override public List<BlocklyPanel> getBlocklyPanels() {
+		return List.of(blocklyPanel);
 	}
 
 }

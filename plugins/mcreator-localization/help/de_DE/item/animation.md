@@ -1,0 +1,1 @@
+Animation ist die Animation, die verwendet wird, wenn der Spieler eine Aktion mit dem Gegenstand ausführt.

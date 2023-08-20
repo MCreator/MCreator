@@ -1,0 +1,1 @@
+Wenn eine Bedingung angegeben ist, muss der Spieler sie übergeben, um in diese Dimension zu reisen.

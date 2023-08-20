@@ -36,6 +36,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -69,6 +70,7 @@ import java.util.List;
 	public Sound portalSound;
 	public boolean enableIgniter;
 	public String igniterName;
+	public List<String> specialInfo;
 	public TabEntry igniterTab;
 	public String texture;
 	public String portalTexture;
@@ -89,6 +91,12 @@ import java.util.List;
 		this.enablePortal = true;
 		this.enableIgniter = true;
 		this.sleepResult = "ALLOW";
+		this.specialInfo = new ArrayList<>();
+	}
+
+	public boolean hasIgniter() {
+		// igniter needs portal and igniter enabled
+		return enablePortal && enableIgniter;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -96,7 +104,7 @@ import java.util.List;
 				MinecraftImageGenerator.Preview.generateDimensionPreviewPicture(getModElement().getWorkspace(),
 						getModElement().getFolderManager().getTextureFile(portalTexture, TextureType.BLOCK),
 						getModElement().getFolderManager().getTextureFile(texture, TextureType.ITEM), portalFrame,
-						enableIgniter) :
+						this.hasIgniter()) :
 				null;
 	}
 
@@ -105,21 +113,25 @@ import java.util.List;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
+		List<BaseType> baseTypes = new ArrayList<>();
 		if (enablePortal)
-			return List.of(BaseType.BLOCK, BaseType.ITEM);
-		else
-			return Collections.emptyList();
+			baseTypes.add(BaseType.BLOCK);
+		if (this.hasIgniter())
+			baseTypes.add(BaseType.ITEM);
+		return baseTypes;
 	}
 
 	@Override public List<MCItem> providedMCItems() {
+		ArrayList<MCItem> retval = new ArrayList<>();
 		if (this.enablePortal)
-			return List.of(new MCItem.Custom(this.getModElement(), null, "item", "Portal igniter"),
-					new MCItem.Custom(this.getModElement(), "portal", "block", "Portal block"));
-		return Collections.emptyList();
+			retval.add(new MCItem.Custom(this.getModElement(), "portal", "block", "Portal block"));
+		if (this.hasIgniter())
+			retval.add(new MCItem.Custom(this.getModElement(), null, "item", "Portal igniter"));
+		return retval;
 	}
 
 	@Override public List<MCItem> getCreativeTabItems() {
-		if (this.enablePortal)
+		if (this.hasIgniter())
 			return List.of(new MCItem.Custom(this.getModElement(), null, "item", "Portal igniter"));
 		return Collections.emptyList();
 	}

@@ -33,6 +33,10 @@ public abstract class SizedComponent extends GUIComponent {
 		this.height = height;
 	}
 
+	public boolean canChangeHeight() {
+		return false;
+	}
+
 	@Override public final int getWidth(Workspace workspace) {
 		return width;
 	}

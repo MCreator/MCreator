@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.blockly.data.BlocklyLoader;
+import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
@@ -40,7 +41,7 @@ import java.util.Locale;
 
 	public String permissionLevel;
 
-	public String argsxml;
+	@BlocklyXML("cmdargs") public String argsxml;
 
 	private Command() {
 		this(null);
@@ -72,6 +73,7 @@ import java.util.Locale;
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			additionalData.put("argscode", blocklyToJava.getGeneratedCode());
+			additionalData.put("argsblocks", blocklyToJava.getUsedBlocks());
 		};
 	}
 

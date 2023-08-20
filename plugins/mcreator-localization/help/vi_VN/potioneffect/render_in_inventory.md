@@ -1,0 +1,1 @@
+Kích hoạt tham số này để hiển thị hiệu ứng trong túi đồ của người chơi khi hoạt động.

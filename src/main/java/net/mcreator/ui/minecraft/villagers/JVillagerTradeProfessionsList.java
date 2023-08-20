@@ -36,12 +36,13 @@ public class JVillagerTradeProfessionsList extends JEntriesList {
 
 	private final List<JVillagerTradeProfession> professionList = new ArrayList<>();
 
-	private final JPanel professions = new JPanel(new GridLayout(0, 1, 5, 5));
+	private final JPanel professions = new JPanel();
 
 	public JVillagerTradeProfessionsList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
 
+		professions.setLayout(new BoxLayout(professions, BoxLayout.PAGE_AXIS));
 		professions.setOpaque(false);
 
 		JToolBar bar = new JToolBar();

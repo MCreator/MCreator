@@ -1,5 +1,5 @@
-按键绑定类别是类别显示在控制部分的Minecraft设置。
+按键绑定的类别是显示在控制部分的 Minecraft 设置。
 
-属于同一类别的所有按键绑定应该具有相同的类别按键。
+属于同一类别的所有按键绑定应该具有相同的类别。
 
-要实际设置类别名称，请转到**${l10n.t("tab.workspace")} -> ${l10n.t("workspace.category.localization")} -> ${l10n.t("workspace.localization.add_entry")}** and use `key.category.${data.keyBindingCategoryKey}` 来获取条目名称，然后将值设置为所需的类别名称。
+要设置按键绑定的类别的显示名称,请按照下面的流程进行`${l10n.t("tab.workspace")} -> ${l10n.t("workspace.category.localization")} -> ${l10n.t("workspace.localization.add_entry")}` 然后将 `key.category.${data.keyBindingCategoryKey}`作为键名，最后将值设置为所需的类别显示名称。

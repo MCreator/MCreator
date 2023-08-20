@@ -26,6 +26,7 @@ import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.Command;
 import net.mcreator.element.types.GUI;
+import net.mcreator.element.types.Item;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -60,7 +61,7 @@ import java.util.List;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure> {
+public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure> implements IBlocklyPanelHolder {
 
 	private final JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 
@@ -368,17 +369,18 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		localVarsPan.add("Center", scrollPane);
 
 		JToolBar bar = new JToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(2, 2, 5, 0));
+		bar.setBorder(BorderFactory.createEmptyBorder(2, 0, 5, 0));
 		bar.setFloatable(false);
 		bar.setOpaque(false);
 
-		bar.add(ComponentUtils.deriveFont(L10N.label("elementgui.procedure.local_variables"), 13));
+		JLabel lab = L10N.label("elementgui.procedure.local_variables");
+		lab.setToolTipText(L10N.t("elementgui.procedure.local_variables"));
 
 		JButton addvar = new JButton(UIRES.get("16px.add.gif"));
 		addvar.setContentAreaFilled(false);
 		addvar.setOpaque(false);
 		ComponentUtils.deriveFont(addvar, 11);
-		addvar.setBorder(BorderFactory.createEmptyBorder(1, 6, 0, 2));
+		addvar.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 2));
 		bar.add(addvar);
 
 		JButton remvar = new JButton(UIRES.get("16px.delete.gif"));
@@ -466,10 +468,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			}
 		});
 
+		lab.setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 0));
+
 		JPanel varHeader = new JPanel(new GridLayout());
 		varHeader.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		varHeader.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		varHeader.add(bar);
+		varHeader.add(PanelUtils.northAndCenterElement(ComponentUtils.deriveFont(lab, 13), bar));
 		localVarsPan.add("North", varHeader);
 		localVarsPan.setOpaque(false);
 		localVarsPan.setPreferredSize(new Dimension(150, 0));
@@ -574,7 +578,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
-			blocklyPanel.getJSBridge().setJavaScriptEventListener(() -> new Thread(this::regenerateProcedure).start());
+			blocklyPanel.getJSBridge().setJavaScriptEventListener(
+					() -> new Thread(this::regenerateProcedure, "ProcedureRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(net.mcreator.element.types.Procedure.XML_BASE);
 			}
@@ -631,6 +636,17 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 						if (procedureUsedByGUI || Procedure.isElementUsingProcedure(generatableElement,
 								modElement.getName()))
 							mcreator.getGenerator().generateElement(generatableElement);
+					} else if (generatableElement instanceof Item item) {
+						boolean procedureUsedByItem = false;
+						for (Procedure procedure : item.customProperties.values()) {
+							if (modElement.getName().equals(procedure.getName())) {
+								procedureUsedByItem = true;
+								break;
+							}
+						}
+						if (procedureUsedByItem || Procedure.isElementUsingProcedure(generatableElement,
+								modElement.getName()))
+							mcreator.getGenerator().generateElement(generatableElement);
 					} else if (generatableElement != null && element.getType().hasProcedureTriggers()) {
 						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {
 							mcreator.getGenerator().generateElement(generatableElement);
@@ -668,6 +684,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(modElement);
 		procedure.procedurexml = blocklyPanel.getXML();
 		return procedure;
+	}
+
+	@Override public List<BlocklyPanel> getBlocklyPanels() {
+		return List.of(blocklyPanel);
 	}
 
 }

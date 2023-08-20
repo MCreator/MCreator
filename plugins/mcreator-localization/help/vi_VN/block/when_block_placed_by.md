@@ -1,0 +1,1 @@
+Kích hoạt một quy trình khi một thứ nào đó đặt khối (thực thể/khối) bên cạnh khối này.

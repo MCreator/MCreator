@@ -200,7 +200,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.t("elementgui.armor.boots_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
+		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 
 		armorTextureFile.setRenderer(new WTextureComboBoxRenderer(element -> {
 			File[] armorTextures = mcreator.getFolderManager().getArmorTextureFilesForName(element);
@@ -360,7 +360,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				enableHelmet);
 		helText.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-				BorderFactory.createEmptyBorder(15, 12, 0, 12)));
+				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
+		helText.setPreferredSize(new Dimension(145, 110));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(helText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.helmet_name"), helmetName),
@@ -372,7 +373,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				enableBody);
 		bodText.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-				BorderFactory.createEmptyBorder(15, 17, 0, 17)));
+				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
+		bodText.setPreferredSize(new Dimension(145, 110));
 
 		JComponent bodyModelComponent = PanelUtils.westAndCenterElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
@@ -411,7 +413,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				enableLeggings);
 		legText.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-				BorderFactory.createEmptyBorder(15, 8, 0, 8)));
+				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
+		legText.setPreferredSize(new Dimension(145, 110));
 
 		JComponent leggingsModelComponent = PanelUtils.westAndCenterElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
@@ -448,7 +451,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				enableBoots);
 		bootText.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
-				BorderFactory.createEmptyBorder(15, 16, 0, 15)));
+				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
+		bootText.setPreferredSize(new Dimension(145, 110));
 
 		JComponent bootsModelComponent = PanelUtils.westAndCenterElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
@@ -588,28 +592,28 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		pane5.add("Center", PanelUtils.totalCenterInPanel(clopa));
 
 		textureHelmet.setValidator(() -> {
-			if (enableHelmet.isSelected() && !textureHelmet.has())
+			if (enableHelmet.isSelected() && !textureHelmet.hasTexture())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
 			return Validator.ValidationResult.PASSED;
 		});
 
 		textureBody.setValidator(() -> {
-			if (enableBody.isSelected() && !textureBody.has())
+			if (enableBody.isSelected() && !textureBody.hasTexture())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
 			return Validator.ValidationResult.PASSED;
 		});
 
 		textureLeggings.setValidator(() -> {
-			if (enableLeggings.isSelected() && !textureLeggings.has())
+			if (enableLeggings.isSelected() && !textureLeggings.hasTexture())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
 			return Validator.ValidationResult.PASSED;
 		});
 
 		textureBoots.setValidator(() -> {
-			if (enableBoots.isSelected() && !textureBoots.has())
+			if (enableBoots.isSelected() && !textureBoots.hasTexture())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.need_texture"));
 			return Validator.ValidationResult.PASSED;
@@ -713,8 +717,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				new ConditionalTextFieldValidator(bootsName, L10N.t("elementgui.armor.boots_need_name"), enableBoots,
 						true));
 		bodyName.setValidator(
-				new ConditionalTextFieldValidator(bodyName, L10N.t("elementgui.armor.chestplate_needs_name"), enableBody,
-						true));
+				new ConditionalTextFieldValidator(bodyName, L10N.t("elementgui.armor.chestplate_needs_name"),
+						enableBody, true));
 		leggingsName.setValidator(
 				new ConditionalTextFieldValidator(leggingsName, L10N.t("elementgui.armor.leggings_need_name"),
 						enableLeggings, true));

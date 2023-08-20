@@ -19,6 +19,7 @@
 package net.mcreator.io;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,8 +28,6 @@ import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
 import java.io.*;
 import java.net.URL;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
@@ -39,24 +38,9 @@ public final class FileIO {
 
 	private static final Logger LOG = LogManager.getLogger("File System");
 
-	public static void touchFile(File f) {
-		if (!f.getAbsoluteFile().getParentFile().isDirectory())
-			f.getAbsoluteFile().getParentFile().mkdirs();
-
-		try {
-			f.createNewFile();
-		} catch (Exception e) {
-			LOG.error("Error touching " + e.getMessage(), e);
-		}
-	}
-
 	public static String readFileToString(File f) {
-		try {
-			FileChannel channel = new FileInputStream(f).getChannel();
-			ByteBuffer buffer = ByteBuffer.allocate((int) channel.size());
-			channel.read(buffer);
-			channel.close();
-			return new String(buffer.array(), StandardCharsets.UTF_8);
+		try (FileInputStream fis = new FileInputStream(f)) {
+			return IOUtils.toString(fis, StandardCharsets.UTF_8);
 		} catch (Exception e) {
 			LOG.error("Error reading: " + e.getMessage(), e);
 			return "";
@@ -75,15 +59,7 @@ public final class FileIO {
 			resource = resource.substring(1);
 
 		try (InputStream dis = classLoader.getResourceAsStream(resource)) {
-			ByteArrayOutputStream result = new ByteArrayOutputStream();
-			byte[] buffer = new byte[8192];
-			int length;
-			if (dis != null) {
-				while ((length = dis.read(buffer)) != -1) {
-					result.write(buffer, 0, length);
-				}
-			}
-			return result.toString(StandardCharsets.UTF_8);
+			return dis != null ? IOUtils.toString(dis, StandardCharsets.UTF_8) : "";
 		} catch (Exception e) {
 			LOG.error("Error resource reading: " + e.getMessage(), e);
 			return "";
@@ -95,24 +71,29 @@ public final class FileIO {
 			return null;
 
 		try (InputStream dis = resource.openConnection().getInputStream()) {
-			ByteArrayOutputStream result = new ByteArrayOutputStream();
-			byte[] buffer = new byte[8192];
-			int length;
-			if (dis != null) {
-				while ((length = dis.read(buffer)) != -1) {
-					result.write(buffer, 0, length);
-				}
-			}
-			return result.toString();
+			return dis != null ? IOUtils.toString(dis, StandardCharsets.UTF_8) : "";
 		} catch (Exception e) {
 			LOG.error("Error resource reading: " + e.getMessage(), e);
 			return "";
 		}
 	}
 
+	public static void touchFile(File f) {
+		File parentDir = f.getAbsoluteFile().getParentFile();
+		if (parentDir != null && !parentDir.isDirectory())
+			parentDir.mkdirs();
+
+		try {
+			f.createNewFile();
+		} catch (Exception e) {
+			LOG.error("Error touching " + e.getMessage(), e);
+		}
+	}
+
 	public static void writeStringToFile(String c, File f) {
-		if (!f.getAbsoluteFile().getParentFile().isDirectory())
-			f.getAbsoluteFile().getParentFile().mkdirs();
+		File parentDir = f.getAbsoluteFile().getParentFile();
+		if (parentDir != null && !parentDir.isDirectory())
+			parentDir.mkdirs();
 
 		try (BufferedWriter out = new BufferedWriter(
 				new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8))) {
@@ -123,8 +104,9 @@ public final class FileIO {
 	}
 
 	public static void writeBytesToFile(byte[] c, File f) {
-		if (!f.getAbsoluteFile().getParentFile().isDirectory())
-			f.getAbsoluteFile().getParentFile().mkdirs();
+		File parentDir = f.getAbsoluteFile().getParentFile();
+		if (parentDir != null && !parentDir.isDirectory())
+			parentDir.mkdirs();
 
 		try (FileOutputStream out = new FileOutputStream(f)) {
 			out.write(c);
@@ -134,13 +116,29 @@ public final class FileIO {
 	}
 
 	public static void writeImageToPNGFile(RenderedImage image, File f) {
-		if (!f.getAbsoluteFile().getParentFile().isDirectory())
-			f.getAbsoluteFile().getParentFile().mkdirs();
+		File parentDir = f.getAbsoluteFile().getParentFile();
+		if (parentDir != null && !parentDir.isDirectory())
+			parentDir.mkdirs();
 
 		try {
 			ImageIO.write(image, "png", f);
 		} catch (IOException e) {
 			LOG.error("Error writing image " + e.getMessage(), e);
+		}
+	}
+
+	public static void copyFile(File from, File to) {
+		if (from.isDirectory())
+			LOG.fatal("Trying to copy folder as a file: " + from);
+
+		try {
+			File parentDir = to.getAbsoluteFile().getParentFile();
+			if (parentDir != null && !parentDir.isDirectory())
+				parentDir.mkdirs();
+
+			Files.copy(from.toPath(), to.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		} catch (IOException e) {
+			LOG.error("Error copying file: " + e.getMessage(), e);
 		}
 	}
 
@@ -150,36 +148,22 @@ public final class FileIO {
 
 		// prevent recursive copy in case if directory is copied in a subdirectory
 		try {
-			if (targetLocation.getParentFile().getCanonicalPath().equals(sourceLocation.getCanonicalPath()))
+			if (targetLocation.getAbsoluteFile().getParentFile().getCanonicalPath()
+					.equals(sourceLocation.getCanonicalPath()))
 				return;
 		} catch (IOException e) {
 			return;
 		}
 
 		if (sourceLocation.isDirectory()) {
-			if (!targetLocation.exists()) {
+			if (!targetLocation.exists())
 				targetLocation.mkdir();
-			}
 			String[] children = sourceLocation.list();
 			for (String element : children != null ? children : new String[0]) {
 				copyDirectory(new File(sourceLocation, element), new File(targetLocation, element));
 			}
 		} else {
 			copyFile(sourceLocation, targetLocation);
-		}
-	}
-
-	public static void copyFile(File from, File to) {
-		if (from.isDirectory())
-			LOG.fatal("Trying to copy folder as a file: " + from);
-
-		try {
-			if (!to.getParentFile().isDirectory())
-				to.getParentFile().mkdirs();
-
-			Files.copy(from.toPath(), to.toPath(), StandardCopyOption.REPLACE_EXISTING);
-		} catch (IOException e) {
-			LOG.error("Error copying file: " + e.getMessage(), e);
 		}
 	}
 

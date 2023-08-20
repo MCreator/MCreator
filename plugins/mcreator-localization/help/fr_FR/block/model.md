@@ -1,5 +1,4 @@
-Sélectionnez le modèle à utiliser avec ce bloc. Le modèle définit uniquement l'aspect visuel et non le
-boîte englobante du bloc.
+Sélectionnez le modèle à utiliser avec ce bloc. Le modèle définit uniquement l'aspect visuel et non le boîte englobante du bloc.
 
 * **Normal** - Bloc normal avec des textures de chaque côté
 * **Texture unique** - Bloc avec la même texture sur tous les côtés

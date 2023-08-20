@@ -69,6 +69,7 @@ public class BlocklyPanel extends JFXPanel {
 	private String currentXML = "";
 
 	private final MCreator mcreator;
+	private final BlocklyEditorType type;
 
 	private static final String MINIMAL_XML = "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>";
 
@@ -76,6 +77,7 @@ public class BlocklyPanel extends JFXPanel {
 		setOpaque(false);
 
 		this.mcreator = mcreator;
+		this.type = type;
 
 		bridge = new BlocklyJavascriptBridge(mcreator, () -> {
 			String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
@@ -253,10 +255,9 @@ public class BlocklyPanel extends JFXPanel {
 		for (String varNameType : vars) {
 			String[] vardata = varNameType.split(";");
 			if (vardata.length == 2) {
-				VariableElement element = new VariableElement();
-				element.setName(vardata[0]);
 				VariableType variableType = VariableTypeLoader.INSTANCE.fromName(vardata[1]);
 				if (variableType != null) {
+					VariableElement element = new VariableElement(vardata[0]);
 					element.setType(variableType);
 					retval.add(element);
 				}
@@ -287,6 +288,10 @@ public class BlocklyPanel extends JFXPanel {
 
 	public MCreator getMCreator() {
 		return mcreator;
+	}
+
+	public BlocklyEditorType getType() {
+		return type;
 	}
 
 	private String cleanupXML(String xml) {

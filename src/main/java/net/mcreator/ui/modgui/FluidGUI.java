@@ -22,7 +22,6 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Fluid;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -54,7 +53,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.stream.Collectors;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
@@ -93,10 +91,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(1, 0, 15, 1));
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 0, 9999999, 1));
+	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
-	private final JComboBox<String> colorOnMap = new JComboBox<>();
+	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
 
 	private ProcedureSelector onBlockAdded;
 	private ProcedureSelector onNeighbourChanges;
@@ -424,9 +422,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
-
-		ComboBoxUtil.updateComboBoxContents(colorOnMap,
-				Arrays.asList(ElementUtil.getDataListAsStringArray("mapcolors")), "DEFAULT");
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -516,7 +511,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.tickRate = (int) tickRate.getValue();
 		fluid.flammability = (int) flammability.getValue();
 		fluid.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
-		fluid.colorOnMap = (String) colorOnMap.getSelectedItem();
+		fluid.colorOnMap = colorOnMap.getSelectedItem().toString();
 		fluid.onBlockAdded = onBlockAdded.getSelectedProcedure();
 		fluid.onNeighbourChanges = onNeighbourChanges.getSelectedProcedure();
 		fluid.onTickUpdate = onTickUpdate.getSelectedProcedure();

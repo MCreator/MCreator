@@ -1,3 +1,3 @@
-当玩家右键点击手中的物品时，这个过程就会执行。
+當玩家右鍵點擊手中的物品時，這個函式就會執行。
 
-如果你想让这个流程只在实体在空中用这个物品右击时被调用，"${l10n.t("elementgui.common.event_right_clicked_block")}"流程应该总是返回SUCCESS/CONSUME。
+如果你想讓這個函式只在實體在空中用這個物品右擊時被調用，"${l10n.t("elementgui.common.event_right_clicked_block")}"函式應該總是返回SUCCESS/CONSUME。
