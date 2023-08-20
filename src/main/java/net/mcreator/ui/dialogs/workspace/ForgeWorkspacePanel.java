@@ -62,7 +62,7 @@ public class ForgeWorkspacePanel extends AbstractWorkspacePanel {
 		add(new JEmptyBox(30, 170));
 
 		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0),
-				L10N.label("dialog.new_workspace.forge.notice1")));
+				L10N.label("dialog.new_workspace.forge.notice")));
 
 		validationGroup.addValidationElement(workspaceDialogPanel.modName);
 		validationGroup.addValidationElement(workspaceDialogPanel.modID);

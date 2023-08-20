@@ -59,13 +59,10 @@ public class NeoForgeWorkspacePanel extends AbstractWorkspacePanel {
 		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.folder"),
 				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 5, 5)));
 
-		add(new JEmptyBox(30, 142));
-
-		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.ok")), new JEmptyBox(0, 0),
-				L10N.label("dialog.new_workspace.neoforge.notice1")));
+		add(new JEmptyBox(30, 170));
 
 		add(PanelUtils.join(FlowLayout.LEFT, new JLabel(UIRES.get("18px.info")), new JEmptyBox(0, 0),
-				L10N.label("dialog.new_workspace.neoforge.notice2")));
+				L10N.label("dialog.new_workspace.neoforge.notice")));
 
 		validationGroup.addValidationElement(workspaceDialogPanel.modName);
 		validationGroup.addValidationElement(workspaceDialogPanel.modID);
