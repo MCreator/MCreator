@@ -62,7 +62,7 @@ public class BlocklyBlockUtil {
 	public static List<Element> getBlockProcedureStartingWithBlock(Element start_block) {
 		List<Element> base_blocks = new ArrayList<>();
 		List<Element> nextblock = XMLUtil.getChildrenWithName(start_block, "block");
-		if (nextblock.size() != 0) {
+		if (!nextblock.isEmpty()) {
 			Element block = nextblock.get(0);
 			if (block != null) {
 				base_blocks.add(block);
