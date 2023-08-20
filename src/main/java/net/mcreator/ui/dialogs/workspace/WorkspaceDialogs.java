@@ -577,33 +577,33 @@ public class WorkspaceDialogs {
 			retVal.setWorkspace(workspace);
 			retVal.setModName(modName.getText());
 			retVal.setVersion(version.getText());
-			retVal.setDescription(description.getText().equals("") ? null : description.getText());
-			retVal.setAuthor(author.getText().equals("") ? null : author.getText());
-			retVal.setLicense(license.getEditor().getItem().toString().equals("") ?
+			retVal.setDescription(description.getText().isEmpty() ? null : description.getText());
+			retVal.setAuthor(author.getText().isEmpty() ? null : author.getText());
+			retVal.setLicense(license.getEditor().getItem().toString().isEmpty() ?
 					"Not specified" :
 					license.getEditor().getItem().toString());
-			retVal.setWebsiteURL(websiteURL.getText().equals("") ? null : websiteURL.getText());
-			retVal.setCredits(credits.getText().equals("") ? null : credits.getText());
+			retVal.setWebsiteURL(websiteURL.getText().isEmpty() ? null : websiteURL.getText());
+			retVal.setCredits(credits.getText().isEmpty() ? null : credits.getText());
 			retVal.setModPicture(Objects.equals(modPicture.getSelectedItem(),
 					L10N.t("dialog.workspace.settings.workspace_nopic_default")) ?
 					null :
 					(String) modPicture.getSelectedItem());
-			retVal.setModElementsPackage(packageName.getText().equals("") ? null : packageName.getText());
+			retVal.setModElementsPackage(packageName.getText().isEmpty() ? null : packageName.getText());
 			retVal.setServerSideOnly(serverSideOnly.isSelected());
 			retVal.setLockBaseModFiles(lockBaseModFiles.isSelected());
 			retVal.setDisableForgeVersionCheck(disableForgeVersionCheck.isSelected());
-			retVal.setUpdateURL(updateJSON.getText().equals("") ? null : updateJSON.getText());
+			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());
 			retVal.setCurrentGenerator(
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());
 
 			retVal.setRequiredMods(
-					Arrays.stream(requiredMods.getText().split(",")).map(String::trim).filter(text -> !text.equals(""))
+					Arrays.stream(requiredMods.getText().split(",")).map(String::trim).filter(text -> !text.isEmpty())
 							.collect(Collectors.toSet()));
 			retVal.setDependencies(
-					Arrays.stream(dependencies.getText().split(",")).map(String::trim).filter(text -> !text.equals(""))
+					Arrays.stream(dependencies.getText().split(",")).map(String::trim).filter(text -> !text.isEmpty())
 							.collect(Collectors.toSet()));
 			retVal.setDependants(
-					Arrays.stream(dependants.getText().split(",")).map(String::trim).filter(text -> !text.equals(""))
+					Arrays.stream(dependants.getText().split(",")).map(String::trim).filter(text -> !text.isEmpty())
 							.collect(Collectors.toSet()));
 
 			Set<String> mcreatordeps = new HashSet<>();
