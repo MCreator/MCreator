@@ -64,7 +64,7 @@ import java.util.stream.Stream;
 
 	private transient Workspace workspace; // we should never serialize this!!
 
-	private static transient final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
+	private static final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
 
 	public WorkspaceSettings(WorkspaceSettings other) {
 		this.modid = other.modid;
