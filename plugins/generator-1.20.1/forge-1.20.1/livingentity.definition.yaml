@@ -25,3 +25,6 @@ localizationkeys:
     condition: hasSpawnEgg
   - key: entity.@modid.@registryname
     mapto: mobName
+  - key: entity.@modid.@registryname.none
+    mapto: mobName
+    condition: canTrade
