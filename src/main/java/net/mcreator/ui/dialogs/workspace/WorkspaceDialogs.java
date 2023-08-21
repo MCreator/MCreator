@@ -421,7 +421,7 @@ public class WorkspaceDialogs {
 			packageName.setPreferredSize(new Dimension(300, 32));
 			packageName.setValidator(() -> {
 				String text = packageName.getText();
-				if (text.length() == 0)
+				if (text.isEmpty())
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 							L10N.t("dialog.workspace.settings.workspace_package_empty"));
 				if (text.startsWith(".")) {

@@ -21,11 +21,10 @@ package net.mcreator.blockly.java.blocks;
 
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.generator.template.TemplateGeneratorException;
 import org.w3c.dom.Element;
 
 public class TimeYearBlock implements IBlockGenerator {
-	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
+	@Override public void generateBlock(BlocklyToCode master, Element block) {
 		master.append("/*@int*/Calendar.getInstance().get(Calendar.YEAR)");
 	}
 
