@@ -1,0 +1,1 @@
+Wenn angegeben, wird die Entität diese Aufgabe nur ausführen, wenn sie diese Bedingung übergeht.

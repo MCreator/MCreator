@@ -49,7 +49,7 @@ public class JavaMemberNameValidator implements Validator {
 	@Override public ValidationResult validate() {
 		String text = textField.getText();
 
-		if (text == null || text.length() == 0)
+		if (text == null || text.isEmpty())
 			return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 					L10N.t("validators.java_name.needs_name"));
 
@@ -77,7 +77,7 @@ public class JavaMemberNameValidator implements Validator {
 		} else if (JavaConventions.containsInvalidJavaNameCharacters(textField.getText())) {
 			return new Validator.ValidationResult(Validator.ValidationResultType.WARNING,
 					L10N.t("validators.java_name.characters_convertible"));
-		} else if (firstLetterUppercase && textField.getText() != null && textField.getText().length() > 0
+		} else if (firstLetterUppercase && textField.getText() != null && !textField.getText().isEmpty()
 				&& !StringUtils.isUppercaseLetter(textField.getText().charAt(0))) {
 			return new Validator.ValidationResult(Validator.ValidationResultType.WARNING,
 					L10N.t("validators.java_names.upper_case_first_character"));
