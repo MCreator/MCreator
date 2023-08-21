@@ -81,7 +81,7 @@ public class ProcedureDamageSourceFixer implements IConverter {
 				}
 
 				Element damageValue = bh.createValue("damagesource", bh.createBlock("damagesource_from_type",
-						bh.createField("damagesource", damagesource == null ? "GENERIC" : damagesource.toString())));
+						bh.createField("damagetype", damagesource == null ? "GENERIC" : damagesource.getTextContent())));
 				element.appendChild(damageValue);
 			} else if (type.equals("damagesource_isequalto")) {
 				Element damagesource = XMLUtil.getFirstChildrenWithName(element, "field");
@@ -91,7 +91,7 @@ public class ProcedureDamageSourceFixer implements IConverter {
 
 				Element damageValue = bh.createValue("damagesource", bh.createBlock("damagesource_from_deps"));
 				Element damageField = bh.createField("damagetype",
-						damagesource == null ? "GENERIC" : damagesource.toString());
+						damagesource == null ? "GENERIC" : damagesource.getTextContent());
 				element.appendChild(damageValue);
 				element.appendChild(damageField);
 			}
