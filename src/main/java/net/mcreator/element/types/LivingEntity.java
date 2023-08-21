@@ -256,6 +256,7 @@ import java.util.*;
 			additionalData.put("aicode", unmodifiableAIBases != null && !unmodifiableAIBases.contains(aiBase) ?
 					blocklyToJava.getGeneratedCode() :
 					"");
+			additionalData.put("aiblocks", blocklyToJava.getUsedBlocks());
 		};
 	}
 

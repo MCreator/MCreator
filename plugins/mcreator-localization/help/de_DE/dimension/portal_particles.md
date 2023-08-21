@@ -1,0 +1,1 @@
+Dieser Parameter wählt den Partikeltyp aus, der vom Portal ausgestrahlt wird, wenn das Portal aktiv ist.

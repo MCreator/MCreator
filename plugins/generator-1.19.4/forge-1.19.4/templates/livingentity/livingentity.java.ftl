@@ -182,6 +182,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#if>
 
 		<#if data.hasAI && aicode??>
+			<#if aiblocks?seq_contains("doors_open") || aiblocks?seq_contains("doors_close")>
+				this.getNavigation().getNodeEvaluator().setCanOpenDoors(true);
+			</#if>
+
             ${aicode}
         </#if>
 

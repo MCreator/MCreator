@@ -131,6 +131,7 @@ public class Procedure extends GeneratableElement {
 			additionalData.put("return_type", blocklyToJava.getReturnType());
 			additionalData.put("has_trigger", trigger != null);
 			additionalData.put("localvariables", blocklyToJava.getLocalVariables());
+			additionalData.put("procedureblocks", blocklyToJava.getUsedBlocks());
 
 			String triggerCode = "";
 			if (trigger != null) {

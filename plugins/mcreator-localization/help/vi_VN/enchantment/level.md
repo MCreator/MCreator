@@ -1,0 +1,1 @@
+Cấp độ tối thiểu và tối đa mà phù phép của bạn hỗ trợ.

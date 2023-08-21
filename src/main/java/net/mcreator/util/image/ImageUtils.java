@@ -506,9 +506,9 @@ public class ImageUtils {
 	 * @param width   <p>The width of the final image</p>
 	 * @param height  <p>The height of the final image</p>
 	 * @param xFirst  <p>The x position of the first image on the final image</p>
-	 * @param yFirst  <p>The y position of the first image on the final image<</p>
-	 * @param xSecond <p>The x position of the second image on the final image<</p>
-	 * @param ySecond <p>The y position of the second image on the final image<</p>
+	 * @param yFirst  <p>The y position of the first image on the final image</p>
+	 * @param xSecond <p>The x position of the second image on the final image</p>
+	 * @param ySecond <p>The y position of the second image on the final image</p>
 	 * @return <p>Returns the generated image.</p>
 	 */
 	public static BufferedImage mergeTwoImages(Image first, Image second, int width, int height, int xFirst, int yFirst,
