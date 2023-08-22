@@ -53,7 +53,7 @@ public class ProcedureDamageSourceFixer implements IConverter {
 		try {
 			procedure.procedurexml = fixXML(procedure.procedurexml);
 		} catch (Exception e) {
-			LOG.warn("Failed to fix string dependency for procedure " + input.getModElement().getName());
+			LOG.warn("Failed to update damage blocks for procedure " + input.getModElement().getName());
 		}
 
 		return procedure;
@@ -75,25 +75,30 @@ public class ProcedureDamageSourceFixer implements IConverter {
 			Element element = (Element) nodeList.item(i);
 			String type = element.getAttribute("type");
 			if (type.equals("deal_damage")) {
-				Element damagesource = XMLUtil.getFirstChildrenWithName(element, "field");
-				if (damagesource != null) {
-					element.removeChild(damagesource);
+				// Get the damage type field from the "Deal damage" block
+				Element damageType = XMLUtil.getFirstChildrenWithName(element, "field");
+				if (damageType != null) {
+					// If the field exists, remove it from the block and rename it
+					element.removeChild(damageType);
+					damageType.setAttribute("name", "damagetype");
+				} else {
+					// If the field doesn't exist, we use the GENERIC damage type
+					damageType = bh.createField("damagetype", "GENERIC");
 				}
-
-				Element damageValue = bh.createValue("damagesource", bh.createBlock("damagesource_from_type",
-						bh.createField("damagetype", damagesource == null ? "GENERIC" : damagesource.getTextContent())));
-				element.appendChild(damageValue);
+				// Add the "Damage source from type" block
+				element.appendChild(bh.createValue("damagesource",
+						bh.createBlock("damagesource_from_type", damageType)));
 			} else if (type.equals("damagesource_isequalto")) {
-				Element damagesource = XMLUtil.getFirstChildrenWithName(element, "field");
-				if (damagesource != null) {
-					element.removeChild(damagesource);
+				// Get the damage type field from the "Is damage of type" block
+				Element damageType = XMLUtil.getFirstChildrenWithName(element, "field");
+				if (damageType != null) {
+					damageType.setAttribute("name", "damagetype"); // If the field exists, we rename it
+				} else {
+					// If the field doesn't exist, we use the GENERIC damage type
+					element.appendChild(bh.createField("damagetype", "GENERIC"));
 				}
-
-				Element damageValue = bh.createValue("damagesource", bh.createBlock("damagesource_from_deps"));
-				Element damageField = bh.createField("damagetype",
-						damagesource == null ? "GENERIC" : damagesource.getTextContent());
-				element.appendChild(damageValue);
-				element.appendChild(damageField);
+				// Append the "Damage source from deps" block to the new input
+				element.appendChild(bh.createValue("damagesource", bh.createBlock("damagesource_from_deps")));
 			}
 		}
 
