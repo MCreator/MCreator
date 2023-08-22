@@ -742,7 +742,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		group1page.addValidationElement(helmetName);
 
 		armorTextureFile.setValidator(() -> {
-			if (armorTextureFile.getSelectedItem() == null || armorTextureFile.getSelectedItem().equals(""))
+			if (armorTextureFile.getSelectedItem() == null || armorTextureFile.getSelectedItem().isEmpty())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.armor.armor_needs_texture"));
 			return Validator.ValidationResult.PASSED;

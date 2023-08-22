@@ -90,7 +90,7 @@ import java.util.List;
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			String triggerCode = blocklyToJSONTrigger.getGeneratedCode();
-			if (triggerCode.equals(""))
+			if (triggerCode.isEmpty())
 				triggerCode = "{\"trigger\": \"minecraft:impossible\"}";
 
 			additionalData.put("triggercode", triggerCode);

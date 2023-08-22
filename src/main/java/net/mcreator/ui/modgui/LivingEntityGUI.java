@@ -858,7 +858,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane7.setOpaque(false);
 
 		mobModelTexture.setValidator(() -> {
-			if (mobModelTexture.getSelectedItem() == null || mobModelTexture.getSelectedItem().equals(""))
+			if (mobModelTexture.getSelectedItem() == null || mobModelTexture.getSelectedItem().isEmpty())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.living_entity.error_entity_model_needs_texture"));
 			return Validator.ValidationResult.PASSED;
