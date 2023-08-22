@@ -71,8 +71,8 @@ public class BlocklyToFeature extends BlocklyToJava {
 
 	@Override protected void postBlocksPlacement(Document doc, Element startBlock, List<Element> baseBlocks) {
 		if (baseBlocks.isEmpty())
-			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					L10N.t("blockly.errors.features.missing_placement")));
+			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+					L10N.t("blockly.warnings.features.missing_placement")));
 	}
 
 	public final String getFeatureConfigurationCode() {

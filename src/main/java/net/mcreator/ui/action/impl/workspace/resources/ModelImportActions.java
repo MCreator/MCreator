@@ -43,6 +43,8 @@ import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.resources.TexturedModel;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.Import;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
@@ -59,6 +61,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class ModelImportActions {
+
+	private static final Logger LOG = LogManager.getLogger("Model import actions");
 
 	public static class JAVA extends BasicAction {
 		public JAVA(ActionRegistry actionRegistry) {
@@ -150,7 +154,7 @@ public class ModelImportActions {
 				return;
 			}
 		} catch (Exception err) {
-			err.printStackTrace();
+			LOG.error("Failed to load Java model: " + file, err);
 			JOptionPane.showMessageDialog(mcreator,
 					L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.message"),
 					L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.title"),

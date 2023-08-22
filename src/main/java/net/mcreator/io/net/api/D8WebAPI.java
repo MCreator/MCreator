@@ -64,7 +64,7 @@ public class D8WebAPI implements IWebAPI {
 			initAPIPrivate();
 			newsFutures.forEach(future -> future.complete(news));
 			motwFutures.forEach(future -> future.complete(motw));
-		}).start();
+		}, "WebAPI-Loader").start();
 
 		return true;
 	}

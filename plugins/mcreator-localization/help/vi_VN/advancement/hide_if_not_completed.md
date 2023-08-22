@@ -1,0 +1,1 @@
+Tham số này ẩn thành tựu khỏi tab thành tựu cho đến khi nó được hoàn thành.

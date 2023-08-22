@@ -242,7 +242,7 @@ public class LayerPanel extends JPanel {
 	}
 
 	private void updateControls() {
-		if (canvas.size() > 0) {
+		if (!canvas.isEmpty()) {
 			setListMode(LayerListMode.NORMAL);
 			if (selectedID() != -1) {
 				canEdit(true);

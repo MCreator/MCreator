@@ -1,0 +1,1 @@
+Während die Kugel fliegt, wird die ausgewählte Prozedur jeden Tick ausgeführt.

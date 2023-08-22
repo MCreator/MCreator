@@ -91,7 +91,7 @@ public class WorkspaceGeneratorSetupDialog {
 			} else {
 				finalizeTheSetup(m, dial);
 			}
-		});
+		}, "GeneratorSetup");
 		t.start();
 
 		if (showWebsite)
@@ -126,7 +126,7 @@ public class WorkspaceGeneratorSetupDialog {
 				showSetupFailedMessage(dial, m,
 						L10N.t("dialog.setup_workspace.step.failed_build_caches") + e.getMessage());
 			}
-		}).start();
+		}, "GeneratorSetupFinalizer").start();
 	}
 
 	private static void showSetupFailedMessage(ProgressDialog dial, MCreator m, String s) {
