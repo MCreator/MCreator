@@ -51,7 +51,7 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 
 	@Override protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
-		if (searchTerm != null && searchTerm.length() > 0) {
+		if (searchTerm != null && !searchTerm.isEmpty()) {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g2.setFont(g.getFont().deriveFont(12.0f));
@@ -118,7 +118,7 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 			searchTerm += e.getKeyChar();
 			comboFilter();
 		} else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-			if (searchTerm.length() > 0) {
+			if (!searchTerm.isEmpty()) {
 				searchTerm = searchTerm.substring(0, searchTerm.length() - 1);
 				comboFilter();
 			} else {
