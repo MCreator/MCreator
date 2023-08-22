@@ -43,7 +43,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 46;
+	public static final int formatVersion = 47;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
