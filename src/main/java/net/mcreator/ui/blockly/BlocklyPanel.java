@@ -74,8 +74,6 @@ public class BlocklyPanel extends JFXPanel {
 	private static final String MINIMAL_XML = "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>";
 
 	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
-		setOpaque(false);
-
 		this.mcreator = mcreator;
 		this.type = type;
 
@@ -93,12 +91,8 @@ public class BlocklyPanel extends JFXPanel {
 		ThreadUtil.runOnFxThread(() -> {
 			WebView browser = new WebView();
 			Scene scene = new Scene(browser);
-			if (OS.getOS() == OS.WINDOWS) {
-				scene.setFill(Color.TRANSPARENT);
-			} else {
-				java.awt.Color bg = (java.awt.Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT");
-				scene.setFill(Color.rgb(bg.getRed(), bg.getGreen(), bg.getBlue()));
-			}
+			java.awt.Color bg = (java.awt.Color) UIManager.get("MCreatorLAF.DARK_ACCENT");
+			scene.setFill(Color.rgb(bg.getRed(), bg.getGreen(), bg.getBlue()));
 			setScene(scene);
 
 			browser.getChildrenUnmodifiable().addListener(
