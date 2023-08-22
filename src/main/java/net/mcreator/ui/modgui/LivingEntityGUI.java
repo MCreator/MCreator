@@ -986,6 +986,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		breedable.setEnabled(!canTrade.isSelected());
 		ridable.setEnabled(!canTrade.isSelected());
 		villagerTradingType.setEnabled(canTrade.isSelected());
+		wanderingTraderTradingType.setEnabled(canTrade.isSelected());
 		professionTrade.setEnabled(canTrade.isSelected());
 		fullUpdateSound.setEnabled(canTrade.isSelected());
 		emptyUpdateSound.setEnabled(canTrade.isSelected());
