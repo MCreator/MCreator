@@ -267,9 +267,9 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.villagerTradingType>
 	@Override protected void customServerAiStep() {
-		this.level.getProfiler().push("villagerBrain");
-		this.getBrain().tick((ServerLevel) this.level, this);
-		this.level.getProfiler().pop();
+		this.level().getProfiler().push("villagerBrain");
+		this.getBrain().tick((ServerLevel) this.level(), this);
+		this.level().getProfiler().pop();
 		if (this.assignProfessionWhenSpawned) {
 			this.assignProfessionWhenSpawned = false;
 		}
@@ -287,14 +287,14 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 		if (this.lastTradedPlayer != null && this.level instanceof ServerLevel) {
 			((ServerLevel) this.level).onReputationEvent(ReputationEventType.TRADE, this.lastTradedPlayer, this);
-			this.level.broadcastEntityEvent(this, (byte) 14);
+			this.level().broadcastEntityEvent(this, (byte) 14);
 			this.lastTradedPlayer = null;
 		}
 
 		if (!this.isNoAi() && this.random.nextInt(100) == 0) {
 			Raid raid = ((ServerLevel) this.level).getRaidAt(this.blockPosition());
 			if (raid != null && raid.isActive() && !raid.isOver()) {
-				this.level.broadcastEntityEvent(this, (byte) 42);
+				this.level().broadcastEntityEvent(this, (byte) 42);
 			}
 		}
 	}
@@ -324,7 +324,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			<#else>
 				int rewardXp = ${data.rewardXp.getFixedValue()};
 			</#if>
-			this.level.addFreshEntity(new ExperienceOrb(this.level, this.getX(), this.getY() + 0.5D, this.getZ(), rewardXp));
+			this.level().addFreshEntity(new ExperienceOrb(this.level(), this.getX(), this.getY() + 0.5D, this.getZ(), rewardXp));
 		}
 	}
 	</#if>
@@ -578,9 +578,9 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					}
 
 					if (this.getOffers().isEmpty()) {
-						return InteractionResult.sidedSuccess(this.level.isClientSide);
+						return InteractionResult.sidedSuccess(this.level().isClientSide);
 					} else {
-						if (!this.level.isClientSide) {
+						if (!this.level().isClientSide) {
 							<#if data.villagerTradingType>
 							this.updateSpecialPrices(sourceentity);
 							this.setTradingPlayer(sourceentity);
@@ -591,7 +591,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 							</#if>
 						}
 
-						return InteractionResult.sidedSuccess(this.level.isClientSide);
+						return InteractionResult.sidedSuccess(this.level().isClientSide);
 					}
 				} else {
 					return super.mobInteract(sourceentity, hand);
@@ -760,22 +760,22 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		<#if data.hasWanderingTraderTrade()>@Nullable<#else>@Override</#if> public <#if data.hasVillagerTrade()>${name}Entity<#else>AgeableMob</#if> getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
 			<#if data.hasWanderingTraderTrade()>
 				return null;
-			<#elseif data.hasVillagerTrade()>
-				double random = this.random.nextDouble();
-				VillagerType villagerType;
-				if (random < 0.5D) {
-					villagerType = VillagerType.byBiome(serverWorld.getBiome(this.blockPosition()));
-				} else if (random < 0.75D) {
-					villagerType = this.getVillagerData().getType();
-				} else {
-					villagerType = ((${name}Entity) ageable).getVillagerData().getType();
-				}
-				${name}Entity retval = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), serverWorld, villagerType);
 			<#else>
-				${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld);
+				<#if data.hasVillagerTrade()>
+					double random = this.random.nextDouble();
+					VillagerType villagerType = ((${name}Entity) ageable).getVillagerData().getType();
+					if (random < 0.5D) {
+						villagerType = VillagerType.byBiome(serverWorld.getBiome(this.blockPosition()));
+					} else if (random < 0.75D) {
+						villagerType = this.getVillagerData().getType();
+					}
+					${name}Entity retval = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), serverWorld, villagerType);
+				<#else>
+					${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld);
+				</#if>
+				retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null, null);
+				return retval;
 			</#if>
-			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null, null);
-			return retval;
 		}
 
 		<#if data.breedable>

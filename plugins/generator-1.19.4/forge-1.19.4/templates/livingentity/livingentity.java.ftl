@@ -765,22 +765,22 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		<#if data.hasWanderingTraderTrade()>@Nullable<#else>@Override</#if> public <#if data.hasVillagerTrade()>${name}Entity<#else>AgeableMob</#if> getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
 			<#if data.hasWanderingTraderTrade()>
 				return null;
-			<#elseif data.hasVillagerTrade()>
-				double random = this.random.nextDouble();
-				VillagerType villagerType;
-				if (random < 0.5D) {
-					villagerType = VillagerType.byBiome(serverWorld.getBiome(this.blockPosition()));
-				} else if (random < 0.75D) {
-					villagerType = this.getVillagerData().getType();
-				} else {
-					villagerType = ((${name}Entity) ageable).getVillagerData().getType();
-				}
-				${name}Entity retval = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), serverWorld, villagerType);
 			<#else>
-				${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld);
+				<#if data.hasVillagerTrade()>
+					double random = this.random.nextDouble();
+					VillagerType villagerType = ((${name}Entity) ageable).getVillagerData().getType();
+					if (random < 0.5D) {
+						villagerType = VillagerType.byBiome(serverWorld.getBiome(this.blockPosition()));
+					} else if (random < 0.75D) {
+						villagerType = this.getVillagerData().getType();
+					}
+					${name}Entity retval = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), serverWorld, villagerType);
+				<#else>
+					${name}Entity retval = ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get().create(serverWorld);
+				</#if>
+				retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null, null);
+				return retval;
 			</#if>
-			retval.finalizeSpawn(serverWorld, serverWorld.getCurrentDifficultyAt(retval.blockPosition()), MobSpawnType.BREEDING, null, null);
-			return retval;
 		}
 
 		<#if data.breedable>
