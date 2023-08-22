@@ -84,6 +84,7 @@ import java.util.Locale;
 					new ProceduralBlockCodeGenerator(blocklyBlockCodeGenerator));
 
 			additionalData.put("argscode", blocklyToJava.getGeneratedCode());
+			additionalData.put("argsblocks", blocklyToJava.getUsedBlocks());
 		};
 	}
 

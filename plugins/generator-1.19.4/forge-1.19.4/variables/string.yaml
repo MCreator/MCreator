@@ -11,7 +11,7 @@ scopes:
   global_world:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
     read: ${var.getName()} = nbt.getString("${var.getName()}");
-    write: nbt.putString("${var.getName()}" , ${var.getName()});
+    write: nbt.putString("${var.getName()}", ${var.getName()});
     get: ${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.WorldVariables.get(world).${name} = ${opt.removeParentheses(value)};
@@ -19,7 +19,7 @@ scopes:
   global_map:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
     read: ${var.getName()} = nbt.getString("${var.getName()}");
-    write: nbt.putString("${var.getName()}" , ${var.getName()});
+    write: nbt.putString("${var.getName()}", ${var.getName()});
     get: ${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.MapVariables.get(world).${name} = ${opt.removeParentheses(value)};
@@ -27,7 +27,7 @@ scopes:
   player_lifetime:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
     read: ${var.getName()} = nbt.getString("${var.getName()}");
-    write: nbt.putString("${var.getName()}" , ${var.getName()});
+    write: nbt.putString("${var.getName()}", ${var.getName()});
     get: |
       ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
@@ -42,7 +42,7 @@ scopes:
   player_persistent:
     init: public String ${var.getName()} = "${JavaConventions.escapeStringForJava(var.getValue())}";
     read: ${var.getName()} = nbt.getString("${var.getName()}");
-    write: nbt.putString("${var.getName()}" , ${var.getName()});
+    write: nbt.putString("${var.getName()}", ${var.getName()});
     get: |
       ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})

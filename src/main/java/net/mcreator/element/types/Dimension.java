@@ -70,6 +70,7 @@ import java.util.List;
 	public Sound portalSound;
 	public boolean enableIgniter;
 	public String igniterName;
+	public List<String> specialInfo;
 	public TabEntry igniterTab;
 	public String texture;
 	public String portalTexture;
@@ -90,6 +91,7 @@ import java.util.List;
 		this.enablePortal = true;
 		this.enableIgniter = true;
 		this.sleepResult = "ALLOW";
+		this.specialInfo = new ArrayList<>();
 	}
 
 	public boolean hasIgniter() {
