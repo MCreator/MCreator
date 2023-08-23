@@ -19,14 +19,9 @@
 
 package net.mcreator.element.converter.v2023_3;
 
-import com.google.gson.JsonElement;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.converter.ProcedureConverter;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -45,9 +40,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MaterialProcedureConverter implements IConverter {
-
-	private static final Logger LOG = LogManager.getLogger("MaterialProcedureConverter");
+public class MaterialProcedureConverter extends ProcedureConverter {
 
 	private static final Map<String, String> materialToProcedureBlockMap = new HashMap<>() {{
 		// AIR
@@ -122,22 +115,11 @@ public class MaterialProcedureConverter implements IConverter {
 		// DECORATED_POT
 	}};
 
-	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Procedure procedure = (Procedure) input;
-		try {
-			procedure.procedurexml = fixXML(procedure.procedurexml);
-		} catch (Exception e) {
-			LOG.warn("Failed to convert procedure " + input.getModElement().getName());
-		}
-		return procedure;
-	}
-
 	@Override public int getVersionConvertingTo() {
 		return 45;
 	}
 
-	protected String fixXML(String xml) throws Exception {
+	@Override protected String fixXML(Procedure procedure, String xml) throws Exception {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
