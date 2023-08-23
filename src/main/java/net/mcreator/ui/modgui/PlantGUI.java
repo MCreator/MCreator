@@ -348,25 +348,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isReplaceable.setOpaque(false);
 		isBonemealable.setOpaque(false);
 
-		ActionListener planttypeselected = event -> {
-			renderType.setEnabled(true);
-			if (normalType.isSelected())
-				stl.setIcon(TiledImageCache.plantStaticYes);
-			else
-				stl.setIcon(TiledImageCache.plantStaticNo);
-			if (growapableType.isSelected())
-				dyn.setIcon(TiledImageCache.plantGrowingYes);
-			else
-				dyn.setIcon(TiledImageCache.plantGrowingNo);
-			if (doubleType.isSelected()) {
-				dbl.setIcon(TiledImageCache.plantDoubleYes);
-				renderType.setSelectedItem(cross);
-				renderType.setEnabled(false);
-			} else
-				dbl.setIcon(TiledImageCache.plantDoubleNo);
-			updateTextureOptions();
-		};
-
+		ActionListener planttypeselected = event -> updatePlantType();
 		normalType.addActionListener(planttypeselected);
 		growapableType.addActionListener(planttypeselected);
 		doubleType.addActionListener(planttypeselected);
@@ -423,8 +405,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ptipe3.setOpaque(false);
 
 		ptipe.add("West", ptipe1);
-		ptipe.add("Center", ptipe3);
-		ptipe.add("East", ptipe2);
+		ptipe.add("Center", ptipe2);
+		ptipe.add("East", ptipe3);
 
 		sbbp2.add("North", render);
 		sbbp2.add("Center", PanelUtils.totalCenterInPanel(ptipe));
@@ -760,9 +742,44 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 
 		updateSoundType();
+		updatePlantType();
 	}
 
-	private void updateTextureOptions() {
+	private void updatePlantType() {
+		if (normalType.isSelected()) {
+			stl.setIcon(TiledImageCache.plantStaticYes);
+			generationType.setEnabled(true);
+			renderType.setEnabled(true);
+			suspiciousStewEffect.setEnabled(true);
+			suspiciousStewDuration.setEnabled(true);
+			growapableMaxHeight.setEnabled(false);
+		} else {
+			stl.setIcon(TiledImageCache.plantStaticNo);
+		}
+
+		if (growapableType.isSelected()) {
+			dyn.setIcon(TiledImageCache.plantGrowingYes);
+			generationType.setEnabled(false);
+			renderType.setEnabled(true);
+			suspiciousStewEffect.setEnabled(false);
+			suspiciousStewDuration.setEnabled(false);
+			growapableMaxHeight.setEnabled(true);
+		} else {
+			dyn.setIcon(TiledImageCache.plantGrowingNo);
+		}
+
+		if (doubleType.isSelected()) {
+			generationType.setEnabled(true);
+			dbl.setIcon(TiledImageCache.plantDoubleYes);
+			renderType.setSelectedItem(cross);
+			renderType.setEnabled(false);
+			suspiciousStewEffect.setEnabled(false);
+			suspiciousStewDuration.setEnabled(false);
+			growapableMaxHeight.setEnabled(false);
+		} else {
+			dbl.setIcon(TiledImageCache.plantDoubleNo);
+		}
+
 		texture.setVisible(false);
 		textureBottom.setVisible(false);
 
@@ -772,6 +789,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		} else {
 			texture.setVisible(true);
 		}
+
 	}
 
 	private void updateSoundType() {
@@ -951,23 +969,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		disableOffset.setEnabled(customBoundingBox.isSelected());
 		boundingBoxList.setEnabled(customBoundingBox.isSelected());
 
-		if (normalType.isSelected())
-			stl.setIcon(TiledImageCache.plantStaticYes);
-		else
-			stl.setIcon(TiledImageCache.plantStaticNo);
-
-		if (growapableType.isSelected())
-			dyn.setIcon(TiledImageCache.plantGrowingYes);
-		else
-			dyn.setIcon(TiledImageCache.plantGrowingNo);
-
-		if (doubleType.isSelected())
-			dbl.setIcon(TiledImageCache.plantDoubleYes);
-		else
-			dbl.setIcon(TiledImageCache.plantDoubleNo);
-
+		updatePlantType();
 		updateSoundType();
-		updateTextureOptions();
 		refreshBonemealProperties();
 	}
 
