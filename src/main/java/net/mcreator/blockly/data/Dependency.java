@@ -29,8 +29,8 @@ import java.util.List;
 
 public class Dependency implements Comparable<Dependency> {
 
-	private String name;
-	private String type;
+	private final String name;
+	private final String type;
 
 	public Dependency(String name, String type) {
 		this.name = name;
