@@ -14,7 +14,6 @@
 body {
     margin: 0;
     padding: 0;
-    background: transparent;
     overflow: hidden;
 }
 
@@ -25,20 +24,14 @@ body {
 #area {
     width: 100vw;
     height: 100vh;
-    background: transparent;
 }
 
 #blockly {
     position: absolute;
-    background: transparent;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-}
-
-.blocklySvg {
-    background-color: transparent !important;
 }
 
 .blocklyTreeLabel {
