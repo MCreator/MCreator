@@ -38,11 +38,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Map;
 
 public class GeneratorSelector {
 
 	private static final String covpfx = "dialog.generator_selector.coverage.";
+
+	private static final List<GeneratorFlavor> compatible1 = List.of(GeneratorFlavor.FORGE, GeneratorFlavor.FABRIC,
+			GeneratorFlavor.NEOFORGE, GeneratorFlavor.QUILT);
 
 	/**
 	 * <p>Open a dialog window to select a {@link Generator} from the loaded generators. </p>
@@ -69,10 +73,8 @@ public class GeneratorSelector {
 
 			if (currentFlavor == null || currentFlavor.equals(generatorConfiguration.getGeneratorFlavor())) {
 				generator.addItem(generatorConfiguration);
-			} else if ((currentFlavor == GeneratorFlavor.FORGE
-					&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FABRIC
-					|| currentFlavor == GeneratorFlavor.FABRIC
-					&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE) && !newWorkspace) {
+			} else if (compatible1.contains(currentFlavor) && compatible1.contains(
+					generatorConfiguration.getGeneratorFlavor()) && !newWorkspace) {
 				generator.addItem(generatorConfiguration);
 			}
 
