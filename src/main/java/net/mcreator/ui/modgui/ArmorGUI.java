@@ -85,6 +85,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private static final Logger LOG = LogManager.getLogger("Armor UI");
 
+	private static final int ARMOR_TEXTURE_SIZE_FACTOR = 5;
+
 	private TextureHolder textureHelmet;
 	private TextureHolder textureBody;
 	private TextureHolder textureLeggings;
@@ -112,11 +114,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private ActionListener bootsModelListener = null;
 
 	private final VComboBox<String> helmetModelPart = new SearchableComboBox<>();
+
 	private final VComboBox<String> bodyModelPart = new SearchableComboBox<>();
 	private final VComboBox<String> armsModelPartL = new SearchableComboBox<>();
 	private final VComboBox<String> armsModelPartR = new SearchableComboBox<>();
+
 	private final VComboBox<String> leggingsModelPartL = new SearchableComboBox<>();
 	private final VComboBox<String> leggingsModelPartR = new SearchableComboBox<>();
+
 	private final VComboBox<String> bootsModelPartL = new SearchableComboBox<>();
 	private final VComboBox<String> bootsModelPartR = new SearchableComboBox<>();
 
@@ -151,8 +156,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final JLabel clo2 = new JLabel();
 
 	private final SoundSelector equipSound = new SoundSelector(mcreator);
-
-	private final int fact = 5;
 
 	private final JSpinner maxDamage = new JSpinner(new SpinnerNumberModel(25, 0, 1024, 1));
 	private final JSpinner damageValueBoots = new JSpinner(new SpinnerNumberModel(2, 0, 1024, 1));
@@ -223,53 +226,30 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JPanel pane5 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane6 = new JPanel(new BorderLayout(10, 10));
 
-		helmetModelTexture.setPreferredSize(new Dimension(180, 36));
 		ComponentUtils.deriveFont(helmetModelTexture, 16);
-
-		bodyModelTexture.setPreferredSize(new Dimension(180, 36));
 		ComponentUtils.deriveFont(bodyModelTexture, 16);
-
-		leggingsModelTexture.setPreferredSize(new Dimension(180, 36));
 		ComponentUtils.deriveFont(leggingsModelTexture, 16);
-
-		bootsModelTexture.setPreferredSize(new Dimension(180, 36));
 		ComponentUtils.deriveFont(bootsModelTexture, 16);
 
-		helmetModel.setPreferredSize(new Dimension(200, 36));
 		helmetModel.setRenderer(new ModelComboBoxRenderer());
 		ComponentUtils.deriveFont(helmetModel, 16);
-
-		helmetModelPart.setPreferredSize(new Dimension(160, 36));
 		ComponentUtils.deriveFont(helmetModelPart, 16);
 
-		bodyModel.setPreferredSize(new Dimension(200, 36));
 		bodyModel.setRenderer(new ModelComboBoxRenderer());
 		ComponentUtils.deriveFont(bodyModel, 16);
-
-		bodyModelPart.setPreferredSize(new Dimension(160, 36));
 		ComponentUtils.deriveFont(bodyModelPart, 16);
 
-		leggingsModel.setPreferredSize(new Dimension(200, 36));
 		leggingsModel.setRenderer(new ModelComboBoxRenderer());
 		ComponentUtils.deriveFont(leggingsModel, 16);
-
-		leggingsModelPartL.setPreferredSize(new Dimension(120, 36));
 		ComponentUtils.deriveFont(leggingsModelPartL, 16);
-		leggingsModelPartR.setPreferredSize(new Dimension(120, 36));
 		ComponentUtils.deriveFont(leggingsModelPartR, 16);
 
-		armsModelPartL.setPreferredSize(new Dimension(120, 36));
 		ComponentUtils.deriveFont(armsModelPartL, 16);
-		armsModelPartR.setPreferredSize(new Dimension(120, 36));
 		ComponentUtils.deriveFont(armsModelPartR, 16);
 
-		bootsModel.setPreferredSize(new Dimension(200, 36));
 		bootsModel.setRenderer(new ModelComboBoxRenderer());
 		ComponentUtils.deriveFont(bootsModel, 16);
-
-		bootsModelPartL.setPreferredSize(new Dimension(120, 36));
 		ComponentUtils.deriveFont(bootsModelPartL, 16);
-		bootsModelPartR.setPreferredSize(new Dimension(120, 36));
 		ComponentUtils.deriveFont(bootsModelPartR, 16);
 
 		helmetName.setPreferredSize(new Dimension(350, 36));
@@ -278,19 +258,15 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsName.setPreferredSize(new Dimension(350, 36));
 
 		ComponentUtils.deriveFont(helmetItemRenderType, 16);
-		helmetItemRenderType.setPreferredSize(new Dimension(350, 42));
 		helmetItemRenderType.setRenderer(new ModelComboBoxRenderer());
 
 		ComponentUtils.deriveFont(bodyItemRenderType, 16);
-		bodyItemRenderType.setPreferredSize(new Dimension(350, 42));
 		bodyItemRenderType.setRenderer(new ModelComboBoxRenderer());
 
 		ComponentUtils.deriveFont(leggingsItemRenderType, 16);
-		leggingsItemRenderType.setPreferredSize(new Dimension(350, 42));
 		leggingsItemRenderType.setRenderer(new ModelComboBoxRenderer());
 
 		ComponentUtils.deriveFont(bootsItemRenderType, 16);
-		bootsItemRenderType.setPreferredSize(new Dimension(350, 42));
 		bootsItemRenderType.setRenderer(new ModelComboBoxRenderer());
 
 		ComponentUtils.deriveFont(helmetName, 16);
@@ -334,11 +310,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setOpaque(false);
 		bootsImmuneToFire.setOpaque(false);
 
-		JPanel helmetSubPanel = new JPanel(new GridLayout(5, 2, 4, 4));
+		JPanel helmetSubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
 		helmetSubPanel.setOpaque(false);
 
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
-		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, helmetModel, helmetModelPart));
+		helmetSubPanel.add(PanelUtils.gridElements(1, 2, 2, 2, helmetModel, helmetModelPart));
 
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		helmetSubPanel.add(helmetModelTexture);
@@ -347,12 +323,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		helmetSubPanel.add(helmetItemRenderType);
 
-		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
-		helmetSubPanel.add(helmetSpecialInfo);
-
 		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		helmetSubPanel.add(helmetImmuneToFire);
+
+		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
+		helmetSubPanel.add(helmetSpecialInfo);
 
 		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), helmetSubPanel);
 
@@ -376,15 +352,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		bodText.setPreferredSize(new Dimension(145, 110));
 
-		JComponent bodyModelComponent = PanelUtils.westAndCenterElement(
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
-				PanelUtils.northAndCenterElement(
-						PanelUtils.join(FlowLayout.RIGHT, bodyModel, new JLabel(":"), bodyModelPart),
-						PanelUtils.join(FlowLayout.RIGHT, L10N.label("elementgui.armor.part_arm_left"), armsModelPartL,
-								L10N.label("elementgui.armor.part_arm_right"), armsModelPartR)));
-
-		JPanel bodySubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
+		JPanel bodySubPanel = new JPanel(new GridLayout(6, 2, 2, 2));
 		bodySubPanel.setOpaque(false);
+
+		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
+		bodySubPanel.add(PanelUtils.gridElements(1, 2, 2, 2, bodyModel, bodyModelPart));
+
+		bodySubPanel.add(new JEmptyBox());
+		bodySubPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
+				PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.part_arm_left"), armsModelPartL, 5, 5),
+				PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.part_arm_right"), armsModelPartR, 5, 5)));
 
 		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		bodySubPanel.add(bodyModelTexture);
@@ -393,15 +370,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		bodySubPanel.add(bodyItemRenderType);
 
-		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
-		bodySubPanel.add(bodySpecialInfo);
-
 		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bodySubPanel.add(bodyImmuneToFire);
 
-		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"),
-				PanelUtils.northAndCenterElement(bodyModelComponent, bodySubPanel));
+		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
+		bodySubPanel.add(bodySpecialInfo);
+
+		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"), bodySubPanel);
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.chestplate_name"), bodyName),
@@ -416,13 +392,17 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		legText.setPreferredSize(new Dimension(145, 110));
 
-		JComponent leggingsModelComponent = PanelUtils.westAndCenterElement(
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
-				PanelUtils.join(FlowLayout.RIGHT, leggingsModel, new JLabel(": L"), leggingsModelPartL, new JLabel("R"),
-						leggingsModelPartR));
-
-		JPanel leggingsSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
+		JPanel leggingsSubPanel = new JPanel(new GridLayout(6, 2, 2, 2));
 		leggingsSubPanel.setOpaque(false);
+
+		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
+		leggingsSubPanel.add(leggingsModel);
+
+		leggingsSubPanel.add(new JEmptyBox());
+		leggingsSubPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
+				PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.part_leg_left"), leggingsModelPartL, 5, 5),
+				PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.part_leg_right"), leggingsModelPartR, 5,
+						5)));
 
 		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		leggingsSubPanel.add(leggingsModelTexture);
@@ -431,15 +411,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		leggingsSubPanel.add(leggingsItemRenderType);
 
-		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
-		leggingsSubPanel.add(leggingsSpecialInfo);
-
 		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		leggingsSubPanel.add(leggingsImmuneToFire);
 
-		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
-				PanelUtils.northAndCenterElement(leggingsModelComponent, leggingsSubPanel));
+		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
+		leggingsSubPanel.add(leggingsSpecialInfo);
+
+		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"), leggingsSubPanel);
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
@@ -454,13 +433,17 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		bootText.setPreferredSize(new Dimension(145, 110));
 
-		JComponent bootsModelComponent = PanelUtils.westAndCenterElement(
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")),
-				PanelUtils.join(FlowLayout.RIGHT, bootsModel, new JLabel(": L"), bootsModelPartL, new JLabel("R"),
-						bootsModelPartR));
-
-		JPanel bootsSubPanel = new JPanel(new GridLayout(4, 2, 4, 4));
+		JPanel bootsSubPanel = new JPanel(new GridLayout(6, 2, 2, 2));
 		bootsSubPanel.setOpaque(false);
+
+		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
+		bootsSubPanel.add(bootsModel);
+
+		bootsSubPanel.add(new JEmptyBox());
+		bootsSubPanel.add(PanelUtils.gridElements(1, 2, 2, 2,
+				PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.part_boot_left"), bootsModelPartL, 5, 5),
+				PanelUtils.westAndCenterElement(L10N.label("elementgui.armor.part_boot_right"), bootsModelPartR, 5,
+						5)));
 
 		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.texture")));
 		bootsSubPanel.add(bootsModelTexture);
@@ -469,15 +452,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")));
 		bootsSubPanel.add(bootsItemRenderType);
 
-		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
-		bootsSubPanel.add(bootsSpecialInfo);
-
 		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bootsSubPanel.add(bootsImmuneToFire);
 
-		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
-				PanelUtils.northAndCenterElement(bootsModelComponent, bootsSubPanel));
+		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
+		bootsSubPanel.add(bootsSpecialInfo);
+
+		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"), bootsSubPanel);
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
@@ -506,15 +488,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armorTextureFile.addActionListener(e -> updateArmorTexturePreview());
 
 		JPanel sbbp22 = new JPanel();
-
 		sbbp22.setOpaque(false);
-
 		sbbp22.add(destal);
-
-		GridLayout klo = new GridLayout(2, 2);
-
-		klo.setHgap(20);
-		klo.setVgap(20);
 
 		JPanel events = new JPanel();
 		events.setLayout(new BoxLayout(events, BoxLayout.PAGE_AXIS));
@@ -575,8 +550,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		pane5.setOpaque(false);
 		pane6.setOpaque(false);
 
-		clo1.setPreferredSize(new Dimension(64 * fact, 32 * fact));
-		clo2.setPreferredSize(new Dimension(64 * fact, 32 * fact));
+		clo1.setPreferredSize(new Dimension(64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));
+		clo2.setPreferredSize(new Dimension(64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));
 
 		JPanel clop = new JPanel();
 		clop.add(clo1);
@@ -860,11 +835,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				.getArmorTextureFilesForName(armorTextureFile.getSelectedItem());
 		if (armorTextures[0].isFile() && armorTextures[1].isFile()) {
 			ImageIcon bg1 = new ImageIcon(
-					ImageUtils.resize(new ImageIcon(armorTextures[0].getAbsolutePath()).getImage(), 64 * fact,
-							32 * fact));
+					ImageUtils.resize(new ImageIcon(armorTextures[0].getAbsolutePath()).getImage(),
+							64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));
 			ImageIcon bg2 = new ImageIcon(
-					ImageUtils.resize(new ImageIcon(armorTextures[1].getAbsolutePath()).getImage(), 64 * fact,
-							32 * fact));
+					ImageUtils.resize(new ImageIcon(armorTextures[1].getAbsolutePath()).getImage(),
+							64 * ARMOR_TEXTURE_SIZE_FACTOR, 32 * ARMOR_TEXTURE_SIZE_FACTOR));
 			ImageIcon front1 = new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame1());
 			ImageIcon front2 = new ImageIcon(MinecraftImageGenerator.Preview.generateArmorPreviewFrame2());
 			clo1.setIcon(ImageUtils.drawOver(bg1, front1));
