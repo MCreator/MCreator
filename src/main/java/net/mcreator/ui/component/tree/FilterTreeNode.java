@@ -54,7 +54,7 @@ public class FilterTreeNode extends DefaultMutableTreeNode {
 	}
 
 	private boolean pass(FilterTreeNode node) {
-		if (getFilter().trim().equals(""))
+		if (getFilter().isBlank())
 			return true;
 
 		return node.getUserObject().toString().toLowerCase(Locale.ENGLISH).trim()

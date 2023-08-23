@@ -76,7 +76,7 @@ public class BlocklyJavascriptBridge {
 	@SuppressWarnings("unused") public String getMCItemURI(String name) {
 		ImageIcon base = new ImageIcon(ImageUtils.resize(MinecraftImageGenerator.generateItemSlot(), 36, 36));
 		ImageIcon image;
-		if (name != null && !name.equals("") && !name.equals("null"))
+		if (name != null && !name.isEmpty() && !name.equals("null"))
 			image = ImageUtils.drawOver(base, MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), name), 2, 2, 32,
 					32);
 		else
