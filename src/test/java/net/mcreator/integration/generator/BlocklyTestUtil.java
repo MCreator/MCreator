@@ -149,11 +149,11 @@ public class BlocklyTestUtil {
 						String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
 								suggestedDataListName);
 
-						if (values.length == 0 || values[0].equals(""))
+						if (values.length == 0 || values[0].isEmpty())
 							values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
 									suggestedDataListName + "s");
 
-						if (values.length > 0 && !values[0].equals("")) {
+						if (values.length > 0 && !values[0].isEmpty()) {
 							additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
 									.append(ListUtils.getRandomItem(random, values)).append("</field>");
 							processed++;
@@ -240,12 +240,12 @@ public class BlocklyTestUtil {
 
 			if (value == null) {
 				String[] values = getDataListFieldValues(workspace, type, typeFilter, customEntryProviders);
-				if (values.length > 0 && !values[0].equals("")) {
+				if (values.length > 0 && !values[0].isEmpty()) {
 					value = ListUtils.getRandomItem(random, values);
 				}
 			}
 
-			if (value != null && !value.equals("")) {
+			if (value != null && !value.isEmpty()) {
 				additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
 				processed++;
 			}

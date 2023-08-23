@@ -17,10 +17,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.v2020_5;
+package net.mcreator.element.converter.v2023_3;
 
 import net.mcreator.element.converter.ProcedureConverter;
 import net.mcreator.element.types.Procedure;
+import net.mcreator.util.BlocklyHelper;
+import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -35,10 +37,10 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-public class ProcedureSpawnGemPickupDelayFixer extends ProcedureConverter {
+public class ProcedureDamageSourceFixer extends ProcedureConverter {
 
 	@Override public int getVersionConvertingTo() {
-		return 13;
+		return 46;
 	}
 
 	@Override protected String fixXML(Procedure procedure, String xml) throws Exception {
@@ -46,25 +48,41 @@ public class ProcedureSpawnGemPickupDelayFixer extends ProcedureConverter {
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
 		doc.getDocumentElement().normalize();
+		BlocklyHelper bh = new BlocklyHelper(doc);
 
 		NodeList nodeList = doc.getElementsByTagName("block");
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
 			String type = element.getAttribute("type");
-			if (type.equals("spawn_gem")) {
-				Element value = doc.createElement("value");
-				value.setAttribute("name", "pickUpDelay");
+			if (type.equals("deal_damage")) {
+				reportDependenciesChanged();
 
-				Element delay_block = doc.createElement("block");
-				delay_block.setAttribute("type", "math_number");
+				// Get the damage type field from the "Deal damage" block
+				Element damageType = XMLUtil.getFirstChildrenWithName(element, "field");
+				if (damageType != null) {
+					// If the field exists, remove it from the block and rename it
+					element.removeChild(damageType);
+					damageType.setAttribute("name", "damagetype");
+				} else {
+					// If the field doesn't exist, we use the GENERIC damage type
+					damageType = bh.createField("damagetype", "GENERIC");
+				}
+				// Add the "Damage source from type" block
+				element.appendChild(
+						bh.createValue("damagesource", bh.createBlock("damagesource_from_type", damageType)));
+			} else if (type.equals("damagesource_isequalto")) {
+				reportDependenciesChanged();
 
-				Element delay_block_filed = doc.createElement("field");
-				delay_block_filed.setAttribute("name", "NUM");
-				delay_block_filed.setTextContent("10");
-
-				delay_block.appendChild(delay_block_filed);
-				value.appendChild(delay_block);
-				element.appendChild(value);
+				// Get the damage type field from the "Is damage of type" block
+				Element damageType = XMLUtil.getFirstChildrenWithName(element, "field");
+				if (damageType != null) {
+					damageType.setAttribute("name", "damagetype"); // If the field exists, we rename it
+				} else {
+					// If the field doesn't exist, we use the GENERIC damage type
+					element.appendChild(bh.createField("damagetype", "GENERIC"));
+				}
+				// Append the "Damage source from deps" block to the new input
+				element.appendChild(bh.createValue("damagesource", bh.createBlock("damagesource_from_deps")));
 			}
 		}
 
