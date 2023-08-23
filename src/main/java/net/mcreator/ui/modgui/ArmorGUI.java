@@ -355,7 +355,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), helmetSubPanel);
 		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"),
-				PanelUtils.northAndCenterElement(helmetSubPanel, helmetPiglinNeutral));
+				PanelUtils.northAndCenterElement(helmetSubPanel, helmetPiglinNeutral, 2, 2));
 
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
 				enableHelmet);
@@ -402,10 +402,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		bodySubPanel.add(bodySpecialInfo);
 
-		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"), bodySubPanel);
 		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"),
-				PanelUtils.northAndCenterElement(bodyModelComponent,
-						PanelUtils.centerAndSouthElement(bodySubPanel, bodyPiglinNeutral)));
+				PanelUtils.centerAndSouthElement(bodySubPanel, bodyPiglinNeutral, 2, 2));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.chestplate_name"), bodyName),
@@ -446,10 +444,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		leggingsSubPanel.add(leggingsSpecialInfo);
 
-		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"), leggingsSubPanel);
 		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
-				PanelUtils.northAndCenterElement(leggingsModelComponent,
-						PanelUtils.centerAndSouthElement(leggingsSubPanel, leggingsPiglinNeutral)));
+				PanelUtils.centerAndSouthElement(leggingsSubPanel, leggingsPiglinNeutral, 2, 2));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
@@ -490,10 +486,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		bootsSubPanel.add(bootsSpecialInfo);
 
-		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"), bootsSubPanel);
 		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
-				PanelUtils.northAndCenterElement(bootsModelComponent,
-						PanelUtils.centerAndSouthElement(bootsSubPanel, bootsPiglinNeutral)));
+				PanelUtils.centerAndSouthElement(bootsSubPanel, bootsPiglinNeutral, 2, 2));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
