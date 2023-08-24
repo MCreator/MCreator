@@ -133,8 +133,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	}
 
     <#if hasProcedure(data.transparentModelCondition)>
-        @Override
-	    protected boolean isBodyVisible(${name}Entity _ent) {
+        @Override protected boolean isBodyVisible(${name}Entity _ent) {
 	        Entity entity = _ent;
 	        Level world = entity.level;
 	        double x = entity.getX();
@@ -145,8 +144,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 	</#if>
 
     <#if hasProcedure(data.isShakingCondition)>
-        @Override
-	    protected boolean isShaking(${name}Entity _ent) {
+        @Override protected boolean isShaking(${name}Entity _ent) {
 	        Entity entity = _ent;
 	        Level world = entity.level;
 	        double x = entity.getX();

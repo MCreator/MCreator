@@ -528,7 +528,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
     </#if>
 
-	<#if hasProcedure(data.onMobTickUpdate) || (data.boundingBoxScale?? && (data.boundingBoxScale.getFixedValue() != 1 || hasProcedure(data.boundingBoxScale)))>
+	<#if hasProcedure(data.onMobTickUpdate) || hasProcedure(data.boundingBoxScale)>
 	@Override public void baseTick() {
 		super.baseTick();
 		<#if hasProcedure(data.onMobTickUpdate)>
@@ -540,7 +540,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				"world": "this.level()"
 			}/>
 		</#if>
-		<#if data.boundingBoxScale?? && (data.boundingBoxScale.getFixedValue() != 1 || hasProcedure(data.boundingBoxScale))>
+		<#if hasProcedure(data.boundingBoxScale)>
 			this.refreshDimensions();
 		</#if>
 	}
@@ -702,17 +702,17 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
     </#if>
 
-	<#if data.boundingBoxScale?? && (data.boundingBoxScale.getFixedValue() != 1 || hasProcedure(data.boundingBoxScale))>
-	@Override public EntityDimensions getDimensions(Pose entityPose) {
+	<#if hasProcedure(data.boundingBoxScale) || (data.boundingBoxScale?? && data.boundingBoxScale.getFixedValue() != 1)>
+	@Override public EntityDimensions getDimensions(Pose pose) {
 		<#if hasProcedure(data.boundingBoxScale)>
 			Entity entity = this;
 			Level world = this.level();
 			double x = this.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
-			return super.getDimensions(entityPose).scale((float) <@procedureOBJToNumberCode data.boundingBoxScale/>);
+			double y = this.getY();
+			double z = this.getZ();
+			return super.getDimensions(pose).scale((float) <@procedureOBJToNumberCode data.boundingBoxScale/>);
 		<#else>
-			return super.getDimensions(entityPose).scale((float) ${data.boundingBoxScale.getFixedValue()});
+			return super.getDimensions(pose).scale(${data.boundingBoxScale.getFixedValue()}f);
 		</#if>
 	}
 	</#if>
