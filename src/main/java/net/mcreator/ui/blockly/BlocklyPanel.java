@@ -115,6 +115,12 @@ public class BlocklyPanel extends JFXPanel {
 								"/themes/default_dark/styles/blockly.css");
 					}
 
+					if (PreferencesManager.PREFERENCES.blockly.transparentBackground.get()
+							&& OS.getOS() == OS.WINDOWS) {
+						makeComponentsTransparent(scene);
+						css += FileIO.readResourceToString("/blockly/css/mcreator_blockly_transparent.css");
+					}
+
 					//remove font declaration if property set so
 					if (PreferencesManager.PREFERENCES.blockly.legacyFont.get()) {
 						css = css.replace("font-family: sans-serif;", "");
@@ -124,6 +130,11 @@ public class BlocklyPanel extends JFXPanel {
 					styleNode.appendChild(styleContent);
 					webEngine.getDocument().getDocumentElement().getElementsByTagName("head").item(0)
 							.appendChild(styleNode);
+
+					// register JS bridge
+					JSObject window = (JSObject) webEngine.executeScript("window");
+					window.setMember("javabridge", bridge);
+					window.setMember("editorType", type.registryName());
 
 					// @formatter:off
 					webEngine.executeScript("var MCR_BLOCKLY_PREF = { "
@@ -153,16 +164,26 @@ public class BlocklyPanel extends JFXPanel {
 					//JS code generation for custom variables
 					webEngine.executeScript(VariableTypeLoader.INSTANCE.getVariableBlocklyJS());
 
-					// register JS bridge
-					JSObject window = (JSObject) webEngine.executeScript("window");
-					window.setMember("javabridge", bridge);
-					window.setMember("editorType", type.registryName());
-
 					loaded = true;
 					runAfterLoaded.forEach(ThreadUtil::runOnFxThread);
 				}
 			});
 		});
+	}
+
+	private void makeComponentsTransparent(Scene scene) {
+		setOpaque(false);
+		scene.setFill(Color.TRANSPARENT);
+
+		// Make the webpage transparent
+		try {
+			Method method = Class.forName("com.sun.javafx.webkit.Accessor").getMethod("getPageFor", WebEngine.class);
+			Object accessor = method.invoke(null, webEngine);
+			method = Class.forName("com.sun.webkit.WebPage").getMethod("setBackgroundColor", int.class);
+			method.invoke(accessor, 0);
+		} catch (Exception e) {
+			LOG.warn("Failed to set Blockly panel transparency", e);
+		}
 	}
 
 	public void addTaskToRunAfterLoaded(Runnable runnable) {

@@ -21,11 +21,6 @@ body {
     display: none;
 }
 
-#area {
-    width: 100vw;
-    height: 100vh;
-}
-
 #blockly {
     position: absolute;
     top: 0;
