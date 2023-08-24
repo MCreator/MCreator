@@ -29,8 +29,8 @@ import java.util.List;
 
 public class Dependency implements Comparable<Dependency> {
 
-	private String name;
-	private String type;
+	private final String name;
+	private final String type;
 
 	public Dependency(String name, String type) {
 		this.name = name;
@@ -100,6 +100,9 @@ public class Dependency implements Comparable<Dependency> {
 			break;
 		case "blockstate":
 			blockXml.append("<block type=\"blockstate_from_deps\"></block>");
+			break;
+		case "damagesource":
+			blockXml.append("<block type=\"damagesource_from_deps\"></block>");
 			break;
 		default:
 			if (VariableTypeLoader.INSTANCE.fromName(type) != null) {

@@ -392,7 +392,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 			if (ma != null) {
 				String name = StringUtils.abbreviateString(FilenameUtilsPatched.removeExtension(ma.getName()), 10);
-				if (name.trim().equals(""))
+				if (name.isBlank())
 					name = "(untitled)";
 
 				setText(name);
