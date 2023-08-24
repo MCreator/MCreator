@@ -578,13 +578,13 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					}
 
 					if (!this.getOffers().isEmpty() && !this.level().isClientSide) {
+						this.setTradingPlayer(sourceentity);
+						this.openTradingScreen(sourceentity, this.getDisplayName(),
 						<#if data.villagerTradingType>
-						this.updateSpecialPrices(sourceentity);
-						this.setTradingPlayer(sourceentity);
-						this.openTradingScreen(sourceentity, this.getDisplayName(), this.getVillagerData().getLevel());
+							this.getVillagerData().getLevel());
+							this.updateSpecialPrices(sourceentity);
 						<#else>
-						this.setTradingPlayer(sourceentity);
-						this.openTradingScreen(sourceentity, this.getDisplayName(), 1);
+							1);
 						</#if>
 					}
 				}
