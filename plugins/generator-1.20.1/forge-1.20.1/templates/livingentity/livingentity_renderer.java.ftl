@@ -109,7 +109,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		</#if>
 	}
 
-	<#if data.visualScale?? && (data.visualScale.getFixedValue() != 1 || hasProcedure(data.visualScale))>
+	<#if data.mobModelName == "Villager" || (data.visualScale?? && (data.visualScale.getFixedValue() != 1 || hasProcedure(data.visualScale)))>
 	@Override protected void scale(${name}Entity entity, PoseStack poseStack, float f) {
 		<#if hasProcedure(data.visualScale)>
 			Level world = entity.level();
@@ -121,11 +121,10 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		<#else>
 			poseStack.scale(${data.visualScale.getFixedValue()}f, ${data.visualScale.getFixedValue()}f, ${data.visualScale.getFixedValue()}f);
 		</#if>
-	}
-	<#elseif data.mobModelName == "Villager">
-		@Override protected void scale(${name}Entity villager, PoseStack poseStack, float f) {
+		<#if data.mobModelName == "Villager">
 			poseStack.scale(0.9375f, 0.9375f, 0.9375f);
-		}
+		</#if>
+	}
 	</#if>
 
 	@Override public ResourceLocation getTextureLocation(${name}Entity entity) {
