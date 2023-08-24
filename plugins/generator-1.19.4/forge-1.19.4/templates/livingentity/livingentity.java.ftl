@@ -582,24 +582,16 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 						sourceentity.awardStat(Stats.TALKED_TO_VILLAGER);
 					}
 
-					if (this.getOffers().isEmpty()) {
-						return InteractionResult.sidedSuccess(this.level.isClientSide);
-					} else {
-						if (!this.level.isClientSide) {
-							<#if data.villagerTradingType>
-							this.updateSpecialPrices(sourceentity);
-							this.setTradingPlayer(sourceentity);
-							this.openTradingScreen(sourceentity, this.getDisplayName(), this.getVillagerData().getLevel());
-							<#else>
-							this.setTradingPlayer(sourceentity);
-							this.openTradingScreen(sourceentity, this.getDisplayName(), 1);
-							</#if>
-						}
-
-						return InteractionResult.sidedSuccess(this.level.isClientSide);
+					if (!this.getOffers().isEmpty() && !this.level.isClientSide) {
+						<#if data.villagerTradingType>
+						this.updateSpecialPrices(sourceentity);
+						this.setTradingPlayer(sourceentity);
+						this.openTradingScreen(sourceentity, this.getDisplayName(), this.getVillagerData().getLevel());
+						<#else>
+						this.setTradingPlayer(sourceentity);
+						this.openTradingScreen(sourceentity, this.getDisplayName(), 1);
+						</#if>
 					}
-				} else {
-					return super.mobInteract(sourceentity, hand);
 				}
 			</#if>
 			<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
@@ -693,9 +685,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				return retval;
 			</#if>
 		<#else>
-			<#if !data.canTrade>
 			return retval;
-			</#if>
 		</#if>
 	}
     </#if>
