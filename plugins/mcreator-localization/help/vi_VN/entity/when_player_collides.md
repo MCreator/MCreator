@@ -1,0 +1,1 @@
+Trình kích hoạt này kích hoạt quy trình khi người chơi va chạm với thực thể này.
