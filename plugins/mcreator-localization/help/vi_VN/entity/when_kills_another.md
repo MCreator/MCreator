@@ -1,0 +1,1 @@
+Trình kích hoạt này kích hoạt quy trình khi thực thể giết thực thể khác.
