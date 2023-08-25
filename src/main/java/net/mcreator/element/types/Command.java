@@ -35,15 +35,11 @@ import java.util.Locale;
 
 @SuppressWarnings("unused") public class Command extends GeneratableElement {
 
-	public transient final int TYPE_STANDARD;
-	public transient final int TYPE_MULTIPLAYER;
-	public transient final int TYPE_SINGLEPLAYER;
-	public transient final int TYPE_CLIENT_SIDE;
-
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"><next><block type=\"call_procedure\"><field name=\"procedure\"></field></block></next></block></xml>";
 
 	public String commandName;
-	public int type;
+
+	public String type;
 
 	public String permissionLevel;
 
@@ -56,11 +52,7 @@ import java.util.Locale;
 	public Command(ModElement element) {
 		super(element);
 
-		TYPE_STANDARD = 0;
-		TYPE_MULTIPLAYER = 1;
-		TYPE_SINGLEPLAYER = 2;
-		TYPE_CLIENT_SIDE = 3;
-
+		this.type = "STANDARD";
 		this.permissionLevel = "4";
 	}
 

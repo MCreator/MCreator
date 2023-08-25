@@ -101,10 +101,10 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 		} else if (type == ModElementType.COMMAND) {
-			generatableElements.add(getCommandExample(me(workspace, type, "1"), 0, random));
-			generatableElements.add(getCommandExample(me(workspace, type, "2"), 1, random));
-			generatableElements.add(getCommandExample(me(workspace, type, "3"), 2, random));
-			generatableElements.add(getCommandExample(me(workspace, type, "4"), 3, random));
+			generatableElements.add(getCommandExample(me(workspace, type, "1"), "STANDARD", random));
+			generatableElements.add(getCommandExample(me(workspace, type, "2"), "SINGLEPLAYER_ONLY", random));
+			generatableElements.add(getCommandExample(me(workspace, type, "3"), "MULTIPLAYER_ONLY", random));
+			generatableElements.add(getCommandExample(me(workspace, type, "4"), "CLIENTSIDE", random));
 		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING
 				|| type == ModElementType.KEYBIND || type == ModElementType.PROCEDURE || type == ModElementType.FEATURE
 				|| type == ModElementType.CODE) {
@@ -1538,7 +1538,7 @@ public class TestWorkspaceDataProvider {
 		return null;
 	}
 
-	private static GeneratableElement getCommandExample(ModElement modElement, int type, Random random) {
+	private static GeneratableElement getCommandExample(ModElement modElement, String type, Random random) {
 		Command command = new Command(modElement);
 		command.commandName = modElement.getName();
 		command.type = type;

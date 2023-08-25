@@ -52,14 +52,13 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelHolder {
 
 	private final VTextField commandName = new VTextField(25);
 	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "Standard", "Multiplayer only", "Singleplayer only", "Client-side" });
+			new String[] { "STANDARD", "SINGLEPLAYER_ONLY", "MULTIPLAYER_ONLY", "CLIENTSIDE" });
 	private final JComboBox<String> permissionLevel = new JComboBox<>(
 			new String[] { "No requirement", "1", "2", "3", "4" });
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
@@ -75,8 +74,6 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 	}
 
 	@Override protected void initGUI() {
-		ComponentUtils.deriveFont(commandName, 16);
-		ComponentUtils.deriveFont(type, 16);
 		ComponentUtils.deriveFont(commandName, 16);
 
 		JPanel enderpanel = new JPanel(new GridLayout(3, 2, 10, 2));
@@ -163,7 +160,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 	@Override public void openInEditingMode(Command command) {
 		commandName.setText(command.commandName);
-		type.setSelectedIndex(command.type);
+		type.setSelectedItem(command.type);
 		permissionLevel.setSelectedItem(command.permissionLevel);
 
 		blocklyPanel.setXMLDataOnly(command.argsxml);
@@ -177,13 +174,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 	@Override public Command getElementFromGUI() {
 		Command command = new Command(modElement);
 		command.commandName = commandName.getText();
-		String commandType = Objects.requireNonNull((String) type.getSelectedItem());
-		switch (commandType) {
-		case "Standard" -> command.type = command.TYPE_STANDARD;
-		case "Multiplayer only" -> command.type = command.TYPE_MULTIPLAYER;
-		case "Singleplayer only" -> command.type = command.TYPE_SINGLEPLAYER;
-		case "Client-side" -> command.type = command.TYPE_CLIENT_SIDE;
-		}
+		command.type = (String) type.getSelectedItem();
 
 		command.permissionLevel = (String) permissionLevel.getSelectedItem();
 		command.argsxml = blocklyPanel.getXML();

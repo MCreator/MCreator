@@ -33,31 +33,30 @@
 
 package ${package}.command;
 
-@Mod.EventBusSubscriber<#if data.type == 3>(value = Dist.CLIENT)</#if> public class ${name}Command {
+@Mod.EventBusSubscriber<#if data.type == "CLIENTSIDE">(value = Dist.CLIENT)</#if>
+public class ${name}Command {
 
-	<#if data.type == data.TYPE_CLIENT_SIDE>
+	<#if data.type == "CLIENTSIDE">
 		@SubscribeEvent public static void registerCommand(RegisterClientCommandsEvent event) {
-			<@commandCode/>
+			<@commandRegistrationCode/>
 		}
 	<#else>
 		@SubscribeEvent public static void registerCommand(RegisterCommandsEvent event) {
-			<#if data.type == data.TYPE_MULTIPLAYER>
-				if (event.getCommandSelection() == Commands.CommandSelection.DEDICATED) {
-					<@commandCode/>
-				}
-			<#elseif data.type == data.TYPE_SINGLEPLAYER>
-				if (event.getCommandSelection() == Commands.CommandSelection.INTEGRATED) {
-					<@commandCode/>
-				}
+			<#if data.type == "MULTIPLAYER_ONLY">
+				if (event.getCommandSelection() == Commands.CommandSelection.DEDICATED)
+					<@commandRegistrationCode/>
+			<#elseif data.type == "SINGLEPLAYER_ONLY">
+				if (event.getCommandSelection() == Commands.CommandSelection.INTEGRATED)
+					<@commandRegistrationCode/>
 			<#else>
-				<@commandCode/>
+				<@commandRegistrationCode/>
 			</#if>
 		}
 	</#if>
 
 }
 
-<#macro commandCode>
+<#macro commandRegistrationCode>
 	event.getDispatcher().register(Commands.literal("${data.commandName}")
 		<#if data.permissionLevel != "No requirement">.requires(s -> s.hasPermission(${data.permissionLevel}))</#if>
 		${argscode}
