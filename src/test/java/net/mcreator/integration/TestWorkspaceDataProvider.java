@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -765,6 +766,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
+			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
 			plant.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
@@ -772,10 +774,7 @@ public class TestWorkspaceDataProvider {
 			plant.textureBottom = "test2";
 			plant.itemTexture = emptyLists ? "" : "itest";
 			plant.particleTexture = emptyLists ? "" : "test3";
-			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
 			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("planttypes"));
-			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
-			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.suspiciousStewEffect = getRandomString(random,
 					ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
 							.toList());
@@ -840,6 +839,7 @@ public class TestWorkspaceDataProvider {
 			plant.frequencyOnChunks = 13;
 			plant.patchSize = 46;
 			plant.generateAtAnyHeight = _true;
+			plant.generationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
 			plant.speedFactor = 34.632;
@@ -873,10 +873,16 @@ public class TestWorkspaceDataProvider {
 			plant.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
 							"Water", "Sky", "Fog", "Water fog"));
-			plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
-					!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
-			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
-					"Cross model" }[valueIndex];
+
+			if ("double".equals(plant.plantType)) {
+				plant.renderType = !"No tint".equals(plant.tintType) ? 120 : 12;
+				plant.customModelName = "Cross model";
+			} else {
+				plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
+						!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
+				plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
+						"Cross model" }[valueIndex];
+			}
 			plant.isItemTinted = _true;
 			if (!emptyLists) {
 				plant.isBonemealable = true;
