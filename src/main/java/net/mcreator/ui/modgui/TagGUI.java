@@ -52,11 +52,9 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 	private MCItemListField items;
 	private MCItemListField blocks;
-
-	private ModElementListField functions;
 	private SpawnableEntityListField entities;
-
 	private BiomeListField biomes;
+	private ModElementListField functions;
 
 	private final VComboBox<String> name = new VComboBox<>();
 
@@ -72,9 +70,9 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 		items = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
-		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
-		entities = new SpawnableEntityListField(mcreator);
+		entities = new SpawnableEntityListField(mcreator, true);
 		biomes = new BiomeListField(mcreator, true);
+		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
 
 		name.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), name, false));
 		name.enableRealtimeValidation();
