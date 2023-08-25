@@ -19,24 +19,42 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Tag;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.ResourceLocationValidator;
+import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 
 public class AddTagDialog {
 
-	public static String openAddTagDialog(Window parent, String... suggestions) {
+	public static String openAddTagDialog(Window parent, MCreator mcreator, @Nullable String tagType, String... suggestions) {
 		VComboBox<String> tagName = new VComboBox<>();
 
 		tagName.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), tagName, true));
 
 		tagName.addItem("");
+
+		if (tagType != null) {
+			for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+				if (modElement.getType() == ModElementType.TAG) {
+					GeneratableElement ge = modElement.getGeneratableElement();
+					if (ge instanceof Tag tag) {
+						if (tagType.equals(tag.type))
+							tagName.addItem(tag.getResourceLocation());
+					}
+				}
+			}
+		}
 
 		for (String suggestion : suggestions)
 			tagName.addItem(suggestion);

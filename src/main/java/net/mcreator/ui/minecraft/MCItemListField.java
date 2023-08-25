@@ -56,7 +56,7 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 	@Override protected List<MItemBlock> getTagsToAdd() {
 		List<MItemBlock> tags = new ArrayList<>();
 
-		String tag = AddTagDialog.openAddTagDialog(mcreator, "tag", "category/tag");
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, null, "tag", "category/tag");
 		if (tag != null)
 			tags.add(new MItemBlock(mcreator.getWorkspace(), "TAG:" + tag));
 
