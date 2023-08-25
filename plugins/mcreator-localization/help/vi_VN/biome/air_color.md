@@ -1,0 +1,1 @@
+Tham số này điều khiển màu của bầu trời trong quần xã này.

@@ -203,7 +203,7 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean doesGenerateInWorld() {
-		return spawnWorldTypes.size() > 0;
+		return !spawnWorldTypes.isEmpty();
 	}
 
 	@Override public String getRenderType() {

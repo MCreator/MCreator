@@ -45,8 +45,7 @@ public class BackgroundLoader {
 				try {
 					images.add(ImageIO.read(f));
 				} catch (IOException e) {
-					LOG.error("Can not load " + f.getName(), e.getMessage());
-					e.printStackTrace();
+					LOG.error("Can not load user background: " + f.getName(), e);
 				}
 			});
 			return images;
@@ -63,7 +62,7 @@ public class BackgroundLoader {
 			try {
 				backgrounds.add(Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(name)));
 			} catch (Exception e) {
-				LOG.error("Can not load " + name, e.getMessage());
+				LOG.error("Can not load theme background: " + name, e);
 			}
 		}
 		return backgrounds;

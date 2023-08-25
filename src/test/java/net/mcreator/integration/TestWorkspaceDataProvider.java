@@ -43,7 +43,6 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
-import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -645,6 +644,12 @@ public class TestWorkspaceDataProvider {
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			dimension.igniterName = modElement.getName();
+			if (!emptyLists) {
+				dimension.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+						"info 1, info 2, test \\, is this, another one");
+			} else {
+				dimension.specialInfo = new ArrayList<>();
+			}
 			dimension.worldGenType = new String[] { "Nether like gen", "Normal world gen", "End like gen",
 					"Normal world gen" }[valueIndex];
 			dimension.mainFillerBlock = new MItemBlock(modElement.getWorkspace(),
@@ -1344,7 +1349,6 @@ public class TestWorkspaceDataProvider {
 			musicDisc.onEntityHitWith = new Procedure("procedure4");
 			musicDisc.onItemInInventoryTick = new Procedure("procedure5");
 			musicDisc.onItemInUseTick = new Procedure("procedure6");
-			musicDisc.onStoppedUsing = new Procedure("procedure7");
 			musicDisc.onEntitySwing = new Procedure("procedure8");
 			musicDisc.lengthInTicks = 13;
 			musicDisc.analogOutput = 6;
@@ -1720,7 +1724,6 @@ public class TestWorkspaceDataProvider {
 		tool.onEntityHitWith = new Procedure("procedure5");
 		tool.onItemInInventoryTick = new Procedure("procedure6");
 		tool.onItemInUseTick = new Procedure("procedure7");
-		tool.onStoppedUsing = new Procedure("procedure8");
 		tool.onEntitySwing = new Procedure("procedure11");
 		tool.texture = "test";
 		tool.renderType = 0;
@@ -1740,14 +1743,12 @@ public class TestWorkspaceDataProvider {
 		List<MCItem> blocksAndItemsAndTags = ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace());
 		List<MCItem> blocksAndItems = ElementUtil.loadBlocksAndItems(modElement.getWorkspace());
 
-		if ("Crafting".equals(recipe.recipeType)) {
+		switch (recipe.recipeType) {
+		case "Crafting" -> {
 			MItemBlock[] recipeSlots = new MItemBlock[9];
-
 			Arrays.fill(recipeSlots, new MItemBlock(modElement.getWorkspace(), ""));
-
 			recipeSlots[0] = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
-
 			if (random.nextBoolean())
 				recipeSlots[3] = new MItemBlock(modElement.getWorkspace(),
 						getRandomMCItem(random, blocksAndItemsAndTags).getName());
@@ -1777,56 +1778,63 @@ public class TestWorkspaceDataProvider {
 			recipe.recipeReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			recipe.recipeSlots = recipeSlots;
-		} else if ("Smelting".equals(recipe.recipeType)) {
+		}
+		case "Smelting" -> {
 			recipe.smeltingInputStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.smeltingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			recipe.xpReward = 1.234;
 			recipe.cookingTime = 123;
-		} else if ("Smoking".equals(recipe.recipeType)) {
+		}
+		case "Smoking" -> {
 			recipe.smokingInputStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.smokingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			recipe.xpReward = 12.34;
 			recipe.cookingTime = 42;
-		} else if ("Blasting".equals(recipe.recipeType)) {
+		}
+		case "Blasting" -> {
 			recipe.blastingInputStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.blastingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			recipe.xpReward = 21.234;
 			recipe.cookingTime = 1000;
-		} else if ("Stone cutting".equals(recipe.recipeType)) {
+		}
+		case "Stone cutting" -> {
 			recipe.stoneCuttingInputStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.stoneCuttingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			recipe.recipeRetstackSize = 32;
-		} else if ("Campfire cooking".equals(recipe.recipeType)) {
+		}
+		case "Campfire cooking" -> {
 			recipe.campfireCookingInputStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.campfireCookingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
 			recipe.xpReward = 21.234;
 			recipe.cookingTime = 2983;
-		} else if ("Smithing".equals(recipe.recipeType)) {
+		}
+		case "Smithing" -> {
 			recipe.smithingInputStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.smithingInputAdditionStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-		} else if ("Brewing".equals(recipe.recipeType)) {
+		}
+		case "Brewing" -> {
 			recipe.brewingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
 					ElementUtil.loadBlocksAndItemsAndTagsAndPotions(modElement.getWorkspace())).getName());
 			recipe.brewingIngredientStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.brewingReturnStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
 					ElementUtil.loadBlocksAndItemsAndPotions(modElement.getWorkspace())).getName());
-		} else {
-			throw new RuntimeException("Unknown recipe type");
+		}
+		default -> throw new RuntimeException("Unknown recipe type");
 		}
 		return recipe;
 	}
