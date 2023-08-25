@@ -226,7 +226,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 			return
 			<#if (data.canBePlacedOn?size > 0)>
-				<@canPlaceOnList data.canBePlacedOn hasProcedure(data.placingCondition)/>
+				<@canPlaceOnList data.canBePlacedOn hasProcedure(data.placingCondition) "groundState"/>
 			</#if>
 			<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
 			<#if hasProcedure(data.placingCondition)> additionalCondition </#if>;
@@ -252,7 +252,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 				return groundState.is(this) ||
 				<#if (data.canBePlacedOn?size > 0)>
-					<@canPlaceOnList data.canBePlacedOn hasProcedure(data.placingCondition)/>
+					<@canPlaceOnList data.canBePlacedOn hasProcedure(data.placingCondition) "blockstate"/>
 				</#if>
 				<#if (data.canBePlacedOn?size > 0) && hasProcedure(data.placingCondition)> && </#if>
 				<#if hasProcedure(data.placingCondition)> additionalCondition </#if>
@@ -386,9 +386,8 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 </#compress>
 <#-- @formatter:on -->
 
-<#macro canPlaceOnList blockList condition>
+<#macro canPlaceOnList blockList condition blockToCheck>
 <#if (blockList?size > 1) && condition>(</#if>
-<#list blockList as canBePlacedOn>
-groundState.is(${mappedBlockToBlock(canBePlacedOn)})<#sep>||
-</#list><#if (blockList?size > 1) && condition>)</#if>
+${containsAnyOfBlocks(blockList blockToCheck data.excludePlaceableBlocks)}<#if (blockList?size > 1) && condition>)
+</#if>
 </#macro>
