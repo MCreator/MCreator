@@ -42,12 +42,12 @@ public class FileEntry extends PreferencesEntry<File> {
 	 * The constructor used to add a new preference entry to select the location of a folder.
 	 *
 	 * @param id    The preference entry's ID
-	 * @param value The default value of the entry
+	 * @param value The default value of the entry. This needs to be null to allow null values.
 	 */
-	public FileEntry(String id, File value, boolean allowNullValue) {
+	public FileEntry(String id, File value) {
 		super(id, value);
 		this.isFolder = true;
-		this.allowNullValue = allowNullValue;
+		this.allowNullValue = value == null;
 		this.filters = new FileChooser.ExtensionFilter[] {};
 	}
 
@@ -55,13 +55,13 @@ public class FileEntry extends PreferencesEntry<File> {
 	 * The constructor used to add a new preference entry to select the location of a file
 	 *
 	 * @param id      The preference entry's ID
-	 * @param value   The default value of the entry
+	 * @param value   The default value of the entry. This needs to be null to allow null values.
 	 * @param filters One or multiple filters to apply to the {@link FileChooser} dialog
 	 */
-	public FileEntry(String id, File value, boolean allowNullValue, FileChooser.ExtensionFilter... filters) {
+	public FileEntry(String id, File value, FileChooser.ExtensionFilter... filters) {
 		super(id, value);
 		this.isFolder = false;
-		this.allowNullValue = allowNullValue;
+		this.allowNullValue = value == null;
 		this.filters = filters;
 	}
 
