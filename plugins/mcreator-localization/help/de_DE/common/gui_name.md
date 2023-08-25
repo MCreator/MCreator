@@ -1,0 +1,1 @@
+In-Game-Name ist der Name des Mod-Elements, wie in den Spiel-Menüs angezeigt, item-Tooltips und andere Orte an denen visuelle Namensanzeige möglich ist.

@@ -182,6 +182,14 @@ Blockly.Blocks['entity_none'] = {
     }
 };
 
+Blockly.Blocks['damagesource_from_deps'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.damagesource_from_deps"));
+        this.setColour(306);
+        this.setOutput(true, 'DamageSource');
+    }
+}
+
 Blockly.Blocks['direction_from_deps'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.direction_from_deps"));
@@ -595,6 +603,27 @@ Blockly.Blocks['weighted_list_mutator_input'] = {
       this.contextMenu = false;
       this.fieldValues_ = [];
       this.setColour('#888888');
+    }
+};
+
+// Mutator block for ore features mixin
+Blockly.Blocks['feature_simple_random_mutator_container'] = {
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.feature_simple_random_mutator.container"));
+        this.appendStatementInput('STACK');
+        this.contextMenu = false;
+        this.setColour(340);
+    }
+};
+
+// Mutator block for ore features mixin
+Blockly.Blocks['feature_simple_random_mutator_input'] = {
+    init: function () {
+      this.appendDummyInput().appendField(javabridge.t("blockly.block.feature_simple_random_mutator.input"));
+      this.setPreviousStatement(true);
+      this.setNextStatement(true);
+      this.contextMenu = false;
+      this.setColour(340);
     }
 };
 

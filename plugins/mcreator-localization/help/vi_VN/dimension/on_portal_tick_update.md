@@ -1,0 +1,1 @@
+Khi khối cổng xuất hiện trong thế giới, quy trình này sẽ được thực thi mỗi tick.

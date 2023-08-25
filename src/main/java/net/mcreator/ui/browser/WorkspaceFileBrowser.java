@@ -90,7 +90,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			super.paintComponent(g);
 			g.setColor(new Color(111, 111, 111));
 			g.setFont(getFont().deriveFont(10f));
-			if (getText().trim().equals(""))
+			if (getText().isBlank())
 				g.drawString(L10N.t("workspace_file_browser.search"), 2, 17);
 		}
 	};
@@ -158,7 +158,7 @@ public class WorkspaceFileBrowser extends JPanel {
 							mods.setFilter(jtf1.getText().trim());
 							SwingUtilities.invokeLater(() -> TreeUtils.expandAllNodes(tree, 0, tree.getRowCount()));
 							searchInAction = false;
-						}).start();
+						}, "ReferenceSearch").start();
 					}
 				} else {
 					mods.setFilter("");

@@ -90,7 +90,7 @@ public class MCItem extends DataListEntry {
 	}
 
 	public static ImageIcon getBlockIconBasedOnName(Workspace workspace, String name) {
-		if (name == null || name.trim().equals(""))
+		if (name == null || name.isBlank())
 			return new EmptyIcon.ImageIcon(32, 32);
 
 		if (name.startsWith("TAG:"))

@@ -44,7 +44,7 @@ import java.util.stream.Collectors;
 	public int renderType;
 	public String texture;
 	public String textureBottom;
-	public String customModelName;
+	@Nonnull public String customModelName;
 
 	public String itemTexture;
 	public String particleTexture;
@@ -202,7 +202,7 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean doesGenerateInWorld() {
-		return spawnWorldTypes.size() > 0;
+		return !spawnWorldTypes.isEmpty();
 	}
 
 	@Override public String getRenderType() {

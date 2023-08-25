@@ -23,11 +23,12 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 
-@SuppressWarnings("unused") public class KeyBinding extends GeneratableElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class KeyBinding extends GeneratableElement {
 
-	public String triggerKey;
+	@Nonnull public String triggerKey;
 	public String keyBindingName;
 	public String keyBindingCategoryKey;
 

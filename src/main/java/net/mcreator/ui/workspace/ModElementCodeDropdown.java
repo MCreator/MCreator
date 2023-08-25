@@ -45,8 +45,8 @@ class ModElementCodeDropdown extends JPopupMenu {
 			add(modElementFileMenuItem(modElementFile));
 
 		// add global files to the dropdown (if any)
-		if (modElementGlobalFiles.size() > 0) {
-			if (modElementFiles.size() > 0)
+		if (!modElementGlobalFiles.isEmpty()) {
+			if (!modElementFiles.isEmpty())
 				addSeparator();
 
 			for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles)
@@ -54,12 +54,12 @@ class ModElementCodeDropdown extends JPopupMenu {
 		}
 
 		// add list files to the dropdown (if any)
-		if (modElementListFiles.size() > 0) {
+		if (!modElementListFiles.isEmpty()) {
 			if (modElementFiles.size() + modElementGlobalFiles.size() > 0)
 				addSeparator();
 
 			for (GeneratorTemplatesList list : modElementListFiles) {
-				if (list.templates().size() > 0) {
+				if (!list.templates().isEmpty()) {
 					JMenu listMenu = new JMenu(list.groupName());
 					listMenu.setIcon(UIRES.get("16px.list.gif"));
 					listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());

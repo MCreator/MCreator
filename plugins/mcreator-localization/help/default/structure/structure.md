@@ -1,4 +1,4 @@
-Current vanilla limit for a single structure is 32x32x32 blocks for performance reasons.
+Current vanilla limit for a single structure is 48x48x48 blocks for performance reasons.
 
 Structure block is a built-in vanilla block that can save builds as .NBT structures. 
 

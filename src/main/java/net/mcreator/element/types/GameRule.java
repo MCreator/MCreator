@@ -22,11 +22,12 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 
-public class GameRule extends GeneratableElement {
+@SuppressWarnings("NotNullFieldNotInitialized") public class GameRule extends GeneratableElement {
 
-	public String type;
+	@Nonnull public String type;
 
 	public String displayName;
 	public String description;

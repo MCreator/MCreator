@@ -88,8 +88,4 @@ public class BlastFurnaceRecipeMaker extends JPanel {
 		return cb2.getBlock();
 	}
 
-	public boolean has() {
-		return cb1.containsItem() && cb2.containsItem();
-	}
-
 }

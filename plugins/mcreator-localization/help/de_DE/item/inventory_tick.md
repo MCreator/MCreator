@@ -1,0 +1,1 @@
+Diese Prozedur wird jeden Tick, wenn sich der Gegenstand im Inventar eines Spielers befindet, ausgeführt.

@@ -1,0 +1,1 @@
+Verwendet den Rückgabewert der gewählten Prozedur, um das Modell zu bestimmen, das angezeigt wird. Der Rückgabewert muss eine Entität sein.
