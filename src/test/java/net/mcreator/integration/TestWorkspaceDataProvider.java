@@ -610,7 +610,7 @@ public class TestWorkspaceDataProvider {
 			gui.components = components;
 			return gui;
 		} else if (ModElementType.LIVINGENTITY.equals(modElement.getType())) {
-			return getLivingEntity(modElement, random, _true, emptyLists, valueIndex, blocksAndItems, biomes);
+			return getLivingEntity(modElement, random, _true, emptyLists, valueIndex, blocksAndItems, blocksAndItemsAndTags, biomes);
 		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
 			Dimension dimension = new Dimension(modElement);
 			dimension.texture = "test";
@@ -1540,7 +1540,7 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static LivingEntity getLivingEntity(ModElement modElement, Random random, boolean _true, boolean emptyLists,
-			int valueIndex, List<MCItem> blocksAndItems, List<DataListEntry> biomes) {
+			int valueIndex, List<MCItem> blocksAndItems, List<MCItem> blocksAndItemsAndTags, List<DataListEntry> biomes) {
 		LivingEntity livingEntity = new LivingEntity(modElement);
 		livingEntity.mobName = modElement.getName();
 		livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
@@ -1638,15 +1638,15 @@ public class TestWorkspaceDataProvider {
 		livingEntity.breedTriggerItems = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 		}
 		livingEntity.ranged = _true;
 		livingEntity.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),

@@ -346,7 +346,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		restrictionBiomes = new BiomeListField(mcreator);
-		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
+		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 
 		mobModelTexture.setRenderer(
