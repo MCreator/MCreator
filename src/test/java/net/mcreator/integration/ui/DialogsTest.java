@@ -173,6 +173,7 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> FileDialogs.getOpenDialog(mcreator, new String[] { ".png" }));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> FileDialogs.getSaveDialog(mcreator, new String[] { ".png" }));
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> FileDialogs.getDirectoryChooser(mcreator, new File(System.getProperty("user.home"))));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> FileDialogs.getDirectoryChooser(mcreator, null));
 	}
 
 	@Test public void testSoundElementDialog() throws Throwable {
