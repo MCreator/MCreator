@@ -1,0 +1,1 @@
+Xác định mức tăng giá khi người chơi trao đổi cùng một mặt hàng nhiều lần.
