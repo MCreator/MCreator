@@ -42,7 +42,8 @@ public class FileEntry extends PreferencesEntry<File> {
 	 * The constructor used to add a new preference entry to select the location of a folder.
 	 *
 	 * @param id    The preference entry's ID
-	 * @param value The default value of the entry. This needs to be null to allow null values.
+	 * @param value The default value of the entry. This needs to be null to allow a null value.
+
 	 */
 	public FileEntry(String id, File value) {
 		super(id, value);
@@ -55,7 +56,8 @@ public class FileEntry extends PreferencesEntry<File> {
 	 * The constructor used to add a new preference entry to select the location of a file
 	 *
 	 * @param id      The preference entry's ID
-	 * @param value   The default value of the entry. This needs to be null to allow null values.
+	 * @param value   The default value of the entry. This needs to be null to allow a null value.
+
 	 * @param filters One or multiple filters to apply to the {@link FileChooser} dialog
 	 */
 	public FileEntry(String id, File value, FileChooser.ExtensionFilter... filters) {
