@@ -76,6 +76,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 	@Override protected void initGUI() {
 		ComponentUtils.deriveFont(commandName, 16);
+		ComponentUtils.deriveFont(type, 16);
+		ComponentUtils.deriveFont(commandName, 16);
 
 		JPanel enderpanel = new JPanel(new GridLayout(3, 2, 10, 2));
 
