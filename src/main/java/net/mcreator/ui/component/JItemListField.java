@@ -311,11 +311,11 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 										.replace("Items.", "").replace("#", "")));
 
 				if ((mappableElement).getUnmappedValue().contains("CUSTOM:"))
-					setIcon(new ImageIcon(ImageUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
+					setIcon(new ImageIcon(ImageUtils.resizeAA(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
 							(mappableElement).getUnmappedValue()).getImage(), 18)));
 
 				if ((mappableElement).getUnmappedValue().startsWith("#"))
-					setIcon(new ImageIcon(ImageUtils.resize(MCItem.TAG_ICON.getImage(), 18)));
+					setIcon(new ImageIcon(ImageUtils.resizeAA(MCItem.TAG_ICON.getImage(), 18)));
 
 				if (!(mappableElement).canProperlyMap())
 					setIcon(UIRES.get("18px.warning"));
@@ -325,7 +325,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				setText(StringUtils.machineToReadableName(value.toString().replace("CUSTOM:", "")));
 
 				if (value.toString().contains("CUSTOM:"))
-					setIcon(new ImageIcon(ImageUtils.resize(
+					setIcon(new ImageIcon(ImageUtils.resizeAA(
 							MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()).getImage(), 18)));
 			}
 

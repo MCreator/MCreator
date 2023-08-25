@@ -269,15 +269,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 
-		// emulate base_stone_overworld
-		blocksToReplace.setListElements(List.of(
-				//@formatter:off
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#0"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#1"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#3"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#5")
-				//@formatter:on
-		));
+		blocksToReplace.setListElements(List.of(new MItemBlock(mcreator.getWorkspace(), "TAG:stone_ore_replaceables")));
 		generateHeight.setAllowEqualValues(true);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
