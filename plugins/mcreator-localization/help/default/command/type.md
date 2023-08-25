@@ -1,4 +1,5 @@
 This option allow you to determine the type of the command and how/where it can be used.
+
 * **Standard**: The command can be used everywhere. This is the common/normal behavior (e.g. `/give`).
 * **Multiplayer only**: The command will be available on multiplayer servers only (e.g. `/ban`).
 * **Singleplayer only**: The command will be available on singleplayer worlds only (e.g. `/publish`).
