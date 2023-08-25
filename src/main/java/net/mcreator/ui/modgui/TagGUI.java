@@ -68,8 +68,8 @@ public class TagGUI extends ModElementGUI<Tag> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		items = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
-		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
+		items = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems, false, true);
+		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
 		entities = new SpawnableEntityListField(mcreator, true);
 		biomes = new BiomeListField(mcreator, true);
 		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
