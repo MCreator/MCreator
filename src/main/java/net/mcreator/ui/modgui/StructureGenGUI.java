@@ -103,7 +103,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 				L10N.t("condition.common.no_additional"));
 
 		restrictionBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
-		restrictionBiomes = new BiomeListField(mcreator);
+		restrictionBiomes = new BiomeListField(mcreator, true);
 		spawnWorldTypes = new DimensionListField(mcreator);
 		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
 		countPerChunk.setAllowEqualValues(true);

@@ -81,7 +81,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
-		restrictionBiomes = new BiomeListField(mcreator);
+		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
 
 		restrictionDimensions = new DimensionListField(mcreator);

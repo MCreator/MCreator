@@ -180,7 +180,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	@Override protected void initGUI() {
-		restrictionBiomes = new BiomeListField(mcreator);
+		restrictionBiomes = new BiomeListField(mcreator, true);
 		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);

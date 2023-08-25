@@ -345,7 +345,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.checkbox("elementgui.common.enable"), 160,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
-		restrictionBiomes = new BiomeListField(mcreator);
+		restrictionBiomes = new BiomeListField(mcreator, true);
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 
