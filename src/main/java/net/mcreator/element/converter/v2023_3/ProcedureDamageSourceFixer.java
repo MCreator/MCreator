@@ -19,15 +19,10 @@
 
 package net.mcreator.element.converter.v2023_3;
 
-import com.google.gson.JsonElement;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.converter.ProcedureConverter;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.util.BlocklyHelper;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -42,28 +37,13 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-public class ProcedureDamageSourceFixer implements IConverter {
-
-	private static final Logger LOG = LogManager.getLogger(ProcedureDamageSourceFixer.class);
-
-	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Procedure procedure = (Procedure) input;
-
-		try {
-			procedure.procedurexml = fixXML(procedure.procedurexml);
-		} catch (Exception e) {
-			LOG.warn("Failed to update damage blocks for procedure " + input.getModElement().getName());
-		}
-
-		return procedure;
-	}
+public class ProcedureDamageSourceFixer extends ProcedureConverter {
 
 	@Override public int getVersionConvertingTo() {
 		return 46;
 	}
 
-	protected String fixXML(String xml) throws Exception {
+	@Override protected String fixXML(Procedure procedure, String xml) throws Exception {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
@@ -75,6 +55,8 @@ public class ProcedureDamageSourceFixer implements IConverter {
 			Element element = (Element) nodeList.item(i);
 			String type = element.getAttribute("type");
 			if (type.equals("deal_damage")) {
+				reportDependenciesChanged();
+
 				// Get the damage type field from the "Deal damage" block
 				Element damageType = XMLUtil.getFirstChildrenWithName(element, "field");
 				if (damageType != null) {
@@ -86,9 +68,11 @@ public class ProcedureDamageSourceFixer implements IConverter {
 					damageType = bh.createField("damagetype", "GENERIC");
 				}
 				// Add the "Damage source from type" block
-				element.appendChild(bh.createValue("damagesource",
-						bh.createBlock("damagesource_from_type", damageType)));
+				element.appendChild(
+						bh.createValue("damagesource", bh.createBlock("damagesource_from_type", damageType)));
 			} else if (type.equals("damagesource_isequalto")) {
+				reportDependenciesChanged();
+
 				// Get the damage type field from the "Is damage of type" block
 				Element damageType = XMLUtil.getFirstChildrenWithName(element, "field");
 				if (damageType != null) {

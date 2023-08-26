@@ -66,15 +66,15 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 
 			setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(0, 2, 0, 2, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
-					BorderFactory.createEmptyBorder(2, 2, 2, 2)));
+					BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setVerticalAlignment(SwingConstants.CENTER);
 
 			setToolTipText(
 					value.getUnmappedValue().replace("CUSTOM:", "").replace("Blocks.", "").replace("Items.", ""));
 
-			setIcon(new ImageIcon(ImageUtils.resize(
-					MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.getUnmappedValue()).getImage(), 22)));
+			setIcon(new ImageIcon(ImageUtils.resizeAA(
+					MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.getUnmappedValue()).getImage(), 25)));
 
 			return this;
 		}

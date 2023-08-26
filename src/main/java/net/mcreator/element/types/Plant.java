@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -55,14 +56,11 @@ import java.util.stream.Collectors;
 
 	public String plantType;
 
-	public String staticPlantGenerationType;
 	public String suspiciousStewEffect;
 	public int suspiciousStewDuration;
 
 	public String growapableSpawnType;
 	public int growapableMaxHeight;
-
-	public String doublePlantGenerationType;
 
 	public boolean customBoundingBox;
 	public boolean disableOffset;
@@ -116,6 +114,7 @@ import java.util.stream.Collectors;
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
+	public String generationType;
 	public int patchSize;
 	public boolean generateAtAnyHeight;
 
@@ -157,8 +156,7 @@ import java.util.stream.Collectors;
 		this.suspiciousStewEffect = "SATURATION";
 		this.suspiciousStewDuration = 0;
 
-		this.staticPlantGenerationType = "Flower";
-		this.doublePlantGenerationType = "Flower";
+		this.generationType = "Flower";
 		this.patchSize = 64;
 
 		this.boundingBoxes = new ArrayList<>();
