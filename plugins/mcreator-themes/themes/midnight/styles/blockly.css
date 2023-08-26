@@ -18,6 +18,10 @@ body {
     background: #1c2128;
 }
 
+::-webkit-scrollbar-corner {
+    background: #1c2128;
+}
+
 ::-webkit-scrollbar-thumb {
     background: #171c23;
 }
