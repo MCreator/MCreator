@@ -185,7 +185,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 				}
 			});
 
-			add("Center", PanelUtils.westAndEastElement(procwrap,
+			add("Center", PanelUtils.centerAndEastElement(procwrap,
 					PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, add, edit))));
 		} else {
 			setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 1));

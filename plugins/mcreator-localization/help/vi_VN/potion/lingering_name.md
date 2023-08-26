@@ -1,0 +1,1 @@
+Tham số này điều khiển tên của lọ thuốc kéo dài.

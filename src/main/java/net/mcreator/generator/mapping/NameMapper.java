@@ -52,7 +52,7 @@ public class NameMapper {
 	}
 
 	public String getMapping(String origName, int mappingTable) {
-		if (origName == null || origName.equals(""))
+		if (origName == null || origName.isEmpty())
 			return origName;
 
 		Map<?, ?> mapping = workspace.getGenerator().getMappings().getMapping(mappingSource);

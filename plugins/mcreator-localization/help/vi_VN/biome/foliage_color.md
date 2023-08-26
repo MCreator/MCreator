@@ -1,0 +1,1 @@
+Tham số này điều khiển màu của tán lá cây trong quần xã này.

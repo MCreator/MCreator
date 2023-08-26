@@ -54,7 +54,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.List;
-import java.util.Objects;
 import java.util.Vector;
 
 /**
@@ -77,7 +76,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			super.paintComponent(g);
 			g.setColor(new Color(111, 111, 111));
 			g.setFont(getFont().deriveFont(10f));
-			if (getText().trim().isEmpty())
+			if (getText().isBlank())
 				g.drawString(L10N.t("workspace_file_browser.search"), 2, 17);
 		}
 	};
