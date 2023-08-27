@@ -44,7 +44,11 @@ import net.mcreator.element.converter.v2023_2.BiomeCustomFeaturesConverter;
 import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
 import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
-import net.mcreator.element.converter.v2023_3.*;
+import net.mcreator.element.converter.v2023_3.HugeFungusFeatureConverter;
+import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
+import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
+import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
+import net.mcreator.element.converter.v2023_4.SpecialInformationConverter;
 
 import java.util.HashMap;
 import java.util.List;
