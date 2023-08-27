@@ -69,7 +69,8 @@
       "<mutation inputs=\"0\"></mutation>",
       "<value name=\"dirt\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
       "<value name=\"trunk\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"foliage\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+      "<value name=\"foliage\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "~<value name=\"decorator0\"><block type=\"tree_decorator_trunk_vine\"></block></value>"
     ],
     "inputs": [
       "dirt",
