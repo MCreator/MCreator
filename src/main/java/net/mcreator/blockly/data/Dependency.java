@@ -29,8 +29,8 @@ import java.util.List;
 
 public class Dependency implements Comparable<Dependency> {
 
-	private String name;
-	private String type;
+	private final String name;
+	private final String type;
 
 	public Dependency(String name, String type) {
 		this.name = name;
@@ -101,6 +101,9 @@ public class Dependency implements Comparable<Dependency> {
 		case "blockstate":
 			blockXml.append("<block type=\"blockstate_from_deps\"></block>");
 			break;
+		case "damagesource":
+			blockXml.append("<block type=\"damagesource_from_deps\"></block>");
+			break;
 		default:
 			if (VariableTypeLoader.INSTANCE.fromName(type) != null) {
 				blockXml.append("<block type=\"custom_dependency_");
@@ -129,7 +132,7 @@ public class Dependency implements Comparable<Dependency> {
 			case "advancement" -> new Color(0x68712E);
 			case "dimensiontype" -> new Color(0x609963);
 			case "cmdcontext" -> new Color(0x8C5BA5);
-			case "damagesource" -> new Color(0xA65C9F);
+			case "damagesource" -> new Color(0x996086);
 			default -> Color.white;
 		};
 	}

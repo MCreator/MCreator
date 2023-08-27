@@ -211,7 +211,7 @@ import java.util.stream.Collectors;
 	}
 
 	public int renderType() {
-		if (blockBase != null && !blockBase.equals(""))
+		if (blockBase != null && !blockBase.isEmpty())
 			return -1;
 		return renderType;
 	}
@@ -237,7 +237,7 @@ import java.util.stream.Collectors;
 	}
 
 	public boolean doesGenerateInWorld() {
-		return spawnWorldTypes.size() > 0;
+		return !spawnWorldTypes.isEmpty();
 	}
 
 	public boolean shouldScheduleTick() {
@@ -331,7 +331,7 @@ import java.util.stream.Collectors;
 	}
 
 	private Image getTextureWithFallback(String textureName) {
-		if (textureName.equals(""))
+		if (textureName.isEmpty())
 			return getMainTexture();
 		return getModElement().getFolderManager().getTextureImageIcon(textureName, TextureType.BLOCK).getImage();
 	}

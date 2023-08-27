@@ -84,8 +84,8 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 						UIManager.getString("OptionPane.cancelButtonText") };
 				int n = JOptionPane.showOptionDialog(actionRegistry.getMCreator(),
 						L10N.t("dialog.workspace.export.message"), L10N.t("dialog.workspace.export.title"),
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, UIRES.get("export_donate"), options2,
-						options2[1]);
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, UIRES.get("export_donate"),
+						options2, options2[1]);
 				if (n == 2 || n == JOptionPane.CLOSED_OPTION) {
 					return;
 				} else if (n == 1) {

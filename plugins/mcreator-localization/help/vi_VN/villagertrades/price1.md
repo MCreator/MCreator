@@ -1,0 +1,1 @@
+Vật phẩm bắt buộc thứ nhất để trao đổi.

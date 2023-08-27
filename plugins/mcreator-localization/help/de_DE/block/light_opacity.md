@@ -1,0 +1,1 @@
+Diese Eigenschaft bestimmt, wie stark der Lichtstand sinkt, wenn dieser Block durchläuft. Zum Beispiel blockiert ein Wert von 15 das gesamte Licht, ein Wert von 0 macht den Block transparent für Licht.
