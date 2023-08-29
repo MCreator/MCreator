@@ -93,39 +93,10 @@ public final class MCreatorApplication {
 	private MCreatorApplication(List<String> launchArguments) {
 		final SplashScreen splashScreen = new SplashScreen();
 
-		int rmiPort = Integer.parseInt(System.getProperty("mcreator.rmi.port","2013"));
+		int rmiPort = Integer.parseInt(System.getProperty("mcreator.rmi.port", "2013"));
 
-		try {
-			LOG.info("We are finding the other mcreator process if we find this we will send a sign to the old MCreator"
-					+ " process and exit the new process, current port:"+rmiPort);
-			var client =  RMIHandler.launchClient(rmiPort);
-
-			if (launchArguments.size() != 0) {
-				new Thread(() -> {
-					try {
-						client.openWorkspace(launchArguments.get(launchArguments.size() - 1));
-					} catch (RemoteException ignored) {
-					}
-				}).start();
-
-				//wait :(
-				Thread.sleep(3000L);
-			}
-
-			System.exit(0);
-		} catch (MalformedURLException | NotBoundException | RemoteException ignored) {
-			LOG.info("We can not find the other MCreator process we will continue to start the MCreator");
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
-		try{
-			LOG.info("begin to open RMIServer");
-			RMIHandler.launchServer(rmiPort);
-		} catch (MalformedURLException | AlreadyBoundException | RemoteException e) {
-			// if we can not open server
-			throw new RuntimeException(e);
-		}
+		trySendProjectOpenSign(launchArguments, rmiPort);
+		tryOpenRMIServer(rmiPort);
 
 		new Thread(() -> {
 			splashScreen.setProgress(5, "Loading plugins");
@@ -275,6 +246,35 @@ public final class MCreatorApplication {
 
 			LOG.debug("Application loader finished");
 		}, "Application-Loader").start();
+	}
+
+	private static void tryOpenRMIServer(int rmiPort) {
+		try {
+			RMIHandler.launchServer(rmiPort);
+		} catch (MalformedURLException | AlreadyBoundException | RemoteException e) {
+			LOG.warn("We can not open MCreator RMI Server");
+		}
+	}
+
+	private static void trySendProjectOpenSign(List<String> launchArguments, int rmiPort) {
+		try {
+			LOG.info("We are finding the other mcreator process if we find this we will send a sign to the old MCreator"
+					+ " process and exit the new process, current port:" + rmiPort);
+			var client = RMIHandler.launchClient(rmiPort);
+
+			if (launchArguments.size() != 0) {
+				new Thread(() -> {
+					try {
+						client.openWorkspace(launchArguments.get(launchArguments.size() - 1));
+					} catch (RemoteException ignored) {
+					}
+				}).start();
+			}
+
+			System.exit(0);
+		} catch (MalformedURLException | NotBoundException | RemoteException ignored) {
+			LOG.info("We can not find the other MCreator process we will continue to start the MCreator");
+		}
 	}
 
 	public GoogleAnalytics getAnalytics() {

@@ -29,13 +29,11 @@ import java.rmi.registry.LocateRegistry;
 public class RMIHandler {
 	public static IRMIWorkspaceOpener launchClient(int port)
 			throws MalformedURLException, NotBoundException, RemoteException {
-		return (IRMIWorkspaceOpener) Naming.lookup(
-				"rmi://localhost:" + port + "/mcreator");
+		return (IRMIWorkspaceOpener) Naming.lookup("rmi://localhost:" + port + "/mcreator");
 	}
 
 	public static void launchServer(int port) throws RemoteException, AlreadyBoundException, MalformedURLException {
 		LocateRegistry.createRegistry(port);
-		Naming.bind("rmi://localhost:" + port + "/mcreator",
-				MCreatorRMIWorkspaceOpenListener.getInstance());
+		Naming.bind("rmi://localhost:" + port + "/mcreator", MCreatorRMIWorkspaceOpenListener.getInstance());
 	}
 }

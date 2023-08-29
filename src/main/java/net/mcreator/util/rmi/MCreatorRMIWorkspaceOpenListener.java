@@ -21,8 +21,6 @@ package net.mcreator.util.rmi;
 
 import net.mcreator.ui.workspace.selector.WorkspaceOpenListener;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -31,13 +29,13 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class MCreatorRMIWorkspaceOpenListener extends UnicastRemoteObject implements IRMIWorkspaceOpener {
 
-	private static final Logger LOG = LogManager.getLogger("MCreatorRMIServer");
-
 	private static final Object lock = new Object();
 
 	private static MCreatorRMIWorkspaceOpenListener instance;
-	public static  MCreatorRMIWorkspaceOpenListener getInstance() throws RemoteException {
-		if (instance == null) instance = new MCreatorRMIWorkspaceOpenListener();
+
+	public static MCreatorRMIWorkspaceOpenListener getInstance() throws RemoteException {
+		if (instance == null)
+			instance = new MCreatorRMIWorkspaceOpenListener();
 		return instance;
 	}
 
@@ -46,8 +44,8 @@ public class MCreatorRMIWorkspaceOpenListener extends UnicastRemoteObject implem
 	protected MCreatorRMIWorkspaceOpenListener() throws RemoteException {
 	}
 
-	public void setWorkspaceOpenListener(@Nonnull WorkspaceOpenListener workspaceOpenListener){
-		synchronized (lock){
+	public void setWorkspaceOpenListener(@Nonnull WorkspaceOpenListener workspaceOpenListener) {
+		synchronized (lock) {
 			lock.notifyAll();
 		}
 		this.workspaceOpenListener = workspaceOpenListener;
@@ -55,14 +53,14 @@ public class MCreatorRMIWorkspaceOpenListener extends UnicastRemoteObject implem
 
 	@Override public void openWorkspace(@Nonnull String workspaceFile) throws RemoteException {
 		File fl;
-		if (workspaceFile.startsWith("\"")&&workspaceFile.endsWith("\"")){
-			fl = new File(workspaceFile.substring(1,workspaceFile.length()-1));
+		if (workspaceFile.startsWith("\"") && workspaceFile.endsWith("\"")) {
+			fl = new File(workspaceFile.substring(1, workspaceFile.length() - 1));
 		} else {
 			fl = new File(workspaceFile);
 		}
 
 		//exclude invalidate
-		if (!FilenameUtils.isExtension(fl.getPath(),"mcreator")){
+		if (!FilenameUtils.isExtension(fl.getPath(), "mcreator")) {
 			return;
 		}
 
@@ -74,9 +72,7 @@ public class MCreatorRMIWorkspaceOpenListener extends UnicastRemoteObject implem
 					e.printStackTrace();
 				}
 			}
-
-			LOG.info("starting to open workspace"+fl);
-
+			// start to open the project
 			workspaceOpenListener.workspaceOpened(fl);
 		}
 	}
