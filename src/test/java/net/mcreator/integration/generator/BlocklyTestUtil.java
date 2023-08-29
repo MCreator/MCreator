@@ -185,7 +185,7 @@ public class BlocklyTestUtil {
 				}
 			}
 			if (processedFields != totalFields) {
-				LOG.warn("Skipping Blockly block with incorrectly " + "defined repeating field: "
+				LOG.warn("Skipping Blockly block with incorrectly defined repeating field: "
 						+ toolboxBlock.getMachineName());
 				return false;
 			}
