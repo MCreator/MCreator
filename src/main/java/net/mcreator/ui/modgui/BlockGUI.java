@@ -474,7 +474,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destal.add(ComponentUtils.squareAndBorder(textureBack, L10N.t("elementgui.block.texture_place_back")));
 
 		textureLeft.setActionListener(event -> {
-			if (!(texture.hasTexture() || textureTop.hasTexture() || textureBack.hasTexture() || textureFront.hasTexture() || textureRight.hasTexture())) {
+			if (!(texture.hasTexture() || textureTop.hasTexture() || textureBack.hasTexture()
+					|| textureFront.hasTexture() || textureRight.hasTexture())) {
 				texture.setTextureFromTextureName(textureLeft.getID());
 				textureTop.setTextureFromTextureName(textureLeft.getID());
 				textureBack.setTextureFromTextureName(textureLeft.getID());
@@ -1560,15 +1561,15 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.inventoryStackSize = (int) inventoryStackSize.getValue();
 		block.inventoryDropWhenDestroyed = inventoryDropWhenDestroyed.isSelected();
 		block.inventoryComparatorPower = inventoryComparatorPower.isSelected();
-		if (outSlotIDs.getText().trim().equals(""))
+		if (outSlotIDs.getText().isBlank())
 			block.inventoryOutSlotIDs = new ArrayList<>();
 		else
-			block.inventoryOutSlotIDs = Stream.of(outSlotIDs.getText().split(",")).filter(e -> !e.equals(""))
+			block.inventoryOutSlotIDs = Stream.of(outSlotIDs.getText().split(",")).filter(e -> !e.isEmpty())
 					.map(Integer::parseInt).collect(Collectors.toList());
-		if (inSlotIDs.getText().trim().equals(""))
+		if (inSlotIDs.getText().isBlank())
 			block.inventoryInSlotIDs = new ArrayList<>();
 		else
-			block.inventoryInSlotIDs = Stream.of(inSlotIDs.getText().split(",")).filter(e -> !e.equals(""))
+			block.inventoryInSlotIDs = Stream.of(inSlotIDs.getText().split(",")).filter(e -> !e.isEmpty())
 					.map(Integer::parseInt).collect(Collectors.toList());
 		block.frequencyPerChunks = (int) frequencyPerChunks.getValue();
 		block.frequencyOnChunk = (int) frequencyOnChunk.getValue();

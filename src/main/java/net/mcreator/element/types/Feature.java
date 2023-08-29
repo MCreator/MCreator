@@ -77,11 +77,12 @@ import java.util.List;
 			additionalData.put("placementcode", blocklyToFeature.getGeneratedCode());
 			additionalData.put("configurationcode", blocklyToFeature.getFeatureConfigurationCode());
 			additionalData.put("featuretype", blocklyToFeature.getFeatureType());
+			additionalData.put("featureblocks", blocklyToFeature.getUsedBlocks());
 		};
 	}
 
 	public boolean hasGenerationConditions() {
-		return restrictionDimensions.size() > 0 || generateCondition != null;
+		return !restrictionDimensions.isEmpty() || generateCondition != null;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

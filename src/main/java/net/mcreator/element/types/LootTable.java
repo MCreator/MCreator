@@ -25,7 +25,8 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.annotation.Nonnull;
 import java.util.List;
 
-@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class LootTable extends NamespacedGeneratableElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class LootTable
+		extends NamespacedGeneratableElement {
 
 	@Nonnull public String type;
 

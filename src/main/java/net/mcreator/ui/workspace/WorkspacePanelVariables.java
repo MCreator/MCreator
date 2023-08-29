@@ -273,7 +273,8 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				for (int i = 0; i < elements.getModel().getRowCount(); i++) {
 					VariableType elementType = VariableTypeLoader.INSTANCE.fromName((String) elements.getValueAt(i, 1));
 					if (elementType != null) {
-						VariableElement element = new VariableElement(Transliteration.transliterateString((String) elements.getValueAt(i, 0)));
+						VariableElement element = new VariableElement(
+								Transliteration.transliterateString((String) elements.getValueAt(i, 0)));
 						element.setType(elementType);
 						element.setValue(elements.getValueAt(i, 3));
 						element.setScope((VariableType.Scope) elements.getValueAt(i, 2));

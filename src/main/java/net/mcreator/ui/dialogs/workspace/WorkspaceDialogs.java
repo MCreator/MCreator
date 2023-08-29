@@ -103,7 +103,7 @@ public class WorkspaceDialogs {
 			String[] options = new String[] { L10N.t("dialog.workspace_settings.refactor.yes"),
 					L10N.t("dialog.workspace_settings.refactor.no") };
 			int option = JOptionPane.showOptionDialog(null, change.generatorFlavorChanged ?
-							L10N.t("dialog.workspace_settings.refactor.text_fbfg_switch") :
+							L10N.t("dialog.workspace_settings.refactor.text_flavor_switch") :
 							L10N.t("dialog.workspace_settings.refactor.text"),
 					L10N.t("dialog.workspace_settings.refactor.title"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.WARNING_MESSAGE, null, options, options[0]);
@@ -221,7 +221,7 @@ public class WorkspaceDialogs {
 			modID.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
 					super.keyReleased(e);
-					modIDManuallyEntered = !modID.getText().trim().equals("");
+					modIDManuallyEntered = !modID.getText().isBlank();
 					if (!packageNameManuallyEntered) {
 						packageName.setText("net.mcreator." + modID.getText().replaceAll("[^a-z]+", ""));
 						packageName.getValidationStatus();
@@ -232,7 +232,7 @@ public class WorkspaceDialogs {
 			packageName.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
 					super.keyReleased(e);
-					packageNameManuallyEntered = !packageName.getText().trim().equals("");
+					packageNameManuallyEntered = !packageName.getText().isBlank();
 				}
 			});
 
@@ -424,7 +424,7 @@ public class WorkspaceDialogs {
 			packageName.setPreferredSize(new Dimension(300, 32));
 			packageName.setValidator(() -> {
 				String text = packageName.getText();
-				if (text.length() == 0)
+				if (text.isEmpty())
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 							L10N.t("dialog.workspace.settings.workspace_package_empty"));
 				if (text.startsWith(".")) {
@@ -578,22 +578,22 @@ public class WorkspaceDialogs {
 			retVal.setWorkspace(workspace);
 			retVal.setModName(modName.getText());
 			retVal.setVersion(version.getText());
-			retVal.setDescription(description.getText().equals("") ? null : description.getText());
-			retVal.setAuthor(author.getText().equals("") ? null : author.getText());
-			retVal.setLicense(license.getEditor().getItem().toString().equals("") ?
+			retVal.setDescription(description.getText().isEmpty() ? null : description.getText());
+			retVal.setAuthor(author.getText().isEmpty() ? null : author.getText());
+			retVal.setLicense(license.getEditor().getItem().toString().isEmpty() ?
 					"Not specified" :
 					license.getEditor().getItem().toString());
-			retVal.setWebsiteURL(websiteURL.getText().equals("") ? null : websiteURL.getText());
-			retVal.setCredits(credits.getText().equals("") ? null : credits.getText());
+			retVal.setWebsiteURL(websiteURL.getText().isEmpty() ? null : websiteURL.getText());
+			retVal.setCredits(credits.getText().isEmpty() ? null : credits.getText());
 			retVal.setModPicture(Objects.equals(modPicture.getSelectedItem(),
 					L10N.t("dialog.workspace.settings.workspace_nopic_default")) ?
 					null :
 					(String) modPicture.getSelectedItem());
-			retVal.setModElementsPackage(packageName.getText().equals("") ? null : packageName.getText());
+			retVal.setModElementsPackage(packageName.getText().isEmpty() ? null : packageName.getText());
 			retVal.setServerSideOnly(serverSideOnly.isSelected());
 			retVal.setLockBaseModFiles(lockBaseModFiles.isSelected());
 			retVal.setDisableForgeVersionCheck(disableForgeVersionCheck.isSelected());
-			retVal.setUpdateURL(updateJSON.getText().equals("") ? null : updateJSON.getText());
+			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());
 			retVal.setCurrentGenerator(
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());
 
