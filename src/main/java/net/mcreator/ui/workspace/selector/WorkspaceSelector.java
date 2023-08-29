@@ -45,6 +45,7 @@ import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.util.rmi.MCreatorRMIWorkspaceOpenListener;
 import net.mcreator.workspace.ShareableZIPManager;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -60,6 +61,7 @@ import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -83,6 +85,12 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	public WorkspaceSelector(@Nullable MCreatorApplication application, WorkspaceOpenListener workspaceOpenListener) {
 		this.workspaceOpenListener = workspaceOpenListener;
 		this.application = application;
+
+		try {
+			MCreatorRMIWorkspaceOpenListener.getInstance().setWorkspaceOpenListener(workspaceOpenListener);
+		} catch (RemoteException e) {
+			e.printStackTrace();
+		}
 
 		setTitle("MCreator " + Launcher.version.getMajorString());
 		setIconImage(UIRES.getAppIcon().getImage());

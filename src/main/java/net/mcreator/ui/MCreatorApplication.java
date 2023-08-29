@@ -50,6 +50,7 @@ import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.SoundUtils;
+import net.mcreator.util.rmi.RMIHandler;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
@@ -61,6 +62,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -87,6 +92,36 @@ public final class MCreatorApplication {
 
 	private MCreatorApplication(List<String> launchArguments) {
 		final SplashScreen splashScreen = new SplashScreen();
+
+		int rmiPort = Integer.parseInt(System.getProperty("mcreator.rmi.port","2013"));
+
+		try {
+			LOG.info("We are finding the other mcreator process if we find this we will send a sign to the old MCreator"
+					+ " process and exit the new process, current port:"+rmiPort);
+			var client =  RMIHandler.launchClient(rmiPort);
+
+			new Thread(()->{
+				try {
+					client.openWorkspace(launchArguments.get(launchArguments.size() - 1));
+				} catch (RemoteException ignored) {}
+			}).start();
+			//wait :(
+			Thread.sleep(3000L);
+
+			System.exit(0);
+		} catch (MalformedURLException | NotBoundException | RemoteException ignored) {
+			LOG.info("We can not find the other MCreator process we will continue to start the MCreator");
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+
+		try{
+			LOG.info("begin to open RMIServer");
+			RMIHandler.launchServer(rmiPort);
+		} catch (MalformedURLException | AlreadyBoundException | RemoteException e) {
+			// if we can not open server
+			throw new RuntimeException(e);
+		}
 
 		new Thread(() -> {
 			splashScreen.setProgress(5, "Loading plugins");
