@@ -100,13 +100,17 @@ public final class MCreatorApplication {
 					+ " process and exit the new process, current port:"+rmiPort);
 			var client =  RMIHandler.launchClient(rmiPort);
 
-			new Thread(()->{
-				try {
-					client.openWorkspace(launchArguments.get(launchArguments.size() - 1));
-				} catch (RemoteException ignored) {}
-			}).start();
-			//wait :(
-			Thread.sleep(3000L);
+			if (launchArguments.size() != 0) {
+				new Thread(() -> {
+					try {
+						client.openWorkspace(launchArguments.get(launchArguments.size() - 1));
+					} catch (RemoteException ignored) {
+					}
+				}).start();
+
+				//wait :(
+				Thread.sleep(3000L);
+			}
 
 			System.exit(0);
 		} catch (MalformedURLException | NotBoundException | RemoteException ignored) {
