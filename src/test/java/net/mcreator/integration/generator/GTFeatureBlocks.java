@@ -173,7 +173,7 @@ public class GTFeatureBlocks {
 							<value name="dirt"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
 							<value name="trunk"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
 							<value name="foliage"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
-							<field name=type>oak</field>
+							<field name="type">oak</field>
 							<field name="base_height">0</field>
 							<field name="height_variation_a">0</field><field name="height_variation_b">0</field>
 							<field name="force_dirt">FALSE</field><field name="ignore_vines">TRUE</field>
