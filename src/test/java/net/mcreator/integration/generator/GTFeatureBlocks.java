@@ -163,16 +163,17 @@ public class GTFeatureBlocks {
 							<value name="block">%s</value>
 						</block></value></block></xml>
 						""".formatted(testXML);
-				// Tree decorators are tested with the oak tree feature
+				// Tree decorators are tested with the simple tree feature
 				case "TreeDecorator" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">
-						<value name="feature"><block type="feature_tree_oak">
+						<value name="feature"><block type="feature_tree_simple">
 							<mutation inputs="1"></mutation>
 							<value name="decorator0">%s</value>
 							<value name="dirt"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
 							<value name="trunk"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
 							<value name="foliage"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+							<field name=type>oak</field>
 							<field name="base_height">0</field>
 							<field name="height_variation_a">0</field><field name="height_variation_b">0</field>
 							<field name="force_dirt">FALSE</field><field name="ignore_vines">TRUE</field>
