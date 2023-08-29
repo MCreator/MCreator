@@ -96,6 +96,10 @@ feature_simple_random_selector:
   - "minecraft:simple_random_selector"
 
 # Tree features
+feature_tree_simple:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"
 feature_tree_acacia:
   - TreeFeature
   - TreeConfiguration
