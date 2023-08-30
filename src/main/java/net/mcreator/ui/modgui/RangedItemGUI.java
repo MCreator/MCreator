@@ -393,7 +393,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		customBulletModelTexture.setValidator(() -> {
 			if (!adefault.equals(bulletModel.getSelectedItem()))
 				if (customBulletModelTexture.getSelectedItem() == null || customBulletModelTexture.getSelectedItem()
-						.equals(""))
+						.isEmpty())
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 							L10N.t("elementgui.ranged_item.error_custom_model_needs_texture"));
 			return Validator.ValidationResult.PASSED;

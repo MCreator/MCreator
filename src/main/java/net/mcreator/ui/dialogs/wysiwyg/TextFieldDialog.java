@@ -83,7 +83,7 @@ public class TextFieldDialog extends AbstractWYSIWYGDialog<TextField> {
 			if (nameField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				setVisible(false);
 				String text = Transliteration.transliterateString(nameField.getText());
-				if (!text.equals("")) {
+				if (!text.isEmpty()) {
 					if (textField == null) {
 						TextField component = new TextField(text, 0, 0, 120, 20, deft.getText());
 

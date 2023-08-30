@@ -43,7 +43,7 @@ import java.util.Map;
 
 public class GeneratorSelector {
 
-	private static final String covpfx = "dialog.generator_selector.coverage.";
+	public static final String covpfx = "dialog.generator_selector.coverage.";
 
 	private static final List<GeneratorFlavor> compatible1 = List.of(GeneratorFlavor.FORGE, GeneratorFlavor.FABRIC,
 			GeneratorFlavor.NEOFORGE, GeneratorFlavor.QUILT);
@@ -129,7 +129,11 @@ public class GeneratorSelector {
 
 			JPanel supportedElements = new JPanel(new GridLayout(-1, 6, 7, 3));
 			DataListLoader.getCache().entrySet().stream().filter(e -> !e.getValue().isEmpty()).map(Map.Entry::getKey)
-					.sorted().forEach(e -> addStatsBar(L10N.t(covpfx + e), e, supportedElements, stats));
+					.sorted().forEach(e -> {
+						String name = L10N.t(covpfx + e);
+						if (name != null)
+							addStatsBar(name, e, supportedElements, stats);
+					});
 
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"),
 					supportedElements, 10, 10));
@@ -138,8 +142,11 @@ public class GeneratorSelector {
 
 			JPanel supportedProcedures = new JPanel(new GridLayout(-1, 4, 7, 3));
 
-			stats.getGeneratorBlocklyBlocks()
-					.forEach((key, value) -> addStatsBar(L10N.t(covpfx + key), key, supportedProcedures, stats));
+			stats.getGeneratorBlocklyBlocks().forEach((key, value) -> {
+				String name = L10N.t(covpfx + key);
+				if (name != null)
+					addStatsBar(name, key, supportedProcedures, stats);
+			});
 
 			addStatsBar(L10N.t(covpfx + "triggers"), "triggers", supportedProcedures, stats);
 
