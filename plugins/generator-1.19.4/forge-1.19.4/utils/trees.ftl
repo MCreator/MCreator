@@ -1,51 +1,41 @@
-<#macro toTreeConfiguration dirt_provider foliage_provider trunk_provider foliage_config trunk_config size_config force_dirt ignore_vines decorators>
+<#-- Macro for trunk placers that only use height parameters -->
+<#macro simpleTrunkPlacer type height rand_a rand_b>
 {
-  "dirt_provider": ${dirt_provider},
-  "foliage_placer": <@toFoliagePlacer foliage_config/>,
-  "foliage_provider": ${foliage_provider},
-  "trunk_placer": <@toTrunkPlacer trunk_config/>,
-  "trunk_provider": ${trunk_provider},
-  "force_dirt": ${force_dirt},
-  "ignore_vines": ${ignore_vines},
-  "minimum_size": <@toSizeConfiguration size_config/>,
-  "decorators": [
-    <#list decorators as decorator>
-      ${decorator}
-    <#sep>,</#list>
-  ]
+  "type": "${type}",
+  "base_height": ${height},
+  "height_rand_a": ${rand_a},
+  "height_rand_b": ${rand_b}
 }
 </#macro>
 
-<#macro toFoliagePlacer foliage_config>
+<#-- Macro for foliage placers that only use radius, offset, and optional height parameters -->
+<#macro simpleFoliagePlacer type radius offset height=-1>
 {
-  "type": "${foliage_config[0]}",
-  "radius": ${foliage_config[1]},
-  "offset": ${foliage_config[2]}
-  <#if foliage_config?size == 4>,
-    "height": ${foliage_config[3]}
+  "type": "${type}",
+  "radius": ${radius},
+  "offset": ${offset}
+  <#if height != -1>,
+    "height": ${height}
   </#if>
 }
 </#macro>
 
-<#macro toTrunkPlacer trunk_config>
+<#macro twoLayersFeatureSize limit lower_size upper_size>
 {
-  "type": "${trunk_config[0]}",
-  "base_height": ${trunk_config[1]},
-  "height_rand_a": ${trunk_config[2]},
-  "height_rand_b": ${trunk_config[3]}
+  "type": "minecraft:two_layers_feature_size",
+  "limit": ${limit},
+  "lower_size": ${lower_size},
+  "upper_size": ${upper_size}
 }
 </#macro>
 
-<#-- Passing 5 parameters means using the "three layers" feature size -->
-<#macro toSizeConfiguration size_config>
+<#macro threeLayersFeatureSize limit upper_limit lower_size middle_size upper_size>
 {
-  "type": <#if size_config?size == 5>"minecraft:three_layers_feature_size"<#else>"minecraft:two_layers_feature_size"</#if>,
-  "limit": ${size_config[0]},
-  "lower_size": ${size_config[1]},
-  "upper_size": ${size_config[2]}
-  <#if size_config?size == 5>,
-    "middle_size": ${size_config[3]},
-    "upper_limit": ${size_config[4]}
-  </#if>
+  "type": "minecraft:three_layers_feature_size",
+  "limit": ${limit},
+  "upper_limit": ${upper_limit},
+  "lower_size": ${lower_size},
+  "middle_size": ${middle_size},
+  "upper_size": ${upper_size}
 }
 </#macro>
