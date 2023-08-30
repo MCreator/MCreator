@@ -18,6 +18,19 @@
 
 package net.mcreator.ui.views.editor.image.tool.tools;
 
+import net.mcreator.ui.init.L10N;
+
 public enum Shape {
-	SQUARE, FRAME, CIRCLE, RING
+	SQUARE("square"), FRAME("frame"), CIRCLE("circle"), RING("ring");
+
+	private final String name;
+
+	Shape(String name) {
+		this.name = name;
+	}
+
+	@Override public String toString() {
+		//TO make the code change smaller
+		return L10N.t("dialog.image_maker.tools.types.shape." + name);
+	}
 }
