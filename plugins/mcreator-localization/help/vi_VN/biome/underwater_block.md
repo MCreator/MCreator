@@ -1,0 +1,1 @@
+Tham số này xác định khối sẽ khởi tạo ở dưới nước. Hầu hết các quần xã vanilla dùng đất hoặc sỏi cho cái này.

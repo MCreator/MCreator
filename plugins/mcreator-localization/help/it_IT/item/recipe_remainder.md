@@ -1,0 +1,1 @@
+Questo parametro controlla l'oggetto che verrà sostituito quando utilizzato nel tavolo di creazione. Ciò significa che l'oggetto farà parte della ricetta, ma verrà sostituito con un altro oggetto.

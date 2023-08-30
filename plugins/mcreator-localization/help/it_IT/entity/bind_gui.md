@@ -1,0 +1,1 @@
+Se vuoi associare una GUI alla tua entità (per creare un villico o un inventario personalizzato simile a un cavallo, ad esempio), seleziona questa casella per abilitare l'inventario e associarlo a una GUI selezionata.
