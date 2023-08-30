@@ -30,7 +30,6 @@ public enum Shape {
 	}
 
 	@Override public String toString() {
-		//TO make the code change smaller
 		return L10N.t("dialog.image_maker.tools.types.shape." + name);
 	}
 }
