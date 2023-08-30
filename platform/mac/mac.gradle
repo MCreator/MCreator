@@ -20,7 +20,7 @@ void makeDMG(File directory, File outputDMGFile, String volumeName) {
             arg(value: outputDMGFile)
         }
     } else {
-        def mkisofs_binary = Os.isFamily(Os.FAMILY_WINDOWS) ? '/build/tools/mkisofs/Sample/mkisofs' : 'mkisofs'
+        def mkisofs_binary = Os.isFamily(Os.FAMILY_WINDOWS) ? './build/tools/mkisofs/Sample/mkisofs' : './mkisofs'
         ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
             arg(value: '-D')

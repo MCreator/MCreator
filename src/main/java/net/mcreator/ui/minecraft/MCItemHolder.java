@@ -64,7 +64,7 @@ public class MCItemHolder extends JButton implements IValidable {
 		bs.setItemSelectedListener(e -> {
 			MCItem bsa = bs.getSelectedMCItem();
 			if (bsa != null) {
-				setIcon(new ImageIcon(ImageUtils.resize(bsa.icon.getImage(), 25)));
+				setIcon(new ImageIcon(ImageUtils.resizeAA(bsa.icon.getImage(), 25)));
 				this.block = bsa.getName();
 				this.setToolTipText(bsa.getName());
 				getValidationStatus();

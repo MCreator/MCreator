@@ -46,7 +46,7 @@ public class DefinitionsProvider {
 					"/" + generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH)
 							+ ".definition.yaml");
 
-			if (config.equals("")) // definition not specified
+			if (config.isEmpty()) // definition not specified
 				continue;
 
 			YamlReader reader = new YamlReader(config);
@@ -61,7 +61,7 @@ public class DefinitionsProvider {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
 					"/" + generatorName + "/common." + type.getPluralName().toLowerCase(Locale.ENGLISH) + ".yaml");
 
-			if (config.equals("")) // definition not specified
+			if (config.isEmpty()) // definition not specified
 				continue;
 
 			YamlReader reader = new YamlReader(config);

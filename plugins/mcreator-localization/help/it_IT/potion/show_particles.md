@@ -1,0 +1,1 @@
+Questo parametro definisce se le particelle sono mostrate vicino al giocatore.

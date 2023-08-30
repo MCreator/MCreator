@@ -1,1 +1,1 @@
-Nếu được tích thì kiến trúc sẽ ngẫu nhiên xoay theo các hướng khác nhau khi sinh ra.
+Nếu được tích thì kiến trúc sẽ ngẫu nhiên xoay theo các hướng khác nhau khi xuất hiện.

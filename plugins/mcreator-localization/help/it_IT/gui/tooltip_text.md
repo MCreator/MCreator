@@ -1,0 +1,1 @@
+Il testo che verrà visualizzato nel tooltip per un giocatore che passa con il mouse sull'area coperta da questo componente.
