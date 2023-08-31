@@ -20,16 +20,13 @@ package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.init.L10N;
 
+import java.util.Locale;
+
 public enum Shape {
-	SQUARE("square"), FRAME("frame"), CIRCLE("circle"), RING("ring");
+	SQUARE, FRAME, CIRCLE, RING;
 
-	private final String name;
-
-	Shape(String name) {
-		this.name = name;
-	}
 
 	@Override public String toString() {
-		return L10N.t("dialog.image_maker.tools.types.shape." + name);
+		return L10N.t("dialog.image_maker.tools.types.shape." + this.name().toLowerCase(Locale.ENGLISH));
 	}
 }
