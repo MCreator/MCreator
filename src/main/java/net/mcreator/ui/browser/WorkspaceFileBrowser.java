@@ -231,20 +231,21 @@ public class WorkspaceFileBrowser extends JPanel {
 			addNodes(sourceCode, mcreator.getGenerator().getSourceRoot(), true);
 			node.add(sourceCode);
 
-			currRes = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.resource"));//
+			currRes = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.resource"));
 			addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
 			node.add(currRes);
 
 			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("sounds")
 					!= GeneratorStats.CoverageStatus.NONE) {
-				FilterTreeNode sounds = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.sounds"));//Sounds
+				FilterTreeNode sounds = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.sounds"));
 				addNodes(sounds, mcreator.getFolderManager().getSoundsDir(), true);
 				node.add(sounds);
 			}
 
 			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("structures")
 					!= GeneratorStats.CoverageStatus.NONE) {
-				FilterTreeNode structures = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.structures"));//Structures
+				FilterTreeNode structures = new FilterTreeNode(
+						L10N.t("workspace_file_browser.nodes.structures"));
 				addNodes(structures, mcreator.getFolderManager().getStructuresDir(), true);
 				node.add(structures);
 			}
@@ -255,7 +256,7 @@ public class WorkspaceFileBrowser extends JPanel {
 					!= GeneratorStats.CoverageStatus.NONE
 					|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 					!= GeneratorStats.CoverageStatus.NONE) {
-				FilterTreeNode models = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.models"));//Models
+				FilterTreeNode models = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.models"));
 				addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
 				node.add(models);
 			}
@@ -491,7 +492,8 @@ public class WorkspaceFileBrowser extends JPanel {
 					a.setIcon(UIRES.get("16px.resources.png"));
 				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.models")))
 					a.setIcon(UIRES.get("16px.models.png"));
-				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.run")) || tsi.equals(L10N.t("workspace_file_browser.nodes.bedrock")))
+				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.run")) || tsi.equals(
+						L10N.t("workspace_file_browser.nodes.bedrock")))
 					a.setIcon(UIRES.get("16px.minecraft.png"));
 				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.sounds")))
 					a.setIcon(UIRES.get("16px.music.png"));
