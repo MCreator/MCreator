@@ -244,7 +244,8 @@ public class WorkspaceFileBrowser extends JPanel {
 
 			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("structures")
 					!= GeneratorStats.CoverageStatus.NONE) {
-				FilterTreeNode structures = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.structures"));//Structures
+				FilterTreeNode structures = new FilterTreeNode(
+						L10N.t("workspace_file_browser.nodes.structures"));//Structures
 				addNodes(structures, mcreator.getFolderManager().getStructuresDir(), true);
 				node.add(structures);
 			}
@@ -491,7 +492,8 @@ public class WorkspaceFileBrowser extends JPanel {
 					a.setIcon(UIRES.get("16px.resources.png"));
 				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.models")))
 					a.setIcon(UIRES.get("16px.models.png"));
-				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.run")) || tsi.equals(L10N.t("workspace_file_browser.nodes.bedrock")))
+				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.run")) || tsi.equals(
+						L10N.t("workspace_file_browser.nodes.bedrock")))
 					a.setIcon(UIRES.get("16px.minecraft.png"));
 				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.sounds")))
 					a.setIcon(UIRES.get("16px.music.png"));
