@@ -39,13 +39,13 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 	private ActionListener itemSelectedListener;
 
-	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags) {
-		this(mcreator, blocksConsumer, supportTags, false);
+	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider supplier, boolean supportTags) {
+		this(mcreator, supplier, supportTags, false);
 	}
 
-	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags,
+	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider supplier, boolean supportTags,
 			boolean hasPotions) {
-		super(mcreator, blocksConsumer::provide);
+		super(mcreator, supplier::provide);
 
 		setTitle(L10N.t("dialog.item_selector.title"));
 		list.setCellRenderer(new Render());
