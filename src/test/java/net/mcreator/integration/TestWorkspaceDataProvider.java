@@ -784,8 +784,8 @@ public class TestWorkspaceDataProvider {
 			}
 			plant.hardness = 0.03;
 			plant.emissiveRendering = !_true;
-			plant.resistance = 3;
-			plant.luminance = 3;
+			plant.resistance = 3.45;
+			plant.luminance = 7;
 			plant.isReplaceable = !_true;
 			plant.forceTicking = !_true;
 			plant.hasTileEntity = !_true;
@@ -879,7 +879,7 @@ public class TestWorkspaceDataProvider {
 			item.stackSize = 52;
 			item.enchantability = 3;
 			item.useDuration = 8;
-			item.toolType = 1.4;
+			item.toolType = 1.43;
 			item.damageCount = 4;
 			item.destroyAnyBlock = _true;
 			item.inventorySize = 10;
@@ -901,7 +901,7 @@ public class TestWorkspaceDataProvider {
 			item.onEntitySwing = new Procedure("procedure8");
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
-			item.damageVsEntity = 3;
+			item.damageVsEntity = 6.53;
 			item.specialInformation = new StringProcedure(emptyLists ? null : "string1",
 					"info 1, info 2, test \\, is this, another one");
 			item.texture = "test2";
@@ -937,7 +937,7 @@ public class TestWorkspaceDataProvider {
 
 			item.isFood = _true;
 			item.nutritionalValue = 5;
-			item.saturation = 0.8f;
+			item.saturation = 0.82;
 			item.isMeat = _true;
 			item.isAlwaysEdible = _true;
 			item.animation = getRandomItem(random,
@@ -995,7 +995,7 @@ public class TestWorkspaceDataProvider {
 			rangedItem.customModelName = "Normal";
 			rangedItem.hasGlow = _true;
 			rangedItem.enableMeleeDamage = !_true;
-			rangedItem.damageVsEntity = 2;
+			rangedItem.damageVsEntity = 2.16;
 			return rangedItem;
 		} else if (ModElementType.POTION.equals(modElement.getType())) {
 			Potion potion = new Potion(modElement);
@@ -1618,7 +1618,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
 		livingEntity.rangedAttackInterval = 15;
-		livingEntity.rangedAttackRadius = 8;
+		livingEntity.rangedAttackRadius = 8.75;
 		livingEntity.spawnThisMob = !_true;
 		livingEntity.doesDespawnWhenIdle = _true;
 		livingEntity.spawningProbability = 23;
@@ -1647,10 +1647,10 @@ public class TestWorkspaceDataProvider {
 				getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 		tool.toolType = toolType;
 		tool.harvestLevel = 3;
-		tool.efficiency = 6;
+		tool.efficiency = 6.5;
 		tool.attackSpeed = 4.8;
 		tool.enchantability = 4;
-		tool.damageVsEntity = 2;
+		tool.damageVsEntity = 2.45;
 		tool.usageCount = 24;
 		tool.stayInGridWhenCrafting = _true;
 		tool.damageOnCrafting = emptyLists;
@@ -1750,7 +1750,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.smokingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			recipe.xpReward = 12.34;
+			recipe.xpReward = 1.34;
 			recipe.cookingTime = 42;
 		}
 		case "Blasting" -> {
@@ -1758,7 +1758,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.blastingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			recipe.xpReward = 21.234;
+			recipe.xpReward = 6.45;
 			recipe.cookingTime = 1000;
 		}
 		case "Stone cutting" -> {
@@ -1773,7 +1773,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.campfireCookingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			recipe.xpReward = 21.234;
+			recipe.xpReward = 24.234;
 			recipe.cookingTime = 2983;
 		}
 		case "Smithing" -> {
