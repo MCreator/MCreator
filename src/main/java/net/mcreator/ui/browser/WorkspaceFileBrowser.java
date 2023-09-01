@@ -517,7 +517,7 @@ public class WorkspaceFileBrowser extends JPanel {
 					a.setIcon(UIRES.get("laf.directory.gif"));
 			}
 
-			if (node.getFilter() != null && !node.getFilter().equals("")) {
+			if (node.getFilter() != null && !node.getFilter().isEmpty()) {
 				a.setText("<html>" + getText().replace(node.getFilter(), "<b>" + node.getFilter() + "</b>"));
 			}
 
