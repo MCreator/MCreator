@@ -1,2 +1,3 @@
-Ceci est le son joué lorsque le joueur mine le bloc.
-Note: Ce son est joué en boucle pendant sa destruction jusqu'à ce que le bloc soit détruit.
+C'est le son joué quand le joueur minera le block.
+
+NOTE : Le son se jouera en boucle jusqu'a que le bloc soit cassé.

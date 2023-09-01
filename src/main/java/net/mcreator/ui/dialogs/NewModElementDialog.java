@@ -49,7 +49,7 @@ public class NewModElementDialog {
 					@Override public Validator.ValidationResult validate(JComponent component) {
 						String regNameString = RegistryNameFixer.fromCamelCase(((VTextField) component).getText());
 						regName.setText(L10N.t("dialog.new_modelement.registry_name",
-								regNameString == null || regNameString.equals("") ?
+								regNameString == null || regNameString.isEmpty() ?
 										L10N.t("dialog.new_modelement.registry_name.empty") :
 										regNameString));
 						return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
@@ -58,7 +58,7 @@ public class NewModElementDialog {
 				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
 				UIManager.getString("OptionPane.cancelButtonText"), null, regName);
 
-		if (modName != null && !modName.equals("")) {
+		if (modName != null && !modName.isEmpty()) {
 			modName = JavaConventions.convertToValidClassName(modName);
 
 			ModElement element = new ModElement(mcreator.getWorkspace(), modName, type);
