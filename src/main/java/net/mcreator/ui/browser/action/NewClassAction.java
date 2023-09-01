@@ -82,7 +82,7 @@ public class NewClassAction extends BasicAction {
 
 							String code = "";
 
-							if (!packagenm.equals(""))
+							if (!packagenm.isEmpty())
 								code += "package " + packagenm + ";\n\n";
 
 							code += "public class " + classname + " {\n\n\n}";

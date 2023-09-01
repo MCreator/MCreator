@@ -1,0 +1,1 @@
+Se si desidera utilizzare questo bioma solo in dimensioni personalizzate, disabilitare questa opzione.

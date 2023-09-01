@@ -70,7 +70,7 @@ public class TextureHolder extends VButton {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (isEnabled()) {
 					if (e.getX() > 1 && e.getX() < 11 && e.getY() < getHeight() - 1 && e.getY() > getHeight() - 11
-							&& !id.equals("")) {
+							&& !id.isEmpty()) {
 						id = "";
 						setIcon(null);
 						getValidationStatus();
@@ -100,7 +100,7 @@ public class TextureHolder extends VButton {
 	@Override public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
-		if (!id.equals("")) {
+		if (!id.isEmpty()) {
 			ImageIcon removeIcon;
 			if (!removeButtonHover || !isEnabled()) {
 				removeIcon = ImageUtils.changeSaturation(UIRES.get("18px.remove"), 0.4f);
@@ -116,7 +116,7 @@ public class TextureHolder extends VButton {
 	}
 
 	public void setTextureFromTextureName(String texture) {
-		if (texture != null && !texture.equals("")) {
+		if (texture != null && !texture.isEmpty()) {
 			id = texture;
 			setToolTipText(texture);
 			setIcon(new ImageIcon(ImageUtils.resize(
@@ -126,7 +126,7 @@ public class TextureHolder extends VButton {
 	}
 
 	public boolean hasTexture() {
-		return id != null && !id.equals("");
+		return id != null && !id.isEmpty();
 	}
 
 	public void setActionListener(ActionListener actionListener) {

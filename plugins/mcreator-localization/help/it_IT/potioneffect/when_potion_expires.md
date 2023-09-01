@@ -1,0 +1,1 @@
+Questa procedura verrà eseguita quando un'entità perde questo effetto.

@@ -119,7 +119,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			String key = JOptionPane.showInputDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.localization.key_name_message"), L10N.t("workspace.localization.key_name_title"),
 					JOptionPane.QUESTION_MESSAGE);
-			if (key != null && !key.equals("")) {
+			if (key != null && !key.isEmpty()) {
 				workspacePanel.getMCreator().getWorkspace().setLocalization(key, "");
 				reloadElements();
 			}

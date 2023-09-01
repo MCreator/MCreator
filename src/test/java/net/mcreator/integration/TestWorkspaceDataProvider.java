@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -767,6 +768,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.PLANT.equals(modElement.getType())) {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
+			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
 			plant.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
@@ -774,10 +776,7 @@ public class TestWorkspaceDataProvider {
 			plant.textureBottom = "test2";
 			plant.itemTexture = emptyLists ? "" : "itest";
 			plant.particleTexture = emptyLists ? "" : "test3";
-			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
 			plant.growapableSpawnType = getRandomItem(random, ElementUtil.getDataListAsStringArray("planttypes"));
-			plant.staticPlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
-			plant.doublePlantGenerationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.suspiciousStewEffect = getRandomString(random,
 					ElementUtil.loadAllPotionEffects(modElement.getWorkspace()).stream().map(DataListEntry::getName)
 							.toList());
@@ -803,8 +802,8 @@ public class TestWorkspaceDataProvider {
 			}
 			plant.hardness = 0.03;
 			plant.emissiveRendering = !_true;
-			plant.resistance = 3;
-			plant.luminance = 3;
+			plant.resistance = 3.45;
+			plant.luminance = 7;
 			plant.isReplaceable = !_true;
 			plant.forceTicking = !_true;
 			plant.hasTileEntity = !_true;
@@ -842,6 +841,7 @@ public class TestWorkspaceDataProvider {
 			plant.frequencyOnChunks = 13;
 			plant.patchSize = 46;
 			plant.generateAtAnyHeight = _true;
+			plant.generationType = getRandomItem(random, new String[] { "Grass", "Flower" });
 			plant.flammability = 5;
 			plant.fireSpreadSpeed = 12;
 			plant.speedFactor = 34.632;
@@ -877,10 +877,16 @@ public class TestWorkspaceDataProvider {
 			plant.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
 							"Water", "Sky", "Fog", "Water fog"));
-			plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
-					!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
-			plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
-					"Cross model" }[valueIndex];
+
+			if ("double".equals(plant.plantType)) {
+				plant.renderType = !"No tint".equals(plant.tintType) ? 120 : 12;
+				plant.customModelName = "Cross model";
+			} else {
+				plant.renderType = new int[] { 13, !"No tint".equals(plant.tintType) ? 120 : 12, 13,
+						!"No tint".equals(plant.tintType) ? 120 : 12 }[valueIndex];
+				plant.customModelName = new String[] { "Crop model", "Cross model", "Crop model",
+						"Cross model" }[valueIndex];
+			}
 			plant.isItemTinted = _true;
 			if (!emptyLists) {
 				plant.isBonemealable = true;
@@ -898,7 +904,7 @@ public class TestWorkspaceDataProvider {
 			item.stackSize = 52;
 			item.enchantability = 3;
 			item.useDuration = 8;
-			item.toolType = 1.4;
+			item.toolType = 1.43;
 			item.damageCount = 4;
 			item.destroyAnyBlock = _true;
 			item.inventorySize = 10;
@@ -920,7 +926,7 @@ public class TestWorkspaceDataProvider {
 			item.onEntitySwing = new Procedure("procedure8");
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
-			item.damageVsEntity = 3;
+			item.damageVsEntity = 6.53;
 
 			if (!emptyLists) {
 				item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
@@ -961,7 +967,7 @@ public class TestWorkspaceDataProvider {
 
 			item.isFood = _true;
 			item.nutritionalValue = 5;
-			item.saturation = 0.8f;
+			item.saturation = 0.82;
 			item.isMeat = _true;
 			item.isAlwaysEdible = _true;
 			item.animation = getRandomItem(random,
@@ -1024,7 +1030,7 @@ public class TestWorkspaceDataProvider {
 			rangedItem.customModelName = "Normal";
 			rangedItem.hasGlow = _true;
 			rangedItem.enableMeleeDamage = !_true;
-			rangedItem.damageVsEntity = 2;
+			rangedItem.damageVsEntity = 2.16;
 			return rangedItem;
 		} else if (ModElementType.POTION.equals(modElement.getType())) {
 			Potion potion = new Potion(modElement);
@@ -1662,7 +1668,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
 		livingEntity.rangedAttackInterval = 15;
-		livingEntity.rangedAttackRadius = 8;
+		livingEntity.rangedAttackRadius = 8.75;
 		livingEntity.spawnThisMob = !_true;
 		livingEntity.doesDespawnWhenIdle = _true;
 		livingEntity.spawningProbability = 23;
@@ -1693,10 +1699,10 @@ public class TestWorkspaceDataProvider {
 				getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 		tool.toolType = toolType;
 		tool.harvestLevel = 3;
-		tool.efficiency = 6;
+		tool.efficiency = 6.5;
 		tool.attackSpeed = 4.8;
 		tool.enchantability = 4;
-		tool.damageVsEntity = 2;
+		tool.damageVsEntity = 2.45;
 		tool.usageCount = 24;
 		tool.stayInGridWhenCrafting = _true;
 		tool.damageOnCrafting = emptyLists;
@@ -1801,7 +1807,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.smokingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			recipe.xpReward = 12.34;
+			recipe.xpReward = 1.34;
 			recipe.cookingTime = 42;
 		}
 		case "Blasting" -> {
@@ -1809,7 +1815,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.blastingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			recipe.xpReward = 21.234;
+			recipe.xpReward = 6.45;
 			recipe.cookingTime = 1000;
 		}
 		case "Stone cutting" -> {
@@ -1824,7 +1830,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsAndTags).getName());
 			recipe.campfireCookingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			recipe.xpReward = 21.234;
+			recipe.xpReward = 24.234;
 			recipe.cookingTime = 2983;
 		}
 		case "Smithing" -> {

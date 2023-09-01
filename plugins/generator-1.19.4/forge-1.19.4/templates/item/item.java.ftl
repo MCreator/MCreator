@@ -120,7 +120,7 @@ public class ${name}Item extends Item {
 
 	<#if data.toolType != 1>
 	@Override public float getDestroySpeed(ItemStack par1ItemStack, BlockState par2Block) {
-		return ${data.toolType}F;
+		return ${data.toolType}f;
 	}
 	</#if>
 
