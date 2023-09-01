@@ -80,7 +80,16 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 			JButton useTags = L10N.button("dialog.item_selector.use_tag");
 			buttons.add(useTags);
 			useTags.addActionListener(e -> {
-				String tag = AddTagDialog.openAddTagDialog(this, mcreator, null, "tag", "category/tag");
+				String tagType = "Blocks";
+				List<MCItem> items = supplier.provide(mcreator.getWorkspace());
+				for (MCItem item : items) {
+					if (item.getType().equals("item")) {
+						tagType = "Items";
+						break;
+					}
+				}
+
+				String tag = AddTagDialog.openAddTagDialog(this, mcreator, tagType, "tag", "category/tag");
 				if (tag != null) {
 					MCItem mcItem = new MCItem.Tag(mcreator.getWorkspace(), tag);
 					model.addElement(mcItem);

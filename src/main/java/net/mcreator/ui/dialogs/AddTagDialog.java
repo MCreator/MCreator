@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Tag;
@@ -31,27 +32,34 @@ import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.workspace.elements.ModElement;
 
-import javax.annotation.Nullable;
+import javax.annotation.Nonnull;
 import javax.swing.*;
 import java.awt.*;
+import java.util.Locale;
 
 public class AddTagDialog {
 
-	public static String openAddTagDialog(Window parent, MCreator mcreator, @Nullable String tagType, String... suggestions) {
+	public static String openAddTagDialog(Window parent, MCreator mcreator, @Nonnull String tagType,
+			String... suggestions) {
+		JPanel wrap = new JPanel(new GridLayout());
 		VComboBox<String> tagName = new VComboBox<>();
 
-		tagName.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), tagName, true));
+		switch (tagType) {
+		case "Items" -> wrap.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Dependency.getColor("itemstack")));
+		case "Blocks" -> wrap.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Dependency.getColor("blockstate")));
+		case "Entities" -> wrap.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Dependency.getColor("entity")));
+		case "Biomes" -> wrap.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Dependency.getColor("world")));
+		}
 
+		tagName.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), tagName, true));
 		tagName.addItem("");
 
-		if (tagType != null) {
-			for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-				if (modElement.getType() == ModElementType.TAG) {
-					GeneratableElement ge = modElement.getGeneratableElement();
-					if (ge instanceof Tag tag) {
-						if (tagType.equals(tag.type))
-							tagName.addItem(tag.getResourceLocation());
-					}
+		for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+			if (modElement.getType() == ModElementType.TAG) {
+				GeneratableElement ge = modElement.getGeneratableElement();
+				if (ge instanceof Tag tag) {
+					if (tag.type.equals(tagType))
+						tagName.addItem(tag.getResourceLocation());
 				}
 			}
 		}
@@ -64,8 +72,10 @@ public class AddTagDialog {
 		tagName.enableRealtimeValidation();
 		ComponentUtils.deriveFont(tagName, 16);
 
-		int result = JOptionPane.showConfirmDialog(parent,
-				PanelUtils.northAndCenterElement(L10N.label("dialog.item_selector.enter_tag_name"), tagName),
+		wrap.add(tagName);
+
+		int result = JOptionPane.showConfirmDialog(parent, PanelUtils.northAndCenterElement(
+						L10N.label("dialog.item_selector.enter_tag_name." + tagType.toLowerCase(Locale.ENGLISH)), wrap, 5, 5),
 				L10N.t("dialog.item_selector.use_tag"), JOptionPane.OK_CANCEL_OPTION);
 		if (result == JOptionPane.OK_OPTION) {
 			if (tagName.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
