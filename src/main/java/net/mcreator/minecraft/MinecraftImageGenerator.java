@@ -1434,7 +1434,7 @@ public class MinecraftImageGenerator {
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("itemstack"), false)
 								.getImage());
 				case "Blocks" -> ImageUtils.toBufferedImage(
-						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), new Color(0x999960), false).getImage());
+						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("blockstate"), false).getImage());
 				case "Entities" -> ImageUtils.toBufferedImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("entity"), false)
 								.getImage());
