@@ -227,25 +227,24 @@ public class WorkspaceFileBrowser extends JPanel {
 			FilterTreeNode root = new FilterTreeNode("");
 			FilterTreeNode node = new FilterTreeNode(mcreator.getWorkspaceSettings().getModName());
 
-			sourceCode = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.source"));
+			sourceCode = new FilterTreeNode("Source (Gradle)");
 			addNodes(sourceCode, mcreator.getGenerator().getSourceRoot(), true);
 			node.add(sourceCode);
 
-			currRes = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.resource"));
+			currRes = new FilterTreeNode("Resources (Gradle)");
 			addNodes(currRes, mcreator.getGenerator().getResourceRoot(), true);
 			node.add(currRes);
 
 			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("sounds")
 					!= GeneratorStats.CoverageStatus.NONE) {
-				FilterTreeNode sounds = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.sounds"));
+				FilterTreeNode sounds = new FilterTreeNode("Sounds");
 				addNodes(sounds, mcreator.getFolderManager().getSoundsDir(), true);
 				node.add(sounds);
 			}
 
 			if (mcreator.getGeneratorStats().getBaseCoverageInfo().get("structures")
 					!= GeneratorStats.CoverageStatus.NONE) {
-				FilterTreeNode structures = new FilterTreeNode(
-						L10N.t("workspace_file_browser.nodes.structures"));
+				FilterTreeNode structures = new FilterTreeNode("Structures");
 				addNodes(structures, mcreator.getFolderManager().getStructuresDir(), true);
 				node.add(structures);
 			}
@@ -256,7 +255,7 @@ public class WorkspaceFileBrowser extends JPanel {
 					!= GeneratorStats.CoverageStatus.NONE
 					|| mcreator.getGeneratorStats().getBaseCoverageInfo().get("model_obj")
 					!= GeneratorStats.CoverageStatus.NONE) {
-				FilterTreeNode models = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.models"));
+				FilterTreeNode models = new FilterTreeNode("Models");
 				addNodes(models, mcreator.getFolderManager().getModelsDir(), true);
 				node.add(models);
 			}
@@ -277,7 +276,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			root.add(node);
 
 			if (new File(mcreator.getWorkspaceFolder(), "run/").isDirectory()) {
-				FilterTreeNode minecraft = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.run"));
+				FilterTreeNode minecraft = new FilterTreeNode("Minecraft run folder");
 				addNodes(minecraft, new File(mcreator.getWorkspaceFolder(), "run/"), true);
 				root.add(minecraft);
 			}
@@ -288,7 +287,7 @@ public class WorkspaceFileBrowser extends JPanel {
 
 			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.ADDON
 					&& MinecraftFolderUtils.getBedrockEditionFolder() != null) {
-				FilterTreeNode minecraft = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.bedrock"));
+				FilterTreeNode minecraft = new FilterTreeNode("Bedrock Edition");
 				addNodes(minecraft, MinecraftFolderUtils.getBedrockEditionFolder(), true);
 				root.add(minecraft);
 			}
@@ -339,9 +338,9 @@ public class WorkspaceFileBrowser extends JPanel {
 				else
 					Toolkit.getDefaultToolkit().beep();
 			} else if (selection.getUserObject() instanceof String selectedObject) {
-				if (selectedObject.equals(L10N.t("workspace_file_browser.nodes.source")))
+				if (selectedObject.equals("Source (Gradle)"))
 					DesktopUtils.openSafe(mcreator.getGenerator().getSourceRoot());
-				else if (selectedObject.equals(L10N.t("workspace_file_browser.nodes.resource")))
+				else if (selectedObject.equals("Resources (Gradle)"))
 					DesktopUtils.openSafe(mcreator.getGenerator().getResourceRoot());
 				else
 					Toolkit.getDefaultToolkit().beep();
@@ -389,7 +388,7 @@ public class WorkspaceFileBrowser extends JPanel {
 	}
 
 	private void loadExtSources(FilterTreeNode node) {
-		FilterTreeNode extDeps = new FilterTreeNode(L10N.t("workspace_file_browser.nodes.libraries"));
+		FilterTreeNode extDeps = new FilterTreeNode("External libraries");
 
 		if (mcreator.getGenerator().getProjectJarManager() != null) {
 			List<LibraryInfo> libraryInfos = mcreator.getGenerator().getProjectJarManager().getClassFileSources();
@@ -484,22 +483,21 @@ public class WorkspaceFileBrowser extends JPanel {
 				a.setText(tsi);
 				if (tsi.equals(mcreator.getWorkspaceSettings().getModName()))
 					a.setIcon(UIRES.get("16px.package.gif"));
-				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.source")))
+				else if (tsi.equals("Source (Gradle)"))
 					a.setIcon(UIRES.get("16px.mod.png"));
 				else if (tsi.equals("Textures"))
 					a.setIcon(UIRES.get("16px.textures.png"));
-				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.resource")))
+				else if (tsi.equals("Resources (Gradle)"))
 					a.setIcon(UIRES.get("16px.resources.png"));
-				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.models")))
+				else if (tsi.equals("Models"))
 					a.setIcon(UIRES.get("16px.models.png"));
-				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.run")) || tsi.equals(
-						L10N.t("workspace_file_browser.nodes.bedrock")))
+				else if (tsi.equals("Minecraft run folder") || tsi.equals("Bedrock Edition"))
 					a.setIcon(UIRES.get("16px.minecraft.png"));
-				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.sounds")))
+				else if (tsi.equals("Sounds"))
 					a.setIcon(UIRES.get("16px.music.png"));
-				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.libraries")))
+				else if (tsi.equals("External libraries"))
 					a.setIcon(UIRES.get("16px.directory.gif"));
-				else if (tsi.equals(L10N.t("workspace_file_browser.nodes.structures")))
+				else if (tsi.equals("Structures"))
 					a.setIcon(UIRES.get("16px.structures.png"));
 			} else if (node.getUserObject() instanceof FileNode fileNode) {
 				a.setText(fileNode.data);
