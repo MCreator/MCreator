@@ -203,7 +203,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().toString().equals(""))
+		if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().toString().isEmpty())
 			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.structuregen.error_select_structure_spawn"));
 		return new AggregatedValidationResult(page1group);
 	}

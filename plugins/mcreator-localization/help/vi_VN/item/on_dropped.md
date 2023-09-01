@@ -1,0 +1,1 @@
+Quy trình này sẽ được thực thi khi vật phẩm này được thả rơi.
