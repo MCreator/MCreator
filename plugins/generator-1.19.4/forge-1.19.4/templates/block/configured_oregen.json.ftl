@@ -1,6 +1,10 @@
 <#include "../mcitems.ftl">
 {
+	<#if data.hasGenerationConditions()>
     "type": "${modid}:${registryname}",
+	<#else>
+	"type": "minecraft:ore",
+	</#if>
     "config": {
         "size": ${data.frequencyOnChunk},
         "discard_chance_on_air_exposure": 0,
