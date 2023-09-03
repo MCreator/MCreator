@@ -51,12 +51,14 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	public final Level world;
 	public final Player entity;
 	public int x, y, z;
+	private ContainerLevelAccess access = ContainerLevelAccess.NULL;
 
 	private IItemHandler internal;
 
 	private final Map<Integer, Slot> customSlots = new HashMap<>();
 
 	private boolean bound = false;
+	private Block ownerBlock = null;
 
 	public ${name}Menu(int id, Inventory inv, FriendlyByteBuf extraData) {
 		super(${JavaModName}Menus.${data.getModElement().getRegistryNameUpper()}.get(), id);
@@ -72,6 +74,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 			this.x = pos.getX();
 			this.y = pos.getY();
 			this.z = pos.getZ();
+			access = ContainerLevelAccess.create(world, pos);
 		}
 
 		<#if data.type == 1>
@@ -87,7 +90,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 						this.internal = capability;
 						this.bound = true;
 					});
-				} else if (extraData.readableBytes() > 1) {
+				} else if (extraData.readableBytes() > 1) { // bound to entity
 					extraData.readByte(); // drop padding
 					Entity entity = world.getEntity(extraData.readVarInt());
 					if(entity != null)
@@ -96,9 +99,10 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 							this.bound = true;
 						});
 				} else { // might be bound to block
-					BlockEntity ent = inv.player != null ? inv.player.level.getBlockEntity(pos) : null;
-					if (ent != null) {
-						ent.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
+					BlockEntity blockEntity = this.world.getBlockEntity(pos);
+					if (blockEntity != null) {
+						this.ownerBlock = this.world.getBlockState(pos).getBlock();
+						blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
 							this.internal = capability;
 							this.bound = true;
 						});
@@ -182,6 +186,8 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	}
 
 	@Override public boolean stillValid(Player player) {
+		if (this.bound && this.ownerBlock != null)
+			return AbstractContainerMenu.stillValid(this.access, player, this.ownerBlock);
 		return true;
 	}
 
