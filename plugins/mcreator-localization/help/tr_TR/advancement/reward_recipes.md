@@ -1,0 +1,1 @@
+Oyuncu başarıyı tamamladığı zaman açılacak tarifler.
