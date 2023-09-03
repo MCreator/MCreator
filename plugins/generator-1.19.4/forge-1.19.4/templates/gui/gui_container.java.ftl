@@ -58,8 +58,9 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	private final Map<Integer, Slot> customSlots = new HashMap<>();
 
 	private boolean bound = false;
-	private Block ownerBlock = null;
-	private Supplier<Boolean> ownerItemMatcher = null;
+	private Supplier<Boolean> boundItemMatcher = null;
+	private Entity boundEntity = null;
+	private BlockEntity boundBlockEntity = null;
 
 	public ${name}Menu(int id, Inventory inv, FriendlyByteBuf extraData) {
 		super(${JavaModName}Menus.${data.getModElement().getRegistryNameUpper()}.get(), id);
@@ -83,28 +84,26 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 				if (extraData.readableBytes() == 1) { // bound to item
 					byte hand = extraData.readByte();
 					ItemStack itemstack = hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem();
-					this.ownerItemMatcher = () -> itemstack == (hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem());
+					this.boundItemMatcher = () -> itemstack == (hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem());
 					itemstack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
 						this.internal = capability;
 						this.bound = true;
 					});
 				} else if (extraData.readableBytes() > 1) { // bound to entity
 					extraData.readByte(); // drop padding
-					Entity entity = world.getEntity(extraData.readVarInt());
-					if(entity != null)
-						entity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
+					boundEntity = world.getEntity(extraData.readVarInt());
+					if(boundEntity != null)
+						boundEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
 							this.internal = capability;
 							this.bound = true;
 						});
 				} else { // might be bound to block
-					BlockEntity blockEntity = this.world.getBlockEntity(pos);
-					if (blockEntity != null) {
-						this.ownerBlock = this.world.getBlockState(pos).getBlock();
-						blockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
+					boundBlockEntity = this.world.getBlockEntity(pos);
+					if (boundBlockEntity != null)
+						boundBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
 							this.internal = capability;
 							this.bound = true;
 						});
-					}
 				}
 			}
 
@@ -184,10 +183,14 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	}
 
 	@Override public boolean stillValid(Player player) {
-		if (this.bound && this.ownerBlock != null)
-			return AbstractContainerMenu.stillValid(this.access, player, this.ownerBlock);
-		else if (this.bound && this.ownerItemMatcher != null)
-			return this.ownerItemMatcher.get();
+		if (this.bound) {
+			if (this.boundItemMatcher != null)
+				return this.boundItemMatcher.get();
+			else if (this.boundBlockEntity != null)
+				return AbstractContainerMenu.stillValid(this.access, player, this.boundBlockEntity.getBlockState().getBlock());
+			else if (this.boundEntity != null)
+				return this.boundEntity.isAlive();
+		}
 		return true;
 	}
 
