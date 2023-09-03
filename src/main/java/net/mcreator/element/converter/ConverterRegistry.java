@@ -46,8 +46,9 @@ import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
 import net.mcreator.element.converter.v2023_3.HugeFungusFeatureConverter;
 import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
-import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
 import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
+import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
+import net.mcreator.element.converter.v2023_4.BlockFeatureDimensionRestrictionConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +64,8 @@ public class ConverterRegistry {
 				new BiomeCustomFeaturesConverter()));
 		put(ModElementType.BLOCK,
 				List.of(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
-						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer()));
+						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer(),
+						new BlockFeatureDimensionRestrictionConverter()));
 		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer()));
 		put(ModElementType.FLUID, List.of(new FluidNameFixer(), new FluidGenToFeatureConverter()));
 		put(ModElementType.COMMAND, List.of(new CommandParameterBlockFixer()));
@@ -76,7 +78,8 @@ public class ConverterRegistry {
 				List.of(new OverlayCoordinateConverter(), new OverlayTexturesConverter(), new GUIComponentNamer()));
 		put(ModElementType.PAINTING, List.of(new PaintingFieldsFixer()));
 		put(ModElementType.PARTICLE, List.of(new ParticleTextureConverter()));
-		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer(), new PlantGenerationTypeConverter()));
+		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer(), new PlantGenerationTypeConverter(),
+				new BlockFeatureDimensionRestrictionConverter()));
 		put(ModElementType.POTION, List.of(new PotionToEffectConverter()));
 		put(ModElementType.POTIONEFFECT, List.of(new EffectTextureConverter()));
 		put(ModElementType.PROCEDURE, List.of(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),

@@ -173,8 +173,7 @@ import java.util.stream.Collectors;
 	public Procedure onRedstoneOff;
 	public Procedure onHitByProjectile;
 
-	public List<String> spawnWorldTypes; // TODO: converter
-	public boolean generateFeature; // TODO: converter
+	public boolean generateFeature;
 	public List<BiomeEntry> restrictionBiomes;
 	public List<MItemBlock> blocksToReplace;
 	public String generationShape;

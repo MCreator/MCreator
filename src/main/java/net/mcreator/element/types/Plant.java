@@ -111,8 +111,7 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public int frequencyOnChunks;
-	public List<String> spawnWorldTypes; // TODO: converter
-	public boolean generateFeature; // TODO: converter
+	public boolean generateFeature;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
 	public String generationType;
