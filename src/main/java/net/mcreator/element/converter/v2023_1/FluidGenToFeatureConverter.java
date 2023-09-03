@@ -58,6 +58,13 @@ public class FluidGenToFeatureConverter implements IConverter {
 
 					feature.generationStep = "LAKES";
 
+					if (fluid.get("spawnWorldTypes") != null) {
+						fluid.getAsJsonArray("spawnWorldTypes").iterator()
+								.forEachRemaining(e -> feature.restrictionDimensions.add(e.getAsString()));
+					} else {
+						feature.restrictionDimensions.add("Surface");
+					}
+
 					if (fluid.get("restrictionBiomes") != null && !fluid.getAsJsonArray("restrictionBiomes")
 							.isEmpty()) {
 						fluid.getAsJsonArray("restrictionBiomes").iterator().forEachRemaining(

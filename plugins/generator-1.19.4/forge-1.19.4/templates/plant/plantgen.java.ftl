@@ -37,31 +37,13 @@ package ${package}.world.features.plants;
 <#compress>
 public class ${name}Feature extends RandomPatchFeature {
 
-	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
-		<#list data.spawnWorldTypes as worldType>
-			<#if worldType == "Surface">
-				Level.OVERWORLD
-			<#elseif worldType == "Nether">
-				Level.NETHER
-			<#elseif worldType == "End">
-				Level.END
-			<#else>
-				ResourceKey.create(Registries.DIMENSION,
-						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}"))
-			</#if><#sep>,
-		</#list>
-	);
-
 	public ${name}Feature() {
 		super(RandomPatchConfiguration.CODEC);
 	}
 
 	public boolean place(FeaturePlaceContext<RandomPatchConfiguration> context) {
-		WorldGenLevel world = context.level();
-		if (!generate_dimensions.contains(world.getLevel().dimension()))
-			return false;
-
 		<#if hasProcedure(data.generateCondition)>
+		WorldGenLevel world = context.level();
 		int x = context.origin().getX();
 		int y = context.origin().getY();
 		int z = context.origin().getZ();

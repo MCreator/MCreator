@@ -27,6 +27,7 @@ import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
@@ -110,7 +111,8 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public int frequencyOnChunks;
-	public List<String> spawnWorldTypes;
+	public List<String> spawnWorldTypes; // TODO: converter
+	public boolean generateFeature; // TODO: converter
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
 	public String generationType;
@@ -138,8 +140,6 @@ import java.util.stream.Collectors;
 		super(element);
 
 		this.canBePlacedOn = new ArrayList<>();
-		this.spawnWorldTypes = new ArrayList<>();
-		this.spawnWorldTypes.add("Surface");
 		this.restrictionBiomes = new ArrayList<>();
 		this.growapableSpawnType = "Plains";
 		this.renderType = 12;
@@ -199,18 +199,19 @@ import java.util.stream.Collectors;
 		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
 	}
 
-	public boolean doesGenerateInWorld() {
-		return !spawnWorldTypes.isEmpty();
-	}
-
 	@Override public String getRenderType() {
 		return "cutout";
+	}
+
+	public boolean hasGenerationConditions() {
+		return generateFeature && generateCondition != null;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
 
-		if (doesGenerateInWorld())
+		if (hasGenerationConditions() || getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+				== GeneratorFlavor.FABRIC) // Fabric needs to be handled differently than Forge
 			baseTypes.add(BaseType.FEATURE);
 
 		if (hasTileEntity)

@@ -768,7 +768,6 @@ public class TestWorkspaceDataProvider {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			plant.texture = "test";
@@ -1193,7 +1192,6 @@ public class TestWorkspaceDataProvider {
 				block.fluidRestrictions.add(new net.mcreator.element.parts.Fluid(modElement.getWorkspace(),
 						getRandomItem(random, ElementUtil.loadAllFluids(modElement.getWorkspace()))));
 			}
-			block.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				block.restrictionBiomes.addAll(

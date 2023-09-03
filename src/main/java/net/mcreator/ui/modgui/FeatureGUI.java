@@ -42,7 +42,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.BiomeListField;
-import net.mcreator.ui.minecraft.DimensionListField;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
