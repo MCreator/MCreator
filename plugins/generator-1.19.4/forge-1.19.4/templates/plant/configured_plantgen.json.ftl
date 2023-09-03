@@ -1,6 +1,10 @@
 <#include "../mcitems.ftl">
 {
+    <#if data.hasGenerationConditions()>
     "type": "${modid}:${registryname}",
+    <#else>
+	"type": "minecraft:random_patch",
+    </#if>
     "config": {
         <#if data.patchSize != 128>
         "tries": ${data.patchSize},
