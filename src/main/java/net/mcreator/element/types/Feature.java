@@ -46,7 +46,6 @@ import java.util.List;
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 
 	public String generationStep;
-	public List<String> restrictionDimensions; // TODO: converter
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
 	@BlocklyXML("features") public String featurexml;
@@ -92,4 +91,5 @@ import java.util.List;
 		else
 			return Collections.emptyList();
 	}
+
 }

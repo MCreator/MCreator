@@ -49,6 +49,7 @@ import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
 import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
 import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
 import net.mcreator.element.converter.v2023_4.BlockFeatureDimensionRestrictionConverter;
+import net.mcreator.element.converter.v2023_4.FeatureDimensionRestrictionConverter;
 import net.mcreator.element.converter.v2023_4.StructureDimensionRestrictionConverter;
 
 import java.util.HashMap;
@@ -93,7 +94,8 @@ public class ConverterRegistry {
 		put(ModElementType.RANGEDITEM, List.of(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
 		put(ModElementType.ITEM, List.of(new ItemDispenseBehaviorToItemExtensionConverter()));
-		put(ModElementType.FEATURE, List.of(new HugeFungusFeatureConverter()));
+		put(ModElementType.FEATURE,
+				List.of(new HugeFungusFeatureConverter(), new FeatureDimensionRestrictionConverter()));
 		put(ModElementType.STRUCTURE, List.of(new StructureDimensionRestrictionConverter()));
 	}};
 
