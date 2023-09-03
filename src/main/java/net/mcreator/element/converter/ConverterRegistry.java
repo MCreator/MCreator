@@ -49,6 +49,7 @@ import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
 import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
 import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
 import net.mcreator.element.converter.v2023_4.BlockFeatureDimensionRestrictionConverter;
+import net.mcreator.element.converter.v2023_4.StructureDimensionRestrictionConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -93,6 +94,7 @@ public class ConverterRegistry {
 		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
 		put(ModElementType.ITEM, List.of(new ItemDispenseBehaviorToItemExtensionConverter()));
 		put(ModElementType.FEATURE, List.of(new HugeFungusFeatureConverter()));
+		put(ModElementType.STRUCTURE, List.of(new StructureDimensionRestrictionConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one
