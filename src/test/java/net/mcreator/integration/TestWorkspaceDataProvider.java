@@ -674,7 +674,6 @@ public class TestWorkspaceDataProvider {
 			structure.spawnHeightOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnXOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnZOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
-			structure.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			structure.spawnLocation = getRandomString(random, Arrays.asList("Ground", "Air", "Underground"));
 			structure.surfaceDetectionType = getRandomString(random,
 					Arrays.asList("First motion blocking block", "First block"));
@@ -1536,9 +1535,6 @@ public class TestWorkspaceDataProvider {
 			Feature feature = new Feature(modElement);
 			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));
-			feature.restrictionDimensions = emptyLists ?
-					new ArrayList<>() :
-					new ArrayList<>(Arrays.asList("Surface", "Nether"));
 			feature.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				feature.restrictionBiomes.addAll(

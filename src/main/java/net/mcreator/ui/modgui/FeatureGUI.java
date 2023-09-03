@@ -62,7 +62,6 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 	private ProcedureSelector generateCondition;
 	private BiomeListField restrictionBiomes;
-	private DimensionListField restrictionDimensions;
 	private final JComboBox<String> generationStep = new JComboBox<>();
 
 	private BlocklyPanel blocklyPanel;
@@ -87,19 +86,14 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
 
-		restrictionDimensions = new DimensionListField(mcreator);
 		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
 
 		JPanel page1 = new JPanel(new BorderLayout(10, 10));
-		JPanel properties = new JPanel(new GridLayout(3, 2, 4, 2));
+		JPanel properties = new JPanel(new GridLayout(2, 2, 4, 2));
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("feature/generation_stage"),
 				L10N.label("elementgui.feature.generation_stage")));
 		properties.add(generationStep);
-
-		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("feature/restrict_to_dimensions"),
-				L10N.label("elementgui.feature.restrict_to_dimensions")));
-		properties.add(restrictionDimensions);
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
 				L10N.label("elementgui.common.restrict_to_biomes")));
@@ -190,7 +184,6 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 	@Override protected void openInEditingMode(Feature feature) {
 		generationStep.setSelectedItem(feature.generationStep);
-		restrictionDimensions.setListElements(feature.restrictionDimensions);
 		restrictionBiomes.setListElements(feature.restrictionBiomes);
 		generateCondition.setSelectedProcedure(feature.generateCondition);
 
@@ -205,7 +198,6 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 	@Override public Feature getElementFromGUI() {
 		Feature feature = new Feature(modElement);
 		feature.generationStep = (String) generationStep.getSelectedItem();
-		feature.restrictionDimensions = restrictionDimensions.getListElements();
 		feature.restrictionBiomes = restrictionBiomes.getListElements();
 		feature.generateCondition = generateCondition.getSelectedProcedure();
 
