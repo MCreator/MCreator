@@ -66,7 +66,6 @@ public class ConverterRegistry {
 				List.of(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
 						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer(),
 						new SpecialInformationConverter()));
-		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer(), new SpecialInformationConverter()));
 		put(ModElementType.FLUID,
 				List.of(new FluidNameFixer(), new FluidGenToFeatureConverter(), new SpecialInformationConverter()));
@@ -83,7 +82,8 @@ public class ConverterRegistry {
 				List.of(new OverlayCoordinateConverter(), new OverlayTexturesConverter(), new GUIComponentNamer()));
 		put(ModElementType.PAINTING, List.of(new PaintingFieldsFixer()));
 		put(ModElementType.PARTICLE, List.of(new ParticleTextureConverter()));
-		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer(), new PlantGenerationTypeConverter(), new SpecialInformationConverter()));
+		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer(), new PlantGenerationTypeConverter(),
+				new SpecialInformationConverter()));
 		put(ModElementType.POTION, List.of(new PotionToEffectConverter()));
 		put(ModElementType.POTIONEFFECT, List.of(new EffectTextureConverter()));
 		put(ModElementType.PROCEDURE, List.of(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
