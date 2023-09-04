@@ -206,19 +206,19 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		helmetSpecialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
-				L10N.t("elementgui.armor.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.armor.helmet_special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		bodySpecialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
-				L10N.t("elementgui.armor.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.armor.body_special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		leggingsSpecialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
-				L10N.t("elementgui.armor.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.armor.leggings_special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		bootsSpecialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
-				L10N.t("elementgui.armor.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.armor.boots_special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JTextField(25), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
