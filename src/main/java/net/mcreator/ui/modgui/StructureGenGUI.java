@@ -34,8 +34,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
-import net.mcreator.ui.minecraft.DimensionListField;
-import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -50,38 +48,33 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.Locale;
 
 public class StructureGenGUI extends ModElementGUI<Structure> {
 
-	private DimensionListField spawnWorldTypes;
-
-	private final JComboBox<String> spawnLocation = new JComboBox<>(new String[] { "Ground", "Air", "Underground" });
 	private final JComboBox<String> ignoreBlocks = new JComboBox<>(
 			new String[] { "STRUCTURE_BLOCK", "AIR_AND_STRUCTURE_BLOCK", "AIR" });
 
-	private final JSpinner spawnProbability = new JSpinner(new SpinnerNumberModel(10000, 0, 1000000, 1));
-
 	private final JComboBox<String> surfaceDetectionType = new JComboBox<>(
-			new String[] { "First motion blocking block", "First block" });
+			new String[] { "WORLD_SURFACE_WG", "WORLD_SURFACE", "OCEAN_FLOOR_WG", "OCEAN_FLOOR", "MOTION_BLOCKING",
+					"MOTION_BLOCKING_NO_LEAVES" });
 
-	private final JSpinner spawnHeightOffset = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
-	private final JSpinner spawnOffsetX = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
-	private final JSpinner spawnOffsetZ = new JSpinner(new SpinnerNumberModel(0, -128, 128, 1));
+	private final JComboBox<String> terrainAdaptation = new JComboBox<>(
+			new String[] { "none", "beard_thin", "beard_box", "bury" });
 
-	private final JMinMaxSpinner countPerChunk = new JMinMaxSpinner(1, 1, 1, 16, 1);
+	private final JComboBox<String> projection = new JComboBox<>(new String[] { "rigid", "terrain_matching" });
 
 	private BiomeListField restrictionBiomes;
-	private MCItemListField restrictionBlocks;
+
+	private final JMinMaxSpinner separation_spacing = new JMinMaxSpinner(2, 5, 0, 1000000, 1,
+			L10N.t("elementgui.structuregen.separation"), L10N.t("elementgui.structuregen.spacing"));
 
 	private final JComboBox<String> structureSelector = new JComboBox<>();
 
-	private final JCheckBox randomlyRotateStructure = L10N.checkbox("elementgui.common.enable");
+	private final JComboBox<String> generationStep = new JComboBox<>();
 
 	private final ValidationGroup page1group = new ValidationGroup();
-
-	private ProcedureSelector onStructureGenerated;
 
 	private ProcedureSelector generateCondition;
 
@@ -92,29 +85,21 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 	}
 
 	@Override protected void initGUI() {
-		onStructureGenerated = new ProcedureSelector(this.withEntry("structure/on_generated"), mcreator,
-				L10N.t("elementgui.structuregen.event_structure_instance_generated"), ProcedureSelector.Side.SERVER,
-				Dependency.fromString("x:number/y:number/z:number/world:world"));
-
 		generateCondition = new ProcedureSelector(this.withEntry("structure/condition"), mcreator,
 				L10N.t("elementgui.structuregen.event_additional_structure_condition_is"),
 				ProcedureSelector.Side.SERVER, true, VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional"));
 
-		restrictionBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		restrictionBiomes = new BiomeListField(mcreator);
-		spawnWorldTypes = new DimensionListField(mcreator);
-		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
-		countPerChunk.setAllowEqualValues(true);
+
+		separation_spacing.setAllowEqualValues(false);
 
 		JPanel pane5 = new JPanel(new BorderLayout(3, 3));
 
-		spawnProbability.setOpaque(false);
-
 		ComponentUtils.deriveFont(structureSelector, 16);
 
-		JPanel params = new JPanel(new GridLayout(11, 2, 50, 2));
+		JPanel params = new JPanel(new GridLayout(8, 2, 50, 2));
 		params.setOpaque(false);
 
 		JButton importnbt = new JButton(UIRES.get("18px.add"));
@@ -136,58 +121,42 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 				L10N.label("elementgui.structuregen.select_tooltip")));
 		params.add(PanelUtils.centerAndEastElement(structureSelector, importnbt));
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/probability"),
-				L10N.label("elementgui.structuregen.probability")));
-		params.add(spawnProbability);
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/biomes_to_spawn"),
+				L10N.label("elementgui.structuregen.biomes_to_spawn")));
+		params.add(restrictionBiomes);
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/group_size"),
-				L10N.label("elementgui.structuregen.structure_group_size")));
-		params.add(countPerChunk);
-
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/random_rotation"),
-				L10N.label("elementgui.structuregen.random_structure_rotation")));
-		params.add(randomlyRotateStructure);
-
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/ignore_blocks"),
-				L10N.label("elementgui.structuregen.ignore_blocks")));
-		params.add(ignoreBlocks);
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/generation_step"),
+				L10N.label("elementgui.structuregen.generation_stage")));
+		params.add(generationStep);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/ground_detection"),
 				L10N.label("elementgui.structuregen.surface_detection_type")));
 		params.add(surfaceDetectionType);
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/spawn_location"),
-				L10N.label("elementgui.structuregen.spawn_location")));
-		params.add(spawnLocation);
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/separation_spacing"),
+				L10N.label("elementgui.structuregen.separation_spacing")));
+		params.add(separation_spacing);
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/height_offset"),
-				L10N.label("elementgui.structuregen.spawn_height_offset")));
-		params.add(PanelUtils.gridElements(1, 3, 2, 2, spawnOffsetX, spawnHeightOffset, spawnOffsetZ));
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/projection"),
+				L10N.label("elementgui.structuregen.projection")));
+		params.add(projection);
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/spawn_world_types"),
-				L10N.label("elementgui.structuregen.spawn_world_types")));
-		params.add(spawnWorldTypes);
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/terrain_adaptation"),
+				L10N.label("elementgui.structuregen.terrain_adaptation")));
+		params.add(terrainAdaptation);
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_blocks"),
-				L10N.label("elementgui.structuregen.restrict_blocks")));
-		params.add(restrictionBlocks);
-
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
-				L10N.label("elementgui.structuregen.restrict_biomes")));
-		params.add(restrictionBiomes);
-
-		randomlyRotateStructure.setSelected(true);
-		randomlyRotateStructure.setOpaque(false);
-		randomlyRotateStructure.setForeground(Color.white);
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/ignore_blocks"),
+				L10N.label("elementgui.structuregen.ignore_blocks")));
+		params.add(ignoreBlocks);
 
 		pane5.setOpaque(false);
 
-		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(params,
-				PanelUtils.join(FlowLayout.LEFT, generateCondition, onStructureGenerated), 20, 20)));
+		pane5.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.northAndCenterElement(params, PanelUtils.join(FlowLayout.LEFT, generateCondition), 20, 20)));
 
-		spawnWorldTypes.setValidator(
-				new ItemListFieldValidator(spawnWorldTypes, L10N.t("elementgui.structuregen.error_select_world_type")));
-		page1group.addValidationElement(spawnWorldTypes);
+		restrictionBiomes.setValidator(
+				new ItemListFieldValidator(restrictionBiomes, L10N.t("elementgui.structuregen.error_select_biomes")));
+		page1group.addValidationElement(restrictionBiomes);
 
 		addPage(pane5);
 	}
@@ -195,9 +164,10 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
-		onStructureGenerated.refreshListKeepSelected();
-
 		generateCondition.refreshListKeepSelected();
+
+		ComboBoxUtil.updateComboBoxContents(generationStep,
+				Arrays.asList(ElementUtil.getDataListAsStringArray("generationsteps")), "SURFACE_STRUCTURES");
 
 		ComboBoxUtil.updateComboBoxContents(structureSelector, mcreator.getFolderManager().getStructureList());
 	}
@@ -209,42 +179,30 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 	}
 
 	@Override public void openInEditingMode(Structure structure) {
-		spawnProbability.setValue(structure.spawnProbability);
-		spawnHeightOffset.setValue(structure.spawnHeightOffset);
-		spawnOffsetX.setValue(structure.spawnXOffset);
-		spawnOffsetZ.setValue(structure.spawnZOffset);
-		countPerChunk.setMinValue(structure.minCountPerChunk);
-		countPerChunk.setMaxValue(structure.maxCountPerChunk);
-		spawnLocation.setSelectedItem(structure.spawnLocation);
 		ignoreBlocks.setSelectedItem(structure.ignoreBlocks);
+		projection.setSelectedItem(structure.projection);
 		surfaceDetectionType.setSelectedItem(structure.surfaceDetectionType);
-		spawnWorldTypes.setListElements(structure.spawnWorldTypes);
-		randomlyRotateStructure.setSelected(structure.randomlyRotateStructure);
+		terrainAdaptation.setSelectedItem(structure.terrainAdaptation);
 		structureSelector.setSelectedItem(structure.structure);
-		restrictionBlocks.setListElements(structure.restrictionBlocks);
 		restrictionBiomes.setListElements(structure.restrictionBiomes);
-		onStructureGenerated.setSelectedProcedure(structure.onStructureGenerated);
 		generateCondition.setSelectedProcedure(structure.generateCondition);
+		separation_spacing.setMinValue(structure.separation);
+		separation_spacing.setMaxValue(structure.spacing);
+		generationStep.setSelectedItem(structure.generationStep);
 	}
 
 	@Override public Structure getElementFromGUI() {
 		Structure structure = new Structure(modElement);
-		structure.spawnProbability = (int) spawnProbability.getValue();
-		structure.spawnHeightOffset = (int) spawnHeightOffset.getValue();
-		structure.spawnXOffset = (int) spawnOffsetX.getValue();
-		structure.spawnZOffset = (int) spawnOffsetZ.getValue();
-		structure.minCountPerChunk = countPerChunk.getIntMinValue();
-		structure.maxCountPerChunk = countPerChunk.getIntMaxValue();
-		structure.spawnWorldTypes = spawnWorldTypes.getListElements();
-		structure.spawnLocation = (String) spawnLocation.getSelectedItem();
 		structure.ignoreBlocks = (String) ignoreBlocks.getSelectedItem();
+		structure.projection = (String) projection.getSelectedItem();
 		structure.surfaceDetectionType = (String) surfaceDetectionType.getSelectedItem();
-		structure.restrictionBlocks = restrictionBlocks.getListElements();
-		structure.randomlyRotateStructure = randomlyRotateStructure.isSelected();
+		structure.terrainAdaptation = (String) terrainAdaptation.getSelectedItem();
 		structure.restrictionBiomes = restrictionBiomes.getListElements();
 		structure.structure = (String) structureSelector.getSelectedItem();
-		structure.onStructureGenerated = onStructureGenerated.getSelectedProcedure();
 		structure.generateCondition = generateCondition.getSelectedProcedure();
+		structure.separation = separation_spacing.getIntMinValue();
+		structure.spacing = separation_spacing.getIntMaxValue();
+		structure.generationStep = (String) generationStep.getSelectedItem();
 		return structure;
 	}
 

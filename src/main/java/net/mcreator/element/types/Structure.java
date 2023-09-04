@@ -20,7 +20,6 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
-import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -29,28 +28,18 @@ import java.util.List;
 @SuppressWarnings("unused") public class Structure extends GeneratableElement {
 
 	public String structure;
-	public String projection; //UI: dropdown: [rigid, terrain_matching]
+	public String projection;
 	public String ignoreBlocks;
 
-	public int spacing; //UI
-	public int separation; //UI
+	public int spacing;
+	public int separation;
 
-	public List<BiomeEntry> restrictionBiomes; //UI: require at least one entry
+	public List<BiomeEntry> restrictionBiomes;
 	public String surfaceDetectionType;
-	public String spawnLocation; //implement
+	public String terrainAdaptation;
+	public String generationStep;
 
-	public List<MItemBlock> restrictionBlocks; //implement
-	public Procedure generateCondition; //implement
-	public Procedure onStructureGenerated; //implement
-
-	public int spawnHeightOffset; //TODO: removal
-	public int spawnProbability; //TODO: removal
-	public boolean randomlyRotateStructure; //TODO: removal
-	public int minCountPerChunk; //TODO: removal
-	public int maxCountPerChunk; //TODO: removal
-	public int spawnXOffset; //TODO: removal
-	public int spawnZOffset; //TODO: removal
-	public List<String> spawnWorldTypes; //TODO: removal
+	public Procedure generateCondition; //TODO
 
 	private Structure() {
 		this(null);
@@ -58,9 +47,6 @@ import java.util.List;
 
 	public Structure(ModElement element) {
 		super(element);
-
-		this.surfaceDetectionType = "First motion blocking block";
-		this.ignoreBlocks = "STRUCTURE_BLOCK";
 	}
 
 }

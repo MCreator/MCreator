@@ -668,28 +668,21 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.STRUCTURE.equals(modElement.getType())) {
 			Structure structure = new Structure(modElement);
 			structure.structure = "test";
-			structure.spawnProbability = 310000;
-			structure.minCountPerChunk = 1;
-			structure.maxCountPerChunk = 3;
-			structure.spawnHeightOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
-			structure.spawnXOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
-			structure.spawnZOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
-			structure.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
-			structure.spawnLocation = getRandomString(random, Arrays.asList("Ground", "Air", "Underground"));
 			structure.surfaceDetectionType = getRandomString(random,
-					Arrays.asList("First motion blocking block", "First block"));
+					Arrays.asList("WORLD_SURFACE_WG", "WORLD_SURFACE", "OCEAN_FLOOR_WG", "OCEAN_FLOOR",
+							"MOTION_BLOCKING", "MOTION_BLOCKING_NO_LEAVES"));
 			structure.ignoreBlocks = getRandomString(random,
 					Arrays.asList("STRUCTURE_BLOCK", "AIR_AND_STRUCTURE_BLOCK", "AIR"));
-			structure.restrictionBlocks = new ArrayList<>();
+			structure.terrainAdaptation = getRandomString(random,
+					Arrays.asList("none", "beard_thin", "beard_box", "bury"));
+			structure.projection = getRandomString(random, Arrays.asList("rigid", "terrain_matching"));
 			structure.restrictionBiomes = new ArrayList<>();
-			if (!emptyLists) {
-				structure.restrictionBlocks.addAll(
-						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-			}
+			structure.spacing = 14;
+			structure.separation = 6;
+			structure.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
+					ElementUtil.getDataListAsStringArray("generationsteps"));
 			if (_true) {
 				structure.generateCondition = new Procedure("condition1");
-				structure.onStructureGenerated = new Procedure("procedure3");
 			}
 			return structure;
 		} else if (ModElementType.ARMOR.equals(modElement.getType())) {

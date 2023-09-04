@@ -8,3 +8,5 @@ templates:
   - template: structure/template_pool.json.ftl
     writer: json
     name: "@MODDATAROOT/worldgen/template_pool/@registryname.json"
+
+field_exclusions: [generateCondition]
