@@ -18,44 +18,39 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Structure extends GeneratableElement implements ICommonType {
+@SuppressWarnings("unused") public class Structure extends GeneratableElement {
 
 	public String structure;
-
-	public boolean randomlyRotateStructure;
-
-	public String surfaceDetectionType;
-
-	public int spawnProbability;
-
-	public int minCountPerChunk;
-	public int maxCountPerChunk;
-
-	public String spawnLocation;
-	public int spawnHeightOffset;
-	public int spawnXOffset;
-	public int spawnZOffset;
-	public List<String> spawnWorldTypes;
-
-	public List<MItemBlock> restrictionBlocks;
-	public List<BiomeEntry> restrictionBiomes;
-
+	public String projection; //UI: dropdown: [rigid, terrain_matching]
 	public String ignoreBlocks;
 
-	public Procedure generateCondition;
+	public int spacing; //UI
+	public int separation; //UI
 
-	public Procedure onStructureGenerated;
+	public List<BiomeEntry> restrictionBiomes; //UI: require at least one entry
+	public String surfaceDetectionType;
+	public String spawnLocation; //implement
+
+	public List<MItemBlock> restrictionBlocks; //implement
+	public Procedure generateCondition; //implement
+	public Procedure onStructureGenerated; //implement
+
+	public int spawnHeightOffset; //TODO: removal
+	public int spawnProbability; //TODO: removal
+	public boolean randomlyRotateStructure; //TODO: removal
+	public int minCountPerChunk; //TODO: removal
+	public int maxCountPerChunk; //TODO: removal
+	public int spawnXOffset; //TODO: removal
+	public int spawnZOffset; //TODO: removal
+	public List<String> spawnWorldTypes; //TODO: removal
 
 	private Structure() {
 		this(null);
@@ -64,19 +59,8 @@ import java.util.List;
 	public Structure(ModElement element) {
 		super(element);
 
-		this.randomlyRotateStructure = true;
-		this.spawnHeightOffset = 0;
-		this.spawnXOffset = 0;
-		this.spawnZOffset = 0;
 		this.surfaceDetectionType = "First motion blocking block";
-
-		this.minCountPerChunk = 1;
-		this.maxCountPerChunk = 1;
-
 		this.ignoreBlocks = "STRUCTURE_BLOCK";
 	}
 
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		return List.of(BaseType.FEATURE);
-	}
 }
