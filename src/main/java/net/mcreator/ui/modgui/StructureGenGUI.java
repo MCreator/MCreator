@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.modgui;
 
-import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.Structure;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.Transliteration;
@@ -34,13 +33,11 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
-import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -76,8 +73,6 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	private ProcedureSelector generateCondition;
-
 	public StructureGenGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
@@ -85,12 +80,6 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 	}
 
 	@Override protected void initGUI() {
-		generateCondition = new ProcedureSelector(this.withEntry("structure/condition"), mcreator,
-				L10N.t("elementgui.structuregen.event_additional_structure_condition_is"),
-				ProcedureSelector.Side.SERVER, true, VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
-				L10N.t("condition.common.no_additional"));
-
 		restrictionBiomes = new BiomeListField(mcreator);
 
 		separation_spacing.setAllowEqualValues(false);
@@ -151,8 +140,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 		pane5.setOpaque(false);
 
-		pane5.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(params, PanelUtils.join(FlowLayout.LEFT, generateCondition), 20, 20)));
+		pane5.add("Center", PanelUtils.totalCenterInPanel(params));
 
 		restrictionBiomes.setValidator(
 				new ItemListFieldValidator(restrictionBiomes, L10N.t("elementgui.structuregen.error_select_biomes")));
@@ -163,8 +151,6 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-
-		generateCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(generationStep,
 				Arrays.asList(ElementUtil.getDataListAsStringArray("generationsteps")), "SURFACE_STRUCTURES");
@@ -185,7 +171,6 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		terrainAdaptation.setSelectedItem(structure.terrainAdaptation);
 		structureSelector.setSelectedItem(structure.structure);
 		restrictionBiomes.setListElements(structure.restrictionBiomes);
-		generateCondition.setSelectedProcedure(structure.generateCondition);
 		separation_spacing.setMinValue(structure.separation);
 		separation_spacing.setMaxValue(structure.spacing);
 		generationStep.setSelectedItem(structure.generationStep);
@@ -199,7 +184,6 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		structure.terrainAdaptation = (String) terrainAdaptation.getSelectedItem();
 		structure.restrictionBiomes = restrictionBiomes.getListElements();
 		structure.structure = (String) structureSelector.getSelectedItem();
-		structure.generateCondition = generateCondition.getSelectedProcedure();
 		structure.separation = separation_spacing.getIntMinValue();
 		structure.spacing = separation_spacing.getIntMaxValue();
 		structure.generationStep = (String) generationStep.getSelectedItem();

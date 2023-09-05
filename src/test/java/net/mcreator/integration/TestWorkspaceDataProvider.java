@@ -681,9 +681,6 @@ public class TestWorkspaceDataProvider {
 			structure.separation = 6;
 			structure.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));
-			if (_true) {
-				structure.generateCondition = new Procedure("condition1");
-			}
 			return structure;
 		} else if (ModElementType.ARMOR.equals(modElement.getType())) {
 			Armor armor = new Armor(modElement);

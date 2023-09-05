@@ -20,7 +20,6 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
-import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.util.List;
@@ -38,8 +37,6 @@ import java.util.List;
 	public String surfaceDetectionType;
 	public String terrainAdaptation;
 	public String generationStep;
-
-	public Procedure generateCondition; //TODO
 
 	private Structure() {
 		this(null);
