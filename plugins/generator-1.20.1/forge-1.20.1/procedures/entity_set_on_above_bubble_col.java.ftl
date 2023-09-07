@@ -1,1 +1,1 @@
-${input$entity}.setInvisible(${input$boolean});
+${input$entity}.onAboveBubbleCol(${input$boolean});
