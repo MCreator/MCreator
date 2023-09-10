@@ -29,6 +29,10 @@
       "type": "number"
     },
     {
+      "name": "immediatesourceentity",
+      "type": "entity"
+    },
+    {
       "name": "damagesource",
       "type": "damagesource"
     }
