@@ -1,1 +1,1 @@
-(${input$entity}.getMaxFallDistance())
+/*@int*/(${input$entity}.getMaxFallDistance())
