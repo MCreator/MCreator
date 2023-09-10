@@ -1,1 +1,1 @@
-(${input$entity}.getTicksRequiredToFreeze())
+/*@int*/(${input$entity}.getTicksRequiredToFreeze())
