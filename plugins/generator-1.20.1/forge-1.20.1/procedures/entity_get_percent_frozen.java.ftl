@@ -1,1 +1,1 @@
-(${input$entity}.getPercentFrozen())
+/*@float*/(${input$entity}.getPercentFrozen())
