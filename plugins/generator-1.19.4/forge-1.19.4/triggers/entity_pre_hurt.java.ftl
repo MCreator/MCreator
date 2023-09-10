@@ -12,6 +12,7 @@
 				"entity": "event.getEntity()",
 				"damagesource": "event.getSource()",
 				"sourceentity": "event.getSource().getEntity()",
+				"immediatesourceentity": "event.getSource().getDirectEntity()",
 				"event": "event"
 				}/>
 			</#compress></#assign>
