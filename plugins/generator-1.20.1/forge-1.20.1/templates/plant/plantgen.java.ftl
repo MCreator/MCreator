@@ -34,10 +34,6 @@
 
 package ${package}.world.features.plants;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-
 <#compress>
 public class ${name}Feature extends RandomPatchFeature {
 

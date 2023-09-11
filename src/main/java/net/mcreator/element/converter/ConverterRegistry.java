@@ -64,8 +64,6 @@ public class ConverterRegistry {
 		put(ModElementType.BLOCK,
 				List.of(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
 						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer()));
-		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
-		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer()));
 		put(ModElementType.FLUID, List.of(new FluidNameFixer(), new FluidGenToFeatureConverter()));
 		put(ModElementType.COMMAND, List.of(new CommandParameterBlockFixer()));
