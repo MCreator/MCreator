@@ -42,6 +42,11 @@
       "check": "BlockStateProvider"
     },
     {
+      "type": "input_value",
+      "name": "root_placer",
+      "check": "RootPlacer"
+    },
+    {
       "type": "field_number",
       "name": "base_height",
       "value": 4,
@@ -97,12 +102,14 @@
       "<value name=\"dirt\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
       "<value name=\"trunk\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
       "<value name=\"foliage\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"root_placer\"><block type=\"root_placer_none\"></block></value>",
       "~<value name=\"decorator0\"><block type=\"tree_decorator_trunk_vine\"></block></value>"
     ],
     "inputs": [
       "dirt",
       "trunk",
-      "foliage"
+      "foliage",
+      "root_placer"
     ],
     "fields": [
       "type",
