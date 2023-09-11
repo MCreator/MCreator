@@ -128,7 +128,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 				<#if data.helmetHasGlow>
-				<@hasGlow data.glowCondition/>
+				<@hasGlow data.helmetglowCondition/>
 				</#if>
 
 		<@onArmorTick data.onHelmetTick/>
@@ -182,7 +182,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 				<#if data.bodyHasGlow>
-				<@hasGlow data.glowCondition/>
+				<@hasGlow data.bodyglowCondition/>
 				</#if>
 
 		<@onArmorTick data.onBodyTick/>
@@ -236,7 +236,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 				<#if data.leggingsHasGlow>
-				<@hasGlow data.glowCondition/>
+				<@hasGlow data.leggingsglowCondition/>
 				</#if>
 
 		<@onArmorTick data.onLeggingsTick/>
@@ -290,7 +290,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 
 				<#if data.bootsHasGlow>
-				<@hasGlow data.glowCondition/>
+				<@hasGlow data.bootsglowCondition/>
 				</#if>
 
 		<@onArmorTick data.onBootsTick/>
