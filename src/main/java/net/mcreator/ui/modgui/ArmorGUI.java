@@ -63,6 +63,7 @@ import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.VariableTypeLoader;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -152,6 +153,15 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final JCheckBox leggingsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bootsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 
+	private final JCheckBox helmetHasGlow = L10N.checkbox("elementgui.common.enable");
+	private ProcedureSelector helmetglowCondition;
+	private final JCheckBox bodyHasGlow = L10N.checkbox("elementgui.common.enable");
+	private ProcedureSelector bodyglowCondition;
+	private final JCheckBox leggingsHasGlow = L10N.checkbox("elementgui.common.enable");
+	private ProcedureSelector leggingsglowCondition;
+	private final JCheckBox bootsHasGlow = L10N.checkbox("elementgui.common.enable");
+	private ProcedureSelector bootsglowCondition;
+
 	private final JLabel clo1 = new JLabel();
 	private final JLabel clo2 = new JLabel();
 
@@ -202,6 +212,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		onBootsTick = new ProcedureSelector(this.withEntry("armor/boots_tick"), mcreator,
 				L10N.t("elementgui.armor.boots_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		helmetglowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
+		bodyglowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
+		leggingsglowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
+		bootsglowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
+				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 
@@ -310,6 +336,20 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setOpaque(false);
 		bootsImmuneToFire.setOpaque(false);
 
+		helmetHasGlow.setOpaque(false);
+		helmetHasGlow.setSelected(false);
+		bodyHasGlow.setOpaque(false);
+		bodyHasGlow.setSelected(false);
+		leggingsHasGlow.setOpaque(false);
+		leggingsHasGlow.setSelected(false);
+		bootsHasGlow.setOpaque(false);
+		bootsHasGlow.setSelected(false);
+
+		helmetHasGlow.addActionListener(e -> updateGlowElements());
+		bodyHasGlow.addActionListener(e -> updateGlowElements());
+		leggingsHasGlow.addActionListener(e -> updateGlowElements());
+		bootsHasGlow.addActionListener(e -> updateGlowElements());
+
 		JPanel helmetSubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
 		helmetSubPanel.setOpaque(false);
 
@@ -326,6 +366,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		helmetSubPanel.add(helmetImmuneToFire);
+
+		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+				L10N.label("elementgui.item.glowing_effect")));
+		helmetSubPanel.add(helmetHasGlow, helmetglowCondition);
 
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		helmetSubPanel.add(helmetSpecialInfo);
@@ -374,6 +418,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bodySubPanel.add(bodyImmuneToFire);
 
+		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+				L10N.label("elementgui.item.glowing_effect")));
+		bodySubPanel.add(bodyHasGlow, bodyglowCondition);
+
 		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		bodySubPanel.add(bodySpecialInfo);
 
@@ -415,6 +463,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		leggingsSubPanel.add(leggingsImmuneToFire);
 
+		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+				L10N.label("elementgui.item.glowing_effect")));
+		leggingsSubPanel.add(leggingsHasGlow, leggingsHasGlow);
+
 		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		leggingsSubPanel.add(leggingsSpecialInfo);
 
@@ -455,6 +507,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/immune_to_fire"),
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bootsSubPanel.add(bootsImmuneToFire);
+
+		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+				L10N.label("elementgui.item.glowing_effect")));
+		bootsSubPanel.add(bootsHasGlow, bootsglowCondition);
 
 		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		bootsSubPanel.add(bootsSpecialInfo);
@@ -738,6 +794,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		}
 	}
 
+	private void updateGlowElements() {
+		helmetglowCondition.setEnabled(helmetHasGlow.isSelected());
+		bodyglowCondition.setEnabled(bodyHasGlow.isSelected());
+		leggingsglowCondition.setEnabled(leggingsHasGlow.isSelected());
+		bootsglowCondition.setEnabled(bootsHasGlow.isSelected());
+	}
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
@@ -750,6 +812,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		onBodyTick.refreshListKeepSelected();
 		onLeggingsTick.refreshListKeepSelected();
 		onBootsTick.refreshListKeepSelected();
+		helmetglowCondition.refreshListKeepSelected();
+		bodyglowCondition.refreshListKeepSelected();
+		leggingsglowCondition.refreshListKeepSelected();
+		bootsglowCondition.refreshListKeepSelected();
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("COMBAT"));
 
@@ -881,6 +947,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodyName.setText(armor.bodyName);
 		leggingsName.setText(armor.leggingsName);
 		bootsName.setText(armor.bootsName);
+		helmetHasGlow.setSelected(armor.helmetHasGlow);
+		helmetglowCondition.setSelectedProcedure(armor.helmetglowCondition);
+		bodyHasGlow.setSelected(armor.bodyHasGlow);
+		bodyglowCondition.setSelectedProcedure(armor.bodyglowCondition);
+		leggingsHasGlow.setSelected(armor.leggingsHasGlow);
+		leggingsglowCondition.setSelectedProcedure(armor.leggingsglowCondition);
+		bootsHasGlow.setSelected(armor.bootsHasGlow);
+		bootsglowCondition.setSelectedProcedure(armor.bootsglowCondition);
 		repairItems.setListElements(armor.repairItems);
 		equipSound.setSound(armor.equipSound);
 
@@ -1007,6 +1081,14 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodyImmuneToFire = bodyImmuneToFire.isSelected();
 		armor.leggingsImmuneToFire = leggingsImmuneToFire.isSelected();
 		armor.bootsImmuneToFire = bootsImmuneToFire.isSelected();
+		armor.helmetHasGlow = helmetHasGlow.isSelected();
+		armor.helmetglowCondition = helmetglowCondition.getSelectedProcedure();
+		armor.bodyHasGlow = bodyHasGlow.isSelected();
+		armor.bodyglowCondition = bodyglowCondition.getSelectedProcedure();
+		armor.leggingsHasGlow = leggingsHasGlow.isSelected();
+		armor.leggingsglowCondition = leggingsglowCondition.getSelectedProcedure();
+		armor.bootsHasGlow = bootsHasGlow.isSelected();
+		armor.bootsglowCondition = bootsglowCondition.getSelectedProcedure();
 
 		Model.Type helmetModelType = Objects.requireNonNull(helmetItemRenderType.getSelectedItem()).getType();
 		armor.helmetItemRenderType = 0;

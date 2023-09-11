@@ -106,6 +106,10 @@ public abstract class ${name}Item extends ArmorItem {
 					armorModel.young = living.isBaby();
 					return armorModel;
 				}
+
+				<#if data.helmetHasGlow>
+				<@hasGlow data.glowCondition/>
+				</#if>
 			});
 		}
 		</#if>
@@ -156,6 +160,10 @@ public abstract class ${name}Item extends ArmorItem {
 					armorModel.young = living.isBaby();
 					return armorModel;
 				}
+
+				<#if data.bodyHasGlow>
+				<@hasGlow data.glowCondition/>
+				</#if>
 			});
 		}
 		</#if>
@@ -206,6 +214,10 @@ public abstract class ${name}Item extends ArmorItem {
 					armorModel.young = living.isBaby();
 					return armorModel;
 				}
+
+				<#if data.leggingsHasGlow>
+				<@hasGlow data.glowCondition/>
+				</#if>
 			});
 		}
 		</#if>
@@ -256,6 +268,10 @@ public abstract class ${name}Item extends ArmorItem {
 					armorModel.young = living.isBaby();
 					return armorModel;
 				}
+
+				<#if data.bootsHasGlow>
+				<@hasGlow data.glowCondition/>
+				</#if>
 			});
 		}
 		</#if>
