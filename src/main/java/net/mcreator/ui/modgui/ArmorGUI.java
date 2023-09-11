@@ -27,6 +27,7 @@
 
 package net.mcreator.ui.modgui;
 
+import javafx.scene.layout.Pane;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Armor;
@@ -350,7 +351,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsHasGlow.addActionListener(e -> updateGlowElements());
 		bootsHasGlow.addActionListener(e -> updateGlowElements());
 
-		JPanel helmetSubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
+		JPanel helmetSubPanel = new JPanel(new GridLayout(6, 2, 2, 2));
 		helmetSubPanel.setOpaque(false);
 
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
@@ -367,9 +368,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		helmetSubPanel.add(helmetImmuneToFire);
 
-		helmetSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-				L10N.label("elementgui.item.glowing_effect")));
-		helmetSubPanel.add(helmetHasGlow, helmetglowCondition);
+		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+						L10N.label("elementgui.item.glowing_effect")), helmetHasGlow, helmetglowCondition));
 
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		helmetSubPanel.add(helmetSpecialInfo);
@@ -418,9 +419,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bodySubPanel.add(bodyImmuneToFire);
 
-		bodySubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-				L10N.label("elementgui.item.glowing_effect")));
-		bodySubPanel.add(bodyHasGlow, bodyglowCondition);
+		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+						L10N.label("elementgui.item.glowing_effect")), bodyHasGlow, bodyglowCondition));
 
 		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		bodySubPanel.add(bodySpecialInfo);
@@ -463,9 +464,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		leggingsSubPanel.add(leggingsImmuneToFire);
 
-		leggingsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-				L10N.label("elementgui.item.glowing_effect")));
-		leggingsSubPanel.add(leggingsHasGlow, leggingsHasGlow);
+		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+						L10N.label("elementgui.item.glowing_effect")), leggingsHasGlow, leggingsglowCondition));
 
 		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		leggingsSubPanel.add(leggingsSpecialInfo);
@@ -508,9 +509,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bootsSubPanel.add(bootsImmuneToFire);
 
-		bootsSubPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-				L10N.label("elementgui.item.glowing_effect")));
-		bootsSubPanel.add(bootsHasGlow, bootsglowCondition);
+		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+						L10N.label("elementgui.item.glowing_effect")), bootsHasGlow, bootsglowCondition));
 
 		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		bootsSubPanel.add(bootsSpecialInfo);
@@ -1025,6 +1026,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			bootsItemRenderType.setSelectedItem(bootsItemModel);
 
 		updateArmorTexturePreview();
+		updateGlowElements();
 	}
 
 	@Override public Armor getElementFromGUI() {

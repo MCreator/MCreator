@@ -737,6 +737,10 @@ public class TestWorkspaceDataProvider {
 			armor.bodyHasGlow = !_true;
 			armor.leggingsHasGlow = _true;
 			armor.bootsHasGlow = !_true;
+			armor.helmetglowCondition = new VariableTypeLoader(_true ? "condition1" : null, _true);
+			armor.bodyglowCondition = new VariableTypeLoader(_true ? "condition2" : null, _true);
+			armor.leggingsglowCondition = new VariableTypeLoader(_true ? "condition3" : null, _true);
+			armor.bootsglowCondition = new VariableTypeLoader(_true ? "condition4" : null, _true);
 			armor.equipSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			armor.onHelmetTick = new Procedure("procedure1");
