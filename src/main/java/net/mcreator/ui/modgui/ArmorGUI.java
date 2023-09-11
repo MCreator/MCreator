@@ -213,19 +213,19 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		onBootsTick = new ProcedureSelector(this.withEntry("armor/boots_tick"), mcreator,
 				L10N.t("elementgui.armor.boots_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		helmetglowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+		helmetglowCondition = new ProcedureSelector(this.withEntry("armor/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
-		bodyglowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+		bodyglowCondition = new ProcedureSelector(this.withEntry("armor/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
-		leggingsglowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+		leggingsglowCondition = new ProcedureSelector(this.withEntry("armor/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
-		bootsglowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+		bootsglowCondition = new ProcedureSelector(this.withEntry("armor/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
