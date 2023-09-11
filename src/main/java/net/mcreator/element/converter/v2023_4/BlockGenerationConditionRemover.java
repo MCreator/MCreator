@@ -40,6 +40,7 @@ import java.util.List;
 
 public class BlockGenerationConditionRemover implements IConverter {
 	private static final Logger LOG = LogManager.getLogger(BlockGenerationConditionRemover.class);
+
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Block block = (Block) input;
@@ -49,8 +50,8 @@ public class BlockGenerationConditionRemover implements IConverter {
 				JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
 				// Check if we need to convert the element
-				if (definition.has("spawnWorldTypes") && !definition.getAsJsonArray("spawnWorldTypes").isEmpty() &&
-						definition.has("generateCondition")) {
+				if (definition.has("spawnWorldTypes") && !definition.getAsJsonArray("spawnWorldTypes").isEmpty()
+						&& definition.has("generateCondition")) {
 					Feature feature = new Feature(
 							new ModElement(workspace, modElementName + "Feature", ModElementType.FEATURE));
 					feature.generationStep = "UNDERGROUND_ORES";

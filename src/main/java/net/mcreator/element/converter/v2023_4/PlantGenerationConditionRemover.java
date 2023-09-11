@@ -46,8 +46,8 @@ public class PlantGenerationConditionRemover implements IConverter {
 				JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
 				// Check if we need to convert the element
-				if (definition.has("spawnWorldTypes") && !definition.getAsJsonArray("spawnWorldTypes").isEmpty() &&
-						definition.has("generateCondition")) {
+				if (definition.has("spawnWorldTypes") && !definition.getAsJsonArray("spawnWorldTypes").isEmpty()
+						&& definition.has("generateCondition")) {
 					Feature feature = new Feature(
 							new ModElement(workspace, modElementName + "Feature", ModElementType.FEATURE));
 					feature.generationStep = "VEGETAL_DECORATION";
@@ -72,10 +72,10 @@ public class PlantGenerationConditionRemover implements IConverter {
 					String plantType = plant.plantType;
 					String genType = plant.generationType;
 					boolean genAtAnyHeight = plant.generateAtAnyHeight;
-					boolean isRarer = plantType.equals("growapable") ||
-							((plantType.equals("normal") || plantType.equals("double")) && genType.equals("Flower"));
-					boolean onMotionBlocking = plantType.equals("growapable") ||
-							((plantType.equals("normal") || plantType.equals("double")) && genType.equals("Grass"));
+					boolean isRarer = plantType.equals("growapable") || (
+							(plantType.equals("normal") || plantType.equals("double")) && genType.equals("Flower"));
+					boolean onMotionBlocking = plantType.equals("growapable") || (
+							(plantType.equals("normal") || plantType.equals("double")) && genType.equals("Grass"));
 
 					String patchXML = getPatchXML(plantType, plant.patchSize, modElementName);
 					String placementXML = getPlacementXML(plant.frequencyOnChunks, isRarer, genAtAnyHeight,
@@ -155,7 +155,8 @@ public class PlantGenerationConditionRemover implements IConverter {
 
 		// Add "Repeated x times" block if frequency on chunks isn't 1
 		if (frequency != 1) {
-			xml.append("<block type=\"placement_count\"><value name=\"count\"><block type=\"int_provider_constant\"><field name=\"value\">");
+			xml.append(
+					"<block type=\"placement_count\"><value name=\"count\"><block type=\"int_provider_constant\"><field name=\"value\">");
 			xml.append(frequency);
 			xml.append("</field></block></value><next>");
 			blocksToClose++;
@@ -170,10 +171,10 @@ public class PlantGenerationConditionRemover implements IConverter {
 		// Add the correct height placement block
 		if (generateAtAnyHeight) {
 			xml.append("""
-			<block type="placement_height_uniform">
-			<value name="min"><block type="vertical_anchor_above_bottom"><field name="value">0</field></block></value>
-			<value name="max"><block type="vertical_anchor_below_top"><field name="value">0</field></block></value>
-			<next>""");
+					<block type="placement_height_uniform">
+					<value name="min"><block type="vertical_anchor_above_bottom"><field name="value">0</field></block></value>
+					<value name="max"><block type="vertical_anchor_below_top"><field name="value">0</field></block></value>
+					<next>""");
 		} else if (onMotionBlocking) {
 			xml.append("<block type=\"placement_heightmap\"><field name=\"heightmap\">MOTION_BLOCKING</field><next>");
 		} else {
