@@ -50,13 +50,8 @@ public class BiomeListField extends JItemListField<BiomeEntry> {
 		List<BiomeEntry> tags = new ArrayList<>();
 
 		String tag = AddTagDialog.openAddTagDialog(mcreator, "is_overworld", "is_nether", "is_end", "is_badlands",
-				"is_beach", "is_cave", "is_cold/end", "is_cold/overworld", "is_cold", "is_coniferous", "is_deep_ocean",
-				"is_dense/overworld", "is_dense", "is_desert", "is_dry/end", "is_dry/nether", "is_dry/overworld",
-				"is_dry", "is_end", "is_forest", "is_hill", "is_hot/nether", "is_hot/overworld", "is_hot", "is_jungle",
-				"is_lush", "is_mountain", "is_mountain", "is_mushroom", "is_nether", "is_ocean", "is_overworld",
-				"is_peak", "is_plains", "is_plateau", "is_rare", "is_river", "is_sandy", "is_savanna", "is_slope",
-				"is_snowy", "is_sparse/overworld", "is_sparse", "is_spooky", "is_swamp", "is_taiga", "is_underground",
-				"is_void", "is_wasteland", "is_water", "is_wet/overworld", "is_wet");
+				"is_beach", "is_deep_ocean", "is_forest", "is_hill", "is_jungle", "is_mountain", "is_ocean", "is_river",
+				"is_savanna", "is_taiga");
 		if (tag != null)
 			tags.add(new BiomeEntry(mcreator.getWorkspace(), "#" + tag));
 
