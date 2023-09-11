@@ -106,10 +106,6 @@ public abstract class ${name}Item extends ArmorItem {
 					armorModel.young = living.isBaby();
 					return armorModel;
 				}
-
-				<#if data.helmetHasGlow>
-				<@hasGlow data.glowCondition/>
-				</#if>
 			});
 		}
 		</#if>
@@ -130,6 +126,10 @@ public abstract class ${name}Item extends ArmorItem {
 			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
 			</#if>
 		}
+
+				<#if data.helmetHasGlow>
+				<@hasGlow data.glowCondition/>
+				</#if>
 
 		<@onArmorTick data.onHelmetTick/>
 	}
@@ -160,10 +160,6 @@ public abstract class ${name}Item extends ArmorItem {
 					armorModel.young = living.isBaby();
 					return armorModel;
 				}
-
-				<#if data.bodyHasGlow>
-				<@hasGlow data.glowCondition/>
-				</#if>
 			});
 		}
 		</#if>
@@ -184,6 +180,10 @@ public abstract class ${name}Item extends ArmorItem {
 			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
 			</#if>
 		}
+
+				<#if data.bodyHasGlow>
+				<@hasGlow data.glowCondition/>
+				</#if>
 
 		<@onArmorTick data.onBodyTick/>
 	}
@@ -214,10 +214,6 @@ public abstract class ${name}Item extends ArmorItem {
 					armorModel.young = living.isBaby();
 					return armorModel;
 				}
-
-				<#if data.leggingsHasGlow>
-				<@hasGlow data.glowCondition/>
-				</#if>
 			});
 		}
 		</#if>
@@ -238,6 +234,10 @@ public abstract class ${name}Item extends ArmorItem {
 			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_2.png";
 			</#if>
 		}
+
+				<#if data.leggingsHasGlow>
+				<@hasGlow data.glowCondition/>
+				</#if>
 
 		<@onArmorTick data.onLeggingsTick/>
 	}
@@ -268,10 +268,6 @@ public abstract class ${name}Item extends ArmorItem {
 					armorModel.young = living.isBaby();
 					return armorModel;
 				}
-
-				<#if data.bootsHasGlow>
-				<@hasGlow data.glowCondition/>
-				</#if>
 			});
 		}
 		</#if>
@@ -292,6 +288,10 @@ public abstract class ${name}Item extends ArmorItem {
 			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
 			</#if>
 		}
+
+				<#if data.bootsHasGlow>
+				<@hasGlow data.glowCondition/>
+				</#if>
 
 		<@onArmorTick data.onBootsTick/>
 	}
