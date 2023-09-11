@@ -110,6 +110,10 @@ public abstract class GeneratableElement {
 		return true;
 	}
 
+	public boolean isUnknown() {
+		return false;
+	}
+
 	public static class GSONAdapter
 			implements JsonSerializer<GeneratableElement>, JsonDeserializer<GeneratableElement> {
 
@@ -294,6 +298,11 @@ public abstract class GeneratableElement {
 
 		public Unknown(ModElement element) {
 			super(element);
+		}
+
+		@Override
+		public boolean isUnknown() {
+			return true;
 		}
 	}
 
