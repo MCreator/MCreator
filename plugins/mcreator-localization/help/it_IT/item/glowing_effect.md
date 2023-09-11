@@ -1,0 +1,1 @@
+L'effetto luminoso fa brillare l'oggetto come una mela d'oro o un oggetto incantato, tranne che il bagliore è permanente.

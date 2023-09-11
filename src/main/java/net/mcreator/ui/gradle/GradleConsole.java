@@ -632,7 +632,7 @@ public class GradleConsole extends JPanel {
 	private void appendAutoColor(String text) {
 		pan.beginTransaction();
 
-		if (!text.equals("")) {
+		if (!text.isEmpty()) {
 			Color c = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
 
 			if (!text.endsWith("\n"))
@@ -751,7 +751,7 @@ public class GradleConsole extends JPanel {
 	}
 
 	private void appendErrorWithCodeLine(String text) {
-		if (!text.equals("")) {
+		if (!text.isEmpty()) {
 			String err = text.replaceAll(": error:.*", "");
 			String othr = text.replaceAll(".+\\.java:\\d+", "") + "\n";
 			SimpleAttributeSet keyWord = new SimpleAttributeSet();
@@ -766,7 +766,7 @@ public class GradleConsole extends JPanel {
 	private final Pattern jpattern = Pattern.compile("\\((.+?)\\.java:\\d+\\)");
 
 	private void appendErrorWithCodeLine2(String text) {
-		if (!text.equals("")) {
+		if (!text.isEmpty()) {
 			try {
 				Matcher matcher = jpattern.matcher(text);
 				matcher.find();
@@ -793,7 +793,7 @@ public class GradleConsole extends JPanel {
 	}
 
 	public void append(String text, Color c, boolean a) {
-		if (!text.equals("")) {
+		if (!text.isEmpty()) {
 			if (!text.endsWith("\n"))
 				text = text + "\n";
 			SimpleAttributeSet keyWord = new SimpleAttributeSet();
@@ -801,7 +801,7 @@ public class GradleConsole extends JPanel {
 			StyleConstants.setItalic(keyWord, a);
 			StyleConstants.setForeground(keyWord, c);
 			StyleConstants.setBackground(keyWord, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-			pan.insertString("" + text, keyWord);
+			pan.insertString(text, keyWord);
 		}
 		scrollToBottom();
 	}

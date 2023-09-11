@@ -124,7 +124,7 @@ public class ZipIO {
 				if (Arrays.asList(excludes).contains("#" + fileName))
 					continue;
 
-				if (path.equals("")) {
+				if (path.isEmpty()) {
 					addFileToZip(folder.getName(), srcFolder + "/" + fileName, zip, false, excludes);
 				} else {
 					addFileToZip(path + "/" + folder.getName(), srcFolder + "/" + fileName, zip, false, excludes);
@@ -145,7 +145,7 @@ public class ZipIO {
 				byte[] buf = new byte[8192];
 				int len;
 				FileInputStream in = new FileInputStream(srcFile);
-				if (!path.equals(""))
+				if (!path.isEmpty())
 					zip.putNextEntry(new ZipEntry(path + "/" + file.getName()));
 				else
 					zip.putNextEntry(new ZipEntry(file.getName()));
