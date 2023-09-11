@@ -27,7 +27,6 @@
 
 package net.mcreator.ui.modgui;
 
-import javafx.scene.layout.Pane;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Armor;
@@ -213,19 +212,19 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		onBootsTick = new ProcedureSelector(this.withEntry("armor/boots_tick"), mcreator,
 				L10N.t("elementgui.armor.boots_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		helmetglowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+		helmetglowCondition = new ProcedureSelector(this.withEntry("armor/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
-		bodyglowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+		bodyglowCondition = new ProcedureSelector(this.withEntry("armor/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
-		leggingsglowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+		leggingsglowCondition = new ProcedureSelector(this.withEntry("armor/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
-		bootsglowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+		bootsglowCondition = new ProcedureSelector(this.withEntry("armor/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
@@ -345,11 +344,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsHasGlow.setSelected(false);
 		bootsHasGlow.setOpaque(false);
 		bootsHasGlow.setSelected(false);
-
-		helmetHasGlow.addActionListener(e -> updateGlowElements());
-		bodyHasGlow.addActionListener(e -> updateGlowElements());
-		leggingsHasGlow.addActionListener(e -> updateGlowElements());
-		bootsHasGlow.addActionListener(e -> updateGlowElements());
 
 		JPanel helmetSubPanel = new JPanel(new GridLayout(6, 2, 2, 2));
 		helmetSubPanel.setOpaque(false);
@@ -543,6 +537,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		});
 
 		armorTextureFile.addActionListener(e -> updateArmorTexturePreview());
+		helmetHasGlow.addActionListener(e -> updateGlowHelmetElements());
+		bodyHasGlow.addActionListener(e -> updateGlowBodyElements());
+		leggingsHasGlow.addActionListener(e -> updateGlowLegsElements());
+		bootsHasGlow.addActionListener(e -> updateGlowFeetElements());
 
 		JPanel sbbp22 = new JPanel();
 		sbbp22.setOpaque(false);
@@ -793,14 +791,29 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			leggingsName.setText(L10N.t("elementgui.armor.leggings", readableNameFromModElement));
 			bootsName.setText(L10N.t("elementgui.armor.boots", readableNameFromModElement));
 		}
+
+		updateGlowHelmetElements();
+		updateGlowBodyElements();
+		updateGlowLegsElements();
+		updateGlowFeetElements();
 	}
 
-	private void updateGlowElements() {
+	private void updateGlowHelmetElements() {
 		helmetglowCondition.setEnabled(helmetHasGlow.isSelected());
+	}
+
+	private void updateGlowBodyElements() {
 		bodyglowCondition.setEnabled(bodyHasGlow.isSelected());
+	}
+
+	private void updateGlowLegsElements() {
 		leggingsglowCondition.setEnabled(leggingsHasGlow.isSelected());
+	}
+
+	private void updateGlowFeetElements() {
 		bootsglowCondition.setEnabled(bootsHasGlow.isSelected());
 	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
@@ -948,14 +961,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodyName.setText(armor.bodyName);
 		leggingsName.setText(armor.leggingsName);
 		bootsName.setText(armor.bootsName);
-		helmetHasGlow.setSelected(armor.helmetHasGlow);
-		helmetglowCondition.setSelectedProcedure(armor.helmetglowCondition);
-		bodyHasGlow.setSelected(armor.bodyHasGlow);
-		bodyglowCondition.setSelectedProcedure(armor.bodyglowCondition);
-		leggingsHasGlow.setSelected(armor.leggingsHasGlow);
-		leggingsglowCondition.setSelectedProcedure(armor.leggingsglowCondition);
-		bootsHasGlow.setSelected(armor.bootsHasGlow);
-		bootsglowCondition.setSelectedProcedure(armor.bootsglowCondition);
 		repairItems.setListElements(armor.repairItems);
 		equipSound.setSound(armor.equipSound);
 
@@ -1012,6 +1017,15 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setSelected(armor.leggingsImmuneToFire);
 		bootsImmuneToFire.setSelected(armor.bootsImmuneToFire);
 
+		helmetHasGlow.setSelected(armor.helmetHasGlow);
+		helmetglowCondition.setSelectedProcedure(armor.helmetglowCondition);
+		bodyHasGlow.setSelected(armor.bodyHasGlow);
+		bodyglowCondition.setSelectedProcedure(armor.bodyglowCondition);
+		leggingsHasGlow.setSelected(armor.leggingsHasGlow);
+		leggingsglowCondition.setSelectedProcedure(armor.leggingsglowCondition);
+		bootsHasGlow.setSelected(armor.bootsHasGlow);
+		bootsglowCondition.setSelectedProcedure(armor.bootsglowCondition);
+
 		Model helmetItemModel = armor.getHelmetItemModel();
 		if (helmetItemModel != null)
 			helmetItemRenderType.setSelectedItem(helmetItemModel);
@@ -1026,7 +1040,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 			bootsItemRenderType.setSelectedItem(bootsItemModel);
 
 		updateArmorTexturePreview();
-		updateGlowElements();
+		updateGlowHelmetElements();
+		updateGlowBodyElements();
+		updateGlowLegsElements();
+		updateGlowFeetElements();
 	}
 
 	@Override public Armor getElementFromGUI() {
