@@ -48,6 +48,8 @@ import net.mcreator.element.converter.v2023_3.HugeFungusFeatureConverter;
 import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
 import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
 import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
+import net.mcreator.element.converter.v2023_4.BlockGenerationConditionRemover;
+import net.mcreator.element.converter.v2023_4.PlantGenerationConditionRemover;
 import net.mcreator.element.converter.v2023_4.SpecialInformationConverter;
 
 import java.util.HashMap;
@@ -65,7 +67,7 @@ public class ConverterRegistry {
 		put(ModElementType.BLOCK,
 				List.of(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
 						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer(),
-						new SpecialInformationConverter()));
+						new BlockGenerationConditionRemover(), new SpecialInformationConverter()));
 		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer(), new SpecialInformationConverter()));
 		put(ModElementType.FLUID,
 				List.of(new FluidNameFixer(), new FluidGenToFeatureConverter(), new SpecialInformationConverter()));
@@ -83,7 +85,7 @@ public class ConverterRegistry {
 		put(ModElementType.PAINTING, List.of(new PaintingFieldsFixer()));
 		put(ModElementType.PARTICLE, List.of(new ParticleTextureConverter()));
 		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer(), new PlantGenerationTypeConverter(),
-				new SpecialInformationConverter()));
+				new PlantGenerationConditionRemover(), new SpecialInformationConverter()));
 		put(ModElementType.POTION, List.of(new PotionToEffectConverter()));
 		put(ModElementType.POTIONEFFECT, List.of(new EffectTextureConverter()));
 		put(ModElementType.PROCEDURE, List.of(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),

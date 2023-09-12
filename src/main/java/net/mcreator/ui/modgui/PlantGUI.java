@@ -159,7 +159,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private ProcedureSelector onBonemealSuccess;
 
 	private ProcedureSelector placingCondition;
-	private ProcedureSelector generateCondition;
 	private ProcedureSelector isBonemealTargetCondition;
 	private ProcedureSelector bonemealSuccessCondition;
 
@@ -238,10 +237,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).setDefaultName(
-				L10N.t("condition.common.no_additional")).makeInline();
-		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				L10N.t("elementgui.plant.event_additional_generation_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 		isBonemealTargetCondition = new ProcedureSelector(this.withEntry("block/bonemeal_target_condition"), mcreator,
 				L10N.t("elementgui.common.event_is_bonemeal_target"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -706,7 +701,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		spawning.add(restrictionBiomes);
 
 		pane4.add("Center", PanelUtils.totalCenterInPanel(spawning));
-		pane4.add("South", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition));
 
 		pane4.setOpaque(false);
 
@@ -839,7 +833,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		specialInformation.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
-		generateCondition.refreshListKeepSelected();
 		isBonemealTargetCondition.refreshListKeepSelected();
 		bonemealSuccessCondition.refreshListKeepSelected();
 
@@ -934,7 +927,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onBonemealSuccess.setSelectedProcedure(plant.onBonemealSuccess);
 
 		placingCondition.setSelectedProcedure(plant.placingCondition);
-		generateCondition.setSelectedProcedure(plant.generateCondition);
 
 		customBoundingBox.setSelected(plant.customBoundingBox);
 		disableOffset.setSelected(plant.disableOffset);
@@ -1045,7 +1037,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.speedFactor = (double) speedFactor.getValue();
 		plant.jumpFactor = (double) jumpFactor.getValue();
 		plant.placingCondition = placingCondition.getSelectedProcedure();
-		plant.generateCondition = generateCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();
 		plant.isSolid = isSolid.isSelected();
 		plant.isBonemealable = isBonemealable.isSelected();
