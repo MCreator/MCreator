@@ -6,9 +6,6 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
 
   # Worldgen
-  - template: plant/plantgen.java.ftl
-    condition: hasGenerationConditions()
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/plants/@NAMEFeature.java"
   - template: json/block_feature_biome_modifier.json.ftl
     writer: json
     condition: generateFeature
