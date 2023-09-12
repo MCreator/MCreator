@@ -201,14 +201,10 @@ import java.util.stream.Collectors;
 		return "cutout";
 	}
 
-	public boolean hasGenerationConditions() {
-		return generateFeature && generateCondition != null;
-	}
-
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
 
-		if (hasGenerationConditions() || getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
 				== GeneratorFlavor.FABRIC) // Fabric needs to be handled differently than Forge
 			baseTypes.add(BaseType.FEATURE);
 
