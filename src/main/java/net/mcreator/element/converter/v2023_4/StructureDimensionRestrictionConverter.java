@@ -82,7 +82,7 @@ public class StructureDimensionRestrictionConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 48;
+		return 49;
 	}
 
 }

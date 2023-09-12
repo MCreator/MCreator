@@ -110,7 +110,7 @@ public class BlockFeatureDimensionRestrictionConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 48;
+		return 49;
 	}
 
 }
