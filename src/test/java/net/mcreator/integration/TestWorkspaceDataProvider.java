@@ -869,7 +869,6 @@ public class TestWorkspaceDataProvider {
 			plant.onEntityWalksOn = new Procedure("procedure11");
 			plant.onHitByProjectile = new Procedure("procedure12");
 			plant.placingCondition = _true ? null : new Procedure("condition2");
-			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
 							"Water", "Sky", "Fog", "Water fog"));
@@ -1226,7 +1225,6 @@ public class TestWorkspaceDataProvider {
 				block.onRedstoneOff = new Procedure("procedure12");
 				block.onEntityWalksOn = new Procedure("procedure13");
 				block.onHitByProjectile = new Procedure("procedure14");
-				block.generateCondition = new Procedure("condition1");
 				block.placingCondition = new Procedure("condition2");
 				block.isBonemealTargetCondition = new Procedure("condition3");
 				block.bonemealSuccessCondition = new Procedure("condition4");
