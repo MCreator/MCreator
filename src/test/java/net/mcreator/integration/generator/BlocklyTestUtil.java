@@ -227,19 +227,26 @@ public class BlocklyTestUtil {
 			String type = arg.get("datalist").getAsString();
 
 			// Get the optional properties
-			JsonElement optTypeFilter = null, optCustomEntryProviders = null;
+			JsonElement optTypeFilter = null, optCustomEntryProviders = null, optTestValue = null;
 			if (arg.get("type").getAsString().equals("field_data_list_selector")) {
 				optTypeFilter = arg.get("typeFilter");
 				optCustomEntryProviders = arg.get("customEntryProviders");
+				optTestValue = arg.get("testValue");
 			}
 
 			String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
 			String customEntryProviders =
 					optCustomEntryProviders == null ? null : optCustomEntryProviders.getAsString();
+			String value = optTestValue == null ? null : optTestValue.getAsString();
 
-			String[] values = getDataListFieldValues(workspace, type, typeFilter, customEntryProviders);
-			if (values.length > 0 && !values[0].equals("")) {
-				String value = ListUtils.getRandomItem(random, values);
+			if (value == null) {
+				String[] values = getDataListFieldValues(workspace, type, typeFilter, customEntryProviders);
+				if (values.length > 0 && !values[0].equals("")) {
+					value = ListUtils.getRandomItem(random, values);
+				}
+			}
+
+			if (value != null && !value.equals("")) {
 				additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
 				processed++;
 			}
