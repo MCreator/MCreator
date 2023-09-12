@@ -63,6 +63,30 @@ configurations {
     linux64
 }
 
+configurations.win64.attributes {
+    attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+    attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, OperatingSystemFamily.WINDOWS))
+    attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, MachineArchitecture.X86_64))
+}
+
+configurations.macX64.attributes {
+    attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+    attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, OperatingSystemFamily.MACOS))
+    attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, MachineArchitecture.X86_64))
+}
+
+configurations.macAarch64.attributes {
+    attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+    attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, OperatingSystemFamily.MACOS))
+    attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, MachineArchitecture.ARM64))
+}
+
+configurations.linux64.attributes {
+    attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+    attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, OperatingSystemFamily.LINUX))
+    attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, MachineArchitecture.X86_64))
+}
+
 dependencies {
     // from lib folder
     implementation fileTree(dir: 'lib', include: ['*.jar'])
@@ -95,43 +119,14 @@ dependencies {
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.13.0' // needed by discord-rpc.jar
 
     // test dependencies
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.2'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.2'
-
-    // JFX natives
-    win64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'win'
-
-    macX64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'mac'
-    macX64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'mac'
-    macX64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'mac'
-    macX64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'mac'
-    macX64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'mac'
-    macX64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'mac'
-
-    macAarch64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'mac-aarch64'
-    macAarch64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'mac-aarch64'
-    macAarch64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'mac-aarch64'
-    macAarch64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'mac-aarch64'
-    macAarch64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'mac-aarch64'
-    macAarch64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'mac-aarch64'
-
-    linux64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'linux'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
 }
 
 javafx {
-    version = "19"
+    version = '20.0.2'
     modules = ['javafx.web', 'javafx.swing']
-    configuration = 'provided' // we provide natives during deployment or with SDK
+    configurations = ['provided', 'win64', 'macX64', 'macAarch64', 'linux64'] // we provide natives during deployment or with SDK
 }
 
 test {
