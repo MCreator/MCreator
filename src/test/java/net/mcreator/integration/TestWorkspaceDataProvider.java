@@ -733,6 +733,10 @@ public class TestWorkspaceDataProvider {
 			armor.bodyImmuneToFire = !_true;
 			armor.leggingsImmuneToFire = _true;
 			armor.bootsImmuneToFire = !_true;
+			armor.helmetHasGlow = _true;
+			armor.bodyHasGlow = _true;
+			armor.leggingsHasGlow = _true;
+			armor.bootsHasGlow = _true;
 			armor.equipSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			armor.onHelmetTick = new Procedure("procedure1");

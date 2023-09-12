@@ -102,6 +102,16 @@ import java.util.*;
 	public boolean leggingsImmuneToFire;
 	public boolean bootsImmuneToFire;
 
+	public boolean helmetHasGlow;
+	public Procedure helmetglowCondition;
+	public boolean bodyHasGlow;
+	public Procedure bodyglowCondition;
+	public boolean leggingsHasGlow;
+	public Procedure leggingsglowCondition;
+	public boolean bootsHasGlow;
+	public Procedure bootsglowCondition;
+
+
 	public int maxDamage;
 	public int damageValueHelmet;
 	public int damageValueBody;
