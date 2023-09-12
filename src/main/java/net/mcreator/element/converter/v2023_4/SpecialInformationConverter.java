@@ -65,50 +65,51 @@ public class SpecialInformationConverter implements IConverter {
 			try {
 				Field specialInformationField = input.getClass().getDeclaredField("specialInformation");
 				specialInformationField.setAccessible(true);
-
 				specialInformationField.set(input, new StringListProcedure(null, specialInfo));
-			} catch (IllegalAccessException | NoSuchFieldException exception) {
+			} catch (IllegalAccessException exception) {
 				LOG.warn(exception.getMessage(), exception);
+			} catch (NoSuchFieldException ignored) {
 			}
 		}
+
 		if (!helmetSpecialInfo.isEmpty()) {
 			try {
 				Field helmetSecialInformationField = input.getClass().getDeclaredField("helmetSpecialInformation");
 				helmetSecialInformationField.setAccessible(true);
-
 				helmetSecialInformationField.set(input, new StringListProcedure(null, helmetSpecialInfo));
-			} catch (IllegalAccessException | NoSuchFieldException exception) {
+			} catch (IllegalAccessException exception) {
 				LOG.warn(exception.getMessage(), exception);
+			} catch (NoSuchFieldException ignored) {
 			}
 		}
 		if (!bodySpecialInfo.isEmpty()) {
 			try {
 				Field bodySecialInformationField = input.getClass().getDeclaredField("bodySpecialInformation");
 				bodySecialInformationField.setAccessible(true);
-
 				bodySecialInformationField.set(input, new StringListProcedure(null, bodySpecialInfo));
-			} catch (IllegalAccessException | NoSuchFieldException exception) {
+			} catch (IllegalAccessException exception) {
 				LOG.warn(exception.getMessage(), exception);
+			} catch (NoSuchFieldException ignored) {
 			}
 		}
 		if (!leggingsSpecialInfo.isEmpty()) {
 			try {
 				Field leggingsSecialInformationField = input.getClass().getDeclaredField("leggingsSpecialInformation");
 				leggingsSecialInformationField.setAccessible(true);
-
 				leggingsSecialInformationField.set(input, new StringListProcedure(null, leggingsSpecialInfo));
-			} catch (IllegalAccessException | NoSuchFieldException exception) {
+			} catch (IllegalAccessException exception) {
 				LOG.warn(exception.getMessage(), exception);
+			} catch (NoSuchFieldException ignored) {
 			}
 		}
 		if (!bootsSpecialInfo.isEmpty()) {
 			try {
 				Field bootsSecialInformationField = input.getClass().getDeclaredField("bootsSpecialInformation");
 				bootsSecialInformationField.setAccessible(true);
-
 				bootsSecialInformationField.set(input, new StringListProcedure(null, bootsSpecialInfo));
-			} catch (IllegalAccessException | NoSuchFieldException exception) {
+			} catch (IllegalAccessException exception) {
 				LOG.warn(exception.getMessage(), exception);
+			} catch (NoSuchFieldException ignored) {
 			}
 		}
 
