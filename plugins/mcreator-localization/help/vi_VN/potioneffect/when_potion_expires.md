@@ -1,0 +1,1 @@
+Tham số này sẽ được thực thi mỗi tick khi một thực thể hết hiệu ứng thuốc.

@@ -38,11 +38,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Map;
 
 public class GeneratorSelector {
 
-	private static final String covpfx = "dialog.generator_selector.coverage.";
+	public static final String covpfx = "dialog.generator_selector.coverage.";
+
+	private static final List<GeneratorFlavor> compatible1 = List.of(GeneratorFlavor.FORGE, GeneratorFlavor.FABRIC,
+			GeneratorFlavor.NEOFORGE, GeneratorFlavor.QUILT);
 
 	/**
 	 * <p>Open a dialog window to select a {@link Generator} from the loaded generators. </p>
@@ -69,10 +73,8 @@ public class GeneratorSelector {
 
 			if (currentFlavor == null || currentFlavor.equals(generatorConfiguration.getGeneratorFlavor())) {
 				generator.addItem(generatorConfiguration);
-			} else if ((currentFlavor == GeneratorFlavor.FORGE
-					&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FABRIC
-					|| currentFlavor == GeneratorFlavor.FABRIC
-					&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE) && !newWorkspace) {
+			} else if (compatible1.contains(currentFlavor) && compatible1.contains(
+					generatorConfiguration.getGeneratorFlavor()) && !newWorkspace) {
 				generator.addItem(generatorConfiguration);
 			}
 
@@ -127,7 +129,11 @@ public class GeneratorSelector {
 
 			JPanel supportedElements = new JPanel(new GridLayout(-1, 6, 7, 3));
 			DataListLoader.getCache().entrySet().stream().filter(e -> !e.getValue().isEmpty()).map(Map.Entry::getKey)
-					.sorted().forEach(e -> addStatsBar(L10N.t(covpfx + e), e, supportedElements, stats));
+					.sorted().forEach(e -> {
+						String name = L10N.t(covpfx + e);
+						if (name != null)
+							addStatsBar(name, e, supportedElements, stats);
+					});
 
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"),
 					supportedElements, 10, 10));
@@ -136,8 +142,11 @@ public class GeneratorSelector {
 
 			JPanel supportedProcedures = new JPanel(new GridLayout(-1, 4, 7, 3));
 
-			stats.getGeneratorBlocklyBlocks()
-					.forEach((key, value) -> addStatsBar(L10N.t(covpfx + key), key, supportedProcedures, stats));
+			stats.getGeneratorBlocklyBlocks().forEach((key, value) -> {
+				String name = L10N.t(covpfx + key);
+				if (name != null)
+					addStatsBar(name, key, supportedProcedures, stats);
+			});
 
 			addStatsBar(L10N.t(covpfx + "triggers"), "triggers", supportedProcedures, stats);
 

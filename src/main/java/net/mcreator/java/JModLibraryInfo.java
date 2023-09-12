@@ -20,6 +20,8 @@
 package net.mcreator.java;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.PackageMapNode;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
 import org.fife.rsta.ac.java.classreader.ClassFile;
@@ -37,6 +39,8 @@ import java.util.zip.ZipFile;
 
 public class JModLibraryInfo extends LibraryInfo {
 
+	private static final Logger LOG = LogManager.getLogger(JModLibraryInfo.class);
+
 	private final File jmodFile;
 	private ZipFile bulkCreateZip;
 
@@ -52,7 +56,7 @@ public class JModLibraryInfo extends LibraryInfo {
 		try {
 			bulkCreateZip.close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error("Failed to end class file creation", e);
 		}
 	}
 
@@ -60,7 +64,7 @@ public class JModLibraryInfo extends LibraryInfo {
 		try {
 			bulkCreateZip = new ZipFile(jmodFile);
 		} catch (IOException e) {
-			e.printStackTrace();
+			LOG.error("Failed to start class file creation", e);
 		}
 	}
 

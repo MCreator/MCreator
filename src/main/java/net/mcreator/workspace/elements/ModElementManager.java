@@ -79,7 +79,8 @@ public final class ModElementManager {
 	 */
 	public void storeModElement(GeneratableElement element) {
 		if (element == null) {
-			LOG.warn("Attempted to store null generatable element. Something went wrong previously for this to happen!");
+			LOG.warn(
+					"Attempted to store null generatable element. Something went wrong previously for this to happen!");
 			return;
 		}
 
@@ -121,7 +122,8 @@ public final class ModElementManager {
 			if (cache.get(element).getModElement() == element) {
 				return cache.get(element);
 			} else {
-				LOG.error("GeneratableElement cache contains element with same name but different object. This should not happen!");
+				LOG.error(
+						"GeneratableElement cache contains element with same name but different object. This should not happen!");
 			}
 		}
 

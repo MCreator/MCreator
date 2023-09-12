@@ -24,7 +24,8 @@ import net.mcreator.ui.init.L10N;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class CollapsiblePanel extends JPanel {
 

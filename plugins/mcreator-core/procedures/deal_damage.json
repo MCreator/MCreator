@@ -11,9 +11,9 @@
       "check": "Entity"
     },
     {
-      "type": "field_data_list_selector",
+      "type": "input_value",
       "name": "damagesource",
-      "datalist": "damagesources"
+      "check": "DamageSource"
     }
   ],
   "inputsInline": true,
@@ -24,13 +24,12 @@
     "toolbox_id": "entitymanagement",
     "toolbox_init": [
       "<value name=\"amount\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
-      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
+      "<value name=\"damagesource\"><block type=\"damagesource_from_type\"><field name=\"damagetype\">GENERIC</field></block></value>"
     ],
     "inputs": [
       "amount",
-      "entity"
-    ],
-    "fields": [
+      "entity",
       "damagesource"
     ]
   }

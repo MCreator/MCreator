@@ -40,7 +40,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Fluid extends GeneratableElement implements IBlock, ITabContainedElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Fluid extends GeneratableElement
+		implements IBlock, ITabContainedElement {
 
 	public String name;
 	public String bucketName;

@@ -278,7 +278,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 										.replace("Items.", "")));
 
 				if ((mappableElement).getUnmappedValue().contains("CUSTOM:"))
-					setIcon(new ImageIcon(ImageUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
+					setIcon(new ImageIcon(ImageUtils.resizeAA(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
 							(mappableElement).getUnmappedValue()).getImage(), 18)));
 
 				if (!(mappableElement).canProperlyMap())
@@ -289,7 +289,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				setText(StringUtils.machineToReadableName(value.toString().replace("CUSTOM:", "")));
 
 				if (value.toString().contains("CUSTOM:"))
-					setIcon(new ImageIcon(ImageUtils.resize(
+					setIcon(new ImageIcon(ImageUtils.resizeAA(
 							MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()).getImage(), 18)));
 			}
 
