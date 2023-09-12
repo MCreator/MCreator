@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -103,13 +104,13 @@ import java.util.*;
 	public boolean bootsImmuneToFire;
 
 	public boolean helmetHasGlow;
-	public Procedure helmetglowCondition;
+	public LogicProcedure helmetglowCondition;
 	public boolean bodyHasGlow;
-	public Procedure bodyglowCondition;
+	public LogicProcedure bodyglowCondition;
 	public boolean leggingsHasGlow;
-	public Procedure leggingsglowCondition;
+	public LogicProcedure leggingsglowCondition;
 	public boolean bootsHasGlow;
-	public Procedure bootsglowCondition;
+	public LogicProcedure bootsglowCondition;
 
 
 	public int maxDamage;

@@ -51,6 +51,8 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -63,7 +65,6 @@ import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableTypeLoader;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -154,13 +155,13 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final JCheckBox bootsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox helmetHasGlow = L10N.checkbox("elementgui.common.enable");
-	private ProcedureSelector helmetglowCondition;
+	private LogicProcedureSelector helmetglowCondition;
 	private final JCheckBox bodyHasGlow = L10N.checkbox("elementgui.common.enable");
-	private ProcedureSelector bodyglowCondition;
+	private LogicProcedureSelector bodyglowCondition;
 	private final JCheckBox leggingsHasGlow = L10N.checkbox("elementgui.common.enable");
-	private ProcedureSelector leggingsglowCondition;
+	private LogicProcedureSelector leggingsglowCondition;
 	private final JCheckBox bootsHasGlow = L10N.checkbox("elementgui.common.enable");
-	private ProcedureSelector bootsglowCondition;
+	private LogicProcedureSelector bootsglowCondition;
 
 	private final JLabel clo1 = new JLabel();
 	private final JLabel clo2 = new JLabel();
@@ -212,22 +213,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		onBootsTick = new ProcedureSelector(this.withEntry("armor/boots_tick"), mcreator,
 				L10N.t("elementgui.armor.boots_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		helmetglowCondition = new ProcedureSelector(this.withEntry("armor/condition_glow"), mcreator,
-				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
-		bodyglowCondition = new ProcedureSelector(this.withEntry("armor/condition_glow"), mcreator,
-				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
-		leggingsglowCondition = new ProcedureSelector(this.withEntry("armor/condition_glow"), mcreator,
-				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
-		bootsglowCondition = new ProcedureSelector(this.withEntry("armor/condition_glow"), mcreator,
-				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
+		helmetglowCondition = new LogicProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				L10N.t("elementgui.item.condition_glow"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.checkbox("elementgui.common.enable"), 0,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		bodyglowCondition = new LogicProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				L10N.t("elementgui.item.condition_glow"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.checkbox("elementgui.common.enable"), 0,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		leggingsglowCondition = new LogicProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				L10N.t("elementgui.item.condition_glow"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.checkbox("elementgui.common.enable"), 0,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		bootsglowCondition = new LogicProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
+				L10N.t("elementgui.item.condition_glow"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.checkbox("elementgui.common.enable"), 0,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 
@@ -362,14 +363,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		helmetSubPanel.add(helmetImmuneToFire);
 
-		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-						L10N.label("elementgui.item.glowing_effect")), helmetHasGlow, helmetglowCondition));
-
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		helmetSubPanel.add(helmetSpecialInfo);
 
 		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"), helmetSubPanel);
+		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"),
+				PanelUtils.northAndCenterElement(helmetSubPanel, helmetglowCondition, 2, 2));
 
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
 				enableHelmet);
@@ -413,14 +412,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bodySubPanel.add(bodyImmuneToFire);
 
-		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-						L10N.label("elementgui.item.glowing_effect")), bodyHasGlow, bodyglowCondition));
-
 		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		bodySubPanel.add(bodySpecialInfo);
 
 		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"), bodySubPanel);
+		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"),
+				PanelUtils.centerAndSouthElement(bodySubPanel, bodyglowCondition, 2, 2));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.chestplate_name"), bodyName),
@@ -458,14 +455,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		leggingsSubPanel.add(leggingsImmuneToFire);
 
-		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-						L10N.label("elementgui.item.glowing_effect")), leggingsHasGlow, leggingsglowCondition));
-
 		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		leggingsSubPanel.add(leggingsSpecialInfo);
 
 		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"), leggingsSubPanel);
+		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
+				PanelUtils.centerAndSouthElement(leggingsSubPanel, leggingsglowCondition, 2, 2));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
@@ -503,14 +498,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bootsSubPanel.add(bootsImmuneToFire);
 
-		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-						L10N.label("elementgui.item.glowing_effect")), bootsHasGlow, bootsglowCondition));
-
 		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
 		bootsSubPanel.add(bootsSpecialInfo);
 
 		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"), bootsSubPanel);
+		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
+				PanelUtils.centerAndSouthElement(bootsSubPanel, bootsglowCondition, 2, 2));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
