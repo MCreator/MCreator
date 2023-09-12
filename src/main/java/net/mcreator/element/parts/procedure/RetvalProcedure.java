@@ -30,6 +30,7 @@ public abstract class RetvalProcedure<T> extends Procedure {
 		put(LogicProcedure.class, new LogicProcedure.GSONAdapter());
 		put(NumberProcedure.class, new NumberProcedure.GSONAdapter());
 		put(StringProcedure.class, new StringProcedure.GSONAdapter());
+		put(StringListProcedure.class, new StringListProcedure.GSONAdapter());
 	}};
 
 	private final T fixedValue;
