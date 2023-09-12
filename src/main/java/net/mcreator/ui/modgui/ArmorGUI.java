@@ -38,6 +38,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -53,7 +54,7 @@ import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.procedure.StringProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -105,10 +106,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final VComboBox<Model> leggingsModel = new SearchableComboBox<>(new Model[] { defaultModel });
 	private final VComboBox<Model> bootsModel = new SearchableComboBox<>(new Model[] { defaultModel });
 
-	private StringProcedureSelector helmetSpecialInformation;
-	private StringProcedureSelector bodySpecialInformation;
-	private StringProcedureSelector leggingsSpecialInformation;
-	private StringProcedureSelector bootsSpecialInformation;
+	private StringListProcedureSelector helmetSpecialInformation;
+	private StringListProcedureSelector bodySpecialInformation;
+	private StringListProcedureSelector leggingsSpecialInformation;
+	private StringListProcedureSelector bootsSpecialInformation;
 
 	private ActionListener helmetModelListener = null;
 	private ActionListener bodyModelListener = null;
@@ -205,21 +206,21 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.t("elementgui.armor.boots_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		helmetSpecialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+		helmetSpecialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
 				L10N.t("elementgui.armor.helmet_special_information"), AbstractProcedureSelector.Side.CLIENT,
-				new JTextField(25), 0,
+				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
-		bodySpecialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+		bodySpecialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
 				L10N.t("elementgui.armor.body_special_information"), AbstractProcedureSelector.Side.CLIENT,
-				new JTextField(25), 0,
+				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
-		leggingsSpecialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+		leggingsSpecialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
 				L10N.t("elementgui.armor.leggings_special_information"), AbstractProcedureSelector.Side.CLIENT,
-				new JTextField(25), 0,
+				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
-		bootsSpecialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+		bootsSpecialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
 				L10N.t("elementgui.armor.boots_special_information"), AbstractProcedureSelector.Side.CLIENT,
-				new JTextField(25), 0,
+				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
@@ -930,16 +931,16 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		helmetCollapsiblePanel.toggleVisibility(
 				helmetModel.getSelectedItem() != defaultModel || armor.helmetSpecialInformation.getName() != null
-						|| !armor.helmetSpecialInformation.getFixedValue().equals(""));
+						|| !armor.helmetSpecialInformation.getFixedValue().isEmpty());
 		bodyCollapsiblePanel.toggleVisibility(
 				bodyModel.getSelectedItem() != defaultModel || armor.bodySpecialInformation.getName() != null
-						|| !armor.bodySpecialInformation.getFixedValue().equals(""));
+						|| !armor.bodySpecialInformation.getFixedValue().isEmpty());
 		leggingsCollapsiblePanel.toggleVisibility(
 				leggingsModel.getSelectedItem() != defaultModel || armor.leggingsSpecialInformation.getName() != null
-						|| !armor.leggingsSpecialInformation.getFixedValue().equals(""));
+						|| !armor.leggingsSpecialInformation.getFixedValue().isEmpty());
 		bootsCollapsiblePanel.toggleVisibility(
 				bootsModel.getSelectedItem() != defaultModel || armor.bootsSpecialInformation.getName() != null
-						|| !armor.bootsSpecialInformation.getFixedValue().equals(""));
+						|| !armor.bootsSpecialInformation.getFixedValue().isEmpty());
 
 		helmetImmuneToFire.setSelected(armor.helmetImmuneToFire);
 		bodyImmuneToFire.setSelected(armor.bodyImmuneToFire);

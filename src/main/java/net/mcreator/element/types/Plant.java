@@ -23,7 +23,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.parts.procedure.StringProcedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
@@ -67,7 +67,7 @@ import java.util.stream.Collectors;
 	public List<BoxEntry> boundingBoxes;
 
 	public String name;
-	public StringProcedure specialInformation;
+	public StringListProcedure specialInformation;
 	public TabEntry creativeTab;
 	public double hardness;
 	public double resistance;

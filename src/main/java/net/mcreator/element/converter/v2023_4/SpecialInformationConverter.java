@@ -23,7 +23,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.parts.procedure.StringProcedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -31,7 +31,6 @@ import org.apache.logging.log4j.Logger;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SpecialInformationConverter implements IConverter {
 
@@ -39,7 +38,6 @@ public class SpecialInformationConverter implements IConverter {
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		GeneratableElement object = input;
 		JsonObject oldObject = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
 		List<String> specialInfo = new ArrayList<>();
@@ -65,65 +63,57 @@ public class SpecialInformationConverter implements IConverter {
 
 		if (!specialInfo.isEmpty()) {
 			try {
-				Field specialInformationField = object.getClass().getDeclaredField("specialInformation");
+				Field specialInformationField = input.getClass().getDeclaredField("specialInformation");
 				specialInformationField.setAccessible(true);
-
-				specialInformationField.set(object, new StringProcedure(null,
-						specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(","))));
-			} catch (IllegalAccessException | NoSuchFieldException exception) {
+				specialInformationField.set(input, new StringListProcedure(null, specialInfo));
+			} catch (IllegalAccessException exception) {
 				LOG.warn(exception.getMessage(), exception);
+			} catch (NoSuchFieldException ignored) {
 			}
 		}
+
 		if (!helmetSpecialInfo.isEmpty()) {
 			try {
-				Field helmetSecialInformationField = object.getClass().getDeclaredField("helmetSpecialInformation");
+				Field helmetSecialInformationField = input.getClass().getDeclaredField("helmetSpecialInformation");
 				helmetSecialInformationField.setAccessible(true);
-
-				helmetSecialInformationField.set(object, new StringProcedure(null,
-						helmetSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
-								.collect(Collectors.joining(","))));
-			} catch (IllegalAccessException | NoSuchFieldException exception) {
+				helmetSecialInformationField.set(input, new StringListProcedure(null, helmetSpecialInfo));
+			} catch (IllegalAccessException exception) {
 				LOG.warn(exception.getMessage(), exception);
+			} catch (NoSuchFieldException ignored) {
 			}
 		}
 		if (!bodySpecialInfo.isEmpty()) {
 			try {
-				Field bodySecialInformationField = object.getClass().getDeclaredField("bodySpecialInformation");
+				Field bodySecialInformationField = input.getClass().getDeclaredField("bodySpecialInformation");
 				bodySecialInformationField.setAccessible(true);
-
-				bodySecialInformationField.set(object, new StringProcedure(null,
-						bodySpecialInfo.stream().map(info -> info.replace(",", "\\,"))
-								.collect(Collectors.joining(","))));
-			} catch (IllegalAccessException | NoSuchFieldException exception) {
+				bodySecialInformationField.set(input, new StringListProcedure(null, bodySpecialInfo));
+			} catch (IllegalAccessException exception) {
 				LOG.warn(exception.getMessage(), exception);
+			} catch (NoSuchFieldException ignored) {
 			}
 		}
 		if (!leggingsSpecialInfo.isEmpty()) {
 			try {
-				Field leggingsSecialInformationField = object.getClass().getDeclaredField("leggingsSpecialInformation");
+				Field leggingsSecialInformationField = input.getClass().getDeclaredField("leggingsSpecialInformation");
 				leggingsSecialInformationField.setAccessible(true);
-
-				leggingsSecialInformationField.set(object, new StringProcedure(null,
-						leggingsSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
-								.collect(Collectors.joining(","))));
-			} catch (IllegalAccessException | NoSuchFieldException exception) {
+				leggingsSecialInformationField.set(input, new StringListProcedure(null, leggingsSpecialInfo));
+			} catch (IllegalAccessException exception) {
 				LOG.warn(exception.getMessage(), exception);
+			} catch (NoSuchFieldException ignored) {
 			}
 		}
 		if (!bootsSpecialInfo.isEmpty()) {
 			try {
-				Field bootsSecialInformationField = object.getClass().getDeclaredField("bootsSpecialInformation");
+				Field bootsSecialInformationField = input.getClass().getDeclaredField("bootsSpecialInformation");
 				bootsSecialInformationField.setAccessible(true);
-
-				bootsSecialInformationField.set(object, new StringProcedure(null,
-						bootsSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
-								.collect(Collectors.joining(","))));
-			} catch (IllegalAccessException | NoSuchFieldException exception) {
+				bootsSecialInformationField.set(input, new StringListProcedure(null, bootsSpecialInfo));
+			} catch (IllegalAccessException exception) {
 				LOG.warn(exception.getMessage(), exception);
+			} catch (NoSuchFieldException ignored) {
 			}
 		}
 
-		return object;
+		return input;
 	}
 
 	@Override public int getVersionConvertingTo() {
