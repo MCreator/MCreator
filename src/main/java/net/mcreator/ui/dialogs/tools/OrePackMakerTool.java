@@ -198,6 +198,7 @@ public class OrePackMakerTool {
 		oreBlock.destroyTool = "pickaxe";
 		oreBlock.breakHarvestLevel = (int) Math.round(2 * factor);
 		oreBlock.requiresCorrectTool = true;
+		oreBlock.generateFeature = true;
 		oreBlock.restrictionBiomes = List.of(new BiomeEntry(mcreator.getWorkspace(), "#is_overworld"));
 		oreBlock.minGenerateHeight = 1;
 		oreBlock.maxGenerateHeight = (int) (63 / Math.pow(factor, 0.9));
