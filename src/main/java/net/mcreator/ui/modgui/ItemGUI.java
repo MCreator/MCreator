@@ -27,6 +27,7 @@ import net.mcreator.element.types.Item;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -41,7 +42,7 @@ import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.procedure.StringProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -69,7 +70,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private TextureHolder texture;
 
-	private StringProcedureSelector specialInformation;
+	private StringListProcedureSelector specialInformation;
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 0, 64, 1));
 	private final VTextField name = new VTextField(20);
@@ -165,8 +166,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
-				L10N.t("elementgui.item.tooltip_tip"), AbstractProcedureSelector.Side.CLIENT, new JTextField(25), 0,
+		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.item.tooltip_tip"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,

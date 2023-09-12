@@ -27,7 +27,7 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.parts.procedure.StringProcedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.Item;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -36,7 +36,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class FoodToItemConverter implements IConverter {
 
@@ -61,8 +60,7 @@ public class FoodToItemConverter implements IConverter {
 			if (food.get("specialInfo") != null)
 				food.getAsJsonArray("specialInfo").iterator()
 						.forEachRemaining(element -> specialInfo.add(element.getAsString()));
-			item.specialInformation = new StringProcedure(null,
-					specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+			item.specialInformation = new StringListProcedure(null, specialInfo);
 			item.stackSize = food.get("stackSize").getAsInt();
 			item.isFood = true;
 			item.nutritionalValue = food.get("nutritionalValue").getAsInt();

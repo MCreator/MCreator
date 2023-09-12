@@ -24,7 +24,7 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.parts.procedure.StringProcedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
@@ -71,7 +71,7 @@ import java.util.List;
 	public TabEntry creativeTab;
 	public Sound emptySound;
 	public String rarity;
-	public StringProcedure specialInformation;
+	public StringListProcedure specialInformation;
 
 	public double resistance;
 	public int luminance;

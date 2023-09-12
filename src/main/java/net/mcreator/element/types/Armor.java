@@ -23,7 +23,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.parts.procedure.StringProcedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
@@ -64,10 +64,10 @@ import java.util.*;
 	public String leggingsName;
 	public String bootsName;
 
-	public StringProcedure helmetSpecialInformation;
-	public StringProcedure bodySpecialInformation;
-	public StringProcedure leggingsSpecialInformation;
-	public StringProcedure bootsSpecialInformation;
+	public StringListProcedure helmetSpecialInformation;
+	public StringListProcedure bodySpecialInformation;
+	public StringListProcedure leggingsSpecialInformation;
+	public StringListProcedure bootsSpecialInformation;
 
 	public String helmetModelName;
 	public String helmetModelPart;

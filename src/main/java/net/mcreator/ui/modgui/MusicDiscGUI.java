@@ -25,6 +25,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -36,7 +37,7 @@ import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.procedure.StringProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -57,7 +58,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
 	private TextureHolder texture;
 
-	private StringProcedureSelector specialInformation;
+	private StringListProcedureSelector specialInformation;
 	private final VTextField name = new VTextField(20);
 	private final VTextField description = new VTextField(20);
 
@@ -109,9 +110,9 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
 				L10N.t("elementgui.music_disc.disc_description_tip"), AbstractProcedureSelector.Side.CLIENT,
-				new JTextField(25), 0,
+				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));

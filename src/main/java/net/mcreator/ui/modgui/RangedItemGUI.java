@@ -25,6 +25,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -43,7 +44,7 @@ import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.procedure.StringProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -95,7 +96,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 	private final SoundSelector shootSound = new SoundSelector(mcreator);
 
-	public StringProcedureSelector specialInformation;
+	public StringListProcedureSelector specialInformation;
 
 	private MCItemHolder ammoItem;
 	private MCItemHolder bulletItemTexture;
@@ -153,9 +154,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				L10N.t("elementgui.ranged_item.swinged_by_entity"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
-		specialInformation = new StringProcedureSelector(this.withEntry("item/special_information"), mcreator,
+		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
 				L10N.t("elementgui.ranged_item.special_informations"), AbstractProcedureSelector.Side.CLIENT,
-				new JTextField(25), 0,
+				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition"), mcreator,
 				L10N.t("elementgui.ranged_item.can_use"), VariableTypeLoader.BuiltInTypes.LOGIC,
