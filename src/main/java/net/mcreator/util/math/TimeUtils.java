@@ -50,7 +50,7 @@ public class TimeUtils {
 				res.append(remainder).append(" minute").append(remainder > 1 ? "s" : "");
 			}
 
-			if (!res.toString().equals("") && millis >= ONE_SECOND) {
+			if (!res.toString().isEmpty() && millis >= ONE_SECOND) {
 				res.append(" and ");
 			}
 

@@ -199,7 +199,7 @@ public class RegenerateCodeAction extends GradleAction {
 			// save all updated generatable mod elements
 			generatableElementsToSave.parallelStream().forEach(mcreator.getModElementManager()::storeModElement);
 
-			if (warnMissingDefinitions && skippedElements.size() > 0) {
+			if (warnMissingDefinitions && !skippedElements.isEmpty()) {
 				skippedElements.forEach(el -> {
 					try {
 						mcreator.getWorkspace().removeModElement(el);

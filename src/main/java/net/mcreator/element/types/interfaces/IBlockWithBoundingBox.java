@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 	}
 
 	default boolean isFullCube() {
-		return getValidBoundingBoxes().size() > 0 && getValidBoundingBoxes().stream().allMatch(BoxEntry::isFullCube);
+		return !getValidBoundingBoxes().isEmpty() && getValidBoundingBoxes().stream().allMatch(BoxEntry::isFullCube);
 	}
 
 	default List<BoxEntry> positiveBoundingBoxes() {

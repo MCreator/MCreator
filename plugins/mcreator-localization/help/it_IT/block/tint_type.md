@@ -1,0 +1,1 @@
+Questa opzione applica una tinta al blocco basata sui colori del bioma, simile a erba, foglie e acqua. Per ottenere risultati ottimali, le facce colorate dovrebbero utilizzare una texture in scala di grigi.

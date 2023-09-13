@@ -1,0 +1,1 @@
+Numero massimo di questi scambi che il Villico può fare senza ricaricarsi.

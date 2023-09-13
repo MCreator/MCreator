@@ -1,0 +1,1 @@
+Bu parametre ile, oyuncunun başarıyı kazanacağını fonksiyonu ayarlayabilirsiniz.
