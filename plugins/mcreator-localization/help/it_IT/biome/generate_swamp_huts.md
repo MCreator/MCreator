@@ -1,0 +1,1 @@
+Seleziona questa impostazione per avere capanne delle streghe nel tuo bioma.

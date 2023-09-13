@@ -1,0 +1,1 @@
+Questo parametro controlla se l'oggetto rimane nella griglia di creazione una volta creato. Ciò significa che l'oggetto farà parte della ricetta, ma non verrà consumato dalla stessa.

@@ -113,7 +113,7 @@ public class VTextField extends JTextField implements IValidable {
 			if (customDefaultMessage != null)
 				message = customDefaultMessage;
 			if (currentValidationResult != null && currentValidationResult.getMessage() != null
-					&& !currentValidationResult.getMessage().equals(""))
+					&& !currentValidationResult.getMessage().isEmpty())
 				message = currentValidationResult.getMessage();
 			g.drawString(message, 3, 11);
 		}

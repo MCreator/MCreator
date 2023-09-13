@@ -45,6 +45,7 @@ import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.DimensionListField;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
@@ -81,7 +82,9 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
-		restrictionBiomes = new BiomeListField(mcreator);
+		restrictionBiomes = new BiomeListField(mcreator, true);
+		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
+
 		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
 
 		restrictionDimensions = new DimensionListField(mcreator);
@@ -175,7 +178,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				new AggregatedValidationResult.MULTIFAIL(
 						compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::message)
 								.collect(Collectors.toList())) :
-				new AggregatedValidationResult.PASS();
+				new AggregatedValidationResult(restrictionBiomes);
 	}
 
 	@Override public void reloadDataLists() {

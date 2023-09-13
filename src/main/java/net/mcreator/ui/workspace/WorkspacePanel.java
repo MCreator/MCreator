@@ -301,7 +301,7 @@ import java.util.stream.Collectors;
 				g.setColor(new Color(0.4f, 0.4f, 0.4f, 0.3f));
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 				g.setColor(Color.white);
-				if (getText().equals("")) {
+				if (getText().isEmpty()) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
 					if (!currentTab.equals("mods")) {
@@ -1073,7 +1073,7 @@ import java.util.stream.Collectors;
 										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));
-				if (modName != null && !modName.equals("")) {
+				if (modName != null && !modName.isEmpty()) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
 					ModElement duplicateModElement = new ModElement(mcreator.getWorkspace(), mu, modName);

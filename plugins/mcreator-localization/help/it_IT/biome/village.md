@@ -1,0 +1,1 @@
+Questa impostazione ti consente di generare villaggi Minecraft all'interno del tuo bioma.

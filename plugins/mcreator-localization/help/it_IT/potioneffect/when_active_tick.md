@@ -1,0 +1,1 @@
+Questa procedura verrà eseguita ogni tick per ogni entità che ha questo effetto.
