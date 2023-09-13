@@ -112,7 +112,6 @@ import java.util.stream.Collectors;
 	public int frequencyOnChunks;
 	public List<String> spawnWorldTypes;
 	public List<BiomeEntry> restrictionBiomes;
-	public Procedure generateCondition;
 	public String generationType;
 	public int patchSize;
 	public boolean generateAtAnyHeight;
