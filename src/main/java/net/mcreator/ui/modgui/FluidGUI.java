@@ -144,7 +144,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 
 		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
-				L10N.t("elementgui.fluid.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 

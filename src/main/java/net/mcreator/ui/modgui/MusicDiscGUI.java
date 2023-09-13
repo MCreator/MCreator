@@ -111,7 +111,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.t("elementgui.music_disc.event_swing"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
-				L10N.t("elementgui.music_disc.disc_description_tip"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 

@@ -155,7 +155,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
-				L10N.t("elementgui.ranged_item.special_informations"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition"), mcreator,

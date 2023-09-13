@@ -144,7 +144,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true, VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
-				L10N.t("elementgui.tool.tool_special_information"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 

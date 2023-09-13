@@ -230,7 +230,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
 		specialInformation = new StringListProcedureSelector(this.withEntry("block/special_information"), mcreator,
-				L10N.t("elementgui.plant.special_information_tip"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 

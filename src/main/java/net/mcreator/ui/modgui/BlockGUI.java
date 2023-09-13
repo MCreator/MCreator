@@ -328,7 +328,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate"));
 
 		specialInformation = new StringListProcedureSelector(this.withEntry("block/special_information"), mcreator,
-				L10N.t("elementgui.block.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
