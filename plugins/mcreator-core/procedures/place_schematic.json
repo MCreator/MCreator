@@ -58,7 +58,7 @@
     {
       "type": "field_data_list_selector",
       "name": "schematic",
-      "datalist": "structures"
+      "datalist": "structure"
     },
     {
       "type": "input_dummy"

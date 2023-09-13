@@ -155,7 +155,7 @@ public class BlocklyJavascriptBridge {
 					w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "gamerules");
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
-			case "structures" ->
+			case "structure" ->
 					openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
 							"structure");
 			case "procedure" -> openStringEntrySelector(
