@@ -228,11 +228,10 @@ public class BlocklyTestUtil {
 			String type = arg.get("datalist").getAsString();
 
 			// Get the optional properties
-			JsonElement optTypeFilter = null, optCustomEntryProviders = null, optTestValue = null;
+			JsonElement optTypeFilter = null, optCustomEntryProviders = null, optTestValue = arg.get("testValue");
 			if (arg.get("type").getAsString().equals("field_data_list_selector")) {
 				optTypeFilter = arg.get("typeFilter");
 				optCustomEntryProviders = arg.get("customEntryProviders");
-				optTestValue = arg.get("testValue");
 			}
 
 			String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
