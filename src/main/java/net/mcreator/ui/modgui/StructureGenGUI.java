@@ -39,6 +39,7 @@ import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
@@ -188,6 +189,9 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 		spawnWorldTypes.setValidator(
 				new ItemListFieldValidator(spawnWorldTypes, L10N.t("elementgui.structuregen.error_select_world_type")));
 		page1group.addValidationElement(spawnWorldTypes);
+
+		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
+		page1group.addValidationElement(restrictionBiomes);
 
 		addPage(pane5);
 	}

@@ -244,9 +244,8 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag nbt = super.getShareTag(stack);
-		if(nbt != null)
-			stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
+		CompoundTag nbt = stack.getOrCreateTag();
+		stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
 		return nbt;
 	}
 

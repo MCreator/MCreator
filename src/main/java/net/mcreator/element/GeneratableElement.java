@@ -44,7 +44,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 47;
+	public static final int formatVersion = 48;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -108,6 +108,10 @@ public abstract class GeneratableElement {
 		}
 
 		return true;
+	}
+
+	public boolean isUnknown() {
+		return false;
 	}
 
 	public static class GSONAdapter
@@ -294,6 +298,11 @@ public abstract class GeneratableElement {
 
 		public Unknown(ModElement element) {
 			super(element);
+		}
+
+		@Override
+		public boolean isUnknown() {
+			return true;
 		}
 	}
 
