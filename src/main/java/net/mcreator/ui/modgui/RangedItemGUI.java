@@ -197,9 +197,9 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.ranged_item.texture"))));
 
 		sbbp2.add("South", PanelUtils.centerAndSouthElement(PanelUtils.westAndEastElement(
-						HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-								L10N.label("elementgui.ranged_item.enable_glowing")), PanelUtils.join(hasGlow, glowCondition)),
-				specialInformation));
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+						L10N.label("elementgui.ranged_item.enable_glowing")),
+				PanelUtils.westAndCenterElement(hasGlow, glowCondition)), specialInformation, 2, 2));
 
 		pane1.setOpaque(false);
 
