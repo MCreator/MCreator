@@ -46,8 +46,8 @@ import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
 import net.mcreator.element.converter.v2023_3.HugeFungusFeatureConverter;
 import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
-import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
 import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
+import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
 import net.mcreator.element.converter.v2023_4.BlockGenerationConditionRemover;
 import net.mcreator.element.converter.v2023_4.PlantGenerationConditionRemover;
 
@@ -68,12 +68,14 @@ public class ConverterRegistry {
 						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer(),
 						new BlockGenerationConditionRemover()));
 		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer()));
+		put(ModElementType.FEATURE, List.of(new HugeFungusFeatureConverter()));
 		put(ModElementType.FLUID, List.of(new FluidNameFixer(), new FluidGenToFeatureConverter()));
 		put(ModElementType.COMMAND, List.of(new CommandParameterBlockFixer()));
 		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
 		put(ModElementType.GUI,
 				List.of(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
 						new GUIComponentNamer(), new SlotInteractionsConverter()));
+		put(ModElementType.ITEM, List.of(new ItemDispenseBehaviorToItemExtensionConverter()));
 		put(ModElementType.LIVINGENTITY, List.of(new EntityTexturesConverter()));
 		put(ModElementType.OVERLAY,
 				List.of(new OverlayCoordinateConverter(), new OverlayTexturesConverter(), new GUIComponentNamer()));
@@ -92,8 +94,6 @@ public class ConverterRegistry {
 				new MaterialProcedureConverter(), new ProcedureDamageSourceFixer()));
 		put(ModElementType.RANGEDITEM, List.of(new RangedItemTextureConverter()));
 		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
-		put(ModElementType.ITEM, List.of(new ItemDispenseBehaviorToItemExtensionConverter()));
-		put(ModElementType.FEATURE, List.of(new HugeFungusFeatureConverter()));
 	}};
 
 	// Converters that convert older mod element type to a newer one
