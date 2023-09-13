@@ -74,7 +74,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
 		entities = new SpawnableEntityListField(mcreator);
-		biomes = new BiomeListField(mcreator);
+		biomes = new BiomeListField(mcreator, true);
 
 		name.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), name, false));
 		name.enableRealtimeValidation();

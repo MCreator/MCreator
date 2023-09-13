@@ -45,6 +45,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -179,7 +180,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	@Override protected void initGUI() {
-		restrictionBiomes = new BiomeListField(mcreator);
+		restrictionBiomes = new BiomeListField(mcreator, true);
+		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
+
 		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
@@ -857,6 +860,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			return new AggregatedValidationResult(texture);
 		else if (page == 2)
 			return new AggregatedValidationResult(page3group);
+		else if (page == 5)
+			return new AggregatedValidationResult(restrictionBiomes);
 		return new AggregatedValidationResult.PASS();
 	}
 

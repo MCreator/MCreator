@@ -686,6 +686,8 @@ public class TestWorkspaceDataProvider {
 				structure.restrictionBlocks.addAll(
 						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_surface"));
+				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:test/tag"));
 			}
 			if (_true) {
 				structure.generateCondition = new Procedure("condition1");
@@ -855,6 +857,8 @@ public class TestWorkspaceDataProvider {
 				plant.restrictionBiomes.addAll(
 						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
 								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
+				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
 			}
 			plant.onNeighbourBlockChanges = new Procedure("procedure7");
 			plant.onTickUpdate = new Procedure("procedure2");
@@ -1195,6 +1199,8 @@ public class TestWorkspaceDataProvider {
 				block.restrictionBiomes.addAll(
 						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
 								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+				block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
+				block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
 			}
 			block.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
@@ -1274,6 +1280,8 @@ public class TestWorkspaceDataProvider {
 						.map(e -> new EntityEntry(modElement.getWorkspace(), e.getName())).toList());
 				tag.biomes.addAll(ElementUtil.loadAllBiomes(modElement.getWorkspace()).stream()
 						.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+				tag.biomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
+				tag.biomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
 
 				tag.functions.add("ExampleFunction1");
 				tag.functions.add("ExampleFunction2");
@@ -1535,6 +1543,8 @@ public class TestWorkspaceDataProvider {
 						biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex))
 								.limit(biomes.size() / 4)
 								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
+				feature.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
 			}
 			feature.generateCondition = _true ? new Procedure("condition1") : null;
 			feature.featurexml = Feature.XML_BASE;
@@ -1668,6 +1678,8 @@ public class TestWorkspaceDataProvider {
 			livingEntity.restrictionBiomes.addAll(
 					biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
 							.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+			livingEntity.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
+			livingEntity.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
 		}
 		livingEntity.spawnInDungeons = _true;
 		livingEntity.modelWidth = 0.4;

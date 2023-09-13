@@ -57,10 +57,7 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
-import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.*;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -260,22 +257,17 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
-		restrictionBiomes = new BiomeListField(mcreator);
+
+		restrictionBiomes = new BiomeListField(mcreator, true);
+		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
+
 		spawnWorldTypes = new DimensionListField(mcreator);
 
 		fluidRestrictions = new FluidListField(mcreator);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 
-		// emulate base_stone_overworld
-		blocksToReplace.setListElements(List.of(
-				//@formatter:off
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#0"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#1"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#3"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#5")
-				//@formatter:on
-		));
+		blocksToReplace.setListElements(List.of(new MItemBlock(mcreator.getWorkspace(), "TAG:stone_ore_replaceables")));
 		generateHeight.setAllowEqualValues(true);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
@@ -1338,6 +1330,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			return new AggregatedValidationResult(page3group);
 		else if (page == 4)
 			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
+		else if (page == 7)
+			return new AggregatedValidationResult(restrictionBiomes);
 		return new AggregatedValidationResult.PASS();
 	}
 
