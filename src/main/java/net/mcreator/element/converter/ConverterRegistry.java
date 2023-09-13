@@ -46,8 +46,8 @@ import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
 import net.mcreator.element.converter.v2023_3.HugeFungusFeatureConverter;
 import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
-import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
 import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
+import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
 import net.mcreator.element.converter.v2023_4.BlockGenerationConditionRemover;
 import net.mcreator.element.converter.v2023_4.PlantGenerationConditionRemover;
 import net.mcreator.element.converter.v2023_4.SpecialInformationConverter;
@@ -76,8 +76,6 @@ public class ConverterRegistry {
 		put(ModElementType.GUI,
 				List.of(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
 						new GUIComponentNamer(), new SlotInteractionsConverter()));
-		put(ModElementType.ITEM,
-				List.of(new ItemDispenseBehaviorToItemExtensionConverter(), new SpecialInformationConverter()));
 		put(ModElementType.LIVINGENTITY, List.of(new EntityTexturesConverter()));
 		put(ModElementType.MUSICDISC, List.of(new SpecialInformationConverter()));
 		put(ModElementType.OVERLAY,
@@ -98,6 +96,8 @@ public class ConverterRegistry {
 		put(ModElementType.RANGEDITEM, List.of(new RangedItemTextureConverter(), new SpecialInformationConverter()));
 		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
 		put(ModElementType.TOOL, List.of(new SpecialInformationConverter()));
+		put(ModElementType.ITEM,
+				List.of(new ItemDispenseBehaviorToItemExtensionConverter(), new SpecialInformationConverter()));
 		put(ModElementType.FEATURE, List.of(new HugeFungusFeatureConverter()));
 	}};
 
