@@ -208,15 +208,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel destal2 = new JPanel(new BorderLayout(0, 10));
 		destal2.setOpaque(false);
 
-		JPanel destal = new JPanel(new GridLayout(1, 1, 15, 15));
-		destal.setOpaque(false);
-		destal.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.common.special_information"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		destal.add(specialInformation);
-
 		JComponent destal1 = PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
 						L10N.label("elementgui.item.glowing_effect")), hasGlow, glowCondition);
@@ -226,7 +217,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		hasGlow.addActionListener(e -> updateGlowElements());
 
-		destal2.add("Center", PanelUtils.northAndCenterElement(destal, destal1, 10, 10));
+		destal2.add("Center", PanelUtils.northAndCenterElement(destal1, specialInformation, 10, 10));
 
 		ComponentUtils.deriveFont(renderType, 16);
 
@@ -245,8 +236,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.item.item_3d_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		destal2.add("North", PanelUtils.totalCenterInPanel(
-				PanelUtils.join(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
+		destal2.add("North", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
+				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 		sbbp2.setOpaque(false);
