@@ -270,15 +270,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		particleTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 		particleTexture.setOpaque(false);
 
-		JPanel tintPanel = new JPanel(new GridLayout(1, 1, 0, 2));
-		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
-		tintPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.common.special_information"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		tintPanel.add(specialInformation);
 
 		JPanel rent = new JPanel(new GridLayout(5, 2, 2, 2));
 		rent.setOpaque(false);
@@ -313,19 +305,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
 						L10N.t("elementgui.plant.texture_place_top_main")),
 				ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom")))));
-		texturesAndRent.add("East", rent);
+		texturesAndRent.add("East", PanelUtils.centerAndSouthElement(rent, specialInformation, 2, 2));
 
 		texturesAndRent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.textures_and_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		JPanel render = new JPanel();
-		render.setLayout(new BoxLayout(render, BoxLayout.PAGE_AXIS));
-		render.setOpaque(false);
-
-		render.add(texturesAndRent);
-		render.add(tintPanel);
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 
@@ -408,7 +393,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ptipe.add("Center", ptipe2);
 		ptipe.add("East", ptipe3);
 
-		sbbp2.add("North", render);
+		sbbp2.add("North", texturesAndRent);
 		sbbp2.add("Center", PanelUtils.totalCenterInPanel(ptipe));
 
 		pane2.setOpaque(false);
