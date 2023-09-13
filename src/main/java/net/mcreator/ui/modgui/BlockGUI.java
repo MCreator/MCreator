@@ -519,14 +519,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		topnbot.add("Center", sbbp22);
 
-		JPanel txblock3 = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		txblock3.setOpaque(false);
+		JComponent txblock3 = PanelUtils.gridElements(1, 1, specialInformation);
 		txblock3.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.common.special_information"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		txblock3.add(specialInformation);
 
 		sbbp2.add("Center", topnbot);
 
