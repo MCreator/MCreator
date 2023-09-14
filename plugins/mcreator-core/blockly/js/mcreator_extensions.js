@@ -15,8 +15,6 @@ Blockly.Extensions.register('material_list_provider', appendDropDown('material',
 
 Blockly.Extensions.register('plant_type_list_provider', appendDropDown('planttypes', 'planttype'));
 
-Blockly.Extensions.register('schematic_list_provider', appendDropDown('schematic', 'schematic'));
-
 Blockly.Extensions.register('direction_list_provider', appendDropDown('direction', 'direction'));
 
 // Extension to mark a procedure block as a custom loop
