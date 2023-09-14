@@ -157,7 +157,7 @@ public class BlocklyJavascriptBridge {
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
 			case "structure" ->
 					openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
-							"structure");
+							"structures");
 			case "procedure" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 							.map(ModElement::getName).toArray(String[]::new), "procedure");
