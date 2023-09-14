@@ -2,22 +2,22 @@
 
 <#-- Item-related triggers -->
 <#macro addSpecialInformation procedure="" isBlock=false>
-    <#if procedure?has_content || hasProcedure(procedure)>
+	<#if procedure?has_content || hasProcedure(procedure)>
 		@Override public void appendHoverText(ItemStack itemstack, <#if isBlock>BlockGetter<#else>Level</#if> world, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(itemstack, world, list, flag);
-        <#if hasProcedure(procedure)>
+		<#if hasProcedure(procedure)>
 			Entity entity = itemstack.getEntityRepresentation();
 			double x = entity != null ? entity.getX() : 0.0;
 			double y = entity != null ? entity.getY() : 0.0;
 			double z = entity != null ? entity.getZ() : 0.0;
 			list.add(Component.literal(<@procedureOBJToStringCode procedure/>));
-        <#else>
-            <#list thelper.splitCommaSeparatedStringListWithEscapes(procedure.getFixedValue()) as entry>
+		<#else>
+			<#list procedure.getFixedValue() as entry>
 				list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-            </#list>
-        </#if>
+			</#list>
+		</#if>
 		}
-    </#if>
+	</#if>
 </#macro>
 
 <#macro onEntitySwing procedure="">

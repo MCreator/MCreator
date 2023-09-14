@@ -71,8 +71,4 @@ import java.util.Random;
 		return new ArrayList<>(new LinkedHashSet<>(original));
 	}
 
-	public List<String> splitCommaSeparatedStringListWithEscapes(String specialString) {
-		return StringUtils.splitCommaSeparatedStringListWithEscapes(specialString);
-	}
-
 }
