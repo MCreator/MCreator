@@ -36,10 +36,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.lang.reflect.AccessibleObject;
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
+import java.lang.reflect.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -223,9 +220,10 @@ public class ReferencesFinder {
 
 		if (clazz.isInstance(value)) { // value of specified type
 			return condition == null || condition.test(field, (T) value);
-		} else if (value instanceof Object[] array) { // array of values
-			for (Object obj : array) {
-				if (checkValue(obj, field, clazz, validIf, condition))
+		} else if (clazz.isArray()) { // array of values
+			int length = Array.getLength(value);
+			for (int i = 0; i < length; i++) {
+				if (checkValue(Array.get(value, i), field, clazz, validIf, condition))
 					return true;
 			}
 		} else if (value instanceof Iterable<?> list) { // list of values
