@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -216,13 +216,23 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#assign btid = 0>
 
 		<#list data.getComponentsOfType("Button") as component>
-			${component.getName()} = Button.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <@buttonOnClick component/>)
-				.bounds(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, ${component.width}, ${component.height})
-				<#if hasProcedure(component.displayCondition)>
-				.build(builder -> new Button(builder)<@buttonDisplayCondition component/>);
-				<#else>
-				.build();
-				</#if>
+			<#if component.isUndecorated>
+				${component.getName()} = new PlainTextButton(
+					this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+					${component.width}, ${component.height},
+					Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
+					<@buttonOnClick component/>, this.font
+				)<@buttonDisplayCondition component/>;
+			<#else>
+				${component.getName()} = Button.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <@buttonOnClick component/>)
+					.bounds(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+					${component.width}, ${component.height})
+					<#if hasProcedure(component.displayCondition)>
+						.build(builder -> new Button(builder)<@buttonDisplayCondition component/>);
+					<#else>
+						.build();
+					</#if>
+		    </#if>
 
 			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
