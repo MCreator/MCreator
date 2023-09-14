@@ -1,6 +1,6 @@
 <#include "../mcitems.ftl">
 {
-	"type": "minecraft:ore",
+    "type": "minecraft:ore",
     "config": {
         "size": ${data.frequencyOnChunk},
         "discard_chance_on_air_exposure": 0,
