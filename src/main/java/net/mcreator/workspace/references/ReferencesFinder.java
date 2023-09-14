@@ -41,7 +41,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiPredicate;
@@ -67,7 +66,7 @@ public class ReferencesFinder {
 					(a, t) -> t.getUnmappedValue().equals(query))) {
 				elements.add(me);
 			} else if (anyValueMatches(ge, Procedure.class, e -> true,
-					(a, t) -> t.getName() != null && !t.getName().equals("") && !t.getName().equals("null")
+					(a, t) -> t.getName() != null && !t.getName().isEmpty() && !t.getName().equals("null")
 							&& element.getName().equals(t.getName()))) {
 				elements.add(me);
 			} else if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
@@ -224,7 +223,12 @@ public class ReferencesFinder {
 
 		if (clazz.isInstance(value)) { // value of specified type
 			return condition == null || condition.test(field, (T) value);
-		} else if (value instanceof Collection<?> list) { // list of values
+		} else if (value instanceof Object[] array) { // array of values
+			for (Object obj : array) {
+				if (checkValue(obj, field, clazz, validIf, condition))
+					return true;
+			}
+		} else if (value instanceof Iterable<?> list) { // list of values
 			return listHasMatches(list, field, clazz, validIf, condition);
 		} else if (value instanceof Map<?, ?> map) { // map with values
 			return listHasMatches(map.keySet(), field, clazz, validIf, condition) || listHasMatches(map.values(), field,
@@ -248,7 +252,7 @@ public class ReferencesFinder {
 	 * @return Whether the provided value or any value extracted from valid fields/methods on the {@code value} object
 	 * passes the provided condition.
 	 */
-	private static <T> boolean listHasMatches(Collection<?> list, AccessibleObject field, Class<T> clazz,
+	private static <T> boolean listHasMatches(Iterable<?> list, AccessibleObject field, Class<T> clazz,
 			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
 		for (Object obj : list) {
 			if (checkValue(obj, field, clazz, validIf, condition))
