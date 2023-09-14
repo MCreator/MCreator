@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
@@ -92,20 +93,15 @@ public class JStringListField extends JPanel {
 		edit.setContentAreaFilled(false);
 		edit.addActionListener(e -> {
 			List<String> newTextList = ListEditorDialog.open(parent, entriesModel.elements(), validator, uniqueEntries);
-			if (newTextList != null) {
+			if (newTextList != null)
 				setTextList(newTextList);
-				stateChanged();
-			}
 		});
 
 		clear.setOpaque(false);
 		clear.setMargin(new Insets(0, 0, 0, 0));
 		clear.setBorder(BorderFactory.createEmptyBorder());
 		clear.setContentAreaFilled(false);
-		clear.addActionListener(e -> {
-			entriesModel.clear();
-			stateChanged();
-		});
+		clear.addActionListener(e -> entriesModel.clear());
 
 		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, clear));
 		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
@@ -147,33 +143,24 @@ public class JStringListField extends JPanel {
 	}
 
 	/**
-	 * @param listener Change listener to add. Will be called when the string list changes.
+	 * @param listener Data listener to add. Will be called when the string list changes.
 	 */
-	public void addChangeListener(ChangeListener listener) {
-		listenerList.add(ChangeListener.class, listener);
+	public void addDataListener(ListDataListener listener) {
+		entriesModel.addListDataListener(listener);
 	}
 
 	/**
 	 * @param listener The listener to remove.
 	 */
-	public void removeChangeListener(ChangeListener listener) {
-		listenerList.remove(ChangeListener.class, listener);
+	public void removeDataListener(ListDataListener listener) {
+		entriesModel.addListDataListener(listener);
 	}
 
 	/**
-	 * @return All change listeners currently added, an empty array if none.
+	 * @return All data listeners currently added, an empty array if none.
 	 */
-	public ChangeListener[] getChangeListeners() {
-		return listenerList.getListeners(ChangeListener.class);
-	}
-
-	/**
-	 * Private method to fire a state changed event for all change listeners.
-	 */
-	private void stateChanged() {
-		ChangeEvent changeEvent = new ChangeEvent(this);
-		for (ChangeListener listener : getChangeListeners())
-			listener.stateChanged(changeEvent);
+	public ListDataListener[] getDataListeners() {
+		return entriesModel.getListDataListeners();
 	}
 
 	private static class CustomListCellRenderer extends JLabel implements ListCellRenderer<String> {
