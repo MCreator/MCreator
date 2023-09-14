@@ -1,0 +1,1 @@
+Hạt hiệu ứng sẽ xuất hiện trong quần xã này.

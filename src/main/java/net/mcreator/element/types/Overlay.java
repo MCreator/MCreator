@@ -60,7 +60,7 @@ import java.util.List;
 	}
 
 	public boolean hasTextures() {
-		return (this.baseTexture != null && !this.baseTexture.equals("")) || !getComponentsOfType("Image").isEmpty();
+		return (this.baseTexture != null && !this.baseTexture.isEmpty()) || !getComponentsOfType("Image").isEmpty();
 	}
 
 	public int getBaseTextureWidth() {
@@ -72,7 +72,7 @@ import java.util.List;
 	}
 
 	private Dimension getBaseTextureSize() {
-		if (this.baseTexture != null && !this.baseTexture.equals("")) {
+		if (this.baseTexture != null && !this.baseTexture.isEmpty()) {
 			try {
 				ImageIcon texture = new ImageIcon(getModElement().getFolderManager()
 						.getTextureFile(FilenameUtilsPatched.removeExtension(this.baseTexture), TextureType.SCREEN)

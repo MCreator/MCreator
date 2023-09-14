@@ -53,7 +53,6 @@ public class MusicDisc extends GeneratableElement implements IItem, IItemWithTex
 	public Procedure onEntityHitWith;
 	public Procedure onItemInInventoryTick;
 	public Procedure onItemInUseTick;
-	public Procedure onStoppedUsing;
 	public Procedure onEntitySwing;
 
 	public MusicDisc(ModElement element) {

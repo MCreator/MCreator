@@ -1,0 +1,1 @@
+Questo parametro controlla il nome della chiave mostrata nella scheda Controlli nelle impostazioni di Minecraft.

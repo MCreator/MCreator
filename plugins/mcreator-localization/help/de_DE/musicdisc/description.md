@@ -1,0 +1,1 @@
+Schreiben Sie die Beschreibung Ihrer CD. Normalerweise ist sie der Komponist - der Name der Musik.

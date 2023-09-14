@@ -236,7 +236,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 			}
 		} else {
 			if (wysiwygEditor.overlayBaseTexture.getSelectedItem() != null
-					&& !wysiwygEditor.overlayBaseTexture.getSelectedItem().equals("")) {
+					&& !wysiwygEditor.overlayBaseTexture.getSelectedItem().isEmpty()) {
 				g.drawImage(new ImageIcon(wysiwygEditor.mcreator.getFolderManager().getTextureFile(
 						FilenameUtilsPatched.removeExtension(wysiwygEditor.overlayBaseTexture.getSelectedItem()),
 						TextureType.SCREEN).getAbsolutePath()).getImage(), 0, 0, W, H, this);
@@ -309,7 +309,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		if (positioningModeSettingWidth) {
 			ow = Math.abs(ox - ex);
 			if (positioningModeSettingHeight)
-				ow = Math.abs(ox - ex);
+				oh = Math.abs(oy - ey);
 		} else if (componentMoveMode) {
 			ox = ex;
 			oy = ey;

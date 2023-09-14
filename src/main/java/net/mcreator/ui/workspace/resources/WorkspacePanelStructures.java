@@ -134,7 +134,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 
 	private void deleteCurrentlySelected(JSelectableList<String> structureElementList) {
 		List<String> files = structureElementList.getSelectedValuesList();
-		if (files.size() > 0) {
+		if (!files.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			Set<ModElement> references = new HashSet<>();

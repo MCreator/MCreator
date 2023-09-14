@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +44,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 45;
+	public static final int formatVersion = 48;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -107,6 +108,10 @@ public abstract class GeneratableElement {
 		}
 
 		return true;
+	}
+
+	public boolean isUnknown() {
+		return false;
 	}
 
 	public static class GSONAdapter
@@ -293,6 +298,11 @@ public abstract class GeneratableElement {
 
 		public Unknown(ModElement element) {
 			super(element);
+		}
+
+		@Override
+		public boolean isUnknown() {
+			return true;
 		}
 	}
 

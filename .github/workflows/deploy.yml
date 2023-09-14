@@ -30,7 +30,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '17.0.7+7'
+          java-version: '17.0.8+7'
           distribution: 'adopt'
       - name: Install Dependencies
         run: |
@@ -84,7 +84,7 @@ jobs:
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
-          java-version: '17.0.7+7'
+          java-version: '17.0.8+7'
           distribution: 'adopt'
       - name: Install Dependencies
         run: |

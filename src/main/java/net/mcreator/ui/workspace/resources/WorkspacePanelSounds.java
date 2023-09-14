@@ -173,7 +173,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 
 	private void deleteSelectedSound(WorkspacePanel workspacePanel, JSelectableList<SoundElement> soundElementList) {
 		List<SoundElement> soundElements = soundElementList.getSelectedValuesList();
-		if (soundElements.size() > 0) {
+		if (!soundElements.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			Set<ModElement> references = new HashSet<>();

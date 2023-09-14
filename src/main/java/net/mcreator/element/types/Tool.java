@@ -75,7 +75,6 @@ import java.util.Map;
 	public Procedure onEntityHitWith;
 	public Procedure onItemInInventoryTick;
 	public Procedure onItemInUseTick;
-	public Procedure onStoppedUsing;
 	public Procedure onBlockDestroyedWithTool;
 	public Procedure onEntitySwing;
 

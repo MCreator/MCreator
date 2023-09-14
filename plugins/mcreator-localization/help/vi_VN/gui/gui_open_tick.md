@@ -1,0 +1,1 @@
+Kích hoạt một quy trình mỗi tick khi GUI này được mở.

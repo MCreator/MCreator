@@ -216,7 +216,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	private void deleteCurrentlySelected() {
 		List<File> files = listGroup.getSelectedItemsList();
-		if (files.size() > 0) {
+		if (!files.isEmpty()) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			Set<ModElement> references = new HashSet<>();
@@ -251,7 +251,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	private void exportSelectedImages() {
 		List<File> files = listGroup.getSelectedItemsList();
-		if (files.size() > 0) {
+		if (!files.isEmpty()) {
 			files.forEach(f -> {
 				File to = FileDialogs.getSaveDialog(workspacePanel.getMCreator(), new String[] { ".png" });
 				if (to != null)
@@ -434,7 +434,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 			if (ma != null) {
 				String name = StringUtils.abbreviateString(FilenameUtilsPatched.removeExtension(ma.getName()), 10);
-				if (name.trim().equals(""))
+				if (name.isBlank())
 					name = "(untitled)";
 
 				setText(name);
