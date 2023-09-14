@@ -24,6 +24,7 @@ import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.procedure.StringListProcedure;
+import net.mcreator.element.types.Armor;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,79 +39,44 @@ public class SpecialInformationConverter implements IConverter {
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		JsonObject oldObject = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+		try {
+			JsonObject oldObject = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-		List<String> specialInfo = new ArrayList<>();
-		List<String> helmetSpecialInfo = new ArrayList<>();
-		List<String> bodySpecialInfo = new ArrayList<>();
-		List<String> leggingsSpecialInfo = new ArrayList<>();
-		List<String> bootsSpecialInfo = new ArrayList<>();
-		if (oldObject.get("specialInfo") != null)
-			oldObject.getAsJsonArray("specialInfo").iterator()
-					.forEachRemaining(jsonElement -> specialInfo.add(jsonElement.getAsString()));
-		if (oldObject.get("helmetSpecialInfo") != null)
-			oldObject.getAsJsonArray("helmetSpecialInfo").iterator()
-					.forEachRemaining(jsonElement -> helmetSpecialInfo.add(jsonElement.getAsString()));
-		if (oldObject.get("bodySpecialInfo") != null)
-			oldObject.getAsJsonArray("bodySpecialInfo").iterator()
-					.forEachRemaining(jsonElement -> bodySpecialInfo.add(jsonElement.getAsString()));
-		if (oldObject.get("leggingsSpecialInfo") != null)
-			oldObject.getAsJsonArray("leggingsSpecialInfo").iterator()
-					.forEachRemaining(jsonElement -> leggingsSpecialInfo.add(jsonElement.getAsString()));
-		if (oldObject.get("bootsSpecialInfo") != null)
-			oldObject.getAsJsonArray("bootsSpecialInfo").iterator()
-					.forEachRemaining(jsonElement -> bootsSpecialInfo.add(jsonElement.getAsString()));
+			if (input instanceof Armor armor) { // Armor is special case, we can handle this one without reflection
+				List<String> helmetSpecialInfo = new ArrayList<>();
+				List<String> bodySpecialInfo = new ArrayList<>();
+				List<String> leggingsSpecialInfo = new ArrayList<>();
+				List<String> bootsSpecialInfo = new ArrayList<>();
 
-		if (!specialInfo.isEmpty()) {
-			try {
+				if (oldObject.get("helmetSpecialInfo") != null)
+					oldObject.getAsJsonArray("helmetSpecialInfo").iterator()
+							.forEachRemaining(jsonElement -> helmetSpecialInfo.add(jsonElement.getAsString()));
+				if (oldObject.get("bodySpecialInfo") != null)
+					oldObject.getAsJsonArray("bodySpecialInfo").iterator()
+							.forEachRemaining(jsonElement -> bodySpecialInfo.add(jsonElement.getAsString()));
+				if (oldObject.get("leggingsSpecialInfo") != null)
+					oldObject.getAsJsonArray("leggingsSpecialInfo").iterator()
+							.forEachRemaining(jsonElement -> leggingsSpecialInfo.add(jsonElement.getAsString()));
+				if (oldObject.get("bootsSpecialInfo") != null)
+					oldObject.getAsJsonArray("bootsSpecialInfo").iterator()
+							.forEachRemaining(jsonElement -> bootsSpecialInfo.add(jsonElement.getAsString()));
+
+				armor.helmetSpecialInformation = new StringListProcedure(null, helmetSpecialInfo);
+				armor.bodySpecialInformation = new StringListProcedure(null, bodySpecialInfo);
+				armor.leggingsSpecialInformation = new StringListProcedure(null, leggingsSpecialInfo);
+				armor.bootsSpecialInformation = new StringListProcedure(null, bootsSpecialInfo);
+			} else {
+				List<String> specialInfo = new ArrayList<>();
+				if (oldObject.get("specialInfo") != null)
+					oldObject.getAsJsonArray("specialInfo").iterator()
+							.forEachRemaining(jsonElement -> specialInfo.add(jsonElement.getAsString()));
+
 				Field specialInformationField = input.getClass().getDeclaredField("specialInformation");
 				specialInformationField.setAccessible(true);
 				specialInformationField.set(input, new StringListProcedure(null, specialInfo));
-			} catch (IllegalAccessException exception) {
-				LOG.warn(exception.getMessage(), exception);
-			} catch (NoSuchFieldException ignored) {
 			}
-		}
-
-		if (!helmetSpecialInfo.isEmpty()) {
-			try {
-				Field helmetSecialInformationField = input.getClass().getDeclaredField("helmetSpecialInformation");
-				helmetSecialInformationField.setAccessible(true);
-				helmetSecialInformationField.set(input, new StringListProcedure(null, helmetSpecialInfo));
-			} catch (IllegalAccessException exception) {
-				LOG.warn(exception.getMessage(), exception);
-			} catch (NoSuchFieldException ignored) {
-			}
-		}
-		if (!bodySpecialInfo.isEmpty()) {
-			try {
-				Field bodySecialInformationField = input.getClass().getDeclaredField("bodySpecialInformation");
-				bodySecialInformationField.setAccessible(true);
-				bodySecialInformationField.set(input, new StringListProcedure(null, bodySpecialInfo));
-			} catch (IllegalAccessException exception) {
-				LOG.warn(exception.getMessage(), exception);
-			} catch (NoSuchFieldException ignored) {
-			}
-		}
-		if (!leggingsSpecialInfo.isEmpty()) {
-			try {
-				Field leggingsSecialInformationField = input.getClass().getDeclaredField("leggingsSpecialInformation");
-				leggingsSecialInformationField.setAccessible(true);
-				leggingsSecialInformationField.set(input, new StringListProcedure(null, leggingsSpecialInfo));
-			} catch (IllegalAccessException exception) {
-				LOG.warn(exception.getMessage(), exception);
-			} catch (NoSuchFieldException ignored) {
-			}
-		}
-		if (!bootsSpecialInfo.isEmpty()) {
-			try {
-				Field bootsSecialInformationField = input.getClass().getDeclaredField("bootsSpecialInformation");
-				bootsSecialInformationField.setAccessible(true);
-				bootsSecialInformationField.set(input, new StringListProcedure(null, bootsSpecialInfo));
-			} catch (IllegalAccessException exception) {
-				LOG.warn(exception.getMessage(), exception);
-			} catch (NoSuchFieldException ignored) {
-			}
+		} catch (Exception e) {
+			LOG.warn("Failed to convert special information for " + input.getModElement().getName(), e);
 		}
 
 		return input;
@@ -119,4 +85,5 @@ public class SpecialInformationConverter implements IConverter {
 	@Override public int getVersionConvertingTo() {
 		return 49;
 	}
+
 }
