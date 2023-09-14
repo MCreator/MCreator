@@ -58,6 +58,8 @@ import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Arrays;
+import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -199,6 +201,12 @@ public class DialogsTest {
 			testState.put(testProps.get(5), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> StateEditorDialog.open(mcreator, testProps, testState, JStateLabel.NumberMatchType.EQUAL));
+	}
+
+	@Test public void testListEditor() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> ListEditorDialog.open(mcreator,
+				Collections.enumeration(Arrays.asList("info 1", "info 2", "test \\, is this", "another one")), null,
+				false));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

@@ -63,6 +63,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
@@ -372,8 +373,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
 				L10N.t("condition.common.true"));
 
-		restrictionBiomes = new BiomeListField(mcreator);
+		restrictionBiomes = new BiomeListField(mcreator, true);
+		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
 		professionTrade = new ProfessionListField(mcreator);
+
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 
@@ -1070,6 +1073,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
 						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
 						.collect(Collectors.toList()));
+		} else if (page == 6) {
+			return new AggregatedValidationResult(restrictionBiomes);
 		}
 		return new AggregatedValidationResult.PASS();
 	}
