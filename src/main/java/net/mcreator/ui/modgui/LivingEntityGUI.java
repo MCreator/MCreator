@@ -306,17 +306,18 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				"x:number/y:number/z:number/world:world/entity:entity/damagesource:damagesource"));
 		whenMobDies = new ProcedureSelector(this.withEntry("entity/when_dies"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_dies"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/damagesource:damagesource"));
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity/damagesource:damagesource"));
 		whenMobIsHurt = new ProcedureSelector(this.withEntry("entity/when_hurt"), mcreator,
-				L10N.t("elementgui.living_entity.event_mob_is_hurt"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/damagesource:damagesource"));
+				L10N.t("elementgui.living_entity.event_mob_is_hurt"), VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString(
+						"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity/damagesource:damagesource")).makeReturnValueOptional();
 		onRightClickedOn = new ProcedureSelector(this.withEntry("entity/when_right_clicked"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_right_clicked"),
 				VariableTypeLoader.BuiltInTypes.ACTIONRESULTTYPE, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/itemstack:itemstack")).makeReturnValueOptional();
 		whenThisMobKillsAnother = new ProcedureSelector(this.withEntry("entity/when_kills_another"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_kills_another"), Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/damagesource:damagesource"));
+				"x:number/y:number/z:number/world:world/entity:entity/sourceentity:entity/immediatesourceentity:entity/damagesource:damagesource"));
 		onMobTickUpdate = new ProcedureSelector(this.withEntry("entity/on_tick_update"), mcreator,
 				L10N.t("elementgui.living_entity.event_mob_tick_update"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
