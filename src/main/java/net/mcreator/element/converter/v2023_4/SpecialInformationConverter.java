@@ -83,7 +83,7 @@ public class SpecialInformationConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 49;
+		return 50;
 	}
 
 }
