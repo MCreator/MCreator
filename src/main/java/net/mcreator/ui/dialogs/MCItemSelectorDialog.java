@@ -23,9 +23,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.validation.Validator;
-import net.mcreator.ui.validation.component.VComboBox;
-import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -82,44 +79,16 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		if (supportTags) {
 			JButton useTags = L10N.button("dialog.item_selector.use_tag");
 			buttons.add(useTags);
-
-			VComboBox<String> tagName = new VComboBox<>();
-
-			tagName.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), tagName, true));
-
-			tagName.addItem("");
-			tagName.addItem("tag");
-			tagName.addItem("category/tag");
-
-			tagName.setEditable(true);
-			tagName.setOpaque(false);
-			tagName.setForeground(Color.white);
-			ComponentUtils.deriveFont(tagName, 16);
-
-			tagName.enableRealtimeValidation();
-
 			useTags.addActionListener(e -> {
-				int result = JOptionPane.showConfirmDialog(this,
-						PanelUtils.northAndCenterElement(L10N.label("dialog.item_selector.enter_tag_name"), tagName),
-						L10N.t("dialog.item_selector.use_tag"), JOptionPane.OK_CANCEL_OPTION);
-				if (result == JOptionPane.OK_OPTION) {
-					if (tagName.getValidationStatus().getValidationResultType()
-							!= Validator.ValidationResultType.ERROR) {
-						String selectedItem = tagName.getSelectedItem();
-						if (selectedItem != null) {
-							MCItem mcItem = new MCItem.Tag(mcreator.getWorkspace(), selectedItem);
-							model.addElement(mcItem);
-							list.setSelectedValue(mcItem, true);
-
-							setVisible(false);
-							dispose();
-							if (itemSelectedListener != null)
-								itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
-						}
-					} else {
-						JOptionPane.showMessageDialog(this, tagName.getValidationStatus().getMessage(),
-								L10N.t("dialog.item_selector.error_invalid_tag_name_title"), JOptionPane.ERROR_MESSAGE);
-					}
+				String tag = AddTagDialog.openAddTagDialog(this, "tag", "category/tag");
+				if (tag != null) {
+					MCItem mcItem = new MCItem.Tag(mcreator.getWorkspace(), tag);
+					model.addElement(mcItem);
+					list.setSelectedValue(mcItem, true);
+					setVisible(false);
+					dispose();
+					if (itemSelectedListener != null)
+						itemSelectedListener.actionPerformed(new ActionEvent(this, 0, ""));
 				}
 			});
 		}

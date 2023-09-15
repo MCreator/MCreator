@@ -47,7 +47,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
@@ -58,10 +57,7 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
-import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.*;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -117,7 +113,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector placingCondition;
 	private ProcedureSelector isBonemealTargetCondition;
 	private ProcedureSelector bonemealSuccessCondition;
-	private ProcedureSelector generateCondition;
 
 	private final JSpinner hardness = new JSpinner(new SpinnerNumberModel(1, -1, 64000, 0.05));
 	private final JSpinner resistance = new JSpinner(new SpinnerNumberModel(10, 0, Integer.MAX_VALUE, 0.5));
@@ -262,22 +257,17 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
-		restrictionBiomes = new BiomeListField(mcreator);
+
+		restrictionBiomes = new BiomeListField(mcreator, true);
+		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
+
 		spawnWorldTypes = new DimensionListField(mcreator);
 
 		fluidRestrictions = new FluidListField(mcreator);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 
-		// emulate base_stone_overworld
-		blocksToReplace.setListElements(List.of(
-				//@formatter:off
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#0"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#1"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#3"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#5")
-				//@formatter:on
-		));
+		blocksToReplace.setListElements(List.of(new MItemBlock(mcreator.getWorkspace(), "TAG:stone_ore_replaceables")));
 		generateHeight.setAllowEqualValues(true);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
@@ -334,10 +324,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).setDefaultName(
-				L10N.t("condition.common.no_additional")).makeInline();
-		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				L10N.t("elementgui.block.event_generate_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 		isBonemealTargetCondition = new ProcedureSelector(this.withEntry("block/bonemeal_target_condition"), mcreator,
 				L10N.t("elementgui.common.event_is_bonemeal_target"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -1076,8 +1062,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		pane8.add("Center", PanelUtils.totalCenterInPanel(invblock));
 
-		JPanel enderpanel2 = new JPanel(new BorderLayout(30, 15));
-
 		JPanel genPanel = new JPanel(new GridLayout(7, 2, 20, 2));
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
@@ -1109,11 +1093,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		genPanel.add(generateHeight);
 
 		genPanel.setOpaque(false);
-
-		enderpanel2.add("West", PanelUtils.totalCenterInPanel(new JLabel(UIRES.get("chunk"))));
-		enderpanel2.add("Center", PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(genPanel,
-				PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), generateCondition), 5, 5)));
-		enderpanel2.setOpaque(false);
 
 		JPanel redstoneParameters = new JPanel(new GridLayout(2, 2, 0, 2));
 		redstoneParameters.setOpaque(false);
@@ -1179,7 +1158,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);
 
-		pane9.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(enderpanel2)));
+		pane9.add("Center", PanelUtils.totalCenterInPanel(genPanel));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -1327,7 +1306,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		isBonemealTargetCondition.refreshListKeepSelected();
 		bonemealSuccessCondition.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
-		generateCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(renderType,
 				ListUtils.merge(Arrays.asList(normal, singleTexture, cross, crop, grassBlock),
@@ -1352,6 +1330,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			return new AggregatedValidationResult(page3group);
 		else if (page == 4)
 			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
+		else if (page == 7)
+			return new AggregatedValidationResult(restrictionBiomes);
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -1401,7 +1381,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		frequencyPerChunks.setValue(block.frequencyPerChunks);
 		frequencyOnChunk.setValue(block.frequencyOnChunk);
 		emittedRedstonePower.setSelectedProcedure(block.emittedRedstonePower);
-		generateCondition.setSelectedProcedure(block.generateCondition);
 		hardness.setValue(block.hardness);
 		resistance.setValue(block.resistance);
 		hasGravity.setSelected(block.hasGravity);
@@ -1553,7 +1532,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.unbreakable = unbreakable.isSelected();
 		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();
 		block.emittedRedstonePower = emittedRedstonePower.getSelectedProcedure();
-		block.generateCondition = generateCondition.getSelectedProcedure();
 		block.hasInventory = hasInventory.isSelected();
 		block.useLootTableForDrops = useLootTableForDrops.isSelected();
 		block.openGUIOnRightClick = openGUIOnRightClick.isSelected();

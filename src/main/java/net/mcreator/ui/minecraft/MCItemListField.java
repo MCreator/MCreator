@@ -22,18 +22,19 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
+import net.mcreator.ui.dialogs.AddTagDialog;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MCItemListField extends JItemListField<MItemBlock> {
 
 	private final MCItem.ListProvider supplier;
-	private final boolean supportTags;
 
 	public MCItemListField(MCreator mcreator, MCItem.ListProvider supplier) {
 		this(mcreator, supplier, false, false);
@@ -41,16 +42,25 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 
 	public MCItemListField(MCreator mcreator, MCItem.ListProvider supplier, boolean excludeButton,
 			boolean supportTags) {
-		super(mcreator, excludeButton);
+		super(mcreator, excludeButton, supportTags);
 		this.supplier = supplier;
-		this.supportTags = supportTags;
 
 		elementsList.setCellRenderer(new CustomListCellRenderer());
 	}
 
 	@Override public List<MItemBlock> getElementsToAdd() {
-		return MCItemSelectorDialog.openMultiSelectorDialog(mcreator, supplier, supportTags).stream()
+		return MCItemSelectorDialog.openMultiSelectorDialog(mcreator, supplier).stream()
 				.map(e -> new MItemBlock(mcreator.getWorkspace(), e.getName())).collect(Collectors.toList());
+	}
+
+	@Override protected List<MItemBlock> getTagsToAdd() {
+		List<MItemBlock> tags = new ArrayList<>();
+
+		String tag = AddTagDialog.openAddTagDialog(mcreator, "tag", "category/tag");
+		if (tag != null)
+			tags.add(new MItemBlock(mcreator.getWorkspace(), "TAG:" + tag));
+
+		return tags;
 	}
 
 	class CustomListCellRenderer extends JLabel implements ListCellRenderer<MItemBlock> {
