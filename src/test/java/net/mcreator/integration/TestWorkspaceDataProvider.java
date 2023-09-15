@@ -1621,7 +1621,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.xpAmount = 8;
 		livingEntity.ridable = !_true;
 		livingEntity.canControlStrafe = !_true;
-		livingEntity.canControlForward = _true;
+		livingEntity.canControlForward = !_true;
 		livingEntity.guiBoundTo = "<NONE>";
 		livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
@@ -1646,7 +1646,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.onPlayerCollidesWith = new Procedure("procedure8");
 			livingEntity.onInitialSpawn = new Procedure("procedure9");
 		}
-		livingEntity.hasAI = _true;
+		livingEntity.hasAI = !emptyLists;
 		livingEntity.aiBase = "(none)";
 		livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 		livingEntity.breedable = !_true;
@@ -1690,12 +1690,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelShadowSize = 1.8;
 		livingEntity.canTrade = _true;
 		livingEntity.villagerTradingType = !_true;
-		if (livingEntity.canTrade) {
-			livingEntity.breedable = false;
-			livingEntity.tameable = false;
-			livingEntity.ridable = false;
-			livingEntity.canControlForward = false;
-			livingEntity.canControlStrafe = false;
+		if (livingEntity.canTrade || livingEntity.breedable) {
+			livingEntity.hasAI = true;
 		}
 		livingEntity.professionTrade = new ArrayList<>();
 		if (!emptyLists) {
@@ -1715,7 +1711,7 @@ public class TestWorkspaceDataProvider {
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		livingEntity.restockCondition = new LogicProcedure(_true ? "condition4" : null, _true);
 		livingEntity.rewardXp = new NumberProcedure(emptyLists ? null : "number1", 4);
-		livingEntity.tradingCondition = new Procedure(_true ? "condition5" : null);
+		livingEntity.tradingCondition = _true ? null : new Procedure("condition5");
 		return livingEntity;
 	}
 
