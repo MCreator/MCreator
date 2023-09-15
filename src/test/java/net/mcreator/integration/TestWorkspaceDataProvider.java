@@ -1690,6 +1690,13 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelShadowSize = 1.8;
 		livingEntity.canTrade = _true;
 		livingEntity.villagerTradingType = !_true;
+		if (livingEntity.ridable && livingEntity.canTrade) {
+			livingEntity.breedable = false;
+			livingEntity.tameable = false;
+			livingEntity.ridable = false;
+			livingEntity.canControlForward = false;
+			livingEntity.canControlStrafe = false;
+		}
 		livingEntity.professionTrade = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.professionTrade.addAll(
