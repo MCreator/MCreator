@@ -1622,27 +1622,6 @@ public class TestWorkspaceDataProvider {
 		livingEntity.ridable = !_true;
 		livingEntity.canControlStrafe = !_true;
 		livingEntity.canControlForward = _true;
-		livingEntity.canTrade = _true;
-		livingEntity.villagerTradingType = !_true;
-		livingEntity.professionTrade = new ArrayList<>();
-		if (!emptyLists) {
-			livingEntity.professionTrade.addAll(
-					professions.stream().skip(_true ? 0 : ((long) (professions.size() / 4) * valueIndex))
-							.limit(professions.size() / 4)
-							.map(e -> new ProfessionEntry(modElement.getWorkspace(), e.getName())).toList());
-		} else {
-			livingEntity.professionTrade.add(
-					new ProfessionEntry(modElement.getWorkspace(), getRandomDataListEntry(random, professions)));
-		}
-		livingEntity.fullUpdateSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-		livingEntity.emptyUpdateSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-		livingEntity.notificationSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-		livingEntity.restockCondition = new LogicProcedure(_true ? "condition4" : null, _true);
-		livingEntity.rewardXp = new NumberProcedure(emptyLists ? null : "number1", 4);
-		livingEntity.tradingCondition = new Procedure(_true ? "condition5" : null);
 		livingEntity.guiBoundTo = "<NONE>";
 		livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
@@ -1709,6 +1688,27 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelHeight = 1.3;
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
+		livingEntity.canTrade = _true;
+		livingEntity.villagerTradingType = !_true;
+		livingEntity.professionTrade = new ArrayList<>();
+		if (!emptyLists) {
+			livingEntity.professionTrade.addAll(
+					professions.stream().skip(_true ? 0 : ((long) (professions.size() / 4) * valueIndex))
+							.limit(professions.size() / 4)
+							.map(e -> new ProfessionEntry(modElement.getWorkspace(), e.getName())).toList());
+		} else {
+			livingEntity.professionTrade.add(
+					new ProfessionEntry(modElement.getWorkspace(), getRandomDataListEntry(random, professions)));
+		}
+		livingEntity.fullUpdateSound = new Sound(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+		livingEntity.emptyUpdateSound = new Sound(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+		livingEntity.notificationSound = new Sound(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+		livingEntity.restockCondition = new LogicProcedure(_true ? "condition4" : null, _true);
+		livingEntity.rewardXp = new NumberProcedure(emptyLists ? null : "number1", 4);
+		livingEntity.tradingCondition = new Procedure(_true ? "condition5" : null);
 		return livingEntity;
 	}
 
