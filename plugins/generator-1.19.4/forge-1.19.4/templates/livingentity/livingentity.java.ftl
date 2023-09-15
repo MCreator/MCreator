@@ -189,7 +189,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
             ${aicode}
         </#if>
 
-        <#if data.hasAI && data.ranged>
+        <#if data.ranged>
             this.goalSelector.addGoal(1, new RangedAttackGoal(this, 1.25, ${data.rangedAttackInterval}, ${data.rangedAttackRadius}f) {
 				@Override public boolean canContinueToUse() {
 					return this.canUse();
