@@ -37,7 +37,6 @@ public class BinaryStringIO {
 		try {
 			return bytesToString(Files.readAllBytes(file.toPath()));
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
 			LOG.error("Error reading " + e.getMessage());
 			return "";
 		}
@@ -54,7 +53,6 @@ public class BinaryStringIO {
 			else
 				throw new IOException("Failed to load resoruce from any plugin. Resource: " + resource);
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
 			LOG.error("Error reading " + e.getMessage());
 			return "";
 		}
@@ -76,7 +74,6 @@ public class BinaryStringIO {
 			return new String(Base64.getDecoder().decode(base64));
 
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
 			LOG.error("Error reading " + e.getMessage());
 			return "";
 		}
@@ -102,7 +99,6 @@ public class BinaryStringIO {
 			// save
 			out.write(compressed, 0, compressed.length);
 		} catch (Exception e) {
-			LOG.error(e.getMessage(), e);
 			LOG.error("Error writing " + e.getMessage());
 		}
 	}

@@ -45,7 +45,8 @@ public class BlocklyTestUtil {
 
 	private static final Logger LOG = LogManager.getLogger(BlocklyTestUtil.class);
 
-	protected static boolean validateToolboxBlock(ToolboxBlock toolboxBlock, Set<String> generatorBlocks, Workspace workspace) {
+	protected static boolean validateToolboxBlock(ToolboxBlock toolboxBlock, Set<String> generatorBlocks,
+			Workspace workspace) {
 		// skip procedure blocks not supported by this generator
 		if (!generatorBlocks.contains(toolboxBlock.getMachineName()))
 			return false;
@@ -148,11 +149,11 @@ public class BlocklyTestUtil {
 						String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
 								suggestedDataListName);
 
-						if (values.length == 0 || values[0].equals(""))
+						if (values.length == 0 || values[0].isEmpty())
 							values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
 									suggestedDataListName + "s");
 
-						if (values.length > 0 && !values[0].equals("")) {
+						if (values.length > 0 && !values[0].isEmpty()) {
 							additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
 									.append(ListUtils.getRandomItem(random, values)).append("</field>");
 							processed++;
@@ -184,7 +185,7 @@ public class BlocklyTestUtil {
 				}
 			}
 			if (processedFields != totalFields) {
-				LOG.warn("Skipping Blockly block with incorrectly " + "defined repeating field: "
+				LOG.warn("Skipping Blockly block with incorrectly defined repeating field: "
 						+ toolboxBlock.getMachineName());
 				return false;
 			}
@@ -239,12 +240,12 @@ public class BlocklyTestUtil {
 
 			if (value == null) {
 				String[] values = getDataListFieldValues(workspace, type, typeFilter, customEntryProviders);
-				if (values.length > 0 && !values[0].equals("")) {
+				if (values.length > 0 && !values[0].isEmpty()) {
 					value = ListUtils.getRandomItem(random, values);
 				}
 			}
 
-			if (value != null && !value.equals("")) {
+			if (value != null && !value.isEmpty()) {
 				additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
 				processed++;
 			}
@@ -284,6 +285,8 @@ public class BlocklyTestUtil {
 					.toArray(String[]::new);
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
+		case "structure":
+			return workspace.getFolderManager().getStructureList().toArray(String[]::new);
 		case "procedure":
 			return workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 					.map(ModElement::getName).toArray(String[]::new);

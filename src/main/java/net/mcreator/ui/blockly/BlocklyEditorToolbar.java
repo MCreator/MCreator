@@ -102,7 +102,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 					g.setColor(new Color(0.4f, 0.4f, 0.4f, 0.3f));
 					g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 					g.setColor(Color.white);
-					if (getText().equals("")) {
+					if (getText().isEmpty()) {
 						g.setFont(g.getFont().deriveFont(11f));
 						g.setColor(new Color(120, 120, 120));
 						g.drawString(L10N.t("blockly.search_procedure_blocks"), 5, 18);
@@ -121,7 +121,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			search.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
 					super.keyReleased(e);
-					if (!search.getText().equals("")) {
+					if (!search.getText().isEmpty()) {
 						String[] keyWords = search.getText().replaceAll("[^ a-zA-Z0-9/._-]+", "").split(" ");
 
 						Set<ToolboxBlock> filtered = new LinkedHashSet<>();

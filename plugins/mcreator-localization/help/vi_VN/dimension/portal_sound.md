@@ -1,0 +1,1 @@
+Tham số này xác định âm thanh được chơi bởi cổng một cách ngẫu nhiên khi hoạt động.

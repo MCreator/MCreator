@@ -19,10 +19,15 @@
 
 package net.mcreator.util;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.lang.reflect.Field;
 import java.nio.charset.Charset;
 
 public class UTF8Forcer {
+
+	private static final Logger LOG = LogManager.getLogger(UTF8Forcer.class);
 
 	public static void forceGlobalUTF8() {
 		try {
@@ -31,7 +36,7 @@ public class UTF8Forcer {
 			charset.setAccessible(true);
 			charset.set(null, null);
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Failed to set UTF8 as default app encoding", e);
 		}
 	}
 

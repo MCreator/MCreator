@@ -148,7 +148,8 @@ public final class FileIO {
 
 		// prevent recursive copy in case if directory is copied in a subdirectory
 		try {
-			if (targetLocation.getAbsoluteFile().getParentFile().getCanonicalPath().equals(sourceLocation.getCanonicalPath()))
+			if (targetLocation.getAbsoluteFile().getParentFile().getCanonicalPath()
+					.equals(sourceLocation.getCanonicalPath()))
 				return;
 		} catch (IOException e) {
 			return;
