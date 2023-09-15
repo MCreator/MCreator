@@ -177,7 +177,7 @@ public abstract class GeneratableElement {
 				GeneratableElement generatableElement = gson.fromJson(jsonObject,
 						modElementType.getModElementStorageClass());
 				generatableElement.setModElement(lastModElement); // set the mod element reference
-				passWorkspaceTo(generatableElement, workspace);
+				passWorkspace(generatableElement, workspace);
 
 				List<IConverter> converters = ConverterRegistry.getConvertersForModElementType(modElementType);
 				if (converters != null) {
