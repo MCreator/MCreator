@@ -163,6 +163,7 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new SourceEntityDependencyBlock());
 		blockGenerators.add(new EntityIteratorDependencyBlock());
 		blockGenerators.add(new ImmediateSourceEntityDependencyBlock());
+		blockGenerators.add(new DamageSourceDependencyBlock());
 		blockGenerators.add(new DirectionDependencyBlock());
 		blockGenerators.add(new DirectionConstantBlock());
 		blockGenerators.add(new NullBlock());

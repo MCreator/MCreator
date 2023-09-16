@@ -62,8 +62,9 @@ public class RSyntaxTextAreaStyler {
 			}
 
 			if (!PreferencesManager.PREFERENCES.ide.editorTheme.get().equals("MCreator")) {
-				theme = Theme.load(te.getClass().getResourceAsStream("/org/fife/ui/rsyntaxtextarea/themes/"
-						+ PreferencesManager.PREFERENCES.ide.editorTheme.get().toLowerCase(Locale.ENGLISH) + ".xml"));
+				theme = Theme.load(te.getClass().getResourceAsStream(
+						"/org/fife/ui/rsyntaxtextarea/themes/" + PreferencesManager.PREFERENCES.ide.editorTheme.get()
+								.toLowerCase(Locale.ENGLISH) + ".xml"));
 			}
 
 			theme.matchedBracketBG = (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT");

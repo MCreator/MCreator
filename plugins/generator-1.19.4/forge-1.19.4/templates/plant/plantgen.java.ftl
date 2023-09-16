@@ -34,10 +34,6 @@
 
 package ${package}.world.features.plants;
 
-import com.mojang.serialization.Codec;
-import net.minecraft.world.level.levelgen.blockpredicates.BlockPredicate;
-import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-
 <#compress>
 public class ${name}Feature extends RandomPatchFeature {
 
@@ -64,14 +60,6 @@ public class ${name}Feature extends RandomPatchFeature {
 		WorldGenLevel world = context.level();
 		if (!generate_dimensions.contains(world.getLevel().dimension()))
 			return false;
-
-		<#if hasProcedure(data.generateCondition)>
-		int x = context.origin().getX();
-		int y = context.origin().getY();
-		int z = context.origin().getZ();
-		if (!<@procedureOBJToConditionCode data.generateCondition/>)
-			return false;
-		</#if>
 
 		return super.place(context);
 	}

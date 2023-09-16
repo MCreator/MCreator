@@ -61,7 +61,7 @@ record MCreatorDropTarget(MCreator mcreator) implements DropTargetListener {
 			dtde.acceptDrop(dtde.getDropAction());
 			try {
 				List<?> transferData = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
-				if (transferData.size() > 0) {
+				if (!transferData.isEmpty()) {
 					Object transfObj = transferData.get(0);
 					if (transfObj instanceof File file) {
 						if (file.getName().endsWith(".ogg")) {

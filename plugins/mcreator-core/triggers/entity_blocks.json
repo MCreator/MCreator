@@ -1,0 +1,46 @@
+{
+  "dependencies_provided": [
+    {
+      "name": "entity",
+      "type": "entity"
+    },
+    {
+      "name": "sourceentity",
+      "type": "entity"
+    },
+    {
+      "name": "world",
+      "type": "world"
+    },
+    {
+      "name": "x",
+      "type": "number"
+    },
+    {
+      "name": "y",
+      "type": "number"
+    },
+    {
+      "name": "z",
+      "type": "number"
+    },
+    {
+      "name": "originalblockedamount",
+      "type": "number"
+    },
+    {
+      "name": "blockedamount",
+      "type": "number"
+    },
+    {
+      "name": "immediatesourceentity",
+      "type": "entity"
+    },
+    {
+      "name": "damagesource",
+      "type": "damagesource"
+    }
+  ],
+  "cancelable": "true",
+  "side": "server"
+}
