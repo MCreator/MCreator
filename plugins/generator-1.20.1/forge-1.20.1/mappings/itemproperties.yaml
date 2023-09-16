@@ -5,4 +5,5 @@ damage: damage
 lefthanded: lefthanded
 cooldown: cooldown
 custom_model_data: custom_model_data
+blocking: blocking
 trim_type: trim_type
