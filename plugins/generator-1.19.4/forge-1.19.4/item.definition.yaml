@@ -24,6 +24,10 @@ templates:
     writer: json
     condition: "renderType #= 2"
     name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/rangeditem.json.ftl
+    writer: json
+    condition: "renderType #= 3"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
 
 list_templates:
   - name: "Item states"

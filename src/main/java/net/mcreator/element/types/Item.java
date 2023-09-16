@@ -242,7 +242,10 @@ import java.util.*;
 		}
 	}
 
-	public static int encodeModelType(Model.Type modelType) {
+	public static int encodeModelType(Model.Type modelType, boolean isRanged) {
+		if (isRanged && modelType == Model.Type.BUILTIN)
+			return 3;
+
 		return switch (modelType) {
 			case JSON -> 1;
 			case OBJ -> 2;

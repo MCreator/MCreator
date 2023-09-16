@@ -680,7 +680,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		item.texture = texture.getID();
-		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
+		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType(), enableRanged.isSelected());
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 
 		item.customProperties = customProperties.getProperties();
