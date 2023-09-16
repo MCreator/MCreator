@@ -50,6 +50,7 @@ import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
 import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
 import net.mcreator.element.converter.v2023_4.BlockGenerationConditionRemover;
 import net.mcreator.element.converter.v2023_4.PlantGenerationConditionRemover;
+import net.mcreator.element.converter.v2023_4.WaterEntitiesConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -103,7 +104,8 @@ public class ConverterRegistry {
 			new SlotInteractionsConverter()
 		));
 		put(ModElementType.LIVINGENTITY, List.of(
-			new EntityTexturesConverter()
+				new EntityTexturesConverter(),
+				new WaterEntitiesConverter()
 		));
 		put(ModElementType.OVERLAY, List.of(
 			new OverlayCoordinateConverter(),
