@@ -100,14 +100,6 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 				new HumanoidModel(context.bakeLayer(ModelLayers.PLAYER_OUTER_ARMOR)), context.getModelManager()));
 		</#if>
 
-		<#if data.mobModelGlowTexture?has_content>
-		this.addLayer(new EyesLayer<${name}Entity, ${model}>(this) {
-			@Override public RenderType renderType() {
-				return RenderType.eyes(new ResourceLocation("${modid}:textures/entities/${data.mobModelGlowTexture}"));
-			}
-		});
-		</#if>
-
 		<#if data.modelLayers??>
 			<#list data.modelLayers as layer>
 				this.addLayer(new RenderLayer<${name}Entity, ${model}>(this) {

@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.v2023_3;
+package net.mcreator.element.converter.v2023_4;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -61,7 +61,7 @@ public class EntityGlowLayerConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 44;
+		return 50;
 	}
 
 }

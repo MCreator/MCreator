@@ -1560,7 +1560,6 @@ public class TestWorkspaceDataProvider {
 		livingEntity.mobName = modElement.getName();
 		livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
 		livingEntity.mobModelTexture = "test.png";
-		livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
 		livingEntity.transparentModelCondition = new Procedure("condition1");
 		livingEntity.isShakingCondition = new Procedure("condition2");
 		livingEntity.solidBoundingBox = new LogicProcedure(_true ? "condition3" : null, _true);
@@ -1687,15 +1686,15 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelHeight = 1.3;
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
-			if (!emptyLists) {
-				livingEntity.modelLayers = new ArrayList<>();
-				LivingEntity.ModelLayerEntry modelLayer = new LivingEntity.ModelLayerEntry();
-				modelLayer.model = "Default";
-				modelLayer.texture = "test.png";
-				modelLayer.glow = _true;
-				modelLayer.condition = new Procedure("condition4");
-				livingEntity.modelLayers.add(modelLayer);
-			}
+		if (!emptyLists) {
+			livingEntity.modelLayers = new ArrayList<>();
+			LivingEntity.ModelLayerEntry modelLayer = new LivingEntity.ModelLayerEntry();
+			modelLayer.model = "Default";
+			modelLayer.texture = "test.png";
+			modelLayer.glow = _true;
+			modelLayer.condition = new Procedure("condition4");
+			livingEntity.modelLayers.add(modelLayer);
+		}
 		return livingEntity;
 	}
 
