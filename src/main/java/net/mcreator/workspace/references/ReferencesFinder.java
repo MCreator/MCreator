@@ -49,10 +49,7 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		String query = new DataListEntry.Custom(element).getName();
-		for (ModElement me : workspace.getModElements()) {
-			if (me.equals(element))
-				continue;
-
+		workspace.getModElements().parallelStream().filter(me -> !me.equals(element)).forEach(me -> {
 			GeneratableElement ge = me.getGeneratableElement();
 			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ElementReference.class), (a, t) -> {
 				ElementReference ref = a.getAnnotation(ElementReference.class);
@@ -70,7 +67,7 @@ public class ReferencesFinder {
 					(a, t) -> t.contains(query) || t.contains(element.getName()))) {
 				elements.add(me);
 			}
-		}
+		});
 
 		return elements;
 	}
@@ -78,7 +75,7 @@ public class ReferencesFinder {
 	public static List<ModElement> searchTextureUsages(Workspace workspace, File texture, TextureType type) {
 		List<ModElement> elements = new ArrayList<>();
 
-		for (ModElement me : workspace.getModElements()) {
+		workspace.getModElements().parallelStream().forEach(me -> {
 			if (anyValueMatches(me.getGeneratableElement(), String.class, e -> {
 				TextureReference ref = e.getAnnotation(TextureReference.class);
 				return ref != null && ref.value() == type;
@@ -89,7 +86,7 @@ public class ReferencesFinder {
 			})) {
 				elements.add(me);
 			}
-		}
+		});
 
 		return elements;
 	}
@@ -97,13 +94,13 @@ public class ReferencesFinder {
 	public static List<ModElement> searchModelUsages(Workspace workspace, Model model) {
 		List<ModElement> elements = new ArrayList<>();
 
-		for (ModElement me : workspace.getModElements()) {
+		workspace.getModElements().parallelStream().forEach(me -> {
 			if (anyValueMatches(me.getGeneratableElement(), Model.class,
 					e -> e.isAnnotationPresent(ModelReference.class),
 					(a, t) -> model.equals(t) || TexturedModel.getModelTextureMapVariations(model).contains(t))) {
 				elements.add(me);
 			}
-		}
+		});
 
 		return elements;
 	}
@@ -111,11 +108,11 @@ public class ReferencesFinder {
 	public static List<ModElement> searchSoundUsages(Workspace workspace, SoundElement sound) {
 		List<ModElement> elements = new ArrayList<>();
 
-		for (ModElement me : workspace.getModElements()) {
+		workspace.getModElements().parallelStream().forEach(me -> {
 			if (anyValueMatches(me.getGeneratableElement(), Sound.class, e -> true,
 					(a, t) -> t.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())))
 				elements.add(me);
-		}
+		});
 
 		return elements;
 	}
@@ -123,11 +120,15 @@ public class ReferencesFinder {
 	public static List<ModElement> searchStructureUsages(Workspace workspace, String structure) {
 		List<ModElement> elements = new ArrayList<>();
 
-		for (ModElement me : workspace.getModElements()) {
-			if (anyValueMatches(me.getGeneratableElement(), String.class,
-					e -> e.isAnnotationPresent(StructureReference.class), (a, t) -> t.equals(structure)))
+		workspace.getModElements().parallelStream().forEach(me -> {
+			GeneratableElement ge = me.getGeneratableElement();
+			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(StructureReference.class),
+					(a, t) -> t.equals(structure)))
 				elements.add(me);
-		}
+			else if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
+					(a, t) -> t.contains(structure)))
+				elements.add(me);
+		});
 
 		return elements;
 	}
@@ -135,12 +136,12 @@ public class ReferencesFinder {
 	public static List<ModElement> searchGlobalVariableUsages(Workspace workspace, String variableName) {
 		List<ModElement> elements = new ArrayList<>();
 
-		for (ModElement me : workspace.getModElements()) {
+		workspace.getModElements().parallelStream().forEach(me -> {
 			if (anyValueMatches(me.getGeneratableElement(), String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
 					(a, t) -> t.contains("<field name=\"VAR\">global:" + variableName + "</field>"))) {
 				elements.add(me);
 			}
-		}
+		});
 
 		return elements;
 	}
@@ -148,7 +149,7 @@ public class ReferencesFinder {
 	public static List<ModElement> searchLocalizationKeyUsages(Workspace workspace, String localizationKey) {
 		List<ModElement> elements = new ArrayList<>();
 
-		for (ModElement me : workspace.getModElements()) {
+		workspace.getModElements().parallelStream().forEach(me -> {
 			GeneratableElement ge = me.getGeneratableElement();
 			if (ge != null && workspace.getGenerator().getElementLocalizationKeys(ge).contains(localizationKey)) {
 				elements.add(me);
@@ -156,7 +157,7 @@ public class ReferencesFinder {
 					(a, t) -> t.contains(localizationKey))) {
 				elements.add(me);
 			}
-		}
+		});
 
 		return elements;
 	}
