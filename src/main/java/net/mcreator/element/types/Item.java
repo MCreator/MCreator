@@ -162,6 +162,10 @@ import java.util.*;
 		return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Tool");
 	}
 
+	public boolean hasRangedItemModel() {
+		return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
+	}
+
 	public boolean hasInventory() {
 		return guiBoundTo != null && !guiBoundTo.isEmpty() && !guiBoundTo.equals("<NONE>");
 	}
@@ -240,12 +244,13 @@ import java.util.*;
 		public boolean hasToolModel() {
 			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Tool");
 		}
+
+		public boolean hasRangedItemModel() {
+			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
+		}
 	}
 
-	public static int encodeModelType(Model.Type modelType, boolean isRanged) {
-		if (isRanged && modelType == Model.Type.BUILTIN)
-			return 3;
-
+	public static int encodeModelType(Model.Type modelType) {
 		return switch (modelType) {
 			case JSON -> 1;
 			case OBJ -> 2;

@@ -102,7 +102,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private static final Model normal = new Model.BuiltInModel("Normal");
 	private static final Model tool = new Model.BuiltInModel("Tool");
-	public static final Model[] builtinitemmodels = new Model[] { normal, tool };
+	private static final Model rangedItem = new Model.BuiltInModel("Ranged item");
+	public static final Model[] builtinitemmodels = new Model[] { normal, tool, rangedItem };
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
 	private JItemPropertiesStatesList customProperties;
 
@@ -520,6 +521,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 			useCondition.setEnabled(true);
 			if ((int) useDuration.getValue() == 0)
 				useDuration.setValue(72000);
+			if (renderType.getSelectedItem() == normal)
+				renderType.setSelectedItem(rangedItem);
 		} else {
 			shootConstantly.setEnabled(false);
 			projectile.setEnabled(false);
@@ -527,6 +530,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 			useCondition.setEnabled(false);
 			if ((int) useDuration.getValue() == 72000)
 				useDuration.setValue(0);
+			if (renderType.getSelectedItem() == rangedItem)
+				renderType.setSelectedItem(normal);
 		}
 	}
 
@@ -680,7 +685,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		item.texture = texture.getID();
-		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType(), enableRanged.isSelected());
+		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());
 		item.customModelName = Objects.requireNonNull(renderType.getSelectedItem()).getReadableName();
 
 		item.customProperties = customProperties.getProperties();
