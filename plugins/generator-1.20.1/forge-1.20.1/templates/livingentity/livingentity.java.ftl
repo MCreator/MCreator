@@ -604,7 +604,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
 	</#if>
 
-	<#if data.breatheUnderwater?? && (hasProcedure(data.pushedByFluids) || !data.pushedByFluids.getFixedValue())>
+	<#if data.pushedByFluids?? && (hasProcedure(data.pushedByFluids) || !data.pushedByFluids.getFixedValue())>
 		@Override public boolean isPushedByFluid() {
 			return <@procedureOBJToConditionCode data.pushedByFluids false false/>;
 		}
