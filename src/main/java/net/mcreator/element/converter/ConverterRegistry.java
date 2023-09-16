@@ -48,8 +48,7 @@ import net.mcreator.element.converter.v2023_3.HugeFungusFeatureConverter;
 import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
 import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
 import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
-import net.mcreator.element.converter.v2023_4.BlockGenerationConditionRemover;
-import net.mcreator.element.converter.v2023_4.PlantGenerationConditionRemover;
+import net.mcreator.element.converter.v2023_4.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -103,7 +102,8 @@ public class ConverterRegistry {
 			new SlotInteractionsConverter()
 		));
 		put(ModElementType.LIVINGENTITY, List.of(
-			new EntityTexturesConverter()
+			new EntityTexturesConverter(),
+			new EntitiesRangedAttackConverter()
 		));
 		put(ModElementType.OVERLAY, List.of(
 			new OverlayCoordinateConverter(),
@@ -142,10 +142,8 @@ public class ConverterRegistry {
 			new ToolToItemTypeProcedureConverter(),
 			new ExplodeProcedureConverter(),
 			new MaterialProcedureConverter(),
-			new ProcedureDamageSourceFixer()
-		));
-		put(ModElementType.RANGEDITEM, List.of(
-			new RangedItemTextureConverter()
+			new ProcedureDamageSourceFixer(),
+			new ProcedureArrowProjectileFixer()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()
