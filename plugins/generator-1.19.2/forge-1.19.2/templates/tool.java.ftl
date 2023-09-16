@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2022, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -39,7 +39,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 <#compress>
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
-		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
+		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "MultiTool">
 public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "Tiered")}Item {
 	public ${name}Item () {
 		super(<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword"
@@ -79,7 +79,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			 	<#if data.immuneToFire>
 			 	.fireResistant()
 			 	</#if>
-		<#elseif data.toolType == "Shears" || data.toolType == "Shield">
+		<#elseif data.toolType=="Shears">
 			new Item.Properties()
 				.tab(${data.creativeTab})
 				.durability(${data.usageCount})
@@ -88,12 +88,6 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				</#if>
 		</#if>);
 	}
-
-	<#if data.toolType == "Shield" && data.repairItems?has_content>
-	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
-		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
-	}
-	</#if>
 
 	<#if data.toolType=="Shears">
 		@Override public int getEnchantmentValue() {
