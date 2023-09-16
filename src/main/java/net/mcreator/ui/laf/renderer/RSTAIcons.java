@@ -21,6 +21,8 @@ package net.mcreator.ui.laf.renderer;
 
 import net.mcreator.ui.init.UIRES;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.DecoratableIcon;
 
 import javax.swing.*;
@@ -30,6 +32,8 @@ import java.util.List;
 import java.util.Map;
 
 public class RSTAIcons {
+
+	private static final Logger LOG = LogManager.getLogger("RSTA icons");
 
 	private static final Map<Icon, Icon> lookup_cache = new IdentityHashMap<>();
 
@@ -94,7 +98,7 @@ public class RSTAIcons {
 
 			return newIcon;
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOG.error("Failed to load icon: " + icon, e);
 		}
 
 		return icon;

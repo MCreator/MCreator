@@ -1,0 +1,1 @@
+Questa proprietà determina quanto diminuisce il livello di luce quando si attraversa questo blocco. Ad esempio, un valore di 15 bloccherà tutta la luce, un valore pari a 0 renderà il blocco trasparente alla luce.

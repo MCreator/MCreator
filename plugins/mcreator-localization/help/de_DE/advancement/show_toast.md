@@ -1,0 +1,1 @@
+Zeigt den Fortschritt oben rechts auf dem Bildschirm an, wenn der Spieler den Fortschritt erhalten hat.

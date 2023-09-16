@@ -1,0 +1,1 @@
+Der Gegenstand, den Sie im Ergebnis des Handels erhalten.

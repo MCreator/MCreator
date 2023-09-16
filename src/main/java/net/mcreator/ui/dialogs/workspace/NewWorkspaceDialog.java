@@ -54,7 +54,9 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		super(w, L10N.t("dialog.new_workspace.title"), true);
 
 		AbstractWorkspacePanel forgeWorkspacePanel = new ForgeWorkspacePanel(this);
+		AbstractWorkspacePanel neoforgeWorkspacePanel = new NeoForgeWorkspacePanel(this);
 		AbstractWorkspacePanel fabricWorkspacePanel = new FabricWorkspacePanel(this);
+		AbstractWorkspacePanel quiltWorkspacePanel = new QuiltWorkspacePanel(this);
 		AbstractWorkspacePanel spigotWorkspacePanel = new SpigotWorkspacePanel(this);
 		AbstractWorkspacePanel datapackWorkspacePanel = new DatapackWorkspacePanel(this);
 		AbstractWorkspacePanel addonWorkspacePanel = new AddonWorkspacePanel(this);
@@ -106,7 +108,9 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 				MCreatorApplication.SERVER_DOMAIN + "/wiki/create-new-workspace-window"));
 
 		workspacePanels.add("forge", PanelUtils.pullElementUp(forgeWorkspacePanel));
+		workspacePanels.add("neoforge", PanelUtils.pullElementUp(neoforgeWorkspacePanel));
 		workspacePanels.add("fabric", PanelUtils.pullElementUp(fabricWorkspacePanel));
+		workspacePanels.add("quilt", PanelUtils.pullElementUp(quiltWorkspacePanel));
 		workspacePanels.add("spigot", PanelUtils.pullElementUp(spigotWorkspacePanel));
 		workspacePanels.add("datapack", PanelUtils.pullElementUp(datapackWorkspacePanel));
 		workspacePanels.add("addon", PanelUtils.pullElementUp(addonWorkspacePanel));
@@ -128,7 +132,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		ButtonGroup buttonGroup = new ButtonGroup();
 
-		JToggleButton forge = new JToggleButton(L10N.t("dialog.new_workspace.forge.toogle"), UIRES.get("16px.forge"));
+		JToggleButton forge = new JToggleButton(L10N.t("dialog.new_workspace.forge.toggle"), UIRES.get("16px.forge"));
 		forge.setHorizontalAlignment(SwingConstants.LEFT);
 		forge.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
@@ -137,6 +141,17 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		forge.addActionListener(e -> {
 			current = forgeWorkspacePanel;
 			cardLayout.show(workspacePanels, "forge");
+		});
+
+		JToggleButton neoforge = new JToggleButton(L10N.t("dialog.new_workspace.neoforge.toggle"), UIRES.get("16px.neoforge"));
+		neoforge.setHorizontalAlignment(SwingConstants.LEFT);
+		neoforge.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
+		buttonGroup.add(neoforge);
+		neoforge.addActionListener(e -> {
+			current = neoforgeWorkspacePanel;
+			cardLayout.show(workspacePanels, "neoforge");
 		});
 
 		JToggleButton fabric = new JToggleButton(L10N.t("dialog.new_workspace.fabric.toggle"),
@@ -149,6 +164,18 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		fabric.addActionListener(e -> {
 			current = fabricWorkspacePanel;
 			cardLayout.show(workspacePanels, "fabric");
+		});
+
+		JToggleButton quilt = new JToggleButton(L10N.t("dialog.new_workspace.quilt.toggle"),
+				UIRES.get("16px.quilt"));
+		quilt.setHorizontalAlignment(SwingConstants.LEFT);
+		quilt.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
+		buttonGroup.add(quilt);
+		quilt.addActionListener(e -> {
+			current = quiltWorkspacePanel;
+			cardLayout.show(workspacePanels, "quilt");
 		});
 
 		JToggleButton spigot = new JToggleButton(L10N.t("dialog.new_workspace.spigot.toggle"),
@@ -193,7 +220,9 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		workspaceType.add(wt);
 		workspaceType.add(forge);
+		workspaceType.add(neoforge);
 		workspaceType.add(fabric);
+		workspaceType.add(quilt);
 		workspaceType.add(spigot);
 		workspaceType.add(addon);
 		workspaceType.add(datapack);
@@ -204,8 +233,18 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		}
 
 		if (Generator.GENERATOR_CACHE.values().stream()
+				.noneMatch(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.NEOFORGE)) {
+			disableType(neoforge);
+		}
+
+		if (Generator.GENERATOR_CACHE.values().stream()
 				.noneMatch(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.FABRIC)) {
 			disableType(fabric);
+		}
+
+		if (Generator.GENERATOR_CACHE.values().stream()
+				.noneMatch(gc -> gc.getGeneratorFlavor() == GeneratorFlavor.QUILT)) {
+			disableType(quilt);
 		}
 
 		if (Generator.GENERATOR_CACHE.values().stream()

@@ -149,7 +149,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 
 	private void deleteSelectedSound(WorkspacePanel workspacePanel, JSelectableList<SoundElement> soundElementList) {
 		List<SoundElement> soundElements = soundElementList.getSelectedValuesList();
-		if (soundElements.size() > 0) {
+		if (!soundElements.isEmpty()) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.sounds.confirm_deletion_message"), L10N.t("common.confirmation"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -162,8 +162,8 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 
 	private void editSelectedSound(SoundElement selectedValue) {
 		if (selectedValue != null) {
-			SoundElement newElement = SoundElementDialog.soundDialog(workspacePanel.getMCreator(), selectedValue, null);
-			workspacePanel.getMCreator().getWorkspace().updateSoundElement(selectedValue, newElement);
+			SoundElementDialog.soundDialog(workspacePanel.getMCreator(), selectedValue, null);
+			workspacePanel.getMCreator().getWorkspace().markDirty();
 			reloadElements();
 		}
 	}

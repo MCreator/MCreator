@@ -1,0 +1,1 @@
+Quando questa procedura condizionale è vera, il blocco a x, y e z genererà particelle in base alle impostazioni.

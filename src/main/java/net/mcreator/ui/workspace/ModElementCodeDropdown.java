@@ -45,8 +45,8 @@ class ModElementCodeDropdown extends JPopupMenu {
 			add(modElementFileMenuItem(modElementFile));
 
 		// add global files to the dropdown (if any)
-		if (modElementGlobalFiles.size() > 0) {
-			if (modElementFiles.size() > 0)
+		if (!modElementGlobalFiles.isEmpty()) {
+			if (!modElementFiles.isEmpty())
 				addSeparator();
 
 			for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles)
@@ -54,12 +54,11 @@ class ModElementCodeDropdown extends JPopupMenu {
 		}
 
 		// add list files to the dropdown (if any)
-		if (modElementListFiles.size() > 0) {
-			if (modElementFiles.size() + modElementGlobalFiles.size() > 0)
-				addSeparator();
+		if (!modElementListFiles.isEmpty()) {
+			boolean hasEntriesAbove = modElementFiles.size() + modElementGlobalFiles.size() > 0;
 
 			for (GeneratorTemplatesList list : modElementListFiles) {
-				if (list.templates().size() > 0) {
+				if (!list.templates().isEmpty()) {
 					JMenu listMenu = new JMenu(list.groupName());
 					listMenu.setIcon(UIRES.get("16px.list.gif"));
 					listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
@@ -74,8 +73,14 @@ class ModElementCodeDropdown extends JPopupMenu {
 						list.templates().get(i).stream().map(this::modElementFileMenuItem).forEach(listMenu::add);
 					}
 
-					if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem))
+					if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem)) {
+						if (hasEntriesAbove) { // if there were entries above list files, add separator on the top, then prevent this from happening again by setting hasEntriesAbove to false
+							addSeparator();
+							hasEntriesAbove = false;
+						}
+
 						add(listMenu);
+					}
 				}
 			}
 		}

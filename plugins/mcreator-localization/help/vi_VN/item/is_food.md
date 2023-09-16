@@ -1,0 +1,1 @@
+﻿Tích hộp này để làm cho vật phẩm này ăn được (bật nó để có các thuộc tính thức ăn).

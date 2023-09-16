@@ -1,0 +1,1 @@
+Đây là số lượng kinh nghiệm người chơi nhận được sau khi hoàn thành thành tựu.

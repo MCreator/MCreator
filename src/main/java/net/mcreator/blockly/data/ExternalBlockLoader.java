@@ -164,8 +164,7 @@ public class ExternalBlockLoader {
 			categoryBuilder.append("<category name=\"").append(escapeTranslationForXMLAndJS(category.getName()))
 					.append("\" colour=\"").append(category.color).append("\">");
 			if (category.getDescription() != null) {
-				categoryBuilder.append("<label text=\"")
-						.append(escapeTranslationForXMLAndJS(category.getDescription()))
+				categoryBuilder.append("<label text=\"").append(escapeTranslationForXMLAndJS(category.getDescription()))
 						.append("\" web-class=\"whlab\"/>");
 			}
 			for (ToolboxBlock toolboxBlock : toolboxBlocksList) {

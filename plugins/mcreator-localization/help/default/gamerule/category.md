@@ -1,1 +1,1 @@
-This is the game rulegame rule category. It's used for the classification of the GameRules depending on what they do.
+This is the game rule category. It's used for the classification of the game rules  depending on what they do.

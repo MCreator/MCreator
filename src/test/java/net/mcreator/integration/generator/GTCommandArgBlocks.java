@@ -19,8 +19,6 @@
 
 package net.mcreator.integration.generator;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.StatementInput;
@@ -29,15 +27,12 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Command;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
-import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Random;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import static net.mcreator.integration.TestWorkspaceDataProvider.getRandomItem;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -57,128 +52,14 @@ public class GTCommandArgBlocks {
 				.getDefinedBlocks().values()) {
 			StringBuilder additionalXML = new StringBuilder();
 
-			// silently skip command argument blocks not supported by this generator
-			if (!generatorBlocks.contains(commandArg.getMachineName())) {
-				continue;
-			}
+			if (!BlocklyTestUtil.validateToolboxBlock(commandArg, generatorBlocks, workspace))
+				continue; // block is not supported by this generator
 
-			if (commandArg.getToolboxTestXML() == null) {
-				LOG.warn("[" + generatorName + "] Skipping command argument block without default XML defined: "
-						+ commandArg.getMachineName());
-				continue;
-			}
+			if (!BlocklyTestUtil.validateInputs(commandArg))
+				continue; // failed to validate inputs
 
-			if (!commandArg.getAllInputs().isEmpty() || !commandArg.getAllRepeatingInputs().isEmpty()) {
-				boolean templatesDefined = true;
-
-				if (commandArg.getToolboxInitStatements() != null) {
-					for (String input : commandArg.getAllInputs()) {
-						boolean match = false;
-						for (String toolboxtemplate : commandArg.getToolboxInitStatements()) {
-							if (toolboxtemplate.contains("<value name=\"" + input + "\">")) {
-								match = true;
-								break;
-							}
-						}
-
-						if (!match) {
-							templatesDefined = false;
-							break;
-						}
-					}
-
-					for (String input : commandArg.getAllRepeatingInputs()) {
-						Pattern pattern = Pattern.compile("<value name=\"" + input + "\\d+\">");
-						boolean match = false;
-						for (String toolboxtemplate : commandArg.getToolboxInitStatements()) {
-							if (pattern.matcher(toolboxtemplate).find()) {
-								match = true;
-								break;
-							}
-						}
-
-						if (!match) {
-							templatesDefined = false;
-							break;
-						}
-					}
-				} else {
-					templatesDefined = false;
-				}
-
-				if (!templatesDefined) {
-					LOG.warn("[" + generatorName + "] Skipping command argument block with incomplete template: "
-							+ commandArg.getMachineName());
-					continue;
-				}
-			}
-
-			if (commandArg.getFields() != null) {
-				int processed = 0;
-
-				if (commandArg.getBlocklyJSON().has("args0")) {
-					for (String field : commandArg.getFields()) {
-						JsonArray args0 = commandArg.getBlocklyJSON().get("args0").getAsJsonArray();
-						for (int i = 0; i < args0.size(); i++) {
-							JsonObject arg = args0.get(i).getAsJsonObject();
-							if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
-								switch (arg.get("type").getAsString()) {
-								case "field_checkbox":
-									additionalXML.append("<field name=\"").append(field).append("\">TRUE</field>");
-									processed++;
-									break;
-								case "field_number":
-									additionalXML.append("<field name=\"").append(field).append("\">1.23d</field>");
-									processed++;
-									break;
-								case "field_input":
-								case "field_javaname":
-									additionalXML.append("<field name=\"").append(field).append("\">test</field>");
-									processed++;
-									break;
-								case "field_dropdown":
-									JsonArray opts = arg.get("options").getAsJsonArray();
-									JsonArray opt = opts.get((int) (Math.random() * opts.size())).getAsJsonArray();
-									additionalXML.append("<field name=\"").append(field).append("\">")
-											.append(opt.get(1).getAsString()).append("</field>");
-									processed++;
-									break;
-								}
-								break;
-							}
-						}
-					}
-				}
-
-				if (commandArg.getBlocklyJSON().get("extensions") != null) {
-					JsonArray extensions = commandArg.getBlocklyJSON().get("extensions").getAsJsonArray();
-					for (int i = 0; i < extensions.size(); i++) {
-						String extension = extensions.get(i).getAsString();
-						String suggestedFieldName = extension;
-
-						// convert to proper field names in some extension cases
-						if ("arg_procedure".equals(extension)) {
-							suggestedFieldName = "procedure";
-						}
-
-						if (commandArg.getFields().contains(suggestedFieldName)) {
-							String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
-									suggestedFieldName);
-							if (values.length > 0 && !values[0].equals("")) {
-								additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
-										.append(ListUtils.getRandomItem(random, values)).append("</field>");
-								processed++;
-							}
-						}
-					}
-				}
-
-				if (processed != commandArg.getFields().size()) {
-					LOG.warn("[" + generatorName + "] Skipping command argument block with special fields: "
-							+ commandArg.getMachineName());
-					continue;
-				}
-			}
+			if (!BlocklyTestUtil.populateFields(commandArg, workspace, random, additionalXML))
+				continue; // failed to populate all fields
 
 			if (commandArg.getStatements() != null) {
 				for (StatementInput statement : commandArg.getStatements()) {

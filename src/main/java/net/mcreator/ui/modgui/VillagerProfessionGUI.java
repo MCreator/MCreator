@@ -151,14 +151,14 @@ public class VillagerProfessionGUI extends ModElementGUI<VillagerProfession> {
 		actionSound.getVTextField().setValidator(new TextFieldValidator(actionSound.getVTextField(),
 				L10N.t("elementgui.common.error_sound_empty_null")));
 		professionTextureFile.setValidator(() -> {
-			if (professionTextureFile.getSelectedItem() == null || professionTextureFile.getSelectedItem().equals(""))
+			if (professionTextureFile.getSelectedItem() == null || professionTextureFile.getSelectedItem().isEmpty())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.villager_profession.profession_needs_texture"));
 			return Validator.ValidationResult.PASSED;
 		});
 		zombifiedProfessionTextureFile.setValidator(() -> {
 			if (zombifiedProfessionTextureFile.getSelectedItem() == null
-					|| zombifiedProfessionTextureFile.getSelectedItem().equals(""))
+					|| zombifiedProfessionTextureFile.getSelectedItem().isEmpty())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 						L10N.t("elementgui.villager_profession.profession_needs_zombified_texture"));
 			return Validator.ValidationResult.PASSED;
