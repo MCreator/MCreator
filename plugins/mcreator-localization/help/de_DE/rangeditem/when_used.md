@@ -1,0 +1,1 @@
+Wenn das Fernkampfelement verwendet wird, wird die ausgewählte Prozedur ausgelöst.

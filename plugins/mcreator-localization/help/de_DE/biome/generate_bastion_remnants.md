@@ -1,0 +1,1 @@
+Wählen Sie diese Einstellung, um Bastionsruinen in Ihrem Biom zu haben.

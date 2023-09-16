@@ -293,8 +293,6 @@ public class ${name}Item extends FishingRodItem {
 
 	<@onEntitySwing data.onEntitySwing/>
 
-	<@onStoppedUsing data.onStoppedUsing/>
-
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
 	<#if data.hasGlow>

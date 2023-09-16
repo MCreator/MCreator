@@ -188,14 +188,15 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		String[] path = image.splitPath();
 		name = FilenameUtilsPatched.getName(path[1]);
 		canEdit = false;
-		Layer layer = Layer.toLayer(Objects.requireNonNull(ZipIO.readFileInZip(new File(path[0]), path[1], (file, entry) -> {
-			try {
-				return ImageIO.read(file.getInputStream(entry));
-			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
-				return null;
-			}
-		}), "Could not read source image asset!"), name);
+		Layer layer = Layer.toLayer(
+				Objects.requireNonNull(ZipIO.readFileInZip(new File(path[0]), path[1], (file, entry) -> {
+					try {
+						return ImageIO.read(file.getInputStream(entry));
+					} catch (IOException e) {
+						LOG.error(e.getMessage(), e);
+						return null;
+					}
+				}), "Could not read source image asset!"), name);
 		canvas = new Canvas(layer.getWidth(), layer.getHeight(), layerPanel, versionManager);
 		canvasRenderer.setCanvas(canvas);
 		toolPanel.setCanvas(canvas);
@@ -239,7 +240,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		Image image = canvasRenderer.render();
 
-		JComboBox<TextureType> types = new JComboBox<>(TextureType.getTypes(false));
+		JComboBox<TextureType> types = new JComboBox<>(TextureType.getSupportedTypes(mcreator.getWorkspace(), false));
 		VTextField name = new VTextField(20);
 		name.setValidator(new RegistryNameValidator(name, L10N.t("dialog.image_maker.texture_name")));
 		name.enableRealtimeValidation();
@@ -314,7 +315,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	public static boolean isFileSupported(String fileName) {
-		return Arrays.asList("bmp", "gif", "jpeg", "jpg", "png", "tiff", "tif", "wbmp").contains(FilenameUtilsPatched.getExtension(fileName));
+		return Arrays.asList("bmp", "gif", "jpeg", "jpg", "png", "tiff", "tif", "wbmp")
+				.contains(FilenameUtilsPatched.getExtension(fileName));
 	}
 
 	@Override public ViewBase showView() {

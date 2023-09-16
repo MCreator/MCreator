@@ -1,0 +1,1 @@
+Dieser Parameter steuert die Spinnbeschleunigung des Teilchens.

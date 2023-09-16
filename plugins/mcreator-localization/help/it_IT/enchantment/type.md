@@ -1,0 +1,1 @@
+Questa proprietà definirà il tipo di oggetto che il tuo incantesimo può essere applicato (solo nel tavolo da incantamento).

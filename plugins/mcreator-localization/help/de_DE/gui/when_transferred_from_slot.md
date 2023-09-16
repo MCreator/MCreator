@@ -1,0 +1,1 @@
+Löst eine Prozedur aus, wenn Gegenstände in diesem Slot übertragen werden.

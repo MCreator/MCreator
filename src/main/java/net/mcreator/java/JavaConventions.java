@@ -62,7 +62,7 @@ public class JavaConventions {
 	}
 
 	public static boolean isValidJavaIdentifier(String s) {
-		if (s == null || s.length() == 0) {
+		if (s == null || s.isEmpty()) {
 			return false;
 		}
 

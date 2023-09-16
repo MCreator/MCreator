@@ -1,0 +1,1 @@
+Questo parametro controlla l'altezza del quadro (in unità di blocco).

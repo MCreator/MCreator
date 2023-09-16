@@ -1,0 +1,1 @@
+Marca este parámetro para habilitar la aparición de partículas de ambiente en el bioma.

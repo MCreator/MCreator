@@ -1,1 +1,0 @@
-(damagesource.is(${generator.map(field$damagesource, "damagesources")}))

@@ -97,7 +97,7 @@ public class BlocklyBlockCodeGenerator {
 				boolean found = false;
 				for (Element element : elements) {
 					if (element.getNodeName().equals("field") && element.getAttribute("name").equals(fieldName)
-							&& !element.getTextContent().equals("")) {
+							&& !element.getTextContent().isEmpty()) {
 						found = true;
 						dataModel.put("field$" + fieldName, element.getTextContent());
 						break; // found, no need to look other elements
@@ -225,7 +225,7 @@ public class BlocklyBlockCodeGenerator {
 						!matchingElements.isEmpty(); i++) {
 					if (matchingElements.containsKey(fieldName + i)) {
 						String fieldValue = matchingElements.remove(fieldName + i).getTextContent();
-						if (fieldValue != null && !fieldValue.equals("")) {
+						if (fieldValue != null && !fieldValue.isEmpty()) {
 							processedElements.put(i, fieldValue);
 							continue;
 						}

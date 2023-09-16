@@ -1,0 +1,1 @@
+Questo parametro controlla quanto tempo ci vuole per scavare il blocco. Un valore più alto significa che ci vuole più tempo per estrarre questo blocco.

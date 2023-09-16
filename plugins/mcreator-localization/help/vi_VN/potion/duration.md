@@ -1,0 +1,1 @@
+Tham số này xác định khoảng thời gian hiệu ứng này có hiệu lực.

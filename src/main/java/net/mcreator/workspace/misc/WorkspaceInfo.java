@@ -46,19 +46,20 @@ import java.util.*;
 	private static final Logger LOG = LogManager.getLogger("Workspace info");
 
 	public boolean hasVariables() {
-		return workspace.getVariableElements().size() > 0;
+		return !workspace.getVariableElements().isEmpty();
 	}
 
 	public boolean hasJavaModels() {
-		return Model.getModels(workspace).stream().anyMatch(model -> model.getType() == Model.Type.JAVA);
+		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
 	public boolean hasSounds() {
-		return workspace.getSoundElements().size() > 0;
+		return !workspace.getSoundElements().isEmpty();
 	}
 
 	public boolean hasVariablesOfScope(String type) {
-		return workspace.getVariableElements().stream().anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
+		return workspace.getVariableElements().parallelStream()
+				.anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
 	}
 
 	public Map<String, String> getItemTextureMap() {
@@ -358,4 +359,5 @@ import java.util.*;
 	public Workspace getWorkspace() {
 		return workspace;
 	}
+
 }
