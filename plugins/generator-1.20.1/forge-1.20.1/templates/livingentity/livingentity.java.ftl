@@ -37,6 +37,7 @@ package ${package}.entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.sounds.SoundEvent;
 
 import javax.annotation.Nullable;
@@ -54,6 +55,18 @@ import javax.annotation.Nullable;
 </#if>
 
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
+
+	<#if data.entityDataEntries?has_content>
+		<#list data.entityDataEntries as entry>
+			<#if entry.defaultValue().getClass().getSimpleName() == "Integer">
+				public static final EntityDataAccessor<Integer> ${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.INT);
+			<#elseif entry.defaultValue().getClass().getSimpleName() == "Boolean">
+				public static final EntityDataAccessor<Boolean> ${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.BOOLEAN);
+			<#elseif entry.defaultValue().getClass().getSimpleName() == "String">
+				public static final EntityDataAccessor<String> ${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.STRING);
+			</#if>
+		</#list>
+	</#if>
 
 	<#if data.isBoss>
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(),
@@ -145,6 +158,15 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
+
+	<#if data.entityDataEntries?has_content>
+		@Override protected void defineSynchedData() {
+			super.defineSynchedData();
+			<#list data.entityDataEntries as entry>
+				this.entityData.define(${entry.property().getName()}, ${entry.defaultValue()?is_string?then("\"" + entry.defaultValue() + "\"", entry.defaultValue())});
+			</#list>
+		}
+	</#if>
 
 	<#if data.flyingMob>
 	@Override protected PathNavigation createNavigation(Level world) {
