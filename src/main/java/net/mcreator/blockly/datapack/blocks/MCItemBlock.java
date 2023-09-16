@@ -21,9 +21,7 @@ package net.mcreator.blockly.datapack.blocks;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
-import net.mcreator.blockly.feature.BlocklyToFeature;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
@@ -36,7 +34,7 @@ public class MCItemBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
-		if (element != null && element.getTextContent() != null && !element.getTextContent().equals("")
+		if (element != null && element.getTextContent() != null && !element.getTextContent().isEmpty()
 				&& !element.getTextContent().equals("null")) {
 			if (master.getTemplateGenerator() != null) {
 				Map<String, Object> dataModel = new HashMap<>();

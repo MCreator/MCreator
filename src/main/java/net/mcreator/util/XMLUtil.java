@@ -70,7 +70,7 @@ public class XMLUtil {
 
 	public static Element getFirstChildrenWithName(Element element, String... names) {
 		List<Element> elements = getChildrenWithName(element, names);
-		if (elements.size() > 0) {
+		if (!elements.isEmpty()) {
 			return elements.get(0);
 		} else {
 			return null;

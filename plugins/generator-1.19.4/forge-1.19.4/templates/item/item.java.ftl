@@ -120,7 +120,7 @@ public class ${name}Item extends Item {
 
 	<#if data.toolType != 1>
 	@Override public float getDestroySpeed(ItemStack par1ItemStack, BlockState par2Block) {
-		return ${data.toolType}F;
+		return ${data.toolType}f;
 	}
 	</#if>
 
@@ -156,7 +156,7 @@ public class ${name}Item extends Item {
 	}
 	</#if>
 
-	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || data.enableRanged>
+	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)) || data.enableRanged>
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		<#if data.enableRanged>
 			InteractionResultHolder<ItemStack> ar = new InteractionResultHolder<>(InteractionResult.SUCCESS, entity.getItemInHand(hand));
@@ -168,6 +168,10 @@ public class ${name}Item extends Item {
 		double x = entity.getX();
 		double y = entity.getY();
 		double z = entity.getZ();
+
+		<#if hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)>
+		entity.startUsingItem(hand);
+		</#if>
 
 		<#if data.hasInventory()>
 		if(entity instanceof ServerPlayer serverPlayer) {
@@ -243,9 +247,8 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag nbt = super.getShareTag(stack);
-		if(nbt != null)
-			stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
+		CompoundTag nbt = stack.getOrCreateTag();
+		stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
 		return nbt;
 	}
 

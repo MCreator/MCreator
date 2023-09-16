@@ -19,7 +19,6 @@
 package net.mcreator.util;
 
 import net.mcreator.Launcher;
-import net.mcreator.io.FileIO;
 import org.apache.commons.lang3.StringUtils;
 
 import java.net.URL;

@@ -1,0 +1,1 @@
+Qualsiasi tipo di attacco che scegli qui non influenzerà il mob.

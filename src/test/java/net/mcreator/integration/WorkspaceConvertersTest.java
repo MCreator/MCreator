@@ -91,8 +91,6 @@ public class WorkspaceConvertersTest {
 
 					// Check if all MEs have valid GE definition
 					for (ModElement mod : workspace.getModElements()) {
-						assertTrue(workspace.getModElementManager().hasModElementGeneratableElement(mod));
-
 						GeneratableElement ge = mod.getGeneratableElement();
 
 						assertNotNull(ge);
@@ -102,8 +100,8 @@ public class WorkspaceConvertersTest {
 						// save custom mod element picture if it has one
 						workspace.getModElementManager().storeModElementPicture(ge);
 
-						// add mod element to workspace again (update ME action)
-						workspace.addModElement(ge.getModElement());
+						// preload/update MCItem cache and MCItem icons
+						ge.getModElement().getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush());
 
 						// we reinit the mod to load new icons etc.
 						ge.getModElement().reinit(workspace);

@@ -97,8 +97,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 
 		texture.setValidator(new TileHolderValidator(texture));
 
-		title.setValidator(
-				new TextFieldValidator(title, L10N.t("elementgui.painting.painting_needs_title")));
+		title.setValidator(new TextFieldValidator(title, L10N.t("elementgui.painting.painting_needs_title")));
 		title.enableRealtimeValidation();
 
 		author.setValidator(new TextFieldValidator(author, L10N.t("elementgui.painting.painting_needs_author")));

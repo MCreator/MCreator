@@ -57,6 +57,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	private final Stack<DependencyProviderInput> dependencyProviderInputStack = new Stack<>();
 
+	private final Set<String> usedBlocks = new HashSet<>();
+
 	/**
 	 * @param workspace          <p>The {@link Workspace} executing the code</p>
 	 * @param editorType         <p>Blockly editor type</p>
@@ -171,6 +173,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 							generator.getSupportedBlocks()).contains(type)) {
 						generator.generateBlock(this, block);
 
+						usedBlocks.add(type);
+
 						lastProceduralBlockType = type; // update last block type generated
 
 						generated = true;
@@ -188,7 +192,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 
 	public final void processOutputBlock(Element condition) throws TemplateGeneratorException {
 		List<Element> conditionBlocks = XMLUtil.getChildrenWithName(condition, "block", "shadow");
-		if (conditionBlocks.size() < 1)
+		if (conditionBlocks.isEmpty())
 			return;
 		Element block = conditionBlocks.get(0);
 		String type = block.getAttribute("type");
@@ -202,6 +206,8 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 				if (generator.getBlockType() == IBlockGenerator.BlockType.OUTPUT && Arrays.asList(
 						generator.getSupportedBlocks()).contains(type)) {
 					generator.generateBlock(this, block);
+
+					usedBlocks.add(type);
 
 					generated = true;
 					break;
@@ -284,6 +290,15 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 	public final void processOutputBlockToInt(Element element) throws TemplateGeneratorException {
 		String code = directProcessOutputBlock(this, element);
 		this.append(ProcedureCodeOptimizer.toInt(code));
+	}
+
+	/**
+	 * This method returns collection of machine names of all blocks that are present in the provided Blockly arrangement
+	 *
+	 * @return Unmodifiable collection of machine names of all blocks that are present in the provided Blockly arrangement
+	 */
+	public Collection<String> getUsedBlocks() {
+		return Collections.unmodifiableSet(usedBlocks);
 	}
 
 }

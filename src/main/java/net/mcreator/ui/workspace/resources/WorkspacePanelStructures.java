@@ -108,7 +108,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 
 	private void deleteCurrentlySelected(JSelectableList<String> structureElementList) {
 		List<String> files = structureElementList.getSelectedValuesList();
-		if (files.size() > 0) {
+		if (!files.isEmpty()) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.structure.confirm_deletion_message"), L10N.t("common.confirmation"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);

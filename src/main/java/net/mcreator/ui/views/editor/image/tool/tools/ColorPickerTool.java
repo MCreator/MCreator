@@ -39,7 +39,7 @@ public class ColorPickerTool extends AbstractTool {
 				L10N.t("dialog.image_maker.tools.types.colorpicker_description"), UIRES.get("img_editor.picker"),
 				canvas, colorSelector, versionManager);
 
-		respectOpacity = new JCheckBox("Pick opacity");
+		respectOpacity = new JCheckBox(L10N.t("dialog.image_maker.tools.types.pick_opacity"));
 		respectOpacity.setSelected(true);
 		settingsPanel.add(respectOpacity);
 	}

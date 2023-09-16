@@ -1,0 +1,1 @@
+Questa categoria definisce sotto quale scheda la ricetta sarà mostrata nel libro di crafting.

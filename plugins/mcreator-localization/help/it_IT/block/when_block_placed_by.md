@@ -1,0 +1,1 @@
+Attiva una procedura quando qualcosa posiziona il blocco (entità/blocco) accanto a questo blocco.

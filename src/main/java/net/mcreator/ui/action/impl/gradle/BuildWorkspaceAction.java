@@ -46,7 +46,7 @@ public class BuildWorkspaceAction extends GradleAction {
 				LOG.error(e.getMessage(), e);
 				actionRegistry.getMCreator().getGradleConsole().markReady();
 			}
-		}).start());
+		}, "BuildWorkspace").start());
 		setTooltip(L10N.t("action.gradle.build_workspace.tooltip"));
 	}
 

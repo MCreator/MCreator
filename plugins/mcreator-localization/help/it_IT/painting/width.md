@@ -1,0 +1,1 @@
+Questo parametro controlla l'ampiezza del quadro (in unità di blocco).

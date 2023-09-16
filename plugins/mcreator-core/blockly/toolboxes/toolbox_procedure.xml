@@ -11,6 +11,7 @@
         <block type="source_entity_from_deps"/>
         <block type="immediate_source_entity_from_deps"/>
         <block type="entity_iterator"/>
+        <block type="damagesource_from_deps"/>
         <block type="direction_constant"/>
         <block type="direction_from_deps"/>
         <custom-mcelements/>
@@ -53,6 +54,7 @@
     <category name="${t:blockly.category.text}" colour="%{BKY_TEXTS_HUE}">
         <block type="text"/>
         <block type="text_join"/>
+        <block type="text_print"/>
         <block type="text_length"/>
         <block type="text_is_empty"/>
         <block type="text_replace"/>
@@ -71,7 +73,6 @@
                 </block>
             </value>
         </block>
-        <block type="text_print"/>
         <custom-text/>
     </category>
     <category name="${t:blockly.category.time}" colour="#628c94">

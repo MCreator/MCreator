@@ -20,10 +20,15 @@ package net.mcreator.workspace.elements;
 
 public class VariableElement implements IElement {
 
-	private String name;
+	private final String name;
+
 	private String type;
 	private VariableType.Scope scope = VariableType.Scope.GLOBAL_SESSION;
 	private Object value;
+
+	public VariableElement(String name) {
+		this.name = name;
+	}
 
 	@Override public String toString() {
 		return getName();
@@ -47,10 +52,6 @@ public class VariableElement implements IElement {
 
 	@Override public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public Object getValue() {

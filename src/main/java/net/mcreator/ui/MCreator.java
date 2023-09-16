@@ -184,7 +184,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		}
 
 		Image bgimage = null;
-		if (bgimages.size() > 0) {
+		if (!bgimages.isEmpty()) {
 			bgimage = ListUtils.getRandomItem(bgimages);
 			float avg = ImageUtils.getAverageLuminance(ImageUtils.toBufferedImage(bgimage));
 			if (avg > 0.15) {
@@ -365,7 +365,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			LOG.info("Closing MCreator window ...");
 			PreferencesManager.PREFERENCES.hidden.fullScreen.set(getExtendedState() == MAXIMIZED_BOTH);
 			if (splitPane != null)
-				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.set(splitPane.getDividerLocation()); // this one could be stored per workspace in the future
+				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.set(
+						splitPane.getDividerLocation()); // this one could be stored per workspace in the future
 
 			workspace.close();
 

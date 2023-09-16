@@ -117,7 +117,7 @@ public class ClearAllGradleCachesAction extends GradleAction {
 						if (regenerateCodeFlag) {
 							RegenerateCodeAction.regenerateCode(mcreator, false, true);
 						}
-					}).start();
+					}, "GradleProjectReload").start();
 
 					progressDialogSecondStage.setVisible(true);
 				});
@@ -129,7 +129,7 @@ public class ClearAllGradleCachesAction extends GradleAction {
 			progressDialog.refreshDisplay();
 
 			progressDialog.hideAll();
-		}).start();
+		}, "ClearAllGradleCaches").start();
 		progressDialog.setVisible(true);
 	}
 

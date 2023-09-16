@@ -39,6 +39,7 @@ import java.util.List;
 	}
 
 	default Collection<Tooltip> getFixedTooltips() {
-		return getComponentsOfType("Tooltip").stream().map(c -> (Tooltip) c).filter(c -> c.text.getName() == null).toList();
+		return getComponentsOfType("Tooltip").stream().map(c -> (Tooltip) c).filter(c -> c.text.getName() == null)
+				.toList();
 	}
 }

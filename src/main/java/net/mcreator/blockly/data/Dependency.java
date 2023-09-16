@@ -29,8 +29,8 @@ import java.util.List;
 
 public class Dependency implements Comparable<Dependency> {
 
-	private String name;
-	private String type;
+	private final String name;
+	private final String type;
 
 	public Dependency(String name, String type) {
 		this.name = name;
@@ -74,34 +74,17 @@ public class Dependency implements Comparable<Dependency> {
 	public String getDependencyBlockXml() {
 		StringBuilder blockXml = new StringBuilder("<xml xmlns=\"http://www.w3.org/1999/xhtml\">");
 		switch (name) {
-		case "x":
-			blockXml.append("<block type=\"coord_x\"></block>");
-			break;
-		case "y":
-			blockXml.append("<block type=\"coord_y\"></block>");
-			break;
-		case "z":
-			blockXml.append("<block type=\"coord_z\"></block>");
-			break;
-		case "entity":
-			blockXml.append("<block type=\"entity_from_deps\"></block>");
-			break;
-		case "sourceentity":
-			blockXml.append("<block type=\"source_entity_from_deps\"></block>");
-			break;
-		case "immediatesourceentity":
-			blockXml.append("<block type=\"immediate_source_entity_from_deps\"></block>");
-			break;
-		case "direction":
-			blockXml.append("<block type=\"direction_from_deps\"></block>");
-			break;
-		case "itemstack":
-			blockXml.append("<block type=\"itemstack_to_mcitem\"></block>");
-			break;
-		case "blockstate":
-			blockXml.append("<block type=\"blockstate_from_deps\"></block>");
-			break;
-		default:
+		case "x" -> blockXml.append("<block type=\"coord_x\"></block>");
+		case "y" -> blockXml.append("<block type=\"coord_y\"></block>");
+		case "z" -> blockXml.append("<block type=\"coord_z\"></block>");
+		case "entity" -> blockXml.append("<block type=\"entity_from_deps\"></block>");
+		case "sourceentity" -> blockXml.append("<block type=\"source_entity_from_deps\"></block>");
+		case "immediatesourceentity" -> blockXml.append("<block type=\"immediate_source_entity_from_deps\"></block>");
+		case "direction" -> blockXml.append("<block type=\"direction_from_deps\"></block>");
+		case "itemstack" -> blockXml.append("<block type=\"itemstack_to_mcitem\"></block>");
+		case "blockstate" -> blockXml.append("<block type=\"blockstate_from_deps\"></block>");
+		case "damagesource" -> blockXml.append("<block type=\"damagesource_from_deps\"></block>");
+		default -> {
 			if (VariableTypeLoader.INSTANCE.fromName(type) != null) {
 				blockXml.append("<block type=\"custom_dependency_");
 				blockXml.append(type);
@@ -110,6 +93,7 @@ public class Dependency implements Comparable<Dependency> {
 				blockXml.append("</field></block>");
 			} else
 				return null;
+		}
 		}
 		blockXml.append("</xml>");
 		return blockXml.toString();
@@ -129,7 +113,7 @@ public class Dependency implements Comparable<Dependency> {
 			case "advancement" -> new Color(0x68712E);
 			case "dimensiontype" -> new Color(0x609963);
 			case "cmdcontext" -> new Color(0x8C5BA5);
-			case "damagesource" -> new Color(0xA65C9F);
+			case "damagesource" -> new Color(0x996086);
 			default -> Color.white;
 		};
 	}

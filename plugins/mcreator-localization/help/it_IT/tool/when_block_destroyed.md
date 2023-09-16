@@ -1,0 +1,1 @@
+Se lo strumento distrugge un blocco, verrà eseguita questa procedura.
