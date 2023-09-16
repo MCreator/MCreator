@@ -163,6 +163,22 @@ public class ReferencesFinder {
 	}
 
 	/**
+	 * Scans the entire passed workspace and collects all mod elements considered to use certain value(s).
+	 *
+	 * @param workspace The project to check mod elements from for usages.
+	 * @param clazz     The class of values to be checked.
+	 * @param validIf   The predicate used to check if a field/method is considered valid.
+	 * @param condition The predicate defining the condition that the acquired values should pass.
+	 * @param <T>       The type of values to be checked.
+	 * @return List of mod elements contained in the provided workspace and considered to use certain value(s).
+	 */
+	@SuppressWarnings("unused") public static <T> List<ModElement> searchUsages(Workspace workspace, Class<T> clazz,
+			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
+		return workspace.getModElements().parallelStream()
+				.filter(me -> anyValueMatches(me.getGeneratableElement(), clazz, validIf, condition)).toList();
+	}
+
+	/**
 	 * Checks if values acquired from any valid fields or methods meet the specified condition.
 	 *
 	 * @param source    The object to extract values from.
@@ -213,9 +229,8 @@ public class ReferencesFinder {
 	 * @return Whether the provided value or any value extracted from valid fields/methods on the {@code value} object
 	 * passes the provided condition.
 	 */
-	@SuppressWarnings("unchecked")
-	private static <T> boolean checkValue(@Nullable Object value, AccessibleObject field, Class<T> clazz,
-			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
+	@SuppressWarnings("unchecked") private static <T> boolean checkValue(@Nullable Object value, AccessibleObject field,
+			Class<T> clazz, Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
 		if (value == null)
 			return false;
 
