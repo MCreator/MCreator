@@ -48,8 +48,7 @@ import net.mcreator.element.converter.v2023_3.HugeFungusFeatureConverter;
 import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
 import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
 import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
-import net.mcreator.element.converter.v2023_4.BlockGenerationConditionRemover;
-import net.mcreator.element.converter.v2023_4.PlantGenerationConditionRemover;
+import net.mcreator.element.converter.v2023_4.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -79,7 +78,8 @@ public class ConverterRegistry {
 			new BlockLightOpacityFixer(),
 			new BlockRequiresCorrectToolConverter(),
 			new BlockOreReplacementBlocksFixer(),
-			new BlockGenerationConditionRemover()
+			new BlockGenerationConditionRemover(),
+			new BlockFeatureDimensionRestrictionConverter()
 		));
 		put(ModElementType.DIMENSION, List.of(
 			new DimensionLuminanceFixer()
@@ -119,7 +119,8 @@ public class ConverterRegistry {
 		put(ModElementType.PLANT, List.of(
 			new PlantLuminanceFixer(),
 			new PlantGenerationTypeConverter(),
-			new PlantGenerationConditionRemover()
+			new PlantGenerationConditionRemover(),
+			new BlockFeatureDimensionRestrictionConverter()
 		));
 		put(ModElementType.POTION, List.of(
 			new PotionToEffectConverter()
@@ -154,7 +155,11 @@ public class ConverterRegistry {
 			new ItemDispenseBehaviorToItemExtensionConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
-			new HugeFungusFeatureConverter()
+			new HugeFungusFeatureConverter(),
+			new FeatureDimensionRestrictionConverter()
+		));
+		put(ModElementType.STRUCTURE, List.of(
+			new StructureDimensionRestrictionConverter()
 		));
 	}};
 	//@formatter:on

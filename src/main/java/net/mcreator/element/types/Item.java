@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -203,7 +204,7 @@ import java.util.*;
 		return models;
 	}
 
-	public static class StateEntry {
+	public static class StateEntry implements IWorkspaceDependent {
 
 		public int renderType;
 		@TextureReference(TextureType.ITEM) public String texture;
@@ -211,9 +212,9 @@ import java.util.*;
 
 		public StateMap stateMap;
 
-		@Nullable Workspace workspace;
+		@Nullable transient Workspace workspace;
 
-		void setWorkspace(@Nullable Workspace workspace) {
+		@Override public void setWorkspace(@Nullable Workspace workspace) {
 			this.workspace = workspace;
 		}
 
