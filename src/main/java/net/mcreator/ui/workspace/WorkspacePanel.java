@@ -301,7 +301,7 @@ import java.util.stream.Collectors;
 				g.setColor(new Color(0.4f, 0.4f, 0.4f, 0.3f));
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 				g.setColor(Color.white);
-				if (getText().equals("")) {
+				if (getText().isEmpty()) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
 					if (!currentTab.equals("mods")) {
@@ -1027,7 +1027,7 @@ import java.util.stream.Collectors;
 				dial.refreshDisplay();
 
 				// if we have new unlocked elements, we recreate their code
-				if (elementsThatGotUnlocked.size() > 0) {
+				if (!elementsThatGotUnlocked.isEmpty()) {
 					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 							L10N.t("workspace.elements.lock_modelement_regeneration"));
 					dial.addProgress(p1);
@@ -1073,7 +1073,7 @@ import java.util.stream.Collectors;
 										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));
-				if (modName != null && !modName.equals("")) {
+				if (modName != null && !modName.isEmpty()) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
 					ModElement duplicateModElement = new ModElement(mcreator.getWorkspace(), mu, modName);
@@ -1340,7 +1340,7 @@ import java.util.stream.Collectors;
 		}
 
 		@Override public IElement getElementAt(int index) {
-			if (filterItems.size() > 0 && index < filterItems.size())
+			if (!filterItems.isEmpty() && index < filterItems.size())
 				return filterItems.get(index);
 			else
 				return null;
@@ -1408,7 +1408,7 @@ import java.util.stream.Collectors;
 						if (!filters.isEmpty() || !metfilters.isEmpty())
 							return false;
 
-						if (keyWords.size() == 0)
+						if (keyWords.isEmpty())
 							return true;
 
 						for (String key : keyWords)
@@ -1422,7 +1422,7 @@ import java.util.stream.Collectors;
 					.filter(item -> currentFolder.equals(item.getFolderPath()) || (flattenFolders
 							&& currentFolder.getRecursiveFolderChildren().stream()
 							.anyMatch(folder -> folder.equals(item.getFolderPath())))).filter(item -> {
-						if (keyWords.size() == 0)
+						if (keyWords.isEmpty())
 							return true;
 
 						for (String key : keyWords) {
@@ -1435,7 +1435,7 @@ import java.util.stream.Collectors;
 
 						return false;
 					}).filter(item -> {
-						if (filters.size() == 0)
+						if (filters.isEmpty())
 							return true;
 
 						for (String f : filters) {
@@ -1450,7 +1450,7 @@ import java.util.stream.Collectors;
 						}
 						return false;
 					}).filter(item -> {
-						if (metfilters.size() == 0)
+						if (metfilters.isEmpty())
 							return true;
 
 						for (ModElementType<?> type : metfilters)

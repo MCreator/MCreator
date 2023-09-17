@@ -78,7 +78,7 @@ public class BlocklyJavascriptBridge {
 	@SuppressWarnings("unused") public String getMCItemURI(String name) {
 		ImageIcon base = new ImageIcon(ImageUtils.resize(MinecraftImageGenerator.generateItemSlot(), 36, 36));
 		ImageIcon image;
-		if (name != null && !name.equals("") && !name.equals("null"))
+		if (name != null && !name.isEmpty() && !name.equals("null"))
 			image = ImageUtils.drawOver(base, MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), name), 2, 2, 32,
 					32);
 		else
@@ -157,6 +157,9 @@ public class BlocklyJavascriptBridge {
 					w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "gamerules");
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
+			case "structure" ->
+					openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
+							"structures");
 			case "procedure" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 							.map(ModElement::getName).toArray(String[]::new), "procedure");
@@ -175,7 +178,7 @@ public class BlocklyJavascriptBridge {
 							StringUtils.split(customEntryProviders, ',')), type);
 				}
 
-				yield new String[]{"", L10N.t("blockly.extension.data_list_selector.no_entry")};
+				yield new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
 			}
 		};
 
@@ -190,7 +193,7 @@ public class BlocklyJavascriptBridge {
 	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
 	 */
 	private String[] openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
-		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
+		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
 		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()
@@ -225,7 +228,7 @@ public class BlocklyJavascriptBridge {
 	 * @return A {"value", "value"} pair (strings don't have readable names!), or the default entry if no string was selected
 	 */
 	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
-		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
+		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
 		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()
@@ -397,7 +400,7 @@ public class BlocklyJavascriptBridge {
 			}).map(ModElement::getName).collect(Collectors.toList());
 		}
 
-		if (retval.size() == 0)
+		if (retval.isEmpty())
 			return new String[] { "" };
 
 		return retval.toArray(new String[0]);

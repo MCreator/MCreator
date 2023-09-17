@@ -82,9 +82,6 @@ public class GTFeatureBlocks {
 			Feature feature = new Feature(modElement);
 			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));
-			feature.restrictionDimensions = random.nextBoolean() ?
-					new ArrayList<>() :
-					new ArrayList<>(Arrays.asList("Surface", "Nether"));
 			feature.restrictionBiomes = new ArrayList<>();
 			feature.generateCondition = random.nextBoolean() ? new Procedure("condition1") : null;
 

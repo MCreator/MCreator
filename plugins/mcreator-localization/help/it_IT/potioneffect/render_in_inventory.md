@@ -1,0 +1,1 @@
+Abilita questo parametro per avere l'effetto visualizzato nell'inventario del giocatore quando attivo.

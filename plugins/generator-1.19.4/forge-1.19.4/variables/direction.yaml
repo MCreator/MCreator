@@ -11,7 +11,7 @@ scopes:
   global_world:
     init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
     read: ${var.getName()} = Direction.from3DDataValue(nbt.getInt("${var.getName()}"));
-    write: nbt.putInt("${var.getName()}" , ${var.getName()}.get3DDataValue());
+    write: nbt.putInt("${var.getName()}", ${var.getName()}.get3DDataValue());
     get: ${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.WorldVariables.get(world).${name} = ${opt.removeParentheses(value)};
@@ -19,7 +19,7 @@ scopes:
   global_map:
     init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
     read: ${var.getName()} = Direction.from3DDataValue(nbt.getInt("${var.getName()}"));
-    write: nbt.putInt("${var.getName()}" , ${var.getName()}.get3DDataValue());
+    write: nbt.putInt("${var.getName()}", ${var.getName()}.get3DDataValue());
     get: ${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
       ${JavaModName}Variables.MapVariables.get(world).${name} = ${opt.removeParentheses(value)};
@@ -27,7 +27,7 @@ scopes:
   player_lifetime:
     init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
     read: ${var.getName()} = Direction.from3DDataValue(nbt.getInt("${var.getName()}"));
-    write: nbt.putInt("${var.getName()}" , ${var.getName()}.get3DDataValue());
+    write: nbt.putInt("${var.getName()}", ${var.getName()}.get3DDataValue());
     get: |
       ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
@@ -42,7 +42,7 @@ scopes:
   player_persistent:
     init: public Direction ${var.getName()} = ${generator.map(var.getValue(), "directions")};
     read: ${var.getName()} = Direction.from3DDataValue(nbt.getInt("${var.getName()}"));
-    write: nbt.putInt("${var.getName()}" , ${var.getName()}.get3DDataValue());
+    write: nbt.putInt("${var.getName()}", ${var.getName()}.get3DDataValue());
     get: |
       ((${entity}.getCapability(${JavaModName}Variables.PLAYER_VARIABLES_CAPABILITY, null)
         .orElse(new ${JavaModName}Variables.PlayerVariables())).${name})
