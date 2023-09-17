@@ -80,7 +80,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	}
 
 	@Override protected void initGUI() {
-		restrictionBiomes = new BiomeListField(mcreator);
+		restrictionBiomes = new BiomeListField(mcreator, true);
 
 		separation_spacing.setAllowEqualValues(false);
 

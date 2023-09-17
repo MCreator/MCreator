@@ -565,8 +565,8 @@ public class TestWorkspaceDataProvider {
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button1", 100, 200, _true, new Procedure("procedure10"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, !_true, null, null));
-				components.add(new Button("button3", 10, 10, "button3", 100, 200, _true,
-						null, new Procedure("condition3")));
+				components.add(
+						new Button("button3", 10, 10, "button3", 100, 200, _true, null, new Procedure("condition3")));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button4", 100, 200, !_true, new Procedure("procedure2"), new Procedure("condition4")));
 				components.add(
@@ -681,6 +681,8 @@ public class TestWorkspaceDataProvider {
 			structure.spacing = 14;
 			structure.separation = 6;
 			if (!emptyLists) {
+				structure.restrictionBiomes.addAll(
+						biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_surface"));
 				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:test/tag"));
 			}
