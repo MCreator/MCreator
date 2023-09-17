@@ -28,7 +28,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -56,10 +55,12 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.stream.Collectors;
 
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final VTextField igniterName = new VTextField(14);
+	private final JTextField specialInfo = new JTextField(20);
 
 	private TextureHolder portalTexture;
 	private TextureHolder texture;
@@ -222,7 +223,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel proper = new JPanel(new GridLayout(4, 2, 5, 2));
 		proper.setOpaque(false);
 
-		JPanel proper22 = new JPanel(new GridLayout(2, 2, 5, 2));
+		JPanel proper22 = new JPanel(new GridLayout(3, 2, 5, 2));
 		proper22.setOpaque(false);
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_particles"),
@@ -249,6 +250,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.portal_igniter_tab")));
 		proper22.add(igniterTab);
 
+		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
+				L10N.label("elementgui.dimension.igniter_tooltip_tip")));
+		proper22.add(specialInfo);
+
 		portalSound.setText("block.portal.ambient");
 
 		portalParticles.setFont(portalParticles.getFont().deriveFont(16.0f));
@@ -256,15 +261,15 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel igniterPanel = new JPanel(new BorderLayout(5, 5));
 		igniterPanel.setOpaque(false);
 
-		igniterPanel.add("North" , PanelUtils.gridElements(1, 2,
+		igniterPanel.add("North", PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_igniter"),
 						L10N.label("elementgui.dimension.enable_new_igniter")), enableIgniter));
 
-		igniterPanel.add("Center" , PanelUtils.gridElements(1, 2,
+		igniterPanel.add("Center", PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
 						L10N.label("elementgui.dimension.portal_igniter_texture")), PanelUtils.join(texture)));
 
-		igniterPanel.add("South" , PanelUtils.centerAndSouthElement(proper22, portalMakeCondition));
+		igniterPanel.add("South", PanelUtils.centerAndSouthElement(proper22, portalMakeCondition, 2, 2));
 
 		igniterPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -305,6 +310,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		pane2.add(PanelUtils.totalCenterInPanel(portalPanel));
 
 		ComponentUtils.deriveFont(igniterName, 16);
+		ComponentUtils.deriveFont(specialInfo, 16);
 
 		enablePortal.addActionListener(e -> updatePortalElements());
 		enableIgniter.addActionListener(e -> updateIgniterElements(enableIgniter.isSelected()));
@@ -363,6 +369,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private void updateIgniterElements(boolean enabled) {
 		igniterName.setEnabled(enabled);
 		igniterTab.setEnabled(enabled);
+		specialInfo.setEnabled(enabled);
 		texture.setEnabled(enabled);
 		portalMakeCondition.setEnabled(enabled);
 	}
@@ -399,6 +406,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalSound.setSound(dimension.portalSound);
 		enableIgniter.setSelected(dimension.enableIgniter);
 		igniterName.setText(dimension.igniterName);
+		specialInfo.setText(dimension.specialInfo.stream().map(info -> info.replace(",", "\\,"))
+				.collect(Collectors.joining(",")));
 		portalTexture.setTextureFromTextureName(dimension.portalTexture);
 		texture.setTextureFromTextureName(dimension.texture);
 		worldGenType.setSelectedItem(dimension.worldGenType);
@@ -443,6 +452,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.portalFrame = portalFrame.getBlock();
 		dimension.enableIgniter = enableIgniter.isSelected();
 		dimension.igniterName = igniterName.getText();
+		dimension.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
+				specialInfo.getText());
 		dimension.worldGenType = (String) worldGenType.getSelectedItem();
 		dimension.sleepResult = (String) sleepResult.getSelectedItem();
 		dimension.mainFillerBlock = mainFillerBlock.getBlock();

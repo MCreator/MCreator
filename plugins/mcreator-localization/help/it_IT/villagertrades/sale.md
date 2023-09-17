@@ -1,0 +1,1 @@
+Il prodotto che si ottiene dallo scambio.

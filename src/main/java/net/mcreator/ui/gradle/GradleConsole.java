@@ -112,7 +112,8 @@ public class GradleConsole extends JPanel {
 					try {
 						ProjectJarManager jarManager = ref.getGenerator().getProjectJarManager();
 						if (jarManager != null) {
-							if (fileurl.contains("/")) { // we don't have just FQDN but also module definition which we need to remove
+							if (fileurl.contains(
+									"/")) { // we don't have just FQDN but also module definition which we need to remove
 								fileurl = fileurl.substring(fileurl.lastIndexOf("/") + 1);
 							}
 
@@ -467,7 +468,8 @@ public class GradleConsole extends JPanel {
 								int reply = JOptionPane.showOptionDialog(ref,
 										L10N.t("dialog.gradle_console.gradle_caches_corrupted_message"),
 										L10N.t("dialog.gradle_console.gradle_caches_corrupted_title"),
-										JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+										JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, options,
+										options[0]);
 								if (reply == 0 || reply == 1) {
 									taskComplete(GradleErrorCodes.GRADLE_CACHEDATA_ERROR);
 
@@ -603,7 +605,7 @@ public class GradleConsole extends JPanel {
 	private void appendAutoColor(String text) {
 		pan.beginTransaction();
 
-		if (!text.equals("")) {
+		if (!text.isEmpty()) {
 			Color c = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
 
 			if (!text.endsWith("\n"))
@@ -722,7 +724,7 @@ public class GradleConsole extends JPanel {
 	}
 
 	private void appendErrorWithCodeLine(String text) {
-		if (!text.equals("")) {
+		if (!text.isEmpty()) {
 			String err = text.replaceAll(": error:.*", "");
 			String othr = text.replaceAll(".+\\.java:\\d+", "") + "\n";
 			SimpleAttributeSet keyWord = new SimpleAttributeSet();
@@ -737,7 +739,7 @@ public class GradleConsole extends JPanel {
 	private final Pattern jpattern = Pattern.compile("\\((.+?)\\.java:\\d+\\)");
 
 	private void appendErrorWithCodeLine2(String text) {
-		if (!text.equals("")) {
+		if (!text.isEmpty()) {
 			try {
 				Matcher matcher = jpattern.matcher(text);
 				matcher.find();
@@ -764,7 +766,7 @@ public class GradleConsole extends JPanel {
 	}
 
 	public void append(String text, Color c, boolean a) {
-		if (!text.equals("")) {
+		if (!text.isEmpty()) {
 			if (!text.endsWith("\n"))
 				text = text + "\n";
 			SimpleAttributeSet keyWord = new SimpleAttributeSet();
@@ -772,7 +774,7 @@ public class GradleConsole extends JPanel {
 			StyleConstants.setItalic(keyWord, a);
 			StyleConstants.setForeground(keyWord, c);
 			StyleConstants.setBackground(keyWord, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-			pan.insertString("" + text, keyWord);
+			pan.insertString(text, keyWord);
 		}
 		scrollToBottom();
 	}

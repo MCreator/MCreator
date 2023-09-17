@@ -156,27 +156,26 @@ public class Generator implements IGenerator, Closeable {
 	public boolean generateBase(boolean formatAndOrganiseImports) {
 		AtomicBoolean success = new AtomicBoolean(true);
 
-		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).parallelStream()
-				.map(generatorTemplate -> {
-					if (generatorTemplate.getTemplateDefinition().get("canLock") != null
-							&& generatorTemplate.getTemplateDefinition().get("canLock")
-							.equals("true")) // can this file be locked
-						if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
-							return null; // if they are, we skip this file
+		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).stream().map(generatorTemplate -> {
+			if (generatorTemplate.getTemplateDefinition().get("canLock") != null
+					&& generatorTemplate.getTemplateDefinition().get("canLock")
+					.equals("true")) // can this file be locked
+				if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
+					return null; // if they are, we skip this file
 
-					Map<String, Object> dataModel = generatorTemplate.getDataModel();
+			Map<String, Object> dataModel = generatorTemplate.getDataModel();
 
-					try {
-						String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(
-								(String) generatorTemplate.getTemplateDefinition().get("template"), dataModel,
-								(String) generatorTemplate.getTemplateDefinition().get("variables"));
-						return generatorTemplate.toGeneratorFile(code);
-					} catch (TemplateGeneratorException e) {
-						success.set(false);
-					}
+			try {
+				String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(
+						(String) generatorTemplate.getTemplateDefinition().get("template"), dataModel,
+						(String) generatorTemplate.getTemplateDefinition().get("variables"));
+				return generatorTemplate.toGeneratorFile(code);
+			} catch (TemplateGeneratorException e) {
+				success.set(false);
+			}
 
-					return null;
-				}).filter(Objects::nonNull).collect(Collectors.toList());
+			return null;
+		}).filter(Objects::nonNull).collect(Collectors.toList());
 
 		generateFiles(generatorFiles, formatAndOrganiseImports);
 

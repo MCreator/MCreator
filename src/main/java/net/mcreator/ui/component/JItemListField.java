@@ -46,6 +46,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	private final JButton bt = new JButton(UIRES.get("18px.add"));
 	private final JButton bt2 = new JButton(UIRES.get("18px.remove"));
 	private final JButton bt3 = new JButton(UIRES.get("18px.removeall"));
+	private final JButton bt4 = new JButton(UIRES.get("18px.addtag"));
 	private final JToggleButton include = L10N.togglebutton("elementgui.common.include");
 	private final JToggleButton exclude = L10N.togglebutton("elementgui.common.exclude");
 
@@ -65,6 +66,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	}
 
 	protected JItemListField(MCreator mcreator, boolean excludeButton) {
+		this(mcreator, excludeButton, false);
+	}
+
+	protected JItemListField(MCreator mcreator, boolean excludeButton, boolean allowTags) {
 		this.mcreator = mcreator;
 
 		setLayout(new BorderLayout());
@@ -89,6 +94,11 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		bt3.setBorder(BorderFactory.createEmptyBorder());
 		bt3.setContentAreaFilled(false);
 
+		bt4.setOpaque(false);
+		bt4.setMargin(new Insets(0, 0, 0, 0));
+		bt4.setBorder(BorderFactory.createEmptyBorder());
+		bt4.setContentAreaFilled(false);
+
 		bt.addActionListener(e -> {
 			List<T> list = getElementsToAdd();
 			for (T el : list)
@@ -112,6 +122,16 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		bt3.addActionListener(e -> {
 			elementsListModel.removeAllElements();
 			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
+		});
+
+		bt4.addActionListener(e -> {
+			List<T> list = getTagsToAdd();
+			for (T el : list)
+				if (!elementsListModel.contains(el))
+					elementsListModel.addElement(el);
+
+			if (!list.isEmpty())
+				this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
 		});
 
 		JScrollPane pane = new JScrollPane(PanelUtils.totalCenterInPanel(elementsList));
@@ -141,7 +161,15 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		pane.setPreferredSize(getPreferredSize());
 
-		JComponent buttons = PanelUtils.totalCenterInPanel(PanelUtils.join(bt, bt2, bt3));
+		JPanel buttonsPanel = new JPanel();
+		buttonsPanel.setOpaque(false);
+		buttonsPanel.add(bt);
+		if (allowTags)
+			buttonsPanel.add(bt4);
+		buttonsPanel.add(bt2);
+		buttonsPanel.add(bt3);
+
+		JComponent buttons = PanelUtils.totalCenterInPanel(buttonsPanel);
 		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
 		buttons.setOpaque(true);
 		buttons.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
@@ -168,10 +196,15 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 	protected abstract List<T> getElementsToAdd();
 
+	protected List<T> getTagsToAdd() {
+		return List.of();
+	}
+
 	@Override public void setEnabled(boolean enabled) {
 		bt.setEnabled(enabled);
 		bt2.setEnabled(enabled);
 		bt3.setEnabled(enabled);
+		bt4.setEnabled(enabled);
 		include.setEnabled(enabled);
 		exclude.setEnabled(enabled);
 	}
@@ -275,11 +308,14 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				mappableElement.getDataListEntry()
 						.ifPresentOrElse(dataListEntry -> setText(dataListEntry.getReadableName()), () -> setText(
 								(mappableElement).getUnmappedValue().replace("CUSTOM:", "").replace("Blocks.", "")
-										.replace("Items.", "")));
+										.replace("Items.", "").replace("#", "")));
 
 				if ((mappableElement).getUnmappedValue().contains("CUSTOM:"))
-					setIcon(new ImageIcon(ImageUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
+					setIcon(new ImageIcon(ImageUtils.resizeAA(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
 							(mappableElement).getUnmappedValue()).getImage(), 18)));
+
+				if ((mappableElement).getUnmappedValue().startsWith("#"))
+					setIcon(new ImageIcon(ImageUtils.resizeAA(MCItem.TAG_ICON.getImage(), 18)));
 
 				if (!(mappableElement).canProperlyMap())
 					setIcon(UIRES.get("18px.warning"));
@@ -289,7 +325,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				setText(StringUtils.machineToReadableName(value.toString().replace("CUSTOM:", "")));
 
 				if (value.toString().contains("CUSTOM:"))
-					setIcon(new ImageIcon(ImageUtils.resize(
+					setIcon(new ImageIcon(ImageUtils.resizeAA(
 							MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()).getImage(), 18)));
 			}
 

@@ -92,6 +92,7 @@ public class MaterialPackMakerTool {
 			}
 		});
 
+		dialog.getRootPane().setDefaultButton(ok);
 		dialog.setSize(600, 280);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);

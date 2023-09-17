@@ -113,7 +113,7 @@ public class WorkspaceFileManager implements Closeable {
 			return;
 
 		String workspacestring = gson.toJson(workspace);
-		if (workspacestring != null && !workspacestring.equals("")) {
+		if (workspacestring != null && !workspacestring.isEmpty()) {
 			MCREvent.event(new WorkspaceSavedEvent.BeforeSaving(workspace));
 
 			// first we backup workspace file

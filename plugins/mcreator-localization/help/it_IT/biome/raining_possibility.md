@@ -1,0 +1,1 @@
+Questo parametro controlla la possibilità di pioggia all'interno del bioma.

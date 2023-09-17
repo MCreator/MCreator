@@ -1,0 +1,1 @@
+Đây là mô tả của luật chơi. Nó được dùng trong màn hình cài đặt luật chơi khi di chuột qua.

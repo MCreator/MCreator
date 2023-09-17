@@ -186,7 +186,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	private void deleteCurrentlySelected() {
 		List<File> files = listGroup.getSelectedItemsList();
-		if (files.size() > 0) {
+		if (!files.isEmpty()) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.textures.confirm_deletion_message"), L10N.t("common.confirmation"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
@@ -209,7 +209,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	private void exportSelectedImages() {
 		List<File> files = listGroup.getSelectedItemsList();
-		if (files.size() > 0) {
+		if (!files.isEmpty()) {
 			files.forEach(f -> {
 				File to = FileDialogs.getSaveDialog(workspacePanel.getMCreator(), new String[] { ".png" });
 				if (to != null)
@@ -279,7 +279,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				textureRender.invalidateIconCache();
 				refilterElements();
 			});
-		}).start();
+		}, "WorkspaceTexturesReload").start();
 	}
 
 	@Override public void refilterElements() {
@@ -392,7 +392,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 			if (ma != null) {
 				String name = StringUtils.abbreviateString(FilenameUtilsPatched.removeExtension(ma.getName()), 10);
-				if (name.trim().equals(""))
+				if (name.isBlank())
 					name = "(untitled)";
 
 				setText(name);
