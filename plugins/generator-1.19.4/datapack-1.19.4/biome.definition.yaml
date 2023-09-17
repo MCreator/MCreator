@@ -15,157 +15,157 @@ global_templates:
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=mineshaft"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('mineshaft'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('mineshaft'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/mineshaft.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=igloo"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('igloo'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('igloo'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/igloo.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=stronghold"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('stronghold'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('stronghold'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/stronghold.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=mineshaft_mesa"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('mineshaft_mesa'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('mineshaft_mesa'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/mineshaft_mesa.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=pillager_outpost"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('pillager_outpost'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('pillager_outpost'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/pillager_outpost.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=woodland_mansion"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('woodland_mansion'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('woodland_mansion'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/woodland_mansion.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=jungle_temple"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('jungle_temple'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('jungle_temple'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/jungle_temple.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=desert_pyramid"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('desert_pyramid'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('desert_pyramid'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/desert_pyramid.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=swamp_hut"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('swamp_hut'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('swamp_hut'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/swamp_hut.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=ocean_monument"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ocean_monument'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ocean_monument'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ocean_monument.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=shipwreck"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('shipwreck'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('shipwreck'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/shipwreck.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=shipwreck_beached"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('shipwreck_beached'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('shipwreck_beached'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/shipwreck_beached.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=buried_treasure"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('buried_treasure'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('buried_treasure'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/buried_treasure.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=nether_fortress"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('nether_fortress'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('nether_fortress'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/nether_fortress.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=nether_fossil"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('nether_fossil'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('nether_fossil'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/nether_fossil.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=bastion_remnant"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('bastion_remnant'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('bastion_remnant'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/bastion_remnant.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=end_city"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('end_city'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('end_city'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/end_city.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=village_desert"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('village_desert'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('village_desert'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_desert.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=village_plains"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('village_plains'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('village_plains'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_plains.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=village_savanna"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('village_savanna'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('village_savanna'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_savanna.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=village_snowy"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('village_snowy'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('village_snowy'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_snowy.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=village_taiga"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('village_taiga'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('village_taiga'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_taiga.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=ocean_ruin_cold"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ocean_ruin_cold'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ocean_ruin_cold'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ocean_ruin_cold.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=ocean_ruin_warm"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ocean_ruin_warm'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ocean_ruin_warm'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ocean_ruin_warm.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=ruined_portal_standard"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_standard'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_standard'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_standard.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=ruined_portal_desert"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_desert'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_desert'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_desert.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=ruined_portal_jungle"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_jungle'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_jungle'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_jungle.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=ruined_portal_swamp"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_swamp'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_swamp'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_swamp.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=ruined_portal_mountain"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_mountain'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_mountain'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_mountain.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=ruined_portal_ocean"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_ocean'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_ocean'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_ocean.json"
   - template: biome/biometag.json.ftl
     writer: json
     variables: "type=ruined_portal_nether"
-    condition: ${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_nether'))?has_content}
+    condition: "${w.getRawElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_nether'))?has_content}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_nether.json"
 
 field_exclusions: [name, coverageEstimate, treeVines, treeFruits, spawnBiome, spawnInCaves, spawnBiomeNether]
