@@ -48,7 +48,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class StructureGenGUI extends ModElementGUI<Structure> {
+public class StructureGUI extends ModElementGUI<Structure> {
 
 	private final JComboBox<String> ignoreBlocks = new JComboBox<>(
 			new String[] { "STRUCTURE_BLOCK", "AIR_AND_STRUCTURE_BLOCK", "AIR" });
@@ -73,7 +73,7 @@ public class StructureGenGUI extends ModElementGUI<Structure> {
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
-	public StructureGenGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
+	public StructureGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
