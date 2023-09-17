@@ -21,10 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Material;
-import net.mcreator.element.parts.StepSound;
-import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.InputSlot;
 import net.mcreator.element.parts.gui.OutputSlot;
@@ -177,7 +174,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner frequencyOnChunk = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
 	private BiomeListField restrictionBiomes;
 	private MCItemListField blocksToReplace;
-	private DimensionListField spawnWorldTypes;
+	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
@@ -258,7 +255,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
 
-		spawnWorldTypes = new DimensionListField(mcreator);
+		restrictionBiomes = new BiomeListField(mcreator, true);
+		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
 
 		fluidRestrictions = new FluidListField(mcreator);
 
@@ -266,6 +264,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		blocksToReplace.setListElements(List.of(new MItemBlock(mcreator.getWorkspace(), "TAG:stone_ore_replaceables")));
 		generateHeight.setAllowEqualValues(true);
+
+		generateFeature.setOpaque(false);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.block.event_on_block_added"), Dependency.fromString(
@@ -1060,9 +1060,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JPanel genPanel = new JPanel(new GridLayout(7, 2, 20, 2));
 
-		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
-				L10N.label("elementgui.block.spawn_world_types")));
-		genPanel.add(spawnWorldTypes);
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/generate_feature"),
+				L10N.label("elementgui.block.generate_feature")));
+		genPanel.add(generateFeature);
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
 				L10N.label("elementgui.block.gen_replace_blocks")));
@@ -1429,7 +1429,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		inventoryStackSize.setValue(block.inventoryStackSize);
 		tickRate.setValue(block.tickRate);
 
-		spawnWorldTypes.setListElements(block.spawnWorldTypes);
+		generateFeature.setSelected(block.generateFeature);
 		blocksToReplace.setListElements(block.blocksToReplace);
 		restrictionBiomes.setListElements(block.restrictionBiomes);
 		fluidRestrictions.setListElements(block.fluidRestrictions);
@@ -1578,7 +1578,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		block.beaconColorModifier = beaconColorModifier.getColor();
 
-		block.spawnWorldTypes = spawnWorldTypes.getListElements();
+		block.generateFeature = generateFeature.isSelected();
 		block.restrictionBiomes = restrictionBiomes.getListElements();
 		block.fluidRestrictions = fluidRestrictions.getListElements();
 		block.blocksToReplace = blocksToReplace.getListElements();

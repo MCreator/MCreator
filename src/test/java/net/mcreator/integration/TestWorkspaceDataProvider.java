@@ -664,7 +664,6 @@ public class TestWorkspaceDataProvider {
 			structure.spawnHeightOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnXOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnZOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
-			structure.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			structure.spawnLocation = getRandomString(random, Arrays.asList("Ground", "Air", "Underground"));
 			structure.surfaceDetectionType = getRandomString(random,
 					Arrays.asList("First motion blocking block", "First block"));
@@ -676,7 +675,7 @@ public class TestWorkspaceDataProvider {
 				structure.restrictionBlocks.addAll(
 						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_surface"));
+				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:test/tag"));
 			}
 			if (_true) {
@@ -752,7 +751,6 @@ public class TestWorkspaceDataProvider {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			plant.texture = "test";
@@ -1161,7 +1159,6 @@ public class TestWorkspaceDataProvider {
 				block.fluidRestrictions.add(new net.mcreator.element.parts.Fluid(modElement.getWorkspace(),
 						getRandomItem(random, ElementUtil.loadAllFluids(modElement.getWorkspace()))));
 			}
-			block.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				block.restrictionBiomes.addAll(
@@ -1493,9 +1490,6 @@ public class TestWorkspaceDataProvider {
 			Feature feature = new Feature(modElement);
 			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));
-			feature.restrictionDimensions = emptyLists ?
-					new ArrayList<>() :
-					new ArrayList<>(Arrays.asList("Surface", "Nether"));
 			feature.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				feature.restrictionBiomes.addAll(

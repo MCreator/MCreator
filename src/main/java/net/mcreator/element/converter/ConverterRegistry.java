@@ -48,9 +48,7 @@ import net.mcreator.element.converter.v2023_3.HugeFungusFeatureConverter;
 import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
 import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
 import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
-import net.mcreator.element.converter.v2023_4.BlockGenerationConditionRemover;
-import net.mcreator.element.converter.v2023_4.PlantGenerationConditionRemover;
-import net.mcreator.element.converter.v2023_4.SpecialInformationConverter;
+import net.mcreator.element.converter.v2023_4.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -82,6 +80,7 @@ public class ConverterRegistry {
 			new BlockRequiresCorrectToolConverter(),
 			new BlockOreReplacementBlocksFixer(),
 			new BlockGenerationConditionRemover(),
+			new BlockFeatureDimensionRestrictionConverter(),
 			new SpecialInformationConverter()
 		));
 		put(ModElementType.DIMENSION, List.of(
@@ -125,6 +124,7 @@ public class ConverterRegistry {
 			new PlantLuminanceFixer(),
 			new PlantGenerationTypeConverter(),
 			new PlantGenerationConditionRemover(),
+			new BlockFeatureDimensionRestrictionConverter(),
 			new SpecialInformationConverter()
 		));
 		put(ModElementType.POTION, List.of(
@@ -162,7 +162,11 @@ public class ConverterRegistry {
 			new SpecialInformationConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
-			new HugeFungusFeatureConverter()
+			new HugeFungusFeatureConverter(),
+			new FeatureDimensionRestrictionConverter()
+		));
+		put(ModElementType.STRUCTURE, List.of(
+			new StructureDimensionRestrictionConverter()
 		));
 		put(ModElementType.MUSICDISC, List.of(
 			new SpecialInformationConverter()
