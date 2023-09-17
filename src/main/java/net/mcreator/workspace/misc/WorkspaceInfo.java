@@ -24,7 +24,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.types.*;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -132,17 +131,6 @@ import java.util.*;
 		}
 	}
 
-	public List<ModElement> getRecipesOfType(String typestring) {
-		try {
-			return workspace.getModElements().parallelStream().filter(e -> e.getType() == ModElementType.RECIPE)
-					.filter(e -> e.getGeneratableElement() instanceof Recipe re && re.recipeType.equals(typestring))
-					.toList();
-		} catch (IllegalArgumentException e) {
-			LOG.warn("Failed to list elements of non-existent type", e);
-			return Collections.emptyList();
-		}
-	}
-
 	public boolean hasElementsOfBaseType(BaseType baseType) {
 		for (ModElement modElement : workspace.getModElements()) {
 			GeneratableElement generatableElement = modElement.getGeneratableElement();
@@ -169,126 +157,6 @@ import java.util.*;
 
 	public boolean hasElementsOfType(String typestring) {
 		return hasElementsOfType(ModElementTypeLoader.getModElementType(typestring));
-	}
-
-	public boolean hasGameRulesOfType(String type) {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.GAMERULE) {
-				if (element.getGeneratableElement() instanceof GameRule gr) {
-					if (gr.type.equalsIgnoreCase(type))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasVillagerTrades(boolean wandering) {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.VILLAGERTRADE) {
-				if (element.getGeneratableElement() instanceof VillagerTrade vt) {
-					if (vt.hasVillagerTrades(wandering))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasBlocksMineableWith(String tool) {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.BLOCK) {
-				if (element.getGeneratableElement() instanceof Block block) {
-					if (block.destroyTool.equalsIgnoreCase(tool))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasToolsOfType(String type) {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.TOOL) {
-				if (element.getGeneratableElement() instanceof Tool tool) {
-					if (tool.toolType.equalsIgnoreCase(type))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasFluidsOfType(String type) {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.FLUID) {
-				if (element.getGeneratableElement() instanceof Fluid fluid) {
-					if (fluid.type.equalsIgnoreCase(type))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasBiomesWithStructure(String type) {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.BIOME) {
-				if (element.getGeneratableElement() instanceof Biome biome) {
-					if (biome.hasStructure(type))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasFuels() {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.ITEMEXTENSION) {
-				if (element.getGeneratableElement() instanceof ItemExtension itemExtension) {
-					if (itemExtension.enableFuel)
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasCompostableItems() {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.ITEMEXTENSION) {
-				if (element.getGeneratableElement() instanceof ItemExtension itemExtension) {
-					if (itemExtension.compostLayerChance > 0)
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasItemsWithCustomProperties() {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.ITEM) {
-				if (element.getGeneratableElement() instanceof Item item) {
-					if (!item.customProperties.isEmpty())
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasBiomesInVanillaDimensions() {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.BIOME) {
-				if (element.getGeneratableElement() instanceof Biome biome) {
-					if (biome.spawnBiome || biome.spawnInCaves || biome.spawnBiomeNether)
-						return true;
-				}
-			}
-		}
-		return false;
 	}
 
 	public boolean hasItemsInTabs() {
@@ -335,24 +203,6 @@ import java.util.*;
 		}
 
 		return tabMap;
-	}
-
-	public boolean hasItemsInVanillaTabs(Map<String, List<MItemBlock>> creativeTabMap) {
-		for (String tab : creativeTabMap.keySet()) {
-			if (!tab.startsWith("CUSTOM:")) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean hasItemsInCustomTabs(Map<String, List<MItemBlock>> creativeTabMap) {
-		for (String tab : creativeTabMap.keySet()) {
-			if (tab.startsWith("CUSTOM:")) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public MItemBlock itemBlock(String itemBlock) {
