@@ -1,0 +1,1 @@
+Başarı ikonunu ve açıklamasını, oyuncu başarıyı tamamladığı zaman sağ üst köşede göster.

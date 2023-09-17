@@ -1,0 +1,1 @@
+Tham số này điều khiển tên của hiệu ứng (tên được hiển thị trong kho đồ của người chơi).

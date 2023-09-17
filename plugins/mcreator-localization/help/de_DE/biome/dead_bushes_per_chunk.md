@@ -1,0 +1,1 @@
+Dieser Parameter steuert die Anzahl der toten Büsche in einem Biom-Chunk

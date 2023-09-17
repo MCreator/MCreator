@@ -89,7 +89,8 @@ public class GeneratorTemplate {
 	}
 
 	public boolean shouldBeSkippedBasedOnCondition(Generator generator, Object conditionData) {
-		return TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, templateDefinition, conditionData);
+		return TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, templateDefinition,
+				conditionData);
 	}
 
 	@Override public boolean equals(Object o) {

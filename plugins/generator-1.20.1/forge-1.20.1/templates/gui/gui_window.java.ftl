@@ -82,18 +82,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	@Override public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
 		this.renderBackground(guiGraphics);
-		super.render(guiGraphics, mouseX, mouseY, partialTicks);
-		this.renderTooltip(guiGraphics, mouseX, mouseY);
 
-		<#list data.getComponentsOfType("Tooltip") as component>
-			<#assign x = (component.x - mx/2)?int>
-			<#assign y = (component.y - my/2)?int>
-			<#if hasProcedure(component.displayCondition)>
-				if (<@procedureOBJToConditionCode component.displayCondition/>)
-			</#if>
-				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height})
-					guiGraphics.renderTooltip(font, <#if hasProcedure(component.text)>Component.literal(<@procedureOBJToStringCode component.text/>)<#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>, mouseX, mouseY);
-		</#list>
+		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 		<#list data.getComponentsOfType("TextField") as component>
 				${component.getName()}.render(guiGraphics, mouseX, mouseY, partialTicks);
@@ -113,6 +103,18 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 					livingEntity
 				);
 			}
+		</#list>
+
+		this.renderTooltip(guiGraphics, mouseX, mouseY);
+
+		<#list data.getComponentsOfType("Tooltip") as component>
+			<#assign x = (component.x - mx/2)?int>
+			<#assign y = (component.y - my/2)?int>
+			<#if hasProcedure(component.displayCondition)>
+				if (<@procedureOBJToConditionCode component.displayCondition/>)
+			</#if>
+				if (mouseX > leftPos + ${x} && mouseX < leftPos + ${x + component.width} && mouseY > topPos + ${y} && mouseY < topPos + ${y + component.height})
+					guiGraphics.renderTooltip(font, <#if hasProcedure(component.text)>Component.literal(<@procedureOBJToStringCode component.text/>)<#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>, mouseX, mouseY);
 		</#list>
 	}
 
@@ -162,9 +164,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
-			guiGraphics.drawString(font,
+			guiGraphics.drawString(this.font,
 				<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-				${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()});
+				${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()}, false);
 		</#list>
 	}
 
@@ -212,13 +214,23 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#assign btid = 0>
 
 		<#list data.getComponentsOfType("Button") as component>
-			${component.getName()} = Button.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <@buttonOnClick component/>)
-				.bounds(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, ${component.width}, ${component.height})
-				<#if hasProcedure(component.displayCondition)>
-				.build(builder -> new Button(builder)<@buttonDisplayCondition component/>);
-				<#else>
-				.build();
-				</#if>
+			<#if component.isUndecorated>
+				${component.getName()} = new PlainTextButton(
+					this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+					${component.width}, ${component.height},
+					Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
+					<@buttonOnClick component/>, this.font
+				)<@buttonDisplayCondition component/>;
+			<#else>
+				${component.getName()} = Button.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <@buttonOnClick component/>)
+					.bounds(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+					${component.width}, ${component.height})
+					<#if hasProcedure(component.displayCondition)>
+						.build(builder -> new Button(builder)<@buttonDisplayCondition component/>);
+					<#else>
+						.build();
+					</#if>
+			</#if>
 
 			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});

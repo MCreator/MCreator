@@ -157,6 +157,16 @@ public class ${name}Block extends
 		<#if data.offsetType != "NONE">
 			.offsetType(Block.OffsetType.${data.offsetType})
 		</#if>
+		<#if data.blockBase?has_content && (
+				data.blockBase == "FenceGate" ||
+				data.blockBase == "PressurePlate" ||
+				data.blockBase == "Fence" ||
+				data.blockBase == "Wall")>
+			.forceSolidOn()
+		</#if>
+		<#if data.blockBase?has_content && data.blockBase == "EndRod">
+			.forceSolidOff()
+		</#if>
 	</#macro>
 
 	public ${name}Block() {

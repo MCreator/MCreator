@@ -1,0 +1,1 @@
+Wenn dieser Parameter aktiviert ist, öffnet dieser Block bei Rechtsklick die gebundene GUI.

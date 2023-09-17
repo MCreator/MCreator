@@ -95,7 +95,7 @@ public class InjectTagsTool {
 		callables.add(addTag(mcreator, props, "raiders", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "skeletons", "minecraft", "Entities", false));
 
-		callables.add(addTag(mcreator, props, "is_overworld", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_overworld", "minecraft", "Biomes", true));
 		callables.add(addTag(mcreator, props, "is_nether", "minecraft", "Biomes", false));
 		callables.add(addTag(mcreator, props, "is_end", "minecraft", "Biomes", false));
 		callables.add(addTag(mcreator, props, "is_ocean", "minecraft", "Biomes", false));
@@ -116,6 +116,7 @@ public class InjectTagsTool {
 			dialog.setVisible(false);
 		});
 
+		dialog.getRootPane().setDefaultButton(ok);
 		dialog.setSize(740, 420);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);

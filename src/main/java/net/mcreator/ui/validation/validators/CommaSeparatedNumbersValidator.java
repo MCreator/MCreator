@@ -35,7 +35,7 @@ public class CommaSeparatedNumbersValidator implements Validator {
 	}
 
 	@Override public ValidationResult validate() {
-		if (holder.getText().trim().equals(""))
+		if (holder.getText().isBlank())
 			return Validator.ValidationResult.PASSED;
 		try {
 			Stream.of(holder.getText().split(",")).map(Integer::parseInt).collect(Collectors.toList());

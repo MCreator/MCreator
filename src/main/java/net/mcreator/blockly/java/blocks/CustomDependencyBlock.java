@@ -39,7 +39,7 @@ public class CustomDependencyBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
 		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
-		if (element != null && element.getTextContent() != null && !element.getTextContent().equals("")) {
+		if (element != null && element.getTextContent() != null && !element.getTextContent().isEmpty()) {
 			String depname = element.getTextContent();
 
 			String deptype = StringUtils.removeStart(block.getAttribute("type"), "custom_dependency_");

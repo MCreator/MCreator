@@ -55,7 +55,7 @@ public class D8WebAPI implements IWebAPI {
 		CookieHandler.setDefault(null);
 
 		String appData = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/repository");
-		if (appData.equals(""))
+		if (appData.isEmpty())
 			return false;
 
 		updateInfo = new Gson().fromJson(appData, UpdateInfo.class);
@@ -64,7 +64,7 @@ public class D8WebAPI implements IWebAPI {
 			initAPIPrivate();
 			newsFutures.forEach(future -> future.complete(news));
 			motwFutures.forEach(future -> future.complete(motw));
-		}).start();
+		}, "WebAPI-Loader").start();
 
 		return true;
 	}
@@ -76,7 +76,7 @@ public class D8WebAPI implements IWebAPI {
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			if (!newsXML.equals("")) {
+			if (!newsXML.isEmpty()) {
 				news = new String[2];
 				InputSource is = new InputSource(new StringReader(newsXML));
 				Document doc = dBuilder.parse(is);
@@ -95,7 +95,7 @@ public class D8WebAPI implements IWebAPI {
 
 			dbFactory = DocumentBuilderFactory.newInstance();
 			dBuilder = dbFactory.newDocumentBuilder();
-			if (!motwXML.equals("")) {
+			if (!motwXML.isEmpty()) {
 				motw = new String[5];
 				InputSource is = new InputSource(new StringReader(motwXML));
 				Document doc = dBuilder.parse(is);

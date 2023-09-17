@@ -118,6 +118,7 @@ public class ArmorPackMakerTool {
 			}
 		});
 
+		dialog.getRootPane().setDefaultButton(ok);
 		dialog.setSize(600, 280);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
@@ -125,6 +126,10 @@ public class ArmorPackMakerTool {
 
 	static void addArmorPackToWorkspace(MCreator mcreator, Workspace workspace, String name, MItemBlock base,
 			Color color, double factor) {
+		if (!PackMakerToolUtils.checkIfNamesAvailable(workspace, name + "Armor", name + "ArmorHelmetRecipe",
+				name + "ArmorChestplateRecipe", name + "ArmorLeggingsRecipe", name + "ArmorBootsRecipe"))
+			return;
+
 		// select folder the mod pack should be in
 		FolderElement folder = null;
 		if (!mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
@@ -154,12 +159,7 @@ public class ArmorPackMakerTool {
 		armor.damageValueLeggings = (int) Math.round(6 * factor);
 		armor.damageValueBoots = (int) Math.round(2 * factor);
 		armor.repairItems = Collections.singletonList(base);
-
-		armor.getModElement().setParentFolder(folder);
-		mcreator.getModElementManager().storeModElementPicture(armor);
-		mcreator.getWorkspace().addModElement(armor.getModElement());
-		mcreator.getGenerator().generateElement(armor);
-		mcreator.getModElementManager().storeModElement(armor);
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, armor);
 
 		// generate recipes
 		Recipe armorHelmetRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
@@ -172,12 +172,7 @@ public class ArmorPackMakerTool {
 		armorHelmetRecipe.recipeSlots[3] = base;
 		armorHelmetRecipe.recipeSlots[5] = base;
 		armorHelmetRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Armor" + ".helmet");
-
-		armorHelmetRecipe.getModElement().setParentFolder(folder);
-		mcreator.getModElementManager().storeModElementPicture(armorHelmetRecipe);
-		mcreator.getWorkspace().addModElement(armorHelmetRecipe.getModElement());
-		mcreator.getGenerator().generateElement(armorHelmetRecipe);
-		mcreator.getModElementManager().storeModElement(armorHelmetRecipe);
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, armorHelmetRecipe);
 
 		Recipe armorBodyRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 						new ModElement(workspace, name + "ArmorChestplateRecipe", ModElementType.RECIPE), false)
@@ -192,12 +187,7 @@ public class ArmorPackMakerTool {
 		armorBodyRecipe.recipeSlots[7] = base;
 		armorBodyRecipe.recipeSlots[8] = base;
 		armorBodyRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Armor" + ".body");
-
-		armorBodyRecipe.getModElement().setParentFolder(folder);
-		mcreator.getModElementManager().storeModElementPicture(armorBodyRecipe);
-		mcreator.getWorkspace().addModElement(armorBodyRecipe.getModElement());
-		mcreator.getGenerator().generateElement(armorBodyRecipe);
-		mcreator.getModElementManager().storeModElement(armorBodyRecipe);
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, armorBodyRecipe);
 
 		Recipe armorLeggingsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 						new ModElement(workspace, name + "ArmorLeggingsRecipe", ModElementType.RECIPE), false)
@@ -211,12 +201,7 @@ public class ArmorPackMakerTool {
 		armorLeggingsRecipe.recipeSlots[6] = base;
 		armorLeggingsRecipe.recipeSlots[8] = base;
 		armorLeggingsRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Armor" + ".legs");
-
-		armorLeggingsRecipe.getModElement().setParentFolder(folder);
-		mcreator.getModElementManager().storeModElementPicture(armorLeggingsRecipe);
-		mcreator.getWorkspace().addModElement(armorLeggingsRecipe.getModElement());
-		mcreator.getGenerator().generateElement(armorLeggingsRecipe);
-		mcreator.getModElementManager().storeModElement(armorLeggingsRecipe);
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, armorLeggingsRecipe);
 
 		Recipe armorBootsRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "ArmorBootsRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -226,12 +211,7 @@ public class ArmorPackMakerTool {
 		armorBootsRecipe.recipeSlots[6] = base;
 		armorBootsRecipe.recipeSlots[8] = base;
 		armorBootsRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Armor" + ".boots");
-
-		armorBootsRecipe.getModElement().setParentFolder(folder);
-		mcreator.getModElementManager().storeModElementPicture(armorBootsRecipe);
-		mcreator.getWorkspace().addModElement(armorBootsRecipe.getModElement());
-		mcreator.getGenerator().generateElement(armorBootsRecipe);
-		mcreator.getModElementManager().storeModElement(armorBootsRecipe);
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, armorBootsRecipe);
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {

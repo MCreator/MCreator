@@ -1,0 +1,1 @@
+Attiva una procedura quando un giocatore inizia a distruggere il blocco.

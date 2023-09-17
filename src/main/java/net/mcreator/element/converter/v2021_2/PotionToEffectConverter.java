@@ -48,19 +48,22 @@ public class PotionToEffectConverter implements IConverter {
 
 		String originalName = input.getModElement().getName();
 
-		if (workspace.getModElementByName(originalName + "PotionItem") == null) {
+		if (workspace.getModElementByName(originalName + "PotionEffect") == null) {
 			try {
-				potion.potionName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
+				String displayName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
 						.getAsString();
-				potion.splashName =
-						"Splash " + jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
-								.getAsString();
-				potion.lingeringName =
-						"Lingering " + jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-								.get("name").getAsString();
-				potion.arrowName =
-						"Arrow of " + jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
-								.getAsString();
+
+				if (displayName.isEmpty())
+					displayName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+							.get("effectName").getAsString();
+
+				if (displayName.isEmpty())
+					displayName = originalName;
+
+				potion.potionName = displayName;
+				potion.splashName = "Splash " + displayName;
+				potion.lingeringName = "Lingering " + displayName;
+				potion.arrowName = "Arrow of " + displayName;
 
 				potion.effects = new ArrayList<>();
 				Potion.CustomEffectEntry effectEntry = new Potion.CustomEffectEntry();
@@ -71,9 +74,7 @@ public class PotionToEffectConverter implements IConverter {
 				effectEntry.showParticles = true;
 				potion.effects.add(effectEntry);
 
-				input.getModElement().setName(originalName + "PotionItem");
 				workspace.getModElementManager().storeModElementPicture(potion);
-				workspace.addModElement(potion.getModElement());
 				workspace.getGenerator().generateElement(potion);
 				workspace.getModElementManager().storeModElement(potion);
 
@@ -92,7 +93,8 @@ public class PotionToEffectConverter implements IConverter {
 							+ e.getMessage());
 				}
 
-				potionEffect.setModElement(new ModElement(workspace, originalName, ModElementType.POTIONEFFECT));
+				potionEffect.setModElement(
+						new ModElement(workspace, originalName + "PotionEffect", ModElementType.POTIONEFFECT));
 
 				potionEffect.getModElement()
 						.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
