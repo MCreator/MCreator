@@ -38,35 +38,14 @@ package ${package}.world.features;
 
 <#compress>
 public class ${name}Feature extends ${generator.map(featuretype, "features")} {
-	<#if data.restrictionDimensions?has_content>
-	private final Set<ResourceKey<Level>> generateDimensions = Set.of(
-		<#list data.restrictionDimensions as dimension>
-			<#if dimension == "Surface">
-				Level.OVERWORLD
-			<#elseif dimension == "Nether">
-				Level.NETHER
-			<#elseif dimension == "End">
-				Level.END
-			<#else>
-				ResourceKey.create(Registries.DIMENSION,
-						new ResourceLocation("${generator.getResourceLocationForModElement(dimension.toString().replace("CUSTOM:", ""))}"))
-			</#if><#sep>,
-		</#list>
-	);
-	</#if>
 
 	public ${name}Feature() {
 		super(${configuration}.CODEC);
 	}
 
 	public boolean place(FeaturePlaceContext<${configuration}> context) {
-		WorldGenLevel world = context.level();
-		<#if data.restrictionDimensions?has_content>
-		if (!generateDimensions.contains(world.getLevel().dimension()))
-			return false;
-		</#if>
-
 		<#if hasProcedure(data.generateCondition)>
+		WorldGenLevel world = context.level();
 		int x = context.origin().getX();
 		int y = context.origin().getY();
 		int z = context.origin().getZ();

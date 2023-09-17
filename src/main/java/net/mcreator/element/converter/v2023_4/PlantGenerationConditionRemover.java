@@ -19,6 +19,7 @@
 
 package net.mcreator.element.converter.v2023_4;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
@@ -26,6 +27,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Feature;
 import net.mcreator.element.types.Plant;
 import net.mcreator.workspace.Workspace;
@@ -52,16 +54,29 @@ public class PlantGenerationConditionRemover implements IConverter {
 							new ModElement(workspace, modElementName + "Feature", ModElementType.FEATURE));
 					feature.generationStep = "VEGETAL_DECORATION";
 
-					// Copy the restriction dimensions
-					definition.getAsJsonArray("spawnWorldTypes").iterator()
-							.forEachRemaining(e -> feature.restrictionDimensions.add(e.getAsString()));
-
-					// Copy the restriction biomes
+					JsonArray spawnWorldTypes = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+							.get("spawnWorldTypes").getAsJsonArray();
 					if (definition.has("restrictionBiomes") && !definition.getAsJsonArray("restrictionBiomes")
-							.isEmpty()) {
+							.isEmpty()) { // Copy the restriction biomes if there are any
 						definition.getAsJsonArray("restrictionBiomes").iterator().forEachRemaining(
 								e -> feature.restrictionBiomes.add(
 										new BiomeEntry(workspace, e.getAsJsonObject().get("value").getAsString())));
+					} else if (spawnWorldTypes.size() == 1) { // If there are no restriction biomes, consider restiction dimensions
+						String spawnWorldType = spawnWorldTypes.get(0).getAsString();
+						if (spawnWorldType.equals("Surface")) {
+							feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_overworld"));
+						} else if (spawnWorldType.equals("Nether")) {
+							feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_nether"));
+						} else if (spawnWorldType.equals("End")) {
+							feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_end"));
+						} else if (spawnWorldType.startsWith("CUSTOM:")) {
+							ModElement modElement = workspace.getModElementByName(
+									spawnWorldType.replaceFirst("CUSTOM:", ""));
+							GeneratableElement generatableElement = modElement.getGeneratableElement();
+							if (generatableElement instanceof Dimension dimension) {
+								feature.restrictionBiomes.addAll(dimension.biomesInDimension);
+							}
+						}
 					}
 
 					// Copy the generation condition
@@ -94,7 +109,8 @@ public class PlantGenerationConditionRemover implements IConverter {
 					workspace.getModElementManager().storeModElement(feature);
 
 					// Clear the restriction dimensions of the plant, so that it doesn't generate anymore
-					plant.spawnWorldTypes.clear();
+					definition.remove("spawnWorldTypes");
+					definition.add("spawnWorldTypes", new JsonArray());
 				}
 			}
 		} catch (Exception e) {
