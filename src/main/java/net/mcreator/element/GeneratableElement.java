@@ -211,7 +211,7 @@ public abstract class GeneratableElement {
 						ConverterUtils.convertElementToDifferentType(converter, lastModElement, result);
 					} catch (Exception e2) {
 						LOG.warn("Failed to convert mod element " + lastModElement.getName() + " of type "
-								+ modElementTypeString + " to a potential alternative." , e2);
+								+ modElementTypeString + " to a potential alternative.", e2);
 					}
 				}
 
@@ -226,8 +226,8 @@ public abstract class GeneratableElement {
 		public JsonElement serialize(GeneratableElement modElement, Type type,
 				JsonSerializationContext jsonSerializationContext) {
 			JsonObject root = new JsonObject();
-			root.add("_fv" , new JsonPrimitive(GeneratableElement.formatVersion));
-			root.add("_type" , gson.toJsonTree(modElement.getModElement().getType().getRegistryName()));
+			root.add("_fv", new JsonPrimitive(GeneratableElement.formatVersion));
+			root.add("_type", gson.toJsonTree(modElement.getModElement().getType().getRegistryName()));
 
 			JsonObject definition = gson.toJsonTree(modElement).getAsJsonObject();
 
@@ -237,7 +237,7 @@ public abstract class GeneratableElement {
 				return null;
 			}
 
-			root.add("definition" , definition);
+			root.add("definition", definition);
 
 			return root;
 		}
