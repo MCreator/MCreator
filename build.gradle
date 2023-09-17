@@ -4,7 +4,7 @@ plugins {
     id "de.undercouch.download" version "5.5.0"
     id 'edu.sc.seis.launch4j' version '3.0.4'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.7'
-    id 'org.openjfx.javafxplugin' version '0.0.14'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
 }
 
 repositories {
@@ -63,23 +63,47 @@ configurations {
     linux64
 }
 
+configurations.win64.attributes {
+    attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+    attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, OperatingSystemFamily.WINDOWS))
+    attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, MachineArchitecture.X86_64))
+}
+
+configurations.macX64.attributes {
+    attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+    attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, OperatingSystemFamily.MACOS))
+    attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, MachineArchitecture.X86_64))
+}
+
+configurations.macAarch64.attributes {
+    attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+    attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, OperatingSystemFamily.MACOS))
+    attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, MachineArchitecture.ARM64))
+}
+
+configurations.linux64.attributes {
+    attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, Usage.JAVA_RUNTIME))
+    attribute(OperatingSystemFamily.OPERATING_SYSTEM_ATTRIBUTE, objects.named(OperatingSystemFamily, OperatingSystemFamily.LINUX))
+    attribute(MachineArchitecture.ARCHITECTURE_ATTRIBUTE, objects.named(MachineArchitecture, MachineArchitecture.X86_64))
+}
+
 dependencies {
     // from lib folder
     implementation fileTree(dir: 'lib', include: ['*.jar'])
 
     // from maven
-    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.13.0'
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.32'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
     implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'
-    implementation group: 'org.jboss.forge.roaster', name: 'roaster-api', version: '2.28.0.Final'
-    implementation group: 'org.jboss.forge.roaster', name: 'roaster-jdt', version: '2.28.0.Final'
+    implementation group: 'org.jboss.forge.roaster', name: 'roaster-api', version: '2.29.0.Final'
+    implementation group: 'org.jboss.forge.roaster', name: 'roaster-jdt', version: '2.29.0.Final'
     implementation group: 'com.esotericsoftware.yamlbeans', name: 'yamlbeans', version: '1.15'
     implementation group: 'org.reflections', name: 'reflections', version: '0.10.2'
-    implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
-    implementation group: 'de.javagl', name: 'obj', version: '0.3.0'
+    implementation group: 'com.google.guava', name: 'guava', version: '32.1.2-jre'
+    implementation group: 'de.javagl', name: 'obj', version: '0.4.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.19.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.20.0'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.9'
     implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.3'
@@ -87,7 +111,7 @@ dependencies {
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
-    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.3.2'
+    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.3.4'
     implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.3.1'
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
@@ -95,43 +119,14 @@ dependencies {
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.13.0' // needed by discord-rpc.jar
 
     // test dependencies
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.9.2'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.9.2'
-
-    // JFX natives
-    win64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'win'
-    win64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'win'
-
-    macX64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'mac'
-    macX64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'mac'
-    macX64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'mac'
-    macX64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'mac'
-    macX64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'mac'
-    macX64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'mac'
-
-    macAarch64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'mac-aarch64'
-    macAarch64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'mac-aarch64'
-    macAarch64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'mac-aarch64'
-    macAarch64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'mac-aarch64'
-    macAarch64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'mac-aarch64'
-    macAarch64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'mac-aarch64'
-
-    linux64 group: 'org.openjfx', name: 'javafx-base', version: '19', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-controls', version: '19', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-graphics', version: '19', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-media', version: '19', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-web', version: '19', classifier: 'linux'
-    linux64 group: 'org.openjfx', name: 'javafx-swing', version: '19', classifier: 'linux'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
 }
 
 javafx {
-    version = "19"
+    version = '20.0.2'
     modules = ['javafx.web', 'javafx.swing']
-    configuration = 'provided' // we provide natives during deployment or with SDK
+    configurations = ['provided', 'win64', 'macX64', 'macAarch64', 'linux64'] // we provide natives during deployment or with SDK
 }
 
 test {

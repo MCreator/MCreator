@@ -60,14 +60,6 @@ public class ${name}Feature extends OreFeature {
 		if (!generate_dimensions.contains(world.getLevel().dimension()))
 			return false;
 
-		<#if hasProcedure(data.generateCondition)>
-		int x = context.origin().getX();
-		int y = context.origin().getY();
-		int z = context.origin().getZ();
-		if (!<@procedureOBJToConditionCode data.generateCondition/>)
-			return false;
-		</#if>
-
 		return super.place(context);
 	}
 
