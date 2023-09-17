@@ -106,13 +106,13 @@ public class StructureGUI extends ModElementGUI<Structure> {
 			}
 		});
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/structure"),
-				L10N.label("elementgui.structuregen.select_tooltip")));
-		params.add(PanelUtils.centerAndEastElement(structureSelector, importnbt));
-
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/biomes_to_spawn"),
 				L10N.label("elementgui.structuregen.biomes_to_spawn")));
 		params.add(restrictionBiomes);
+
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/separation_spacing"),
+				L10N.label("elementgui.structuregen.separation_spacing")));
+		params.add(separation_spacing);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/generation_step"),
 				L10N.label("elementgui.structuregen.generation_stage")));
@@ -122,17 +122,17 @@ public class StructureGUI extends ModElementGUI<Structure> {
 				L10N.label("elementgui.structuregen.surface_detection_type")));
 		params.add(surfaceDetectionType);
 
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/separation_spacing"),
-				L10N.label("elementgui.structuregen.separation_spacing")));
-		params.add(separation_spacing);
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/terrain_adaptation"),
+				L10N.label("elementgui.structuregen.terrain_adaptation")));
+		params.add(terrainAdaptation);
+
+		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/structure"),
+				L10N.label("elementgui.structuregen.select_tooltip")));
+		params.add(PanelUtils.centerAndEastElement(structureSelector, importnbt));
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/projection"),
 				L10N.label("elementgui.structuregen.projection")));
 		params.add(projection);
-
-		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/terrain_adaptation"),
-				L10N.label("elementgui.structuregen.terrain_adaptation")));
-		params.add(terrainAdaptation);
 
 		params.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/ignore_blocks"),
 				L10N.label("elementgui.structuregen.ignore_blocks")));
