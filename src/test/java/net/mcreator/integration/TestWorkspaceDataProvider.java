@@ -1686,13 +1686,19 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelHeight = 1.3;
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
+		livingEntity.modelLayers = new ArrayList<>();
 		if (!emptyLists) {
-			livingEntity.modelLayers = new ArrayList<>();
 			LivingEntity.ModelLayerEntry modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.model = "Default";
 			modelLayer.texture = "test.png";
-			modelLayer.glow = _true;
+			modelLayer.glow = true;
 			modelLayer.condition = new Procedure("condition4");
+			livingEntity.modelLayers.add(modelLayer);
+			modelLayer = new LivingEntity.ModelLayerEntry();
+			modelLayer.model = "Default";
+			modelLayer.texture = "test.png";
+			modelLayer.glow = false;
+			modelLayer.condition = new Procedure("condition1");
 			livingEntity.modelLayers.add(modelLayer);
 		}
 		return livingEntity;
