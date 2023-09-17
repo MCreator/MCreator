@@ -43,11 +43,10 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 48;
+	public static final int formatVersion = 49;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -191,7 +190,8 @@ public abstract class GeneratableElement {
 								+ converter.getClass().getSimpleName());
 						generatableElement = converter.convert(this.workspace, generatableElement, jsonElement);
 
-						if (generatableElement == null || generatableElement.getClass() != modElementType.getModElementStorageClass()) {
+						if (generatableElement == null
+								|| generatableElement.getClass() != modElementType.getModElementStorageClass()) {
 							ConverterUtils.convertElementToDifferentType(converter, lastModElement, generatableElement);
 							return null;
 						} else {
@@ -211,7 +211,7 @@ public abstract class GeneratableElement {
 						ConverterUtils.convertElementToDifferentType(converter, lastModElement, result);
 					} catch (Exception e2) {
 						LOG.warn("Failed to convert mod element " + lastModElement.getName() + " of type "
-								+ modElementTypeString + " to a potential alternative.", e2);
+								+ modElementTypeString + " to a potential alternative." , e2);
 					}
 				}
 
@@ -226,8 +226,8 @@ public abstract class GeneratableElement {
 		public JsonElement serialize(GeneratableElement modElement, Type type,
 				JsonSerializationContext jsonSerializationContext) {
 			JsonObject root = new JsonObject();
-			root.add("_fv", new JsonPrimitive(GeneratableElement.formatVersion));
-			root.add("_type", gson.toJsonTree(modElement.getModElement().getType().getRegistryName()));
+			root.add("_fv" , new JsonPrimitive(GeneratableElement.formatVersion));
+			root.add("_type" , gson.toJsonTree(modElement.getModElement().getType().getRegistryName()));
 
 			JsonObject definition = gson.toJsonTree(modElement).getAsJsonObject();
 
@@ -237,7 +237,7 @@ public abstract class GeneratableElement {
 				return null;
 			}
 
-			root.add("definition", definition);
+			root.add("definition" , definition);
 
 			return root;
 		}
