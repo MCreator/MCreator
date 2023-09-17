@@ -28,6 +28,7 @@ import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -172,7 +173,7 @@ import java.util.stream.Collectors;
 	public Procedure onRedstoneOff;
 	public Procedure onHitByProjectile;
 
-	public List<String> spawnWorldTypes;
+	public boolean generateFeature;
 	public List<BiomeEntry> restrictionBiomes;
 	public List<MItemBlock> blocksToReplace;
 	public String generationShape;
@@ -190,7 +191,6 @@ import java.util.stream.Collectors;
 
 		this.tintType = "No tint";
 		this.boundingBoxes = new ArrayList<>();
-		this.spawnWorldTypes = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 		this.reactionToPushing = "NORMAL";
 		this.slipperiness = 0.6;
@@ -219,10 +219,6 @@ import java.util.stream.Collectors;
 		return !customDrop.isEmpty();
 	}
 
-	public boolean isGeneratedInWorld() {
-		return !spawnWorldTypes.isEmpty();
-	}
-
 	public boolean isBlockTinted() {
 		return !"No tint".equals(tintType);
 	}
@@ -233,10 +229,6 @@ import java.util.stream.Collectors;
 
 	public boolean shouldOpenGUIOnRightClick() {
 		return guiBoundTo != null && !guiBoundTo.equals("<NONE>") && openGUIOnRightClick;
-	}
-
-	public boolean doesGenerateInWorld() {
-		return !spawnWorldTypes.isEmpty();
 	}
 
 	public boolean shouldScheduleTick() {
@@ -346,7 +338,8 @@ import java.util.stream.Collectors;
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
 
-		if (doesGenerateInWorld())
+		if (generateFeature && getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+				== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
 			baseTypes.add(BaseType.FEATURE);
 
 		if (hasInventory)
