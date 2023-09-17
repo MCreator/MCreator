@@ -31,7 +31,11 @@ import java.util.List;
 public class ProfessionListField extends JItemListField<ProfessionEntry> {
 
 	public ProfessionListField(MCreator mcreator) {
-		super(mcreator);
+		super(mcreator, false);
+	}
+
+	public ProfessionListField(MCreator mcreator, boolean excludeButton) {
+		super(mcreator, excludeButton);
 	}
 
 	@Override protected List<ProfessionEntry> getElementsToAdd() {
