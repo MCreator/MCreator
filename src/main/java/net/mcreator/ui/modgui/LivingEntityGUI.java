@@ -376,7 +376,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
-		professionTrade = new ProfessionListField(mcreator);
+		professionTrade = new ProfessionListField(mcreator, true);
 
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
 		numberOfMobsPerGroup.setAllowEqualValues(true);
@@ -1175,6 +1175,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		villagerTradingType.setSelected(livingEntity.villagerTradingType);
 		wanderingTraderTradingType.setSelected(!livingEntity.villagerTradingType);
 		professionTrade.setListElements(livingEntity.professionTrade);
+		professionTrade.setExclusionMode(livingEntity.excludeProfessions);
 		fullUpdateSound.setSound(livingEntity.fullUpdateSound);
 		emptyUpdateSound.setSound(livingEntity.emptyUpdateSound);
 		notificationSound.setSound(livingEntity.notificationSound);
@@ -1308,6 +1309,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.canTrade = canTrade.isSelected();
 		livingEntity.villagerTradingType = villagerTradingType.isSelected();
 		livingEntity.professionTrade = professionTrade.getListElements();
+		livingEntity.excludeProfessions = professionTrade.isExclusionMode();
 		livingEntity.fullUpdateSound = fullUpdateSound.getSound();
 		livingEntity.emptyUpdateSound = emptyUpdateSound.getSound();
 		livingEntity.notificationSound = notificationSound.getSound();

@@ -101,6 +101,7 @@ import java.util.*;
 	public boolean canTrade;
 	public boolean villagerTradingType;
 	public List<ProfessionEntry> professionTrade;
+	public boolean excludeProfessions;
 	public Sound fullUpdateSound;
 	public Sound emptyUpdateSound;
 	public Sound notificationSound;

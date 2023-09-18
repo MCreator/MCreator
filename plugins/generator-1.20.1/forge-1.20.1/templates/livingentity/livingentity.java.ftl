@@ -237,11 +237,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		);
 		Int2ObjectMap<VillagerTrades.ItemListing[]> trades = new Int2ObjectOpenHashMap<>();
 		VillagerTrades.TRADES.forEach((key, value) -> {
-			if (professions.contains(key)) {
+			if (<#if data.excludeProfessions>!</#if>(professions.contains(key))) {
 				value.int2ObjectEntrySet().forEach(ent -> trades.put(ent.getIntKey(), Arrays.copyOf(ent.getValue(), ent.getValue().length)));
 			}
 		});
-		<#if data.professionTrade?contains("WanderingTrader")>
+		<#if data.professionTrade?contains("WanderingTrader") && !data.excludeProfessions>
 		VillagerTrades.WANDERING_TRADER_TRADES.int2ObjectEntrySet().forEach(e -> trades.put(e.getIntKey(), Arrays.copyOf(e.getValue(), e.getValue().length)));
 		</#if>
 		if (trades != null && !trades.isEmpty()) {

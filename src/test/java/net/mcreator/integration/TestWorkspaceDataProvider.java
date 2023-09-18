@@ -1693,9 +1693,11 @@ public class TestWorkspaceDataProvider {
 					professions.stream().skip(_true ? 0 : ((long) (professions.size() / 4) * valueIndex))
 							.limit(professions.size() / 4)
 							.map(e -> new ProfessionEntry(modElement.getWorkspace(), e.getName())).toList());
+			livingEntity.excludeProfessions = _true;
 		} else {
 			livingEntity.professionTrade.add(
 					new ProfessionEntry(modElement.getWorkspace(), getRandomDataListEntry(random, professions)));
+			livingEntity.excludeProfessions = !_true;
 		}
 		livingEntity.fullUpdateSound = new Sound(modElement.getWorkspace(),
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
