@@ -85,6 +85,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox destroyAnyBlock = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
+
 	private LogicProcedureSelector glowCondition;
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
