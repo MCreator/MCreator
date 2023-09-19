@@ -26,7 +26,7 @@
   "nextStatement": null,
   "colour": 60,
   "mcreator": {
-    "toolbox_id": "secondary1",
+    "toolbox_id": "blockactions",
     "toolbox_init": [
       "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
