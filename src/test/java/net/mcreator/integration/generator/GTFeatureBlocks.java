@@ -160,6 +160,39 @@ public class GTFeatureBlocks {
 							<value name="block">%s</value>
 						</block></value></block></xml>
 						""".formatted(testXML);
+				// Tree decorators are tested with the simple tree feature
+				case "TreeDecorator" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_tree_simple">
+							<mutation inputs="1"></mutation>
+							<value name="decorator0">%s</value>
+							<value name="dirt"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+							<value name="trunk"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+							<value name="foliage"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+							<value name="root_placer"><block type="root_placer_none"></block></value>
+							<field name="type">oak</field>
+							<field name="base_height">0</field>
+							<field name="height_variation_a">0</field><field name="height_variation_b">0</field>
+							<field name="force_dirt">FALSE</field><field name="ignore_vines">TRUE</field>
+						</block></value></block></xml>
+						""".formatted(testXML);
+				// Root placers are also tested with the simple tree feature
+				case "RootPlacer" -> feature.featurexml = """
+						<xml xmlns="https://developers.google.com/blockly/xml">
+						<block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature"><block type="feature_tree_simple">
+							<mutation inputs="0"></mutation>
+							<value name="dirt"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+							<value name="trunk"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+							<value name="foliage"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+							<value name="root_placer">%s</value>
+							<field name="type">oak</field>
+							<field name="base_height">0</field>
+							<field name="height_variation_a">0</field><field name="height_variation_b">0</field>
+							<field name="force_dirt">FALSE</field><field name="ignore_vines">TRUE</field>
+						</block></value></block></xml>
+						""".formatted(testXML);
 				// Other output types (Height provider, block predicate, etc.) are tested with an appropriate placement block
 				case "HeightProvider" -> feature.featurexml = getXMLFor("placement_height_range", "height", testXML);
 				case "BlockPredicate" ->
