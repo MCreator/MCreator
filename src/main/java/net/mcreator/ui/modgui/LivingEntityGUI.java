@@ -95,8 +95,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private ProcedureSelector onInitialSpawn;
 
 	private ProcedureSelector spawningCondition;
-	private ProcedureSelector transparentModelCondition;
-	private ProcedureSelector isShakingCondition;
+	private LogicProcedureSelector transparentModelCondition;
+	private LogicProcedureSelector isShakingCondition;
 	private LogicProcedureSelector solidBoundingBox;
 	private LogicProcedureSelector breatheUnderwater;
 	private LogicProcedureSelector pushedByFluids;
@@ -334,16 +334,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.use_vanilla")).makeInline();
-		transparentModelCondition = new ProcedureSelector(this.withEntry("entity/condition_is_model_transparent"),
+		transparentModelCondition = new LogicProcedureSelector(this.withEntry("entity/condition_is_model_transparent"),
 				mcreator, L10N.t("elementgui.living_entity.condition_is_model_transparent"),
-				ProcedureSelector.Side.CLIENT, true, VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
-				L10N.t("condition.common.false")).makeInline();
-		isShakingCondition = new ProcedureSelector(this.withEntry("entity/condition_is_shaking"), mcreator,
-				L10N.t("elementgui.living_entity.condition_is_shaking"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
-				L10N.t("condition.common.false")).makeInline();
+				ProcedureSelector.Side.CLIENT, L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		isShakingCondition = new LogicProcedureSelector(this.withEntry("entity/condition_is_shaking"), mcreator,
+				L10N.t("elementgui.living_entity.condition_is_shaking"), ProcedureSelector.Side.CLIENT,
+				L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		solidBoundingBox = new LogicProcedureSelector(this.withEntry("entity/condition_solid_bounding_box"), mcreator,
 				L10N.t("elementgui.living_entity.condition_solid_bounding_box"), AbstractProcedureSelector.Side.BOTH,
 				L10N.checkbox("elementgui.common.enable"), 160,
