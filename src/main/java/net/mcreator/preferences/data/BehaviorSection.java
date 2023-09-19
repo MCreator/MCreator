@@ -22,8 +22,6 @@ package net.mcreator.preferences.data;
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
 
-import java.io.File;
-
 public class BehaviorSection extends PreferencesSection {
 
 	public BooleanEntry openLastWorkspace;
@@ -32,7 +30,7 @@ public class BehaviorSection extends PreferencesSection {
 
 	public BehaviorSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
-		
+
 		openLastWorkspace = addEntry(new BooleanEntry("openLastWorkspace", false));
 		confirmBeforeClosing = addEntry(new BooleanEntry("confirmBeforeClosing", false));
 		returnToWorkspaceSelector = addEntry(new BooleanEntry("returnToWorkspaceSelector", false));
