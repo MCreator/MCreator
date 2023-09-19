@@ -23,13 +23,19 @@ import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import java.awt.*;
+import java.util.List;
 
 public class ToolboxCategory {
 	private static final Logger LOG = LogManager.getLogger("Toolbox category");
 
 	String id, name, description, color;
-	boolean api;
+	/**
+	 * A list of category's IDs that will be inside this main toolbox
+	 */
+	@Nullable List<String> nested_categories;
+	boolean api, nested_only, is_expanded;
 
 	public String getName() {
 		String localized_name = L10N.t("blockly.category." + id);

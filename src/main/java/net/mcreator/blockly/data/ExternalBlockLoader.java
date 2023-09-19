@@ -160,24 +160,59 @@ public class ExternalBlockLoader {
 
 		// Handle other and API categories
 		for (ToolboxCategory category : toolboxCategories) {
-			StringBuilder categoryBuilder = new StringBuilder();
-			categoryBuilder.append("<category name=\"").append(escapeTranslationForXMLAndJS(category.getName()))
-					.append("\" colour=\"").append(category.color).append("\">");
-			if (category.getDescription() != null) {
-				categoryBuilder.append("<label text=\"").append(escapeTranslationForXMLAndJS(category.getDescription()))
-						.append("\" web-class=\"whlab\"/>");
+			if (!category.nested_only) {
+				String categoryCode = generateCategoryXML(category, toolboxCategories, toolboxBlocksList);
+				if (categoryCode.contains("<block type="))
+					toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryCode));
 			}
-			for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
-				if (toolboxBlock.toolbox_id != null && toolboxBlock.toolbox_id.equals(category.id)) {
-					categoryBuilder.append(toolboxBlock.getToolboxXML());
-					toolboxBlock.toolboxCategory = category;
-				}
-			}
-			categoryBuilder.append("</category>");
-
-			if (categoryBuilder.toString().contains("<block type="))
-				toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryBuilder.toString()));
 		}
+	}
+
+	private String generateCategoryXML(ToolboxCategory category, List<ToolboxCategory> toolboxCategories,
+			List<ToolboxBlock> toolboxBlocksList) {
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("<category name=\"").append(escapeTranslationForXMLAndJS(category.getName()))
+				.append("\" colour=\"").append(category.color).append("\"");
+		if (category.is_expanded)
+			builder.append(" expanded=\"true\"");
+
+		builder.append(">");
+
+		if (category.getDescription() != null) {
+			builder.append("<label text=\"").append(escapeTranslationForXMLAndJS(category.getDescription()))
+					.append("\" web-class=\"whlab\"/>");
+		}
+
+		for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
+			if (toolboxBlock.toolbox_id != null && toolboxBlock.toolbox_id.equals(category.id)) {
+				builder.append(toolboxBlock.getToolboxXML());
+				toolboxBlock.toolboxCategory = category;
+			}
+		}
+
+		// Create each secondary category that will be added to this current category
+		if (category.nested_categories != null && !category.nested_categories.isEmpty()) {
+			category.nested_categories.stream().filter(Objects::nonNull).filter(s -> !s.isBlank())
+					.forEach(secCatID -> {
+						ToolboxCategory secCategory = null;
+						for (ToolboxCategory toolboxCategory : toolboxCategories) {
+							if (toolboxCategory.id.equals(secCatID)) {
+								secCategory = toolboxCategory;
+							}
+						}
+						if (secCategory != null) {
+							builder.append(generateCategoryXML(secCategory, toolboxCategories, toolboxBlocksList));
+						} else {
+							LOG.error("The category: " + secCatID
+									+ " was not found inside the list of registered categories.");
+						}
+					});
+		}
+
+		builder.append("</category>");
+
+		return builder.toString();
 	}
 
 	public void loadBlocksAndCategoriesInPanel(BlocklyPanel pane, ToolboxType toolboxType) {
