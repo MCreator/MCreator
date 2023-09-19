@@ -1,0 +1,1 @@
+Thuộc tính tùy chọn này sẽ thay đổi kết cấu của xô trong kho đồ, thay cho cái được tự động tạo.

@@ -27,6 +27,8 @@ import net.mcreator.preferences.entries.StringEntry;
 public class BlocklySection extends PreferencesSection {
 
 	public StringEntry blockRenderer;
+	public IntegerEntry colorSaturation;
+	public IntegerEntry colorValue;
 	public BooleanEntry useSmartSort;
 	public BooleanEntry enableComments;
 	public BooleanEntry enableCollapse;
@@ -35,11 +37,14 @@ public class BlocklySection extends PreferencesSection {
 	public IntegerEntry minScale;
 	public IntegerEntry scaleSpeed;
 	public BooleanEntry legacyFont;
+	public BooleanEntry transparentBackground;
 
 	BlocklySection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
 		blockRenderer = addEntry(new StringEntry("blockRenderer", "Thrasos", "Geras", "Thrasos"));
+		colorSaturation = addEntry(new IntegerEntry("colorSaturation", 45, 30, 100));
+		colorValue = addEntry(new IntegerEntry("colorValue", 65, 30, 100));
 		useSmartSort = addEntry(new BooleanEntry("useSmartSort", true));
 		enableComments = addEntry(new BooleanEntry("enableComments", true));
 		enableCollapse = addEntry(new BooleanEntry("enableCollapse", true));
@@ -48,6 +53,7 @@ public class BlocklySection extends PreferencesSection {
 		minScale = addEntry(new IntegerEntry("minScale", 40, 20, 95));
 		scaleSpeed = addEntry(new IntegerEntry("scaleSpeed", 105, 0, 200));
 		legacyFont = addEntry(new BooleanEntry("legacyFont", false));
+		transparentBackground = addEntry(new BooleanEntry("transparentBackground", false));
 	}
 
 	@Override public String getSectionKey() {

@@ -1,0 +1,1 @@
+Attiva una procedura quando il blocco viene aggiunto al mondo (potrebbe non essere chiamato da alcuni generatori naturali).

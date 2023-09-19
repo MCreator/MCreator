@@ -1,0 +1,1 @@
+Seleziona questa impostazione per utilizzare le miniere abbandonate nei biomi mesa del tuo bioma.
