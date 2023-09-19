@@ -34,7 +34,7 @@
   "nextStatement": null,
   "colour": 60,
   "mcreator": {
-    "toolbox_id": "secondary5",
+    "toolbox_id": "energyandfluid",
     "toolbox_init": [
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
