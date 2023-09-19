@@ -34,11 +34,9 @@ public class HiddenSection extends PreferencesSection {
 	public IntegerEntry projectTreeSplitPos;
 	public BooleanEntry workspaceSortAscending;
 	public PreferencesEntry<SortType> workspaceSortType;
-	public FileEntry java_home;
+	public PreferencesEntry<File> java_home;
 	public StringEntry uiTheme;
 	public BooleanEntry enableJavaPlugins;
-
-	public FileEntry lastWorkspace;
 
 	HiddenSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -64,7 +62,15 @@ public class HiddenSection extends PreferencesSection {
 				return PreferencesManager.gson.toJsonTree(value, SortType.class);
 			}
 		});
-		java_home = addEntry(new FileEntry("java_home", null, false));
+		java_home = addEntry(new HiddenEntry<>("java_home", null) {
+			@Override public void setValueFromJsonElement(JsonElement object) {
+				this.value = new File(object.getAsString());
+			}
+
+			@Override public JsonElement getSerializedValue() {
+				return PreferencesManager.gson.toJsonTree(value, File.class);
+			}
+		});
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
 		enableJavaPlugins = addEntry(new BooleanEntry("enableJavaPlugins", false));
 	}
