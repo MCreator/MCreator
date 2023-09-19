@@ -146,13 +146,15 @@ public class ConverterRegistry {
 			new ProcedureDamageSourceFixer()
 		));
 		put(ModElementType.RANGEDITEM, List.of(
-			new RangedItemTextureConverter()
+			new RangedItemTextureConverter(),
+			new ItemHasGlowConverter()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()
 		));
 		put(ModElementType.ITEM, List.of(
-			new ItemDispenseBehaviorToItemExtensionConverter()
+			new ItemDispenseBehaviorToItemExtensionConverter(),
+			new ItemHasGlowConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
 			new HugeFungusFeatureConverter(),
@@ -160,6 +162,9 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.STRUCTURE, List.of(
 			new StructureDimensionRestrictionConverter()
+		));
+		put(ModElementType.TOOL, List.of(
+			new ItemHasGlowConverter()
 		));
 	}};
 	//@formatter:on
