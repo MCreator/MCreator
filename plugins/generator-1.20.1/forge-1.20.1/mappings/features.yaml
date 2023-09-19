@@ -94,3 +94,7 @@ feature_simple_random_selector:
   - SimpleRandomSelectorFeature
   - SimpleRandomFeatureConfiguration
   - "minecraft:simple_random_selector"
+feature_tree_simple:
+  - TreeFeature
+  - TreeConfiguration
+  - "minecraft:tree"

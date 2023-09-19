@@ -1,0 +1,1 @@
+Acesta este cantitatea de experiență pe care jucătorul le va primi după completarea progresului.

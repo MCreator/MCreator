@@ -29,16 +29,18 @@ public class Button extends SizedComponent {
 
 	public String name;
 	public String text;
+	public boolean isUndecorated;
 	public Procedure onClick;
 	public Procedure displayCondition;
 
-	public Button(String name, int x, int y, String text, int width, int height, Procedure onClick,
-			Procedure displayCondition) {
+	public Button(String name, int x, int y, String text, int width, int height, boolean isUndecorated,
+			Procedure onClick, Procedure displayCondition) {
 		super(x, y, width, height);
 		this.text = text;
 		this.onClick = onClick;
 		this.displayCondition = displayCondition;
 		this.name = name;
+		this.isUndecorated = isUndecorated;
 	}
 
 	@Override public int getWeight() {
@@ -50,12 +52,17 @@ public class Button extends SizedComponent {
 	}
 
 	@Override public void paintComponent(int cx, int cy, WYSIWYGEditor wysiwygEditor, Graphics2D g) {
-		g.drawImage(MinecraftImageGenerator.generateButton(this.width, this.height), cx, cy, this.width, this.height,
-				wysiwygEditor);
 		int textwidth = (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getWidth());
 		int textheight = (int) (WYSIWYG.fontMC.getStringBounds(this.text, WYSIWYG.frc).getHeight()) - 4;
-		g.drawString(this.text, cx + (this.width / 2) - (textwidth / 2),
-				cy + textheight + (this.height / 2) - (textheight / 2));
+
+		if (isUndecorated) {
+			g.drawString(this.text, cx, cy + textheight + 4);
+		} else {
+			g.drawImage(MinecraftImageGenerator.generateButton(this.width, this.height), cx, cy, this.width,
+					this.height, wysiwygEditor);
+			g.drawString(this.text, cx + (this.width / 2) - (textwidth / 2),
+					cy + textheight + (this.height / 2) - (textheight / 2));
+		}
 	}
 
 }
