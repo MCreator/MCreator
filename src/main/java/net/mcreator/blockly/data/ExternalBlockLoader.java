@@ -174,7 +174,8 @@ public class ExternalBlockLoader {
 
 		builder.append("<category name=\"").append(escapeTranslationForXMLAndJS(category.getName()))
 				.append("\" colour=\"").append(category.color).append("\"");
-		if (category.is_expanded)
+		String expandCategoryPref = PreferencesManager.PREFERENCES.blockly.expandCategories.get();
+		if ((category.is_expanded && expandCategoryPref.equals("Default")) || expandCategoryPref.equals("Always"))
 			builder.append(" expanded=\"true\"");
 
 		builder.append(">");
