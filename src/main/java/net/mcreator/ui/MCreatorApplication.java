@@ -228,8 +228,16 @@ public final class MCreatorApplication {
 					}
 				}
 
-				if (!directLaunch)
+				workspaceSelector.reloadRecents();
+				if (PreferencesManager.PREFERENCES.behavior.openLastWorkspace.get()) {
+					RecentWorkspaceEntry workspace = workspaceSelector.getRecentWorkspaces().getList().get(0);
+					if (workspace != null)
+						openWorkspaceInMCreator(workspace.getPath());
+					else
+						showWorkspaceSelector();
+				} else if (!directLaunch) {
 					showWorkspaceSelector();
+				}
 
 				splashScreen.setVisible(false);
 			});

@@ -304,7 +304,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}
 	}
 
-	private void reloadRecents() {
+	public void reloadRecents() {
 		if (UserFolderManager.getFileFromUserFolder("recentworkspaces").isFile()) {
 			try {
 				recentWorkspaces = gson.fromJson(
