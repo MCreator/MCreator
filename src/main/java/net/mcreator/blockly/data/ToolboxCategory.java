@@ -35,7 +35,7 @@ public class ToolboxCategory {
 	 * A list of category's IDs that will be inside this main toolbox
 	 */
 	@Nullable List<String> nested_categories;
-	boolean api, nested_only, is_expanded;
+	boolean api, is_nested, is_expanded;
 
 	public String getName() {
 		String localized_name = L10N.t("blockly.category." + id);

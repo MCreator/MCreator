@@ -34,6 +34,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class ExternalBlockLoader {
 
@@ -116,6 +117,15 @@ public class ExternalBlockLoader {
 			toolboxCategory.id = FilenameUtilsPatched.getBaseName(toolboxCategoryName).replace("$", "");
 			toolboxCategories.add(toolboxCategory);
 		}
+		// Create a list of categories that are nested
+		List<String> nestedCategories = toolboxCategories.stream()
+				.filter(toolboxCategory -> toolboxCategory.nested_categories != null
+						&& !toolboxCategory.nested_categories.isEmpty())
+				.flatMap(toolboxCategory -> toolboxCategory.nested_categories.stream()).distinct()
+				.toList();
+		// Mark each category that was detected as 'nested'
+		toolboxCategories.stream().filter(category -> nestedCategories.contains(category.id))
+				.forEach(category -> category.is_nested = true);
 
 		toolboxCategories.sort(Comparator.comparing(ToolboxCategory::getName));
 
@@ -160,7 +170,7 @@ public class ExternalBlockLoader {
 
 		// Handle other and API categories
 		for (ToolboxCategory category : toolboxCategories) {
-			if (!category.nested_only) {
+			if (!category.is_nested) {
 				String categoryCode = generateCategoryXML(category, toolboxCategories, toolboxBlocksList);
 				if (categoryCode.contains("<block type="))
 					toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryCode));
