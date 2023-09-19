@@ -913,7 +913,7 @@ public class TestWorkspaceDataProvider {
 			item.stayInGridWhenCrafting = _true;
 			item.damageOnCrafting = _true;
 			item.immuneToFire = _true;
-			item.hasGlow = _true;
+			item.glowCondition = new LogicProcedure(emptyLists ? "condition3" : null, _true);
 			item.onRightClickedInAir = new Procedure("procedure1");
 			item.onRightClickedOnBlock = emptyLists ? new Procedure("actionresulttype1") : new Procedure("procedure2");
 			item.onCrafted = new Procedure("procedure3");
@@ -1026,7 +1026,7 @@ public class TestWorkspaceDataProvider {
 			rangedItem.texture = "test3";
 			rangedItem.renderType = 0;
 			rangedItem.customModelName = "Normal";
-			rangedItem.hasGlow = _true;
+			rangedItem.glowCondition = new LogicProcedure(emptyLists ? "condition4" : null, _true);;
 			rangedItem.enableMeleeDamage = !_true;
 			rangedItem.damageVsEntity = 2.16;
 			return rangedItem;
@@ -1701,7 +1701,7 @@ public class TestWorkspaceDataProvider {
 		tool.damageOnCrafting = emptyLists;
 		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
-		tool.hasGlow = _true;
+		tool.glowCondition = new LogicProcedure(emptyLists ? "condition2" : null, _true);;
 		tool.specialInfo = new ArrayList<>();
 		if (!emptyLists) {
 			tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(

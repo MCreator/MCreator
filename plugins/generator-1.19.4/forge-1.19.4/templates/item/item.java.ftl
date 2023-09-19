@@ -137,9 +137,7 @@ public class ${name}Item extends Item {
 		}
 	</#if>
 
-	<#if data.hasGlow>
 	<@hasGlow data.glowCondition/>
-	</#if>
 
 	<#if data.destroyAnyBlock>
 	@Override public boolean isCorrectToolForDrops(BlockState state) {

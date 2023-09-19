@@ -39,6 +39,7 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -84,8 +85,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox destroyAnyBlock = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox stayInGridWhenCrafting = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
-	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
-	private ProcedureSelector glowCondition;
+	private LogicProcedureSelector glowCondition;
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
@@ -163,10 +163,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
-				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
+		glowCondition = new LogicProcedureSelector(this.withEntry("item/glowing_effect"), mcreator,
+				L10N.t("elementgui.item.glowing_effect"), ProcedureSelector.Side.CLIENT,
+				L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		customProperties = new JItemPropertiesStatesList(mcreator, this);
 		customProperties.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
@@ -203,20 +203,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
 		destal.setOpaque(false);
-		JComponent destal1 = PanelUtils.join(FlowLayout.LEFT,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-						L10N.label("elementgui.item.glowing_effect")), hasGlow, glowCondition);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
 				L10N.label("elementgui.item.tooltip_tip")));
 		destal.add(specialInfo);
 
-		hasGlow.setOpaque(false);
-		hasGlow.setSelected(false);
-
-		hasGlow.addActionListener(e -> updateGlowElements());
-
-		destal2.add("Center", PanelUtils.northAndCenterElement(destal, destal1, 10, 10));
+		destal2.add("Center", PanelUtils.northAndCenterElement(destal, glowCondition, 10, 10));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
 
@@ -433,7 +425,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 			name.setText(readableNameFromModElement);
 		}
 
-		updateGlowElements();
 		updateFoodPanel();
 	}
 
@@ -451,10 +442,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 			isAlwaysEdible.setEnabled(false);
 			eatResultItem.setEnabled(false);
 		}
-	}
-
-	private void updateGlowElements() {
-		glowCondition.setEnabled(hasGlow.isSelected());
 	}
 
 	@Override public void reloadDataLists() {
@@ -521,7 +508,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		destroyAnyBlock.setSelected(item.destroyAnyBlock);
 		stayInGridWhenCrafting.setSelected(item.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(item.damageOnCrafting);
-		hasGlow.setSelected(item.hasGlow);
 		glowCondition.setSelectedProcedure(item.glowCondition);
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
@@ -537,7 +523,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		animation.setSelectedItem(item.animation);
 		eatResultItem.setBlock(item.eatResultItem);
 
-		updateGlowElements();
 		updateFoodPanel();
 		onStoppedUsing.setEnabled((int) useDuration.getValue() > 0);
 
@@ -564,7 +549,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.destroyAnyBlock = destroyAnyBlock.isSelected();
 		item.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		item.damageOnCrafting = damageOnCrafting.isSelected();
-		item.hasGlow = hasGlow.isSelected();
 		item.glowCondition = glowCondition.getSelectedProcedure();
 		item.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		item.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();

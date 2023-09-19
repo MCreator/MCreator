@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
@@ -59,8 +60,7 @@ import java.util.Map;
 	public double damageVsEntity;
 	public int usageCount;
 	public List<MItemBlock> blocksAffected;
-	public boolean hasGlow;
-	public Procedure glowCondition;
+	public LogicProcedure glowCondition;
 	public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
 
