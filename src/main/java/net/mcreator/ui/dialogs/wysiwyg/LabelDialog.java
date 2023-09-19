@@ -30,6 +30,7 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableTypeLoader;
+import net.mcreator.ui.component.util.ComponentUtils.Anchor;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -83,6 +84,13 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 		}
 
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text_color"), cola));
+
+		final JComboBox<Anchor> anchor = new JComboBox<>(Anchor.values());
+		if (!editor.isNotOverlayType) {
+			anchor.setSelectedItem(Anchor.CENTER);
+			options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_anchor"), anchor));
+		}
+
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
 		getRootPane().setDefaultButton(ok);
@@ -95,6 +103,9 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			labelText.setSelectedProcedure(label.text);
 			cola.setColor(label.color);
 			displayCondition.setSelectedProcedure(label.displayCondition);
+			if (!editor.isNotOverlayType) {
+				anchor.setSelectedItem(label.anchor);
+			}
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
@@ -112,9 +123,13 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 				String name = textToMachineName(editor.getComponentList(), "label_", nameBase);
 
-				Label component = new Label(name, 0, 0, textProcedure, cola.getColor(),
-						displayCondition.getSelectedProcedure());
-
+				Label component;
+				if (editor.isNotOverlayType) {
+					component = new Label(name, 0, 0, textProcedure, cola.getColor(), displayCondition.getSelectedProcedure());
+				} else {
+					component = new Label(name, 0, 0, textProcedure, cola.getColor(), displayCondition.getSelectedProcedure(),
+							(Anchor) anchor.getSelectedItem());
+				}
 				setEditingComponent(component);
 				editor.editor.addComponent(component);
 				editor.list.setSelectedValue(component, true);
@@ -122,8 +137,14 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			} else {
 				int idx = editor.components.indexOf(label);
 				editor.components.remove(label);
-				Label labelNew = new Label(label.name, label.getX(), label.getY(), textProcedure, cola.getColor(),
-						displayCondition.getSelectedProcedure());
+				Label labelNew;
+				if (editor.isNotOverlayType) {
+					labelNew = new Label(label.name, label.getX(), label.getY(), textProcedure, cola.getColor(),
+							displayCondition.getSelectedProcedure());
+				} else {
+					labelNew = new Label(label.name, label.getX(), label.getY(), textProcedure, cola.getColor(),
+							displayCondition.getSelectedProcedure(), (Anchor) anchor.getSelectedItem());
+				}
 				editor.components.add(idx, labelNew);
 				setEditingComponent(labelNew);
 			}
