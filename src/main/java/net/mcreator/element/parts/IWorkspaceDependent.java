@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,24 +17,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.minecraft;
+package net.mcreator.element.parts;
 
-import net.mcreator.minecraft.ElementUtil;
-import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.dialogs.StringSelectorDialog;
-import net.mcreator.ui.init.L10N;
+import net.mcreator.workspace.Workspace;
 
-import java.util.List;
+import javax.annotation.Nullable;
 
-public class DimensionListField extends JItemListField<String> {
+/**
+ * Mod element parameters represented by instances of classes implementing this interface gather some used data
+ * from the configured workspace. In other words, these objects need workspace reference defined
+ * before they can be used by workspace managers or code generators.
+ */
+public interface IWorkspaceDependent {
 
-	public DimensionListField(MCreator mcreator) {
-		super(mcreator);
-	}
+	void setWorkspace(@Nullable Workspace workspace);
 
-	@Override protected List<String> getElementsToAdd() {
-		return StringSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllDimensions,
-				L10N.t("dialog.list_field.dimension_title"), L10N.t("dialog.list_field.dimension_message"));
-	}
 }
