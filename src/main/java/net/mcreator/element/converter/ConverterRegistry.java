@@ -166,6 +166,9 @@ public class ConverterRegistry {
 		put(ModElementType.TOOL, List.of(
 			new ItemHasGlowConverter()
 		));
+		put(ModElementType.MUSICDISC, List.of(
+			new ItemHasGlowConverter()
+		));
 	}};
 	//@formatter:on
 

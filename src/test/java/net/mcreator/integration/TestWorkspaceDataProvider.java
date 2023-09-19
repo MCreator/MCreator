@@ -1347,7 +1347,7 @@ public class TestWorkspaceDataProvider {
 			musicDisc.description = modElement.getName();
 			musicDisc.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			musicDisc.hasGlow = _true;
+			musicDisc.glowCondition = new LogicProcedure(emptyLists ? "condition1" : null, _true);
 			musicDisc.onRightClickedInAir = new Procedure("procedure1");
 			musicDisc.onRightClickedOnBlock = emptyLists ?
 					new Procedure("actionresulttype1") :

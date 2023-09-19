@@ -46,12 +46,6 @@ public class ${name}Item extends RecordItem {
 		);
 	}
 
-	<#if data.hasGlow>
-	@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
-		return true;
-	}
-	</#if>
-
 	<#if data.specialInfo?has_content>
 	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
 		super.appendHoverText(itemstack, world, list, flag);
@@ -72,5 +66,8 @@ public class ${name}Item extends RecordItem {
 	<@onCrafted data.onCrafted/>
 
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
+
+	<@hasGlow data.glowCondition/>
+
 }
 <#-- @formatter:on -->

@@ -25,6 +25,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.types.Item;
+import net.mcreator.element.types.MusicDisc;
 import net.mcreator.element.types.RangedItem;
 import net.mcreator.element.types.Tool;
 import net.mcreator.workspace.Workspace;
@@ -53,6 +54,8 @@ public class ItemHasGlowConverter implements IConverter {
 				tool.glowCondition = glowCondition;
 			} else if (input instanceof RangedItem rangedItem) {
 				rangedItem.glowCondition = glowCondition;
+			} else if (input instanceof MusicDisc musicDisc) {
+				musicDisc.glowCondition = glowCondition;
 			}
 		} catch (Exception e) {
 			LOG.warn("Failed to convert glow condition", e);
