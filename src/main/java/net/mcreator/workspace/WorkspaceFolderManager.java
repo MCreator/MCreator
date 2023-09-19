@@ -21,7 +21,6 @@ package net.mcreator.workspace;
 import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import org.apache.logging.log4j.LogManager;

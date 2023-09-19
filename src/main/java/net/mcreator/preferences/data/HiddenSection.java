@@ -23,7 +23,10 @@ import com.google.gson.JsonElement;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.PreferencesSection;
-import net.mcreator.preferences.entries.*;
+import net.mcreator.preferences.entries.BooleanEntry;
+import net.mcreator.preferences.entries.HiddenEntry;
+import net.mcreator.preferences.entries.IntegerEntry;
+import net.mcreator.preferences.entries.StringEntry;
 
 import java.io.File;
 
