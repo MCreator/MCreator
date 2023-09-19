@@ -1,3 +1,8 @@
 {
-  "color": 60
+  "color": 60,
+  "is_expanded": true,
+  "nested_categories": [
+    "secondary1",
+    "secondary4"
+  ]
 }
