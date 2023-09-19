@@ -21,23 +21,18 @@ package net.mcreator.preferences.data;
 
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
-import net.mcreator.preferences.entries.FileEntry;
-import net.mcreator.workspace.WorkspaceFolderManager;
 
 import java.io.File;
 
 public class BehaviorSection extends PreferencesSection {
 
-
-	public FileEntry defaultWorkspacesFolder;
 	public BooleanEntry openLastWorkspace;
 	public BooleanEntry confirmBeforeClosing;
 	public BooleanEntry returnToWorkspaceSelector;
 
 	public BehaviorSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
-
-		defaultWorkspacesFolder = addEntry(new FileEntry("defaultWorkspacesFolder", new File(System.getProperty("user.home"), "MCreatorWorkspaces"), true));
+		
 		openLastWorkspace = addEntry(new BooleanEntry("openLastWorkspace", false));
 		confirmBeforeClosing = addEntry(new BooleanEntry("confirmBeforeClosing", false));
 		returnToWorkspaceSelector = addEntry(new BooleanEntry("returnToWorkspaceSelector", false));
