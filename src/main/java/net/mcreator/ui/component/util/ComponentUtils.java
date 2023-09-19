@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component.util;
 
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.DesktopUtils;
 
@@ -116,6 +117,15 @@ public class ComponentUtils {
 
 	public static JPanel squareAndBorder(Component gor, String text) {
 		return squareAndBorder(gor, (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), text);
+	}
+
+	public static enum Anchor {
+		TOP_LEFT, TOP_RIGHT, CENTER, BOTTOM_LEFT, BOTTOM_RIGHT;
+
+		@Override
+		public String toString() {
+			return L10N.t("dialog.gui.label_anchor_" + name().toLowerCase());
+		}
 	}
 
 }
