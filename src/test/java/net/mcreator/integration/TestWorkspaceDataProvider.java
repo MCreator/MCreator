@@ -1593,13 +1593,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.trackingRange = 27;
 		livingEntity.followRange = 11;
 		livingEntity.waterMob = !_true;
-		if (emptyLists) {
-			livingEntity.breatheUnderwater = new LogicProcedure("condition1", _true);
-			livingEntity.pushedByFluids = new LogicProcedure("condition1", _true);
-		} else {
-			livingEntity.breatheUnderwater = new LogicProcedure(null, _true);
-			livingEntity.pushedByFluids = new LogicProcedure(null, _true);
-		}
+		livingEntity.breatheUnderwater = new LogicProcedure(emptyLists ? null : "condition3", _true);
+		livingEntity.pushedByFluids = new LogicProcedure(emptyLists ? null : "condition4", _true);
 		livingEntity.flyingMob = !_true;
 		livingEntity.inventorySize = 10;
 		livingEntity.inventoryStackSize = 42;
