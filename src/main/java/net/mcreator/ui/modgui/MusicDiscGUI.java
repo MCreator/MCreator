@@ -137,6 +137,10 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.common.name_in_gui")));
 		subpane2.add(name);
 
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/description"),
+				L10N.label("elementgui.music_disc.disc_description")));
+		subpane2.add(description);
+
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/length"),
 				L10N.label("elementgui.music_disc.disc_length")));
 		subpane2.add(lengthInTicks);
@@ -144,10 +148,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/analog_output"),
 				L10N.label("elementgui.music_disc.disc_analog_output")));
 		subpane2.add(analogOutput);
-
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/description"),
-				L10N.label("elementgui.music_disc.disc_description")));
-		subpane2.add(description);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
