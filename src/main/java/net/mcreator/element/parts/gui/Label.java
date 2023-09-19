@@ -20,6 +20,7 @@ package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
+import net.mcreator.ui.component.util.ComponentUtils.Anchor;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
@@ -38,6 +39,14 @@ public class Label extends GUIComponent {
 
 	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition) {
 		super(x, y);
+		this.text = text;
+		this.color = color;
+		this.displayCondition = displayCondition;
+		this.name = name;
+	}
+
+	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition, Anchor anchor) {
+		super(x, y, anchor);
 		this.text = text;
 		this.color = color;
 		this.displayCondition = displayCondition;
