@@ -95,7 +95,7 @@ public class InjectTagsTool {
 		callables.add(addTag(mcreator, props, "raiders", "minecraft", "Entities", false));
 		callables.add(addTag(mcreator, props, "skeletons", "minecraft", "Entities", false));
 
-		callables.add(addTag(mcreator, props, "is_overworld", "minecraft", "Biomes", false));
+		callables.add(addTag(mcreator, props, "is_overworld", "minecraft", "Biomes", true));
 		callables.add(addTag(mcreator, props, "is_nether", "minecraft", "Biomes", false));
 		callables.add(addTag(mcreator, props, "is_end", "minecraft", "Biomes", false));
 		callables.add(addTag(mcreator, props, "is_ocean", "minecraft", "Biomes", false));
