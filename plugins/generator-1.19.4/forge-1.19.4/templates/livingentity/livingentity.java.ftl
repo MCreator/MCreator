@@ -234,7 +234,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.canTrade>
 	protected void updateTrades() {
-		<#assign professions = w.exclude(w.filterBrokenReferences(data.professionTrade), "WANDERING_TRADER")>
+		<#assign professions = (w.filterBrokenReferences(data.professionTrade))?filter(p -> p.getUnmappedValue() != "WANDERING_TRADER")>
 		List<VillagerProfession> professions = List.of(
 			<#list professions as profession>
 				${profession}<#if profession?has_next>,</#if>
