@@ -181,7 +181,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
-		renderType.addActionListener(e -> updateFields());
 
 		rent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),

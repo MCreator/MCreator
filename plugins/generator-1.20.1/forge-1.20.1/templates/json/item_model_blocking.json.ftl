@@ -1,5 +1,5 @@
-{
 <#if data.blockingRenderType == 0>
+{
     "parent": "item/handheld",
     "textures": {
         "layer0": "${modid}:item/${data.texture}"
@@ -22,20 +22,22 @@
     }
 }
 <#elseif data.blockingRenderType == 1>
+{
     "parent": "${modid}:custom/${data.blockingModelName.split(":")[0]}",
     "textures": {
         <@textures data.getBlockingTextureMap()/>
-        "particle": "${modid}:items/${data.texture}"
+        "particle": "${modid}:item/${data.texture}"
     }
 }
 <#else>
+{
     "forge_marker": 1,
     "parent": "forge:item/default",
     "loader": "forge:obj",
     "model": "${modid}:models/item/${data.blockingModelName.split(":")[0]}.obj",
     "textures": {
         <@textures data.getBlockingTextureMap()/>
-        "particle": "${modid}:items/${data.texture}"
+        "particle": "${modid}:item/${data.texture}"
     }
 }
 </#if>
