@@ -20,15 +20,13 @@
             "translation": [ -5, 2, -1 ]
         }
     }
-}
 <#elseif data.blockingRenderType == 1>
     "parent": "${modid}:custom/${data.blockingModelName.split(":")[0]}",
     "textures": {
         <@textures data.getBlockingTextureMap()/>
         "particle": "${modid}:item/${data.texture}"
     }
-}
-<#else>
+<#elseif data.blockingRenderType == 2>
     "forge_marker": 1,
     "parent": "forge:item/default",
     "loader": "forge:obj",
@@ -37,8 +35,8 @@
         <@textures data.getBlockingTextureMap()/>
         "particle": "${modid}:item/${data.texture}"
     }
-}
 </#if>
+}
 
 <#macro textures textureMap>
     <#if textureMap??>
