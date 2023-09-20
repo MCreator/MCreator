@@ -431,11 +431,11 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		Model model = tool.getItemModel();
 		if (model != null)
-			this.renderType.setSelectedItem(model);
+			renderType.setSelectedItem(model);
 
-		Model blockingModel = tool.getBlockingModel();
-		if (blockingModel != null)
-			this.blockingModel.setSelectedItem(tool.getBlockingModel());
+		Model modelBlocking = tool.getBlockingModel();
+		if (modelBlocking != null)
+			blockingModel.setSelectedItem(modelBlocking);
 	}
 
 	@Override public Tool getElementFromGUI() {
