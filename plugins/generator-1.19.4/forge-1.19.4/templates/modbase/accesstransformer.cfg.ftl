@@ -9,6 +9,7 @@ public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 
 <#if w.hasElementsOfType("feature")>
 public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lcom/mojang/serialization/Codec;)V #constructor
+public-f net.minecraft.world.level.levelgen.feature.TreeFeature m_142674_(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z #place
 </#if>
 
 <#if w.hasElementsOfType("livingentity")>
