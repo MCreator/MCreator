@@ -117,17 +117,12 @@ public class ExternalBlockLoader {
 			toolboxCategory.id = FilenameUtilsPatched.getBaseName(toolboxCategoryName).replace("$", "");
 			toolboxCategories.add(toolboxCategory);
 		}
-		// Create a list of categories that are nested
-		List<String> nestedCategories = toolboxCategories.stream()
-				.filter(toolboxCategory -> toolboxCategory.nested_categories != null
-						&& !toolboxCategory.nested_categories.isEmpty())
-				.flatMap(toolboxCategory -> toolboxCategory.nested_categories.stream()).distinct()
-				.toList();
-		// Mark each category that was detected as 'nested'
-		toolboxCategories.stream().filter(category -> nestedCategories.contains(category.id))
-				.forEach(category -> category.is_nested = true);
-
 		toolboxCategories.sort(Comparator.comparing(ToolboxCategory::getName));
+
+		// Create a list of categories that are nested (are not root categories)
+		Set<String> nestedCategories = toolboxCategories.stream()
+				.filter(toolboxCategory -> toolboxCategory.nested_categories != null)
+				.flatMap(toolboxCategory -> toolboxCategory.nested_categories.stream()).collect(Collectors.toSet());
 
 		// setup lookup cache of loaded blocks
 		this.toolboxBlocks = new HashMap<>();
@@ -170,7 +165,7 @@ public class ExternalBlockLoader {
 
 		// Handle other and API categories
 		for (ToolboxCategory category : toolboxCategories) {
-			if (!category.is_nested) {
+			if (!nestedCategories.contains(category.id)) {
 				String categoryCode = generateCategoryXML(category, toolboxCategories, toolboxBlocksList);
 				if (categoryCode.contains("<block type="))
 					toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryCode));
@@ -184,10 +179,9 @@ public class ExternalBlockLoader {
 
 		builder.append("<category name=\"").append(escapeTranslationForXMLAndJS(category.getName()))
 				.append("\" colour=\"").append(category.color).append("\"");
-		String expandCategoryPref = PreferencesManager.PREFERENCES.blockly.expandCategories.get();
-		if ((category.is_expanded && expandCategoryPref.equals("Default")) || expandCategoryPref.equals("Always"))
+		String expandCategories = PreferencesManager.PREFERENCES.blockly.expandCategories.get();
+		if ((category.is_expanded && expandCategories.equals("Default")) || expandCategories.equals("Always"))
 			builder.append(" expanded=\"true\"");
-
 		builder.append(">");
 
 		if (category.getDescription() != null) {
@@ -203,22 +197,22 @@ public class ExternalBlockLoader {
 		}
 
 		// Create each secondary category that will be added to this current category
-		if (category.nested_categories != null && !category.nested_categories.isEmpty()) {
-			category.nested_categories.stream().filter(Objects::nonNull).filter(s -> !s.isBlank())
-					.forEach(secCatID -> {
-						ToolboxCategory secCategory = null;
-						for (ToolboxCategory toolboxCategory : toolboxCategories) {
-							if (toolboxCategory.id.equals(secCatID)) {
-								secCategory = toolboxCategory;
-							}
-						}
-						if (secCategory != null) {
-							builder.append(generateCategoryXML(secCategory, toolboxCategories, toolboxBlocksList));
-						} else {
-							LOG.error("The category: " + secCatID
-									+ " was not found inside the list of registered categories.");
-						}
-					});
+		if (category.nested_categories != null) {
+			category.nested_categories.forEach(nestedCategoryID -> {
+				ToolboxCategory nestedCategory = null;
+				for (ToolboxCategory toolboxCategory : toolboxCategories) {
+					if (toolboxCategory.id.equals(nestedCategoryID)) {
+						nestedCategory = toolboxCategory;
+						break;
+					}
+				}
+				if (nestedCategory != null) {
+					builder.append(generateCategoryXML(nestedCategory, toolboxCategories, toolboxBlocksList));
+				} else {
+					LOG.warn("The category: " + nestedCategoryID
+							+ " was not found inside the list of registered categories.");
+				}
+			});
 		}
 
 		builder.append("</category>");

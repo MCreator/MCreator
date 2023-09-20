@@ -31,11 +31,14 @@ public class ToolboxCategory {
 	private static final Logger LOG = LogManager.getLogger("Toolbox category");
 
 	String id, name, description, color;
+
 	/**
 	 * A list of category's IDs that will be inside this main toolbox
 	 */
 	@Nullable List<String> nested_categories;
-	boolean api, is_nested, is_expanded;
+
+	boolean api;
+	boolean is_expanded;
 
 	public String getName() {
 		String localized_name = L10N.t("blockly.category." + id);
