@@ -260,17 +260,11 @@ import java.util.*;
 					if (!item.customProperties.isEmpty())
 						return true;
 				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasShields() {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.TOOL) {
-				if (element.getGeneratableElement() instanceof Tool tool)
+			} else if (element.getType() == ModElementType.TOOL) {
+				if (element.getGeneratableElement() instanceof Tool tool) {
 					if (tool.toolType.equals("Shield"))
 						return true;
+				}
 			}
 		}
 		return false;
