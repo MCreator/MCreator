@@ -65,6 +65,8 @@ import java.util.*;
 	public LogicProcedure isShakingCondition;
 	public LogicProcedure solidBoundingBox;
 
+	public List<ModelLayerEntry> modelLayers;
+
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;
 
@@ -163,7 +165,6 @@ import java.util.*;
 	public int maxNumberOfMobsPerGroup;
 	public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
-	public List<ModelLayerEntry> modelLayers;
 
 	private LivingEntity() {
 		this(null);
