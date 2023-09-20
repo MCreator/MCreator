@@ -96,8 +96,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private ProcedureSelector onInitialSpawn;
 
 	private ProcedureSelector spawningCondition;
-	private ProcedureSelector transparentModelCondition;
-	private ProcedureSelector isShakingCondition;
+	private LogicProcedureSelector transparentModelCondition;
+	private LogicProcedureSelector isShakingCondition;
 	private LogicProcedureSelector solidBoundingBox;
 
 	private final SoundSelector livingSound = new SoundSelector(mcreator);
@@ -334,16 +334,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.t("elementgui.living_entity.condition_natural_spawn"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.use_vanilla")).makeInline();
-		transparentModelCondition = new ProcedureSelector(this.withEntry("entity/condition_is_model_transparent"),
+		transparentModelCondition = new LogicProcedureSelector(this.withEntry("entity/condition_is_model_transparent"),
 				mcreator, L10N.t("elementgui.living_entity.condition_is_model_transparent"),
-				ProcedureSelector.Side.CLIENT, true, VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
-				L10N.t("condition.common.false")).makeInline();
-		isShakingCondition = new ProcedureSelector(this.withEntry("entity/condition_is_shaking"), mcreator,
-				L10N.t("elementgui.living_entity.condition_is_shaking"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
-				L10N.t("condition.common.false")).makeInline();
+				ProcedureSelector.Side.CLIENT, L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		isShakingCondition = new LogicProcedureSelector(this.withEntry("entity/condition_is_shaking"), mcreator,
+				L10N.t("elementgui.living_entity.condition_is_shaking"), ProcedureSelector.Side.CLIENT,
+				L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		solidBoundingBox = new LogicProcedureSelector(this.withEntry("entity/condition_solid_bounding_box"), mcreator,
 				L10N.t("elementgui.living_entity.condition_solid_bounding_box"), AbstractProcedureSelector.Side.BOTH,
 				L10N.checkbox("elementgui.common.enable"), 160,
@@ -396,7 +394,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane8 = new JPanel(new BorderLayout(0, 0));
 
-		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
+		JPanel subpane1 = new JPanel(new GridLayout(10, 2, 0, 2));
 
 		immuneToFire.setOpaque(false);
 		immuneToArrows.setOpaque(false);
@@ -418,23 +416,21 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.behaviour")));
 		subpane1.add(mobBehaviourType);
 
-		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/drop"),
-				L10N.label("elementgui.living_entity.mob_drop")));
-		subpane1.add(PanelUtils.totalCenterInPanel(mobDrop));
-
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/creature_type"),
 				L10N.label("elementgui.living_entity.creature_type")));
 		subpane1.add(mobCreatureType);
+
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.drop_health_xp_amount"),
+				HelpUtils.helpButton(this.withEntry("entity/drop")),
+				HelpUtils.helpButton(this.withEntry("entity/health")),
+				HelpUtils.helpButton(this.withEntry("entity/xp_amount"))));
+		subpane1.add(PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(mobDrop),
+				PanelUtils.gridElements(1, 2, 2, 0, health, xpAmount), 8, 8));
 
 		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.movement_speed_step_height"),
 				HelpUtils.helpButton(this.withEntry("entity/movement_speed")),
 				HelpUtils.helpButton(this.withEntry("entity/step_height"))));
 		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, movementSpeed, stepHeight));
-
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.health_xp_amount"),
-				HelpUtils.helpButton(this.withEntry("entity/health")),
-				HelpUtils.helpButton(this.withEntry("entity/xp_amount"))));
-		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, health, xpAmount));
 
 		subpane1.add(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.follow_range_tracking_range"),
@@ -442,26 +438,18 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 						HelpUtils.helpButton(this.withEntry("entity/tracking_range"))));
 		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, followRange, trackingRange));
 
-		subpane1.add(
-				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.attack_strenght_armor_value"),
-						HelpUtils.helpButton(this.withEntry("entity/attack_strength")),
-						HelpUtils.helpButton(this.withEntry("entity/armor_base_value"))));
-		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, attackStrength, armorBaseValue));
-
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.living_entity.knockback"),
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT,
+				L10N.label("elementgui.living_entity.attack_strenght_armor_value_knockback"),
+				HelpUtils.helpButton(this.withEntry("entity/attack_strength")),
+				HelpUtils.helpButton(this.withEntry("entity/armor_base_value")),
 				HelpUtils.helpButton(this.withEntry("entity/attack_knockback")),
 				HelpUtils.helpButton(this.withEntry("entity/knockback_resistance"))));
-		subpane1.add(PanelUtils.gridElements(1, 2, 2, 0, attackKnockback, knockbackResistance));
-
-		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"),
-				L10N.label("elementgui.living_entity.equipment")));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 2, PanelUtils.totalCenterInPanel(
-				PanelUtils.join(FlowLayout.LEFT, 2, 0, equipmentMainHand, equipmentOffHand, equipmentHelmet,
-						equipmentBody, equipmentLeggings, equipmentBoots))));
+		subpane1.add(PanelUtils.gridElements(1, 4, 2, 0, attackStrength, armorBaseValue, attackKnockback,
+				knockbackResistance));
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/ridable"),
 				L10N.label("elementgui.living_entity.ridable")));
-		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, ridable, canControlForward, canControlStrafe));
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 8, ridable, canControlForward, canControlStrafe));
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/water_entity"),
 				L10N.label("elementgui.living_entity.water_mob")));
@@ -470,6 +458,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/flying_entity"),
 				L10N.label("elementgui.living_entity.flying_mob")));
 		subpane1.add(flyingMob);
+
+		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/equipment"),
+				L10N.label("elementgui.living_entity.equipment")));
+		subpane1.add(PanelUtils.join(FlowLayout.LEFT, 0, 2, PanelUtils.totalCenterInPanel(
+				PanelUtils.join(FlowLayout.LEFT, 2, 0, equipmentMainHand, equipmentOffHand, equipmentHelmet,
+						equipmentBody, equipmentLeggings, equipmentBoots))));
 
 		hasAI.setOpaque(false);
 		isBoss.setOpaque(false);
@@ -488,7 +482,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		subpanel2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/immunity"),
 				L10N.label("elementgui.living_entity.is_immune_to")));
 		subpanel2.add(
-				PanelUtils.gridElements(4, 4, 0, 0, immuneToFire, immuneToArrows, immuneToFallDamage, immuneToCactus,
+				PanelUtils.gridElements(3, 5, 0, 0, immuneToFire, immuneToArrows, immuneToFallDamage, immuneToCactus,
 						immuneToDrowning, immuneToLightning, immuneToPotions, immuneToPlayer, immuneToExplosion,
 						immuneToAnvil, immuneToTrident, immuneToDragonBreath, immuneToWither));
 
@@ -551,16 +545,16 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		modelHeight.setPreferredSize(new Dimension(85, 41));
 		modelShadowSize.setPreferredSize(new Dimension(85, 41));
 
-		armorBaseValue.setPreferredSize(new Dimension(250, 32));
-		movementSpeed.setPreferredSize(new Dimension(250, 32));
-		stepHeight.setPreferredSize(new Dimension(250, 32));
-		trackingRange.setPreferredSize(new Dimension(250, 32));
-		attackStrength.setPreferredSize(new Dimension(250, 32));
-		attackKnockback.setPreferredSize(new Dimension(250, 32));
-		knockbackResistance.setPreferredSize(new Dimension(250, 32));
-		followRange.setPreferredSize(new Dimension(250, 32));
-		health.setPreferredSize(new Dimension(250, 32));
-		xpAmount.setPreferredSize(new Dimension(250, 32));
+		armorBaseValue.setPreferredSize(new Dimension(0, 32));
+		movementSpeed.setPreferredSize(new Dimension(0, 32));
+		stepHeight.setPreferredSize(new Dimension(0, 32));
+		trackingRange.setPreferredSize(new Dimension(0, 32));
+		attackStrength.setPreferredSize(new Dimension(0, 32));
+		attackKnockback.setPreferredSize(new Dimension(0, 32));
+		knockbackResistance.setPreferredSize(new Dimension(0, 32));
+		followRange.setPreferredSize(new Dimension(0, 32));
+		health.setPreferredSize(new Dimension(0, 32));
+		xpAmount.setPreferredSize(new Dimension(0, 32));
 
 		rangedAttackInterval.setPreferredSize(new Dimension(85, 32));
 		rangedAttackRadius.setPreferredSize(new Dimension(85, 32));
