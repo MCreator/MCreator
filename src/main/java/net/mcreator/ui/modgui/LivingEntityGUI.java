@@ -943,12 +943,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			return new AggregatedValidationResult(mobModelTexture, mobName);
 		} else if (page == 1) {
 			return modelLayers.getValidationResult();
-		} else if (page == 5) {
+		} else if (page == 6) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
 						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
 						.collect(Collectors.toList()));
-		} else if (page == 6) {
+		} else if (page == 7) {
 			return new AggregatedValidationResult(restrictionBiomes);
 		}
 		return new AggregatedValidationResult.PASS();
