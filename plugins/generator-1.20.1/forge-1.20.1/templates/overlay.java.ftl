@@ -46,7 +46,6 @@ package ${package}.client.screens;
                 int w = event.getScreen().width;
                 int h = event.getScreen().height;
 	</#if>
-
         int posX = w / 2;
         int posY = h / 2;
 
@@ -91,16 +90,32 @@ package ${package}.client.screens;
             </#list>
 
             <#list data.getComponentsOfType("Label") as component>
-                <#assign x = component.x - 213>
-                <#assign y = component.y - 120>
                     <#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-                    event.getGuiGraphics().drawString(Minecraft.getInstance().font,
-                        <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-                        posX + ${x}, posY + ${y}, ${component.color.getRGB()}, false);
+                    <#if component.anchor.name() == "TOP_LEFT">
+                    	posX = ${component.x};
+                    	posY = ${component.y};
+					<#elseif component.anchor.name() == "TOP_RIGHT">
+						posX = w - (427 - ${component.x});
+						posY = ${component.y};
+					<#elseif component.anchor.name() == "BOTTOM_LEFT">
+						posX = ${component.x};
+						posY = h - (240 - ${component.y});
+                    <#elseif component.anchor.name() == "BOTTOM_RIGHT">
+                    	posX = w - (427 - ${component.x});
+						posY = h - (240 - ${component.y});
+					<#elseif component.anchor.name() == "CENTER">
+						posX = w / 2 + ${component.x - 213};
+						posY = h / 2 + ${component.y - 120};
+					</#if>
+					event.getGuiGraphics().drawString(Minecraft.getInstance().font,
+						<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+						posX, posY, ${component.color.getRGB()}, false);
             </#list>
 
+			posX = w / 2;
+			posY = h / 2;
 			<#list data.getComponentsOfType("EntityModel") as component>
 			    if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity livingEntity) {
 			    	<#if hasProcedure(component.displayCondition)>
