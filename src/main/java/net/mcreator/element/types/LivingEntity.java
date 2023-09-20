@@ -228,11 +228,11 @@ import java.util.*;
 		return ranged && "Default item".equals(rangedItemType) && !rangedAttackItem.isEmpty();
 	}
 
-	public boolean hasVillagerTrade() {
+	public boolean isVillagerType() {
 		return canTrade && villagerTradingType;
 	}
 
-	public boolean hasWanderingTraderTrade() {
+	public boolean isWanderingTraderType() {
 		return canTrade && !villagerTradingType;
 	}
 

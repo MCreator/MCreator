@@ -53,7 +53,7 @@ import javax.annotation.Nullable;
 	<#assign extendsClass = data.tameable?then("TamableAnimal", "Animal")>
 </#if>
 
-<#if data.hasWanderingTraderTrade()>
+<#if data.isWanderingTraderType()>
 	<#assign extendsClass = "AbstractVillager">
 </#if>
 
@@ -68,14 +68,14 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     	this(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
     }
 
-	<#if data.hasVillagerTrade()>
+	<#if data.isVillagerType()>
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
 		this(type, world, VillagerType.PLAINS);
 	}
 	</#if>
 
-	public ${name}Entity(EntityType<${name}Entity> type, Level world<#if data.hasVillagerTrade()>, VillagerType villagerType</#if>) {
-		super(type, world<#if data.hasVillagerTrade()>, villagerType</#if>);
+	public ${name}Entity(EntityType<${name}Entity> type, Level world<#if data.isVillagerType()>, VillagerType villagerType</#if>) {
+		super(type, world<#if data.isVillagerType()>, villagerType</#if>);
 		setMaxUpStep(${data.stepHeight}f);
 		xpReward = ${data.xpAmount};
 		setNoAi(${(!data.hasAI)});
@@ -166,11 +166,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
-	<#if data.hasAI || data.hasWanderingTraderTrade()>
+	<#if data.hasAI || data.isWanderingTraderType()>
 	@Override protected void registerGoals() {
 		super.registerGoals();
 
-		<#if data.hasWanderingTraderTrade()>
+		<#if data.isWanderingTraderType()>
 			this.goalSelector.addGoal(1, new TradeWithPlayerGoal(this));
 			this.goalSelector.addGoal(1, new LookAtTradingPlayerGoal(this));
 			this.goalSelector.addGoal(10, new LookAtPlayerGoal(this, Mob.class, 8.0F));
@@ -354,7 +354,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
-	<#if data.hasWanderingTraderTrade()>
+	<#if data.isWanderingTraderType()>
 	protected SoundEvent getTradeUpdatedSound(boolean hasContent) {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(hasContent ? "${data.fullUpdateSound}" : "${data.emptyUpdateSound}"));
 	}
@@ -753,11 +753,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if data.breedable || data.canTrade>
-		<#if data.hasWanderingTraderTrade()>@Nullable<#else>@Override</#if> public <#if data.hasVillagerTrade()>${name}Entity<#else>AgeableMob</#if> getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
-			<#if data.hasWanderingTraderTrade()>
+		<#if data.isWanderingTraderType()>@Nullable<#else>@Override</#if> public <#if data.isVillagerType()>${name}Entity<#else>AgeableMob</#if> getBreedOffspring(ServerLevel serverWorld, AgeableMob ageable) {
+			<#if data.isWanderingTraderType()>
 				return null;
 			<#else>
-				<#if data.hasVillagerTrade()>
+				<#if data.isVillagerType()>
 					double random = this.random.nextDouble();
 					VillagerType villagerType = ((${name}Entity) ageable).getVillagerData().getType();
 					if (random < 0.5D) {
