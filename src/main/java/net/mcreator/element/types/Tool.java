@@ -129,19 +129,20 @@ import java.util.*;
 	}
 
 	public List<Item.StateEntry> getModels() {
-		if (!toolType.equals("Shield"))
+		if (toolType.equals("Shield")) {
+			Item.StateEntry model = new Item.StateEntry();
+			model.setWorkspace(getModElement().getWorkspace());
+			model.renderType = blockingRenderType;
+			model.texture = texture;
+			model.customModelName = blockingModelName;
+
+			model.stateMap = new StateMap();
+			model.stateMap.put(new PropertyData.LogicType("blocking"), true);
+
+			return Collections.singletonList(model);
+		} else {
 			return Collections.emptyList();
-
-		Item.StateEntry model = new Item.StateEntry();
-		model.setWorkspace(getModElement().getWorkspace());
-		model.renderType = Tool.this.blockingRenderType;
-		model.texture = Tool.this.texture;
-		model.customModelName = Tool.this.blockingModelName;
-
-		model.stateMap = new StateMap();
-		model.stateMap.put(new PropertyData.LogicType("blocking"), true);
-
-		return Collections.singletonList(model);
+		}
 	}
 
 	@Override public TabEntry getCreativeTab() {
