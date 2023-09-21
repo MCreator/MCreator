@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Material;
 import net.mcreator.element.parts.StepSound;
@@ -52,7 +53,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -197,7 +198,8 @@ public class OrePackMakerTool {
 		oreBlock.destroyTool = "pickaxe";
 		oreBlock.breakHarvestLevel = (int) Math.round(2 * factor);
 		oreBlock.requiresCorrectTool = true;
-		oreBlock.spawnWorldTypes = Collections.singletonList("Surface");
+		oreBlock.generateFeature = true;
+		oreBlock.restrictionBiomes = List.of(new BiomeEntry(mcreator.getWorkspace(), "#is_overworld"));
 		oreBlock.minGenerateHeight = 1;
 		oreBlock.maxGenerateHeight = (int) (63 / Math.pow(factor, 0.9));
 		oreBlock.frequencyPerChunks = (int) (11 / Math.pow(factor, 0.9));

@@ -45,6 +45,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -156,11 +157,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private ProcedureSelector onBonemealSuccess;
 
 	private ProcedureSelector placingCondition;
-	private ProcedureSelector generateCondition;
 	private ProcedureSelector isBonemealTargetCondition;
 	private ProcedureSelector bonemealSuccessCondition;
 
-	private DimensionListField spawnWorldTypes;
+	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
 	private BiomeListField restrictionBiomes;
 	private final JSpinner patchSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
 	private final JCheckBox generateAtAnyHeight = L10N.checkbox("elementgui.common.enable");
@@ -181,10 +181,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	@Override protected void initGUI() {
 		restrictionBiomes = new BiomeListField(mcreator, true);
+		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
+
 		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 		renderType.addActionListener(e -> boundingBoxList.modelChanged());
+
+		generateFeature.setOpaque(false);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.plant.event_on_added"), Dependency.fromString(
@@ -231,10 +235,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
-		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				L10N.t("elementgui.plant.event_additional_generation_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
-				L10N.t("condition.common.no_additional")).makeInline();
 		isBonemealTargetCondition = new ProcedureSelector(this.withEntry("block/bonemeal_target_condition"), mcreator,
 				L10N.t("elementgui.common.event_is_bonemeal_target"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString(
@@ -243,9 +243,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.common.event_bonemeal_success_condition"), ProcedureSelector.Side.SERVER, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
-
-		spawnWorldTypes = new DimensionListField(mcreator);
-		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
 
 		ComponentUtils.deriveFont(specialInfo, 16);
 		ComponentUtils.deriveFont(tintType, 16);
@@ -676,6 +673,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		spawning.setOpaque(false);
 		generateAtAnyHeight.setOpaque(false);
 
+		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/generate_feature"),
+				L10N.label("elementgui.plant.generate_feature")));
+		spawning.add(generateFeature);
+
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/gen_chunk_count"),
 				L10N.label("elementgui.plant.gen_chunk_count")));
 		spawning.add(frequencyOnChunks);
@@ -692,16 +693,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.generation_type")));
 		spawning.add(generationType);
 
-		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
-				L10N.label("elementgui.plant.spawn_world_types")));
-		spawning.add(spawnWorldTypes);
-
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
 				L10N.label("elementgui.common.restrict_to_biomes")));
 		spawning.add(restrictionBiomes);
 
 		pane4.add("Center", PanelUtils.totalCenterInPanel(spawning));
-		pane4.add("South", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition));
 
 		pane4.setOpaque(false);
 
@@ -833,7 +829,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onBonemealSuccess.refreshListKeepSelected();
 
 		placingCondition.refreshListKeepSelected();
-		generateCondition.refreshListKeepSelected();
 		isBonemealTargetCondition.refreshListKeepSelected();
 		bonemealSuccessCondition.refreshListKeepSelected();
 
@@ -864,6 +859,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			return new AggregatedValidationResult(texture);
 		else if (page == 2)
 			return new AggregatedValidationResult(page3group);
+		else if (page == 5)
+			return new AggregatedValidationResult(restrictionBiomes);
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -907,7 +904,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onEntityWalksOn.setSelectedProcedure(plant.onEntityWalksOn);
 		onHitByProjectile.setSelectedProcedure(plant.onHitByProjectile);
 		growapableMaxHeight.setValue(plant.growapableMaxHeight);
-		spawnWorldTypes.setListElements(plant.spawnWorldTypes);
+		generateFeature.setSelected(plant.generateFeature);
 		restrictionBiomes.setListElements(plant.restrictionBiomes);
 		canBePlacedOn.setListElements(plant.canBePlacedOn);
 		isReplaceable.setSelected(plant.isReplaceable);
@@ -929,7 +926,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		specialInfo.setText(
 				plant.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		placingCondition.setSelectedProcedure(plant.placingCondition);
-		generateCondition.setSelectedProcedure(plant.generateCondition);
 
 		customBoundingBox.setSelected(plant.customBoundingBox);
 		disableOffset.setSelected(plant.disableOffset);
@@ -1023,7 +1019,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.onRightClicked = onRightClicked.getSelectedProcedure();
 		plant.onEntityWalksOn = onEntityWalksOn.getSelectedProcedure();
 		plant.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
-		plant.spawnWorldTypes = spawnWorldTypes.getListElements();
+		plant.generateFeature = generateFeature.isSelected();
 		plant.restrictionBiomes = restrictionBiomes.getListElements();
 		plant.patchSize = (int) patchSize.getValue();
 		plant.generateAtAnyHeight = generateAtAnyHeight.isSelected();
@@ -1040,7 +1036,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.jumpFactor = (double) jumpFactor.getValue();
 		plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		plant.placingCondition = placingCondition.getSelectedProcedure();
-		plant.generateCondition = generateCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();
 		plant.isSolid = isSolid.isSelected();
 		plant.isBonemealable = isBonemealable.isSelected();

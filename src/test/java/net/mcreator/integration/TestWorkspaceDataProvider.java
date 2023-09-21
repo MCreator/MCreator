@@ -563,11 +563,12 @@ public class TestWorkspaceDataProvider {
 				components.add(new Image(20, 30, "picture1", true, new Procedure("condition1")));
 				components.add(new Image(22, 31, "picture2", false, new Procedure("condition2")));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
-						"button1", 100, 200, new Procedure("procedure10"), null));
-				components.add(new Button("button2", 10, 10, "button2", 100, 200, null, null));
-				components.add(new Button("button3", 10, 10, "button3", 100, 200, null, new Procedure("condition3")));
+						"button1", 100, 200, _true, new Procedure("procedure10"), null));
+				components.add(new Button("button2", 10, 10, "button2", 100, 200, !_true, null, null));
+				components.add(new Button("button3", 10, 10, "button3", 100, 200, _true,
+						null, new Procedure("condition3")));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
-						"button4", 100, 200, new Procedure("procedure2"), new Procedure("condition4")));
+						"button4", 100, 200, !_true, new Procedure("procedure2"), new Procedure("condition4")));
 				components.add(
 						new ImageButton("imagebutton1", 0, 48, "picture1", "picture2", new Procedure("procedure10"),
 								null));
@@ -674,7 +675,6 @@ public class TestWorkspaceDataProvider {
 			structure.spawnHeightOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnXOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnZOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
-			structure.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			structure.spawnLocation = getRandomString(random, Arrays.asList("Ground", "Air", "Underground"));
 			structure.surfaceDetectionType = getRandomString(random,
 					Arrays.asList("First motion blocking block", "First block"));
@@ -686,7 +686,7 @@ public class TestWorkspaceDataProvider {
 				structure.restrictionBlocks.addAll(
 						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_surface"));
+				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:test/tag"));
 			}
 			if (_true) {
@@ -769,7 +769,6 @@ public class TestWorkspaceDataProvider {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			plant.texture = "test";
@@ -873,7 +872,6 @@ public class TestWorkspaceDataProvider {
 			plant.onEntityWalksOn = new Procedure("procedure11");
 			plant.onHitByProjectile = new Procedure("procedure12");
 			plant.placingCondition = _true ? null : new Procedure("condition2");
-			plant.generateCondition = emptyLists ? null : new Procedure("condition1");
 			plant.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
 							"Water", "Sky", "Fog", "Water fog"));
@@ -1194,7 +1192,6 @@ public class TestWorkspaceDataProvider {
 				block.fluidRestrictions.add(new net.mcreator.element.parts.Fluid(modElement.getWorkspace(),
 						getRandomItem(random, ElementUtil.loadAllFluids(modElement.getWorkspace()))));
 			}
-			block.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				block.restrictionBiomes.addAll(
@@ -1232,7 +1229,6 @@ public class TestWorkspaceDataProvider {
 				block.onRedstoneOff = new Procedure("procedure12");
 				block.onEntityWalksOn = new Procedure("procedure13");
 				block.onHitByProjectile = new Procedure("procedure14");
-				block.generateCondition = new Procedure("condition1");
 				block.placingCondition = new Procedure("condition2");
 				block.isBonemealTargetCondition = new Procedure("condition3");
 				block.bonemealSuccessCondition = new Procedure("condition4");
@@ -1536,9 +1532,6 @@ public class TestWorkspaceDataProvider {
 			Feature feature = new Feature(modElement);
 			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));
-			feature.restrictionDimensions = emptyLists ?
-					new ArrayList<>() :
-					new ArrayList<>(Arrays.asList("Surface", "Nether"));
 			feature.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				feature.restrictionBiomes.addAll(
@@ -1562,9 +1555,9 @@ public class TestWorkspaceDataProvider {
 		livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
 		livingEntity.mobModelTexture = "test.png";
 		livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
-		livingEntity.transparentModelCondition = new Procedure("condition1");
-		livingEntity.isShakingCondition = new Procedure("condition2");
-		livingEntity.solidBoundingBox = new LogicProcedure(_true ? "condition3" : null, _true);
+		livingEntity.transparentModelCondition = new LogicProcedure(emptyLists ? "condition1" : null, _true);
+		livingEntity.isShakingCondition = new LogicProcedure(emptyLists ? "condition2" : null, !_true);
+		livingEntity.solidBoundingBox = new LogicProcedure(emptyLists ? "condition3" : null, _true);
 		livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 		livingEntity.spawnEggBaseColor = Color.red;
 		livingEntity.spawnEggDotColor = Color.green;

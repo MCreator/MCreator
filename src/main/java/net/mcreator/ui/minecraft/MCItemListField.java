@@ -70,6 +70,16 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 		return tags;
 	}
 
+	@Override protected List<MItemBlock> getTagsToAdd() {
+		List<MItemBlock> tags = new ArrayList<>();
+
+		String tag = AddTagDialog.openAddTagDialog(mcreator, "tag", "category/tag");
+		if (tag != null)
+			tags.add(new MItemBlock(mcreator.getWorkspace(), "TAG:" + tag));
+
+		return tags;
+	}
+
 	class CustomListCellRenderer extends JLabel implements ListCellRenderer<MItemBlock> {
 
 		@Override

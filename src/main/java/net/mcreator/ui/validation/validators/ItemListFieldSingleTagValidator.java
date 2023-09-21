@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,24 +17,32 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.minecraft;
+package net.mcreator.ui.validation.validators;
 
-import net.mcreator.minecraft.ElementUtil;
-import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.validation.Validator;
 
 import java.util.List;
 
-public class DimensionListField extends JItemListField<String> {
+public class ItemListFieldSingleTagValidator implements Validator {
 
-	public DimensionListField(MCreator mcreator) {
-		super(mcreator);
+	private final JItemListField<?> holder;
+
+	public ItemListFieldSingleTagValidator(JItemListField<?> holder) {
+		this.holder = holder;
 	}
 
-	@Override protected List<String> getElementsToAdd() {
-		return StringSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllDimensions,
-				L10N.t("dialog.list_field.dimension_title"), L10N.t("dialog.list_field.dimension_message"));
+	@Override public ValidationResult validate() {
+		List<?> listElements = holder.getListElements();
+
+		if (listElements.size() > 1) {
+			for (Object object : listElements) {
+				if (object.toString().startsWith("#"))
+					return new ValidationResult(ValidationResultType.ERROR, L10N.t("validator.singletag.multiple"));
+			}
+		}
+
+		return new ValidationResult(ValidationResultType.PASSED, "");
 	}
 }
