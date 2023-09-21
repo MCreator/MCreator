@@ -67,7 +67,6 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 		entries.addPropertyChangeListener("boundingBoxChanged",
 				e -> firePropertyChange("boundingBoxChanged", false, true));
 
-		setOpaque(false);
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.common.bounding_box_entries"), 0, 0, getFont().deriveFont(12.0f),

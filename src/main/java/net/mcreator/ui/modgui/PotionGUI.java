@@ -149,7 +149,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		splashName.setText(potion.splashName);
 		lingeringName.setText(potion.lingeringName);
 		arrowName.setText(potion.arrowName);
-		effectList.setEffects(potion.effects);
+		effectList.setEntries(potion.effects);
 	}
 
 	@Override public Potion getElementFromGUI() {
@@ -158,7 +158,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		potion.splashName = splashName.getText();
 		potion.lingeringName = lingeringName.getText();
 		potion.arrowName = arrowName.getText();
-		potion.effects = effectList.getEffects();
+		potion.effects = effectList.getEntries();
 		return potion;
 	}
 

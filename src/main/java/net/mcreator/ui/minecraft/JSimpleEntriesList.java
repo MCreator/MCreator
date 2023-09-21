@@ -38,6 +38,7 @@ public abstract class JSimpleEntriesList<T extends JPanel, U> extends JEntriesLi
 
 	public JSimpleEntriesList(MCreator mcreator, LayoutManager layout, IHelpContext gui) {
 		super(mcreator, layout, gui);
+		setOpaque(false);
 
 		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
