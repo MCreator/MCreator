@@ -23,15 +23,14 @@ import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.JSimpleEntriesList;
+import net.mcreator.ui.component.entries.JSingleEntriesList;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 import java.util.Objects;
 
 public class JVillagerTradeProfessionsList
-		extends JSimpleEntriesList<JVillagerTradeProfession, VillagerTrade.CustomTradeEntry> {
+		extends JSingleEntriesList<JVillagerTradeProfession, VillagerTrade.CustomTradeEntry> {
 
 	public JVillagerTradeProfessionsList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);

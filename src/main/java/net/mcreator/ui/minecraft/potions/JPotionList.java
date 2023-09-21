@@ -23,7 +23,7 @@ import net.mcreator.element.types.Potion;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.JSimpleEntriesList;
+import net.mcreator.ui.component.entries.JSingleEntriesList;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class JPotionList extends JSimpleEntriesList<JPotionListEntry, Potion.CustomEffectEntry> {
+public class JPotionList extends JSingleEntriesList<JPotionListEntry, Potion.CustomEffectEntry> {
 
 	public JPotionList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);

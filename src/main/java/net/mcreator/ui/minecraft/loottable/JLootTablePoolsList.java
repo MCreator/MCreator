@@ -23,13 +23,13 @@ import net.mcreator.element.types.LootTable;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.JSimpleEntriesList;
+import net.mcreator.ui.component.entries.JSingleEntriesList;
 
 import javax.swing.*;
 import java.util.List;
 import java.util.Objects;
 
-public class JLootTablePoolsList extends JSimpleEntriesList<JLootTablePool, LootTable.Pool> {
+public class JLootTablePoolsList extends JSingleEntriesList<JLootTablePool, LootTable.Pool> {
 
 	public JLootTablePoolsList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);
