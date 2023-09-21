@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.wysiwyg;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.procedure.StringProcedure;
+import net.mcreator.element.types.interfaces.IAnchorableElement;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -30,7 +31,6 @@ import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringProcedureSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableTypeLoader;
-import net.mcreator.ui.component.util.ComponentUtils.Anchor;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -85,9 +85,9 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text_color"), cola));
 
-		final JComboBox<Anchor> anchor = new JComboBox<>(Anchor.values());
+		final JComboBox<IAnchorableElement.AnchorPoint> anchor = new JComboBox<>(IAnchorableElement.AnchorPoint.values());
 		if (!editor.isNotOverlayType) {
-			anchor.setSelectedItem(Anchor.CENTER);
+			anchor.setSelectedItem(IAnchorableElement.AnchorPoint.CENTER);
 			options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_anchor"), anchor));
 		}
 
@@ -104,7 +104,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			cola.setColor(label.color);
 			displayCondition.setSelectedProcedure(label.displayCondition);
 			if (!editor.isNotOverlayType) {
-				anchor.setSelectedItem(label.anchor);
+				anchor.setSelectedItem(label.anchorPoint);
 			}
 		}
 
@@ -128,7 +128,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 					component = new Label(name, 0, 0, textProcedure, cola.getColor(), displayCondition.getSelectedProcedure());
 				} else {
 					component = new Label(name, 0, 0, textProcedure, cola.getColor(), displayCondition.getSelectedProcedure(),
-							(Anchor) anchor.getSelectedItem());
+							(IAnchorableElement.AnchorPoint) anchor.getSelectedItem());
 				}
 				setEditingComponent(component);
 				editor.editor.addComponent(component);
@@ -143,7 +143,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 							displayCondition.getSelectedProcedure());
 				} else {
 					labelNew = new Label(label.name, label.getX(), label.getY(), textProcedure, cola.getColor(),
-							displayCondition.getSelectedProcedure(), (Anchor) anchor.getSelectedItem());
+							displayCondition.getSelectedProcedure(), (IAnchorableElement.AnchorPoint) anchor.getSelectedItem());
 				}
 				editor.components.add(idx, labelNew);
 				setEditingComponent(labelNew);
