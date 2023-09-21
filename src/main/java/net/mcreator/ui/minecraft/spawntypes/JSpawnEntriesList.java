@@ -20,58 +20,26 @@ package net.mcreator.ui.minecraft.spawntypes;
 
 import net.mcreator.element.types.Biome;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.JEntriesList;
+import net.mcreator.ui.minecraft.JSimpleEntriesList;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class JSpawnEntriesList extends JEntriesList {
-
-	private final List<JSpawnListEntry> entryList = new ArrayList<>();
-
-	private final JPanel entries = new JPanel();
+public class JSpawnEntriesList extends JSimpleEntriesList<JSpawnListEntry, Biome.SpawnEntry> {
 
 	public JSpawnEntriesList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new BorderLayout(), gui);
-		setOpaque(false);
-
-		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 
 		add.setText(L10N.t("elementgui.spawnlist.add_entry"));
-		topbar.add(add);
-
-		add("North", topbar);
-
-		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
-		entries.setOpaque(false);
-
 		add.addActionListener(e -> {
 			JSpawnListEntry entry = new JSpawnListEntry(mcreator, gui, entries, entryList);
 			registerEntryUI(entry);
 		});
-
-		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(entries)) {
-			@Override protected void paintComponent(Graphics g) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-				g2d.fillRect(0, 0, getWidth(), getHeight());
-				g2d.dispose();
-				super.paintComponent(g);
-			}
-		};
-		scrollPane.getViewport().setOpaque(false);
-		scrollPane.setOpaque(false);
-		scrollPane.getVerticalScrollBar().setUnitIncrement(15);
-		add("Center", scrollPane);
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -80,17 +48,11 @@ public class JSpawnEntriesList extends JEntriesList {
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
 
-	@Override public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-
-		add.setEnabled(false);
-	}
-
-	public List<Biome.SpawnEntry> getSpawns() {
+	@Override public List<Biome.SpawnEntry> getEntries() {
 		return entryList.stream().map(JSpawnListEntry::getEntry).filter(Objects::nonNull).collect(Collectors.toList());
 	}
 
-	public void setSpawns(List<Biome.SpawnEntry> pool) {
+	@Override public void setEntries(List<Biome.SpawnEntry> pool) {
 		pool.forEach(e -> {
 			JSpawnListEntry entry = new JSpawnListEntry(mcreator, gui, entries, entryList);
 			registerEntryUI(entry);

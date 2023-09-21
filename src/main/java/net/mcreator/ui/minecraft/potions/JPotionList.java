@@ -35,8 +35,8 @@ public class JPotionList extends JSimpleEntriesList<JPotionListEntry, Potion.Cus
 
 	public JPotionList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new BorderLayout(), gui);
-		add.setText(L10N.t("elementgui.potion.add_entry"));
 
+		add.setText(L10N.t("elementgui.potion.add_entry"));
 		add.addActionListener(e -> {
 			JPotionListEntry entry = new JPotionListEntry(mcreator, gui, entries, entryList);
 			registerEntryUI(entry);

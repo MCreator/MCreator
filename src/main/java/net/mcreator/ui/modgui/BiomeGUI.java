@@ -708,7 +708,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		temperature.setValue(biome.temperature);
 		defaultFeatures.setListElements(biome.defaultFeatures);
 		vanillaTreeType.setSelectedItem(biome.vanillaTreeType);
-		spawnEntries.setSpawns(biome.spawnEntries);
+		spawnEntries.setEntries(biome.spawnEntries);
 
 		genTemperature.setMinValue(biome.genTemperature.min);
 		genTemperature.setMaxValue(biome.genTemperature.max);
@@ -757,7 +757,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.temperature = (double) temperature.getValue();
 		biome.defaultFeatures = defaultFeatures.getListElements();
 		biome.vanillaTreeType = (String) vanillaTreeType.getSelectedItem();
-		biome.spawnEntries = spawnEntries.getSpawns();
+		biome.spawnEntries = spawnEntries.getEntries();
 		biome.minHeight = (int) minHeight.getValue();
 		biome.treeVines = treeVines.getBlock();
 		biome.treeStem = treeStem.getBlock();

@@ -58,6 +58,7 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 			modelChanged();
 		}
 
+		add.setText(L10N.t("elementgui.common.add_bounding_box"));
 		add.addActionListener(e -> {
 			JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, entryList).setEntryEnabled(this.isEnabled());
 			registerEntryUI(entry);
