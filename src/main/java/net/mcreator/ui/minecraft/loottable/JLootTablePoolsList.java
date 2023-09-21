@@ -47,7 +47,7 @@ public class JLootTablePoolsList extends JSingleEntriesList<JLootTablePool, Loot
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 	}
 
-	public void reloadDataLists() {
+	@Override public void reloadDataLists() {
 		entryList.forEach(JLootTablePool::reloadDataLists);
 	}
 

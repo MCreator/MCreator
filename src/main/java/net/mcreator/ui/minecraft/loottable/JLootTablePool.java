@@ -116,7 +116,7 @@ public class JLootTablePool extends JEntriesList {
 		parent.repaint();
 	}
 
-	public void reloadDataLists() {
+	@Override public void reloadDataLists() {
 		entryList.forEach(JLootTableEntry::reloadDataLists);
 	}
 

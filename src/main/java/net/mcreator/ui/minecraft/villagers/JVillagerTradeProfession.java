@@ -109,7 +109,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 		parent.repaint();
 	}
 
-	public void reloadDataLists() {
+	@Override public void reloadDataLists() {
 		ComboBoxUtil.updateComboBoxContents(villagerProfession, ElementUtil.loadAllVillagerProfessions(workspace));
 	}
 

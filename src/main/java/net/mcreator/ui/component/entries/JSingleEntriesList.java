@@ -62,6 +62,11 @@ public abstract class JSingleEntriesList<T extends JPanel, U> extends JEntriesLi
 		add("Center", scrollPane);
 	}
 
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		entryList.forEach(e -> e.setEnabled(enabled));
+	}
+
 	public abstract List<U> getEntries();
 
 	public abstract void setEntries(List<U> box);

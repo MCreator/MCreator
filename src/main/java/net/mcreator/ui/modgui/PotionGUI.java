@@ -138,6 +138,12 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		}
 	}
 
+	@Override public void reloadDataLists() {
+		super.reloadDataLists();
+
+		effectList.reloadDataLists();
+	}
+
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
 			return new AggregatedValidationResult(page1group);

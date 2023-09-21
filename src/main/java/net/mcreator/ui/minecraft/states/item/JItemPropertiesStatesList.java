@@ -164,7 +164,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		stateEntries.setEnabled(enabled);
 	}
 
-	public void reloadDataLists() {
+	@Override public void reloadDataLists() {
 		propertiesList.forEach(JItemPropertiesListEntry::reloadDataLists);
 		statesList.forEach(JItemStatesListEntry::reloadDataLists);
 	}

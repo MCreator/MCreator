@@ -26,9 +26,10 @@ import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.TechnicalButton;
+import net.mcreator.ui.component.entries.JSimpleEntriesList;
+import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.component.entries.JSingleEntriesList;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -38,14 +39,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.Supplier;
 
-public class JBoundingBoxList extends JSingleEntriesList<JBoundingBoxEntry, IBlockWithBoundingBox.BoxEntry> {
+public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlockWithBoundingBox.BoxEntry> {
 
 	private static final Logger LOG = LogManager.getLogger(JBoundingBoxList.class);
 
 	@Nullable private final Supplier<Model> modelProvider;
+
 	private final TechnicalButton genFromModel = L10N.technicalbutton("elementgui.common.gen_from_block_model");
 
 	public JBoundingBoxList(MCreator mcreator, IHelpContext gui, @Nullable Supplier<Model> modelProvider) {
@@ -59,11 +60,6 @@ public class JBoundingBoxList extends JSingleEntriesList<JBoundingBoxEntry, IBlo
 		}
 
 		add.setText(L10N.t("elementgui.common.add_bounding_box"));
-		add.addActionListener(e -> {
-			JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, entryList).setEntryEnabled(this.isEnabled());
-			registerEntryUI(entry);
-			firePropertyChange("boundingBoxChanged", false, true);
-		});
 
 		entries.addPropertyChangeListener("boundingBoxChanged",
 				e -> firePropertyChange("boundingBoxChanged", false, true));
@@ -75,9 +71,13 @@ public class JBoundingBoxList extends JSingleEntriesList<JBoundingBoxEntry, IBlo
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
 
-	@Override public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-		entryList.forEach(e -> e.setEntryEnabled(enabled));
+	@Override public void entryAddedByUserHandler() {
+		firePropertyChange("boundingBoxChanged", false, true);
+	}
+
+	@Override
+	public JSimpleListEntry<IBlockWithBoundingBox.BoxEntry> newEntry(JPanel parent, List<JBoundingBoxEntry> entryList) {
+		return new JBoundingBoxEntry(parent, entryList);
 	}
 
 	public void modelChanged() {
@@ -120,20 +120,6 @@ public class JBoundingBoxList extends JSingleEntriesList<JBoundingBoxEntry, IBlo
 				}
 			}
 		}
-	}
-
-	@Override public List<IBlockWithBoundingBox.BoxEntry> getEntries() {
-		return entryList.stream().map(JBoundingBoxEntry::getEntry).filter(Objects::nonNull).toList();
-	}
-
-	@Override public void setEntries(List<IBlockWithBoundingBox.BoxEntry> box) {
-		entryList.clear(); // Fixes failing tests
-		entries.removeAll();
-		box.forEach(e -> {
-			JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, entryList).setEntryEnabled(isEnabled());
-			registerEntryUI(entry);
-			entry.setEntry(e);
-		});
 	}
 
 	public boolean isFullCube() {

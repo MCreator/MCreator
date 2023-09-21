@@ -62,4 +62,8 @@ public abstract class JEntriesList extends JPanel {
 		add.setEnabled(enabled);
 	}
 
+	public void reloadDataLists() {
+
+	}
+
 }

@@ -20,26 +20,21 @@ package net.mcreator.ui.minecraft.spawntypes;
 
 import net.mcreator.element.types.Biome;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.entries.JSimpleEntriesList;
+import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.component.entries.JSingleEntriesList;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
-public class JSpawnEntriesList extends JSingleEntriesList<JSpawnListEntry, Biome.SpawnEntry> {
+public class JSpawnEntriesList extends JSimpleEntriesList<JSpawnListEntry, Biome.SpawnEntry> {
 
 	public JSpawnEntriesList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);
 
 		add.setText(L10N.t("elementgui.spawnlist.add_entry"));
-		add.addActionListener(e -> {
-			JSpawnListEntry entry = new JSpawnListEntry(mcreator, gui, entries, entryList);
-			registerEntryUI(entry);
-		});
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -48,16 +43,8 @@ public class JSpawnEntriesList extends JSingleEntriesList<JSpawnListEntry, Biome
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
 
-	@Override public List<Biome.SpawnEntry> getEntries() {
-		return entryList.stream().map(JSpawnListEntry::getEntry).filter(Objects::nonNull).collect(Collectors.toList());
-	}
-
-	@Override public void setEntries(List<Biome.SpawnEntry> pool) {
-		pool.forEach(e -> {
-			JSpawnListEntry entry = new JSpawnListEntry(mcreator, gui, entries, entryList);
-			registerEntryUI(entry);
-			entry.setEntry(e);
-		});
+	@Override public JSimpleListEntry<Biome.SpawnEntry> newEntry(JPanel parent, List<JSpawnListEntry> entryList) {
+		return new JSpawnListEntry(mcreator, gui, parent, entryList);
 	}
 
 }

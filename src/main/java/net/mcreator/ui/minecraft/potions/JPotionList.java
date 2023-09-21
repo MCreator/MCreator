@@ -21,26 +21,21 @@ package net.mcreator.ui.minecraft.potions;
 
 import net.mcreator.element.types.Potion;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.entries.JSimpleEntriesList;
+import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.component.entries.JSingleEntriesList;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
-public class JPotionList extends JSingleEntriesList<JPotionListEntry, Potion.CustomEffectEntry> {
+public class JPotionList extends JSimpleEntriesList<JPotionListEntry, Potion.CustomEffectEntry> {
 
 	public JPotionList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);
 
 		add.setText(L10N.t("elementgui.potion.add_entry"));
-		add.addActionListener(e -> {
-			JPotionListEntry entry = new JPotionListEntry(mcreator, gui, entries, entryList);
-			registerEntryUI(entry);
-		});
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -48,16 +43,9 @@ public class JPotionList extends JSingleEntriesList<JPotionListEntry, Potion.Cus
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 	}
 
-	@Override public List<Potion.CustomEffectEntry> getEntries() {
-		return entryList.stream().map(JPotionListEntry::getEntry).filter(Objects::nonNull).collect(Collectors.toList());
-	}
-
-	@Override public void setEntries(List<Potion.CustomEffectEntry> pool) {
-		pool.forEach(e -> {
-			JPotionListEntry entry = new JPotionListEntry(mcreator, gui, entries, entryList);
-			registerEntryUI(entry);
-			entry.setEntry(e);
-		});
+	@Override
+	public JSimpleListEntry<Potion.CustomEffectEntry> newEntry(JPanel parent, List<JPotionListEntry> entryList) {
+		return new JPotionListEntry(mcreator, gui, entries, entryList);
 	}
 
 }

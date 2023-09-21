@@ -584,6 +584,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
+		spawnEntries.reloadDataLists();
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
