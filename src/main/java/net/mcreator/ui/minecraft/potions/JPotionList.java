@@ -34,7 +34,7 @@ import java.util.stream.Collectors;
 public class JPotionList extends JSimpleEntriesList<JPotionListEntry, Potion.CustomEffectEntry> {
 
 	public JPotionList(MCreator mcreator, IHelpContext gui) {
-		super(mcreator, new BorderLayout(), gui);
+		super(mcreator, gui);
 
 		add.setText(L10N.t("elementgui.potion.add_entry"));
 		add.addActionListener(e -> {

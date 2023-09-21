@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 public class JSpawnEntriesList extends JSimpleEntriesList<JSpawnListEntry, Biome.SpawnEntry> {
 
 	public JSpawnEntriesList(MCreator mcreator, IHelpContext gui) {
-		super(mcreator, new BorderLayout(), gui);
+		super(mcreator, gui);
 
 		add.setText(L10N.t("elementgui.spawnlist.add_entry"));
 		add.addActionListener(e -> {

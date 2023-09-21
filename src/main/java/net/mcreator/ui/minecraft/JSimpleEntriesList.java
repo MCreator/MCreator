@@ -22,7 +22,6 @@ package net.mcreator.ui.minecraft;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
-import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
 import java.awt.*;
@@ -36,8 +35,8 @@ public abstract class JSimpleEntriesList<T extends JPanel, U> extends JEntriesLi
 
 	protected JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-	public JSimpleEntriesList(MCreator mcreator, LayoutManager layout, IHelpContext gui) {
-		super(mcreator, layout, gui);
+	public JSimpleEntriesList(MCreator mcreator, IHelpContext gui) {
+		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
 
 		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));

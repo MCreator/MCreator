@@ -49,7 +49,7 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 	private final TechnicalButton genFromModel = L10N.technicalbutton("elementgui.common.gen_from_block_model");
 
 	public JBoundingBoxList(MCreator mcreator, IHelpContext gui, @Nullable Supplier<Model> modelProvider) {
-		super(mcreator, new BorderLayout(), gui);
+		super(mcreator, gui);
 		this.modelProvider = modelProvider;
 
 		if (modelProvider != null) {
