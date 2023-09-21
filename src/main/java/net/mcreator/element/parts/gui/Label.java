@@ -20,7 +20,7 @@ package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringProcedure;
-import net.mcreator.ui.component.util.ComponentUtils.Anchor;
+import net.mcreator.element.types.interfaces.IAnchorableElement;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
@@ -28,7 +28,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import java.awt.*;
 
-public class Label extends GUIComponent {
+public class Label extends GUIComponent implements IAnchorableElement {
 
 	public String name;
 
@@ -37,20 +37,24 @@ public class Label extends GUIComponent {
 
 	public Procedure displayCondition;
 
+	public AnchorPoint anchorPoint;
+
 	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition) {
 		super(x, y);
 		this.text = text;
 		this.color = color;
 		this.displayCondition = displayCondition;
 		this.name = name;
+		this.anchorPoint = AnchorPoint.CENTER;
 	}
 
-	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition, Anchor anchor) {
-		super(x, y, anchor);
+	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition, AnchorPoint anchorPoint) {
+		super(x, y);
 		this.text = text;
 		this.color = color;
 		this.displayCondition = displayCondition;
 		this.name = name;
+		this.anchorPoint = anchorPoint;
 	}
 
 	@Override public String getName() {
@@ -91,4 +95,7 @@ public class Label extends GUIComponent {
 		}
 	}
 
+	@Override public AnchorPoint getAnchorPoint() {
+		return this.anchorPoint;
+	}
 }

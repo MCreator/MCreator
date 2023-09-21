@@ -21,7 +21,6 @@ package net.mcreator.element.parts.gui;
 import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
-import net.mcreator.ui.component.util.ComponentUtils.Anchor;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 
@@ -40,7 +39,6 @@ import java.util.stream.Collectors;
 
 	public transient UUID uuid;
 
-	public Anchor anchor;
 
 	private static final Map<String, Class<? extends GUIComponent>> typeMappings = new HashMap<>() {{
 		put("tooltip", Tooltip.class); // weight -15
@@ -66,14 +64,6 @@ import java.util.stream.Collectors;
 		this();
 		this.x = x;
 		this.y = y;
-		this.anchor = Anchor.CENTER;
-	}
-
-	GUIComponent(int x, int y, Anchor anchor) {
-		this();
-		this.x = x;
-		this.y = y;
-		this.anchor = anchor;
 	}
 
 	/**
