@@ -94,4 +94,5 @@ public class JModelLayerList extends JEntriesList {
 		entryList.forEach(validationResult::addValidationElement);
 		return validationResult;
 	}
+
 }

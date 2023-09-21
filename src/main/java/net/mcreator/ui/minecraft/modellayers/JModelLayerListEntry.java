@@ -148,4 +148,5 @@ public class JModelLayerListEntry extends JPanel implements IValidable {
 	@Override public Validator getValidator() {
 		return texture.getValidator();
 	}
+
 }
