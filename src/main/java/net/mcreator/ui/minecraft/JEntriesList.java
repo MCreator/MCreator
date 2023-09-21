@@ -57,4 +57,9 @@ public abstract class JEntriesList extends JPanel {
 		return mcreator;
 	}
 
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		add.setEnabled(enabled);
+	}
+
 }

@@ -26,10 +26,9 @@ import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.TechnicalButton;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.JEntriesList;
+import net.mcreator.ui.minecraft.JSimpleEntriesList;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -42,11 +41,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-public class JBoundingBoxList extends JEntriesList {
-	private static final Logger LOG = LogManager.getLogger(JBoundingBoxList.class);
+public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlockWithBoundingBox.BoxEntry> {
 
-	private final List<JBoundingBoxEntry> boundingBoxList = new ArrayList<>();
-	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
+	private static final Logger LOG = LogManager.getLogger(JBoundingBoxList.class);
 
 	@Nullable private final Supplier<Model> modelProvider;
 	private final TechnicalButton genFromModel = L10N.technicalbutton("elementgui.common.gen_from_block_model");
@@ -55,24 +52,14 @@ public class JBoundingBoxList extends JEntriesList {
 		super(mcreator, new BorderLayout(), gui);
 		this.modelProvider = modelProvider;
 
-		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-
-		add.setText(L10N.t("elementgui.common.add_bounding_box"));
-		topbar.add(add);
-		add("North", topbar);
-
 		if (modelProvider != null) {
 			genFromModel.addActionListener(e -> generateBoundingBoxFromModel());
 			topbar.add(genFromModel);
 			modelChanged();
 		}
 
-		entries.setOpaque(false);
-		add("Center", new JScrollPane(PanelUtils.pullElementUp(entries)));
-
 		add.addActionListener(e -> {
-			JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(this.isEnabled());
+			JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, entryList).setEntryEnabled(this.isEnabled());
 			registerEntryUI(entry);
 			firePropertyChange("boundingBoxChanged", false, true);
 		});
@@ -90,8 +77,7 @@ public class JBoundingBoxList extends JEntriesList {
 
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		add.setEnabled(enabled);
-		boundingBoxList.forEach(e -> e.setEntryEnabled(enabled));
+		entryList.forEach(e -> e.setEntryEnabled(enabled));
 	}
 
 	public void modelChanged() {
@@ -124,7 +110,7 @@ public class JBoundingBoxList extends JEntriesList {
 							boxEntries.add(box);
 						}
 
-						setBoundingBoxes(boxEntries);
+						setEntries(boxEntries);
 					}
 				} catch (Exception e) {
 					JOptionPane.showMessageDialog(mcreator,
@@ -136,22 +122,23 @@ public class JBoundingBoxList extends JEntriesList {
 		}
 	}
 
-	public List<IBlockWithBoundingBox.BoxEntry> getBoundingBoxes() {
-		return boundingBoxList.stream().map(JBoundingBoxEntry::getEntry).filter(Objects::nonNull).toList();
+	@Override public List<IBlockWithBoundingBox.BoxEntry> getEntries() {
+		return entryList.stream().map(JBoundingBoxEntry::getEntry).filter(Objects::nonNull).toList();
 	}
 
-	public void setBoundingBoxes(List<IBlockWithBoundingBox.BoxEntry> box) {
-		boundingBoxList.clear(); // Fixes failing tests
+	@Override public void setEntries(List<IBlockWithBoundingBox.BoxEntry> box) {
+		entryList.clear(); // Fixes failing tests
 		entries.removeAll();
 		box.forEach(e -> {
-			JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, boundingBoxList).setEntryEnabled(isEnabled());
+			JBoundingBoxEntry entry = new JBoundingBoxEntry(entries, entryList).setEntryEnabled(isEnabled());
 			registerEntryUI(entry);
 			entry.setEntry(e);
 		});
 	}
 
 	public boolean isFullCube() {
-		return boundingBoxList.stream().anyMatch(JBoundingBoxEntry::isNotEmpty) && boundingBoxList.stream()
+		return entryList.stream().anyMatch(JBoundingBoxEntry::isNotEmpty) && entryList.stream()
 				.filter(JBoundingBoxEntry::isNotEmpty).allMatch(JBoundingBoxEntry::isFullCube);
 	}
+
 }

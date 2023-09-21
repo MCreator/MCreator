@@ -438,7 +438,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		});
 
 		if (!isEditingMode()) { // Add first bounding box, disable custom bounding box options
-			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
+			boundingBoxList.setEntries(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
 			disableOffset.setEnabled(false);
 			boundingBoxList.setEnabled(false);
 		}
@@ -929,7 +929,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		customBoundingBox.setSelected(plant.customBoundingBox);
 		disableOffset.setSelected(plant.disableOffset);
-		boundingBoxList.setBoundingBoxes(plant.boundingBoxes);
+		boundingBoxList.setEntries(plant.boundingBoxes);
 
 		Model model = plant.getItemModel();
 		if (model != null && model.getType() != null && model.getReadableName() != null)
@@ -1045,7 +1045,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		plant.customBoundingBox = customBoundingBox.isSelected();
 		plant.disableOffset = disableOffset.isSelected();
-		plant.boundingBoxes = boundingBoxList.getBoundingBoxes();
+		plant.boundingBoxes = boundingBoxList.getEntries();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		plant.renderType = 12;

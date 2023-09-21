@@ -638,7 +638,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bbPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		if (!isEditingMode()) // add first bounding box
-			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
+			boundingBoxList.setEntries(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
 
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
@@ -1456,7 +1456,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		speedFactor.setValue(block.speedFactor);
 
 		disableOffset.setSelected(block.disableOffset);
-		boundingBoxList.setBoundingBoxes(block.boundingBoxes);
+		boundingBoxList.setEntries(block.boundingBoxes);
 
 		specialInfo.setText(
 				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
@@ -1578,7 +1578,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.textureBack = textureBack.getID();
 
 		block.disableOffset = disableOffset.isSelected();
-		block.boundingBoxes = boundingBoxList.getBoundingBoxes();
+		block.boundingBoxes = boundingBoxList.getEntries();
 
 		block.beaconColorModifier = beaconColorModifier.getColor();
 
