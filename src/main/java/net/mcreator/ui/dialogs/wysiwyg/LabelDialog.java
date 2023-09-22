@@ -86,6 +86,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text_color"), cola));
 
 		final JComboBox<IAnchorableElement.AnchorPoint> anchor = new JComboBox<>(IAnchorableElement.AnchorPoint.values());
+		anchor.setRenderer(new AnchorComboBoxRenderer());
 		if (!editor.isNotOverlayType) {
 			anchor.setSelectedItem(IAnchorableElement.AnchorPoint.CENTER);
 			options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor"), anchor));
