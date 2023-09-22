@@ -192,7 +192,7 @@ public class ExternalBlockLoader {
 
 		// Create each nested category that will be added to this current category
 		for (ToolboxCategory child : toolboxCategories) {
-			if (child.parent_category != null && child.parent_category.equals(category.id)) {
+			if (category.id.equals(child.parent_category)) {
 				builder.append(generateCategoryXML(child, toolboxCategories, toolboxBlocksList));
 			}
 		}
