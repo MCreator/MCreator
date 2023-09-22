@@ -598,21 +598,21 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if data.breatheUnderwater?? && (hasProcedure(data.breatheUnderwater) || data.breatheUnderwater.getFixedValue())>
-		@Override public boolean canBreatheUnderwater() {
-			return <@procedureOBJToConditionCode data.breatheUnderwater true false/>;
-		}
+	@Override public boolean canBreatheUnderwater() {
+		return <@procedureOBJToConditionCode data.breatheUnderwater true false/>;
+	}
 	</#if>
 
 	<#if data.waterMob>
-		@Override public boolean checkSpawnObstruction(LevelReader world) {
-			return world.isUnobstructed(this);
-		}
+	@Override public boolean checkSpawnObstruction(LevelReader world) {
+		return world.isUnobstructed(this);
+	}
 	</#if>
 
 	<#if data.pushedByFluids?? && (hasProcedure(data.pushedByFluids) || !data.pushedByFluids.getFixedValue())>
-		@Override public boolean isPushedByFluid() {
-			return <@procedureOBJToConditionCode data.pushedByFluids false false/>;
-		}
+	@Override public boolean isPushedByFluid() {
+		return <@procedureOBJToConditionCode data.pushedByFluids false false/>;
+	}
 	</#if>
 
 	<#if data.disableCollisions>
