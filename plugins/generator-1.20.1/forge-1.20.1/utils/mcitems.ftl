@@ -169,7 +169,7 @@
     <#return (extension?has_content)?then("_" + extension, "")>
 </#function>
 
-<#function mappedMCItemToIngameItemName mappedBlock>
+<#function mappedMCItemToItemObjectJSON mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
@@ -193,7 +193,7 @@
     </#if>
 </#function>
 
-<#function mappedMCItemToIngameNameNoTags mappedBlock>
+<#function mappedMCItemToRegistryName mappedBlock acceptTags=false>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
@@ -202,11 +202,19 @@
             <#return "minecraft:air">
         </#if>
     <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#return "minecraft:air">
+        <#if acceptTags>
+            <#return "#" + mappedBlock.getUnmappedValue().replace("TAG:", "")?lower_case>
+        <#else>
+            <#return "minecraft:air">
+        </#if>
     <#else>
         <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
         <#if mapped.startsWith("#")>
-            <#return "minecraft:air">
+            <#if customelement?has_content>
+                <#return "#" + mapped>
+            <#else>
+                <#return "minecraft:air">
+            </#if>
         <#elseif mapped.contains(":")>
             <#return mapped>
         <#else>
@@ -217,7 +225,7 @@
 
 <#function mappedMCItemToBlockStateJSON mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
-        <#assign mcitemresourcepath = mappedMCItemToIngameNameNoTags(mappedBlock)/>
+        <#assign mcitemresourcepath = mappedMCItemToRegistryName(mappedBlock)/>
         <#assign me = w.getWorkspace().getModElementByName(generator.getElementPlainName(mappedBlock.getUnmappedValue()))/>
         <#if me??>
             <#assign ge = me.getGeneratableElement() />
