@@ -31,10 +31,12 @@
 <#-- @formatter:off -->
 package ${package}.world.features;
 
+import com.mojang.serialization.Codec;
+
 <#compress>
 public class StructureFeature extends Feature<StructureFeatureConfiguration> {
-	public StructureFeature() {
-		super(StructureFeatureConfiguration.CODEC);
+	public StructureFeature(Codec<StructureFeatureConfiguration> codec) {
+		super(codec);
 	}
 
 	public boolean place(FeaturePlaceContext<StructureFeatureConfiguration> context) {
