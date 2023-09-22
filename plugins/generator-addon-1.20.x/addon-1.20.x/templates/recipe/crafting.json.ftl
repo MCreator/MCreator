@@ -13,13 +13,13 @@
               <#assign ingredients = "">
               <#list data.recipeSlots as element>
                   <#if !element.isEmpty()>
-                      <#assign ingredients += "{${mappedMCItemToIngameItemName(element)}},">
+                      <#assign ingredients += "{${mappedMCItemToItemObjectJSON(element)}},">
                   </#if>
               </#list>
                 ${ingredients[0..(ingredients?last_index_of(',') - 1)]}
             ],
             "result": {
-              ${mappedMCItemToIngameItemName(data.recipeReturnStack)},
+              ${mappedMCItemToItemObjectJSON(data.recipeReturnStack)},
               "count": ${data.recipeRetstackSize}
             }
         }
@@ -34,7 +34,7 @@
             <#assign rm = [], i = 0>
             "pattern": [
             <#list recipeArray as rl>
-            		"<#list rl as re><#if !re.isEmpty()><#assign rm+=["\"${i}\": {${mappedMCItemToIngameItemName(re)}}"]/>${i}<#else> </#if><#assign i+=1></#list>"<#if rl?has_next>,</#if>
+            		"<#list rl as re><#if !re.isEmpty()><#assign rm+=["\"${i}\": {${mappedMCItemToItemObjectJSON(re)}}"]/>${i}<#else> </#if><#assign i+=1></#list>"<#if rl?has_next>,</#if>
             </#list>
             ],
             "key": {
@@ -43,7 +43,7 @@
             </#list>
             },
             "result": {
-              ${mappedMCItemToIngameItemName(data.recipeReturnStack)},
+              ${mappedMCItemToItemObjectJSON(data.recipeReturnStack)},
               "count": ${data.recipeRetstackSize}
             }
         }
