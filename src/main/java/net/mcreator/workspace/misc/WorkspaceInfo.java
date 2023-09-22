@@ -117,17 +117,6 @@ import java.util.*;
 		}
 	}
 
-	public List<ModElement> getElementsOfBaseType(String baseType) {
-		try {
-			return workspace.getModElements().parallelStream().filter(
-					e -> e.getBaseTypesProvided().contains(BaseType.valueOf(baseType.toUpperCase(Locale.ENGLISH)))
-					).toList();
-		} catch (IllegalArgumentException e) {
-			LOG.warn("Failed to list elements of non-existent base type", e);
-			return Collections.emptyList();
-		}
-	}
-
 	public List<ModElement> getRecipesOfType(String typestring) {
 		try {
 			return workspace.getModElements().parallelStream().filter(e -> e.getType() == ModElementType.RECIPE)
@@ -349,10 +338,8 @@ import java.util.*;
 
 	public boolean hasFeaturesWithStructureFeature() {
 		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.FEATURE) {
-				if (element.getGeneratableElement() instanceof Feature feature && feature.hasStructureFeatureBlock()) {
-					return true;
-				}
+			if (element.getType() == ModElementType.FEATURE && element.getMetadata("has_structure_block") != null) {
+				return true;
 			}
 		}
 		return false;

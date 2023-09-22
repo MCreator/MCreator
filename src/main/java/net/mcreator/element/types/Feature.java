@@ -76,15 +76,14 @@ import java.util.List;
 			additionalData.put("configurationcode", blocklyToFeature.getFeatureConfigurationCode());
 			additionalData.put("featuretype", blocklyToFeature.getFeatureType());
 			additionalData.put("featureblocks", blocklyToFeature.getUsedBlocks());
+
+			this.getModElement().clearMetadata().putMetadata("has_structure_block",
+					blocklyToFeature.getUsedBlocks().contains("feature_custom_structure") ? true : null);
 		};
 	}
 
 	public boolean hasGenerationConditions() {
 		return generateCondition != null;
-	}
-
-	public boolean hasStructureFeatureBlock() {
-		return featurexml.contains("<block type=\"feature_custom_structure\"");
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

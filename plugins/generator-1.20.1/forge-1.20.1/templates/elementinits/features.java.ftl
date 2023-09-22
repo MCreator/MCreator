@@ -40,14 +40,10 @@ package ${package}.init;
 
 	public static final DeferredRegister<Feature<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.FEATURES, ${JavaModName}.MODID);
 
-	<#list w.getElementsOfBaseType("feature") as feature>
-	public static final RegistryObject<Feature<?>> ${feature.getRegistryNameUpper()} =
-		REGISTRY.register("${feature.getRegistryName()}", ${feature.getName()}Feature::new);
+	<#list features as feature>
+	public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
+		REGISTRY.register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::new);
 	</#list>
-
-	<#if w.hasFeaturesWithStructureFeature()>
-	public static final RegistryObject<Feature<?>> STRUCTURE_FEATURE = REGISTRY.register("structure_feature", () -> new StructureFeature(StructureFeatureConfiguration.CODEC));
-	</#if>
 
 }
 

@@ -34,7 +34,10 @@ package ${package}.world.features;
 import com.mojang.serialization.Codec;
 
 <#compress>
-public class StructureFeature extends Feature<StructureFeatureConfiguration> {
+@Mod.EventBusSubscriber public class StructureFeature extends Feature<StructureFeatureConfiguration> {
+	public static final DeferredRegister<Feature<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.FEATURES, ${JavaModName}.MODID);
+	public static final RegistryObject<Feature<?>> STRUCTURE_FEATURE = REGISTRY.register("structure_feature", () -> new StructureFeature(StructureFeatureConfiguration.CODEC));
+
 	public StructureFeature(Codec<StructureFeatureConfiguration> codec) {
 		super(codec);
 	}
