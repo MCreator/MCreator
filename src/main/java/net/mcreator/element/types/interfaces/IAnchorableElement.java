@@ -28,9 +28,8 @@ public interface IAnchorableElement {
 	enum AnchorPoint {
 		TOP_LEFT, TOP_RIGHT, CENTER, BOTTOM_LEFT, BOTTOM_RIGHT;
 
-		@Override
-		public String toString() {
-			return L10N.t("dialog.gui.label_anchor_" + name().toLowerCase());
+		public String displayName() {
+			return L10N.t("dialog.gui.anchor_" + name().toLowerCase());
 		}
 	}
 }

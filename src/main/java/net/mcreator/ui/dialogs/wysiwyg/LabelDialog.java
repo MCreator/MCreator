@@ -88,7 +88,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 		final JComboBox<IAnchorableElement.AnchorPoint> anchor = new JComboBox<>(IAnchorableElement.AnchorPoint.values());
 		if (!editor.isNotOverlayType) {
 			anchor.setSelectedItem(IAnchorableElement.AnchorPoint.CENTER);
-			options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_anchor"), anchor));
+			options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor"), anchor));
 		}
 
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
