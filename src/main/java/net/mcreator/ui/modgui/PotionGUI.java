@@ -54,7 +54,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 	public PotionGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
-		super.finalizeGUI();
+		super.finalizeGUI(false);
 	}
 
 	@Override protected void initGUI() {
@@ -87,17 +87,11 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		ComponentUtils.deriveFont(lingeringName, 16);
 		ComponentUtils.deriveFont(arrowName, 16);
 
-		JPanel mainEditor = new JPanel(new GridLayout());
-
-		JComponent component = PanelUtils.northAndCenterElement(
+		JComponent mainEditor = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("potion/effects"), L10N.label("elementgui.potion.effects")),
 				effectList);
 
-		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-		mainEditor.add(component);
-
-		mainEditor.setOpaque(false);
+		mainEditor.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		potionName.setValidator(
 				new TextFieldValidator(potionName, L10N.t("elementgui.potion.error_potion_needs_display_name")));
