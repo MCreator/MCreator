@@ -50,10 +50,10 @@ public abstract class JSimpleEntriesList<T extends JSimpleListEntry<U>, U> exten
 		return entryList.stream().map(T::getEntry).filter(Objects::nonNull).toList();
 	}
 
-	@Override public final void setEntries(List<U> box) {
+	@Override public final void setEntries(List<U> newEntries) {
 		entryList.clear();
 		entries.removeAll();
-		box.forEach(e -> {
+		newEntries.forEach(e -> {
 			@SuppressWarnings("unchecked") T entry = (T) newEntry(entries, entryList);
 			entry.reloadDataLists();
 			entryList.add(entry);
