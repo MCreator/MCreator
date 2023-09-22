@@ -596,7 +596,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		@Override public boolean canBreatheUnderwater() {
 			return <@procedureOBJToConditionCode data.breatheUnderwater true false/>;
 		}
-    </#if>
+	</#if>
 
 	<#if data.waterMob>
 		@Override public boolean checkSpawnObstruction(LevelReader world) {
