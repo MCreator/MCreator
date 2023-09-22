@@ -44,7 +44,7 @@ public abstract class JSimpleEntriesList<T extends JSimpleListEntry<U>, U> exten
 	public void entryAddedByUserHandler() {
 	}
 
-	public abstract JSimpleListEntry<U> newEntry(JPanel parent, List<T> entryList);
+	protected abstract JSimpleListEntry<U> newEntry(JPanel parent, List<T> entryList);
 
 	@Override public final List<U> getEntries() {
 		return entryList.stream().map(T::getEntry).filter(Objects::nonNull).toList();

@@ -44,7 +44,7 @@ public class JPotionList extends JSimpleEntriesList<JPotionListEntry, Potion.Cus
 	}
 
 	@Override
-	public JSimpleListEntry<Potion.CustomEffectEntry> newEntry(JPanel parent, List<JPotionListEntry> entryList) {
+	protected JSimpleListEntry<Potion.CustomEffectEntry> newEntry(JPanel parent, List<JPotionListEntry> entryList) {
 		return new JPotionListEntry(mcreator, gui, entries, entryList);
 	}
 
