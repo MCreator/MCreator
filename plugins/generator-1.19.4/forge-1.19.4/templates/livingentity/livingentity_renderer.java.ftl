@@ -119,28 +119,28 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		return new ResourceLocation("${modid}:textures/entities/${data.mobModelTexture}");
 	}
 
-    <#if hasProcedure(data.transparentModelCondition)>
-        @Override
-	    protected boolean isBodyVisible(${name}Entity _ent) {
-	        Entity entity = _ent;
-	        Level world = entity.level;
-	        double x = entity.getX();
-	        double y = entity.getY();
-	        double z = entity.getZ();
-		    return !<@procedureOBJToConditionCode data.transparentModelCondition/>;
-	    }
+	<#if data.transparentModelCondition?? && (hasProcedure(data.transparentModelCondition) || data.transparentModelCondition.getFixedValue())>
+	@Override protected boolean isBodyVisible(${name}Entity entity) {
+		<#if hasProcedure(data.transparentModelCondition)>
+		Level world = entity.level;
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		</#if>
+		return <@procedureOBJToConditionCode data.transparentModelCondition false true/>;
+	}
 	</#if>
 
-    <#if hasProcedure(data.isShakingCondition)>
-        @Override
-	    protected boolean isShaking(${name}Entity _ent) {
-	        Entity entity = _ent;
-	        Level world = entity.level;
-	        double x = entity.getX();
-	        double y = entity.getY();
-	        double z = entity.getZ();
-		    return <@procedureOBJToConditionCode data.isShakingCondition/>;
-	    }
+	<#if data.isShakingCondition?? && (hasProcedure(data.isShakingCondition) || data.isShakingCondition.getFixedValue())>
+	@Override protected boolean isShaking(${name}Entity entity) {
+		<#if hasProcedure(data.isShakingCondition)>
+		Level world = entity.level;
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		</#if>
+		return <@procedureOBJToConditionCode data.isShakingCondition/>;
+	}
 	</#if>
 
 }
