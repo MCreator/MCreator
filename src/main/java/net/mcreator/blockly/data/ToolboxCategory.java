@@ -31,11 +31,7 @@ public class ToolboxCategory {
 	private static final Logger LOG = LogManager.getLogger("Toolbox category");
 
 	String id, name, description, color;
-
-	/**
-	 * The category will be added to each of the parent listed here.
-	 */
-	@Nullable List<String> parent_categories;
+	@Nullable String parent_category;
 
 	boolean api;
 	boolean is_expanded;

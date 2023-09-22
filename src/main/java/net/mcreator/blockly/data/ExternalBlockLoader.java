@@ -121,8 +121,8 @@ public class ExternalBlockLoader {
 
 		// Create a list of parent categories (categories added to the toolbox)
 		Set<String> parentCategories = toolboxCategories.stream()
-				.filter(toolboxCategory -> toolboxCategory.parent_categories == null
-						|| toolboxCategory.parent_categories.isEmpty()).map(toolboxCategory -> toolboxCategory.id)
+				.filter(toolboxCategory -> toolboxCategory.parent_category == null
+						|| toolboxCategory.parent_category.isBlank()).map(toolboxCategory -> toolboxCategory.id)
 				.collect(Collectors.toSet());
 
 		// setup lookup cache of loaded blocks
@@ -199,10 +199,8 @@ public class ExternalBlockLoader {
 
 		// Create each nested category that will be added to this current category
 		for (ToolboxCategory child : toolboxCategories) {
-			if (child.parent_categories != null) {
-				if (child.parent_categories.contains(category.id)) {
-					builder.append(generateCategoryXML(child, toolboxCategories, toolboxBlocksList));
-				}
+			if (child.parent_category != null && child.parent_category.equals(category.id)) {
+				builder.append(generateCategoryXML(child, toolboxCategories, toolboxBlocksList));
 			}
 		}
 
