@@ -338,7 +338,7 @@ import java.util.*;
 
 	public boolean hasFeaturesWithStructureFeature() {
 		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.FEATURE && element.getMetadata("has_structure_block") != null) {
+			if (element.getType() == ModElementType.FEATURE && element.getMetadata("has_nbt_structure") != null) {
 				return true;
 			}
 		}
