@@ -33,9 +33,9 @@ public class ToolboxCategory {
 	String id, name, description, color;
 
 	/**
-	 * A list of category's IDs that will be inside this main toolbox
+	 * The category will be added to each of the parent listed here.
 	 */
-	@Nullable List<String> nested_categories;
+	@Nullable List<String> parent_categories;
 
 	boolean api;
 	boolean is_expanded;

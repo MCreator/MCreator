@@ -119,10 +119,11 @@ public class ExternalBlockLoader {
 		}
 		toolboxCategories.sort(Comparator.comparing(ToolboxCategory::getName));
 
-		// Create a list of categories that are nested (are not root categories)
-		Set<String> nestedCategories = toolboxCategories.stream()
-				.filter(toolboxCategory -> toolboxCategory.nested_categories != null)
-				.flatMap(toolboxCategory -> toolboxCategory.nested_categories.stream()).collect(Collectors.toSet());
+		// Create a list of parent categories (categories added to the toolbox)
+		Set<String> parentCategories = toolboxCategories.stream()
+				.filter(toolboxCategory -> toolboxCategory.parent_categories == null
+						|| toolboxCategory.parent_categories.isEmpty()).map(toolboxCategory -> toolboxCategory.id)
+				.collect(Collectors.toSet());
 
 		// setup lookup cache of loaded blocks
 		this.toolboxBlocks = new HashMap<>();
@@ -165,7 +166,7 @@ public class ExternalBlockLoader {
 
 		// Handle other and API categories
 		for (ToolboxCategory category : toolboxCategories) {
-			if (!nestedCategories.contains(category.id)) {
+			if (parentCategories.contains(category.id)) {
 				String categoryCode = generateCategoryXML(category, toolboxCategories, toolboxBlocksList);
 				if (categoryCode.contains("<block type="))
 					toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryCode));
@@ -196,23 +197,13 @@ public class ExternalBlockLoader {
 			}
 		}
 
-		// Create each secondary category that will be added to this current category
-		if (category.nested_categories != null) {
-			category.nested_categories.forEach(nestedCategoryID -> {
-				ToolboxCategory nestedCategory = null;
-				for (ToolboxCategory toolboxCategory : toolboxCategories) {
-					if (toolboxCategory.id.equals(nestedCategoryID)) {
-						nestedCategory = toolboxCategory;
-						break;
-					}
+		// Create each nested category that will be added to this current category
+		for (ToolboxCategory child : toolboxCategories) {
+			if (child.parent_categories != null) {
+				if (child.parent_categories.contains(category.id)) {
+					builder.append(generateCategoryXML(child, toolboxCategories, toolboxBlocksList));
 				}
-				if (nestedCategory != null) {
-					builder.append(generateCategoryXML(nestedCategory, toolboxCategories, toolboxBlocksList));
-				} else {
-					LOG.warn("The category: " + nestedCategoryID
-							+ " was not found inside the list of registered categories.");
-				}
-			});
+			}
 		}
 
 		builder.append("</category>");
