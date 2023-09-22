@@ -41,7 +41,7 @@
 <#macro textures textureMap>
     <#if textureMap??>
         <#list textureMap.entrySet() as texture>
-            "${texture.getKey()}": "${modid}:blocks/${texture.getValue()}",
+            "${texture.getKey()}": "${modid}:block/${texture.getValue()}",
         </#list>
     </#if>
 </#macro>
