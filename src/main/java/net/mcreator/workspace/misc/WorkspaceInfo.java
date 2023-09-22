@@ -347,6 +347,17 @@ import java.util.*;
 		return false;
 	}
 
+	public boolean hasFeaturesWithStructureFeature() {
+		for (ModElement element : workspace.getModElements()) {
+			if (element.getType() == ModElementType.FEATURE) {
+				if (element.getGeneratableElement() instanceof Feature feature && feature.hasStructureFeatureBlock()) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
 	public MItemBlock itemBlock(String itemBlock) {
 		return new MItemBlock(workspace, itemBlock);
 	}

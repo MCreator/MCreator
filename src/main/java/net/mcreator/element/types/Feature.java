@@ -83,6 +83,10 @@ import java.util.List;
 		return generateCondition != null;
 	}
 
+	public boolean hasStructureFeatureBlock() {
+		return featurexml.contains("<block type=\"feature_custom_structure\"");
+	}
+
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		if (getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor() == GeneratorFlavor.FABRIC)
 			return List.of(BaseType.FEATURE); // Fabric needs to be handled differently than Forge

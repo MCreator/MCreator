@@ -70,16 +70,16 @@ base_templates:
   # Templates for custom structure feature
   - template: feature/structure_feature.java.ftl
     writer: java
-    condition: ${w.hasElementsOfType('feature')}
+    condition: ${w.hasFeaturesWithStructureFeature()}
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/StructureFeature.java"
   - template: feature/structure_feature_configuration.java.ftl
     writer: java
-    condition: ${w.hasElementsOfType('feature')}
+    condition: ${w.hasFeaturesWithStructureFeature()}
     name: "@SRCROOT/@BASEPACKAGEPATH/world/features/configurations/StructureFeatureConfiguration.java"
   # The "features" init file needs to register the custom structure feature, but there might be no element of base type "feature" yet
   - template: elementinits/features.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFeatures.java"
-    condition: ${w.hasElementsOfType('feature')}
+    condition: ${w.hasFeaturesWithStructureFeature()}
 
 sources_setup_tasks:
   - task: copy_models

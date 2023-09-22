@@ -45,7 +45,7 @@ package ${package}.init;
 		REGISTRY.register("${feature.getRegistryName()}", ${feature.getName()}Feature::new);
 	</#list>
 
-	<#if w.hasElementsOfType("feature")>
+	<#if w.hasFeaturesWithStructureFeature()>
 	public static final RegistryObject<Feature<?>> STRUCTURE_FEATURE = REGISTRY.register("structure_feature", () -> new StructureFeature(StructureFeatureConfiguration.CODEC));
 	</#if>
 
