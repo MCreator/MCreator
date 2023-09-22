@@ -119,12 +119,6 @@ public class ExternalBlockLoader {
 		}
 		toolboxCategories.sort(Comparator.comparing(ToolboxCategory::getName));
 
-		// Create a list of parent categories (categories added to the toolbox)
-		Set<String> parentCategories = toolboxCategories.stream()
-				.filter(toolboxCategory -> toolboxCategory.parent_category == null
-						|| toolboxCategory.parent_category.isBlank()).map(toolboxCategory -> toolboxCategory.id)
-				.collect(Collectors.toSet());
-
 		// setup lookup cache of loaded blocks
 		this.toolboxBlocks = new HashMap<>();
 		for (ToolboxBlock toolboxBlock : toolboxBlocksList)
@@ -166,7 +160,7 @@ public class ExternalBlockLoader {
 
 		// Handle other and API categories
 		for (ToolboxCategory category : toolboxCategories) {
-			if (parentCategories.contains(category.id)) {
+			if (category.parent_category == null) {
 				String categoryCode = generateCategoryXML(category, toolboxCategories, toolboxBlocksList);
 				if (categoryCode.contains("<block type="))
 					toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryCode));
