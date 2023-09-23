@@ -6,8 +6,8 @@ Bien que les valeurs entre -2 et 2 sont valides, les biomes vanilla utilisent un
 
 Divers biomes vanilla de l'Overworld utilisent ces intervalles de valeurs :
 
-* -1.0 à -0.35
-* -0.35 à -0.1
-* -0.1 à -0.1
-* 0.1 à -0.3
-* 0.3 à -1.0
+* -1,0 à -0,35
+* -0,35 à -0,1
+* -0,1 à -0,1
+* 0,1 à -0,3
+* 0,3 à -1,0
