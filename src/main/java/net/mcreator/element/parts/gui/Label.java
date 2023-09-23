@@ -96,6 +96,6 @@ public class Label extends GUIComponent implements IAnchorableElement {
 	}
 
 	@Override public AnchorPoint getAnchorPoint() {
-		return this.anchorPoint;
+		return anchorPoint;
 	}
 }
