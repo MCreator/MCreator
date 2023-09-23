@@ -24,6 +24,7 @@ import net.mcreator.element.parts.Fluid;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
@@ -77,7 +78,7 @@ import java.util.stream.Collectors;
 	public List<BoxEntry> boundingBoxes;
 
 	public String name;
-	public List<String> specialInfo;
+	public StringListProcedure specialInformation;
 	public double hardness;
 	public double resistance;
 	public boolean hasGravity;
