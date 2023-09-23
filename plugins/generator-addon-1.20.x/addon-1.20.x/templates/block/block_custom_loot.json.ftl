@@ -7,7 +7,7 @@
         "entries": [
           {
             "type": "item",
-            "name": "${mappedMCItemToIngameNameNoTags(data.customDrop)}",
+            "name": "${mappedMCItemToRegistryNameNoTags(data.customDrop)}",
             "weight": 1,
             "functions": [
               {

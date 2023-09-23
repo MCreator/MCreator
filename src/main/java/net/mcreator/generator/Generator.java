@@ -23,7 +23,6 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.generator.template.MinecraftCodeProvider;
 import net.mcreator.generator.template.TemplateExpressionParser;
@@ -157,9 +156,7 @@ public class Generator implements IGenerator, Closeable {
 		AtomicBoolean success = new AtomicBoolean(true);
 
 		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).stream().map(generatorTemplate -> {
-			if (generatorTemplate.getTemplateDefinition().get("canLock") != null
-					&& generatorTemplate.getTemplateDefinition().get("canLock")
-					.equals("true")) // can this file be locked
+			if (generatorTemplate.canBeLocked()) // can this file be locked
 				if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
 					return null; // if they are, we skip this file
 
@@ -347,15 +344,12 @@ public class Generator implements IGenerator, Closeable {
 
 		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new HashMap<>();
 		for (ModElement modElement : workspace.getModElements()) {
-			GeneratableElement generatableElement = modElement.getGeneratableElement();
-			if (generatableElement instanceof ICommonType) {
-				Collection<BaseType> baseTypes = ((ICommonType) generatableElement).getBaseTypesProvided();
-				for (BaseType baseType : baseTypes) {
-					if (!baseTypeListMap.containsKey(baseType))
-						baseTypeListMap.put(baseType, new ArrayList<>());
+			Collection<BaseType> baseTypes = modElement.getBaseTypesProvided();
+			for (BaseType baseType : baseTypes) {
+				if (!baseTypeListMap.containsKey(baseType))
+					baseTypeListMap.put(baseType, new ArrayList<>());
 
-					baseTypeListMap.get(baseType).add(generatableElement);
-				}
+				baseTypeListMap.get(baseType).add(modElement.getGeneratableElement());
 			}
 		}
 

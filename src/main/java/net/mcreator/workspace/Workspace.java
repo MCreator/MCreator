@@ -42,7 +42,6 @@ import java.awt.*;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -67,14 +66,14 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	// transient fields
 	private transient boolean changed = false;
-	transient WorkspaceFileManager fileManager;
+	protected transient WorkspaceFileManager fileManager;
 	protected transient Generator generator;
 	private transient boolean regenerateRequired = false;
 	private transient boolean failingGradleDependencies = false;
 
 	@Nonnull private final transient WorkspaceInfo workspaceInfo;
 
-	private Workspace(WorkspaceSettings workspaceSettings) {
+	protected Workspace(WorkspaceSettings workspaceSettings) {
 		this();
 		this.workspaceSettings = workspaceSettings;
 	}
@@ -281,14 +280,14 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return changed;
 	}
 
-	void reloadModElements() {
+	protected void reloadModElements() {
 		// While reiniting, list may change due to converters, so we need to copy it
 		for (ModElement modElement : Set.copyOf(mod_elements)) {
 			modElement.reinit(this);
 		}
 	}
 
-	void reloadFolderStructure() {
+	protected void reloadFolderStructure() {
 		this.foldersRoot.updateStructure();
 
 		Set<String> validPaths = foldersRoot.getRecursiveFolderChildren().stream().map(FolderElement::getPath)
@@ -535,23 +534,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		reloadModElements();
 		reloadFolderStructure();
 		LOG.info("Reloaded current workspace from the workspace file");
-	}
-
-	@SuppressWarnings("unused") public final static class VirtualWorkspace extends Workspace {
-
-		public VirtualWorkspace(Workspace original, String workspace_string) throws IOException {
-			super(null);
-			Workspace retval = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
-			if (retval == null)
-				throw new IOException("Failed to parse workspace string");
-			this.loadStoredDataFrom(retval);
-			this.generator = new Generator(this);
-			this.generator.setGradleCache(this.generator.getGradleCache());
-			this.fileManager = original.getFileManager();
-			this.reloadModElements();
-			this.reloadFolderStructure();
-		}
-
 	}
 
 }
