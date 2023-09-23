@@ -23,6 +23,7 @@ import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
@@ -71,7 +72,7 @@ import java.util.*;
 	public boolean enableMeleeDamage;
 	public double damageVsEntity;
 
-	public List<String> specialInfo;
+	public StringListProcedure specialInformation;
 	public boolean hasGlow;
 	public Procedure glowCondition;
 
