@@ -156,9 +156,7 @@ public class Generator implements IGenerator, Closeable {
 		AtomicBoolean success = new AtomicBoolean(true);
 
 		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).stream().map(generatorTemplate -> {
-			if (generatorTemplate.getTemplateDefinition().get("canLock") != null
-					&& generatorTemplate.getTemplateDefinition().get("canLock")
-					.equals("true")) // can this file be locked
+			if (generatorTemplate.canBeLocked()) // can this file be locked
 				if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
 					return null; // if they are, we skip this file
 
