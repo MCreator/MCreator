@@ -93,19 +93,19 @@ package ${package}.client.screens;
                     <#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-                    <#if component.getAnchorPoint().name() == "TOP_LEFT">
+                    <#if component.anchorPoint.name() == "TOP_LEFT">
                     	posX = ${component.x};
                     	posY = ${component.y};
-					<#elseif component.getAnchorPoint().name() == "TOP_RIGHT">
+					<#elseif component.anchorPoint.name() == "TOP_RIGHT">
 						posX = w - (427 - ${component.x});
 						posY = ${component.y};
-					<#elseif component.getAnchorPoint().name() == "BOTTOM_LEFT">
+					<#elseif component.anchorPoint.name() == "BOTTOM_LEFT">
 						posX = ${component.x};
 						posY = h - (240 - ${component.y});
-                    <#elseif component.getAnchorPoint().name() == "BOTTOM_RIGHT">
+                    <#elseif component.anchorPoint.name() == "BOTTOM_RIGHT">
                     	posX = w - (427 - ${component.x});
 						posY = h - (240 - ${component.y});
-					<#elseif component.getAnchorPoint().name() == "CENTER">
+					<#elseif component.anchorPoint.name() == "CENTER">
 						posX = w / 2 + ${component.x - 213};
 						posY = h / 2 + ${component.y - 120};
 					</#if>
