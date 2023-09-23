@@ -29,10 +29,8 @@ import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.element.parts.gui.*;
-import net.mcreator.element.parts.procedure.LogicProcedure;
-import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.parts.procedure.StringProcedure;
+import net.mcreator.element.parts.procedure.*;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
@@ -468,13 +466,8 @@ public class TestWorkspaceDataProvider {
 					new Sound(modElement.getWorkspace(),
 							getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			fluid.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
-			fluid.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				fluid.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				fluid.specialInfo = new ArrayList<>();
-			}
+			fluid.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			fluid.resistance = 52.2;
 			fluid.emissiveRendering = _true;
 			fluid.luminance = 6;
@@ -646,12 +639,8 @@ public class TestWorkspaceDataProvider {
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			dimension.igniterName = modElement.getName();
-			if (!emptyLists) {
-				dimension.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				dimension.specialInfo = new ArrayList<>();
-			}
+			dimension.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			dimension.worldGenType = new String[] { "Nether like gen", "Normal world gen", "End like gen",
 					"Normal world gen" }[valueIndex];
 			dimension.mainFillerBlock = new MItemBlock(modElement.getWorkspace(),
@@ -675,7 +664,6 @@ public class TestWorkspaceDataProvider {
 			structure.spawnHeightOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnXOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
 			structure.spawnZOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
-			structure.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			structure.spawnLocation = getRandomString(random, Arrays.asList("Ground", "Air", "Underground"));
 			structure.surfaceDetectionType = getRandomString(random,
 					Arrays.asList("First motion blocking block", "First block"));
@@ -687,7 +675,7 @@ public class TestWorkspaceDataProvider {
 				structure.restrictionBlocks.addAll(
 						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_surface"));
+				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:test/tag"));
 			}
 			if (_true) {
@@ -717,21 +705,14 @@ public class TestWorkspaceDataProvider {
 			armor.leggingsItemCustomModelName = "Normal";
 			armor.bootsItemRenderType = 0;
 			armor.bootsItemCustomModelName = "Normal";
-			if (!emptyLists) {
-				armor.helmetSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-				armor.bodySpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-				armor.leggingsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-				armor.bootsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				armor.helmetSpecialInfo = new ArrayList<>();
-				armor.bodySpecialInfo = new ArrayList<>();
-				armor.leggingsSpecialInfo = new ArrayList<>();
-				armor.bootsSpecialInfo = new ArrayList<>();
-			}
+			armor.helmetSpecialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
+			armor.bodySpecialInformation = new StringListProcedure(emptyLists ? null : "string2",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
+			armor.leggingsSpecialInformation = new StringListProcedure(emptyLists ? null : "string3",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
+			armor.bootsSpecialInformation = new StringListProcedure(emptyLists ? null : "string4",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			armor.helmetImmuneToFire = _true;
 			armor.bodyImmuneToFire = !_true;
 			armor.leggingsImmuneToFire = _true;
@@ -770,7 +751,6 @@ public class TestWorkspaceDataProvider {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			plant.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			plant.texture = "test";
@@ -809,13 +789,8 @@ public class TestWorkspaceDataProvider {
 			plant.forceTicking = !_true;
 			plant.hasTileEntity = !_true;
 			plant.isSolid = _true;
-			plant.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				plant.specialInfo = new ArrayList<>();
-			}
+			plant.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			plant.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
@@ -927,13 +902,8 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 6.53;
-
-			if (!emptyLists) {
-				item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				item.specialInfo = new ArrayList<>();
-			}
+			item.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			item.texture = "test2";
 			item.renderType = 0;
 			item.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
@@ -1175,7 +1145,6 @@ public class TestWorkspaceDataProvider {
 				block.fluidRestrictions.add(new net.mcreator.element.parts.Fluid(modElement.getWorkspace(),
 						getRandomItem(random, ElementUtil.loadAllFluids(modElement.getWorkspace()))));
 			}
-			block.spawnWorldTypes = new ArrayList<>(Arrays.asList("Nether", "Surface", "End"));
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				block.restrictionBiomes.addAll(
@@ -1226,13 +1195,8 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = "test4";
 			block.textureRight = "test5";
 			block.textureBack = "test6";
-			block.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				block.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				block.specialInfo = new ArrayList<>();
-			}
+			block.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			block.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
 							"Water", "Sky", "Fog", "Water fog"));
@@ -1345,12 +1309,8 @@ public class TestWorkspaceDataProvider {
 			musicDisc.analogOutput = 6;
 			musicDisc.music = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			if (!emptyLists) {
-				musicDisc.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				musicDisc.specialInfo = new ArrayList<>();
-			}
+			musicDisc.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			musicDisc.texture = "itest";
 			return musicDisc;
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
@@ -1516,9 +1476,6 @@ public class TestWorkspaceDataProvider {
 			Feature feature = new Feature(modElement);
 			feature.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));
-			feature.restrictionDimensions = emptyLists ?
-					new ArrayList<>() :
-					new ArrayList<>(Arrays.asList("Surface", "Nether"));
 			feature.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
 				feature.restrictionBiomes.addAll(
@@ -1542,9 +1499,9 @@ public class TestWorkspaceDataProvider {
 		livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
 		livingEntity.mobModelTexture = "test.png";
 		livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
-		livingEntity.transparentModelCondition = new Procedure("condition1");
-		livingEntity.isShakingCondition = new Procedure("condition2");
-		livingEntity.solidBoundingBox = new LogicProcedure(_true ? "condition3" : null, _true);
+		livingEntity.transparentModelCondition = new LogicProcedure(emptyLists ? "condition1" : null, _true);
+		livingEntity.isShakingCondition = new LogicProcedure(emptyLists ? "condition2" : null, !_true);
+		livingEntity.solidBoundingBox = new LogicProcedure(emptyLists ? "condition3" : null, _true);
 		livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 		livingEntity.spawnEggBaseColor = Color.red;
 		livingEntity.spawnEggDotColor = Color.green;
@@ -1689,13 +1646,8 @@ public class TestWorkspaceDataProvider {
 		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
 		tool.hasGlow = _true;
-		tool.specialInfo = new ArrayList<>();
-		if (!emptyLists) {
-			tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-					"info 1, info 2, test \\, is this, another one");
-		} else {
-			tool.specialInfo = new ArrayList<>();
-		}
+		tool.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+				Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 		if (!emptyLists) {
 			List<MCItem> blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
 			tool.blocksAffected.addAll(

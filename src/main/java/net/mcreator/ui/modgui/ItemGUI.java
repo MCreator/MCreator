@@ -28,6 +28,7 @@ import net.mcreator.element.types.Item;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -40,7 +41,9 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -68,7 +71,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private TextureHolder texture;
 
-	private final JTextField specialInfo = new JTextField(20);
+	private StringListProcedureSelector specialInformation;
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 0, 64, 1));
 	private final VTextField name = new VTextField(20);
@@ -178,6 +181,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onRangedItemUsed = new ProcedureSelector(this.withEntry("item/when_used"), mcreator,
 				L10N.t("elementgui.item.event_on_use"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator,
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
@@ -220,24 +227,16 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel destal2 = new JPanel(new BorderLayout(0, 10));
 		destal2.setOpaque(false);
 
-		JPanel destal = new JPanel(new GridLayout(1, 2, 15, 15));
-		destal.setOpaque(false);
 		JComponent destal1 = PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
 						L10N.label("elementgui.item.glowing_effect")), hasGlow, glowCondition);
-
-		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.item.tooltip_tip")));
-		destal.add(specialInfo);
 
 		hasGlow.setOpaque(false);
 		hasGlow.setSelected(false);
 
 		hasGlow.addActionListener(e -> updateGlowElements());
 
-		destal2.add("Center", PanelUtils.northAndCenterElement(destal, destal1, 10, 10));
-
-		ComponentUtils.deriveFont(specialInfo, 16);
+		destal2.add("Center", PanelUtils.northAndCenterElement(destal1, specialInformation, 10, 10));
 
 		ComponentUtils.deriveFont(renderType, 16);
 
@@ -256,8 +255,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.item.item_3d_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		destal2.add("North", PanelUtils.totalCenterInPanel(
-				PanelUtils.join(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
+		destal2.add("North", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
+				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 		sbbp2.setOpaque(false);
@@ -547,6 +546,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onEntitySwing.refreshListKeepSelected();
 		onDroppedByPlayer.refreshListKeepSelected();
 		onFinishUsingItem.refreshListKeepSelected();
+		specialInformation.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 		onRangedItemUsed.refreshListKeepSelected();
 		useCondition.refreshListKeepSelected();
@@ -581,8 +581,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		name.setText(item.name);
 		rarity.setSelectedItem(item.rarity);
 		texture.setTextureFromTextureName(item.texture);
-		specialInfo.setText(
-				item.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		onRightClickedInAir.setSelectedProcedure(item.onRightClickedInAir);
 		onRightClickedOnBlock.setSelectedProcedure(item.onRightClickedOnBlock);
 		onCrafted.setSelectedProcedure(item.onCrafted);
@@ -604,6 +602,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		stayInGridWhenCrafting.setSelected(item.stayInGridWhenCrafting);
 		damageOnCrafting.setSelected(item.damageOnCrafting);
 		hasGlow.setSelected(item.hasGlow);
+		specialInformation.setSelectedProcedure(item.specialInformation);
 		glowCondition.setSelectedProcedure(item.glowCondition);
 		damageVsEntity.setValue(item.damageVsEntity);
 		enableMeleeDamage.setSelected(item.enableMeleeDamage);
@@ -653,6 +652,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		item.damageOnCrafting = damageOnCrafting.isSelected();
 		item.hasGlow = hasGlow.isSelected();
+		item.specialInformation = specialInformation.getSelectedProcedure();
 		item.glowCondition = glowCondition.getSelectedProcedure();
 		item.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		item.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
@@ -681,8 +681,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.projectile = new ProjectileEntry(mcreator.getWorkspace(), projectile.getSelectedItem());
 		item.onRangedItemUsed = onRangedItemUsed.getSelectedProcedure();
 		item.useCondition = useCondition.getSelectedProcedure();
-
-		item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		item.texture = texture.getID();
 		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());

@@ -63,7 +63,8 @@ public class ConverterRegistry {
 			new AdvancementTextureConverter()
 		));
 		put(ModElementType.ARMOR, List.of(
-			new ArmorTexturesConverter()
+			new ArmorTexturesConverter(),
+			new SpecialInformationConverter()
 		));
 		put(ModElementType.BIOME, List.of(
 			new BiomeSpawnListConverter(),
@@ -78,14 +79,18 @@ public class ConverterRegistry {
 			new BlockLightOpacityFixer(),
 			new BlockRequiresCorrectToolConverter(),
 			new BlockOreReplacementBlocksFixer(),
-			new BlockGenerationConditionRemover()
+			new BlockGenerationConditionRemover(),
+			new BlockFeatureDimensionRestrictionConverter(),
+			new SpecialInformationConverter()
 		));
 		put(ModElementType.DIMENSION, List.of(
-			new DimensionLuminanceFixer()
+			new DimensionLuminanceFixer(),
+			new SpecialInformationConverter()
 		));
 		put(ModElementType.FLUID, List.of(
 			new FluidNameFixer(),
-			new FluidGenToFeatureConverter()
+			new FluidGenToFeatureConverter(),
+			new SpecialInformationConverter()
 		));
 		put(ModElementType.COMMAND, List.of(
 			new CommandParameterBlockFixer()
@@ -119,7 +124,9 @@ public class ConverterRegistry {
 		put(ModElementType.PLANT, List.of(
 			new PlantLuminanceFixer(),
 			new PlantGenerationTypeConverter(),
-			new PlantGenerationConditionRemover()
+			new PlantGenerationConditionRemover(),
+			new BlockFeatureDimensionRestrictionConverter(),
+			new SpecialInformationConverter()
 		));
 		put(ModElementType.POTION, List.of(
 			new PotionToEffectConverter()
@@ -149,10 +156,21 @@ public class ConverterRegistry {
 			new RecipeTypeConverter()
 		));
 		put(ModElementType.ITEM, List.of(
-			new ItemDispenseBehaviorToItemExtensionConverter()
+			new ItemDispenseBehaviorToItemExtensionConverter(),
+			new SpecialInformationConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
-			new HugeFungusFeatureConverter()
+			new HugeFungusFeatureConverter(),
+			new FeatureDimensionRestrictionConverter()
+		));
+		put(ModElementType.STRUCTURE, List.of(
+			new StructureDimensionRestrictionConverter()
+		));
+		put(ModElementType.MUSICDISC, List.of(
+			new SpecialInformationConverter()
+		));
+		put(ModElementType.TOOL, List.of(
+			new SpecialInformationConverter()
 		));
 	}};
 	//@formatter:on
