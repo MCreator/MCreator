@@ -7,8 +7,8 @@
     "experience": ${data.xpReward},
 	"cookingtime": ${data.cookingTime},
     "ingredient": {
-      ${mappedMCItemToIngameItemName(data.campfireCookingInputStack)}
+      ${mappedMCItemToItemObjectJSON(data.campfireCookingInputStack)}
     },
-    "result": "${mappedMCItemToIngameNameNoTags(data.campfireCookingReturnStack)}"
+    "result": "${mappedMCItemToRegistryName(data.campfireCookingReturnStack)}"
 }
 <#-- @formatter:on -->
