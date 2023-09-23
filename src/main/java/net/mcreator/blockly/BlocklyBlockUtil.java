@@ -18,6 +18,7 @@
 
 package net.mcreator.blockly;
 
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -114,7 +115,8 @@ public class BlocklyBlockUtil {
 	 * @return Block's render number
 	 */
 	public static Color getBlockColorFromHUE(int hue) {
-		return Color.getHSBColor(hue / 360f, 0.37f, 0.6f);
+		return Color.getHSBColor(hue / 360f, PreferencesManager.PREFERENCES.blockly.colorSaturation.get() / 100f,
+				PreferencesManager.PREFERENCES.blockly.colorValue.get() / 100f);
 	}
 
 	/**

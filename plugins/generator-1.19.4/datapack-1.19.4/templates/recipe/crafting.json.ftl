@@ -13,7 +13,7 @@
           <#assign ingredients = "">
           <#list data.recipeSlots as element>
               <#if !element.isEmpty()>
-                  <#assign ingredients += "{${mappedMCItemToIngameItemName(element)}},">
+                  <#assign ingredients += "{${mappedMCItemToItemObjectJSON(element)}},">
               </#if>
           </#list>
             ${ingredients[0..(ingredients?last_index_of(',') - 1)]}
@@ -23,7 +23,7 @@
         <#assign rm = [], i = 0>
         "pattern": [
         <#list recipeArray as rl>
-        		"<#list rl as re><#if !re.isEmpty()><#assign rm+=["\"${i}\": {${mappedMCItemToIngameItemName(re)}}"]/>${i}<#else> </#if><#assign i+=1></#list>"<#sep>,
+        		"<#list rl as re><#if !re.isEmpty()><#assign rm+=["\"${i}\": {${mappedMCItemToItemObjectJSON(re)}}"]/>${i}<#else> </#if><#assign i+=1></#list>"<#sep>,
         </#list>
         ],
         "key": {
@@ -33,7 +33,7 @@
         },
     </#if>
     "result": {
-        ${mappedMCItemToIngameItemName(data.recipeReturnStack)},
+        ${mappedMCItemToItemObjectJSON(data.recipeReturnStack)},
         "count": ${data.recipeRetstackSize}
     }
 }

@@ -24,6 +24,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.*;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -36,7 +37,10 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class RangedItem extends GeneratableElement
 		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture {
@@ -45,7 +49,7 @@ import java.util.*;
 	@TextureReference(TextureType.ITEM) public String texture;
 	@Nonnull public String customModelName;
 	public String name;
-	public List<String> specialInfo;
+	public StringListProcedure specialInformation;
 	public TabEntry creativeTab;
 	public int stackSize;
 	public MItemBlock ammoItem;
@@ -84,8 +88,6 @@ import java.util.*;
 
 		this.stackSize = 1;
 		this.animation = "bow";
-
-		this.specialInfo = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

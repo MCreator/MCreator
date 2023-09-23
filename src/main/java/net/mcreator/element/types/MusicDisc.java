@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -40,7 +41,7 @@ public class MusicDisc extends GeneratableElement implements IItem, IItemWithTex
 	@TextureReference(TextureType.ITEM) public String texture;
 	public String description;
 	public TabEntry creativeTab;
-	public List<String> specialInfo;
+	public StringListProcedure specialInformation;
 	public boolean hasGlow;
 
 	public Sound music;

@@ -4,11 +4,11 @@
     "values": [
       <#if data.type == "Items">
           <#list w.filterBrokenReferences(data.items) as value>
-            "${mappedMCItemToIngameNameNoTags(value)}"<#if value?has_next>,</#if>
+            "${mappedMCItemToRegistryName(value, true)}"<#if value?has_next>,</#if>
           </#list>
       <#elseif data.type == "Blocks">
           <#list w.filterBrokenReferences(data.blocks) as value>
-            "${mappedMCItemToIngameNameNoTags(value)}"<#if value?has_next>,</#if>
+            "${mappedMCItemToRegistryName(value, true)}"<#if value?has_next>,</#if>
           </#list>
       <#elseif data.type == "Functions">
           <#list data.functions as value>
