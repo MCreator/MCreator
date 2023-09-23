@@ -64,7 +64,7 @@ public class ItemHasGlowConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 50;
+		return 51;
 	}
 
 }
