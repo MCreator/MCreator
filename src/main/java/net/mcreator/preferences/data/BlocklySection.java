@@ -30,6 +30,7 @@ public class BlocklySection extends PreferencesSection {
 	public IntegerEntry colorSaturation;
 	public IntegerEntry colorValue;
 	public BooleanEntry useSmartSort;
+	public StringEntry expandCategories;
 	public BooleanEntry enableComments;
 	public BooleanEntry enableCollapse;
 	public BooleanEntry enableTrashcan;
@@ -46,6 +47,7 @@ public class BlocklySection extends PreferencesSection {
 		colorSaturation = addEntry(new IntegerEntry("colorSaturation", 45, 30, 100));
 		colorValue = addEntry(new IntegerEntry("colorValue", 65, 30, 100));
 		useSmartSort = addEntry(new BooleanEntry("useSmartSort", true));
+		expandCategories = addEntry(new StringEntry("expandCategories", "Default", "Default", "Always", "Never"));
 		enableComments = addEntry(new BooleanEntry("enableComments", true));
 		enableCollapse = addEntry(new BooleanEntry("enableCollapse", true));
 		enableTrashcan = addEntry(new BooleanEntry("enableTrashcan", true));

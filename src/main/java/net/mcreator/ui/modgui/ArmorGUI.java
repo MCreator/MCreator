@@ -38,6 +38,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -54,6 +55,7 @@ import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -105,10 +107,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final VComboBox<Model> leggingsModel = new SearchableComboBox<>(new Model[] { defaultModel });
 	private final VComboBox<Model> bootsModel = new SearchableComboBox<>(new Model[] { defaultModel });
 
-	private final JTextField helmetSpecialInfo = new JTextField(20);
-	private final JTextField bodySpecialInfo = new JTextField(20);
-	private final JTextField leggingsSpecialInfo = new JTextField(20);
-	private final JTextField bootsSpecialInfo = new JTextField(20);
+	private StringListProcedureSelector helmetSpecialInformation;
+	private StringListProcedureSelector bodySpecialInformation;
+	private StringListProcedureSelector leggingsSpecialInformation;
+	private StringListProcedureSelector bootsSpecialInformation;
 
 	private ActionListener helmetModelListener = null;
 	private ActionListener bodyModelListener = null;
@@ -226,6 +228,23 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.t("elementgui.armor.boots_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
+		helmetSpecialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+		bodySpecialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+		leggingsSpecialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"),
+				mcreator, L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+		bootsSpecialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+
 		repairItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 
 		armorTextureFile.setRenderer(new WTextureComboBoxRenderer(element -> {
@@ -297,11 +316,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		ComponentUtils.deriveFont(leggingsName, 16);
 		ComponentUtils.deriveFont(bootsName, 16);
 
-		ComponentUtils.deriveFont(helmetSpecialInfo, 16);
-		ComponentUtils.deriveFont(bodySpecialInfo, 16);
-		ComponentUtils.deriveFont(leggingsSpecialInfo, 16);
-		ComponentUtils.deriveFont(bootsSpecialInfo, 16);
-
 		ComponentUtils.deriveFont(armorTextureFile, 16);
 
 		JPanel destal = new JPanel();
@@ -333,7 +347,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setOpaque(false);
 		bootsImmuneToFire.setOpaque(false);
 
-		JPanel helmetSubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
+		JPanel helmetSubPanel = new JPanel(new GridLayout(4, 2, 2, 2));
 		helmetSubPanel.setOpaque(false);
 
 		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
@@ -350,11 +364,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		helmetSubPanel.add(helmetImmuneToFire);
 
-		helmetSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
-		helmetSubPanel.add(helmetSpecialInfo);
-
 		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"),
-				PanelUtils.northAndCenterElement(helmetSubPanel, helmetPiglinNeutral, 2, 2));
+				PanelUtils.northAndCenterElement(helmetSubPanel,
+						PanelUtils.centerAndSouthElement(helmetSpecialInformation, helmetPiglinNeutral, 2, 2)));
 
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
 				enableHelmet);
@@ -376,7 +388,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		bodText.setPreferredSize(new Dimension(145, 110));
 
-		JPanel bodySubPanel = new JPanel(new GridLayout(6, 2, 2, 2));
+		JPanel bodySubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
 		bodySubPanel.setOpaque(false);
 
 		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
@@ -398,11 +410,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bodySubPanel.add(bodyImmuneToFire);
 
-		bodySubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
-		bodySubPanel.add(bodySpecialInfo);
-
 		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"),
-				PanelUtils.centerAndSouthElement(bodySubPanel, bodyPiglinNeutral, 2, 2));
+				PanelUtils.centerAndSouthElement(bodySubPanel,
+						PanelUtils.centerAndSouthElement(bodySpecialInformation, bodyPiglinNeutral, 2, 2)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.chestplate_name"), bodyName),
@@ -417,7 +427,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		legText.setPreferredSize(new Dimension(145, 110));
 
-		JPanel leggingsSubPanel = new JPanel(new GridLayout(6, 2, 2, 2));
+		JPanel leggingsSubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
 		leggingsSubPanel.setOpaque(false);
 
 		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
@@ -440,11 +450,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		leggingsSubPanel.add(leggingsImmuneToFire);
 
-		leggingsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
-		leggingsSubPanel.add(leggingsSpecialInfo);
-
 		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
-				PanelUtils.centerAndSouthElement(leggingsSubPanel, leggingsPiglinNeutral, 2, 2));
+				PanelUtils.centerAndSouthElement(leggingsSubPanel,
+						PanelUtils.centerAndSouthElement(leggingsSpecialInformation, leggingsPiglinNeutral, 2, 2)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
@@ -459,7 +467,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		bootText.setPreferredSize(new Dimension(145, 110));
 
-		JPanel bootsSubPanel = new JPanel(new GridLayout(6, 2, 2, 2));
+		JPanel bootsSubPanel = new JPanel(new GridLayout(5, 2, 2, 2));
 		bootsSubPanel.setOpaque(false);
 
 		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.supported_java")));
@@ -482,11 +490,9 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.label("elementgui.item.is_immune_to_fire")));
 		bootsSubPanel.add(bootsImmuneToFire);
 
-		bootsSubPanel.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.special_information")));
-		bootsSubPanel.add(bootsSpecialInfo);
-
 		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
-				PanelUtils.centerAndSouthElement(bootsSubPanel, bootsPiglinNeutral, 2, 2));
+				PanelUtils.centerAndSouthElement(bootsSubPanel,
+						PanelUtils.centerAndSouthElement(bootsSpecialInformation, bootsPiglinNeutral, 2, 2)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
@@ -782,6 +788,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		onBodyTick.refreshListKeepSelected();
 		onLeggingsTick.refreshListKeepSelected();
 		onBootsTick.refreshListKeepSelected();
+		helmetSpecialInformation.refreshListKeepSelected();
+		bodySpecialInformation.refreshListKeepSelected();
+		leggingsSpecialInformation.refreshListKeepSelected();
+		bootsSpecialInformation.refreshListKeepSelected();
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("COMBAT"));
 
@@ -900,6 +910,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		onBodyTick.setSelectedProcedure(armor.onBodyTick);
 		onLeggingsTick.setSelectedProcedure(armor.onLeggingsTick);
 		onBootsTick.setSelectedProcedure(armor.onBootsTick);
+		helmetSpecialInformation.setSelectedProcedure(armor.helmetSpecialInformation);
+		bodySpecialInformation.setSelectedProcedure(armor.bodySpecialInformation);
+		leggingsSpecialInformation.setSelectedProcedure(armor.leggingsSpecialInformation);
+		bootsSpecialInformation.setSelectedProcedure(armor.bootsSpecialInformation);
 		enableHelmet.setSelected(armor.enableHelmet);
 		enableBody.setSelected(armor.enableBody);
 		enableLeggings.setSelected(armor.enableLeggings);
@@ -915,15 +929,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsName.setText(armor.bootsName);
 		repairItems.setListElements(armor.repairItems);
 		equipSound.setSound(armor.equipSound);
-
-		helmetSpecialInfo.setText(armor.helmetSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
-				.collect(Collectors.joining(",")));
-		bodySpecialInfo.setText(
-				armor.bodySpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
-		leggingsSpecialInfo.setText(armor.leggingsSpecialInfo.stream().map(info -> info.replace(",", "\\,"))
-				.collect(Collectors.joining(",")));
-		bootsSpecialInfo.setText(
-				armor.bootsSpecialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
 		Model _helmetModel = armor.getHelmetModel();
 		if (_helmetModel != null && _helmetModel.getType() != null && _helmetModel.getReadableName() != null)
@@ -956,13 +961,17 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsModelPartR.setSelectedItem(armor.bootsModelPartR);
 
 		helmetCollapsiblePanel.toggleVisibility(
-				helmetModel.getSelectedItem() != defaultModel || !helmetSpecialInfo.getText().isEmpty());
+				helmetModel.getSelectedItem() != defaultModel || armor.helmetSpecialInformation.getName() != null
+						|| !armor.helmetSpecialInformation.getFixedValue().isEmpty());
 		bodyCollapsiblePanel.toggleVisibility(
-				bodyModel.getSelectedItem() != defaultModel || !bodySpecialInfo.getText().isEmpty());
+				bodyModel.getSelectedItem() != defaultModel || armor.bodySpecialInformation.getName() != null
+						|| !armor.bodySpecialInformation.getFixedValue().isEmpty());
 		leggingsCollapsiblePanel.toggleVisibility(
-				leggingsModel.getSelectedItem() != defaultModel || !leggingsSpecialInfo.getText().isEmpty());
+				leggingsModel.getSelectedItem() != defaultModel || armor.leggingsSpecialInformation.getName() != null
+						|| !armor.leggingsSpecialInformation.getFixedValue().isEmpty());
 		bootsCollapsiblePanel.toggleVisibility(
-				bootsModel.getSelectedItem() != defaultModel || !bootsSpecialInfo.getText().isEmpty());
+				bootsModel.getSelectedItem() != defaultModel || armor.bootsSpecialInformation.getName() != null
+						|| !armor.bootsSpecialInformation.getFixedValue().isEmpty());
 
 		helmetImmuneToFire.setSelected(armor.helmetImmuneToFire);
 		bodyImmuneToFire.setSelected(armor.bodyImmuneToFire);
@@ -1004,6 +1013,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.onBodyTick = onBodyTick.getSelectedProcedure();
 		armor.onLeggingsTick = onLeggingsTick.getSelectedProcedure();
 		armor.onBootsTick = onBootsTick.getSelectedProcedure();
+		armor.helmetSpecialInformation = helmetSpecialInformation.getSelectedProcedure();
+		armor.bodySpecialInformation = bodySpecialInformation.getSelectedProcedure();
+		armor.leggingsSpecialInformation = leggingsSpecialInformation.getSelectedProcedure();
+		armor.bootsSpecialInformation = bootsSpecialInformation.getSelectedProcedure();
 		armor.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		armor.armorTextureFile = armorTextureFile.getSelectedItem();
 		armor.maxDamage = (int) maxDamage.getValue();
@@ -1036,10 +1049,6 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bootsModelTexture = bootsModelTexture.getSelectedItem();
 		armor.equipSound = equipSound.getSound();
 		armor.repairItems = repairItems.getListElements();
-		armor.helmetSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(helmetSpecialInfo.getText());
-		armor.bodySpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(bodySpecialInfo.getText());
-		armor.leggingsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(leggingsSpecialInfo.getText());
-		armor.bootsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(bootsSpecialInfo.getText());
 		armor.helmetImmuneToFire = helmetImmuneToFire.isSelected();
 		armor.bodyImmuneToFire = bodyImmuneToFire.isSelected();
 		armor.leggingsImmuneToFire = leggingsImmuneToFire.isSelected();

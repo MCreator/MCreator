@@ -24,6 +24,7 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
@@ -64,10 +65,10 @@ import java.util.*;
 	public String leggingsName;
 	public String bootsName;
 
-	public List<String> helmetSpecialInfo;
-	public List<String> bodySpecialInfo;
-	public List<String> leggingsSpecialInfo;
-	public List<String> bootsSpecialInfo;
+	public StringListProcedure helmetSpecialInformation;
+	public StringListProcedure bodySpecialInformation;
+	public StringListProcedure leggingsSpecialInformation;
+	public StringListProcedure bootsSpecialInformation;
 
 	public String helmetModelName;
 	public String helmetModelPart;
@@ -139,11 +140,6 @@ import java.util.*;
 		this.leggingsItemCustomModelName = "Normal";
 		this.bootsItemRenderType = 0;
 		this.bootsItemCustomModelName = "Normal";
-
-		this.helmetSpecialInfo = new ArrayList<>();
-		this.bodySpecialInfo = new ArrayList<>();
-		this.leggingsSpecialInfo = new ArrayList<>();
-		this.bootsSpecialInfo = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
