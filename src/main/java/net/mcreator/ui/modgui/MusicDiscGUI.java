@@ -35,8 +35,8 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
-import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -130,7 +130,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel subpane2 = new JPanel(new GridLayout(7, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(6, 2, 45, 2));
 		subpane2.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -159,32 +159,23 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.common.creative_tab")));
 		subpane2.add(creativeTab);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-				L10N.label("elementgui.music_disc.has_glowing_effect")));
-		subpane2.add(hasGlow);
-
-		JPanel subpane3 = new JPanel(new BorderLayout(5, 2));
+		JPanel subpane3 = new JPanel(new BorderLayout(0, 2));
 		subpane3.setOpaque(false);
-		subpane3.add("Center", subpane2);
-		subpane3.add("South", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), specialInformation));
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.music_disc.disc_description_tip")));
-		subpane2.add(specialInfo);
+		subpane3.add("North", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), glowCondition, 0, 0));
+		subpane3.add("Center", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), specialInformation, 0, 0));
 
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
 		destal3.add("West", PanelUtils.totalCenterInPanel(
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.music_disc.disc_texture"))));
 
-		pane3.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(destal3), subpane3, 40, 40)));
 		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(destal3),
-				PanelUtils.centerAndSouthElement(subpane2, glowCondition, 2, 2), 40, 40)));
+				PanelUtils.centerAndSouthElement(subpane2, subpane3, 2, 2), 40, 40)));
 		pane3.setOpaque(false);
 
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		JPanel events = new JPanel(new GridLayout(3, 3, 10, 10));
+		JPanel events = new JPanel(new GridLayout(3, 3, 5, 5));
 		events.setOpaque(false);
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);

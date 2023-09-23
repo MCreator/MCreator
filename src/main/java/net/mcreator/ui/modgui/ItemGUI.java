@@ -206,10 +206,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
-		JPanel destal2 = new JPanel(new BorderLayout(0, 10));
+		JPanel destal2 = new JPanel(new BorderLayout(0, 5));
 		destal2.setOpaque(false);
 
-		destal2.add("Center", PanelUtils.northAndCenterElement(glowCondition, specialInformation, 10, 10));
+		destal2.add("Center", PanelUtils.northAndCenterElement(glowCondition, specialInformation, 0, 5));
 
 		ComponentUtils.deriveFont(renderType, 16);
 
@@ -369,7 +369,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		advancedProperties.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(4, 3, 10, 10));
+		JPanel events = new JPanel(new GridLayout(4, 3, 5, 5));
 		events.setOpaque(false);
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);

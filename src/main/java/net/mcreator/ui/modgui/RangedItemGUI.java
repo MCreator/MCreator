@@ -194,10 +194,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.ranged_item.texture"))));
 
 		sbbp2.add("South", glowCondition);
-		sbbp2.add("South", PanelUtils.centerAndSouthElement(PanelUtils.westAndEastElement(
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-						L10N.label("elementgui.ranged_item.enable_glowing")),
-				PanelUtils.westAndCenterElement(hasGlow, glowCondition)), specialInformation, 2, 2));
+		sbbp2.add("South", PanelUtils.centerAndSouthElement(glowCondition, specialInformation, 2, 2));
 
 		pane1.setOpaque(false);
 
@@ -470,7 +467,6 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		onEntitySwing.setSelectedProcedure(rangedItem.onEntitySwing);
 		onRangedItemUsed.setSelectedProcedure(rangedItem.onRangedItemUsed);
 		specialInformation.setSelectedProcedure(rangedItem.specialInformation);
-		hasGlow.setSelected(rangedItem.hasGlow);
 		glowCondition.setSelectedProcedure(rangedItem.glowCondition);
 		animation.setSelectedItem(rangedItem.animation);
 		damageVsEntity.setValue(rangedItem.damageVsEntity);

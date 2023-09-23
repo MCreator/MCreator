@@ -140,9 +140,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.tool.event_swings"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, 
-				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true, VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
 				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
@@ -186,25 +183,13 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.t("elementgui.tool.tool_3d_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		pane2.setOpaque(false);
-		pane2.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), PanelUtils.gridElements(1, 2,
-						HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-								L10N.label("elementgui.tool.tool_special_information")), specialInfo))));
-		JComponent glow = PanelUtils.join(FlowLayout.LEFT,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-						L10N.label("elementgui.tool.glowing_effect")), hasGlow, glowCondition);
-
-		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-						L10N.label("elementgui.tool.tooltip_tip")), specialInfo), glowCondition, 10, 10);
-		JComponent visualBottom = PanelUtils.centerAndSouthElement(glow, specialInformation, 10, 10);
+		JComponent visualBottom = PanelUtils.centerAndSouthElement(glowCondition, specialInformation, 0, 5);
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
 				PanelUtils.westAndCenterElement(
 						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")), rent), visualBottom,
-				10, 10)));
+				0, 5)));
 
 		JPanel selp = new JPanel(new GridLayout(14, 2, 10, 2));
 		selp.setOpaque(false);
@@ -279,7 +264,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		pane3.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(3, 3, 10, 10));
+		JPanel events = new JPanel(new GridLayout(3, 3, 5, 5));
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
 		events.add(onCrafted);
