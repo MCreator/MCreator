@@ -95,28 +95,28 @@ package ${package}.client.screens;
             </#list>
 
             <#list data.getComponentsOfType("Label") as component>
-                    <#if hasProcedure(component.displayCondition)>
-                        if (<@procedureOBJToConditionCode component.displayCondition/>)
-                    </#if>
-                    <#if component.anchorPoint.name() == "TOP_LEFT">
-						posX = ${component.x};
-						posY = ${component.y};
-					<#elseif component.anchorPoint.name() == "TOP_RIGHT">
-						posX = w - (427 - ${component.x});
-						posY = ${component.y};
-					<#elseif component.anchorPoint.name() == "BOTTOM_LEFT">
-						posX = ${component.x};
-						posY = h - (240 - ${component.y});
-					<#elseif component.anchorPoint.name() == "BOTTOM_RIGHT">
-						posX = w - (427 - ${component.x});
-						posY = h - (240 - ${component.y});
-					<#elseif component.anchorPoint.name() == "CENTER">
-						posX = w / 2 + ${component.x - 213};
-						posY = h / 2 + ${component.y - 120};
-					</#if>
-                    Minecraft.getInstance().font.draw(event.getPoseStack(),
-                        <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-                        posX, posY, ${component.color.getRGB()});
+                <#if hasProcedure(component.displayCondition)>
+                    if (<@procedureOBJToConditionCode component.displayCondition/>)
+                </#if>
+                <#if component.anchorPoint.name() == "TOP_LEFT">
+                    posX = ${component.x};
+                    posY = ${component.y};
+                <#elseif component.anchorPoint.name() == "TOP_RIGHT">
+                    posX = w - (427 - ${component.x});
+                    posY = ${component.y};
+                <#elseif component.anchorPoint.name() == "BOTTOM_LEFT">
+                    posX = ${component.x};
+                    posY = h - (240 - ${component.y});
+                <#elseif component.anchorPoint.name() == "BOTTOM_RIGHT">
+                    posX = w - (427 - ${component.x});
+                    posY = h - (240 - ${component.y});
+                <#elseif component.anchorPoint.name() == "CENTER">
+                    posX = w / 2 + ${component.x - 213};
+                    posY = h / 2 + ${component.y - 120};
+                </#if>
+                Minecraft.getInstance().font.draw(event.getPoseStack(),
+                    <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
+                    posX, posY, ${component.color.getRGB()});
             </#list>
 
 			posX = w / 2;
