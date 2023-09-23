@@ -83,6 +83,6 @@ public class ProcedureArrowProjectileFixer implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 50;
+		return 51;
 	}
 }

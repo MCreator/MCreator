@@ -29,6 +29,7 @@ import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.Item;
 import net.mcreator.element.types.Projectile;
 import net.mcreator.io.FileIO;
@@ -107,6 +108,7 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			workspace.addModElement(projectile.getModElement());
 			workspace.getGenerator().generateElement(projectile);
 			workspace.getModElementManager().storeModElement(projectile);
+			workspace.reloadFromFS();
 
 			Item item = new Item(new ModElement(workspace, input.getModElement().getName(), ModElementType.ITEM));
 			item.name = rangedItem.get("name").getAsString();
@@ -118,11 +120,21 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 				item.customModelName = "Ranged item"; // Convert the ranged items' normal model to items' RI model option
 			item.creativeTab = new TabEntry(workspace,
 					rangedItem.get("creativeTab").getAsJsonObject().get("value").getAsString());
-			List<String> specialInfo = new ArrayList<>();
-			if (rangedItem.get("specialInfo") != null)
+			List<String> infoFixedValues = new ArrayList<>();
+			String infoProcedureName = null;
+
+			if (rangedItem.get("specialInfo") != null) {
 				rangedItem.getAsJsonArray("specialInfo").iterator()
-						.forEachRemaining(element -> specialInfo.add(element.getAsString()));
-			item.specialInfo = specialInfo;
+						.forEachRemaining(element -> infoFixedValues.add(element.getAsString()));
+			} else if (rangedItem.get("specialInformation") != null) {
+				if (rangedItem.get("specialInformation").getAsJsonObject().get("fixedValue") != null) {
+					rangedItem.get("specialInformation").getAsJsonObject().getAsJsonArray("fixedValue").iterator()
+							.forEachRemaining(element -> infoFixedValues.add(element.getAsString()));
+				}
+				infoProcedureName = rangedItem.get("specialInformation").getAsJsonObject().get("name").getAsString();
+			}
+			item.specialInformation = new StringListProcedure(infoProcedureName, infoFixedValues);
+			
 			item.stackSize = rangedItem.get("stackSize").getAsInt();
 			if (rangedItem.get("animation") != null)
 				item.animation = rangedItem.get("animation").getAsString();
@@ -155,6 +167,6 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 50;
+		return 51;
 	}
 }
