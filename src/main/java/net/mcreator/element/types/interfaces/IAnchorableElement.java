@@ -26,10 +26,17 @@ public interface IAnchorableElement {
 	AnchorPoint getAnchorPoint();
 
 	enum AnchorPoint {
-		TOP_LEFT, TOP_RIGHT, CENTER, BOTTOM_LEFT, BOTTOM_RIGHT;
+		TOP_LEFT("top_left"), TOP_RIGHT("top_right"), CENTER("center"), BOTTOM_LEFT("bottom_left"), BOTTOM_RIGHT("bottom_right");
 
-		public String displayName() {
-			return L10N.t("dialog.gui.anchor_" + name().toLowerCase());
+		private final String id;
+
+		AnchorPoint(String id) {
+			this.id = id;
+		}
+
+		@Override
+		public String toString() {
+			return L10N.t("dialog.gui.anchor." + id);
 		}
 	}
 }
