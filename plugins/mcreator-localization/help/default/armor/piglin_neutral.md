@@ -1,1 +1,1 @@
-This condition controls whether the armor piece makes piglins around neutrals, like gold ones.
+This condition controls whether the armor piece makes nearby piglins neutral, like gold armor.
