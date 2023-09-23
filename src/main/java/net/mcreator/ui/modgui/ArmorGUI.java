@@ -366,7 +366,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"),
 				PanelUtils.northAndCenterElement(helmetSubPanel,
-						PanelUtils.centerAndSouthElement(helmetSpecialInformation, helmetPiglinNeutral, 2, 2)));
+						PanelUtils.centerAndSouthElement(helmetPiglinNeutral, helmetSpecialInformation, 2, 2)));
 
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
 				enableHelmet);
@@ -412,7 +412,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"),
 				PanelUtils.centerAndSouthElement(bodySubPanel,
-						PanelUtils.centerAndSouthElement(bodySpecialInformation, bodyPiglinNeutral, 2, 2)));
+						PanelUtils.centerAndSouthElement(bodyPiglinNeutral, bodySpecialInformation, 2, 2)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.chestplate_name"), bodyName),
@@ -452,7 +452,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
 				PanelUtils.centerAndSouthElement(leggingsSubPanel,
-						PanelUtils.centerAndSouthElement(leggingsSpecialInformation, leggingsPiglinNeutral, 2, 2)));
+						PanelUtils.centerAndSouthElement(leggingsPiglinNeutral, leggingsSpecialInformation, 2, 2)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
@@ -492,7 +492,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
 				PanelUtils.centerAndSouthElement(bootsSubPanel,
-						PanelUtils.centerAndSouthElement(bootsSpecialInformation, bootsPiglinNeutral, 2, 2)));
+						PanelUtils.centerAndSouthElement(bootsPiglinNeutral, bootsSpecialInformation, 2, 2)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
