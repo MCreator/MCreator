@@ -26,16 +26,11 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
-import net.mcreator.minecraft.DataListLoader;
-import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.ui.init.BlockItemIcons;
-import net.mcreator.ui.init.UIRES;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.util.image.TiledImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.util.Collection;
 import java.util.Collections;
@@ -68,11 +63,14 @@ public class Projectile extends GeneratableElement implements IEntityWithModel, 
 		return Model.getModelByParams(getModElement().getWorkspace(), entityModel, modelType);
 	}
 
-	@SuppressWarnings("OptionalGetWithoutIsPresent") @Override public BufferedImage generateModElementPicture() {
-		return ImageUtils.toBufferedImage(BlockItemIcons.getIconFor(projectileItem.getDataListEntry().get().getTexture()).getImage());
+	@Override public BufferedImage generateModElementPicture() {
+		return ImageUtils.toBufferedImage(
+				MCItem.getBlockIconBasedOnName(getModElement().getWorkspace(), projectileItem.getUnmappedValue())
+						.getImage());
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		return Collections.singletonList(BaseType.ENTITY);
 	}
+
 }
