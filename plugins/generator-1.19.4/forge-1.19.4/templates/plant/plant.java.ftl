@@ -154,14 +154,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-		</#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation, true/>
 
 	<#if data.fireSpreadSpeed != 0>
 	@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {

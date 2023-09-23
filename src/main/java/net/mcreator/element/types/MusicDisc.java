@@ -23,6 +23,7 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
@@ -39,7 +40,7 @@ public class MusicDisc extends GeneratableElement implements IItem, ITabContaine
 	public String texture;
 	public String description;
 	public TabEntry creativeTab;
-	public List<String> specialInfo;
+	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
 
 	public Sound music;

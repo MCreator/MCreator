@@ -25,6 +25,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -41,8 +42,10 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -93,7 +96,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 
 	private final SoundSelector shootSound = new SoundSelector(mcreator);
 
-	private final JTextField specialInfo = new JTextField(20);
+	public StringListProcedureSelector specialInformation;
 
 	private MCItemHolder ammoItem;
 	private MCItemHolder bulletItemTexture;
@@ -151,6 +154,10 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				L10N.t("elementgui.ranged_item.swinged_by_entity"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
+		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		useCondition = new ProcedureSelector(this.withEntry("rangeditem/use_condition"), mcreator,
 				L10N.t("elementgui.ranged_item.can_use"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -167,7 +174,6 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		bulletModel.setPreferredSize(new Dimension(400, 42));
 		bulletModel.setRenderer(new ModelComboBoxRenderer());
 		ComponentUtils.deriveFont(bulletModel, 16);
-		ComponentUtils.deriveFont(specialInfo, 16);
 
 		JPanel pane1 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
@@ -188,12 +194,16 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.ranged_item.texture"))));
 
 		sbbp2.add("South", glowCondition);
+		sbbp2.add("South", PanelUtils.centerAndSouthElement(PanelUtils.westAndEastElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
+						L10N.label("elementgui.ranged_item.enable_glowing")),
+				PanelUtils.westAndCenterElement(hasGlow, glowCondition)), specialInformation, 2, 2));
 
 		pane1.setOpaque(false);
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
 
-		JPanel selp = new JPanel(new GridLayout(11, 2, 5, 2));
+		JPanel selp = new JPanel(new GridLayout(10, 2, 5, 2));
 		selp.setOpaque(false);
 
 		JPanel selp2 = new JPanel(new GridLayout(8, 2, 10, 2));
@@ -213,10 +223,6 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
-
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.ranged_item.special_informations")));
-		selp.add(specialInfo);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
@@ -412,6 +418,7 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		onRangedItemUsed.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
 
+		specialInformation.refreshListKeepSelected();
 		useCondition.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 
@@ -462,12 +469,12 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		onBulletFlyingTick.setSelectedProcedure(rangedItem.onBulletFlyingTick);
 		onEntitySwing.setSelectedProcedure(rangedItem.onEntitySwing);
 		onRangedItemUsed.setSelectedProcedure(rangedItem.onRangedItemUsed);
+		specialInformation.setSelectedProcedure(rangedItem.specialInformation);
+		hasGlow.setSelected(rangedItem.hasGlow);
 		glowCondition.setSelectedProcedure(rangedItem.glowCondition);
 		animation.setSelectedItem(rangedItem.animation);
 		damageVsEntity.setValue(rangedItem.damageVsEntity);
 		enableMeleeDamage.setSelected(rangedItem.enableMeleeDamage);
-		specialInfo.setText(
-				rangedItem.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 
 		customBulletModelTexture.setSelectedItem(rangedItem.customBulletModelTexture);
 		useCondition.setSelectedProcedure(rangedItem.useCondition);
@@ -503,12 +510,12 @@ public class RangedItemGUI extends ModElementGUI<RangedItem> {
 		rangedItem.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		rangedItem.stackSize = (int) stackSize.getValue();
 		rangedItem.glowCondition = glowCondition.getSelectedProcedure();
+		rangedItem.specialInformation = specialInformation.getSelectedProcedure();
 		rangedItem.animation = (String) animation.getSelectedItem();
 		rangedItem.damageVsEntity = (double) damageVsEntity.getValue();
 		rangedItem.enableMeleeDamage = enableMeleeDamage.isSelected();
 		rangedItem.bulletModel = (Objects.requireNonNull(bulletModel.getSelectedItem())).getReadableName();
 		rangedItem.customBulletModelTexture = customBulletModelTexture.getSelectedItem();
-		rangedItem.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		rangedItem.useCondition = useCondition.getSelectedProcedure();
 
 		rangedItem.texture = texture.getID();

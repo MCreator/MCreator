@@ -4,13 +4,13 @@
     "type": "minecraft:smithing_transform",
     "template": [],
     "base": {
-      ${mappedMCItemToIngameItemName(data.smithingInputStack)}
+      ${mappedMCItemToItemObjectJSON(data.smithingInputStack)}
     },
     "addition": {
-      ${mappedMCItemToIngameItemName(data.smithingInputAdditionStack)}
+      ${mappedMCItemToItemObjectJSON(data.smithingInputAdditionStack)}
     },
     "result": {
-      ${mappedMCItemToIngameItemName(data.smithingReturnStack)}
+      ${mappedMCItemToItemObjectJSON(data.smithingReturnStack)}
     }
 }
 <#-- @formatter:on -->
