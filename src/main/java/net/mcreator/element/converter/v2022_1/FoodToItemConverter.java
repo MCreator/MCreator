@@ -27,6 +27,7 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.Item;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -59,7 +60,7 @@ public class FoodToItemConverter implements IConverter {
 			if (food.get("specialInfo") != null)
 				food.getAsJsonArray("specialInfo").iterator()
 						.forEachRemaining(element -> specialInfo.add(element.getAsString()));
-			item.specialInfo = specialInfo;
+			item.specialInformation = new StringListProcedure(null, specialInfo);
 			item.stackSize = food.get("stackSize").getAsInt();
 			item.isFood = true;
 			item.nutritionalValue = food.get("nutritionalValue").getAsInt();
