@@ -11,3 +11,16 @@ templates:
   - template: json/feature/placed_feature.json.ftl
     writer: json
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
+
+# Templates for custom structure feature
+global_templates:
+  - template: feature/structure_feature.java.ftl
+    writer: java
+    condition: ${w.hasFeaturesWithStructureFeature()}
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/StructureFeature.java"
+    hidden: true
+  - template: feature/structure_feature_configuration.java.ftl
+    writer: java
+    condition: ${w.hasFeaturesWithStructureFeature()}
+    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/configurations/StructureFeatureConfiguration.java"
+    hidden: true

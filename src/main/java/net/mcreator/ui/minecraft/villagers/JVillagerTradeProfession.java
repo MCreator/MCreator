@@ -29,7 +29,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.minecraft.JEntriesList;
+import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -109,7 +109,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 		parent.repaint();
 	}
 
-	public void reloadDataLists() {
+	@Override public void reloadDataLists() {
 		ComboBoxUtil.updateComboBoxContents(villagerProfession, ElementUtil.loadAllVillagerProfessions(workspace));
 	}
 
