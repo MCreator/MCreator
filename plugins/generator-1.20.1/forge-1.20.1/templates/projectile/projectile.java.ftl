@@ -74,47 +74,47 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 	}
 
 	<#if hasProcedure(data.onHitsPlayer)>
-		@Override public void playerTouch(Player entity) {
-			super.playerTouch(entity);
-			<@procedureCode data.onHitsPlayer, {
-				"x": "this.getX()",
-				"y": "this.getY()",
-				"z": "this.getZ()",
-				"entity": "entity",
-				"sourceentity": "this.getOwner()",
-				"immediatesourceentity": "this",
-				"world": "this.level()"
-			}/>
-		}
+	@Override public void playerTouch(Player entity) {
+		super.playerTouch(entity);
+		<@procedureCode data.onHitsPlayer, {
+			"x": "this.getX()",
+			"y": "this.getY()",
+			"z": "this.getZ()",
+			"entity": "entity",
+			"sourceentity": "this.getOwner()",
+			"immediatesourceentity": "this",
+			"world": "this.level()"
+		}/>
+	}
 	</#if>
 
 	<#if hasProcedure(data.onHitsEntity)>
-		@Override public void onHitEntity(EntityHitResult entityHitResult) {
-			super.onHitEntity(entityHitResult);
-			<@procedureCode data.onHitsEntity, {
-				"x": "this.getX()",
-				"y": "this.getY()",
-				"z": "this.getZ()",
-				"entity": "entityHitResult.getEntity()",
-				"sourceentity": "this.getOwner()",
-				"immediatesourceentity": "this",
-				"world": "this.level()"
-			}/>
-		}
+	@Override public void onHitEntity(EntityHitResult entityHitResult) {
+		super.onHitEntity(entityHitResult);
+		<@procedureCode data.onHitsEntity, {
+			"x": "this.getX()",
+			"y": "this.getY()",
+			"z": "this.getZ()",
+			"entity": "entityHitResult.getEntity()",
+			"sourceentity": "this.getOwner()",
+			"immediatesourceentity": "this",
+			"world": "this.level()"
+		}/>
+	}
 	</#if>
 
 	<#if hasProcedure(data.onHitsBlock)>
-		@Override public void onHitBlock(BlockHitResult blockHitResult) {
-			super.onHitBlock(blockHitResult);
-			<@procedureCode data.onHitsBlock, {
-				"x": "blockHitResult.getBlockPos().getX()",
-				"y": "blockHitResult.getBlockPos().getY()",
-				"z": "blockHitResult.getBlockPos().getZ()",
-				"entity": "this.getOwner()",
-				"immediatesourceentity": "this",
-				"world": "this.level()"
-			}/>
-		}
+	@Override public void onHitBlock(BlockHitResult blockHitResult) {
+		super.onHitBlock(blockHitResult);
+		<@procedureCode data.onHitsBlock, {
+			"x": "blockHitResult.getBlockPos().getX()",
+			"y": "blockHitResult.getBlockPos().getY()",
+			"z": "blockHitResult.getBlockPos().getZ()",
+			"entity": "this.getOwner()",
+			"immediatesourceentity": "this",
+			"world": "this.level()"
+		}/>
+	}
 	</#if>
 
 	@Override public void tick() {
