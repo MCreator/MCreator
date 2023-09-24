@@ -971,7 +971,7 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			projectile.power = 1.5;
 			projectile.damage = 2.3;
-			projectile.knockback = 5;
+			projectile.knockback = 7;
 			projectile.showParticles = _true;
 			projectile.igniteFire = _true;
 			projectile.projectileItem = new MItemBlock(modElement.getWorkspace(),
