@@ -140,7 +140,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		namespace.setSelectedItem(loottable.namespace);
 		name.getEditor().setItem(loottable.name);
 
-		lootTablePools.setPools(loottable.pools);
+		lootTablePools.setEntries(loottable.pools);
 	}
 
 	@Override public LootTable getElementFromGUI() {
@@ -151,7 +151,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		loottable.namespace = (String) namespace.getSelectedItem();
 		loottable.name = name.getEditor().getItem().toString();
 
-		loottable.pools = lootTablePools.getPools();
+		loottable.pools = lootTablePools.getEntries();
 
 		return loottable;
 	}
