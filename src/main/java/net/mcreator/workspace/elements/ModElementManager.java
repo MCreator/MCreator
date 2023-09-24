@@ -122,8 +122,11 @@ public final class ModElementManager {
 			if (cache.get(element).getModElement() == element) {
 				return cache.get(element);
 			} else {
+				ModElement cacheElement = cache.get(element).getModElement();
 				LOG.error(
-						"GeneratableElement cache contains element with same name but different object. This should not happen!");
+						"Cache contains mod element with same name but different object. This should not happen! Cache element: "
+								+ cacheElement.getName() + ", type: " + cacheElement.getType() + ", queried element: "
+								+ element.getName() + ", type: " + element.getType());
 			}
 		}
 
@@ -211,9 +214,9 @@ public final class ModElementManager {
 	}
 
 	/**
-	 * Invalidates the cache of this manager. May be used by some plugins.
+	 * Invalidates the generatable element cache
 	 */
-	@SuppressWarnings("unused") public void invalidateCache() {
+	public void invalidateCache() {
 		cache.clear();
 	}
 
