@@ -9,10 +9,10 @@
       "groups": [ "<#if data.group?has_content>${data.group}<#else>${modid}</#if>" ],
       "tags": [ "campfire" ],
       "input": {
-        ${mappedMCItemToIngameItemName(data.campfireCookingInputStack)}
+        ${mappedMCItemToItemObjectJSON(data.campfireCookingInputStack)}
       },
       "output": {
-        ${mappedMCItemToIngameItemName(data.campfireCookingReturnStack)}
+        ${mappedMCItemToItemObjectJSON(data.campfireCookingReturnStack)}
       }
     }
 }

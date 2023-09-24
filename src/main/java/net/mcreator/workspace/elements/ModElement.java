@@ -19,9 +19,11 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.*;
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.minecraft.MCItem;
@@ -268,6 +270,11 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 			this.path = null;
 		else
 			this.path = parent.getPath();
+	}
+
+	public Collection<BaseType> getBaseTypesProvided() {
+		return this.getGeneratableElement() instanceof ICommonType iCommonType ?
+				iCommonType.getBaseTypesProvided() : Collections.emptyList();
 	}
 
 	public static class ModElementDeserializer implements JsonDeserializer<ModElement> {

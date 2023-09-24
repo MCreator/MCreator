@@ -29,40 +29,24 @@
 -->
 
 <#-- @formatter:off -->
-<#include "../procedures.java.ftl">
-<#include "../mcitems.ftl">
+package ${package}.world.features.configurations;
 
-package ${package}.world.features.ores;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
+import com.mojang.serialization.Codec;
 
-public class ${name}Feature extends OreFeature {
-
-	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
-		<#list data.spawnWorldTypes as worldType>
-			<#if worldType == "Surface">
-				Level.OVERWORLD
-			<#elseif worldType == "Nether">
-				Level.NETHER
-			<#elseif worldType == "End">
-				Level.END
-			<#else>
-				ResourceKey.create(Registries.DIMENSION,
-						new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}"))
-			</#if><#sep>,
-		</#list>
-	);
-
-	public ${name}Feature() {
-		super(OreConfiguration.CODEC);
-	}
-
-	public boolean place(FeaturePlaceContext<OreConfiguration> context) {
-		WorldGenLevel world = context.level();
-		if (!generate_dimensions.contains(world.getLevel().dimension()))
-			return false;
-
-		return super.place(context);
-	}
-
+public record StructureFeatureConfiguration(ResourceLocation structure, boolean randomRotation, boolean randomMirror, HolderSet<Block> ignoredBlocks, Vec3i offset) implements FeatureConfiguration {
+	public static final Codec<StructureFeatureConfiguration> CODEC = RecordCodecBuilder.create(builder -> {
+		return builder.group(ResourceLocation.CODEC.fieldOf("structure").forGetter(config -> {
+			return config.structure;
+		}), Codec.BOOL.fieldOf("random_rotation").orElse(false).forGetter(config -> {
+			return config.randomRotation;
+		}), Codec.BOOL.fieldOf("random_mirror").orElse(false).forGetter(config -> {
+			return config.randomMirror;
+		}), RegistryCodecs.homogeneousList(Registries.BLOCK).fieldOf("ignored_blocks").forGetter(config -> {
+			return config.ignoredBlocks;
+		}), Vec3i.offsetCodec(48).optionalFieldOf("offset", Vec3i.ZERO).forGetter(config -> {
+			return config.offset;
+		})).apply(builder, StructureFeatureConfiguration::new);
+	});
 }
-
 <#-- @formatter:on -->

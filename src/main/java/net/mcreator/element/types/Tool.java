@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
@@ -37,7 +38,10 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
@@ -51,7 +55,7 @@ import java.util.*;
 	@Nonnull public String blockingModelName;
 
 	public String name;
-	public List<String> specialInfo;
+	public StringListProcedure specialInformation;
 	public TabEntry creativeTab;
 	public int harvestLevel;
 	public double efficiency;
@@ -85,8 +89,6 @@ import java.util.*;
 		super(element);
 
 		this.attackSpeed = 2.8;
-
-		this.specialInfo = new ArrayList<>();
 
 		this.blockingModelName = "Normal blocking";
 	}

@@ -25,6 +25,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -37,7 +38,9 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -88,7 +91,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector glowCondition;
 
-	private final JTextField specialInfo = new JTextField(20);
+	private StringListProcedureSelector specialInformation;
 
 	private ProcedureSelector onRightClickedInAir;
 	private ProcedureSelector onCrafted;
@@ -142,6 +145,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, 
 				L10N.t("elementgui.item.condition_glow"), ProcedureSelector.Side.CLIENT, true, VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
+		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
 
@@ -153,9 +160,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		JPanel destal = new JPanel();
-		destal.setOpaque(false);
-
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
 
@@ -166,8 +170,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
 
-		destal.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")));
-
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
 
@@ -175,8 +177,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		rent.add(PanelUtils.join(
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
 				PanelUtils.join(renderType)));
-
-		ComponentUtils.deriveFont(specialInfo, 16);
 
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
@@ -187,22 +187,17 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.t("elementgui.tool.tool_3d_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		pane2.setOpaque(false);
-		pane2.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), PanelUtils.gridElements(1, 2,
-						HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-								L10N.label("elementgui.tool.tool_special_information")), specialInfo))));
 		JComponent glow = PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
 						L10N.label("elementgui.tool.glowing_effect")), hasGlow, glowCondition);
 
-		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-						L10N.label("elementgui.tool.tooltip_tip")), specialInfo), glow, 10, 10);
+		JComponent visualBottom = PanelUtils.centerAndSouthElement(glow, specialInformation, 10, 10);
 
 		pane2.setOpaque(false);
-		pane2.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), visualBottom)));
+		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
+				PanelUtils.westAndCenterElement(
+						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")), rent), visualBottom,
+				10, 10)));
 
 		JPanel selp = new JPanel(new GridLayout(15, 2, 10, 2));
 		selp.setOpaque(false);
@@ -370,6 +365,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInUseTick.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
+		specialInformation.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("TOOLS"));
@@ -414,9 +410,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onEntitySwing.setSelectedProcedure(tool.onEntitySwing);
 		hasGlow.setSelected(tool.hasGlow);
 		glowCondition.setSelectedProcedure(tool.glowCondition);
+		specialInformation.setSelectedProcedure(tool.specialInformation);
 		repairItems.setListElements(tool.repairItems);
-		specialInfo.setText(
-				tool.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		stayInGridWhenCrafting.setSelected(tool.stayInGridWhenCrafting);
 		immuneToFire.setSelected(tool.immuneToFire);
 		damageOnCrafting.setSelected(tool.damageOnCrafting);
@@ -460,8 +455,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.onEntitySwing = onEntitySwing.getSelectedProcedure();
 		tool.hasGlow = hasGlow.isSelected();
 		tool.glowCondition = glowCondition.getSelectedProcedure();
+		tool.specialInformation = specialInformation.getSelectedProcedure();
 		tool.repairItems = repairItems.getListElements();
-		tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		tool.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		tool.immuneToFire = immuneToFire.isSelected();

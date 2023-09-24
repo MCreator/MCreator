@@ -26,7 +26,7 @@
             <#list pool.entries as entry>
               {
                 "type": "minecraft:${entry.type}",
-                "name": "${mappedMCItemToIngameNameNoTags(entry.item)}",
+                "name": "${mappedMCItemToRegistryName(entry.item)}",
                 "weight": ${entry.weight},
                 <#if entry.silkTouchMode == 1>
                 "conditions": [

@@ -25,7 +25,6 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.*;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
@@ -131,12 +130,8 @@ import java.util.*;
 
 	public boolean hasElementsOfBaseType(BaseType baseType) {
 		for (ModElement modElement : workspace.getModElements()) {
-			GeneratableElement generatableElement = modElement.getGeneratableElement();
-			if (generatableElement instanceof ICommonType) {
-				Collection<BaseType> baseTypes = ((ICommonType) generatableElement).getBaseTypesProvided();
-				if (baseTypes.contains(baseType))
-					return true;
-			}
+			if (modElement.getBaseTypesProvided().contains(baseType))
+				return true;
 		}
 		return false;
 	}
@@ -340,6 +335,15 @@ import java.util.*;
 	public boolean hasItemsInCustomTabs(Map<String, List<MItemBlock>> creativeTabMap) {
 		for (String tab : creativeTabMap.keySet()) {
 			if (tab.startsWith("CUSTOM:")) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public boolean hasFeaturesWithStructureFeature() {
+		for (ModElement element : workspace.getModElements()) {
+			if (element.getType() == ModElementType.FEATURE && element.getMetadata("has_nbt_structure") != null) {
 				return true;
 			}
 		}
