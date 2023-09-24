@@ -79,9 +79,7 @@ public class ModElementTypeLoader {
 
 	public static ModElementType<?> getModElementType(String typeName) throws IllegalArgumentException {
 		// legacy support in case name was not converted up to this point
-		if (typeName.equals("gun")) {
-			typeName = "rangeditem";
-		} else if (typeName.equals("mob")) {
+		if (typeName.equals("mob")) {
 			typeName = "livingentity";
 		}
 
