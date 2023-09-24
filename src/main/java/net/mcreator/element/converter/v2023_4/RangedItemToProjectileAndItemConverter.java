@@ -133,30 +133,34 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 				infoProcedureName = rangedItem.get("specialInformation").getAsJsonObject().get("name").getAsString();
 			}
 			item.specialInformation = new StringListProcedure(infoProcedureName, infoFixedValues);
-			
+
 			item.stackSize = rangedItem.get("stackSize").getAsInt();
 			if (rangedItem.get("animation") != null)
 				item.animation = rangedItem.get("animation").getAsString();
 			else
 				item.animation = "bow";
 			item.hasGlow = rangedItem.get("hasGlow").getAsBoolean();
+
 			if (rangedItem.get("glowCondition") != null)
 				item.glowCondition = new Procedure(
 						rangedItem.get("glowCondition").getAsJsonObject().get("name").getAsString());
+
 			if (rangedItem.get("onEntitySwing") != null)
 				item.onEntitySwing = new Procedure(
 						rangedItem.get("onEntitySwing").getAsJsonObject().get("name").getAsString());
+
 			item.enableRanged = true;
 			item.shootConstantly = rangedItem.get("shootConstantly").getAsBoolean();
 			item.projectile = new ProjectileEntry(workspace, "CUSTOM:" + projectile.getModElement().getName());
+			item.enableMeleeDamage = rangedItem.get("enableMeleeDamage").getAsBoolean();
+			item.damageVsEntity = rangedItem.get("damageVsEntity").getAsDouble();
+
 			if (rangedItem.get("useCondition") != null)
 				item.useCondition = new Procedure(
 						rangedItem.get("useCondition").getAsJsonObject().get("name").getAsString());
 			if (rangedItem.get("onRangedItemUsed") != null)
-				item.useCondition = new Procedure(
+				item.onRangedItemUsed = new Procedure(
 						rangedItem.get("onRangedItemUsed").getAsJsonObject().get("name").getAsString());
-			item.enableMeleeDamage = rangedItem.get("enableMeleeDamage").getAsBoolean();
-			item.damageVsEntity = rangedItem.get("damageVsEntity").getAsDouble();
 
 			return item;
 		} catch (Exception e) {
