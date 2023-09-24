@@ -62,6 +62,7 @@ import java.awt.image.RenderedImage;
 import java.io.File;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class TestWorkspaceDataProvider {
@@ -512,9 +513,7 @@ public class TestWorkspaceDataProvider {
 			components.add(new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"),
 					Color.red, new Procedure("condition1")));
 			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
-					Color.white, new Procedure("condition4")));
-			components.add(new Label("text3", 100, 150, new StringProcedure(null, "fixed value 3"),
-					Color.white, new Procedure("condition1"), IAnchorableElement.AnchorPoint.TOP_LEFT));
+					Color.white, new Procedure("condition4"), getRandomItem(random, IAnchorableElement.AnchorPoint.values())));
 
 			components.add(new Image(20, 30, "pricture1", true, new Procedure("condition1")));
 			components.add(new Image(22, 31, "pricture2", false, new Procedure("condition2")));
