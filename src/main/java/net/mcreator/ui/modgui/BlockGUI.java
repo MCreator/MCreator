@@ -21,10 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Material;
-import net.mcreator.element.parts.StepSound;
-import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.InputSlot;
 import net.mcreator.element.parts.gui.OutputSlot;
@@ -36,10 +33,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.component.JColor;
-import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.JMinMaxSpinner;
-import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -54,13 +48,11 @@ import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.validators.CommaSeparatedNumbersValidator;
-import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
-import net.mcreator.ui.validation.validators.TextFieldValidator;
-import net.mcreator.ui.validation.validators.TileHolderValidator;
+import net.mcreator.ui.validation.validators.*;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -112,6 +104,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private ProcedureSelector onHitByProjectile;
 	private ProcedureSelector onBonemealSuccess;
 
+	private StringListProcedureSelector specialInformation;
 	private NumberProcedureSelector emittedRedstonePower;
 	private ProcedureSelector placingCondition;
 	private ProcedureSelector isBonemealTargetCondition;
@@ -181,7 +174,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JSpinner frequencyOnChunk = new JSpinner(new SpinnerNumberModel(16, 1, 64, 1));
 	private BiomeListField restrictionBiomes;
 	private MCItemListField blocksToReplace;
-	private DimensionListField spawnWorldTypes;
+	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox plantsGrowOn = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isLadder = L10N.checkbox("elementgui.common.enable");
@@ -236,8 +229,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final VTextField outSlotIDs = new VTextField(18);
 	private final VTextField inSlotIDs = new VTextField(18);
 
-	private final JTextField specialInfo = new JTextField(25);
-
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page3group = new ValidationGroup();
 
@@ -260,23 +251,21 @@ public class BlockGUI extends ModElementGUI<Block> {
 		destroyTool.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		blocksToReplace = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
-		restrictionBiomes = new BiomeListField(mcreator);
-		spawnWorldTypes = new DimensionListField(mcreator);
+
+		restrictionBiomes = new BiomeListField(mcreator, true);
+		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
+
+		restrictionBiomes = new BiomeListField(mcreator, true);
+		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
 
 		fluidRestrictions = new FluidListField(mcreator);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 
-		// emulate base_stone_overworld
-		blocksToReplace.setListElements(List.of(
-				//@formatter:off
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#0"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#1"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#3"),
-				new MItemBlock(mcreator.getWorkspace(), "Blocks.STONE#5")
-				//@formatter:on
-		));
+		blocksToReplace.setListElements(List.of(new MItemBlock(mcreator.getWorkspace(), "TAG:stone_ore_replaceables")));
 		generateHeight.setAllowEqualValues(true);
+
+		generateFeature.setOpaque(false);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.block.event_on_block_added"), Dependency.fromString(
@@ -329,6 +318,12 @@ public class BlockGUI extends ModElementGUI<Block> {
 				L10N.t("elementgui.block.redstone_power"), AbstractProcedureSelector.Side.BOTH,
 				new JSpinner(new SpinnerNumberModel(15, 0, 15, 1)), 130, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/direction:direction/blockstate:blockstate"));
+
+		specialInformation = new StringListProcedureSelector(this.withEntry("block/special_information"), mcreator,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+
 		placingCondition = new ProcedureSelector(this.withEntry("block/placing_condition"), mcreator,
 				L10N.t("elementgui.block.event_placing_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).setDefaultName(
@@ -516,18 +511,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		topnbot.add("Center", sbbp22);
 
-		JPanel txblock3 = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		txblock3.setOpaque(false);
+		JComponent txblock3 = PanelUtils.gridElements(1, 1, specialInformation);
 		txblock3.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.block.special_information_title"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.common.special_information"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		ComponentUtils.deriveFont(specialInfo, 16);
-
-		txblock3.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.block.special_information_tip")));
-		txblock3.add(specialInfo);
 
 		sbbp2.add("Center", topnbot);
 
@@ -646,7 +634,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		bbPane.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		if (!isEditingMode()) // add first bounding box
-			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
+			boundingBoxList.setEntries(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
 
 		boundingBoxList.addPropertyChangeListener("boundingBoxChanged", e -> updateParametersBasedOnBoundingBoxSize());
 
@@ -1072,9 +1060,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JPanel genPanel = new JPanel(new GridLayout(7, 2, 20, 2));
 
-		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
-				L10N.label("elementgui.block.spawn_world_types")));
-		genPanel.add(spawnWorldTypes);
+		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/generate_feature"),
+				L10N.label("elementgui.block.generate_feature")));
+		genPanel.add(generateFeature);
 
 		genPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/gen_replace_blocks"),
 				L10N.label("elementgui.block.gen_replace_blocks")));
@@ -1310,6 +1298,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		onHitByProjectile.refreshListKeepSelected();
 		onBonemealSuccess.refreshListKeepSelected();
 
+		specialInformation.refreshListKeepSelected();
 		emittedRedstonePower.refreshListKeepSelected();
 		isBonemealTargetCondition.refreshListKeepSelected();
 		bonemealSuccessCondition.refreshListKeepSelected();
@@ -1338,6 +1327,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 			return new AggregatedValidationResult(page3group);
 		else if (page == 4)
 			return new AggregatedValidationResult(outSlotIDs, inSlotIDs);
+		else if (page == 7)
+			return new AggregatedValidationResult(restrictionBiomes);
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -1386,6 +1377,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		generateHeight.setMaxValue(block.maxGenerateHeight);
 		frequencyPerChunks.setValue(block.frequencyPerChunks);
 		frequencyOnChunk.setValue(block.frequencyOnChunk);
+		specialInformation.setSelectedProcedure(block.specialInformation);
 		emittedRedstonePower.setSelectedProcedure(block.emittedRedstonePower);
 		hardness.setValue(block.hardness);
 		resistance.setValue(block.resistance);
@@ -1437,7 +1429,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		inventoryStackSize.setValue(block.inventoryStackSize);
 		tickRate.setValue(block.tickRate);
 
-		spawnWorldTypes.setListElements(block.spawnWorldTypes);
+		generateFeature.setSelected(block.generateFeature);
 		blocksToReplace.setListElements(block.blocksToReplace);
 		restrictionBiomes.setListElements(block.restrictionBiomes);
 		fluidRestrictions.setListElements(block.fluidRestrictions);
@@ -1462,10 +1454,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		speedFactor.setValue(block.speedFactor);
 
 		disableOffset.setSelected(block.disableOffset);
-		boundingBoxList.setBoundingBoxes(block.boundingBoxes);
-
-		specialInfo.setText(
-				block.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
+		boundingBoxList.setEntries(block.boundingBoxes);
 
 		refreshFieldsTileEntity();
 		refreshRedstoneEmitted();
@@ -1537,6 +1526,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.luminance = (int) luminance.getValue();
 		block.unbreakable = unbreakable.isSelected();
 		block.breakHarvestLevel = (int) breakHarvestLevel.getValue();
+		block.specialInformation = specialInformation.getSelectedProcedure();
 		block.emittedRedstonePower = emittedRedstonePower.getSelectedProcedure();
 		block.hasInventory = hasInventory.isSelected();
 		block.useLootTableForDrops = useLootTableForDrops.isSelected();
@@ -1584,11 +1574,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.textureBack = textureBack.getID();
 
 		block.disableOffset = disableOffset.isSelected();
-		block.boundingBoxes = boundingBoxList.getBoundingBoxes();
+		block.boundingBoxes = boundingBoxList.getEntries();
 
 		block.beaconColorModifier = beaconColorModifier.getColor();
 
-		block.spawnWorldTypes = spawnWorldTypes.getListElements();
+		block.generateFeature = generateFeature.isSelected();
 		block.restrictionBiomes = restrictionBiomes.getListElements();
 		block.fluidRestrictions = fluidRestrictions.getListElements();
 		block.blocksToReplace = blocksToReplace.getListElements();
@@ -1609,8 +1599,6 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.slipperiness = (double) slipperiness.getValue();
 		block.speedFactor = (double) speedFactor.getValue();
 		block.jumpFactor = (double) jumpFactor.getValue();
-
-		block.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		if (blockBase.getSelectedIndex() != 0)
 			block.blockBase = (String) blockBase.getSelectedItem();
