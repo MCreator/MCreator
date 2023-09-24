@@ -56,15 +56,15 @@ public class ReferencesFinder {
 				return !List.of(ref.defaultValues()).contains(t) && query.equals(ref.customPrefix() + t);
 			})) {
 				elements.add(me);
-			} else if (anyValueMatches(ge, MappableElement.class, e -> true,
-					(a, t) -> t.getUnmappedValue().equals(query))) {
+			} else if (anyValueMatches(ge, MappableElement.class, null, (a, t) -> t.getUnmappedValue().equals(query))) {
 				elements.add(me);
-			} else if (anyValueMatches(ge, Procedure.class, e -> true,
+			} else if (anyValueMatches(ge, Procedure.class, null,
 					(a, t) -> t.getName() != null && !t.getName().isEmpty() && !t.getName().equals("null")
 							&& element.getName().equals(t.getName()))) {
 				elements.add(me);
 			} else if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
-					(a, t) -> t.contains(query) || t.contains(element.getName()))) {
+					(a, t) -> t.contains(">" + query + "</field>") || t.contains(
+							">" + element.getName() + "</field>"))) {
 				elements.add(me);
 			}
 		});
@@ -109,7 +109,7 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		workspace.getModElements().parallelStream().forEach(me -> {
-			if (anyValueMatches(me.getGeneratableElement(), Sound.class, e -> true,
+			if (anyValueMatches(me.getGeneratableElement(), Sound.class, null,
 					(a, t) -> t.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())))
 				elements.add(me);
 		});
@@ -126,7 +126,7 @@ public class ReferencesFinder {
 					(a, t) -> t.equals(structure)))
 				elements.add(me);
 			else if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
-					(a, t) -> t.contains(structure)))
+					(a, t) -> t.contains(">" + structure + "</field>")))
 				elements.add(me);
 		});
 
@@ -154,7 +154,7 @@ public class ReferencesFinder {
 			if (ge != null && workspace.getGenerator().getElementLocalizationKeys(ge).contains(localizationKey)) {
 				elements.add(me);
 			} else if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
-					(a, t) -> t.contains(localizationKey))) {
+					(a, t) -> t.contains(">" + localizationKey + "</field>"))) {
 				elements.add(me);
 			}
 		});
@@ -194,7 +194,8 @@ public class ReferencesFinder {
 			return false;
 
 		for (Field field : source.getClass().getFields()) {
-			if (!Modifier.isStatic(field.getModifiers()) && validIf.test(field)) {
+			if (!Modifier.isStatic(field.getModifiers()) && (clazz.isAssignableFrom(field.getType())
+					|| validIf != null && validIf.test(field))) {
 				try {
 					field.setAccessible(true);
 					if (checkValue(field.get(source), field, clazz, validIf, condition))
@@ -204,7 +205,8 @@ public class ReferencesFinder {
 			}
 		}
 		for (Method method : source.getClass().getMethods()) {
-			if (!Modifier.isStatic(method.getModifiers()) && validIf.test(method)) {
+			if (!Modifier.isStatic(method.getModifiers()) && (clazz.isAssignableFrom(method.getReturnType())
+					|| validIf != null && validIf.test(method))) {
 				try {
 					method.setAccessible(true);
 					if (checkValue(method.invoke(source), method, clazz, validIf, condition))
