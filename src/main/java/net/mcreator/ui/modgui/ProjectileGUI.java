@@ -101,33 +101,39 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 				L10N.t("elementgui.projectile.event_flying_tick"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/immediatesourceentity:entity"));
 
-		JPanel propertiesPanel = new JPanel(new GridLayout(9, 2, 2, 2));
-		propertiesPanel.setOpaque(false);
-
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/item_texture"),
-				L10N.label("elementgui.projectile.item_texture")));
-		projectileItem.setOpaque(false);
-		projectileItem.setValidator(new MCItemHolderValidator(projectileItem));
-		propertiesPanel.add(PanelUtils.totalCenterInPanel(projectileItem));
-
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/show_particles"),
-				L10N.label("elementgui.projectile.show_particles")));
-		showParticles.setOpaque(false);
-		propertiesPanel.add(showParticles);
-
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/action_sound"),
-				L10N.label("elementgui.projectile.action_sound")));
-		actionSound.setText("entity.arrow.shoot");
-		propertiesPanel.add(actionSound);
-
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/model"),
-				L10N.label("elementgui.projectile.model")));
 		customModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 		customModelTexture.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 		model.setPreferredSize(new Dimension(400, 42));
 		model.setRenderer(new ModelComboBoxRenderer());
 		ComponentUtils.deriveFont(model, 16);
+
+		actionSound.setText("entity.arrow.shoot");
+
+		power.setOpaque(false);
+		igniteFire.setOpaque(false);
+		knockback.setOpaque(false);
+		damage.setOpaque(false);
+		projectileItem.setOpaque(false);
+		showParticles.setOpaque(false);
+
+		JPanel propertiesPanel = new JPanel(new GridLayout(9, 2, 2, 2));
+		propertiesPanel.setOpaque(false);
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/item_texture"),
+				L10N.label("elementgui.projectile.item_texture")));
+		propertiesPanel.add(PanelUtils.totalCenterInPanel(projectileItem));
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/show_particles"),
+				L10N.label("elementgui.projectile.show_particles")));
+		propertiesPanel.add(showParticles);
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/action_sound"),
+				L10N.label("elementgui.projectile.action_sound")));
+		propertiesPanel.add(actionSound);
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/model"),
+				L10N.label("elementgui.projectile.model")));
 		propertiesPanel.add(model);
 
 		JButton importEntityTexture = new JButton(UIRES.get("18px.add"));
@@ -150,42 +156,41 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/power"),
 				L10N.label("elementgui.projectile.power")));
-		power.setOpaque(false);
 		propertiesPanel.add(power);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/damage"),
 				L10N.label("elementgui.projectile.damage")));
-		damage.setOpaque(false);
 		propertiesPanel.add(damage);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/knockback"),
 				L10N.label("elementgui.projectile.knockback")));
-		knockback.setOpaque(false);
 		propertiesPanel.add(knockback);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/ignite_fire"),
 				L10N.label("elementgui.projectile.ignite_fire")));
-		igniteFire.setOpaque(false);
 		propertiesPanel.add(igniteFire);
 
-		JPanel triggersPanels = new JPanel(new BorderLayout(10, 10));
+		JPanel triggersPanels = new JPanel(new BorderLayout());
 		triggersPanels.setOpaque(false);
-		JPanel events = new JPanel(new GridLayout(2, 2, 10, 10));
+
+		JPanel events = new JPanel(new GridLayout(2, 2, 5, 5));
 		events.setOpaque(false);
 		events.add(onHitsBlock);
 		events.add(onHitsEntity);
 		events.add(onHitsPlayer);
 		events.add(onFlyingTick);
+
 		triggersPanels.add("Center",
 				PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
 
 		customModelTexture.setValidator(() -> {
 			if (!modelDefault.equals(model.getSelectedItem()))
-				if (customModelTexture.getSelectedItem() == null || customModelTexture.getSelectedItem().equals(""))
+				if (customModelTexture.getSelectedItem() == null || customModelTexture.getSelectedItem().isEmpty())
 					return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
 							L10N.t("elementgui.projectile.error_custom_model_needs_texture"));
 			return Validator.ValidationResult.PASSED;
 		});
+		projectileItem.setValidator(new MCItemHolderValidator(projectileItem));
 
 		page1group.addValidationElement(projectileItem);
 		page1group.addValidationElement(customModelTexture);
@@ -251,11 +256,11 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectile.onHitsEntity = onHitsEntity.getSelectedProcedure();
 		projectile.onHitsPlayer = onHitsPlayer.getSelectedProcedure();
 		projectile.onFlyingTick = onFlyingTick.getSelectedProcedure();
-
 		return projectile;
 	}
 
 	@Nullable @Override public URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-projectile");
 	}
+
 }
