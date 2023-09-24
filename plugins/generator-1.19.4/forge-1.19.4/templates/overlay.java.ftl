@@ -98,22 +98,7 @@ package ${package}.client.screens;
                 <#if hasProcedure(component.displayCondition)>
                     if (<@procedureOBJToConditionCode component.displayCondition/>)
                 </#if>
-                <#if component.anchorPoint.name() == "TOP_LEFT">
-                    posX = ${component.x};
-                    posY = ${component.y};
-                <#elseif component.anchorPoint.name() == "TOP_RIGHT">
-                    posX = w - (427 - ${component.x});
-                    posY = ${component.y};
-                <#elseif component.anchorPoint.name() == "BOTTOM_LEFT">
-                    posX = ${component.x};
-                    posY = h - (240 - ${component.y});
-                <#elseif component.anchorPoint.name() == "BOTTOM_RIGHT">
-                    posX = w - (427 - ${component.x});
-                    posY = h - (240 - ${component.y});
-                <#elseif component.anchorPoint.name() == "CENTER">
-                    posX = w / 2 + ${component.x - 213};
-                    posY = h / 2 + ${component.y - 120};
-                </#if>
+				<@calculatePos anchor_point=component.anchorPoint.name() comp_x=component.x comp_y=component.y/>
                 Minecraft.getInstance().font.draw(event.getPoseStack(),
                     <#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
                     posX, posY, ${component.color.getRGB()});
@@ -145,4 +130,23 @@ package ${package}.client.screens;
 	}
 
 }
+
+<#macro calculatePos anchor_point, comp_x, comp_y>
+	<#if anchor_point == "TOP_LEFT">
+		posX = ${comp_x};
+		posY = ${comp_y};
+	<#elseif anchor_point == "TOP_RIGHT">
+		posX = w - (427 - ${comp_x});
+		posY = ${comp_y};
+	<#elseif anchor_point == "BOTTOM_LEFT">
+		posX = ${comp_x};
+		posY = h - (240 - ${comp_y});
+	<#elseif anchor_point == "BOTTOM_RIGHT">
+		posX = w - (427 - ${comp_x});
+		posY = h - (240 - ${comp_y});
+	<#elseif anchor_point == "CENTER">
+		posX = w / 2 + ${comp_x - 213};
+		posY = h / 2 + ${comp_y - 120};
+	</#if>
+</#macro>
 <#-- @formatter:on -->
