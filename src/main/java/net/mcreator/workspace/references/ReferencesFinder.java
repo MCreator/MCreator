@@ -53,7 +53,7 @@ public class ReferencesFinder {
 			GeneratableElement ge = me.getGeneratableElement();
 			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ElementReference.class), (a, t) -> {
 				ElementReference ref = a.getAnnotation(ElementReference.class);
-				return !List.of(ref.defaultValues()).contains(t) && query.equals(ref.customPrefix() + t);
+				return ref != null && !List.of(ref.defaultValues()).contains(t) && query.equals(ref.customPrefix() + t);
 			})) {
 				elements.add(me);
 			} else if (anyValueMatches(ge, MappableElement.class, null, (a, t) -> t.getUnmappedValue().equals(query))) {
@@ -81,7 +81,7 @@ public class ReferencesFinder {
 				return ref != null && ref.value() == type;
 			}, (a, t) -> {
 				TextureReference ref = a.getAnnotation(TextureReference.class);
-				return !List.of(ref.defaultValues()).contains(t) && workspace.getFolderManager()
+				return ref != null && !List.of(ref.defaultValues()).contains(t) && workspace.getFolderManager()
 						.getTextureFile(FilenameUtilsPatched.removeExtension(t), type).equals(texture);
 			})) {
 				elements.add(me);
