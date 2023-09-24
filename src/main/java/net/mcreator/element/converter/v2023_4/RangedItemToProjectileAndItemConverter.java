@@ -108,7 +108,6 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			workspace.addModElement(projectile.getModElement());
 			workspace.getGenerator().generateElement(projectile);
 			workspace.getModElementManager().storeModElement(projectile);
-			workspace.reloadFromFS();
 
 			Item item = new Item(new ModElement(workspace, input.getModElement().getName(), ModElementType.ITEM));
 			item.name = rangedItem.get("name").getAsString();
@@ -169,4 +168,5 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 	@Override public int getVersionConvertingTo() {
 		return 51;
 	}
+
 }
