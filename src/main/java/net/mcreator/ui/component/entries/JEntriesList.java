@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.minecraft;
+package net.mcreator.ui.component.entries;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.TechnicalButton;
@@ -55,6 +55,15 @@ public abstract class JEntriesList extends JPanel {
 
 	public MCreator getMCreator() {
 		return mcreator;
+	}
+
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		add.setEnabled(enabled);
+	}
+
+	public void reloadDataLists() {
+
 	}
 
 }
