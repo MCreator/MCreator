@@ -34,7 +34,6 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.references.ElementReference;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
