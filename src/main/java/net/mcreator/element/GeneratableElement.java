@@ -22,13 +22,14 @@ package net.mcreator.element;
 import com.google.gson.*;
 import net.mcreator.Launcher;
 import net.mcreator.element.converter.ConverterRegistry;
+import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
-import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,15 +37,16 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.Map;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 47;
+	public static final int formatVersion = 50;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -110,6 +112,10 @@ public abstract class GeneratableElement {
 		return true;
 	}
 
+	public boolean isUnknown() {
+		return false;
+	}
+
 	public static class GSONAdapter
 			implements JsonSerializer<GeneratableElement>, JsonDeserializer<GeneratableElement> {
 
@@ -136,14 +142,13 @@ public abstract class GeneratableElement {
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
 			ModElement lastModElement = workspace.getModElementManager().getLastElementInConversion();
 
-			String newType = switch (jsonElement.getAsJsonObject().get("_type").getAsString()) {
+			final String modElementTypeString = switch (jsonElement.getAsJsonObject().get("_type").getAsString()) {
 				case "gun" -> "rangeditem";
 				case "mob" -> "livingentity";
 				default -> jsonElement.getAsJsonObject().get("_type").getAsString();
 			};
-
-			int importedFormatVersion = jsonDeserializationContext.deserialize(jsonElement.getAsJsonObject().get("_fv"),
-					Integer.class);
+			final int importedFormatVersion = jsonDeserializationContext.deserialize(
+					jsonElement.getAsJsonObject().get("_fv"), Integer.class);
 
 			// If GE was stored with newer FV, we can not deserialize it (we still allow this on development builds for testing purposes)
 			if (importedFormatVersion > formatVersion) {
@@ -159,7 +164,7 @@ public abstract class GeneratableElement {
 			}
 
 			try {
-				ModElementType<?> modElementType = ModElementTypeLoader.getModElementType(newType);
+				ModElementType<?> modElementType = ModElementTypeLoader.getModElementType(modElementTypeString);
 
 				JsonObject jsonObject = jsonElement.getAsJsonObject().get("definition").getAsJsonObject();
 				if (jsonObject.keySet().isEmpty()) {
@@ -168,54 +173,45 @@ public abstract class GeneratableElement {
 					return null;
 				}
 
-				final GeneratableElement[] generatableElement = {
-						gson.fromJson(jsonObject, modElementType.getModElementStorageClass()) };
-
-				generatableElement[0].setModElement(lastModElement); // set the mod element reference
-				passWorkspaceToFields(generatableElement[0], workspace);
+				GeneratableElement generatableElement = gson.fromJson(jsonObject,
+						modElementType.getModElementStorageClass());
+				generatableElement.setModElement(lastModElement); // set the mod element reference
+				passWorkspace(generatableElement, workspace);
 
 				List<IConverter> converters = ConverterRegistry.getConvertersForModElementType(modElementType);
 				if (converters != null) {
-					AtomicInteger versionIncrementer = new AtomicInteger(importedFormatVersion);
-					converters.stream().filter(converter -> importedFormatVersion < converter.getVersionConvertingTo())
-							.sorted().forEach(converter -> {
-								LOG.debug("Converting " + lastModElement.getName() + " (" + modElementType + ") from FV"
-										+ versionIncrementer.get() + " to FV" + converter.getVersionConvertingTo() + " using "
-										+ converter.getClass().getSimpleName());
-								generatableElement[0] = converter.convert(this.workspace, generatableElement[0], jsonElement);
-								generatableElement[0].conversionApplied = true;
-								versionIncrementer.set(converter.getVersionConvertingTo());
-							});
+					List<IConverter> applicableConverters = converters.stream()
+							.filter(converter -> importedFormatVersion < converter.getVersionConvertingTo()).sorted()
+							.toList();
+					int currentFormatVersion = importedFormatVersion;
+					for (IConverter converter : applicableConverters) {
+						LOG.debug("Converting " + lastModElement.getName() + " (" + modElementType + ") from FV"
+								+ currentFormatVersion + " to FV" + converter.getVersionConvertingTo() + " using "
+								+ converter.getClass().getSimpleName());
+						generatableElement = converter.convert(this.workspace, generatableElement, jsonElement);
+
+						if (generatableElement == null
+								|| generatableElement.getClass() != modElementType.getModElementStorageClass()) {
+							ConverterUtils.convertElementToDifferentType(converter, lastModElement, generatableElement);
+							return null;
+						} else {
+							generatableElement.conversionApplied = true;
+							currentFormatVersion = converter.getVersionConvertingTo();
+						}
+					}
 				}
 
-				return generatableElement[0];
+				return generatableElement;
 			} catch (IllegalArgumentException e) { // we may be dealing with mod element type no longer existing
-				IConverter converter = ConverterRegistry.getConverterForModElementType(newType);
+				IConverter converter = ConverterRegistry.getConverterForModElementType(modElementTypeString);
 				if (converter != null && importedFormatVersion < converter.getVersionConvertingTo()) {
 					try {
 						GeneratableElement result = converter.convert(this.workspace, new Unknown(lastModElement),
 								jsonElement);
-						if (result != null) {
-							workspace.removeModElement(lastModElement);
-
-							result.getModElement()
-									.setParentFolder(FolderElement.dummyFromPath(lastModElement.getFolderPath()));
-							workspace.getModElementManager().storeModElementPicture(result);
-							workspace.addModElement(result.getModElement());
-							workspace.getGenerator().generateElement(result);
-							workspace.getModElementManager().storeModElement(result);
-
-							LOG.debug("Converted mod element " + lastModElement.getName() + " (" + newType + ") to "
-									+ result.getModElement().getType().getRegistryName() + " using "
-									+ converter.getClass().getSimpleName());
-						} else {
-							LOG.debug("Converted mod element " + lastModElement.getName() + " (" + newType
-									+ ") to data format that is not a mod element using " + converter.getClass()
-									.getSimpleName());
-						}
+						ConverterUtils.convertElementToDifferentType(converter, lastModElement, result);
 					} catch (Exception e2) {
-						LOG.warn("Failed to convert mod element " + lastModElement.getName() + " of type " + newType
-								+ " to a potential alternative.", e2);
+						LOG.warn("Failed to convert mod element " + lastModElement.getName() + " of type "
+								+ modElementTypeString + " to a potential alternative.", e2);
 					}
 				}
 
@@ -246,54 +242,51 @@ public abstract class GeneratableElement {
 			return root;
 		}
 
-		private void passWorkspaceToFields(Object object, Workspace workspace) {
-			for (Field field : object.getClass().getDeclaredFields()) {
-				field.setAccessible(true);
+		private void passWorkspace(Object object, Workspace workspace) {
+			if (object == null)
+				return;
 
-				if (Modifier.isTransient(field.getModifiers()))
-					continue;
+			// Pass workspace if IWorkspaceDependent
+			if (object instanceof IWorkspaceDependent iws)
+				iws.setWorkspace(workspace);
 
-				try {
-					Object subobject = field.get(object);
-					if (subobject instanceof MappableElement) {
-						((MappableElement) subobject).mapper.setWorkspace(workspace);
-					} else if (subobject instanceof Object[]) {
-						for (Object element : ((Object[]) subobject)) {
-							if (element instanceof MappableElement) {
-								((MappableElement) element).mapper.setWorkspace(workspace);
-							} else {
-								if (element != null && element.getClass().getPackage().getName()
-										.startsWith("net.mcreator"))
-									passWorkspaceToFields(element, workspace);
-							}
+			// Then check if we can pass workspace to any of the children
+			if (object instanceof Iterable<?> list) {
+				for (Object element : list)
+					passWorkspace(element, workspace);
+			} else if (object instanceof Map<?, ?> map) {
+				for (Object element : map.keySet())
+					passWorkspace(element, workspace);
+				for (Object element : map.values())
+					passWorkspace(element, workspace);
+			} else if (object.getClass().isArray()) {
+				int length = Array.getLength(object);
+				for (int i = 0; i < length; i++)
+					passWorkspace(Array.get(object, i), workspace);
+			} else if (object.getClass().getModule() == MCreator.class.getModule()) {
+				for (Field field : object.getClass().getDeclaredFields()) {
+					field.setAccessible(true);
+					if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers())) {
+						try {
+							passWorkspace(field.get(object), workspace);
+						} catch (Exception e) {
+							LOG.warn("Failed to pass workspace to field " + field.getName() + " of object "
+									+ object.getClass().getSimpleName());
 						}
-					} else if (subobject instanceof Iterable) {
-						for (Object element : ((Iterable<?>) subobject)) {
-							if (element instanceof MappableElement) {
-								((MappableElement) element).mapper.setWorkspace(workspace);
-							} else {
-								if (element != null && element.getClass().getPackage().getName()
-										.startsWith("net.mcreator"))
-									passWorkspaceToFields(element, workspace);
-							}
-						}
-					} else {
-						if (subobject != null && subobject.getClass().getPackage().getName().startsWith("net.mcreator"))
-							passWorkspaceToFields(subobject, workspace);
 					}
-				} catch (Exception e) {
-					LOG.warn("Failed to pass workspace to field " + field.getName() + " of object " + object.getClass()
-							.getSimpleName());
 				}
 			}
 		}
-
 	}
 
 	public static final class Unknown extends GeneratableElement {
 
 		public Unknown(ModElement element) {
 			super(element);
+		}
+
+		@Override public boolean isUnknown() {
+			return true;
 		}
 	}
 

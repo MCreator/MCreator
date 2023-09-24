@@ -46,7 +46,6 @@ import java.util.List;
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 
 	public String generationStep;
-	public List<String> restrictionDimensions;
 	public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
 	@BlocklyXML("features") public String featurexml;
@@ -55,7 +54,6 @@ import java.util.List;
 		super(element);
 
 		this.generationStep = "SURFACE_STRUCTURES";
-		this.restrictionDimensions = new ArrayList<>();
 		this.restrictionBiomes = new ArrayList<>();
 	}
 
@@ -78,11 +76,14 @@ import java.util.List;
 			additionalData.put("configurationcode", blocklyToFeature.getFeatureConfigurationCode());
 			additionalData.put("featuretype", blocklyToFeature.getFeatureType());
 			additionalData.put("featureblocks", blocklyToFeature.getUsedBlocks());
+
+			this.getModElement().clearMetadata().putMetadata("has_nbt_structure",
+					blocklyToFeature.getUsedBlocks().contains("feature_custom_structure") ? true : null);
 		};
 	}
 
 	public boolean hasGenerationConditions() {
-		return !restrictionDimensions.isEmpty() || generateCondition != null;
+		return generateCondition != null;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
@@ -93,4 +94,5 @@ import java.util.List;
 		else
 			return Collections.emptyList();
 	}
+
 }

@@ -86,7 +86,7 @@ tasks.register('exportMacX64', Copy.class) {
         }
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
-        makeDMG(new File(buildDir, 'export/mac_x64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
+        makeDMG(file('build/export/mac_x64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
 
@@ -140,7 +140,7 @@ tasks.register('exportMacAarch64', Copy.class) {
         }
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
-        makeDMG(new File(buildDir, 'export/mac_aarch64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
+        makeDMG(file('build/export/mac_aarch64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
 

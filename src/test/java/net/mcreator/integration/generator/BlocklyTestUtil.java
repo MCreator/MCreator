@@ -285,6 +285,8 @@ public class BlocklyTestUtil {
 					.toArray(String[]::new);
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
+		case "structure":
+			return workspace.getFolderManager().getStructureList().toArray(String[]::new);
 		case "procedure":
 			return workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 					.map(ModElement::getName).toArray(String[]::new);

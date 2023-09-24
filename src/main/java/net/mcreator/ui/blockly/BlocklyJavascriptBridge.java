@@ -155,6 +155,9 @@ public class BlocklyJavascriptBridge {
 					w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "gamerules");
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
+			case "structure" ->
+					openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
+							"structures");
 			case "procedure" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 							.map(ModElement::getName).toArray(String[]::new), "procedure");
@@ -343,9 +346,6 @@ public class BlocklyJavascriptBridge {
 		case "material":
 			retval = ElementUtil.loadMaterials().stream().map(DataListEntry::getName).collect(Collectors.toList());
 			break;
-		case "rangeditem":
-			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
 		case "villagerprofessions":
 			return ElementUtil.loadAllVillagerProfessions(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);

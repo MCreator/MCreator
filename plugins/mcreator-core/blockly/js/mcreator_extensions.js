@@ -15,8 +15,6 @@ Blockly.Extensions.register('material_list_provider', appendDropDown('material',
 
 Blockly.Extensions.register('plant_type_list_provider', appendDropDown('planttypes', 'planttype'));
 
-Blockly.Extensions.register('schematic_list_provider', appendDropDown('schematic', 'schematic'));
-
 Blockly.Extensions.register('direction_list_provider', appendDropDown('direction', 'direction'));
 
 // Extension to mark a procedure block as a custom loop
@@ -476,6 +474,15 @@ Blockly.Extensions.registerMutator('weighted_state_provider_mutator', simpleRepe
                 .appendField(new Blockly.FieldImage("./res/b_input.png", 8, 10));
         }, true, ['weight'], true),
     undefined, ['weighted_list_mutator_input']);
+
+// Mutator for repeating tree decorator inputs
+Blockly.Extensions.registerMutator('tree_decorator_mutator', simpleRepeatingInputMixin(
+        'tree_decorator_mutator_container', 'tree_decorator_mutator_input', 'decorator',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('TreeDecorator').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.feature_tree.decorator_input'));
+        }),
+    undefined, ['tree_decorator_mutator_input']);
 
 // Helper function for extensions that validate one or more resource location text fields
 function validateResourceLocationFields(...fields) {
