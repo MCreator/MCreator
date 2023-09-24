@@ -31,7 +31,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.minecraft.JEntriesList;
+import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -164,7 +164,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		stateEntries.setEnabled(enabled);
 	}
 
-	public void reloadDataLists() {
+	@Override public void reloadDataLists() {
 		propertiesList.forEach(JItemPropertiesListEntry::reloadDataLists);
 		statesList.forEach(JItemStatesListEntry::reloadDataLists);
 	}

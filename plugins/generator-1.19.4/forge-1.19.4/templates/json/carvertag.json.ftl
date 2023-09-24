@@ -6,12 +6,12 @@
         <#list w.getElementsOfType("dimension") as me>
             <#assign ge = me.getGeneratableElement() />
 
-            <#assign elements += ["${mappedMCItemToIngameNameNoTags(ge.mainFillerBlock)}"]>
+            <#assign elements += ["${mappedMCItemToRegistryName(ge.mainFillerBlock)}"]>
             <#list w.filterBrokenReferences(ge.biomesInDimension) as biome>
                 <#if biome.getUnmappedValue().startsWith("CUSTOM:")>
                     <#assign gebiome = w.getWorkspace().getModElementByName(biome.getUnmappedValue().replace("CUSTOM:", "")).getGeneratableElement()/>
-                    <#assign elements += ["${mappedMCItemToIngameNameNoTags(gebiome.groundBlock)}"]>
-                    <#assign elements += ["${mappedMCItemToIngameNameNoTags(gebiome.undergroundBlock)}"]>
+                    <#assign elements += ["${mappedMCItemToRegistryName(gebiome.groundBlock)}"]>
+                    <#assign elements += ["${mappedMCItemToRegistryName(gebiome.undergroundBlock)}"]>
                 </#if>
             </#list>
         </#list>

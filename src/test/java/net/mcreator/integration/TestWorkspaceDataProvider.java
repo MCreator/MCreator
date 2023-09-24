@@ -29,10 +29,8 @@ import net.mcreator.element.parts.gui.Image;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.gui.TextField;
 import net.mcreator.element.parts.gui.*;
-import net.mcreator.element.parts.procedure.LogicProcedure;
-import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.parts.procedure.StringProcedure;
+import net.mcreator.element.parts.procedure.*;
 import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
@@ -468,13 +466,8 @@ public class TestWorkspaceDataProvider {
 					new Sound(modElement.getWorkspace(),
 							getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			fluid.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
-			fluid.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				fluid.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				fluid.specialInfo = new ArrayList<>();
-			}
+			fluid.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			fluid.resistance = 52.2;
 			fluid.emissiveRendering = _true;
 			fluid.luminance = 6;
@@ -646,12 +639,8 @@ public class TestWorkspaceDataProvider {
 			dimension.portalFrame = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			dimension.igniterName = modElement.getName();
-			if (!emptyLists) {
-				dimension.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				dimension.specialInfo = new ArrayList<>();
-			}
+			dimension.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			dimension.worldGenType = new String[] { "Nether like gen", "Normal world gen", "End like gen",
 					"Normal world gen" }[valueIndex];
 			dimension.mainFillerBlock = new MItemBlock(modElement.getWorkspace(),
@@ -716,21 +705,14 @@ public class TestWorkspaceDataProvider {
 			armor.leggingsItemCustomModelName = "Normal";
 			armor.bootsItemRenderType = 0;
 			armor.bootsItemCustomModelName = "Normal";
-			if (!emptyLists) {
-				armor.helmetSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-				armor.bodySpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-				armor.leggingsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-				armor.bootsSpecialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				armor.helmetSpecialInfo = new ArrayList<>();
-				armor.bodySpecialInfo = new ArrayList<>();
-				armor.leggingsSpecialInfo = new ArrayList<>();
-				armor.bootsSpecialInfo = new ArrayList<>();
-			}
+			armor.helmetSpecialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
+			armor.bodySpecialInformation = new StringListProcedure(emptyLists ? null : "string2",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
+			armor.leggingsSpecialInformation = new StringListProcedure(emptyLists ? null : "string3",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
+			armor.bootsSpecialInformation = new StringListProcedure(emptyLists ? null : "string4",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			armor.helmetImmuneToFire = _true;
 			armor.bodyImmuneToFire = !_true;
 			armor.leggingsImmuneToFire = _true;
@@ -807,13 +789,8 @@ public class TestWorkspaceDataProvider {
 			plant.forceTicking = !_true;
 			plant.hasTileEntity = !_true;
 			plant.isSolid = _true;
-			plant.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				plant.specialInfo = new ArrayList<>();
-			}
+			plant.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			plant.creativePickItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocks).getName());
 			plant.colorOnMap = getRandomItem(random, ElementUtil.getDataListAsStringArray("mapcolors"));
@@ -925,13 +902,8 @@ public class TestWorkspaceDataProvider {
 			item.onDroppedByPlayer = new Procedure("procedure9");
 			item.enableMeleeDamage = !_true;
 			item.damageVsEntity = 6.53;
-
-			if (!emptyLists) {
-				item.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				item.specialInfo = new ArrayList<>();
-			}
+			item.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			item.texture = "test2";
 			item.renderType = 0;
 			item.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
@@ -994,13 +966,8 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			rangedItem.ammoItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			rangedItem.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				rangedItem.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				rangedItem.specialInfo = new ArrayList<>();
-			}
+			rangedItem.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			rangedItem.animation = getRandomItem(random,
 					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
 			rangedItem.shootConstantly = _true;
@@ -1242,13 +1209,8 @@ public class TestWorkspaceDataProvider {
 			block.textureFront = "test4";
 			block.textureRight = "test5";
 			block.textureBack = "test6";
-			block.specialInfo = new ArrayList<>();
-			if (!emptyLists) {
-				block.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				block.specialInfo = new ArrayList<>();
-			}
+			block.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			block.tintType = getRandomString(random,
 					Arrays.asList("No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage",
 							"Water", "Sky", "Fog", "Water fog"));
@@ -1361,12 +1323,8 @@ public class TestWorkspaceDataProvider {
 			musicDisc.analogOutput = 6;
 			musicDisc.music = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			if (!emptyLists) {
-				musicDisc.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-						"info 1, info 2, test \\, is this, another one");
-			} else {
-				musicDisc.specialInfo = new ArrayList<>();
-			}
+			musicDisc.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 			musicDisc.texture = "itest";
 			return musicDisc;
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
@@ -1716,13 +1674,8 @@ public class TestWorkspaceDataProvider {
 		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
 		tool.hasGlow = _true;
-		tool.specialInfo = new ArrayList<>();
-		if (!emptyLists) {
-			tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(
-					"info 1, info 2, test \\, is this, another one");
-		} else {
-			tool.specialInfo = new ArrayList<>();
-		}
+		tool.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
+				Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 		if (!emptyLists) {
 			List<MCItem> blocksAndTags = ElementUtil.loadBlocksAndTags(modElement.getWorkspace());
 			tool.blocksAffected.addAll(
