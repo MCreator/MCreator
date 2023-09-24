@@ -34,7 +34,6 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ElementReference;
-import net.mcreator.workspace.references.ModelReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
@@ -163,7 +162,7 @@ import java.util.stream.Collectors;
 		this.boundingBoxes = new ArrayList<>();
 	}
 
-	@Override @ModelReference public Model getItemModel() {
+	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)
 			modelType = Model.Type.JSON;

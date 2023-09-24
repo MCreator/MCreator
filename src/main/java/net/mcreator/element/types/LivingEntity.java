@@ -44,7 +44,6 @@ import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.references.ModelReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 
@@ -188,7 +187,7 @@ import java.util.*;
 		this.inventoryStackSize = 64;
 	}
 
-	@Override @ModelReference public Model getEntityModel() {
+	@Override public Model getEntityModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (Arrays.stream(LivingEntityGUI.builtinmobmodels).map(Model::getReadableName).noneMatch(mobModelName::equals)
 				&& !mobModelName.equals("Zombie")) // legacy check as zombie was supported in the past

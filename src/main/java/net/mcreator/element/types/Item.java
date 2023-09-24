@@ -124,7 +124,7 @@ import java.util.*;
 				getModElement().getFolderManager().getTextureImageIcon(texture, TextureType.ITEM).getImage(), 32);
 	}
 
-	@Override @ModelReference public Model getItemModel() {
+	@Override public Model getItemModel() {
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, decodeModelType(renderType));
 	}
 
@@ -219,7 +219,7 @@ import java.util.*;
 			this.workspace = workspace;
 		}
 
-		@ModelReference public Model getItemModel() {
+		public Model getItemModel() {
 			return Model.getModelByParams(workspace, customModelName, decodeModelType(renderType));
 		}
 
