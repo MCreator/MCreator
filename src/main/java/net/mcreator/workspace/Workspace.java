@@ -530,6 +530,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	@SuppressWarnings("unused") public void reloadFromFS() {
 		String workspace_string = FileIO.readFileToString(fileManager.getWorkspaceFile());
 		Workspace workspace_on_fs = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
+		fileManager.getModElementManager().invalidateCache();
 		loadStoredDataFrom(workspace_on_fs);
 		reloadModElements();
 		reloadFolderStructure();

@@ -21,7 +21,7 @@ package net.mcreator.ui.modgui;
 
 import javafx.embed.swing.JFXPanel;
 import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.minecraft.JEntriesList;
+import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
 
 import javax.swing.*;
