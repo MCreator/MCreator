@@ -11,7 +11,7 @@
               </#if>
           </#if>
           "icon": {
-            ${mappedMCItemToIngameItemName(data.achievementIcon)}
+            ${mappedMCItemToItemObjectJSON(data.achievementIcon)}
           },
           "title": "${data.achievementName}",
           "description": "${data.achievementDescription}",

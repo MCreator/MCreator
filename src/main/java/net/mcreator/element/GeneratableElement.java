@@ -43,11 +43,10 @@ import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 48;
+	public static final int formatVersion = 50;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -191,7 +190,8 @@ public abstract class GeneratableElement {
 								+ converter.getClass().getSimpleName());
 						generatableElement = converter.convert(this.workspace, generatableElement, jsonElement);
 
-						if (generatableElement == null || generatableElement.getClass() != modElementType.getModElementStorageClass()) {
+						if (generatableElement == null
+								|| generatableElement.getClass() != modElementType.getModElementStorageClass()) {
 							ConverterUtils.convertElementToDifferentType(converter, lastModElement, generatableElement);
 							return null;
 						} else {
