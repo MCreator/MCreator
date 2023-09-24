@@ -346,9 +346,6 @@ public class BlocklyJavascriptBridge {
 		case "material":
 			retval = ElementUtil.loadMaterials().stream().map(DataListEntry::getName).collect(Collectors.toList());
 			break;
-		case "rangeditem":
-			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
 		case "villagerprofessions":
 			return ElementUtil.loadAllVillagerProfessions(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
