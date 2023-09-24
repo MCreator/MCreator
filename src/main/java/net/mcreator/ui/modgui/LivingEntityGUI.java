@@ -1041,7 +1041,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
-		modelLayers.setModelLayers(livingEntity.modelLayers);
+		modelLayers.setEntries(livingEntity.modelLayers);
 
 		if (livingEntity.creativeTab != null)
 			creativeTab.setSelectedItem(livingEntity.creativeTab);
@@ -1171,7 +1171,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.inventorySize = (int) inventorySize.getValue();
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.guiBoundTo = (String) guiBoundTo.getSelectedItem();
-		livingEntity.modelLayers = modelLayers.getModelLayers();
+		livingEntity.modelLayers = modelLayers.getEntries();
 		return livingEntity;
 	}
 

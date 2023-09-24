@@ -23,12 +23,11 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
+import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.component.util.ComboBoxUtil;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -48,7 +47,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-public class JModelLayerListEntry extends JPanel implements IValidable {
+public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLayerEntry> implements IValidable {
 	private final Model default_model = new Model.BuiltInModel("Default");
 	private final JComboBox<Model> model = new JComboBox<>(new Model[] { default_model });
 	private final VComboBox<String> texture = new SearchableComboBox<>();
@@ -57,8 +56,10 @@ public class JModelLayerListEntry extends JPanel implements IValidable {
 	private final MCreator mcreator;
 
 	public JModelLayerListEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JModelLayerListEntry> entryList) {
-		super(new FlowLayout(FlowLayout.LEFT));
+		super(parent, entryList);
 		this.mcreator = mcreator;
+
+		line.setLayout(new FlowLayout(FlowLayout.LEFT, 10, 5));
 
 		condition = new ProcedureSelector(gui.withEntry("entity/condition_display_model_layer"), mcreator,
 				L10N.t("elementgui.living_entity.layer_display_condition"), ProcedureSelector.Side.CLIENT, true,
@@ -67,15 +68,10 @@ public class JModelLayerListEntry extends JPanel implements IValidable {
 
 		reloadDataLists();
 
-		final JComponent container = PanelUtils.expandHorizontally(this);
-
-		parent.add(container);
-		entryList.add(this);
-
 		model.setRenderer(new ModelComboBoxRenderer());
 
-		add(L10N.label("elementgui.living_entity.layer_model"));
-		add(model);
+		line.add(L10N.label("elementgui.living_entity.layer_model"));
+		line.add(model);
 
 		texture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 		texture.setValidator(() -> {
@@ -84,28 +80,17 @@ public class JModelLayerListEntry extends JPanel implements IValidable {
 			return Validator.ValidationResult.PASSED;
 		});
 
-		add(L10N.label("elementgui.living_entity.layer_texture"));
-		add(texture);
+		line.add(L10N.label("elementgui.living_entity.layer_texture"));
+		line.add(texture);
 
-		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/glow_texture"), glow));
+		glow.setOpaque(false);
 
-		add(condition);
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/glow_texture"), glow));
 
-		JButton remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText(L10N.t("elementgui.living_entity.remove_model_layer"));
-		remove.addActionListener(e -> {
-			entryList.remove(this);
-			parent.remove(container);
-			parent.revalidate();
-			parent.repaint();
-		});
-		add(remove);
-
-		parent.revalidate();
-		parent.repaint();
+		line.add(condition);
 	}
 
-	public void reloadDataLists() {
+	@Override public void reloadDataLists() {
 		condition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(model, ListUtils.merge(Collections.singletonList(default_model),
@@ -118,7 +103,14 @@ public class JModelLayerListEntry extends JPanel implements IValidable {
 						.collect(Collectors.toList())), "");
 	}
 
-	public LivingEntity.ModelLayerEntry getEntry() {
+	@Override protected void setEntryEnabled(boolean enabled) {
+		model.setEnabled(enabled);
+		texture.setEnabled(enabled);
+		glow.setEnabled(enabled);
+		condition.setEnabled(enabled);
+	}
+
+	@Override public LivingEntity.ModelLayerEntry getEntry() {
 		LivingEntity.ModelLayerEntry entry = new LivingEntity.ModelLayerEntry();
 		entry.model = ((Model)Objects.requireNonNull(model.getSelectedItem())).getReadableName();
 		entry.texture = texture.getSelectedItem();
@@ -127,7 +119,7 @@ public class JModelLayerListEntry extends JPanel implements IValidable {
 		return entry;
 	}
 
-	public void setEntry(LivingEntity.ModelLayerEntry e) {
+	@Override public void setEntry(LivingEntity.ModelLayerEntry e) {
 		if (e.model != null && !e.model.isEmpty()) {
 			model.setSelectedItem(Model.getModelByParams(mcreator.getWorkspace(), e.model,
 					e.model.equals("Default") ? Model.Type.BUILTIN : Model.Type.JAVA));
