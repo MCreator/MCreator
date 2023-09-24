@@ -66,12 +66,12 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 	}
 
 	@Override public void openInEditingMode(VillagerTrade villagerTrade) {
-		villagerTradeProfessions.setTrades(villagerTrade.tradeEntries);
+		villagerTradeProfessions.setEntries(villagerTrade.tradeEntries);
 	}
 
 	@Override public VillagerTrade getElementFromGUI() {
 		VillagerTrade villagerTrade = new VillagerTrade(modElement);
-		villagerTrade.tradeEntries = villagerTradeProfessions.getTrades();
+		villagerTrade.tradeEntries = villagerTradeProfessions.getEntries();
 		return villagerTrade;
 	}
 }
