@@ -66,6 +66,7 @@ net.mcreator.ui.blockly
 net.mcreator.ui.browser
 net.mcreator.ui.browser.action
 net.mcreator.ui.component
+net.mcreator.ui.component.entries
 net.mcreator.ui.component.filebrowser
 net.mcreator.ui.component.tree
 net.mcreator.ui.component.util
