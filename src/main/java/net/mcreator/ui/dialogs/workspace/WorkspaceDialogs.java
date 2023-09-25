@@ -137,6 +137,7 @@ public class WorkspaceDialogs {
 		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
 		JCheckBox disableForgeVersionCheck = new JCheckBox();
 		JTextField updateJSON = new JTextField(24);
+		JTextField modIssue = new JTextField(24);
 		JStringListField requiredMods, dependencies, dependants;
 
 		JComboBox<String> license = new JComboBox<>(
@@ -524,6 +525,8 @@ public class WorkspaceDialogs {
 			advancedSettings.add(lockBaseModFiles);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.update_url"));
 			advancedSettings.add(updateJSON);
+			advancedSettings.add(L10N.label("dialog.workspace_settings.mod_issue_url"));
+			advancedSettings.add(modIssue);
 
 			JPanel dependencySettings = new JPanel(new GridLayout(3, 2, 7, 5));
 			dependencySettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -557,6 +560,7 @@ public class WorkspaceDialogs {
 				lockBaseModFiles.setSelected(workspace.getWorkspaceSettings().isLockBaseModFiles());
 				disableForgeVersionCheck.setSelected(workspace.getWorkspaceSettings().isDisableForgeVersionCheck());
 				updateJSON.setText(workspace.getWorkspaceSettings().getUpdateURL());
+				modIssue.setText(workspace.getWorkspaceSettings().getModIssueURL());
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
 				packageName.setText(workspace.getWorkspaceSettings().getModElementsPackage());
 
@@ -594,6 +598,7 @@ public class WorkspaceDialogs {
 			retVal.setLockBaseModFiles(lockBaseModFiles.isSelected());
 			retVal.setDisableForgeVersionCheck(disableForgeVersionCheck.isSelected());
 			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());
+			retVal.setModIssueURL(modIssue.getText().isEmpty() ? null : modIssue.getText());
 			retVal.setCurrentGenerator(
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());
 

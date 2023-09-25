@@ -112,6 +112,7 @@ public class GeneratorsTest {
 				workspaceSettings.setLicense("GPL 3.0");
 				workspaceSettings.setWebsiteURL("https://mcreator.net/");
 				workspaceSettings.setUpdateURL("https://mcreator.net/");
+				workspaceSettings.setModIssueURL("https://mcreator.net/");
 				workspaceSettings.setModPicture("example");
 				workspaceSettings.setModName("Test mod");
 				workspaceSettings.setCurrentGenerator(generator);
