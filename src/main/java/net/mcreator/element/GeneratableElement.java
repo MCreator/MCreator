@@ -46,7 +46,7 @@ import java.util.Map;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 50;
+	public static final int formatVersion = 52;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 

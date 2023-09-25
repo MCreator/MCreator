@@ -52,14 +52,7 @@ public class ${name}Item extends Item {
 
 	<@onEntitySwing data.onEntitySwing/>
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-		</#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation/>
 
 	@Override public UseAnim getUseAnimation(ItemStack itemstack) {
 		return UseAnim.${data.animation?upper_case};
@@ -69,9 +62,7 @@ public class ${name}Item extends Item {
 		return 72000;
 	}
 
-	<#if data.hasGlow>
 	<@hasGlow data.glowCondition/>
-	</#if>
 
 	<#if data.enableMeleeDamage>
 		@Override public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {

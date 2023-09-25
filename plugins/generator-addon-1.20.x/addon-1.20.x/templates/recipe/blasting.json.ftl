@@ -9,10 +9,10 @@
       "groups": [ "<#if data.group?has_content>${data.group}<#else>${modid}</#if>" ],
       "tags": [ "blast_furnace" ],
       "input": {
-        ${mappedMCItemToIngameItemName(data.blastingInputStack)}
+        ${mappedMCItemToItemObjectJSON(data.blastingInputStack)}
       },
       "output": {
-        ${mappedMCItemToIngameItemName(data.blastingReturnStack)}
+        ${mappedMCItemToItemObjectJSON(data.blastingReturnStack)}
       }
     }
 }

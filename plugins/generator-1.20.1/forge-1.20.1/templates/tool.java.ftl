@@ -272,14 +272,7 @@ public class ${name}Item extends FishingRodItem {
 		</#if>
 	</#if>
 
-	<#if data.specialInfo?has_content>
-		@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-			super.appendHoverText(itemstack, world, list, flag);
-			<#list data.specialInfo as entry>
-			list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
-		}
-	</#if>
+	<@addSpecialInformation data.specialInformation/>
 
 	<@onItemUsedOnBlock data.onRightClickedOnBlock/>
 
@@ -289,8 +282,7 @@ public class ${name}Item extends FishingRodItem {
 
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
-	<#if data.hasGlow>
 	<@hasGlow data.glowCondition/>
-	</#if>
+
 </#macro>
 <#-- @formatter:on -->
