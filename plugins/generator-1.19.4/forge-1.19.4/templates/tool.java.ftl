@@ -282,8 +282,7 @@ public class ${name}Item extends FishingRodItem {
 
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
-	<#if data.hasGlow>
 	<@hasGlow data.glowCondition/>
-	</#if>
+
 </#macro>
 <#-- @formatter:on -->
