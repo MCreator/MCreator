@@ -48,6 +48,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLayerEntry> implements IValidable {
+
 	private final Model default_model = new Model.BuiltInModel("Default");
 	private final JComboBox<Model> model = new JComboBox<>(new Model[] { default_model });
 	private final VComboBox<String> texture = new SearchableComboBox<>();
@@ -55,7 +56,8 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 	private final ProcedureSelector condition;
 	private final MCreator mcreator;
 
-	public JModelLayerListEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JModelLayerListEntry> entryList) {
+	public JModelLayerListEntry(MCreator mcreator, IHelpContext gui, JPanel parent,
+			List<JModelLayerListEntry> entryList) {
 		super(parent, entryList);
 		this.mcreator = mcreator;
 
@@ -63,10 +65,8 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 
 		condition = new ProcedureSelector(gui.withEntry("entity/condition_display_model_layer"), mcreator,
 				L10N.t("elementgui.living_entity.layer_display_condition"), ProcedureSelector.Side.CLIENT, true,
-				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity")).makeInline();
-
-		reloadDataLists();
+				VariableTypeLoader.BuiltInTypes.LOGIC,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
 
 		model.setRenderer(new ModelComboBoxRenderer());
 
@@ -75,8 +75,9 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 
 		texture.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 		texture.setValidator(() -> {
-			if (texture.getSelectedItem() == null || texture.getSelectedItem().equals(""))
-				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR, L10N.t("elementgui.living_entity.layer_needs_texture"));
+			if (texture.getSelectedItem() == null || texture.getSelectedItem().isEmpty())
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("elementgui.living_entity.layer_needs_texture"));
 			return Validator.ValidationResult.PASSED;
 		});
 
@@ -112,7 +113,7 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 
 	@Override public LivingEntity.ModelLayerEntry getEntry() {
 		LivingEntity.ModelLayerEntry entry = new LivingEntity.ModelLayerEntry();
-		entry.model = ((Model)Objects.requireNonNull(model.getSelectedItem())).getReadableName();
+		entry.model = ((Model) Objects.requireNonNull(model.getSelectedItem())).getReadableName();
 		entry.texture = texture.getSelectedItem();
 		entry.glow = glow.isSelected();
 		entry.condition = condition.getSelectedProcedure();
@@ -134,7 +135,6 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 	}
 
 	@Override public void setValidator(Validator validator) {
-
 	}
 
 	@Override public Validator getValidator() {
