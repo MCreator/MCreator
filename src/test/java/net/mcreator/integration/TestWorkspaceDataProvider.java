@@ -516,7 +516,8 @@ public class TestWorkspaceDataProvider {
 					Color.white, new Procedure("condition4"), getRandomItem(random, IAnchorableElement.AnchorPoint.values())));
 
 			components.add(new Image(20, 30, "pricture1", true, new Procedure("condition1")));
-			components.add(new Image(22, 31, "pricture2", false, new Procedure("condition2")));
+			components.add(new Image(22, 31, "pricture2", false, new Procedure("condition2"),
+					getRandomItem(random, IAnchorableElement.AnchorPoint.values())));
 			components.add(
 					new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false));
 			components.add(

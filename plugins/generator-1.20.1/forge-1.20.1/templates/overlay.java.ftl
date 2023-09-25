@@ -79,12 +79,11 @@ package ${package}.client.screens;
             </#if>
 
             <#list data.getComponentsOfType("Image") as component>
-                <#assign x = component.x - 213>
-                <#assign y = component.y - 120>
                 <#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>) {
                 </#if>
-                    event.getGuiGraphics().blit(new ResourceLocation("${modid}:textures/screens/${component.image}"), posX + ${x}, posY + ${y}, 0, 0,
+					<@calculatePos anchor_point=component.anchorPoint.name() comp_x=component.x comp_y=component.y/>
+                    event.getGuiGraphics().blit(new ResourceLocation("${modid}:textures/screens/${component.image}"), posX, posY, 0, 0,
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
                         ${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
                 <#if hasProcedure(component.displayCondition)>}</#if>

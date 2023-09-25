@@ -20,6 +20,7 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.Image;
+import net.mcreator.element.types.interfaces.IAnchorableElement;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -57,6 +58,12 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 		JCheckBox scale1x = L10N.checkbox("dialog.gui.image_use_scale");
 		options.add(PanelUtils.join(FlowLayout.LEFT, scale1x));
 
+		final JComboBox<IAnchorableElement.AnchorPoint> anchor = new JComboBox<>(IAnchorableElement.AnchorPoint.values());
+		if (!editor.isNotOverlayType) {
+			anchor.setSelectedItem(IAnchorableElement.AnchorPoint.CENTER);
+			options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor"), anchor));
+		}
+
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/image_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.image_display_condition"), ProcedureSelector.Side.CLIENT, false,
@@ -80,6 +87,9 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			textureSelector.setSelectedItem(image.image);
 			scale1x.setSelected(image.use1Xscale);
 			displayCondition.setSelectedProcedure(image.displayCondition);
+			if (!editor.isNotOverlayType) {
+				anchor.setSelectedItem(image.getAnchorPoint());
+			}
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
@@ -88,8 +98,14 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			String imageTxt = textureSelector.getSelectedItem();
 			if (imageTxt != null) {
 				if (image == null) {
-					Image component = new Image(0, 0, imageTxt, scale1x.isSelected(),
+					Image component;
+					if (editor.isNotOverlayType) {
+						component = new Image(0, 0, imageTxt, scale1x.isSelected(),
 							displayCondition.getSelectedProcedure());
+					} else {
+						component = new Image(0, 0, imageTxt, scale1x.isSelected(),
+							displayCondition.getSelectedProcedure(), (IAnchorableElement.AnchorPoint) anchor.getSelectedItem());
+					}
 
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
@@ -98,8 +114,14 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 				} else {
 					int idx = editor.components.indexOf(image);
 					editor.components.remove(image);
-					Image labelNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
+					Image labelNew;
+					if (editor.isNotOverlayType) {
+						labelNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
 							displayCondition.getSelectedProcedure());
+					} else {
+						labelNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
+							displayCondition.getSelectedProcedure(), (IAnchorableElement.AnchorPoint) anchor.getSelectedItem());
+					}
 					editor.components.add(idx, labelNew);
 					setEditingComponent(labelNew);
 				}
