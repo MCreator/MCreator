@@ -522,7 +522,7 @@ public class TestWorkspaceDataProvider {
 					new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false));
 			components.add(
 					new EntityModel(60, 20, new Procedure("entity1"), new Procedure(!_true ? "condition4" : null), 30,
-							90, false));
+							90, false, getRandomItem(random, IAnchorableElement.AnchorPoint.values())));
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
 			overlay.baseTexture = emptyLists ? "" : "test.png";

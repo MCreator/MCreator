@@ -103,14 +103,13 @@ package ${package}.client.screens;
                     posX, posY, ${component.color.getRGB()});
             </#list>
 
-			posX = w / 2;
-			posY = w / 2;
 			<#list data.getComponentsOfType("EntityModel") as component>
 			    if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity livingEntity) {
 			    	<#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-			        InventoryScreen.renderEntityInInventoryFollowsAngle(event.getPoseStack(), posX + ${component.x - 202}, posY + ${component.y - 100},
+					<@calculatePos anchor_point=component.anchorPoint.name() comp_x=component.x comp_y=component.y/>
+					InventoryScreen.renderEntityInInventoryFollowsAngle(event.getPoseStack(), posX, posY,
                         ${component.scale}, ${component.rotationX / 20.0}f, 0, livingEntity);
 			    }
 			</#list>

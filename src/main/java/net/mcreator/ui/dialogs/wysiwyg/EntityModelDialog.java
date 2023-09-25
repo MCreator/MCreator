@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.EntityModel;
+import net.mcreator.element.types.interfaces.IAnchorableElement;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -40,7 +41,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 	public EntityModelDialog(WYSIWYGEditor editor, @Nullable EntityModel model) {
 		super(editor, model);
 		setModal(true);
-		setSize(500, editor.isNotOverlayType ? 270 : 230);
+		setSize(500, 270);
 		setLocationRelativeTo(editor.mcreator);
 		setTitle(L10N.t("dialog.gui.add_entity_model"));
 
@@ -88,6 +89,13 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 			opts.add(followMouseMovement);
 		}
 
+		JComboBox<IAnchorableElement.AnchorPoint> anchor = new JComboBox<>(IAnchorableElement.AnchorPoint.values());
+		if (!editor.isNotOverlayType) {
+			anchor.setSelectedItem(IAnchorableElement.AnchorPoint.CENTER);
+			opts.add(L10N.label("dialog.gui.anchor"));
+			opts.add(anchor);
+		}
+
 		options.add("North", PanelUtils.join(entityModel, displayCondition));
 		options.add("Center", PanelUtils.join(FlowLayout.LEFT, opts));
 		options.add("South", PanelUtils.join(ok, cancel));
@@ -101,6 +109,9 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 			scale.setValue(model.scale);
 			rotationX.setValue(model.rotationX);
 			followMouseMovement.setSelected(model.followMouseMovement);
+			if (!editor.isNotOverlayType) {
+				anchor.setSelectedItem(model.getAnchorPoint());
+			}
 		}
 
 		cancel.addActionListener(e -> setVisible(false));
@@ -108,9 +119,16 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 			if (entityModel.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				setVisible(false);
 				if (model == null) {
-					EntityModel component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),
-							displayCondition.getSelectedProcedure(), (int) scale.getValue(), (int) rotationX.getValue(),
-							followMouseMovement.isSelected());
+					EntityModel component;
+					if (editor.isNotOverlayType) {
+						component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),
+								displayCondition.getSelectedProcedure(), (int) scale.getValue(), (int) rotationX.getValue(),
+								followMouseMovement.isSelected());
+					} else {
+						component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),
+								displayCondition.getSelectedProcedure(), (int) scale.getValue(), (int) rotationX.getValue(),
+								followMouseMovement.isSelected(), (IAnchorableElement.AnchorPoint) anchor.getSelectedItem());
+					}
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
 					editor.list.setSelectedValue(component, true);
@@ -118,9 +136,17 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 				} else {
 					int idx = editor.components.indexOf(model);
 					editor.components.remove(model);
-					EntityModel modelNew = new EntityModel(model.getX(), model.getY(),
-							entityModel.getSelectedProcedure(), displayCondition.getSelectedProcedure(),
-							(int) scale.getValue(), (int) rotationX.getValue(), followMouseMovement.isSelected());
+					EntityModel modelNew;
+					if (editor.isNotOverlayType) {
+						modelNew = new EntityModel(model.getX(), model.getY(),
+								entityModel.getSelectedProcedure(), displayCondition.getSelectedProcedure(),
+								(int) scale.getValue(), (int) rotationX.getValue(), followMouseMovement.isSelected());
+					} else {
+						modelNew = new EntityModel(model.getX(), model.getY(),
+								entityModel.getSelectedProcedure(), displayCondition.getSelectedProcedure(),
+								(int) scale.getValue(), (int) rotationX.getValue(), followMouseMovement.isSelected(),
+								(IAnchorableElement.AnchorPoint) anchor.getSelectedItem());
+					}
 					editor.components.add(idx, modelNew);
 					setEditingComponent(modelNew);
 				}
