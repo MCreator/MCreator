@@ -116,11 +116,11 @@ import java.util.*;
 		}
 	}
 
-	public List<GeneratableElement> getRawElementsOfType(String typestring) {
-		return getRawElementsOfType(ModElementTypeLoader.getModElementType(typestring));
+	public List<GeneratableElement> getModElements(String typestring) {
+		return getModElements(ModElementTypeLoader.getModElementType(typestring));
 	}
 
-	public List<GeneratableElement> getRawElementsOfType(ModElementType<?> type) {
+	public List<GeneratableElement> getModElements(ModElementType<?> type) {
 		try {
 			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
 					.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
