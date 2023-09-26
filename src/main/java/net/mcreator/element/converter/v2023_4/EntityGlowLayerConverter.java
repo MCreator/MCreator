@@ -42,7 +42,7 @@ public class EntityGlowLayerConverter implements IConverter {
 			JsonObject jsonObject = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
 			if (jsonObject.get("mobModelGlowTexture") != null) {
 				String glowTexture = jsonObject.get("mobModelGlowTexture").getAsString();
-				if (!glowTexture.equals("")) {
+				if (!glowTexture.isEmpty()) {
 					LivingEntity.ModelLayerEntry glowLayer = new LivingEntity.ModelLayerEntry();
 					glowLayer.model = "Default";
 					glowLayer.texture = glowTexture;
@@ -61,7 +61,7 @@ public class EntityGlowLayerConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 50;
+		return 52;
 	}
 
 }

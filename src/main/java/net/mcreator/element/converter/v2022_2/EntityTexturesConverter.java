@@ -49,7 +49,7 @@ public class EntityTexturesConverter implements IConverter {
 			JsonObject jsonObject = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
 			if (jsonObject.get("mobModelGlowTexture") != null) {
 				String glowTexture = jsonObject.get("mobModelGlowTexture").getAsString();
-				if (!glowTexture.equals("")) {
+				if (!glowTexture.isEmpty()) {
 					FileIO.copyFile(workspace.getFolderManager()
 									.getTextureFile(FilenameUtilsPatched.removeExtension(glowTexture), TextureType.OTHER),
 							workspace.getFolderManager()
