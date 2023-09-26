@@ -45,7 +45,6 @@ import java.util.stream.Stream;
 
 	private boolean disableForgeVersionCheck = true;
 	private boolean serverSideOnly = false;
-
 	private boolean showAsResourcePack = false;
 	private String updateURL;
 
