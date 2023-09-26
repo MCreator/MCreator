@@ -29,44 +29,44 @@ description="${settings.getDescription()}"
 </#if>
 
 [[dependencies.${settings.getModID()}]]
-    modId="minecraft"
-    mandatory=true
-    versionRange="[1.20.1]"
-    ordering="NONE"
-    side="BOTH"
+modId="minecraft"
+mandatory=true
+versionRange="[${generator.getGeneratorMinecraftVersion()}]"
+ordering="NONE"
+side="BOTH"
 
 <#if !settings.isDisableForgeVersionCheck()>
 [[dependencies.${settings.getModID()}]]
-    modId="forge"
-    mandatory=true
-    versionRange="[${generator.getGeneratorBuildFileVersion()}]"
-    ordering="NONE"
-    side="BOTH"
+modId="forge"
+mandatory=true
+versionRange="[${generator.getGeneratorBuildFileVersion()}]"
+ordering="NONE"
+side="BOTH"
 </#if>
 
 <#list settings.getRequiredMods() as e>
 [[dependencies.${settings.getModID()}]]
-    modId="${e}"
-    mandatory=true
-    versionRange="[0,)"
-    ordering="NONE"
-    side="BOTH"
+modId="${e}"
+mandatory=true
+versionRange="[0,)"
+ordering="NONE"
+side="BOTH"
 </#list>
 
 <#list settings.getDependencies() as e>
 [[dependencies.${settings.getModID()}]]
-    modId="${e}"
-    mandatory=false
-    versionRange="[0,)"
-    ordering="NONE"
-    side="BOTH"
+modId="${e}"
+mandatory=false
+versionRange="[0,)"
+ordering="NONE"
+side="BOTH"
 </#list>
 
 <#list settings.getDependants() as e>
 [[dependencies.${settings.getModID()}]]
-    modId="${e}"
-    mandatory=false
-    versionRange="[0,)"
-    ordering="NONE"
-    side="BOTH"
+modId="${e}"
+mandatory=false
+versionRange="[0,)"
+ordering="NONE"
+side="BOTH"
 </#list>
