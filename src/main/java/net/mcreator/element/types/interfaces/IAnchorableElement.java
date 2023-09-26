@@ -24,6 +24,7 @@ import net.mcreator.ui.init.L10N;
 public interface IAnchorableElement {
 
 	AnchorPoint getAnchorPoint();
+	void setAnchorPoint(AnchorPoint anchorPoint);
 
 	enum AnchorPoint {
 		TOP_LEFT("top_left"), TOP_CENTER("top_center"), TOP_RIGHT("top_right"),

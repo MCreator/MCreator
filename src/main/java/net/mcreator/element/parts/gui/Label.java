@@ -98,4 +98,8 @@ public class Label extends GUIComponent implements IAnchorableElement {
 	@Override public AnchorPoint getAnchorPoint() {
 		return anchorPoint;
 	}
+
+	@Override public void setAnchorPoint(AnchorPoint anchorPoint) {
+		this.anchorPoint = anchorPoint;
+	}
 }
