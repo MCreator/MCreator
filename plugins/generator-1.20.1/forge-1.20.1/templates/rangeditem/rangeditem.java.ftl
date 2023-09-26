@@ -62,9 +62,7 @@ public class ${name}Item extends Item {
 		return 72000;
 	}
 
-	<#if data.hasGlow>
 	<@hasGlow data.glowCondition/>
-	</#if>
 
 	<#if data.enableMeleeDamage>
 		@Override public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlot slot) {
