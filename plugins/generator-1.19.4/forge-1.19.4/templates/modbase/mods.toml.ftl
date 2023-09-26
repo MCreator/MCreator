@@ -28,7 +28,7 @@ description="${settings.getDescription()}"
 [[dependencies.${settings.getModID()}]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.4]"
+    versionRange="[${generator.getGeneratorMinecraftVersion()}]"
     ordering="NONE"
     side="BOTH"
 
