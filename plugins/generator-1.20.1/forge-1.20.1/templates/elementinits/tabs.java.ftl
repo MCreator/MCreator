@@ -33,7 +33,7 @@
 <#include "../mcitems.ftl">
 
 <#assign tabMap = w.getCreativeTabMap()>
-<#assign itemsInVanillaTabs = tabMap.keySet()?filter(e -> !e?starts_with('CUSTOM:'))?has_content>
+<#assign itemsInVanillaTabs = tabMap.keySet()?filter(e -> !e?starts_with('CUSTOM:'))?size != 0>
 
 /*
  *    MCreator note: This file will be REGENERATED on each build.

@@ -6,9 +6,9 @@ templates:
 global_templates:
   - template: elementinits/fuels.java.ftl
     writer: java
-    condition: "${w.getRawElementsOfType('itemextension')?filter(e -> e.enableFuel)?has_content}"
+    condition: "${w.getModElements('itemextension')?filter(e -> e.enableFuel)?size != 0}"
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFuels.java"
   - template: elementinits/compostable_items.java.ftl
     writer: java
-    condition: "${w.getRawElementsOfType('itemextension')?filter(e -> e.compostLayerChance gt 0)?has_content}"
+    condition: "${w.getModElements('itemextension')?filter(e -> e.compostLayerChance gt 0)?size != 0}"
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameCompostableItems.java"
