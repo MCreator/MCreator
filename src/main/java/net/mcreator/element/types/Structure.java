@@ -25,15 +25,14 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.references.ElementReference;
-import net.mcreator.workspace.references.StructureReference;
+import net.mcreator.workspace.references.ResourceReference;
 
 import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Structure extends GeneratableElement implements ICommonType {
 
-	@StructureReference public String structure;
+	@ResourceReference("structure") public String structure;
 
 	public boolean randomlyRotateStructure;
 

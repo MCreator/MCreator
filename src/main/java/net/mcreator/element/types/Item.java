@@ -36,7 +36,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.references.ModelReference;
+import net.mcreator.workspace.references.ResourceReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
@@ -54,7 +54,7 @@ import java.util.*;
 	@Nonnull public String customModelName;
 
 	public Map<String, Procedure> customProperties;
-	@TextureReference(TextureType.ITEM) @ModelReference public List<StateEntry> states;
+	@TextureReference(TextureType.ITEM) @ResourceReference("model") public List<StateEntry> states;
 
 	public String name;
 	public String rarity;

@@ -95,9 +95,10 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		workspace.getModElements().parallelStream().forEach(me -> {
-			if (anyValueMatches(me.getGeneratableElement(), Model.class,
-					e -> e.isAnnotationPresent(ModelReference.class),
-					(a, t) -> model.equals(t) || TexturedModel.getModelTextureMapVariations(model).contains(t))) {
+			if (anyValueMatches(me.getGeneratableElement(), Model.class, e -> {
+				ResourceReference ref = e.getAnnotation(ResourceReference.class);
+				return ref != null && ref.value().equals("model");
+			}, (a, t) -> model.equals(t) || TexturedModel.getModelTextureMapVariations(model).contains(t))) {
 				elements.add(me);
 			}
 		});
@@ -109,8 +110,10 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		workspace.getModElements().parallelStream().forEach(me -> {
-			if (anyValueMatches(me.getGeneratableElement(), Sound.class, null,
-					(a, t) -> t.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())))
+			if (anyValueMatches(me.getGeneratableElement(), Sound.class, e -> {
+				ResourceReference ref = e.getAnnotation(ResourceReference.class);
+				return ref != null && ref.value().equals("sound");
+			}, (a, t) -> t.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())))
 				elements.add(me);
 		});
 
@@ -122,8 +125,10 @@ public class ReferencesFinder {
 
 		workspace.getModElements().parallelStream().forEach(me -> {
 			GeneratableElement ge = me.getGeneratableElement();
-			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(StructureReference.class),
-					(a, t) -> t.equals(structure)))
+			if (anyValueMatches(ge, String.class, e -> {
+				ResourceReference ref = e.getAnnotation(ResourceReference.class);
+				return ref != null && ref.value().equals("structure");
+			}, (a, t) -> t.equals(structure)))
 				elements.add(me);
 			else if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
 					(a, t) -> t.contains(">" + structure + "</field>")))
