@@ -52,7 +52,6 @@ public class AddTagDialog {
 		}
 
 		tagName.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), tagName, true));
-		tagName.addItem("");
 
 		for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
 			if (modElement.getType() == ModElementType.TAG) {
@@ -68,7 +67,7 @@ public class AddTagDialog {
 			tagName.addItem(suggestion);
 
 		tagName.setEditable(true);
-		tagName.setOpaque(false);
+		tagName.getEditor().setItem("");
 		tagName.enableRealtimeValidation();
 		ComponentUtils.deriveFont(tagName, 16);
 
