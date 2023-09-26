@@ -26,6 +26,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.Item;
@@ -72,10 +73,13 @@ public class FoodToItemConverter implements IConverter {
 				item.eatResultItem = new MItemBlock(workspace,
 						food.get("resultItem").getAsJsonObject().get("value").getAsString());
 			item.animation = food.get("animation").getAsString();
-			item.hasGlow = food.get("hasGlow").getAsBoolean();
-			if (food.get("glowCondition") != null)
-				item.glowCondition = new Procedure(
-						food.get("glowCondition").getAsJsonObject().get("name").getAsString());
+			if (food.get("hasGlow").getAsBoolean()) {
+				if (food.get("glowCondition") != null)
+					item.glowCondition = new LogicProcedure(
+							food.get("glowCondition").getAsJsonObject().get("name").getAsString(), true);
+				else
+					item.glowCondition = new LogicProcedure(null, true);
+			}
 			if (food.get("onRightClicked") != null)
 				item.onRightClickedInAir = new Procedure(
 						food.get("onRightClicked").getAsJsonObject().get("name").getAsString());
