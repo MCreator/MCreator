@@ -135,9 +135,9 @@ public class WorkspaceDialogs {
 		JComboBox<String> modPicture = new JComboBox<>();
 		JCheckBox lockBaseModFiles = L10N.checkbox("dialog.workspace_settings.lock_base_files");
 		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
+		JCheckBox  showAsResourcePack = new JCheckBox();
 		JCheckBox disableForgeVersionCheck = new JCheckBox();
 		JTextField updateJSON = new JTextField(24);
-		JTextField modIssue = new JTextField(24);
 		JStringListField requiredMods, dependencies, dependants;
 
 		JComboBox<String> license = new JComboBox<>(
@@ -335,6 +335,7 @@ public class WorkspaceDialogs {
 			version.setText("1.0.0");
 
 			disableForgeVersionCheck.setSelected(true);
+			showAsResourcePack.setSelected(false);
 
 			generator.setUI(new BasicComboBoxUI() {
 				@Override protected JButton createArrowButton() {
@@ -513,6 +514,12 @@ public class WorkspaceDialogs {
 					BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 							L10N.t("dialog.workspace_settings.version_check")));
 			_advancedSettings.add(forgeVersionCheckPan);
+			JComponent showAsResourcePackCheckPan = PanelUtils.westAndEastElement(
+					L10N.label("dialog.workspace_settings.section.show_as_resource_pack_check"), showAsResourcePack);
+			showAsResourcePackCheckPan.setBorder(
+					BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
+							L10N.t("dialog.workspace_settings.show_as_resource_pack_check")));
+			_advancedSettings.add(showAsResourcePackCheckPan);
 			_advancedSettings.add(new JEmptyBox(5, 5));
 
 			JPanel advancedSettings = new JPanel(new GridLayout(3, 2, 5, 2));
@@ -525,8 +532,6 @@ public class WorkspaceDialogs {
 			advancedSettings.add(lockBaseModFiles);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.update_url"));
 			advancedSettings.add(updateJSON);
-			advancedSettings.add(L10N.label("dialog.workspace_settings.mod_issue_url"));
-			advancedSettings.add(modIssue);
 
 			JPanel dependencySettings = new JPanel(new GridLayout(3, 2, 7, 5));
 			dependencySettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -559,8 +564,8 @@ public class WorkspaceDialogs {
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
 				lockBaseModFiles.setSelected(workspace.getWorkspaceSettings().isLockBaseModFiles());
 				disableForgeVersionCheck.setSelected(workspace.getWorkspaceSettings().isDisableForgeVersionCheck());
+				showAsResourcePack.setSelected(workspace.getWorkspaceSettings().isShowAsResourcePack());
 				updateJSON.setText(workspace.getWorkspaceSettings().getUpdateURL());
-				modIssue.setText(workspace.getWorkspaceSettings().getModIssueURL());
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
 				packageName.setText(workspace.getWorkspaceSettings().getModElementsPackage());
 
@@ -597,8 +602,8 @@ public class WorkspaceDialogs {
 			retVal.setServerSideOnly(serverSideOnly.isSelected());
 			retVal.setLockBaseModFiles(lockBaseModFiles.isSelected());
 			retVal.setDisableForgeVersionCheck(disableForgeVersionCheck.isSelected());
+			retVal.setShowAsResourcePack(showAsResourcePack.isSelected());
 			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());
-			retVal.setModIssueURL(modIssue.getText().isEmpty() ? null : modIssue.getText());
 			retVal.setCurrentGenerator(
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());
 

@@ -1,8 +1,8 @@
 modLoader="javafml"
 loaderVersion="[45,)"
 license="${settings.getLicense()}"
-<#if settings.getModIssueURL()?has_content>
-issueTrackerURL="${settings.getModIssueURL()}"
+<#if settings.isShowAsResourcePack()>
+showAsResourcePack=true
 </#if>
 
 [[mods]]

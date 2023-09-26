@@ -45,8 +45,9 @@ import java.util.stream.Stream;
 
 	private boolean disableForgeVersionCheck = true;
 	private boolean serverSideOnly = false;
+
+	private boolean showAsResourcePack = false;
 	private String updateURL;
-	private String modIssueURL;
 
 	private String modPicture = null;
 
@@ -77,8 +78,8 @@ import java.util.stream.Stream;
 		this.websiteURL = other.websiteURL;
 		this.disableForgeVersionCheck = other.disableForgeVersionCheck;
 		this.serverSideOnly = other.serverSideOnly;
+		this.showAsResourcePack = other.showAsResourcePack;
 		this.updateURL = other.updateURL;
-		this.modIssueURL = other.modIssueURL;
 		this.modPicture = other.modPicture;
 		this.requiredMods = other.requiredMods;
 		this.dependencies = other.dependencies;
@@ -128,12 +129,12 @@ import java.util.stream.Stream;
 		this.serverSideOnly = serverSideOnly;
 	}
 
-	public void setUpdateURL(String updateURL) {
-		this.updateURL = updateURL;
+	public void setShowAsResourcePack(boolean showAsResourcePack) {
+		this.showAsResourcePack = showAsResourcePack;
 	}
 
-	public void setModIssueURL(String modIssueURL) {
-		this.modIssueURL = modIssueURL;
+	public void setUpdateURL(String updateURL) {
+		this.updateURL = updateURL;
 	}
 
 	public void setModPicture(String modPicture) {
@@ -242,13 +243,14 @@ import java.util.stream.Stream;
 		return disableForgeVersionCheck;
 	}
 
+	public boolean isShowAsResourcePack() {
+		return showAsResourcePack;
+	}
+
 	public String getUpdateURL() {
 		return updateURL;
 	}
 
-	public String getModIssueURL() {
-		return modIssueURL;
-	}
 	public String getModPicture() {
 		return modPicture;
 	}
