@@ -20,6 +20,7 @@ package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Armor;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -150,6 +151,7 @@ public class ArmorPackMakerTool {
 		armor.textureLeggings = name.toLowerCase(Locale.ENGLISH) + "_leggings";
 		armor.textureBoots = name.toLowerCase(Locale.ENGLISH) + "_boots";
 		armor.armorTextureFile = name.toLowerCase(Locale.ENGLISH);
+		armor.creativeTab = new TabEntry(workspace, "COMBAT");
 		armor.maxDamage = (int) Math.round(15 * factor);
 		armor.enchantability = (int) Math.round(9 * factor);
 		armor.toughness = 0;

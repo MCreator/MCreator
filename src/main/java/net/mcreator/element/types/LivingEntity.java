@@ -63,8 +63,8 @@ import java.util.*;
 	@Nonnull public String mobModelName;
 	public String mobModelTexture;
 	public String mobModelGlowTexture;
-	public Procedure transparentModelCondition;
-	public Procedure isShakingCondition;
+	public LogicProcedure transparentModelCondition;
+	public LogicProcedure isShakingCondition;
 	public LogicProcedure solidBoundingBox;
 
 	public double modelWidth, modelHeight, modelShadowSize;

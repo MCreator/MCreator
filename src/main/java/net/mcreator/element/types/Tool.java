@@ -21,7 +21,9 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
@@ -35,7 +37,6 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +51,7 @@ import java.util.Map;
 	@Nonnull public String customModelName;
 
 	public String name;
-	public List<String> specialInfo;
+	public StringListProcedure specialInformation;
 	public TabEntry creativeTab;
 	public int harvestLevel;
 	public double efficiency;
@@ -59,8 +60,7 @@ import java.util.Map;
 	public double damageVsEntity;
 	public int usageCount;
 	public List<MItemBlock> blocksAffected;
-	public boolean hasGlow;
-	public Procedure glowCondition;
+	public LogicProcedure glowCondition;
 	public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
 
@@ -84,8 +84,6 @@ import java.util.Map;
 		super(element);
 
 		this.attackSpeed = 2.8;
-
-		this.specialInfo = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
