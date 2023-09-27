@@ -38,6 +38,7 @@ public class JEntityDataEntry extends JSimpleListEntry<DefaultPropertyValue<?>> 
 	private final MCreator mcreator;
 	private PropertyData<?> data;
 
+	private final JLabel nameLabel, typeLabel;
 	private final JPanel defValuePane = new JPanel(new BorderLayout());
 	private JComponent defaultValue;
 
@@ -51,7 +52,7 @@ public class JEntityDataEntry extends JSimpleListEntry<DefaultPropertyValue<?>> 
 		line.setLayout(new BorderLayout());
 		line.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		JLabel nameLabel = new JLabel(data.getName());
+		nameLabel = new JLabel(data.getName());
 		nameLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		nameLabel.setPreferredSize(new Dimension(0, 28));
 		ComponentUtils.deriveFont(nameLabel, 16);
@@ -63,7 +64,7 @@ public class JEntityDataEntry extends JSimpleListEntry<DefaultPropertyValue<?>> 
 		namePane.add("Center", nameLabel);
 		namePane.setPreferredSize(new Dimension(240, 0));
 
-		JLabel typeLabel = new JLabel(switch (data.getClass().getSimpleName()) {
+		typeLabel = new JLabel(switch (data.getClass().getSimpleName()) {
 			case "LogicType" -> "Logic";
 			case "StringType" -> "String";
 			default -> "Number";
@@ -99,6 +100,12 @@ public class JEntityDataEntry extends JSimpleListEntry<DefaultPropertyValue<?>> 
 
 	@Override public void setEntry(DefaultPropertyValue<?> entry) {
 		data = entry.property();
+		nameLabel.setText(data.getName());
+		typeLabel.setText(switch (data.getClass().getSimpleName()) {
+			case "LogicType" -> "Logic";
+			case "StringType" -> "String";
+			default -> "Number";
+		});
 		defValuePane.removeAll();
 		defValuePane.add(this.defaultValue = data.getComponent(mcreator, entry.defaultValue()));
 		defaultValue.setOpaque(false);

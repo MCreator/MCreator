@@ -32,7 +32,7 @@ public abstract class JSimpleEntriesList<T extends JSimpleListEntry<U>, U> exten
 		super(mcreator, gui);
 
 		add.addActionListener(e -> {
-			T entry = newEntry(entries, entryList);
+			T entry = newEntry(entries, entryList, false);
 			entry.reloadDataLists();
 			entryList.add(entry);
 			entry.setEnabled(this.isEnabled());
@@ -44,7 +44,7 @@ public abstract class JSimpleEntriesList<T extends JSimpleListEntry<U>, U> exten
 	public void entryAddedByUserHandler() {
 	}
 
-	protected abstract T newEntry(JPanel parent, List<T> entryList);
+	protected abstract T newEntry(JPanel parent, List<T> entryList, boolean loading);
 
 	@Override public final List<U> getEntries() {
 		return entryList.stream().map(T::getEntry).filter(Objects::nonNull).toList();
@@ -54,7 +54,7 @@ public abstract class JSimpleEntriesList<T extends JSimpleListEntry<U>, U> exten
 		entryList.clear();
 		entries.removeAll();
 		newEntries.forEach(e -> {
-			T entry = newEntry(entries, entryList);
+			T entry = newEntry(entries, entryList, true);
 			entry.reloadDataLists();
 			entryList.add(entry);
 			entry.setEnabled(isEnabled());

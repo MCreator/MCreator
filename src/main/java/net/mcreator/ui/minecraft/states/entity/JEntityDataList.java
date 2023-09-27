@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.minecraft.states.entity;
 
+import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -52,46 +53,51 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Defaul
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
 
-	@Override protected JEntityDataEntry newEntry(JPanel parent, List<JEntityDataEntry> entryList) {
+	@Override protected JEntityDataEntry newEntry(JPanel parent, List<JEntityDataEntry> entryList, boolean loading) {
 		AtomicReference<JEntityDataEntry> entry = new AtomicReference<>();
 
-		MCreatorDialog dialog = new MCreatorDialog(mcreator,
-				L10N.t("elementgui.living_entity.entity_data_entries.add_entry.title"), true);
+		if (loading) {
+			entry.set(new JEntityDataEntry(mcreator, gui, parent, entryList, new PropertyData.IntegerType("")));
+		} else {
+			MCreatorDialog dialog = new MCreatorDialog(mcreator,
+					L10N.t("elementgui.living_entity.entity_data_entries.add_entry.title"), true);
 
-		VTextField name = new VTextField(20);
-		JComboBox<String> type = new JComboBox<>(new String[] { "Number", "Logic", "String" });
+			VTextField name = new VTextField(20);
+			JComboBox<String> type = new JComboBox<>(new String[] { "Number", "Logic", "String" });
 
-		UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
-				name::getText, () -> entryList.stream().map(e -> e.getEntry().property().getName()),
-				new JavaMemberNameValidator(name, false));
-		validator.setIsPresentOnList(false);
-		name.setValidator(validator);
-		name.enableRealtimeValidation();
+			UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
+					name::getText, () -> entryList.stream().map(e -> e.getEntry().property().getName()),
+					new JavaMemberNameValidator(name, false));
+			validator.setIsPresentOnList(false);
+			name.setValidator(validator);
+			name.enableRealtimeValidation();
 
-		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
-		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		dialog.getRootPane().setDefaultButton(ok);
+			JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
+			JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+			dialog.getRootPane().setDefaultButton(ok);
 
-		ok.addActionListener(e -> {
-			if (name.getValidationStatus().getValidationResultType() == Validator.ValidationResultType.PASSED) {
-				dialog.setVisible(false);
-				entry.set(new JEntityDataEntry(mcreator, gui, parent, entryList,
-						switch (Objects.requireNonNullElse((String) type.getSelectedItem(), "Number")) {
-							case "Logic" -> new PropertyData.LogicType(name.getText());
-							case "String" -> new PropertyData.StringType(name.getText());
-							default -> new PropertyData.IntegerType(name.getText());
-						}));
-			}
-		});
-		cancel.addActionListener(e -> dialog.setVisible(false));
+			ok.addActionListener(e -> {
+				if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
+					dialog.setVisible(false);
+					String property = Transliteration.transliterateString(name.getText());
+					entry.set(new JEntityDataEntry(mcreator, gui, parent, entryList,
+							switch (Objects.requireNonNullElse((String) type.getSelectedItem(), "Number")) {
+								case "Logic" -> new PropertyData.LogicType(property);
+								case "String" -> new PropertyData.StringType(property);
+								default -> new PropertyData.IntegerType(property);
+							}));
+				}
+			});
+			cancel.addActionListener(e -> dialog.setVisible(false));
 
-		dialog.getContentPane().add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 2, 50, 20,
-				L10N.label("elementgui.living_entity.entity_data_entries.add_entry.name"), name,
-				L10N.label("elementgui.living_entity.entity_data_entries.add_entry.type"), type)));
-		dialog.getContentPane().add("South", PanelUtils.join(ok, cancel));
-		dialog.setSize(360, 180);
-		dialog.setLocationRelativeTo(mcreator);
-		dialog.setVisible(true);
+			dialog.getContentPane().add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 2, 50, 20,
+					L10N.label("elementgui.living_entity.entity_data_entries.add_entry.name"), name,
+					L10N.label("elementgui.living_entity.entity_data_entries.add_entry.type"), type)));
+			dialog.getContentPane().add("South", PanelUtils.join(ok, cancel));
+			dialog.setSize(360, 180);
+			dialog.setLocationRelativeTo(mcreator);
+			dialog.setVisible(true);
+		}
 
 		return entry.get();
 	}

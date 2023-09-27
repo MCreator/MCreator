@@ -22,7 +22,6 @@ package net.mcreator.ui.minecraft.potions;
 import net.mcreator.element.types.Potion;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
-import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 
@@ -44,7 +43,7 @@ public class JPotionList extends JSimpleEntriesList<JPotionListEntry, Potion.Cus
 	}
 
 	@Override
-	protected JPotionListEntry newEntry(JPanel parent, List<JPotionListEntry> entryList) {
+	protected JPotionListEntry newEntry(JPanel parent, List<JPotionListEntry> entryList, boolean loading) {
 		return new JPotionListEntry(mcreator, gui, entries, entryList);
 	}
 

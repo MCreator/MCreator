@@ -21,7 +21,6 @@ package net.mcreator.ui.minecraft.spawntypes;
 import net.mcreator.element.types.Biome;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
-import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 
@@ -43,7 +42,7 @@ public class JSpawnEntriesList extends JSimpleEntriesList<JSpawnListEntry, Biome
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
 
-	@Override protected JSpawnListEntry newEntry(JPanel parent, List<JSpawnListEntry> entryList) {
+	@Override protected JSpawnListEntry newEntry(JPanel parent, List<JSpawnListEntry> entryList, boolean loading) {
 		return new JSpawnListEntry(mcreator, gui, parent, entryList);
 	}
 
