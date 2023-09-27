@@ -20,12 +20,11 @@
 package net.mcreator.ui.minecraft.states.entity;
 
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.util.*;
+import net.mcreator.ui.component.entries.JSimpleEntriesList;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.ui.minecraft.states.DefaultPropertyValue;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.Validator;
@@ -34,84 +33,17 @@ import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableCellEditor;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.atomic.AtomicReference;
 
-public class JEntityDataList extends JEntriesList {
-
-	private final DefaultTableModel entriesModel;
-	private final JTable entries;
+public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, DefaultPropertyValue<?>> {
 
 	public JEntityDataList(MCreator mcreator, IHelpContext gui) {
-		super(mcreator, new BorderLayout(), gui);
-		setOpaque(false);
-
-		entriesModel = new DefaultTableModel(new Object[] { L10N.t("elementgui.living_entity.entity_data_entries.name"),
-				L10N.t("elementgui.living_entity.entity_data_entries.type"),
-				L10N.t("elementgui.living_entity.entity_data_entries.default_value") }, 0) {
-			@Override public boolean isCellEditable(int row, int column) {
-				return column == 2;
-			}
-
-			@Override public void setValueAt(Object value, int row, int column) {
-				if (column == 2 && !entries.getValueAt(row, column).equals(value))
-					super.setValueAt(value, row, column);
-			}
-		};
-		entries = new JTable(entriesModel) {
-			@Override public TableCellEditor getCellEditor(int row, int column) {
-				if (convertColumnIndexToModel(column) == 2) {
-					DefaultPropertyValue<?> data = toPropertyData(row);
-					switch ((String) getValueAt(row, 1)) {
-					case "Number" -> {
-						return new SpinnerCellEditor(
-								(JSpinner) data.property().getComponent(mcreator, data.defaultValue()));
-					}
-					case "Logic" -> {
-						return new CheckBoxCellEditor(
-								(JCheckBox) data.property().getComponent(mcreator, data.defaultValue()));
-					}
-					case "String" -> {
-						return new DefaultCellEditor(
-								(JTextField) data.property().getComponent(mcreator, data.defaultValue()));
-					}
-					}
-				}
-
-				return super.getCellEditor(row, column);
-			}
-		};
-		entries.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		entries.setSelectionBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-		entries.setSelectionForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		entries.setBorder(BorderFactory.createEmptyBorder());
-		entries.setGridColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		entries.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		entries.setRowHeight(30);
-		entries.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
-		ComponentUtils.deriveFont(entries, 14);
-
-		JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		topBar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		super(mcreator, gui);
 
 		add.setText(L10N.t("elementgui.living_entity.entity_data_entries.add_entry"));
-		add.addActionListener(e -> showNewEntryDialog());
-		topBar.add(add);
-
-		JButton remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText(L10N.t("elementgui.living_entity.entity_data_entries.remove_entry"));
-		remove.addActionListener(e -> {
-			if (entries.getSelectedRow() != -1)
-				entriesModel.removeRow(entries.getSelectedRow());
-		});
-		topBar.add(remove);
-
-		add("North", topBar);
-		add("Center", new JScrollPane(entries));
 
 		setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
@@ -120,13 +52,9 @@ public class JEntityDataList extends JEntriesList {
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
 
-	@Override public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
+	@Override protected JEntityDataEntry newEntry(JPanel parent, List<JEntityDataEntry> entryList) {
+		AtomicReference<JEntityDataEntry> entry = new AtomicReference<>();
 
-		add.setEnabled(enabled);
-	}
-
-	private void showNewEntryDialog() {
 		MCreatorDialog dialog = new MCreatorDialog(mcreator,
 				L10N.t("elementgui.living_entity.entity_data_entries.add_entry.title"), true);
 
@@ -134,7 +62,7 @@ public class JEntityDataList extends JEntriesList {
 		JComboBox<String> type = new JComboBox<>(new String[] { "Number", "Logic", "String" });
 
 		UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
-				name::getText, () -> TableUtil.getColumnContents(entries, 0).stream(),
+				name::getText, () -> entryList.stream().map(e -> e.getEntry().property().getName()),
 				new JavaMemberNameValidator(name, false));
 		validator.setIsPresentOnList(false);
 		name.setValidator(validator);
@@ -147,12 +75,12 @@ public class JEntityDataList extends JEntriesList {
 		ok.addActionListener(e -> {
 			if (name.getValidationStatus().getValidationResultType() == Validator.ValidationResultType.PASSED) {
 				dialog.setVisible(false);
-				String selType = Objects.requireNonNullElse((String) type.getSelectedItem(), "Number");
-				entriesModel.addRow(new Object[] { name.getText(), selType, (switch (selType) {
-					case "Logic" -> new PropertyData.LogicType(name.getText());
-					case "String" -> new PropertyData.StringType(name.getText());
-					default -> new PropertyData.IntegerType(name.getText());
-				}).getDefaultValue() + "" });
+				entry.set(new JEntityDataEntry(mcreator, gui, parent, entryList,
+						switch (Objects.requireNonNullElse((String) type.getSelectedItem(), "Number")) {
+							case "Logic" -> new PropertyData.LogicType(name.getText());
+							case "String" -> new PropertyData.StringType(name.getText());
+							default -> new PropertyData.IntegerType(name.getText());
+						}));
 			}
 		});
 		cancel.addActionListener(e -> dialog.setVisible(false));
@@ -164,32 +92,8 @@ public class JEntityDataList extends JEntriesList {
 		dialog.setSize(360, 180);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
-	}
 
-	private DefaultPropertyValue<?> toPropertyData(int row) {
-		String name = (String) entries.getValueAt(row, 0);
-		String value = entries.getValueAt(row, 2).toString();
-		return switch ((String) entries.getValueAt(row, 1)) {
-			case "Number" -> new DefaultPropertyValue<>(new PropertyData.IntegerType(name), Integer.parseInt(value));
-			case "Logic" -> new DefaultPropertyValue<>(new PropertyData.LogicType(name), Boolean.parseBoolean(value));
-			default -> new DefaultPropertyValue<>(new PropertyData.StringType(name), value);
-		};
-	}
-
-	public List<DefaultPropertyValue<?>> getEntries() {
-		List<DefaultPropertyValue<?>> retVal = new ArrayList<>();
-		for (int i = 0; i < entriesModel.getRowCount(); i++)
-			retVal.add(toPropertyData(i));
-		return retVal;
-	}
-
-	public void setEntries(List<DefaultPropertyValue<?>> pool) {
-		pool.forEach(e -> entriesModel.addRow(
-				new Object[] { e.property().getName(), switch (e.property().getClass().getSimpleName()) {
-					case "LogicType" -> "Logic";
-					case "StringType" -> "String";
-					default -> "Number";
-				}, e.defaultValue() + "" }));
+		return entry.get();
 	}
 
 }
