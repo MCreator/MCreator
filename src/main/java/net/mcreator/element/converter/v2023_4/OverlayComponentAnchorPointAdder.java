@@ -33,14 +33,14 @@ public class OverlayComponentAnchorPointAdder implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Overlay overlay = (Overlay) input;
 		for (GUIComponent component : overlay.getComponents()) {
-			if (component instanceof IAnchorableElement && ((IAnchorableElement) component).getAnchorPoint() == null) {
-				((IAnchorableElement) component).setAnchorPoint(IAnchorableElement.AnchorPoint.CENTER);
+			if (component instanceof IAnchorableElement anchorableElement && anchorableElement.getAnchorPoint() == null) {
+				anchorableElement.setAnchorPoint(IAnchorableElement.AnchorPoint.CENTER);
 			}
 		}
 		return overlay;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 49;
+		return 52;
 	}
 }
