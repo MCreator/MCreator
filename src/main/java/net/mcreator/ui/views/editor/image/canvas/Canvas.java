@@ -153,6 +153,10 @@ public class Canvas extends ArrayListListModel<Layer> {
 		return success;
 	}
 
+	public boolean mergeSelectedDown() {
+		return mergeDown(layerPanel.selectedID());
+	}
+
 	public void update(Layer layer) {
 		update(indexOf(layer));
 	}
@@ -230,6 +234,10 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 	public Layer selected() {
 		return layerPanel.selected();
+	}
+
+	public LayerPanel getLayerPanel() {
+		return layerPanel;
 	}
 
 	public void setSize(int width, int height, UUID group) {

@@ -44,7 +44,7 @@ public abstract class AbstractModificationTool extends AbstractTool {
 		if (SwingUtilities.isLeftMouseButton(e)) {
 			layer.mergeOverlay();
 			versionManager.addRevision(new Modification(canvas, layer));
-			super.mouseReleased(e);
 		}
+		super.mouseReleased(e);
 	}
 }
