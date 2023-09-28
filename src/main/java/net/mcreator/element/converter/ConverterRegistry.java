@@ -44,6 +44,11 @@ import net.mcreator.element.converter.v2023_2.BiomeCustomFeaturesConverter;
 import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
 import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
+import net.mcreator.element.converter.v2023_3.HugeFungusFeatureConverter;
+import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
+import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
+import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
+import net.mcreator.element.converter.v2023_4.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -51,42 +56,132 @@ import java.util.Map;
 
 public class ConverterRegistry {
 
+	//@formatter:off
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
-		put(ModElementType.ADVANCEMENT, List.of(new AchievementFixer(), new AdvancementTextureConverter()));
-		put(ModElementType.ARMOR, List.of(new ArmorTexturesConverter()));
-		put(ModElementType.BIOME, List.of(new BiomeSpawnListConverter(), new BiomeDefaultFeaturesConverter(),
-				new BiomeFrozenTopLayerConverter(), new BiomeGenParametersConverter(),
-				new BiomeCustomFeaturesConverter()));
-		put(ModElementType.BLOCK,
-				List.of(new BlockLuminanceFixer(), new BlockBoundingBoxFixer(), new BlockLightOpacityFixer(),
-						new BlockRequiresCorrectToolConverter(), new BlockOreReplacementBlocksFixer()));
-		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
-		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
-		put(ModElementType.DIMENSION, List.of(new DimensionLuminanceFixer()));
-		put(ModElementType.FLUID, List.of(new FluidNameFixer(), new FluidGenToFeatureConverter()));
-		put(ModElementType.COMMAND, List.of(new CommandParameterBlockFixer()));
-		put(ModElementType.GAMERULE, List.of(new GameruleDisplayNameFixer(), new BooleanGameRulesConverter()));
-		put(ModElementType.GUI,
-				List.of(new GUIBindingInverter(), new GUICoordinateConverter(), new GUITexturesConverter(),
-						new GUIComponentNamer(), new SlotInteractionsConverter()));
-		put(ModElementType.LIVINGENTITY, List.of(new EntityTexturesConverter()));
-		put(ModElementType.OVERLAY,
-				List.of(new OverlayCoordinateConverter(), new OverlayTexturesConverter(), new GUIComponentNamer()));
-		put(ModElementType.PAINTING, List.of(new PaintingFieldsFixer()));
-		put(ModElementType.PARTICLE, List.of(new ParticleTextureConverter()));
-		put(ModElementType.PLANT, List.of(new PlantLuminanceFixer()));
-		put(ModElementType.POTION, List.of(new PotionToEffectConverter()));
-		put(ModElementType.POTIONEFFECT, List.of(new EffectTextureConverter()));
-		put(ModElementType.PROCEDURE, List.of(new ProcedureEntityDepFixer(), new OpenGUIProcedureDepFixer(),
-				new ProcedureGlobalTriggerFixer(), new ProcedureSpawnGemPickupDelayFixer(),
-				new ProcedureVariablesConverter(), new ProcedureVariablesEntityFixer(),
-				new LegacyProcedureBlockRemover(), new LegacyBlockPosProcedureRemover(), new ProcedureShootArrowFixer(),
-				new LegacyShootArrowProcedureRemover(), new BiomeDictionaryProcedureConverter(),
-				new ToolToItemTypeProcedureConverter(), new ExplodeProcedureConverter()));
-		put(ModElementType.RANGEDITEM, List.of(new RangedItemTextureConverter()));
-		put(ModElementType.RECIPE, List.of(new RecipeTypeConverter()));
-		put(ModElementType.ITEM, List.of(new ItemDispenseBehaviorToItemExtensionConverter()));
+		put(ModElementType.ADVANCEMENT, List.of(
+			new AchievementFixer(),
+			new AdvancementTextureConverter()
+		));
+		put(ModElementType.ARMOR, List.of(
+			new ArmorTexturesConverter(),
+			new SpecialInformationConverter()
+		));
+		put(ModElementType.BIOME, List.of(
+			new BiomeSpawnListConverter(),
+			new BiomeDefaultFeaturesConverter(),
+			new BiomeFrozenTopLayerConverter(),
+			new BiomeGenParametersConverter(),
+			new BiomeCustomFeaturesConverter()
+		));
+		put(ModElementType.BLOCK, List.of(
+			new BlockLuminanceFixer(),
+			new BlockBoundingBoxFixer(),
+			new BlockLightOpacityFixer(),
+			new BlockRequiresCorrectToolConverter(),
+			new BlockOreReplacementBlocksFixer(),
+			new BlockGenerationConditionRemover(),
+			new BlockFeatureDimensionRestrictionConverter(),
+			new SpecialInformationConverter()
+		));
+		put(ModElementType.DIMENSION, List.of(
+			new DimensionLuminanceFixer(),
+			new SpecialInformationConverter()
+		));
+		put(ModElementType.FLUID, List.of(
+			new FluidNameFixer(),
+			new FluidGenToFeatureConverter(),
+			new SpecialInformationConverter()
+		));
+		put(ModElementType.COMMAND, List.of(
+			new CommandParameterBlockFixer()
+		));
+		put(ModElementType.GAMERULE, List.of(
+			new GameruleDisplayNameFixer(),
+			new BooleanGameRulesConverter()
+		));
+		put(ModElementType.GUI, List.of(
+			new GUIBindingInverter(),
+			new GUICoordinateConverter(),
+			new GUITexturesConverter(),
+			new GUIComponentNamer(),
+			new SlotInteractionsConverter()
+		));
+		put(ModElementType.LIVINGENTITY, List.of(
+			new EntityTexturesConverter()
+		));
+		put(ModElementType.OVERLAY, List.of(
+			new OverlayCoordinateConverter(),
+			new OverlayTexturesConverter(),
+			new GUIComponentNamer()
+		));
+		put(ModElementType.PAINTING, List.of(
+			new PaintingFieldsFixer()
+		));
+		put(ModElementType.PARTICLE, List.of(
+			new ParticleTextureConverter()
+		));
+		put(ModElementType.PLANT, List.of(
+			new PlantLuminanceFixer(),
+			new PlantGenerationTypeConverter(),
+			new PlantGenerationConditionRemover(),
+			new BlockFeatureDimensionRestrictionConverter(),
+			new SpecialInformationConverter()
+		));
+		put(ModElementType.POTION, List.of(
+			new PotionToEffectConverter()
+		));
+		put(ModElementType.POTIONEFFECT, List.of(
+			new EffectTextureConverter()
+		));
+		put(ModElementType.PROCEDURE, List.of(
+			new ProcedureEntityDepFixer(),
+			new OpenGUIProcedureDepFixer(),
+			new ProcedureGlobalTriggerFixer(),
+			new ProcedureSpawnGemPickupDelayFixer(),
+			new ProcedureVariablesConverter(),
+			new ProcedureVariablesEntityFixer(),
+			new LegacyProcedureBlockRemover(),
+			new LegacyBlockPosProcedureRemover(),
+			new ProcedureShootArrowFixer(),
+			new LegacyShootArrowProcedureRemover(),
+			new BiomeDictionaryProcedureConverter(),
+			new ToolToItemTypeProcedureConverter(),
+			new ExplodeProcedureConverter(),
+			new MaterialProcedureConverter(),
+			new ProcedureDamageSourceFixer()
+		));
+		put(ModElementType.RANGEDITEM, List.of(
+			new RangedItemTextureConverter(),
+			new SpecialInformationConverter(),
+			new RangedItemTextureConverter(),
+			new ItemHasGlowConverter()
+		));
+		put(ModElementType.RECIPE, List.of(
+			new RecipeTypeConverter()
+		));
+		put(ModElementType.ITEM, List.of(
+			new ItemDispenseBehaviorToItemExtensionConverter(),
+			new SpecialInformationConverter(),
+			new ItemDispenseBehaviorToItemExtensionConverter(),
+			new ItemHasGlowConverter()
+		));
+		put(ModElementType.FEATURE, List.of(
+			new HugeFungusFeatureConverter(),
+			new FeatureDimensionRestrictionConverter()
+		));
+		put(ModElementType.STRUCTURE, List.of(
+			new StructureDimensionRestrictionConverter()
+		));
+		put(ModElementType.MUSICDISC, List.of(
+			new SpecialInformationConverter(),
+			new ItemHasGlowConverter()
+		));
+		put(ModElementType.TOOL, List.of(
+			new SpecialInformationConverter(),
+			new ItemHasGlowConverter()
+		));
 	}};
+	//@formatter:on
 
 	// Converters that convert older mod element type to a newer one
 	private static final Map<String, IConverter> converters_legacy = new HashMap<>() {{

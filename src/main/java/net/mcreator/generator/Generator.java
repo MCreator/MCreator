@@ -23,7 +23,6 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.generator.template.MinecraftCodeProvider;
 import net.mcreator.generator.template.TemplateExpressionParser;
@@ -69,6 +68,7 @@ public class Generator implements IGenerator, Closeable {
 
 	private final Workspace workspace;
 
+	@Nullable private GradleConnector gradleConnector;
 	@Nullable private ProjectConnection gradleProjectConnection;
 	@Nullable private GeneratorGradleCache generatorGradleCache;
 
@@ -155,27 +155,24 @@ public class Generator implements IGenerator, Closeable {
 	public boolean generateBase(boolean formatAndOrganiseImports) {
 		AtomicBoolean success = new AtomicBoolean(true);
 
-		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).parallelStream()
-				.map(generatorTemplate -> {
-					if (generatorTemplate.getTemplateDefinition().get("canLock") != null
-							&& generatorTemplate.getTemplateDefinition().get("canLock")
-							.equals("true")) // can this file be locked
-						if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
-							return null; // if they are, we skip this file
+		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).stream().map(generatorTemplate -> {
+			if (generatorTemplate.canBeLocked()) // can this file be locked
+				if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
+					return null; // if they are, we skip this file
 
-					Map<String, Object> dataModel = generatorTemplate.getDataModel();
+			Map<String, Object> dataModel = generatorTemplate.getDataModel();
 
-					try {
-						String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(
-								(String) generatorTemplate.getTemplateDefinition().get("template"), dataModel,
-								(String) generatorTemplate.getTemplateDefinition().get("variables"));
-						return generatorTemplate.toGeneratorFile(code);
-					} catch (TemplateGeneratorException e) {
-						success.set(false);
-					}
+			try {
+				String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(
+						(String) generatorTemplate.getTemplateDefinition().get("template"), dataModel,
+						(String) generatorTemplate.getTemplateDefinition().get("variables"));
+				return generatorTemplate.toGeneratorFile(code);
+			} catch (TemplateGeneratorException e) {
+				success.set(false);
+			}
 
-					return null;
-				}).filter(Objects::nonNull).collect(Collectors.toList());
+			return null;
+		}).filter(Objects::nonNull).collect(Collectors.toList());
 
 		generateFiles(generatorFiles, formatAndOrganiseImports);
 
@@ -347,15 +344,12 @@ public class Generator implements IGenerator, Closeable {
 
 		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new HashMap<>();
 		for (ModElement modElement : workspace.getModElements()) {
-			GeneratableElement generatableElement = modElement.getGeneratableElement();
-			if (generatableElement instanceof ICommonType) {
-				Collection<BaseType> baseTypes = ((ICommonType) generatableElement).getBaseTypesProvided();
-				for (BaseType baseType : baseTypes) {
-					if (!baseTypeListMap.containsKey(baseType))
-						baseTypeListMap.put(baseType, new ArrayList<>());
+			Collection<BaseType> baseTypes = modElement.getBaseTypesProvided();
+			for (BaseType baseType : baseTypes) {
+				if (!baseTypeListMap.containsKey(baseType))
+					baseTypeListMap.put(baseType, new ArrayList<>());
 
-					baseTypeListMap.get(baseType).add(generatableElement);
-				}
+				baseTypeListMap.get(baseType).add(modElement.getGeneratableElement());
 			}
 		}
 
@@ -624,9 +618,9 @@ public class Generator implements IGenerator, Closeable {
 	@Nullable public ProjectConnection getGradleProjectConnection() {
 		if (gradleProjectConnection == null) {
 			try {
-				gradleProjectConnection = GradleConnector.newConnector()
-						.forProjectDirectory(workspace.getWorkspaceFolder())
-						.useGradleUserHomeDir(UserFolderManager.getGradleHome()).connect();
+				gradleConnector = GradleConnector.newConnector().forProjectDirectory(workspace.getWorkspaceFolder())
+						.useGradleUserHomeDir(UserFolderManager.getGradleHome());
+				gradleProjectConnection = gradleConnector.connect();
 			} catch (Exception e) {
 				LOG.warn("Failed to load Gradle project", e);
 			}
@@ -643,8 +637,13 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	@Override public void close() {
-		if (gradleProjectConnection != null)
+		if (gradleProjectConnection != null) {
+			LOG.info("Closing Gradle project connection");
 			gradleProjectConnection.close();
+
+			if (gradleConnector != null)
+				gradleConnector.disconnect();
+		}
 	}
 
 	public void loadOrCreateGradleCaches() throws GradleCacheImportFailedException {

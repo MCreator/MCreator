@@ -1,0 +1,1 @@
+Başarının ismi eğer bu başarı için herhangi bir ebeveyn (kök) başarı seçilmediyse, başarı ağacının ismi olacaktır.

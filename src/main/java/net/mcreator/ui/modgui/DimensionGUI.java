@@ -28,7 +28,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
-import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -38,7 +38,9 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -60,6 +62,8 @@ import java.net.URISyntaxException;
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final VTextField igniterName = new VTextField(14);
+
+	private StringListProcedureSelector specialInformation;
 
 	private TextureHolder portalTexture;
 	private TextureHolder texture;
@@ -135,6 +139,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalUseCondition = new ProcedureSelector(this.withEntry("dimension/condition_portal_use"), mcreator,
 				L10N.t("elementgui.dimension.event_can_travel_through_portal"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).makeInline();
+		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
 		worldGenType.setRenderer(new ItemTexturesComboBoxRenderer());
 		biomesInDimension = new BiomeListField(mcreator);
@@ -256,24 +264,25 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel igniterPanel = new JPanel(new BorderLayout(5, 5));
 		igniterPanel.setOpaque(false);
 
-		igniterPanel.add("North" , PanelUtils.gridElements(1, 2,
+		igniterPanel.add("North", PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_igniter"),
 						L10N.label("elementgui.dimension.enable_new_igniter")), enableIgniter));
 
-		igniterPanel.add("Center" , PanelUtils.gridElements(1, 2,
+		igniterPanel.add("Center", PanelUtils.gridElements(1, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_igniter_texture"),
 						L10N.label("elementgui.dimension.portal_igniter_texture")), PanelUtils.join(texture)));
 
-		igniterPanel.add("South" , PanelUtils.centerAndSouthElement(proper22, portalMakeCondition));
+		JPanel conditions = new JPanel(new GridLayout(2, 1, 5, 2));
+		conditions.setOpaque(false);
+		conditions.add(specialInformation);
+		conditions.add(portalMakeCondition);
+
+		igniterPanel.add("South", PanelUtils.centerAndSouthElement(proper22, conditions, 2, 2));
 
 		igniterPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.dimension.portal_igniter_properties"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		JPanel conditions = new JPanel(new GridLayout(1, 1, 5, 2));
-		conditions.setOpaque(false);
-		conditions.add(portalUseCondition);
 
 		JPanel propertiesPanel = new JPanel(new BorderLayout(5, 2));
 		propertiesPanel.setOpaque(false);
@@ -281,7 +290,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				PanelUtils.gridElements(1, 2, HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_texture"),
 						L10N.label("elementgui.dimension.portal_block_texture")), PanelUtils.join(portalTexture)),
 				proper)));
-		propertiesPanel.add("South", conditions);
+		propertiesPanel.add("South", portalUseCondition);
 
 		propertiesPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
@@ -363,6 +372,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 	private void updateIgniterElements(boolean enabled) {
 		igniterName.setEnabled(enabled);
 		igniterTab.setEnabled(enabled);
+		specialInformation.setEnabled(enabled);
 		texture.setEnabled(enabled);
 		portalMakeCondition.setEnabled(enabled);
 	}
@@ -376,6 +386,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		portalMakeCondition.refreshListKeepSelected();
 		portalUseCondition.refreshListKeepSelected();
+		specialInformation.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(igniterTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("TOOLS"));
@@ -399,6 +410,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalSound.setSound(dimension.portalSound);
 		enableIgniter.setSelected(dimension.enableIgniter);
 		igniterName.setText(dimension.igniterName);
+		specialInformation.setSelectedProcedure(dimension.specialInformation);
 		portalTexture.setTextureFromTextureName(dimension.portalTexture);
 		texture.setTextureFromTextureName(dimension.texture);
 		worldGenType.setSelectedItem(dimension.worldGenType);
@@ -443,6 +455,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.portalFrame = portalFrame.getBlock();
 		dimension.enableIgniter = enableIgniter.isSelected();
 		dimension.igniterName = igniterName.getText();
+		dimension.specialInformation = specialInformation.getSelectedProcedure();
 		dimension.worldGenType = (String) worldGenType.getSelectedItem();
 		dimension.sleepResult = (String) sleepResult.getSelectedItem();
 		dimension.mainFillerBlock = mainFillerBlock.getBlock();

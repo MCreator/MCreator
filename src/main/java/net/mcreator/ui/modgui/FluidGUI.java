@@ -22,11 +22,11 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.Fluid;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -37,7 +37,9 @@ import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -54,8 +56,6 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class FluidGUI extends ModElementGUI<Fluid> {
 
@@ -85,7 +85,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 	private final SoundSelector emptySound = new SoundSelector(mcreator);
 	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
-	private final JTextField specialInfo = new JTextField(20);
+	private StringListProcedureSelector specialInformation;
 
 	private final JComboBox<String> fluidtype = new JComboBox<>(new String[] { "WATER", "LAVA" });
 
@@ -93,7 +93,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 	private final JSpinner lightOpacity = new JSpinner(new SpinnerNumberModel(1, 0, 15, 1));
 	private final JCheckBox emissiveRendering = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(10, 0, 9999999, 1));
+	private final JSpinner tickRate = new JSpinner(new SpinnerNumberModel(0, 0, 9999999, 1));
 	private final JSpinner flammability = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final JSpinner fireSpreadSpeed = new JSpinner(new SpinnerNumberModel(0, 0, 1024, 1));
 	private final DataListComboBox colorOnMap = new DataListComboBox(mcreator, ElementUtil.loadMapColors());
@@ -143,6 +143,11 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.event_before_replacing_block"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate"));
 
+		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+
 		fluidtype.setRenderer(new ItemTexturesComboBoxRenderer());
 
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
@@ -171,7 +176,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(bucketName, 16);
-		ComponentUtils.deriveFont(specialInfo, 16);
 
 		destal.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
@@ -212,7 +216,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.label("elementgui.fluid.tint_type")));
 		destal.add(tintType);
 
-		JPanel bucketProperties = new JPanel(new GridLayout(7, 2, 5, 2));
+		JPanel bucketProperties = new JPanel(new GridLayout(6, 2, 5, 2));
 		bucketProperties.setOpaque(false);
 
 		textureBucket = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM), 32);
@@ -243,9 +247,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
 		bucketProperties.add(rarity);
 
-		bucketProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.fluid.special_information")));
-		bucketProperties.add(specialInfo);
+		JPanel bcProp = new JPanel(new BorderLayout(5, 2));
+		bcProp.setOpaque(false);
+		bcProp.add("Center", bucketProperties);
+		bcProp.add("South", specialInformation);
 
 		generateBucket.setSelected(true);
 
@@ -255,10 +260,10 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 			creativeTab.setEnabled(generateBucket.isSelected());
 			emptySound.setEnabled(generateBucket.isSelected());
 			rarity.setEnabled(generateBucket.isSelected());
-			specialInfo.setEnabled(generateBucket.isSelected());
+			specialInformation.setEnabled(generateBucket.isSelected());
 		});
 
-		bucketProperties.setBorder(BorderFactory.createTitledBorder(
+		bcProp.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.fluid.bucket_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
@@ -271,8 +276,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 				L10N.t("elementgui.fluid.fluid_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont().deriveFont(12.0f), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent fluidBucketProperties = PanelUtils.westAndEastElement(destala,
-				PanelUtils.pullElementUp(bucketProperties));
+		JComponent fluidBucketProperties = PanelUtils.westAndEastElement(destala, PanelUtils.pullElementUp(bcProp));
 		fluidBucketProperties.setOpaque(false);
 		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(destalx, fluidBucketProperties)));
 
@@ -420,6 +424,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		onDestroyedByExplosion.refreshListKeepSelected();
 		flowCondition.refreshListKeepSelected();
 		beforeReplacingBlock.refreshListKeepSelected();
+		specialInformation.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(dripParticle, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
 
@@ -453,8 +458,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		textureBucket.setTextureFromTextureName(fluid.textureBucket);
 		emptySound.setSound(fluid.emptySound);
 		rarity.setSelectedItem(fluid.rarity);
-		specialInfo.setText(
-				fluid.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		resistance.setValue(fluid.resistance);
 		luminance.setValue(fluid.luminance);
 		lightOpacity.setValue(fluid.lightOpacity);
@@ -472,6 +475,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		flowCondition.setSelectedProcedure(fluid.flowCondition);
 		beforeReplacingBlock.setSelectedProcedure(fluid.beforeReplacingBlock);
 		fluidtype.setSelectedItem(fluid.type);
+		specialInformation.setSelectedProcedure(fluid.specialInformation);
+
 		if (fluid.creativeTab != null)
 			creativeTab.setSelectedItem(fluid.creativeTab);
 
@@ -480,7 +485,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		creativeTab.setEnabled(generateBucket.isSelected());
 		emptySound.setEnabled(generateBucket.isSelected());
 		rarity.setEnabled(generateBucket.isSelected());
-		specialInfo.setEnabled(generateBucket.isSelected());
+		specialInformation.setEnabled(generateBucket.isSelected());
 	}
 
 	@Override public Fluid getElementFromGUI() {
@@ -505,7 +510,6 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.textureBucket = textureBucket.getID();
 		fluid.emptySound = emptySound.getSound();
 		fluid.rarity = (String) rarity.getSelectedItem();
-		fluid.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		fluid.resistance = (double) resistance.getValue();
 		fluid.luminance = (int) luminance.getValue();
 		fluid.lightOpacity = (int) lightOpacity.getValue();
@@ -523,6 +527,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.flowCondition = flowCondition.getSelectedProcedure();
 		fluid.beforeReplacingBlock = beforeReplacingBlock.getSelectedProcedure();
 		fluid.type = (String) fluidtype.getSelectedItem();
+		fluid.specialInformation = specialInformation.getSelectedProcedure();
+
 		fluid.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		return fluid;
 	}

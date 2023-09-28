@@ -21,7 +21,9 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
@@ -33,23 +35,24 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
+import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@SuppressWarnings("unused") public class Tool extends GeneratableElement
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
+
+	@Nonnull public String toolType;
 
 	public int renderType;
 	public String texture;
-	public String customModelName;
+	@Nonnull public String customModelName;
 
 	public String name;
-	public List<String> specialInfo;
+	public StringListProcedure specialInformation;
 	public TabEntry creativeTab;
-	public String toolType;
 	public int harvestLevel;
 	public double efficiency;
 	public double attackSpeed;
@@ -57,8 +60,7 @@ import java.util.Map;
 	public double damageVsEntity;
 	public int usageCount;
 	public List<MItemBlock> blocksAffected;
-	public boolean hasGlow;
-	public Procedure glowCondition;
+	public LogicProcedure glowCondition;
 	public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
 
@@ -71,7 +73,6 @@ import java.util.Map;
 	public Procedure onEntityHitWith;
 	public Procedure onItemInInventoryTick;
 	public Procedure onItemInUseTick;
-	public Procedure onStoppedUsing;
 	public Procedure onBlockDestroyedWithTool;
 	public Procedure onEntitySwing;
 
@@ -83,8 +84,6 @@ import java.util.Map;
 		super(element);
 
 		this.attackSpeed = 2.8;
-
-		this.specialInfo = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

@@ -25,7 +25,6 @@ import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.*;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
@@ -46,19 +45,20 @@ import java.util.*;
 	private static final Logger LOG = LogManager.getLogger("Workspace info");
 
 	public boolean hasVariables() {
-		return workspace.getVariableElements().size() > 0;
+		return !workspace.getVariableElements().isEmpty();
 	}
 
 	public boolean hasJavaModels() {
-		return Model.getModels(workspace).stream().anyMatch(model -> model.getType() == Model.Type.JAVA);
+		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
 	public boolean hasSounds() {
-		return workspace.getSoundElements().size() > 0;
+		return !workspace.getSoundElements().isEmpty();
 	}
 
 	public boolean hasVariablesOfScope(String type) {
-		return workspace.getVariableElements().stream().anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
+		return workspace.getVariableElements().parallelStream()
+				.anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
 	}
 
 	public Map<String, String> getItemTextureMap() {
@@ -130,12 +130,8 @@ import java.util.*;
 
 	public boolean hasElementsOfBaseType(BaseType baseType) {
 		for (ModElement modElement : workspace.getModElements()) {
-			GeneratableElement generatableElement = modElement.getGeneratableElement();
-			if (generatableElement instanceof ICommonType) {
-				Collection<BaseType> baseTypes = ((ICommonType) generatableElement).getBaseTypesProvided();
-				if (baseTypes.contains(baseType))
-					return true;
-			}
+			if (modElement.getBaseTypesProvided().contains(baseType))
+				return true;
 		}
 		return false;
 	}
@@ -340,6 +336,15 @@ import java.util.*;
 		return false;
 	}
 
+	public boolean hasFeaturesWithStructureFeature() {
+		for (ModElement element : workspace.getModElements()) {
+			if (element.getType() == ModElementType.FEATURE && element.getMetadata("has_nbt_structure") != null) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	public MItemBlock itemBlock(String itemBlock) {
 		return new MItemBlock(workspace, itemBlock);
 	}
@@ -347,4 +352,5 @@ import java.util.*;
 	public Workspace getWorkspace() {
 		return workspace;
 	}
+
 }

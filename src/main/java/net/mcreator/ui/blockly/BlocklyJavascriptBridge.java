@@ -76,7 +76,7 @@ public class BlocklyJavascriptBridge {
 	@SuppressWarnings("unused") public String getMCItemURI(String name) {
 		ImageIcon base = new ImageIcon(ImageUtils.resize(MinecraftImageGenerator.generateItemSlot(), 36, 36));
 		ImageIcon image;
-		if (name != null && !name.equals("") && !name.equals("null"))
+		if (name != null && !name.isEmpty() && !name.equals("null"))
 			image = ImageUtils.drawOver(base, MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), name), 2, 2, 32,
 					32);
 		else
@@ -139,10 +139,25 @@ public class BlocklyJavascriptBridge {
 			case "spawnableEntity" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "entity");
+			case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUI(w).toArray(String[]::new), "gui");
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"biome");
+			case "dimension" -> openStringEntrySelector(ElementUtil::loadAllDimensions, "dimension");
+			case "dimensionCustom" -> openStringEntrySelector(
+					w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
+							.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new), "dimension");
+			case "fluid" -> openStringEntrySelector(ElementUtil::loadAllFluids, "fluids");
+			case "gamerulesboolean" -> openDataListEntrySelector(
+					w -> ElementUtil.getAllBooleanGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+							.toList(), "gamerules");
+			case "gamerulesnumber" -> openDataListEntrySelector(
+					w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
+							.toList(), "gamerules");
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
+			case "structure" ->
+					openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
+							"structures");
 			case "procedure" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 							.map(ModElement::getName).toArray(String[]::new), "procedure");
@@ -161,7 +176,7 @@ public class BlocklyJavascriptBridge {
 							StringUtils.split(customEntryProviders, ',')), type);
 				}
 
-				yield new String[]{"", L10N.t("blockly.extension.data_list_selector.no_entry")};
+				yield new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
 			}
 		};
 
@@ -176,9 +191,8 @@ public class BlocklyJavascriptBridge {
 	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
 	 */
 	private String[] openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
-		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
-		String title = L10N.t("dialog.selector." + type + ".title");
-		String message = L10N.t("dialog.selector." + type + ".message");
+		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
+		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()
 				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
@@ -212,9 +226,8 @@ public class BlocklyJavascriptBridge {
 	 * @return A {"value", "value"} pair (strings don't have readable names!), or the default entry if no string was selected
 	 */
 	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
-		String[] retval = new String[] {"", L10N.t("blockly.extension.data_list_selector.no_entry")};
-		String title = L10N.t("dialog.selector." + type + ".title");
-		String message = L10N.t("dialog.selector." + type + ".message");
+		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
+		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector." + type + ".message");
 
 		if (SwingUtilities.isEventDispatchThread()
 				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
@@ -333,9 +346,6 @@ public class BlocklyJavascriptBridge {
 		case "material":
 			retval = ElementUtil.loadMaterials().stream().map(DataListEntry::getName).collect(Collectors.toList());
 			break;
-		case "rangeditem":
-			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
 		case "villagerprofessions":
 			return ElementUtil.loadAllVillagerProfessions(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
@@ -361,7 +371,7 @@ public class BlocklyJavascriptBridge {
 			}).map(ModElement::getName).collect(Collectors.toList());
 		}
 
-		if (retval.size() == 0)
+		if (retval.isEmpty())
 			return new String[] { "" };
 
 		return retval.toArray(new String[0]);

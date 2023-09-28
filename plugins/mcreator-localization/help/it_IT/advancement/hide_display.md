@@ -1,0 +1,1 @@
+Questo parametro nasconde l'avanzamento nella scheda avanzamento finché non viene completato.

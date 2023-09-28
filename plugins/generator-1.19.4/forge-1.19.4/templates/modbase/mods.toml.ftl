@@ -6,13 +6,17 @@ license="${settings.getLicense()}"
 modId="${settings.getModID()}"
 version="${settings.getCleanVersion()}"
 displayName="${settings.getModName()}"
-credits="${settings.getCredits()}"
-displayURL="${settings.getWebsiteURL()}"
 <#if settings.getUpdateURL()?has_content>
 updateJSONURL="${settings.getUpdateURL()}"
 </#if>
+<#if settings.getWebsiteURL()?has_content>
+displayURL="${settings.getWebsiteURL()}"
+</#if>
 <#if settings.getModPicture()?has_content>
 logoFile="logo.png"
+</#if>
+<#if settings.getCredits()?has_content>
+credits="${settings.getCredits()}"
 </#if>
 <#if settings.getAuthor()?has_content>
 authors="${settings.getAuthor()}"
@@ -24,7 +28,7 @@ description="${settings.getDescription()}"
 [[dependencies.${settings.getModID()}]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.19.4]"
+    versionRange="[${generator.getGeneratorMinecraftVersion()}]"
     ordering="NONE"
     side="BOTH"
 

@@ -1,0 +1,1 @@
+Este parámetro controla el bloque se genera bajo el agua. La mayoría de los biomas vanilla usan tierra o grava.

@@ -19,15 +19,10 @@
 
 package net.mcreator.element.converter.v2021_2;
 
-import com.google.gson.JsonElement;
 import net.mcreator.blockly.java.BlocklyVariables;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.converter.ProcedureConverter;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -42,26 +37,13 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-public class ProcedureVariablesEntityFixer implements IConverter {
-
-	private static final Logger LOG = LogManager.getLogger("ProcedureVariablesEntityFixer");
-
-	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Procedure procedure = (Procedure) input;
-		try {
-			procedure.procedurexml = fixXML(procedure.procedurexml, workspace);
-		} catch (Exception e) {
-			LOG.warn("Failed to fix entity dependency for procedure " + input.getModElement().getName());
-		}
-		return procedure;
-	}
+public class ProcedureVariablesEntityFixer extends ProcedureConverter {
 
 	@Override public int getVersionConvertingTo() {
 		return 24;
 	}
 
-	protected String fixXML(String xml, Workspace workspace) throws Exception {
+	@Override protected String fixXML(Procedure procedure, String xml) throws Exception {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
@@ -71,11 +53,13 @@ public class ProcedureVariablesEntityFixer implements IConverter {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
 			String type = element.getAttribute("type");
-			if (type != null && (type.startsWith("variables_get_") || type.startsWith("variables_set_"))) {
+			if (type.startsWith("variables_get_") || type.startsWith("variables_set_")) {
 				// Check if the selected variable needs the entity input
 				Element variable = XMLUtil.getFirstChildrenWithName(element, "field");
-				if (variable != null && BlocklyVariables.isPlayerVariableForWorkspace(workspace,
-						variable.getTextContent())) {
+				if (variable != null && BlocklyVariables.isPlayerVariableForWorkspace(
+						procedure.getModElement().getWorkspace(), variable.getTextContent())) {
+					reportDependenciesChanged();
+
 					Element mutationXML = doc.createElement("mutation");
 					mutationXML.setAttribute("is_player_var", "true");
 					mutationXML.setAttribute("has_entity", "true"); // The converter also adds the entity block

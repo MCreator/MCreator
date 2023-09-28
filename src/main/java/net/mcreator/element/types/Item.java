@@ -19,9 +19,12 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
@@ -37,16 +40,17 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
 import java.util.*;
 
-@SuppressWarnings("unused") public class Item extends GeneratableElement
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Item extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
 	public String texture;
-	public String customModelName;
+	@Nonnull public String customModelName;
 
 	public Map<String, Procedure> customProperties;
 	public List<StateEntry> states;
@@ -69,11 +73,10 @@ import java.util.*;
 	public boolean enableMeleeDamage;
 	public double damageVsEntity;
 
-	public List<String> specialInfo;
-	public boolean hasGlow;
-	public Procedure glowCondition;
+	public StringListProcedure specialInformation;
+	public LogicProcedure glowCondition;
 
-	public String guiBoundTo;
+	@Nullable public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
 
@@ -200,7 +203,7 @@ import java.util.*;
 		return models;
 	}
 
-	public static class StateEntry {
+	public static class StateEntry implements IWorkspaceDependent {
 
 		public int renderType;
 		public String texture;
@@ -208,9 +211,9 @@ import java.util.*;
 
 		public StateMap stateMap;
 
-		@Nullable Workspace workspace;
+		@Nullable transient Workspace workspace;
 
-		void setWorkspace(@Nullable Workspace workspace) {
+		@Override public void setWorkspace(@Nullable Workspace workspace) {
 			this.workspace = workspace;
 		}
 

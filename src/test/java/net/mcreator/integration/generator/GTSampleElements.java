@@ -20,6 +20,7 @@
 package net.mcreator.integration.generator;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.generator.GeneratorStats;
@@ -52,94 +53,88 @@ public class GTSampleElements {
 				} else {
 					me.putMetadata("dependencies", Collections.emptyList());
 				}
-				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
 				procedure.skipDependencyRegeneration();
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML("");
-				assertTrue(workspace.getGenerator().generateElement(procedure));
-				workspace.getModElementManager().storeModElement(procedure);
+
+				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
 			for (int i = 1; i <= 4; i++) {
 				ModElement me = new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE).putMetadata(
 						"dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC");
-				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_logic\"><value name=\"return\">"
 								+ "<block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block>"
 								+ "</value></block>");
-				assertTrue(workspace.getGenerator().generateElement(procedure));
-				workspace.getModElementManager().storeModElement(procedure);
+
+				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
 			for (int i = 1; i <= 3; i++) {
 				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE).putMetadata(
 						"dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER");
-				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_number\"><value name=\"return\">"
 								+ "<block type=\"math_number\"><field name=\"NUM\">100</field></block>"
 								+ "</value></block>");
-				assertTrue(workspace.getGenerator().generateElement(procedure));
-				workspace.getModElementManager().storeModElement(procedure);
+
+				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
-			for (int i = 1; i <= 2; i++) {
+			for (int i = 1; i <= 4; i++) {
 				ModElement me = new ModElement(workspace, "string" + i, ModElementType.PROCEDURE).putMetadata(
 						"dependencies", new ArrayList<String>()).putMetadata("return_type", "STRING");
-				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_string\"><value name=\"return\">"
 								+ "<block type=\"text\"><field name=\"TEXT\">demo text</field></block>"
 								+ "</value></block>");
-				assertTrue(workspace.getGenerator().generateElement(procedure));
-				workspace.getModElementManager().storeModElement(procedure);
+
+				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
 			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE).putMetadata(
 						"dependencies", new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK");
-				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_itemstack\"><value name=\"return\">"
 								+ "<block type=\"empty_itemstack\"></block></value></block>");
-				assertTrue(workspace.getGenerator().generateElement(procedure));
-				workspace.getModElementManager().storeModElement(procedure);
+
+				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
 			for (int i = 1; i <= 1; i++) {
 				ModElement me = new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE).putMetadata(
 						"dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE");
-				workspace.addModElement(me);
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_actionresulttype\"><value name=\"return\">"
 								+ "<block type=\"action_result_type\"><field name=\"type\">SUCCESS</field></block>"
 								+ "</value></block>");
-				assertTrue(workspace.getGenerator().generateElement(procedure));
-				workspace.getModElementManager().storeModElement(procedure);
+
+				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
 			for (int i = 1; i <= 1; i++) {
 				ModElement me = new ModElement(workspace, "entity" + i, ModElementType.PROCEDURE).putMetadata(
 						"dependencies", new ArrayList<String>()).putMetadata("return_type", "ENTITY");
-				workspace.addModElement(me);
+
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_entity\"><value name=\"return\">"
 								+ "<block type=\"entity_from_deps\"></block></value></block>");
-				assertTrue(workspace.getGenerator().generateElement(procedure));
-				workspace.getModElementManager().storeModElement(procedure);
+
+				addGeneratableElementAndAssert(workspace, procedure);
 			}
 		}
 
@@ -148,7 +143,6 @@ public class GTSampleElements {
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "ExampleRecipe" + i, ModElementType.RECIPE);
-				workspace.addModElement(me);
 
 				net.mcreator.element.types.Recipe recipe = new net.mcreator.element.types.Recipe(me);
 				recipe.recipeType = "smelting";
@@ -160,8 +154,8 @@ public class GTSampleElements {
 								.getName());
 				recipe.name = me.getRegistryName();
 				recipe.namespace = "mod";
-				assertTrue(workspace.getGenerator().generateElement(recipe));
-				workspace.getModElementManager().storeModElement(recipe);
+
+				addGeneratableElementAndAssert(workspace, recipe);
 			}
 		}
 
@@ -170,14 +164,13 @@ public class GTSampleElements {
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "ExampleFunction" + i, ModElementType.FUNCTION);
-				workspace.addModElement(me);
 
 				net.mcreator.element.types.Function function = new net.mcreator.element.types.Function(me);
 				function.code = "";
 				function.name = me.getRegistryName();
 				function.namespace = "mod";
-				assertTrue(workspace.getGenerator().generateElement(function));
-				workspace.getModElementManager().storeModElement(function);
+
+				addGeneratableElementAndAssert(workspace, function);
 			}
 		}
 
@@ -186,17 +179,22 @@ public class GTSampleElements {
 				!= GeneratorStats.CoverageStatus.NONE) {
 			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "ExampleLootTable" + i, ModElementType.LOOTTABLE);
-				workspace.addModElement(me);
 
 				net.mcreator.element.types.LootTable lootTable = new net.mcreator.element.types.LootTable(me);
 				lootTable.type = "Generic";
 				lootTable.name = me.getRegistryName();
 				lootTable.namespace = "mod";
 				lootTable.pools = Collections.emptyList();
-				assertTrue(workspace.getGenerator().generateElement(lootTable));
-				workspace.getModElementManager().storeModElement(lootTable);
+
+				addGeneratableElementAndAssert(workspace, lootTable);
 			}
 		}
+	}
+
+	private static void addGeneratableElementAndAssert(Workspace workspace, GeneratableElement generatableElement) {
+		workspace.addModElement(generatableElement.getModElement());
+		assertTrue(workspace.getGenerator().generateElement(generatableElement));
+		workspace.getModElementManager().storeModElement(generatableElement);
 	}
 
 }

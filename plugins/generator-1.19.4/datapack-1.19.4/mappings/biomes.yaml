@@ -1,6 +1,7 @@
 _default: plains
 _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@modid:@registryname"
+_bypass_prefix: "#"
 ocean: ocean
 plains: plains
 desert: desert
@@ -64,31 +65,3 @@ jagged_peaks: jagged_peaks
 stony_peaks: stony_peaks
 mangrove_swamp: mangrove_swamp
 deep_dark: deep_dark
-
-# legacy (removed/merged in 1.18)
-snowy_mountains: windswept_hills
-mushroom_field_shore: mushroom_fields
-desert_hills: desert
-forest_hills: forest
-taiga_hills: taiga
-smaller_extreme_hills: windswept_hills
-jungle_hills: jungle
-redwood_taiga_hills: old_growth_pine_taiga
-taiga_cold_hills: snowy_taiga
-birch_forest_hills: birch_forest
-badlands_plateau: badlands
-deep_warm_ocean: warm_ocean
-mutated_desert: desert
-mutated_extreme_hills_with_trees: windswept_gravelly_hills
-mutated_taiga: taiga
-mutated_swampland: swamp
-mutated_jungle: jungle
-mutated_jungle_edge: sparse_jungle
-bamboo_jungle_hills: bamboo_jungle
-mutated_birch_forest_hills: old_growth_birch_forest
-mutated_roofed_forest: dark_forest
-mutated_taiga_cold: snowy_taiga
-mutated_redwood_taiga_hills: old_growth_spruce_taiga
-mutated_savanna_rock: windswept_savanna
-mutated_mesa_rock: wooded_badlands
-mutated_mesa_clear_rock: eroded_badlands

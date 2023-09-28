@@ -116,7 +116,6 @@ public class ExternalBlockLoader {
 			toolboxCategory.id = FilenameUtilsPatched.getBaseName(toolboxCategoryName).replace("$", "");
 			toolboxCategories.add(toolboxCategory);
 		}
-
 		toolboxCategories.sort(Comparator.comparing(ToolboxCategory::getName));
 
 		// setup lookup cache of loaded blocks
@@ -160,25 +159,47 @@ public class ExternalBlockLoader {
 
 		// Handle other and API categories
 		for (ToolboxCategory category : toolboxCategories) {
-			StringBuilder categoryBuilder = new StringBuilder();
-			categoryBuilder.append("<category name=\"").append(escapeTranslationForXMLAndJS(category.getName()))
-					.append("\" colour=\"").append(category.color).append("\">");
-			if (category.getDescription() != null) {
-				categoryBuilder.append("<label text=\"")
-						.append(escapeTranslationForXMLAndJS(category.getDescription()))
-						.append("\" web-class=\"whlab\"/>");
+			if (category.parent_category == null) {
+				String categoryCode = generateCategoryXML(category, toolboxCategories, toolboxBlocksList);
+				if (categoryCode.contains("<block type="))
+					toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryCode));
 			}
-			for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
-				if (toolboxBlock.toolbox_id != null && toolboxBlock.toolbox_id.equals(category.id)) {
-					categoryBuilder.append(toolboxBlock.getToolboxXML());
-					toolboxBlock.toolboxCategory = category;
-				}
-			}
-			categoryBuilder.append("</category>");
-
-			if (categoryBuilder.toString().contains("<block type="))
-				toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryBuilder.toString()));
 		}
+	}
+
+	private String generateCategoryXML(ToolboxCategory category, List<ToolboxCategory> toolboxCategories,
+			List<ToolboxBlock> toolboxBlocksList) {
+		StringBuilder builder = new StringBuilder();
+
+		builder.append("<category name=\"").append(escapeTranslationForXMLAndJS(category.getName()))
+				.append("\" colour=\"").append(category.color).append("\"");
+		String expandCategories = PreferencesManager.PREFERENCES.blockly.expandCategories.get();
+		if ((category.is_expanded && expandCategories.equals("Default")) || expandCategories.equals("Always"))
+			builder.append(" expanded=\"true\"");
+		builder.append(">");
+
+		if (category.getDescription() != null) {
+			builder.append("<label text=\"").append(escapeTranslationForXMLAndJS(category.getDescription()))
+					.append("\" web-class=\"whlab\"/>");
+		}
+
+		for (ToolboxBlock toolboxBlock : toolboxBlocksList) {
+			if (toolboxBlock.toolbox_id != null && toolboxBlock.toolbox_id.equals(category.id)) {
+				builder.append(toolboxBlock.getToolboxXML());
+				toolboxBlock.toolboxCategory = category;
+			}
+		}
+
+		// Create each nested category that will be added to this current category
+		for (ToolboxCategory child : toolboxCategories) {
+			if (category.id.equals(child.parent_category)) {
+				builder.append(generateCategoryXML(child, toolboxCategories, toolboxBlocksList));
+			}
+		}
+
+		builder.append("</category>");
+
+		return builder.toString();
 	}
 
 	public void loadBlocksAndCategoriesInPanel(BlocklyPanel pane, ToolboxType toolboxType) {

@@ -22,11 +22,13 @@ import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nonnull;
 import java.util.List;
 
-@SuppressWarnings("unused") public class LootTable extends NamespacedGeneratableElement {
+@SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class LootTable
+		extends NamespacedGeneratableElement {
 
-	public String type;
+	@Nonnull public String type;
 
 	public List<Pool> pools;
 

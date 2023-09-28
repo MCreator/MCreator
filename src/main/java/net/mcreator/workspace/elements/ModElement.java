@@ -19,9 +19,11 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.*;
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.minecraft.MCItem;
@@ -38,8 +40,8 @@ import java.util.*;
 
 public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorProvider, IElement {
 
-	private String name;
-	private String type;
+	private final String name;
+	private final String type;
 
 	private Integer sortid = null;
 
@@ -99,7 +101,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public void loadDataFrom(ModElement other) {
-		this.type = other.type;
 		this.compiles = other.compiles;
 		this.locked_code = other.locked_code;
 		this.sortid = other.sortid;
@@ -200,10 +201,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public ModElementType<?> getType() {
 		try {
 			return ModElementTypeLoader.getModElementType(type);
@@ -214,10 +211,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 
 	public String getTypeString() {
 		return type == null ? null : type.toLowerCase(Locale.ENGLISH);
-	}
-
-	public void setType(ModElementType<?> type) {
-		this.type = type.getRegistryName();
 	}
 
 	public boolean isCodeLocked() {
@@ -277,6 +270,11 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 			this.path = null;
 		else
 			this.path = parent.getPath();
+	}
+
+	public Collection<BaseType> getBaseTypesProvided() {
+		return this.getGeneratableElement() instanceof ICommonType iCommonType ?
+				iCommonType.getBaseTypesProvided() : Collections.emptyList();
 	}
 
 	public static class ModElementDeserializer implements JsonDeserializer<ModElement> {

@@ -257,7 +257,7 @@ public class MainMenuBar extends JMenuBar {
 				super.paintComponent(g);
 				g.setColor(new Color(0x9C9C9C));
 				g.setFont(getFont().deriveFont(11.0f));
-				if (getText().equals(""))
+				if (getText().isEmpty())
 					g.drawString(L10N.t("menubar.help.search.tooltip"), 28, 14);
 			}
 		};

@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -46,20 +46,7 @@ public class ${name}Item extends RecordItem {
 		);
 	}
 
-	<#if data.hasGlow>
-	@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
-		return true;
-	}
-	</#if>
-
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-		</#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation/>
 
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
@@ -71,8 +58,9 @@ public class ${name}Item extends RecordItem {
 
 	<@onCrafted data.onCrafted/>
 
-	<@onStoppedUsing data.onStoppedUsing/>
-
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
+
+	<@hasGlow data.glowCondition/>
+
 }
 <#-- @formatter:on -->

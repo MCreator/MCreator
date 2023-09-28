@@ -35,7 +35,7 @@ import java.util.concurrent.atomic.AtomicReference;
 
 public class ShareableZIPManager {
 
-	private static final Logger LOG = LogManager.getLogger("Shareable ZIP Manager");
+	private static final Logger LOG = LogManager.getLogger("Shareable ZIP manager");
 
 	public static File importZIP(File file, File workspaceDir, Window window) {
 		AtomicReference<File> retval = new AtomicReference<>();
@@ -83,12 +83,11 @@ public class ShareableZIPManager {
 					GeneratableElement generatableElement = mod.getGeneratableElement();
 
 					if (generatableElement != null) {
-						workspace.getModElementManager().storeModElementPicture(
-								generatableElement); // save custom mod element picture if it has one
-						workspace.addModElement(
-								generatableElement.getModElement()); // add mod element to workspace again, so the icons get reloaded
-						generatableElement.getModElement()
-								.reinit(workspace); // we reinit the mod to load new icons etc.
+						// save custom mod element picture if it has one
+						workspace.getModElementManager().storeModElementPicture(generatableElement);
+
+						// we reinit the mod to load new ME icon
+						generatableElement.getModElement().reinit(workspace);
 					}
 
 					i++;
@@ -96,16 +95,19 @@ public class ShareableZIPManager {
 					dial.refreshDisplay();
 				}
 
+				// make sure we store any potential changes made to the workspace
+				workspace.markDirty();
+
 				workspace.close(); // we need to close the workspace!
 			} catch (Exception e) {
-				e.printStackTrace();
+				LOG.error("Failed to import workspace", e);
 			}
 
 			p2.ok();
 			dial.refreshDisplay();
 
 			dial.hideAll();
-		});
+		}, "ZIPImporter");
 		t.start();
 		dial.setVisible(true);
 
@@ -130,13 +132,13 @@ public class ShareableZIPManager {
 							"#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/", ".settings/");
 				}
 			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
+				LOG.error("Failed to export workspace", e);
 			}
 
 			p1.ok();
 			dial.refreshDisplay();
 			dial.hideAll();
-		});
+		}, "ZIPExporter");
 		t.start();
 		dial.setVisible(true);
 	}

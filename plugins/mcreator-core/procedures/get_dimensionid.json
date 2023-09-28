@@ -1,6 +1,10 @@
 {
-  "extensions": [
-    "dimension_list_provider"
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "dimension",
+      "datalist": "dimension"
+    }
   ],
   "inputsInline": true,
   "output": "DimensionType",

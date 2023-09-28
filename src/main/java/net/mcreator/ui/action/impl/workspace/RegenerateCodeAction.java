@@ -91,9 +91,7 @@ public class RegenerateCodeAction extends GradleAction {
 			// keep base mod files that can be locked if selected so in the workspace settings
 			if (mcreator.getWorkspaceSettings().isLockBaseModFiles()) {
 				mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).forEach(generatorTemplate -> {
-					if (generatorTemplate.getTemplateDefinition().get("canLock") != null
-							&& generatorTemplate.getTemplateDefinition().get("canLock")
-							.equals("true")) // can this file be locked
+					if (generatorTemplate.canBeLocked()) // can this file be locked
 						// are mod base file locked
 						toBePreserved.add(
 								generatorTemplate.getFile()); // we add locked base mod files on the to be preserved list
@@ -145,51 +143,48 @@ public class RegenerateCodeAction extends GradleAction {
 					hasLockedElements = true;
 				}
 
-				if (!mcreator.getModElementManager().hasModElementGeneratableElement(mod)) {
-					if (!skipAll) {
-						int opt = JOptionPane.showOptionDialog(mcreator,
-								L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.message",
-										mod.getName(), skippedElements.size()),
-								L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.title"),
-								JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {
-										L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.option.skip_one"),
-										L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.option.skip_all") },
-								0);
-						if (opt == 1)
-							skipAll = true;
-					}
-					skippedElements.add(mod);
-					continue;
-				}
-
 				try {
 					GeneratableElement generatableElement = mod.getGeneratableElement();
-
-					if (generatableElement != null) {
-						LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: " + mod.getName());
-
-						// generate mod element code
-						List<GeneratorFile> generatedFiles = mcreator.getGenerator()
-								.generateElement(generatableElement, false);
-
-						if (!mod.isCodeLocked()) {
-							filesToReformat.addAll(
-									generatedFiles.stream().map(GeneratorFile::getFile).collect(Collectors.toSet()));
-						}
-
-						// save custom mod element picture if it has one
-						mcreator.getModElementManager().storeModElementPicture(generatableElement);
-
-						// add mod element to workspace again, so the icons get reloaded
-						mcreator.getWorkspace().addModElement(generatableElement.getModElement());
-
-						// we reinit the mod to load new icons etc.
-						generatableElement.getModElement().reinit(mcreator.getWorkspace());
-
-						generatableElementsToSave.add(generatableElement);
-					} else {
+					if (generatableElement == null) {
 						LOG.warn("Failed to regenerate: " + mod.getName() + " as it has no generatable element");
+
+						if (!skipAll) {
+							int opt = JOptionPane.showOptionDialog(mcreator,
+									L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.message",
+											mod.getName(), skippedElements.size()),
+									L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.title"),
+									JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE, null, new String[] {
+											L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.option.skip_one"),
+											L10N.t("dialog.workspace.regenerate_and_build.error.failed_to_import.option.skip_all") },
+									0);
+							if (opt == 1)
+								skipAll = true;
+						}
+						skippedElements.add(mod);
+						continue;
 					}
+
+					LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: " + mod.getName());
+
+					// generate mod element code
+					List<GeneratorFile> generatedFiles = mcreator.getGenerator()
+							.generateElement(generatableElement, false);
+
+					if (!mod.isCodeLocked()) {
+						filesToReformat.addAll(
+								generatedFiles.stream().map(GeneratorFile::getFile).collect(Collectors.toSet()));
+					}
+
+					// save custom mod element picture if it has one
+					mcreator.getModElementManager().storeModElementPicture(generatableElement);
+
+					// we reinit the mod to reload ME icon
+					generatableElement.getModElement().reinit(mcreator.getWorkspace());
+
+					// preload/update MCItem cache and MCItem icons
+					generatableElement.getModElement().getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush());
+
+					generatableElementsToSave.add(generatableElement);
 				} catch (Exception e) {
 					LOG.error("Failed to regenerate: " + mod.getName(), e);
 				}
@@ -202,7 +197,7 @@ public class RegenerateCodeAction extends GradleAction {
 			// save all updated generatable mod elements
 			generatableElementsToSave.parallelStream().forEach(mcreator.getModElementManager()::storeModElement);
 
-			if (warnMissingDefinitions && skippedElements.size() > 0) {
+			if (warnMissingDefinitions && !skippedElements.isEmpty()) {
 				skippedElements.forEach(el -> {
 					try {
 						mcreator.getWorkspace().removeModElement(el);
@@ -278,11 +273,14 @@ public class RegenerateCodeAction extends GradleAction {
 				mcreator.getGradleConsole().markReady();
 			}
 
+			// Make sure to store any potential changes to the workspace
+			mcreator.getWorkspace().markDirty();
+
 			p3.ok();
 			dial.refreshDisplay();
 
 			dial.hideAll();
-		});
+		}, "RegenerateCode");
 		thread.start();
 		dial.setVisible(true);
 	}

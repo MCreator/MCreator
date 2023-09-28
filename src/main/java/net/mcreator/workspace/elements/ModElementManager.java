@@ -32,13 +32,13 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Stack;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -50,32 +50,40 @@ public final class ModElementManager {
 	private static final Logger LOG = LogManager.getLogger("ModElementManager");
 
 	private final Gson gson;
-	private final GeneratableElement.GSONAdapter gsonAdapter;
 
 	private final Map<ModElement, GeneratableElement> cache = new ConcurrentHashMap<>();
 
 	@Nonnull private final Workspace workspace;
 
-	@Nullable private ModElement modElementInConversion = null;
+	private final Stack<ModElement> modElementsInConversion = new Stack<>();
 
 	public ModElementManager(@Nonnull Workspace workspace) {
 		this.workspace = workspace;
 
-		this.gsonAdapter = new GeneratableElement.GSONAdapter(this.workspace);
-
 		GsonBuilder gsonBuilder = new GsonBuilder().registerTypeHierarchyAdapter(GeneratableElement.class,
-				this.gsonAdapter).disableHtmlEscaping().setPrettyPrinting().setLenient();
-
+						new GeneratableElement.GSONAdapter(this.workspace)).disableHtmlEscaping().setPrettyPrinting()
+				.setLenient();
 		RetvalProcedure.GSON_ADAPTERS.forEach(gsonBuilder::registerTypeAdapter);
 
 		this.gson = gsonBuilder.create();
 	}
 
-	public void invalidateCache() {
-		cache.clear();
+	public ModElement getLastElementInConversion() {
+		return modElementsInConversion.peek();
 	}
 
+	/**
+	 * Also stores to cache. Is thread safe.
+	 *
+	 * @param element GeneratableElement to convert to store
+	 */
 	public void storeModElement(GeneratableElement element) {
+		if (element == null) {
+			LOG.warn(
+					"Attempted to store null generatable element. Something went wrong previously for this to happen!");
+			return;
+		}
+
 		cache.put(element.getModElement(), element);
 
 		FileIO.writeStringToFile(generatableElementToJSON(element),
@@ -83,29 +91,44 @@ public final class ModElementManager {
 						element.getModElement().getName() + ".mod.json"));
 	}
 
-	/**
-	 * Mod element passed here will be used to prevent circular reference when converting the generatable element.
-	 * Make sure to call this method again with null argument after the conversion is done or this ME will not be
-	 * loadable anymore in the current session.
-	 *
-	 * @param modElementInConversion ME being converted or null if conversion is complete
-	 */
-	public void setModElementInConversion(@Nullable ModElement modElementInConversion) {
-		this.modElementInConversion = modElementInConversion;
+	public void removeModElement(ModElement element) {
+		cache.remove(element);
+
+		// first we ask generator to remove all related files
+		if (element.getType() != ModElementType.UNKNOWN) {
+			GeneratableElement generatableElement = element.getGeneratableElement();
+			if (generatableElement != null && workspace.getGenerator() != null)
+				workspace.getGenerator().removeElementFilesAndLangKeys(generatableElement);
+			else
+				LOG.warn("Failed to remove element files for element " + element);
+		}
+
+		// after we don't need the definition anymore, remove actual files
+		new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").delete();
+		new File(workspace.getFolderManager().getModElementPicturesCacheDir(), element.getName() + ".png").delete();
 	}
 
 	GeneratableElement loadGeneratableElement(ModElement element) {
 		// To prevent circular reference (and thus stack overflow), we return Unknown GE if we are loading the
 		// mod element that is being converted as otherwise this will try to start the conversion again
-		if (element.equals(modElementInConversion))
+		if (modElementsInConversion.contains(element))
 			return new GeneratableElement.Unknown(element);
 
 		if (element.getType() == ModElementType.CODE) {
 			return new CustomElement(element);
 		}
 
-		if (cache.containsKey(element))
-			return cache.get(element);
+		if (cache.containsKey(element)) {
+			if (cache.get(element).getModElement() == element) {
+				return cache.get(element);
+			} else {
+				ModElement cacheElement = cache.get(element).getModElement();
+				LOG.error(
+						"Cache contains mod element with same name but different object. This should not happen! Cache element: "
+								+ cacheElement.getName() + ", type: " + cacheElement.getType() + ", queried element: "
+								+ element.getName() + ", type: " + element.getType());
+			}
+		}
 
 		File genFile = new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json");
 
@@ -116,9 +139,15 @@ public final class ModElementManager {
 
 		GeneratableElement generatableElement = fromJSONtoGeneratableElement(importJSON, element);
 		if (generatableElement != null && element.getType() != ModElementType.UNKNOWN) {
+			// Make sure after conversion and importing, no Nonnull fields are null to prevent NPEs and check GE integrity
+			if (!generatableElement.performQuickValidation())
+				return null;
+
+			// Store the mod element in case the conversion was applied
 			if (generatableElement.wasConversionApplied())
 				storeModElement(generatableElement);
 
+			// Add it to the cache
 			cache.put(element, generatableElement);
 		}
 
@@ -130,25 +159,17 @@ public final class ModElementManager {
 	}
 
 	public GeneratableElement fromJSONtoGeneratableElement(String json, ModElement modElement) {
+		this.modElementsInConversion.push(modElement);
+
 		try {
-			this.gsonAdapter.setLastModElement(modElement);
 			return gson.fromJson(json, GeneratableElement.class);
 		} catch (JsonSyntaxException e) {
 			LOG.warn("Failed to load generatable element " + modElement.getName()
 					+ " from JSON. This can lead to errors further down the road!", e);
 			return null;
+		} finally {
+			this.modElementsInConversion.pop();
 		}
-	}
-
-	public boolean hasModElementGeneratableElement(ModElement element) {
-		if (element == null)
-			return false;
-
-		// custom code mod element does not actually have one, but is provided by this manager
-		if (element.getType() == ModElementType.CODE)
-			return true;
-
-		return new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json").isFile();
 	}
 
 	public boolean requiresElementGradleBuild(GeneratableElement generatableElement) {
@@ -190,6 +211,13 @@ public final class ModElementManager {
 		if (icon == null || icon.getImage() == null || icon.getIconWidth() <= 0 || icon.getIconHeight() <= 0)
 			icon = element.getType().getIcon();
 		return icon;
+	}
+
+	/**
+	 * Invalidates the generatable element cache
+	 */
+	public void invalidateCache() {
+		cache.clear();
 	}
 
 }

@@ -45,6 +45,8 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 
 		villagerTradeProfessions = new JVillagerTradeProfessionsList(mcreator, this);
 
+		pane.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
+
 		pane.add(villagerTradeProfessions);
 		addPage(pane);
 
@@ -64,12 +66,12 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 	}
 
 	@Override public void openInEditingMode(VillagerTrade villagerTrade) {
-		villagerTradeProfessions.setTrades(villagerTrade.tradeEntries);
+		villagerTradeProfessions.setEntries(villagerTrade.tradeEntries);
 	}
 
 	@Override public VillagerTrade getElementFromGUI() {
 		VillagerTrade villagerTrade = new VillagerTrade(modElement);
-		villagerTrade.tradeEntries = villagerTradeProfessions.getTrades();
+		villagerTrade.tradeEntries = villagerTradeProfessions.getEntries();
 		return villagerTrade;
 	}
 }

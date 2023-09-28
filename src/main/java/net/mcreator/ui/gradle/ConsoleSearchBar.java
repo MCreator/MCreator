@@ -108,7 +108,7 @@ public class ConsoleSearchBar extends JToolBar {
 		}
 		oldSearch = searchFor;
 
-		if (searchFor.equals("")) {
+		if (searchFor.isEmpty()) {
 			results.setText("No results");
 			return;
 		}

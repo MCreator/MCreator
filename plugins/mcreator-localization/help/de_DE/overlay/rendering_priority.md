@@ -1,0 +1,1 @@
+Dieser Parameter definiert die Priorität des Overlays. Overlays mit "High" werden über mit diesem Parameter auf "Niedrig" gerendert.

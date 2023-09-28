@@ -5,6 +5,12 @@
     <category name="${t:blockly.category.orefeatures}" colour="80">
         <custom-orefeatures/>
     </category>
+    <category name="${t:blockly.category.treefeatures}" colour="110">
+        <custom-treefeatures/>
+    </category>
+    <category name="${t:blockly.category.advancedfeatures}" colour="340">
+        <custom-advancedfeatures/>
+    </category>
     <sep/>
     <category name="${t:blockly.category.blocks.feature}" colour="60">
         <block type="mcitem_allblocks"/>

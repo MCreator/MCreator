@@ -40,42 +40,58 @@ class ModElementCodeDropdown extends JPopupMenu {
 		setBorder(BorderFactory.createEmptyBorder());
 		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
 
-		// add regular files to the dropdown
-		for (GeneratorTemplate modElementFile : modElementFiles)
-			add(modElementFileMenuItem(modElementFile));
+		int entryCounter = 0;
+
+		// add regular files to the dropdown (if any)
+		for (GeneratorTemplate modElementFile : modElementFiles) {
+			if (!modElementFile.isHidden()) {
+				add(modElementFileMenuItem(modElementFile));
+				entryCounter++;
+			}
+		}
 
 		// add global files to the dropdown (if any)
-		if (modElementGlobalFiles.size() > 0) {
-			if (modElementFiles.size() > 0)
-				addSeparator();
+		boolean separatorPlaceFlag = entryCounter > 0;
+		for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles) {
+			if (!modElementGlobalFile.isHidden()) {
+				// if there were entries before, add separator on the top, then prevent this from happening again by setting hasEntriesAbove to false
+				if (separatorPlaceFlag) {
+					addSeparator();
+					separatorPlaceFlag = false;
+				}
 
-			for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles)
 				add(modElementFileMenuItem(modElementGlobalFile));
+				entryCounter++;
+			}
 		}
 
 		// add list files to the dropdown (if any)
-		if (modElementListFiles.size() > 0) {
-			if (modElementFiles.size() + modElementGlobalFiles.size() > 0)
-				addSeparator();
+		separatorPlaceFlag = entryCounter > 0;
+		for (GeneratorTemplatesList list : modElementListFiles) {
+			if (!list.templates().isEmpty()) {
+				JMenu listMenu = new JMenu(list.groupName());
+				listMenu.setIcon(UIRES.get("16px.list.gif"));
+				listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+				listMenu.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				listMenu.setIconTextGap(8);
+				listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
 
-			for (GeneratorTemplatesList list : modElementListFiles) {
-				if (list.templates().size() > 0) {
-					JMenu listMenu = new JMenu(list.groupName());
-					listMenu.setIcon(UIRES.get("16px.list.gif"));
-					listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-					listMenu.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-					listMenu.setIconTextGap(8);
-					listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
+				for (int i = 0; i < list.listData().size(); i++) {
+					if (i > 0 && listMenu.getMenuComponents().length > 0 && !list.templates().get(i).isEmpty())
+						listMenu.addSeparator(); // separate files generated for different list items
 
-					for (int i = 0; i < list.listData().size(); i++) {
-						if (i > 0 && listMenu.getMenuComponents().length > 0 && !list.templates().get(i).isEmpty())
-							listMenu.addSeparator(); // separate files generated for different list items
+					list.templates().get(i).stream().filter(e -> !e.isHidden()).map(this::modElementFileMenuItem)
+							.forEach(listMenu::add);
+				}
 
-						list.templates().get(i).stream().map(this::modElementFileMenuItem).forEach(listMenu::add);
+				if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem)) {
+					// if there were entries before, add separator on the top, then prevent this from happening again by setting hasEntriesAbove to false
+					if (separatorPlaceFlag) {
+						addSeparator();
+						separatorPlaceFlag = false;
 					}
 
-					if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem))
-						add(listMenu);
+					add(listMenu);
 				}
 			}
 		}

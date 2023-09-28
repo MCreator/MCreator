@@ -1,0 +1,1 @@
+Questo parametro controlla la texture del portale come la texture animata viola del portale Nether.
