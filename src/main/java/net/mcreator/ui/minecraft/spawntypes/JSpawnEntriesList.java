@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft.spawntypes;
 import net.mcreator.element.types.Biome;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
+import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 
