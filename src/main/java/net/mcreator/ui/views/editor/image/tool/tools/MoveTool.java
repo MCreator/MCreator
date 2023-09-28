@@ -65,7 +65,7 @@ public class MoveTool extends AbstractTool {
 
 	@Override public void mouseReleased(MouseEvent e) {
 		prev = null;
-		if (original.x != layer.getX() && original.y != layer.getY()) {
+		if (layer.in(e.getX(), e.getY()) && original.x != layer.getX() && original.y != layer.getY()) {
 			relocation.setAfter(layer);
 			versionManager.addRevision(relocation);
 		}
