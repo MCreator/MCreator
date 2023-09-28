@@ -133,7 +133,7 @@ package ${package}.client.screens;
 		posX = w / 2 + ${comp_x - 213};
 		posY = ${comp_y};
 	<#elseif anchor_point == "TOP_RIGHT">
-		posX = w - (427 - ${comp_x});
+		posX = w - ${427 - comp_x};
 		posY = ${comp_y};
 	<#elseif anchor_point == "CENTER_LEFT">
 		posX = ${comp_x};
@@ -142,17 +142,17 @@ package ${package}.client.screens;
 		posX = w / 2 + ${comp_x - 213};
 		posY = h / 2 + ${comp_y - 120};
 	<#elseif anchor_point == "CENTER_RIGHT">
-		posX = w - (427 - ${comp_x});
+		posX = w - ${427 - comp_x};
 		posY = h / 2 + ${comp_y - 120};
 	<#elseif anchor_point == "BOTTOM_LEFT">
 		posX = ${comp_x};
-		posY = h - (240 - ${comp_y});
+		posY = h - ${240 - comp_y};
 	<#elseif anchor_point == "BOTTOM_CENTER">
 		posX = w / 2 + ${comp_x - 213};
-		posY = h - (240 - ${comp_y});
+		posY = h - ${240 - comp_y};
 	<#elseif anchor_point == "BOTTOM_RIGHT">
-		posX = w - (427 - ${comp_x});
-		posY = h - (240 - ${comp_y});
+		posX = w - ${427 - comp_x};
+		posY = h - ${240 - comp_y};
 	</#if>
 </#macro>
 <#-- @formatter:on -->
