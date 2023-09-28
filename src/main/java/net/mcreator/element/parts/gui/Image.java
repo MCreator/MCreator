@@ -45,10 +45,7 @@ public class Image extends GUIComponent implements IAnchorableElement {
 	}
 
 	public Image(int x, int y, String image, boolean use1Xscale, Procedure displayCondition, AnchorPoint anchorPoint) {
-		super(x, y);
-		this.image = image;
-		this.use1Xscale = use1Xscale;
-		this.displayCondition = displayCondition;
+		this(x, y, image, use1Xscale, displayCondition);
 		this.anchorPoint = anchorPoint;
 	}
 

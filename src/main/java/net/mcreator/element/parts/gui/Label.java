@@ -49,11 +49,7 @@ public class Label extends GUIComponent implements IAnchorableElement {
 	}
 
 	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition, AnchorPoint anchorPoint) {
-		super(x, y);
-		this.text = text;
-		this.color = color;
-		this.displayCondition = displayCondition;
-		this.name = name;
+		this(name, x, y, text, color, displayCondition);
 		this.anchorPoint = anchorPoint;
 	}
 
