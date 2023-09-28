@@ -200,38 +200,44 @@
 </#macro>
 
 <#macro hasGlow procedure="">
+<#if procedure?has_content && (hasProcedure(procedure) || procedure.getFixedValue())>
 @Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
 	<#if hasProcedure(procedure)>
-	<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
-	<#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
-	Entity entity = Minecraft.getInstance().player;
-	</#if>
-	return <@procedureCode procedure, {
-		"x": "entity.getX()",
-		"y": "entity.getY()",
-		"z": "entity.getZ()",
-		"entity": "entity",
-		"world": "entity.level()",
-		"itemstack": "itemstack"
-	}/>
+		<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
+		<#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
+		Entity entity = Minecraft.getInstance().player;
+		</#if>
+		return <@procedureCode procedure, {
+			"x": "entity.getX()",
+			"y": "entity.getY()",
+			"z": "entity.getZ()",
+			"entity": "entity",
+			"world": "entity.level()",
+			"itemstack": "itemstack"
+		}/>
 	<#else>
-	return true;
+		return true;
 	</#if>
 }
+</#if>
 </#macro>
 
 <#-- Armor triggers -->
 <#macro onArmorTick procedure="">
 <#if hasProcedure(procedure)>
-@Override public void onArmorTick(ItemStack itemstack, Level world, Player entity) {
-	<@procedureCode procedure, {
-	"x": "entity.getX()",
-	"y": "entity.getY()",
-	"z": "entity.getZ()",
-	"world": "world",
-	"entity": "entity",
-	"itemstack": "itemstack"
-	}/>
+<#-- ideally we would use onInventoryTick for slotIndex [36, 40), however this method is not being called in 1.20.1 FG properly -->
+@Override public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
+	super.inventoryTick(itemstack, world, entity, slot, selected);
+	if (entity instanceof Player player && Iterables.contains(player.getArmorSlots(), itemstack)) {
+		<@procedureCode procedure, {
+		"x": "entity.getX()",
+		"y": "entity.getY()",
+		"z": "entity.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"itemstack": "itemstack"
+		}/>
+	}
 }
 </#if>
 </#macro>

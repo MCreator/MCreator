@@ -200,24 +200,26 @@
 </#macro>
 
 <#macro hasGlow procedure="">
+<#if procedure?has_content && (hasProcedure(procedure) || procedure.getFixedValue())>
 @Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
 	<#if hasProcedure(procedure)>
-	<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
-	<#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
-	Entity entity = Minecraft.getInstance().player;
-	</#if>
-	return <@procedureCode procedure, {
-		"x": "entity.getX()",
-		"y": "entity.getY()",
-		"z": "entity.getZ()",
-		"entity": "entity",
-		"world": "entity.level",
-		"itemstack": "itemstack"
-	}/>
+		<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
+		<#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
+		Entity entity = Minecraft.getInstance().player;
+		</#if>
+		return <@procedureCode procedure, {
+			"x": "entity.getX()",
+			"y": "entity.getY()",
+			"z": "entity.getZ()",
+			"entity": "entity",
+			"world": "entity.level",
+			"itemstack": "itemstack"
+		}/>
 	<#else>
-	return true;
+		return true;
 	</#if>
 }
+</#if>
 </#macro>
 
 <#-- Armor triggers -->
