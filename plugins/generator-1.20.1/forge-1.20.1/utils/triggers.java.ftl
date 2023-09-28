@@ -225,9 +225,10 @@
 <#-- Armor triggers -->
 <#macro onArmorTick procedure="">
 <#if hasProcedure(procedure)>
-@Override public void onInventoryTick(ItemStack itemstack, Level world, Player entity, int slotIndex, int selectedIndex) {
-	super.onInventoryTick(itemstack, world, entity, slotIndex, selectedIndex);
-	if (slotIndex >= 36 && slotIndex < 40) {
+<#-- ideally we would use onInventoryTick for slotIndex [36, 40), however this method is not being called in 1.20.1 FG properly -->
+@Override public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
+	super.inventoryTick(itemstack, world, entity, slot, selected);
+	if (entity instanceof Player player && Iterables.contains(player.getArmorSlots(), itemstack)) {
 		<@procedureCode procedure, {
 		"x": "entity.getX()",
 		"y": "entity.getY()",
