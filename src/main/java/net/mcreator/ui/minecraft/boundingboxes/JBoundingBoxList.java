@@ -75,7 +75,7 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 	}
 
 	@Override
-	protected JBoundingBoxEntry newEntry(JPanel parent, List<JBoundingBoxEntry> entryList, boolean loading) {
+	protected JBoundingBoxEntry newEntry(JPanel parent, List<JBoundingBoxEntry> entryList) {
 		return new JBoundingBoxEntry(parent, entryList);
 	}
 

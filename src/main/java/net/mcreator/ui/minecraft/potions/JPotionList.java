@@ -43,7 +43,7 @@ public class JPotionList extends JSimpleEntriesList<JPotionListEntry, Potion.Cus
 	}
 
 	@Override
-	protected JPotionListEntry newEntry(JPanel parent, List<JPotionListEntry> entryList, boolean loading) {
+	protected JPotionListEntry newEntry(JPanel parent, List<JPotionListEntry> entryList) {
 		return new JPotionListEntry(mcreator, gui, entries, entryList);
 	}
 

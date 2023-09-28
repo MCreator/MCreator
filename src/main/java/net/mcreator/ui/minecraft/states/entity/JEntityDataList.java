@@ -53,12 +53,10 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Defaul
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
 
-	@Override protected JEntityDataEntry newEntry(JPanel parent, List<JEntityDataEntry> entryList, boolean loading) {
-		AtomicReference<JEntityDataEntry> entry = new AtomicReference<>();
+	@Override protected JEntityDataEntry newEntry(JPanel parent, List<JEntityDataEntry> entryList) {
+		if (userAction) {
+			AtomicReference<JEntityDataEntry> entry = new AtomicReference<>();
 
-		if (loading) {
-			entry.set(new JEntityDataEntry(mcreator, gui, parent, entryList, new PropertyData.IntegerType("")));
-		} else {
 			MCreatorDialog dialog = new MCreatorDialog(mcreator,
 					L10N.t("elementgui.living_entity.entity_data_entries.add_entry.title"), true);
 
@@ -97,9 +95,10 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Defaul
 			dialog.setSize(360, 180);
 			dialog.setLocationRelativeTo(mcreator);
 			dialog.setVisible(true);
+			return entry.get();
 		}
 
-		return entry.get();
+		return new JEntityDataEntry(mcreator, gui, parent, entryList, new PropertyData.IntegerType(""));
 	}
 
 }

@@ -42,7 +42,7 @@ public class JSpawnEntriesList extends JSimpleEntriesList<JSpawnListEntry, Biome
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
 
-	@Override protected JSpawnListEntry newEntry(JPanel parent, List<JSpawnListEntry> entryList, boolean loading) {
+	@Override protected JSpawnListEntry newEntry(JPanel parent, List<JSpawnListEntry> entryList) {
 		return new JSpawnListEntry(mcreator, gui, parent, entryList);
 	}
 
