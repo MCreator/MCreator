@@ -23,6 +23,7 @@ import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.layer.Layer;
+import net.mcreator.ui.views.editor.image.layer.PastedLayer;
 import net.mcreator.ui.views.editor.image.tool.tools.Shape;
 
 import javax.swing.*;
@@ -41,6 +42,7 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 
 	private TexturePaint checkerboard;
 	private Stroke dashed;
+	private float stroke_phase = 0;
 
 	public CanvasRenderer(ImageMakerView imageMakerView) {
 		rebuildCheckerboardPattern();
@@ -173,7 +175,7 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 			int x = (int) Math.round(outline.getX() * zoom), y = (int) Math.round(outline.getY() * zoom);
 			int width = (int) Math.round(outline.getWidth() * zoom), height = (int) Math.round(
 					outline.getHeight() * zoom);
-			drawOutline((Graphics2D) g, x, y, width, height);
+			drawOutline((Graphics2D) g, x, y, width, height, outline instanceof PastedLayer);
 		}
 	}
 
@@ -224,7 +226,16 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 
 	private void rebuildOutlineStroke() {
 		dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
-				new float[] { OUTLINE_LINE_LENGTH }, 0);
+				new float[] { OUTLINE_LINE_LENGTH }, stroke_phase);
+	}
+
+	public void addPhaseToOutline(float phase) {
+		float sp = (stroke_phase - phase / ((float) Math.PI) * OUTLINE_LINE_LENGTH) % (OUTLINE_LINE_LENGTH * 2);
+		if (sp < 0)
+			stroke_phase = OUTLINE_LINE_LENGTH * 2 + sp;
+		else
+			stroke_phase = sp;
+		rebuildOutlineStroke();
 	}
 
 	private void drawCheckerboard(Graphics2D graphics2D, Dimension d) {
@@ -232,10 +243,13 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 		graphics2D.fillRect(0, 0, (int) d.getWidth(), (int) d.getHeight());
 	}
 
-	private void drawOutline(Graphics2D graphics2D, int x, int y, int width, int height) {
+	private void drawOutline(Graphics2D graphics2D, int x, int y, int width, int height, boolean pasted) {
 		graphics2D.setPaint((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		graphics2D.drawRect(x, y, width - 1, height - 1);
-		graphics2D.setPaint((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		if (pasted)
+			graphics2D.setPaint((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		else
+			graphics2D.setPaint((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
 		graphics2D.setStroke(dashed);
 		graphics2D.drawRect(x, y, width - 1, height - 1);
 	}

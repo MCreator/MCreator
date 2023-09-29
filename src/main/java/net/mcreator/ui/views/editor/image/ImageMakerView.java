@@ -37,6 +37,7 @@ import net.mcreator.ui.views.editor.image.canvas.CanvasRenderer;
 import net.mcreator.ui.views.editor.image.clipboard.ClipboardManager;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
+import net.mcreator.ui.views.editor.image.layer.PastedLayer;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -46,7 +47,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.Clip;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import java.awt.*;
@@ -63,6 +63,7 @@ import java.util.concurrent.Executors;
 public class ImageMakerView extends ViewBase implements MouseListener, MouseMotionListener {
 
 	private static final Logger LOG = LogManager.getLogger("Image Maker View");
+	private final int fps = 24;
 
 	private String name = L10N.t("tab.image_maker");
 
@@ -83,6 +84,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public final JButton save;
 
 	public static final ExecutorService toolExecutor = Executors.newSingleThreadExecutor();
+	private boolean active;
 	private MCreatorTabs.Tab tab;
 	private File image;
 	private boolean canEdit = true;
@@ -171,6 +173,24 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		add(controls, BorderLayout.NORTH);
 		add(leftSplitPane, BorderLayout.CENTER);
+
+		Thread animator = new Thread(() -> {
+			active = true;
+			while (active) {
+				if (layerPanel.selected() instanceof PastedLayer) {
+					canvasRenderer.addPhaseToOutline((float) Math.PI / fps);
+					repaint();
+				}
+
+				try {
+					Thread.sleep(1000 / fps);
+				} catch (InterruptedException e) {
+					LOG.error(e.getMessage(), e);
+				}
+			}
+		}, "ImageMakerAnimationRenderer");
+
+		animator.start();
 	}
 
 	public void openInEditMode(File image) {
@@ -329,6 +349,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			this.tab = new MCreatorTabs.Tab(this, image);
 		else
 			this.tab = new MCreatorTabs.Tab(this);
+
+		tab.setTabClosedListener(tab -> this.active = false);
 
 		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(this.tab);
 		if (existing == null) {

@@ -171,8 +171,6 @@ public class LayerPanel extends JPanel {
 		layerPanel.add(PanelUtils.totalCenterInPanel(closed), LayerListMode.CLOSED.toString());
 		layerPanel.add(PanelUtils.totalCenterInPanel(empty), LayerListMode.EMPTY.toString());
 
-		//setOpaque(false);
-
 		add(layerPanel, BorderLayout.CENTER);
 		add(controls, BorderLayout.NORTH);
 	}
@@ -234,6 +232,9 @@ public class LayerPanel extends JPanel {
 	}
 
 	public Layer selected() {
+		if (layerList == null)
+			return null;
+
 		int selectedIndex = layerList.getSelectedIndex();
 		if (selectedIndex == -1)
 			return null;
