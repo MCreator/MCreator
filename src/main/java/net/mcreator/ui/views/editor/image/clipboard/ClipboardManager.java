@@ -20,6 +20,7 @@
 package net.mcreator.ui.views.editor.image.clipboard;
 
 import net.mcreator.ui.views.editor.image.ImageMakerView;
+import net.mcreator.ui.views.editor.image.clipboard.transferables.CanvasTransferable;
 import net.mcreator.ui.views.editor.image.clipboard.transferables.LayerTransferable;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.PastedLayer;
@@ -27,12 +28,11 @@ import net.mcreator.ui.views.editor.image.versioning.change.Modification;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 
 public class ClipboardManager implements ClipboardOwner {
 	private final Clipboard clipboard;
-	private ImageMakerView imageMakerView;
+	private final ImageMakerView imageMakerView;
 
 	public ClipboardManager(ImageMakerView imageMakerView) {
 		this.imageMakerView = imageMakerView;
@@ -40,15 +40,15 @@ public class ClipboardManager implements ClipboardOwner {
 	}
 
 	public void copy() {
-		addToClipboard();
+		addLayerToClipboard();
 	}
 
 	public void copyAll() {
-		// TODO: Add support for copying all layers as a single image.
+		addCanvasToClipboard();
 	}
 
 	public void cut() {
-		addToClipboard();
+		addLayerToClipboard();
 		Layer selected = imageMakerView.getLayerPanel().selected();
 		if (imageMakerView.getCanvas().size() > 1)
 			imageMakerView.getCanvas().remove(selected);
@@ -58,10 +58,20 @@ public class ClipboardManager implements ClipboardOwner {
 		}
 	}
 
-	private void addToClipboard() {
+	private void addCanvasToClipboard(){
+		addLayerToClipboard(new CanvasTransferable(imageMakerView.getCanvas()));
+	}
+
+	private void addLayerToClipboard() {
+		Layer selected = imageMakerView.getLayerPanel().selected();
+		if (selected != null)
+			addLayerToClipboard(new LayerTransferable(selected));
+	}
+
+	private void addLayerToClipboard(Transferable transferable) {
 		// Prevent crashing on systems that lock clipboards to specific programs. This still crashes due to a bug in java's clipboard implementation (https://stackoverflow.com/questions/59140881/error-copying-an-image-object-to-the-clipboard).
 		try {
-			clipboard.setContents(new LayerTransferable(imageMakerView.getLayerPanel().selected()), this);
+			clipboard.setContents(transferable, this);
 		} catch (IllegalStateException ignored) {
 		}
 	}
