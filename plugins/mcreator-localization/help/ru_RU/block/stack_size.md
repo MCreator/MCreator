@@ -1,4 +1,3 @@
-This is how many items in the slots in this block's inventory can stack too.
+Задаёт ограничение на число предметов, которые можно положить в одну ячейку инвентаря блока.
 
-Keep in mind that there is another slot stack size limit set for the specific items, so this is an upper limit of the
-slots that can be further limited by items.
+Имейте в виду, что данное число может быть ещё более ограничено самим предметом, т. е. этот параметр определяет верхнюю границу величины стопки.
