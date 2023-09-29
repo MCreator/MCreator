@@ -22,7 +22,6 @@ import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
-import net.mcreator.ui.views.editor.image.layer.PastedLayer;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 import net.mcreator.ui.views.editor.image.versioning.change.Relocation;
@@ -70,7 +69,7 @@ public class MoveTool extends AbstractTool {
 			versionManager.addRevision(relocation);
 		}
 
-		if (layer instanceof PastedLayer && !layer.in(e.getX(), e.getY()))
+		if (layer.isPasted() && !layer.in(e.getX(), e.getY()))
 			canvas.mergeSelectedDown();
 
 		super.mouseReleased(e);

@@ -23,7 +23,6 @@ import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.layer.Layer;
-import net.mcreator.ui.views.editor.image.layer.PastedLayer;
 import net.mcreator.ui.views.editor.image.tool.tools.Shape;
 
 import javax.swing.*;
@@ -175,7 +174,7 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 			int x = (int) Math.round(outline.getX() * zoom), y = (int) Math.round(outline.getY() * zoom);
 			int width = (int) Math.round(outline.getWidth() * zoom), height = (int) Math.round(
 					outline.getHeight() * zoom);
-			drawOutline((Graphics2D) g, x, y, width, height, outline instanceof PastedLayer);
+			drawOutline((Graphics2D) g, x, y, width, height, outline.isPasted());
 		}
 	}
 

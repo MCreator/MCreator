@@ -38,6 +38,8 @@ public class Layer {
 
 	private boolean renderingMode = false;
 
+	private boolean isPasted = false;
+
 	public Layer(int width, int height, String name) {
 		this(width, height, 0, 0, name);
 	}
@@ -139,6 +141,14 @@ public class Layer {
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 		canvas.update(this);
+	}
+
+	public boolean isPasted() {
+		return isPasted;
+	}
+
+	public void setPasted(boolean isPasted) {
+		this.isPasted = isPasted;
 	}
 
 	public boolean in(int x, int y) {

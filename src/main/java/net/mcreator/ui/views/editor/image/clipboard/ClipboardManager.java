@@ -23,7 +23,6 @@ import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.clipboard.transferables.CanvasTransferable;
 import net.mcreator.ui.views.editor.image.clipboard.transferables.LayerTransferable;
 import net.mcreator.ui.views.editor.image.layer.Layer;
-import net.mcreator.ui.views.editor.image.layer.PastedLayer;
 import net.mcreator.ui.views.editor.image.versioning.change.Modification;
 
 import java.awt.*;
@@ -83,10 +82,14 @@ public class ClipboardManager implements ClipboardOwner {
 				try {
 					Image img = (Image) clp.getTransferData(DataFlavor.imageFlavor);
 					if (clp.isDataFlavorSupported(DataFlavor.stringFlavor)) {
+						Layer layer = new Layer((String) clp.getTransferData(DataFlavor.stringFlavor), img);
+						layer.setPasted(true);
 						imageMakerView.getCanvas()
-								.add(new PastedLayer((String) clp.getTransferData(DataFlavor.stringFlavor), img));
+								.add(layer);
 					} else {
-						imageMakerView.getCanvas().add(new PastedLayer("Pasted layer", img));
+						Layer layer = new Layer("Pasted layer", img);
+						layer.setPasted(true);
+						imageMakerView.getCanvas().add(layer);
 					}
 
 				} catch (UnsupportedFlavorException | IOException e) {

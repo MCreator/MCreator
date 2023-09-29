@@ -37,7 +37,6 @@ import net.mcreator.ui.views.editor.image.canvas.CanvasRenderer;
 import net.mcreator.ui.views.editor.image.clipboard.ClipboardManager;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
-import net.mcreator.ui.views.editor.image.layer.PastedLayer;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -177,7 +176,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		Thread animator = new Thread(() -> {
 			active = true;
 			while (active) {
-				if (layerPanel.selected() instanceof PastedLayer) {
+				if (layerPanel.selected() != null && layerPanel.selected().isPasted()) {
 					canvasRenderer.addPhaseToOutline((float) Math.PI / fps);
 					repaint();
 				}
