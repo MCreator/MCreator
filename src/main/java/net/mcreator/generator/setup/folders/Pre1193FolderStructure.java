@@ -43,6 +43,8 @@ class Pre1193FolderStructure extends AbstractFolderStructure {
 		return switch (section) {
 			case BLOCK -> new File(getResourceRoot(),
 					"assets/" + workspace.getWorkspaceSettings().getModID() + "/textures/blocks");
+			case BANNER -> new File(getResourceRoot(),
+					"assets/" + workspace.getWorkspaceSettings().getModID() + "/textures/entities");
 			case ITEM -> new File(getResourceRoot(),
 					"assets/" + workspace.getWorkspaceSettings().getModID() + "/textures/items");
 			case ARMOR -> new File(getResourceRoot(),
