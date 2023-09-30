@@ -1,11 +1,16 @@
 global_templates:
-  - template: elementinits/bannerpatterns.java.ftl
+  - template: bannerpattern/bannerpattern.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBannerPatterns.java"
+  - template: bannerpattern/bannerpattern_tag_provider.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBannerTagProvider.java"
 
 templates:
   - template: json/item.json.ftl
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/bannerpattern_item_tag.json.ftl
+    name: "@RESROOT/data/@modid/tags/banner_patterns/pattern_item/@registryname.json"
+    writer: json
 
 localizationkeys:
   - key: item.@modid.@registryname
