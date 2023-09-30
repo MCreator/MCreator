@@ -23,6 +23,8 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.datapack.blocks.MCItemBlock;
 import net.mcreator.blockly.java.BlocklyToJava;
+import net.mcreator.blockly.java.blocks.JavaCodeOutputBlock;
+import net.mcreator.blockly.java.blocks.JavaCodeProceduralBlock;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -51,6 +53,8 @@ public class BlocklyToFeature extends BlocklyToJava {
 
 	@Override protected void preInitialization() {
 		blockGenerators.add(new MCItemBlock());
+		blockGenerators.add(new JavaCodeOutputBlock());
+		blockGenerators.add(new JavaCodeProceduralBlock());
 
 		featureConfigurationCode = new StringBuilder();
 		featureType = "";
