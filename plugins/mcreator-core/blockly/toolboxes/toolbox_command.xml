@@ -24,4 +24,8 @@
         <block type="old_command"/>
         <custom-actions/>
     </category>
+    <category name="${t:blockly.category.advanced}" colour="250">
+        <block type="java_code"/>
+        <custom-aiadvanced/>
+    </category>
 </xml>
