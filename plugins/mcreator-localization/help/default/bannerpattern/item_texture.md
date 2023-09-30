@@ -1,0 +1,1 @@
+The pattern's item texture that will be found in the inventory.
