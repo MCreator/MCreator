@@ -43,7 +43,7 @@ public class JModelLayerList extends JSimpleEntriesList<JModelLayerListEntry, Li
 						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
 	}
 
-	@Override protected JModelLayerListEntry newEntry(JPanel parent, List<JModelLayerListEntry> entryList) {
+	@Override protected JModelLayerListEntry newEntry(JPanel parent, List<JModelLayerListEntry> entryList, boolean userAction) {
 		return new JModelLayerListEntry(mcreator, gui, parent, entryList);
 	}
 
