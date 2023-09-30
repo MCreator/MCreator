@@ -34,6 +34,7 @@ particle_textures_dir: "@MODASSETSROOT/textures/particle"
 screen_textures_dir: "@MODASSETSROOT/textures/screens"
 armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
+banner_textures_dir: "@MODASSETSROOT/textures/entity"
 
 base_templates:
   - template: modbase/mod.java.ftl
@@ -67,6 +68,10 @@ base_templates:
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
+  - template: modbase/datagenerator.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModNameDataGenerator.java"
+    condition_any:
+      - ${w.hasElementsOfType('bannerpattern')}
 
 sources_setup_tasks:
   - task: copy_models
