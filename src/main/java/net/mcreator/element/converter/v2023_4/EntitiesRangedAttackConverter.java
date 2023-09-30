@@ -37,6 +37,6 @@ public class EntitiesRangedAttackConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 51;
+		return 52;
 	}
 }

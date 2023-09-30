@@ -97,6 +97,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
 
 	private ProcedureSelector onRangedItemUsed;
+	private ProcedureSelector useCondition;
 
 	private final DataListComboBox projectile = new DataListComboBox(mcreator);
 

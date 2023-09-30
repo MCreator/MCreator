@@ -28,6 +28,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.Item;
@@ -139,11 +140,16 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 				item.animation = rangedItem.get("animation").getAsString();
 			else
 				item.animation = "bow";
-			item.hasGlow = rangedItem.get("hasGlow").getAsBoolean();
 
-			if (rangedItem.get("glowCondition") != null)
-				item.glowCondition = new Procedure(
-						rangedItem.get("glowCondition").getAsJsonObject().get("name").getAsString());
+			if (rangedItem.has("glowCondition"))
+				item.glowCondition = new LogicProcedure(rangedItem.get("glowCondition").getAsJsonObject().get("name").getAsString(),
+						rangedItem.get("hasGlow").getAsBoolean());
+			else if (rangedItem.has("hasGlow"))
+				item.glowCondition = new LogicProcedure(null, rangedItem.get("hasGlow").getAsBoolean());
+			else if (rangedItem.has("glowCondition")) {
+				JsonObject rangedGlow = rangedItem.getAsJsonObject("glowCondition");
+				item.glowCondition = new LogicProcedure(rangedGlow.get("name").getAsString(), rangedGlow.get("fixedValue").getAsBoolean());
+			}
 
 			if (rangedItem.get("onEntitySwing") != null)
 				item.onEntitySwing = new Procedure(
@@ -170,7 +176,7 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 51;
+		return 52;
 	}
 
 }
