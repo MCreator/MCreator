@@ -6,8 +6,9 @@
       "check": "Entity"
     },
     {
-      "type": "input_dummy",
-      "name": "customEntityField"
+      "type": "field_data_list_selector",
+      "name": "customEntity",
+      "datalist": "customEntity"
     },
     {
       "type": "input_dummy",

@@ -107,40 +107,25 @@ function appendDropDownWithMessage(messageKey, listType, fieldName) {
     };
 }
 
-// Helper function to use in Blockly extensions that register one dropdown to update contents of another
-// The block may define inputs called "<sourceName>Field" and "<targetName>Field" to customize fields' positions
-// Note that the source dropdown must be inserted before the target dropdown for their values to be loaded properly
-function appendAutoReloadingDropDown(sourceName, sourceList, targetName, targetList) {
+// Helper function to use in Blockly extensions that register one data list selector field to update contents of another
+// The block may define input called "<targetName>Field" to customize field's position
+// Note that the source field must be inserted before the target field for their values to be loaded properly
+function appendAutoReloadingDataListField(sourceName, targetName, targetList) {
     return function () {
-        const source = new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(javabridge.getListOf(sourceList)));
-        (this.getInput(sourceName + 'Field') || this.appendDummyInput()).appendField(source, sourceName);
-        const targetData = function () {
-            return javabridge.getListOfFrom(targetList, this.getValue());
-        };
-        const dummy = (this.getInput(targetName + 'Field') || this.appendDummyInput());
-        dummy.appendField(new Blockly.FieldDropdown(arrayToBlocklyDropDownArray(targetData.call(source))), targetName);
-        const sourceLoadState = source.loadState; // without this override field tries to parse field value
-        source.loadState = function (state) { // using textToDom method which then fails as its argument is not xml text
-            sourceLoadState.call(this, state);
-        };
-        const sourceFromXml = source.fromXml;
-        source.fromXml = function (fieldElement) {
-            sourceFromXml.call(this, fieldElement);
-            if (this.getValue()) {
-                dummy.removeField(targetName);
-                dummy.appendField(new Blockly.FieldDropdown(
-                    arrayToBlocklyDropDownArray(targetData.call(this))), targetName);
+        const thisBlock = this;
+        (this.getInput(targetName + 'Field') || this.appendDummyInput()).appendField(
+            new FieldDataListSelector(targetList, undefined, {
+                'customEntryProviders': function () {
+                    return thisBlock.getFieldValue(sourceName);
+                }
+            }), targetName);
+        this.setOnChange(function (changeEvent) {
+            if (changeEvent.type === Blockly.Events.BLOCK_CHANGE &&
+                changeEvent.element === 'field' &&
+                changeEvent.name === sourceName) {
+                this.setFieldValue('', targetName);
             }
-        };
-        const sourceOnItemSelected = source.onItemSelected_;
-        source.onItemSelected_ = function (menu, menuItem) {
-            sourceOnItemSelected.call(this, menu, menuItem);
-            if (this.getValue()) {
-                dummy.removeField(targetName);
-                dummy.appendField(new Blockly.FieldDropdown(
-                    arrayToBlocklyDropDownArray(targetData.call(this))), targetName);
-            }
-        };
+        });
     };
 }
 

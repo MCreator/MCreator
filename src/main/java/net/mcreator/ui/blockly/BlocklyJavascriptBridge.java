@@ -139,6 +139,16 @@ public class BlocklyJavascriptBridge {
 			case "spawnableEntity" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "entity");
+			case "customEntity" -> openDataListEntrySelector(ElementUtil::loadCustomEntities, "entity");
+			case "entitydata_logic" -> openStringEntrySelector(
+					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders, "Boolean")
+							.toArray(String[]::new), "entity");
+			case "entitydata_number" -> openStringEntrySelector(
+					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders, "Integer")
+							.toArray(String[]::new), "entity");
+			case "entitydata_string" -> openStringEntrySelector(
+					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders, "String")
+							.toArray(String[]::new), "entity");
 			case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUI(w).toArray(String[]::new), "gui");
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
@@ -288,18 +298,10 @@ public class BlocklyJavascriptBridge {
 	}
 
 	@SuppressWarnings("unused") public String[] getListOf(String type) {
-		return getListOfForWorkspace(mcreator.getWorkspace(), type, null);
-	}
-
-	@SuppressWarnings("unused") public String[] getListOfFrom(String type, String source) {
-		return getListOfForWorkspace(mcreator.getWorkspace(), type, source);
+		return getListOfForWorkspace(mcreator.getWorkspace(), type);
 	}
 
 	@SuppressWarnings("unused") public static String[] getListOfForWorkspace(Workspace workspace, String type) {
-		return getListOfForWorkspace(workspace, type, null);
-	}
-
-	@SuppressWarnings("unused") public static String[] getListOfForWorkspace(Workspace workspace, String type, String source) {
 		List<String> retval;
 		//We check for general cases
 		switch (type) {
@@ -312,18 +314,6 @@ public class BlocklyJavascriptBridge {
 		case "spawnableEntity":
 			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
-		case "customentity":
-			return ElementUtil.loadCustomEntities(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "entitydata_logic":
-			retval = ElementUtil.loadEntityDataListFromCustomEntity(workspace, source, "Boolean");
-			break;
-		case "entitydata_number":
-			retval = ElementUtil.loadEntityDataListFromCustomEntity(workspace, source, "Integer");
-			break;
-		case "entitydata_string":
-			retval = ElementUtil.loadEntityDataListFromCustomEntity(workspace, source, "String");
-			break;
 		case "gui":
 			retval = ElementUtil.loadBasicGUI(workspace);
 			break;
