@@ -11,23 +11,9 @@ class FieldDataListDropdown extends Blockly.FieldDropdown {
         this.maxDisplayLength = 75;
     };
 
-    // Configure the field given a map of settings
     // Create the field from the json definition
     static fromJson(options) {
         return new this(Blockly.utils.parsing.replaceMessageReferences(options['datalist']), undefined, options);
-    };
-
-    // Update the value of this selector
-    doValueUpdate_(newValue) {
-        if (newValue !== this.value_) { // If the value is different, update the readable name
-            this.readableName = javabridge.getReadableNameOf(newValue, this.type) || newValue;
-        }
-        super.doValueUpdate_(newValue);
-    };
-
-    // Get the text that is shown in the Blockly editor
-    getText_() {
-        return this.readableName;
     };
 }
 

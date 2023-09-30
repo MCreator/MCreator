@@ -394,7 +394,9 @@ public class BlocklyJavascriptBridge {
 		case "entity", "spawnableEntity" -> datalist = "entities";
 		case "biome" -> datalist = "biomes";
 		case "arrowProjectile", "projectiles" -> datalist = "projectiles";
-		default -> datalist = type;
+		default -> {
+			return "";
+		}
 		}
 		return DataListLoader.loadDataMap(datalist).containsKey(value) ?
 				DataListLoader.loadDataMap(datalist).get(value).getReadableName() :
