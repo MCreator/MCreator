@@ -141,14 +141,17 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			else
 				item.animation = "bow";
 
-			if (rangedItem.has("glowCondition"))
-				item.glowCondition = new LogicProcedure(rangedItem.get("glowCondition").getAsJsonObject().get("name").getAsString(),
-						rangedItem.get("hasGlow").getAsBoolean());
-			else if (rangedItem.has("hasGlow"))
-				item.glowCondition = new LogicProcedure(null, rangedItem.get("hasGlow").getAsBoolean());
-			else if (rangedItem.has("glowCondition")) {
+			if (rangedItem.has("glowCondition")) {
 				JsonObject rangedGlow = rangedItem.getAsJsonObject("glowCondition");
-				item.glowCondition = new LogicProcedure(rangedGlow.get("name").getAsString(), rangedGlow.get("fixedValue").getAsBoolean());
+				if (rangedGlow.has("hasGlow")) // Old converter is applied here
+					item.glowCondition = new LogicProcedure(
+							rangedItem.get("glowCondition").getAsJsonObject().get("name").getAsString(),
+							rangedItem.get("hasGlow").getAsBoolean());
+				else // Converter for mod elements that already had the converter above
+					item.glowCondition = new LogicProcedure(rangedGlow.get("name").getAsString(),
+							rangedGlow.get("fixedValue").getAsBoolean());
+			} else if (rangedItem.has("hasGlow")) {
+				item.glowCondition = new LogicProcedure(null, rangedItem.get("hasGlow").getAsBoolean());
 			}
 
 			if (rangedItem.get("onEntitySwing") != null)
