@@ -157,7 +157,9 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.ITEM, List.of(
 			new ItemDispenseBehaviorToItemExtensionConverter(),
-			new SpecialInformationConverter()
+			new SpecialInformationConverter(),
+			new ItemDispenseBehaviorToItemExtensionConverter(),
+			new ItemHasGlowConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
 			new HugeFungusFeatureConverter(),
@@ -167,10 +169,12 @@ public class ConverterRegistry {
 			new StructureDimensionRestrictionConverter()
 		));
 		put(ModElementType.MUSICDISC, List.of(
-			new SpecialInformationConverter()
+			new SpecialInformationConverter(),
+			new ItemHasGlowConverter()
 		));
 		put(ModElementType.TOOL, List.of(
-			new SpecialInformationConverter()
+			new SpecialInformationConverter(),
+			new ItemHasGlowConverter()
 		));
 	}};
 	//@formatter:on

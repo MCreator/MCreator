@@ -27,7 +27,6 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.TechnicalButton;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
-import net.mcreator.ui.component.entries.JSimpleListEntry;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.resources.Model;
@@ -76,7 +75,7 @@ public class JBoundingBoxList extends JSimpleEntriesList<JBoundingBoxEntry, IBlo
 	}
 
 	@Override
-	protected JBoundingBoxEntry newEntry(JPanel parent, List<JBoundingBoxEntry> entryList) {
+	protected JBoundingBoxEntry newEntry(JPanel parent, List<JBoundingBoxEntry> entryList, boolean userAction) {
 		return new JBoundingBoxEntry(parent, entryList);
 	}
 

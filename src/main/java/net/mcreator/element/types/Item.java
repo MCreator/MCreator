@@ -23,6 +23,7 @@ import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
@@ -74,8 +75,7 @@ import java.util.*;
 	public double damageVsEntity;
 
 	public StringListProcedure specialInformation;
-	public boolean hasGlow;
-	public Procedure glowCondition;
+	public LogicProcedure glowCondition;
 
 	@Nullable public String guiBoundTo;
 	public int inventorySize;

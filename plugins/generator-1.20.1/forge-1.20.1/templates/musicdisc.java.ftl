@@ -46,14 +46,6 @@ public class ${name}Item extends RecordItem {
 		);
 	}
 
-	<#if data.hasGlow>
-	@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
-		return true;
-	}
-	</#if>
-
-	<@addSpecialInformation data.specialInformation/>
-
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
 	<@onItemUsedOnBlock data.onRightClickedOnBlock/>
@@ -65,5 +57,8 @@ public class ${name}Item extends RecordItem {
 	<@onCrafted data.onCrafted/>
 
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
+
+	<@hasGlow data.glowCondition/>
+
 }
 <#-- @formatter:on -->
