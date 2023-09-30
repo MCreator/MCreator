@@ -37,10 +37,10 @@ public class JModelLayerList extends JSimpleEntriesList<JModelLayerListEntry, Li
 
 		add.setText(L10N.t("elementgui.living_entity.add_model_layer"));
 
-		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.living_entity.model_layers"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
 	}
 
 	@Override protected JModelLayerListEntry newEntry(JPanel parent, List<JModelLayerListEntry> entryList) {
