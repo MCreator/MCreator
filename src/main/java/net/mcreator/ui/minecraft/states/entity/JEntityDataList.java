@@ -53,7 +53,7 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Defaul
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
 
-	@Override protected JEntityDataEntry newEntry(JPanel parent, List<JEntityDataEntry> entryList) {
+	@Override protected JEntityDataEntry newEntry(JPanel parent, List<JEntityDataEntry> entryList, boolean userAction) {
 		if (userAction) {
 			AtomicReference<JEntityDataEntry> entry = new AtomicReference<>();
 
@@ -95,6 +95,7 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Defaul
 			dialog.setSize(360, 180);
 			dialog.setLocationRelativeTo(mcreator);
 			dialog.setVisible(true);
+
 			return entry.get();
 		}
 
