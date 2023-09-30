@@ -16,6 +16,12 @@ templates:
       - "renderType #= 0"
       - "hasToolModel()"
     name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/rangeditem.json.ftl
+    writer: json
+    condition:
+      - "renderType #= 0"
+      - "hasRangedItemModel()"
+    name: "@MODASSETSROOT/models/item/@registryname.json"
   - template: json/item_cmodel.json.ftl
     writer: json
     condition: "renderType #= 1"
@@ -23,10 +29,6 @@ templates:
   - template: json/item_cmodel_obj.json.ftl
     writer: json
     condition: "renderType #= 2"
-    name: "@MODASSETSROOT/models/item/@registryname.json"
-  - template: json/rangeditem.json.ftl
-    writer: json
-    condition: "renderType #= 3"
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
 list_templates:
