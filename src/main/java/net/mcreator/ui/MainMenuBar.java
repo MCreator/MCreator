@@ -234,7 +234,7 @@ public class MainMenuBar extends JMenuBar {
 
 		JMenu help = L10N.menu("menubar.help");
 		addHelpSearch(help);
-		if (System.getProperty("apple.laf.useScreenMenuBar").equals("true") && (OS.getOS() == OS.MAC)) {
+		if ("true".equals(System.getProperty("apple.laf.useScreenMenuBar")) && (OS.getOS() == OS.MAC)) {
 			help.add(mcreator.actionRegistry.mcreatorWebsite);
 			help.add(mcreator.actionRegistry.mcreatorCommunity);
 			help.add(mcreator.actionRegistry.mcreatorPublish);
