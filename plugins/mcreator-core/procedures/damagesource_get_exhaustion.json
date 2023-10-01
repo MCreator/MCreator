@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "damagesource",
+      "check": "DamageSource"
+    }
+  ],
+  "output": "Number",
+  "colour": "%{BKY_MATH_HUE}",
+  "mcreator": {
+    "toolbox_id": "damagesources",
+    "toolbox_init": [
+      "<value name=\"damagesource\"><block type=\"damagesource_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "damagesource"
+    ]
+  }
+}
