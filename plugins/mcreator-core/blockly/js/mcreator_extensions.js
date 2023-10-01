@@ -42,9 +42,7 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
         this.setOnChange(function (changeEvent) {
             // Trigger the change only if a block is changed, moved, deleted or created
             if ((changeEvent.type !== Blockly.Events.BLOCK_CHANGE ||
-                changeEvent.element !== 'field' ||
-                changeEvent.name !== 'procedure') &&
-                changeEvent.type !== Blockly.Events.BLOCK_DELETE &&
+                changeEvent.element !== 'field') &&
                 changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
                 return;
             }
