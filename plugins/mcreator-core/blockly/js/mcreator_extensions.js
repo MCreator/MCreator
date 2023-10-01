@@ -41,8 +41,9 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
     function () {
         this.setOnChange(function (changeEvent) {
             // Trigger the change only if a block is changed, moved, deleted or created
-            if (changeEvent.type !== Blockly.Events.BLOCK_CHANGE &&
-                changeEvent.type !== Blockly.Events.BLOCK_MOVE &&
+            if ((changeEvent.type !== Blockly.Events.BLOCK_CHANGE ||
+                changeEvent.element !== 'field' ||
+                changeEvent.name !== 'procedure') &&
                 changeEvent.type !== Blockly.Events.BLOCK_DELETE &&
                 changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
                 return;
@@ -67,7 +68,13 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
                 // Fire change event if block existed earlier and previous input type was different
                 if (changeEvent.type === Blockly.Events.BLOCK_CHANGE &&
                     JSON.stringify(prevType) !== JSON.stringify(newType)) {
-                    Blockly.Events.fire(new InputCheckChange(this, 'arg' + i, prevType, newType));
+                    const inputCheckChange = new Blockly.Events.BlockChange(this, null, 'arg' + i, prevType, newType);
+                    inputCheckChange.run = function (forward) {
+                        const block = this.blockId && this.getEventWorkspace_().getBlockById(this.blockId);
+                        if (block)
+                            block.getInput(this.name).setCheck(forward ? this.newValue : this.oldValue);
+                    };
+                    Blockly.Events.fire(inputCheckChange);
                 }
             }
             // Fire change event if block existed earlier and previous input type was different
