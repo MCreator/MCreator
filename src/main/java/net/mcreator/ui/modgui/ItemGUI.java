@@ -444,12 +444,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		JPanel rangedTriggers = new JPanel(new GridLayout(1, 2, 10, 10));
 		rangedTriggers.setOpaque(false);
-		rangedTriggers.add(onRangedItemUsed);
 		rangedTriggers.add(useCondition);
-		rangedTriggers.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.item.ranged_events"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+		rangedTriggers.add(onRangedItemUsed);
 
 		rangedPanel.setOpaque(false);
 		rangedPanel.add("Center", PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers));
@@ -505,19 +501,26 @@ public class ItemGUI extends ModElementGUI<Item> {
 			projectile.setEnabled(true);
 			onRangedItemUsed.setEnabled(true);
 			useCondition.setEnabled(true);
-			if ((int) useDuration.getValue() == 0)
-				useDuration.setValue(72000);
-			if (renderType.getSelectedItem() == normal)
-				renderType.setSelectedItem(rangedItem);
+			if (!isEditingMode()) {
+				if ((int) useDuration.getValue() == 0)
+					useDuration.setValue(72000);
+				if (renderType.getSelectedItem() == normal)
+					renderType.setSelectedItem(rangedItem);
+				if ("none".equals(animation.getSelectedItem()))
+					animation.setSelectedItem("bow");
+			}
 		} else {
 			shootConstantly.setEnabled(false);
 			projectile.setEnabled(false);
 			onRangedItemUsed.setEnabled(false);
 			useCondition.setEnabled(false);
-			if ((int) useDuration.getValue() == 72000)
-				useDuration.setValue(0);
-			if (renderType.getSelectedItem() == rangedItem)
-				renderType.setSelectedItem(normal);
+			if (!isEditingMode()) {
+				if ((int) useDuration.getValue() == 72000)
+					useDuration.setValue(0);
+				if (renderType.getSelectedItem() == rangedItem)
+					renderType.setSelectedItem(normal);
+				animation.setSelectedItem("none");
+			}
 		}
 	}
 
