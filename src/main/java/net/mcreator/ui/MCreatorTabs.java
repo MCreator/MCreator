@@ -458,6 +458,10 @@ public class MCreatorTabs {
 			return content;
 		}
 
+		public TabClosedListener getTabClosedListener() {
+			return tabClosedListener;
+		}
+
 		@Override public boolean equals(Object o) {
 			if (o instanceof Tab)
 				return ((Tab) o).identifier.equals(identifier);
