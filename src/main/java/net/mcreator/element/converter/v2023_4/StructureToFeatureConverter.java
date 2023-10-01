@@ -161,6 +161,12 @@ public class StructureToFeatureConverter implements IConverter {
 		StringBuilder xml = new StringBuilder();
 		int blocksToClose = 0;
 
+		xml.append("""
+				<block type="placement_rarity">
+					<field name="rarity">%d</field>
+					<next>""".formatted((int) Math.round(1000000 / (double) spawnProbability)));
+		blocksToClose++;
+
 		if (minCountPerChunk != 1 || maxCountPerChunk != 1) {
 			xml.append("""
 					<block type="placement_count">
@@ -173,12 +179,6 @@ public class StructureToFeatureConverter implements IConverter {
 						<next>""".formatted(minCountPerChunk, maxCountPerChunk));
 			blocksToClose++;
 		}
-
-		xml.append("""
-				<block type="placement_rarity">
-					<field name="rarity">%d</field>
-					<next>""".formatted((int) Math.round(1000000 / (double) spawnProbability)));
-		blocksToClose++;
 
 		xml.append("<block type=\"placement_in_square\"><next>");
 		blocksToClose++;
