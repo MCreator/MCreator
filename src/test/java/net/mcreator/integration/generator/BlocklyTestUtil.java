@@ -28,7 +28,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
-import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -123,40 +122,6 @@ public class BlocklyTestUtil {
 						if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
 							processed += appendFieldXML(workspace, random, additionalXML, arg, field);
 							break;
-						}
-					}
-				}
-			}
-
-			if (toolboxBlock.getBlocklyJSON().get("extensions") != null) {
-				JsonArray extensions = toolboxBlock.getBlocklyJSON().get("extensions").getAsJsonArray();
-				for (int i = 0; i < extensions.size(); i++) {
-					String extension = extensions.get(i).getAsString();
-					String suggestedFieldName = extension.replace("_list_provider", "");
-					String suggestedDataListName = suggestedFieldName;
-
-					if (suggestedDataListName.equals("sound_category")) {
-						suggestedDataListName = "soundcategories";
-						suggestedFieldName = "soundcategory";
-					} else if (suggestedDataListName.equals("plant_type")) {
-						suggestedDataListName = "planttype";
-						suggestedFieldName = "planttype";
-					} else if ("arg_procedure".equals(extension)) {
-						suggestedFieldName = "procedure";
-					}
-
-					if (toolboxBlock.getFields().contains(suggestedFieldName)) {
-						String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
-								suggestedDataListName);
-
-						if (values.length == 0 || values[0].isEmpty())
-							values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
-									suggestedDataListName + "s");
-
-						if (values.length > 0 && !values[0].isEmpty()) {
-							additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
-									.append(ListUtils.getRandomItem(random, values)).append("</field>");
-							processed++;
 						}
 					}
 				}
@@ -269,6 +234,8 @@ public class BlocklyTestUtil {
 					.toArray(String[]::new);
 		case "gui":
 			return ElementUtil.loadBasicGUI(workspace).toArray(String[]::new);
+		case "direction":
+			return ElementUtil.loadDirections();
 		case "biome":
 			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "dimension":
