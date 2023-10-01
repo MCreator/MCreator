@@ -54,12 +54,19 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 	}
 
 	@Override protected List<MItemBlock> getTagsToAdd() {
-		List<MItemBlock> tags = new ArrayList<>();
+		String tagType = "Blocks";
+		List<MCItem> items = supplier.provide(mcreator.getWorkspace());
+		for (MCItem item : items) {
+			if (item.getType().equals("item")) {
+				tagType = "Items";
+				break;
+			}
+		}
 
-		String tag = AddTagDialog.openAddTagDialog(mcreator, "tag", "category/tag");
+		List<MItemBlock> tags = new ArrayList<>();
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, tagType, "tag", "category/tag");
 		if (tag != null)
 			tags.add(new MItemBlock(mcreator.getWorkspace(), "TAG:" + tag));
-
 		return tags;
 	}
 

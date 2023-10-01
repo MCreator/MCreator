@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
@@ -42,7 +43,7 @@ public class MusicDisc extends GeneratableElement implements IItem, IItemWithTex
 	public String description;
 	public TabEntry creativeTab;
 	public StringListProcedure specialInformation;
-	public boolean hasGlow;
+	public LogicProcedure glowCondition;
 
 	public Sound music;
 	public int lengthInTicks;

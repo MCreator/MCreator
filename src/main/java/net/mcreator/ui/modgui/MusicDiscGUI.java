@@ -36,6 +36,7 @@ import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -65,7 +66,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 	private final JSpinner lengthInTicks = new JSpinner(new SpinnerNumberModel(100, 0, 20 * 3600, 1));
 	private final JSpinner analogOutput = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
-	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
+	private LogicProcedureSelector glowCondition;
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
@@ -115,17 +116,21 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 
+		glowCondition = new LogicProcedureSelector(this.withEntry("item/glowing_effect"), mcreator,
+				L10N.t("elementgui.item.glowing_effect"), ProcedureSelector.Side.CLIENT,
+				L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 
 		texture.setOpaque(false);
-		hasGlow.setOpaque(false);
 
 		JPanel pane3 = new JPanel(new BorderLayout());
 
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel subpane2 = new JPanel(new GridLayout(7, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(6, 2, 45, 2));
 		subpane2.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -138,6 +143,10 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.common.name_in_gui")));
 		subpane2.add(name);
 
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/description"),
+				L10N.label("elementgui.music_disc.disc_description")));
+		subpane2.add(description);
+
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/length"),
 				L10N.label("elementgui.music_disc.disc_length")));
 		subpane2.add(lengthInTicks);
@@ -146,35 +155,27 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.music_disc.disc_analog_output")));
 		subpane2.add(analogOutput);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/description"),
-				L10N.label("elementgui.music_disc.disc_description")));
-		subpane2.add(description);
-
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.common.creative_tab")));
 		subpane2.add(creativeTab);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-				L10N.label("elementgui.music_disc.has_glowing_effect")));
-		subpane2.add(hasGlow);
-
-		JPanel subpane3 = new JPanel(new BorderLayout(5, 2));
+		JPanel subpane3 = new JPanel(new BorderLayout(0, 2));
 		subpane3.setOpaque(false);
-		subpane3.add("Center", subpane2);
-		subpane3.add("South", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), specialInformation));
+		subpane3.add("North", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), glowCondition, 0, 0));
+		subpane3.add("Center", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), specialInformation, 0, 0));
 
 		JPanel destal3 = new JPanel(new BorderLayout(15, 15));
 		destal3.setOpaque(false);
 		destal3.add("West", PanelUtils.totalCenterInPanel(
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.music_disc.disc_texture"))));
 
-		pane3.add(PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(destal3), subpane3, 40, 40)));
+		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(PanelUtils.centerInPanel(destal3),
+				PanelUtils.centerAndSouthElement(subpane2, subpane3, 2, 2), 40, 40)));
 		pane3.setOpaque(false);
 
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		JPanel events = new JPanel(new GridLayout(3, 3, 10, 10));
+		JPanel events = new JPanel(new GridLayout(3, 3, 5, 5));
 		events.setOpaque(false);
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
@@ -224,6 +225,8 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onEntitySwing.refreshListKeepSelected();
 		specialInformation.refreshListKeepSelected();
 
+		glowCondition.refreshListKeepSelected();
+
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 	}
 
@@ -246,7 +249,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onEntitySwing.setSelectedProcedure(musicDisc.onEntitySwing);
 		specialInformation.setSelectedProcedure(musicDisc.specialInformation);
 		creativeTab.setSelectedItem(musicDisc.creativeTab);
-		hasGlow.setSelected(musicDisc.hasGlow);
+		glowCondition.setSelectedProcedure(musicDisc.glowCondition);
 		music.setSound(musicDisc.music);
 		lengthInTicks.setValue(musicDisc.lengthInTicks);
 		analogOutput.setValue(musicDisc.analogOutput);
@@ -257,7 +260,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		musicDisc.name = name.getText();
 		musicDisc.description = description.getText();
 		musicDisc.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
-		musicDisc.hasGlow = hasGlow.isSelected();
+		musicDisc.glowCondition = glowCondition.getSelectedProcedure();
 		musicDisc.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		musicDisc.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();
 		musicDisc.onCrafted = onCrafted.getSelectedProcedure();
