@@ -18,12 +18,14 @@
 
 package net.mcreator.minecraft;
 
-import com.esotericsoftware.yamlbeans.YamlException;
-import com.esotericsoftware.yamlbeans.YamlReader;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.util.YamlUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.api.LoadSettings;
+import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
 import java.io.IOException;
 import java.net.URL;
@@ -66,18 +68,17 @@ public class DataListLoader {
 			Collections.list(res).forEach(resource -> {
 				String config = FileIO.readResourceToString(resource);
 
-				YamlReader reader = new YamlReader(config);
 				try {
-					((List<?>) reader.read()).forEach(elementObj -> {
-						if (elementObj instanceof String) {
-							if (list.get().containsKey(elementObj))
-								LOG.warn("Duplicate datalist key: " + elementObj);
-							list.get().put((String) elementObj, new DataListEntry((String) elementObj));
+					((List<?>) new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(config)).forEach(elementObj -> {
+						if (elementObj instanceof String elementObjStr) {
+							if (list.get().containsKey(elementObjStr))
+								LOG.warn("Duplicate datalist key: " + elementObjStr);
+							list.get().put(elementObjStr, new DataListEntry(elementObjStr));
 						} else if (elementObj instanceof Map<?, ?> element) {
 							String elementName = null;
 							for (Map.Entry<?, ?> entry : element.entrySet())
 								if (entry.getValue() == null)
-									elementName = (String) entry.getKey();
+									elementName = entry.getKey().toString();
 
 							if (elementName != null) {
 								DataListEntry entry = new DataListEntry(elementName);
@@ -87,16 +88,15 @@ public class DataListLoader {
 								entry.setOther(element.get("other"));
 								entry.setTexture((String) element.get("texture"));
 
-								if (element.get("required_apis") instanceof List)
-									entry.setRequiredAPIs(
-											((List<?>) element.get("required_apis")).stream().map(Object::toString)
+								if (element.get("required_apis") instanceof List<?> requiredAPIs)
+									entry.setRequiredAPIs(requiredAPIs.stream().map(Object::toString)
 													.collect(Collectors.toList()));
 
 								if (listName.equals("blocksitems")) {
 									MCItem mcitem = new MCItem(entry);
-									if (element.get("subtypes") != null) {
+									if (element.get("subtypes") != null)
 										mcitem.setSubtypes(Boolean.parseBoolean((String) element.get("subtypes")));
-									}
+
 									if (list.get().containsKey(elementName))
 										LOG.warn("Duplicate datalist key: " + elementName);
 									list.get().put(elementName, mcitem);
@@ -108,8 +108,8 @@ public class DataListLoader {
 							}
 						}
 					});
-				} catch (YamlException e) {
-					LOG.error(e.getMessage(), e);
+				} catch (YamlEngineException e) {
+					LOG.error("Failed to parse datalist " + listName, e);
 				}
 			});
 		} catch (IOException e) {
