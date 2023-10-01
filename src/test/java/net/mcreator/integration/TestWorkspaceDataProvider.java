@@ -1644,13 +1644,19 @@ public class TestWorkspaceDataProvider {
 			modelLayer.model = "Default";
 			modelLayer.texture = "test.png";
 			modelLayer.glow = true;
-			modelLayer.condition = new Procedure("condition4");
+			modelLayer.condition = null;
 			livingEntity.modelLayers.add(modelLayer);
 			modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.model = "Default";
 			modelLayer.texture = "test.png";
 			modelLayer.glow = false;
 			modelLayer.condition = new Procedure("condition1");
+			livingEntity.modelLayers.add(modelLayer);
+			modelLayer = new LivingEntity.ModelLayerEntry();
+			modelLayer.model = "Default";
+			modelLayer.texture = "test.png";
+			modelLayer.glow = true;
+			modelLayer.condition = null;
 			livingEntity.modelLayers.add(modelLayer);
 		}
 		return livingEntity;
