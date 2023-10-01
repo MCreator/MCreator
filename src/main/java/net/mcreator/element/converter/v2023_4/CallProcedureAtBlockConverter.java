@@ -57,7 +57,7 @@ public class CallProcedureAtBlockConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 51;
+		return 53;
 	}
 
 	protected String fixXML(String xml) throws Exception {
