@@ -18,15 +18,17 @@
 
 package net.mcreator.minecraft.api;
 
-import com.esotericsoftware.yamlbeans.YamlException;
-import com.esotericsoftware.yamlbeans.YamlReader;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.YamlUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.api.LoadSettings;
+import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
 import java.io.File;
 import java.util.*;
@@ -41,19 +43,21 @@ public class ModAPIManager {
 
 	public static void initAPIs() {
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources("apis", Pattern.compile(".*\\.yaml"));
+
+		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
+
 		for (String apidefinition : fileNames) {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE, apidefinition);
-			YamlReader reader = new YamlReader(config);
 
 			// load generator configuration
 			try {
-				Map<?, ?> apiconfiguration = (Map<?, ?>) reader.read();
+				Map<?, ?> apiconfiguration = (Map<?, ?>) yamlLoad.loadFromString(config);
 
 				ModAPI modAPI = new ModAPI(FilenameUtilsPatched.getBaseName(apidefinition),
-						(String) apiconfiguration.get("name"), new HashMap<>());
+						apiconfiguration.get("name").toString(), new HashMap<>());
 
 				for (Object keyraw : apiconfiguration.keySet()) {
-					String key = (String) keyraw;
+					String key = keyraw.toString();
 					if (!key.equals("name")) {
 						Map<?, ?> impldef = (Map<?, ?>) apiconfiguration.get(keyraw);
 						String gradle = (String) impldef.get("gradle");
@@ -75,7 +79,7 @@ public class ModAPIManager {
 				modApiList.put(FilenameUtilsPatched.getBaseName(apidefinition), modAPI);
 
 				LOG.debug("Loaded mod API definition: " + FilenameUtilsPatched.getBaseName(apidefinition));
-			} catch (YamlException e) {
+			} catch (YamlEngineException e) {
 				LOG.error("Failed to load mod API definition: " + e.getMessage());
 			}
 		}

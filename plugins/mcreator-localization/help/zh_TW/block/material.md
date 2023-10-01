@@ -2,4 +2,4 @@
 
 如果你打算使用礦石方塊類型，選擇 ROCK 材料，以便套用收集等級。
 
-點擊[這裏](https://mcreator.net/wiki/materials)來閱讀更多有關材料的資料。
+點擊[此处](https://mcreator.net/wiki/materials)來閱讀更多有關材料的資料。
