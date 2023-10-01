@@ -744,8 +744,7 @@ public class CodeEditorView extends ViewBase {
 			SwingUtilities.invokeLater(() -> te.requestFocus());
 			try {
 				Thread.sleep(250);
-			} catch (InterruptedException e) {
-				LOG.error(e.getMessage(), e);
+			} catch (InterruptedException ignored) {
 			}
 			SwingUtilities.invokeLater(() -> {
 				try {

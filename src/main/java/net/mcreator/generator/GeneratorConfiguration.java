@@ -18,15 +18,16 @@
 
 package net.mcreator.generator;
 
-import com.esotericsoftware.yamlbeans.YamlException;
-import com.esotericsoftware.yamlbeans.YamlReader;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.mapping.MappingLoader;
 import net.mcreator.generator.template.TemplateGeneratorConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.util.YamlUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -62,14 +63,12 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		this.generatorName = generatorName;
 
 		String config = FileIO.readResourceToString(PluginLoader.INSTANCE, "/" + generatorName + "/generator.yaml");
-		YamlReader reader = new YamlReader(config);
 
 		// load generator configuration
 		try {
-			generatorConfig = (Map<?, ?>) reader.read();
-			generatorConfig = new ConcurrentHashMap<>(
-					generatorConfig); // make this map concurent, cache can be reused by multiple instances
-		} catch (YamlException e) {
+			generatorConfig = (Map<?, ?>) new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(config);
+			generatorConfig = new ConcurrentHashMap<>(generatorConfig); // make this map concurrent, cache can be reused by multiple instances
+		} catch (YamlEngineException e) {
 			LOG.fatal("[" + generatorName + "] Error: " + e.getMessage());
 		}
 
