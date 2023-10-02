@@ -170,6 +170,7 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			if (rangedItem.get("onRangedItemUsed") != null)
 				item.onRangedItemUsed = new Procedure(
 						rangedItem.get("onRangedItemUsed").getAsJsonObject().get("name").getAsString());
+			item.useDuration = 72000;
 
 			return item;
 		} catch (Exception e) {
