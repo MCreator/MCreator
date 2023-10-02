@@ -171,8 +171,9 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="JPotionListEntry.html" title="class in net.mcreator.ui.minecraft.potions">JPotionListEntry</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newEntry(javax.swing.JPanel,java.util.List)" class="member-name-link">newEntry</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a>&nbsp;parent,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="JPotionListEntry.html" title="class in net.mcreator.ui.minecraft.potions">JPotionListEntry</a>&gt;&nbsp;entryList)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#newEntry(javax.swing.JPanel,java.util.List,boolean)" class="member-name-link">newEntry</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a>&nbsp;parent,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="JPotionListEntry.html" title="class in net.mcreator.ui.minecraft.potions">JPotionListEntry</a>&gt;&nbsp;entryList,
+ boolean&nbsp;userAction)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
@@ -228,13 +229,20 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="newEntry(javax.swing.JPanel,java.util.List)">
+<section class="detail" id="newEntry(javax.swing.JPanel,java.util.List,boolean)">
 <h3>newEntry</h3>
 <div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="JPotionListEntry.html" title="class in net.mcreator.ui.minecraft.potions">JPotionListEntry</a></span>&nbsp;<span class="element-name">newEntry</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a>&nbsp;parent,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="JPotionListEntry.html" title="class in net.mcreator.ui.minecraft.potions">JPotionListEntry</a>&gt;&nbsp;entryList)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="JPotionListEntry.html" title="class in net.mcreator.ui.minecraft.potions">JPotionListEntry</a>&gt;&nbsp;entryList,
+ boolean&nbsp;userAction)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../../component/entries/JSimpleEntriesList.html#newEntry(javax.swing.JPanel,java.util.List)">newEntry</a></code>&nbsp;in class&nbsp;<code><a href="../../component/entries/JSimpleEntriesList.html" title="class in net.mcreator.ui.component.entries">JSimpleEntriesList</a>&lt;<a href="JPotionListEntry.html" title="class in net.mcreator.ui.minecraft.potions">JPotionListEntry</a>,<wbr><a href="../../../element/types/Potion.CustomEffectEntry.html" title="class in net.mcreator.element.types">Potion.CustomEffectEntry</a>&gt;</code></dd>
+<dd><code><a href="../../component/entries/JSimpleEntriesList.html#newEntry(javax.swing.JPanel,java.util.List,boolean)">newEntry</a></code>&nbsp;in class&nbsp;<code><a href="../../component/entries/JSimpleEntriesList.html" title="class in net.mcreator.ui.component.entries">JSimpleEntriesList</a>&lt;<a href="JPotionListEntry.html" title="class in net.mcreator.ui.minecraft.potions">JPotionListEntry</a>,<wbr><a href="../../../element/types/Potion.CustomEffectEntry.html" title="class in net.mcreator.element.types">Potion.CustomEffectEntry</a>&gt;</code></dd>
+<dt>Parameters:</dt>
+<dd><code>parent</code> - The container panel that displays all entries in this list.</dd>
+<dd><code>entryList</code> - The list to add the new entry to.</dd>
+<dd><code>userAction</code> - Whether this method was triggered by user action in UI.</dd>
+<dt>Returns:</dt>
+<dd>A new entry to be added to this list, <code>null</code> to cancel entry creation.</dd>
 </dl>
 </section>
 </li>

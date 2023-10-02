@@ -174,13 +174,16 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#entryAddedByUserHandler()" class="member-name-link">entryAddedByUserHandler</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Called after an entry created upon user action is successfully added to this list.</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="JSimpleEntriesList.html" title="type parameter in JSimpleEntriesList">U</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getEntries()" class="member-name-link">getEntries</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>protected abstract <a href="JSimpleEntriesList.html" title="type parameter in JSimpleEntriesList">T</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#newEntry(javax.swing.JPanel,java.util.List)" class="member-name-link">newEntry</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a>&nbsp;parent,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="JSimpleEntriesList.html" title="type parameter in JSimpleEntriesList">T</a>&gt;&nbsp;entryList)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#newEntry(javax.swing.JPanel,java.util.List,boolean)" class="member-name-link">newEntry</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a>&nbsp;parent,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="JSimpleEntriesList.html" title="type parameter in JSimpleEntriesList">T</a>&gt;&nbsp;entryList,
+ boolean&nbsp;userAction)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadDataLists()" class="member-name-link">reloadDataLists</a>()</code></div>
@@ -242,13 +245,23 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="entryAddedByUserHandler()">
 <h3>entryAddedByUserHandler</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">entryAddedByUserHandler</span>()</div>
+<div class="block">Called after an entry created upon user action is successfully added to this list.</div>
 </section>
 </li>
 <li>
-<section class="detail" id="newEntry(javax.swing.JPanel,java.util.List)">
+<section class="detail" id="newEntry(javax.swing.JPanel,java.util.List,boolean)">
 <h3>newEntry</h3>
 <div class="member-signature"><span class="modifiers">protected abstract</span>&nbsp;<span class="return-type"><a href="JSimpleEntriesList.html" title="type parameter in JSimpleEntriesList">T</a></span>&nbsp;<span class="element-name">newEntry</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a>&nbsp;parent,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="JSimpleEntriesList.html" title="type parameter in JSimpleEntriesList">T</a>&gt;&nbsp;entryList)</span></div>
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="JSimpleEntriesList.html" title="type parameter in JSimpleEntriesList">T</a>&gt;&nbsp;entryList,
+ boolean&nbsp;userAction)</span></div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>parent</code> - The container panel that displays all entries in this list.</dd>
+<dd><code>entryList</code> - The list to add the new entry to.</dd>
+<dd><code>userAction</code> - Whether this method was triggered by user action in UI.</dd>
+<dt>Returns:</dt>
+<dd>A new entry to be added to this list, <code>null</code> to cancel entry creation.</dd>
+</dl>
 </section>
 </li>
 <li>
