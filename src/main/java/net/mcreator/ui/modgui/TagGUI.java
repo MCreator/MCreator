@@ -46,7 +46,7 @@ import java.util.Objects;
 
 public class TagGUI extends ModElementGUI<Tag> {
 
-	private final VComboBox<String> namespace = new VComboBox<>(new String[] { "forge", "minecraft", "mod" });
+	private final VComboBox<String> namespace = new VComboBox<>(new String[] { "minecraft", "mod", "forge" });
 	private final JComboBox<String> type = new JComboBox<>(
 			new String[] { "Items", "Blocks", "Entities", "Biomes", "Functions" });
 
