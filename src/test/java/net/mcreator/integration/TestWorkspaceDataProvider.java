@@ -509,15 +509,17 @@ public class TestWorkspaceDataProvider {
 			ArrayList<GUIComponent> components = new ArrayList<>();
 
 			components.add(new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"),
-					Color.red, new Procedure("condition1")));
+					Color.red, new Procedure("condition1"), getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
-					Color.white, new Procedure("condition4"), getRandomItem(random, GUIComponent.AnchorPoint.values())));
+					Color.white, new Procedure("condition4"),
+					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 
-			components.add(new Image(20, 30, "pricture1", true, new Procedure("condition1")));
+			components.add(new Image(20, 30, "pricture1", true, new Procedure("condition1"),
+					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(new Image(22, 31, "pricture2", false, new Procedure("condition2"),
 					getRandomItem(random, GUIComponent.AnchorPoint.values())));
-			components.add(
-					new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false));
+			components.add(new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false,
+					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(
 					new EntityModel(60, 20, new Procedure("entity1"), new Procedure(!_true ? "condition4" : null), 30,
 							90, false, getRandomItem(random, GUIComponent.AnchorPoint.values())));
@@ -559,8 +561,8 @@ public class TestWorkspaceDataProvider {
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button1", 100, 200, _true, new Procedure("procedure10"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, !_true, null, null));
-				components.add(new Button("button3", 10, 10, "button3", 100, 200, _true,
-						null, new Procedure("condition3")));
+				components.add(
+						new Button("button3", 10, 10, "button3", 100, 200, _true, null, new Procedure("condition3")));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button4", 100, 200, !_true, new Procedure("procedure2"), new Procedure("condition4")));
 				components.add(
@@ -994,7 +996,8 @@ public class TestWorkspaceDataProvider {
 			rangedItem.texture = "test3";
 			rangedItem.renderType = 0;
 			rangedItem.customModelName = "Normal";
-			rangedItem.glowCondition = new LogicProcedure(emptyLists ? "condition4" : null, _true);;
+			rangedItem.glowCondition = new LogicProcedure(emptyLists ? "condition4" : null, _true);
+			;
 			rangedItem.enableMeleeDamage = !_true;
 			rangedItem.damageVsEntity = 2.16;
 			return rangedItem;
@@ -1660,7 +1663,8 @@ public class TestWorkspaceDataProvider {
 		tool.damageOnCrafting = emptyLists;
 		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
-		tool.glowCondition = new LogicProcedure(emptyLists ? "condition2" : null, _true);;
+		tool.glowCondition = new LogicProcedure(emptyLists ? "condition2" : null, _true);
+		;
 		tool.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 				Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 		if (!emptyLists) {
