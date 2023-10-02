@@ -86,8 +86,8 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text_color"), cola));
 
 		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
+		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
 		if (!editor.isNotOverlayType) {
-			anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
 			options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor"), anchor));
 		}
 
@@ -103,9 +103,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			labelText.setSelectedProcedure(label.text);
 			cola.setColor(label.color);
 			displayCondition.setSelectedProcedure(label.displayCondition);
-			if (!editor.isNotOverlayType) {
-				anchor.setSelectedItem(label.anchorPoint);
-			}
+			anchor.setSelectedItem(label.anchorPoint);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));

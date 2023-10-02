@@ -90,8 +90,8 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 		}
 
 		JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
+		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
 		if (!editor.isNotOverlayType) {
-			anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
 			opts.add(L10N.label("dialog.gui.anchor"));
 			opts.add(anchor);
 		}
@@ -109,9 +109,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 			scale.setValue(model.scale);
 			rotationX.setValue(model.rotationX);
 			followMouseMovement.setSelected(model.followMouseMovement);
-			if (!editor.isNotOverlayType) {
-				anchor.setSelectedItem(model.anchorPoint);
-			}
+			anchor.setSelectedItem(model.anchorPoint);
 		}
 
 		cancel.addActionListener(e -> setVisible(false));

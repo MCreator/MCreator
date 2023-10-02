@@ -59,8 +59,8 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 		options.add(PanelUtils.join(FlowLayout.LEFT, scale1x));
 
 		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
+		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
 		if (!editor.isNotOverlayType) {
-			anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
 			options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor"), anchor));
 		}
 
@@ -87,9 +87,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			textureSelector.setSelectedItem(image.image);
 			scale1x.setSelected(image.use1Xscale);
 			displayCondition.setSelectedProcedure(image.displayCondition);
-			if (!editor.isNotOverlayType) {
-				anchor.setSelectedItem(image.anchorPoint);
-			}
+			anchor.setSelectedItem(image.anchorPoint);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
