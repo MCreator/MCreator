@@ -35,7 +35,6 @@ import net.mcreator.element.types.Dimension;
 import net.mcreator.element.types.Enchantment;
 import net.mcreator.element.types.Fluid;
 import net.mcreator.element.types.*;
-import net.mcreator.element.types.interfaces.IAnchorableElement;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
@@ -512,16 +511,16 @@ public class TestWorkspaceDataProvider {
 			components.add(new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"),
 					Color.red, new Procedure("condition1")));
 			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
-					Color.white, new Procedure("condition4"), getRandomItem(random, IAnchorableElement.AnchorPoint.values())));
+					Color.white, new Procedure("condition4"), getRandomItem(random, GUIComponent.AnchorPoint.values())));
 
 			components.add(new Image(20, 30, "pricture1", true, new Procedure("condition1")));
 			components.add(new Image(22, 31, "pricture2", false, new Procedure("condition2"),
-					getRandomItem(random, IAnchorableElement.AnchorPoint.values())));
+					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(
 					new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false));
 			components.add(
 					new EntityModel(60, 20, new Procedure("entity1"), new Procedure(!_true ? "condition4" : null), 30,
-							90, false, getRandomItem(random, IAnchorableElement.AnchorPoint.values())));
+							90, false, getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
 			overlay.baseTexture = emptyLists ? "" : "test.png";

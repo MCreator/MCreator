@@ -19,7 +19,6 @@
 package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.IAnchorableElement;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -28,20 +27,18 @@ import net.mcreator.workspace.Workspace;
 import javax.swing.*;
 import java.awt.*;
 
-public class Image extends GUIComponent implements IAnchorableElement {
+public class Image extends GUIComponent {
 
 	public String image;
 	public boolean use1Xscale;
 
 	public Procedure displayCondition;
-	public AnchorPoint anchorPoint;
 
 	public Image(int x, int y, String image, boolean use1Xscale, Procedure displayCondition) {
 		super(x, y);
 		this.image = image;
 		this.use1Xscale = use1Xscale;
 		this.displayCondition = displayCondition;
-		this.anchorPoint = AnchorPoint.CENTER;
 	}
 
 	public Image(int x, int y, String image, boolean use1Xscale, Procedure displayCondition, AnchorPoint anchorPoint) {
@@ -90,11 +87,4 @@ public class Image extends GUIComponent implements IAnchorableElement {
 		g.drawImage(actualImage, cx, cy, cw, ch, wysiwygEditor);
 	}
 
-	@Override public AnchorPoint getAnchorPoint() {
-		return anchorPoint;
-	}
-
-	@Override public void setAnchorPoint(AnchorPoint anchorPoint) {
-		this.anchorPoint = anchorPoint;
-	}
 }

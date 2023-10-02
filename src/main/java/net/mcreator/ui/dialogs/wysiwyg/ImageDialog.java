@@ -19,8 +19,8 @@
 package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Image;
-import net.mcreator.element.types.interfaces.IAnchorableElement;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -58,9 +58,9 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 		JCheckBox scale1x = L10N.checkbox("dialog.gui.image_use_scale");
 		options.add(PanelUtils.join(FlowLayout.LEFT, scale1x));
 
-		final JComboBox<IAnchorableElement.AnchorPoint> anchor = new JComboBox<>(IAnchorableElement.AnchorPoint.values());
+		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
 		if (!editor.isNotOverlayType) {
-			anchor.setSelectedItem(IAnchorableElement.AnchorPoint.CENTER);
+			anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
 			options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor"), anchor));
 		}
 
@@ -88,7 +88,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			scale1x.setSelected(image.use1Xscale);
 			displayCondition.setSelectedProcedure(image.displayCondition);
 			if (!editor.isNotOverlayType) {
-				anchor.setSelectedItem(image.getAnchorPoint());
+				anchor.setSelectedItem(image.anchorPoint);
 			}
 		}
 
@@ -104,7 +104,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 							displayCondition.getSelectedProcedure());
 					} else {
 						component = new Image(0, 0, imageTxt, scale1x.isSelected(),
-							displayCondition.getSelectedProcedure(), (IAnchorableElement.AnchorPoint) anchor.getSelectedItem());
+							displayCondition.getSelectedProcedure(), (GUIComponent.AnchorPoint) anchor.getSelectedItem());
 					}
 
 					setEditingComponent(component);
@@ -120,7 +120,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 							displayCondition.getSelectedProcedure());
 					} else {
 						labelNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
-							displayCondition.getSelectedProcedure(), (IAnchorableElement.AnchorPoint) anchor.getSelectedItem());
+							displayCondition.getSelectedProcedure(), (GUIComponent.AnchorPoint) anchor.getSelectedItem());
 					}
 					editor.components.add(idx, labelNew);
 					setEditingComponent(labelNew);

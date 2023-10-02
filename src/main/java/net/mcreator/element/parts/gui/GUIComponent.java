@@ -21,10 +21,12 @@ package net.mcreator.element.parts.gui;
 import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
 
 @JsonAdapter(GUIComponent.GSONAdapter.class) public abstract class GUIComponent implements Comparable<GUIComponent> {
 
+	@Nullable public AnchorPoint anchorPoint;
 	public int x;
 	public int y;
 
@@ -179,6 +182,23 @@ import java.util.stream.Collectors;
 		@Override public int getWeight() {
 			return 0;
 		}
+	}
+
+	public enum AnchorPoint {
+		TOP_LEFT("top_left"), TOP_CENTER("top_center"), TOP_RIGHT("top_right"), CENTER_LEFT("center_left"), CENTER(
+				"center"), CENTER_RIGHT("center_right"), BOTTOM_LEFT("bottom_left"), BOTTOM_CENTER(
+				"bottom_center"), BOTTOM_RIGHT("bottom_right");
+
+		private final String id;
+
+		AnchorPoint(String id) {
+			this.id = id;
+		}
+
+		@Override public String toString() {
+			return L10N.t("dialog.gui.anchor." + id);
+		}
+
 	}
 
 }

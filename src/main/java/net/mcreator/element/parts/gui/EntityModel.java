@@ -20,7 +20,6 @@
 package net.mcreator.element.parts.gui;
 
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.IAnchorableElement;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
@@ -30,7 +29,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import java.awt.*;
 import java.util.Objects;
 
-public class EntityModel extends GUIComponent implements IAnchorableElement {
+public class EntityModel extends GUIComponent {
 
 	public Procedure entityModel;
 	public Procedure displayCondition;
@@ -39,7 +38,6 @@ public class EntityModel extends GUIComponent implements IAnchorableElement {
 	public int rotationX;
 
 	public boolean followMouseMovement;
-	public AnchorPoint anchorPoint;
 
 	public EntityModel(int x, int y, Procedure entityModel, Procedure displayCondition, int scale, int rotationX,
 			boolean followMouseMovement) {
@@ -49,7 +47,6 @@ public class EntityModel extends GUIComponent implements IAnchorableElement {
 		this.scale = scale;
 		this.rotationX = rotationX;
 		this.followMouseMovement = followMouseMovement;
-		this.anchorPoint = AnchorPoint.CENTER;
 	}
 
 	public EntityModel(int x, int y, Procedure entityModel, Procedure displayCondition, int scale, int rotationX,
@@ -93,11 +90,4 @@ public class EntityModel extends GUIComponent implements IAnchorableElement {
 		return -10;
 	}
 
-	@Override public AnchorPoint getAnchorPoint() {
-		return anchorPoint;
-	}
-
-	@Override public void setAnchorPoint(AnchorPoint anchorPoint) {
-		this.anchorPoint = anchorPoint;
-	}
 }

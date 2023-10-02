@@ -24,7 +24,6 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.types.Overlay;
-import net.mcreator.element.types.interfaces.IAnchorableElement;
 import net.mcreator.workspace.Workspace;
 
 public class OverlayComponentAnchorPointAdder implements IConverter {
@@ -33,9 +32,7 @@ public class OverlayComponentAnchorPointAdder implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Overlay overlay = (Overlay) input;
 		for (GUIComponent component : overlay.getComponents()) {
-			if (component instanceof IAnchorableElement anchorableElement && anchorableElement.getAnchorPoint() == null) {
-				anchorableElement.setAnchorPoint(IAnchorableElement.AnchorPoint.CENTER);
-			}
+			component.anchorPoint = GUIComponent.AnchorPoint.CENTER;
 		}
 		return overlay;
 	}
