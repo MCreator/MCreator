@@ -96,15 +96,10 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			String imageTxt = textureSelector.getSelectedItem();
 			if (imageTxt != null) {
 				if (image == null) {
-					Image component;
-					if (editor.isNotOverlayType) {
-						component = new Image(0, 0, imageTxt, scale1x.isSelected(),
+					Image component = new Image(0, 0, imageTxt, scale1x.isSelected(),
 							displayCondition.getSelectedProcedure());
-					} else {
-						component = new Image(0, 0, imageTxt, scale1x.isSelected(),
-							displayCondition.getSelectedProcedure(), (GUIComponent.AnchorPoint) anchor.getSelectedItem());
-					}
-
+					if (!editor.isNotOverlayType)
+						component.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
 					editor.list.setSelectedValue(component, true);
@@ -112,16 +107,12 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 				} else {
 					int idx = editor.components.indexOf(image);
 					editor.components.remove(image);
-					Image labelNew;
-					if (editor.isNotOverlayType) {
-						labelNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
+					Image imageNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
 							displayCondition.getSelectedProcedure());
-					} else {
-						labelNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
-							displayCondition.getSelectedProcedure(), (GUIComponent.AnchorPoint) anchor.getSelectedItem());
-					}
-					editor.components.add(idx, labelNew);
-					setEditingComponent(labelNew);
+					if (!editor.isNotOverlayType)
+						imageNew.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
+					editor.components.add(idx, imageNew);
+					setEditingComponent(imageNew);
 				}
 			}
 		});

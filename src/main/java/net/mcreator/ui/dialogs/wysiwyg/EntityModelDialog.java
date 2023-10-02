@@ -92,7 +92,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 		JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
 		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
 		if (!editor.isNotOverlayType) {
-			opts.add(L10N.label("dialog.gui.anchor"));
+			opts.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor")));
 			opts.add(anchor);
 		}
 
@@ -117,16 +117,11 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 			if (entityModel.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				setVisible(false);
 				if (model == null) {
-					EntityModel component;
-					if (editor.isNotOverlayType) {
-						component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),
-								displayCondition.getSelectedProcedure(), (int) scale.getValue(), (int) rotationX.getValue(),
-								followMouseMovement.isSelected());
-					} else {
-						component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),
-								displayCondition.getSelectedProcedure(), (int) scale.getValue(), (int) rotationX.getValue(),
-								followMouseMovement.isSelected(), (GUIComponent.AnchorPoint) anchor.getSelectedItem());
-					}
+					EntityModel component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),
+							displayCondition.getSelectedProcedure(), (int) scale.getValue(), (int) rotationX.getValue(),
+							followMouseMovement.isSelected());
+					if (!editor.isNotOverlayType)
+						component.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
 					editor.list.setSelectedValue(component, true);
@@ -134,17 +129,11 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 				} else {
 					int idx = editor.components.indexOf(model);
 					editor.components.remove(model);
-					EntityModel modelNew;
-					if (editor.isNotOverlayType) {
-						modelNew = new EntityModel(model.getX(), model.getY(),
+					EntityModel modelNew = new EntityModel(model.getX(), model.getY(),
 								entityModel.getSelectedProcedure(), displayCondition.getSelectedProcedure(),
 								(int) scale.getValue(), (int) rotationX.getValue(), followMouseMovement.isSelected());
-					} else {
-						modelNew = new EntityModel(model.getX(), model.getY(),
-								entityModel.getSelectedProcedure(), displayCondition.getSelectedProcedure(),
-								(int) scale.getValue(), (int) rotationX.getValue(), followMouseMovement.isSelected(),
-								(GUIComponent.AnchorPoint) anchor.getSelectedItem());
-					}
+					if (!editor.isNotOverlayType)
+						modelNew.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 					editor.components.add(idx, modelNew);
 					setEditingComponent(modelNew);
 				}

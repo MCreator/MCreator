@@ -121,13 +121,10 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 				String name = textToMachineName(editor.getComponentList(), "label_", nameBase);
 
-				Label component;
-				if (editor.isNotOverlayType) {
-					component = new Label(name, 0, 0, textProcedure, cola.getColor(), displayCondition.getSelectedProcedure());
-				} else {
-					component = new Label(name, 0, 0, textProcedure, cola.getColor(), displayCondition.getSelectedProcedure(),
-							(GUIComponent.AnchorPoint) anchor.getSelectedItem());
-				}
+				Label component = new Label(name, 0, 0, textProcedure, cola.getColor(),
+						displayCondition.getSelectedProcedure());
+				if (!editor.isNotOverlayType)
+					component.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 				setEditingComponent(component);
 				editor.editor.addComponent(component);
 				editor.list.setSelectedValue(component, true);
@@ -135,14 +132,10 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			} else {
 				int idx = editor.components.indexOf(label);
 				editor.components.remove(label);
-				Label labelNew;
-				if (editor.isNotOverlayType) {
-					labelNew = new Label(label.name, label.getX(), label.getY(), textProcedure, cola.getColor(),
-							displayCondition.getSelectedProcedure());
-				} else {
-					labelNew = new Label(label.name, label.getX(), label.getY(), textProcedure, cola.getColor(),
-							displayCondition.getSelectedProcedure(), (GUIComponent.AnchorPoint) anchor.getSelectedItem());
-				}
+				Label labelNew = new Label(label.name, label.getX(), label.getY(), textProcedure, cola.getColor(),
+						displayCondition.getSelectedProcedure());
+				if (!editor.isNotOverlayType)
+					labelNew.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 				editor.components.add(idx, labelNew);
 				setEditingComponent(labelNew);
 			}
