@@ -120,7 +120,7 @@ public class ${name}Item extends Item {
 
 	<#if data.toolType != 1>
 	@Override public float getDestroySpeed(ItemStack par1ItemStack, BlockState par2Block) {
-		return ${data.toolType}F;
+		return ${data.toolType}f;
 	}
 	</#if>
 
@@ -137,9 +137,7 @@ public class ${name}Item extends Item {
 		}
 	</#if>
 
-	<#if data.hasGlow>
 	<@hasGlow data.glowCondition/>
-	</#if>
 
 	<#if data.destroyAnyBlock>
 	@Override public boolean isCorrectToolForDrops(BlockState state) {
@@ -147,14 +145,7 @@ public class ${name}Item extends Item {
 	}
 	</#if>
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-		</#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation/>
 
 	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0))>
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
@@ -244,9 +235,8 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag nbt = super.getShareTag(stack);
-		if(nbt != null)
-			stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
+		CompoundTag nbt = stack.getOrCreateTag();
+		stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
 		return nbt;
 	}
 

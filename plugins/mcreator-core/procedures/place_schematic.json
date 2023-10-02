@@ -54,10 +54,21 @@
           "LEFT_RIGHT"
         ]
       ]
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "schematic",
+      "datalist": "structure"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/server.png",
+      "width": 8,
+      "height": 24
     }
-  ],
-  "extensions": [
-    "schematic_list_provider"
   ],
   "inputsInline": true,
   "previousStatement": null,

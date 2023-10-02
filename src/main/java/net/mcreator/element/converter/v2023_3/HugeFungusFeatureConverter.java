@@ -59,7 +59,7 @@ public class HugeFungusFeatureConverter implements IConverter {
 		return 44;
 	}
 
-	protected String fixXML(String xml) throws Exception {
+	private String fixXML(String xml) throws Exception {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));

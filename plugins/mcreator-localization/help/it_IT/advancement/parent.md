@@ -1,3 +1,3 @@
-Questo è l'avanzamento dopo il quale verrà elencato il tuo progresso.
+Questo è il progresso dopo il quale il vostro risultato sarà elencato.
 
-Puoi usare "Nessun genitore: radice" creerà un nuovo percorso (nuova scheda di avanzamento).
+Usare "Nessun genitore: radice" creerà un nuovo percorso (nuova scheda di avanzamento).

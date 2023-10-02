@@ -19,7 +19,6 @@
 package net.mcreator.ui.workspace;
 
 import net.mcreator.element.*;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.generator.ListTemplate;
@@ -301,7 +300,7 @@ import java.util.stream.Collectors;
 				g.setColor(new Color(0.4f, 0.4f, 0.4f, 0.3f));
 				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 				g.setColor(Color.white);
-				if (getText().equals("")) {
+				if (getText().isEmpty()) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
 					if (!currentTab.equals("mods")) {
@@ -1073,7 +1072,7 @@ import java.util.stream.Collectors;
 										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));
-				if (modName != null && !modName.equals("")) {
+				if (modName != null && !modName.isEmpty()) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
 					ModElement duplicateModElement = new ModElement(mcreator.getWorkspace(), mu, modName);
@@ -1155,13 +1154,10 @@ import java.util.stream.Collectors;
 		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator()
 				.getModElementListTemplates(mu.getGeneratableElement());
 
-		if (mu.getGeneratableElement() instanceof ICommonType) {
-			Collection<BaseType> baseTypes = ((ICommonType) mu.getGeneratableElement()).getBaseTypesProvided();
-			for (BaseType baseType : baseTypes) {
-				modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesListForDefinition(
-						mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
-								.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
-			}
+		for (BaseType baseType : mu.getBaseTypesProvided()) {
+			modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesListForDefinition(
+					mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+							.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
 		}
 
 		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)

@@ -37,7 +37,7 @@ public class MItemBlock extends MappableElement {
 	}
 
 	public boolean isEmpty() {
-		return value == null || value.equals("");
+		return value == null || value.isEmpty();
 	}
 
 }

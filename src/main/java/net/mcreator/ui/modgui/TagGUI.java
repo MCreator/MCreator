@@ -46,17 +46,15 @@ import java.util.Objects;
 
 public class TagGUI extends ModElementGUI<Tag> {
 
-	private final VComboBox<String> namespace = new VComboBox<>(new String[] { "forge", "minecraft", "mod" });
+	private final VComboBox<String> namespace = new VComboBox<>(new String[] { "minecraft", "mod", "forge" });
 	private final JComboBox<String> type = new JComboBox<>(
 			new String[] { "Items", "Blocks", "Entities", "Biomes", "Functions" });
 
 	private MCItemListField items;
 	private MCItemListField blocks;
-
-	private ModElementListField functions;
 	private SpawnableEntityListField entities;
-
 	private BiomeListField biomes;
+	private ModElementListField functions;
 
 	private final VComboBox<String> name = new VComboBox<>();
 
@@ -70,11 +68,11 @@ public class TagGUI extends ModElementGUI<Tag> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		items = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
-		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
+		items = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems, false, true);
+		blocks = new MCItemListField(mcreator, ElementUtil::loadBlocks, false, true);
+		entities = new SpawnableEntityListField(mcreator, true);
+		biomes = new BiomeListField(mcreator, true);
 		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
-		entities = new SpawnableEntityListField(mcreator);
-		biomes = new BiomeListField(mcreator);
 
 		name.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), name, false));
 		name.enableRealtimeValidation();

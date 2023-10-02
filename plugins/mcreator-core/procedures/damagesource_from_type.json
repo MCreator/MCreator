@@ -1,0 +1,24 @@
+{
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "damagetype",
+      "datalist": "damagesources"
+    }
+  ],
+  "inputsInline": true,
+  "output": "DamageSource",
+  "colour": "320",
+  "mcreator": {
+    "toolbox_id": "damagesources",
+    "fields": [
+      "damagetype"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}

@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,6 +29,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -39,11 +41,14 @@ import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ConditionalTextFieldValidator;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.validation.validators.TileHolderValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -96,7 +101,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final VTextField name = new VTextField(18);
 
-	private final JTextField specialInfo = new JTextField(20);
+	private StringListProcedureSelector specialInformation;
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
 	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
@@ -119,12 +124,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>();
 	private final JSpinner growapableMaxHeight = new JSpinner(new SpinnerNumberModel(3, 1, 14, 1));
 
-	private final JComboBox<String> staticPlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
 	private final JComboBox<String> suspiciousStewEffect = new JComboBox<>();
 	private final JSpinner suspiciousStewDuration = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
 
 	private final JRadioButton doubleType = L10N.radiobutton("elementgui.plant.use_double_plant_type");
-	private final JComboBox<String> doublePlantGenerationType = new JComboBox<>(new String[] { "Flower", "Grass" });
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 	private final JRadioButton growapableType = L10N.radiobutton("elementgui.plant.use_growable_plant_type");
@@ -157,14 +160,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private ProcedureSelector onBonemealSuccess;
 
 	private ProcedureSelector placingCondition;
-	private ProcedureSelector generateCondition;
 	private ProcedureSelector isBonemealTargetCondition;
 	private ProcedureSelector bonemealSuccessCondition;
 
-	private DimensionListField spawnWorldTypes;
+	private final JCheckBox generateFeature = L10N.checkbox("elementgui.common.enable");
 	private BiomeListField restrictionBiomes;
 	private final JSpinner patchSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
 	private final JCheckBox generateAtAnyHeight = L10N.checkbox("elementgui.common.enable");
+	private final JComboBox<String> generationType = new JComboBox<>(new String[] { "Flower", "Grass" });
 
 	private final ValidationGroup page3group = new ValidationGroup();
 
@@ -180,11 +183,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	@Override protected void initGUI() {
-		restrictionBiomes = new BiomeListField(mcreator);
+		restrictionBiomes = new BiomeListField(mcreator, true);
+		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
+
 		canBePlacedOn = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
 		boundingBoxList = new JBoundingBoxList(mcreator, this, renderType::getSelectedItem);
 		renderType.addActionListener(e -> boundingBoxList.modelChanged());
+
+		generateFeature.setOpaque(false);
 
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.plant.event_on_added"), Dependency.fromString(
@@ -227,13 +234,14 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.common.event_on_bonemeal_success"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
+		specialInformation = new StringListProcedureSelector(this.withEntry("block/special_information"), mcreator,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).setDefaultName(
-				L10N.t("condition.common.no_additional")).makeInline();
-		generateCondition = new ProcedureSelector(this.withEntry("block/generation_condition"), mcreator,
-				L10N.t("elementgui.plant.event_additional_generation_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
-				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 		isBonemealTargetCondition = new ProcedureSelector(this.withEntry("block/bonemeal_target_condition"), mcreator,
 				L10N.t("elementgui.common.event_is_bonemeal_target"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -244,14 +252,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
-		spawnWorldTypes = new DimensionListField(mcreator);
-		spawnWorldTypes.setListElements(Collections.singletonList("Surface"));
-
-		ComponentUtils.deriveFont(specialInfo, 16);
 		ComponentUtils.deriveFont(tintType, 16);
 		ComponentUtils.deriveFont(growapableSpawnType, 16);
-		ComponentUtils.deriveFont(doublePlantGenerationType, 16);
-		ComponentUtils.deriveFont(staticPlantGenerationType, 16);
 
 		JPanel pane2 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
@@ -270,17 +272,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		particleTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 		particleTexture.setOpaque(false);
 
-		JPanel tintPanel = new JPanel(new GridLayout(1, 2, 0, 2));
-		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
-		tintPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.plant.plant_info"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.plant.special_information_tip")));
-		tintPanel.add(specialInfo);
 
 		JPanel rent = new JPanel(new GridLayout(5, 2, 2, 2));
 		rent.setOpaque(false);
@@ -315,19 +307,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
 						L10N.t("elementgui.plant.texture_place_top_main")),
 				ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom")))));
-		texturesAndRent.add("East", rent);
+		texturesAndRent.add("East", PanelUtils.centerAndSouthElement(rent, specialInformation, 2, 2));
 
 		texturesAndRent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.textures_and_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		JPanel render = new JPanel();
-		render.setLayout(new BoxLayout(render, BoxLayout.PAGE_AXIS));
-		render.setOpaque(false);
-
-		render.add(texturesAndRent);
-		render.add(tintPanel);
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 
@@ -350,25 +335,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isReplaceable.setOpaque(false);
 		isBonemealable.setOpaque(false);
 
-		ActionListener planttypeselected = event -> {
-			renderType.setEnabled(true);
-			if (normalType.isSelected())
-				stl.setIcon(TiledImageCache.plantStaticYes);
-			else
-				stl.setIcon(TiledImageCache.plantStaticNo);
-			if (growapableType.isSelected())
-				dyn.setIcon(TiledImageCache.plantGrowingYes);
-			else
-				dyn.setIcon(TiledImageCache.plantGrowingNo);
-			if (doubleType.isSelected()) {
-				dbl.setIcon(TiledImageCache.plantDoubleYes);
-				renderType.setSelectedItem(cross);
-				renderType.setEnabled(false);
-			} else
-				dbl.setIcon(TiledImageCache.plantDoubleNo);
-			updateTextureOptions();
-		};
-
+		ActionListener planttypeselected = event -> updatePlantType();
 		normalType.addActionListener(planttypeselected);
 		growapableType.addActionListener(planttypeselected);
 		doubleType.addActionListener(planttypeselected);
@@ -382,11 +349,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.type_static"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JPanel staticPlantProperties = new JPanel(new GridLayout(3, 2, 0, 4));
+		JPanel staticPlantProperties = new JPanel(new GridLayout(2, 2, 0, 4));
 		staticPlantProperties.setOpaque(false);
-		staticPlantProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/static_generation_type"),
-				L10N.label("elementgui.plant.type_generator")));
-		staticPlantProperties.add(staticPlantGenerationType);
 		staticPlantProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/suspicious_stew_effect"),
 				L10N.label("elementgui.plant.suspicious_stew_effect")));
 		staticPlantProperties.add(suspiciousStewEffect);
@@ -423,18 +387,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.type_double"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		ptipe3.add("West", dbl);
-		ptipe3.add("Center", PanelUtils.join(
-				HelpUtils.wrapWithHelpButton(this.withEntry("plant/static_generation_type"),
-						L10N.label("elementgui.plant.type_generator")), doublePlantGenerationType));
+		ptipe3.add("Center", dbl);
 		ptipe3.add("North", doubleType);
 		ptipe3.setOpaque(false);
 
 		ptipe.add("West", ptipe1);
-		ptipe.add("Center", ptipe3);
-		ptipe.add("East", ptipe2);
+		ptipe.add("Center", ptipe2);
+		ptipe.add("East", ptipe3);
 
-		sbbp2.add("North", render);
+		sbbp2.add("North", texturesAndRent);
 		sbbp2.add("Center", PanelUtils.totalCenterInPanel(ptipe));
 
 		pane2.setOpaque(false);
@@ -467,7 +428,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		});
 
 		if (!isEditingMode()) { // Add first bounding box, disable custom bounding box options
-			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
+			boundingBoxList.setEntries(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
 			disableOffset.setEnabled(false);
 			boundingBoxList.setEnabled(false);
 		}
@@ -698,9 +659,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		events2.add(onEntityWalksOn);
 		events2.add(onHitByProjectile);
 
-		JPanel spawning = new JPanel(new GridLayout(5, 2, 5, 2));
+		JPanel spawning = new JPanel(new GridLayout(6, 2, 5, 2));
 		spawning.setOpaque(false);
 		generateAtAnyHeight.setOpaque(false);
+
+		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/generate_feature"),
+				L10N.label("elementgui.plant.generate_feature")));
+		spawning.add(generateFeature);
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/gen_chunk_count"),
 				L10N.label("elementgui.plant.gen_chunk_count")));
@@ -714,16 +679,15 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.generate_at_any_height")));
 		spawning.add(generateAtAnyHeight);
 
-		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/spawn_world_types"),
-				L10N.label("elementgui.plant.spawn_world_types")));
-		spawning.add(spawnWorldTypes);
+		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/generation_type"),
+				L10N.label("elementgui.plant.generation_type")));
+		spawning.add(generationType);
 
 		spawning.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/restrict_to_biomes"),
 				L10N.label("elementgui.common.restrict_to_biomes")));
 		spawning.add(restrictionBiomes);
 
 		pane4.add("Center", PanelUtils.totalCenterInPanel(spawning));
-		pane4.add("South", PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition));
 
 		pane4.setOpaque(false);
 
@@ -764,9 +728,44 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 
 		updateSoundType();
+		updatePlantType();
 	}
 
-	private void updateTextureOptions() {
+	private void updatePlantType() {
+		if (normalType.isSelected()) {
+			stl.setIcon(TiledImageCache.plantStaticYes);
+			generationType.setEnabled(true);
+			renderType.setEnabled(true);
+			suspiciousStewEffect.setEnabled(true);
+			suspiciousStewDuration.setEnabled(true);
+			growapableMaxHeight.setEnabled(false);
+		} else {
+			stl.setIcon(TiledImageCache.plantStaticNo);
+		}
+
+		if (growapableType.isSelected()) {
+			dyn.setIcon(TiledImageCache.plantGrowingYes);
+			generationType.setEnabled(false);
+			renderType.setEnabled(true);
+			suspiciousStewEffect.setEnabled(false);
+			suspiciousStewDuration.setEnabled(false);
+			growapableMaxHeight.setEnabled(true);
+		} else {
+			dyn.setIcon(TiledImageCache.plantGrowingNo);
+		}
+
+		if (doubleType.isSelected()) {
+			generationType.setEnabled(true);
+			dbl.setIcon(TiledImageCache.plantDoubleYes);
+			renderType.setSelectedItem(cross);
+			renderType.setEnabled(false);
+			suspiciousStewEffect.setEnabled(false);
+			suspiciousStewDuration.setEnabled(false);
+			growapableMaxHeight.setEnabled(false);
+		} else {
+			dbl.setIcon(TiledImageCache.plantDoubleNo);
+		}
+
 		texture.setVisible(false);
 		textureBottom.setVisible(false);
 
@@ -776,6 +775,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		} else {
 			texture.setVisible(true);
 		}
+
 	}
 
 	private void updateSoundType() {
@@ -818,8 +818,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onHitByProjectile.refreshListKeepSelected();
 		onBonemealSuccess.refreshListKeepSelected();
 
+		specialInformation.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
-		generateCondition.refreshListKeepSelected();
 		isBonemealTargetCondition.refreshListKeepSelected();
 		bonemealSuccessCondition.refreshListKeepSelected();
 
@@ -850,6 +850,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 			return new AggregatedValidationResult(texture);
 		else if (page == 2)
 			return new AggregatedValidationResult(page3group);
+		else if (page == 5)
+			return new AggregatedValidationResult(restrictionBiomes);
 		return new AggregatedValidationResult.PASS();
 	}
 
@@ -892,8 +894,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onRightClicked.setSelectedProcedure(plant.onRightClicked);
 		onEntityWalksOn.setSelectedProcedure(plant.onEntityWalksOn);
 		onHitByProjectile.setSelectedProcedure(plant.onHitByProjectile);
+		specialInformation.setSelectedProcedure(plant.specialInformation);
 		growapableMaxHeight.setValue(plant.growapableMaxHeight);
-		spawnWorldTypes.setListElements(plant.spawnWorldTypes);
+		generateFeature.setSelected(plant.generateFeature);
 		restrictionBiomes.setListElements(plant.restrictionBiomes);
 		canBePlacedOn.setListElements(plant.canBePlacedOn);
 		isReplaceable.setSelected(plant.isReplaceable);
@@ -912,14 +915,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		bonemealSuccessCondition.setSelectedProcedure(plant.bonemealSuccessCondition);
 		onBonemealSuccess.setSelectedProcedure(plant.onBonemealSuccess);
 
-		specialInfo.setText(
-				plant.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		placingCondition.setSelectedProcedure(plant.placingCondition);
-		generateCondition.setSelectedProcedure(plant.generateCondition);
 
 		customBoundingBox.setSelected(plant.customBoundingBox);
 		disableOffset.setSelected(plant.disableOffset);
-		boundingBoxList.setBoundingBoxes(plant.boundingBoxes);
+		boundingBoxList.setEntries(plant.boundingBoxes);
 
 		Model model = plant.getItemModel();
 		if (model != null && model.getType() != null && model.getReadableName() != null)
@@ -942,8 +942,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 
 		growapableSpawnType.setSelectedItem(plant.growapableSpawnType);
-		staticPlantGenerationType.setSelectedItem(plant.staticPlantGenerationType);
-		doublePlantGenerationType.setSelectedItem(plant.doublePlantGenerationType);
+		generationType.setSelectedItem(plant.generationType);
 
 		suspiciousStewEffect.setSelectedItem(plant.suspiciousStewEffect);
 		suspiciousStewDuration.setValue(plant.suspiciousStewDuration);
@@ -956,23 +955,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		disableOffset.setEnabled(customBoundingBox.isSelected());
 		boundingBoxList.setEnabled(customBoundingBox.isSelected());
 
-		if (normalType.isSelected())
-			stl.setIcon(TiledImageCache.plantStaticYes);
-		else
-			stl.setIcon(TiledImageCache.plantStaticNo);
-
-		if (growapableType.isSelected())
-			dyn.setIcon(TiledImageCache.plantGrowingYes);
-		else
-			dyn.setIcon(TiledImageCache.plantGrowingNo);
-
-		if (doubleType.isSelected())
-			dbl.setIcon(TiledImageCache.plantDoubleYes);
-		else
-			dbl.setIcon(TiledImageCache.plantDoubleNo);
-
+		updatePlantType();
 		updateSoundType();
-		updateTextureOptions();
 		refreshBonemealProperties();
 	}
 
@@ -993,8 +977,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		else
 			plant.plantType = "double";
 		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
-		plant.staticPlantGenerationType = (String) staticPlantGenerationType.getSelectedItem();
-		plant.doublePlantGenerationType = (String) doublePlantGenerationType.getSelectedItem();
 		plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
 		plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
 		plant.suspiciousStewDuration = (int) suspiciousStewDuration.getValue();
@@ -1027,10 +1009,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.onRightClicked = onRightClicked.getSelectedProcedure();
 		plant.onEntityWalksOn = onEntityWalksOn.getSelectedProcedure();
 		plant.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
-		plant.spawnWorldTypes = spawnWorldTypes.getListElements();
+		plant.specialInformation = specialInformation.getSelectedProcedure();
+		plant.generateFeature = generateFeature.isSelected();
 		plant.restrictionBiomes = restrictionBiomes.getListElements();
 		plant.patchSize = (int) patchSize.getValue();
 		plant.generateAtAnyHeight = generateAtAnyHeight.isSelected();
+		plant.generationType = (String) generationType.getSelectedItem();
 		plant.canBePlacedOn = canBePlacedOn.getListElements();
 		plant.isReplaceable = isReplaceable.isSelected();
 		plant.colorOnMap = colorOnMap.getSelectedItem().toString();
@@ -1041,9 +1025,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 		plant.speedFactor = (double) speedFactor.getValue();
 		plant.jumpFactor = (double) jumpFactor.getValue();
-		plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		plant.placingCondition = placingCondition.getSelectedProcedure();
-		plant.generateCondition = generateCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();
 		plant.isSolid = isSolid.isSelected();
 		plant.isBonemealable = isBonemealable.isSelected();
@@ -1053,7 +1035,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		plant.customBoundingBox = customBoundingBox.isSelected();
 		plant.disableOffset = disableOffset.isSelected();
-		plant.boundingBoxes = boundingBoxList.getBoundingBoxes();
+		plant.boundingBoxes = boundingBoxList.getEntries();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		plant.renderType = 12;
