@@ -124,14 +124,6 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 				L10N.label("elementgui.projectile.item_texture")));
 		propertiesPanel.add(PanelUtils.totalCenterInPanel(projectileItem));
 
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/show_particles"),
-				L10N.label("elementgui.projectile.show_particles")));
-		propertiesPanel.add(showParticles);
-
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/action_sound"),
-				L10N.label("elementgui.projectile.action_sound")));
-		propertiesPanel.add(actionSound);
-
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/model"),
 				L10N.label("elementgui.projectile.model")));
 		propertiesPanel.add(model);
@@ -153,6 +145,14 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 				L10N.label("elementgui.projectile.model_texture")));
 		ComponentUtils.deriveFont(customModelTexture, 16);
 		propertiesPanel.add(PanelUtils.centerAndEastElement(customModelTexture, importEntityTexture));
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/action_sound"),
+				L10N.label("elementgui.projectile.action_sound")));
+		propertiesPanel.add(actionSound);
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/show_particles"),
+				L10N.label("elementgui.projectile.show_particles")));
+		propertiesPanel.add(showParticles);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/power"),
 				L10N.label("elementgui.projectile.power")));
