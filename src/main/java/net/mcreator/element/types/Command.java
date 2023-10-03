@@ -39,6 +39,8 @@ import java.util.Locale;
 
 	public String commandName;
 
+	public String type;
+
 	public String permissionLevel;
 
 	@BlocklyXML("cmdargs") public String argsxml;
@@ -50,6 +52,7 @@ import java.util.Locale;
 	public Command(ModElement element) {
 		super(element);
 
+		this.type = "STANDARD";
 		this.permissionLevel = "4";
 	}
 
