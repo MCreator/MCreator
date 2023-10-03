@@ -131,7 +131,10 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 					rangedItem.get("specialInformation").getAsJsonObject().getAsJsonArray("fixedValue").iterator()
 							.forEachRemaining(element -> infoFixedValues.add(element.getAsString()));
 				}
-				infoProcedureName = rangedItem.get("specialInformation").getAsJsonObject().get("name").getAsString();
+
+				if (rangedItem.get("specialInformation").getAsJsonObject().get("name") != null)
+					infoProcedureName = rangedItem.get("specialInformation").getAsJsonObject().get("name")
+							.getAsString();
 			}
 			item.specialInformation = new StringListProcedure(infoProcedureName, infoFixedValues);
 
@@ -143,13 +146,12 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 
 			if (rangedItem.has("glowCondition")) {
 				JsonObject rangedGlow = rangedItem.getAsJsonObject("glowCondition");
-				if (rangedGlow.has("hasGlow")) // Old converter is applied here
-					item.glowCondition = new LogicProcedure(
-							rangedItem.get("glowCondition").getAsJsonObject().get("name").getAsString(),
-							rangedItem.get("hasGlow").getAsBoolean());
-				else // Converter for mod elements that already had the converter above
-					item.glowCondition = new LogicProcedure(rangedGlow.get("name").getAsString(),
-							rangedGlow.get("fixedValue").getAsBoolean());
+				String glowName = rangedGlow.has("name") ? rangedGlow.get("name").getAsString() : null;
+				boolean value = rangedGlow.has("hasGlow") ?
+						rangedGlow.get("hasGlow").getAsBoolean() : // Old format
+						rangedGlow.get("fixedValue").getAsBoolean(); // New format of 2023.4
+
+				item.glowCondition = new LogicProcedure(glowName, value);
 			} else if (rangedItem.has("hasGlow")) {
 				item.glowCondition = new LogicProcedure(null, rangedItem.get("hasGlow").getAsBoolean());
 			}
