@@ -99,7 +99,7 @@ package ${package}.client.screens;
 			    	<#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-					InventoryScreen.renderEntityInInventoryFollowsAngle(event.getGuiGraphics(), <@calculatePosition component/>,
+					InventoryScreen.renderEntityInInventoryFollowsAngle(event.getGuiGraphics(), <@calculatePosition component=component x_offset=11 y_offset=20/>,
                         ${component.scale}, ${component.rotationX / 20.0}f, 0, livingEntity);
 			    }
 			</#list>
@@ -119,25 +119,25 @@ package ${package}.client.screens;
 
 }
 
-<#macro calculatePosition component>
+<#macro calculatePosition component x_offset=0 y_offset=0>
 	<#if component.anchorPoint.name() == "TOP_LEFT">
-		${component.x}, ${component.y}
+		${component.x + x_offset}, ${component.y + y_offset}
 	<#elseif component.anchorPoint.name() == "TOP_CENTER">
-		w / 2 + ${component.x - 213}, ${component.y}
+		w / 2 + ${component.x - (213 - x_offset)}, ${component.y + y_offset}
 	<#elseif component.anchorPoint.name() == "TOP_RIGHT">
-		w - ${427 - component.x}, ${component.y}
+		w - ${427 - (component.x + x_offset)}, ${component.y + y_offset}
 	<#elseif component.anchorPoint.name() == "CENTER_LEFT">
-		${component.x}, h / 2 + ${component.y - 120}
+		${component.x + x_offset}, h / 2 + ${component.y - (120 - y_offset)}
 	<#elseif component.anchorPoint.name() == "CENTER">
-		w / 2 + ${component.x - 213}, h / 2 + ${component.y - 120}
+		w / 2 + ${component.x - (213 - x_offset)}, h / 2 + ${component.y - (120 - y_offset)}
 	<#elseif component.anchorPoint.name() == "CENTER_RIGHT">
-		w - ${427 - component.x}, h / 2 + ${component.y - 120}
+		w - ${427 - (component.x + x_offset)}, h / 2 + ${component.y - (120 - y_offset)}
 	<#elseif component.anchorPoint.name() == "BOTTOM_LEFT">
-		${component.x}, h - ${240 - component.y}
+		${component.x + x_offset}, h - ${240 - (component.y + y_offset)}
 	<#elseif component.anchorPoint.name() == "BOTTOM_CENTER">
-		w / 2 + ${component.x - 213}, h - ${240 - component.y}
+		w / 2 + ${component.x - (213 - x_offset)}, h - ${240 - (component.y + y_offset)}
 	<#elseif component.anchorPoint.name() == "BOTTOM_RIGHT">
-		w - ${427 - component.x}, h - ${240 - component.y}
+		w - ${427 - (component.x + x_offset)}, h - ${240 - (component.y + y_offset)}
 	</#if>
 </#macro>
 <#-- @formatter:on -->
