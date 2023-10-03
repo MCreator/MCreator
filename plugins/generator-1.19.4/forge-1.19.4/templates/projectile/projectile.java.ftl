@@ -38,7 +38,7 @@ package ${package}.entity;
 @OnlyIn(value = Dist.CLIENT, _interface = ItemSupplier.class)
 public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
-	public static final ItemStack PROJECTILE_ITEM = ${mappedMCItemToItem(data.projectileItem)}.getDefaultInstance();
+	public static final ItemStack PROJECTILE_ITEM = ${mappedMCItemToItemStackCode(data.projectileItem)};
 
 	public ${name}Entity(PlayMessages.SpawnEntity packet, Level world) {
 		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
