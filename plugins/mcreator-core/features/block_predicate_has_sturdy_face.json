@@ -23,10 +23,12 @@
       "precision": 1,
       "min": -15,
       "max": 15
+    },
+    {
+      "type": "field_data_list_dropdown",
+      "name": "direction",
+      "datalist": "direction"
     }
-  ],
-  "extensions": [
-    "direction_list_provider"
   ],
   "inputsInline": true,
   "output": "BlockPredicate",
