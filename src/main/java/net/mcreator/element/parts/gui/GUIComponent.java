@@ -102,6 +102,10 @@ import java.util.stream.Collectors;
 		return y;
 	}
 
+	@Nullable public AnchorPoint getAnchorPoint() {
+		return anchorPoint;
+	}
+
 	@Override public final int compareTo(@Nonnull GUIComponent o) {
 		return o.getWeight() - getWeight();
 	}
@@ -197,6 +201,20 @@ import java.util.stream.Collectors;
 
 		@Override public String toString() {
 			return L10N.t("dialog.gui.anchor." + id);
+		}
+
+		public Point getAnchorPoint(int width, int height) {
+			return switch (this) {
+				case TOP_LEFT -> new Point(0, 0);
+				case TOP_CENTER -> new Point(width / 2, 0);
+				case TOP_RIGHT -> new Point(width, 0);
+				case CENTER_LEFT -> new Point(0, height / 2);
+				case CENTER -> new Point(width / 2, height / 2);
+				case CENTER_RIGHT -> new Point(width, height / 2);
+				case BOTTOM_LEFT -> new Point(0, height);
+				case BOTTOM_CENTER -> new Point(width / 2, height);
+				case BOTTOM_RIGHT -> new Point(width, height);
+			};
 		}
 
 	}
