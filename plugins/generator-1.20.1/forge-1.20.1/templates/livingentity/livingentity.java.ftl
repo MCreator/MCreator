@@ -266,38 +266,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	</#if>
 
 	<#if data.villagerTradingType>
-	@Override protected void customServerAiStep() {
-		this.level().getProfiler().push("villagerBrain");
-		this.getBrain().tick((ServerLevel) this.level(), this);
-		this.level().getProfiler().pop();
-		if (this.assignProfessionWhenSpawned) {
-			this.assignProfessionWhenSpawned = false;
-		}
-
-		if (!this.isTrading() && this.updateMerchantTimer > 0) {
-			--this.updateMerchantTimer;
-			if (this.updateMerchantTimer <= 0) {
-				if (this.increaseProfessionLevelOnUpdate) {
-					this.increaseMerchantCareer();
-					this.increaseProfessionLevelOnUpdate = false;
-				}
-				this.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 200, 0));
-			}
-		}
-
-		if (this.lastTradedPlayer != null && this.level instanceof ServerLevel) {
-			((ServerLevel) this.level).onReputationEvent(ReputationEventType.TRADE, this.lastTradedPlayer, this);
-			this.level().broadcastEntityEvent(this, (byte) 14);
-			this.lastTradedPlayer = null;
-		}
-
-		if (!this.isNoAi() && this.random.nextInt(100) == 0) {
-			Raid raid = ((ServerLevel) this.level).getRaidAt(this.blockPosition());
-			if (raid != null && raid.isActive() && !raid.isOver()) {
-				this.level().broadcastEntityEvent(this, (byte) 42);
-			}
-		}
-	}
+	@Override ${mcc.getMethod("net.minecraft.world.entity.npc.Villager", "customServerAiStep")
+		.replace("this.stopTrading();", "")}
 
 	private void updateSpecialPrices(Player player) {
 		int reputation = this.getPlayerReputation(player);

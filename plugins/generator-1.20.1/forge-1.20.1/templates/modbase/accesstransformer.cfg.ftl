@@ -11,3 +11,11 @@ public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lcom/mojang/serialization/Codec;)V #constructor
 public-f net.minecraft.world.level.levelgen.feature.TreeFeature m_142674_(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z #place
 </#if>
+
+<#if w.hasElementsOfType("livingentity")>
+public-f net.minecraft.world.entity.npc.Villager f_35366_ #assignProfessionWhenSpawned
+public-f net.minecraft.world.entity.npc.Villager f_35373_ #updateMerchantTimer
+public-f net.minecraft.world.entity.npc.Villager f_35374_ #increaseProfessionLevelOnUpdate
+public net.minecraft.world.entity.npc.Villager m_35528_()V #increaseMerchantCareer
+public-f net.minecraft.world.entity.npc.Villager f_35375_ #lastTradedPlayer
+</#if>
