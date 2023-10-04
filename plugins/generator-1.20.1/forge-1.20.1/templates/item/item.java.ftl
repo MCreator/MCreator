@@ -150,17 +150,12 @@ public class ${name}Item extends Item {
 	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)) || data.enableRanged>
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		<#if data.enableRanged>
-			InteractionResultHolder<ItemStack> ar = new InteractionResultHolder<>(InteractionResult.SUCCESS, entity.getItemInHand(hand));
-			entity.startUsingItem(hand);
+		InteractionResultHolder<ItemStack> ar = InteractionResultHolder.success(entity.getItemInHand(hand));
 		<#else>
-			InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
+		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
 		</#if>
-		ItemStack itemstack = ar.getObject();
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
 
-		<#if hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)>
+		<#if (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)) || data.enableRanged>
 		entity.startUsingItem(hand);
 		</#if>
 
@@ -184,7 +179,14 @@ public class ${name}Item extends Item {
 		}
 		</#if>
 
-		<@procedureOBJToCode data.onRightClickedInAir/>
+		<@procedureCode data.onRightClickedInAir, {
+			"x": "entity.getX()",
+			"y": "entity.getY()",
+			"z": "entity.getZ()",
+			"world": "world",
+			"entity": "entity",
+			"itemstack": "ar.getObject()"
+		}/>
 		return ar;
 	}
 	</#if>
@@ -252,14 +254,11 @@ public class ${name}Item extends Item {
 
 	<#if hasProcedure(data.onStoppedUsing) || (data.enableRanged && !data.shootConstantly)>
 		@Override public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
-			double x = entity.getX();
-			double y = entity.getY();
-			double z = entity.getZ();
 			<#if hasProcedure(data.onStoppedUsing)>
 				<@procedureCode data.onStoppedUsing, {
-					"x": "x",
-					"y": "y",
-					"z": "z",
+					"x": "entity.getX()",
+					"y": "entity.getY()",
+					"z": "entity.getZ()",
 					"world": "world",
 					"entity": "entity",
 					"itemstack": "itemstack",
@@ -268,6 +267,9 @@ public class ${name}Item extends Item {
 			</#if>
 			<#if data.enableRanged && !data.shootConstantly>
 				if (!world.isClientSide() && entity instanceof ServerPlayer player) {
+					double x = entity.getX();
+					double y = entity.getY();
+					double z = entity.getZ();
 					if (<@procedureOBJToConditionCode data.useCondition/>) {
 						<@arrowShootCode/>
 					}
