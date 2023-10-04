@@ -17,7 +17,7 @@
   "colour": 50,
   "mcreator": {
     "group": "team",
-    "toolbox_id": "teammanagement",
+    "toolbox_id": "scoreboardmanagement",
     "toolbox_init": [
       "<value name=\"name\"><block type=\"text\"><field name=\"TEXT\">team_name</field></block></value>",
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
