@@ -7,7 +7,7 @@
     },
     {
       "type": "input_value",
-      "name": "player",
+      "name": "entity",
       "check": "Entity"
     }
   ],
@@ -20,11 +20,11 @@
     "toolbox_id": "teammanagement",
     "toolbox_init": [
       "<value name=\"name\"><block type=\"text\"><field name=\"TEXT\">team_name</field></block></value>",
-      "<value name=\"player\"><block type=\"entity_from_deps\"></block></value>"
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "inputs": [
       "name",
-      "player"
+      "entity"
     ],
     "dependencies": [
       {
