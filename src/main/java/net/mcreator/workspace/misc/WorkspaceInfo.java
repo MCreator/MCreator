@@ -122,7 +122,7 @@ import java.util.*;
 
 	public List<GeneratableElement> getModElements(ModElementType<?> type) {
 		try {
-			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type)
+			return workspace.getModElements().stream().filter(e -> e.getType() == type)
 					.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
 		} catch (IllegalArgumentException e) {
 			LOG.warn("Failed to list elements of non-existent type", e);
