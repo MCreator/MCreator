@@ -78,7 +78,7 @@ public class YamlUtil {
 			}
 		};
 
-		return cache = LoadSettings.builder().setSchema(schema).setUseMarks(false).build();
+		return cache = LoadSettings.builder().setSchema(schema).build();
 	}
 
 }

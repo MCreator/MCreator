@@ -27,7 +27,6 @@ import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.snakeyaml.engine.v2.api.Load;
-import org.snakeyaml.engine.v2.api.LoadSettings;
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
 import java.io.File;
@@ -80,7 +79,7 @@ public class ModAPIManager {
 
 				LOG.debug("Loaded mod API definition: " + FilenameUtilsPatched.getBaseName(apidefinition));
 			} catch (YamlEngineException e) {
-				LOG.error("Failed to load mod API definition: " + e.getMessage());
+				LOG.error("Failed to load mod API definition for: " + apidefinition + ": " + e.getMessage());
 			}
 		}
 	}
