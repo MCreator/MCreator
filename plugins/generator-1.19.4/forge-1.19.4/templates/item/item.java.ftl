@@ -179,14 +179,16 @@ public class ${name}Item extends Item {
 		}
 		</#if>
 
-		<@procedureCode data.onRightClickedInAir, {
-			"x": "entity.getX()",
-			"y": "entity.getY()",
-			"z": "entity.getZ()",
-			"world": "world",
-			"entity": "entity",
-			"itemstack": "ar.getObject()"
-		}/>
+		<#if hasProcedure(data.onRightClickedInAir)>
+			<@procedureCode data.onRightClickedInAir, {
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
+				"world": "world",
+				"entity": "entity",
+				"itemstack": "ar.getObject()"
+			}/>
+		</#if>
 		return ar;
 	}
 	</#if>
