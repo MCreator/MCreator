@@ -97,7 +97,7 @@ import java.util.*;
 	public boolean shootConstantly;
 	public ProjectileEntry projectile;
 	public Procedure onRangedItemUsed;
-	public Procedure useCondition;
+	public Procedure rangedUseCondition;
 
 	// Food
 	public boolean isFood;

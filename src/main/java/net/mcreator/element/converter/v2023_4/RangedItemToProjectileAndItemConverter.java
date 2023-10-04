@@ -167,7 +167,7 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			item.damageVsEntity = rangedItem.get("damageVsEntity").getAsDouble();
 
 			if (rangedItem.get("useCondition") != null)
-				item.useCondition = new Procedure(
+				item.rangedUseCondition = new Procedure(
 						rangedItem.get("useCondition").getAsJsonObject().get("name").getAsString());
 			if (rangedItem.get("onRangedItemUsed") != null)
 				item.onRangedItemUsed = new Procedure(

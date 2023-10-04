@@ -97,7 +97,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
 
 	private ProcedureSelector onRangedItemUsed;
-	private ProcedureSelector useCondition;
+	private ProcedureSelector rangedUseCondition;
 
 	private final DataListComboBox projectile = new DataListComboBox(mcreator);
 
@@ -189,8 +189,8 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.glowing_effect"), ProcedureSelector.Side.CLIENT,
 				L10N.checkbox("elementgui.common.enable"), 160,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		useCondition = new ProcedureSelector(this.withEntry("item/use_condition"), mcreator,
-				L10N.t("elementgui.item.can_use"), VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+		rangedUseCondition = new ProcedureSelector(this.withEntry("item/ranged_use_condition"), mcreator,
+				L10N.t("elementgui.item.can_use_ranged"), VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 
 		customProperties = new JItemPropertiesStatesList(mcreator, this);
@@ -443,7 +443,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		JPanel rangedTriggers = new JPanel(new GridLayout(2, 1, 2, 2));
 		rangedTriggers.setOpaque(false);
-		rangedTriggers.add(useCondition);
+		rangedTriggers.add(rangedUseCondition);
 		rangedTriggers.add(onRangedItemUsed);
 
 		rangedPanel.setOpaque(false);
@@ -499,7 +499,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			shootConstantly.setEnabled(true);
 			projectile.setEnabled(true);
 			onRangedItemUsed.setEnabled(true);
-			useCondition.setEnabled(true);
+			rangedUseCondition.setEnabled(true);
 			if (!isEditingMode()) {
 				if ((int) useDuration.getValue() == 0)
 					useDuration.setValue(72000);
@@ -512,7 +512,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			shootConstantly.setEnabled(false);
 			projectile.setEnabled(false);
 			onRangedItemUsed.setEnabled(false);
-			useCondition.setEnabled(false);
+			rangedUseCondition.setEnabled(false);
 			if (!isEditingMode()) {
 				if ((int) useDuration.getValue() == 72000)
 					useDuration.setValue(0);
@@ -538,7 +538,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		specialInformation.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
 		onRangedItemUsed.refreshListKeepSelected();
-		useCondition.refreshListKeepSelected();
+		rangedUseCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(projectile, ElementUtil.loadArrowProjectiles(mcreator.getWorkspace()));
 
@@ -608,7 +608,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		enableRanged.setSelected(item.enableRanged);
 		shootConstantly.setSelected(item.shootConstantly);
 		projectile.setSelectedItem(item.projectile);
-		useCondition.setSelectedProcedure(item.useCondition);
+		rangedUseCondition.setSelectedProcedure(item.rangedUseCondition);
 		onRangedItemUsed.setSelectedProcedure(item.onRangedItemUsed);
 
 		updateFoodPanel();
@@ -666,7 +666,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.shootConstantly = shootConstantly.isSelected();
 		item.projectile = new ProjectileEntry(mcreator.getWorkspace(), projectile.getSelectedItem());
 		item.onRangedItemUsed = onRangedItemUsed.getSelectedProcedure();
-		item.useCondition = useCondition.getSelectedProcedure();
+		item.rangedUseCondition = rangedUseCondition.getSelectedProcedure();
 
 		item.texture = texture.getID();
 		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());

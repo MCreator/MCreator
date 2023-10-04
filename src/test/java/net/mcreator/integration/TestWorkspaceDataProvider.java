@@ -950,7 +950,7 @@ public class TestWorkspaceDataProvider {
 					getRandomDataListEntry(random, ElementUtil.loadArrowProjectiles(modElement.getWorkspace())));
 			item.shootConstantly = emptyLists;
 			item.onRangedItemUsed = new Procedure("procedure4");
-			item.useCondition = new Procedure("condition1");
+			item.rangedUseCondition = new Procedure("condition1");
 			return item;
 		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
 			ItemExtension itemExtension = new ItemExtension(modElement);
