@@ -852,9 +852,13 @@ Blockly.defineBlocksWithJsonArray([
     },
     {
         "type": "direction_constant",
-        "message0": "",
-        "extensions": [
-            "direction_list_provider"
+        "message0": "%1",
+        "args0": [
+            {
+                "type": "field_data_list_dropdown",
+                "name": "direction",
+                "datalist": "direction"
+            }
         ],
         "output": "Direction",
         "colour": "20"
