@@ -269,12 +269,16 @@ public class ${name}Item extends Item {
 			</#if>
 			<#if data.enableRanged && !data.shootConstantly>
 				if (!world.isClientSide() && entity instanceof ServerPlayer player) {
-					double x = entity.getX();
-					double y = entity.getY();
-					double z = entity.getZ();
-					if (<@procedureOBJToConditionCode data.rangedUseCondition/>) {
+					<#if hasProcedure(data.rangedUseCondition)>
+						double x = entity.getX();
+						double y = entity.getY();
+						double z = entity.getZ();
+						if (<@procedureOBJToConditionCode data.rangedUseCondition/>) {
+							<@arrowShootCode/>
+						}
+					<#else>
 						<@arrowShootCode/>
-					}
+					</#if>
 				}
 			</#if>
 		}
@@ -283,13 +287,18 @@ public class ${name}Item extends Item {
 	<#if data.enableRanged && data.shootConstantly>
 		@Override public void onUseTick(Level world, LivingEntity entity, ItemStack itemstack, int count) {
 			if (!world.isClientSide() && entity instanceof ServerPlayer player) {
-				double x = entity.getX();
-				double y = entity.getY();
-				double z = entity.getZ();
-				if (<@procedureOBJToConditionCode data.rangedUseCondition/>) {
+				<#if hasProcedure(data.rangedUseCondition)>
+					double x = entity.getX();
+					double y = entity.getY();
+					double z = entity.getZ();
+					if (<@procedureOBJToConditionCode data.rangedUseCondition/>) {
+						<@arrowShootCode/>
+						entity.releaseUsingItem();
+					}
+				<#else>
 					<@arrowShootCode/>
 					entity.releaseUsingItem();
-				}
+				</#if>
 			}
 		}
 	</#if>
@@ -298,7 +307,6 @@ public class ${name}Item extends Item {
 <#macro arrowShootCode>
 	<#assign projectile = data.projectile.getUnmappedValue()>
 	ItemStack stack = ProjectileWeaponItem.getHeldProjectile(entity, e -> e.getItem() == ${generator.map(projectile, "projectiles", 2)});
-
 	if(stack == ItemStack.EMPTY) {
 		for (int i = 0; i < player.getInventory().items.size(); i++) {
 			ItemStack teststack = player.getInventory().items.get(i);
