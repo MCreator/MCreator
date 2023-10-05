@@ -116,10 +116,13 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			item.name = rangedItem.get("name").getAsString();
 			item.texture = rangedItem.get("texture").getAsString();
 			item.renderType = rangedItem.get("renderType").getAsInt();
-			if (rangedItem.get("customModelName") != null)
+			if (rangedItem.get("customModelName") != null) {
 				item.customModelName = rangedItem.get("customModelName").getAsString();
-			if (item.customModelName.equals("Normal") && item.renderType == 0)
-				item.customModelName = "Ranged item"; // Convert the ranged items' normal model to items' RI model option
+				if (item.customModelName.equals("Normal") && item.renderType == 0)
+					item.customModelName = "Ranged item"; // Convert the ranged items' normal model to items' RI model option
+			} else {
+				item.customModelName = "Ranged item";
+			}
 			item.creativeTab = new TabEntry(workspace,
 					rangedItem.get("creativeTab").getAsJsonObject().get("value").getAsString());
 
