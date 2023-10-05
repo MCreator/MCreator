@@ -20,7 +20,7 @@ package net.mcreator.ui.help;
 
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
-import net.mcreator.generator.template.base.DefaultFreemarkerConfiguration;
+import net.mcreator.generator.template.InlineTemplatesHandler;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.L10N;
@@ -47,8 +47,6 @@ public class HelpLoader {
 
 	private static Parser parser;
 	private static HtmlRenderer renderer;
-
-	private static final DefaultFreemarkerConfiguration configuration = new DefaultFreemarkerConfiguration();
 
 	public static void preloadCache() {
 		PluginLoader.INSTANCE.getResources("help.default", Pattern.compile("^[^$].*\\.md")).forEach(
@@ -119,10 +117,10 @@ public class HelpLoader {
 											.getBaseDataModelProvider().provide());
 							}
 
-							Template freemarkerTemplate = new Template(helpContext.entry(), new StringReader(helpText),
-									configuration);
+							Template freemarkerTemplate = InlineTemplatesHandler.getTemplate(helpText);
 							StringWriter stringWriter = new StringWriter();
-							freemarkerTemplate.process(dataModel, stringWriter, configuration.getBeansWrapper());
+							freemarkerTemplate.process(dataModel, stringWriter,
+									InlineTemplatesHandler.getConfiguration().getBeansWrapper());
 
 							helpString.append(renderer.render(parser.parse(stringWriter.getBuffer().toString())));
 						} catch (TemplateException | IOException e) {
