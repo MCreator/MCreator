@@ -43,16 +43,36 @@ import java.util.*;
 
 	private static final Logger LOG = LogManager.getLogger("Workspace info");
 
-	public boolean hasVariables() {
-		return !workspace.getVariableElements().isEmpty();
+	public List<ModElement> getElementsOfType(String typestring) {
+		return getElementsOfType(ModElementTypeLoader.getModElementType(typestring));
 	}
 
-	public boolean hasJavaModels() {
-		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
+	public List<ModElement> getElementsOfType(ModElementType<?> type) {
+		try {
+			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type).toList();
+		} catch (IllegalArgumentException e) {
+			LOG.warn("Failed to list elements of non-existent type", e);
+			return Collections.emptyList();
+		}
 	}
 
-	public boolean hasSounds() {
-		return !workspace.getSoundElements().isEmpty();
+	public boolean hasElementsOfBaseType(String baseTypeString) {
+		BaseType baseType = BaseType.valueOf(baseTypeString.toUpperCase(Locale.ENGLISH));
+		for (ModElement modElement : workspace.getModElements()) {
+			// getBaseTypesProvided is not thread safe, so we can't use parallelStream here
+			if (modElement.getBaseTypesProvided().contains(baseType))
+				return true;
+		}
+		return false;
+	}
+
+	public boolean hasElementsOfType(String typeString) {
+		try {
+			ModElementType<?> type = ModElementTypeLoader.getModElementType(typeString);
+			return workspace.getModElements().parallelStream().anyMatch(e -> e.getType() == type);
+		} catch (IllegalArgumentException e) {
+			return false;
+		}
 	}
 
 	public boolean hasVariablesOfScope(String type) {
@@ -60,27 +80,16 @@ import java.util.*;
 				.anyMatch(e -> e.getScope() == VariableType.Scope.valueOf(type));
 	}
 
-	public Map<String, String> getItemTextureMap() {
-		Map<String, String> textureMap = new HashMap<>();
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType().getBaseType() == BaseType.ITEM) {
-				GeneratableElement generatableElement = element.getGeneratableElement();
-				if (generatableElement instanceof IItemWithTexture) {
-					textureMap.put(element.getRegistryName(), ((IItemWithTexture) generatableElement).getTexture());
-				}
-			}
-		}
-		return textureMap;
+	public boolean hasVariables() {
+		return !workspace.getVariableElements().isEmpty();
 	}
 
-	public String getUUID(String offset) {
-		return UUID.nameUUIDFromBytes(
-				(offset + workspace.getWorkspaceSettings().getModID()).getBytes(StandardCharsets.UTF_8)).toString();
+	public boolean hasSounds() {
+		return !workspace.getSoundElements().isEmpty();
 	}
 
-	public String getUUID() {
-		return UUID.nameUUIDFromBytes(workspace.getWorkspaceSettings().getModID().getBytes(StandardCharsets.UTF_8))
-				.toString();
+	public boolean hasJavaModels() {
+		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
 	public <T extends MappableElement> Set<MappableElement.Unique> filterBrokenReferences(List<T> input) {
@@ -103,17 +112,17 @@ import java.util.*;
 		return retval;
 	}
 
-	public List<ModElement> getElementsOfType(String typestring) {
-		return getElementsOfType(ModElementTypeLoader.getModElementType(typestring));
-	}
-
-	public List<ModElement> getElementsOfType(ModElementType<?> type) {
-		try {
-			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type).toList();
-		} catch (IllegalArgumentException e) {
-			LOG.warn("Failed to list elements of non-existent type", e);
-			return Collections.emptyList();
+	public Map<String, String> getItemTextureMap() {
+		Map<String, String> textureMap = new HashMap<>();
+		for (ModElement element : workspace.getModElements()) {
+			if (element.getType().getBaseType() == BaseType.ITEM) {
+				GeneratableElement generatableElement = element.getGeneratableElement();
+				if (generatableElement instanceof IItemWithTexture) {
+					textureMap.put(element.getRegistryName(), ((IItemWithTexture) generatableElement).getTexture());
+				}
+			}
 		}
+		return textureMap;
 	}
 
 	public List<GeneratableElement> getModElements(String typestring) {
@@ -198,6 +207,16 @@ import java.util.*;
 		}
 
 		return tabMap;
+	}
+
+	public String getUUID(String offset) {
+		return UUID.nameUUIDFromBytes(
+				(offset + workspace.getWorkspaceSettings().getModID()).getBytes(StandardCharsets.UTF_8)).toString();
+	}
+
+	public String getUUID() {
+		return UUID.nameUUIDFromBytes(workspace.getWorkspaceSettings().getModID().getBytes(StandardCharsets.UTF_8))
+				.toString();
 	}
 
 	public MItemBlock itemBlock(String itemBlock) {
