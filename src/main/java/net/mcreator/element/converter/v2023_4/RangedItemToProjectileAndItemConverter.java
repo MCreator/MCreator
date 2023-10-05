@@ -68,6 +68,7 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			else
 				projectile.projectileItem = new MItemBlock(workspace,
 						"Items.ARROW"); // if for some reason a ranged item has no item defined, we need to provide one.
+
 			projectile.showParticles = rangedItem.get("bulletParticles").getAsBoolean();
 			if (rangedItem.get("actionSound") != null)
 				projectile.actionSound = new Sound(workspace,
@@ -78,6 +79,7 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			projectile.knockback = rangedItem.get("bulletKnockback").getAsInt();
 			if (rangedItem.get("bulletModel") != null)
 				projectile.entityModel = rangedItem.get("bulletModel").getAsString();
+
 			if (rangedItem.get("customBulletModelTexture") != null) {
 				// We need to include the old fv31 texture converter of ranged items as the mod element has been deleted.
 				if (jsonElementInput.getAsJsonObject().get("_fv").getAsInt() < 31 && !rangedItem.get(
@@ -120,9 +122,9 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 				item.customModelName = "Ranged item"; // Convert the ranged items' normal model to items' RI model option
 			item.creativeTab = new TabEntry(workspace,
 					rangedItem.get("creativeTab").getAsJsonObject().get("value").getAsString());
+
 			List<String> infoFixedValues = new ArrayList<>();
 			String infoProcedureName = null;
-
 			if (rangedItem.get("specialInfo") != null) {
 				rangedItem.getAsJsonArray("specialInfo").iterator()
 						.forEachRemaining(element -> infoFixedValues.add(element.getAsString()));
@@ -138,7 +140,6 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			}
 			item.specialInformation = new StringListProcedure(infoProcedureName, infoFixedValues);
 
-			item.stackSize = rangedItem.get("stackSize").getAsInt();
 			if (rangedItem.get("animation") != null)
 				item.animation = rangedItem.get("animation").getAsString();
 			else
@@ -146,33 +147,32 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 
 			if (rangedItem.has("glowCondition")) {
 				JsonObject rangedGlow = rangedItem.getAsJsonObject("glowCondition");
-				String glowName = rangedGlow.has("name") ? rangedGlow.get("name").getAsString() : null;
-				boolean value = rangedGlow.has("hasGlow") ?
-						rangedGlow.get("hasGlow").getAsBoolean() : // Old format
+				String glowConditionProcedureName = rangedGlow.has("name") ? rangedGlow.get("name").getAsString() : null;
+				boolean value = rangedGlow.has("hasGlow") ? rangedGlow.get("hasGlow").getAsBoolean() : // Old format
 						rangedGlow.get("fixedValue").getAsBoolean(); // New format of 2023.4
 
-				item.glowCondition = new LogicProcedure(glowName, value);
+				item.glowCondition = new LogicProcedure(glowConditionProcedureName, value);
 			} else if (rangedItem.has("hasGlow")) {
 				item.glowCondition = new LogicProcedure(null, rangedItem.get("hasGlow").getAsBoolean());
 			}
-
-			if (rangedItem.get("onEntitySwing") != null)
-				item.onEntitySwing = new Procedure(
-						rangedItem.get("onEntitySwing").getAsJsonObject().get("name").getAsString());
 
 			item.enableRanged = true;
 			item.shootConstantly = rangedItem.get("shootConstantly").getAsBoolean();
 			item.projectile = new ProjectileEntry(workspace, "CUSTOM:" + projectile.getModElement().getName());
 			item.enableMeleeDamage = rangedItem.get("enableMeleeDamage").getAsBoolean();
 			item.damageVsEntity = rangedItem.get("damageVsEntity").getAsDouble();
+			item.stackSize = rangedItem.get("stackSize").getAsInt();
+			item.useDuration = 72000;
 
+			if (rangedItem.get("onEntitySwing") != null)
+				item.onEntitySwing = new Procedure(
+						rangedItem.get("onEntitySwing").getAsJsonObject().get("name").getAsString());
 			if (rangedItem.get("useCondition") != null)
 				item.rangedUseCondition = new Procedure(
 						rangedItem.get("useCondition").getAsJsonObject().get("name").getAsString());
 			if (rangedItem.get("onRangedItemUsed") != null)
 				item.onRangedItemUsed = new Procedure(
 						rangedItem.get("onRangedItemUsed").getAsJsonObject().get("name").getAsString());
-			item.useDuration = 72000;
 
 			return item;
 		} catch (Exception e) {
