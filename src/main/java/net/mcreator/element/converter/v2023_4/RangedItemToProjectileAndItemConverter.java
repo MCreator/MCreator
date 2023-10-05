@@ -148,7 +148,7 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			if (rangedItem.has("glowCondition")) {
 				JsonObject rangedGlow = rangedItem.getAsJsonObject("glowCondition");
 				String glowConditionProcedureName = rangedGlow.has("name") ? rangedGlow.get("name").getAsString() : null;
-				boolean value = rangedGlow.has("hasGlow") ? rangedGlow.get("hasGlow").getAsBoolean() : // Old format
+				boolean value = rangedItem.has("hasGlow") ? rangedItem.get("hasGlow").getAsBoolean() : // Old format
 						rangedGlow.get("fixedValue").getAsBoolean(); // New format of 2023.4
 
 				item.glowCondition = new LogicProcedure(glowConditionProcedureName, value);
