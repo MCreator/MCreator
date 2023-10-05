@@ -133,8 +133,8 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 						.forEachRemaining(element -> infoFixedValues.add(element.getAsString()));
 			} else if (rangedItem.get("specialInformation") != null) {
 				if (rangedItem.get("specialInformation").getAsJsonObject().get("fixedValue") != null) {
-					rangedItem.get("specialInformation").getAsJsonObject().getAsJsonArray("fixedValue").iterator()
-							.forEachRemaining(element -> infoFixedValues.add(element.getAsString()));
+					rangedItem.get("specialInformation").getAsJsonObject().getAsJsonArray("fixedValue")
+							.forEach(element -> infoFixedValues.add(element.getAsString()));
 				}
 
 				if (rangedItem.get("specialInformation").getAsJsonObject().get("name") != null)
