@@ -62,7 +62,7 @@ import java.util.concurrent.Executors;
 public class ImageMakerView extends ViewBase implements MouseListener, MouseMotionListener {
 
 	private static final Logger LOG = LogManager.getLogger("Image Maker View");
-	private final int fps = 24;
+	private static final int FPS = 4;
 
 	private String name = L10N.t("tab.image_maker");
 
@@ -177,12 +177,12 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			active = true;
 			while (active) {
 				if (layerPanel.selected() != null && layerPanel.selected().isPasted()) {
-					canvasRenderer.addPhaseToOutline((float) Math.PI / fps);
+					canvasRenderer.addPhaseToOutline((float) Math.PI / FPS / 2);
 					repaint();
 				}
 
 				try {
-					Thread.sleep(1000 / fps);
+					Thread.sleep(1000 / FPS);
 				} catch (InterruptedException e) {
 					LOG.error(e.getMessage(), e);
 				}
