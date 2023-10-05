@@ -325,7 +325,7 @@ public class Generator implements IGenerator, Closeable {
 			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesListForModElementType(type, performFSTasks,
 					templateID);
 
-			List<GeneratableElement> elementsList = workspace.getWorkspaceInfo().getElementsOfType(type).stream()
+			List<GeneratableElement> elementsList = workspace.getModElements().stream().filter(e -> e.getType() == type)
 					.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
 					.filter(Objects::nonNull).collect(Collectors.toList());
 
