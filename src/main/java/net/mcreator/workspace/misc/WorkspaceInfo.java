@@ -56,6 +56,20 @@ import java.util.*;
 		}
 	}
 
+	public List<GeneratableElement> getModElements(String typestring) {
+		return getModElements(ModElementTypeLoader.getModElementType(typestring));
+	}
+
+	public List<GeneratableElement> getModElements(ModElementType<?> type) {
+		try {
+			return workspace.getModElements().stream().filter(e -> e.getType() == type)
+					.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
+		} catch (IllegalArgumentException e) {
+			LOG.warn("Failed to list elements of non-existent type", e);
+			return Collections.emptyList();
+		}
+	}
+
 	public boolean hasElementsOfBaseType(String baseTypeString) {
 		BaseType baseType = BaseType.valueOf(baseTypeString.toUpperCase(Locale.ENGLISH));
 		for (ModElement modElement : workspace.getModElements()) {
@@ -123,44 +137,6 @@ import java.util.*;
 			}
 		}
 		return textureMap;
-	}
-
-	public List<GeneratableElement> getModElements(String typestring) {
-		return getModElements(ModElementTypeLoader.getModElementType(typestring));
-	}
-
-	public List<GeneratableElement> getModElements(ModElementType<?> type) {
-		try {
-			return workspace.getModElements().stream().filter(e -> e.getType() == type)
-					.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
-		} catch (IllegalArgumentException e) {
-			LOG.warn("Failed to list elements of non-existent type", e);
-			return Collections.emptyList();
-		}
-	}
-
-	public boolean hasElementsOfBaseType(BaseType baseType) {
-		for (ModElement modElement : workspace.getModElements()) {
-			if (modElement.getBaseTypesProvided().contains(baseType))
-				return true;
-		}
-		return false;
-	}
-
-	public boolean hasElementsOfBaseType(String baseType) {
-		return hasElementsOfBaseType(BaseType.valueOf(baseType.toUpperCase(Locale.ENGLISH)));
-	}
-
-	public boolean hasElementsOfType(ModElementType<?> type) {
-		try {
-			return workspace.getModElements().parallelStream().anyMatch(e -> e.getType() == type);
-		} catch (IllegalArgumentException e) {
-			return false;
-		}
-	}
-
-	public boolean hasElementsOfType(String typestring) {
-		return hasElementsOfType(ModElementTypeLoader.getModElementType(typestring));
 	}
 
 	public boolean hasItemsInTabs() {
