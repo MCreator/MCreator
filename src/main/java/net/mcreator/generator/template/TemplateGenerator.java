@@ -29,9 +29,9 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class TemplateGenerator {
@@ -41,6 +41,8 @@ public class TemplateGenerator {
 	private final TemplateGeneratorConfiguration templateGeneratorConfiguration;
 	private final Generator generator;
 	private final BaseDataModelProvider baseDataModelProvider;
+
+	private final Map<String, Template> inline_template_cache = new ConcurrentHashMap<>();
 
 	public TemplateGenerator(TemplateGeneratorConfiguration templateGeneratorConfiguration, Generator generator) {
 		this.generator = generator;
@@ -134,8 +136,15 @@ public class TemplateGenerator {
 	private String generateTemplateFromString(String template, Map<String, Object> dataModel)
 			throws TemplateGeneratorException {
 		try {
-			Template freemarkerTemplate = new Template("DIRECT", new StringReader(template),
-					templateGeneratorConfiguration.getConfiguration());
+			Template freemarkerTemplate;
+			if (inline_template_cache.containsKey(template)) {
+				freemarkerTemplate = inline_template_cache.get(template);
+			} else {
+				freemarkerTemplate = new Template("INLINE_TEMPLATE", template,
+						templateGeneratorConfiguration.getConfiguration());
+				inline_template_cache.put(template, freemarkerTemplate);
+			}
+
 			StringWriter stringWriter = new StringWriter();
 			freemarkerTemplate.process(dataModel, stringWriter, templateGeneratorConfiguration.getBeansWrapper());
 			return stringWriter.getBuffer().toString();
