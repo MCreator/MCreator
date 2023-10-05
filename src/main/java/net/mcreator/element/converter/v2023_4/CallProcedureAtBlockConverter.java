@@ -19,15 +19,10 @@
 
 package net.mcreator.element.converter.v2023_4;
 
-import com.google.gson.JsonElement;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.converter.ProcedureConverter;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.util.BlocklyHelper;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -42,25 +37,13 @@ import javax.xml.transform.stream.StreamResult;
 import java.io.StringReader;
 import java.io.StringWriter;
 
-public class CallProcedureAtBlockConverter implements IConverter {
-	private static final Logger LOG = LogManager.getLogger("CallProcedureBlockConverter");
-
-	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Procedure procedure = (Procedure) input;
-		try {
-			procedure.procedurexml = fixXML(procedure.procedurexml);
-		} catch (Exception e) {
-			LOG.warn("Failed to convert procedure " + input.getModElement().getName());
-		}
-		return procedure;
-	}
+public class CallProcedureAtBlockConverter extends ProcedureConverter {
 
 	@Override public int getVersionConvertingTo() {
 		return 53;
 	}
 
-	protected String fixXML(String xml) throws Exception {
+	@Override protected String fixXML(Procedure procedure, String xml) throws Exception {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
