@@ -23,11 +23,13 @@ import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.clipboard.transferables.CanvasTransferable;
 import net.mcreator.ui.views.editor.image.clipboard.transferables.LayerTransferable;
 import net.mcreator.ui.views.editor.image.layer.Layer;
+import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.versioning.change.Modification;
 
 import java.awt.*;
 import java.awt.datatransfer.*;
 import java.io.IOException;
+import java.util.UUID;
 
 public class ClipboardManager implements ClipboardOwner {
 	private final Clipboard clipboard;
@@ -57,7 +59,7 @@ public class ClipboardManager implements ClipboardOwner {
 		}
 	}
 
-	private void addCanvasToClipboard(){
+	private void addCanvasToClipboard() {
 		addLayerToClipboard(new CanvasTransferable(imageMakerView.getCanvas()));
 	}
 
@@ -87,19 +89,30 @@ public class ClipboardManager implements ClipboardOwner {
 					Image img = (Image) clp.getTransferData(DataFlavor.imageFlavor);
 					if (clp.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 						Layer layer = new Layer((String) clp.getTransferData(DataFlavor.stringFlavor), img);
-						layer.setPasted(true);
-						imageMakerView.getCanvas()
-								.add(layer);
+						layer.setPasted(!imageMakerView.getCanvas().isEmpty());
+
+						addFloatingLayer(layer);
 					} else {
 						Layer layer = new Layer("Pasted layer", img);
-						layer.setPasted(true);
-						imageMakerView.getCanvas().add(layer);
+						layer.setPasted(!imageMakerView.getCanvas().isEmpty());
+						addFloatingLayer(layer);
 					}
 
 				} catch (UnsupportedFlavorException | IOException e) {
 					throw new RuntimeException(e);
 				}
 			}
+		}
+	}
+
+	private void addFloatingLayer(Layer layer) {
+		if (imageMakerView.getLayerPanel().isFloating()) {
+			Canvas canvas = imageMakerView.getCanvas();
+			UUID uuid = UUID.randomUUID();
+			canvas.mergeDown(canvas.indexOf(canvas.getFloatingLayer()), uuid);
+			canvas.add(layer, 0, uuid);
+		} else {
+			imageMakerView.getCanvas().add(layer);
 		}
 	}
 

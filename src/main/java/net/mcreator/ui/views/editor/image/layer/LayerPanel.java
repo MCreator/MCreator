@@ -115,8 +115,13 @@ public class LayerPanel extends JPanel {
 		canEdit(false);
 
 		add.addActionListener(e -> {
-			NewLayerDialog dialog = new NewLayerDialog(f, canvas);
-			dialog.setVisible(true);
+			if (isFloating()) {
+				canvas.consolidateFloating();
+				updateControls();
+			} else {
+				NewLayerDialog dialog = new NewLayerDialog(f, canvas);
+				dialog.setVisible(true);
+			}
 		});
 
 		up.addActionListener(e -> {
@@ -143,8 +148,10 @@ public class LayerPanel extends JPanel {
 					L10N.t("dialog.imageeditor.layer_panel_confirm_layer_deletion_message") + selected(),
 					L10N.t("dialog.imageeditor.layer_panel_confirm_layer_deletion_title"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE);
-			if (confirmDialog == 0)
+			if (confirmDialog == 0) {
 				canvas.remove(selectedID());
+				updateControls();
+			}
 		});
 
 		duplicate.addActionListener(e -> {
@@ -215,20 +222,33 @@ public class LayerPanel extends JPanel {
 		}
 	}
 
-	public void setListMode(LayerListMode mode) {
+	private void setListMode(LayerListMode mode) {
 		if (!(layerList == null && mode == LayerListMode.NORMAL))
 			this.mode = mode;
 		CardLayout cl = (CardLayout) (layerPanel.getLayout());
 		cl.show(layerPanel, mode.toString());
 	}
 
+	public void updateFloatingLayer() {
+		updateControls();
+	}
+
 	public void select(int selected) {
-		layerList.setSelectedIndex(selected);
+		if (selected < 0)
+			layerList.setSelectedIndex(0);
+		else if (selected >= canvas.size())
+			layerList.setSelectedIndex(canvas.size() - 1);
+		else
+			layerList.setSelectedIndex(selected);
 		updateSelection();
 	}
 
 	public int selectedID() {
 		return layerList.getSelectedIndex();
+	}
+
+	public boolean isFloating() {
+		return canvas.getFloatingLayer() != null && canvas.getFloatingLayer().isPasted();
 	}
 
 	public Layer selected() {
@@ -242,20 +262,30 @@ public class LayerPanel extends JPanel {
 	}
 
 	public void updateSelection() {
-		updateControls();
 		Layer selected = selected();
 		if (selected != null)
 			toolPanel.setLayer(selected);
+		updateControls();
 	}
 
-	private void updateControls() {
+	public void updateControls() {
 		if (!canvas.isEmpty()) {
 			setListMode(LayerListMode.NORMAL);
 			if (selectedID() != -1) {
-				canEdit(true);
-				down.setEnabled(selectedID() < canvas.size() - 1);
-				up.setEnabled(selectedID() > 0);
+				boolean floating = isFloating();
+				canEdit(!floating);
+				down.setEnabled(selectedID() < canvas.size() - 1 && !floating);
+				up.setEnabled(selectedID() > 0 && !floating);
 				mergeDown.setEnabled(selectedID() < canvas.size() - 1);
+				layerList.setEnabled(!floating);
+				if (floating) {
+					add.setIcon(UIRES.get("18px.add_new"));
+					add.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_new_layer.floating"));
+					delete.setEnabled(true);
+				} else {
+					add.setIcon(UIRES.get("18px.add"));
+					add.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_new_layer"));
+				}
 			} else {
 				up.setEnabled(false);
 				down.setEnabled(false);

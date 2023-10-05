@@ -22,10 +22,7 @@ import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.tools.Shape;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
-import net.mcreator.ui.views.editor.image.versioning.change.Addition;
-import net.mcreator.ui.views.editor.image.versioning.change.CanvasResize;
-import net.mcreator.ui.views.editor.image.versioning.change.Modification;
-import net.mcreator.ui.views.editor.image.versioning.change.Removal;
+import net.mcreator.ui.views.editor.image.versioning.change.*;
 import net.mcreator.util.ArrayListListModel;
 
 import java.awt.*;
@@ -46,6 +43,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 	private Image previewImage;
 	private boolean drawCustomPreview;
+	private Layer floatingLayer;
 
 	public Canvas(int width, int height, LayerPanel layerPanel, VersionManager versionManager) {
 		this.width = width;
@@ -63,7 +61,19 @@ public class Canvas extends ArrayListListModel<Layer> {
 		Addition addition = new Addition(this, layer);
 		addition.setUUID(group);
 		versionManager.addRevision(addition);
+		floatingCheck(layer);
 		return success;
+	}
+
+	public boolean add(Layer layer, int index, UUID group) {
+		super.add(index, layer);
+		layer.setCanvas(this);
+		layerPanel.select(indexOf(layer));
+		Addition addition = new Addition(this, layer);
+		addition.setUUID(group);
+		versionManager.addRevision(addition);
+		floatingCheck(layer);
+		return true;
 	}
 
 	@Override public boolean add(Layer layer) {
@@ -71,6 +81,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 		layer.setCanvas(this);
 		layerPanel.select(indexOf(layer));
 		versionManager.addRevision(new Addition(this, layer));
+		floatingCheck(layer);
 		return true;
 	}
 
@@ -78,6 +89,23 @@ public class Canvas extends ArrayListListModel<Layer> {
 		super.add(index, element);
 		element.setCanvas(this);
 		layerPanel.select(indexOf(element));
+		floatingCheck(element);
+	}
+
+	/**
+	 * Checks if the layer is floating and updates the floating layer.
+	 *
+	 * @param layer the layer to check
+	 */
+	public void floatingCheck(Layer layer) {
+		if (layer == null || layer.isPasted()) {
+			floatingLayer = layer;
+			layerPanel.updateFloatingLayer();
+		}
+	}
+
+	public Layer getFloatingLayer() {
+		return floatingLayer;
 	}
 
 	@Override public Layer set(int index, Layer layer) {
@@ -93,6 +121,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 		layerPanel.select(index - 1);
 		removal.setUUID(group);
 		versionManager.addRevision(removal);
+		floatingCheck(null);
 		return removed;
 	}
 
@@ -102,6 +131,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 		layerPanel.select(toSelect);
 		removal.setUUID(group);
 		versionManager.addRevision(removal);
+		floatingCheck(null);
 		return removed;
 	}
 
@@ -109,6 +139,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 		versionManager.addRevision(new Removal(this, get(index)));
 		Layer removed = super.remove(index);
 		layerPanel.select(Math.max(index - 1, 0));
+		floatingCheck(null);
 		return removed;
 	}
 
@@ -117,12 +148,14 @@ public class Canvas extends ArrayListListModel<Layer> {
 		versionManager.addRevision(new Removal(this, (Layer) o));
 		boolean removed = super.remove(o);
 		layerPanel.select(Math.max(index - 1, 0));
+		floatingCheck(null);
 		return removed;
 	}
 
 	public Layer removeNR(int index) {
 		Layer removed = super.remove(index);
 		layerPanel.select(index - 1);
+		floatingCheck(null);
 		return removed;
 	}
 
@@ -142,6 +175,10 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 	public boolean mergeDown(int selectedID) {
 		UUID uuid = UUID.randomUUID();
+		return mergeDown(selectedID, uuid);
+	}
+
+	public boolean mergeDown(int selectedID, UUID uuid) {
 		get(selectedID + 1).mergeOnTop(get(selectedID));
 
 		Modification adt = new Modification(this, get(selectedID + 1));
@@ -151,6 +188,14 @@ public class Canvas extends ArrayListListModel<Layer> {
 		boolean success = remove(selectedID, uuid, selectedID) != null;
 		layerPanel.select(selectedID);
 		return success;
+	}
+
+	public boolean consolidateFloating() {
+		Consolidation consolidation = new Consolidation(this, floatingLayer);
+		floatingLayer.setPasted(false);
+		consolidation.setAfter(floatingLayer);
+		versionManager.addRevision(consolidation);
+		return true;
 	}
 
 	public boolean mergeSelectedDown() {
