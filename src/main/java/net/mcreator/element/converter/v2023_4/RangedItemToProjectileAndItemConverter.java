@@ -162,6 +162,7 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			item.enableMeleeDamage = rangedItem.get("enableMeleeDamage").getAsBoolean();
 			item.damageVsEntity = rangedItem.get("damageVsEntity").getAsDouble();
 			item.stackSize = rangedItem.get("stackSize").getAsInt();
+			item.damageCount = rangedItem.get("usageCount").getAsInt();
 			item.useDuration = 72000;
 
 			if (rangedItem.get("onEntitySwing") != null)
