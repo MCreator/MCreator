@@ -49,11 +49,11 @@ public class ReferencesFinder {
 		List<ModElement> elements = new ArrayList<>();
 
 		String query = new DataListEntry.Custom(element).getName();
-		workspace.getModElements().parallelStream().filter(me -> !me.equals(element)).forEach(me -> {
+		workspace.getModElements().stream().filter(me -> !me.equals(element)).forEach(me -> {
 			GeneratableElement ge = me.getGeneratableElement();
 			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ElementReference.class), (a, t) -> {
 				ElementReference ref = a.getAnnotation(ElementReference.class);
-				return ref != null && !List.of(ref.defaultValues()).contains(t) && query.equals(ref.customPrefix() + t);
+				return ref != null && !List.of(ref.defaultValues()).contains(t) && query.equals("CUSTOM:" + t);
 			})) {
 				elements.add(me);
 			} else if (anyValueMatches(ge, MappableElement.class, null, (a, t) -> t.getUnmappedValue().equals(query))) {
@@ -75,7 +75,7 @@ public class ReferencesFinder {
 	public static List<ModElement> searchTextureUsages(Workspace workspace, File texture, TextureType type) {
 		List<ModElement> elements = new ArrayList<>();
 
-		workspace.getModElements().parallelStream().forEach(me -> {
+		workspace.getModElements().forEach(me -> {
 			if (anyValueMatches(me.getGeneratableElement(), String.class, e -> {
 				TextureReference ref = e.getAnnotation(TextureReference.class);
 				return ref != null && ref.value() == type;
@@ -94,7 +94,7 @@ public class ReferencesFinder {
 	public static List<ModElement> searchModelUsages(Workspace workspace, Model model) {
 		List<ModElement> elements = new ArrayList<>();
 
-		workspace.getModElements().parallelStream().forEach(me -> {
+		workspace.getModElements().forEach(me -> {
 			if (anyValueMatches(me.getGeneratableElement(), Model.class, e -> {
 				ResourceReference ref = e.getAnnotation(ResourceReference.class);
 				return ref != null && ref.value().equals("model");
@@ -109,7 +109,7 @@ public class ReferencesFinder {
 	public static List<ModElement> searchSoundUsages(Workspace workspace, SoundElement sound) {
 		List<ModElement> elements = new ArrayList<>();
 
-		workspace.getModElements().parallelStream().forEach(me -> {
+		workspace.getModElements().forEach(me -> {
 			if (anyValueMatches(me.getGeneratableElement(), Sound.class, e -> {
 				ResourceReference ref = e.getAnnotation(ResourceReference.class);
 				return ref != null && ref.value().equals("sound");
@@ -123,7 +123,7 @@ public class ReferencesFinder {
 	public static List<ModElement> searchStructureUsages(Workspace workspace, String structure) {
 		List<ModElement> elements = new ArrayList<>();
 
-		workspace.getModElements().parallelStream().forEach(me -> {
+		workspace.getModElements().forEach(me -> {
 			GeneratableElement ge = me.getGeneratableElement();
 			if (anyValueMatches(ge, String.class, e -> {
 				ResourceReference ref = e.getAnnotation(ResourceReference.class);
@@ -141,7 +141,7 @@ public class ReferencesFinder {
 	public static List<ModElement> searchGlobalVariableUsages(Workspace workspace, String variableName) {
 		List<ModElement> elements = new ArrayList<>();
 
-		workspace.getModElements().parallelStream().forEach(me -> {
+		workspace.getModElements().forEach(me -> {
 			if (anyValueMatches(me.getGeneratableElement(), String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
 					(a, t) -> t.contains("<field name=\"VAR\">global:" + variableName + "</field>"))) {
 				elements.add(me);
@@ -154,7 +154,7 @@ public class ReferencesFinder {
 	public static List<ModElement> searchLocalizationKeyUsages(Workspace workspace, String localizationKey) {
 		List<ModElement> elements = new ArrayList<>();
 
-		workspace.getModElements().parallelStream().forEach(me -> {
+		workspace.getModElements().forEach(me -> {
 			GeneratableElement ge = me.getGeneratableElement();
 			if (ge != null && workspace.getGenerator().getElementLocalizationKeys(ge).contains(localizationKey)) {
 				elements.add(me);
@@ -179,7 +179,7 @@ public class ReferencesFinder {
 	 */
 	@SuppressWarnings("unused") public static <T> List<ModElement> searchUsages(Workspace workspace, Class<T> clazz,
 			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
-		return workspace.getModElements().parallelStream()
+		return workspace.getModElements().stream()
 				.filter(me -> anyValueMatches(me.getGeneratableElement(), clazz, validIf, condition)).toList();
 	}
 

@@ -142,7 +142,7 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public boolean hasInventory;
-	@ElementReference(customPrefix = "CUSTOM:", defaultValues = "<NONE>") public String guiBoundTo;
+	@ElementReference(defaultValues = "<NONE>") public String guiBoundTo;
 	public boolean openGUIOnRightClick;
 	public int inventorySize;
 	public int inventoryStackSize;

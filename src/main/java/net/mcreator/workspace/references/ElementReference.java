@@ -28,6 +28,4 @@ import java.lang.annotation.Target;
 
 	String[] defaultValues() default "";
 
-	String customPrefix() default "";
-
 }

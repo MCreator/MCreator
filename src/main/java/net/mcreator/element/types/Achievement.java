@@ -53,9 +53,9 @@ import java.util.List;
 	public boolean announceToChat;
 	public boolean hideIfNotCompleted;
 
-	@ElementReference(customPrefix = "CUSTOM:") public List<String> rewardLoot;
-	@ElementReference(customPrefix = "CUSTOM:") public List<String> rewardRecipes;
-	@ElementReference(customPrefix = "CUSTOM:", defaultValues = "No function") public String rewardFunction;
+	@ElementReference public List<String> rewardLoot;
+	@ElementReference public List<String> rewardRecipes;
+	@ElementReference(defaultValues = "No function") public String rewardFunction;
 	public int rewardXP;
 
 	public String achievementType;
