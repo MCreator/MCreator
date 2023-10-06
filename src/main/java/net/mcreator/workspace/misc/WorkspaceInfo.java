@@ -43,12 +43,9 @@ import java.util.*;
 
 	private static final Logger LOG = LogManager.getLogger("Workspace info");
 
-	public List<ModElement> getElementsOfType(String typestring) {
-		return getElementsOfType(ModElementTypeLoader.getModElementType(typestring));
-	}
-
-	public List<ModElement> getElementsOfType(ModElementType<?> type) {
+	public List<ModElement> getElementsOfType(String typeString) {
 		try {
+			ModElementType<?> type = ModElementTypeLoader.getModElementType(typeString);
 			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type).toList();
 		} catch (IllegalArgumentException e) {
 			LOG.warn("Failed to list elements of non-existent type", e);

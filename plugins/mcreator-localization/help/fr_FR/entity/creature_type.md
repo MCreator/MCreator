@@ -1,4 +1,5 @@
 Vous permet de définir le type d'une créature, occasionnant quelques changements.
-* **Morts-vivants** prennent des dégâts supplémentaires de l'enchantement Châtiment, sont guéris par l'effet de Dégâts et blessés par l'effet de Soin, et ne sont pas affectés par le Poison ou la Régénération. 
-* **Arthropodes** subissent des dégâts supplémentaires grâce à l'enchantement Fléau des Arthropodes. 
+* Les **Morts-vivants** subissent des dégâts supplémentaires grâce à l'enchantement Châtiment, sont soignés par la potion de dégâts et blessés par les potions de soins, et ne sont pas affectés par le poison ou la régénération.
+* **Les Arthropodes** reçoivent des dégâts supplémentaires de l'enchantement du Fléau des Arthropodes.
 * **Illager** ne semble pas avoir d'effet.
+* **Eau** subit des dégâts supplémentaires de l'enchantement Impalant. 
