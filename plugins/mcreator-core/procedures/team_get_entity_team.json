@@ -11,7 +11,7 @@
   "colour": "%{BKY_TEXTS_HUE}",
   "mcreator": {
     "group": "team",
-    "toolbox_id": "scoreboardmanagement",
+    "toolbox_id": "scoreboard",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],

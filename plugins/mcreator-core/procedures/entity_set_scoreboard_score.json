@@ -22,7 +22,7 @@
   "colour": 50,
   "mcreator": {
     "group": "scoreboard",
-    "toolbox_id": "scoreboardmanagement",
+    "toolbox_id": "scoreboard",
     "toolbox_init": [
       "<value name=\"score\"><block type=\"text\"><field name=\"TEXT\">custom_score</field></block></value>",
       "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
