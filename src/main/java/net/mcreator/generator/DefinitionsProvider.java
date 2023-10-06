@@ -27,7 +27,6 @@ import net.mcreator.util.YamlUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.snakeyaml.engine.v2.api.Load;
-import org.snakeyaml.engine.v2.api.LoadSettings;
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
 import java.util.Locale;
@@ -56,7 +55,7 @@ public class DefinitionsProvider {
 			try {
 				cache.put(type, new ConcurrentHashMap<>((Map<?, ?>) yamlLoad.loadFromString(config))); // add definition to the cache
 			} catch (YamlEngineException e) {
-				LOG.error("[" + generatorName + "] Error: " + e.getMessage(), e);
+				LOG.error("[" + generatorName + "] Error: " + e.getMessage());
 			}
 		}
 
@@ -71,7 +70,7 @@ public class DefinitionsProvider {
 				global_cache.put(type,
 						new ConcurrentHashMap<>((Map<?, ?>) yamlLoad.loadFromString(config))); // add definition to the cache
 			} catch (YamlEngineException e) {
-				LOG.info("[" + generatorName + "] Error: " + e.getMessage(), e);
+				LOG.info("[" + generatorName + "] Error: " + e.getMessage());
 			}
 		}
 	}

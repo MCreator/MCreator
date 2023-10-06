@@ -32,6 +32,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -45,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * ModElementManager is not thread safe
  */
-public final class ModElementManager {
+@NotThreadSafe public final class ModElementManager {
 
 	private static final Logger LOG = LogManager.getLogger("ModElementManager");
 
