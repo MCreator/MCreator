@@ -53,12 +53,10 @@ import java.util.*;
 		}
 	}
 
-	public List<GeneratableElement> getModElements(String typestring) {
-		return getModElements(ModElementTypeLoader.getModElementType(typestring));
-	}
-
-	public List<GeneratableElement> getModElements(ModElementType<?> type) {
+	public List<GeneratableElement> getGElementsOfType(String typeString) {
+		ModElementType<?> type = ModElementTypeLoader.getModElementType(typeString);
 		try {
+			// getGeneratableElement is not thread safe, so we can't use parallelStream here
 			return workspace.getModElements().stream().filter(e -> e.getType() == type)
 					.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
 		} catch (IllegalArgumentException e) {
