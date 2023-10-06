@@ -225,15 +225,33 @@
 <#-- Armor triggers -->
 <#macro onArmorTick procedure="">
 <#if hasProcedure(procedure)>
-@Override public void onArmorTick(ItemStack itemstack, Level world, Player entity) {
-	<@procedureCode procedure, {
-	"x": "entity.getX()",
-	"y": "entity.getY()",
-	"z": "entity.getZ()",
-	"world": "world",
-	"entity": "entity",
-	"itemstack": "itemstack"
-	}/>
+<#-- ideally we would use onInventoryTick for slotIndex [36, 40), however this method is not being called in 1.20.1 FG properly -->
+@Override public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
+	super.inventoryTick(itemstack, world, entity, slot, selected);
+	if (entity instanceof Player player && Iterables.contains(player.getArmorSlots(), itemstack)) {
+		<@procedureCode procedure, {
+		"x": "entity.getX()",
+		"y": "entity.getY()",
+		"z": "entity.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"itemstack": "itemstack"
+		}/>
+	}
+}
+</#if>
+</#macro>
+
+<#macro piglinNeutral procedure="">
+<#if procedure?has_content || hasProcedure(procedure)>
+@Override public boolean makesPiglinsNeutral(ItemStack itemstack, LivingEntity entity) {
+	<#if hasProcedure(procedure)>
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		Level world = entity.level();
+	</#if>
+	return <@procedureOBJToConditionCode procedure procedure.getFixedValue() false/>;
 }
 </#if>
 </#macro>
