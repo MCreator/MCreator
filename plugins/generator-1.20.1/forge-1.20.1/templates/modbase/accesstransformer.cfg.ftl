@@ -1,4 +1,4 @@
-<#if w.getModElements("biome")?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
+<#if w.getGElementsOfType("biome")?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0>
 public net.minecraft.world.level.biome.MultiNoiseBiomeSource m_274409_()Lnet/minecraft/world/level/biome/Climate$ParameterList; #parameters()
 public-f net.minecraft.world.level.chunk.ChunkGenerator f_62137_ #biomeSource
 public-f net.minecraft.world.level.chunk.ChunkGenerator f_223020_ #featuresPerStep
