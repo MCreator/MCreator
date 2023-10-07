@@ -27,51 +27,36 @@ import net.mcreator.ui.component.util.ListUtil;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
-import java.util.*;
+import java.util.Locale;
 
-class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable {
-
-	private final WorkspacePanel workspacePanel;
-
-	private final FilterModel listmodel = new FilterModel();
-	private final JSelectableList<File> screenshotsList = new JSelectableList<>(listmodel);
+class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 
 	WorkspacePanelScreenshots(WorkspacePanel workspacePanel) {
-		super(new BorderLayout());
-		setOpaque(false);
+		super(workspacePanel, new ResourceFilterModel<>(workspacePanel,
+				item -> item.getName().toLowerCase(Locale.ENGLISH)
+						.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH)),
+				Comparator.comparing(File::getName)), new Render());
 
-		this.workspacePanel = workspacePanel;
+		elementList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2)
+					exportSelectedScreenshots();
+			}
+		});
+	}
 
-		screenshotsList.setOpaque(false);
-		screenshotsList.setCellRenderer(new Render());
-		screenshotsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		screenshotsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		screenshotsList.setVisibleRowCount(-1);
-
-		JScrollPane sp = new JScrollPane(screenshotsList);
-		sp.setOpaque(false);
-		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUnitIncrement(11);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
-
-		add("Center", sp);
-
+	@Override TransparentToolBar createToolBar(JSelectableList<File> elementList) {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
@@ -98,32 +83,33 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 		del.addActionListener(e -> {
-			screenshotsList.getSelectedValuesList().forEach(File::delete);
+			deleteCurrentlySelected(elementList.getSelectedValuesList());
 			reloadElements();
 		});
-		screenshotsList.addKeyListener(new KeyAdapter() {
-			@Override public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					screenshotsList.getSelectedValuesList().forEach(File::delete);
-					reloadElements();
-				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					exportSelectedScreenshots();
-				}
-			}
-		});
 
-		screenshotsList.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2)
-					exportSelectedScreenshots();
-			}
-		});
+		return bar;
+	}
 
-		add("North", bar);
+	@Override void deleteCurrentlySelected(List<File> elements) {
+		elements.forEach(File::delete);
+	}
+
+	@Override public void reloadElements() {
+		List<File> selected = elementList.getSelectedValuesList();
+
+		filterModel.removeAllElements();
+		File[] screenshots = new File(workspacePanel.getMCreator().getWorkspaceFolder(),
+				"run/screenshots/").listFiles();
+		if (screenshots != null)
+			Arrays.stream(screenshots).forEach(filterModel::addElement);
+
+		ListUtil.setSelectedValues(elementList, selected);
+
+		refilterElements();
 	}
 
 	private void useSelectedAsBackgrounds() {
-		screenshotsList.getSelectedValuesList().forEach(
+		elementList.getSelectedValuesList().forEach(
 				f -> FileIO.copyFile(f, new File(UserFolderManager.getFileFromUserFolder("backgrounds"), f.getName())));
 		JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
 				L10N.t("workspace.screenshots.use_background_message"), L10N.t("workspace.screenshots.action_complete"),
@@ -131,94 +117,11 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 	}
 
 	private void exportSelectedScreenshots() {
-		screenshotsList.getSelectedValuesList().forEach(f -> {
+		elementList.getSelectedValuesList().forEach(f -> {
 			File to = FileDialogs.getSaveDialog(workspacePanel.getMCreator(), new String[] { ".png" });
 			if (to != null)
 				FileIO.copyFile(f, to);
 		});
-	}
-
-	@Override public void reloadElements() {
-		List<File> selected = screenshotsList.getSelectedValuesList();
-
-		listmodel.removeAllElements();
-		File[] screenshots = new File(workspacePanel.getMCreator().getWorkspaceFolder(),
-				"run/screenshots/").listFiles();
-		if (screenshots != null)
-			Arrays.stream(screenshots).forEach(listmodel::addElement);
-
-		ListUtil.setSelectedValues(screenshotsList, selected);
-
-		refilterElements();
-	}
-
-	@Override public void refilterElements() {
-		listmodel.refilter();
-	}
-
-	private class FilterModel extends DefaultListModel<File> {
-		List<File> items;
-		List<File> filterItems;
-
-		FilterModel() {
-			super();
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
-		}
-
-		@Override public int indexOf(Object elem) {
-			if (elem instanceof File)
-				return filterItems.indexOf(elem);
-			else
-				return -1;
-		}
-
-		@Override public File getElementAt(int index) {
-			if (index < filterItems.size())
-				return filterItems.get(index);
-			else
-				return null;
-		}
-
-		@Override public int getSize() {
-			return filterItems.size();
-		}
-
-		@Override public void addElement(File o) {
-			items.add(o);
-			refilter();
-		}
-
-		@Override public void removeAllElements() {
-			super.removeAllElements();
-			items.clear();
-			filterItems.clear();
-		}
-
-		@Override public boolean removeElement(Object a) {
-			if (a instanceof File) {
-				items.remove(a);
-				filterItems.remove(a);
-			}
-			return super.removeElement(a);
-		}
-
-		void refilter() {
-			filterItems.clear();
-			String term = workspacePanel.search.getText();
-			filterItems.addAll(items.stream().filter(Objects::nonNull)
-					.filter(item -> item.getName().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH))).toList());
-
-			if (workspacePanel.sortName.isSelected()) {
-				filterItems.sort(Comparator.comparing(File::getName));
-			}
-
-			if (workspacePanel.desc.isSelected())
-				Collections.reverse(filterItems);
-
-			fireContentsChanged(this, 0, getSize());
-		}
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<File> {

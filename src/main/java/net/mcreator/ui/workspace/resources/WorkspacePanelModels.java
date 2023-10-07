@@ -22,6 +22,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
+import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
@@ -29,8 +30,6 @@ import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.TextureMappingDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.resources.Model;
@@ -38,8 +37,6 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -47,47 +44,33 @@ import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class WorkspacePanelModels extends JPanel implements IReloadableFilterable {
-
-	private final WorkspacePanel workspacePanel;
-
-	private final FilterModel listmodel = new FilterModel();
-	private final JList<Model> modelList = new JList<>(listmodel);
+public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 	WorkspacePanelModels(WorkspacePanel workspacePanel) {
-		super(new BorderLayout());
-		setOpaque(false);
-
-		this.workspacePanel = workspacePanel;
-
-		modelList.setOpaque(false);
-		modelList.setCellRenderer(new Render());
-		modelList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		modelList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		modelList.setVisibleRowCount(-1);
-
-		modelList.addMouseMotionListener(new MouseAdapter() {
-			@Override public void mouseMoved(MouseEvent e) {
-				super.mouseMoved(e);
-				int idx = modelList.locationToIndex(e.getPoint());
-				Model model = modelList.getModel().getElementAt(idx);
-				if (model != null) {
-					workspacePanel.getMCreator().getStatusBar().setMessage(model.getReadableName());
+		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, item -> predicateCheck(workspacePanel, item),
+				Comparator.comparing(Model::getReadableName)), new Render());
+		
+		elementList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2) {
+					Model model = elementList.getSelectedValue();
+					if (model.getType() == Model.Type.JAVA) {
+						editSelectedModelAnimations();
+					} else {
+						editSelectedModelTextureMappings();
+					}
 				}
 			}
 		});
+	}
 
-		JScrollPane sp = new JScrollPane(modelList);
-		sp.setOpaque(false);
-		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUnitIncrement(11);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
+	private static boolean predicateCheck(WorkspacePanel workspacePanel, Model item) {
+		return item.getReadableName().toLowerCase(Locale.ENGLISH)
+				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH)) || item.getType().name()
+				.toLowerCase(Locale.ENGLISH).contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH));
+	}
 
-		add("Center", sp);
-
+	@Override TransparentToolBar createToolBar(JSelectableList<Model> elementList) {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
@@ -153,34 +136,13 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
 
-		del.addActionListener(e -> deleteCurrentlySelected());
+		del.addActionListener(e -> deleteCurrentlySelected(Collections.emptyList()));
 
-		modelList.addKeyListener(new KeyAdapter() {
-			@Override public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					deleteCurrentlySelected();
-				}
-			}
-		});
-
-		modelList.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
-					Model model = modelList.getSelectedValue();
-					if (model.getType() == Model.Type.JAVA) {
-						editSelectedModelAnimations();
-					} else {
-						editSelectedModelTextureMappings();
-					}
-				}
-			}
-		});
-
-		add("North", bar);
+		return bar;
 	}
 
-	private void deleteCurrentlySelected() {
-		Model model = modelList.getSelectedValue();
+	@Override void deleteCurrentlySelected(List<Model> elements) {
+		Model model = elementList.getSelectedValue();
 		if (model != null) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.3dmodels.delete_confirm_message"), L10N.t("common.confirmation"),
@@ -193,8 +155,14 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		}
 	}
 
+	@Override public void reloadElements() {
+		filterModel.removeAllElements();
+		Model.getModels(workspacePanel.getMCreator().getWorkspace()).forEach(filterModel::addElement);
+		refilterElements();
+	}
+
 	private void editSelectedModelAnimations() {
-		Model model = modelList.getSelectedValue();
+		Model model = elementList.getSelectedValue();
 		if (model.getType() == Model.Type.JAVA) {
 			File file = model.getFile();
 			String code = FileIO.readFileToString(file);
@@ -249,7 +217,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 	}
 
 	private void editSelectedModelTextureMappings() {
-		Model model = modelList.getSelectedValue();
+		Model model = elementList.getSelectedValue();
 		Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(model);
 		if (textureMappingMap != null) {
 			textureMappingMap = new TextureMappingDialog(textureMappingMap).openMappingDialog(
@@ -263,82 +231,6 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.3dmodels.mappings_unsupported_message"),
 					L10N.t("workspace.3dmodels.mappings_unsupported_title"), JOptionPane.WARNING_MESSAGE);
-		}
-	}
-
-	@Override public void reloadElements() {
-		listmodel.removeAllElements();
-		Model.getModels(workspacePanel.getMCreator().getWorkspace()).forEach(listmodel::addElement);
-		refilterElements();
-	}
-
-	@Override public void refilterElements() {
-		listmodel.refilter();
-	}
-
-	private class FilterModel extends DefaultListModel<Model> {
-		java.util.List<Model> items;
-		List<Model> filterItems;
-
-		FilterModel() {
-			super();
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
-		}
-
-		@Override public int indexOf(Object elem) {
-			if (elem instanceof Model)
-				return filterItems.indexOf(elem);
-			else
-				return -1;
-		}
-
-		@Override public Model getElementAt(int index) {
-			if (!filterItems.isEmpty() && index < filterItems.size())
-				return filterItems.get(index);
-			else
-				return null;
-		}
-
-		@Override public int getSize() {
-			return filterItems.size();
-		}
-
-		@Override public void addElement(Model o) {
-			items.add(o);
-			refilter();
-		}
-
-		@Override public void removeAllElements() {
-			super.removeAllElements();
-			items.clear();
-			filterItems.clear();
-		}
-
-		@Override public boolean removeElement(Object a) {
-			if (a instanceof Model) {
-				items.remove(a);
-				filterItems.remove(a);
-			}
-			return super.removeElement(a);
-		}
-
-		void refilter() {
-			filterItems.clear();
-			String term = workspacePanel.search.getText();
-			filterItems.addAll(items.stream().filter(Objects::nonNull).filter(item ->
-					(item.getReadableName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)))
-							|| (item.getType().name().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH)))).toList());
-
-			if (workspacePanel.sortName.isSelected()) {
-				filterItems.sort(Comparator.comparing(Model::getReadableName));
-			}
-
-			if (workspacePanel.desc.isSelected())
-				Collections.reverse(filterItems);
-
-			fireContentsChanged(this, 0, getSize());
 		}
 	}
 

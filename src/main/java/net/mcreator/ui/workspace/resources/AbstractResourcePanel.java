@@ -37,19 +37,18 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 
 	protected final WorkspacePanel workspacePanel;
 
-	private final ResourceFilterModel<T> filterModel;
-	private final Consumer<T> deleteSelectedElement;
+	protected final ResourceFilterModel<T> filterModel;
+	protected JSelectableList<T> elementList;
 
 	public AbstractResourcePanel(WorkspacePanel workspacePanel, ResourceFilterModel<T> filterModel,
-			ListCellRenderer<T> render, Consumer<T> deleteSelectedElement) {
+			ListCellRenderer<T> render) {
 		super(new BorderLayout());
 		setOpaque(false);
 
 		this.filterModel = filterModel;
 		this.workspacePanel = workspacePanel;
-		this.deleteSelectedElement = deleteSelectedElement;
 
-		JSelectableList<T> elementList = new JSelectableList<>(filterModel);
+		elementList = new JSelectableList<>(filterModel);
 		elementList.setOpaque(false);
 		elementList.setCellRenderer(render);
 		elementList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -68,28 +67,17 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 		elementList.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					deleteCurrentlySelected(elementList);
+					deleteCurrentlySelected(elementList.getSelectedValuesList());
 				}
 			}
 		});
 
-		add("North", createToolBar());
+		add("North", createToolBar(elementList));
 	}
 
-	abstract TransparentToolBar createToolBar();
+	abstract TransparentToolBar createToolBar(JSelectableList<T> elementList);
 
-	private void deleteCurrentlySelected(JSelectableList<T> structureElementList) {
-		List<T> files = structureElementList.getSelectedValuesList();
-		if (!files.isEmpty()) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.structure.confirm_deletion_message"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (n == 0) {
-				files.forEach(deleteSelectedElement);
-				reloadElements();
-			}
-		}
-	}
+	abstract void deleteCurrentlySelected(List<T> elements);
 
 	@Override public abstract void reloadElements();
 

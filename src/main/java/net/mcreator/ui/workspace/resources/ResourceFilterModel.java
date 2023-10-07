@@ -29,15 +29,15 @@ public class ResourceFilterModel<T> extends DefaultListModel<T> {
 	private final List<T> items;
 	private final List<T> filterItems;
 	private final WorkspacePanel workspacePanel;
-	private final Predicate<T> predicateFilter;
-	private final Comparator<T> refilterComparator;
+	private final Predicate<T> refilterItemsFilter;
+	private final Comparator<T> sortingCondition;
 
-	public ResourceFilterModel(WorkspacePanel workspacePanel, Predicate<T> predicateFilter,
-			Comparator<T> refilterComparator) {
+	public ResourceFilterModel(WorkspacePanel workspacePanel, Predicate<T> refilterItemsFilter,
+			Comparator<T> sortingCondition) {
 		super();
 		this.workspacePanel = workspacePanel;
-		this.predicateFilter = predicateFilter;
-		this.refilterComparator = refilterComparator;
+		this.refilterItemsFilter = refilterItemsFilter;
+		this.sortingCondition = sortingCondition;
 
 		items = new ArrayList<>();
 		filterItems = new ArrayList<>();
@@ -86,11 +86,10 @@ public class ResourceFilterModel<T> extends DefaultListModel<T> {
 
 	void refilter() {
 		filterItems.clear();
-		filterItems.addAll(items.stream().filter(Objects::nonNull).filter(predicateFilter).toList());
+		filterItems.addAll(items.stream().filter(Objects::nonNull).filter(refilterItemsFilter).toList());
 
-		if (workspacePanel.sortName.isSelected()) {
-			filterItems.sort(refilterComparator);
-		}
+		if (workspacePanel.sortName.isSelected())
+			filterItems.sort(sortingCondition);
 
 		if (workspacePanel.desc.isSelected())
 			Collections.reverse(filterItems);

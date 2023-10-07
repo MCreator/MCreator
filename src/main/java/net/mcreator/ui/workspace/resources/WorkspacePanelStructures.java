@@ -23,45 +23,23 @@ import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.util.Comparator;
 import java.util.List;
-import java.util.*;
+import java.util.Locale;
 
-public class WorkspacePanelStructures extends JPanel implements IReloadableFilterable {
-
-	private final WorkspacePanel workspacePanel;
-
-	private final FilterModel listmodel = new FilterModel();
+public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 
 	WorkspacePanelStructures(WorkspacePanel workspacePanel) {
-		super(new BorderLayout());
-		setOpaque(false);
+		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, e -> (e.toLowerCase(Locale.ENGLISH)
+				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH))),
+				Comparator.comparing(String::toString)), new Render());
+	}
 
-		this.workspacePanel = workspacePanel;
-
-		JSelectableList<String> structureElementList = new JSelectableList<>(listmodel);
-		structureElementList.setOpaque(false);
-		structureElementList.setCellRenderer(new Render());
-		structureElementList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-
-		JScrollPane sp = new JScrollPane(structureElementList);
-		sp.setOpaque(false);
-		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUnitIncrement(11);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
-
-		add("Center", sp);
-
+	@Override TransparentToolBar createToolBar(JSelectableList<String> elementList) {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
@@ -72,6 +50,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		ComponentUtils.deriveFont(importnbt, 12);
 		importnbt.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(importnbt);
+		importnbt.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());
 
 		JButton importmc = L10N.button("action.workspace.resources.import_structure_from_minecraft");
 		importmc.setIcon(UIRES.get("16px.open.gif"));
@@ -80,6 +59,8 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		ComponentUtils.deriveFont(importmc, 12);
 		importmc.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(importmc);
+		importmc.addActionListener(
+				e -> workspacePanel.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
 
 		JButton del = L10N.button("workspace.sounds.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
@@ -87,110 +68,27 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		del.setContentAreaFilled(false);
 		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(del);
+		del.addActionListener(a -> deleteCurrentlySelected(elementList.getSelectedValuesList()));
 
-		del.addActionListener(a -> deleteCurrentlySelected(structureElementList));
-
-		structureElementList.addKeyListener(new KeyAdapter() {
-			@Override public void keyReleased(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					deleteCurrentlySelected(structureElementList);
-				}
-			}
-		});
-
-		importnbt.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());
-		importmc.addActionListener(
-				e -> workspacePanel.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
-
-		add("North", bar);
-
+		return bar;
 	}
 
-	private void deleteCurrentlySelected(JSelectableList<String> structureElementList) {
-		List<String> files = structureElementList.getSelectedValuesList();
-		if (!files.isEmpty()) {
+	@Override void deleteCurrentlySelected(List<String> elements) {
+		if (!elements.isEmpty()) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.structure.confirm_deletion_message"), L10N.t("common.confirmation"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 			if (n == 0) {
-				files.forEach(workspacePanel.getMCreator().getFolderManager()::removeStructure);
+				elements.forEach(workspacePanel.getMCreator().getFolderManager()::removeStructure);
 				reloadElements();
 			}
 		}
 	}
 
 	@Override public void reloadElements() {
-		listmodel.removeAllElements();
-		workspacePanel.getMCreator().getFolderManager().getStructureList().forEach(listmodel::addElement);
+		filterModel.removeAllElements();
+		workspacePanel.getMCreator().getFolderManager().getStructureList().forEach(filterModel::addElement);
 		refilterElements();
-	}
-
-	@Override public void refilterElements() {
-		listmodel.refilter();
-	}
-
-	private class FilterModel extends DefaultListModel<String> {
-		List<String> items;
-		List<String> filterItems;
-
-		FilterModel() {
-			super();
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
-		}
-
-		@Override public int indexOf(Object elem) {
-			if (elem instanceof String)
-				return filterItems.indexOf(elem);
-			else
-				return -1;
-		}
-
-		@Override public String getElementAt(int index) {
-			if (index < filterItems.size())
-				return filterItems.get(index);
-			else
-				return null;
-		}
-
-		@Override public int getSize() {
-			return filterItems.size();
-		}
-
-		@Override public void addElement(String o) {
-			items.add(o);
-			refilter();
-		}
-
-		@Override public void removeAllElements() {
-			super.removeAllElements();
-			items.clear();
-			filterItems.clear();
-		}
-
-		@Override public boolean removeElement(Object a) {
-			if (a instanceof String) {
-				items.remove(a);
-				filterItems.remove(a);
-			}
-			return super.removeElement(a);
-		}
-
-		void refilter() {
-			filterItems.clear();
-			String term = workspacePanel.search.getText();
-			filterItems.addAll(items.stream().filter(Objects::nonNull)
-					.filter(e -> (e.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)))).toList());
-
-			if (workspacePanel.sortName.isSelected()) {
-				filterItems.sort(Comparator.comparing(String::toString));
-			}
-
-			if (workspacePanel.desc.isSelected())
-				Collections.reverse(filterItems);
-
-			fireContentsChanged(this, 0, getSize());
-		}
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<String> {
