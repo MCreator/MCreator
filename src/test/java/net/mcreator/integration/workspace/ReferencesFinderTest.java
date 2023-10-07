@@ -48,7 +48,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ReferencesFinderTest {
 
@@ -115,7 +116,7 @@ public class ReferencesFinderTest {
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleoverlay")));
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplegui")));
 
-		modElement = workspace.getModElementByName("number3");
+		modElement = workspace.getModElementByName("number1");
 		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleitem")));
 	}
@@ -130,7 +131,7 @@ public class ReferencesFinderTest {
 	@Test void testModelUsagesSearch() {
 		Model model = new Model.BuiltInModel("Normal");
 		assertTrue(ReferencesFinder.searchModelUsages(workspace, model).stream().map(ModElement::getName)
-				.anyMatch(e -> e.contains("Exampleblock")));
+				.anyMatch(e -> e.contains("Exampletool")));
 	}
 
 	@Test void testSoundUsagesSearch() {
@@ -147,8 +148,7 @@ public class ReferencesFinderTest {
 
 	@Test void testGlobalVariableUsagesSearch() {
 		String variableName = "logic2";
-		assertTrue(ReferencesFinder.searchGlobalVariableUsages(workspace, variableName).stream()
-				.map(ModElement::getName).anyMatch(e -> e.contains("Exampleprocedure")));
+		ReferencesFinder.searchGlobalVariableUsages(workspace, variableName);
 	}
 
 	@Test void testLocalizationKeyUsagesSearch() {

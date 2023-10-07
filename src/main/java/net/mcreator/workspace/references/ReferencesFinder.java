@@ -56,9 +56,10 @@ public class ReferencesFinder {
 				return ref != null && !List.of(ref.defaultValues()).contains(t) && query.equals("CUSTOM:" + t);
 			})) {
 				elements.add(me);
-			} else if (anyValueMatches(ge, MappableElement.class, null, (a, t) -> t.getUnmappedValue().equals(query))) {
+			} else if (anyValueMatches(ge, MappableElement.class, e -> e.isAnnotationPresent(ModElementReference.class),
+					(a, t) -> t.getUnmappedValue().equals(query))) {
 				elements.add(me);
-			} else if (anyValueMatches(ge, Procedure.class, null,
+			} else if (anyValueMatches(ge, Procedure.class, e -> e.isAnnotationPresent(ModElementReference.class),
 					(a, t) -> t.getName() != null && !t.getName().isEmpty() && !t.getName().equals("null")
 							&& element.getName().equals(t.getName()))) {
 				elements.add(me);
