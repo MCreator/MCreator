@@ -48,7 +48,8 @@ public class SpawnableEntityListField extends JItemListField<EntityEntry> {
 	@Override protected List<EntityEntry> getTagsToAdd() {
 		List<EntityEntry> tags = new ArrayList<>();
 
-		String tag = AddTagDialog.openAddTagDialog(mcreator, "bosses", "raiders", "fall_damage_immune", "powder_snow_walkable_mobs");
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, "Entities", "bosses", "raiders",
+				"fall_damage_immune", "powder_snow_walkable_mobs");
 		if (tag != null)
 			tags.add(new EntityEntry(mcreator.getWorkspace(), "#" + tag));
 

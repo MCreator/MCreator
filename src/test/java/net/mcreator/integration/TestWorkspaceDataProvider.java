@@ -99,7 +99,12 @@ public class TestWorkspaceDataProvider {
 		} else if (type == ModElementType.TAB) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
-		} else if (type == ModElementType.COMMAND || type == ModElementType.FUNCTION || type == ModElementType.PAINTING
+		} else if (type == ModElementType.COMMAND) {
+			generatableElements.add(getCommandExample(me(workspace, type, "1"), "STANDARD", random));
+			generatableElements.add(getCommandExample(me(workspace, type, "2"), "SINGLEPLAYER_ONLY", random));
+			generatableElements.add(getCommandExample(me(workspace, type, "3"), "MULTIPLAYER_ONLY", random));
+			generatableElements.add(getCommandExample(me(workspace, type, "4"), "CLIENTSIDE", random));
+		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING
 				|| type == ModElementType.KEYBIND || type == ModElementType.PROCEDURE || type == ModElementType.FEATURE
 				|| type == ModElementType.CODE) {
 			generatableElements.add(
@@ -717,6 +722,10 @@ public class TestWorkspaceDataProvider {
 			armor.bodyImmuneToFire = !_true;
 			armor.leggingsImmuneToFire = _true;
 			armor.bootsImmuneToFire = !_true;
+			armor.helmetPiglinNeutral = new LogicProcedure(_true ? "condition1" : null, _true);
+			armor.bodyPiglinNeutral = new LogicProcedure(_true ? "condition2" : null, _true);
+			armor.leggingsPiglinNeutral = new LogicProcedure(_true ? "condition3" : null, _true);
+			armor.bootsPiglinNeutral = new LogicProcedure(_true ? "condition4" : null, _true);
 			armor.equipSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			armor.onHelmetTick = new Procedure("procedure1");
@@ -945,6 +954,12 @@ public class TestWorkspaceDataProvider {
 			item.eatResultItem = new MItemBlock(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			item.onFinishUsingItem = new Procedure("procedure3");
+			item.enableRanged = _true;
+			item.projectile = new ProjectileEntry(modElement.getWorkspace(),
+					getRandomDataListEntry(random, ElementUtil.loadArrowProjectiles(modElement.getWorkspace())));
+			item.shootConstantly = emptyLists;
+			item.onRangedItemUsed = new Procedure("procedure4");
+			item.rangedUseCondition = new Procedure("condition1");
 			return item;
 		} else if (ModElementType.ITEMEXTENSION.equals(modElement.getType())) {
 			ItemExtension itemExtension = new ItemExtension(modElement);
@@ -959,44 +974,24 @@ public class TestWorkspaceDataProvider {
 			itemExtension.dispenseSuccessCondition = _true ? new Procedure("condition1") : null;
 			itemExtension.dispenseResultItemstack = _true ? new Procedure("itemstack1") : null;
 			return itemExtension;
-		} else if (ModElementType.RANGEDITEM.equals(modElement.getType())) {
-			RangedItem rangedItem = new RangedItem(modElement);
-			rangedItem.name = modElement.getName();
-			rangedItem.creativeTab = new TabEntry(modElement.getWorkspace(),
-					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			rangedItem.ammoItem = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
-			rangedItem.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
-					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
-			rangedItem.animation = getRandomItem(random,
-					new String[] { "block", "bow", "crossbow", "drink", "eat", "none", "spear" });
-			rangedItem.shootConstantly = _true;
-			rangedItem.usageCount = 67;
-			rangedItem.stackSize = 41;
-			rangedItem.actionSound = new Sound(modElement.getWorkspace(),
+		} else if (ModElementType.PROJECTILE.equals(modElement.getType())){
+			Projectile projectile = new Projectile(modElement);
+			projectile.actionSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-			rangedItem.bulletPower = 1.5;
-			rangedItem.bulletDamage = 2.3;
-			rangedItem.bulletKnockback = 5;
-			rangedItem.bulletParticles = _true;
-			rangedItem.bulletIgnitesFire = _true;
-			rangedItem.bulletItemTexture = new MItemBlock(modElement.getWorkspace(),
+			projectile.power = 1.5;
+			projectile.damage = 2.3;
+			projectile.knockback = 7;
+			projectile.showParticles = _true;
+			projectile.igniteFire = _true;
+			projectile.projectileItem = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItems).getName());
-			rangedItem.onBulletHitsBlock = new Procedure("procedure2");
-			rangedItem.onBulletHitsPlayer = new Procedure("procedure1");
-			rangedItem.onBulletFlyingTick = new Procedure("procedure3");
-			rangedItem.onRangedItemUsed = new Procedure("procedure4");
-			rangedItem.useCondition = new Procedure("condition1");
-			rangedItem.onEntitySwing = new Procedure("procedure8");
-			rangedItem.bulletModel = "Default";
-			rangedItem.customBulletModelTexture = "";
-			rangedItem.texture = "test3";
-			rangedItem.renderType = 0;
-			rangedItem.customModelName = "Normal";
-			rangedItem.glowCondition = new LogicProcedure(emptyLists ? "condition4" : null, _true);;
-			rangedItem.enableMeleeDamage = !_true;
-			rangedItem.damageVsEntity = 2.16;
-			return rangedItem;
+			projectile.entityModel = "Default";
+			projectile.customModelTexture = "";
+			projectile.onHitsBlock = new Procedure("procedure1");
+			projectile.onHitsEntity = new Procedure("procedure2");
+			projectile.onHitsPlayer = new Procedure("procedure3");
+			projectile.onFlyingTick = new Procedure("procedure4");
+			return projectile;
 		} else if (ModElementType.POTION.equals(modElement.getType())) {
 			Potion potion = new Potion(modElement);
 			potion.potionName = modElement.getName() + " Potion";
@@ -1477,12 +1472,6 @@ public class TestWorkspaceDataProvider {
 			net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(modElement);
 			procedure.procedurexml = net.mcreator.element.types.Procedure.XML_BASE;
 			return procedure;
-		} else if (ModElementType.COMMAND.equals(modElement.getType())) {
-			Command command = new Command(modElement);
-			command.commandName = modElement.getName();
-			command.permissionLevel = getRandomString(random, List.of("No requirement", "1", "2", "3", "4"));
-			command.argsxml = Command.XML_BASE;
-			return command;
 		}
 		// As feature requires placement and feature to place, this GE is only returned for uiTests
 		// For generator tests, it will be tested by GTFeatureBlocks anyway
@@ -1504,6 +1493,15 @@ public class TestWorkspaceDataProvider {
 			return feature;
 		}
 		return null;
+	}
+
+	private static GeneratableElement getCommandExample(ModElement modElement, String type, Random random) {
+		Command command = new Command(modElement);
+		command.commandName = modElement.getName();
+		command.type = type;
+		command.permissionLevel = getRandomString(random, List.of("No requirement", "1", "2", "3", "4"));
+		command.argsxml = Command.XML_BASE;
+		return command;
 	}
 
 	public static LivingEntity getLivingEntity(ModElement modElement, Random random, boolean _true, boolean emptyLists,
