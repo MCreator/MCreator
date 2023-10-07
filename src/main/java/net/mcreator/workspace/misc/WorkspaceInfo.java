@@ -54,8 +54,8 @@ import java.util.*;
 	}
 
 	public List<GeneratableElement> getGElementsOfType(String typeString) {
-		ModElementType<?> type = ModElementTypeLoader.getModElementType(typeString);
 		try {
+			ModElementType<?> type = ModElementTypeLoader.getModElementType(typeString);
 			// getGeneratableElement is not thread safe, so we can't use parallelStream here
 			return workspace.getModElements().stream().filter(e -> e.getType() == type)
 					.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
