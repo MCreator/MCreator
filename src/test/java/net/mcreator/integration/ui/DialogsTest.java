@@ -55,11 +55,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -207,6 +203,30 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> ListEditorDialog.open(mcreator,
 				Collections.enumeration(Arrays.asList("info 1", "info 2", "test \\, is this", "another one")), null,
 				false));
+	}
+
+	@Test public void testUsagesSearchDialogs() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
+						Collections.emptyList(), false));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.texture"),
+						Collections.emptyList(), false));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.model"),
+						Collections.emptyList(), false));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.sound"),
+						Collections.emptyList(), false));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.structure"),
+						Collections.emptyList(), false));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.global_variable"),
+						Collections.emptyList(), false));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.localization_key"),
+						Collections.emptyList(), false));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

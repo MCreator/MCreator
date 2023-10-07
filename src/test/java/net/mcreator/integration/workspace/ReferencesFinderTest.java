@@ -21,25 +21,17 @@ package net.mcreator.integration.workspace;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
-import net.mcreator.generator.Generator;
-import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.generator.GeneratorStats;
+import net.mcreator.generator.*;
 import net.mcreator.integration.TestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.integration.generator.GTSampleElements;
-import net.mcreator.integration.ui.UITestUtil;
 import net.mcreator.minecraft.ElementUtil;
-import net.mcreator.ui.MCreator;
-import net.mcreator.ui.dialogs.SearchUsagesDialog;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
-import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
-import net.mcreator.workspace.elements.VariableElement;
+import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
@@ -56,23 +48,20 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ReferencesFinderTest {
 
 	private static Logger LOG;
-	private static Random random;
 
 	private static Workspace workspace;
-	private static MCreator mcreator;
 
 	@BeforeAll public static void initTest() throws IOException {
 		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
 		LOG = LogManager.getLogger("References Finder Test");
 
 		long rgenseed = System.currentTimeMillis();
-		random = new Random(rgenseed);
+		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
 
 		TestSetup.setupIntegrationTestEnvironment();
@@ -93,8 +82,6 @@ public class ReferencesFinderTest {
 		workspace = Workspace.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"),
 				workspaceSettings);
 
-		mcreator = new MCreator(null, workspace);
-
 		LOG.info("Generating sample elements");
 		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
 		GTSampleElements.provideAndGenerateSampleElements(random, workspace);
@@ -104,6 +91,9 @@ public class ReferencesFinderTest {
 				TestWorkspaceDataProvider.getModElementExamplesFor(workspace, type, false, random).forEach(e -> {
 					workspace.addModElement(e.getModElement());
 					workspace.getModElementManager().storeModElement(e);
+					LocalizationUtils.generateLocalizationKeys(workspace.getGenerator(), e,
+							(List<?>) generatorConfiguration.getDefinitionsProvider()
+									.getModElementDefinition(e.getModElement().getType()).get("localizationkeys"));
 				});
 			}
 		}
@@ -113,67 +103,57 @@ public class ReferencesFinderTest {
 		LOG.info("Running " + testInfo.getDisplayName());
 	}
 
-	@Test void testProcedureUsagesSearch() {
-		ModElement searchFor = workspace.getModElementByName("condition4");
-		List<ModElement> references = ReferencesFinder.searchModElementUsages(workspace, searchFor);
+	@Test void testModElementUsagesSearch() {
+		ModElement modElement = workspace.getModElementByName("Exampleblock3");
+		ReferencesFinder.searchModElementUsages(workspace, modElement);
+
+		modElement = workspace.getModElementByName("Exampleentity3");
+		ReferencesFinder.searchModElementUsages(workspace, modElement);
+
+		modElement = workspace.getModElementByName("condition4");
+		List<ModElement> references = ReferencesFinder.searchModElementUsages(workspace, modElement);
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleoverlay")));
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplegui")));
 
-		searchFor = workspace.getModElementByName("number3");
-		references = ReferencesFinder.searchModElementUsages(workspace, searchFor);
+		modElement = workspace.getModElementByName("number3");
+		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleitem")));
 	}
 
-	@Test void testModElementUsagesSearch() throws Throwable {
-		ModElement modElement = ListUtils.getRandomItem(workspace.getModElements().toArray(ModElement[]::new));
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
-						ReferencesFinder.searchModElementUsages(workspace, modElement), false));
+	@Test void testTextureUsagesSearch() {
+		TextureType section = TextureType.PARTICLE;
+		File texture = workspace.getFolderManager().getTextureFile("test.png", section);
+		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Exampleparticle")));
 	}
 
-	@Test void testTextureUsagesSearch() throws Throwable {
-		TextureType section = ListUtils.getRandomItem(TextureType.getSupportedTypes(workspace, true));
-		File texture = ListUtils.getRandomItem(workspace.getFolderManager().getTexturesList(section));
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.texture"),
-						ReferencesFinder.searchTextureUsages(workspace, texture, section), false));
+	@Test void testModelUsagesSearch() {
+		Model model = new Model.BuiltInModel("Normal");
+		assertTrue(ReferencesFinder.searchModelUsages(workspace, model).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Exampleblock")));
 	}
 
-	@Test void testModelUsagesSearch() throws Throwable {
-		Model model = random.nextBoolean() ? new Model.BuiltInModel("Normal") : new Model.BuiltInModel("Default");
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.model"),
-						ReferencesFinder.searchModelUsages(workspace, model), false));
-	}
-
-	@Test void testSoundUsagesSearch() throws Throwable {
+	@Test void testSoundUsagesSearch() {
 		SoundElement sound = new SoundElement(ListUtils.getRandomItem(ElementUtil.getAllSounds(workspace)), List.of(),
 				"neutral", null);
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.sound"),
-						ReferencesFinder.searchSoundUsages(workspace, sound), false));
+		ReferencesFinder.searchSoundUsages(workspace, sound);
 	}
 
-	@Test void testStructureUsagesSearch() throws Throwable {
-		String structure = ListUtils.getRandomItem(workspace.getFolderManager().getStructureList());
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.structure"),
-						ReferencesFinder.searchStructureUsages(workspace, structure), false));
+	@Test void testStructureUsagesSearch() {
+		String structure = "test";
+		assertTrue(ReferencesFinder.searchStructureUsages(workspace, structure).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Examplestructure")));
 	}
 
-	@Test void testGlobalVariableUsagesSearch() throws Throwable {
-		String variableName = ListUtils.getRandomItem(workspace.getVariableElements().toArray(VariableElement[]::new))
-				.getName();
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.global_variable"),
-						ReferencesFinder.searchGlobalVariableUsages(workspace, variableName), false));
+	@Test void testGlobalVariableUsagesSearch() {
+		String variableName = "itemstack5";
+		assertTrue(ReferencesFinder.searchGlobalVariableUsages(workspace, variableName).stream()
+				.map(ModElement::getName).anyMatch(e -> e.contains("Exampleprocedure")));
 	}
 
-	@Test void testLocalizationKeyUsagesSearch() throws Throwable {
+	@Test void testLocalizationKeyUsagesSearch() {
 		String localizationKey = ListUtils.getRandomItem(
 				workspace.getLanguageMap().get("en_us").values().toArray(String[]::new));
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.localization_key"),
-						ReferencesFinder.searchLocalizationKeyUsages(workspace, localizationKey), false));
+		assertFalse(ReferencesFinder.searchLocalizationKeyUsages(workspace, localizationKey).isEmpty());
 	}
 }
