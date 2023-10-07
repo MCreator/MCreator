@@ -70,11 +70,11 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 			DataListEntry entry = (DataListEntry) value;
 			label.setText(entry.getReadableName());
 			if (entry.getName().contains("CUSTOM:")) {
-				setIcon(new ImageIcon(ImageUtils.resize(
+				setIcon(new ImageIcon(ImageUtils.resizeAA(
 						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), entry.getName()).getImage(), 18)));
 			} else if (entry.getTexture() != null) {
 				setIcon(new ImageIcon(
-						ImageUtils.resize(BlockItemIcons.getIconForItem(entry.getTexture()).getImage(), 18)));
+						ImageUtils.resizeAA(BlockItemIcons.getIconForItem(entry.getTexture()).getImage(), 18)));
 			}
 			return label;
 		}
