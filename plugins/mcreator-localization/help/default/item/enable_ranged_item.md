@@ -1,0 +1,1 @@
+By enabling this parameter, the item will become a ranged item allowing it to shoot a projectile, like bows and crossbows.

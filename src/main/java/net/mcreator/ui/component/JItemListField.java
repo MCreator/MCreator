@@ -19,9 +19,11 @@
 package net.mcreator.ui.component;
 
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.IValidable;
@@ -40,6 +42,7 @@ import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public abstract class JItemListField<T> extends JPanel implements IValidable {
 
@@ -305,17 +308,26 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			setIcon(null);
 
 			if (value instanceof MappableElement mappableElement) {
-				mappableElement.getDataListEntry()
-						.ifPresentOrElse(dataListEntry -> setText(dataListEntry.getReadableName()), () -> setText(
-								(mappableElement).getUnmappedValue().replace("CUSTOM:", "").replace("Blocks.", "")
-										.replace("Items.", "").replace("#", "")));
+				Optional<DataListEntry> dataListEntryOpt = mappableElement.getDataListEntry();
+				if (dataListEntryOpt.isPresent()) {
+					DataListEntry dataListEntry = dataListEntryOpt.get();
+					setText(dataListEntry.getReadableName());
+					if (dataListEntry.getTexture() != null) {
+						setIcon(new ImageIcon(ImageUtils.resizeAA(
+								BlockItemIcons.getIconForItem(dataListEntry.getTexture()).getImage(), 18)));
+					}
+				} else {
+					String unmappedValue = mappableElement.getUnmappedValue();
+					setText(unmappedValue.replace("CUSTOM:", "").replace("Blocks.", "").replace("Items.", "")
+							.replace("#", ""));
 
-				if ((mappableElement).getUnmappedValue().contains("CUSTOM:"))
-					setIcon(new ImageIcon(ImageUtils.resizeAA(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
-							(mappableElement).getUnmappedValue()).getImage(), 18)));
-
-				if ((mappableElement).getUnmappedValue().startsWith("#"))
-					setIcon(new ImageIcon(ImageUtils.resizeAA(MCItem.TAG_ICON.getImage(), 18)));
+					if (unmappedValue.startsWith("CUSTOM:"))
+						setIcon(new ImageIcon(ImageUtils.resizeAA(
+								MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), unmappedValue).getImage(),
+								18)));
+					else if (unmappedValue.startsWith("#"))
+						setIcon(new ImageIcon(ImageUtils.resizeAA(MCItem.TAG_ICON.getImage(), 18)));
+				}
 
 				if (!(mappableElement).canProperlyMap())
 					setIcon(UIRES.get("18px.warning"));

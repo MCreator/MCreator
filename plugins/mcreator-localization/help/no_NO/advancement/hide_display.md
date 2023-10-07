@@ -1,0 +1,1 @@
+Merk av denne parameteren for å skjule avansering i avansering-fanen til den er fullført.

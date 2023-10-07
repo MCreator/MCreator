@@ -53,6 +53,7 @@ import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.SoundSelector;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -155,6 +156,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	private final JCheckBox leggingsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox bootsImmuneToFire = L10N.checkbox("elementgui.common.enable");
 
+	private LogicProcedureSelector helmetPiglinNeutral;
+	private LogicProcedureSelector bodyPiglinNeutral;
+	private LogicProcedureSelector leggingsPiglinNeutral;
+	private LogicProcedureSelector bootsPiglinNeutral;
+
 	private final JLabel clo1 = new JLabel();
 	private final JLabel clo2 = new JLabel();
 
@@ -193,6 +199,22 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	}
 
 	@Override protected void initGUI() {
+		helmetPiglinNeutral = new LogicProcedureSelector(this.withEntry("armor/piglin_neutral"), mcreator,
+				L10N.t("elementgui.armor.piglin_neutral"), AbstractProcedureSelector.Side.BOTH,
+				L10N.checkbox("elementgui.common.enable"), 0,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		bodyPiglinNeutral = new LogicProcedureSelector(this.withEntry("armor/piglin_neutral"), mcreator,
+				L10N.t("elementgui.armor.piglin_neutral"), AbstractProcedureSelector.Side.BOTH,
+				L10N.checkbox("elementgui.common.enable"), 0,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		leggingsPiglinNeutral = new LogicProcedureSelector(this.withEntry("armor/piglin_neutral"), mcreator,
+				L10N.t("elementgui.armor.piglin_neutral"), AbstractProcedureSelector.Side.BOTH,
+				L10N.checkbox("elementgui.common.enable"), 0,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		bootsPiglinNeutral = new LogicProcedureSelector(this.withEntry("armor/piglin_neutral"), mcreator,
+				L10N.t("elementgui.armor.piglin_neutral"), AbstractProcedureSelector.Side.BOTH,
+				L10N.checkbox("elementgui.common.enable"), 0,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 		onHelmetTick = new ProcedureSelector(this.withEntry("armor/helmet_tick"), mcreator,
 				L10N.t("elementgui.armor.helmet_tick_event"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -214,8 +236,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
-		leggingsSpecialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
-				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+		leggingsSpecialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"),
+				mcreator, L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
 				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
 		bootsSpecialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
@@ -343,7 +365,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		helmetSubPanel.add(helmetImmuneToFire);
 
 		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"),
-				PanelUtils.northAndCenterElement(helmetSubPanel, helmetSpecialInformation));
+				PanelUtils.northAndCenterElement(helmetSubPanel,
+						PanelUtils.centerAndSouthElement(helmetPiglinNeutral, helmetSpecialInformation, 2, 2)));
 
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
 				enableHelmet);
@@ -388,7 +411,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bodySubPanel.add(bodyImmuneToFire);
 
 		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"),
-				PanelUtils.centerAndSouthElement(bodySubPanel, bodySpecialInformation));
+				PanelUtils.centerAndSouthElement(bodySubPanel,
+						PanelUtils.centerAndSouthElement(bodyPiglinNeutral, bodySpecialInformation, 2, 2)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bodText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.chestplate_name"), bodyName),
@@ -427,7 +451,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsSubPanel.add(leggingsImmuneToFire);
 
 		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
-				PanelUtils.centerAndSouthElement(leggingsSubPanel, leggingsSpecialInformation));
+				PanelUtils.centerAndSouthElement(leggingsSubPanel,
+						PanelUtils.centerAndSouthElement(leggingsPiglinNeutral, leggingsSpecialInformation, 2, 2)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(legText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.leggings_name"), leggingsName),
@@ -466,7 +491,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		bootsSubPanel.add(bootsImmuneToFire);
 
 		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
-				PanelUtils.centerAndSouthElement(bootsSubPanel, bootsSpecialInformation));
+				PanelUtils.centerAndSouthElement(bootsSubPanel,
+						PanelUtils.centerAndSouthElement(bootsPiglinNeutral, bootsSpecialInformation, 2, 2)));
 
 		destal.add(PanelUtils.westAndCenterElement(PanelUtils.pullElementUp(bootText), PanelUtils.centerAndSouthElement(
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.armor.boots_name"), bootsName),
@@ -753,6 +779,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsModel.removeActionListener(leggingsModelListener);
 		bootsModel.removeActionListener(bootsModelListener);
 
+		helmetPiglinNeutral.refreshListKeepSelected();
+		bodyPiglinNeutral.refreshListKeepSelected();
+		leggingsPiglinNeutral.refreshListKeepSelected();
+		bootsPiglinNeutral.refreshListKeepSelected();
+
 		onHelmetTick.refreshListKeepSelected();
 		onBodyTick.refreshListKeepSelected();
 		onLeggingsTick.refreshListKeepSelected();
@@ -947,6 +978,11 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		leggingsImmuneToFire.setSelected(armor.leggingsImmuneToFire);
 		bootsImmuneToFire.setSelected(armor.bootsImmuneToFire);
 
+		helmetPiglinNeutral.setSelectedProcedure(armor.helmetPiglinNeutral);
+		bodyPiglinNeutral.setSelectedProcedure(armor.bodyPiglinNeutral);
+		leggingsPiglinNeutral.setSelectedProcedure(armor.leggingsPiglinNeutral);
+		bootsPiglinNeutral.setSelectedProcedure(armor.bootsPiglinNeutral);
+
 		Model helmetItemModel = armor.getHelmetItemModel();
 		if (helmetItemModel != null)
 			helmetItemRenderType.setSelectedItem(helmetItemModel);
@@ -1017,6 +1053,10 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		armor.bodyImmuneToFire = bodyImmuneToFire.isSelected();
 		armor.leggingsImmuneToFire = leggingsImmuneToFire.isSelected();
 		armor.bootsImmuneToFire = bootsImmuneToFire.isSelected();
+		armor.helmetPiglinNeutral = helmetPiglinNeutral.getSelectedProcedure();
+		armor.bodyPiglinNeutral = bodyPiglinNeutral.getSelectedProcedure();
+		armor.leggingsPiglinNeutral = leggingsPiglinNeutral.getSelectedProcedure();
+		armor.bootsPiglinNeutral = bootsPiglinNeutral.getSelectedProcedure();
 
 		Model.Type helmetModelType = Objects.requireNonNull(helmetItemRenderType.getSelectedItem()).getType();
 		armor.helmetItemRenderType = 0;
