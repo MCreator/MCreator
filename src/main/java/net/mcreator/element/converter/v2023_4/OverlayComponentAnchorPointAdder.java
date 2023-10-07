@@ -38,6 +38,6 @@ public class OverlayComponentAnchorPointAdder implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 52;
+		return 53;
 	}
 }
