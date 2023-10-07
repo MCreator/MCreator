@@ -29,7 +29,7 @@ import java.lang.annotation.Target;
 import java.util.Collection;
 
 /**
- * Used to mark fields storing names of custom elements (mappable or MEs) used by mod element instance
+ * Used to mark fields that can store names of custom elements (mappable or MEs) used by mod element instance
  * and NOT already included as names of objects like {@link MappableElement} or {@link Procedure}.
  * <br>Format of strings: with {@code CUSTOM:} prefix for entries created from other mod elements
  * or unmapped name for data list entries.
@@ -37,7 +37,7 @@ import java.util.Collection;
  * @apiNote This annotation can also be added to fields of type {@link Collection}, custom object, etc.
  * with their values known to have fields/methods with matching values.
  */
-@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface ElementReference {
+@Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface ModElementReference {
 
 	/**
 	 * Special values indicating the element is not assigned.

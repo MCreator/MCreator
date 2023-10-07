@@ -28,6 +28,8 @@ import java.util.Collection;
 /**
  * Used to mark fields storing names of resources used by mod element instance.
  * For textures, {@link TextureReference} should be used instead as it also declares the texture type.
+ * <p></p>
+ * Regular Model and Sound references using Model or Sound object do not need this annotation additionally.
  *
  * @apiNote This annotation can also be added to fields of type {@link Collection}, custom object, etc.
  * with their values known to match or have fields/methods with matching values.

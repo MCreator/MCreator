@@ -35,7 +35,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.references.ElementReference;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
@@ -142,7 +142,7 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public boolean hasInventory;
-	@ElementReference(defaultValues = "<NONE>") public String guiBoundTo;
+	@ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
 	public boolean openGUIOnRightClick;
 	public int inventorySize;
 	public int inventoryStackSize;

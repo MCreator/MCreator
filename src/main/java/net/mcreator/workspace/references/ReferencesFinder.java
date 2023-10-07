@@ -51,8 +51,8 @@ public class ReferencesFinder {
 		String query = new DataListEntry.Custom(element).getName();
 		workspace.getModElements().stream().filter(me -> !me.equals(element)).forEach(me -> {
 			GeneratableElement ge = me.getGeneratableElement();
-			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ElementReference.class), (a, t) -> {
-				ElementReference ref = a.getAnnotation(ElementReference.class);
+			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) -> {
+				ModElementReference ref = a.getAnnotation(ModElementReference.class);
 				return ref != null && !List.of(ref.defaultValues()).contains(t) && query.equals("CUSTOM:" + t);
 			})) {
 				elements.add(me);

@@ -33,7 +33,7 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.references.ElementReference;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
@@ -59,7 +59,7 @@ import java.util.stream.Collectors;
 
 	public String plantType;
 
-	@ElementReference public String suspiciousStewEffect;
+	@ModElementReference public String suspiciousStewEffect;
 	public int suspiciousStewDuration;
 
 	public String growapableSpawnType;

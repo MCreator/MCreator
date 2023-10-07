@@ -31,7 +31,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.references.ElementReference;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 
 import javax.annotation.Nullable;
@@ -53,9 +53,9 @@ import java.util.List;
 	public boolean announceToChat;
 	public boolean hideIfNotCompleted;
 
-	@ElementReference public List<String> rewardLoot;
-	@ElementReference public List<String> rewardRecipes;
-	@ElementReference(defaultValues = "No function") public String rewardFunction;
+	@ModElementReference public List<String> rewardLoot;
+	@ModElementReference public List<String> rewardRecipes;
+	@ModElementReference(defaultValues = "No function") public String rewardFunction;
 	public int rewardXP;
 
 	public String achievementType;
