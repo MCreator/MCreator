@@ -56,6 +56,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class ReferencesFinderTest {
@@ -102,7 +103,6 @@ public class ReferencesFinderTest {
 					!= GeneratorStats.CoverageStatus.NONE) {
 				TestWorkspaceDataProvider.getModElementExamplesFor(workspace, type, false, random).forEach(e -> {
 					workspace.addModElement(e.getModElement());
-					workspace.getGenerator().generateElement(e);
 					workspace.getModElementManager().storeModElement(e);
 				});
 			}
@@ -111,6 +111,17 @@ public class ReferencesFinderTest {
 
 	@BeforeEach void printName(TestInfo testInfo) {
 		LOG.info("Running " + testInfo.getDisplayName());
+	}
+
+	@Test void testProcedureUsagesSearch() {
+		ModElement searchFor = workspace.getModElementByName("condition4");
+		List<ModElement> references = ReferencesFinder.searchModElementUsages(workspace, searchFor);
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleoverlay")));
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplegui")));
+
+		searchFor = workspace.getModElementByName("number3");
+		references = ReferencesFinder.searchModElementUsages(workspace, searchFor);
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleitem")));
 	}
 
 	@Test void testModElementUsagesSearch() throws Throwable {
