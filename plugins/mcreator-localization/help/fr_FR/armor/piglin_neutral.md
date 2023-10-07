@@ -1,0 +1,1 @@
+Cette condition détermine si la pièce d'armure rend les piglins proches neutres, comme les armures en or.
