@@ -119,16 +119,16 @@ import java.util.concurrent.atomic.AtomicInteger;
 			return new CustomElement(element);
 		}
 
-		if (cache.containsKey(element)) {
-			if (cache.get(element).getModElement() == element) {
-				return cache.get(element);
-			} else {
-				ModElement cacheElement = cache.get(element).getModElement();
+		GeneratableElement cachedGeneratableElement = cache.get(element);
+		if (cachedGeneratableElement != null) {
+			if (cachedGeneratableElement.getModElement() != element) {
+				ModElement cacheModElement = cachedGeneratableElement.getModElement();
 				LOG.error(
 						"Cache contains mod element with same name but different object. This should not happen! Cache element: "
-								+ cacheElement.getName() + ", type: " + cacheElement.getType() + ", queried element: "
-								+ element.getName() + ", type: " + element.getType());
+								+ cacheModElement.getName() + ", type: " + cacheModElement.getType()
+								+ ", queried element: " + element.getName() + ", type: " + element.getType());
 			}
+			return cachedGeneratableElement;
 		}
 
 		File genFile = new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json");
