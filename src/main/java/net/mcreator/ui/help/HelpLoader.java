@@ -74,10 +74,7 @@ public class HelpLoader {
 	}
 
 	@Nullable private static String getFromCache(String key) {
-		if (LOCALIZED_CACHE.containsKey(key))
-			return LOCALIZED_CACHE.get(key);
-
-		return DEFAULT_CACHE.get(key);
+		return LOCALIZED_CACHE.computeIfAbsent(key, DEFAULT_CACHE::get);
 	}
 
 	public static boolean hasFullHelp(IHelpContext helpContext) {
