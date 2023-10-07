@@ -23,7 +23,20 @@ import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
+import java.util.Collection;
 
+/**
+ * Used to mark fields storing names of resources used by mod element instance.
+ * For textures, {@link TextureReference} should be used instead as it also declares the texture type.
+ *
+ * @apiNote This annotation can also be added to fields of type {@link Collection}, custom object, etc.
+ * with their values known to match or have fields/methods with matching values.
+ */
 @Target(ElementType.FIELD) @Retention(RetentionPolicy.RUNTIME) public @interface ResourceReference {
+
+	/**
+	 * The type of resource that the marked field can contain a reference to.
+	 */
 	String value();
+
 }
