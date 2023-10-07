@@ -1,1 +1,3 @@
-Pour ajouter plus de conditions au placement de votre plante, ajoutez votre procédure avec sa valeur de retour ici.
+Pour ajouter plus de conditions à la mise en place de votre usine, malgré le bloc sur lequel elle doit être allumée, ajoutez votre procédure avec la valeur de retour ici.
+
+REMARQUE : remplace la condition de placement du type d'installation et étend la liste des blocs "peut être placé sur" avec cette condition supplémentaire. Si la liste des blocs « pouvant être placés sur » est vide, cette procédure est utilisée comme condition principale de placement/croissance.

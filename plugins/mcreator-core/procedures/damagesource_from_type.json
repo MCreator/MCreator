@@ -10,7 +10,7 @@
   "output": "DamageSource",
   "colour": "320",
   "mcreator": {
-    "toolbox_id": "mcelements",
+    "toolbox_id": "damagesources",
     "fields": [
       "damagetype"
     ],

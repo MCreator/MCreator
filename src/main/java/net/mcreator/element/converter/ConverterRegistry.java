@@ -108,6 +108,7 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.LIVINGENTITY, List.of(
 			new EntityTexturesConverter(),
+			new EntitiesRangedAttackConverter(),
 			new EntityGlowLayerConverter()
 		));
 		put(ModElementType.OVERLAY, List.of(
@@ -149,13 +150,8 @@ public class ConverterRegistry {
 			new ToolToItemTypeProcedureConverter(),
 			new ExplodeProcedureConverter(),
 			new MaterialProcedureConverter(),
-			new ProcedureDamageSourceFixer()
-		));
-		put(ModElementType.RANGEDITEM, List.of(
-			new RangedItemTextureConverter(),
-			new SpecialInformationConverter(),
-			new RangedItemTextureConverter(),
-			new ItemHasGlowConverter()
+			new ProcedureDamageSourceFixer(),
+			new ProcedureArrowProjectileFixer()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()
@@ -188,6 +184,7 @@ public class ConverterRegistry {
 	private static final Map<String, IConverter> converters_legacy = new HashMap<>() {{
 		put("food", new FoodToItemConverter());
 		put("fuel", new FuelToItemExtensionConverter());
+		put("rangeditem", new RangedItemToProjectileAndItemConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {

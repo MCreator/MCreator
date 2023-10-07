@@ -1,1 +1,0 @@
-This texture is the texture of the bullet model if custom model is used.
