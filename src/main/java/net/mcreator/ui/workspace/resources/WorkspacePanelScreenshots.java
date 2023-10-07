@@ -46,7 +46,7 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 		super(workspacePanel, new ResourceFilterModel<>(workspacePanel,
 				item -> item.getName().toLowerCase(Locale.ENGLISH)
 						.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH)),
-				Comparator.comparing(File::getName)), new Render());
+				Comparator.comparing(File::getName)), new Render(), JList.HORIZONTAL_WRAP);
 
 		elementList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {

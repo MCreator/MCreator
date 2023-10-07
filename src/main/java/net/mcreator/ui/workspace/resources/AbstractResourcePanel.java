@@ -23,7 +23,6 @@ import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -35,7 +34,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.util.List;
-import java.util.function.Consumer;
 
 /**
  * <p>An abstract class used to standardize code, methods and features across the different resource tabs.
@@ -51,10 +49,15 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 	protected final ResourceFilterModel<T> filterModel;
 	protected JSelectableList<T> elementList;
 
-	private TransparentToolBar bar = new TransparentToolBar();;
+	private final TransparentToolBar bar = new TransparentToolBar();
 
 	public AbstractResourcePanel(WorkspacePanel workspacePanel, ResourceFilterModel<T> filterModel,
 			ListCellRenderer<T> render) {
+		this(workspacePanel, filterModel, render, JList.VERTICAL);
+	}
+
+	public AbstractResourcePanel(WorkspacePanel workspacePanel, ResourceFilterModel<T> filterModel,
+			ListCellRenderer<T> render, int layoutOrientation) {
 		super(new BorderLayout());
 		setOpaque(false);
 
@@ -65,6 +68,9 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 		elementList.setOpaque(false);
 		elementList.setCellRenderer(render);
 		elementList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+		elementList.setLayoutOrientation(layoutOrientation);
+		if (layoutOrientation == JList.HORIZONTAL_WRAP)
+			elementList.setVisibleRowCount(-1);
 
 		JScrollPane sp = new JScrollPane(elementList);
 		sp.setOpaque(false);
