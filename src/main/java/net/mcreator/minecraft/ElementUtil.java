@@ -286,19 +286,8 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static String[] loadAllFluids(Workspace workspace) {
-		ArrayList<String> retval = new ArrayList<>();
-
-		for (ModElement modElement : workspace.getModElements()) {
-			if (modElement.getType() == ModElementType.FLUID) {
-				retval.add("CUSTOM:" + modElement.getName());
-				retval.add("CUSTOM:" + modElement.getName() + ":Flowing");
-			}
-		}
-
-		retval.addAll(DataListLoader.loadDataList("fluids").stream().map(DataListEntry::getName).toList());
-
-		return retval.toArray(new String[0]);
+	public static List<DataListEntry> loadAllFluids(Workspace workspace) {
+		return loadDataListAndElements(workspace, "fluids", false, null, "fluid");
 	}
 
 	public static String[] getAllSounds(Workspace workspace) {
