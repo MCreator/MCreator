@@ -1,6 +1,6 @@
 {
-	Level _level = ${input$entity}.level();
-    PlayerTeam _pt = _level.getScoreboard().getPlayerTeam(${input$name});
+	Entity _entity${cbi} = ${input$entity};
+    PlayerTeam _pt = _entity${cbi}.level().getScoreboard().getPlayerTeam(${input$name});
     if (_pt != null)
-    	_level.getScoreboard().removePlayerFromTeam(${input$entity}.getStringUUID(), _pt);
+    	_entity${cbi}.level().getScoreboard().removePlayerFromTeam(_entity${cbi}.getStringUUID(), _pt);
 }
