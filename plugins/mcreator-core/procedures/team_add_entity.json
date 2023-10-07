@@ -25,12 +25,6 @@
     "inputs": [
       "name",
       "entity"
-    ],
-    "dependencies": [
-      {
-        "name": "entity",
-        "type": "entity"
-      }
     ]
   }
 }
