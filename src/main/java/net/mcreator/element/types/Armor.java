@@ -33,6 +33,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
@@ -119,7 +120,7 @@ import java.util.*;
 	public double toughness;
 	public double knockbackResistance;
 	public Sound equipSound;
-	public List<MItemBlock> repairItems;
+	@ModElementReference public List<MItemBlock> repairItems;
 
 	private Armor() {
 		this(null);

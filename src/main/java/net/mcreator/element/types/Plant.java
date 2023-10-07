@@ -105,7 +105,7 @@ import java.util.stream.Collectors;
 	public double jumpFactor;
 	public double speedFactor;
 
-	public List<MItemBlock> canBePlacedOn;
+	@ModElementReference public List<MItemBlock> canBePlacedOn;
 	public Procedure placingCondition;
 
 	public boolean isBonemealable;
@@ -115,7 +115,7 @@ import java.util.stream.Collectors;
 
 	public int frequencyOnChunks;
 	public boolean generateFeature;
-	public List<BiomeEntry> restrictionBiomes;
+	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public String generationType;
 	public int patchSize;
 	public boolean generateAtAnyHeight;

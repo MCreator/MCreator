@@ -159,7 +159,7 @@ import java.util.stream.Collectors;
 
 	public boolean isFluidTank;
 	public int fluidCapacity;
-	public List<Fluid> fluidRestrictions;
+	@ModElementReference public List<Fluid> fluidRestrictions;
 
 	public Procedure onRightClicked;
 	public Procedure onBlockAdded;
@@ -177,8 +177,8 @@ import java.util.stream.Collectors;
 	public Procedure onHitByProjectile;
 
 	public boolean generateFeature;
-	public List<BiomeEntry> restrictionBiomes;
-	public List<MItemBlock> blocksToReplace;
+	@ModElementReference public List<BiomeEntry> restrictionBiomes;
+	@ModElementReference public List<MItemBlock> blocksToReplace;
 	public String generationShape;
 	public int frequencyPerChunks;
 	public int frequencyOnChunk;

@@ -44,6 +44,7 @@ import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 
@@ -102,7 +103,7 @@ import java.util.*;
 	public boolean waterMob;
 	public boolean flyingMob;
 
-	public String guiBoundTo;
+	@ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
 
@@ -149,11 +150,11 @@ import java.util.*;
 
 	public boolean breedable;
 	public boolean tameable;
-	public List<MItemBlock> breedTriggerItems;
+	@ModElementReference public List<MItemBlock> breedTriggerItems;
 
 	public boolean ranged;
 	public MItemBlock rangedAttackItem;
-	public String rangedItemType;
+	@ModElementReference(defaultValues = "Default item") public String rangedItemType;
 	public int rangedAttackInterval;
 	public double rangedAttackRadius;
 
@@ -164,7 +165,7 @@ import java.util.*;
 	public String mobSpawningType;
 	public int minNumberOfMobsPerGroup;
 	public int maxNumberOfMobsPerGroup;
-	public List<BiomeEntry> restrictionBiomes;
+	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
 
 	private LivingEntity() {

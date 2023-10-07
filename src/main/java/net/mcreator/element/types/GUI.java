@@ -32,6 +32,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
@@ -50,7 +51,7 @@ import java.util.List;
 	public boolean renderBgLayer;
 	public boolean doesPauseGame;
 
-	@TextureReference(TextureType.SCREEN) public List<GUIComponent> components;
+	@ModElementReference @TextureReference(TextureType.SCREEN) public List<GUIComponent> components;
 
 	public Procedure onOpen;
 	public Procedure onTick;

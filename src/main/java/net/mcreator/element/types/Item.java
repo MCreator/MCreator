@@ -37,6 +37,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
@@ -54,7 +55,7 @@ import java.util.*;
 	@TextureReference(TextureType.ITEM) public String texture;
 	@Nonnull public String customModelName;
 
-	public Map<String, Procedure> customProperties;
+	@ModElementReference public Map<String, Procedure> customProperties;
 	@TextureReference(TextureType.ITEM) @ResourceReference("model") public List<StateEntry> states;
 
 	public String name;
@@ -78,7 +79,7 @@ import java.util.*;
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
 
-	@Nullable public String guiBoundTo;
+	@Nullable @ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
 

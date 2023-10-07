@@ -33,6 +33,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
@@ -46,7 +47,7 @@ import java.util.List;
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
 		implements ICommonType, ITabContainedElement, IMCItemProvider, IPOIProvider {
 
-	public List<BiomeEntry> biomesInDimension;
+	@ModElementReference public List<BiomeEntry> biomesInDimension;
 
 	public String worldGenType;
 

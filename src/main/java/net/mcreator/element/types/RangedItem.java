@@ -31,7 +31,6 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -46,7 +45,7 @@ import java.util.Map;
 		implements IItem, IItemWithModel, IEntityWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
-	@TextureReference(TextureType.ITEM) public String texture;
+	public String texture;
 	@Nonnull public String customModelName;
 	public String name;
 	public StringListProcedure specialInformation;
@@ -71,7 +70,7 @@ import java.util.Map;
 	public boolean bulletIgnitesFire;
 	public MItemBlock bulletItemTexture;
 	@Nonnull public String bulletModel;
-	@TextureReference(TextureType.ENTITY) public String customBulletModelTexture;
+	public String customBulletModelTexture;
 
 	public Procedure onBulletHitsBlock;
 	public Procedure onBulletHitsPlayer;
