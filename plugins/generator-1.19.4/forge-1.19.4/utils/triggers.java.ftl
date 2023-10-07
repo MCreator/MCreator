@@ -53,22 +53,6 @@
 </#if>
 </#macro>
 
-<#macro onStoppedUsing procedure="">
-<#if hasProcedure(procedure) && (data.useDuration > 0)>
-@Override public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
-	<@procedureCode data.onStoppedUsing, {
-		"x": "entity.getX()",
-		"y": "entity.getY()",
-		"z": "entity.getZ()",
-		"world": "world",
-		"entity": "entity",
-		"itemstack": "itemstack",
-		"time": "time"
-	}/>
-}
-</#if>
-</#macro>
-
 <#macro onEntityHitWith procedure="" hurtStack=false>
 <#if hasProcedure(procedure) || hurtStack>
 @Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
@@ -234,6 +218,20 @@
 		"entity": "entity",
 		"itemstack": "itemstack"
 	}/>
+}
+</#if>
+</#macro>
+
+<#macro piglinNeutral procedure="">
+<#if procedure?has_content || hasProcedure(procedure)>
+@Override public boolean makesPiglinsNeutral(ItemStack itemstack, LivingEntity entity) {
+	<#if hasProcedure(procedure)>
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		Level world = entity.level;
+	</#if>
+	return <@procedureOBJToConditionCode procedure procedure.getFixedValue() false/>;
 }
 </#if>
 </#macro>

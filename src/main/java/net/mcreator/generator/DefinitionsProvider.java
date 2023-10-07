@@ -18,15 +18,16 @@
 
 package net.mcreator.generator;
 
-import com.esotericsoftware.yamlbeans.YamlException;
-import com.esotericsoftware.yamlbeans.YamlReader;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.util.YamlUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
 import java.util.Locale;
 import java.util.Map;
@@ -41,6 +42,8 @@ public class DefinitionsProvider {
 	private final Map<BaseType, Map<?, ?>> global_cache = new ConcurrentHashMap<>();
 
 	public DefinitionsProvider(String generatorName) {
+		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
+
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
 					"/" + generatorName + "/" + type.getRegistryName().toLowerCase(Locale.ENGLISH)
@@ -49,11 +52,10 @@ public class DefinitionsProvider {
 			if (config.isEmpty()) // definition not specified
 				continue;
 
-			YamlReader reader = new YamlReader(config);
 			try {
-				cache.put(type, new ConcurrentHashMap<>((Map<?, ?>) reader.read())); // add definition to the cache
-			} catch (YamlException e) {
-				LOG.error("[" + generatorName + "] Error: " + e.getMessage(), e);
+				cache.put(type, new ConcurrentHashMap<>((Map<?, ?>) yamlLoad.loadFromString(config))); // add definition to the cache
+			} catch (YamlEngineException e) {
+				LOG.error("[" + generatorName + "] Error: " + e.getMessage());
 			}
 		}
 
@@ -64,12 +66,11 @@ public class DefinitionsProvider {
 			if (config.isEmpty()) // definition not specified
 				continue;
 
-			YamlReader reader = new YamlReader(config);
 			try {
 				global_cache.put(type,
-						new ConcurrentHashMap<>((Map<?, ?>) reader.read())); // add definition to the cache
-			} catch (YamlException e) {
-				LOG.info("[" + generatorName + "] Error: " + e.getMessage(), e);
+						new ConcurrentHashMap<>((Map<?, ?>) yamlLoad.loadFromString(config))); // add definition to the cache
+			} catch (YamlEngineException e) {
+				LOG.info("[" + generatorName + "] Error: " + e.getMessage());
 			}
 		}
 	}

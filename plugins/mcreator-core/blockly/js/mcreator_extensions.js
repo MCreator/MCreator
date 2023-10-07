@@ -4,19 +4,6 @@ Blockly.Extensions.register('small_text_tip',
             new Blockly.FieldLabel(javabridge.t('blockly.block.' + this.type + '.tip'), 'small-text'));
     });
 
-Blockly.Extensions.register('gamemode_list_provider', appendDropDown('gamemodes', 'gamemode'));
-
-Blockly.Extensions.register('damagesource_list_provider', appendDropDown('damagesources', 'damagesource'));
-
-Blockly.Extensions.register('sound_category_list_provider',
-    appendDropDownWithMessage('sound_category_list', 'soundcategories', 'soundcategory'));
-
-Blockly.Extensions.register('material_list_provider', appendDropDown('material', 'material'));
-
-Blockly.Extensions.register('plant_type_list_provider', appendDropDown('planttypes', 'planttype'));
-
-Blockly.Extensions.register('direction_list_provider', appendDropDown('direction', 'direction'));
-
 Blockly.Extensions.register('entity_data_logic_list_provider',
     appendAutoReloadingDataListField('customEntity', 'accessor', 'entitydata_logic'));
 

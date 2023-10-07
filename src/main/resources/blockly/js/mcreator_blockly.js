@@ -90,23 +90,6 @@ function jsonToBlocklyDropDownArray(json) {
     return retval;
 }
 
-// Helper function to use in Blockly extensions that append a dropdown
-function appendDropDown(listType, fieldName) {
-    return function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf(listType))), fieldName);
-    };
-}
-
-// Helper function to use in Blockly extensions that append a message and a dropdown
-function appendDropDownWithMessage(messageKey, listType, fieldName) {
-    return function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.extension." + messageKey))
-            .appendField(new Blockly.FieldDropdown(
-                arrayToBlocklyDropDownArray(javabridge.getListOf(listType))), fieldName);
-    };
-}
-
 // Helper function to use in Blockly extensions that register one data list selector field to update contents of another
 // The block may define input called "<targetName>Field" to customize field's position
 // Note that the source field must be inserted before the target field for their values to be loaded properly
