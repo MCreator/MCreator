@@ -33,6 +33,13 @@ import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.function.Consumer;
 
+/**
+ * <p>An abstract class used to standardize code, methods and features across the different resource tabs.
+ * This class is optional and only expected to be used when the behavior of a tab is similar to the others (e.g. sounds, structures, etc.)
+ * It should not be used in a case where it is different in some way (e.g. textures having multiple lists).</p>
+ *
+ * @param <T>
+ */
 public abstract class AbstractResourcePanel<T> extends JPanel implements IReloadableFilterable {
 
 	protected final WorkspacePanel workspacePanel;

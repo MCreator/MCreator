@@ -25,6 +25,12 @@ import javax.swing.*;
 import java.util.*;
 import java.util.function.Predicate;
 
+/**
+ * <p>A general filter model that is used inside a {@link AbstractResourcePanel}.
+ * It defines how a general resource panel's list of elements behaves.</p>
+ *
+ * @param <T>
+ */
 public class ResourceFilterModel<T> extends DefaultListModel<T> {
 	private final List<T> items;
 	private final List<T> filterItems;
@@ -32,6 +38,12 @@ public class ResourceFilterModel<T> extends DefaultListModel<T> {
 	private final Predicate<T> refilterItemsFilter;
 	private final Comparator<T> sortingCondition;
 
+	/**
+	 *
+	 * @param workspacePanel <p>The {@link WorkspacePanel} of the current workspace</p>
+	 * @param refilterItemsFilter <p>Defines which elements should be contained inside the filtered list of elements.</p>
+	 * @param sortingCondition <p>Defines how the filtered elements will be ordered.</p>
+	 */
 	public ResourceFilterModel(WorkspacePanel workspacePanel, Predicate<T> refilterItemsFilter,
 			Comparator<T> sortingCondition) {
 		super();
