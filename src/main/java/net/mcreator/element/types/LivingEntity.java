@@ -98,6 +98,10 @@ import java.util.*;
 	public boolean waterMob;
 	public boolean flyingMob;
 
+	public String guiBoundTo;
+	public int inventorySize;
+	public int inventoryStackSize;
+
 	public boolean canTrade;
 	public boolean villagerTradingType;
 	public List<ProfessionEntry> professionTrade;
@@ -108,9 +112,6 @@ import java.util.*;
 	public LogicProcedure restockCondition;
 	public NumberProcedure rewardXp;
 	public Procedure tradingCondition;
-	public String guiBoundTo;
-	public int inventorySize;
-	public int inventoryStackSize;
 
 	public boolean disableCollisions;
 
