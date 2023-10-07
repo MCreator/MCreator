@@ -79,7 +79,8 @@ public class MappingLoader {
 							mappings.put(mappingName, merged);
 						}
 					} catch (Exception e) {
-						LOG.error("[" + mappingName + "] Error: " + e.getMessage());
+						LOG.error("[" + mappingName + "] Error: " + e.getMessage() + " for mapping file "
+								+ mappingResource);
 					}
 				});
 			} catch (IOException e) {

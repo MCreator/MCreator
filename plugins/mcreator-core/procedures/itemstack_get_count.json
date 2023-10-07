@@ -10,7 +10,7 @@
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
     "group": "count",
-    "toolbox_id": "itemmanagement",
+    "toolbox_id": "itemdata",
     "toolbox_init": [
       "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>"
     ],

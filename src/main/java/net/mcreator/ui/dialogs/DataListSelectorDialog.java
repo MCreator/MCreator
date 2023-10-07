@@ -22,6 +22,7 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 
@@ -66,11 +67,15 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-			label.setText(((DataListEntry) value).getReadableName());
-			if (((DataListEntry) value).getName().contains("CUSTOM:"))
-				setIcon(new ImageIcon(ImageUtils.resize(
-						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), ((DataListEntry) value).getName())
-								.getImage(), 18)));
+			DataListEntry entry = (DataListEntry) value;
+			label.setText(entry.getReadableName());
+			if (entry.getName().contains("CUSTOM:")) {
+				setIcon(new ImageIcon(ImageUtils.resizeAA(
+						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), entry.getName()).getImage(), 18)));
+			} else if (entry.getTexture() != null) {
+				setIcon(new ImageIcon(
+						ImageUtils.resizeAA(BlockItemIcons.getIconForItem(entry.getTexture()).getImage(), 18)));
+			}
 			return label;
 		}
 	}
