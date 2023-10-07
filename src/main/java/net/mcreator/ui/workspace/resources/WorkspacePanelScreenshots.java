@@ -54,40 +54,15 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 					exportSelectedScreenshots();
 			}
 		});
-	}
 
-	@Override TransparentToolBar createToolBar(JSelectableList<File> elementList) {
-		TransparentToolBar bar = new TransparentToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
-
-		JButton edit = L10N.button("workspace.screenshots.export_selected");
-		edit.setIcon(UIRES.get("16px.ext.gif"));
-		edit.setOpaque(false);
-		edit.setContentAreaFilled(false);
-		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(edit);
-		edit.addActionListener(e -> exportSelectedScreenshots());
-
-		JButton useasbg = L10N.button("workspace.screenshots.use_as_background");
-		useasbg.setIcon(UIRES.get("16px.textures"));
-		useasbg.setOpaque(false);
-		useasbg.setContentAreaFilled(false);
-		useasbg.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(useasbg);
-		useasbg.addActionListener(e -> useSelectedAsBackgrounds());
-
-		JButton del = L10N.button("workspace.screenshots.delete_selected");
-		del.setIcon(UIRES.get("16px.delete.gif"));
-		del.setOpaque(false);
-		del.setContentAreaFilled(false);
-		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(del);
-		del.addActionListener(e -> {
+		addToolBarButton("workspace.screenshots.export_selected", UIRES.get("16px.ext.gif"),
+				e -> exportSelectedScreenshots());
+		addToolBarButton("workspace.screenshots.use_as_background", UIRES.get("16px.textures"),
+				e -> useSelectedAsBackgrounds());
+		addToolBarButton("workspace.screenshots.delete_selected", UIRES.get("16px.delete.gif"), e -> {
 			deleteCurrentlySelected(elementList.getSelectedValuesList());
 			reloadElements();
 		});
-
-		return bar;
 	}
 
 	@Override void deleteCurrentlySelected(List<File> elements) {

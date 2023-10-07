@@ -21,15 +21,19 @@ package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.TransparentToolBar;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -46,6 +50,8 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 
 	protected final ResourceFilterModel<T> filterModel;
 	protected JSelectableList<T> elementList;
+
+	private TransparentToolBar bar = new TransparentToolBar();;
 
 	public AbstractResourcePanel(WorkspacePanel workspacePanel, ResourceFilterModel<T> filterModel,
 			ListCellRenderer<T> render) {
@@ -79,12 +85,34 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 			}
 		});
 
-		add("North", createToolBar(elementList));
+		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
+
+		add("North", bar);
 	}
 
-	abstract TransparentToolBar createToolBar(JSelectableList<T> elementList);
-
 	abstract void deleteCurrentlySelected(List<T> elements);
+
+	protected void addToolBarButton(String key, ImageIcon icon, ActionListener action) {
+		addToolBarButton(key, icon, action, null);
+	}
+
+	protected void addToolBarButton(String key, ImageIcon icon, MouseAdapter mouse) {
+		addToolBarButton(key, icon, null, mouse);
+	}
+
+	protected void addToolBarButton(String key, ImageIcon icon, ActionListener action, MouseAdapter mouse) {
+		JButton button = L10N.button(key);
+		button.setIcon(icon);
+		button.setContentAreaFilled(false);
+		button.setOpaque(false);
+		ComponentUtils.deriveFont(button, 12);
+		button.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+		if (action != null)
+			button.addActionListener(action);
+		if (mouse != null)
+			button.addMouseListener(mouse);
+		bar.add(button);
+	}
 
 	@Override public abstract void reloadElements();
 

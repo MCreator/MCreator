@@ -37,40 +37,13 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, e -> (e.toLowerCase(Locale.ENGLISH)
 				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH))),
 				Comparator.comparing(String::toString)), new Render());
-	}
 
-	@Override TransparentToolBar createToolBar(JSelectableList<String> elementList) {
-		TransparentToolBar bar = new TransparentToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
-
-		JButton importnbt = L10N.button("action.workspace.resources.import_structure");
-		importnbt.setIcon(UIRES.get("16px.open.gif"));
-		importnbt.setContentAreaFilled(false);
-		importnbt.setOpaque(false);
-		ComponentUtils.deriveFont(importnbt, 12);
-		importnbt.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(importnbt);
-		importnbt.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());
-
-		JButton importmc = L10N.button("action.workspace.resources.import_structure_from_minecraft");
-		importmc.setIcon(UIRES.get("16px.open.gif"));
-		importmc.setContentAreaFilled(false);
-		importmc.setOpaque(false);
-		ComponentUtils.deriveFont(importmc, 12);
-		importmc.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(importmc);
-		importmc.addActionListener(
+		addToolBarButton("action.workspace.resources.import_structure", UIRES.get("16px.open.gif"),
+				e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());
+		addToolBarButton("action.workspace.resources.import_structure_from_minecraft", UIRES.get("16px.open.gif"),
 				e -> workspacePanel.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
-
-		JButton del = L10N.button("workspace.sounds.delete_selected");
-		del.setIcon(UIRES.get("16px.delete.gif"));
-		del.setOpaque(false);
-		del.setContentAreaFilled(false);
-		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(del);
-		del.addActionListener(a -> deleteCurrentlySelected(elementList.getSelectedValuesList()));
-
-		return bar;
+		addToolBarButton("workspace.sounds.delete_selected", UIRES.get("16px.delete.gif"),
+				e -> deleteCurrentlySelected(elementList.getSelectedValuesList()));
 	}
 
 	@Override void deleteCurrentlySelected(List<String> elements) {

@@ -47,6 +47,29 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 	WorkspacePanelSounds(WorkspacePanel workspacePanel) {
 		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, item -> (item.getName().toLowerCase(Locale.ENGLISH)
 				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH))), Comparator.comparing(SoundElement::getName)), new Render());
+
+		addToolBarButton("action.workspace.resources.import_sound", UIRES.get("16px.open.gif"),
+				e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
+		addToolBarButton("workspace.sounds.edit_selected", UIRES.get("16px.edit.gif"),
+				e -> editSelectedSound(elementList.getSelectedValue()));
+		addToolBarButton("workspace.sounds.delete_selected", UIRES.get("16px.delete.gif"),
+				e -> deleteCurrentlySelected(Collections.singletonList(elementList.getSelectedValue())));
+		addToolBarButton("workspace.sounds.play_selected", UIRES.get("16px.play"), new MouseAdapter() {
+			@Override public void mousePressed(MouseEvent e) {
+				SoundElement soundElement = elementList.getSelectedValue();
+				if (soundElement != null) {
+					if (!soundElement.getFiles().isEmpty()) {
+						SoundUtils.playSound(
+								new File(workspacePanel.getMCreator().getWorkspace().getFolderManager().getSoundsDir(),
+										ListUtils.getRandomItem(soundElement.getFiles()) + ".ogg"));
+					}
+				}
+			}
+			@Override public void mouseReleased(MouseEvent e) {
+				SoundUtils.stopAllSounds();
+			}
+
+		});
 	}
 
 	private void editSelectedSound(SoundElement selectedValue) {
@@ -55,66 +78,6 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 			workspacePanel.getMCreator().getWorkspace().markDirty();
 			reloadElements();
 		}
-	}
-
-	@Override TransparentToolBar createToolBar(JSelectableList<SoundElement> elementList) {
-		TransparentToolBar bar = new TransparentToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
-
-		JButton importsound = L10N.button("action.workspace.resources.import_sound");
-		importsound.setIcon(UIRES.get("16px.open.gif"));
-		importsound.setContentAreaFilled(false);
-		importsound.setOpaque(false);
-		ComponentUtils.deriveFont(importsound, 12);
-		importsound.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(importsound);
-		importsound.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
-
-		JButton edit = L10N.button("workspace.sounds.edit_selected");
-		edit.setIcon(UIRES.get("16px.edit.gif"));
-		edit.setContentAreaFilled(false);
-		edit.setOpaque(false);
-		ComponentUtils.deriveFont(edit, 12);
-		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(edit);
-		edit.addActionListener(e -> editSelectedSound(elementList.getSelectedValue()));
-
-		JButton del = L10N.button("workspace.sounds.delete_selected");
-		del.setIcon(UIRES.get("16px.delete.gif"));
-		del.setOpaque(false);
-		del.setContentAreaFilled(false);
-		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(del);
-
-		del.addActionListener(a -> deleteCurrentlySelected(Collections.singletonList(elementList.getSelectedValue())));
-
-		JButton play = L10N.button("workspace.sounds.play_selected");
-		play.setIcon(UIRES.get("16px.play"));
-		play.setOpaque(false);
-		play.setContentAreaFilled(false);
-		play.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(play);
-		play.addMouseListener(new MouseAdapter() {
-			@Override public void mousePressed(MouseEvent e) {
-				SoundElement soundElement = elementList.getSelectedValue();
-				if (soundElement != null) {
-					if (!soundElement.getFiles().isEmpty()) {
-						SoundUtils.playSound(
-								new File(workspacePanel.getMCreator().getWorkspace().getFolderManager().getSoundsDir(),
-										ListUtils.getRandomItem(soundElement.getFiles()) + ".ogg"));
-						play.setEnabled(false);
-					}
-				}
-			}
-
-			@Override public void mouseReleased(MouseEvent e) {
-				SoundUtils.stopAllSounds();
-				play.setEnabled(true);
-			}
-
-		});
-
-		return bar;
 	}
 
 	@Override void deleteCurrentlySelected(List<SoundElement> elements) {
