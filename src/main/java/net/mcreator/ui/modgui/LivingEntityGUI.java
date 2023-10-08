@@ -167,6 +167,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private MCItemHolder equipmentBoots;
 	private MCItemHolder equipmentOffHand;
 
+	private final JComboBox<String> guiBoundTo = new JComboBox<>();
+	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
+	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
+
 	private final JCheckBox canTrade = L10N.checkbox("elementgui.common.enable");
 	private final JRadioButton villagerTradingType = L10N.radiobutton("elementgui.living_entity.villager");
 	private final JRadioButton wanderingTraderTradingType = L10N.radiobutton(
@@ -178,9 +182,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private LogicProcedureSelector restockCondition;
 	private NumberProcedureSelector rewardXp;
 	private ProcedureSelector tradingCondition;
-	private final JComboBox<String> guiBoundTo = new JComboBox<>();
-	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
-	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
 
 	private MCItemHolder rangedAttackItem;
 
@@ -999,7 +1000,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		canControlStrafe.setEnabled(!canTrade.isSelected());
 
 		if (canTrade.isSelected()) {
-			aiBase.setSelectedItem(villagerTradingType.isSelected() ? "Villager" : "(none)");
+			aiBase.setSelectedItem("Villager");
 			guiBoundTo.setSelectedItem("<NONE>");
 			breedable.setSelected(false);
 			updateBreedingConditions();

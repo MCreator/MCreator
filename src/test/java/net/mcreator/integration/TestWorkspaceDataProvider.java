@@ -1653,7 +1653,9 @@ public class TestWorkspaceDataProvider {
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
 		livingEntity.canTrade = _true;
-		livingEntity.villagerTradingType = !_true;
+		livingEntity.villagerTradingType = emptyLists;
+		if (livingEntity.canTrade)
+			livingEntity.aiBase = "Villager";
 		if (livingEntity.canTrade || livingEntity.breedable) {
 			livingEntity.hasAI = true;
 		}
