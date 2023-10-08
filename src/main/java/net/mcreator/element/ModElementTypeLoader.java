@@ -57,7 +57,7 @@ public class ModElementTypeLoader {
 		ModElementType.POTION = register(new ModElementType<>("potion", 'z', BaseType.OTHER, PotionGUI::new, Potion.class));
 		ModElementType.POTIONEFFECT = register(new ModElementType<>("potioneffect", null, BaseType.OTHER, PotionEffectGUI::new, PotionEffect.class));
 		ModElementType.PROCEDURE = register(new ModElementType<>("procedure", 'p', BaseType.OTHER, ProcedureGUI::new, Procedure.class));
-		ModElementType.RANGEDITEM = register(new ModElementType<>("rangeditem", 'q', BaseType.ITEM, RangedItemGUI::new, RangedItem.class));
+		ModElementType.PROJECTILE = register(new ModElementType<>("projectile", 'q', BaseType.ENTITY, ProjectileGUI::new, Projectile.class));
 		ModElementType.RECIPE = register(new ModElementType<>("recipe", 'r', BaseType.DATAPACK, RecipeGUI::new, Recipe.class));
 		ModElementType.STRUCTURE = register(new ModElementType<>("structure", 's', BaseType.FEATURE, StructureGenGUI::new, Structure.class));
 		ModElementType.TAB = register(new ModElementType<>("tab", 'w', BaseType.OTHER, TabGUI::new, Tab.class));
@@ -79,9 +79,7 @@ public class ModElementTypeLoader {
 
 	public static ModElementType<?> getModElementType(String typeName) throws IllegalArgumentException {
 		// legacy support in case name was not converted up to this point
-		if (typeName.equals("gun")) {
-			typeName = "rangeditem";
-		} else if (typeName.equals("mob")) {
+		if (typeName.equals("mob")) {
 			typeName = "livingentity";
 		}
 

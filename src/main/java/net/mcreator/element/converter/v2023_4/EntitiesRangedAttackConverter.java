@@ -17,34 +17,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.v2022_2;
+package net.mcreator.element.converter.v2023_4;
 
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
-import net.mcreator.element.types.RangedItem;
-import net.mcreator.io.FileIO;
-import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.element.types.LivingEntity;
 import net.mcreator.workspace.Workspace;
 
-public class RangedItemTextureConverter implements IConverter {
+public class EntitiesRangedAttackConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		RangedItem item = (RangedItem) input;
-
-		if (item.customBulletModelTexture != null && !item.customBulletModelTexture.isEmpty()) {
-			FileIO.copyFile(workspace.getFolderManager()
-					.getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture),
-							TextureType.OTHER), workspace.getFolderManager()
-					.getTextureFile(FilenameUtilsPatched.removeExtension(item.customBulletModelTexture),
-							TextureType.ENTITY));
+		LivingEntity entity = (LivingEntity) input;
+		if (!entity.rangedItemType.equals("Default item")) {
+			entity.rangedItemType = entity.rangedItemType + "Projectile";
 		}
 
-		return item;
+		return entity;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 31;
+		return 52;
 	}
 }

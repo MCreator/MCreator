@@ -16,7 +16,7 @@
   "output": "MCItem",
   "colour": 350,
   "mcreator": {
-    "toolbox_id": "itemmanagement",
+    "toolbox_id": "itemdata",
     "toolbox_init": [
       "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
     ],

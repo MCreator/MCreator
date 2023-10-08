@@ -67,7 +67,8 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		// load generator configuration
 		try {
 			generatorConfig = (Map<?, ?>) new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(config);
-			generatorConfig = new ConcurrentHashMap<>(generatorConfig); // make this map concurrent, cache can be reused by multiple instances
+			generatorConfig = new ConcurrentHashMap<>(
+					generatorConfig); // make this map concurrent, cache can be reused by multiple instances
 		} catch (YamlEngineException e) {
 			LOG.fatal("[" + generatorName + "] Error: " + e.getMessage());
 		}
@@ -229,13 +230,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	}
 
 	public TemplateGeneratorConfiguration getTemplateGenConfigFromName(String name) {
-		if (templateGeneratorConfigs.containsKey(name))
-			return templateGeneratorConfigs.get(name);
-		else {
-			TemplateGeneratorConfiguration tpl = new TemplateGeneratorConfiguration(this, name);
-			templateGeneratorConfigs.put(name, tpl);
-			return tpl;
-		}
+		return templateGeneratorConfigs.computeIfAbsent(name, key -> new TemplateGeneratorConfiguration(this, key));
 	}
 
 	public GeneratorVariableTypes getVariableTypes() {
