@@ -93,20 +93,32 @@ public class StructureToFeatureConverter implements IConverter {
 			}
 
 			String structure = definition.get("structure").getAsString();
-			int spawnXOffset = definition.get("spawnXOffset").getAsInt();
-			int spawnYOffset = definition.get("spawnHeightOffset").getAsInt();
-			int spawnZOffset = definition.get("spawnZOffset").getAsInt();
-			boolean randomlyRotateStructure = definition.get("randomlyRotateStructure").getAsBoolean();
-			String ignoreBlocks = definition.get("ignoreBlocks").getAsString();
+			int spawnXOffset = definition.has("spawnXOffset") ? definition.get("spawnXOffset").getAsInt() : 0;
+			int spawnYOffset = definition.has("spawnHeightOffset") ? definition.get("spawnHeightOffset").getAsInt() : 0;
+			int spawnZOffset = definition.has("spawnZOffset") ? definition.get("spawnZOffset").getAsInt() : 0;
+			boolean randomlyRotateStructure =
+					!definition.has("randomlyRotateStructure") || definition.get("randomlyRotateStructure")
+							.getAsBoolean();
+			String ignoreBlocks = definition.has("ignoreBlocks") ?
+					definition.get("ignoreBlocks").getAsString() :
+					"STRUCTURE_BLOCK";
 			String patchXML = getFeatureXML(structure, spawnXOffset, spawnYOffset, spawnZOffset,
 					randomlyRotateStructure, ignoreBlocks);
 
-			String surfaceDetectionType = definition.get("surfaceDetectionType").getAsString();
+			String surfaceDetectionType = definition.has("surfaceDetectionType") ?
+					definition.get("surfaceDetectionType").getAsString() :
+					"First motion blocking block";
 			int spawnProbability = definition.get("spawnProbability").getAsInt();
-			int minCountPerChunk = definition.get("minCountPerChunk").getAsInt();
-			int maxCountPerChunk = definition.get("maxCountPerChunk").getAsInt();
-			List<String> restrictionBlocks = definition.getAsJsonArray("restrictionBlocks").asList().stream()
-					.map(e -> e.getAsJsonObject().get("value").getAsString()).toList();
+			int minCountPerChunk = definition.has("minCountPerChunk") ?
+					definition.get("minCountPerChunk").getAsInt() :
+					1;
+			int maxCountPerChunk = definition.has("maxCountPerChunk") ?
+					definition.get("maxCountPerChunk").getAsInt() :
+					1;
+			List<String> restrictionBlocks = definition.has("restrictionBlocks") ?
+					definition.getAsJsonArray("restrictionBlocks").asList().stream()
+							.map(e -> e.getAsJsonObject().get("value").getAsString()).toList() :
+					List.of();
 			String placementXML = getPlacementXML(surfaceDetectionType, spawnProbability, minCountPerChunk,
 					maxCountPerChunk, spawnLocation, restrictionBlocks);
 
