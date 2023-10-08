@@ -207,26 +207,19 @@ public class DialogsTest {
 
 	@Test public void testUsagesSearchDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
-						Collections.emptyList(), false));
+				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.texture"),
-						Collections.emptyList(), false));
+				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.model"),
-						Collections.emptyList(), false));
+				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.sound"),
-						Collections.emptyList(), false));
+				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.resource.structure"),
-						Collections.emptyList(), false));
+				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.global_variable"),
-						Collections.emptyList(), false));
+				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.localization_key"),
-						Collections.emptyList(), false));
+				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {
