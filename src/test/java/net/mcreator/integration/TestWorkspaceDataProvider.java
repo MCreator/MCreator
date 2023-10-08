@@ -51,10 +51,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableType;
-import net.mcreator.workspace.elements.VariableTypeLoader;
+import net.mcreator.workspace.elements.*;
 
 import java.awt.*;
 import java.awt.image.RenderedImage;
@@ -126,6 +123,13 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static void fillWorkspaceWithTestData(Workspace workspace) {
+		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("sounds") == GeneratorStats.CoverageStatus.FULL) {
+			for (int i = 1; i <= 3; i++) {
+				SoundElement sound = new SoundElement("test" + i, List.of(), "neutral", null);
+				workspace.addSoundElement(sound);
+			}
+		}
+
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")
 				== GeneratorStats.CoverageStatus.FULL) {
 			VariableElement sampleVariable1 = new VariableElement("test");

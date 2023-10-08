@@ -25,7 +25,6 @@ import net.mcreator.generator.*;
 import net.mcreator.integration.TestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.integration.generator.GTSampleElements;
-import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
@@ -48,8 +47,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ReferencesFinderTest {
 
@@ -92,9 +90,11 @@ public class ReferencesFinderTest {
 				TestWorkspaceDataProvider.getModElementExamplesFor(workspace, type, false, random).forEach(e -> {
 					workspace.addModElement(e.getModElement());
 					workspace.getModElementManager().storeModElement(e);
+
+					// generate I18N keys for testLocalizationKeyUsagesSearch() to check later
 					LocalizationUtils.generateLocalizationKeys(workspace.getGenerator(), e,
-							(List<?>) generatorConfiguration.getDefinitionsProvider()
-									.getModElementDefinition(e.getModElement().getType()).get("localizationkeys"));
+							(List<?>) generatorConfiguration.getDefinitionsProvider().getModElementDefinition(type)
+									.get("localizationkeys"));
 				});
 			}
 		}
@@ -135,8 +135,7 @@ public class ReferencesFinderTest {
 	}
 
 	@Test void testSoundUsagesSearch() {
-		SoundElement sound = new SoundElement(ListUtils.getRandomItem(ElementUtil.getAllSounds(workspace)), List.of(),
-				"neutral", null);
+		SoundElement sound = ListUtils.getRandomItem(List.copyOf(workspace.getSoundElements()));
 		ReferencesFinder.searchSoundUsages(workspace, sound);
 	}
 
@@ -148,12 +147,12 @@ public class ReferencesFinderTest {
 
 	@Test void testGlobalVariableUsagesSearch() {
 		String variableName = "logic2";
-		ReferencesFinder.searchGlobalVariableUsages(workspace, variableName);
+		assertTrue(ReferencesFinder.searchGlobalVariableUsages(workspace, variableName).isEmpty());
 	}
 
 	@Test void testLocalizationKeyUsagesSearch() {
 		String localizationKey = ListUtils.getRandomItem(
-				workspace.getLanguageMap().get("en_us").values().toArray(String[]::new));
-		ReferencesFinder.searchLocalizationKeyUsages(workspace, localizationKey);
+				workspace.getLanguageMap().get("en_us").keySet().toArray(String[]::new));
+		assertFalse(ReferencesFinder.searchLocalizationKeyUsages(workspace, localizationKey).isEmpty());
 	}
 }
