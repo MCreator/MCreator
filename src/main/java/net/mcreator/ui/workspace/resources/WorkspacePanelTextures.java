@@ -25,6 +25,7 @@ import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.ListUtil;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
@@ -36,6 +37,8 @@ import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.references.ReferencesFinder;
+import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -153,6 +156,14 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(edit);
 
+		JButton search = L10N.button("workspace.textures.search_usages");
+		search.setIcon(UIRES.get("16px.search"));
+		search.setContentAreaFilled(false);
+		search.setOpaque(false);
+		ComponentUtils.deriveFont(search, 12);
+		search.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+		bar.add(search);
+
 		JButton duplicate = L10N.button("workspace.textures.duplicate_selected");
 		duplicate.setIcon(UIRES.get("16px.duplicate.gif"));
 		duplicate.setContentAreaFilled(false);
@@ -179,6 +190,25 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		del.addActionListener(a -> deleteCurrentlySelected());
 
 		edit.addActionListener(e -> editSelectedFile());
+		search.addActionListener(e -> {
+			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+			Set<ModElement> refs = new HashSet<>();
+			for (TextureType section : TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(),
+					true)) {
+				JList<File> list = mapLists.get(section.getID()).list();
+				if (list.getSelectedValue() != null) {
+					for (File texture : list.getSelectedValuesList()) {
+						refs.addAll(ReferencesFinder.searchTextureUsages(workspacePanel.getMCreator().getWorkspace(),
+								texture, section));
+					}
+				}
+			}
+
+			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+			SearchUsagesDialog.show(workspacePanel.getMCreator(), L10N.t("dialog.search_usages.type.resource.texture"),
+					new ArrayList<>(refs), false);
+		});
 		duplicate.addActionListener(e -> duplicateSelectedFile());
 
 		add("North", bar);
@@ -187,11 +217,23 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 	private void deleteCurrentlySelected() {
 		List<File> files = listGroup.getSelectedItemsList();
 		if (!files.isEmpty()) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.textures.confirm_deletion_message"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			if (n == 0) {
+			Set<ModElement> references = new HashSet<>();
+			for (TextureType section : TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(),
+					true)) {
+				JList<File> list = mapLists.get(section.getID()).list();
+				if (list.getSelectedValue() != null) {
+					list.getSelectedValuesList().stream()
+							.map(t -> ReferencesFinder.searchTextureUsages(workspacePanel.getMCreator().getWorkspace(),
+									t, section)).forEach(references::addAll);
+				}
+			}
+
+			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+
+			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.texture"), new ArrayList<>(references), true)) {
 				files.forEach(file -> {
 					if (file != null) {
 						file.delete();

@@ -26,6 +26,7 @@ import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.TextureMappingDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -33,6 +34,8 @@ import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.StringUtils;
+import net.mcreator.workspace.references.ReferencesFinder;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -146,6 +149,25 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		bar.add(editModelAnimations);
 		editModelAnimations.addActionListener(e -> editSelectedModelAnimations());
 
+		JButton searchModelUsages = L10N.button("workspace.3dmodels.search_usages");
+		searchModelUsages.setIcon(UIRES.get("16px.search"));
+		searchModelUsages.setOpaque(false);
+		searchModelUsages.setContentAreaFilled(false);
+		searchModelUsages.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+		bar.add(searchModelUsages);
+		searchModelUsages.addActionListener(e -> {
+			if (!modelList.isSelectionEmpty()) {
+				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+				List<ModElement> references = ReferencesFinder.searchModelUsages(
+						workspacePanel.getMCreator().getWorkspace(), modelList.getSelectedValue());
+
+				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+				SearchUsagesDialog.show(workspacePanel.getMCreator(),
+						L10N.t("dialog.search_usages.type.resource.model"), references, false);
+			}
+		});
+
 		JButton del = L10N.button("workspace.3dmodels.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
@@ -182,11 +204,15 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 	private void deleteCurrentlySelected() {
 		Model model = modelList.getSelectedValue();
 		if (model != null) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.3dmodels.delete_confirm_message"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			if (n == 0) {
+			List<ModElement> references = ReferencesFinder.searchModelUsages(
+					workspacePanel.getMCreator().getWorkspace(), model);
+
+			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+
+			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.model"), references, true)) {
 				Arrays.stream(model.getFiles()).forEach(File::delete);
 				reloadElements();
 			}

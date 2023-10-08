@@ -21,6 +21,7 @@ package net.mcreator.ui.workspace.resources;
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.SoundElementDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -30,6 +31,8 @@ import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.SoundUtils;
+import net.mcreator.workspace.references.ReferencesFinder;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
 
 import javax.swing.*;
@@ -97,6 +100,14 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(edit);
 
+		JButton search = L10N.button("workspace.sounds.search_usages");
+		search.setIcon(UIRES.get("16px.search"));
+		search.setContentAreaFilled(false);
+		search.setOpaque(false);
+		ComponentUtils.deriveFont(search, 12);
+		search.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+		bar.add(search);
+
 		JButton del = L10N.button("workspace.sounds.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
@@ -142,6 +153,19 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		});
 
 		edit.addActionListener(e -> editSelectedSound(soundElementList.getSelectedValue()));
+		search.addActionListener(e -> {
+			if (!soundElementList.isSelectionEmpty()) {
+				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+				Set<ModElement> refs = new HashSet<>();
+				for (SoundElement sound : soundElementList.getSelectedValuesList())
+					refs.addAll(ReferencesFinder.searchSoundUsages(workspacePanel.getMCreator().getWorkspace(), sound));
+
+				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+				SearchUsagesDialog.show(workspacePanel.getMCreator(),
+						L10N.t("dialog.search_usages.type.resource.sound"), new ArrayList<>(refs), false);
+			}
+		});
 		importsound.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
 		add("North", bar);
 
@@ -150,10 +174,16 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 	private void deleteSelectedSound(WorkspacePanel workspacePanel, JSelectableList<SoundElement> soundElementList) {
 		List<SoundElement> soundElements = soundElementList.getSelectedValuesList();
 		if (!soundElements.isEmpty()) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.sounds.confirm_deletion_message"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (n == 0) {
+			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+			Set<ModElement> references = new HashSet<>();
+			for (SoundElement s : soundElements)
+				references.addAll(ReferencesFinder.searchSoundUsages(workspacePanel.getMCreator().getWorkspace(), s));
+
+			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+
+			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.sound"), new ArrayList<>(references), true)) {
 				soundElements.forEach(workspacePanel.getMCreator().getWorkspace()::removeSoundElement);
 				reloadElements();
 			}
