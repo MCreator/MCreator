@@ -22,7 +22,7 @@ import net.mcreator.element.parts.Fluid;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.dialogs.StringSelectorDialog;
+import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.init.L10N;
 
 import java.util.List;
@@ -34,7 +34,7 @@ public class FluidListField extends JItemListField<Fluid> {
 	}
 
 	@Override protected List<Fluid> getElementsToAdd() {
-		return StringSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllFluids,
+		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllFluids,
 						L10N.t("dialog.list_field.fluid_title"), L10N.t("dialog.list_field.fluid_message")).stream()
 				.map(e -> new Fluid(mcreator.getWorkspace(), e)).toList();
 	}
