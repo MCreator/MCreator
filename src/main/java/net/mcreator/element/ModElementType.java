@@ -152,7 +152,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> POTION;
 	public static ModElementType<?> POTIONEFFECT;
 	public static ModElementType<?> PROCEDURE;
-	public static ModElementType<?> RANGEDITEM;
+	public static ModElementType<?> PROJECTILE;
 	public static ModElementType<?> RECIPE;
 	public static ModElementType<?> STRUCTURE;
 	public static ModElementType<?> TAB;

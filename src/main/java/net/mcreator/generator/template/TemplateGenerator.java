@@ -136,10 +136,8 @@ public class TemplateGenerator {
 	private String generateTemplateFromString(String template, Map<String, Object> dataModel)
 			throws TemplateGeneratorException {
 		try {
-			Template freemarkerTemplate;
-			if (inline_template_cache.containsKey(template)) {
-				freemarkerTemplate = inline_template_cache.get(template);
-			} else {
+			Template freemarkerTemplate = inline_template_cache.get(template);
+			if (freemarkerTemplate == null) {
 				freemarkerTemplate = new Template("INLINE_TEMPLATE", template,
 						templateGeneratorConfiguration.getConfiguration());
 				inline_template_cache.put(template, freemarkerTemplate);
