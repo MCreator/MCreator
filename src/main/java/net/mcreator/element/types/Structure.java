@@ -25,13 +25,15 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.ResourceReference;
 
 import java.util.Collection;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Structure extends GeneratableElement implements ICommonType {
 
-	public String structure;
+	@ResourceReference("structure") public String structure;
 
 	public boolean randomlyRotateStructure;
 
@@ -47,8 +49,8 @@ import java.util.List;
 	public int spawnXOffset;
 	public int spawnZOffset;
 
-	public List<MItemBlock> restrictionBlocks;
-	public List<BiomeEntry> restrictionBiomes;
+	@ModElementReference public List<MItemBlock> restrictionBlocks;
+	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 
 	public String ignoreBlocks;
 
