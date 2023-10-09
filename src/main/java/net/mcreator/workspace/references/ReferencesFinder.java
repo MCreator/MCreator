@@ -84,12 +84,13 @@ public class ReferencesFinder {
 				return ref != null && ref.value() == type;
 			}, (a, t) -> {
 				TextureReference ref = a.getAnnotation(TextureReference.class);
-				if (List.of(ref.defaultValues()).contains(t))
-					return false;
-				for (String e : ref.files()) {
-					if (workspace.getFolderManager()
-							.getTextureFile(FilenameUtilsPatched.removeExtension(e.formatted(t)), type).equals(texture))
-						return true;
+				if (!List.of(ref.defaultValues()).contains(t)) {
+					for (String template : ref.files()) {
+						String file = template.isEmpty() ? t : template.formatted(t);
+						if (workspace.getFolderManager()
+								.getTextureFile(FilenameUtilsPatched.removeExtension(file), type).equals(texture))
+							return true;
+					}
 				}
 				return false;
 			})) {
