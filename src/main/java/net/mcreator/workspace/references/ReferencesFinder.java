@@ -54,7 +54,7 @@ public class ReferencesFinder {
 			GeneratableElement ge = me.getGeneratableElement();
 			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) -> {
 				ModElementReference ref = a.getAnnotation(ModElementReference.class);
-				return !List.of(ref.defaultValues()).contains(GeneratorWrapper.getElementPlainName(t)) && query.equals(
+				return !List.of(ref.defaultValues()).contains(t) && query.equals(
 						"CUSTOM:" + GeneratorWrapper.getElementPlainName(t));
 			})) {
 				elements.add(me);
