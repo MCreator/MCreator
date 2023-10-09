@@ -151,7 +151,9 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../../element/BaseType.html" title="enum class in net.mcreator.element">BaseType</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBaseTypesProvided()" class="member-name-link">getBaseTypesProvided</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getElementIcon()" class="member-name-link">getElementIcon</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -160,10 +162,14 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGeneratableElement()" class="member-name-link">getGeneratableElement</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Warning: this method uses ModElementManager and is thus not thread safe</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMCItems()" class="member-name-link">getMCItems</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe</div>
+</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getMetadata(java.lang.String)" class="member-name-link">getMetadata</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;key)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
@@ -292,6 +298,11 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h3>getGeneratableElement</h3>
 <div class="member-signature"><span class="annotations">@Nullable
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../element/GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></span>&nbsp;<span class="element-name">getGeneratableElement</span>()</div>
+<div class="block">Warning: this method uses ModElementManager and is thus not thread safe</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>GeneratableElement or null if load failed</dd>
+</dl>
 </section>
 </li>
 <li>
@@ -453,6 +464,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h3>getMCItems</h3>
 <div class="member-signature"><span class="annotations">@Nonnull
 </span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</span>&nbsp;<span class="element-name">getMCItems</span>()</div>
+<div class="block">Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe</div>
 </section>
 </li>
 <li>
@@ -491,6 +503,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <section class="detail" id="getBaseTypesProvided()">
 <h3>getBaseTypesProvided</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../../element/BaseType.html" title="enum class in net.mcreator.element">BaseType</a>&gt;</span>&nbsp;<span class="element-name">getBaseTypesProvided</span>()</div>
+<div class="block">Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe</div>
 </section>
 </li>
 </ul>

@@ -5325,6 +5325,10 @@ loadScripts(document, 'script');</script>
 <h5>permissionLevel</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComboBox.html" title="class or interface in javax.swing" class="external-link">JComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; permissionLevel</pre>
 </li>
+<li class="block-list">
+<h5>type</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComboBox.html" title="class or interface in javax.swing" class="external-link">JComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; type</pre>
+</li>
 </ul>
 </section>
 </li>
@@ -5984,6 +5988,10 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> enableMeleeDamage</pre>
 </li>
 <li class="block-list">
+<h5>enableRanged</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> enableRanged</pre>
+</li>
+<li class="block-list">
 <h5>enchantability</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> enchantability</pre>
 </li>
@@ -6056,6 +6064,10 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onItemInUseTick</pre>
 </li>
 <li class="block-list">
+<h5>onRangedItemUsed</h5>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRangedItemUsed</pre>
+</li>
+<li class="block-list">
 <h5>onRightClickedInAir</h5>
 <pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRightClickedInAir</pre>
 </li>
@@ -6072,6 +6084,14 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page1group</pre>
 </li>
 <li class="block-list">
+<h5>projectile</h5>
+<pre><a href="net/mcreator/ui/minecraft/DataListComboBox.html" title="class in net.mcreator.ui.minecraft">DataListComboBox</a> projectile</pre>
+</li>
+<li class="block-list">
+<h5>rangedUseCondition</h5>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> rangedUseCondition</pre>
+</li>
+<li class="block-list">
 <h5>rarity</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComboBox.html" title="class or interface in javax.swing" class="external-link">JComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; rarity</pre>
 </li>
@@ -6086,6 +6106,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>saturation</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> saturation</pre>
+</li>
+<li class="block-list">
+<h5>shootConstantly</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> shootConstantly</pre>
 </li>
 <li class="block-list">
 <h5>specialInformation</h5>
@@ -7412,145 +7436,73 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="serialized-class-details" id="net.mcreator.ui.modgui.RangedItemGUI">
-<h3>Class&nbsp;<a href="net/mcreator/ui/modgui/RangedItemGUI.html" title="class in net.mcreator.ui.modgui">net.mcreator.ui.modgui.RangedItemGUI</a></h3>
-<div class="type-signature">class RangedItemGUI extends <a href="net/mcreator/ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="net/mcreator/element/types/RangedItem.html" title="class in net.mcreator.element.types">RangedItem</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<section class="serialized-class-details" id="net.mcreator.ui.modgui.ProjectileGUI">
+<h3>Class&nbsp;<a href="net/mcreator/ui/modgui/ProjectileGUI.html" title="class in net.mcreator.ui.modgui">net.mcreator.ui.modgui.ProjectileGUI</a></h3>
+<div class="type-signature">class ProjectileGUI extends <a href="net/mcreator/ui/modgui/ModElementGUI.html" title="class in net.mcreator.ui.modgui">ModElementGUI</a>&lt;<a href="net/mcreator/element/types/Projectile.html" title="class in net.mcreator.element.types">Projectile</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <ul class="block-list">
 <li>
 <section class="detail">
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
-<h5>adefault</h5>
-<pre><a href="net/mcreator/workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a> adefault</pre>
+<h5>actionSound</h5>
+<pre><a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a> actionSound</pre>
 </li>
 <li class="block-list">
-<h5>ammoItem</h5>
-<pre><a href="net/mcreator/ui/minecraft/MCItemHolder.html" title="class in net.mcreator.ui.minecraft">MCItemHolder</a> ammoItem</pre>
+<h5>customModelTexture</h5>
+<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; customModelTexture</pre>
 </li>
 <li class="block-list">
-<h5>animation</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComboBox.html" title="class or interface in javax.swing" class="external-link">JComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; animation</pre>
+<h5>damage</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> damage</pre>
 </li>
 <li class="block-list">
-<h5>bulletDamage</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> bulletDamage</pre>
+<h5>igniteFire</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> igniteFire</pre>
 </li>
 <li class="block-list">
-<h5>bulletIgnitesFire</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> bulletIgnitesFire</pre>
+<h5>knockback</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> knockback</pre>
 </li>
 <li class="block-list">
-<h5>bulletItemTexture</h5>
-<pre><a href="net/mcreator/ui/minecraft/MCItemHolder.html" title="class in net.mcreator.ui.minecraft">MCItemHolder</a> bulletItemTexture</pre>
+<h5>model</h5>
+<pre><a href="net/mcreator/ui/component/SearchableComboBox.html" title="class in net.mcreator.ui.component">SearchableComboBox</a>&lt;<a href="net/mcreator/workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a>&gt; model</pre>
 </li>
 <li class="block-list">
-<h5>bulletKnockback</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> bulletKnockback</pre>
+<h5>modelDefault</h5>
+<pre><a href="net/mcreator/workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a> modelDefault</pre>
 </li>
 <li class="block-list">
-<h5>bulletModel</h5>
-<pre><a href="net/mcreator/ui/component/SearchableComboBox.html" title="class in net.mcreator.ui.component">SearchableComboBox</a>&lt;<a href="net/mcreator/workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a>&gt; bulletModel</pre>
+<h5>onFlyingTick</h5>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onFlyingTick</pre>
 </li>
 <li class="block-list">
-<h5>bulletParticles</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> bulletParticles</pre>
+<h5>onHitsBlock</h5>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onHitsBlock</pre>
 </li>
 <li class="block-list">
-<h5>bulletPower</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> bulletPower</pre>
+<h5>onHitsEntity</h5>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onHitsEntity</pre>
 </li>
 <li class="block-list">
-<h5>creativeTab</h5>
-<pre><a href="net/mcreator/ui/minecraft/DataListComboBox.html" title="class in net.mcreator.ui.minecraft">DataListComboBox</a> creativeTab</pre>
-</li>
-<li class="block-list">
-<h5>customBulletModelTexture</h5>
-<pre><a href="net/mcreator/ui/validation/component/VComboBox.html" title="class in net.mcreator.ui.validation.component">VComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; customBulletModelTexture</pre>
-</li>
-<li class="block-list">
-<h5>damageVsEntity</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> damageVsEntity</pre>
-</li>
-<li class="block-list">
-<h5>enableMeleeDamage</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> enableMeleeDamage</pre>
-</li>
-<li class="block-list">
-<h5>glowCondition</h5>
-<pre><a href="net/mcreator/ui/procedure/LogicProcedureSelector.html" title="class in net.mcreator.ui.procedure">LogicProcedureSelector</a> glowCondition</pre>
-</li>
-<li class="block-list">
-<h5>name</h5>
-<pre><a href="net/mcreator/ui/validation/component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a> name</pre>
-</li>
-<li class="block-list">
-<h5>normal</h5>
-<pre><a href="net/mcreator/workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a> normal</pre>
-</li>
-<li class="block-list">
-<h5>onBulletFlyingTick</h5>
-<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBulletFlyingTick</pre>
-</li>
-<li class="block-list">
-<h5>onBulletHitsBlock</h5>
-<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBulletHitsBlock</pre>
-</li>
-<li class="block-list">
-<h5>onBulletHitsEntity</h5>
-<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBulletHitsEntity</pre>
-</li>
-<li class="block-list">
-<h5>onBulletHitsPlayer</h5>
-<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onBulletHitsPlayer</pre>
-</li>
-<li class="block-list">
-<h5>onEntitySwing</h5>
-<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onEntitySwing</pre>
-</li>
-<li class="block-list">
-<h5>onRangedItemUsed</h5>
-<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onRangedItemUsed</pre>
+<h5>onHitsPlayer</h5>
+<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> onHitsPlayer</pre>
 </li>
 <li class="block-list">
 <h5>page1group</h5>
 <pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page1group</pre>
 </li>
 <li class="block-list">
-<h5>page2group</h5>
-<pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page2group</pre>
+<h5>power</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> power</pre>
 </li>
 <li class="block-list">
-<h5>renderType</h5>
-<pre><a href="net/mcreator/ui/component/SearchableComboBox.html" title="class in net.mcreator.ui.component">SearchableComboBox</a>&lt;<a href="net/mcreator/workspace/resources/Model.html" title="class in net.mcreator.workspace.resources">Model</a>&gt; renderType</pre>
+<h5>projectileItem</h5>
+<pre><a href="net/mcreator/ui/minecraft/MCItemHolder.html" title="class in net.mcreator.ui.minecraft">MCItemHolder</a> projectileItem</pre>
 </li>
 <li class="block-list">
-<h5>shootConstantly</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> shootConstantly</pre>
-</li>
-<li class="block-list">
-<h5>shootSound</h5>
-<pre><a href="net/mcreator/ui/minecraft/SoundSelector.html" title="class in net.mcreator.ui.minecraft">SoundSelector</a> shootSound</pre>
-</li>
-<li class="block-list">
-<h5>specialInformation</h5>
-<pre><a href="net/mcreator/ui/procedure/StringListProcedureSelector.html" title="class in net.mcreator.ui.procedure">StringListProcedureSelector</a> specialInformation</pre>
-</li>
-<li class="block-list">
-<h5>stackSize</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> stackSize</pre>
-</li>
-<li class="block-list">
-<h5>texture</h5>
-<pre><a href="net/mcreator/ui/minecraft/TextureHolder.html" title="class in net.mcreator.ui.minecraft">TextureHolder</a> texture</pre>
-</li>
-<li class="block-list">
-<h5>usageCount</h5>
-<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSpinner.html" title="class or interface in javax.swing" class="external-link">JSpinner</a> usageCount</pre>
-</li>
-<li class="block-list">
-<h5>useCondition</h5>
-<pre><a href="net/mcreator/ui/procedure/ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a> useCondition</pre>
+<h5>showParticles</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JCheckBox.html" title="class or interface in javax.swing" class="external-link">JCheckBox</a> showParticles</pre>
 </li>
 </ul>
 </section>
