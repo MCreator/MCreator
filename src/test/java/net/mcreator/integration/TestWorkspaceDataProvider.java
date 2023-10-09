@@ -1153,10 +1153,8 @@ public class TestWorkspaceDataProvider {
 			block.fluidCapacity = 451;
 			block.fluidRestrictions = new ArrayList<>();
 			if (!emptyLists) {
-				block.fluidRestrictions.add(new net.mcreator.element.parts.Fluid(modElement.getWorkspace(),
-						getRandomItem(random, ElementUtil.loadAllFluids(modElement.getWorkspace()))));
-				block.fluidRestrictions.add(new net.mcreator.element.parts.Fluid(modElement.getWorkspace(),
-						getRandomItem(random, ElementUtil.loadAllFluids(modElement.getWorkspace()))));
+				block.fluidRestrictions.addAll(ElementUtil.loadAllFluids(modElement.getWorkspace()).stream()
+						.map(e -> new net.mcreator.element.parts.Fluid(modElement.getWorkspace(), e.getName())).toList());
 			}
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
