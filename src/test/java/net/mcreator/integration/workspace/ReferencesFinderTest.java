@@ -115,17 +115,60 @@ public class ReferencesFinderTest {
 		List<ModElement> references = ReferencesFinder.searchModElementUsages(workspace, modElement);
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleoverlay")));
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplegui")));
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplearmor")));
 
 		modElement = workspace.getModElementByName("number1");
 		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleitem")));
+
+		modElement = workspace.getModElementByName("procedure1");
+		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampledimension")));
+
+		modElement = workspace.getModElementByName("procedure10");
+		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplegui")));
 	}
 
 	@Test void testTextureUsagesSearch() {
 		TextureType section = TextureType.PARTICLE;
-		File texture = workspace.getFolderManager().getTextureFile("test", section);
+		File texture = workspace.getFolderManager().getTextureFile("particle1", section);
 		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Exampleparticle")));
+
+		section = TextureType.EFFECT;
+		texture = workspace.getFolderManager().getTextureFile("effect1", section);
+		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Examplepotioneffect")));
+
+		section = TextureType.ENTITY;
+		texture = workspace.getFolderManager().getTextureFile("entityTx1", section);
+		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Examplelivingentity")));
+
+		section = TextureType.ITEM;
+		texture = workspace.getFolderManager().getTextureFile("test", section);
+		// "test" texture is not used as ITEM type in Block demo MEs, so this needs to be false
+		assertFalse(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Exampleblock")));
+
+		section = TextureType.SCREEN;
+		texture = workspace.getFolderManager().getTextureFile("picture1", section);
+		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Examplegui")));
+		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Exampleoverlay")));
+
+		section = TextureType.ARMOR;
+		texture = workspace.getFolderManager().getTextureFile("armorTexture_layer_1", section);
+		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Examplearmor")));
+		texture = workspace.getFolderManager().getTextureFile("armorTexture_layer_2", section);
+		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Examplearmor")));
+		texture = workspace.getFolderManager().getTextureFile("armorTexture", section);
+		assertFalse(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Examplearmor")));
 	}
 
 	@Test void testModelUsagesSearch() {
