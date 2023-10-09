@@ -60,7 +60,7 @@ import java.util.*;
 	public Procedure onBootsTick;
 
 	public TabEntry creativeTab;
-	@TextureReference(TextureType.ARMOR) public String armorTextureFile;
+	@TextureReference(value = TextureType.ARMOR, files = { "%s_layer_1", "%s_layer_2" }) public String armorTextureFile;
 
 	public String helmetName;
 	public String bodyName;

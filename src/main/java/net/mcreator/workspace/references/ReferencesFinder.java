@@ -23,6 +23,7 @@ import net.mcreator.blockly.data.BlocklyXML;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -53,11 +54,12 @@ public class ReferencesFinder {
 			GeneratableElement ge = me.getGeneratableElement();
 			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) -> {
 				ModElementReference ref = a.getAnnotation(ModElementReference.class);
-				return ref != null && !List.of(ref.defaultValues()).contains(t) && query.equals("CUSTOM:" + t);
+				return !List.of(ref.defaultValues()).contains(GeneratorWrapper.getElementPlainName(t)) && query.equals(
+						"CUSTOM:" + GeneratorWrapper.getElementPlainName(t));
 			})) {
 				elements.add(me);
 			} else if (anyValueMatches(ge, MappableElement.class, e -> e.isAnnotationPresent(ModElementReference.class),
-					(a, t) -> t.getUnmappedValue().equals(query))) {
+					(a, t) -> query.equals("CUSTOM:" + GeneratorWrapper.getElementPlainName(t.getUnmappedValue())))) {
 				elements.add(me);
 			} else if (anyValueMatches(ge, Procedure.class, e -> e.isAnnotationPresent(ModElementReference.class),
 					(a, t) -> t.getName() != null && !t.getName().isEmpty() && !t.getName().equals("null")
@@ -82,8 +84,14 @@ public class ReferencesFinder {
 				return ref != null && ref.value() == type;
 			}, (a, t) -> {
 				TextureReference ref = a.getAnnotation(TextureReference.class);
-				return ref != null && !List.of(ref.defaultValues()).contains(t) && workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(t), type).equals(texture);
+				if (List.of(ref.defaultValues()).contains(t))
+					return false;
+				for (String e : ref.files()) {
+					if (workspace.getFolderManager()
+							.getTextureFile(FilenameUtilsPatched.removeExtension(e.formatted(t)), type).equals(texture))
+						return true;
+				}
+				return false;
 			})) {
 				elements.add(me);
 			}
@@ -243,7 +251,8 @@ public class ReferencesFinder {
 			return false;
 
 		if (clazz.isInstance(value)) { // value of specified type
-			return condition == null || condition.test(field, (T) value);
+			return (isCustomObject(value) || validIf == null || validIf.test(field)) && (condition == null
+					|| condition.test(field, (T) value));
 		} else if (clazz.isArray()) { // array of values
 			int length = Array.getLength(value);
 			for (int i = 0; i < length; i++) {

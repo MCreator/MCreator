@@ -41,6 +41,11 @@ import java.util.Collection;
 	TextureType value();
 
 	/**
+	 * Template strings the value of target type should be applied to in order to retrieve texture file names.
+	 */
+	String[] files() default "%s";
+
+	/**
 	 * Special values indicating the texture is not assigned.
 	 */
 	String[] defaultValues() default "";

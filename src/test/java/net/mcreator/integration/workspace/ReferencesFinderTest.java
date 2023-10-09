@@ -175,6 +175,12 @@ public class ReferencesFinderTest {
 		Model model = new Model.BuiltInModel("Normal");
 		assertTrue(ReferencesFinder.searchModelUsages(workspace, model).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Exampletool")));
+		model = new Model.BuiltInModel("Cross model");
+		assertTrue(ReferencesFinder.searchModelUsages(workspace, model).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Exampleplant")));
+		model = new Model.BuiltInModel("Default");
+		assertTrue(ReferencesFinder.searchModelUsages(workspace, model).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Exampleprojectile")));
 	}
 
 	@Test void testSoundUsagesSearch() {
@@ -190,6 +196,10 @@ public class ReferencesFinderTest {
 
 	@Test void testGlobalVariableUsagesSearch() {
 		String variableName = "logic2";
+		assertTrue(ReferencesFinder.searchGlobalVariableUsages(workspace, variableName).isEmpty());
+		variableName = "direction4";
+		assertTrue(ReferencesFinder.searchGlobalVariableUsages(workspace, variableName).isEmpty());
+		variableName = "blockstate3";
 		assertTrue(ReferencesFinder.searchGlobalVariableUsages(workspace, variableName).isEmpty());
 	}
 
