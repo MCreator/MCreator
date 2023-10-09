@@ -209,17 +209,7 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
-		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
+				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), true));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {
