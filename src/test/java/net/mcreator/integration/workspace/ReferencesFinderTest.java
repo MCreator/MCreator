@@ -155,6 +155,8 @@ public class ReferencesFinderTest {
 		// "test" texture is not used as ITEM type in Block demo MEs, so this needs to be false
 		assertFalse(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Exampleblock")));
+		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Exampleitem")));
 
 		section = TextureType.SCREEN;
 		texture = workspace.getFolderManager().getTextureFile("picture1", section);
