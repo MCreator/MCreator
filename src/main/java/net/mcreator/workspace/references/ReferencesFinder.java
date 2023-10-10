@@ -210,7 +210,7 @@ public class ReferencesFinder {
 
 		for (Field field : source.getClass().getFields()) {
 			if (!Modifier.isStatic(field.getModifiers()) && (clazz.isAssignableFrom(field.getType())
-					|| validIf != null && validIf.test(field))) {
+					|| (validIf != null && validIf.test(field)))) {
 				try {
 					field.setAccessible(true);
 					if (checkValue(field.get(source), field, clazz, validIf, condition))
@@ -221,7 +221,7 @@ public class ReferencesFinder {
 		}
 		for (Method method : source.getClass().getMethods()) {
 			if (!Modifier.isStatic(method.getModifiers()) && (clazz.isAssignableFrom(method.getReturnType())
-					|| validIf != null && validIf.test(method))) {
+					|| (validIf != null && validIf.test(method)))) {
 				try {
 					method.setAccessible(true);
 					if (checkValue(method.invoke(source), method, clazz, validIf, condition))
