@@ -998,6 +998,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		inventoryStackSize.setEnabled(!canTrade.isSelected());
 		canControlForward.setEnabled(!canTrade.isSelected());
 		canControlStrafe.setEnabled(!canTrade.isSelected());
+		isBoss.setEnabled(!canTrade.isSelected());
 
 		if (canTrade.isSelected()) {
 			aiBase.setSelectedItem("Villager");
@@ -1008,6 +1009,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			ridable.setSelected(false);
 			canControlForward.setSelected(false);
 			canControlStrafe.setSelected(false);
+			isBoss.setSelected(false);
 		}
 	}
 
