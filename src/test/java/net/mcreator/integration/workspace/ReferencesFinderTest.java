@@ -128,6 +128,10 @@ public class ReferencesFinderTest {
 		modElement = workspace.getModElementByName("procedure10");
 		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplegui")));
+
+		modElement = workspace.getModElementByName("ExampleLootTable1");
+		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleachievement")));
 	}
 
 	@Test void testTextureUsagesSearch() {
