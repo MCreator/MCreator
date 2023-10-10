@@ -34,7 +34,9 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
@@ -142,8 +144,9 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(params));
 
-		restrictionBiomes.setValidator(
-				new ItemListFieldValidator(restrictionBiomes, L10N.t("elementgui.structuregen.error_select_biomes")));
+		restrictionBiomes.setValidator(new CompoundValidator(
+				new ItemListFieldValidator(restrictionBiomes, L10N.t("elementgui.structuregen.error_select_biomes")),
+				new ItemListFieldSingleTagValidator(restrictionBiomes)));
 		page1group.addValidationElement(restrictionBiomes);
 
 		addPage(pane5);
