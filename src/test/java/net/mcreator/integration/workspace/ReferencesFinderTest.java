@@ -121,6 +121,11 @@ public class ReferencesFinderTest {
 		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleitem")));
 
+		modElement = workspace.getModElementByName("string1");
+		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleitem")));
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleblock")));
+
 		modElement = workspace.getModElementByName("procedure1");
 		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampledimension")));
