@@ -5,28 +5,12 @@
       "name": "type",
       "options": [
         [
-          "oak",
-          "oak"
+          "pine",
+          "pine"
         ],
         [
-          "acacia",
-          "acacia"
-        ],
-        [
-          "dark oak",
-          "dark oak"
-        ],
-        [
-          "jungle bush",
-          "jungle bush"
-        ],
-        [
-          "mega jungle",
-          "mega jungle"
-        ],
-        [
-          "fancy oak",
-          "fancy oak"
+          "mega pine",
+          "mega pine"
         ]
       ]
     },
@@ -47,13 +31,18 @@
     },
     {
       "type": "input_value",
+      "name": "foliage_height",
+      "check": "IntProvider"
+    },
+    {
+      "type": "input_value",
       "name": "root_placer",
       "check": "RootPlacer"
     },
     {
       "type": "field_number",
       "name": "base_height",
-      "value": 4,
+      "value": 6,
       "min": 0,
       "max": 32,
       "precision": 1
@@ -61,7 +50,7 @@
     {
       "type": "field_number",
       "name": "height_variation_a",
-      "value": 2,
+      "value": 4,
       "min": 0,
       "max": 24,
       "precision": 1
@@ -97,7 +86,8 @@
   "output": "Feature",
   "colour": 0,
   "extensions": [
-    "add_image_to_bsp_inputs"
+    "add_image_to_bsp_inputs",
+    "pine_tree_feature_validator"
   ],
   "mcreator": {
     "toolbox_id": "treefeatures",
@@ -106,6 +96,7 @@
       "<value name=\"dirt\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
       "<value name=\"trunk\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
       "<value name=\"foliage\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"foliage_height\"><block type=\"int_provider_uniform\"><field name=\"min\">3</field><field name=\"max\">4</field></block></value>",
       "<value name=\"root_placer\"><block type=\"root_placer_none\"></block></value>",
       "~<value name=\"decorator0\"><block type=\"tree_decorator_trunk_vine\"></block></value>"
     ],
@@ -113,6 +104,7 @@
       "dirt",
       "trunk",
       "foliage",
+      "foliage_height",
       "root_placer"
     ],
     "fields": [

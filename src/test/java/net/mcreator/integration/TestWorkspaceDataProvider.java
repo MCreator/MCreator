@@ -240,16 +240,20 @@ public class TestWorkspaceDataProvider {
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ENTITY) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
 					workspace.getFolderManager().getTextureFile("test", TextureType.ENTITY));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("entityTx1", TextureType.ENTITY));
+			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
+					workspace.getFolderManager().getTextureFile("entityTx2", TextureType.ENTITY));
 		}
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.EFFECT) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFile("test", TextureType.EFFECT));
+					workspace.getFolderManager().getTextureFile("effect1", TextureType.EFFECT));
 		}
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.PARTICLE) != null) {
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(),
-					workspace.getFolderManager().getTextureFile("test", TextureType.PARTICLE));
+					workspace.getFolderManager().getTextureFile("particle1", TextureType.PARTICLE));
 		}
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.SCREEN) != null) {
@@ -262,7 +266,7 @@ public class TestWorkspaceDataProvider {
 		}
 
 		if (workspace.getFolderManager().getTexturesFolder(TextureType.ARMOR) != null) {
-			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("test");
+			File[] armorPars = workspace.getFolderManager().getArmorTextureFilesForName("armorTexture");
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[0]);
 			FileIO.writeImageToPNGFile((RenderedImage) imageIcon.getImage(), armorPars[1]);
 		}
@@ -519,8 +523,8 @@ public class TestWorkspaceDataProvider {
 			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
 					Color.white, new Procedure("condition4")));
 
-			components.add(new Image(20, 30, "pricture1", true, new Procedure("condition1")));
-			components.add(new Image(22, 31, "pricture2", false, new Procedure("condition2")));
+			components.add(new Image(20, 30, "picture1", true, new Procedure("condition1")));
+			components.add(new Image(22, 31, "picture2", false, new Procedure("condition2")));
 			components.add(
 					new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false));
 			components.add(
@@ -740,7 +744,7 @@ public class TestWorkspaceDataProvider {
 			armor.leggingsName = modElement.getName() + " appendix4";
 			armor.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
-			armor.armorTextureFile = "test";
+			armor.armorTextureFile = "armorTexture";
 			armor.maxDamage = 12;
 			armor.damageValueHelmet = 3;
 			armor.damageValueBody = 4;
@@ -1026,7 +1030,7 @@ public class TestWorkspaceDataProvider {
 			PotionEffect potionEffect = new PotionEffect(modElement);
 			potionEffect.effectName = modElement.getName() + " Effect Name";
 			potionEffect.color = Color.magenta;
-			potionEffect.icon = "test.png";
+			potionEffect.icon = "effect1.png";
 			potionEffect.isInstant = !_true;
 			potionEffect.isBad = _true;
 			potionEffect.isBenefitical = !_true;
@@ -1320,7 +1324,7 @@ public class TestWorkspaceDataProvider {
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			musicDisc.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 					Arrays.asList("info 1", "info 2", "test, is this", "another one"));
-			musicDisc.texture = "itest";
+			musicDisc.texture = "test";
 			return musicDisc;
 		} else if (ModElementType.ENCHANTMENT.equals(modElement.getType())) {
 			Enchantment enchantment = new Enchantment(modElement);
@@ -1364,7 +1368,7 @@ public class TestWorkspaceDataProvider {
 			return painting;
 		} else if (ModElementType.PARTICLE.equals(modElement.getType())) {
 			net.mcreator.element.types.Particle particle = new net.mcreator.element.types.Particle(modElement);
-			particle.texture = "test.png";
+			particle.texture = "particle1.png";
 			particle.width = 2.3;
 			particle.frameDuration = 2;
 			particle.height = 1.38;
@@ -1508,7 +1512,7 @@ public class TestWorkspaceDataProvider {
 		LivingEntity livingEntity = new LivingEntity(modElement);
 		livingEntity.mobName = modElement.getName();
 		livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
-		livingEntity.mobModelTexture = "test.png";
+		livingEntity.mobModelTexture = "entityTx1.png";
 		livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
 		livingEntity.transparentModelCondition = new LogicProcedure(emptyLists ? "condition1" : null, _true);
 		livingEntity.isShakingCondition = new LogicProcedure(emptyLists ? "condition2" : null, !_true);

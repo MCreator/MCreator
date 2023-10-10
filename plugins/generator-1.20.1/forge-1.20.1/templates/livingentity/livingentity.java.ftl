@@ -166,6 +166,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
+	<#if data.aiBase == "Villager">
+	@Override protected Component getTypeName() {
+		return this.getType().getDescription();
+	}
+	</#if>
+
 	<#if data.hasAI || data.isWanderingTraderType()>
 	@Override protected void registerGoals() {
 		super.registerGoals();
