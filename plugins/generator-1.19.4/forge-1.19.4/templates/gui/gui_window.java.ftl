@@ -242,7 +242,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("ImageButton") as component>
 		    ${component.getName()} = new ImageButton(
-				this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+				this.leftPos + ${((component.x - mx/2) + 1)?int}, this.topPos + ${(component.y - my/2)?int},
             	${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 				0, 0, ${component.getHeight(w.getWorkspace())},
             	new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
