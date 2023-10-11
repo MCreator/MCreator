@@ -159,12 +159,12 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 			if (!modelList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-				List<ModElement> references = ReferencesFinder.searchModelUsages(
+				Set<ModElement> references = ReferencesFinder.searchModelUsages(
 						workspacePanel.getMCreator().getWorkspace(), modelList.getSelectedValue());
 
 				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 				SearchUsagesDialog.show(workspacePanel.getMCreator(),
-						L10N.t("dialog.search_usages.type.resource.model"), references, false);
+						L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(references), false);
 			}
 		});
 
@@ -206,13 +206,13 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		if (model != null) {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-			List<ModElement> references = ReferencesFinder.searchModelUsages(
-					workspacePanel.getMCreator().getWorkspace(), model);
+			Set<ModElement> references = ReferencesFinder.searchModelUsages(workspacePanel.getMCreator().getWorkspace(),
+					model);
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
 			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
-					L10N.t("dialog.search_usages.type.resource.model"), references, true)) {
+					L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(references), true)) {
 				Arrays.stream(model.getFiles()).forEach(File::delete);
 				reloadElements();
 			}
