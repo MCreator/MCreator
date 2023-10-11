@@ -46,6 +46,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -112,7 +113,7 @@ public class ReferencesFinderTest {
 		ReferencesFinder.searchModElementUsages(workspace, modElement);
 
 		modElement = workspace.getModElementByName("condition4");
-		List<ModElement> references = ReferencesFinder.searchModElementUsages(workspace, modElement);
+		Set<ModElement> references = ReferencesFinder.searchModElementUsages(workspace, modElement);
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleoverlay")));
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplegui")));
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplearmor")));

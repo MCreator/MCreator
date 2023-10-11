@@ -265,7 +265,9 @@ import java.util.stream.Collectors;
 
 		list.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+				if (e.getKeyCode() == KeyEvent.VK_F && e.isControlDown() && e.isShiftDown()) {
+					searchModElementsUsages();
+				} else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					deleteCurrentlySelectedModElement();
 				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					IElement selected = list.getSelectedValue();
@@ -798,21 +800,7 @@ import java.util.stream.Collectors;
 		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
 
 		searchElement.setIcon(UIRES.get("16px.search"));
-		searchElement.addActionListener(e -> {
-			if (list.getSelectedValuesList().stream().anyMatch(i -> i instanceof ModElement)) {
-				mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-				Set<ModElement> references = new HashSet<>();
-				for (IElement el : list.getSelectedValuesList()) {
-					if (el instanceof ModElement mod)
-						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
-				}
-
-				mcreator.setCursor(Cursor.getDefaultCursor());
-				SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
-						new ArrayList<>(references), false);
-			}
-		});
+		searchElement.addActionListener(e -> searchModElementsUsages());
 
 		codeElement.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -1078,6 +1066,35 @@ import java.util.stream.Collectors;
 			}, "CodeLock");
 			t.start();
 			dial.setVisible(true);
+		}
+	}
+
+	private void searchModElementsUsages() {
+		if (list.getSelectedValuesList().stream().anyMatch(i -> i instanceof ModElement)) {
+			mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+			Set<ModElement> references = new HashSet<>();
+			boolean tagsSelected = false, nonTagsSelected = false;
+			for (IElement el : list.getSelectedValuesList()) {
+				if (el instanceof ModElement mod) {
+					if (mod.getType() == ModElementType.TAG) {
+						tagsSelected = true;
+					} else {
+						nonTagsSelected = true;
+						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
+					}
+				}
+			}
+
+			mcreator.setCursor(Cursor.getDefaultCursor());
+			if (tagsSelected) {
+				JOptionPane.showMessageDialog(mcreator, L10N.t("workspace.elements.list.edit.usages.tags"),
+						L10N.t("workspace.elements.list.edit.usages.tags.title"), JOptionPane.WARNING_MESSAGE);
+			}
+			if (nonTagsSelected) {
+				SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
+						new ArrayList<>(references), false);
+			}
 		}
 	}
 

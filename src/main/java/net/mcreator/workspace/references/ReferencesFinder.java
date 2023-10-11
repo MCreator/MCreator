@@ -38,23 +38,24 @@ import net.mcreator.workspace.resources.TexturedModel;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.lang.reflect.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class ReferencesFinder {
 
-	public static List<ModElement> searchModElementUsages(Workspace workspace, ModElement element) {
-		List<ModElement> elements = new ArrayList<>();
+	public static Set<ModElement> searchModElementUsages(Workspace workspace, ModElement element) {
+		Set<ModElement> elements = new HashSet<>();
 
 		String query = new DataListEntry.Custom(element).getName();
 		workspace.getModElements().stream().filter(me -> !me.equals(element)).forEach(me -> {
 			GeneratableElement ge = me.getGeneratableElement();
 			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) -> {
 				ModElementReference ref = a.getAnnotation(ModElementReference.class);
-				return !List.of(ref.defaultValues()).contains(t) && query.equals(
+				return !Set.of(ref.defaultValues()).contains(t) && query.equals(
 						"CUSTOM:" + GeneratorWrapper.getElementPlainName(t));
 			})) {
 				elements.add(me);
@@ -75,8 +76,8 @@ public class ReferencesFinder {
 		return elements;
 	}
 
-	public static List<ModElement> searchTextureUsages(Workspace workspace, File texture, TextureType type) {
-		List<ModElement> elements = new ArrayList<>();
+	public static Set<ModElement> searchTextureUsages(Workspace workspace, File texture, TextureType type) {
+		Set<ModElement> elements = new HashSet<>();
 
 		workspace.getModElements().forEach(me -> {
 			if (anyValueMatches(me.getGeneratableElement(), String.class, e -> {
@@ -84,8 +85,8 @@ public class ReferencesFinder {
 				return ref != null && ref.value() == type;
 			}, (a, t) -> {
 				TextureReference ref = a.getAnnotation(TextureReference.class);
-				if (!List.of(ref.defaultValues()).contains(t)) {
-					for (String template : ref.files()) {
+				if (!Set.of(ref.defaultValues()).contains(t)) {
+					for (String template : Set.of(ref.files())) {
 						String file = template.isEmpty() ? t : template.formatted(t);
 						if (workspace.getFolderManager()
 								.getTextureFile(FilenameUtilsPatched.removeExtension(file), type).equals(texture))
@@ -101,8 +102,8 @@ public class ReferencesFinder {
 		return elements;
 	}
 
-	public static List<ModElement> searchModelUsages(Workspace workspace, Model model) {
-		List<ModElement> elements = new ArrayList<>();
+	public static Set<ModElement> searchModelUsages(Workspace workspace, Model model) {
+		Set<ModElement> elements = new HashSet<>();
 
 		workspace.getModElements().forEach(me -> {
 			if (anyValueMatches(me.getGeneratableElement(), Model.class, e -> {
@@ -116,8 +117,8 @@ public class ReferencesFinder {
 		return elements;
 	}
 
-	public static List<ModElement> searchSoundUsages(Workspace workspace, SoundElement sound) {
-		List<ModElement> elements = new ArrayList<>();
+	public static Set<ModElement> searchSoundUsages(Workspace workspace, SoundElement sound) {
+		Set<ModElement> elements = new HashSet<>();
 
 		workspace.getModElements().forEach(me -> {
 			if (anyValueMatches(me.getGeneratableElement(), Sound.class, e -> {
@@ -130,8 +131,8 @@ public class ReferencesFinder {
 		return elements;
 	}
 
-	public static List<ModElement> searchStructureUsages(Workspace workspace, String structure) {
-		List<ModElement> elements = new ArrayList<>();
+	public static Set<ModElement> searchStructureUsages(Workspace workspace, String structure) {
+		Set<ModElement> elements = new HashSet<>();
 
 		workspace.getModElements().forEach(me -> {
 			GeneratableElement ge = me.getGeneratableElement();
@@ -148,8 +149,8 @@ public class ReferencesFinder {
 		return elements;
 	}
 
-	public static List<ModElement> searchGlobalVariableUsages(Workspace workspace, String variableName) {
-		List<ModElement> elements = new ArrayList<>();
+	public static Set<ModElement> searchGlobalVariableUsages(Workspace workspace, String variableName) {
+		Set<ModElement> elements = new HashSet<>();
 
 		workspace.getModElements().forEach(me -> {
 			if (anyValueMatches(me.getGeneratableElement(), String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
@@ -161,8 +162,8 @@ public class ReferencesFinder {
 		return elements;
 	}
 
-	public static List<ModElement> searchLocalizationKeyUsages(Workspace workspace, String localizationKey) {
-		List<ModElement> elements = new ArrayList<>();
+	public static Set<ModElement> searchLocalizationKeyUsages(Workspace workspace, String localizationKey) {
+		Set<ModElement> elements = new HashSet<>();
 
 		workspace.getModElements().forEach(me -> {
 			GeneratableElement ge = me.getGeneratableElement();
@@ -187,10 +188,11 @@ public class ReferencesFinder {
 	 * @param <T>       The type of values to be checked.
 	 * @return List of mod elements contained in the provided workspace and considered to use certain value(s).
 	 */
-	@SuppressWarnings("unused") public static <T> List<ModElement> searchUsages(Workspace workspace, Class<T> clazz,
+	@SuppressWarnings("unused") public static <T> Set<ModElement> searchUsages(Workspace workspace, Class<T> clazz,
 			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
 		return workspace.getModElements().stream()
-				.filter(me -> anyValueMatches(me.getGeneratableElement(), clazz, validIf, condition)).toList();
+				.filter(me -> anyValueMatches(me.getGeneratableElement(), clazz, validIf, condition))
+				.collect(Collectors.toSet());
 	}
 
 	/**
