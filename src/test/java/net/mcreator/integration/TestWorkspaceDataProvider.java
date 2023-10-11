@@ -1642,11 +1642,12 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelShadowSize = 1.8;
 		livingEntity.canTrade = _true;
 		livingEntity.villagerTradingType = emptyLists;
-		if (livingEntity.canTrade)
+		if (livingEntity.canTrade) {
 			livingEntity.aiBase = "Villager";
-		if (livingEntity.canTrade || livingEntity.breedable) {
-			livingEntity.hasAI = true;
+			livingEntity.isBoss = false;
 		}
+		if (livingEntity.canTrade || livingEntity.breedable)
+			livingEntity.hasAI = true;
 		livingEntity.professionTrade = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.professionTrade.addAll(
