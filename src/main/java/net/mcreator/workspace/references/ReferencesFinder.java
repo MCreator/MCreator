@@ -25,7 +25,6 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
-import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.IWorkspaceProvider;
@@ -50,25 +49,24 @@ public class ReferencesFinder {
 	public static Set<ModElement> searchModElementUsages(Workspace workspace, ModElement element) {
 		Set<ModElement> elements = new HashSet<>();
 
-		String query = new DataListEntry.Custom(element).getName();
+		String query = element.getName();
 		workspace.getModElements().stream().filter(me -> !me.equals(element)).forEach(me -> {
 			GeneratableElement ge = me.getGeneratableElement();
 			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) -> {
 				ModElementReference ref = a.getAnnotation(ModElementReference.class);
 				return !Set.of(ref.defaultValues()).contains(t) && query.equals(
-						"CUSTOM:" + GeneratorWrapper.getElementPlainName(t));
+						GeneratorWrapper.getElementPlainName(t));
 			})) {
 				elements.add(me);
 			} else if (anyValueMatches(ge, MappableElement.class, e -> e.isAnnotationPresent(ModElementReference.class),
-					(a, t) -> query.equals("CUSTOM:" + GeneratorWrapper.getElementPlainName(t.getUnmappedValue())))) {
+					(a, t) -> query.equals(GeneratorWrapper.getElementPlainName(t.getUnmappedValue())))) {
 				elements.add(me);
 			} else if (anyValueMatches(ge, Procedure.class, e -> e.isAnnotationPresent(ModElementReference.class),
 					(a, t) -> t.getName() != null && !t.getName().isEmpty() && !t.getName().equals("null")
-							&& element.getName().equals(t.getName()))) {
+							&& query.equals(t.getName()))) {
 				elements.add(me);
 			} else if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
-					(a, t) -> t.contains(">" + query + "</field>") || t.contains(
-							">" + element.getName() + "</field>"))) {
+					(a, t) -> t.contains(">CUSTOM:" + query + "</field>") || t.contains(">" + query + "</field>"))) {
 				elements.add(me);
 			}
 		});
@@ -211,8 +209,8 @@ public class ReferencesFinder {
 			return false;
 
 		for (Field field : source.getClass().getFields()) {
-			if (!Modifier.isStatic(field.getModifiers()) && (clazz.isAssignableFrom(field.getType())
-					|| (validIf != null && validIf.test(field)))) {
+			if (!Modifier.isStatic(field.getModifiers()) && (clazz.isAssignableFrom(field.getType()) || (validIf != null
+					&& validIf.test(field)))) {
 				try {
 					field.setAccessible(true);
 					if (checkValue(field.get(source), field, clazz, validIf, condition))
@@ -222,8 +220,8 @@ public class ReferencesFinder {
 			}
 		}
 		for (Method method : source.getClass().getMethods()) {
-			if (!Modifier.isStatic(method.getModifiers()) && (clazz.isAssignableFrom(method.getReturnType())
-					|| (validIf != null && validIf.test(method)))) {
+			if (!Modifier.isStatic(method.getModifiers()) && (clazz.isAssignableFrom(method.getReturnType()) || (
+					validIf != null && validIf.test(method)))) {
 				try {
 					method.setAccessible(true);
 					if (checkValue(method.invoke(source), method, clazz, validIf, condition))
