@@ -156,6 +156,11 @@ public class ReferencesFinderTest {
 		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Examplelivingentity")));
 
+		section = TextureType.BLOCK;
+		texture = workspace.getFolderManager().getTextureFile("test6", section);
+		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Exampleblock")));
+
 		section = TextureType.ITEM;
 		texture = workspace.getFolderManager().getTextureFile("test", section);
 		// "test" texture is not used as ITEM type in Block demo MEs, so this needs to be false
