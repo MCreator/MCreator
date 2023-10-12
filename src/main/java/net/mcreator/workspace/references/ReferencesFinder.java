@@ -184,7 +184,7 @@ public class ReferencesFinder {
 	 * @param validIf   The predicate used to check if a field/method is considered valid.
 	 * @param condition The predicate defining the condition that the acquired values should pass.
 	 * @param <T>       The type of values to be checked.
-	 * @return List of mod elements contained in the provided workspace and considered to use certain value(s).
+	 * @return Set of mod elements contained in the provided workspace and considered to use certain value(s).
 	 */
 	@SuppressWarnings("unused") public static <T> Set<ModElement> searchUsages(Workspace workspace, Class<T> clazz,
 			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
