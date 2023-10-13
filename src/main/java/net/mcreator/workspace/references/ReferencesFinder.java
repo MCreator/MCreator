@@ -108,11 +108,21 @@ public class ReferencesFinder {
 	}
 
 	public static Set<ModElement> searchSoundUsages(Workspace workspace, SoundElement sound) {
-		return getGeneratableElements(workspace).parallelStream().filter(ge -> anyValueMatches(ge, Sound.class, e -> {
-					ResourceReference ref = e.getAnnotation(ResourceReference.class);
-					return ref != null && ref.value().equals("sound");
-				}, (a, t) -> t.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())))
-				.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+		//@formatter:off
+		return getGeneratableElements(workspace).parallelStream()
+			.filter(ge ->
+				anyValueMatches(ge, Sound.class, e -> {
+						ResourceReference ref = e.getAnnotation(ResourceReference.class);
+						return ref != null && ref.value().equals("sound");
+					}, (a, t) ->
+					t.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())
+				) ||
+				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (a, t) ->
+					t.contains(">CUSTOM:" + sound.getName() + "</field>")
+				)
+			)
+			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+		//@formatter:on
 	}
 
 	public static Set<ModElement> searchStructureUsages(Workspace workspace, String structure) {
