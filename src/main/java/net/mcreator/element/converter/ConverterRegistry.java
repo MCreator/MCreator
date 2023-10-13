@@ -114,7 +114,8 @@ public class ConverterRegistry {
 		put(ModElementType.OVERLAY, List.of(
 			new OverlayCoordinateConverter(),
 			new OverlayTexturesConverter(),
-			new GUIComponentNamer()
+			new GUIComponentNamer(),
+			new OverlayComponentAnchorPointAdder()
 		));
 		put(ModElementType.PAINTING, List.of(
 			new PaintingFieldsFixer()

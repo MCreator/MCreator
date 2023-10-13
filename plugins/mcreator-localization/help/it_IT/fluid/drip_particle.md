@@ -1,0 +1,1 @@
+Questo parametro controlla la particella che il fluido genererà quando gocciola da un blocco.
