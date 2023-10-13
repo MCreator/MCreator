@@ -1,0 +1,1 @@
+Il raggio d'azione definisce da quale distanza il mob noterà/continuerà a inseguire il giocatore/bersaglio
