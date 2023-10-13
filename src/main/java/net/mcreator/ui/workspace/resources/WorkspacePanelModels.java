@@ -46,7 +46,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 	WorkspacePanelModels(WorkspacePanel workspacePanel) {
 		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, item -> predicateCheck(workspacePanel, item),
-				Comparator.comparing(Model::getReadableName)), new Render());
+				Comparator.comparing(Model::getReadableName)), new Render(), JList.HORIZONTAL_WRAP);
 
 		elementList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
