@@ -51,14 +51,17 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 
 	private final WorkspacePanel workspacePanel;
 
-	private final FilterModel listmodel = new FilterModel();
-	private final JList<Model> modelList = new JList<>(listmodel);
+	private final ResourceFilterModel<Model> filterModel ;
+	private final JList<Model> modelList;
 
 	WorkspacePanelModels(WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
 		setOpaque(false);
 
 		this.workspacePanel = workspacePanel;
+		this.filterModel  = new ResourceFilterModel<>(workspacePanel, item -> predicateCheck(workspacePanel, item),
+				Comparator.comparing(Model::getReadableName));
+		modelList = new JList<>(filterModel );
 
 		modelList.setOpaque(false);
 		modelList.setCellRenderer(new Render());
@@ -179,6 +182,12 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		add("North", bar);
 	}
 
+	private static boolean predicateCheck(WorkspacePanel workspacePanel, Model item) {
+		return item.getReadableName().toLowerCase(Locale.ENGLISH)
+				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH)) || item.getType().name()
+				.toLowerCase(Locale.ENGLISH).contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH));
+	}
+
 	private void deleteCurrentlySelected() {
 		Model model = modelList.getSelectedValue();
 		if (model != null) {
@@ -267,79 +276,13 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 	}
 
 	@Override public void reloadElements() {
-		listmodel.removeAllElements();
-		Model.getModels(workspacePanel.getMCreator().getWorkspace()).forEach(listmodel::addElement);
+		filterModel .removeAllElements();
+		Model.getModels(workspacePanel.getMCreator().getWorkspace()).forEach(filterModel ::addElement);
 		refilterElements();
 	}
 
 	@Override public void refilterElements() {
-		listmodel.refilter();
-	}
-
-	private class FilterModel extends DefaultListModel<Model> {
-		java.util.List<Model> items;
-		List<Model> filterItems;
-
-		FilterModel() {
-			super();
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
-		}
-
-		@Override public int indexOf(Object elem) {
-			if (elem instanceof Model)
-				return filterItems.indexOf(elem);
-			else
-				return -1;
-		}
-
-		@Override public Model getElementAt(int index) {
-			if (!filterItems.isEmpty() && index < filterItems.size())
-				return filterItems.get(index);
-			else
-				return null;
-		}
-
-		@Override public int getSize() {
-			return filterItems.size();
-		}
-
-		@Override public void addElement(Model o) {
-			items.add(o);
-			refilter();
-		}
-
-		@Override public void removeAllElements() {
-			super.removeAllElements();
-			items.clear();
-			filterItems.clear();
-		}
-
-		@Override public boolean removeElement(Object a) {
-			if (a instanceof Model) {
-				items.remove(a);
-				filterItems.remove(a);
-			}
-			return super.removeElement(a);
-		}
-
-		void refilter() {
-			filterItems.clear();
-			String term = workspacePanel.search.getText();
-			filterItems.addAll(items.stream().filter(Objects::nonNull).filter(item ->
-					(item.getReadableName().toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)))
-							|| (item.getType().name().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH)))).toList());
-
-			if (workspacePanel.sortName.isSelected()) {
-				filterItems.sort(Comparator.comparing(Model::getReadableName));
-			}
-
-			if (workspacePanel.desc.isSelected())
-				Collections.reverse(filterItems);
-
-			fireContentsChanged(this, 0, getSize());
-		}
+		filterModel .refilter();
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<Model> {

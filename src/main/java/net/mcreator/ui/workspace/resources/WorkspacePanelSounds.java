@@ -39,22 +39,26 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Comparator;
 import java.util.List;
-import java.util.*;
+import java.util.Locale;
 
 public class WorkspacePanelSounds extends JPanel implements IReloadableFilterable {
 
 	private final WorkspacePanel workspacePanel;
 
-	private final FilterModel listmodel = new FilterModel();
+	private final ResourceFilterModel<SoundElement> filterModel;
 
 	WorkspacePanelSounds(WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
 		setOpaque(false);
 
 		this.workspacePanel = workspacePanel;
+		this.filterModel = new ResourceFilterModel<>(workspacePanel, item -> item.getName().toLowerCase(Locale.ENGLISH)
+				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH)),
+				Comparator.comparing(SoundElement::getName));
 
-		JSelectableList<SoundElement> soundElementList = new JSelectableList<>(listmodel);
+		JSelectableList<SoundElement> soundElementList = new JSelectableList<>(filterModel);
 		soundElementList.setOpaque(false);
 		soundElementList.setCellRenderer(new Render());
 		soundElementList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -169,71 +173,13 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 	}
 
 	@Override public void reloadElements() {
-		listmodel.removeAllElements();
-		workspacePanel.getMCreator().getWorkspace().getSoundElements().forEach(listmodel::addElement);
+		filterModel.removeAllElements();
+		workspacePanel.getMCreator().getWorkspace().getSoundElements().forEach(filterModel::addElement);
 		refilterElements();
 	}
 
 	@Override public void refilterElements() {
-		listmodel.refilter();
-	}
-
-	private class FilterModel extends DefaultListModel<SoundElement> {
-		List<SoundElement> items;
-		List<SoundElement> filterItems;
-
-		FilterModel() {
-			super();
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
-		}
-
-		@Override public SoundElement getElementAt(int index) {
-			if (index < filterItems.size())
-				return filterItems.get(index);
-			else
-				return null;
-		}
-
-		@Override public int getSize() {
-			return filterItems.size();
-		}
-
-		@Override public void addElement(SoundElement o) {
-			items.add(o);
-			refilter();
-		}
-
-		@Override public void removeAllElements() {
-			super.removeAllElements();
-			items.clear();
-			filterItems.clear();
-		}
-
-		@Override public boolean removeElement(Object a) {
-			if (a instanceof SoundElement) {
-				items.remove(a);
-				filterItems.remove(a);
-			}
-			return super.removeElement(a);
-		}
-
-		void refilter() {
-			filterItems.clear();
-			String term = workspacePanel.search.getText();
-			filterItems.addAll(items.stream().filter(Objects::nonNull)
-					.filter(item -> (item.getName().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH)))).toList());
-
-			if (workspacePanel.sortName.isSelected()) {
-				filterItems.sort(Comparator.comparing(SoundElement::getName));
-			}
-
-			if (workspacePanel.desc.isSelected())
-				Collections.reverse(filterItems);
-
-			fireContentsChanged(this, 0, getSize());
-		}
+		filterModel.refilter();
 	}
 
 	static class Render extends JPanel implements ListCellRenderer<SoundElement> {
