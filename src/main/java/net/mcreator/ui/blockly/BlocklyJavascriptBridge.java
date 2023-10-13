@@ -149,7 +149,9 @@ public class BlocklyJavascriptBridge {
 			case "dimensionCustom" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
 							.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new), "dimension");
-			case "fluid" -> openStringEntrySelector(ElementUtil::loadAllFluids, "fluids");
+			case "fluid" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllFluids(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					"fluids");
 			case "gamerulesboolean" -> openDataListEntrySelector(
 					w -> ElementUtil.getAllBooleanGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "gamerules");
@@ -348,7 +350,7 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.getAllNumberGameRules(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "fluid":
-			return ElementUtil.loadAllFluids(workspace);
+			return ElementUtil.loadAllFluids(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
 		case "particle":

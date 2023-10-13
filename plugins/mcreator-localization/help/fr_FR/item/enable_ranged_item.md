@@ -1,0 +1,1 @@
+En activant ce paramètre, l'item deviendra un item à distance lui permettant de tirer un projectile, comme les arcs et les arbalètes.

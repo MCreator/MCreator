@@ -310,6 +310,10 @@ Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs
 
 Blockly.Extensions.register('state_provider_int_property_validator', validateIntProviderInputs(['value', 0, Infinity]));
 
+Blockly.Extensions.register('pine_tree_feature_validator', validateIntProviderInputs(['foliage_height', 0, 24]));
+
+Blockly.Extensions.register('spruce_tree_feature_validator', validateIntProviderInputs(['radius', 0, 24], ['trunk_height', 0, 24]));
+
 Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
     mutationToDom: function () {
         var container = document.createElement('mutation');
