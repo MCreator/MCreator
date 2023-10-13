@@ -77,7 +77,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
 		Arrays.stream(TextureType.values()).forEach(section -> {
-			JComponentWithList<File> compList = createListElement(new ResourceFilterModel<File>(workspacePanel, File::getName),
+			JComponentWithList<File> compList = createListElement(
+					new ResourceFilterModel<>(workspacePanel, File::getName),
 					L10N.t("workspace.textures.category." + section.getID()));
 			respan.add(compList.component());
 			mapLists.put(section.getID(), compList);
@@ -235,8 +236,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		}
 	}
 
-	private JComponentWithList<File> createListElement(ResourceFilterModel<File> dmlb, String title) {
-		JSelectableList<File> listElement = new JSelectableList<>(dmlb);
+	private JComponentWithList<File> createListElement(ResourceFilterModel<File> filterModel, String title) {
+		JSelectableList<File> listElement = new JSelectableList<>(filterModel);
 		listElement.setCellRenderer(textureRender);
 		listElement.setOpaque(false);
 		listElement.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -284,9 +285,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	@Override public void refilterElements() {
 		Arrays.stream(TextureType.values()).map(section -> mapLists.get(section.getID())).forEach(compList -> {
-			ResourceFilterModel<?> model = (ResourceFilterModel<?>) compList.list().getModel();
-			model.refilter();
-			if (model.getSize() > 0) {
+			ResourceFilterModel<?> filterModel = (ResourceFilterModel<?>) compList.list().getModel();
+			filterModel.refilter();
+			if (filterModel.getSize() > 0) {
 				compList.component().setPreferredSize(null);
 				compList.component().setVisible(true);
 			} else {
