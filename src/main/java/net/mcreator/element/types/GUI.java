@@ -115,20 +115,21 @@ import java.util.List;
 			File guiTextureFile = getModElement().getFolderManager()
 					.getTextureFile(getModElement().getRegistryName(), TextureType.SCREEN);
 
-			int mx = WYSIWYG.W - width;
-			int my = WYSIWYG.H - height;
+			double mx = (WYSIWYG.W - width) / 2.0;
+			double my = (WYSIWYG.H - height) / 2.0;
 
 			if (type == 0) {
 				FileIO.writeImageToPNGFile(MinecraftImageGenerator.generateBackground(width, height), guiTextureFile);
 			} else if (type == 1) {
 				BufferedImage resizedImage = MinecraftImageGenerator.generateBackground(width, height);
 				Graphics2D g = resizedImage.createGraphics();
-				g.drawImage(MinecraftImageGenerator.generateInventorySlots(), (width - 176) / 2 + inventoryOffsetX,
-						(height - 166) / 2 + inventoryOffsetY, 176, 166, null);
+				g.drawImage(MinecraftImageGenerator.generateInventorySlots(),
+						(int) (Math.ceil((width - 176) / 2.0) + inventoryOffsetX),
+						(int) (Math.ceil((height - 166) / 2.0) + inventoryOffsetY), 176, 166, null);
 				for (GUIComponent component : components) {
 					if (component instanceof Slot) {
-						int elPosX = (int) (component.getX() - mx / 2.0);
-						int elPosy = (int) (component.getY() - my / 2.0);
+						int elPosX = (int) (component.getX() - mx);
+						int elPosy = (int) (component.getY() - my);
 						if (((Slot) component).color == null)
 							g.drawImage(MinecraftImageGenerator.generateItemSlot(), elPosX, elPosy, null);
 						else

@@ -22,7 +22,7 @@
  # all of the MCreator code generator templates (*.ftl files) and distribute 
  # that work under terms of your choice, so long as that work isn't itself a 
  # template for code generation. Alternatively, if you modify or redistribute 
- # the template itself, you may (at your option) remove this special exception, 
+ # the template itself, you may (at your option) remove this special exception,
  # which will cause the template and the resulting code generator output files 
  # to be licensed under the GNU General Public License without this special 
  # exception.
@@ -171,7 +171,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 
 			for (int si = 0; si < 3; ++si)
 				for (int sj = 0; sj < 9; ++sj)
-					this.addSlot(new Slot(inv, sj + (si + 1) * 9, ${coffx} + 8 + sj * 18, ${coffy}+ 84 + si * 18));
+					this.addSlot(new Slot(inv, sj + (si + 1) * 9, ${coffx} + 8 + sj * 18, ${coffy} + 84 + si * 18));
 
 			for (int si = 0; si < 9; ++si)
 				this.addSlot(new Slot(inv, si, ${coffx} + 8 + si * 18, ${coffy} + 142));
