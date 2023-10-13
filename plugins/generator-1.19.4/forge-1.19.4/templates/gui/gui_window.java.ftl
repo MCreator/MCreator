@@ -181,13 +181,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
 			<#if component.placeholder?has_content>
 			{
-				{
-					setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
-				}
-
 				@Override public void insertText(String text) {
 					super.insertText(text);
-
 					if (getValue().isEmpty())
 						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 					else
@@ -196,7 +191,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 				@Override public void moveCursorTo(int pos) {
 					super.moveCursorTo(pos);
-
 					if (getValue().isEmpty())
 						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 					else
@@ -204,6 +198,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				}
 			}
 			</#if>;
+			<#if component.placeholder?has_content>
+			${component.getName()}.setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
+			</#if>
 			${component.getName()}.setMaxLength(32767);
 
 			guistate.put("text:${component.getName()}", ${component.getName()});
