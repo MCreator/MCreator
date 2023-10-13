@@ -37,7 +37,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 import javax.annotation.Nullable;
 import java.io.File;
 import java.lang.reflect.*;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.BiPredicate;
@@ -46,134 +46,111 @@ import java.util.stream.Collectors;
 
 public class ReferencesFinder {
 
+	/**
+	 * Convenience method to provide a list of all generatable elements contained in the provided workspace in a thread-safe manner.
+	 * List returned by this method can be used in parallel streams as long as all other methods in the said parallel stream are
+	 * also thread safe. Thus, e.g. calling ModElementManager within the parallel stream later would still cause problems.
+	 *
+	 * @param workspace Workspace to obtain generatable elements from.
+	 * @return List of all generatable elements contained in the provided workspace.
+	 */
+	private static List<GeneratableElement> getGeneratableElements(Workspace workspace) {
+		return workspace.getModElements().stream().map(ModElement::getGeneratableElement).collect(Collectors.toList());
+	}
+
 	public static Set<ModElement> searchModElementUsages(Workspace workspace, ModElement element) {
-		Set<ModElement> elements = new HashSet<>();
-
-		String query = element.getName();
-		workspace.getModElements().stream().filter(me -> !me.equals(element)).forEach(me -> {
-			GeneratableElement ge = me.getGeneratableElement();
-			if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) -> {
-				ModElementReference ref = a.getAnnotation(ModElementReference.class);
-				return !Set.of(ref.defaultValues()).contains(t) && query.equals(
-						GeneratorWrapper.getElementPlainName(t));
-			})) {
-				elements.add(me);
-			} else if (anyValueMatches(ge, MappableElement.class, e -> e.isAnnotationPresent(ModElementReference.class),
-					(a, t) -> query.equals(GeneratorWrapper.getElementPlainName(t.getUnmappedValue())))) {
-				elements.add(me);
-			} else if (anyValueMatches(ge, Procedure.class, e -> e.isAnnotationPresent(ModElementReference.class),
-					(a, t) -> t.getName() != null && !t.getName().isEmpty() && !t.getName().equals("null")
-							&& query.equals(t.getName()))) {
-				elements.add(me);
-			} else if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
-					(a, t) -> t.contains(">CUSTOM:" + query + "</field>") || t.contains(">" + query + "</field>"))) {
-				elements.add(me);
-			}
-		});
-
-		return elements;
+		//@formatter:off
+		return getGeneratableElements(workspace).parallelStream()
+			.filter(ge ->
+				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) -> {
+					ModElementReference ref = a.getAnnotation(ModElementReference.class);
+					return !Set.of(ref.defaultValues()).contains(t) && element.getName().equals(
+							GeneratorWrapper.getElementPlainName(t));
+				}) ||
+				anyValueMatches(ge, MappableElement.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) ->
+					element.getName().equals(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))
+				) ||
+				anyValueMatches(ge, Procedure.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) ->
+					element.getName().equals(t.getName())
+				) ||
+				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (a, t) ->
+					t.contains(">CUSTOM:" + element.getName() + "</field>") || t.contains(">" + element.getName() + "</field")
+				)
+			)
+			.map(GeneratableElement::getModElement).filter(me -> !me.equals(element)).collect(Collectors.toSet());
+		//@formatter:on
 	}
 
 	public static Set<ModElement> searchTextureUsages(Workspace workspace, File texture, TextureType type) {
-		Set<ModElement> elements = new HashSet<>();
-
-		workspace.getModElements().forEach(me -> {
-			if (anyValueMatches(me.getGeneratableElement(), String.class, e -> {
-				TextureReference ref = e.getAnnotation(TextureReference.class);
-				return ref != null && ref.value() == type;
-			}, (a, t) -> {
-				TextureReference ref = a.getAnnotation(TextureReference.class);
-				if (!Set.of(ref.defaultValues()).contains(t)) {
-					for (String template : Set.of(ref.files())) {
-						String file = template.isEmpty() ? t : template.formatted(t);
-						if (workspace.getFolderManager()
-								.getTextureFile(FilenameUtilsPatched.removeExtension(file), type).equals(texture))
-							return true;
-					}
+		return getGeneratableElements(workspace).parallelStream().filter(ge -> anyValueMatches(ge, String.class, e -> {
+			TextureReference ref = e.getAnnotation(TextureReference.class);
+			return ref != null && ref.value() == type;
+		}, (a, t) -> {
+			TextureReference ref = a.getAnnotation(TextureReference.class);
+			if (!Set.of(ref.defaultValues()).contains(t)) {
+				for (String template : ref.files()) {
+					String file = template.isEmpty() ? t : template.formatted(t);
+					if (workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(file), type)
+							.equals(texture))
+						return true;
 				}
-				return false;
-			})) {
-				elements.add(me);
 			}
-		});
-
-		return elements;
+			return false;
+		})).map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchModelUsages(Workspace workspace, Model model) {
-		Set<ModElement> elements = new HashSet<>();
-
-		workspace.getModElements().forEach(me -> {
-			if (anyValueMatches(me.getGeneratableElement(), Model.class, e -> {
-				ResourceReference ref = e.getAnnotation(ResourceReference.class);
-				return ref != null && ref.value().equals("model");
-			}, (a, t) -> model.equals(t) || TexturedModel.getModelTextureMapVariations(model).contains(t))) {
-				elements.add(me);
-			}
-		});
-
-		return elements;
+		return getGeneratableElements(workspace).parallelStream().filter(ge -> anyValueMatches(ge, Model.class, e -> {
+					ResourceReference ref = e.getAnnotation(ResourceReference.class);
+					return ref != null && ref.value().equals("model");
+				}, (a, t) -> model.equals(t) || TexturedModel.getModelTextureMapVariations(model).contains(t)))
+				.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchSoundUsages(Workspace workspace, SoundElement sound) {
-		Set<ModElement> elements = new HashSet<>();
-
-		workspace.getModElements().forEach(me -> {
-			if (anyValueMatches(me.getGeneratableElement(), Sound.class, e -> {
-				ResourceReference ref = e.getAnnotation(ResourceReference.class);
-				return ref != null && ref.value().equals("sound");
-			}, (a, t) -> t.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())))
-				elements.add(me);
-		});
-
-		return elements;
+		return getGeneratableElements(workspace).parallelStream().filter(ge -> anyValueMatches(ge, Sound.class, e -> {
+					ResourceReference ref = e.getAnnotation(ResourceReference.class);
+					return ref != null && ref.value().equals("sound");
+				}, (a, t) -> t.getUnmappedValue().replaceFirst("CUSTOM:", "").equals(sound.getName())))
+				.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchStructureUsages(Workspace workspace, String structure) {
-		Set<ModElement> elements = new HashSet<>();
-
-		workspace.getModElements().forEach(me -> {
-			GeneratableElement ge = me.getGeneratableElement();
-			if (anyValueMatches(ge, String.class, e -> {
-				ResourceReference ref = e.getAnnotation(ResourceReference.class);
-				return ref != null && ref.value().equals("structure");
-			}, (a, t) -> t.equals(structure)))
-				elements.add(me);
-			else if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
-					(a, t) -> t.contains(">" + structure + "</field>")))
-				elements.add(me);
-		});
-
-		return elements;
+		//@formatter:off
+		return getGeneratableElements(workspace).parallelStream()
+			.filter(ge ->
+				anyValueMatches(ge, String.class, e -> {
+						ResourceReference ref = e.getAnnotation(ResourceReference.class);
+						return ref != null && ref.value().equals("structure");
+					}, (a, t) ->
+					t.equals(structure)
+				) ||
+				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (a, t) ->
+					t.contains(">" + structure + "</field>")
+				)
+			)
+			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+		//@formatter:on
 	}
 
 	public static Set<ModElement> searchGlobalVariableUsages(Workspace workspace, String variableName) {
-		Set<ModElement> elements = new HashSet<>();
-
-		workspace.getModElements().forEach(me -> {
-			if (anyValueMatches(me.getGeneratableElement(), String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
-					(a, t) -> t.contains("<field name=\"VAR\">global:" + variableName + "</field>"))) {
-				elements.add(me);
-			}
-		});
-
-		return elements;
+		return getGeneratableElements(workspace).parallelStream()
+				.filter(ge -> anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
+						(a, t) -> t.contains("<field name=\"VAR\">global:" + variableName + "</field>")))
+				.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchLocalizationKeyUsages(Workspace workspace, String localizationKey) {
-		Set<ModElement> elements = new HashSet<>();
-
-		workspace.getModElements().forEach(me -> {
-			GeneratableElement ge = me.getGeneratableElement();
-			if (ge != null && workspace.getGenerator().getElementLocalizationKeys(ge).contains(localizationKey)) {
-				elements.add(me);
-			} else if (anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
-					(a, t) -> t.contains(">" + localizationKey + "</field>"))) {
-				elements.add(me);
-			}
-		});
-
-		return elements;
+		//@formatter:off
+		return getGeneratableElements(workspace).parallelStream()
+			.filter(ge ->
+				(ge != null && workspace.getGenerator().getElementLocalizationKeys(ge).contains(localizationKey)) ||
+				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (a, t) ->
+					t.contains(">" + localizationKey + "</field>")
+				)
+			)
+			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+		//@formatter:on
 	}
 
 	/**
@@ -188,8 +165,8 @@ public class ReferencesFinder {
 	 */
 	@SuppressWarnings("unused") public static <T> Set<ModElement> searchUsages(Workspace workspace, Class<T> clazz,
 			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
-		return workspace.getModElements().stream()
-				.filter(me -> anyValueMatches(me.getGeneratableElement(), clazz, validIf, condition))
+		return getGeneratableElements(workspace).parallelStream()
+				.filter(ge -> anyValueMatches(ge, clazz, validIf, condition)).map(GeneratableElement::getModElement)
 				.collect(Collectors.toSet());
 	}
 
