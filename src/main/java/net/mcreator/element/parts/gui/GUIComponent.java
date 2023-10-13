@@ -21,6 +21,7 @@ package net.mcreator.element.parts.gui;
 import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
+import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 
@@ -97,6 +98,16 @@ import java.util.stream.Collectors;
 
 	public final int getY() {
 		return y;
+	}
+
+	public final int gx(int width) {
+		double mx = (WYSIWYG.W - width) / 2.0;
+		return (int) Math.floor(x - mx);
+	}
+
+	public final int gy(int height) {
+		double my = (WYSIWYG.H - height) / 2.0;
+		return (int) Math.floor(y - my);
 	}
 
 	@Override public final int compareTo(@Nonnull GUIComponent o) {
