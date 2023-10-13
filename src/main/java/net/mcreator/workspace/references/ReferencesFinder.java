@@ -58,8 +58,9 @@ public class ReferencesFinder {
 		return workspace.getModElements().stream().map(ModElement::getGeneratableElement).collect(Collectors.toList());
 	}
 
+	//@formatter:off
+
 	public static Set<ModElement> searchModElementUsages(Workspace workspace, ModElement element) {
-		//@formatter:off
 		return getGeneratableElements(workspace).parallelStream()
 			.filter(ge ->
 				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) -> {
@@ -78,37 +79,44 @@ public class ReferencesFinder {
 				)
 			)
 			.map(GeneratableElement::getModElement).filter(me -> !me.equals(element)).collect(Collectors.toSet());
-		//@formatter:on
 	}
 
 	public static Set<ModElement> searchTextureUsages(Workspace workspace, File texture, TextureType type) {
-		return getGeneratableElements(workspace).parallelStream().filter(ge -> anyValueMatches(ge, String.class, e -> {
-			TextureReference ref = e.getAnnotation(TextureReference.class);
-			return ref != null && ref.value() == type;
-		}, (a, t) -> {
-			TextureReference ref = a.getAnnotation(TextureReference.class);
-			if (!Set.of(ref.defaultValues()).contains(t)) {
-				for (String template : ref.files()) {
-					String file = template.isEmpty() ? t : template.formatted(t);
-					if (workspace.getFolderManager().getTextureFile(FilenameUtilsPatched.removeExtension(file), type)
-							.equals(texture))
-						return true;
-				}
-			}
-			return false;
-		})).map(GeneratableElement::getModElement).collect(Collectors.toSet());
+		return getGeneratableElements(workspace).parallelStream()
+			.filter(ge ->
+				anyValueMatches(ge, String.class, e -> {
+					TextureReference ref = e.getAnnotation(TextureReference.class);
+					return ref != null && ref.value() == type;
+				}, (a, t) -> {
+					TextureReference ref = a.getAnnotation(TextureReference.class);
+					if (!Set.of(ref.defaultValues()).contains(t)) {
+						for (String template : ref.files()) {
+							String file = template.isEmpty() ? t : template.formatted(t);
+							if (workspace.getFolderManager()
+									.getTextureFile(FilenameUtilsPatched.removeExtension(file), type).equals(texture))
+								return true;
+						}
+					}
+					return false;
+				})
+			)
+			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchModelUsages(Workspace workspace, Model model) {
-		return getGeneratableElements(workspace).parallelStream().filter(ge -> anyValueMatches(ge, Model.class, e -> {
+		return getGeneratableElements(workspace).parallelStream()
+			.filter(ge ->
+				anyValueMatches(ge, Model.class, e -> {
 					ResourceReference ref = e.getAnnotation(ResourceReference.class);
 					return ref != null && ref.value().equals("model");
-				}, (a, t) -> model.equals(t) || TexturedModel.getModelTextureMapVariations(model).contains(t)))
-				.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+				}, (a, t) ->
+					model.equals(t) || TexturedModel.getModelTextureMapVariations(model).contains(t)
+				)
+			)
+			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchSoundUsages(Workspace workspace, SoundElement sound) {
-		//@formatter:off
 		return getGeneratableElements(workspace).parallelStream()
 			.filter(ge ->
 				anyValueMatches(ge, Sound.class, e -> {
@@ -122,11 +130,9 @@ public class ReferencesFinder {
 				)
 			)
 			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
-		//@formatter:on
 	}
 
 	public static Set<ModElement> searchStructureUsages(Workspace workspace, String structure) {
-		//@formatter:off
 		return getGeneratableElements(workspace).parallelStream()
 			.filter(ge ->
 				anyValueMatches(ge, String.class, e -> {
@@ -140,18 +146,19 @@ public class ReferencesFinder {
 				)
 			)
 			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
-		//@formatter:on
 	}
 
 	public static Set<ModElement> searchGlobalVariableUsages(Workspace workspace, String variableName) {
 		return getGeneratableElements(workspace).parallelStream()
-				.filter(ge -> anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class),
-						(a, t) -> t.contains("<field name=\"VAR\">global:" + variableName + "</field>")))
-				.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+			.filter(ge ->
+				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (a, t) ->
+					t.contains("<field name=\"VAR\">global:" + variableName + "</field>")
+				)
+			)
+			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchLocalizationKeyUsages(Workspace workspace, String localizationKey) {
-		//@formatter:off
 		return getGeneratableElements(workspace).parallelStream()
 			.filter(ge ->
 				(ge != null && workspace.getGenerator().getElementLocalizationKeys(ge).contains(localizationKey)) ||
@@ -160,8 +167,9 @@ public class ReferencesFinder {
 				)
 			)
 			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
-		//@formatter:on
 	}
+
+	//@formatter:on
 
 	/**
 	 * Scans the entire passed workspace and collects all mod elements considered to use certain value(s).
