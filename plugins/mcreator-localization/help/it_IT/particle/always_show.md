@@ -1,0 +1,1 @@
+Questo parametro controlla se la particella viene mostrata in tutti i casi, anche se la visualizzazione delle particelle è impostata al minimo nelle impostazioni video.

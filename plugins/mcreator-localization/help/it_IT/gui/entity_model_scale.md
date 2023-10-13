@@ -1,0 +1,1 @@
+Determina la dimensione del modello dell'entità visualizzata.
