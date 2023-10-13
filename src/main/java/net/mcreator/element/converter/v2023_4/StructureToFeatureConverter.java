@@ -137,7 +137,7 @@ public class StructureToFeatureConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 53;
+		return 54;
 	}
 
 	// Returns the XML for the random patch block attached to the feature starting point
