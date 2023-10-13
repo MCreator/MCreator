@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Image;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -57,6 +58,12 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 		JCheckBox scale1x = L10N.checkbox("dialog.gui.image_use_scale");
 		options.add(PanelUtils.join(FlowLayout.LEFT, scale1x));
 
+		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
+		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
+		if (!editor.isNotOverlayType) {
+			options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor"), anchor));
+		}
+
 		ProcedureSelector displayCondition = new ProcedureSelector(
 				IHelpContext.NONE.withEntry("gui/image_display_condition"), editor.mcreator,
 				L10N.t("dialog.gui.image_display_condition"), ProcedureSelector.Side.CLIENT, false,
@@ -80,6 +87,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 			textureSelector.setSelectedItem(image.image);
 			scale1x.setSelected(image.use1Xscale);
 			displayCondition.setSelectedProcedure(image.displayCondition);
+			anchor.setSelectedItem(image.anchorPoint);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
@@ -90,7 +98,8 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 				if (image == null) {
 					Image component = new Image(0, 0, imageTxt, scale1x.isSelected(),
 							displayCondition.getSelectedProcedure());
-
+					if (!editor.isNotOverlayType)
+						component.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
 					editor.list.setSelectedValue(component, true);
@@ -98,10 +107,12 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 				} else {
 					int idx = editor.components.indexOf(image);
 					editor.components.remove(image);
-					Image labelNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
+					Image imageNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
 							displayCondition.getSelectedProcedure());
-					editor.components.add(idx, labelNew);
-					setEditingComponent(labelNew);
+					if (!editor.isNotOverlayType)
+						imageNew.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
+					editor.components.add(idx, imageNew);
+					setEditingComponent(imageNew);
 				}
 			}
 		});

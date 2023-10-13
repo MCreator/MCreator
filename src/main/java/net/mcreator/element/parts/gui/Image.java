@@ -41,6 +41,11 @@ public class Image extends GUIComponent {
 		this.displayCondition = displayCondition;
 	}
 
+	public Image(int x, int y, String image, boolean use1Xscale, Procedure displayCondition, AnchorPoint anchorPoint) {
+		this(x, y, image, use1Xscale, displayCondition);
+		this.anchorPoint = anchorPoint;
+	}
+
 	@Override public String getName() {
 		return "image_" + FilenameUtilsPatched.removeExtension(image);
 	}

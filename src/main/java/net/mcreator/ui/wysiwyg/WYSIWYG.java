@@ -199,6 +199,18 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 				g.drawLine(ox * 2 + selected.getWidth(wysiwygEditor.mcreator.getWorkspace()) * 2, 0,
 						ox * 2 + selected.getWidth(wysiwygEditor.mcreator.getWorkspace()) * 2, getHeight());
 			}
+
+			if (!isNotOverlayType) {
+				GUIComponent.AnchorPoint anchorPoint = selected.getAnchorPoint();
+				if (anchorPoint != null) {
+					Point anchor = anchorPoint.getAnchorPoint(W, H);
+
+					g.setColor(new Color(255, 153, 250, 230));
+					g.fillRect(anchor.x * 2 - 4, anchor.y * 2 - 4, 8, 8);
+					g.drawLine(anchor.x * 2, anchor.y * 2, ox * 2, anchor.y * 2);
+					g.drawLine(anchor.x * 2, anchor.y * 2, anchor.x * 2, oy * 2);
+				}
+			}
 		}
 
 		if (showGrid)

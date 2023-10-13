@@ -518,17 +518,20 @@ public class TestWorkspaceDataProvider {
 			ArrayList<GUIComponent> components = new ArrayList<>();
 
 			components.add(new Label("text", 100, 150, new StringProcedure(_true ? "string1" : null, "fixed value 1"),
-					Color.red, new Procedure("condition1")));
+					Color.red, new Procedure("condition1"), getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(new Label("text2", 100, 150, new StringProcedure(!_true ? "string2" : null, "fixed value 2"),
-					Color.white, new Procedure("condition4")));
+					Color.white, new Procedure("condition4"),
+					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 
-			components.add(new Image(20, 30, "picture1", true, new Procedure("condition1")));
-			components.add(new Image(22, 31, "picture2", false, new Procedure("condition2")));
-			components.add(
-					new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false));
+			components.add(new Image(20, 30, "picture1", true, new Procedure("condition1"),
+					getRandomItem(random, GUIComponent.AnchorPoint.values())));
+			components.add(new Image(22, 31, "picture2", false, new Procedure("condition2"),
+					getRandomItem(random, GUIComponent.AnchorPoint.values())));
+			components.add(new EntityModel(60, 20, new Procedure("entity1"), new Procedure("condition3"), 30, 0, false,
+					getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			components.add(
 					new EntityModel(60, 20, new Procedure("entity1"), new Procedure(!_true ? "condition4" : null), 30,
-							90, false));
+							90, false, getRandomItem(random, GUIComponent.AnchorPoint.values())));
 			overlay.displayCondition = new Procedure("condition1");
 			overlay.components = components;
 			overlay.baseTexture = emptyLists ? "" : "test.png";
@@ -614,7 +617,7 @@ public class TestWorkspaceDataProvider {
 			gui.components = components;
 			return gui;
 		} else if (ModElementType.LIVINGENTITY.equals(modElement.getType())) {
-			return getLivingEntity(modElement, random, _true, emptyLists, valueIndex, blocksAndItems, biomes);
+			return getLivingEntity(modElement, random, _true, emptyLists, valueIndex, blocksAndItems, blocksAndItemsAndTags, biomes);
 		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
 			Dimension dimension = new Dimension(modElement);
 			dimension.texture = "test";
@@ -1507,7 +1510,7 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static LivingEntity getLivingEntity(ModElement modElement, Random random, boolean _true, boolean emptyLists,
-			int valueIndex, List<MCItem> blocksAndItems, List<DataListEntry> biomes) {
+			int valueIndex, List<MCItem> blocksAndItems, List<MCItem> blocksAndItemsAndTags, List<DataListEntry> biomes) {
 		LivingEntity livingEntity = new LivingEntity(modElement);
 		livingEntity.mobName = modElement.getName();
 		livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
@@ -1605,15 +1608,15 @@ public class TestWorkspaceDataProvider {
 		livingEntity.breedTriggerItems = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItems).getName()));
+					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 		}
 		livingEntity.ranged = _true;
 		livingEntity.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),
