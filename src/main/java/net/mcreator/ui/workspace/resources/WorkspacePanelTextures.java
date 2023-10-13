@@ -77,7 +77,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		respan.setLayout(new BoxLayout(respan, BoxLayout.Y_AXIS));
 
 		Arrays.stream(TextureType.values()).forEach(section -> {
-			JComponentWithList<File> compList = createListElement(new FilterModel(),
+			JComponentWithList<File> compList = createListElement(new ResourceFilterModel<File>(workspacePanel, File::getName),
 					L10N.t("workspace.textures.category." + section.getID()));
 			respan.add(compList.component());
 			mapLists.put(section.getID(), compList);
@@ -235,7 +235,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		}
 	}
 
-	private JComponentWithList<File> createListElement(FilterModel dmlb, String title) {
+	private JComponentWithList<File> createListElement(ResourceFilterModel<File> dmlb, String title) {
 		JSelectableList<File> listElement = new JSelectableList<>(dmlb);
 		listElement.setCellRenderer(textureRender);
 		listElement.setOpaque(false);
@@ -263,7 +263,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		new Thread(() -> {
 			Arrays.stream(TextureType.values()).forEach(section -> {
 				List<File> selected = mapLists.get(section.getID()).list().getSelectedValuesList();
-				FilterModel newfm = new FilterModel();
+				ResourceFilterModel<File> newfm = new ResourceFilterModel<>(workspacePanel, File::getName);
 				workspacePanel.getMCreator().getFolderManager().getTexturesList(section).forEach(newfm::addElement);
 
 				SwingUtilities.invokeLater(() -> {
@@ -284,7 +284,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	@Override public void refilterElements() {
 		Arrays.stream(TextureType.values()).map(section -> mapLists.get(section.getID())).forEach(compList -> {
-			FilterModel model = (FilterModel) compList.list().getModel();
+			ResourceFilterModel<?> model = (ResourceFilterModel<?>) compList.list().getModel();
 			model.refilter();
 			if (model.getSize() > 0) {
 				compList.component().setPreferredSize(null);
@@ -294,71 +294,6 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				compList.component().setVisible(false);
 			}
 		});
-	}
-
-	private class FilterModel extends DefaultListModel<File> {
-		List<File> items;
-		List<File> filterItems;
-
-		FilterModel() {
-			super();
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
-		}
-
-		@Override public File getElementAt(int index) {
-			if (index < filterItems.size())
-				return filterItems.get(index);
-			else
-				return null;
-		}
-
-		@Override public int indexOf(Object elem) {
-			if (elem instanceof File)
-				return filterItems.indexOf(elem);
-			else
-				return -1;
-		}
-
-		@Override public int getSize() {
-			return filterItems.size();
-		}
-
-		@Override public void addElement(File o) {
-			items.add(o);
-			refilter();
-		}
-
-		@Override public void removeAllElements() {
-			super.removeAllElements();
-			items.clear();
-			filterItems.clear();
-		}
-
-		@Override public boolean removeElement(Object a) {
-			if (a instanceof File) {
-				items.remove(a);
-				filterItems.remove(a);
-			}
-			return super.removeElement(a);
-		}
-
-		void refilter() {
-			filterItems.clear();
-			String term = workspacePanel.search.getText();
-			filterItems.addAll(items.stream().filter(Objects::nonNull)
-					.filter(item -> (item.getName().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH)))).toList());
-
-			if (workspacePanel.sortName.isSelected()) {
-				filterItems.sort(Comparator.comparing(File::getName));
-			}
-
-			if (workspacePanel.desc.isSelected())
-				Collections.reverse(filterItems);
-
-			fireContentsChanged(this, 0, getSize());
-		}
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<File> {
