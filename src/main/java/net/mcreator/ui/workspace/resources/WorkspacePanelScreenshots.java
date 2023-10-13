@@ -40,7 +40,6 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -56,9 +55,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		setOpaque(false);
 
 		this.workspacePanel = workspacePanel;
-		filterModel = new ResourceFilterModel<>(workspacePanel, item -> item.getName().toLowerCase(Locale.ENGLISH)
-				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH)),
-				Comparator.comparing(File::getName));
+		filterModel = new ResourceFilterModel<>(workspacePanel, File::getName);
 		screenshotsList = new JSelectableList<>(filterModel);
 
 		screenshotsList.setOpaque(false);

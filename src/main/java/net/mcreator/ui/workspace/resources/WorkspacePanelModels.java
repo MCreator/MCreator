@@ -43,15 +43,16 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.List;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class WorkspacePanelModels extends JPanel implements IReloadableFilterable {
 
 	private final WorkspacePanel workspacePanel;
 
-	private final ResourceFilterModel<Model> filterModel ;
+	private final ResourceFilterModel<Model> filterModel;
 	private final JList<Model> modelList;
 
 	WorkspacePanelModels(WorkspacePanel workspacePanel) {
@@ -59,9 +60,10 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		setOpaque(false);
 
 		this.workspacePanel = workspacePanel;
-		this.filterModel  = new ResourceFilterModel<>(workspacePanel, item -> predicateCheck(workspacePanel, item),
-				Comparator.comparing(Model::getReadableName));
-		modelList = new JList<>(filterModel );
+		this.filterModel = new ResourceFilterModel<>(workspacePanel,
+				(item, query) -> item.getReadableName().toLowerCase(Locale.ENGLISH).contains(query) || item.getType()
+						.name().toLowerCase(Locale.ENGLISH).contains(query), Model::getReadableName);
+		modelList = new JList<>(filterModel);
 
 		modelList.setOpaque(false);
 		modelList.setCellRenderer(new Render());
@@ -182,12 +184,6 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		add("North", bar);
 	}
 
-	private static boolean predicateCheck(WorkspacePanel workspacePanel, Model item) {
-		return item.getReadableName().toLowerCase(Locale.ENGLISH)
-				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH)) || item.getType().name()
-				.toLowerCase(Locale.ENGLISH).contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH));
-	}
-
 	private void deleteCurrentlySelected() {
 		Model model = modelList.getSelectedValue();
 		if (model != null) {
@@ -276,13 +272,13 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 	}
 
 	@Override public void reloadElements() {
-		filterModel .removeAllElements();
-		Model.getModels(workspacePanel.getMCreator().getWorkspace()).forEach(filterModel ::addElement);
+		filterModel.removeAllElements();
+		Model.getModels(workspacePanel.getMCreator().getWorkspace()).forEach(filterModel::addElement);
 		refilterElements();
 	}
 
 	@Override public void refilterElements() {
-		filterModel .refilter();
+		filterModel.refilter();
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<Model> {

@@ -31,9 +31,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 public class WorkspacePanelStructures extends JPanel implements IReloadableFilterable {
 
@@ -46,9 +44,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		setOpaque(false);
 
 		this.workspacePanel = workspacePanel;
-		this.filterModel = new ResourceFilterModel<>(workspacePanel, item -> (item.toLowerCase(Locale.ENGLISH)
-				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH))),
-				Comparator.comparing(String::toString));
+		this.filterModel = new ResourceFilterModel<>(workspacePanel, String::toString);
 
 		JSelectableList<String> structureElementList = new JSelectableList<>(filterModel);
 		structureElementList.setOpaque(false);

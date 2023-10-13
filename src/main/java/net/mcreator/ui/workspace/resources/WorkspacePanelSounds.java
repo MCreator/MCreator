@@ -39,7 +39,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -54,9 +53,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		setOpaque(false);
 
 		this.workspacePanel = workspacePanel;
-		this.filterModel = new ResourceFilterModel<>(workspacePanel, item -> item.getName().toLowerCase(Locale.ENGLISH)
-				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH)),
-				Comparator.comparing(SoundElement::getName));
+		this.filterModel = new ResourceFilterModel<>(workspacePanel, SoundElement::getName);
 
 		JSelectableList<SoundElement> soundElementList = new JSelectableList<>(filterModel);
 		soundElementList.setOpaque(false);
