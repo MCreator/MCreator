@@ -177,8 +177,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		super.init();
 
 		<#list data.getComponentsOfType("TextField") as component>
-			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
-			${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
+			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
+			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
 			<#if component.placeholder?has_content>
 			{
 				@Override public void insertText(String text) {
