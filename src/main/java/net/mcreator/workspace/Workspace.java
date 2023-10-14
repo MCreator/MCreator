@@ -469,7 +469,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	// Below are methods that may still be used by some plugins
 
-	@Deprecated public void loadStoredDataFrom(Workspace other) {
+	@SuppressWarnings("unused") void loadStoredDataFrom(Workspace other) {
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
