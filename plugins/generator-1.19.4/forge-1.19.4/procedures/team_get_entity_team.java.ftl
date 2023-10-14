@@ -1,8 +1,1 @@
-(new Object() {
-	public String getFriendlyFire(Entity _entity) {
-		PlayerTeam _pt = _entity.level.getScoreboard().getPlayersTeam(_entity.getStringUUID());
-		if (_pt != null)
-			return _pt.getName();
-		return "";
-	}
-}.getFriendlyFire(${input$entity}))
+(${input$entity}.level.getScoreboard().getPlayersTeam(${input$entity}.getStringUUID()) != null ? ${input$entity}.level.getScoreboard().getPlayersTeam(${input$entity}.getStringUUID()).getName() : "")
