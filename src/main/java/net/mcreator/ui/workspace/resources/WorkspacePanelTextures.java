@@ -78,7 +78,6 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		Arrays.stream(TextureType.values()).forEach(section -> {
 			JComponentWithList<File> compList = createListElement(
-					new ResourceFilterModel<>(workspacePanel, File::getName),
 					L10N.t("workspace.textures.category." + section.getID()));
 			respan.add(compList.component());
 			mapLists.put(section.getID(), compList);
@@ -236,8 +235,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		}
 	}
 
-	private JComponentWithList<File> createListElement(ResourceFilterModel<File> filterModel, String title) {
-		JSelectableList<File> listElement = new JSelectableList<>(filterModel);
+	private JComponentWithList<File> createListElement(String title) {
+		JSelectableList<File> listElement = new JSelectableList<>(
+				new ResourceFilterModel<>(workspacePanel, File::getName));
 		listElement.setCellRenderer(textureRender);
 		listElement.setOpaque(false);
 		listElement.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -264,6 +264,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		new Thread(() -> {
 			Arrays.stream(TextureType.values()).forEach(section -> {
 				List<File> selected = mapLists.get(section.getID()).list().getSelectedValuesList();
+
+				// instead of clearing and adding all elements, we just replace the model (less flickering)
 				ResourceFilterModel<File> newfm = new ResourceFilterModel<>(workspacePanel, File::getName);
 				workspacePanel.getMCreator().getFolderManager().getTexturesList(section).forEach(newfm::addElement);
 
