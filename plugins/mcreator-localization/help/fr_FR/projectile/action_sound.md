@@ -1,0 +1,1 @@
+Ce paramètre contrôle le son joué lorsque le projectile est lancé.
