@@ -223,25 +223,26 @@ public class ReferencesFinder {
 	 * passes the provided condition.
 	 */
 	@SuppressWarnings("unchecked") private static <T> boolean checkValue(@Nullable Object value, AccessibleObject field,
-			Class<T> clazz, Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
+			Class<T> clazz, @Nullable Predicate<AccessibleObject> validIf,
+			@Nullable BiPredicate<AccessibleObject, T> condition) {
 		if (value == null)
 			return false;
 
 		if (clazz.isInstance(value)) { // value of specified type
 			return (isCustomObject(value) || validIf == null || validIf.test(field)) && (condition == null
 					|| condition.test(field, (T) value));
+		} else if (value instanceof Iterable<?> list) { // list of values
+			return listHasMatches(list, field, clazz, validIf, condition);
+		} else if (value instanceof Map<?, ?> map) { // map with values
+			return listHasMatches(map.keySet(), field, clazz, validIf, condition) || listHasMatches(map.values(), field,
+					clazz, validIf, condition);
 		} else if (clazz.isArray()) { // array of values
 			int length = Array.getLength(value);
 			for (int i = 0; i < length; i++) {
 				if (checkValue(Array.get(value, i), field, clazz, validIf, condition))
 					return true;
 			}
-		} else if (value instanceof Iterable<?> list) { // list of values
-			return listHasMatches(list, field, clazz, validIf, condition);
-		} else if (value instanceof Map<?, ?> map) { // map with values
-			return listHasMatches(map.keySet(), field, clazz, validIf, condition) || listHasMatches(map.values(), field,
-					clazz, validIf, condition);
-		} else if (isCustomObject(value)) { // value of unknown type
+		} else if (isCustomObject(value)) { // value of unknown type but from MCreator system, do recursive check
 			return anyValueMatches(value, clazz, validIf, condition);
 		}
 
@@ -261,7 +262,7 @@ public class ReferencesFinder {
 	 * passes the provided condition.
 	 */
 	private static <T> boolean listHasMatches(Iterable<?> list, AccessibleObject field, Class<T> clazz,
-			Predicate<AccessibleObject> validIf, BiPredicate<AccessibleObject, T> condition) {
+			@Nullable Predicate<AccessibleObject> validIf, @Nullable BiPredicate<AccessibleObject, T> condition) {
 		for (Object obj : list) {
 			if (checkValue(obj, field, clazz, validIf, condition))
 				return true;
