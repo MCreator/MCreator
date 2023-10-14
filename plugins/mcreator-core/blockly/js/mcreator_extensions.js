@@ -260,6 +260,10 @@ Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs
 
 Blockly.Extensions.register('state_provider_int_property_validator', validateIntProviderInputs(['value', 0, Infinity]));
 
+Blockly.Extensions.register('pine_tree_feature_validator', validateIntProviderInputs(['foliage_height', 0, 24]));
+
+Blockly.Extensions.register('spruce_tree_feature_validator', validateIntProviderInputs(['radius', 0, 24], ['trunk_height', 0, 24]));
+
 // Helper function to provide a mixin for mutators that add a single repeating (dummy) input with additional fields
 // The mutator container block must have a "STACK" statement input for this to work
 // The empty message is localized as "blockly.block.block_type.empty"

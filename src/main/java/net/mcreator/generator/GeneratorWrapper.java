@@ -97,7 +97,7 @@ import java.util.stream.Collectors;
 	 * @return The plain name of the element
 	 */
 	public static String getElementPlainName(String elementName) {
-		return StringUtils.substringBeforeLast(elementName.replace("CUSTOM:", ""), ".");
+		return StringUtils.substringBeforeLast(elementName.replace("CUSTOM:", "").replace(":Flowing", ""), ".");
 	}
 
 	public String getRegistryNameForModElement(String modElement) {

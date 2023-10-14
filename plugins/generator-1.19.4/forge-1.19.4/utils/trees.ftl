@@ -20,12 +20,15 @@
 }
 </#macro>
 
-<#macro twoLayersFeatureSize limit lower_size upper_size>
+<#macro twoLayersFeatureSize limit lower_size upper_size min_clipped_height=-1>
 {
   "type": "minecraft:two_layers_feature_size",
   "limit": ${limit},
   "lower_size": ${lower_size},
   "upper_size": ${upper_size}
+  <#if min_clipped_height != -1>,
+    "min_clipped_height": ${min_clipped_height}
+  </#if>
 }
 </#macro>
 

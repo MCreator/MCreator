@@ -352,8 +352,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
 
-		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
+		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
 		entityDataList = new JEntityDataList(mcreator, this);
+
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 
 		mobModelTexture.setRenderer(

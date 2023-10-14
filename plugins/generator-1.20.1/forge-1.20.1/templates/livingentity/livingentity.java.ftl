@@ -178,6 +178,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
+	<#if data.aiBase == "Villager">
+	@Override protected Component getTypeName() {
+		return this.getType().getDescription();
+	}
+	</#if>
+
 	<#if data.hasAI>
 	@Override protected void registerGoals() {
 		super.registerGoals();
@@ -610,7 +616,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
 
 		@Override public boolean isFood(ItemStack stack) {
-			return List.of(<#list data.breedTriggerItems as breedTriggerItem>${mappedMCItemToItem(breedTriggerItem)}<#sep>,</#list>).contains(stack.getItem());
+			return ${mappedMCItemsToIngredient(data.breedTriggerItems)}.test(stack);
 		}
     </#if>
 
