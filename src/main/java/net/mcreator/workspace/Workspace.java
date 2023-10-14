@@ -469,7 +469,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	// Below are methods that may still be used by some plugins
 
-	public void loadStoredDataFrom(Workspace other) {
+	@Deprecated public void loadStoredDataFrom(Workspace other) {
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
@@ -478,58 +478,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.mcreatorVersion = other.mcreatorVersion;
 		this.workspaceSettings = other.workspaceSettings;
 		this.workspaceSettings.setWorkspace(this);
-	}
-
-	@SuppressWarnings("unused") public void setFoldersRoot(FolderElement foldersRoot) {
-		this.foldersRoot = foldersRoot;
-		markDirty();
-	}
-
-	@SuppressWarnings("unused") public void updateModElement(ModElement element) {
-		for (ModElement el : mod_elements) {
-			if (el == element || el.getName().equals(element.getName())) {
-				el.loadDataFrom(element);
-				el.reloadElementIcon(); // update ME icon
-				el.getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush()); // update MCItem icons
-
-				break; // there can be only one element with given name so no need to iterate further
-			}
-		}
-		markDirty();
-	}
-
-	@SuppressWarnings("unused")
-	public void updateSoundElement(SoundElement originalElement, SoundElement updatedElement) {
-		Set<SoundElement> tmp = new HashSet<>(sound_elements);
-		for (SoundElement el : tmp) {
-			if (el.getName().equals(originalElement.getName())) {
-				sound_elements.remove(el);
-				sound_elements.add(updatedElement);
-			}
-		}
-		markDirty();
-	}
-
-	@SuppressWarnings("unused")
-	public void updateVariableElement(VariableElement originalElement, VariableElement updatedElement) {
-		Set<VariableElement> tmp = new HashSet<>(variable_elements);
-		for (VariableElement el : tmp) {
-			if (el.getName().equals(originalElement.getName())) {
-				variable_elements.remove(el);
-				variable_elements.add(updatedElement);
-			}
-		}
-		markDirty();
-	}
-
-	@SuppressWarnings("unused") public void reloadFromFS() {
-		String workspace_string = FileIO.readFileToString(fileManager.getWorkspaceFile());
-		Workspace workspace_on_fs = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
-		fileManager.getModElementManager().invalidateCache();
-		loadStoredDataFrom(workspace_on_fs);
-		reloadModElements();
-		reloadFolderStructure();
-		LOG.info("Reloaded current workspace from the workspace file");
 	}
 
 }
