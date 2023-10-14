@@ -190,21 +190,19 @@ public class ReferencesFinder {
 			if (!Modifier.isStatic(field.getModifiers()) && (clazz.isAssignableFrom(field.getType()) || (validIf != null
 					&& validIf.test(field)))) {
 				try {
-					field.setAccessible(true);
 					if (checkValue(field.get(source), field, clazz, validIf, condition))
 						return true;
-				} catch (IllegalAccessException | IllegalArgumentException ignored) {
+				} catch (ReflectiveOperationException ignored) {
 				}
 			}
 		}
 		for (Method method : source.getClass().getMethods()) {
-			if (!Modifier.isStatic(method.getModifiers()) && (clazz.isAssignableFrom(method.getReturnType()) || (
-					validIf != null && validIf.test(method)))) {
+			if (!Modifier.isStatic(method.getModifiers()) && method.getParameterCount() == 0 && (
+					clazz.isAssignableFrom(method.getReturnType()) || (validIf != null && validIf.test(method)))) {
 				try {
-					method.setAccessible(true);
 					if (checkValue(method.invoke(source), method, clazz, validIf, condition))
 						return true;
-				} catch (IllegalArgumentException | ReflectiveOperationException ignored) {
+				} catch (ReflectiveOperationException ignored) {
 				}
 			}
 		}
