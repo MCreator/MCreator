@@ -86,7 +86,7 @@ public class SearchUsagesDialog {
 			boolean deletionRequested, @Nullable String messageSuffix) {
 		if (references.isEmpty()) { // skip custom dialog if there are no references to show
 			if (deletionRequested) {
-				String msg = L10N.t("dialog.search_usages.deletion_safe.confirm_msg");
+				String msg = L10N.t("dialog.search_usages.deletion_safe.confirm_msg", queryType);
 				int n = JOptionPane.showConfirmDialog(mcreator,
 						messageSuffix != null ? msg + "<br><br><small>" + messageSuffix : msg,
 						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
