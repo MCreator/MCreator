@@ -29,6 +29,10 @@
     "foliage_placer": <@simpleFoliagePlacer type="minecraft:jungle_foliage_placer" radius=2 offset=0 height=2/>,
     "trunk_placer": <@simpleTrunkPlacer "minecraft:mega_jungle_trunk_placer" field$base_height field$height_variation_a field$height_variation_b/>,
     "minimum_size": <@twoLayersFeatureSize limit=1 lower_size=1 upper_size=2/>,
+  <#elseif field$type == "fancy oak">
+    "foliage_placer": <@simpleFoliagePlacer type="minecraft:fancy_foliage_placer" radius=2 offset=4 height=4/>,
+    "trunk_placer": <@simpleTrunkPlacer "minecraft:fancy_trunk_placer" field$base_height field$height_variation_a field$height_variation_b/>,
+    "minimum_size": <@twoLayersFeatureSize limit=0 lower_size=0 upper_size=0 min_clipped_height=4/>,
   </#if>
   "decorators": [
     <#list input_list$decorator as decorator>

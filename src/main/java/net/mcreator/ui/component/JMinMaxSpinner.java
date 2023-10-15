@@ -78,13 +78,10 @@ public class JMinMaxSpinner extends JPanel {
 				return;
 
 			Number minVal = getMinNumber(), maxVal = getMaxNumber();
-			if (minVal.doubleValue() >= maxVal.doubleValue()) {
+			if (minVal.doubleValue() > maxVal.doubleValue()) {
 				max.setValue(minVal); // update maximum to not be lower than minimum
-				if (!allowEqualValues) {
-					max.setValue(max.getNextValue()); // update maximum to be higher than minimum
-					if (getMaxNumber().doubleValue() == maxVal.doubleValue())
-						min.setValue(min.getPreviousValue()); // if fails, cancel minimum value update
-				}
+			} else if (!allowEqualValues && (minVal.doubleValue() == maxVal.doubleValue())) {
+				min.setValue(min.getPreviousValue()); // if fails, cancel minimum value update
 			}
 		});
 		max.addChangeListener(e -> {
@@ -92,13 +89,10 @@ public class JMinMaxSpinner extends JPanel {
 				return;
 
 			Number minVal = getMinNumber(), maxVal = getMaxNumber();
-			if (maxVal.doubleValue() <= minVal.doubleValue()) {
+			if (maxVal.doubleValue() < minVal.doubleValue()) {
 				min.setValue(maxVal); // update minimum to not be higher than maximum
-				if (!allowEqualValues) {
-					min.setValue(min.getPreviousValue()); // update minimum to be lower than maximum
-					if (getMinNumber().doubleValue() == minVal.doubleValue())
-						max.setValue(max.getNextValue()); // if fails, cancel maximum value update
-				}
+			} else if (!allowEqualValues && (maxVal.doubleValue() == minVal.doubleValue())) {
+				max.setValue(max.getNextValue()); // if fails, cancel maximum value update
 			}
 		});
 

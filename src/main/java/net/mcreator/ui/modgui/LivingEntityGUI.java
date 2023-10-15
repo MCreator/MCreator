@@ -347,8 +347,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
-
-		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItems);
+    
+		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
+    
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 
 		mobModelTexture.setRenderer(
@@ -921,7 +922,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		ComboBoxUtil.updateComboBoxContents(rangedItemType, ListUtils.merge(Collections.singleton("Default item"),
 				mcreator.getWorkspace().getModElements().stream()
-						.filter(var -> var.getType() == ModElementType.RANGEDITEM).map(ModElement::getName)
+						.filter(var -> var.getType() == ModElementType.PROJECTILE).map(ModElement::getName)
 						.collect(Collectors.toList())), "Default item");
 
 		ComboBoxUtil.updateComboBoxContents(guiBoundTo, ListUtils.merge(Collections.singleton("<NONE>"),
