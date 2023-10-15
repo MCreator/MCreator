@@ -71,7 +71,8 @@ public class SearchUsagesDialog {
 				String msg = L10N.t("dialog.search_usages.deletion_safe.confirm_msg", queryType);
 				int n = JOptionPane.showConfirmDialog(mcreator,
 						messageSuffix != null ? msg + "<br><br><small>" + messageSuffix : msg,
-						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
 				return n == JOptionPane.YES_OPTION;
 			} else {
 				JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.search_usages.list.empty", queryType),
@@ -85,8 +86,7 @@ public class SearchUsagesDialog {
 		AtomicBoolean retVal = new AtomicBoolean(false);
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.search_usages.title"), true);
 
-		JList<ModElement> refList = new JList<>(
-				references.stream().sorted(mcreator.mv.getModElementComparator()).toArray(ModElement[]::new));
+		JList<ModElement> refList = new JList<>(references.toArray(ModElement[]::new));
 		refList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		refList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		refList.setSelectedIndex(0);

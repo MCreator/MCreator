@@ -54,10 +54,10 @@ import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -1505,7 +1505,15 @@ import java.util.stream.Collectors;
 					}).collect(Collectors.toList());
 
 			if (!sortDateCreated.isSelected()) {
-				modElements.sort(getModElementComparator());
+				modElements.sort((a, b) -> {
+					if (sortType.isSelected()) {
+						return a.getType().getReadableName().compareTo(b.getType().getReadableName());
+					} else if (sortLoadingOrder.isSelected()) {
+						return a.getSortID() - b.getSortID();
+					} else {
+						return a.getName().compareTo(b.getName());
+					}
+				});
 			}
 
 			if (!sortDateCreated.isSelected()) {
@@ -1520,16 +1528,6 @@ import java.util.stream.Collectors;
 			filterItems.addAll(modElements);
 
 			fireContentsChanged(this, 0, getSize());
-		}
-	}
-
-	public Comparator<ModElement> getModElementComparator() {
-		if (sortType.isSelected()) {
-			return Comparator.comparing(a -> a.getType().getReadableName());
-		} else if (sortDateCreated.isSelected() || sortLoadingOrder.isSelected()) {
-			return Comparator.comparing(ModElement::getSortID);
-		} else {
-			return Comparator.comparing(ModElement::getName);
 		}
 	}
 
