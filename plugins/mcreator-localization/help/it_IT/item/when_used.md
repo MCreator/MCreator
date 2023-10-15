@@ -1,0 +1,1 @@
+Quando viene utilizzato l'elemento a distanza, verrà attivata la procedura selezionata.
