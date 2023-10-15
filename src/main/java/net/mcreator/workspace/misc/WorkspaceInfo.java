@@ -237,6 +237,11 @@ import java.util.*;
 					if (!item.customProperties.isEmpty())
 						return true;
 				}
+			} else if (element.getType() == ModElementType.TOOL) {
+				if (element.getGeneratableElement() instanceof Tool tool) {
+					if (tool.toolType.equals("Shield"))
+						return true;
+				}
 			}
 		}
 		return false;
