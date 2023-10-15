@@ -361,17 +361,17 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		restockCondition = new LogicProcedureSelector(this.withEntry("entity/can_restock"), mcreator,
 				L10N.t("elementgui.living_entity.can_restock"), AbstractProcedureSelector.Side.BOTH,
-				L10N.checkbox("elementgui.common.enable"), 250,
+				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		rewardXp = new NumberProcedureSelector(this.withEntry("entity/reward_xp"), mcreator,
 				L10N.t("elementgui.living_entity.reward_xp"), AbstractProcedureSelector.Side.BOTH,
-				new JSpinner(new SpinnerNumberModel(4, 0, Integer.MAX_VALUE, 0.5)), 250,
+				new JSpinner(new SpinnerNumberModel(4, 0, Integer.MAX_VALUE, 0.5)), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		tradingCondition = new ProcedureSelector(this.withEntry("entity/trading_condition"), mcreator,
 				L10N.t("elementgui.living_entity.trading_condition"), AbstractProcedureSelector.Side.BOTH, false,
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")).setDefaultName(
-				L10N.t("condition.common.true"));
+				L10N.t("condition.common.true")).makeInline();
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
@@ -915,19 +915,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.notification_sound")));
 		villagerProperties.add(notificationSound);
 
-		JPanel tradingConditionPanel = new JPanel(new GridLayout(1, 1, 0, 2));
-		tradingConditionPanel.setOpaque(false);
-
-		tradingConditionPanel.add(tradingCondition);
-
-		JPanel villagerPropertiesConditions = new JPanel(new GridLayout(2, 1, 0, 2));
+		JPanel villagerPropertiesConditions = new JPanel(new GridLayout(3, 1, 0, 2));
 		villagerPropertiesConditions.setOpaque(false);
-
 		villagerPropertiesConditions.add(restockCondition);
 		villagerPropertiesConditions.add(rewardXp);
+		villagerPropertiesConditions.add(tradingCondition);
 
 		JComponent villagerPropertiesPanel = PanelUtils.northAndCenterElement(villagerProperties,
-				PanelUtils.centerAndSouthElement(villagerPropertiesConditions, tradingConditionPanel), 2, 2);
+				villagerPropertiesConditions, 2, 2);
 		villagerPropertiesPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.living_entity.trade_properties"), TitledBorder.LEADING,
