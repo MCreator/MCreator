@@ -1,0 +1,1 @@
+Seleziona questa casella se la texture della particella deve essere animata.
