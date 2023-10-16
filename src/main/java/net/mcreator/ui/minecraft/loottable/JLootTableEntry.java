@@ -119,7 +119,7 @@ public class JLootTableEntry extends JPanel {
 	}
 
 	public LootTable.Pool.Entry getEntry() {
-		if (!item.containsItem())
+		if (!item.containsItemOrAir())
 			return null;
 
 		LootTable.Pool.Entry entry = new LootTable.Pool.Entry();

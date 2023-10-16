@@ -1,1 +1,3 @@
-Ce paramètre contrôle le nombre de points d'expérience que le joueur recevra après avoir terminé la recette.
+Ce paramètre contrôle combien de points d'expérience le joueur recevra après avoir complété la recette.
+
+Ce paramètre n'est utilisé que pour les recettes de cuisine.

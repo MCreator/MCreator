@@ -161,7 +161,7 @@ public class ExternalBlockLoader {
 		for (ToolboxCategory category : toolboxCategories) {
 			if (category.parent_category == null) {
 				String categoryCode = generateCategoryXML(category, toolboxCategories, toolboxBlocksList);
-				if (categoryCode.contains("<block type="))
+				if (categoryCode.contains("<block type=") || categoryCode.contains("<category name="))
 					toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryCode));
 			}
 		}

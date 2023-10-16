@@ -4,19 +4,6 @@ Blockly.Extensions.register('small_text_tip',
             new Blockly.FieldLabel(javabridge.t('blockly.block.' + this.type + '.tip'), 'small-text'));
     });
 
-Blockly.Extensions.register('gamemode_list_provider', appendDropDown('gamemodes', 'gamemode'));
-
-Blockly.Extensions.register('damagesource_list_provider', appendDropDown('damagesources', 'damagesource'));
-
-Blockly.Extensions.register('sound_category_list_provider',
-    appendDropDownWithMessage('sound_category_list', 'soundcategories', 'soundcategory'));
-
-Blockly.Extensions.register('material_list_provider', appendDropDown('material', 'material'));
-
-Blockly.Extensions.register('plant_type_list_provider', appendDropDown('planttypes', 'planttype'));
-
-Blockly.Extensions.register('direction_list_provider', appendDropDown('direction', 'direction'));
-
 // Extension to mark a procedure block as a custom loop
 Blockly.Extensions.register('is_custom_loop',
     function () {
@@ -263,6 +250,10 @@ Blockly.Extensions.register('replace_sphere_validator', validateIntProviderInput
 Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs(['height', 0, Infinity]));
 
 Blockly.Extensions.register('state_provider_int_property_validator', validateIntProviderInputs(['value', 0, Infinity]));
+
+Blockly.Extensions.register('pine_tree_feature_validator', validateIntProviderInputs(['foliage_height', 0, 24]));
+
+Blockly.Extensions.register('spruce_tree_feature_validator', validateIntProviderInputs(['radius', 0, 24], ['trunk_height', 0, 24]));
 
 // Helper function to provide a mixin for mutators that add a single repeating (dummy) input with additional fields
 // The mutator container block must have a "STACK" statement input for this to work

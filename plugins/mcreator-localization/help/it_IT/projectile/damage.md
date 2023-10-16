@@ -1,0 +1,1 @@
+Maggiore è il numero, maggiore sarà il danno che il proiettile infliggerà all'entità colpita.
