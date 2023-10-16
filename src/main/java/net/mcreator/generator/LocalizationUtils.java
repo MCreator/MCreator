@@ -93,9 +93,12 @@ public class LocalizationUtils {
 
 		if (localizationkeys != null) {
 			for (Object template : localizationkeys) {
-				String keytpl = (String) ((Map<?, ?>) template).get("key");
-				Object fromlist = TemplateExpressionParser.processFTLExpression(generator,
-						(String) ((Map<?, ?>) template).get("fromlist"), element);
+				Map<?, ?> map = (Map<?, ?>) template;
+				String keytpl = (String) map.get("key");
+				Object fromlist = map.get("fromlist") != null ?
+						TemplateExpressionParser.processFTLExpression(generator, (String) map.get("fromlist"),
+								element) :
+						null;
 
 				if (fromlist instanceof Collection<?> listEntries) {
 					for (Object entry : listEntries) {
@@ -108,7 +111,7 @@ public class LocalizationUtils {
 												.replace("@lc1_name", StringUtils.lowercaseFirstLetter(element.getModElement().getName()))
 												//@formatter:on
 								));
-						keysToEntries.put(key, new Tuple<>((Map<?, ?>) template, entry));
+						keysToEntries.put(key, new Tuple<>(map, entry));
 					}
 				} else {
 					String key = GeneratorTokens.replaceTokens(generator.getWorkspace(), keytpl
@@ -119,7 +122,7 @@ public class LocalizationUtils {
 									.replace("@lc1_name", StringUtils.lowercaseFirstLetter(element.getModElement().getName()))
 									//@formatter:on
 					);
-					keysToEntries.put(key, new Tuple<>((Map<?, ?>) template, element));
+					keysToEntries.put(key, new Tuple<>(map, element));
 				}
 			}
 		}
