@@ -42,6 +42,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.function.BiPredicate;
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class ReferencesFinder {
@@ -61,6 +62,7 @@ public class ReferencesFinder {
 	//@formatter:off
 
 	public static Set<ModElement> searchModElementUsages(Workspace workspace, ModElement element) {
+		final Pattern procedureXmlPattern = Pattern.compile(">(?:CUSTOM:)?" + element.getName() + "([.:]\\w+?)?</field>");
 		return getGeneratableElements(workspace).parallelStream()
 			.filter(ge ->
 				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(ModElementReference.class), (a, t) -> {
@@ -75,7 +77,7 @@ public class ReferencesFinder {
 					element.getName().equals(t.getName())
 				) ||
 				anyValueMatches(ge, String.class, e -> e.isAnnotationPresent(BlocklyXML.class), (a, t) ->
-					t.contains(">CUSTOM:" + element.getName() + "</field>") || t.contains(">" + element.getName() + "</field")
+					procedureXmlPattern.matcher(t).find()
 				)
 			)
 			.map(GeneratableElement::getModElement).filter(me -> !me.equals(element)).collect(Collectors.toSet());
