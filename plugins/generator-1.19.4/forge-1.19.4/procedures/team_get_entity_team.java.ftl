@@ -1,2 +1,2 @@
-(${input$entity} instanceof LivingEntity _teamEnt${cbi} && _teamEnt${cbi}.level.getScoreboard().getPlayersTeam(_teamEnt${cbi}.getStringUUID()) != null ?
-	_teamEnt${cbi}.level.getScoreboard().getPlayersTeam(_teamEnt${cbi}.getStringUUID()).getName() : "")
+(${input$entity} instanceof LivingEntity _teamEnt && _teamEnt.level.getScoreboard().getPlayersTeam(_teamEnt.getStringUUID()) != null ?
+	_teamEnt.level.getScoreboard().getPlayersTeam(_teamEnt.getStringUUID()).getName() : "")
