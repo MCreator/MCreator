@@ -1,1 +1,2 @@
-(${input$entity}.level().getScoreboard().getPlayersTeam(${input$entity}.getStringUUID()) != null ? ${input$entity}.level().getScoreboard().getPlayersTeam(${input$entity}.getStringUUID()).getName() : "")
+(${input$entity} instanceof LivingEntity _teamEnt${cbi} && _teamEnt${cbi}.level().getScoreboard().getPlayersTeam(_teamEnt${cbi}.getStringUUID()) != null ?
+	_teamEnt${cbi}.level().getScoreboard().getPlayersTeam(_teamEnt${cbi}.getStringUUID()).getName() : "")
