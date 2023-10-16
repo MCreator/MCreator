@@ -125,6 +125,9 @@ public class ${JavaModName}Items {
 						<#else>0</#if>
 				);
 				</#list>
+			<#elseif item.getModElement().getTypeString() == "tool" && item.toolType == "Shield">
+				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("blocking"),
+					ItemProperties.getProperty(Items.SHIELD, new ResourceLocation("blocking")));
 			</#if>
 		</#list>
 		});
