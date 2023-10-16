@@ -35,6 +35,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -86,7 +87,8 @@ public class SearchUsagesDialog {
 		AtomicBoolean retVal = new AtomicBoolean(false);
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.search_usages.title"), true);
 
-		JList<ModElement> refList = new JList<>(references.toArray(ModElement[]::new));
+		JList<ModElement> refList = new JList<>(
+				references.stream().sorted(Comparator.comparing(ModElement::getName)).toArray(ModElement[]::new));
 		refList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		refList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		refList.setSelectedIndex(0);
