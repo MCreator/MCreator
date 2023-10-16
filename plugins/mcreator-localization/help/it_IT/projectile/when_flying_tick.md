@@ -1,0 +1,1 @@
+Mentre il proiettile è in volo, la procedura selezionata verrà eseguita ogni tick.

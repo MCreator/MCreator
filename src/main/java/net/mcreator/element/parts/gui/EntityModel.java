@@ -49,6 +49,12 @@ public class EntityModel extends GUIComponent {
 		this.followMouseMovement = followMouseMovement;
 	}
 
+	public EntityModel(int x, int y, Procedure entityModel, Procedure displayCondition, int scale, int rotationX,
+			boolean followMouseMovement, AnchorPoint anchorPoint) {
+		this(x, y, entityModel, displayCondition, scale, rotationX, followMouseMovement);
+		this.anchorPoint = anchorPoint;
+	}
+
 	@Override public String getName() {
 		return "entity_model_" + RegistryNameFixer.fromCamelCase(Objects.requireNonNull(this.entityModel.getName()));
 	}
