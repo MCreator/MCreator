@@ -40,6 +40,6 @@ public class WaterEntitiesConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 53;
+		return 54;
 	}
 }
