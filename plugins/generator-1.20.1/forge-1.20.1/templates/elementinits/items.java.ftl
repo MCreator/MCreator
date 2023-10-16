@@ -40,7 +40,7 @@ package ${package}.init;
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
 
-<#if w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0>
+<#if w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0 || w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 </#if>
 public class ${JavaModName}Items {
@@ -103,7 +103,7 @@ public class ${JavaModName}Items {
 	}
 	</#if>
 
-	<#if w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0>
+	<#if w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0 || w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 	<#compress>
 	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
