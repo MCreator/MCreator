@@ -18,15 +18,11 @@
 
 package net.mcreator.ui.workspace.resources;
 
-import net.mcreator.ui.component.JSelectableList;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.SoundElementDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.MCreatorTheme;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.SoundUtils;
@@ -34,13 +30,11 @@ import net.mcreator.workspace.elements.SoundElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
-import java.util.Locale;
 
 public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 
@@ -64,6 +58,7 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 					}
 				}
 			}
+
 			@Override public void mouseReleased(MouseEvent e) {
 				SoundUtils.stopAllSounds();
 			}

@@ -38,17 +38,17 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Map;
+import java.util.List;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 	WorkspacePanelModels(WorkspacePanel workspacePanel) {
 		super(workspacePanel, new ResourceFilterModel<>(workspacePanel,
-				(item, query) -> item.getReadableName().toLowerCase(Locale.ENGLISH).contains(query) || item.getType()
-						.name().toLowerCase(Locale.ENGLISH).contains(query), Model::getReadableName), new Render(), JList.HORIZONTAL_WRAP);
+						(item, query) -> item.getReadableName().toLowerCase(Locale.ENGLISH).contains(query) || item.getType()
+								.name().toLowerCase(Locale.ENGLISH).contains(query), Model::getReadableName), new Render(),
+				JList.HORIZONTAL_WRAP);
 
 		elementList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -84,12 +84,6 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 				e -> editSelectedModelAnimations());
 		addToolBarButton("workspace.3dmodels.delete_selected", UIRES.get("16px.delete.gif"),
 				e -> deleteCurrentlySelected(Collections.emptyList()));
-	}
-
-	private static boolean predicateCheck(WorkspacePanel workspacePanel, Model item) {
-		return item.getReadableName().toLowerCase(Locale.ENGLISH)
-				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH)) || item.getType().name()
-				.toLowerCase(Locale.ENGLISH).contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH));
 	}
 
 	@Override void deleteCurrentlySelected(List<Model> elements) {
