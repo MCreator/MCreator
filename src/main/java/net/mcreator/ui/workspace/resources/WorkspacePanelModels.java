@@ -163,8 +163,8 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 						workspacePanel.getMCreator().getWorkspace(), modelList.getSelectedValue());
 
 				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-				SearchUsagesDialog.show(workspacePanel.getMCreator(),
-						L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(references), false);
+				SearchUsagesDialog.showUsages(workspacePanel.getMCreator(),
+						L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(references));
 			}
 		});
 

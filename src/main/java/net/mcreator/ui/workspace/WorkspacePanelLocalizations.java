@@ -285,8 +285,8 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 					}
 
 					workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-					SearchUsagesDialog.show(workspacePanel.getMCreator(),
-							L10N.t("dialog.search_usages.type.localization_key"), new ArrayList<>(references), false);
+					SearchUsagesDialog.showUsages(workspacePanel.getMCreator(),
+							L10N.t("dialog.search_usages.type.localization_key"), new ArrayList<>(references));
 				}
 			});
 

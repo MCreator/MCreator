@@ -39,11 +39,21 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * Opens a dialog that shows usages of the elements selected by the user before all across the current workspace.
+ */
 public class SearchUsagesDialog {
 
 	/**
-	 * Opens a dialog that shows usages of the elements selected by the user before all across the current workspace.
-	 *
+	 * @param mcreator          Workspace window calling this method.
+	 * @param queryType         Localized string representing type of elements used by mod elements in the given list.
+	 * @param references        List of referencing/dependent mod elements.
+	 */
+	public static void showUsages(MCreator mcreator, String queryType, List<ModElement> references) {
+		show(mcreator, queryType, references, false, null);
+	}
+
+	/**
 	 * @param mcreator          Workspace window calling this method.
 	 * @param queryType         Localized string representing type of elements used by mod elements in the given list.
 	 * @param references        List of referencing/dependent mod elements.
@@ -56,8 +66,6 @@ public class SearchUsagesDialog {
 	}
 
 	/**
-	 * Opens a dialog that shows usages of the elements selected by the user before all across the current workspace.
-	 *
 	 * @param mcreator          Workspace window calling this method.
 	 * @param queryType         Localized string representing type of elements used by mod elements in the given list.
 	 * @param references        List of referencing/dependent mod elements.

@@ -266,8 +266,8 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				}
 
 				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-				SearchUsagesDialog.show(workspacePanel.getMCreator(),
-						L10N.t("dialog.search_usages.type.global_variable"), new ArrayList<>(refs), false);
+				SearchUsagesDialog.showUsages(workspacePanel.getMCreator(),
+						L10N.t("dialog.search_usages.type.global_variable"), new ArrayList<>(refs));
 			}
 		});
 

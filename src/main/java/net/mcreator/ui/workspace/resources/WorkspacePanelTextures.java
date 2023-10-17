@@ -206,8 +206,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			}
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-			SearchUsagesDialog.show(workspacePanel.getMCreator(), L10N.t("dialog.search_usages.type.resource.texture"),
-					new ArrayList<>(refs), false);
+			SearchUsagesDialog.showUsages(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.texture"), new ArrayList<>(refs));
 		});
 		duplicate.addActionListener(e -> duplicateSelectedFile());
 

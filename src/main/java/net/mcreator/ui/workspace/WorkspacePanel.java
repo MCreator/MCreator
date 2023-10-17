@@ -1092,8 +1092,8 @@ import java.util.stream.Collectors;
 						L10N.t("workspace.elements.list.edit.usages.tags.title"), JOptionPane.WARNING_MESSAGE);
 			}
 			if (nonTagsSelected) {
-				SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
-						new ArrayList<>(references), false);
+				SearchUsagesDialog.showUsages(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
+						new ArrayList<>(references));
 			}
 		}
 	}

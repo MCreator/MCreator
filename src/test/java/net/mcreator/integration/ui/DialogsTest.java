@@ -207,7 +207,7 @@ public class DialogsTest {
 
 	@Test public void testUsagesSearchDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), false));
+				() -> SearchUsagesDialog.showUsages(mcreator, "", Collections.emptyList()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), true));
 	}

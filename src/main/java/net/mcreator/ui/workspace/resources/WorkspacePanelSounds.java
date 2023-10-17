@@ -162,8 +162,8 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 					refs.addAll(ReferencesFinder.searchSoundUsages(workspacePanel.getMCreator().getWorkspace(), sound));
 
 				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-				SearchUsagesDialog.show(workspacePanel.getMCreator(),
-						L10N.t("dialog.search_usages.type.resource.sound"), new ArrayList<>(refs), false);
+				SearchUsagesDialog.showUsages(workspacePanel.getMCreator(),
+						L10N.t("dialog.search_usages.type.resource.sound"), new ArrayList<>(refs));
 			}
 		});
 		importsound.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
