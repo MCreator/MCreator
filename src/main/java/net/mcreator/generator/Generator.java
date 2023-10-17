@@ -105,14 +105,8 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	public TemplateGenerator getTemplateGeneratorFromName(String name) {
-		if (templateGeneratorMap.containsKey(name))
-			return templateGeneratorMap.get(name);
-		else {
-			TemplateGenerator tpl = new TemplateGenerator(generatorConfiguration.getTemplateGenConfigFromName(name),
-					this);
-			templateGeneratorMap.put(name, tpl);
-			return tpl;
-		}
+		return templateGeneratorMap.computeIfAbsent(name,
+				key -> new TemplateGenerator(generatorConfiguration.getTemplateGenConfigFromName(key), this));
 	}
 
 	public String getGeneratorName() {

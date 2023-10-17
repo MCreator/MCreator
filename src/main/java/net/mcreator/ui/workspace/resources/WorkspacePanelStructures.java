@@ -34,9 +34,7 @@ import java.util.Locale;
 public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 
 	WorkspacePanelStructures(WorkspacePanel workspacePanel) {
-		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, e -> (e.toLowerCase(Locale.ENGLISH)
-				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH))),
-				Comparator.comparing(String::toString)), new Render());
+		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, String::toString), new Render());
 
 		addToolBarButton("action.workspace.resources.import_structure", UIRES.get("16px.open.gif"),
 				e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());

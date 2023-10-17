@@ -1,0 +1,1 @@
+Questo parametro determina quanto il fluido spinge le entità quando scorre. Con valori negativi attirerà le entità invece di spingerli via.

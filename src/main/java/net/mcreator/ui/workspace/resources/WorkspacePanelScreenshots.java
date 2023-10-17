@@ -20,8 +20,6 @@ package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
-import net.mcreator.ui.component.JSelectableList;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.ListUtil;
 import net.mcreator.ui.dialogs.file.FileDialogs;
@@ -43,10 +41,8 @@ import java.util.Locale;
 class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 
 	WorkspacePanelScreenshots(WorkspacePanel workspacePanel) {
-		super(workspacePanel, new ResourceFilterModel<>(workspacePanel,
-				item -> item.getName().toLowerCase(Locale.ENGLISH)
-						.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH)),
-				Comparator.comparing(File::getName)), new Render(), JList.HORIZONTAL_WRAP);
+		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, File::getName),
+				new Render(), JList.HORIZONTAL_WRAP);
 
 		elementList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {

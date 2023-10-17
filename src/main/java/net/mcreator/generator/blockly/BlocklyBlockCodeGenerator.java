@@ -432,13 +432,9 @@ public class BlocklyBlockCodeGenerator {
 	private final Map<IBlockGenerator.BlockType, String[]> blocks_machine_names = new HashMap<>();
 
 	public String[] getSupportedBlocks(IBlockGenerator.BlockType blockType) {
-		if (blocks_machine_names.containsKey(blockType)) {
-			return blocks_machine_names.get(blockType);
-		} else {
-			String[] retval = blocks.values().stream().filter(block -> block.getType() == blockType)
-					.map(ToolboxBlock::getMachineName).toArray(String[]::new);
-			blocks_machine_names.put(blockType, retval);
-			return retval;
-		}
+		return blocks_machine_names.computeIfAbsent(blockType,
+				key -> blocks.values().stream().filter(block -> block.getType() == key)
+						.map(ToolboxBlock::getMachineName).toArray(String[]::new));
 	}
+
 }

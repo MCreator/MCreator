@@ -1,0 +1,1 @@
+Se viene specificata una condizione, questo modello di entità sarà visualizzabile solo nel caso in cui la condizione venga superata.

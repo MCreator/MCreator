@@ -40,13 +40,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.List;
-import java.util.*;
+import java.util.Locale;
 
 public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 
 	WorkspacePanelSounds(WorkspacePanel workspacePanel) {
-		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, item -> (item.getName().toLowerCase(Locale.ENGLISH)
-				.contains(workspacePanel.search.getText().toLowerCase(Locale.ENGLISH))), Comparator.comparing(SoundElement::getName)), new Render());
+		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, SoundElement::getName), new Render());
 
 		addToolBarButton("action.workspace.resources.import_sound", UIRES.get("16px.open.gif"),
 				e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
