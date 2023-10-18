@@ -62,9 +62,8 @@ class FieldDataListSelector extends Blockly.Field {
                 javabridge.openEntrySelector(this.type, this.typeFilter, this.customEntryProviders, {
                     'callback': function (value, readableName) {
                         const group = Blockly.Events.getGroup();
-                        if (!group)
-                            Blockly.Events.setGroup(true);
                         thisField.cachedReadableName = readableName || value;
+                        Blockly.Events.setGroup(true);
                         thisField.setValue(value);
                         Blockly.Events.setGroup(group);
                         javabridge.triggerEvent();

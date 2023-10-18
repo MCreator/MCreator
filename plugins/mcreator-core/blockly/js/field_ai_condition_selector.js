@@ -49,8 +49,7 @@ class FieldAiConditionSelector extends Blockly.Field {
                 javabridge.openAIConditionEditor(this.getValue() || 'null,null', { // If somehow the value is missing, pass 'null,null'
                     'callback': function (data) {
                         const group = Blockly.Events.getGroup();
-                        if (!group)
-                            Blockly.Events.setGroup(true);
+                        Blockly.Events.setGroup(true);
                         thisField.setValue(data || 'null,null');
                         Blockly.Events.setGroup(group);
                         javabridge.triggerEvent();
