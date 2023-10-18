@@ -1,0 +1,1 @@
+Abilitando questo parametro, l'item diventerà un oggetto a distanza che gli permetterà di sparare un proiettile, come archi e balestre.

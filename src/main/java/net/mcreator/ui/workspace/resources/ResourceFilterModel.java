@@ -23,10 +23,11 @@ import net.mcreator.ui.workspace.WorkspacePanel;
 
 import javax.swing.*;
 import java.util.*;
-import java.util.function.Predicate;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 
 /**
- * <p>A general filter model that is used inside a {@link AbstractResourcePanel}.
+ * <p>A general filter model that is used inside resources-related workspace panels.
  * It defines how a general resource panel's list of elements behaves.</p>
  *
  * @param <T>
@@ -35,27 +36,31 @@ public class ResourceFilterModel<T> extends DefaultListModel<T> {
 	private final List<T> items;
 	private final List<T> filterItems;
 	private final WorkspacePanel workspacePanel;
-	private final Predicate<T> refilterItemsFilter;
-	private final Comparator<T> sortingCondition;
+	private final BiFunction<T, String, Boolean> refilterItemsFilter;
+	private final Function<T, String> resourceNameSupplier;
+
+	public ResourceFilterModel(WorkspacePanel workspacePanel, Function<T, String> resourceNameSupplier) {
+		this(workspacePanel,
+				(item, query) -> resourceNameSupplier.apply(item).toLowerCase(Locale.ENGLISH).contains(query),
+				Object::toString);
+	}
 
 	/**
-	 *
-	 * @param workspacePanel <p>The {@link WorkspacePanel} of the current workspace</p>
-	 * @param refilterItemsFilter <p>Defines which elements should be contained inside the filtered list of elements.</p>
-	 * @param sortingCondition <p>Defines how the filtered elements will be ordered.</p>
+	 * @param workspacePanel       <p>The {@link WorkspacePanel} of the current workspace</p>
+	 * @param refilterItemsFilter  <p>Defines which elements should be contained inside the filtered list of elements.</p>
+	 * @param resourceNameSupplier <p>Provides resource name used for sort-by-name sorter.</p>
 	 */
-	public ResourceFilterModel(WorkspacePanel workspacePanel, Predicate<T> refilterItemsFilter,
-			Comparator<T> sortingCondition) {
-		super();
+	public ResourceFilterModel(WorkspacePanel workspacePanel, BiFunction<T, String, Boolean> refilterItemsFilter,
+			Function<T, String> resourceNameSupplier) {
 		this.workspacePanel = workspacePanel;
 		this.refilterItemsFilter = refilterItemsFilter;
-		this.sortingCondition = sortingCondition;
+		this.resourceNameSupplier = resourceNameSupplier;
 
 		items = new ArrayList<>();
 		filterItems = new ArrayList<>();
 	}
 
-	@Override public int indexOf(Object elem) {
+	@SuppressWarnings("SuspiciousMethodCalls") @Override public int indexOf(Object elem) {
 		try {
 			return filterItems.indexOf(elem);
 		} catch (ClassCastException e) {
@@ -85,7 +90,7 @@ public class ResourceFilterModel<T> extends DefaultListModel<T> {
 		filterItems.clear();
 	}
 
-	@Override public boolean removeElement(Object a) {
+	@SuppressWarnings("SuspiciousMethodCalls") @Override public boolean removeElement(Object a) {
 		if (a != null) {
 			try {
 				items.remove(a);
@@ -98,14 +103,16 @@ public class ResourceFilterModel<T> extends DefaultListModel<T> {
 
 	void refilter() {
 		filterItems.clear();
-		filterItems.addAll(items.stream().filter(Objects::nonNull).filter(refilterItemsFilter).toList());
+		filterItems.addAll(items.stream().filter(Objects::nonNull).filter(item -> refilterItemsFilter.apply(item,
+				workspacePanel.search.getText().toLowerCase(Locale.ENGLISH))).toList());
 
 		if (workspacePanel.sortName.isSelected())
-			filterItems.sort(sortingCondition);
+			filterItems.sort(Comparator.comparing(resourceNameSupplier));
 
 		if (workspacePanel.desc.isSelected())
 			Collections.reverse(filterItems);
 
 		fireContentsChanged(this, 0, getSize());
 	}
+
 }
