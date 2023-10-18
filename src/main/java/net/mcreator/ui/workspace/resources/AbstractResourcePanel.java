@@ -27,12 +27,13 @@ import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
+import java.awt.event.MouseListener;
 import java.util.List;
 
 /**
@@ -46,10 +47,10 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 
 	protected final WorkspacePanel workspacePanel;
 
+	private final TransparentToolBar bar = new TransparentToolBar();
+
 	protected final ResourceFilterModel<T> filterModel;
 	protected JSelectableList<T> elementList;
-
-	private final TransparentToolBar bar = new TransparentToolBar();
 
 	public AbstractResourcePanel(WorkspacePanel workspacePanel, ResourceFilterModel<T> filterModel,
 			ListCellRenderer<T> render) {
@@ -98,31 +99,31 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 
 	abstract void deleteCurrentlySelected(List<T> elements);
 
-	protected void addToolBarButton(String key, ImageIcon icon, ActionListener action) {
-		addToolBarButton(key, icon, action, null);
+	@Override public void refilterElements() {
+		filterModel.refilter();
 	}
 
-	protected void addToolBarButton(String key, ImageIcon icon, MouseAdapter mouse) {
-		addToolBarButton(key, icon, null, mouse);
+	protected void addToolBarButton(String translationKey, ImageIcon icon, ActionListener actionListener) {
+		addToolBarButton(translationKey, icon, actionListener, null);
 	}
 
-	protected void addToolBarButton(String key, ImageIcon icon, ActionListener action, MouseAdapter mouse) {
-		JButton button = L10N.button(key);
+	protected void addToolBarButton(String translationKey, ImageIcon icon, MouseListener mouseListener) {
+		addToolBarButton(translationKey, icon, null, mouseListener);
+	}
+
+	protected void addToolBarButton(String translationKey, ImageIcon icon, @Nullable ActionListener actionListener,
+			@Nullable MouseListener mouseListener) {
+		JButton button = L10N.button(translationKey);
 		button.setIcon(icon);
 		button.setContentAreaFilled(false);
 		button.setOpaque(false);
 		ComponentUtils.deriveFont(button, 12);
 		button.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		if (action != null)
-			button.addActionListener(action);
-		if (mouse != null)
-			button.addMouseListener(mouse);
+		if (actionListener != null)
+			button.addActionListener(actionListener);
+		if (mouseListener != null)
+			button.addMouseListener(mouseListener);
 		bar.add(button);
 	}
 
-	@Override public abstract void reloadElements();
-
-	@Override public void refilterElements() {
-		filterModel.refilter();
-	}
 }
