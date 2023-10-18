@@ -34,7 +34,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseListener;
-import java.util.List;
 
 /**
  * <p>An abstract class used to standardize code, methods and features across the different resource tabs.
@@ -104,15 +103,23 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 	}
 
 	protected void addToolBarButton(String translationKey, ImageIcon icon, ActionListener actionListener) {
-		addToolBarButton(translationKey, icon, actionListener, null);
+		bar.add(createToolBarButton(translationKey, icon, actionListener));
 	}
 
 	protected void addToolBarButton(String translationKey, ImageIcon icon, MouseListener mouseListener) {
-		addToolBarButton(translationKey, icon, null, mouseListener);
+		bar.add(createToolBarButton(translationKey, icon, mouseListener));
 	}
 
-	protected void addToolBarButton(String translationKey, ImageIcon icon, @Nullable ActionListener actionListener,
-			@Nullable MouseListener mouseListener) {
+	public static JButton createToolBarButton(String translationKey, ImageIcon icon, ActionListener actionListener) {
+		return createToolBarButton(translationKey, icon, actionListener, null);
+	}
+
+	public static JButton createToolBarButton(String translationKey, ImageIcon icon, MouseListener mouseListener) {
+		return createToolBarButton(translationKey, icon, null, mouseListener);
+	}
+
+	public static JButton createToolBarButton(String translationKey, ImageIcon icon,
+			@Nullable ActionListener actionListener, @Nullable MouseListener mouseListener) {
 		JButton button = L10N.button(translationKey);
 		button.setIcon(icon);
 		button.setContentAreaFilled(false);
@@ -123,7 +130,7 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 			button.addActionListener(actionListener);
 		if (mouseListener != null)
 			button.addMouseListener(mouseListener);
-		bar.add(button);
+		return button;
 	}
 
 }
