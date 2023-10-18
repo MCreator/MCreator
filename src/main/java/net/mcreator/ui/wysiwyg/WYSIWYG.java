@@ -234,17 +234,19 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		if (isNotOverlayType) {
 			if (wysiwygEditor.renderBgLayer.isSelected()) {
 				if (wysiwygEditor.getGUITypeSelector().getSelectedIndex() == 0) {
-					g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), W / 2 - gw / 2, H / 2 - gh / 2, gw,
-							gh, this);
+					g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), (int) Math.ceil(W / 2.0 - gw / 2.0),
+							(int) Math.ceil(H / 2.0 - gh / 2.0), gw, gh, this);
 				} else if (wysiwygEditor.getGUITypeSelector().getSelectedIndex() == 1) {
-					g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), W / 2 - gw / 2, H / 2 - gh / 2, gw,
-							gh, this);
-					g.drawImage(inventorySlots, W / 2 - 176 / 2 + (int) wysiwygEditor.invOffX.getValue(),
-							H / 2 - 166 / 2 + (int) wysiwygEditor.invOffY.getValue(), 176, 166, this);
+					g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), (int) Math.ceil(W / 2.0 - gw / 2.0),
+							(int) Math.ceil(H / 2.0 - gh / 2.0), gw, gh, this);
+					g.drawImage(inventorySlots,
+							(int) Math.ceil(W / 2.0 - 176 / 2.0) + (int) wysiwygEditor.invOffX.getValue(),
+							(int) Math.ceil(H / 2.0 - 166 / 2.0) + (int) wysiwygEditor.invOffY.getValue(), 176, 166,
+							this);
 				}
 			} else {
 				g.setColor(Color.white);
-				g.drawRect(W / 2 - gw / 2, H / 2 - gh / 2, gw, gh);
+				g.drawRect((int) Math.ceil(W / 2.0 - gw / 2.0), (int) Math.ceil(H / 2.0 - gh / 2.0), gw, gh);
 			}
 		} else {
 			if (wysiwygEditor.overlayBaseTexture.getSelectedItem() != null
