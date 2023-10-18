@@ -34,15 +34,13 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
 
 class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 
 	WorkspacePanelScreenshots(WorkspacePanel workspacePanel) {
-		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, File::getName),
-				new Render(), JList.HORIZONTAL_WRAP);
+		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, File::getName), new Render(),
+				JList.HORIZONTAL_WRAP);
 
 		elementList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -56,12 +54,13 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 		addToolBarButton("workspace.screenshots.use_as_background", UIRES.get("16px.textures"),
 				e -> useSelectedAsBackgrounds());
 		addToolBarButton("workspace.screenshots.delete_selected", UIRES.get("16px.delete.gif"), e -> {
-			deleteCurrentlySelected(elementList.getSelectedValuesList());
+			deleteCurrentlySelected();
 			reloadElements();
 		});
 	}
 
-	@Override void deleteCurrentlySelected(List<File> elements) {
+	@Override void deleteCurrentlySelected() {
+		List<File> elements = elementList.getSelectedValuesList();
 		elements.forEach(File::delete);
 	}
 

@@ -33,7 +33,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Collections;
 import java.util.List;
 
 public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
@@ -46,7 +45,7 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 		addToolBarButton("workspace.sounds.edit_selected", UIRES.get("16px.edit.gif"),
 				e -> editSelectedSound(elementList.getSelectedValue()));
 		addToolBarButton("workspace.sounds.delete_selected", UIRES.get("16px.delete.gif"),
-				e -> deleteCurrentlySelected(Collections.singletonList(elementList.getSelectedValue())));
+				e -> deleteCurrentlySelected());
 		addToolBarButton("workspace.sounds.play_selected", UIRES.get("16px.play"), new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent e) {
 				SoundElement soundElement = elementList.getSelectedValue();
@@ -74,7 +73,8 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 		}
 	}
 
-	@Override void deleteCurrentlySelected(List<SoundElement> elements) {
+	@Override void deleteCurrentlySelected() {
+		List<SoundElement> elements = elementList.getSelectedValuesList();
 		if (!elements.isEmpty()) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.sounds.confirm_deletion_message"), L10N.t("common.confirmation"),

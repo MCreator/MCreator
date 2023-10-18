@@ -87,7 +87,7 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 		elementList.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent e) {
 				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					deleteCurrentlySelected(elementList.getSelectedValuesList());
+					deleteCurrentlySelected();
 				}
 			}
 		});
@@ -97,7 +97,7 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 		add("North", bar);
 	}
 
-	abstract void deleteCurrentlySelected(List<T> elements);
+	abstract void deleteCurrentlySelected();
 
 	@Override public void refilterElements() {
 		filterModel.refilter();

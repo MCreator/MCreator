@@ -37,10 +37,11 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 		addToolBarButton("action.workspace.resources.import_structure_from_minecraft", UIRES.get("16px.open.gif"),
 				e -> workspacePanel.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
 		addToolBarButton("workspace.sounds.delete_selected", UIRES.get("16px.delete.gif"),
-				e -> deleteCurrentlySelected(elementList.getSelectedValuesList()));
+				e -> deleteCurrentlySelected());
 	}
 
-	@Override void deleteCurrentlySelected(List<String> elements) {
+	@Override void deleteCurrentlySelected() {
+		List<String> elements = elementList.getSelectedValuesList();
 		if (!elements.isEmpty()) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.structure.confirm_deletion_message"), L10N.t("common.confirmation"),

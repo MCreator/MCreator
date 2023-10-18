@@ -38,7 +38,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.List;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -83,10 +82,10 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 		addToolBarButton("workspace.3dmodels.redefine_animations", UIRES.get("16px.edit.gif"),
 				e -> editSelectedModelAnimations());
 		addToolBarButton("workspace.3dmodels.delete_selected", UIRES.get("16px.delete.gif"),
-				e -> deleteCurrentlySelected(Collections.emptyList()));
+				e -> deleteCurrentlySelected());
 	}
 
-	@Override void deleteCurrentlySelected(List<Model> elements) {
+	@Override void deleteCurrentlySelected() {
 		Model model = elementList.getSelectedValue();
 		if (model != null) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
