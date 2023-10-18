@@ -39,6 +39,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.*;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
@@ -86,14 +87,14 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 	}
 
 	@Override void deleteCurrentlySelected() {
-		Model model = elementList.getSelectedValue();
-		if (model != null) {
+		List<Model> elements = elementList.getSelectedValuesList();
+		if (!elements.isEmpty()) {
 			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.3dmodels.delete_confirm_message"), L10N.t("common.confirmation"),
 					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 
 			if (n == 0) {
-				Arrays.stream(model.getFiles()).forEach(File::delete);
+				elements.forEach(model -> Arrays.stream(model.getFiles()).forEach(File::delete));
 				reloadElements();
 			}
 		}
