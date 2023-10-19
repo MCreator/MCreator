@@ -26,7 +26,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.states.DefaultPropertyValue;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -39,7 +39,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
-public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, DefaultPropertyValue<?>> {
+public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, PropertyDataWithValue<?>> {
 
 	public JEntityDataList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, gui);

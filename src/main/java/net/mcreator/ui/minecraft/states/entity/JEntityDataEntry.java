@@ -26,14 +26,14 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.states.DefaultPropertyValue;
 import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class JEntityDataEntry extends JSimpleListEntry<DefaultPropertyValue<?>> {
+public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>> {
 
 	private final MCreator mcreator;
 	private PropertyData<?> data;
@@ -94,11 +94,11 @@ public class JEntityDataEntry extends JSimpleListEntry<DefaultPropertyValue<?>> 
 		defaultValue.setEnabled(enabled);
 	}
 
-	@SuppressWarnings("unchecked") @Override public DefaultPropertyValue<?> getEntry() {
-		return new DefaultPropertyValue<>((PropertyData<Object>) data, data.getValue(defaultValue));
+	@SuppressWarnings("unchecked") @Override public PropertyDataWithValue<?> getEntry() {
+		return new PropertyDataWithValue<>((PropertyData<Object>) data, data.getValue(defaultValue));
 	}
 
-	@Override public void setEntry(DefaultPropertyValue<?> entry) {
+	@Override public void setEntry(PropertyDataWithValue<?> entry) {
 		data = entry.property();
 		nameLabel.setText(data.getName());
 		typeLabel.setText(switch (data.getClass().getSimpleName()) {
@@ -107,7 +107,7 @@ public class JEntityDataEntry extends JSimpleListEntry<DefaultPropertyValue<?>> 
 			default -> "Number";
 		});
 		defValuePane.removeAll();
-		defValuePane.add(this.defaultValue = data.getComponent(mcreator, entry.defaultValue()));
+		defValuePane.add(this.defaultValue = data.getComponent(mcreator, entry.value()));
 		defaultValue.setOpaque(false);
 	}
 }

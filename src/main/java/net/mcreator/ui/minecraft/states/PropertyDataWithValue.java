@@ -25,32 +25,32 @@ import com.google.gson.annotations.JsonAdapter;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
 
-@JsonAdapter(DefaultPropertyValue.GSONAdapter.class)
-public record DefaultPropertyValue<T>(PropertyData<T> property, @Nonnull T defaultValue) {
+@JsonAdapter(PropertyDataWithValue.GSONAdapter.class)
+public record PropertyDataWithValue<T>(PropertyData<T> property, @Nonnull T value) {
 
 	@SuppressWarnings("unchecked")
-	private static <T> DefaultPropertyValue<T> create(PropertyData<T> property, Object defaultValue) {
-		return new DefaultPropertyValue<>(property, (T) defaultValue);
+	private static <T> PropertyDataWithValue<T> create(PropertyData<T> property, Object value) {
+		return new PropertyDataWithValue<>(property, (T) value);
 	}
 
 	static class GSONAdapter
-			implements JsonSerializer<DefaultPropertyValue<?>>, JsonDeserializer<DefaultPropertyValue<?>> {
+			implements JsonSerializer<PropertyDataWithValue<?>>, JsonDeserializer<PropertyDataWithValue<?>> {
 
 		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
 				.registerTypeHierarchyAdapter(PropertyData.class, new PropertyData.GSONAdapter()).create();
 
 		@Override
-		public DefaultPropertyValue<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+		public PropertyDataWithValue<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			JsonObject jsonObject = json.getAsJsonObject();
 			PropertyData<?> data = gson.fromJson(jsonObject, PropertyData.class);
-			return create(data, data.parseObj(jsonObject.get("defaultValue")));
+			return create(data, data.parseObj(jsonObject.get("value")));
 		}
 
 		@Override
-		public JsonElement serialize(DefaultPropertyValue<?> value, Type typeOfSrc, JsonSerializationContext context) {
+		public JsonElement serialize(PropertyDataWithValue<?> value, Type typeOfSrc, JsonSerializationContext context) {
 			JsonObject retVal = gson.toJsonTree(value.property).getAsJsonObject();
-			retVal.add("defaultValue", gson.toJsonTree(value.defaultValue));
+			retVal.add("value", gson.toJsonTree(value.value));
 			return retVal;
 		}
 
