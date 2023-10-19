@@ -349,7 +349,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		visualScale = new NumberProcedureSelector(this.withEntry("entity/visual_scale"), mcreator,
 				L10N.t("elementgui.living_entity.visual_scale"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.05)), 308, Dependency.fromString(
+				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 308, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity"));
 		boundingBoxScale = new NumberProcedureSelector(this.withEntry("entity/bounding_box_scale"), mcreator,
 				L10N.t("elementgui.living_entity.bounding_box_scale"), AbstractProcedureSelector.Side.BOTH,
