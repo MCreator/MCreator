@@ -32,19 +32,30 @@ public abstract class JSimpleEntriesList<T extends JSimpleListEntry<U>, U> exten
 		super(mcreator, gui);
 
 		add.addActionListener(e -> {
-			T entry = newEntry(entries, entryList);
-			entry.reloadDataLists();
-			entryList.add(entry);
-			entry.setEnabled(this.isEnabled());
-			registerEntryUI(entry);
-			entryAddedByUserHandler();
+			T entry = newEntry(entries, entryList, true);
+			if (entry != null) {
+				entry.reloadDataLists();
+				entryList.add(entry);
+				entry.setEnabled(this.isEnabled());
+				registerEntryUI(entry);
+				entryAddedByUserHandler();
+			}
 		});
 	}
 
+	/**
+	 * Called after an entry created upon user action is successfully added to this list.
+	 */
 	public void entryAddedByUserHandler() {
 	}
 
-	protected abstract T newEntry(JPanel parent, List<T> entryList);
+	/**
+	 * @param parent     The container panel that displays all entries in this list.
+	 * @param entryList  The list to add the new entry to.
+	 * @param userAction Whether this method was triggered by user action in UI.
+	 * @return A new entry to be added to this list, {@code null} to cancel entry creation.
+	 */
+	protected abstract T newEntry(JPanel parent, List<T> entryList, boolean userAction);
 
 	@Override public final List<U> getEntries() {
 		return entryList.stream().map(T::getEntry).filter(Objects::nonNull).toList();
@@ -54,12 +65,14 @@ public abstract class JSimpleEntriesList<T extends JSimpleListEntry<U>, U> exten
 		entryList.clear();
 		entries.removeAll();
 		newEntries.forEach(e -> {
-			T entry = newEntry(entries, entryList);
-			entry.reloadDataLists();
-			entryList.add(entry);
-			entry.setEnabled(isEnabled());
-			registerEntryUI(entry);
-			entry.setEntry(e);
+			T entry = newEntry(entries, entryList, false);
+			if (entry != null) {
+				entry.reloadDataLists();
+				entryList.add(entry);
+				entry.setEnabled(isEnabled());
+				registerEntryUI(entry);
+				entry.setEntry(e);
+			}
 		});
 	}
 

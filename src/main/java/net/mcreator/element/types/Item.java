@@ -21,7 +21,9 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
@@ -73,8 +75,7 @@ import java.util.*;
 	public double damageVsEntity;
 
 	public StringListProcedure specialInformation;
-	public boolean hasGlow;
-	public Procedure glowCondition;
+	public LogicProcedure glowCondition;
 
 	@Nullable public String guiBoundTo;
 	public int inventorySize;
@@ -90,6 +91,13 @@ import java.util.*;
 	public Procedure onEntitySwing;
 	public Procedure onDroppedByPlayer;
 	public Procedure onFinishUsingItem;
+
+	// Ranged properties
+	public boolean enableRanged;
+	public boolean shootConstantly;
+	public ProjectileEntry projectile;
+	public Procedure onRangedItemUsed;
+	public Procedure rangedUseCondition;
 
 	// Food
 	public boolean isFood;
@@ -154,6 +162,10 @@ import java.util.*;
 
 	public boolean hasToolModel() {
 		return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Tool");
+	}
+
+	public boolean hasRangedItemModel() {
+		return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
 	}
 
 	public boolean hasInventory() {
@@ -233,6 +245,10 @@ import java.util.*;
 
 		public boolean hasToolModel() {
 			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Tool");
+		}
+
+		public boolean hasRangedItemModel() {
+			return decodeModelType(renderType) == Model.Type.BUILTIN && customModelName.equals("Ranged item");
 		}
 	}
 

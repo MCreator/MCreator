@@ -7,7 +7,7 @@ import:
 
 java_models:
   key: mojmap-1.19.x
-  compatible: [mojmap-1.17.x, mojmap-1.18.x]
+  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.20.x]
   requested_key_words: [ModelPart, ~ModelRenderer]
 
 # gradle task definitions
@@ -63,7 +63,7 @@ base_templates:
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
       - ${w.hasElementsOfType('feature')}
-      - hasBiomesInVanillaDimensions()
+      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()

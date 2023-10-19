@@ -107,12 +107,14 @@ public class ConverterRegistry {
 			new SlotInteractionsConverter()
 		));
 		put(ModElementType.LIVINGENTITY, List.of(
-			new EntityTexturesConverter()
+			new EntityTexturesConverter(),
+			new EntitiesRangedAttackConverter()
 		));
 		put(ModElementType.OVERLAY, List.of(
 			new OverlayCoordinateConverter(),
 			new OverlayTexturesConverter(),
-			new GUIComponentNamer()
+			new GUIComponentNamer(),
+			new OverlayComponentAnchorPointAdder()
 		));
 		put(ModElementType.PAINTING, List.of(
 			new PaintingFieldsFixer()
@@ -148,18 +150,17 @@ public class ConverterRegistry {
 			new ToolToItemTypeProcedureConverter(),
 			new ExplodeProcedureConverter(),
 			new MaterialProcedureConverter(),
-			new ProcedureDamageSourceFixer()
-		));
-		put(ModElementType.RANGEDITEM, List.of(
-			new RangedItemTextureConverter(),
-			new SpecialInformationConverter()
+			new ProcedureDamageSourceFixer(),
+			new ProcedureArrowProjectileFixer()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()
 		));
 		put(ModElementType.ITEM, List.of(
 			new ItemDispenseBehaviorToItemExtensionConverter(),
-			new SpecialInformationConverter()
+			new SpecialInformationConverter(),
+			new ItemDispenseBehaviorToItemExtensionConverter(),
+			new ItemHasGlowConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
 			new HugeFungusFeatureConverter(),
@@ -169,10 +170,12 @@ public class ConverterRegistry {
 			new StructureDimensionRestrictionConverter()
 		));
 		put(ModElementType.MUSICDISC, List.of(
-			new SpecialInformationConverter()
+			new SpecialInformationConverter(),
+			new ItemHasGlowConverter()
 		));
 		put(ModElementType.TOOL, List.of(
-			new SpecialInformationConverter()
+			new SpecialInformationConverter(),
+			new ItemHasGlowConverter()
 		));
 	}};
 	//@formatter:on
@@ -181,6 +184,7 @@ public class ConverterRegistry {
 	private static final Map<String, IConverter> converters_legacy = new HashMap<>() {{
 		put("food", new FoodToItemConverter());
 		put("fuel", new FuelToItemExtensionConverter());
+		put("rangeditem", new RangedItemToProjectileAndItemConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
