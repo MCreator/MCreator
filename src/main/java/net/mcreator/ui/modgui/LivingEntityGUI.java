@@ -353,7 +353,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				"x:number/y:number/z:number/world:world/entity:entity"));
 		boundingBoxScale = new NumberProcedureSelector(this.withEntry("entity/bounding_box_scale"), mcreator,
 				L10N.t("elementgui.living_entity.bounding_box_scale"), AbstractProcedureSelector.Side.BOTH,
-				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.05)), 300, Dependency.fromString(
+				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 300, Dependency.fromString(
 				"x:number/y:number/z:number/world:world/entity:entity"));	
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
