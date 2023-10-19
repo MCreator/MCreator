@@ -76,7 +76,7 @@ public class UpdateNotifyDialog {
 				ar.setText(fullChangelog(updateInfo));
 
 				Object[] options;
-				if (OS.getOS() == OS.WINDOWS) {
+				if (OS.getOS() == OS.WINDOWS && !Launcher.version.isSnapshot()) {
 					options = new Object[] { L10N.t("dialog.update_notify.open_download_page"),
 							L10N.t("dialog.update_notify.remind_later"), L10N.t("dialog.update_notify.install") };
 				} else {
@@ -115,7 +115,7 @@ public class UpdateNotifyDialog {
 						Launcher.version.buildlong));
 
 				Object[] options;
-				if (OS.getOS() == OS.WINDOWS) {
+				if (OS.getOS() == OS.WINDOWS && !Launcher.version.isSnapshot()) {
 					options = new Object[] { L10N.t("dialog.update_notify.open_download_page"),
 							L10N.t("dialog.update_notify.remind_later"), L10N.t("dialog.update_notify.install") };
 				} else {
