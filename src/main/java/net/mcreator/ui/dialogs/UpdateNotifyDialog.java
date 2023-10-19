@@ -19,24 +19,35 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.Launcher;
+import net.mcreator.io.OS;
 import net.mcreator.io.net.api.update.Release;
 import net.mcreator.io.net.api.update.UpdateInfo;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.MCreatorVersionNumber;
+import org.apache.commons.io.FileUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 
 public class UpdateNotifyDialog {
+
+	private static final Logger LOG = LogManager.getLogger(UpdateNotifyDialog.class);
 
 	public static void showUpdateDialogIfUpdateExists(Window parent, boolean notifyForUpdates, boolean notifyForPatches,
 			boolean showNoUpdates) {
@@ -64,12 +75,21 @@ public class UpdateNotifyDialog {
 
 				ar.setText(fullChangelog(updateInfo));
 
-				Object[] options = { L10N.t("dialog.update_notify.open_download_page"),
-						L10N.t("dialog.update_notify.remind_later") };
+				Object[] options;
+				if (OS.getOS() == OS.WINDOWS) {
+					options = new Object[] { L10N.t("dialog.update_notify.open_download_page"),
+							L10N.t("dialog.update_notify.remind_later"), L10N.t("dialog.update_notify.install") };
+				} else {
+					options = new Object[] { L10N.t("dialog.update_notify.open_download_page"),
+							L10N.t("dialog.update_notify.remind_later") };
+				}
+
 				int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 				if (option == 0) {
 					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#update");
+				} else if (option == 2) {
+					installUpdate(parent, updateInfo);
 				}
 			} else if (updateInfo.isNewPatchAvailable() && notifyForPatches) {
 				JPanel pan = new JPanel(new BorderLayout());
@@ -94,12 +114,21 @@ public class UpdateNotifyDialog {
 				ar.setText(releaseChangelog(updateInfo.getReleases().get(Launcher.version.major).getBuilds(),
 						Launcher.version.buildlong));
 
-				Object[] options = { L10N.t("dialog.update_notify.open_download_page"),
-						L10N.t("dialog.update_notify.remind_later") };
+				Object[] options;
+				if (OS.getOS() == OS.WINDOWS) {
+					options = new Object[] { L10N.t("dialog.update_notify.open_download_page"),
+							L10N.t("dialog.update_notify.remind_later"), L10N.t("dialog.update_notify.install") };
+				} else {
+					options = new Object[] { L10N.t("dialog.update_notify.open_download_page"),
+							L10N.t("dialog.update_notify.remind_later") };
+				}
+
 				int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
 						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 				if (option == 0) {
 					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#updatebuild");
+				} else if (option == 2) {
+					installUpdate(parent, updateInfo);
 				}
 			} else if (showNoUpdates) {
 				JOptionPane.showMessageDialog(parent, L10N.t("dialog.update_notify.no_update_message"),
@@ -110,6 +139,41 @@ public class UpdateNotifyDialog {
 					L10N.t("dialog.update_notify.error_failed_check_internet_title"), JOptionPane.WARNING_MESSAGE);
 		}
 
+	}
+
+	private static void installUpdate(Window parent, UpdateInfo updateInfo) {
+		try {
+			int n = JOptionPane.showConfirmDialog(parent, L10N.t("dialog.update_notify.install.message"),
+					L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+			if (n == 0) {
+				parent.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+
+				if (OS.getOS() == OS.WINDOWS)
+					windowsUpdate(updateInfo);
+
+				parent.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+
+				if (parent instanceof WorkspaceSelector mcrApp && mcrApp.getApplication() != null)
+					mcrApp.getApplication().closeApplication();
+				else if (parent instanceof MCreator mcr)
+					mcr.getApplication().closeApplication();
+				else
+					System.exit(0); // It shouldn't be used, but in case none worked, we absolutely need to exit.
+			}
+		} catch (IOException ex) {
+			LOG.error("An error occurred when trying to update MCreator. ", ex);
+		}
+	}
+
+	private static void windowsUpdate(UpdateInfo updateInfo) throws IOException {
+		File downloadedFile = File.createTempFile("mcreator", ".exe");
+		String major = updateInfo.getLatestMajor();
+		FileUtils.copyURLToFile(new URL("https://github.com/MCreator/MCreator/releases/download/" + major + "."
+						+ updateInfo.getReleases().get(major).getLatestBuild() + "/MCreator." + major + ".Windows.64bit.exe"),
+				downloadedFile, 4000, 4000);
+
+		Runtime.getRuntime().exec("powershell.exe Start-Process " + downloadedFile.getPath() + " -verb RunAs");
 	}
 
 	private static String fullChangelog(UpdateInfo updateInfo) {
