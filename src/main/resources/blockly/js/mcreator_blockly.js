@@ -90,28 +90,6 @@ function jsonToBlocklyDropDownArray(json) {
     return retval;
 }
 
-// Helper function to use in Blockly extensions that register one data list selector field to update contents of another
-// The block may define input called "<targetName>Field" to customize field's position
-// Note that the source field must be inserted before the target field for their values to be loaded properly
-function appendAutoReloadingDataListField(sourceName, targetName, targetList) {
-    return function () {
-        const thisBlock = this;
-        (this.getInput(targetName + 'Field') || this.appendDummyInput()).appendField(
-            new FieldDataListSelector(targetList, undefined, {
-                'customEntryProviders': function () {
-                    return thisBlock.getFieldValue(sourceName);
-                }
-            }), targetName);
-        this.setOnChange(function (changeEvent) {
-            if (changeEvent.type === Blockly.Events.BLOCK_CHANGE &&
-                changeEvent.element === 'field' &&
-                changeEvent.name === sourceName) {
-                this.setFieldValue('', targetName);
-            }
-        });
-    };
-}
-
 // A function to properly convert workspace to XML (google/blockly#6738)
 function workspaceToXML() {
     const treeXml = Blockly.Xml.workspaceToDom(workspace, true);

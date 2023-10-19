@@ -4,15 +4,6 @@ Blockly.Extensions.register('small_text_tip',
             new Blockly.FieldLabel(javabridge.t('blockly.block.' + this.type + '.tip'), 'small-text'));
     });
 
-Blockly.Extensions.register('entity_data_logic_list_provider',
-    appendAutoReloadingDataListField('customEntity', 'accessor', 'entitydata_logic'));
-
-Blockly.Extensions.register('entity_data_number_list_provider',
-    appendAutoReloadingDataListField('customEntity', 'accessor', 'entitydata_number'));
-
-Blockly.Extensions.register('entity_data_string_list_provider',
-    appendAutoReloadingDataListField('customEntity', 'accessor', 'entitydata_string'));
-
 // Extension to mark a procedure block as a custom loop
 Blockly.Extensions.register('is_custom_loop',
     function () {
@@ -95,6 +86,37 @@ Blockly.Extensions.registerMutator('variable_entity_input',
             }
         }
     });
+
+// Helper function to use in Blockly extensions that register one data list selector field to update contents of another
+// The block may define input called "<targetName>Field" to customize field's position
+// Note that the source field must be inserted before the target field for their values to be loaded properly
+function appendAutoReloadingDataListField(sourceName, targetName, targetList) {
+    return function () {
+        const thisBlock = this;
+        (this.getInput(targetName + 'Field') || this.appendDummyInput()).appendField(
+            new FieldDataListSelector(targetList, undefined, {
+                'customEntryProviders': function () {
+                    return thisBlock.getFieldValue(sourceName);
+                }
+            }), targetName);
+        this.setOnChange(function (changeEvent) {
+            if (changeEvent.type === Blockly.Events.BLOCK_CHANGE &&
+                changeEvent.element === 'field' &&
+                changeEvent.name === sourceName) {
+                this.setFieldValue('', targetName);
+            }
+        });
+    };
+}
+
+Blockly.Extensions.register('entity_data_logic_list_provider',
+    appendAutoReloadingDataListField('customEntity', 'accessor', 'entitydata_logic'));
+
+Blockly.Extensions.register('entity_data_number_list_provider',
+    appendAutoReloadingDataListField('customEntity', 'accessor', 'entitydata_number'));
+
+Blockly.Extensions.register('entity_data_string_list_provider',
+    appendAutoReloadingDataListField('customEntity', 'accessor', 'entitydata_string'));
 
 // Extension used by int providers to validate their min/max values, so that min can't be greater than max and vice versa
 Blockly.Extensions.register('min_max_fields_validator',
