@@ -29,6 +29,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -40,7 +41,9 @@ import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -98,7 +101,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final VTextField name = new VTextField(18);
 
-	private final JTextField specialInfo = new JTextField(20);
+	private StringListProcedureSelector specialInformation;
 
 	private final DataListComboBox soundOnStep = new DataListComboBox(mcreator);
 	private final JRadioButton defaultSoundType = L10N.radiobutton("elementgui.common.default_sound_type");
@@ -231,6 +234,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.common.event_on_bonemeal_success"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
+		specialInformation = new StringListProcedureSelector(this.withEntry("block/special_information"), mcreator,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+
 		placingCondition = new ProcedureSelector(this.withEntry("plant/placing_condition"), mcreator,
 				L10N.t("elementgui.plant.condition_additional_placing"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).setDefaultName(
@@ -244,7 +252,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world/blockstate:blockstate")).makeInline();
 
-		ComponentUtils.deriveFont(specialInfo, 16);
 		ComponentUtils.deriveFont(tintType, 16);
 		ComponentUtils.deriveFont(growapableSpawnType, 16);
 
@@ -265,17 +272,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		particleTexture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.BLOCK), 32);
 		particleTexture.setOpaque(false);
 
-		JPanel tintPanel = new JPanel(new GridLayout(1, 2, 0, 2));
-		tintPanel.setOpaque(false);
 		isItemTinted.setOpaque(false);
-		tintPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.plant.plant_info"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		tintPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-				L10N.label("elementgui.plant.special_information_tip")));
-		tintPanel.add(specialInfo);
 
 		JPanel rent = new JPanel(new GridLayout(5, 2, 2, 2));
 		rent.setOpaque(false);
@@ -310,19 +307,12 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
 						L10N.t("elementgui.plant.texture_place_top_main")),
 				ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom")))));
-		texturesAndRent.add("East", rent);
+		texturesAndRent.add("East", PanelUtils.centerAndSouthElement(rent, specialInformation, 2, 2));
 
 		texturesAndRent.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.plant.textures_and_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-
-		JPanel render = new JPanel();
-		render.setLayout(new BoxLayout(render, BoxLayout.PAGE_AXIS));
-		render.setOpaque(false);
-
-		render.add(texturesAndRent);
-		render.add(tintPanel);
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 
@@ -405,7 +395,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ptipe.add("Center", ptipe2);
 		ptipe.add("East", ptipe3);
 
-		sbbp2.add("North", render);
+		sbbp2.add("North", texturesAndRent);
 		sbbp2.add("Center", PanelUtils.totalCenterInPanel(ptipe));
 
 		pane2.setOpaque(false);
@@ -438,7 +428,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		});
 
 		if (!isEditingMode()) { // Add first bounding box, disable custom bounding box options
-			boundingBoxList.setBoundingBoxes(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
+			boundingBoxList.setEntries(Collections.singletonList(new IBlockWithBoundingBox.BoxEntry()));
 			disableOffset.setEnabled(false);
 			boundingBoxList.setEnabled(false);
 		}
@@ -828,6 +818,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onHitByProjectile.refreshListKeepSelected();
 		onBonemealSuccess.refreshListKeepSelected();
 
+		specialInformation.refreshListKeepSelected();
 		placingCondition.refreshListKeepSelected();
 		isBonemealTargetCondition.refreshListKeepSelected();
 		bonemealSuccessCondition.refreshListKeepSelected();
@@ -903,6 +894,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		onRightClicked.setSelectedProcedure(plant.onRightClicked);
 		onEntityWalksOn.setSelectedProcedure(plant.onEntityWalksOn);
 		onHitByProjectile.setSelectedProcedure(plant.onHitByProjectile);
+		specialInformation.setSelectedProcedure(plant.specialInformation);
 		growapableMaxHeight.setValue(plant.growapableMaxHeight);
 		generateFeature.setSelected(plant.generateFeature);
 		restrictionBiomes.setListElements(plant.restrictionBiomes);
@@ -923,13 +915,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		bonemealSuccessCondition.setSelectedProcedure(plant.bonemealSuccessCondition);
 		onBonemealSuccess.setSelectedProcedure(plant.onBonemealSuccess);
 
-		specialInfo.setText(
-				plant.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		placingCondition.setSelectedProcedure(plant.placingCondition);
 
 		customBoundingBox.setSelected(plant.customBoundingBox);
 		disableOffset.setSelected(plant.disableOffset);
-		boundingBoxList.setBoundingBoxes(plant.boundingBoxes);
+		boundingBoxList.setEntries(plant.boundingBoxes);
 
 		Model model = plant.getItemModel();
 		if (model != null && model.getType() != null && model.getReadableName() != null)
@@ -1019,6 +1009,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.onRightClicked = onRightClicked.getSelectedProcedure();
 		plant.onEntityWalksOn = onEntityWalksOn.getSelectedProcedure();
 		plant.onHitByProjectile = onHitByProjectile.getSelectedProcedure();
+		plant.specialInformation = specialInformation.getSelectedProcedure();
 		plant.generateFeature = generateFeature.isSelected();
 		plant.restrictionBiomes = restrictionBiomes.getListElements();
 		plant.patchSize = (int) patchSize.getValue();
@@ -1034,7 +1025,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
 		plant.speedFactor = (double) speedFactor.getValue();
 		plant.jumpFactor = (double) jumpFactor.getValue();
-		plant.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 		plant.placingCondition = placingCondition.getSelectedProcedure();
 		plant.emissiveRendering = emissiveRendering.isSelected();
 		plant.isSolid = isSolid.isSelected();
@@ -1045,7 +1035,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		plant.customBoundingBox = customBoundingBox.isSelected();
 		plant.disableOffset = disableOffset.isSelected();
-		plant.boundingBoxes = boundingBoxList.getBoundingBoxes();
+		plant.boundingBoxes = boundingBoxList.getEntries();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		plant.renderType = 12;

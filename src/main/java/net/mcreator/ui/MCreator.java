@@ -368,6 +368,11 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.set(
 						splitPane.getDividerLocation()); // this one could be stored per workspace in the future
 
+			mcreatorTabs.getTabs().forEach(tab -> {
+				if (tab.getTabClosedListener() != null)
+					tab.getTabClosedListener().tabClosed(tab);
+			});
+
 			workspace.close();
 
 			setVisible(false); // close the window

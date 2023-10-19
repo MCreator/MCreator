@@ -40,6 +40,7 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("gui")>${JavaModName}Menus.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(bus);</#if>
+		<#if w.getElementsOfType("feature")?filter(e -> e.getMetadata("has_nbt_structure")??)?size != 0>StructureFeature.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("villagerprofession")>${JavaModName}VillagerProfessions.PROFESSIONS.register(bus);</#if>
 		<#if w.hasElementsOfType("fluid")>
 			${JavaModName}Fluids.REGISTRY.register(bus);

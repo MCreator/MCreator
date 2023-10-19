@@ -39,13 +39,13 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 	private ActionListener itemSelectedListener;
 
-	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags) {
-		this(mcreator, blocksConsumer, supportTags, false);
+	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider supplier, boolean supportTags) {
+		this(mcreator, supplier, supportTags, false);
 	}
 
-	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider blocksConsumer, boolean supportTags,
+	public MCItemSelectorDialog(MCreator mcreator, MCItem.ListProvider supplier, boolean supportTags,
 			boolean hasPotions) {
-		super(mcreator, blocksConsumer::provide);
+		super(mcreator, supplier::provide);
 
 		setTitle(L10N.t("dialog.item_selector.title"));
 		list.setCellRenderer(new Render());
@@ -80,7 +80,16 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 			JButton useTags = L10N.button("dialog.item_selector.use_tag");
 			buttons.add(useTags);
 			useTags.addActionListener(e -> {
-				String tag = AddTagDialog.openAddTagDialog(this, "tag", "category/tag");
+				String tagType = "Blocks";
+				List<MCItem> items = supplier.provide(mcreator.getWorkspace());
+				for (MCItem item : items) {
+					if (item.getType().equals("item")) {
+						tagType = "Items";
+						break;
+					}
+				}
+
+				String tag = AddTagDialog.openAddTagDialog(this, mcreator, tagType, "tag", "category/tag");
 				if (tag != null) {
 					MCItem mcItem = new MCItem.Tag(mcreator.getWorkspace(), tag);
 					model.addElement(mcItem);

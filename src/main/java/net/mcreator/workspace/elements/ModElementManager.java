@@ -32,6 +32,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -45,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * ModElementManager is not thread safe
  */
-public final class ModElementManager {
+@NotThreadSafe public final class ModElementManager {
 
 	private static final Logger LOG = LogManager.getLogger("ModElementManager");
 
@@ -118,13 +119,16 @@ public final class ModElementManager {
 			return new CustomElement(element);
 		}
 
-		if (cache.containsKey(element)) {
-			if (cache.get(element).getModElement() == element) {
-				return cache.get(element);
-			} else {
+		GeneratableElement cachedGeneratableElement = cache.get(element);
+		if (cachedGeneratableElement != null) {
+			if (cachedGeneratableElement.getModElement() != element) {
+				ModElement cacheModElement = cachedGeneratableElement.getModElement();
 				LOG.error(
-						"GeneratableElement cache contains element with same name but different object. This should not happen!");
+						"Cache contains mod element with same name but different object. This should not happen! Cache element: "
+								+ cacheModElement.getName() + ", type: " + cacheModElement.getType()
+								+ ", queried element: " + element.getName() + ", type: " + element.getType());
 			}
+			return cachedGeneratableElement;
 		}
 
 		File genFile = new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json");
@@ -211,9 +215,9 @@ public final class ModElementManager {
 	}
 
 	/**
-	 * Invalidates the cache of this manager. May be used by some plugins.
+	 * Invalidates the generatable element cache
 	 */
-	@SuppressWarnings("unused") public void invalidateCache() {
+	public void invalidateCache() {
 		cache.clear();
 	}
 

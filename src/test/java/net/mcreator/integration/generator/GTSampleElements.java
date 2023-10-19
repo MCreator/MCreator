@@ -87,7 +87,7 @@ public class GTSampleElements {
 				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
-			for (int i = 1; i <= 2; i++) {
+			for (int i = 1; i <= 4; i++) {
 				ModElement me = new ModElement(workspace, "string" + i, ModElementType.PROCEDURE).putMetadata(
 						"dependencies", new ArrayList<String>()).putMetadata("return_type", "STRING");
 

@@ -19,7 +19,6 @@
 package net.mcreator.ui.workspace;
 
 import net.mcreator.element.*;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.generator.ListTemplate;
@@ -176,7 +175,6 @@ import java.util.stream.Collectors;
 		JPopupMenu contextMenu = new JPopupMenu();
 
 		panels.setOpaque(false);
-		panels.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
 		list = new JSelectableList<>(dml);
 		list.setOpaque(false);
@@ -1155,13 +1153,10 @@ import java.util.stream.Collectors;
 		List<GeneratorTemplatesList> modElementListFiles = mcreator.getGenerator()
 				.getModElementListTemplates(mu.getGeneratableElement());
 
-		if (mu.getGeneratableElement() instanceof ICommonType) {
-			Collection<BaseType> baseTypes = ((ICommonType) mu.getGeneratableElement()).getBaseTypesProvided();
-			for (BaseType baseType : baseTypes) {
-				modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesListForDefinition(
-						mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
-								.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
-			}
+		for (BaseType baseType : mu.getBaseTypesProvided()) {
+			modElementGlobalFiles.addAll(mcreator.getGenerator().getGlobalTemplatesListForDefinition(
+					mcreator.getGenerator().getGeneratorConfiguration().getDefinitionsProvider()
+							.getBaseTypeDefinition(baseType), false, new AtomicInteger()));
 		}
 
 		if (modElementFiles.size() + modElementGlobalFiles.size() > 1)
