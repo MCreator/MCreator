@@ -27,13 +27,13 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.PropertyData;
-import net.mcreator.ui.minecraft.states.PropertyValue;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class JEntityDataEntry extends JSimpleListEntry<PropertyValue<?>> {
+public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>> {
 
 	private final MCreator mcreator;
 	private PropertyData<?> data;
@@ -90,11 +90,11 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyValue<?>> {
 		defaultValue.setEnabled(enabled);
 	}
 
-	@SuppressWarnings("unchecked") @Override public PropertyValue<?> getEntry() {
-		return new PropertyValue<>((PropertyData<Object>) data, data.getValue(defaultValue));
+	@SuppressWarnings("unchecked") @Override public PropertyDataWithValue<?> getEntry() {
+		return new PropertyDataWithValue<>((PropertyData<Object>) data, data.getValue(defaultValue));
 	}
 
-	@Override public void setEntry(PropertyValue<?> entry) {
+	@Override public void setEntry(PropertyDataWithValue<?> entry) {
 		data = entry.property();
 		nameLabel.setText(data.getName());
 		typeLabel.setText(getType(data));
