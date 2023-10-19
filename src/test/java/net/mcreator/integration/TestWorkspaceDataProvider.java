@@ -1648,7 +1648,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.entityDataEntries.add(
 					new PropertyDataWithValue<>(new PropertyData.LogicType("Logic"), _true));
 			livingEntity.entityDataEntries.add(
-					new PropertyDataWithValue<>(new PropertyData.IntegerType("Number"), random.nextInt()));
+					new PropertyDataWithValue<>(new PropertyData.IntegerType("Integer"), random.nextInt()));
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.StringType("String"),
 					getRandomItem(random, new String[] { "value1", "value2", "value3" })));
 		}
