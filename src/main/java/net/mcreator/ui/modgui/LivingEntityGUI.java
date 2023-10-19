@@ -496,12 +496,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JComponent entityDataListComp = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/entity_data"),
 						L10N.label("elementgui.living_entity.entity_data")), entityDataList);
-
-		entityDataListComp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-		entityDataListPanel.add(entityDataListComp);
-
 		entityDataListPanel.setOpaque(false);
+		entityDataListComp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		entityDataListPanel.add(entityDataListComp);
 
 		JPanel spo2 = new JPanel(new GridLayout(11, 2, 2, 2));
 
