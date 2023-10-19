@@ -25,22 +25,22 @@ import com.google.gson.annotations.JsonAdapter;
 import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
 
-@JsonAdapter(PropertyDataWithValue.GSONAdapter.class)
-public record PropertyDataWithValue<T>(PropertyData<T> property, @Nonnull T value) {
+@JsonAdapter(PropertyValue.GSONAdapter.class)
+public record PropertyValue<T>(PropertyData<T> property, @Nonnull T value) {
 
 	@SuppressWarnings("unchecked")
-	private static <T> PropertyDataWithValue<T> create(PropertyData<T> property, Object value) {
-		return new PropertyDataWithValue<>(property, (T) value);
+	private static <T> PropertyValue<T> create(PropertyData<T> property, Object value) {
+		return new PropertyValue<>(property, (T) value);
 	}
 
 	static class GSONAdapter
-			implements JsonSerializer<PropertyDataWithValue<?>>, JsonDeserializer<PropertyDataWithValue<?>> {
+			implements JsonSerializer<PropertyValue<?>>, JsonDeserializer<PropertyValue<?>> {
 
 		private static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().setLenient()
 				.registerTypeHierarchyAdapter(PropertyData.class, new PropertyData.GSONAdapter()).create();
 
 		@Override
-		public PropertyDataWithValue<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
+		public PropertyValue<?> deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 				throws JsonParseException {
 			JsonObject jsonObject = json.getAsJsonObject();
 			PropertyData<?> data = gson.fromJson(jsonObject, PropertyData.class);
@@ -48,7 +48,7 @@ public record PropertyDataWithValue<T>(PropertyData<T> property, @Nonnull T valu
 		}
 
 		@Override
-		public JsonElement serialize(PropertyDataWithValue<?> value, Type typeOfSrc, JsonSerializationContext context) {
+		public JsonElement serialize(PropertyValue<?> value, Type typeOfSrc, JsonSerializationContext context) {
 			JsonObject retVal = gson.toJsonTree(value.property).getAsJsonObject();
 			retVal.add("value", gson.toJsonTree(value.value));
 			return retVal;
