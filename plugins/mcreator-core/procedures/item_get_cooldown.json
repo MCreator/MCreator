@@ -16,7 +16,7 @@
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
     "group": "cooldown",
-    "toolbox_id": "itemmanagement",
+    "toolbox_id": "itemdata",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
       "<value name=\"item\"><block type=\"itemstack_to_mcitem\"></block></value>"
