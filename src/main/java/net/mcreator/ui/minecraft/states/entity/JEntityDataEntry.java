@@ -64,7 +64,7 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>>
 		namePane.add("Center", nameLabel);
 		namePane.setPreferredSize(new Dimension(240, 0));
 
-		typeLabel = new JLabel(getType(data));
+		typeLabel = new JLabel(getTypeString(data));
 		typeLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		typeLabel.setPreferredSize(new Dimension(0, 28));
 		ComponentUtils.deriveFont(typeLabel, 16);
@@ -97,19 +97,21 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>>
 	@Override public void setEntry(PropertyDataWithValue<?> entry) {
 		data = entry.property();
 		nameLabel.setText(data.getName());
-		typeLabel.setText(getType(data));
+		typeLabel.setText(getTypeString(data));
 		defValuePane.removeAll();
 		defValuePane.add(this.defaultValue = data.getComponent(mcreator, entry.value()));
 		defaultValue.setOpaque(false);
 	}
 
-	private String getType(PropertyData<?> data) {
+	private String getTypeString(PropertyData<?> data) {
 		if (data instanceof PropertyData.LogicType)
 			return "Logic";
 		else if (data instanceof PropertyData.StringType)
 			return "String";
-		else
+		else if (data instanceof PropertyData.IntegerType)
 			return "Number";
+		else
+			return "Unknown";
 	}
 
 }

@@ -24,6 +24,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.types.interfaces.IPOIProvider;
+import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -231,20 +232,17 @@ public class ElementUtil {
 
 	public static List<DataListEntry> loadCustomEntities(Workspace workspace) {
 		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
-		retval.addAll(
-				DataListLoader.loadDataList("entities").stream().filter(e -> e.getReadableName().startsWith("CUSTOM:"))
-						.toList());
 		Collections.sort(retval);
 		return retval;
 	}
 
-	public static List<String> loadEntityDataListFromCustomEntity(Workspace workspace, String entityName, String type) {
+	public static List<String> loadEntityDataListFromCustomEntity(Workspace workspace, String entityName,
+			Class<? extends PropertyData<?>> type) {
 		if (entityName != null) {
 			LivingEntity entity = (LivingEntity) workspace.getModElementByName(entityName.replace("CUSTOM:", ""))
 					.getGeneratableElement();
 			if (entity != null) {
-				return entity.entityDataEntries.stream()
-						.filter(e -> e.property().getDefaultValue().getClass().getSimpleName().equals(type))
+				return entity.entityDataEntries.stream().filter(e -> e.property().getClass().equals(type))
 						.map(e -> e.property().getName()).toList();
 			}
 		}
