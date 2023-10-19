@@ -1649,7 +1649,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.entityDataEntries.add(
 					new PropertyDataWithValue<>(new PropertyData.IntegerType("Number"), random.nextInt()));
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.StringType("String"),
-					getRandomItem(random, new String[] { "Number", "Logic", "String" })));
+					getRandomItem(random, new String[] { "value1", "value2", "value3" })));
 		}
 		return livingEntity;
 	}

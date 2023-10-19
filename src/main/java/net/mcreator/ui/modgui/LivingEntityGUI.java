@@ -204,7 +204,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	private JEntityDataList entityDataList;
 
-	//mob bases
 	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(
 			BlocklyCompileNote.Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
 
