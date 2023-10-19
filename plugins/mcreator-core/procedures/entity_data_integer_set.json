@@ -13,26 +13,34 @@
     {
       "type": "input_dummy",
       "name": "accessorField"
+    },
+    {
+      "type": "input_value",
+      "name": "value",
+      "check": "Number"
     }
   ],
   "extensions": [
-    "entity_data_number_list_provider"
+    "entity_data_integer_list_provider"
   ],
   "inputsInline": true,
   "colour": "%{BKY_MATH_HUE}",
-  "output": "Number",
+  "previousStatement": null,
+  "nextStatement": null,
   "mcreator": {
     "group": "data_accessors",
-    "toolbox_id": "entitydata",
+    "toolbox_id": "entitymanagement",
     "toolbox_init": [
-      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
+      "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>"
     ],
     "fields": [
       "customEntity",
       "accessor"
     ],
     "inputs": [
-      "entity"
+      "entity",
+      "value"
     ]
   }
 }

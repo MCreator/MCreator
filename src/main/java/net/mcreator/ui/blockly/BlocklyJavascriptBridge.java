@@ -144,9 +144,9 @@ public class BlocklyJavascriptBridge {
 			case "entitydata_logic" -> openStringEntrySelector(
 					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
 							PropertyData.LogicType.class).toArray(String[]::new), "entity");
-			case "entitydata_number" -> openStringEntrySelector(
+			case "entitydata_integer" -> openStringEntrySelector(
 					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
-							PropertyData.NumberType.class).toArray(String[]::new), "entity");
+							PropertyData.IntegerType.class).toArray(String[]::new), "entity");
 			case "entitydata_string" -> openStringEntrySelector(
 					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
 							PropertyData.StringType.class).toArray(String[]::new), "entity");

@@ -112,8 +112,8 @@ function appendAutoReloadingDataListField(sourceName, targetName, targetList) {
 Blockly.Extensions.register('entity_data_logic_list_provider',
     appendAutoReloadingDataListField('customEntity', 'accessor', 'entitydata_logic'));
 
-Blockly.Extensions.register('entity_data_number_list_provider',
-    appendAutoReloadingDataListField('customEntity', 'accessor', 'entitydata_number'));
+Blockly.Extensions.register('entity_data_integer_list_provider',
+    appendAutoReloadingDataListField('customEntity', 'accessor', 'entitydata_integer'));
 
 Blockly.Extensions.register('entity_data_string_list_provider',
     appendAutoReloadingDataListField('customEntity', 'accessor', 'entitydata_string'));
