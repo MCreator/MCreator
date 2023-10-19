@@ -465,12 +465,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		subpane1.add(waterMob);
 
 		waterMob.addChangeListener(e -> {
-			if (!isEditingMode() && waterMob.isSelected()) {
-				breatheUnderwater.setFixedValue(true);
-				pushedByFluids.setFixedValue(false);
-			} else if (!isEditingMode() && !waterMob.isSelected()) {
-				breatheUnderwater.setFixedValue(false);
-				pushedByFluids.setFixedValue(true);
+			if (!isEditingMode()) {
+				breatheUnderwater.setFixedValue(waterMob.isSelected());
+				pushedByFluids.setFixedValue(!waterMob.isSelected());
 			}
 		});
 

@@ -27,6 +27,7 @@ import net.mcreator.element.types.LivingEntity;
 import net.mcreator.workspace.Workspace;
 
 public class WaterEntitiesConverter implements IConverter {
+
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		LivingEntity entity = (LivingEntity) input;
