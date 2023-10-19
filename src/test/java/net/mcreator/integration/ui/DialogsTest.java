@@ -184,8 +184,7 @@ public class DialogsTest {
 		testProps.add(new PropertyData.IntegerType("integer2", -100, 100));
 		testProps.add(new PropertyData.NumberType("number"));
 		testProps.add(new PropertyData.NumberType("number2", -0.0001, 1000000));
-		testProps.add(new PropertyData.StringType("text"));
-		testProps.add(new PropertyData.StringType("text2", ElementUtil.loadDirections()));
+		testProps.add(new PropertyData.StringType("text", ElementUtil.loadDirections()));
 		Random rng = new Random();
 		StateMap testState = new StateMap();
 		if (rng.nextBoolean())
@@ -200,8 +199,6 @@ public class DialogsTest {
 			testState.put(testProps.get(4), rng.nextDouble());
 		if (rng.nextBoolean())
 			testState.put(testProps.get(5), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
-		if (rng.nextBoolean())
-			testState.put(testProps.get(6), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> StateEditorDialog.open(mcreator, testProps, testState, JStateLabel.NumberMatchType.EQUAL));
 	}
