@@ -97,6 +97,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "10"), "MultiTool", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "12"), "Fishing rod", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "13"), "Shield", random, true, false));
 		} else if (type == ModElementType.TAB) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
@@ -1701,6 +1702,8 @@ public class TestWorkspaceDataProvider {
 		tool.texture = "test";
 		tool.renderType = 0;
 		tool.customModelName = "Normal";
+		tool.blockingRenderType = 0;
+		tool.blockingModelName = "Normal blocking";
 		return tool;
 	}
 

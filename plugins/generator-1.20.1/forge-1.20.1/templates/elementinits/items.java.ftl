@@ -39,8 +39,10 @@ package ${package}.init;
 
 <#assign hasBlocks = false>
 <#assign hasDoubleBlocks = false>
+<#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
+	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 
-<#if w.hasItemsWithCustomProperties()>
+<#if hasItemsWithProperties>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 </#if>
 public class ${JavaModName}Items {
@@ -103,7 +105,7 @@ public class ${JavaModName}Items {
 	}
 	</#if>
 
-	<#if w.hasItemsWithCustomProperties()>
+	<#if hasItemsWithProperties>
 	<#compress>
 	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
@@ -125,6 +127,9 @@ public class ${JavaModName}Items {
 						<#else>0</#if>
 				);
 				</#list>
+			<#elseif item.getModElement().getTypeString() == "tool" && item.toolType == "Shield">
+				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("blocking"),
+					ItemProperties.getProperty(Items.SHIELD, new ResourceLocation("blocking")));
 			</#if>
 		</#list>
 		});
