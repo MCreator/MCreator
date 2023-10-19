@@ -1647,12 +1647,6 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelShadowSize = 1.8;
 		livingEntity.canTrade = _true;
 		livingEntity.villagerTradingType = emptyLists;
-		if (livingEntity.canTrade) {
-			livingEntity.aiBase = "Villager";
-			livingEntity.isBoss = false;
-		}
-		if (livingEntity.canTrade || livingEntity.breedable)
-			livingEntity.hasAI = true;
 		livingEntity.professionTrade = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.professionTrade.addAll(
@@ -1674,6 +1668,13 @@ public class TestWorkspaceDataProvider {
 		livingEntity.restockCondition = new LogicProcedure(_true ? "condition4" : null, _true);
 		livingEntity.rewardXp = new NumberProcedure(emptyLists ? null : "number1", 4);
 		livingEntity.tradingCondition = _true ? null : new Procedure("condition5");
+		// We need to apply some overrides that are done in the GUI so UI tests can pass
+		if (livingEntity.canTrade) {
+			livingEntity.aiBase = "Villager";
+			livingEntity.isBoss = false;
+		}
+		if (livingEntity.canTrade || livingEntity.breedable)
+			livingEntity.hasAI = true;
 		return livingEntity;
 	}
 

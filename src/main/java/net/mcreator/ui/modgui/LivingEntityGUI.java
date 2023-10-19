@@ -395,6 +395,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		villagerTradingType.addActionListener(e -> updateTradingConditions());
 		wanderingTraderTradingType.addActionListener(e -> updateTradingConditions());
 		updateTradingConditions();
+
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
 				String selected = (String) guiBoundTo.getSelectedItem();
