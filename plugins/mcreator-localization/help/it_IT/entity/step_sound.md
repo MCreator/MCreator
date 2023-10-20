@@ -1,0 +1,1 @@
+Il suono riprodotto quando l'entità cammina.
