@@ -1,0 +1,1 @@
+Se questo parametro è selezionato, qualsiasi pianta può essere posizionata e crescere sul blocco.
