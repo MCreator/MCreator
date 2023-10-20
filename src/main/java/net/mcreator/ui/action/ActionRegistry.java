@@ -175,6 +175,7 @@ public class ActionRegistry {
 	public final BasicAction imageEditorDesaturate;
 	public final BasicAction imageEditorHSVNoise;
 	public final BasicAction imageEditorMoveLayer;
+	public final BasicAction imageEditorSelectLayer;
 	public final BasicAction imageEditorResizeLayer;
 	public final BasicAction imageEditorResizeCanvas;
 
@@ -326,6 +327,7 @@ public class ActionRegistry {
 		this.imageEditorDesaturate = new DesaturateToolAction(this);
 		this.imageEditorHSVNoise = new HSVNoiseToolAction(this);
 		this.imageEditorMoveLayer = new MoveToolAction(this);
+		this.imageEditorSelectLayer = new SelectionToolAction(this);
 		this.imageEditorResizeLayer = new ResizeToolAction(this);
 		this.imageEditorResizeCanvas = new ResizeCanvasToolAction(this);
 
