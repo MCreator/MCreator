@@ -109,7 +109,7 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>>
 		else if (data instanceof PropertyData.StringType)
 			return "String";
 		else if (data instanceof PropertyData.IntegerType)
-			return "Number";
+			return "Integer";
 		else
 			return "Unknown";
 	}

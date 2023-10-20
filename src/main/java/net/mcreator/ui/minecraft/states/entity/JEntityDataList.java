@@ -61,7 +61,7 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Proper
 					L10N.t("elementgui.living_entity.entity_data_entries.add_entry.title"), true);
 
 			VTextField name = new VTextField(20);
-			JComboBox<String> type = new JComboBox<>(new String[] { "Number", "Logic", "String" });
+			JComboBox<String> type = new JComboBox<>(new String[] { "Integer", "Logic", "String" });
 
 			UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
 					name::getText, () -> entryList.stream().map(e -> e.getEntry().property().getName()),
@@ -79,7 +79,7 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Proper
 					dialog.setVisible(false);
 					String property = Transliteration.transliterateString(name.getText());
 					entry.set(new JEntityDataEntry(mcreator, gui, parent, entryList,
-							switch (Objects.requireNonNullElse((String) type.getSelectedItem(), "Number")) {
+							switch (Objects.requireNonNullElse((String) type.getSelectedItem(), "Integer")) {
 								case "Logic" -> new PropertyData.LogicType(property);
 								case "String" -> new PropertyData.StringType(property);
 								default -> new PropertyData.IntegerType(property);
