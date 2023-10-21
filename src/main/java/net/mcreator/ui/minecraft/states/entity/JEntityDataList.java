@@ -36,7 +36,6 @@ import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, PropertyDataWithValue<?>> {
@@ -77,12 +76,15 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Proper
 				if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 					dialog.setVisible(false);
 					String property = Transliteration.transliterateString(name.getText());
-					entry.set(new JEntityDataEntry(mcreator, gui, parent, entryList,
-							switch (Objects.requireNonNullElse((String) type.getSelectedItem(), "Integer")) {
-								case "Logic" -> new PropertyData.LogicType(property);
-								case "String" -> new PropertyData.StringType(property);
-								default -> new PropertyData.IntegerType(property);
-							}));
+					JEntityDataEntry dataEntry = new JEntityDataEntry(mcreator, gui, parent, entryList);
+					if ("Integer".equals(type.getSelectedItem())) {
+						dataEntry.setEntry(new PropertyDataWithValue<>(new PropertyData.IntegerType(property), null));
+					} else if ("Logic".equals(type.getSelectedItem())) {
+						dataEntry.setEntry(new PropertyDataWithValue<>(new PropertyData.LogicType(property), null));
+					} else {
+						dataEntry.setEntry(new PropertyDataWithValue<>(new PropertyData.StringType(property), null));
+					}
+					entry.set(dataEntry);
 				}
 			});
 			cancel.addActionListener(e -> dialog.setVisible(false));
@@ -96,9 +98,9 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Proper
 			dialog.setVisible(true);
 
 			return entry.get();
+		} else {
+			return new JEntityDataEntry(mcreator, gui, parent, entryList);
 		}
-
-		return new JEntityDataEntry(mcreator, gui, parent, entryList, new PropertyData.IntegerType(""));
 	}
 
 }

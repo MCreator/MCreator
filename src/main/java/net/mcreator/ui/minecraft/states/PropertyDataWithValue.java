@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
 
 @JsonAdapter(PropertyDataWithValue.GSONAdapter.class)
-public record PropertyDataWithValue<T>(PropertyData<T> property, @Nonnull T value) {
+public record PropertyDataWithValue<T>(PropertyData<T> property, T value) {
 
 	@SuppressWarnings("unchecked")
 	private static <T> PropertyDataWithValue<T> create(PropertyData<T> property, Object value) {

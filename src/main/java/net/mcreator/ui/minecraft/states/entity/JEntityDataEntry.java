@@ -42,17 +42,14 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>>
 	private final JPanel defValuePane = new JPanel(new BorderLayout());
 	private JComponent defaultValue;
 
-	public JEntityDataEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JEntityDataEntry> entryList,
-			PropertyData<?> data) {
+	public JEntityDataEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JEntityDataEntry> entryList) {
 		super(parent, entryList);
 		this.mcreator = mcreator;
-		this.data = data;
-		this.defaultValue = data.getComponent(mcreator, null);
 
 		line.setLayout(new BorderLayout());
 		line.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-		nameLabel = new JLabel(data.getName());
+		nameLabel = new JLabel();
 		nameLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		nameLabel.setPreferredSize(new Dimension(0, 28));
 		ComponentUtils.deriveFont(nameLabel, 16);
@@ -64,7 +61,7 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>>
 		namePane.add("Center", nameLabel);
 		namePane.setPreferredSize(new Dimension(240, 0));
 
-		typeLabel = new JLabel(getTypeString(data));
+		typeLabel = new JLabel();
 		typeLabel.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		typeLabel.setPreferredSize(new Dimension(0, 28));
 		ComponentUtils.deriveFont(typeLabel, 16);
@@ -77,9 +74,7 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>>
 		typePane.setPreferredSize(new Dimension(240, 0));
 		line.add("West", PanelUtils.westAndEastElement(namePane, typePane));
 
-		defaultValue.setOpaque(false);
 		defValuePane.setOpaque(false);
-		defValuePane.add(defaultValue);
 		line.add("Center", PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_default_value"),
 						L10N.label("elementgui.living_entity.entity_data_entries.default_value")),
@@ -87,7 +82,8 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>>
 	}
 
 	@Override protected void setEntryEnabled(boolean enabled) {
-		defaultValue.setEnabled(enabled);
+		if (defaultValue != null)
+			defaultValue.setEnabled(enabled);
 	}
 
 	@SuppressWarnings("unchecked") @Override public PropertyDataWithValue<?> getEntry() {
@@ -98,9 +94,9 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>>
 		data = entry.property();
 		nameLabel.setText(data.getName());
 		typeLabel.setText(getTypeString(data));
-		defValuePane.removeAll();
 		defValuePane.add(this.defaultValue = data.getComponent(mcreator, entry.value()));
 		defaultValue.setOpaque(false);
+		defaultValue.setEnabled(isEnabled());
 	}
 
 	private String getTypeString(PropertyData<?> data) {
