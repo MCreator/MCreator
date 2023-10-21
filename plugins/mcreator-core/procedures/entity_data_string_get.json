@@ -25,7 +25,9 @@
     "group": "synced_data",
     "toolbox_id": "entitydata",
     "toolbox_init": [
-      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
+      "~<field name=\"customEntity\">Examplelivingentity2</field>",
+      "~<field name=\"accessor\">String</field>"
     ],
     "fields": [
       "customEntity",

@@ -32,7 +32,9 @@
     "toolbox_id": "entitymanagement",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
-      "<value name=\"value\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>"
+      "<value name=\"value\"><block type=\"logic_boolean\"><field name=\"BOOL\">FALSE</field></block></value>",
+      "~<field name=\"customEntity\">Examplelivingentity2</field>",
+      "~<field name=\"accessor\">Logic</field>"
     ],
     "fields": [
       "customEntity",

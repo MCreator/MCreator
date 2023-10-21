@@ -32,7 +32,9 @@
     "toolbox_id": "entitymanagement",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
-      "<value name=\"value\"><block type=\"text\"><field name=\"TEXT\">value</field></block></value>"
+      "<value name=\"value\"><block type=\"text\"><field name=\"TEXT\">value</field></block></value>",
+      "~<field name=\"customEntity\">Examplelivingentity4</field>",
+      "~<field name=\"accessor\">String</field>"
     ],
     "fields": [
       "customEntity",

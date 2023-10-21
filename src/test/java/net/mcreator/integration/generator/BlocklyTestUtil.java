@@ -28,7 +28,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
-import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -123,15 +122,13 @@ public class BlocklyTestUtil {
 						if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
 							processed += appendFieldXML(workspace, random, additionalXML, arg, field);
 							break;
+						} else if (toolboxBlock.getToolboxTestXML().contains("<field name=\"" + field + "\">")) {
+							processed++;
+							break;
 						}
 					}
 				}
 			}
-
-			// TODO: here I would check getBlocklyJSON if it contains entity_data_TYPE_list_provider
-			// and if so, I would populate fields here with call to some private static method in this class
-			// that would specify valid values for the type of the field
-			// and then add processed += 2;
 
 			if (processed != toolboxBlock.getFields().size()) {
 				LOG.warn("Skipping Blockly block with special fields: " + toolboxBlock.getMachineName());
