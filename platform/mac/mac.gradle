@@ -6,18 +6,22 @@ static void convertCRLF(File input, File out) {
 
 void makeDMG(File directory, File outputDMGFile, String volumeName) {
     if (Os.isFamily(Os.FAMILY_MAC)) {
-        ant.exec(executable: 'hdiutil', failonerror: true) {
-            arg(value: 'create')
-            arg(value: '-srcfolder')
-            arg(value: directory)
-            arg(value: '-volname')
-            arg(value: volumeName)
-            arg(value: '-ov') // read-only disk image
-            arg(value: '-format')
-            arg(value: 'UDZO') // UDZ0 zlib-compressed image
-            arg(value: '-imagekey')
-            arg(value: 'zlib-level=9') // maximum compression
-            arg(value: outputDMGFile)
+        exec {
+            commandLine 'create-dmg',
+                    '--volname', volumeName,
+                    '--volicon', 'platform/mac/volume.icns',
+                    '--background', 'platform/mac/diskimage.png',
+                    '--window-pos', '200', '120',
+                    '--window-size', '480', '325',
+                    '--icon-size', '100',
+                    '--icon', 'MCreator.app', '145', '130',
+                    '--hide-extension', 'MCreator.app',
+                    '--text-size', '10',
+                    '--app-drop-link', '337', '130',
+                    '--eula', 'LICENSE.txt',
+                    '--format', 'ULMO',
+                    outputDMGFile,
+                    directory
         }
     } else {
         def mkisofs_binary = Os.isFamily(Os.FAMILY_WINDOWS) ? './build/tools/mkisofs/Sample/mkisofs' : './mkisofs'
