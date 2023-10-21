@@ -22,7 +22,6 @@ package net.mcreator.ui.minecraft.states;
 import com.google.gson.*;
 import com.google.gson.annotations.JsonAdapter;
 
-import javax.annotation.Nonnull;
 import java.lang.reflect.Type;
 
 @JsonAdapter(PropertyDataWithValue.GSONAdapter.class)
