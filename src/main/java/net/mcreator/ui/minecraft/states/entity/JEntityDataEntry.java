@@ -94,9 +94,18 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>>
 		data = entry.property();
 		nameLabel.setText(data.getName());
 		typeLabel.setText(getTypeString(data));
-		defValuePane.add(this.defaultValue = data.getComponent(mcreator, entry.value()));
-		defaultValue.setOpaque(false);
+		defValuePane.add(defaultValue = data.getComponent(mcreator, entry.value()));
 		defaultValue.setEnabled(isEnabled());
+
+		if (data instanceof PropertyData.IntegerType) {
+			defaultValue.setPreferredSize(new Dimension(150, 28));
+			defaultValue.setOpaque(false);
+		} else if (data instanceof PropertyData.StringType) {
+			((JTextField) defaultValue).setColumns(27);
+			defaultValue.setPreferredSize(new Dimension(0, 28));
+		} else {
+			defaultValue.setOpaque(false);
+		}
 	}
 
 	private String getTypeString(PropertyData<?> data) {
