@@ -22,7 +22,7 @@
   "colour": "%{BKY_MATH_HUE}",
   "output": "Number",
   "mcreator": {
-    "group": "data_accessors",
+    "group": "synced_data",
     "toolbox_id": "entitydata",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
