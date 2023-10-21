@@ -80,10 +80,10 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>>
 		defaultValue.setOpaque(false);
 		defValuePane.setOpaque(false);
 		defValuePane.add(defaultValue);
-		line.add("Center", PanelUtils.join(FlowLayout.LEFT, PanelUtils.northAndCenterElement(
+		line.add("Center", PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(gui.withEntry("entity/data_default_value"),
 						L10N.label("elementgui.living_entity.entity_data_entries.default_value")),
-				PanelUtils.join(FlowLayout.LEFT, defValuePane))));
+				PanelUtils.join(FlowLayout.LEFT, defValuePane)));
 	}
 
 	@Override protected void setEntryEnabled(boolean enabled) {

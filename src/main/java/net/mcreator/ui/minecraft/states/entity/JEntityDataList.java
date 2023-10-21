@@ -26,8 +26,8 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
@@ -46,11 +46,10 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Proper
 
 		add.setText(L10N.t("elementgui.living_entity.entity_data_entries.add_entry"));
 
-		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 2),
-				L10N.t("elementgui.living_entity.entity_data_entries"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
 	}
 
 	@Override protected JEntityDataEntry newEntry(JPanel parent, List<JEntityDataEntry> entryList, boolean userAction) {
