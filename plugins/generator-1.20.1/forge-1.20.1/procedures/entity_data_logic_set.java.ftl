@@ -1,1 +1,2 @@
-((${generator.map(field$customEntity, "entities", 0)}) ${input$entity}).getEntityData().set(${generator.map(field$customEntity, "entities", 0)}.${field$accessor}, ${input$value});
+if (${input$entity} instanceof ${generator.map(field$customEntity, "entities", 0)} _datEntI${cbi})
+	_datEntI${cbi}.getEntityData().set(${generator.map(field$customEntity, "entities", 0)}.${field$accessor}, ${input$value});
