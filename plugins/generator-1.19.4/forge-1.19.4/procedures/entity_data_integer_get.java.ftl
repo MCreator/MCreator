@@ -1,1 +1,1 @@
-(((${generator.map(field$customEntity, "entities", 0)}) ${input$entity}).getEntityData().get(${generator.map(field$customEntity, "entities", 0)}.${field$accessor}))
+(${input$entity} instanceof ${generator.map(field$customEntity, "entities", 0)} _datEntI ? _datEntI.getEntityData().get(${generator.map(field$customEntity, "entities", 0)}.${field$accessor}) : 0)
