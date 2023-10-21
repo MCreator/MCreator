@@ -415,17 +415,22 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	@Override public void mouseMoved(MouseEvent e) {
-		//if(toolPanel.getCurrentTool().getHoverCursor() != null)
-		//	setEditorCursor(toolPanel.getCurrentTool().getHoverCursor());
+		if(toolPanel.getCurrentTool().getHoverCursor() != null) {
+			setEditorCursor(toolPanel.getCurrentTool().getHoverCursor());
+		}
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseMoved(e));
 		updateInfoBar(e.getX(), e.getY());
 	}
 
 	public void setEditorCursor(Cursor cursor) {
+		if (currentCursor == cursor)
+			return;
 		currentCursor = cursor;
-		zoomPane.setCursor(cursor);
-		canvasRenderer.setCursor(cursor);
-		System.out.println(cursor);
+
+		SwingUtilities.invokeLater(() -> {
+			zoomPane.getZoomport().setCursor(cursor);
+			canvasRenderer.setCursor(cursor);
+		});
 	}
 
 	private void updateInfoBar(int x, int y) {
