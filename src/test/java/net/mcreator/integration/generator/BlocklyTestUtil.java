@@ -28,6 +28,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -232,6 +233,18 @@ public class BlocklyTestUtil {
 		case "spawnableEntity":
 			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
+		case "customEntity":
+			return ElementUtil.loadCustomEntities(workspace).stream().map(DataListEntry::getName)
+					.toArray(String[]::new);
+		case "entitydata_logic":
+			return ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
+					PropertyData.LogicType.class).toArray(String[]::new);
+		case "entitydata_integer":
+			return ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
+					PropertyData.IntegerType.class).toArray(String[]::new);
+		case "entitydata_string":
+			return ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
+					PropertyData.StringType.class).toArray(String[]::new);
 		case "gui":
 			return ElementUtil.loadBasicGUI(workspace).toArray(String[]::new);
 		case "direction":
