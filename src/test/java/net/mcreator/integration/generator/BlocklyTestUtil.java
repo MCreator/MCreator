@@ -128,6 +128,11 @@ public class BlocklyTestUtil {
 				}
 			}
 
+			// TODO: here I would check getBlocklyJSON if it contains entity_data_TYPE_list_provider
+			// and if so, I would populate fields here with call to some private static method in this class
+			// that would specify valid values for the type of the field
+			// and then add processed += 2;
+
 			if (processed != toolboxBlock.getFields().size()) {
 				LOG.warn("Skipping Blockly block with special fields: " + toolboxBlock.getMachineName());
 				return false;
@@ -233,18 +238,6 @@ public class BlocklyTestUtil {
 		case "spawnableEntity":
 			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
-		case "customEntity":
-			return ElementUtil.loadCustomEntities(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
-		case "entitydata_logic":
-			return ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
-					PropertyData.LogicType.class).toArray(String[]::new);
-		case "entitydata_integer":
-			return ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
-					PropertyData.IntegerType.class).toArray(String[]::new);
-		case "entitydata_string":
-			return ElementUtil.loadEntityDataListFromCustomEntity(workspace, customEntryProviders,
-					PropertyData.StringType.class).toArray(String[]::new);
 		case "gui":
 			return ElementUtil.loadBasicGUI(workspace).toArray(String[]::new);
 		case "direction":
