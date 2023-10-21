@@ -69,22 +69,18 @@ public class UpdateNotifyDialog {
 
 				ar.setText(fullChangelog(updateInfo));
 
-				Object[] options = {
-						L10N.t("dialog.update_notify.update_now"),
-						L10N.t("dialog.update_notify.learn_more"),
-						L10N.t("dialog.update_notify.remind_later"),
-				};
-				int option = JOptionPane.showOptionDialog(parent, pan,
-						L10N.t("dialog.update_notify.update_title"),
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
-						null, options, options[0]);
+				Object[] options = { L10N.t("dialog.update_notify.update_now"),
+						L10N.t("dialog.update_notify.learn_more"), L10N.t("dialog.update_notify.remind_later"), };
+				int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
 				if (option == 1) {
 					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#update");
 				} else if (option == 0) {
 					if (OS.getOS() == OS.MAC) {
 						try {
-							Runtime.getRuntime().exec("./jdk.bundle/Contents/Home/bin/java -jar ./Resources/macOSUpdater.jar");
+							Runtime.getRuntime()
+									.exec("./jdk.bundle/Contents/Home/bin/java -jar ./Resources/macOSUpdater.jar");
 							System.exit(0);
 						} catch (IOException e) {
 							LOG.error("Failed to launch updater for macOS");
@@ -116,22 +112,18 @@ public class UpdateNotifyDialog {
 				ar.setText(releaseChangelog(updateInfo.getReleases().get(Launcher.version.major).getBuilds(),
 						Launcher.version.buildlong));
 
-				Object[] options = {
-						L10N.t("dialog.update_notify.update_now"),
-						L10N.t("dialog.update_notify.learn_more"),
-						L10N.t("dialog.update_notify.remind_later"),
-				};
-				int option = JOptionPane.showOptionDialog(parent, pan,
-						L10N.t("dialog.update_notify.update_title"),
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
-						null, options, options[0]);
+				Object[] options = { L10N.t("dialog.update_notify.update_now"),
+						L10N.t("dialog.update_notify.learn_more"), L10N.t("dialog.update_notify.remind_later"), };
+				int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 
 				if (option == 1) {
 					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#update");
 				} else if (option == 0) {
 					if (OS.getOS() == OS.MAC) {
 						try {
-							Runtime.getRuntime().exec("./jdk.bundle/Contents/Home/bin/java -jar ./Resources/macOSUpdater.jar");
+							Runtime.getRuntime()
+									.exec("./jdk.bundle/Contents/Home/bin/java -jar ./Resources/macOSUpdater.jar");
 							System.exit(0);
 						} catch (IOException e) {
 							LOG.error("Failed to launch updater for macOS");
