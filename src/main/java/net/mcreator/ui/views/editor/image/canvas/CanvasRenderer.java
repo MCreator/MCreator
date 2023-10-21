@@ -40,7 +40,7 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 	private JZoomPane jZoomPane;
 
 	private TexturePaint checkerboard;
-	private Stroke dashed;
+	private Stroke dashed, dashed_animated;
 	private float stroke_phase = 0;
 
 	public CanvasRenderer(ImageMakerView imageMakerView) {
@@ -168,13 +168,31 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 				g.drawImage(image, x, y, (int) Math.round(width * zoom), (int) Math.round(height * zoom), null);
 			}
 		}
+		double zoom = jZoomPane.getZoomport().getZoom();
 		Layer outline = canvas.selected();
 		if (outline != null) {
-			double zoom = jZoomPane.getZoomport().getZoom();
-			int x = (int) Math.round(outline.getX() * zoom), y = (int) Math.round(outline.getY() * zoom);
-			int width = (int) Math.round(outline.getWidth() * zoom), height = (int) Math.round(
-					outline.getHeight() * zoom);
-			drawOutline((Graphics2D) g, x, y, width, height, outline.isPasted());
+			int x = (int) Math.round(outline.getX() * zoom);
+			int y = (int) Math.round(outline.getY() * zoom);
+
+			int width = (int) Math.round(outline.getWidth() * zoom);
+			int height = (int) Math.round(outline.getHeight() * zoom);
+
+			drawOutline((Graphics2D) g, x, y, width, height, outline.isPasted(), false);
+		}
+
+		Selection selection = canvas.getSelection();
+		if (selection.isActive()) {
+			int x = (int) Math.round(selection.getLeft() * zoom);
+			int y = (int) Math.round(selection.getTop() * zoom);
+
+			int width = (int) Math.round(selection.getWidth() * zoom);
+			int height = (int) Math.round(selection.getHeight() * zoom);
+
+			drawOutline((Graphics2D) g, x, y, width, height, true, true);
+		}
+		if (selection.getEditing() != SelectedBorder.NONE) {
+			Graphics2D g2d = (Graphics2D) g;
+			selection.drawHandles(g2d);
 		}
 	}
 
@@ -188,6 +206,10 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 
 	@Override public int getHeight() {
 		return canvas.getHeight();
+	}
+
+	public double getZoom() {
+		return jZoomPane.getZoomport().getZoom();
 	}
 
 	public BufferedImage render() {
@@ -225,6 +247,8 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 
 	private void rebuildOutlineStroke() {
 		dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+				new float[] { OUTLINE_LINE_LENGTH }, 0);
+		dashed_animated = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
 				new float[] { OUTLINE_LINE_LENGTH }, stroke_phase);
 	}
 
@@ -234,7 +258,8 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 			stroke_phase = OUTLINE_LINE_LENGTH * 2 + sp;
 		else
 			stroke_phase = sp;
-		rebuildOutlineStroke();
+		dashed_animated = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+				new float[] { OUTLINE_LINE_LENGTH }, stroke_phase);
 	}
 
 	private void drawCheckerboard(Graphics2D graphics2D, Dimension d) {
@@ -242,14 +267,18 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 		graphics2D.fillRect(0, 0, (int) d.getWidth(), (int) d.getHeight());
 	}
 
-	private void drawOutline(Graphics2D graphics2D, int x, int y, int width, int height, boolean pasted) {
+	private void drawOutline(Graphics2D graphics2D, int x, int y, int width, int height, boolean pasted,
+			boolean animated) {
 		graphics2D.setPaint((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		graphics2D.drawRect(x, y, width - 1, height - 1);
 		if (pasted)
 			graphics2D.setPaint((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		else
 			graphics2D.setPaint((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-		graphics2D.setStroke(dashed);
+		if (animated)
+			graphics2D.setStroke(dashed_animated);
+		else
+			graphics2D.setStroke(dashed);
 		graphics2D.drawRect(x, y, width - 1, height - 1);
 	}
 

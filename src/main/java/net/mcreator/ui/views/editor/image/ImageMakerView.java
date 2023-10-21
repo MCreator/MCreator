@@ -52,6 +52,8 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -83,6 +85,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public final JButton save;
 
 	public static final ExecutorService toolExecutor = Executors.newSingleThreadExecutor();
+	private Cursor currentCursor = null;
 	private boolean active;
 	private MCreatorTabs.Tab tab;
 	private File image;
@@ -176,7 +179,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		Thread animator = new Thread(() -> {
 			active = true;
 			while (active) {
-				if (layerPanel.selected() != null && layerPanel.selected().isPasted()) {
+				if (canvas != null && canvas.getSelection() != null && canvas.getSelection().isActive()) {
 					canvasRenderer.addPhaseToOutline((float) Math.PI / FPS / 2);
 					repaint();
 				}
@@ -388,14 +391,12 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	@Override public void mousePressed(MouseEvent e) {
-		zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
-		canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
+		setEditorCursor(toolPanel.getCurrentTool().getUsingCursor());
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mousePressed(e));
 	}
 
 	@Override public void mouseReleased(MouseEvent e) {
-		zoomPane.setCursor(toolPanel.getCurrentTool().getCursor());
-		canvasRenderer.setCursor(toolPanel.getCurrentTool().getCursor());
+		setEditorCursor(toolPanel.getCurrentTool().getCursor());
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseReleased(e));
 	}
 
@@ -408,15 +409,23 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	@Override public void mouseDragged(MouseEvent e) {
-		zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
-		canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
+		setEditorCursor(toolPanel.getCurrentTool().getUsingCursor());
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseDragged(e));
 		updateInfoBar(e.getX(), e.getY());
 	}
 
 	@Override public void mouseMoved(MouseEvent e) {
+		//if(toolPanel.getCurrentTool().getHoverCursor() != null)
+		//	setEditorCursor(toolPanel.getCurrentTool().getHoverCursor());
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseMoved(e));
 		updateInfoBar(e.getX(), e.getY());
+	}
+
+	public void setEditorCursor(Cursor cursor) {
+		currentCursor = cursor;
+		zoomPane.setCursor(cursor);
+		canvasRenderer.setCursor(cursor);
+		System.out.println(cursor);
 	}
 
 	private void updateInfoBar(int x, int y) {

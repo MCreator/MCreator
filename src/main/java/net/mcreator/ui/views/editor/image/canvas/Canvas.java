@@ -34,6 +34,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 	private int height;
 	private final LayerPanel layerPanel;
 	private final VersionManager versionManager;
+	private final Selection selection;
 	private CanvasRenderer canvasRenderer;
 
 	private boolean drawPreview;
@@ -50,6 +51,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 		this.height = height;
 		this.layerPanel = layerPanel;
 		this.versionManager = versionManager;
+		this.selection = new Selection(this);
 		layerPanel.setCanvas(this);
 		layerPanel.updateSelection();
 	}
@@ -106,6 +108,14 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 	public Layer getFloatingLayer() {
 		return floatingLayer;
+	}
+
+	/**
+	 * Returns the selection.
+	 * @return the selection
+	 */
+	public Selection getSelection() {
+		return selection;
 	}
 
 	@Override public Layer set(int index, Layer layer) {

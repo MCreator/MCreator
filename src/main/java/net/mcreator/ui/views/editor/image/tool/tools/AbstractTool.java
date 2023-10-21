@@ -123,6 +123,9 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 	public Cursor getUsingCursor() {
 		return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
 	}
+	public Cursor getHoverCursor() {
+		return null;
+	}
 
 	public void setLayerPanel(LayerPanel layerPanel) {
 		this.layerPanel = layerPanel;
