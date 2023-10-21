@@ -58,15 +58,16 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Proper
 			MCreatorDialog dialog = new MCreatorDialog(mcreator,
 					L10N.t("elementgui.living_entity.entity_data_entries.add_entry.title"), true);
 
-			VTextField name = new VTextField(20);
-			JComboBox<String> type = new JComboBox<>(new String[] { "Integer", "Logic", "String" });
-
+			VTextField name = new VTextField(24);
+			name.setPreferredSize(new Dimension(0, 28));
 			UniqueNameValidator validator = new UniqueNameValidator(L10N.t("workspace.variables.variable_name"),
 					name::getText, () -> entryList.stream().map(e -> e.getEntry().property().getName()),
 					new JavaMemberNameValidator(name, false));
 			validator.setIsPresentOnList(false);
 			name.setValidator(validator);
 			name.enableRealtimeValidation();
+
+			JComboBox<String> type = new JComboBox<>(new String[] { "Integer", "Logic", "String" });
 
 			JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 			JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -81,7 +82,7 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Proper
 						dataEntry.setEntry(new PropertyDataWithValue<>(new PropertyData.IntegerType(property), null));
 					} else if ("Logic".equals(type.getSelectedItem())) {
 						dataEntry.setEntry(new PropertyDataWithValue<>(new PropertyData.LogicType(property), null));
-					} else {
+					} else if ("String".equals(type.getSelectedItem())) {
 						dataEntry.setEntry(new PropertyDataWithValue<>(new PropertyData.StringType(property), null));
 					}
 					entry.set(dataEntry);
@@ -89,11 +90,14 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Proper
 			});
 			cancel.addActionListener(e -> dialog.setVisible(false));
 
-			dialog.getContentPane().add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 2, 50, 20,
+			JComponent main = PanelUtils.gridElements(2, 2, 2, 2,
 					L10N.label("elementgui.living_entity.entity_data_entries.add_entry.name"), name,
-					L10N.label("elementgui.living_entity.entity_data_entries.add_entry.type"), type)));
+					L10N.label("elementgui.living_entity.entity_data_entries.add_entry.type"), type);
+			main.setBorder(BorderFactory.createEmptyBorder(10, 10, 5, 10));
+
+			dialog.getContentPane().add("Center", main);
 			dialog.getContentPane().add("South", PanelUtils.join(ok, cancel));
-			dialog.setSize(360, 180);
+			dialog.pack();
 			dialog.setLocationRelativeTo(mcreator);
 			dialog.setVisible(true);
 
