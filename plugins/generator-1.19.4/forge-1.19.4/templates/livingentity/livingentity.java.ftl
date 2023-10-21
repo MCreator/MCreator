@@ -61,17 +61,15 @@ import javax.annotation.Nullable;
 
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
 
-	<#if data.entityDataEntries?has_content>
-		<#list data.entityDataEntries as entry>
-			<#if entry.value().getClass().getSimpleName() == "Integer">
-				public static final EntityDataAccessor<Integer> ${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.INT);
-			<#elseif entry.value().getClass().getSimpleName() == "Boolean">
-				public static final EntityDataAccessor<Boolean> ${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.BOOLEAN);
-			<#elseif entry.value().getClass().getSimpleName() == "String">
-				public static final EntityDataAccessor<String> ${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.STRING);
-			</#if>
-		</#list>
-	</#if>
+	<#list data.entityDataEntries as entry>
+		<#if entry.value().getClass().getSimpleName() == "Integer">
+			public static final EntityDataAccessor<Integer> ${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.INT);
+		<#elseif entry.value().getClass().getSimpleName() == "Boolean">
+			public static final EntityDataAccessor<Boolean> ${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.BOOLEAN);
+		<#elseif entry.value().getClass().getSimpleName() == "String">
+			public static final EntityDataAccessor<String> ${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.STRING);
+		</#if>
+	</#list>
 
 	<#if data.isBoss>
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(),
@@ -165,12 +163,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 
 	<#if data.entityDataEntries?has_content>
-		@Override protected void defineSynchedData() {
-			super.defineSynchedData();
-			<#list data.entityDataEntries as entry>
-				this.entityData.define(${entry.property().getName()}, ${entry.value()?is_string?then("\"" + entry.value() + "\"", entry.value())});
-			</#list>
-		}
+	@Override protected void defineSynchedData() {
+		super.defineSynchedData();
+		<#list data.entityDataEntries as entry>
+			this.entityData.define(${entry.property().getName()}, ${entry.value()?is_string?then("\"" + entry.value() + "\"", entry.value())});
+		</#list>
+	}
 	</#if>
 
 	<#if data.flyingMob>
