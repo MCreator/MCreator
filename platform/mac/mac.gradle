@@ -57,6 +57,7 @@ tasks.register('exportMacX64', Copy.class) {
     into('Resources') {
         from file('platform/mac/' + appIcon) rename(appIcon, 'mcreatorapp.icns')
         from file('platform/mac/' + icon) rename(icon, 'mcreator.icns')
+        from file('platform/mac/macOSUpdater.jar')
     }
     into('MacOS') {
         from file('platform/mac/mcreator_x64') rename('mcreator_x64', 'mcreator')
@@ -111,6 +112,7 @@ tasks.register('exportMacAarch64', Copy.class) {
     into('Resources') {
         from file('platform/mac/' + appIcon) rename(appIcon, 'mcreatorapp.icns')
         from file('platform/mac/' + icon) rename(icon, 'mcreator.icns')
+        from file('platform/mac/macOSUpdater.jar')
     }
     into('MacOS') {
         from file('platform/mac/mcreator_aarch64') rename('mcreator_aarch64', 'mcreator')

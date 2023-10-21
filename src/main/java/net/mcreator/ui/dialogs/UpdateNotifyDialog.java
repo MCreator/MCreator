@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs;
 
+import net.mcreator.io.OS;
 import net.mcreator.Launcher;
 import net.mcreator.io.net.api.update.Release;
 import net.mcreator.io.net.api.update.UpdateInfo;
@@ -28,15 +29,19 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.MCreatorVersionNumber;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.text.DefaultCaret;
 import java.awt.*;
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
 public class UpdateNotifyDialog {
+	private static final Logger LOG = LogManager.getLogger("Updater");
 
 	public static void showUpdateDialogIfUpdateExists(Window parent, boolean notifyForUpdates, boolean notifyForPatches,
 			boolean showNoUpdates) {
@@ -64,12 +69,29 @@ public class UpdateNotifyDialog {
 
 				ar.setText(fullChangelog(updateInfo));
 
-				Object[] options = { L10N.t("dialog.update_notify.open_download_page"),
-						L10N.t("dialog.update_notify.remind_later") };
-				int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-				if (option == 0) {
+				Object[] options = {
+						L10N.t("dialog.update_notify.update_now"),
+						L10N.t("dialog.update_notify.learn_more"),
+						L10N.t("dialog.update_notify.remind_later"),
+				};
+				int option = JOptionPane.showOptionDialog(parent, pan,
+						L10N.t("dialog.update_notify.update_title"),
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+						null, options, options[0]);
+
+				if (option == 1) {
 					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#update");
+				} else if (option == 0) {
+					if (OS.getOS() == OS.MAC) {
+						try {
+							Runtime.getRuntime().exec("./jdk.bundle/Contents/Home/bin/java -jar ./Resources/macOSUpdater.jar");
+							System.exit(0);
+						} catch (IOException e) {
+							LOG.error("Failed to launch updater for macOS");
+						}
+					} else {
+						DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#update");
+					}
 				}
 			} else if (updateInfo.isNewPatchAvailable() && notifyForPatches) {
 				JPanel pan = new JPanel(new BorderLayout());
@@ -94,12 +116,29 @@ public class UpdateNotifyDialog {
 				ar.setText(releaseChangelog(updateInfo.getReleases().get(Launcher.version.major).getBuilds(),
 						Launcher.version.buildlong));
 
-				Object[] options = { L10N.t("dialog.update_notify.open_download_page"),
-						L10N.t("dialog.update_notify.remind_later") };
-				int option = JOptionPane.showOptionDialog(parent, pan, L10N.t("dialog.update_notify.update_title"),
-						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
-				if (option == 0) {
-					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#updatebuild");
+				Object[] options = {
+						L10N.t("dialog.update_notify.update_now"),
+						L10N.t("dialog.update_notify.learn_more"),
+						L10N.t("dialog.update_notify.remind_later"),
+				};
+				int option = JOptionPane.showOptionDialog(parent, pan,
+						L10N.t("dialog.update_notify.update_title"),
+						JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
+						null, options, options[0]);
+
+				if (option == 1) {
+					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#update");
+				} else if (option == 0) {
+					if (OS.getOS() == OS.MAC) {
+						try {
+							Runtime.getRuntime().exec("./jdk.bundle/Contents/Home/bin/java -jar ./Resources/macOSUpdater.jar");
+							System.exit(0);
+						} catch (IOException e) {
+							LOG.error("Failed to launch updater for macOS");
+						}
+					} else {
+						DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/download#update");
+					}
 				}
 			} else if (showNoUpdates) {
 				JOptionPane.showMessageDialog(parent, L10N.t("dialog.update_notify.no_update_message"),

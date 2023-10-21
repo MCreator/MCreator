@@ -71,7 +71,7 @@ public class StartupNotifications {
 									updateInfo.getLatestMajor()),
 							new NotificationsRenderer.ActionButton(L10N.t("notification.common.more_info"),
 									e -> UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent, true, false, false)),
-							new NotificationsRenderer.ActionButton(L10N.t("dialog.update_notify.open_download_page"),
+							new NotificationsRenderer.ActionButton(L10N.t("dialog.update_notify.learn_more"),
 									e -> DesktopUtils.browseSafe(
 											MCreatorApplication.SERVER_DOMAIN + "/download#update")));
 				}
@@ -85,7 +85,7 @@ public class StartupNotifications {
 									updateInfo.getLatestPatchVersion()),
 							new NotificationsRenderer.ActionButton(L10N.t("notification.common.more_info"),
 									e -> UpdateNotifyDialog.showUpdateDialogIfUpdateExists(parent, false, true, false)),
-							new NotificationsRenderer.ActionButton(L10N.t("dialog.update_notify.open_download_page"),
+							new NotificationsRenderer.ActionButton(L10N.t("dialog.update_notify.learn_more"),
 									e -> DesktopUtils.browseSafe(
 											MCreatorApplication.SERVER_DOMAIN + "/download#updatebuild")));
 				}
