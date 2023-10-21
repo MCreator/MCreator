@@ -45,6 +45,64 @@ public class Selection {
 		this.second = new Point(xSecond, ySecond);
 	}
 
+	public SelectedBorder getEditing() {
+		return editing;
+	}
+
+	public void setEditing(SelectedBorder editing) {
+		this.editing = editing;
+	}
+
+	public int getHandleSize() {
+		return handleSize;
+	}
+
+	public Stroke getHandleStroke() {
+		return handleStroke;
+	}
+
+	public void setActive(boolean active) {
+		if (!active)
+			this.editing = SelectedBorder.NONE;
+		this.active = active;
+	}
+
+	public boolean isActive() {
+		return active;
+	}
+
+	public int getLeft() {
+		return Math.min(first.x, second.x);
+	}
+
+	public int getRight() {
+		return Math.max(first.x, second.x);
+	}
+
+	public int getTop() {
+		return Math.min(first.y, second.y);
+	}
+
+	public int getBottom() {
+		return Math.max(first.y, second.y);
+	}
+
+	public int getWidth() {
+		return Math.abs(first.x - second.x);
+	}
+
+	public int getHeight() {
+		return Math.abs(first.y - second.y);
+	}
+
+	public Point getFirst() {
+		return first;
+	}
+
+	public Point getSecond() {
+		return second;
+	}
+
 	/**
 	 * Draws the selection handles depending on the current state of the selection.
 	 *
@@ -230,63 +288,5 @@ public class Selection {
 		// Update to the detected state
 		editing = detected;
 		return editing;
-	}
-
-	public SelectedBorder getEditing() {
-		return editing;
-	}
-
-	public void setEditing(SelectedBorder editing) {
-		this.editing = editing;
-	}
-
-	public int getHandleSize() {
-		return handleSize;
-	}
-
-	public Stroke getHandleStroke() {
-		return handleStroke;
-	}
-
-	public void setActive(boolean active) {
-		if (!active)
-			this.editing = SelectedBorder.NONE;
-		this.active = active;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
-	public int getLeft() {
-		return Math.min(first.x, second.x);
-	}
-
-	public int getRight() {
-		return Math.max(first.x, second.x);
-	}
-
-	public int getTop() {
-		return Math.min(first.y, second.y);
-	}
-
-	public int getBottom() {
-		return Math.max(first.y, second.y);
-	}
-
-	public int getWidth() {
-		return Math.abs(first.x - second.x);
-	}
-
-	public int getHeight() {
-		return Math.abs(first.y - second.y);
-	}
-
-	public Point getFirst() {
-		return first;
-	}
-
-	public Point getSecond() {
-		return second;
 	}
 }
