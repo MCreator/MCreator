@@ -1,0 +1,1 @@
+Questo parametro aggiunge un suggerimento all'item quando tieni la tua icona sopra il blocco nel tuo inventario. Se utilizzi un tooltip generato da una procedura e il tuo elemento non è mantenuto da un'entità o da una gemma, la dipendenza `entità` sarà nulla.

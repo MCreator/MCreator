@@ -18,6 +18,7 @@
 
 package net.mcreator.ui;
 
+import net.mcreator.io.OS;
 import net.mcreator.ui.component.SocialButtons;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.ide.CodeEditorView;
@@ -45,30 +46,32 @@ public class MainMenuBar extends JMenuBar {
 	public MainMenuBar(MCreator mcreator) {
 		this.mcreator = mcreator;
 
+		boolean macOSscreenMenuBar =
+				OS.getOS() == OS.MAC && "true".equals(System.getProperty("apple.laf.useScreenMenuBar"));
+
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
 
-		JMenu logo = new JMenu("  MCreator");
-		logo.setMnemonic('M');
-		logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.getAppIcon().getImage(), 14, 14)));
-
-		logo.add(mcreator.actionRegistry.mcreatorWebsite);
-		logo.add(mcreator.actionRegistry.mcreatorCommunity);
-		SocialButtons socialButtons = new SocialButtons();
-		socialButtons.setBorder(BorderFactory.createEmptyBorder(3, 29, 7, 0));
-		logo.add(socialButtons);
-		logo.addSeparator();
-		logo.add(mcreator.actionRegistry.donate);
-		logo.addSeparator();
-		logo.add(mcreator.actionRegistry.mcreatorPublish);
-
-		add(logo);
+		if (!macOSscreenMenuBar) {
+			JMenu logo = new JMenu("  MCreator");
+			logo.setMnemonic('M');
+			logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.getAppIcon().getImage(), 14, 14)));
+			logo.add(mcreator.actionRegistry.mcreatorWebsite);
+			logo.add(mcreator.actionRegistry.mcreatorCommunity);
+			SocialButtons socialButtons = new SocialButtons();
+			socialButtons.setBorder(BorderFactory.createEmptyBorder(3, 29, 7, 0));
+			logo.add(socialButtons);
+			logo.addSeparator();
+			logo.add(mcreator.actionRegistry.donate);
+			logo.addSeparator();
+			logo.add(mcreator.actionRegistry.mcreatorPublish);
+			add(logo);
+		}
 
 		JMenu file = L10N.menu("menubar.file");
 		file.setMnemonic('F');
 		file.add(mcreator.actionRegistry.newWorkspace);
 		file.addSeparator();
 		file.add(mcreator.actionRegistry.openWorkspace);
-
 		if (mcreator.getApplication() != null) {
 			JMenu recentWorkspacesList = new JMenu(L10N.t("menubar.file.recent"));
 			int number = 0;
@@ -144,7 +147,6 @@ public class MainMenuBar extends JMenuBar {
 
 		JMenu workspace = L10N.menu("menubar.workspace");
 		workspace.setMnemonic('S');
-
 		workspace.addSeparator();
 		workspace.add(mcreator.actionRegistry.setCreativeTabItemOrder);
 		workspace.add(mcreator.actionRegistry.injectDefaultTags);
@@ -155,7 +157,6 @@ public class MainMenuBar extends JMenuBar {
 		workspace.addSeparator();
 		workspace.add(mcreator.actionRegistry.exportToDeobfJAR);
 		workspace.add(mcreator.actionRegistry.exportToJAR);
-
 		add(workspace);
 
 		JMenu resources = L10N.menu("menubar.resources");
@@ -239,6 +240,12 @@ public class MainMenuBar extends JMenuBar {
 		help.add(mcreator.actionRegistry.help);
 		help.add(mcreator.actionRegistry.support);
 		help.add(mcreator.actionRegistry.knowledgeBase);
+		if (macOSscreenMenuBar) {
+			help.addSeparator();
+			help.add(mcreator.actionRegistry.mcreatorWebsite);
+			help.add(mcreator.actionRegistry.mcreatorCommunity);
+			help.add(mcreator.actionRegistry.mcreatorPublish);
+		}
 		help.addSeparator();
 		help.add(mcreator.actionRegistry.showShortcuts);
 		help.addSeparator();

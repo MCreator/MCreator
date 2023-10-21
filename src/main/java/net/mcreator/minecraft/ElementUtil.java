@@ -286,19 +286,19 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static String[] loadAllFluids(Workspace workspace) {
-		ArrayList<String> retval = new ArrayList<>();
+	public static List<DataListEntry> loadAllFluids(Workspace workspace) {
+		List<DataListEntry> retval = new ArrayList<>();
 
 		for (ModElement modElement : workspace.getModElements()) {
 			if (modElement.getType() == ModElementType.FLUID) {
-				retval.add("CUSTOM:" + modElement.getName());
-				retval.add("CUSTOM:" + modElement.getName() + ":Flowing");
+				retval.add(new DataListEntry.Custom(modElement));
+				retval.add(new DataListEntry.Custom(modElement, ":Flowing"));
 			}
 		}
 
-		retval.addAll(DataListLoader.loadDataList("fluids").stream().map(DataListEntry::getName).toList());
+		retval.addAll(DataListLoader.loadDataList("fluids"));
 
-		return retval.toArray(new String[0]);
+		return retval.stream().filter(e -> e.isSupportedInWorkspace(workspace)).toList();
 	}
 
 	public static String[] getAllSounds(Workspace workspace) {
@@ -318,7 +318,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadArrowProjectiles(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.RANGEDITEM);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.PROJECTILE);
 
 		retval.addAll(DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("arrow")).toList());
 		return retval;

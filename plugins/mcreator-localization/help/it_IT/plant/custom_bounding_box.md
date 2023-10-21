@@ -1,0 +1,1 @@
+Seleziona questa opzione se vuoi personalizzare la casella di delimitazione di questa pianta. Se questo non è abilitato, la casella di delimitazione sarà basata sul tipo di pianta. 
