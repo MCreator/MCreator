@@ -45,9 +45,17 @@ public class Selection {
 		this.second = new Point(xSecond, ySecond);
 	}
 
+	/**
+	 * Draws the selection handles depending on the current state of the selection.
+	 *
+	 * @param g2d Graphics2D object to draw on
+	 */
 	public void drawHandles(Graphics2D g2d) {
 		Color baseColor = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
-		Color strokeColor = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 180);
+
+		Color strokeColor = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 120);
+		Color strokeColorHighlighted = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 100);
+
 		g2d.setPaint(strokeColor);
 
 		int handleSize = getHandleSize();
@@ -58,23 +66,95 @@ public class Selection {
 		int x_right = (int) Math.round(getRight() * zoom);
 		int y_bottom = (int) Math.round(getBottom() * zoom);
 
+		// Render the corners
 		if (cornersVisible()) {
+			// Top left
 			g2d.fillRect(x_left - handleSize / 2, y_top - handleSize / 2, handleSize, handleSize);
+
+			// Bottom left
 			g2d.fillRect(x_left - handleSize / 2, y_bottom - handleSize / 2, handleSize, handleSize);
+
+			// Top right
 			g2d.fillRect(x_right - handleSize / 2, y_top - handleSize / 2, handleSize, handleSize);
+
+			// Bottom right
 			g2d.fillRect(x_right - handleSize / 2, y_bottom - handleSize / 2, handleSize, handleSize);
+
+			// Add highlight to the selected corner
+			switch (editing) {
+			case TOP_LEFT: {
+				g2d.setPaint(strokeColorHighlighted);
+				g2d.fillRect(x_left - handleSize / 2, y_top - handleSize / 2, handleSize, handleSize);
+				g2d.setPaint(strokeColor);
+				break;
+			}
+			case BOTTOM_LEFT: {
+				g2d.setPaint(strokeColorHighlighted);
+				g2d.fillRect(x_left - handleSize / 2, y_bottom - handleSize / 2, handleSize, handleSize);
+				g2d.setPaint(strokeColor);
+				break;
+			}
+			case TOP_RIGHT: {
+				g2d.setPaint(strokeColorHighlighted);
+				g2d.fillRect(x_right - handleSize / 2, y_top - handleSize / 2, handleSize, handleSize);
+				g2d.setPaint(strokeColor);
+				break;
+			}
+			case BOTTOM_RIGHT: {
+				g2d.setPaint(strokeColorHighlighted);
+				g2d.fillRect(x_right - handleSize / 2, y_bottom - handleSize / 2, handleSize, handleSize);
+				g2d.setPaint(strokeColor);
+				break;
+			}
+			}
 		}
 
 		g2d.setStroke(getHandleStroke());
 
 		if (horizontalHandlesVisible()) {
+			// Top
 			g2d.drawLine(x_left + 2 * handleSize, y_top, x_right - 2 * handleSize, y_top);
+
+			// Bottom
 			g2d.drawLine(x_left + 2 * handleSize, y_bottom, x_right - 2 * handleSize, y_bottom);
+
+			// Add highlight to the selected horizontal handle
+			switch (editing) {
+			case TOP: {
+				g2d.setPaint(strokeColorHighlighted);
+				g2d.drawLine(x_left + 2 * handleSize, y_top, x_right - 2 * handleSize, y_top);
+				g2d.setPaint(strokeColor);
+				break;
+			}
+			case BOTTOM: {
+				g2d.setPaint(strokeColorHighlighted);
+				g2d.drawLine(x_left + 2 * handleSize, y_bottom, x_right - 2 * handleSize, y_bottom);
+				g2d.setPaint(strokeColor);
+				break;
+			}
+			}
 		}
 
 		if (verticalHandlesVisible()) {
+			// Left
 			g2d.drawLine(x_left, y_top + 2 * handleSize, x_left, y_bottom - 2 * handleSize);
+
+			// Right
 			g2d.drawLine(x_right, y_top + 2 * handleSize, x_right, y_bottom - 2 * handleSize);
+
+			// Add highlight to the selected vertical handle
+			switch (editing) {
+			case LEFT: {
+				g2d.setPaint(strokeColorHighlighted);
+				g2d.drawLine(x_left, y_top + 2 * handleSize, x_left, y_bottom - 2 * handleSize);
+				break;
+			}
+			case RIGHT: {
+				g2d.setPaint(strokeColorHighlighted);
+				g2d.drawLine(x_right, y_top + 2 * handleSize, x_right, y_bottom - 2 * handleSize);
+				break;
+			}
+			}
 		}
 	}
 
