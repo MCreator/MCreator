@@ -29,6 +29,12 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 class AcceleratorDialog {
+	private static String replaceMacKey(String input) {
+		return input.replace("⌘", "Command")
+				.replace("⌥", "Option")
+				.replace("⌃", "Control")
+				.replace("⇧", "Shift");
+	}
 
 	static void showAcceleratorMapDialog(Window parent, AcceleratorMap acceleratorMap) {
 		JTable map = new JTable(new DefaultTableModel(
@@ -53,6 +59,7 @@ class AcceleratorDialog {
 				int modifiers = keyStroke.getModifiers();
 				if (modifiers > 0) {
 					acceleratorText = InputEvent.getModifiersExText(modifiers);
+					acceleratorText = replaceMacKey(acceleratorText);
 					acceleratorText += " + ";
 				}
 				acceleratorText += KeyEvent.getKeyText(keyStroke.getKeyCode());
