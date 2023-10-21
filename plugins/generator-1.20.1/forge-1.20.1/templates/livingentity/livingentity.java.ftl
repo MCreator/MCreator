@@ -609,7 +609,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double x = this.getX();
 		double y = this.getY();
 		double z = this.getZ();
-		Level world = this.level;
+		Level world = this.level();
+
 		Entity entity = this;
 		return <@procedureOBJToConditionCode data.breatheUnderwater true false/>;
 	}
@@ -620,7 +621,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		double x = this.getX();
 		double y = this.getY();
 		double z = this.getZ();
-		Level world = this.level;
+		Level world = this.level();
+
 		Entity entity = this;
 		return <@procedureOBJToConditionCode data.pushedByFluids false false/>;
 	}
