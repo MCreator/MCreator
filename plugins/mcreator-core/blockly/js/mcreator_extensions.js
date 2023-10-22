@@ -101,10 +101,13 @@ function appendAutoReloadingDataListField(sourceName, targetName, targetList) {
             }), targetName);
         this.setOnChange(function (changeEvent) {
             if (changeEvent.type === Blockly.Events.BLOCK_CHANGE &&
-                changeEvent.blockId === this.id &&
+                changeEvent.group && changeEvent.blockId === this.id &&
                 changeEvent.element === 'field' &&
                 changeEvent.name === sourceName) {
+                const group = Blockly.Events.getGroup();
+                Blockly.Events.setGroup(changeEvent.group);
                 this.setFieldValue('', targetName);
+                Blockly.Events.setGroup(group);
             }
         });
     };
