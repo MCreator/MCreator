@@ -168,7 +168,7 @@ public class ConverterRegistry {
 			new FeatureDimensionRestrictionConverter()
 		));
 		put(ModElementType.STRUCTURE, List.of(
-			new StructureDimensionRestrictionConverter()
+			new StructureToFeatureConverter()
 		));
 		put(ModElementType.MUSICDISC, List.of(
 			new SpecialInformationConverter(),

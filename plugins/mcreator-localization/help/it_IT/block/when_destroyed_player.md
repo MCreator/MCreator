@@ -1,0 +1,1 @@
+Attiva una procedura quando il giocatore rompe il blocco.
