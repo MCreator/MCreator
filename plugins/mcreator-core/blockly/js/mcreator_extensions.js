@@ -105,6 +105,7 @@ function appendAutoReloadingDataListField(sourceName, targetName, targetList) {
                 changeEvent.element === 'field' &&
                 changeEvent.name === sourceName) {
                 const group = Blockly.Events.getGroup();
+                // Makes it so the update and the reset event get undone together.
                 Blockly.Events.setGroup(changeEvent.group);
                 this.setFieldValue('', targetName);
                 Blockly.Events.setGroup(group);
