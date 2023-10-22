@@ -19,7 +19,6 @@
 package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
-import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
@@ -28,17 +27,15 @@ import net.mcreator.ui.views.editor.image.canvas.Selection;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
-import net.mcreator.ui.views.editor.image.versioning.change.Relocation;
-import net.mcreator.util.image.ImageUtils;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 
 public class SelectionTool extends AbstractTool {
-	private Point prev = null;
 	private Cursor usingCursor = null;
+	private boolean first = true;
+	private SelectedBorder editingBorder = SelectedBorder.NONE, lastBorder = SelectedBorder.NONE;
+	private Point x = null, y = null;
 
 	public SelectionTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager) {
 		super(L10N.t("dialog.image_maker.tools.types.select"),
@@ -48,78 +45,126 @@ public class SelectionTool extends AbstractTool {
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
-		canvas.getSelection().getSecond().x = e.getX();
-		canvas.getSelection().getSecond().y = e.getY();
-		if (prev != null) {
-			//int x = e.getX() - prev.x;
-			//int y = e.getY() - prev.y;
-			//prev = e.getPoint();
-			//relocation.setAfter(layer);
-			return true;
+		Selection selection = canvas.getSelection();
+		switch (editingBorder) {
+		case ANY, NONE -> {
+			if (first) {
+				selection.setEditing(SelectedBorder.ANY);
+				selection.getFirst().x = (int) Math.round(e.getPreciseX());
+				selection.getFirst().y = (int) Math.round(e.getPreciseY());
+				first = false;
+			}
+			selection.getSecond().x = (int) Math.round(e.getPreciseX());
+			selection.getSecond().y = (int) Math.round(e.getPreciseY());
+		}
+		case TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT -> {
+			x.x = (int) Math.round(e.getPreciseX());
+			y.y = (int) Math.round(e.getPreciseY());
+		}
+		case TOP, BOTTOM -> y.y = (int) Math.round(e.getPreciseY());
+		case LEFT, RIGHT -> x.x = (int) Math.round(e.getPreciseX());
 		}
 		return false;
 	}
 
 	@Override public void mousePressed(MouseEvent e) {
-		super.mousePressed(e);
-		canvas.getSelection().setActive(true);
-		canvas.getSelection().getFirst().x = e.getX();
-		canvas.getSelection().getFirst().y = e.getY();
-		if (layer.in(e.getX(), e.getY())) {
-			//prev = e.getPoint();
-			//original = new Point(layer.getX(), layer.getY());
-			//relocation = new Relocation(canvas, layer);
+		Selection selection = canvas.getSelection();
+		selection.setEditStarted(true);
+		editingBorder = selection.getEditing();
+		System.out.println(editingBorder);
+
+		switch (editingBorder) {
+		case TOP_LEFT -> {
+			x = selection.getLeftPoint();
+			y = selection.getTopPoint();
 		}
+		case TOP -> {
+			x = null;
+			y = selection.getTopPoint();
+		}
+		case TOP_RIGHT -> {
+			x = selection.getRightPoint();
+			y = selection.getTopPoint();
+		}
+		case RIGHT -> {
+			x = selection.getRightPoint();
+			y = null;
+		}
+		case BOTTOM_RIGHT -> {
+			x = selection.getRightPoint();
+			y = selection.getBottomPoint();
+		}
+		case BOTTOM -> {
+			x = null;
+			y = selection.getBottomPoint();
+		}
+		case BOTTOM_LEFT -> {
+			x = selection.getLeftPoint();
+			y = selection.getBottomPoint();
+		}
+		case LEFT -> {
+			x = selection.getLeftPoint();
+			y = null;
+		}
+		}
+		super.mousePressed(e);
 	}
 
 	@Override public void mouseReleased(MouseEvent e) {
-		//prev = null;
-		//if (layer.in(e.getX(), e.getY()) && original.x != layer.getX() && original.y != layer.getY()) {
-		//relocation.setAfter(layer);
-		//versionManager.addRevision(relocation);
-		//}
-		canvas.getSelection().setEditing(SelectedBorder.ANY);
+		Selection selection = canvas.getSelection();
+		if (selection.hasSurface())
+			selection.setEditing(SelectedBorder.ANY);
+		else {
+			selection.setEditing(SelectedBorder.NONE);
+		}
+
+		first = true;
+		selection.setEditStarted(false);
 
 		super.mouseReleased(e);
 	}
 
+	@Override public void mouseClicked(MouseEvent e) {
+		super.mouseClicked(e);
+		Selection selection = canvas.getSelection();
+
+		ZoomedMouseEvent zme = (ZoomedMouseEvent) e;
+
+		SelectedBorder border = selection.checkHandles((int) zme.getRawX(), (int) zme.getRawY());
+		if (border != SelectedBorder.ANY) {
+			selection.setEditing(SelectedBorder.NONE);
+		}
+	}
+
 	@Override public void mouseMoved(MouseEvent e) {
 		ZoomedMouseEvent event = (ZoomedMouseEvent) e;
-		SelectedBorder border = canvas.getSelection().checkEditing((int) event.getRawX(), (int) event.getRawY());
+		SelectedBorder border = canvas.getSelection().checkHandles((int) event.getRawX(), (int) event.getRawY());
 
-		// change the cursor based on which border we are floating above
-		switch (border) {
-		case TOP_LEFT:
-		case BOTTOM_RIGHT:
-			usingCursor = Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
-			break;
-		case TOP_RIGHT:
-		case BOTTOM_LEFT:
-			usingCursor = Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR);
-			break;
-		case TOP:
-		case BOTTOM:
-			usingCursor = Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
-			break;
-		case LEFT:
-		case RIGHT:
-			usingCursor = Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
-			break;
-		default:
-			usingCursor = null;
-			break;
+		// change the cursor based on which border we are floating above if different from the previous one
+		if (border != lastBorder) {
+			switch (border) {
+			case TOP_LEFT, BOTTOM_RIGHT -> usingCursor = Cursor.getPredefinedCursor(Cursor.NW_RESIZE_CURSOR);
+			case TOP_RIGHT, BOTTOM_LEFT -> usingCursor = Cursor.getPredefinedCursor(Cursor.NE_RESIZE_CURSOR);
+			case TOP, BOTTOM -> usingCursor = Cursor.getPredefinedCursor(Cursor.N_RESIZE_CURSOR);
+			case LEFT, RIGHT -> usingCursor = Cursor.getPredefinedCursor(Cursor.E_RESIZE_CURSOR);
+			default -> usingCursor = null;
+			}
+			lastBorder = border;
 		}
 	}
 
 	@Override public Cursor getHoverCursor() {
 		if (usingCursor != null)
 			return usingCursor;
-		return super.getUsingCursor();
+		return getCursor();
+	}
+
+	@Override public Cursor getCursor() {
+		return Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	}
 
 	@Override public void toolDisabled(ToolActivationEvent event) {
 		super.toolDisabled(event);
-
-		canvas.getSelection().setActive(false);
+		canvas.getSelection().setEditing(SelectedBorder.ANY);
 	}
 }

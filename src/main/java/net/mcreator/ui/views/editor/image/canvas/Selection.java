@@ -27,13 +27,11 @@ import java.awt.*;
  */
 public class Selection {
 	private final Canvas canvas;
-	private Point first, second;
-
-	private boolean active = false;
+	private final Point first, second;
+	private final int handleSize = 10;
+	private final Stroke handleStroke = new BasicStroke(handleSize);
 	private SelectedBorder editing = SelectedBorder.NONE;
-	private int handleSize = 10;
-
-	private Stroke handleStroke = new BasicStroke(handleSize);
+	private boolean editStarted = false;
 
 	public Selection(Canvas canvas) {
 		this(canvas, 0, 0, 0, 0);
@@ -61,30 +59,36 @@ public class Selection {
 		return handleStroke;
 	}
 
-	public void setActive(boolean active) {
-		if (!active)
-			this.editing = SelectedBorder.NONE;
-		this.active = active;
-	}
-
-	public boolean isActive() {
-		return active;
-	}
-
 	public int getLeft() {
 		return Math.min(first.x, second.x);
+	}
+
+	public Point getLeftPoint() {
+		return first.x == getLeft() ? first : second;
 	}
 
 	public int getRight() {
 		return Math.max(first.x, second.x);
 	}
 
+	public Point getRightPoint() {
+		return first.x == getRight() ? first : second;
+	}
+
 	public int getTop() {
 		return Math.min(first.y, second.y);
 	}
 
+	public Point getTopPoint() {
+		return first.y == getTop() ? first : second;
+	}
+
 	public int getBottom() {
 		return Math.max(first.y, second.y);
+	}
+
+	public Point getBottomPoint() {
+		return first.y == getBottom() ? first : second;
 	}
 
 	public int getWidth() {
@@ -95,6 +99,10 @@ public class Selection {
 		return Math.abs(first.y - second.y);
 	}
 
+	public boolean hasSurface() {
+		return getWidth() > 0 && getHeight() > 0;
+	}
+
 	public Point getFirst() {
 		return first;
 	}
@@ -103,116 +111,109 @@ public class Selection {
 		return second;
 	}
 
+	public void setEditStarted(boolean editStarted) {
+		this.editStarted = editStarted;
+	}
+
+	public boolean isEditStarted() {
+		return editStarted;
+	}
+
 	/**
 	 * Draws the selection handles depending on the current state of the selection.
 	 *
 	 * @param g2d Graphics2D object to draw on
 	 */
 	public void drawHandles(Graphics2D g2d) {
-		Color baseColor = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
+		if (!isEditStarted()) {
+			// Save the previous stroke to avoid unwanted changes
+			Stroke prevStroke = g2d.getStroke();
 
-		Color strokeColor = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 120);
-		Color strokeColorHighlighted = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 100);
+			Color baseColor = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
 
-		g2d.setPaint(strokeColor);
+			Color strokeColor = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 120);
+			Color strokeColorHighlighted = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(),
+					100);
 
-		int handleSize = getHandleSize();
+			g2d.setPaint(strokeColor);
 
-		double zoom = canvas.getCanvasRenderer().getZoom();
-		int x_left = (int) Math.round(getLeft() * zoom);
-		int y_top = (int) Math.round(getTop() * zoom);
-		int x_right = (int) Math.round(getRight() * zoom);
-		int y_bottom = (int) Math.round(getBottom() * zoom);
+			int handleSize = getHandleSize();
 
-		// Render the corners
-		if (cornersVisible()) {
-			// Top left
-			g2d.fillRect(x_left - handleSize / 2, y_top - handleSize / 2, handleSize, handleSize);
+			double zoom = canvas.getCanvasRenderer().getZoom();
+			int x_left = (int) Math.round(getLeft() * zoom);
+			int y_top = (int) Math.round(getTop() * zoom);
+			int x_right = (int) Math.round(getRight() * zoom);
+			int y_bottom = (int) Math.round(getBottom() * zoom);
 
-			// Bottom left
-			g2d.fillRect(x_left - handleSize / 2, y_bottom - handleSize / 2, handleSize, handleSize);
-
-			// Top right
-			g2d.fillRect(x_right - handleSize / 2, y_top - handleSize / 2, handleSize, handleSize);
-
-			// Bottom right
-			g2d.fillRect(x_right - handleSize / 2, y_bottom - handleSize / 2, handleSize, handleSize);
-
-			// Add highlight to the selected corner
-			switch (editing) {
-			case TOP_LEFT: {
-				g2d.setPaint(strokeColorHighlighted);
-				g2d.fillRect(x_left - handleSize / 2, y_top - handleSize / 2, handleSize, handleSize);
-				g2d.setPaint(strokeColor);
-				break;
+			// Render the corners
+			if (cornersVisible()) {
+				// Add highlight to the selected corner
+				switch (editing) {
+				case TOP_LEFT: {
+					g2d.setPaint(strokeColorHighlighted);
+					g2d.fillRect(x_left - handleSize / 2, y_top - handleSize / 2, handleSize, handleSize);
+					g2d.setPaint(strokeColor);
+					break;
+				}
+				case BOTTOM_LEFT: {
+					g2d.setPaint(strokeColorHighlighted);
+					g2d.fillRect(x_left - handleSize / 2, y_bottom - handleSize / 2, handleSize, handleSize);
+					g2d.setPaint(strokeColor);
+					break;
+				}
+				case TOP_RIGHT: {
+					g2d.setPaint(strokeColorHighlighted);
+					g2d.fillRect(x_right - handleSize / 2, y_top - handleSize / 2, handleSize, handleSize);
+					g2d.setPaint(strokeColor);
+					break;
+				}
+				case BOTTOM_RIGHT: {
+					g2d.setPaint(strokeColorHighlighted);
+					g2d.fillRect(x_right - handleSize / 2, y_bottom - handleSize / 2, handleSize, handleSize);
+					g2d.setPaint(strokeColor);
+					break;
+				}
+				}
 			}
-			case BOTTOM_LEFT: {
-				g2d.setPaint(strokeColorHighlighted);
-				g2d.fillRect(x_left - handleSize / 2, y_bottom - handleSize / 2, handleSize, handleSize);
-				g2d.setPaint(strokeColor);
-				break;
-			}
-			case TOP_RIGHT: {
-				g2d.setPaint(strokeColorHighlighted);
-				g2d.fillRect(x_right - handleSize / 2, y_top - handleSize / 2, handleSize, handleSize);
-				g2d.setPaint(strokeColor);
-				break;
-			}
-			case BOTTOM_RIGHT: {
-				g2d.setPaint(strokeColorHighlighted);
-				g2d.fillRect(x_right - handleSize / 2, y_bottom - handleSize / 2, handleSize, handleSize);
-				g2d.setPaint(strokeColor);
-				break;
-			}
-			}
-		}
 
-		g2d.setStroke(getHandleStroke());
+			g2d.setStroke(getHandleStroke());
 
-		if (horizontalHandlesVisible()) {
-			// Top
-			g2d.drawLine(x_left + 2 * handleSize, y_top, x_right - 2 * handleSize, y_top);
+			if (horizontalHandlesVisible()) {
+				// Add highlight to the selected horizontal handle
+				switch (editing) {
+				case TOP: {
+					g2d.setPaint(strokeColorHighlighted);
+					g2d.drawLine(x_left + 2 * handleSize, y_top, x_right - 2 * handleSize, y_top);
+					g2d.setPaint(strokeColor);
+					break;
+				}
+				case BOTTOM: {
+					g2d.setPaint(strokeColorHighlighted);
+					g2d.drawLine(x_left + 2 * handleSize, y_bottom, x_right - 2 * handleSize, y_bottom);
+					g2d.setPaint(strokeColor);
+					break;
+				}
+				}
+			}
 
-			// Bottom
-			g2d.drawLine(x_left + 2 * handleSize, y_bottom, x_right - 2 * handleSize, y_bottom);
+			if (verticalHandlesVisible()) {
+				// Add highlight to the selected vertical handle
+				switch (editing) {
+				case LEFT: {
+					g2d.setPaint(strokeColorHighlighted);
+					g2d.drawLine(x_left, y_top + 2 * handleSize, x_left, y_bottom - 2 * handleSize);
+					break;
+				}
+				case RIGHT: {
+					g2d.setPaint(strokeColorHighlighted);
+					g2d.drawLine(x_right, y_top + 2 * handleSize, x_right, y_bottom - 2 * handleSize);
+					break;
+				}
+				}
+			}
 
-			// Add highlight to the selected horizontal handle
-			switch (editing) {
-			case TOP: {
-				g2d.setPaint(strokeColorHighlighted);
-				g2d.drawLine(x_left + 2 * handleSize, y_top, x_right - 2 * handleSize, y_top);
-				g2d.setPaint(strokeColor);
-				break;
-			}
-			case BOTTOM: {
-				g2d.setPaint(strokeColorHighlighted);
-				g2d.drawLine(x_left + 2 * handleSize, y_bottom, x_right - 2 * handleSize, y_bottom);
-				g2d.setPaint(strokeColor);
-				break;
-			}
-			}
-		}
-
-		if (verticalHandlesVisible()) {
-			// Left
-			g2d.drawLine(x_left, y_top + 2 * handleSize, x_left, y_bottom - 2 * handleSize);
-
-			// Right
-			g2d.drawLine(x_right, y_top + 2 * handleSize, x_right, y_bottom - 2 * handleSize);
-
-			// Add highlight to the selected vertical handle
-			switch (editing) {
-			case LEFT: {
-				g2d.setPaint(strokeColorHighlighted);
-				g2d.drawLine(x_left, y_top + 2 * handleSize, x_left, y_bottom - 2 * handleSize);
-				break;
-			}
-			case RIGHT: {
-				g2d.setPaint(strokeColorHighlighted);
-				g2d.drawLine(x_right, y_top + 2 * handleSize, x_right, y_bottom - 2 * handleSize);
-				break;
-			}
-			}
+			// Restore the previous stroke
+			g2d.setStroke(prevStroke);
 		}
 	}
 
@@ -235,7 +236,7 @@ public class Selection {
 		return height > handleSize && width > handleSize;
 	}
 
-	public SelectedBorder checkEditing(int x, int y) {
+	public SelectedBorder checkHandles(int x, int y) {
 		SelectedBorder detected = SelectedBorder.ANY;
 
 		if (editing != SelectedBorder.NONE) {

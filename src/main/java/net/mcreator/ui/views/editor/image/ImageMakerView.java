@@ -34,6 +34,7 @@ import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.canvas.CanvasRenderer;
+import net.mcreator.ui.views.editor.image.canvas.SelectedBorder;
 import net.mcreator.ui.views.editor.image.clipboard.ClipboardManager;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
@@ -52,8 +53,6 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -179,7 +178,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		Thread animator = new Thread(() -> {
 			active = true;
 			while (active) {
-				if (canvas != null && canvas.getSelection() != null && canvas.getSelection().isActive()) {
+				if (canvas != null && canvas.getSelection() != null && canvas.getSelection().getEditing() != SelectedBorder.NONE) {
 					canvasRenderer.addPhaseToOutline((float) Math.PI / FPS / 2);
 					repaint();
 				}
