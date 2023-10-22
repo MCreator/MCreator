@@ -1,0 +1,1 @@
+Imposta la velocità di movimento del mob. I mob normalmente si muovono alla velocità di circa 0. 5, mentre quelli più veloci come ragni e lupi si muovono a 0.3.
