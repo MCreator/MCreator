@@ -26,7 +26,7 @@
     "toolbox_id": "entitydata",
     "toolbox_init": [
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
-      "~<field name=\"customEntity\">Examplelivingentity6</field>",
+      "~<field name=\"customEntity\">CUSTOM:Examplelivingentity6</field>",
       "~<field name=\"accessor\">Integer</field>"
     ],
     "fields": [
