@@ -101,6 +101,7 @@ function appendAutoReloadingDataListField(sourceName, targetName, targetList) {
             }), targetName);
         this.setOnChange(function (changeEvent) {
             if (changeEvent.type === Blockly.Events.BLOCK_CHANGE &&
+                changeEvent.blockId && changeEvent.getEventWorkspace_().getBlockById(changeEvent.blockId) === this &&
                 changeEvent.element === 'field' &&
                 changeEvent.name === sourceName) {
                 this.setFieldValue('', targetName);
