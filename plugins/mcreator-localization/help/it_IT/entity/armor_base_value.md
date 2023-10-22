@@ -1,0 +1,1 @@
+La quantità di punti armatura incorporati di cui dispone il mob. Gli zombi di default hanno 2 punti armatura.

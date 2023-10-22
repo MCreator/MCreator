@@ -1,0 +1,1 @@
+Questo parametro aggiunge un suggerimento al blocco quando tieni la tua icona sopra il blocco nel tuo inventario. Se utilizzi un suggerimento generato da una procedura e il tuo blocco non è mantenuto da un'entità o da una gemma, la dipendenza `entità` sarà nulla.

@@ -86,6 +86,12 @@ public class LocalizationUtils {
 				(k, v) -> addLocalizationEntry(generator, k, v.x(), v.y()));
 	}
 
+	public static void deleteLocalizationKeys(Generator generator, GeneratableElement element,
+			@Nullable List<?> localizationkeys) {
+		processDefinitionToLocalizationKeys(generator, element, localizationkeys).keySet()
+				.forEach(generator.getWorkspace()::removeLocalizationEntryByKey);
+	}
+
 	static Map<String, Tuple<Map<?, ?>, Object>> processDefinitionToLocalizationKeys(Generator generator,
 			GeneratableElement element, @Nullable List<?> localizationkeys) {
 		// values are pairs of key's YAML definitions and objects to parse tokens with
@@ -93,9 +99,12 @@ public class LocalizationUtils {
 
 		if (localizationkeys != null) {
 			for (Object template : localizationkeys) {
-				String keytpl = (String) ((Map<?, ?>) template).get("key");
-				Object fromlist = TemplateExpressionParser.processFTLExpression(generator,
-						(String) ((Map<?, ?>) template).get("fromlist"), element);
+				Map<?, ?> map = (Map<?, ?>) template;
+				String keytpl = (String) map.get("key");
+				Object fromlist = map.get("fromlist") != null ?
+						TemplateExpressionParser.processFTLExpression(generator, (String) map.get("fromlist"),
+								element) :
+						null;
 
 				if (fromlist instanceof Collection<?> listEntries) {
 					for (Object entry : listEntries) {
@@ -108,7 +117,7 @@ public class LocalizationUtils {
 												.replace("@lc1_name", StringUtils.lowercaseFirstLetter(element.getModElement().getName()))
 												//@formatter:on
 								));
-						keysToEntries.put(key, new Tuple<>((Map<?, ?>) template, entry));
+						keysToEntries.put(key, new Tuple<>(map, entry));
 					}
 				} else {
 					String key = GeneratorTokens.replaceTokens(generator.getWorkspace(), keytpl
@@ -119,7 +128,7 @@ public class LocalizationUtils {
 									.replace("@lc1_name", StringUtils.lowercaseFirstLetter(element.getModElement().getName()))
 									//@formatter:on
 					);
-					keysToEntries.put(key, new Tuple<>((Map<?, ?>) template, element));
+					keysToEntries.put(key, new Tuple<>(map, element));
 				}
 			}
 		}
@@ -153,33 +162,4 @@ public class LocalizationUtils {
 		}
 	}
 
-	public static void deleteLocalizationKeys(Generator generator, GeneratableElement generatableElement,
-			@Nullable List<?> localizationkeys) {
-		if (localizationkeys != null) {
-			for (Object template : localizationkeys) {
-				String keytpl = (String) ((Map<?, ?>) template).get("key");
-				Object fromlist = TemplateExpressionParser.processFTLExpression(generator,
-						(String) ((Map<?, ?>) template).get("fromlist"), generatableElement);
-
-				if (fromlist instanceof Collection<?> listEntries) {
-					for (Object entry : listEntries) {
-						String key = GeneratorTokens.replaceVariableTokens(entry,
-								GeneratorTokens.replaceTokens(generator.getWorkspace(),
-										keytpl.replace("@NAME", generatableElement.getModElement().getName())
-												.replace("@modid",
-														generator.getWorkspace().getWorkspaceSettings().getModID())
-												.replace("@registryname",
-														generatableElement.getModElement().getRegistryName())));
-						generator.getWorkspace().removeLocalizationEntryByKey(key);
-					}
-				} else {
-					String key = GeneratorTokens.replaceTokens(generator.getWorkspace(),
-							keytpl.replace("@NAME", generatableElement.getModElement().getName())
-									.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
-									.replace("@registryname", generatableElement.getModElement().getRegistryName()));
-					generator.getWorkspace().removeLocalizationEntryByKey(key);
-				}
-			}
-		}
-	}
 }
