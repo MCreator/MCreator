@@ -78,15 +78,7 @@ public class WorkspaceDialogs {
 			else
 				showErrorsMessage(mcreator, new AggregatedValidationResult(wdp.validationGroup));
 		});
-
-		workspaceDialog.addWindowListener(new WindowAdapter() {
-			@Override public void windowClosed(WindowEvent windowEvent) {
-				if (wdp.validationGroup.validateIsErrorFree())
-					workspaceDialog.setVisible(false);
-				else
-					showErrorsMessage(mcreator, new AggregatedValidationResult(wdp.validationGroup));
-			}
-		});
+		workspaceDialog.setClosable(false);
 
 		workspaceDialog.getRootPane().setDefaultButton(ok);
 		workspaceDialog.pack();
