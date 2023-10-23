@@ -770,7 +770,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		pane3.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(3, 4, 8, 8));
+		JPanel events = new JPanel(new GridLayout(3, 4, 5, 5));
 		events.add(onStruckByLightning);
 		events.add(whenMobFalls);
 		events.add(whenMobDies);

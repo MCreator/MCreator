@@ -524,16 +524,12 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		sbbp22.setOpaque(false);
 		sbbp22.add(destal);
 
-		JPanel events = new JPanel();
-		events.setLayout(new BoxLayout(events, BoxLayout.PAGE_AXIS));
-		JPanel events2 = new JPanel(new GridLayout(1, 4, 8, 8));
-		events2.setOpaque(false);
-		events2.add(onHelmetTick);
-		events2.add(onBodyTick);
-		events2.add(onLeggingsTick);
-		events2.add(onBootsTick);
-		events.add(PanelUtils.join(events2));
+		JPanel events = new JPanel(new GridLayout(1, 4, 5, 5));
 		events.setOpaque(false);
+		events.add(onHelmetTick);
+		events.add(onBodyTick);
+		events.add(onLeggingsTick);
+		events.add(onBootsTick);
 		pane6.add("Center", PanelUtils.totalCenterInPanel(events));
 
 		pane2.setOpaque(false);
