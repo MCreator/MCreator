@@ -143,13 +143,13 @@ public class BlocklyJavascriptBridge {
 			case "customEntity" -> openDataListEntrySelector(ElementUtil::loadCustomEntities, "entity");
 			case "entitydata_logic" -> openStringEntrySelector(
 					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
-							PropertyData.LogicType.class).toArray(String[]::new), "entity");
+							PropertyData.LogicType.class).toArray(String[]::new), "entity_data");
 			case "entitydata_integer" -> openStringEntrySelector(
 					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
-							PropertyData.IntegerType.class).toArray(String[]::new), "entity");
+							PropertyData.IntegerType.class).toArray(String[]::new), "entity_data");
 			case "entitydata_string" -> openStringEntrySelector(
 					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
-							PropertyData.StringType.class).toArray(String[]::new), "entity");
+							PropertyData.StringType.class).toArray(String[]::new), "entity_data");
 			case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUI(w).toArray(String[]::new), "gui");
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
