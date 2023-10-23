@@ -429,19 +429,43 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			}
 		}
 	}
+    </#if>
 
+	<#if data.entityDataEntries?has_content || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 	@Override public void addAdditionalSaveData(CompoundTag compound) {
-    	super.addAdditionalSaveData(compound);
+		super.addAdditionalSaveData(compound);
+		<#list data.entityDataEntries as entry>
+			<#if entry.value().getClass().getSimpleName() == "Integer">
+			compound.putInt("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
+			<#elseif entry.value().getClass().getSimpleName() == "Boolean">
+			compound.putBoolean("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
+			<#elseif entry.value().getClass().getSimpleName() == "String">
+			compound.putString("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
+			</#if>
+		</#list>
+		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 		compound.put("InventoryCustom", inventory.serializeNBT());
+		</#if>
 	}
 
 	@Override public void readAdditionalSaveData(CompoundTag compound) {
-    	super.readAdditionalSaveData(compound);
-		Tag inventoryCustom = compound.get("InventoryCustom");
-		if (inventoryCustom instanceof CompoundTag inventoryTag)
+		super.readAdditionalSaveData(compound);
+		<#list data.entityDataEntries as entry>
+			if (compound.contains("Data${entry.property().getName()}"))
+				<#if entry.value().getClass().getSimpleName() == "Integer">
+				this.entityData.set(DATA_${entry.property().getName()}, compound.getInt("Data${entry.property().getName()}"));
+				<#elseif entry.value().getClass().getSimpleName() == "Boolean">
+				this.entityData.set(DATA_${entry.property().getName()}, compound.getBoolean("Data${entry.property().getName()}"));
+				<#elseif entry.value().getClass().getSimpleName() == "String">
+				this.entityData.set(DATA_${entry.property().getName()}, compound.getString("Data${entry.property().getName()}"));
+				</#if>
+		</#list>
+		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+		if (compound.get("InventoryCustom") instanceof CompoundTag inventoryTag)
 			inventory.deserializeNBT(inventoryTag);
-    }
-    </#if>
+		</#if>
+	}
+	</#if>
 
 	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 	@Override public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {
