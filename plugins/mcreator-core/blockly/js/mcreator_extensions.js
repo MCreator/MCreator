@@ -100,6 +100,8 @@ function appendAutoReloadingDataListField(sourceName, targetName, targetList) {
                 }
             }), targetName);
         this.setOnChange(function (changeEvent) {
+            // Proceed if event represents change to field named "<sourceName>" on this block and was created in a group
+            // Event triggered by FieldDataListSelector is only grouped if field value is modified in UI
             if (changeEvent.type === Blockly.Events.BLOCK_CHANGE &&
                 changeEvent.group && changeEvent.blockId === this.id &&
                 changeEvent.element === 'field' &&
