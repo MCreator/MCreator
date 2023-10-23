@@ -238,7 +238,7 @@ public class ReferencesFinder {
 		} else if (value instanceof Map<?, ?> map) { // map with values
 			return listHasMatches(map.keySet(), field, clazz, validIf, condition) || listHasMatches(map.values(), field,
 					clazz, validIf, condition);
-		} else if (clazz.isArray()) { // array of values
+		} else if (value.getClass().isArray()) { // array of values
 			int length = Array.getLength(value);
 			for (int i = 0; i < length; i++) {
 				if (checkValue(Array.get(value, i), field, clazz, validIf, condition))
