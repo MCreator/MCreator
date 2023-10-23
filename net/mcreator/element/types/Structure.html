@@ -15,11 +15,7 @@
 <script type="text/javascript" src="../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var evenRowColor = "even-row-color";
-var oddRowColor = "odd-row-color";
-var tableTab = "table-tab";
-var activeTableTab = "active-table-tab";
-var pathtoroot = "../../../../";
+<script type="text/javascript">var pathtoroot = "../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -52,7 +48,7 @@ loadScripts(document, 'script');</script>
 <li>Detail:&nbsp;</li>
 <li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method-detail">Method</a></li>
+<li>Method</li>
 </ul>
 </div>
 <div class="nav-list-search"><label for="search-input">SEARCH:</label>
@@ -76,14 +72,9 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <section class="class-description" id="class-description">
-<dl class="notes">
-<dt>All Implemented Interfaces:</dt>
-<dd><code><a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a></code></dd>
-</dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">Structure</span>
-<span class="extends-implements">extends <a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a>
-implements <a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a></span></div>
+<span class="extends-implements">extends <a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -105,50 +96,32 @@ implements <a href="interfaces/ICommonType.html" title="interface in net.mcreato
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#generateCondition" class="member-name-link">generateCondition</a></code></div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#generationStep" class="member-name-link">generationStep</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color"><code><a href="#ignoreBlocks" class="member-name-link">ignoreBlocks</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#projection" class="member-name-link">projection</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../parts/BiomeEntry.html" title="class in net.mcreator.element.parts">BiomeEntry</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#restrictionBiomes" class="member-name-link">restrictionBiomes</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#maxCountPerChunk" class="member-name-link">maxCountPerChunk</a></code></div>
+<div class="col-second even-row-color"><code><a href="#separation" class="member-name-link">separation</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#minCountPerChunk" class="member-name-link">minCountPerChunk</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></code></div>
-<div class="col-second even-row-color"><code><a href="#onStructureGenerated" class="member-name-link">onStructureGenerated</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>boolean</code></div>
-<div class="col-second odd-row-color"><code><a href="#randomlyRotateStructure" class="member-name-link">randomlyRotateStructure</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../parts/BiomeEntry.html" title="class in net.mcreator.element.parts">BiomeEntry</a>&gt;</code></div>
-<div class="col-second even-row-color"><code><a href="#restrictionBiomes" class="member-name-link">restrictionBiomes</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&gt;</code></div>
-<div class="col-second odd-row-color"><code><a href="#restrictionBlocks" class="member-name-link">restrictionBlocks</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#spawnHeightOffset" class="member-name-link">spawnHeightOffset</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#spawnLocation" class="member-name-link">spawnLocation</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#spawnProbability" class="member-name-link">spawnProbability</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>int</code></div>
-<div class="col-second odd-row-color"><code><a href="#spawnXOffset" class="member-name-link">spawnXOffset</a></code></div>
-<div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code>int</code></div>
-<div class="col-second even-row-color"><code><a href="#spawnZOffset" class="member-name-link">spawnZOffset</a></code></div>
-<div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#structure" class="member-name-link">structure</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#spacing" class="member-name-link">spacing</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#surfaceDetectionType" class="member-name-link">surfaceDetectionType</a></code></div>
+<div class="col-second even-row-color"><code><a href="#structure" class="member-name-link">structure</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#surfaceDetectionType" class="member-name-link">surfaceDetectionType</a></code></div>
+<div class="col-last odd-row-color">&nbsp;</div>
+<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
+<div class="col-second even-row-color"><code><a href="#terrainAdaptation" class="member-name-link">terrainAdaptation</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 </div>
 <div class="inherited-list">
@@ -173,19 +146,6 @@ implements <a href="interfaces/ICommonType.html" title="interface in net.mcreato
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
-<div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
-<div id="method-summary-table.tabpanel" role="tabpanel">
-<div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Method</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../BaseType.html" title="enum class in net.mcreator.element">BaseType</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBaseTypesProvided()" class="member-name-link">getBaseTypesProvided</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-</div>
-</div>
-</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.element.GeneratableElement">Methods inherited from class&nbsp;net.mcreator.element.<a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></h3>
 <code><a href="../GeneratableElement.html#finalizeModElementGeneration()">finalizeModElementGeneration</a>, <a href="../GeneratableElement.html#generateModElementPicture()">generateModElementPicture</a>, <a href="../GeneratableElement.html#getAdditionalTemplateData()">getAdditionalTemplateData</a>, <a href="../GeneratableElement.html#getModElement()">getModElement</a>, <a href="../GeneratableElement.html#isUnknown()">isUnknown</a>, <a href="../GeneratableElement.html#performQuickValidation()">performQuickValidation</a>, <a href="../GeneratableElement.html#setModElement(net.mcreator.workspace.elements.ModElement)">setModElement</a>, <a href="../GeneratableElement.html#wasConversionApplied()">wasConversionApplied</a></code></div>
@@ -210,69 +170,9 @@ implements <a href="interfaces/ICommonType.html" title="interface in net.mcreato
 </section>
 </li>
 <li>
-<section class="detail" id="randomlyRotateStructure">
-<h3>randomlyRotateStructure</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">randomlyRotateStructure</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="surfaceDetectionType">
-<h3>surfaceDetectionType</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">surfaceDetectionType</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="spawnProbability">
-<h3>spawnProbability</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">spawnProbability</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="minCountPerChunk">
-<h3>minCountPerChunk</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">minCountPerChunk</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="maxCountPerChunk">
-<h3>maxCountPerChunk</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">maxCountPerChunk</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="spawnLocation">
-<h3>spawnLocation</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">spawnLocation</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="spawnHeightOffset">
-<h3>spawnHeightOffset</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">spawnHeightOffset</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="spawnXOffset">
-<h3>spawnXOffset</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">spawnXOffset</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="spawnZOffset">
-<h3>spawnZOffset</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">spawnZOffset</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="restrictionBlocks">
-<h3>restrictionBlocks</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&gt;</span>&nbsp;<span class="element-name">restrictionBlocks</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="restrictionBiomes">
-<h3>restrictionBiomes</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../parts/BiomeEntry.html" title="class in net.mcreator.element.parts">BiomeEntry</a>&gt;</span>&nbsp;<span class="element-name">restrictionBiomes</span></div>
+<section class="detail" id="projection">
+<h3>projection</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">projection</span></div>
 </section>
 </li>
 <li>
@@ -282,15 +182,39 @@ implements <a href="interfaces/ICommonType.html" title="interface in net.mcreato
 </section>
 </li>
 <li>
-<section class="detail" id="generateCondition">
-<h3>generateCondition</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">generateCondition</span></div>
+<section class="detail" id="spacing">
+<h3>spacing</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">spacing</span></div>
 </section>
 </li>
 <li>
-<section class="detail" id="onStructureGenerated">
-<h3>onStructureGenerated</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/Procedure.html" title="class in net.mcreator.element.parts.procedure">Procedure</a></span>&nbsp;<span class="element-name">onStructureGenerated</span></div>
+<section class="detail" id="separation">
+<h3>separation</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">int</span>&nbsp;<span class="element-name">separation</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="restrictionBiomes">
+<h3>restrictionBiomes</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../parts/BiomeEntry.html" title="class in net.mcreator.element.parts">BiomeEntry</a>&gt;</span>&nbsp;<span class="element-name">restrictionBiomes</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="surfaceDetectionType">
+<h3>surfaceDetectionType</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">surfaceDetectionType</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="terrainAdaptation">
+<h3>terrainAdaptation</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">terrainAdaptation</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="generationStep">
+<h3>generationStep</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">generationStep</span></div>
 </section>
 </li>
 </ul>
@@ -305,24 +229,6 @@ implements <a href="interfaces/ICommonType.html" title="interface in net.mcreato
 <section class="detail" id="&lt;init&gt;(net.mcreator.workspace.elements.ModElement)">
 <h3>Structure</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">Structure</span><wbr><span class="parameters">(<a href="../../workspace/elements/ModElement.html" title="class in net.mcreator.workspace.elements">ModElement</a>&nbsp;element)</span></div>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<!-- ============ METHOD DETAIL ========== -->
-<li>
-<section class="method-details" id="method-detail">
-<h2>Method Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="getBaseTypesProvided()">
-<h3>getBaseTypesProvided</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;<a href="../BaseType.html" title="enum class in net.mcreator.element">BaseType</a>&gt;</span>&nbsp;<span class="element-name">getBaseTypesProvided</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="interfaces/ICommonType.html#getBaseTypesProvided()">getBaseTypesProvided</a></code>&nbsp;in interface&nbsp;<code><a href="interfaces/ICommonType.html" title="interface in net.mcreator.element.types.interfaces">ICommonType</a></code></dd>
-</dl>
 </section>
 </li>
 </ul>
