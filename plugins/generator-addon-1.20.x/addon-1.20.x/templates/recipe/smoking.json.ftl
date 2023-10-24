@@ -9,10 +9,10 @@
       "groups": [ "<#if data.group?has_content>${data.group}<#else>${modid}</#if>" ],
       "tags": [ "smoker" ],
       "input": {
-        ${mappedMCItemToIngameItemName(data.smokingInputStack)}
+        ${mappedMCItemToItemObjectJSON(data.smokingInputStack)}
       },
       "output": {
-        ${mappedMCItemToIngameItemName(data.smokingReturnStack)}
+        ${mappedMCItemToItemObjectJSON(data.smokingReturnStack)}
       }
     }
 }

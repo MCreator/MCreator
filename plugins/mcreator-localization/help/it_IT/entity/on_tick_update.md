@@ -1,0 +1,1 @@
+Attiva la procedura ogni tick che l'entità trascorre nel mondo.

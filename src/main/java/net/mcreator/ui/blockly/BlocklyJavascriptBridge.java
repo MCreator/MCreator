@@ -147,7 +147,9 @@ public class BlocklyJavascriptBridge {
 			case "dimensionCustom" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
 							.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new), "dimension");
-			case "fluid" -> openStringEntrySelector(ElementUtil::loadAllFluids, "fluids");
+			case "fluid" -> openDataListEntrySelector(
+					w -> ElementUtil.loadAllFluids(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
+					"fluids");
 			case "gamerulesboolean" -> openDataListEntrySelector(
 					w -> ElementUtil.getAllBooleanGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "gamerules");
@@ -155,6 +157,9 @@ public class BlocklyJavascriptBridge {
 					w -> ElementUtil.getAllNumberGameRules(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "gamerules");
 			case "sound" -> openStringEntrySelector(ElementUtil::getAllSounds, "sound");
+			case "structure" ->
+					openStringEntrySelector(w -> w.getFolderManager().getStructureList().toArray(String[]::new),
+							"structures");
 			case "procedure" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 							.map(ModElement::getName).toArray(String[]::new), "procedure");
@@ -319,7 +324,7 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.getAllNumberGameRules(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "fluid":
-			return ElementUtil.loadAllFluids(workspace);
+			return ElementUtil.loadAllFluids(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
 		case "particle":
@@ -343,9 +348,6 @@ public class BlocklyJavascriptBridge {
 		case "material":
 			retval = ElementUtil.loadMaterials().stream().map(DataListEntry::getName).collect(Collectors.toList());
 			break;
-		case "rangeditem":
-			return ElementUtil.loadArrowProjectiles(workspace).stream().map(DataListEntry::getName)
-					.toArray(String[]::new);
 		case "villagerprofessions":
 			return ElementUtil.loadAllVillagerProfessions(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
@@ -389,6 +391,9 @@ public class BlocklyJavascriptBridge {
 	 * @return The readable name of the passed entry, or an empty string if it can't find a readable name
 	 */
 	@SuppressWarnings("unused") public String getReadableNameOf(String value, String type) {
+		if (value.startsWith("CUSTOM:"))
+			return value.substring(7);
+
 		String datalist;
 		switch (type) {
 		case "entity", "spawnableEntity" -> datalist = "entities";

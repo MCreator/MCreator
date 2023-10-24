@@ -42,7 +42,7 @@ package ${package}.init;
 
 	<#assign tabMap = w.getCreativeTabMap()>
 
-	<#if w.hasItemsInVanillaTabs(tabMap)>
+	<#if tabMap.keySet()?filter(e -> !e?starts_with('CUSTOM:'))?size != 0>
 	@SubscribeEvent public static void buildTabContentsVanilla(CreativeModeTabEvent.BuildContents tabData) {
 		<#assign first = true>
 		<#list tabMap.keySet() as tabName>
@@ -58,7 +58,7 @@ package ${package}.init;
 	}
 	</#if>
 
-	<#if w.hasItemsInCustomTabs(tabMap)>
+	<#if tabMap.keySet()?filter(e -> e?starts_with('CUSTOM:'))?size != 0>
 	@SubscribeEvent public static void buildTabContentsModded(CreativeModeTabEvent.Register event) {
 		<#list w.getElementsOfType("tab") as tabME>
 			<#if tabMap.containsKey("CUSTOM:" + tabME.getName())>

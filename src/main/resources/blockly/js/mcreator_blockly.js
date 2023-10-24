@@ -1,7 +1,7 @@
 let global_variables = [];
 
-Blockly.HSV_SATURATION = 0.37;
-Blockly.HSV_VALUE = 0.6;
+Blockly.HSV_SATURATION = MCR_BLOCKLY_PREF['saturation'];
+Blockly.HSV_VALUE = MCR_BLOCKLY_PREF['value'];
 
 const blockly = document.getElementById('blockly');
 const workspace = Blockly.inject(blockly, {
@@ -88,23 +88,6 @@ function jsonToBlocklyDropDownArray(json) {
         retval.push(["" + map[key], "" + key]);
     });
     return retval;
-}
-
-// Helper function to use in Blockly extensions that append a dropdown
-function appendDropDown(listType, fieldName) {
-    return function () {
-        this.appendDummyInput().appendField(new Blockly.FieldDropdown(
-            arrayToBlocklyDropDownArray(javabridge.getListOf(listType))), fieldName);
-    };
-}
-
-// Helper function to use in Blockly extensions that append a message and a dropdown
-function appendDropDownWithMessage(messageKey, listType, fieldName) {
-    return function () {
-        this.appendDummyInput().appendField(javabridge.t("blockly.extension." + messageKey))
-            .appendField(new Blockly.FieldDropdown(
-                arrayToBlocklyDropDownArray(javabridge.getListOf(listType))), fieldName);
-    };
 }
 
 // A function to properly convert workspace to XML (google/blockly#6738)

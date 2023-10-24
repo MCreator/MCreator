@@ -1,0 +1,1 @@
+﻿Questa procedura determina se selezionare inizialmente questa casella o meno quando la GUI viene aperta.

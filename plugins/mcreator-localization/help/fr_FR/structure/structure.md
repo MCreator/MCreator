@@ -1,4 +1,4 @@
-La limite actuelle pour une structure simple est de 32x32x32 blocs pour des raisons de performances.
+La limite actuelle vanilla pour une seule structure est de 48x48x48 blocs pour des raisons de performance.
 
 Les blocs de structure sont des blocs vanilla qui peuvent sauvegarder des structures en format .NBT
 

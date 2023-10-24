@@ -4,21 +4,6 @@ Blockly.Extensions.register('small_text_tip',
             new Blockly.FieldLabel(javabridge.t('blockly.block.' + this.type + '.tip'), 'small-text'));
     });
 
-Blockly.Extensions.register('gamemode_list_provider', appendDropDown('gamemodes', 'gamemode'));
-
-Blockly.Extensions.register('damagesource_list_provider', appendDropDown('damagesources', 'damagesource'));
-
-Blockly.Extensions.register('sound_category_list_provider',
-    appendDropDownWithMessage('sound_category_list', 'soundcategories', 'soundcategory'));
-
-Blockly.Extensions.register('material_list_provider', appendDropDown('material', 'material'));
-
-Blockly.Extensions.register('plant_type_list_provider', appendDropDown('planttypes', 'planttype'));
-
-Blockly.Extensions.register('schematic_list_provider', appendDropDown('schematic', 'schematic'));
-
-Blockly.Extensions.register('direction_list_provider', appendDropDown('direction', 'direction'));
-
 // Extension to mark a procedure block as a custom loop
 Blockly.Extensions.register('is_custom_loop',
     function () {
@@ -266,6 +251,10 @@ Blockly.Extensions.register('simple_column_validator', validateIntProviderInputs
 
 Blockly.Extensions.register('state_provider_int_property_validator', validateIntProviderInputs(['value', 0, Infinity]));
 
+Blockly.Extensions.register('pine_tree_feature_validator', validateIntProviderInputs(['foliage_height', 0, 24]));
+
+Blockly.Extensions.register('spruce_tree_feature_validator', validateIntProviderInputs(['radius', 0, 24], ['trunk_height', 0, 24]));
+
 // Helper function to provide a mixin for mutators that add a single repeating (dummy) input with additional fields
 // The mutator container block must have a "STACK" statement input for this to work
 // The empty message is localized as "blockly.block.block_type.empty"
@@ -476,6 +465,15 @@ Blockly.Extensions.registerMutator('weighted_state_provider_mutator', simpleRepe
                 .appendField(new Blockly.FieldImage("./res/b_input.png", 8, 10));
         }, true, ['weight'], true),
     undefined, ['weighted_list_mutator_input']);
+
+// Mutator for repeating tree decorator inputs
+Blockly.Extensions.registerMutator('tree_decorator_mutator', simpleRepeatingInputMixin(
+        'tree_decorator_mutator_container', 'tree_decorator_mutator_input', 'decorator',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendValueInput(inputName + index).setCheck('TreeDecorator').setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.feature_tree.decorator_input'));
+        }),
+    undefined, ['tree_decorator_mutator_input']);
 
 // Helper function for extensions that validate one or more resource location text fields
 function validateResourceLocationFields(...fields) {

@@ -21,12 +21,16 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -35,7 +39,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -46,11 +50,13 @@ import java.util.Map;
 	@Nonnull public String toolType;
 
 	public int renderType;
+	public int blockingRenderType;
 	public String texture;
 	@Nonnull public String customModelName;
+	@Nonnull public String blockingModelName;
 
 	public String name;
-	public List<String> specialInfo;
+	public StringListProcedure specialInformation;
 	public TabEntry creativeTab;
 	public int harvestLevel;
 	public double efficiency;
@@ -59,8 +65,7 @@ import java.util.Map;
 	public double damageVsEntity;
 	public int usageCount;
 	public List<MItemBlock> blocksAffected;
-	public boolean hasGlow;
-	public Procedure glowCondition;
+	public LogicProcedure glowCondition;
 	public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
 
@@ -85,7 +90,7 @@ import java.util.Map;
 
 		this.attackSpeed = 2.8;
 
-		this.specialInfo = new ArrayList<>();
+		this.blockingModelName = "Normal blocking";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
@@ -102,11 +107,44 @@ import java.util.Map;
 		return Model.getModelByParams(getModElement().getWorkspace(), customModelName, modelType);
 	}
 
+	public Model getBlockingModel() {
+		Model.Type modelType = Model.Type.BUILTIN;
+		if (blockingRenderType == 1)
+			modelType = Model.Type.JSON;
+		else if (blockingRenderType == 2)
+			modelType = Model.Type.OBJ;
+		return Model.getModelByParams(getModElement().getWorkspace(), blockingModelName, modelType);
+	}
+
 	@Override public Map<String, String> getTextureMap() {
 		Model model = getItemModel();
 		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
 			return ((TexturedModel) model).getTextureMapping().getTextureMap();
 		return new HashMap<>();
+	}
+
+	public Map<String, String> getBlockingTextureMap() {
+		Model model = getBlockingModel();
+		if (model instanceof TexturedModel && ((TexturedModel) model).getTextureMapping() != null)
+			return ((TexturedModel) model).getTextureMapping().getTextureMap();
+		return new HashMap<>();
+	}
+
+	public List<Item.StateEntry> getModels() {
+		if (toolType.equals("Shield")) {
+			Item.StateEntry model = new Item.StateEntry();
+			model.setWorkspace(getModElement().getWorkspace());
+			model.renderType = blockingRenderType;
+			model.texture = texture;
+			model.customModelName = blockingModelName;
+
+			model.stateMap = new StateMap();
+			model.stateMap.put(new PropertyData.LogicType("blocking"), true);
+
+			return Collections.singletonList(model);
+		} else {
+			return Collections.emptyList();
+		}
 	}
 
 	@Override public TabEntry getCreativeTab() {

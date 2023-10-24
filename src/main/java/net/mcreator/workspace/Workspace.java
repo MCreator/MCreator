@@ -42,7 +42,6 @@ import java.awt.*;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -67,14 +66,14 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	// transient fields
 	private transient boolean changed = false;
-	transient WorkspaceFileManager fileManager;
+	protected transient WorkspaceFileManager fileManager;
 	protected transient Generator generator;
 	private transient boolean regenerateRequired = false;
 	private transient boolean failingGradleDependencies = false;
 
 	@Nonnull private final transient WorkspaceInfo workspaceInfo;
 
-	private Workspace(WorkspaceSettings workspaceSettings) {
+	protected Workspace(WorkspaceSettings workspaceSettings) {
 		this();
 		this.workspaceSettings = workspaceSettings;
 	}
@@ -127,22 +126,17 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public ModElement getModElementByName(String elementName) {
-		for (ModElement element : mod_elements)
-			if (element.getName().equals(elementName))
-				return element;
-		return null;
+		return mod_elements.parallelStream().filter(element -> element.getName().equals(elementName)).findFirst()
+				.orElse(null);
 	}
 
 	public VariableElement getVariableElementByName(String elementName) {
-		for (VariableElement element : variable_elements)
-			if (element.getName().equals(elementName))
-				return element;
-		return null;
+		return variable_elements.parallelStream().filter(element -> element.getName().equals(elementName)).findFirst()
+				.orElse(null);
 	}
 
 	public void resetModElementCompilesStatus() {
-		for (ModElement el : mod_elements)
-			el.setCompiles(true);
+		mod_elements.parallelStream().forEach(el -> el.setCompiles(true));
 		markDirty();
 	}
 
@@ -281,14 +275,14 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return changed;
 	}
 
-	void reloadModElements() {
+	protected void reloadModElements() {
 		// While reiniting, list may change due to converters, so we need to copy it
 		for (ModElement modElement : Set.copyOf(mod_elements)) {
 			modElement.reinit(this);
 		}
 	}
 
-	void reloadFolderStructure() {
+	protected void reloadFolderStructure() {
 		this.foldersRoot.updateStructure();
 
 		Set<String> validPaths = foldersRoot.getRecursiveFolderChildren().stream().map(FolderElement::getPath)
@@ -475,7 +469,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	// Below are methods that may still be used by some plugins
 
-	public void loadStoredDataFrom(Workspace other) {
+	@SuppressWarnings("unused") void loadStoredDataFrom(Workspace other) {
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
@@ -484,74 +478,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.mcreatorVersion = other.mcreatorVersion;
 		this.workspaceSettings = other.workspaceSettings;
 		this.workspaceSettings.setWorkspace(this);
-	}
-
-	@SuppressWarnings("unused") public void setFoldersRoot(FolderElement foldersRoot) {
-		this.foldersRoot = foldersRoot;
-		markDirty();
-	}
-
-	@SuppressWarnings("unused") public void updateModElement(ModElement element) {
-		for (ModElement el : mod_elements) {
-			if (el == element || el.getName().equals(element.getName())) {
-				el.loadDataFrom(element);
-				el.reloadElementIcon(); // update ME icon
-				el.getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush()); // update MCItem icons
-
-				break; // there can be only one element with given name so no need to iterate further
-			}
-		}
-		markDirty();
-	}
-
-	@SuppressWarnings("unused")
-	public void updateSoundElement(SoundElement originalElement, SoundElement updatedElement) {
-		Set<SoundElement> tmp = new HashSet<>(sound_elements);
-		for (SoundElement el : tmp) {
-			if (el.getName().equals(originalElement.getName())) {
-				sound_elements.remove(el);
-				sound_elements.add(updatedElement);
-			}
-		}
-		markDirty();
-	}
-
-	@SuppressWarnings("unused")
-	public void updateVariableElement(VariableElement originalElement, VariableElement updatedElement) {
-		Set<VariableElement> tmp = new HashSet<>(variable_elements);
-		for (VariableElement el : tmp) {
-			if (el.getName().equals(originalElement.getName())) {
-				variable_elements.remove(el);
-				variable_elements.add(updatedElement);
-			}
-		}
-		markDirty();
-	}
-
-	@SuppressWarnings("unused") public void reloadFromFS() {
-		String workspace_string = FileIO.readFileToString(fileManager.getWorkspaceFile());
-		Workspace workspace_on_fs = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
-		loadStoredDataFrom(workspace_on_fs);
-		reloadModElements();
-		reloadFolderStructure();
-		LOG.info("Reloaded current workspace from the workspace file");
-	}
-
-	@SuppressWarnings("unused") public final static class VirtualWorkspace extends Workspace {
-
-		public VirtualWorkspace(Workspace original, String workspace_string) throws IOException {
-			super(null);
-			Workspace retval = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
-			if (retval == null)
-				throw new IOException("Failed to parse workspace string");
-			this.loadStoredDataFrom(retval);
-			this.generator = new Generator(this);
-			this.generator.setGradleCache(this.generator.getGradleCache());
-			this.fileManager = original.getFileManager();
-			this.reloadModElements();
-			this.reloadFolderStructure();
-		}
-
 	}
 
 }

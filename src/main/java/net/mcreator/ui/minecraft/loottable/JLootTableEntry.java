@@ -94,7 +94,7 @@ public class JLootTableEntry extends JPanel {
 		explosionDecay.setOpaque(false);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText(L10N.t("elementgui.loot_table.remove_entry"));
+		remove.setText(L10N.t("simple_list_entry.remove"));
 		remove.addActionListener(e -> {
 			entryList.remove(this);
 			parent.remove(container);
@@ -119,7 +119,7 @@ public class JLootTableEntry extends JPanel {
 	}
 
 	public LootTable.Pool.Entry getEntry() {
-		if (!item.containsItem())
+		if (!item.containsItemOrAir())
 			return null;
 
 		LootTable.Pool.Entry entry = new LootTable.Pool.Entry();

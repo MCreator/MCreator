@@ -60,27 +60,25 @@ import java.util.Map;
 	}
 
 	private String readCode(@Nonnull String template) {
-		try {
-			if (!CACHE.containsKey(template)) { // cache miss, add to cache
+		return CACHE.computeIfAbsent(template, key -> {
+			try {
 				ProjectJarManager jarManager = workspace.getGenerator().getProjectJarManager();
 				if (jarManager != null) {
-					SourceLocation sourceLocation = jarManager.getSourceLocForClass(template);
+					SourceLocation sourceLocation = jarManager.getSourceLocForClass(key);
 					String code = ZipIO.readCodeInZip(new File(sourceLocation.getLocationAsString()),
-							template.replace(".", "/") + ".java");
+							key.replace(".", "/") + ".java");
 					if (code == null)
-						throw new NullPointerException();
+						throw new NullPointerException("Provided code is null");
 
-					CACHE.put(template, code);
+					return code;
 				}
+				return null;
+			} catch (Exception e) {
+				this.workspace.markFailingGradleDependencies();
+				LOG.error("Failed to load code provider for " + key, e);
+				return null;
 			}
-
-			return CACHE.get(template);
-		} catch (Exception e) {
-			this.workspace.markFailingGradleDependencies();
-
-			LOG.error("Failed to load code provider for " + template, e);
-			return null;
-		}
+		});
 	}
 
 	public String getCodeFor(@Nonnull String template, int lineFrom, int lineTo) {

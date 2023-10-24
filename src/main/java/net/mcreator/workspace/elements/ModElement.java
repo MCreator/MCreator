@@ -19,9 +19,11 @@
 package net.mcreator.workspace.elements;
 
 import com.google.gson.*;
+import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IMCItemProvider;
 import net.mcreator.generator.IGeneratorProvider;
 import net.mcreator.minecraft.MCItem;
@@ -94,6 +96,11 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		reinit(workspace);
 	}
 
+	/**
+	 * Warning: this method uses ModElementManager and is thus not thread safe
+	 *
+	 * @return GeneratableElement or null if load failed
+	 */
 	@Nullable public GeneratableElement getGeneratableElement() {
 		return this.workspace.getModElementManager().loadGeneratableElement(this);
 	}
@@ -199,6 +206,7 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		return name;
 	}
 
+
 	public ModElementType<?> getType() {
 		try {
 			return ModElementTypeLoader.getModElementType(type);
@@ -231,6 +239,9 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		return sortid;
 	}
 
+	/**
+	 * Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe
+	 */
 	@Nonnull public synchronized List<MCItem> getMCItems() {
 		if (mcItems == null) {
 			mcItems = this.getGeneratableElement() instanceof IMCItemProvider provider ?
@@ -268,6 +279,14 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 			this.path = null;
 		else
 			this.path = parent.getPath();
+	}
+
+	/**
+	 * Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe
+	 */
+	public Collection<BaseType> getBaseTypesProvided() {
+		return this.getGeneratableElement() instanceof ICommonType iCommonType ?
+				iCommonType.getBaseTypesProvided() : Collections.emptyList();
 	}
 
 	public static class ModElementDeserializer implements JsonDeserializer<ModElement> {

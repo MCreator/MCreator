@@ -1,5 +1,5 @@
 if (project.snapshot) {
-    project.mcreatorconf.setProperty('mcreator', "EAP " + (String) project.mcreatorconf.getProperty('mcreator') + (String) project.builddate)
+    project.mcreatorconf.setProperty('mcreator', "EAP " + (String) project.mcreatorconf.getProperty('mcreator') + "." + (String) project.builddate)
 }
 
 tasks.register('cleanupPlugins') {
@@ -75,8 +75,8 @@ tasks.register('generateExportReport') {
         report += 'builddate=' + project.builddate.toString() + '\n'
         report += 'minecraft=Minecraft Forge ' + String.join("/", fg) + ', Data Packs ' + String.join("/", dp) + ', and Bedrock Edition ' + String.join("/", bd) + '\n'
 
-        new File("build").mkdirs()
-        new File("build/reports").mkdirs()
+        file('build').mkdirs()
+        file('build/reports').mkdirs()
         file("build/reports/export.txt").write(report)
     }
 }

@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -110,14 +110,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<#if data.helmetSpecialInfo?has_content>
-		@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-			<#list data.helmetSpecialInfo as entry>
-			list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
-		}
-		</#if>
+		<@addSpecialInformation data.helmetSpecialInformation/>
 
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 			<#if data.helmetModelTexture?has_content && data.helmetModelTexture != "From armor">
@@ -126,6 +119,8 @@ public abstract class ${name}Item extends ArmorItem {
 			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
 			</#if>
 		}
+
+		<@piglinNeutral data.helmetPiglinNeutral/>
 
 		<@onArmorTick data.onHelmetTick/>
 	}
@@ -160,14 +155,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<#if data.bodySpecialInfo?has_content>
-		@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-			<#list data.bodySpecialInfo as entry>
-			list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
-		}
-		</#if>
+		<@addSpecialInformation data.bodySpecialInformation/>
 
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 			<#if data.bodyModelTexture?has_content && data.bodyModelTexture != "From armor">
@@ -176,6 +164,8 @@ public abstract class ${name}Item extends ArmorItem {
 			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
 			</#if>
 		}
+
+		<@piglinNeutral data.bodyPiglinNeutral/>
 
 		<@onArmorTick data.onBodyTick/>
 	}
@@ -210,14 +200,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<#if data.leggingsSpecialInfo?has_content>
-		@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-			<#list data.leggingsSpecialInfo as entry>
-			list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
-		}
-		</#if>
+		<@addSpecialInformation data.leggingsSpecialInformation/>
 
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 			<#if data.leggingsModelTexture?has_content && data.leggingsModelTexture != "From armor">
@@ -226,6 +209,8 @@ public abstract class ${name}Item extends ArmorItem {
 			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_2.png";
 			</#if>
 		}
+
+		<@piglinNeutral data.leggingsPiglinNeutral/>
 
 		<@onArmorTick data.onLeggingsTick/>
 	}
@@ -260,14 +245,7 @@ public abstract class ${name}Item extends ArmorItem {
 		}
 		</#if>
 
-		<#if data.bootsSpecialInfo?has_content>
-		@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-			<#list data.bootsSpecialInfo as entry>
-			list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
-		}
-		</#if>
+		<@addSpecialInformation data.bootsSpecialInformation/>
 
 		@Override public String getArmorTexture(ItemStack stack, Entity entity, EquipmentSlot slot, String type) {
 			<#if data.bootsModelTexture?has_content && data.bootsModelTexture != "From armor">
@@ -276,6 +254,8 @@ public abstract class ${name}Item extends ArmorItem {
 			return "${modid}:textures/models/armor/${data.armorTextureFile}_layer_1.png";
 			</#if>
 		}
+
+		<@piglinNeutral data.bootsPiglinNeutral/>
 
 		<@onArmorTick data.onBootsTick/>
 	}

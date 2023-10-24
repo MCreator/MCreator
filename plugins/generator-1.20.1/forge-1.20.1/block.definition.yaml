@@ -6,21 +6,18 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
 
   # Worldgen
-  - template: block/oregen.java.ftl
-    condition: doesGenerateInWorld()
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/ores/@NAMEFeature.java"
   - template: json/block_feature_biome_modifier.json.ftl
     writer: json
-    condition: doesGenerateInWorld()
+    condition: generateFeature
     name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
     variables: "step=underground_ores"
   - template: block/configured_oregen.json.ftl
     writer: json
-    condition: doesGenerateInWorld()
+    condition: generateFeature
     name: "@MODDATAROOT/worldgen/configured_feature/@registryname.json"
   - template: block/placed_oregen.json.ftl
     writer: json
-    condition: doesGenerateInWorld()
+    condition: generateFeature
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
 
   # Block item templates
@@ -394,19 +391,23 @@ global_templates:
     writer: json
     variables: "type=pickaxe"
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/pickaxe.json"
-    condition: ${w.hasBlocksMineableWith('pickaxe')}
+    condition: "${w.getGElementsOfType('block')?filter(e -> e.destroyTool.equals('pickaxe'))?size != 0}"
+    hidden: true
   - template: block/mineable_tag.json.ftl
     writer: json
     variables: "type=axe"
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/axe.json"
-    condition: ${w.hasBlocksMineableWith('axe')}
+    condition: "${w.getGElementsOfType('block')?filter(e -> e.destroyTool.equals('axe'))?size != 0}"
+    hidden: true
   - template: block/mineable_tag.json.ftl
     writer: json
     variables: "type=shovel"
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/shovel.json"
-    condition: ${w.hasBlocksMineableWith('shovel')}
+    condition: "${w.getGElementsOfType('block')?filter(e -> e.destroyTool.equals('shovel'))?size != 0}"
+    hidden: true
   - template: block/mineable_tag.json.ftl
     writer: json
     variables: "type=hoe"
     name: "@RESROOT/data/minecraft/tags/blocks/mineable/hoe.json"
-    condition: ${w.hasBlocksMineableWith('hoe')}
+    condition: "${w.getGElementsOfType('block')?filter(e -> e.destroyTool.equals('hoe'))?size != 0}"
+    hidden: true

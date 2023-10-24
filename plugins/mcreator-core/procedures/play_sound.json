@@ -29,10 +29,12 @@
       "type": "field_data_list_selector",
       "name": "sound",
       "datalist": "sound"
+    },
+    {
+      "type": "field_data_list_dropdown",
+      "name": "soundcategory",
+      "datalist": "soundcategories"
     }
-  ],
-  "extensions": [
-    "sound_category_list_provider"
   ],
   "inputsInline": true,
   "previousStatement": null,
