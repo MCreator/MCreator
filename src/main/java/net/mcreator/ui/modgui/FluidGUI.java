@@ -371,21 +371,17 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(properties));
 
-		JPanel events = new JPanel();
-		events.setLayout(new BoxLayout(events, BoxLayout.PAGE_AXIS));
-		JPanel events2 = new JPanel(new GridLayout(3, 3, 6, 8));
-		events2.setOpaque(false);
-		events2.add(onBlockAdded);
-		events2.add(onNeighbourChanges);
-		events2.add(onTickUpdate);
-		events2.add(onEntityCollides);
-		events2.add(onRandomUpdateEvent);
-		events2.add(onDestroyedByExplosion);
-		events2.add(beforeReplacingBlock);
-		events2.add(new JLabel());
-		events2.add(new JLabel());
-		events.add(PanelUtils.join(events2));
+		JPanel events = new JPanel(new GridLayout(3, 3, 5, 5));
 		events.setOpaque(false);
+		events.add(onBlockAdded);
+		events.add(onNeighbourChanges);
+		events.add(onTickUpdate);
+		events.add(onEntityCollides);
+		events.add(onRandomUpdateEvent);
+		events.add(onDestroyedByExplosion);
+		events.add(beforeReplacingBlock);
+		events.add(new JLabel());
+		events.add(new JLabel());
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 

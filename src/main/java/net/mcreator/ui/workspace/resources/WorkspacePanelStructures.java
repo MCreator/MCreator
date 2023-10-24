@@ -32,21 +32,21 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
-import java.util.*;
 
 public class WorkspacePanelStructures extends JPanel implements IReloadableFilterable {
 
 	private final WorkspacePanel workspacePanel;
 
-	private final FilterModel listmodel = new FilterModel();
+	private final ResourceFilterModel<String> filterModel;
 
 	WorkspacePanelStructures(WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
 		setOpaque(false);
 
 		this.workspacePanel = workspacePanel;
+		this.filterModel = new ResourceFilterModel<>(workspacePanel, String::toString);
 
-		JSelectableList<String> structureElementList = new JSelectableList<>(listmodel);
+		JSelectableList<String> structureElementList = new JSelectableList<>(filterModel);
 		structureElementList.setOpaque(false);
 		structureElementList.setCellRenderer(new Render());
 		structureElementList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
@@ -120,77 +120,13 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 	}
 
 	@Override public void reloadElements() {
-		listmodel.removeAllElements();
-		workspacePanel.getMCreator().getFolderManager().getStructureList().forEach(listmodel::addElement);
+		filterModel.removeAllElements();
+		workspacePanel.getMCreator().getFolderManager().getStructureList().forEach(filterModel::addElement);
 		refilterElements();
 	}
 
 	@Override public void refilterElements() {
-		listmodel.refilter();
-	}
-
-	private class FilterModel extends DefaultListModel<String> {
-		List<String> items;
-		List<String> filterItems;
-
-		FilterModel() {
-			super();
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
-		}
-
-		@Override public int indexOf(Object elem) {
-			if (elem instanceof String)
-				return filterItems.indexOf(elem);
-			else
-				return -1;
-		}
-
-		@Override public String getElementAt(int index) {
-			if (index < filterItems.size())
-				return filterItems.get(index);
-			else
-				return null;
-		}
-
-		@Override public int getSize() {
-			return filterItems.size();
-		}
-
-		@Override public void addElement(String o) {
-			items.add(o);
-			refilter();
-		}
-
-		@Override public void removeAllElements() {
-			super.removeAllElements();
-			items.clear();
-			filterItems.clear();
-		}
-
-		@Override public boolean removeElement(Object a) {
-			if (a instanceof String) {
-				items.remove(a);
-				filterItems.remove(a);
-			}
-			return super.removeElement(a);
-		}
-
-		void refilter() {
-			filterItems.clear();
-			String term = workspacePanel.search.getText();
-			filterItems.addAll(items.stream().filter(Objects::nonNull)
-					.filter(e -> (e.toLowerCase(Locale.ENGLISH).contains(term.toLowerCase(Locale.ENGLISH)))).toList());
-
-			if (workspacePanel.sortName.isSelected()) {
-				filterItems.sort(Comparator.comparing(String::toString));
-			}
-
-			if (workspacePanel.desc.isSelected())
-				Collections.reverse(filterItems);
-
-			fireContentsChanged(this, 0, getSize());
-		}
+		filterModel.refilter();
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<String> {

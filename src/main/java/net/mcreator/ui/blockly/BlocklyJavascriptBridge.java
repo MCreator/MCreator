@@ -417,6 +417,9 @@ public class BlocklyJavascriptBridge {
 	 * @return The readable name of the passed entry, or an empty string if it can't find a readable name
 	 */
 	@SuppressWarnings("unused") public String getReadableNameOf(String value, String type) {
+		if (value.startsWith("CUSTOM:"))
+			return value.substring(7);
+
 		String datalist;
 		switch (type) {
 		case "entity", "spawnableEntity" -> datalist = "entities";
