@@ -644,20 +644,20 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		pane5.add("Center", PanelUtils.totalCenterInPanel(plocb));
 		pane5.setOpaque(false);
 
-		JPanel events2 = new JPanel(new GridLayout(3, 4, 5, 5));
-		events2.setOpaque(false);
-		events2.add(onRightClicked);
-		events2.add(onBlockAdded);
-		events2.add(onNeighbourBlockChanges);
-		events2.add(onTickUpdate);
-		events2.add(onDestroyedByPlayer);
-		events2.add(onDestroyedByExplosion);
-		events2.add(onStartToDestroy);
-		events2.add(onEntityCollides);
-		events2.add(onBlockPlacedBy);
-		events2.add(onRandomUpdateEvent);
-		events2.add(onEntityWalksOn);
-		events2.add(onHitByProjectile);
+		JPanel events = new JPanel(new GridLayout(3, 4, 5, 5));
+		events.setOpaque(false);
+		events.add(onRightClicked);
+		events.add(onBlockAdded);
+		events.add(onNeighbourBlockChanges);
+		events.add(onTickUpdate);
+		events.add(onDestroyedByPlayer);
+		events.add(onDestroyedByExplosion);
+		events.add(onStartToDestroy);
+		events.add(onEntityCollides);
+		events.add(onBlockPlacedBy);
+		events.add(onRandomUpdateEvent);
+		events.add(onEntityWalksOn);
+		events.add(onHitByProjectile);
 
 		JPanel spawning = new JPanel(new GridLayout(6, 2, 5, 2));
 		spawning.setOpaque(false);
@@ -719,7 +719,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane5);
-		addPage(L10N.t("elementgui.common.page_triggers"), PanelUtils.totalCenterInPanel(events2));
+		addPage(L10N.t("elementgui.common.page_triggers"), PanelUtils.totalCenterInPanel(events));
 		addPage(L10N.t("elementgui.common.page_generation"), PanelUtils.totalCenterInPanel(pane4));
 
 		if (!isEditingMode()) {

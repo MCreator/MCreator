@@ -318,7 +318,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		enablePortal.addActionListener(e -> updatePortalElements());
 		enableIgniter.addActionListener(e -> updateIgniterElements(enableIgniter.isSelected()));
 
-		JPanel events = new JPanel(new GridLayout(1, 4, 8, 8));
+		JPanel events = new JPanel(new GridLayout(1, 4, 5, 5));
 		events.add(whenPortaTriggerlUsed);
 		events.add(onPortalTickUpdate);
 		events.add(onPlayerEntersDimension);
