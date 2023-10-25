@@ -26,6 +26,7 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.WorkspaceSelectorLoadedEvent;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.ImagePanel;
@@ -448,8 +449,30 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 				nov.setText("<html>" + L10N.t("dialog.workspace_selector.news")
 						+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
 						news[0], 43));
-			else
+
+				if (PreferencesManager.PREFERENCES.notifications.showWebsiteNewsNotifications.get()) {
+					String id = news[4];
+					if (!PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().equals(id)) {
+						String title = L10N.t("notification.news.title", news[0]);
+						String link = news[1];
+						String description = StringUtils.justifyText(StringUtils.abbreviateString(news[2], 300), 50,
+								"<br>");
+						ImageIcon newsIcon = null;
+						if (news[3] != null && !news[3].isBlank()) {
+							newsIcon = WebIO.getIconFromURL(MCreatorApplication.SERVER_DOMAIN + news[3], 3 * 60, 60,
+									null);
+						}
+						addNotification(title, newsIcon, description,
+								new NotificationsRenderer.ActionButton(L10N.t("notification.news.read_more"), e -> {
+									DesktopUtils.browseSafe(link);
+									PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id);
+								}), new NotificationsRenderer.ActionButton(L10N.t("notification.news.hide"),
+										e -> PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id)));
+					}
+				}
+			} else {
 				nov.setText("");
+			}
 			nov.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent en) {
 					if (news != null)
