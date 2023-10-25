@@ -338,7 +338,18 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						removeRecentWorkspace(defaultListModel.elementAt(idx));
 						reloadRecents();
 					} else if (mouseEvent.getClickCount() == 2) {
-						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
+						RecentWorkspaceEntry selectedEntry = recentsList.getSelectedValue();
+						if (selectedEntry.getMCRVersion().equals(Launcher.version.full)) {
+							workspaceOpenListener.workspaceOpened(selectedEntry.getPath());
+						} else {
+							int n = JOptionPane.showConfirmDialog(WorkspaceSelector.this,
+									L10N.t("dialog.workspace_selector.version_mismatch",
+											selectedEntry.getMCRVersion(), Launcher.version.full),
+									L10N.t("dialog.workspace_selector.version_mismatch.title"), JOptionPane.YES_NO_OPTION,
+									JOptionPane.WARNING_MESSAGE);
+							if (n == JOptionPane.YES_OPTION)
+								workspaceOpenListener.workspaceOpened(selectedEntry.getPath());
+						}
 					}
 				}
 			});
