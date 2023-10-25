@@ -439,15 +439,15 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private void initWebsitePanel() {
 		CompletableFuture<String[]> newsFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getWebsiteNews(newsFuture);
-		JLabel nov = new JLabel("<html>" + L10N.t("dialog.workspace_selector.news")
-				+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + L10N.t(
+		JLabel nov = new JLabel("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
+				+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + L10N.t(
 				"dialog.workspace_selector.webdata.loading"));
 		nov.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		nov.setForeground(new Color(0xf5f5f5));
 		newsFuture.whenComplete((news, throwable) -> SwingUtilities.invokeLater(() -> {
-			if (news != null)
-				nov.setText("<html>" + L10N.t("dialog.workspace_selector.news")
-						+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
+			if (news != null) {
+				nov.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
+						+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
 						news[0], 43));
 
 				if (PreferencesManager.PREFERENCES.notifications.showWebsiteNewsNotifications.get()) {
@@ -483,8 +483,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		CompletableFuture<String[]> motwFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getModOfTheWeekData(motwFuture);
-		JLabel lab3 = new JLabel("<html>" + L10N.t("dialog.workspace_selector.motw")
-				+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + L10N.t(
+		JLabel lab3 = new JLabel("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.motw")
+				+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + L10N.t(
 				"dialog.workspace_selector.webdata.loading"));
 		lab3.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		lab3.setForeground(new Color(0xf5f5f5));
@@ -499,12 +499,13 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						DesktopUtils.browseSafe(motw[1]);
 				}
 			});
-			if (motw != null)
-				lab3.setText("<html>" + L10N.t("dialog.workspace_selector.motw")
-						+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
+			if (motw != null) {
+				lab3.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.motw")
+						+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
 						motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
-			else
+			} else {
 				lab3.setText("");
+			}
 			ImageIcon defaultIcon;
 			if (motw != null && (defaultIcon = WebIO.getIconFromURL(motw[4], 48, 48, null, true)) != null)
 				lab2.setIcon(defaultIcon);
