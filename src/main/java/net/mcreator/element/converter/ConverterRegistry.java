@@ -108,7 +108,8 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.LIVINGENTITY, List.of(
 			new EntityTexturesConverter(),
-			new EntitiesRangedAttackConverter()
+			new EntitiesRangedAttackConverter(),
+			new WaterEntitiesConverter()
 		));
 		put(ModElementType.OVERLAY, List.of(
 			new OverlayCoordinateConverter(),
