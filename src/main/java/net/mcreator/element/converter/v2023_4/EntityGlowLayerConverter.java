@@ -61,7 +61,7 @@ public class EntityGlowLayerConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 54;
+		return 56;
 	}
 
 }
