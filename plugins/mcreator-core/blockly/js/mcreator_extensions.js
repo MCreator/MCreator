@@ -296,8 +296,6 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
             var connection = containerBlock.getInput('STACK').connection;
             for (let i = 0; i < this.inputCount_; i++) {
                 const inputBlock = workspace.newBlock(mutatorInput);
-                if (fieldNames.length > 0)
-                    inputBlock.fieldValues_ = [];
                 inputBlock.initSvg();
                 connection.connect(inputBlock.previousConnection);
                 connection = inputBlock.nextConnection;
