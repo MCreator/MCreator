@@ -41,7 +41,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable {
 

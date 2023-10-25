@@ -25,7 +25,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.List;
 
 public class ToolboxCategory {
 	private static final Logger LOG = LogManager.getLogger("Toolbox category");
