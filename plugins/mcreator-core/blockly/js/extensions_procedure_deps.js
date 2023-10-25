@@ -145,10 +145,11 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
     compose: function (containerBlock) {
         let inputBlock = containerBlock.getInputTargetBlock('STACK');
         const connections = [];
-        const fieldValues = [];
+        const fieldValues = {};
         while (inputBlock && !inputBlock.isInsertionMarker()) {
             connections.push(inputBlock.valueConnection_);
-            fieldValues.push(inputBlock.nameValue_);
+            if (inputBlock.valueConnection_)
+                fieldValues[inputBlock.valueConnection_.sourceBlock_.id] = inputBlock.nameValue_;
             inputBlock = inputBlock.nextConnection && inputBlock.nextConnection.targetBlock();
         }
         for (let i = 0; i < this.inputCount_; i++) {
@@ -158,10 +159,20 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
         }
         this.inputCount_ = connections.length;
         this.updateShape_();
+        const validators = [];
         for (let i = 0; i < this.inputCount_; i++) {
             Blockly.Mutator.reconnect(connections[i], this, 'arg' + i);
-            if (fieldValues[i])
-                this.getField('name' + i).setValue(fieldValues[i] ?? '');
+            const currentField = this.getField('name' + i);
+            validators.push(currentField.getValidator());
+            currentField.setValidator(null);
+            if (connections[i])
+                currentField.setValue(fieldValues[connections[i].sourceBlock_.id] || '_dependency' + i);
+            else
+                currentField.setValue('_dependency' + i);
+        }
+        for (let i = 0; i < this.inputCount_; i++) {
+            if (!connections[i])
+                this.getField('name' + i).setValue('_dependency' + i);
         }
     },
 
