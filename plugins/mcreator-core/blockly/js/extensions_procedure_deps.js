@@ -75,15 +75,15 @@ function firstFreeIndex(block, fieldName, index, valueProvider) {
     for (let i = 0; block.getField(fieldName + i); i++) {
         if (index && i == index)
             continue;
-        values.push("" + block.getFieldValue(fieldName + i));
+        values.push('' + block.getFieldValue(fieldName + i));
     }
     let retVal = 0;
     while (true) {
-        if (values.indexOf(valueProvider ? valueProvider("" + retVal) : "" + retVal) == -1)
+        if (values.indexOf('' + (valueProvider ? valueProvider(retVal) : retVal)) == -1)
             break;
         retVal++;
     }
-    return retVal;
+    return valueProvider ? valueProvider(retVal) : retVal;
 }
 
 // Helper function to disable validators on newly created repeating fields when loading from save file
@@ -166,13 +166,13 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
             validators.push(currentField.getValidator());
             currentField.setValidator(null);
             if (connections[i])
-                currentField.setValue(fieldValues[connections[i].sourceBlock_.id] || '_dependency' + i);
+                currentField.setValue(fieldValues[connections[i].sourceBlock_.id] || 'dependency' + i);
             else
-                currentField.setValue('_dependency' + i);
+                currentField.setValue('dependency' + i);
         }
         for (let i = 0; i < this.inputCount_; i++) {
             if (!connections[i])
-                this.getField('name' + i).setValue('_dependency' + i);
+                this.getField('name' + i).setValue('dependency' + i);
         }
     },
 
@@ -198,10 +198,10 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
             if (!this.getInput('arg' + i)) {
                 this.appendValueInput('arg' + i).setAlign(Blockly.Input.Align.RIGHT)
                     .appendField(javabridge.t('blockly.block.call_procedure.name'))
-                    .appendField(validOnLoad(new FieldJavaName("dependency" + i,
+                    .appendField(validOnLoad(new FieldJavaName('dependency' + i,
                         uniqueValueValidator('name', function () {
-                            return 'dependency' + firstFreeIndex(thisBlock, 'name', i, function (nextIndex) {
-                                return "dependency" + nextIndex;
+                            return firstFreeIndex(thisBlock, 'name', i, function (nextIndex) {
+                                return 'dependency' + nextIndex;
                             });
                         }))), 'name' + i)
                     .appendField(javabridge.t('blockly.block.call_procedure.arg'));
