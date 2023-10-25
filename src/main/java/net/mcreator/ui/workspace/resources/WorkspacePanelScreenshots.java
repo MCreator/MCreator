@@ -39,21 +39,24 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
-import java.util.*;
+import java.util.Locale;
 
 class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable {
 
 	private final WorkspacePanel workspacePanel;
 
-	private final FilterModel listmodel = new FilterModel();
-	private final JSelectableList<File> screenshotsList = new JSelectableList<>(listmodel);
+	private final ResourceFilterModel<File> filterModel;
+	private final JSelectableList<File> screenshotsList;
 
 	WorkspacePanelScreenshots(WorkspacePanel workspacePanel) {
 		super(new BorderLayout());
 		setOpaque(false);
 
 		this.workspacePanel = workspacePanel;
+		filterModel = new ResourceFilterModel<>(workspacePanel, File::getName);
+		screenshotsList = new JSelectableList<>(filterModel);
 
 		screenshotsList.setOpaque(false);
 		screenshotsList.setCellRenderer(new Render());
@@ -141,11 +144,11 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 	@Override public void reloadElements() {
 		List<File> selected = screenshotsList.getSelectedValuesList();
 
-		listmodel.removeAllElements();
+		filterModel.removeAllElements();
 		File[] screenshots = new File(workspacePanel.getMCreator().getWorkspaceFolder(),
 				"run/screenshots/").listFiles();
 		if (screenshots != null)
-			Arrays.stream(screenshots).forEach(listmodel::addElement);
+			Arrays.stream(screenshots).forEach(filterModel::addElement);
 
 		ListUtil.setSelectedValues(screenshotsList, selected);
 
@@ -153,72 +156,7 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 	}
 
 	@Override public void refilterElements() {
-		listmodel.refilter();
-	}
-
-	private class FilterModel extends DefaultListModel<File> {
-		List<File> items;
-		List<File> filterItems;
-
-		FilterModel() {
-			super();
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
-		}
-
-		@Override public int indexOf(Object elem) {
-			if (elem instanceof File)
-				return filterItems.indexOf(elem);
-			else
-				return -1;
-		}
-
-		@Override public File getElementAt(int index) {
-			if (index < filterItems.size())
-				return filterItems.get(index);
-			else
-				return null;
-		}
-
-		@Override public int getSize() {
-			return filterItems.size();
-		}
-
-		@Override public void addElement(File o) {
-			items.add(o);
-			refilter();
-		}
-
-		@Override public void removeAllElements() {
-			super.removeAllElements();
-			items.clear();
-			filterItems.clear();
-		}
-
-		@Override public boolean removeElement(Object a) {
-			if (a instanceof File) {
-				items.remove(a);
-				filterItems.remove(a);
-			}
-			return super.removeElement(a);
-		}
-
-		void refilter() {
-			filterItems.clear();
-			String term = workspacePanel.search.getText();
-			filterItems.addAll(items.stream().filter(Objects::nonNull)
-					.filter(item -> item.getName().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH))).toList());
-
-			if (workspacePanel.sortName.isSelected()) {
-				filterItems.sort(Comparator.comparing(File::getName));
-			}
-
-			if (workspacePanel.desc.isSelected())
-				Collections.reverse(filterItems);
-
-			fireContentsChanged(this, 0, getSize());
-		}
+		filterModel.refilter();
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<File> {

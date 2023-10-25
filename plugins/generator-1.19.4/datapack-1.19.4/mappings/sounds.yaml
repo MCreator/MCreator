@@ -1,4 +1,4 @@
-_default: ""
+_default: intentionally_empty
 _mcreator_prefix: "CUSTOM:"
 entity.allay.ambient_with_item: entity.allay.ambient_with_item
 entity.allay.ambient_without_item: entity.allay.ambient_without_item

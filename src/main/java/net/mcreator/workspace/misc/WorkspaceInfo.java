@@ -24,7 +24,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.types.*;
 import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
@@ -48,6 +47,18 @@ import java.util.*;
 		try {
 			ModElementType<?> type = ModElementTypeLoader.getModElementType(typeString);
 			return workspace.getModElements().parallelStream().filter(e -> e.getType() == type).toList();
+		} catch (IllegalArgumentException e) {
+			LOG.warn("Failed to list elements of non-existent type", e);
+			return Collections.emptyList();
+		}
+	}
+
+	public List<GeneratableElement> getGElementsOfType(String typeString) {
+		try {
+			ModElementType<?> type = ModElementTypeLoader.getModElementType(typeString);
+			// getGeneratableElement is not thread safe, so we can't use parallelStream here
+			return workspace.getModElements().stream().filter(e -> e.getType() == type)
+					.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
 		} catch (IllegalArgumentException e) {
 			LOG.warn("Failed to list elements of non-existent type", e);
 			return Collections.emptyList();
@@ -123,137 +134,6 @@ import java.util.*;
 		return textureMap;
 	}
 
-	public List<ModElement> getRecipesOfType(String typestring) {
-		try {
-			return workspace.getModElements().stream().filter(e -> e.getType() == ModElementType.RECIPE)
-					.filter(e -> e.getGeneratableElement() instanceof Recipe re && re.recipeType.equals(typestring))
-					.toList();
-		} catch (IllegalArgumentException e) {
-			LOG.warn("Failed to list elements of non-existent type", e);
-			return Collections.emptyList();
-		}
-	}
-
-	public boolean hasGameRulesOfType(String type) {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.GAMERULE) {
-				if (element.getGeneratableElement() instanceof GameRule gr) {
-					if (gr.type.equalsIgnoreCase(type))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasVillagerTrades(boolean wandering) {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.VILLAGERTRADE) {
-				if (element.getGeneratableElement() instanceof VillagerTrade vt) {
-					if (vt.hasVillagerTrades(wandering))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasBlocksMineableWith(String tool) {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.BLOCK) {
-				if (element.getGeneratableElement() instanceof Block block) {
-					if (block.destroyTool.equalsIgnoreCase(tool))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasToolsOfType(String type) {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.TOOL) {
-				if (element.getGeneratableElement() instanceof Tool tool) {
-					if (tool.toolType.equalsIgnoreCase(type))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasFluidsOfType(String type) {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.FLUID) {
-				if (element.getGeneratableElement() instanceof Fluid fluid) {
-					if (fluid.type.equalsIgnoreCase(type))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasBiomesWithStructure(String type) {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.BIOME) {
-				if (element.getGeneratableElement() instanceof Biome biome) {
-					if (biome.hasStructure(type))
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasFuels() {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.ITEMEXTENSION) {
-				if (element.getGeneratableElement() instanceof ItemExtension itemExtension) {
-					if (itemExtension.enableFuel)
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasCompostableItems() {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.ITEMEXTENSION) {
-				if (element.getGeneratableElement() instanceof ItemExtension itemExtension) {
-					if (itemExtension.compostLayerChance > 0)
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasItemsWithCustomProperties() {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.ITEM) {
-				if (element.getGeneratableElement() instanceof Item item) {
-					if (!item.customProperties.isEmpty())
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
-	public boolean hasBiomesInVanillaDimensions() {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.BIOME) {
-				if (element.getGeneratableElement() instanceof Biome biome) {
-					if (biome.spawnBiome || biome.spawnInCaves || biome.spawnBiomeNether)
-						return true;
-				}
-			}
-		}
-		return false;
-	}
-
 	public boolean hasItemsInTabs() {
 		List<GeneratableElement> elementsList = workspace.getModElements().stream()
 				.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
@@ -298,33 +178,6 @@ import java.util.*;
 		}
 
 		return tabMap;
-	}
-
-	public boolean hasItemsInVanillaTabs(Map<String, List<MItemBlock>> creativeTabMap) {
-		for (String tab : creativeTabMap.keySet()) {
-			if (!tab.startsWith("CUSTOM:")) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean hasItemsInCustomTabs(Map<String, List<MItemBlock>> creativeTabMap) {
-		for (String tab : creativeTabMap.keySet()) {
-			if (tab.startsWith("CUSTOM:")) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	public boolean hasFeaturesWithStructureFeature() {
-		for (ModElement element : workspace.getModElements()) {
-			if (element.getType() == ModElementType.FEATURE && element.getMetadata("has_nbt_structure") != null) {
-				return true;
-			}
-		}
-		return false;
 	}
 
 	public String getUUID(String offset) {

@@ -96,6 +96,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "10"), "MultiTool", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "12"), "Fishing rod", random, true, false));
+			generatableElements.add(getToolExample(me(workspace, type, "13"), "Shield", random, true, false));
 		} else if (type == ModElementType.TAB) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
@@ -570,8 +571,8 @@ public class TestWorkspaceDataProvider {
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button1", 100, 200, _true, new Procedure("procedure10"), null));
 				components.add(new Button("button2", 10, 10, "button2", 100, 200, !_true, null, null));
-				components.add(new Button("button3", 10, 10, "button3", 100, 200, _true,
-						null, new Procedure("condition3")));
+				components.add(
+						new Button("button3", 10, 10, "button3", 100, 200, _true, null, new Procedure("condition3")));
 				components.add(new Button(AbstractWYSIWYGDialog.textToMachineName(components, null, "button"), 10, 10,
 						"button4", 100, 200, !_true, new Procedure("procedure2"), new Procedure("condition4")));
 				components.add(
@@ -670,30 +671,26 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.STRUCTURE.equals(modElement.getType())) {
 			Structure structure = new Structure(modElement);
 			structure.structure = "test";
-			structure.spawnProbability = 310000;
-			structure.minCountPerChunk = 1;
-			structure.maxCountPerChunk = 3;
-			structure.spawnHeightOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
-			structure.spawnXOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
-			structure.spawnZOffset = new int[] { 0, -3, 10, -10 }[valueIndex];
-			structure.spawnLocation = getRandomString(random, Arrays.asList("Ground", "Air", "Underground"));
 			structure.surfaceDetectionType = getRandomString(random,
-					Arrays.asList("First motion blocking block", "First block"));
+					Arrays.asList("WORLD_SURFACE_WG", "WORLD_SURFACE", "OCEAN_FLOOR_WG", "OCEAN_FLOOR",
+							"MOTION_BLOCKING", "MOTION_BLOCKING_NO_LEAVES"));
 			structure.ignoreBlocks = getRandomString(random,
 					Arrays.asList("STRUCTURE_BLOCK", "AIR_AND_STRUCTURE_BLOCK", "AIR"));
-			structure.restrictionBlocks = new ArrayList<>();
+			structure.terrainAdaptation = getRandomString(random,
+					Arrays.asList("none", "beard_thin", "beard_box", "bury"));
+			structure.projection = getRandomString(random, Arrays.asList("rigid", "terrain_matching"));
 			structure.restrictionBiomes = new ArrayList<>();
+			structure.spacing = 14;
+			structure.separation = 6;
 			if (!emptyLists) {
-				structure.restrictionBlocks.addAll(
-						blocks.stream().skip(_true ? 0 : ((blocks.size() / 4) * valueIndex)).limit(blocks.size() / 4)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+				structure.restrictionBiomes.addAll(
+						biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_surface"));
 				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:test/tag"));
 			}
-			if (_true) {
-				structure.generateCondition = new Procedure("condition1");
-				structure.onStructureGenerated = new Procedure("procedure3");
-			}
+			structure.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
+					ElementUtil.getDataListAsStringArray("generationsteps"));
 			return structure;
 		} else if (ModElementType.ARMOR.equals(modElement.getType())) {
 			Armor armor = new Armor(modElement);
@@ -1553,6 +1550,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.trackingRange = 27;
 		livingEntity.followRange = 11;
 		livingEntity.waterMob = !_true;
+		livingEntity.breatheUnderwater = new LogicProcedure(emptyLists ? null : "condition3", _true);
+		livingEntity.pushedByFluids = new LogicProcedure(emptyLists ? null : "condition4", _true);
 		livingEntity.flyingMob = !_true;
 		livingEntity.inventorySize = 10;
 		livingEntity.inventoryStackSize = 42;
@@ -1712,6 +1711,8 @@ public class TestWorkspaceDataProvider {
 		tool.texture = "test";
 		tool.renderType = 0;
 		tool.customModelName = "Normal";
+		tool.blockingRenderType = 0;
+		tool.blockingModelName = "Normal blocking";
 		return tool;
 	}
 
