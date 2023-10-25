@@ -4,6 +4,9 @@
   "nextStatement": null,
   "colour": 150,
   "mcreator": {
-    "toolbox_id": "utility"
+    "toolbox_id": "utility",
+    "warnings": [
+      "utility_adv_trigger"
+    ]
   }
 }

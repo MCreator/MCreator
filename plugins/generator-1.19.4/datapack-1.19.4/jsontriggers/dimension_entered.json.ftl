@@ -1,4 +1,4 @@
-{
+"${registryname}_${cbi}": {
   "trigger": "minecraft:changed_dimension",
   "conditions": {
     <#if field$dimension == "Surface">
@@ -11,4 +11,4 @@
     "to": "${generator.getResourceLocationForModElement(field$dimension.toString().replace("CUSTOM:", ""))}"
     </#if>
   }
-}
+},

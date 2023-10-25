@@ -1,4 +1,4 @@
-{
+"${registryname}_${cbi}": {
   "trigger": "minecraft:placed_block",
   "conditions": {
     "location": [
@@ -8,4 +8,4 @@
       }
     ]
   }
-}
+},

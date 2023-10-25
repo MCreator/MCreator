@@ -43,14 +43,14 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathFactory;
 import java.io.StringReader;
-import java.util.Collections;
 import java.util.List;
 
 public class BlocklyToJSONTrigger extends BlocklyToCode {
 
 	private static final Logger LOG = LogManager.getLogger("Blockly2JSONTrigger");
 
-	private boolean hasTrigger;
+	private boolean hasTrigger = false;
+	private int criteria = 1;
 
 	public BlocklyToJSONTrigger(Workspace workspace, ModElement parent, String sourceXML,
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
@@ -72,25 +72,15 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 
 				NodeList blocks = (NodeList) xpath.evaluate("block", doc.getDocumentElement(), XPathConstants.NODESET);
 
-				hasTrigger = false;
-
-				Element start_block = null;
-				for (int i = 0; i < blocks.getLength(); i++) {
-					Element start_block_candidate = (Element) blocks.item(i);
-
-					List<Element> children = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block_candidate);
-					if (children.size() == 1) {
-						if (children.get(0).getAttribute("type").equals(editorType.startBlockName())) {
-							start_block = start_block_candidate;
-						}
-					}
-				}
-
-				if (start_block != null) {
+				if (blocks.getLength() > 0) {
+					Element start_block = (Element) blocks.item(0);
 					String type = start_block.getAttribute("type");
 					if (!type.equals(editorType.startBlockName())) {
 						hasTrigger = true;
-						processBlockProcedure(Collections.singletonList(start_block));
+						List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
+						criteria = Math.max(base_blocks.size(), 1);
+						base_blocks.add(0, start_block);
+						processBlockProcedure(base_blocks);
 					}
 				}
 			} catch (TemplateGeneratorException e) {
@@ -107,4 +97,7 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 		return hasTrigger;
 	}
 
+	public int getCriteria() {
+		return criteria;
+	}
 }
