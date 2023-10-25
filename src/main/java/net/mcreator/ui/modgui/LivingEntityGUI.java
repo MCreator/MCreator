@@ -99,6 +99,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private LogicProcedureSelector transparentModelCondition;
 	private LogicProcedureSelector isShakingCondition;
 	private LogicProcedureSelector solidBoundingBox;
+	private LogicProcedureSelector breatheUnderwater;
+	private LogicProcedureSelector pushedByFluids;
 	private NumberProcedureSelector visualScale;
 	private NumberProcedureSelector boundingBoxScale;
 
@@ -347,6 +349,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.t("elementgui.living_entity.condition_solid_bounding_box"), AbstractProcedureSelector.Side.BOTH,
 				L10N.checkbox("elementgui.common.enable"), 160,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		breatheUnderwater = new LogicProcedureSelector(this.withEntry("entity/condition_can_breathe_underwater"), mcreator,
+				L10N.t("elementgui.living_entity.condition_can_breathe_underwater"), AbstractProcedureSelector.Side.BOTH,
+				L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		pushedByFluids = new LogicProcedureSelector(this.withEntry("entity/condition_fluids_can_push"), mcreator,
+				L10N.t("elementgui.living_entity.condition_fluids_can_push"), AbstractProcedureSelector.Side.BOTH,
+				L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		visualScale = new NumberProcedureSelector(this.withEntry("entity/visual_scale"), mcreator,
 				L10N.t("elementgui.living_entity.visual_scale"), AbstractProcedureSelector.Side.CLIENT,
 				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 308, Dependency.fromString(
@@ -354,7 +364,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		boundingBoxScale = new NumberProcedureSelector(this.withEntry("entity/bounding_box_scale"), mcreator,
 				L10N.t("elementgui.living_entity.bounding_box_scale"), AbstractProcedureSelector.Side.BOTH,
 				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 300, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity"));	
+				"x:number/y:number/z:number/world:world/entity:entity"));
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
@@ -404,7 +414,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JPanel pane6 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
 
-		JPanel subpane1 = new JPanel(new GridLayout(10, 2, 0, 2));
+		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
 
 		immuneToFire.setOpaque(false);
 		immuneToArrows.setOpaque(false);
@@ -465,6 +475,21 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.water_mob")));
 		subpane1.add(waterMob);
 
+		waterMob.addChangeListener(e -> {
+			if (!isEditingMode()) {
+				breatheUnderwater.setFixedValue(waterMob.isSelected());
+				pushedByFluids.setFixedValue(!waterMob.isSelected());
+			}
+		});
+
+		subpane1.add(new JEmptyBox());
+		subpane1.add(breatheUnderwater);
+
+		subpane1.add(new JEmptyBox());
+		subpane1.add(pushedByFluids);
+
+		pushedByFluids.setFixedValue(true);
+
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/flying_entity"),
 				L10N.label("elementgui.living_entity.flying_mob")));
 		subpane1.add(flyingMob);
@@ -509,7 +534,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/model"),
 				L10N.label("elementgui.living_entity.entity_model")));
 		spo2.add(mobModel);
-		
+
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
 		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
 		importmobtexture.setOpaque(false);
@@ -787,7 +812,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		pane3.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(3, 4, 8, 8));
+		JPanel events = new JPanel(new GridLayout(3, 4, 5, 5));
 		events.add(onStruckByLightning);
 		events.add(whenMobFalls);
 		events.add(whenMobDies);
@@ -920,6 +945,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		transparentModelCondition.refreshListKeepSelected();
 		isShakingCondition.refreshListKeepSelected();
 		solidBoundingBox.refreshListKeepSelected();
+		breatheUnderwater.refreshListKeepSelected();
+		pushedByFluids.refreshListKeepSelected();
 		visualScale.refreshListKeepSelected();
 		boundingBoxScale.refreshListKeepSelected();
 
@@ -1057,6 +1084,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		modelShadowSize.setValue(livingEntity.modelShadowSize);
 		armorBaseValue.setValue(livingEntity.armorBaseValue);
 		waterMob.setSelected(livingEntity.waterMob);
+		breatheUnderwater.setSelectedProcedure(livingEntity.breatheUnderwater);
+		pushedByFluids.setSelectedProcedure(livingEntity.pushedByFluids);
 		flyingMob.setSelected(livingEntity.flyingMob);
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
 		inventorySize.setValue(livingEntity.inventorySize);
@@ -1188,6 +1217,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.armorBaseValue = (double) armorBaseValue.getValue();
 		livingEntity.mobModelName = ((Model) Objects.requireNonNull(mobModel.getSelectedItem())).getReadableName();
 		livingEntity.waterMob = waterMob.isSelected();
+		livingEntity.breatheUnderwater = breatheUnderwater.getSelectedProcedure();
+		livingEntity.pushedByFluids = pushedByFluids.getSelectedProcedure();
 		livingEntity.flyingMob = flyingMob.isSelected();
 		livingEntity.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		livingEntity.inventorySize = (int) inventorySize.getValue();

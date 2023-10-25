@@ -1,0 +1,1 @@
+Questo determina quale item viene selezionato quando si "sceglie" (clic con il tasto centrale del mouse) il blocco. Se vuoto, l'item sarà il blocco stesso.

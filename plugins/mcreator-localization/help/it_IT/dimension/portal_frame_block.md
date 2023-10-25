@@ -1,0 +1,1 @@
+Questo il blocco utilizzato per creare il frame del portale per la tua dimensione, se il portale è abilitato.

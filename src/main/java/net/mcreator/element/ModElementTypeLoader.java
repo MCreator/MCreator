@@ -59,7 +59,7 @@ public class ModElementTypeLoader {
 		ModElementType.PROCEDURE = register(new ModElementType<>("procedure", 'p', BaseType.OTHER, ProcedureGUI::new, Procedure.class));
 		ModElementType.PROJECTILE = register(new ModElementType<>("projectile", 'q', BaseType.ENTITY, ProjectileGUI::new, Projectile.class));
 		ModElementType.RECIPE = register(new ModElementType<>("recipe", 'r', BaseType.DATAPACK, RecipeGUI::new, Recipe.class));
-		ModElementType.STRUCTURE = register(new ModElementType<>("structure", 's', BaseType.FEATURE, StructureGenGUI::new, Structure.class));
+		ModElementType.STRUCTURE = register(new ModElementType<>("structure", 's', BaseType.FEATURE, StructureGUI::new, Structure.class));
 		ModElementType.TAB = register(new ModElementType<>("tab", 'w', BaseType.OTHER, TabGUI::new, Tab.class));
 		ModElementType.TAG = register(new ModElementType<>("tag", 'j', BaseType.DATAPACK, TagGUI::new, Tag.class));
 		ModElementType.TOOL = register(new ModElementType<>("tool", 't', BaseType.ITEM, ToolGUI::new, Tool.class));
