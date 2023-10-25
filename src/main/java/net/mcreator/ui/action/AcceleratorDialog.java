@@ -21,6 +21,7 @@ package net.mcreator.ui.action;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -29,12 +30,6 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 class AcceleratorDialog {
-	private static String replaceMacKey(String input) {
-		return input.replace("⌘", "Command")
-				.replace("⌥", "Option")
-				.replace("⌃", "Control")
-				.replace("⇧", "Shift");
-	}
 
 	static void showAcceleratorMapDialog(Window parent, AcceleratorMap acceleratorMap) {
 		JTable map = new JTable(new DefaultTableModel(
@@ -50,6 +45,17 @@ class AcceleratorDialog {
 		map.setGridColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		map.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
+		map.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+			@Override
+			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+				if (column == 1) {
+					c.setFont(new Font(".SF NS Text", Font.PLAIN, 12));
+				}
+				return c;
+			}
+		});
+
 		DefaultTableModel model = (DefaultTableModel) map.getModel();
 		SortedSet<BasicAction> keys = new TreeSet<>(acceleratorMap.getActionKeyStrokeMap().keySet());
 		for (BasicAction key : keys) {
@@ -59,7 +65,6 @@ class AcceleratorDialog {
 				int modifiers = keyStroke.getModifiers();
 				if (modifiers > 0) {
 					acceleratorText = InputEvent.getModifiersExText(modifiers);
-					acceleratorText = replaceMacKey(acceleratorText);
 					acceleratorText += " + ";
 				}
 				acceleratorText += KeyEvent.getKeyText(keyStroke.getKeyCode());
@@ -71,5 +76,4 @@ class AcceleratorDialog {
 		JOptionPane.showMessageDialog(parent, new JScrollPane(map), L10N.t("dialog.accelerators.title"),
 				JOptionPane.PLAIN_MESSAGE);
 	}
-
 }
