@@ -452,6 +452,11 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 				if (PreferencesManager.PREFERENCES.notifications.showWebsiteNewsNotifications.get()) {
 					String id = news[4];
+
+					// Do not show notification the first time
+					if (PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().isBlank())
+						PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id);
+
 					if (!PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().equals(id)) {
 						String title = L10N.t("notification.news.title", news[0]);
 						String link = news[1];
