@@ -563,11 +563,11 @@ Blockly.Blocks['geode_crystal_mutator_container'] = {
 // Mutator block for geode feature mixin
 Blockly.Blocks['geode_crystal_mutator_input'] = {
     init: function () {
-      this.appendDummyInput().appendField(javabridge.t("blockly.block.geode_crystal_mutator.input"));
-      this.setPreviousStatement(true);
-      this.setNextStatement(true);
-      this.contextMenu = false;
-      this.setColour(0);
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.geode_crystal_mutator.input"));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+        this.setColour(0);
     }
 };
 
@@ -584,17 +584,17 @@ Blockly.Blocks['ore_mutator_container'] = {
 // Mutator block for ore features mixin
 Blockly.Blocks['ore_mutator_input'] = {
     init: function () {
-      this.appendDummyInput().appendField(javabridge.t("blockly.block.ore_mutator.input"));
-      this.setPreviousStatement(true);
-      this.setNextStatement(true);
-      this.contextMenu = false;
-      this.setColour(0);
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.ore_mutator.input"));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+        this.setColour(0);
     }
 };
 
 // Mutator block for "Weighted list" mixins
 Blockly.Blocks['weighted_list_mutator_container'] = {
-    init: function() {
+    init: function () {
         this.appendDummyInput().appendField(javabridge.t('blockly.block.weighted_list_mutator.container'));
         this.appendStatementInput('STACK');
         this.contextMenu = false;
@@ -604,13 +604,13 @@ Blockly.Blocks['weighted_list_mutator_container'] = {
 
 // Mutator block for "Weighted list" mixins
 Blockly.Blocks['weighted_list_mutator_input'] = {
-    init: function() {
-      this.appendDummyInput().appendField(javabridge.t('blockly.block.weighted_list_mutator.input'));
-      this.setPreviousStatement(true);
-      this.setNextStatement(true);
-      this.contextMenu = false;
-      this.fieldValues_ = [];
-      this.setColour('#888888');
+    init: function () {
+        this.appendDummyInput().appendField(javabridge.t('blockly.block.weighted_list_mutator.input'));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+        this.fieldValues_ = [];
+        this.setColour('#888888');
     }
 };
 
@@ -627,11 +627,11 @@ Blockly.Blocks['feature_simple_random_mutator_container'] = {
 // Mutator block for ore features mixin
 Blockly.Blocks['feature_simple_random_mutator_input'] = {
     init: function () {
-      this.appendDummyInput().appendField(javabridge.t("blockly.block.feature_simple_random_mutator.input"));
-      this.setPreviousStatement(true);
-      this.setNextStatement(true);
-      this.contextMenu = false;
-      this.setColour(340);
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.feature_simple_random_mutator.input"));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+        this.setColour(340);
     }
 };
 
@@ -648,11 +648,11 @@ Blockly.Blocks['tree_decorator_mutator_container'] = {
 // Mutator block for ore features mixin
 Blockly.Blocks['tree_decorator_mutator_input'] = {
     init: function () {
-      this.appendDummyInput().appendField(javabridge.t("blockly.block.tree_decorator_mutator.input"));
-      this.setPreviousStatement(true);
-      this.setNextStatement(true);
-      this.contextMenu = false;
-      this.setColour(320);
+        this.appendDummyInput().appendField(javabridge.t("blockly.block.tree_decorator_mutator.input"));
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.contextMenu = false;
+        this.setColour(320);
     }
 };
 

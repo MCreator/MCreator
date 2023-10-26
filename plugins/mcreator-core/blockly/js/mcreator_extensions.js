@@ -114,7 +114,7 @@ Blockly.Extensions.register('min_max_fields_validator',
 Blockly.Extensions.registerMixin('disable_inside_inline_placed_feature',
     {
         // Check if this block is inside the inline placed feature statement
-        getSurroundLoop: function() {
+        getSurroundLoop: function () {
             let block = this;
             do {
                 if (block.type == 'placed_feature_inline') {
@@ -125,7 +125,7 @@ Blockly.Extensions.registerMixin('disable_inside_inline_placed_feature',
             return null;
         },
 
-        onchange: function(e) {
+        onchange: function (e) {
             // Don't change state if it's at the start of a drag and it's not a move event
             if (!this.workspace.isDragging || this.workspace.isDragging() || e.type !== Blockly.Events.BLOCK_MOVE) {
                 return;
@@ -396,7 +396,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
 // Helper function to provide mixins for weighted list mutators
 function weightedListMutatorMixin(inputType) {
     return simpleRepeatingInputMixin('weighted_list_mutator_container', 'weighted_list_mutator_input', 'entry',
-        function(thisBlock, inputName, index) {
+        function (thisBlock, inputName, index) {
             thisBlock.appendValueInput(inputName + index).setCheck(inputType).setAlign(Blockly.Input.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.weighted_list.weight'))
                 .appendField(new Blockly.FieldNumber(1, 1, null, 1), 'weight' + index)
@@ -449,15 +449,15 @@ Blockly.Extensions.registerMutator('ore_feature_mutator', simpleRepeatingInputMi
     undefined, ['ore_mutator_input']);
 
 Blockly.Extensions.registerMutator('weighted_height_provider_mutator', weightedListMutatorMixin('HeightProvider'),
-        undefined, ['weighted_list_mutator_input']);
+    undefined, ['weighted_list_mutator_input']);
 
 Blockly.Extensions.registerMutator('weighted_int_provider_mutator', weightedListMutatorMixin('IntProvider'),
-        undefined, ['weighted_list_mutator_input']);
+    undefined, ['weighted_list_mutator_input']);
 
 // We cannot use the weighted mutator function, as we need to add image fields too
 Blockly.Extensions.registerMutator('weighted_state_provider_mutator', simpleRepeatingInputMixin(
         'weighted_list_mutator_container', 'weighted_list_mutator_input', 'entry',
-        function(thisBlock, inputName, index) {
+        function (thisBlock, inputName, index) {
             thisBlock.appendValueInput(inputName + index).setCheck('MCItemBlock').setAlign(Blockly.Input.Align.RIGHT)
                 .appendField(javabridge.t('blockly.block.weighted_list.weight'))
                 .appendField(new Blockly.FieldNumber(1, 1, null, 1), 'weight' + index)
@@ -493,4 +493,4 @@ function validateResourceLocationFields(...fields) {
 Blockly.Extensions.register('tag_input_field_validator', validateResourceLocationFields('tag'));
 
 Blockly.Extensions.register('geode_tag_fields_validator',
-        validateResourceLocationFields('cannot_replace_tag', 'invalid_blocks_tag'));
+    validateResourceLocationFields('cannot_replace_tag', 'invalid_blocks_tag'));

@@ -66,7 +66,7 @@ class FieldAiConditionSelector extends Blockly.Field {
         let currentValues = this.getValue().split(',');
         if (currentValues.length === 2) {
             return javabridge.t('blockly.field_ai_condition_selector.conditions') +
-                (currentValues[0] === 'null' ? 'O' : 'X') + 
+                (currentValues[0] === 'null' ? 'O' : 'X') +
                 (currentValues[1] === 'null' ? 'O' : 'X');
         }
         return javabridge.t('blockly.field_ai_condition_selector.conditions') + 'OO';

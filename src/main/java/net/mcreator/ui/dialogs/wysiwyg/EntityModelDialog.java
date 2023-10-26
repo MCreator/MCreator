@@ -130,8 +130,8 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 					int idx = editor.components.indexOf(model);
 					editor.components.remove(model);
 					EntityModel modelNew = new EntityModel(model.getX(), model.getY(),
-								entityModel.getSelectedProcedure(), displayCondition.getSelectedProcedure(),
-								(int) scale.getValue(), (int) rotationX.getValue(), followMouseMovement.isSelected());
+							entityModel.getSelectedProcedure(), displayCondition.getSelectedProcedure(),
+							(int) scale.getValue(), (int) rotationX.getValue(), followMouseMovement.isSelected());
 					if (!editor.isNotOverlayType)
 						modelNew.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 					editor.components.add(idx, modelNew);
