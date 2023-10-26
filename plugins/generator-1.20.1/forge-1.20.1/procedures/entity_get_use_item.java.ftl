@@ -1,1 +1,1 @@
-((${input$entity} instanceof LivingEntity _entUseItem ? _entUseItem.getUseItem() : ItemStack.EMPTY).getItem())
+/*@ItemStack*/(${input$entity} instanceof LivingEntity _entUseItem${cbi} ? _entUseItem${cbi}.getUseItem() : ItemStack.EMPTY)
