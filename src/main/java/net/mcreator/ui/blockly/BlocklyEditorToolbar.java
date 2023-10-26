@@ -21,6 +21,7 @@ package net.mcreator.ui.blockly;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.data.ToolboxCategory;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.io.ResourcePointer;
@@ -42,10 +43,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 public class BlocklyEditorToolbar extends TransparentToolBar {
 
@@ -159,13 +158,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 							results.setMaximumVisibleRows(20);
 
 							for (ToolboxBlock block : filtered) {
-								JMenuItem menuItem = new JMenuItem("<html>" + (block.getToolboxCategory() != null ?
-										"<span style='background: #" + Integer.toHexString(
-												block.getToolboxCategory().getColor().getRGB()).substring(2)
-												+ ";'>&nbsp;" + block.getToolboxCategory().getName()
-												+ "&nbsp;</span>&nbsp;&nbsp;" :
-										"") + block.getName().replaceAll("%\\d+?",
-										"&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
+								JMenuItem menuItem = new JMenuItem(getHTMLForBlock(block));
 								menuItem.addActionListener(ev -> {
 									if (block.getToolboxXML() != null) {
 										blocklyPanel.addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>");
@@ -258,6 +251,34 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 	public void setTemplateLibButtonWidth(int w) {
 		templateLib.setPreferredSize(new Dimension(w, 16));
+	}
+
+	private String getHTMLForBlock(ToolboxBlock block) {
+		List<ToolboxCategory> categories = new ArrayList<>();
+		traverseCategories(categories, block.getToolboxCategory());
+
+		StringBuilder builder = new StringBuilder("<html>");
+		for (int i = categories.size() - 1; i >= 0; i--) {
+			ToolboxCategory category = categories.get(i);
+			builder.append("<span style='background: #")
+					.append(Integer.toHexString(category.getColor().getRGB()).substring(2)).append(";'>&nbsp;")
+					.append(category.getName()).append("&nbsp;</span>");
+			if (i != 0)
+				builder.append("<span style='background: #444444;'>&nbsp;&#x25B8;&nbsp;</span>");
+		}
+		builder.append("&nbsp;&nbsp;");
+		builder.append(block.getName()
+				.replaceAll("%\\d+?", "&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
+
+		return builder.toString();
+	}
+
+	private void traverseCategories(List<ToolboxCategory> categories, ToolboxCategory category) {
+		if (category != null) {
+			categories.add(category);
+			if (category.getParent() != null)
+				traverseCategories(categories, category.getParent());
+		}
 	}
 
 }

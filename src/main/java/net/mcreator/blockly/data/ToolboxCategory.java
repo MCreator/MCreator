@@ -35,6 +35,8 @@ public class ToolboxCategory {
 	boolean api;
 	boolean is_expanded;
 
+	@Nullable transient ToolboxCategory parent = null;
+
 	public String getName() {
 		String localized_name = L10N.t("blockly.category." + id);
 		if (localized_name != null)
@@ -49,6 +51,10 @@ public class ToolboxCategory {
 			return localized_desc;
 
 		return description;
+	}
+
+	@Nullable public ToolboxCategory getParent() {
+		return parent;
 	}
 
 	/**
