@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.action;
 
+import net.mcreator.io.OS;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
@@ -45,16 +46,18 @@ class AcceleratorDialog {
 		map.setGridColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		map.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
-		map.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
-			@Override
-			public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-				Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-				if (column == 1) {
-					c.setFont(new Font(".SF NS Text", Font.PLAIN, 12));
+		if (OS.getOS() == OS.MAC) {
+			map.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+				@Override
+				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+						boolean hasFocus, int row, int column) {
+					Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+					if (column == 1)
+						c.setFont(new Font(".SF NS Text", Font.PLAIN, 12));
+					return c;
 				}
-				return c;
-			}
-		});
+			});
+		}
 
 		DefaultTableModel model = (DefaultTableModel) map.getModel();
 		SortedSet<BasicAction> keys = new TreeSet<>(acceleratorMap.getActionKeyStrokeMap().keySet());
@@ -76,4 +79,5 @@ class AcceleratorDialog {
 		JOptionPane.showMessageDialog(parent, new JScrollPane(map), L10N.t("dialog.accelerators.title"),
 				JOptionPane.PLAIN_MESSAGE);
 	}
+
 }
