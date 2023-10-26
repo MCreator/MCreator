@@ -40,6 +40,7 @@ public class HiddenSection extends PreferencesSection {
 	public PreferencesEntry<File> java_home;
 	public StringEntry uiTheme;
 	public BooleanEntry enableJavaPlugins;
+	public StringEntry lastWebsiteNewsRead;
 
 	HiddenSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -76,6 +77,7 @@ public class HiddenSection extends PreferencesSection {
 		});
 		uiTheme = addEntry(new StringEntry("uiTheme", "default_dark"));
 		enableJavaPlugins = addEntry(new BooleanEntry("enableJavaPlugins", false));
+		lastWebsiteNewsRead = addEntry(new StringEntry("lastWebsiteNewsRead", ""));
 	}
 
 	@Override public boolean isVisible() {

@@ -284,8 +284,8 @@ import java.util.stream.Stream;
 	}
 
 	public String getWebsiteURL() {
-		if (websiteURL == null || websiteURL.isBlank() || !websiteURL.contains("http") || !websiteURL.contains(
-				"://") || !websiteURL.contains("."))
+		if (websiteURL == null || websiteURL.isBlank() || !websiteURL.contains("http") || !websiteURL.contains("://")
+				|| !websiteURL.contains("."))
 			return MCreatorApplication.SERVER_DOMAIN;
 		return websiteURL;
 	}

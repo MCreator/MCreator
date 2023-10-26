@@ -33,7 +33,6 @@ import org.commonmark.renderer.html.HtmlRenderer;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
