@@ -55,7 +55,10 @@ import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.lang.module.ModuleDescriptor;
 import java.util.List;
@@ -78,15 +81,7 @@ public class WorkspaceDialogs {
 			else
 				showErrorsMessage(mcreator, new AggregatedValidationResult(wdp.validationGroup));
 		});
-
-		workspaceDialog.addWindowListener(new WindowAdapter() {
-			@Override public void windowClosed(WindowEvent windowEvent) {
-				if (wdp.validationGroup.validateIsErrorFree())
-					workspaceDialog.setVisible(false);
-				else
-					showErrorsMessage(mcreator, new AggregatedValidationResult(wdp.validationGroup));
-			}
-		});
+		workspaceDialog.setClosable(false);
 
 		workspaceDialog.getRootPane().setDefaultButton(ok);
 		workspaceDialog.pack();

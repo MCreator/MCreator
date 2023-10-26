@@ -38,8 +38,8 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TextureHolder;
-import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -323,7 +323,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			if (toolType.getSelectedItem().equals("Special")) {
 				harvestLevel.setEnabled(false);
 				repairItems.setEnabled(false);
-			} else if (toolType.getSelectedItem().equals("Fishing rod") || toolType.getSelectedItem().equals("Shield")) {
+			} else if (toolType.getSelectedItem().equals("Fishing rod") || toolType.getSelectedItem()
+					.equals("Shield")) {
 				harvestLevel.setEnabled(false);
 				efficiency.setEnabled(false);
 				damageVsEntity.setEnabled(false);

@@ -178,7 +178,6 @@ import java.util.stream.Collectors;
 		JPopupMenu contextMenu = new JPopupMenu();
 
 		panels.setOpaque(false);
-		panels.setBorder(BorderFactory.createMatteBorder(3, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 
 		list = new JSelectableList<>(dml);
 		list.setOpaque(false);
