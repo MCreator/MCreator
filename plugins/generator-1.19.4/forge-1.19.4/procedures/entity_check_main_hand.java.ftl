@@ -1,0 +1,1 @@
+(${input$entity} instanceof LivingEntity _entMainHand && _entMainHand.getMainArm() == HumanoidArm.${field$hand})
