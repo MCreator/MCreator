@@ -107,9 +107,9 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	@Override protected void initGUI() {
 		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
-		JPanel selp = new JPanel(new GridLayout(10, 2, 15, 2));
-		JPanel selp2 = new JPanel(new GridLayout(4, 2, 10, 2));
+		JPanel panel1 = new JPanel(new BorderLayout(10, 10));
+		JPanel propertiesPanel = new JPanel(new GridLayout(10, 2, 15, 2));
+		JPanel logicPanel = new JPanel(new GridLayout(4, 2, 10, 2));
 
 		rewardLoot = new ModElementListField(mcreator, ModElementType.LOOTTABLE);
 		rewardRecipes = new ModElementListField(mcreator, ModElementType.RECIPE);
@@ -128,75 +128,75 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		showPopup.setSelected(true);
 		announceToChat.setSelected(true);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/name"),
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/name"),
 				L10N.label("elementgui.advancement.name")));
-		selp.add(achievementName);
+		propertiesPanel.add(achievementName);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/description"),
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/description"),
 				L10N.label("elementgui.advancement.description")));
-		selp.add(achievementDescription);
+		propertiesPanel.add(achievementDescription);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/icon"),
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/icon"),
 				L10N.label("elementgui.advancement.icon")));
-		selp.add(PanelUtils.join(FlowLayout.LEFT, achievementIcon));
+		propertiesPanel.add(PanelUtils.join(FlowLayout.LEFT, achievementIcon));
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/background"),
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/background"),
 				L10N.label("elementgui.advancement.background")));
-		selp.add(background);
+		propertiesPanel.add(background);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/type"),
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/type"),
 				L10N.label("elementgui.advancement.type")));
-		selp.add(achievementType);
+		propertiesPanel.add(achievementType);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/parent"),
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/parent"),
 				L10N.label("elementgui.advancement.parent")));
-		selp.add(parentAchievement);
+		propertiesPanel.add(parentAchievement);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/show_toast"),
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/show_toast"),
 				L10N.label("elementgui.advancement.show_toast")));
-		selp.add(showPopup);
+		propertiesPanel.add(showPopup);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/announce_to_chat"),
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/announce_to_chat"),
 				L10N.label("elementgui.advancement.announce_to_chat")));
-		selp.add(announceToChat);
+		propertiesPanel.add(announceToChat);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_if_not_completed"),
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_if_not_completed"),
 				L10N.label("elementgui.advancement.hide_if_not_completed")));
-		selp.add(hideIfNotCompleted);
+		propertiesPanel.add(hideIfNotCompleted);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"),
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"),
 				L10N.label("elementgui.advancement.hide_display")));
-		selp.add(disableDisplay);
+		propertiesPanel.add(disableDisplay);
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_xp"),
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_xp"),
 				L10N.label("elementgui.advancement.reward_xp")));
-		selp2.add(rewardXP);
+		logicPanel.add(rewardXP);
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_function"),
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_function"),
 				L10N.label("elementgui.advancement.reward_functions")));
-		selp2.add(rewardFunction);
+		logicPanel.add(rewardFunction);
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_loot_tables"),
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_loot_tables"),
 				L10N.label("elementgui.advancement.reward_loot_tables")));
-		selp2.add(rewardLoot);
+		logicPanel.add(rewardLoot);
 
-		selp2.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_recipes"),
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_recipes"),
 				L10N.label("elementgui.advancement.reward_recipes")));
-		selp2.add(rewardRecipes);
+		logicPanel.add(rewardRecipes);
 
-		selp2.setBorder(BorderFactory.createTitledBorder(
+		logicPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.advancement.logic"), 0, 0, selp2.getFont().deriveFont(12.0f),
+				L10N.t("elementgui.advancement.logic"), 0, 0, logicPanel.getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent selpouter = PanelUtils.pullElementUp(selp);
+		JComponent selpouter = PanelUtils.pullElementUp(propertiesPanel);
 		selpouter.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
-				L10N.t("elementgui.advancement.display_paramters"), 0, 0, selp.getFont().deriveFont(12.0f),
+				L10N.t("elementgui.advancement.display_paramters"), 0, 0, propertiesPanel.getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		selp.setOpaque(false);
-		selp2.setOpaque(false);
+		propertiesPanel.setOpaque(false);
+		logicPanel.setOpaque(false);
 
 		achievementName.setValidator(
 				new TextFieldValidator(achievementName, L10N.t("elementgui.advancement.cant_be_empty")));
@@ -223,21 +223,19 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 			}
 		});
 
-		JPanel advancementTrigger = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
-		advancementTrigger.setBorder(BorderFactory.createTitledBorder(
+		JPanel triggerPanel = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
+		triggerPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.advancement.trigger_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
 
-		advancementTrigger.setPreferredSize(new Dimension(0, 330));
+		panel1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(
+				PanelUtils.centerAndSouthElement(selpouter, logicPanel))));
 
-		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(
-				PanelUtils.westAndEastElement(selpouter,
-						PanelUtils.northAndCenterElement(selp2, advancementTrigger)))));
+		panel1.setOpaque(false);
 
-		pane3.setOpaque(false);
-
-		addPage(pane3);
+		addPage("Page 1", panel1);
+		addPage("Page 2", triggerPanel);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
