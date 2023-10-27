@@ -40,7 +40,7 @@ import java.awt.event.MouseListener;
  * This class is optional and only expected to be used when the behavior of a tab is similar to the others (e.g. sounds, structures, etc.)
  * It should not be used in a case where it is different in some way (e.g. textures having multiple lists).</p>
  *
- * @param <T>
+ * @param <T> Type of resources that can be managed in this tab.
  */
 public abstract class AbstractResourcePanel<T> extends JPanel implements IReloadableFilterable {
 

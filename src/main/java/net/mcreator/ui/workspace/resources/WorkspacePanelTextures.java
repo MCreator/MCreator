@@ -161,7 +161,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		duplicate.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(duplicate);
 
-		JButton del = L10N.button("workspace.textures.delete_selected");
+		JButton del = L10N.button("common.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);

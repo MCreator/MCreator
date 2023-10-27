@@ -53,7 +53,7 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 				e -> exportSelectedScreenshots());
 		addToolBarButton("workspace.screenshots.use_as_background", UIRES.get("16px.textures"),
 				e -> useSelectedAsBackgrounds());
-		addToolBarButton("workspace.screenshots.delete_selected", UIRES.get("16px.delete.gif"), e -> {
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"), e -> {
 			deleteCurrentlySelected();
 			reloadElements();
 		});

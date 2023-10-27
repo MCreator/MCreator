@@ -44,7 +44,7 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 				e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
 		addToolBarButton("workspace.sounds.edit_selected", UIRES.get("16px.edit.gif"),
 				e -> editSelectedSound(elementList.getSelectedValue()));
-		addToolBarButton("workspace.sounds.delete_selected", UIRES.get("16px.delete.gif"),
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
 				e -> deleteCurrentlySelected());
 		addToolBarButton("workspace.sounds.play_selected", UIRES.get("16px.play"), new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent e) {

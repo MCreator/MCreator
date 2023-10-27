@@ -82,7 +82,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 				e -> editSelectedModelTextureMappings());
 		addToolBarButton("workspace.3dmodels.redefine_animations", UIRES.get("16px.edit.gif"),
 				e -> editSelectedModelAnimations());
-		addToolBarButton("workspace.3dmodels.delete_selected", UIRES.get("16px.delete.gif"),
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
 				e -> deleteCurrentlySelected());
 	}
 

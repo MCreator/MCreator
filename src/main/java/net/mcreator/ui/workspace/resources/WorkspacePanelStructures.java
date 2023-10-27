@@ -36,7 +36,7 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 				e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());
 		addToolBarButton("action.workspace.resources.import_structure_from_minecraft", UIRES.get("16px.open.gif"),
 				e -> workspacePanel.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
-		addToolBarButton("workspace.sounds.delete_selected", UIRES.get("16px.delete.gif"),
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
 				e -> deleteCurrentlySelected());
 	}
 
