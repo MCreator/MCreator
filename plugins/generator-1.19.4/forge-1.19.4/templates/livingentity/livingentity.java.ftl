@@ -763,17 +763,31 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if data.waterMob>
-	@Override public boolean canBreatheUnderwater() {
-    	return true;
-    }
-
-    @Override public boolean checkSpawnObstruction(LevelReader world) {
+	@Override public boolean checkSpawnObstruction(LevelReader world) {
 		return world.isUnobstructed(this);
 	}
+	</#if>
 
-    @Override public boolean isPushedByFluid() {
-		return false;
-    }
+	<#if data.breatheUnderwater?? && (hasProcedure(data.breatheUnderwater) || data.breatheUnderwater.getFixedValue())>
+	@Override public boolean canBreatheUnderwater() {
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
+		Level world = this.level;
+		Entity entity = this;
+		return <@procedureOBJToConditionCode data.breatheUnderwater true false/>;
+	}
+	</#if>
+
+	<#if data.pushedByFluids?? && (hasProcedure(data.pushedByFluids) || !data.pushedByFluids.getFixedValue())>
+	@Override public boolean isPushedByFluid() {
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
+		Level world = this.level;
+		Entity entity = this;
+		return <@procedureOBJToConditionCode data.pushedByFluids false false/>;
+	}
 	</#if>
 
 	<#if data.disableCollisions>
