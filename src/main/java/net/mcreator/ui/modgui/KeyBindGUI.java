@@ -91,21 +91,21 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 		enderpanel.setOpaque(false);
 
-		JPanel evente = new JPanel();
-		evente.setOpaque(false);
-		evente.setBorder(BorderFactory.createTitledBorder(
+		JPanel events = new JPanel(new GridLayout(1, 2, 5, 5));
+		events.setOpaque(false);
+		events.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.keybind.key_procedure_triggers"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		evente.add(onKeyPressed);
-		evente.add(onKeyReleased);
+		events.add(onKeyPressed);
+		events.add(onKeyReleased);
 
 		pane5.setOpaque(false);
 
 		JPanel merge = new JPanel(new BorderLayout(20, 20));
 		merge.setOpaque(false);
 		merge.add("North", PanelUtils.centerInPanel(enderpanel));
-		merge.add("South", evente);
+		merge.add("South", events);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(merge)));
 

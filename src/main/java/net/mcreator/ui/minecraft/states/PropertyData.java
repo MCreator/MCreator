@@ -266,6 +266,10 @@ import java.util.stream.Collectors;
 	public static class StringType extends PropertyData<String> {
 		private final String[] arrayData;
 
+		public StringType(String name) {
+			this(name, null);
+		}
+
 		public StringType(String name, String[] arrayData) {
 			super(name);
 			this.arrayData = arrayData;
@@ -284,14 +288,22 @@ import java.util.stream.Collectors;
 		}
 
 		@Override public JComponent getComponent(MCreator mcreator, @Nullable Object value) {
-			JComboBox<String> box = new JComboBox<>(arrayData);
-			box.setEditable(false);
-			box.setSelectedItem(Objects.requireNonNullElse((String) value, getDefaultValue()));
-			return box;
+			if (arrayData != null) {
+				JComboBox<String> box = new JComboBox<>(arrayData);
+				box.setEditable(false);
+				box.setSelectedItem(Objects.requireNonNullElse((String) value, getDefaultValue()));
+				return box;
+			} else {
+				JTextField box = new JTextField(10);
+				box.setText(Objects.requireNonNullElse((String) value, getDefaultValue()));
+				return box;
+			}
 		}
 
 		@Override public String getValue(JComponent component) {
-			return (String) ((JComboBox<?>) component).getSelectedItem();
+			return (String) (component instanceof JComboBox<?> ?
+					((JComboBox<?>) component).getSelectedItem() :
+					((JTextField) component).getText());
 		}
 	}
 
