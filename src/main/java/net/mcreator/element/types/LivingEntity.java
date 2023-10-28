@@ -106,8 +106,8 @@ import java.util.*;
 
 	public boolean canTrade;
 	public boolean villagerTradingType;
-	public List<ProfessionEntry> professionTrade;
-	public boolean excludeProfessions;
+	public List<ProfessionEntry> tradeProfessions;
+	public boolean tradeProfessionsExclude;
 	public Sound tradeFullUpdateSound;
 	public Sound tradeEmptyUpdateSound;
 	public Sound tradeNotificationSound;
@@ -194,7 +194,7 @@ import java.util.*;
 
 		this.canTrade = false;
 		this.villagerTradingType = true;
-		this.professionTrade = new ArrayList<>();
+		this.tradeProfessions = new ArrayList<>();
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
 	}

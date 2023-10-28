@@ -1645,17 +1645,17 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelShadowSize = 1.8;
 		livingEntity.canTrade = _true;
 		livingEntity.villagerTradingType = emptyLists;
-		livingEntity.professionTrade = new ArrayList<>();
+		livingEntity.tradeProfessions = new ArrayList<>();
 		if (!emptyLists) {
-			livingEntity.professionTrade.addAll(
+			livingEntity.tradeProfessions.addAll(
 					professions.stream().skip(_true ? 0 : ((long) (professions.size() / 4) * valueIndex))
 							.limit(professions.size() / 4)
 							.map(e -> new ProfessionEntry(modElement.getWorkspace(), e.getName())).toList());
-			livingEntity.excludeProfessions = _true;
+			livingEntity.tradeProfessionsExclude = _true;
 		} else {
-			livingEntity.professionTrade.add(
+			livingEntity.tradeProfessions.add(
 					new ProfessionEntry(modElement.getWorkspace(), getRandomDataListEntry(random, professions)));
-			livingEntity.excludeProfessions = !_true;
+			livingEntity.tradeProfessionsExclude = !_true;
 		}
 		livingEntity.tradeFullUpdateSound = new Sound(modElement.getWorkspace(),
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));

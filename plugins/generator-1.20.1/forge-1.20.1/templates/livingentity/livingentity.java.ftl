@@ -235,7 +235,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.canTrade>
 	protected void updateTrades() {
-		<#assign professions = (w.filterBrokenReferences(data.professionTrade))?filter(p -> p.getUnmappedValue() != "WANDERING_TRADER")>
+		<#assign professions = (w.filterBrokenReferences(data.tradeProfessions))?filter(p -> p.getUnmappedValue() != "WANDERING_TRADER")>
 		List<VillagerProfession> professions = List.of(
 			<#list professions as profession>
 				${profession}<#if profession?has_next>,</#if>
@@ -243,11 +243,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		);
 		Int2ObjectMap<VillagerTrades.ItemListing[]> trades = new Int2ObjectOpenHashMap<>();
 		VillagerTrades.TRADES.forEach((key, value) -> {
-			if (<#if data.excludeProfessions>!</#if>(professions.contains(key))) {
+			if (<#if data.tradeProfessionsExclude>!</#if>(professions.contains(key))) {
 				value.int2ObjectEntrySet().forEach(ent -> trades.put(ent.getIntKey(), Arrays.copyOf(ent.getValue(), ent.getValue().length)));
 			}
 		});
-		<#if data.professionTrade?contains("WanderingTrader") && !data.excludeProfessions>
+		<#if data.tradeProfessions?contains("WanderingTrader") && !data.tradeProfessionsExclude>
 		VillagerTrades.WANDERING_TRADER_TRADES.int2ObjectEntrySet().forEach(e -> trades.put(e.getIntKey(), Arrays.copyOf(e.getValue(), e.getValue().length)));
 		</#if>
 		if (trades != null && !trades.isEmpty()) {
