@@ -111,8 +111,8 @@ import java.util.*;
 	public Sound tradeFullUpdateSound;
 	public Sound tradeEmptyUpdateSound;
 	public Sound tradeNotificationSound;
-	public LogicProcedure restockCondition;
-	public NumberProcedure rewardXp;
+	public LogicProcedure tradeRestockCondition;
+	public NumberProcedure tradeRewardXp;
 	public Procedure tradingCondition;
 
 	public boolean disableCollisions;

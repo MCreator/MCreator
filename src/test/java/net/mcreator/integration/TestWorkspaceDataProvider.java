@@ -1663,8 +1663,8 @@ public class TestWorkspaceDataProvider {
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		livingEntity.tradeNotificationSound = new Sound(modElement.getWorkspace(),
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
-		livingEntity.restockCondition = new LogicProcedure(_true ? "condition4" : null, _true);
-		livingEntity.rewardXp = new NumberProcedure(emptyLists ? null : "number1", 4);
+		livingEntity.tradeRestockCondition = new LogicProcedure(_true ? "condition4" : null, _true);
+		livingEntity.tradeRewardXp = new NumberProcedure(emptyLists ? null : "number1", 4);
 		livingEntity.tradingCondition = _true ? null : new Procedure("condition5");
 		// We need to apply some overrides that are done in the GUI so UI tests can pass
 		if (livingEntity.canTrade) {

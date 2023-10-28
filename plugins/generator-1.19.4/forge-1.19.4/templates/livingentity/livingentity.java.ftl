@@ -263,16 +263,16 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
 	}
 
-	<#if data.restockCondition?? && (hasProcedure(data.restockCondition) || data.restockCondition.getFixedValue())>
+	<#if data.tradeRestockCondition?? && (hasProcedure(data.tradeRestockCondition) || data.tradeRestockCondition.getFixedValue())>
 	<#if data.villagerTradingType>@Override</#if> public boolean canRestock() {
-		<#if hasProcedure(data.restockCondition)>
+		<#if hasProcedure(data.tradeRestockCondition)>
 			Entity entity = this;
 			Level world = entity.level;
 			double x = entity.getX();
 			double y = entity.getY();
 			double z = entity.getZ();
 		</#if>
-		return <@procedureOBJToConditionCode data.restockCondition true false/>;
+		return <@procedureOBJToConditionCode data.tradeRestockCondition true false/>;
 	}
 	</#if>
 
@@ -295,15 +295,15 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	protected void rewardTradeXp(MerchantOffer offer) {
 		if (offer.shouldRewardExp()) {
-			<#if hasProcedure(data.rewardXp)>
+			<#if hasProcedure(data.tradeRewardXp)>
 				Entity entity = this;
 				Level world = entity.level;
 				double x = entity.getX();
 				double y = entity.getY();
 				double z = entity.getZ();
-				int rewardXp = (int) <@procedureOBJToNumberCode data.rewardXp/>;
+				int rewardXp = (int) <@procedureOBJToNumberCode data.tradeRewardXp/>;
 			<#else>
-				int rewardXp = ${data.rewardXp.getFixedValue()};
+				int rewardXp = ${data.tradeRewardXp.getFixedValue()};
 			</#if>
 			this.level.addFreshEntity(new ExperienceOrb(this.level, this.getX(), this.getY() + 0.5D, this.getZ(), rewardXp));
 		}

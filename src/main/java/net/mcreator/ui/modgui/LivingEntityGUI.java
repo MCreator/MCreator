@@ -181,8 +181,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final SoundSelector tradeFullUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector tradeEmptyUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector tradeNotificationSound = new SoundSelector(mcreator);
-	private LogicProcedureSelector restockCondition;
-	private NumberProcedureSelector rewardXp;
+	private LogicProcedureSelector tradeRestockCondition;
+	private NumberProcedureSelector tradeRewardXp;
 	private ProcedureSelector tradingCondition;
 
 	private MCItemHolder rangedAttackItem;
@@ -369,11 +369,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.checkbox("elementgui.common.enable"), 160,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
-		restockCondition = new LogicProcedureSelector(this.withEntry("entity/can_restock"), mcreator,
+		tradeRestockCondition = new LogicProcedureSelector(this.withEntry("entity/can_restock"), mcreator,
 				L10N.t("elementgui.living_entity.can_restock"), AbstractProcedureSelector.Side.BOTH,
 				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		rewardXp = new NumberProcedureSelector(this.withEntry("entity/reward_xp"), mcreator,
+		tradeRewardXp = new NumberProcedureSelector(this.withEntry("entity/reward_xp"), mcreator,
 				L10N.t("elementgui.living_entity.reward_xp"), AbstractProcedureSelector.Side.BOTH,
 				new JSpinner(new SpinnerNumberModel(4, 0, Integer.MAX_VALUE, 0.5)), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
@@ -944,8 +944,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		JPanel villagerPropertiesConditions = new JPanel(new GridLayout(3, 1, 0, 2));
 		villagerPropertiesConditions.setOpaque(false);
-		villagerPropertiesConditions.add(restockCondition);
-		villagerPropertiesConditions.add(rewardXp);
+		villagerPropertiesConditions.add(tradeRestockCondition);
+		villagerPropertiesConditions.add(tradeRewardXp);
 		villagerPropertiesConditions.add(tradingCondition);
 
 		JComponent villagerPropertiesPanel = PanelUtils.northAndCenterElement(villagerProperties,
@@ -1012,8 +1012,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		tradeFullUpdateSound.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
 		tradeEmptyUpdateSound.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
 		tradeNotificationSound.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
-		restockCondition.setEnabled(canTrade.isSelected());
-		rewardXp.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
+		tradeRestockCondition.setEnabled(canTrade.isSelected());
+		tradeRewardXp.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
 		tradingCondition.setEnabled(canTrade.isSelected());
 		guiBoundTo.setEnabled(!canTrade.isSelected());
 		inventorySize.setEnabled(!canTrade.isSelected());
@@ -1055,8 +1055,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		solidBoundingBox.refreshListKeepSelected();
 		breatheUnderwater.refreshListKeepSelected();
 		pushedByFluids.refreshListKeepSelected();
-		restockCondition.refreshListKeepSelected();
-		rewardXp.refreshListKeepSelected();
+		tradeRestockCondition.refreshListKeepSelected();
+		tradeRewardXp.refreshListKeepSelected();
 		tradingCondition.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
@@ -1202,8 +1202,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		tradeFullUpdateSound.setSound(livingEntity.tradeFullUpdateSound);
 		tradeEmptyUpdateSound.setSound(livingEntity.tradeEmptyUpdateSound);
 		tradeNotificationSound.setSound(livingEntity.tradeNotificationSound);
-		restockCondition.setSelectedProcedure(livingEntity.restockCondition);
-		rewardXp.setSelectedProcedure(livingEntity.rewardXp);
+		tradeRestockCondition.setSelectedProcedure(livingEntity.tradeRestockCondition);
+		tradeRewardXp.setSelectedProcedure(livingEntity.tradeRewardXp);
 		tradingCondition.setSelectedProcedure(livingEntity.tradingCondition);
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
 		inventorySize.setValue(livingEntity.inventorySize);
@@ -1338,8 +1338,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.tradeFullUpdateSound = tradeFullUpdateSound.getSound();
 		livingEntity.tradeEmptyUpdateSound = tradeEmptyUpdateSound.getSound();
 		livingEntity.tradeNotificationSound = tradeNotificationSound.getSound();
-		livingEntity.restockCondition = restockCondition.getSelectedProcedure();
-		livingEntity.rewardXp = rewardXp.getSelectedProcedure();
+		livingEntity.tradeRestockCondition = tradeRestockCondition.getSelectedProcedure();
+		livingEntity.tradeRewardXp = tradeRewardXp.getSelectedProcedure();
 		livingEntity.tradingCondition = tradingCondition.getSelectedProcedure();
 		livingEntity.guiBoundTo = (String) guiBoundTo.getSelectedItem();
 		return livingEntity;
