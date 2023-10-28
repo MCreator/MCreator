@@ -178,9 +178,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JRadioButton wanderingTraderTradingType = L10N.radiobutton(
 			"elementgui.living_entity.wandering_trader");
 	private ProfessionListField professionTrade;
-	private final SoundSelector fullUpdateSound = new SoundSelector(mcreator);
-	private final SoundSelector emptyUpdateSound = new SoundSelector(mcreator);
-	private final SoundSelector notificationSound = new SoundSelector(mcreator);
+	private final SoundSelector tradeFullUpdateSound = new SoundSelector(mcreator);
+	private final SoundSelector tradeEmptyUpdateSound = new SoundSelector(mcreator);
+	private final SoundSelector tradeNotificationSound = new SoundSelector(mcreator);
 	private LogicProcedureSelector restockCondition;
 	private NumberProcedureSelector rewardXp;
 	private ProcedureSelector tradingCondition;
@@ -538,9 +538,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingSound.setText("");
 		hurtSound.setText("entity.generic.hurt");
 		deathSound.setText("entity.generic.death");
-		fullUpdateSound.setText("");
-		emptyUpdateSound.setText("");
-		notificationSound.setText("");
+		tradeFullUpdateSound.setText("");
+		tradeEmptyUpdateSound.setText("");
+		tradeNotificationSound.setText("");
 
 		JPanel subpanel2 = new JPanel(new GridLayout(1, 2, 0, 2));
 		subpanel2.setOpaque(false);
@@ -932,15 +932,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/full_update_sound"),
 				L10N.label("elementgui.living_entity.full_update_sound")));
-		villagerProperties.add(fullUpdateSound);
+		villagerProperties.add(tradeFullUpdateSound);
 
 		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/empty_update_sound"),
 				L10N.label("elementgui.living_entity.empty_update_sound")));
-		villagerProperties.add(emptyUpdateSound);
+		villagerProperties.add(tradeEmptyUpdateSound);
 
 		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/notification_sound"),
 				L10N.label("elementgui.living_entity.notification_sound")));
-		villagerProperties.add(notificationSound);
+		villagerProperties.add(tradeNotificationSound);
 
 		JPanel villagerPropertiesConditions = new JPanel(new GridLayout(3, 1, 0, 2));
 		villagerPropertiesConditions.setOpaque(false);
@@ -1009,9 +1009,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		villagerTradingType.setEnabled(canTrade.isSelected());
 		wanderingTraderTradingType.setEnabled(canTrade.isSelected());
 		professionTrade.setEnabled(canTrade.isSelected());
-		fullUpdateSound.setEnabled(canTrade.isSelected());
-		emptyUpdateSound.setEnabled(canTrade.isSelected());
-		notificationSound.setEnabled(canTrade.isSelected());
+		tradeFullUpdateSound.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
+		tradeEmptyUpdateSound.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
+		tradeNotificationSound.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
 		restockCondition.setEnabled(canTrade.isSelected());
 		rewardXp.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
 		tradingCondition.setEnabled(canTrade.isSelected());
@@ -1199,9 +1199,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		wanderingTraderTradingType.setSelected(!livingEntity.villagerTradingType);
 		professionTrade.setListElements(livingEntity.professionTrade);
 		professionTrade.setExclusionMode(livingEntity.excludeProfessions);
-		fullUpdateSound.setSound(livingEntity.fullUpdateSound);
-		emptyUpdateSound.setSound(livingEntity.emptyUpdateSound);
-		notificationSound.setSound(livingEntity.notificationSound);
+		tradeFullUpdateSound.setSound(livingEntity.tradeFullUpdateSound);
+		tradeEmptyUpdateSound.setSound(livingEntity.tradeEmptyUpdateSound);
+		tradeNotificationSound.setSound(livingEntity.tradeNotificationSound);
 		restockCondition.setSelectedProcedure(livingEntity.restockCondition);
 		rewardXp.setSelectedProcedure(livingEntity.rewardXp);
 		tradingCondition.setSelectedProcedure(livingEntity.tradingCondition);
@@ -1335,9 +1335,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.villagerTradingType = villagerTradingType.isSelected();
 		livingEntity.professionTrade = professionTrade.getListElements();
 		livingEntity.excludeProfessions = professionTrade.isExclusionMode();
-		livingEntity.fullUpdateSound = fullUpdateSound.getSound();
-		livingEntity.emptyUpdateSound = emptyUpdateSound.getSound();
-		livingEntity.notificationSound = notificationSound.getSound();
+		livingEntity.tradeFullUpdateSound = tradeFullUpdateSound.getSound();
+		livingEntity.tradeEmptyUpdateSound = tradeEmptyUpdateSound.getSound();
+		livingEntity.tradeNotificationSound = tradeNotificationSound.getSound();
 		livingEntity.restockCondition = restockCondition.getSelectedProcedure();
 		livingEntity.rewardXp = rewardXp.getSelectedProcedure();
 		livingEntity.tradingCondition = tradingCondition.getSelectedProcedure();

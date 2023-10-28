@@ -337,11 +337,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.isWanderingTraderType()>
 	protected SoundEvent getTradeUpdatedSound(boolean hasContent) {
-		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(hasContent ? "${data.fullUpdateSound}" : "${data.emptyUpdateSound}"));
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(hasContent ? "${data.tradeFullUpdateSound}" : "${data.tradeEmptyUpdateSound}"));
 	}
 
 	public SoundEvent getNotifyTradeSound() {
-		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.notificationSound}"));
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.tradeNotificationSound}"));
 	}
 	</#if>
 
