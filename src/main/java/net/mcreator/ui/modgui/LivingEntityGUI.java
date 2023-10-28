@@ -912,49 +912,57 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.common.max_stack_size")));
 		props.add(inventoryStackSize);
 
-		JPanel villagerProperties = new JPanel(new GridLayout(6, 2, 5, 2));
-		villagerProperties.setOpaque(false);
-
 		canTrade.setOpaque(false);
-		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/can_trade"),
-				L10N.label("elementgui.living_entity.can_trade")));
-		villagerProperties.add(canTrade);
-
 		villagerTradingType.setOpaque(false);
 		wanderingTraderTradingType.setOpaque(false);
-		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/trading_type"),
+
+		JPanel tradingProperties = new JPanel(new GridLayout(3, 2, 5, 2));
+		tradingProperties.setOpaque(false);
+
+		tradingProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/can_trade"),
+				L10N.label("elementgui.living_entity.can_trade")));
+		tradingProperties.add(canTrade);
+
+		tradingProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/trading_type"),
 				L10N.label("elementgui.living_entity.trading_type")));
-		villagerProperties.add(PanelUtils.join(FlowLayout.LEFT, villagerTradingType, wanderingTraderTradingType));
+		tradingProperties.add(PanelUtils.join(FlowLayout.LEFT, villagerTradingType, wanderingTraderTradingType));
 
-		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/profession_trade"),
+		tradingProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/profession_trade"),
 				L10N.label("elementgui.living_entity.profession_trade")));
-		villagerProperties.add(tradeProfessions);
+		tradingProperties.add(tradeProfessions);
 
-		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/full_update_sound"),
+		JPanel tradingConditions = new JPanel(new GridLayout(2, 1, 0, 2));
+		tradingConditions.setOpaque(false);
+		tradingConditions.add(tradeRestockCondition);
+		tradingConditions.add(tradeRewardXp);
+		tradingConditions.add(tradingCondition);
+
+		JPanel wanderingTraderProperties = new JPanel(new GridLayout(3, 2, 5, 2));
+		wanderingTraderProperties.setOpaque(false);
+
+		wanderingTraderProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/full_update_sound"),
 				L10N.label("elementgui.living_entity.full_update_sound")));
-		villagerProperties.add(tradeFullUpdateSound);
+		wanderingTraderProperties.add(tradeFullUpdateSound);
 
-		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/empty_update_sound"),
+		wanderingTraderProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/empty_update_sound"),
 				L10N.label("elementgui.living_entity.empty_update_sound")));
-		villagerProperties.add(tradeEmptyUpdateSound);
+		wanderingTraderProperties.add(tradeEmptyUpdateSound);
 
-		villagerProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/notification_sound"),
+		wanderingTraderProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/notification_sound"),
 				L10N.label("elementgui.living_entity.notification_sound")));
-		villagerProperties.add(tradeNotificationSound);
+		wanderingTraderProperties.add(tradeNotificationSound);
 
-		JPanel villagerPropertiesConditions = new JPanel(new GridLayout(3, 1, 0, 2));
-		villagerPropertiesConditions.setOpaque(false);
-		villagerPropertiesConditions.add(tradeRestockCondition);
-		villagerPropertiesConditions.add(tradeRewardXp);
-		villagerPropertiesConditions.add(tradingCondition);
+		JPanel wanderingTraderConditions = new JPanel(new GridLayout(1, 1, 0, 2));
+		wanderingTraderConditions.setOpaque(false);
+		wanderingTraderConditions.add(tradeRewardXp);
 
-		JComponent villagerPropertiesPanel = PanelUtils.northAndCenterElement(villagerProperties,
-				villagerPropertiesConditions, 2, 2);
+		JComponent villagerPropertiesPanel = PanelUtils.northAndCenterElement(
+				PanelUtils.northAndCenterElement(tradingProperties, tradingConditions, 2, 2),
+				PanelUtils.northAndCenterElement(wanderingTraderProperties, wanderingTraderConditions, 2, 2), 2, 2);
 		villagerPropertiesPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.living_entity.trade_properties"), TitledBorder.LEADING,
 				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		villagerPropertiesPanel.setOpaque(false);
 
 		pane7.add(PanelUtils.totalCenterInPanel(
 				PanelUtils.westAndEastElement(PanelUtils.pullElementUp(props), villagerPropertiesPanel)));
@@ -1232,6 +1240,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		disableMobModelCheckBoxListener = false;
 		editorReady = true;
+
 		updateTradingConditions();
 	}
 
