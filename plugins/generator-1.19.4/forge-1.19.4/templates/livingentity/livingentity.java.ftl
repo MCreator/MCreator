@@ -69,15 +69,15 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		ServerBossEvent.BossBarColor.${data.bossBarColor}, ServerBossEvent.BossBarOverlay.${data.bossBarType});
 	</#if>
 
-	public ${name}Entity(PlayMessages.SpawnEntity packet, Level world) {
-    	this(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
-    }
-
 	<#if data.isVillagerType()>
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
 		this(type, world, VillagerType.PLAINS);
 	}
 	</#if>
+
+	public ${name}Entity(PlayMessages.SpawnEntity packet, Level world) {
+    	this(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
+    }
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world<#if data.isVillagerType()>, VillagerType villagerType</#if>) {
     	super(type, world<#if data.isVillagerType()>, villagerType</#if>);
@@ -239,7 +239,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	</#if>
 
 	<#if data.canTrade>
-	protected void updateTrades() {
+	@Override protected void updateTrades() {
 		<#assign professions = (w.filterBrokenReferences(data.tradeProfessions))?filter(p -> p.getUnmappedValue() != "WANDERING_TRADER")>
 		List<VillagerProfession> professions = List.of(
 			<#list professions as profession>
@@ -255,16 +255,14 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		<#if data.tradeProfessions?contains("WanderingTrader") && !data.tradeProfessionsExclude>
 		VillagerTrades.WANDERING_TRADER_TRADES.int2ObjectEntrySet().forEach(e -> trades.put(e.getIntKey(), Arrays.copyOf(e.getValue(), e.getValue().length)));
 		</#if>
-		if (trades != null && !trades.isEmpty()) {
-			VillagerTrades.ItemListing[] leveledTrades = trades.get(<#if data.villagerTradingType>this.getVillagerData().getLevel()<#else>1</#if>);
-			if (leveledTrades != null) {
-				this.addOffersFromItemListings(this.getOffers(), leveledTrades, 2);
-			}
+		VillagerTrades.ItemListing[] leveledTrades = trades.get(<#if data.villagerTradingType>this.getVillagerData().getLevel()<#else>1</#if>);
+		if (leveledTrades != null) {
+			this.addOffersFromItemListings(this.getOffers(), leveledTrades, 2);
 		}
 	}
 
 	<#if data.tradeRestockCondition?? && (hasProcedure(data.tradeRestockCondition) || data.tradeRestockCondition.getFixedValue())>
-	<#if data.villagerTradingType>@Override</#if> public boolean canRestock() {
+	@Override public boolean canRestock() {
 		<#if hasProcedure(data.tradeRestockCondition)>
 			Entity entity = this;
 			Level world = entity.level;
@@ -289,11 +287,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
 	}
 	<#else>
-	public boolean showProgressBar() {
+	@Override public boolean showProgressBar() {
 		return false;
 	}
 
-	protected void rewardTradeXp(MerchantOffer offer) {
+	@Override protected void rewardTradeXp(MerchantOffer offer) {
 		if (offer.shouldRewardExp()) {
 			<#if hasProcedure(data.tradeRewardXp)>
 				Entity entity = this;
@@ -308,8 +306,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			this.level.addFreshEntity(new ExperienceOrb(this.level, this.getX(), this.getY() + 0.5D, this.getZ(), rewardXp));
 		}
 	}
-	</#if>
-	</#if>
+	</#if><#-- data.villagerTradingType -->
+	</#if><#-- data.canTrade -->
 
    	<#if data.livingSound?has_content && data.livingSound.getMappedValue()?has_content>
 	@Override public SoundEvent getAmbientSound() {
