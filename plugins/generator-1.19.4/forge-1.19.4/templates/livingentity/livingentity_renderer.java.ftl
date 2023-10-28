@@ -118,7 +118,7 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 			double z = entity.getZ();
 			float scale = (float) <@procedureOBJToNumberCode data.visualScale/>;
 			poseStack.scale(scale, scale, scale);
-		<#else>
+		<#elseif data.visualScale?? && (data.visualScale.getFixedValue() != 1>
 			poseStack.scale(${data.visualScale.getFixedValue()}f, ${data.visualScale.getFixedValue()}f, ${data.visualScale.getFixedValue()}f);
 		</#if>
 		<#if data.mobModelName == "Villager">
