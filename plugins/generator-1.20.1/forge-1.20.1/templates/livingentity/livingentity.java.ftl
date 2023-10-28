@@ -286,7 +286,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override ${mcc.getMethod("net.minecraft.world.entity.npc.Villager", "customServerAiStep")
 		.replace("this.stopTrading();", "")}
 
-	private void updateSpecialPrices(Player player) {
+	@Override public void updateSpecialPrices(Player player) {
 		int reputation = this.getPlayerReputation(player);
 		if (reputation != 0) {
 			for (MerchantOffer offer : this.getOffers()) {
