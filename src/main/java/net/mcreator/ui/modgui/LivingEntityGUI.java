@@ -374,7 +374,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		tradeRewardXp = new NumberProcedureSelector(this.withEntry("entity/reward_xp"), mcreator,
-				L10N.t("elementgui.living_entity.reward_xp"), AbstractProcedureSelector.Side.BOTH,
+				L10N.t("elementgui.living_entity.trade_reward_xp"), AbstractProcedureSelector.Side.BOTH,
 				new JSpinner(new SpinnerNumberModel(4, 0, Integer.MAX_VALUE, 0.5)), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		tradingCondition = new ProcedureSelector(this.withEntry("entity/trading_condition"), mcreator,
