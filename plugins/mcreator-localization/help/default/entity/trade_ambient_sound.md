@@ -1,0 +1,1 @@
+The ambient sound played when the entity is trading.

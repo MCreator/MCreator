@@ -178,6 +178,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JRadioButton wanderingTraderTradingType = L10N.radiobutton(
 			"elementgui.living_entity.wandering_trader");
 	private ProfessionListField tradeProfessions;
+	private final SoundSelector tradeAmbientSound = new SoundSelector(mcreator);
 	private final SoundSelector tradeFullUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector tradeEmptyUpdateSound = new SoundSelector(mcreator);
 	private final SoundSelector tradeNotificationSound = new SoundSelector(mcreator);
@@ -538,6 +539,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingSound.setText("");
 		hurtSound.setText("entity.generic.hurt");
 		deathSound.setText("entity.generic.death");
+		tradeAmbientSound.setText("");
 		tradeFullUpdateSound.setText("");
 		tradeEmptyUpdateSound.setText("");
 		tradeNotificationSound.setText("");
@@ -937,8 +939,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		tradingConditions.add(tradeRewardXp);
 		tradingConditions.add(tradingCondition);
 
-		JPanel wanderingTraderProperties = new JPanel(new GridLayout(3, 2, 5, 2));
+		JPanel wanderingTraderProperties = new JPanel(new GridLayout(4, 2, 5, 2));
 		wanderingTraderProperties.setOpaque(false);
+
+		wanderingTraderProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/trade_ambient_sound"),
+				L10N.label("elementgui.living_entity.trade_ambient_sound")));
+		wanderingTraderProperties.add(tradeAmbientSound);
 
 		wanderingTraderProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/full_update_sound"),
 				L10N.label("elementgui.living_entity.full_update_sound")));
@@ -1017,6 +1023,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		villagerTradingType.setEnabled(canTrade.isSelected());
 		wanderingTraderTradingType.setEnabled(canTrade.isSelected());
 		tradeProfessions.setEnabled(canTrade.isSelected());
+		tradeAmbientSound.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
 		tradeFullUpdateSound.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
 		tradeEmptyUpdateSound.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
 		tradeNotificationSound.setEnabled(canTrade.isSelected() && !villagerTradingType.isSelected());
@@ -1207,6 +1214,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		wanderingTraderTradingType.setSelected(!livingEntity.villagerTradingType);
 		tradeProfessions.setListElements(livingEntity.tradeProfessions);
 		tradeProfessions.setExclusionMode(livingEntity.tradeProfessionsExclude);
+		tradeAmbientSound.setSound(livingEntity.tradeAmbientSound);
 		tradeFullUpdateSound.setSound(livingEntity.tradeFullUpdateSound);
 		tradeEmptyUpdateSound.setSound(livingEntity.tradeEmptyUpdateSound);
 		tradeNotificationSound.setSound(livingEntity.tradeNotificationSound);
@@ -1344,6 +1352,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.villagerTradingType = villagerTradingType.isSelected();
 		livingEntity.tradeProfessions = tradeProfessions.getListElements();
 		livingEntity.tradeProfessionsExclude = tradeProfessions.isExclusionMode();
+		livingEntity.tradeAmbientSound = tradeAmbientSound.getSound();
 		livingEntity.tradeFullUpdateSound = tradeFullUpdateSound.getSound();
 		livingEntity.tradeEmptyUpdateSound = tradeEmptyUpdateSound.getSound();
 		livingEntity.tradeNotificationSound = tradeNotificationSound.getSound();

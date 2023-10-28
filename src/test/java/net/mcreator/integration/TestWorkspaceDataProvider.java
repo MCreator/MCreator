@@ -1657,6 +1657,8 @@ public class TestWorkspaceDataProvider {
 					new ProfessionEntry(modElement.getWorkspace(), getRandomDataListEntry(random, professions)));
 			livingEntity.tradeProfessionsExclude = !_true;
 		}
+		livingEntity.tradeAmbientSound = new Sound(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		livingEntity.tradeFullUpdateSound = new Sound(modElement.getWorkspace(),
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		livingEntity.tradeEmptyUpdateSound = new Sound(modElement.getWorkspace(),

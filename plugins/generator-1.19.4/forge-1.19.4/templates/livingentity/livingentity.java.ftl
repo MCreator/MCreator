@@ -324,7 +324,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
    	<#if data.livingSound?has_content && data.livingSound.getMappedValue()?has_content>
 	@Override public SoundEvent getAmbientSound() {
-		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
+		return
+		<#if data.isWanderingTraderType() && data.tradeAmbientSound?has_content && data.tradeAmbientSound.getMappedValue()?has_content>
+		this.isTrading() ? ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.tradeAmbientSound}")) :
+		</#if>
+		ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
 	}
 	</#if>
 
@@ -347,7 +351,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	</#if>
 
 	<#if data.isWanderingTraderType()>
-	protected SoundEvent getTradeUpdatedSound(boolean hasContent) {
+	@Override protected SoundEvent getTradeUpdatedSound(boolean hasContent) {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(hasContent ?
 			"${(data.tradeFullUpdateSound?has_content && data.tradeFullUpdateSound.getMappedValue()?has_content)?then(data.tradeFullUpdateSound, "intentionally_empty")}"
 		:
@@ -355,7 +359,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		));
 	}
 
-	public SoundEvent getNotifyTradeSound() {
+	@Override public SoundEvent getNotifyTradeSound() {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
 			"${(data.tradeNotificationSound?has_content && data.tradeNotificationSound.getMappedValue()?has_content)?then(data.tradeNotificationSound, "intentionally_empty")}"
 		));
