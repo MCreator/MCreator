@@ -21,13 +21,11 @@ package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.TransparentToolBar;
-import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 
-import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionListener;
@@ -103,34 +101,11 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 	}
 
 	protected void addToolBarButton(String translationKey, ImageIcon icon, ActionListener actionListener) {
-		bar.add(createToolBarButton(translationKey, icon, actionListener));
+		bar.add(AbstractWorkspacePanel.createToolBarButton(translationKey, icon, actionListener));
 	}
 
 	protected void addToolBarButton(String translationKey, ImageIcon icon, MouseListener mouseListener) {
-		bar.add(createToolBarButton(translationKey, icon, mouseListener));
-	}
-
-	public static JButton createToolBarButton(String translationKey, ImageIcon icon, ActionListener actionListener) {
-		return createToolBarButton(translationKey, icon, actionListener, null);
-	}
-
-	public static JButton createToolBarButton(String translationKey, ImageIcon icon, MouseListener mouseListener) {
-		return createToolBarButton(translationKey, icon, null, mouseListener);
-	}
-
-	public static JButton createToolBarButton(String translationKey, ImageIcon icon,
-			@Nullable ActionListener actionListener, @Nullable MouseListener mouseListener) {
-		JButton button = L10N.button(translationKey);
-		button.setIcon(icon);
-		button.setContentAreaFilled(false);
-		button.setOpaque(false);
-		ComponentUtils.deriveFont(button, 12);
-		button.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		if (actionListener != null)
-			button.addActionListener(actionListener);
-		if (mouseListener != null)
-			button.addMouseListener(mouseListener);
-		return button;
+		bar.add(AbstractWorkspacePanel.createToolBarButton(translationKey, icon, mouseListener));
 	}
 
 }
