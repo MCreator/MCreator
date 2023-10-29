@@ -65,7 +65,7 @@ body {
 }
 
 .whlab > .blocklyFlyoutLabelText {
-    fill: #eaeaea;
+    fill: #eaeaea !important;
 }
 
 .blocklyDropDownDiv {
