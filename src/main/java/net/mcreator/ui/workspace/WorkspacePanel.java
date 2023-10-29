@@ -112,7 +112,7 @@ import java.util.stream.Collectors;
 	private final JLabel but6 = new JLabel(TiledImageCache.workspaceModElementIDs);
 
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
-	private final JMenuItem searchElement = new JMenuItem(L10N.t("workspace.elements.list.edit.usages"));
+	private final JMenuItem searchElement = new JMenuItem(L10N.t("common.search_usages"));
 	private final JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
 	private final JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
 	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
