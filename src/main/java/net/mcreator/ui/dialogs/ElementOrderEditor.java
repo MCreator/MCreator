@@ -28,6 +28,7 @@ import net.mcreator.ui.laf.renderer.elementlist.SmallIconModListRender;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -48,7 +49,7 @@ public class ElementOrderEditor {
 		LinkedHashMap<String, DefaultListModel<ModElement>> tabEditors = new LinkedHashMap<>();
 		JTabbedPane tabs = new JTabbedPane();
 		tabs.setBorder(BorderFactory.createEmptyBorder());
-		tabs.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
+		tabs.setUI(new BasicTabbedPaneUI() {
 			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 			}
 		});

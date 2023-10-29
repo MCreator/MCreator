@@ -32,6 +32,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
+import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -105,38 +106,23 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton create = L10N.button("workspace.textures.new");
-		create.setIcon(UIRES.get("16px.add.gif"));
-		create.setContentAreaFilled(false);
-		create.setOpaque(false);
-		ComponentUtils.deriveFont(create, 12);
-		create.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(create);
-
 		JPopupMenu createMenu = new JPopupMenu();
-		createMenu.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		createMenu.setBorder(
 				BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
-
+		createMenu.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createMCItemTexture);
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createArmorTexture);
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createAnimatedTexture);
 
+		JButton create = AbstractWorkspacePanel.createToolBarButton("workspace.textures.new",
+				UIRES.get("16px.add.gif"));
 		create.addActionListener(e -> createMenu.show(create, 5, create.getHeight() + 5));
-
-		JButton importt = L10N.button("workspace.textures.import");
-		importt.setIcon(UIRES.get("16px.open.gif"));
-		importt.setContentAreaFilled(false);
-		importt.setOpaque(false);
-		ComponentUtils.deriveFont(importt, 12);
-		importt.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(importt);
+		bar.add(create);
 
 		JPopupMenu importMenu = new JPopupMenu();
-		importMenu.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		importMenu.setBorder(
 				BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
-
+		importMenu.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importBlockTexture);
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importItemTexture);
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importEntityTexture);
@@ -146,51 +132,21 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importArmorTexture);
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importOtherTexture);
 
+		JButton importt = AbstractWorkspacePanel.createToolBarButton("workspace.textures.import",
+				UIRES.get("16px.open.gif"));
 		importt.addActionListener(e -> importMenu.show(importt, 5, importt.getHeight() + 5));
+		bar.add(importt);
 
-		JButton edit = L10N.button("workspace.textures.edit_selected");
-		edit.setIcon(UIRES.get("16px.edit.gif"));
-		edit.setContentAreaFilled(false);
-		edit.setOpaque(false);
-		ComponentUtils.deriveFont(edit, 12);
-		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(edit);
+		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.edit_selected",
+				UIRES.get("16px.edit.gif"), e -> editSelectedFile()));
 
-		JButton search = L10N.button("workspace.textures.search_usages");
-		search.setIcon(UIRES.get("16px.search"));
-		search.setContentAreaFilled(false);
-		search.setOpaque(false);
-		ComponentUtils.deriveFont(search, 12);
-		search.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(search);
+		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.duplicate_selected",
+				UIRES.get("16px.duplicate.gif"), e -> duplicateSelectedFile()));
 
-		JButton duplicate = L10N.button("workspace.textures.duplicate_selected");
-		duplicate.setIcon(UIRES.get("16px.duplicate.gif"));
-		duplicate.setContentAreaFilled(false);
-		duplicate.setOpaque(false);
-		ComponentUtils.deriveFont(duplicate, 12);
-		duplicate.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(duplicate);
+		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.delete_selected",
+				UIRES.get("16px.delete.gif"), e -> deleteCurrentlySelected()));
 
-		JButton del = L10N.button("workspace.textures.delete_selected");
-		del.setIcon(UIRES.get("16px.delete.gif"));
-		del.setOpaque(false);
-		del.setContentAreaFilled(false);
-		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(del);
-
-		JButton export = L10N.button("workspace.textures.export_selected");
-		export.setIcon(UIRES.get("16px.ext.gif"));
-		export.setOpaque(false);
-		export.setContentAreaFilled(false);
-		export.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(export);
-		export.addActionListener(e -> exportSelectedImages());
-
-		del.addActionListener(a -> deleteCurrentlySelected());
-
-		edit.addActionListener(e -> editSelectedFile());
-		search.addActionListener(e -> {
+		bar.add(AbstractWorkspacePanel.createToolBarButton("common.show_usages", UIRES.get("16px.search"), e -> {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			Set<ModElement> refs = new HashSet<>();
@@ -206,10 +162,12 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			}
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-			SearchUsagesDialog.show(workspacePanel.getMCreator(), L10N.t("dialog.search_usages.type.resource.texture"),
-					new ArrayList<>(refs), false);
+			SearchUsagesDialog.showUsages(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.texture"), new ArrayList<>(refs));
 		});
-		duplicate.addActionListener(e -> duplicateSelectedFile());
+
+		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.export_selected",
+				UIRES.get("16px.ext.gif"), e -> exportSelectedImages()));
 
 		add("North", bar);
 	}
