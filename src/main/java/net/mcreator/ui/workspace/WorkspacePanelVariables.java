@@ -199,43 +199,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton addvar = L10N.button("workspace.variables.add_new");
-		addvar.setIcon(UIRES.get("16px.add.gif"));
-		addvar.setContentAreaFilled(false);
-		addvar.setOpaque(false);
-		ComponentUtils.deriveFont(addvar, 12);
-		addvar.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(addvar);
-
-		JButton search = L10N.button("workspace.variables.show_usages");
-		search.setIcon(UIRES.get("16px.search"));
-		search.setContentAreaFilled(false);
-		search.setOpaque(false);
-		ComponentUtils.deriveFont(search, 12);
-		search.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(search);
-
-		JButton delvar = L10N.button("workspace.variables.remove_selected");
-		delvar.setIcon(UIRES.get("16px.delete.gif"));
-		delvar.setContentAreaFilled(false);
-		delvar.setOpaque(false);
-		ComponentUtils.deriveFont(delvar, 12);
-		delvar.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(delvar);
-
-		JButton help = L10N.button("workspace.variables.help");
-		help.setIcon(UIRES.get("16px.info"));
-		help.setContentAreaFilled(false);
-		help.setOpaque(false);
-		ComponentUtils.deriveFont(help, 12);
-		help.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(help);
-
-		help.addActionListener(e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/variables"));
-
-		add("North", bar);
-
-		addvar.addActionListener(e -> {
+		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add.gif"), e -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
@@ -253,9 +217,9 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				workspacePanel.getMCreator().getWorkspace().addVariableElement(element);
 				reloadElements();
 			}
-		});
+		}));
 
-		search.addActionListener(e -> {
+		bar.add(createToolBarButton("common.show_usages", UIRES.get("16px.search"), e -> {
 			if (elements.getSelectedRow() != -1) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -269,9 +233,15 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				SearchUsagesDialog.showUsages(workspacePanel.getMCreator(),
 						L10N.t("dialog.search_usages.type.global_variable"), new ArrayList<>(refs));
 			}
-		});
+		}));
 
-		delvar.addActionListener(a -> deleteCurrentlySelected());
+		bar.add(createToolBarButton("workspace.variables.remove_selected", UIRES.get("16px.delete.gif"),
+				e -> deleteCurrentlySelected()));
+
+		bar.add(createToolBarButton("workspace.variables.help", UIRES.get("16px.info"),
+				e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/variables")));
+
+		add("North", bar);
 
 		elements.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
