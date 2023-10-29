@@ -88,7 +88,7 @@ jobs:
           distribution: 'adopt'
       - name: Install Dependencies
         run: |
-          brew install cdrtools
+          brew install create-dmg
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
         run: ./gradlew generateExportReport exportMac -Pbuilddate=${{ needs.export1.outputs.build_date }}

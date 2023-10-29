@@ -97,11 +97,14 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	}
 
 	@Override protected void initGUI() {
-		craftingRecipeMaker = new CraftingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
-		smeltingRecipeMaker = new SmeltingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
+		craftingRecipeMaker = new CraftingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
+				ElementUtil::loadBlocksAndItems);
+		smeltingRecipeMaker = new SmeltingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
+				ElementUtil::loadBlocksAndItems);
 		blastFurnaceRecipeMaker = new BlastFurnaceRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
 				ElementUtil::loadBlocksAndItems);
-		smokerRecipeMaker = new SmokerRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
+		smokerRecipeMaker = new SmokerRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
+				ElementUtil::loadBlocksAndItems);
 		stoneCutterRecipeMaker = new StoneCutterRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
 				ElementUtil::loadBlocksAndItems);
 		campfireCookingRecipeMaker = new CampfireCookingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
@@ -251,10 +254,11 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		if ("Crafting".equals(recipeType.getSelectedItem())) {
 			if (!craftingRecipeMaker.cb10.containsItem()) {
 				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_result"));
-			} else if (!(
-					craftingRecipeMaker.cb1.containsItem() || craftingRecipeMaker.cb2.containsItem() || craftingRecipeMaker.cb3.containsItem()
-					|| craftingRecipeMaker.cb4.containsItem() || craftingRecipeMaker.cb5.containsItem() || craftingRecipeMaker.cb6.containsItem() || craftingRecipeMaker.cb7.containsItem()
-					|| craftingRecipeMaker.cb8.containsItem() || craftingRecipeMaker.cb9.containsItem())) {
+			} else if (!(craftingRecipeMaker.cb1.containsItem() || craftingRecipeMaker.cb2.containsItem()
+					|| craftingRecipeMaker.cb3.containsItem() || craftingRecipeMaker.cb4.containsItem()
+					|| craftingRecipeMaker.cb5.containsItem() || craftingRecipeMaker.cb6.containsItem()
+					|| craftingRecipeMaker.cb7.containsItem() || craftingRecipeMaker.cb8.containsItem()
+					|| craftingRecipeMaker.cb9.containsItem())) {
 				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_ingredient"));
 			}
 		} else if ("Smelting".equals(recipeType.getSelectedItem())) {
@@ -283,12 +287,14 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 						L10N.t("elementgui.recipe.error_campfire_no_ingredient_and_result"));
 			}
 		} else if ("Smithing".equals(recipeType.getSelectedItem())) {
-			if (!smithingRecipeMaker.cb1.containsItem() || !smithingRecipeMaker.cb2.containsItem() || !smithingRecipeMaker.cb3.containsItem()) {
+			if (!smithingRecipeMaker.cb1.containsItem() || !smithingRecipeMaker.cb2.containsItem()
+					|| !smithingRecipeMaker.cb3.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
 			}
 		} else if ("Brewing".equals(recipeType.getSelectedItem())) {
-			if (!brewingRecipeMaker.cb1.containsItem() || !brewingRecipeMaker.cb2.containsItem() || !brewingRecipeMaker.cb3.containsItem()) {
+			if (!brewingRecipeMaker.cb1.containsItem() || !brewingRecipeMaker.cb2.containsItem()
+					|| !brewingRecipeMaker.cb3.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_brewing_no_input_ingredient_and_result"));
 			}

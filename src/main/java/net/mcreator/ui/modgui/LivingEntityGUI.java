@@ -349,9 +349,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.t("elementgui.living_entity.condition_solid_bounding_box"), AbstractProcedureSelector.Side.BOTH,
 				L10N.checkbox("elementgui.common.enable"), 160,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
-		breatheUnderwater = new LogicProcedureSelector(this.withEntry("entity/condition_can_breathe_underwater"), mcreator,
-				L10N.t("elementgui.living_entity.condition_can_breathe_underwater"), AbstractProcedureSelector.Side.BOTH,
-				L10N.checkbox("elementgui.common.enable"), 160,
+		breatheUnderwater = new LogicProcedureSelector(this.withEntry("entity/condition_can_breathe_underwater"),
+				mcreator, L10N.t("elementgui.living_entity.condition_can_breathe_underwater"),
+				AbstractProcedureSelector.Side.BOTH, L10N.checkbox("elementgui.common.enable"), 160,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		pushedByFluids = new LogicProcedureSelector(this.withEntry("entity/condition_fluids_can_push"), mcreator,
 				L10N.t("elementgui.living_entity.condition_fluids_can_push"), AbstractProcedureSelector.Side.BOTH,
@@ -368,9 +368,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
-    
+
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
-    
+
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 
 		mobModelTexture.setRenderer(
