@@ -162,9 +162,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			}
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-			SearchUsagesDialog.showUsages(workspacePanel.getMCreator(),
-					L10N.t("dialog.search_usages.type.resource.texture"), new ArrayList<>(refs));
-		});
+			SearchUsagesDialog.show(workspacePanel.getMCreator(), L10N.t("dialog.search_usages.type.resource.texture"),
+					new ArrayList<>(refs), false);
+		}));
 
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.export_selected",
 				UIRES.get("16px.ext.gif"), e -> exportSelectedImages()));

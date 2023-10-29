@@ -101,7 +101,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(edit);
 
-		JButton search = L10N.button("workspace.sounds.search_usages");
+		JButton search = L10N.button("common.search_usages");
 		search.setIcon(UIRES.get("16px.search"));
 		search.setContentAreaFilled(false);
 		search.setOpaque(false);

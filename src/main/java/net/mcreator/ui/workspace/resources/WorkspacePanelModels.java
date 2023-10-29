@@ -152,7 +152,7 @@ public class WorkspacePanelModels extends JPanel implements IReloadableFilterabl
 		bar.add(editModelAnimations);
 		editModelAnimations.addActionListener(e -> editSelectedModelAnimations());
 
-		JButton searchModelUsages = L10N.button("workspace.3dmodels.search_usages");
+		JButton searchModelUsages = L10N.button("common.search_usages");
 		searchModelUsages.setIcon(UIRES.get("16px.search"));
 		searchModelUsages.setOpaque(false);
 		searchModelUsages.setContentAreaFilled(false);

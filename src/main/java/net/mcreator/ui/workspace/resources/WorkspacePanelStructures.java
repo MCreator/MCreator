@@ -87,7 +87,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		importmc.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(importmc);
 
-		JButton search = L10N.button("workspace.structure.search_usages");
+		JButton search = L10N.button("common.search_usages");
 		search.setIcon(UIRES.get("16px.search"));
 		search.setContentAreaFilled(false);
 		search.setOpaque(false);
@@ -95,7 +95,7 @@ public class WorkspacePanelStructures extends JPanel implements IReloadableFilte
 		search.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
 		bar.add(search);
 
-		JButton del = L10N.button("workspace.structure.delete_selected");
+		JButton del = L10N.button("workspace.sounds.delete_selected");
 		del.setIcon(UIRES.get("16px.delete.gif"));
 		del.setOpaque(false);
 		del.setContentAreaFilled(false);
