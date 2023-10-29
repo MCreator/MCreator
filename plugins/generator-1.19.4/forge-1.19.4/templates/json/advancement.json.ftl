@@ -27,14 +27,7 @@
     </#if>
     "criteria": {
       ${triggercode?keep_before_last(",")}
-    },
-    "requirements": [
-        <#list 1..triggercount as trigger>
-        [
-            "${registryname}_${trigger - 1}"
-        ]<#sep>,
-        </#list>
-    ]
+    }
     <#if data.hasRewards()>,
     "rewards": {
         "experience": ${data.rewardXP}

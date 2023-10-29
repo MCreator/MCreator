@@ -95,7 +95,6 @@ import java.util.List;
 						getModElement().getRegistryName());
 
 			additionalData.put("triggercode", triggerCode);
-			additionalData.put("triggercount", blocklyToJSONTrigger.getCriteria());
 			additionalData.put("triggerblocks", blocklyToJSONTrigger.getUsedBlocks());
 		};
 	}
