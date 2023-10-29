@@ -352,17 +352,11 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.isWanderingTraderType()>
 	@Override protected SoundEvent getTradeUpdatedSound(boolean hasContent) {
-		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(hasContent ?
-			"${(data.tradeFullUpdateSound?has_content && data.tradeFullUpdateSound.getMappedValue()?has_content)?then(data.tradeFullUpdateSound, "intentionally_empty")}"
-		:
-			"${(data.tradeEmptyUpdateSound?has_content && data.tradeEmptyUpdateSound.getMappedValue()?has_content)?then(data.tradeEmptyUpdateSound, "intentionally_empty")}"
-		));
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(hasContent ? "${data.tradeFullUpdateSound}" : "${data.tradeEmptyUpdateSound}"));
 	}
 
 	@Override public SoundEvent getNotifyTradeSound() {
-		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
-			"${(data.tradeNotificationSound?has_content && data.tradeNotificationSound.getMappedValue()?has_content)?then(data.tradeNotificationSound, "intentionally_empty")}"
-		));
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.tradeNotificationSound}"));
 	}
 	</#if>
 
