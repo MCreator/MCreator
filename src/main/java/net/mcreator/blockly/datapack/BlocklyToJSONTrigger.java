@@ -34,15 +34,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
 import java.io.StringReader;
+import java.text.ParseException;
 import java.util.List;
 
 public class BlocklyToJSONTrigger extends BlocklyToCode {
@@ -50,7 +47,6 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 	private static final Logger LOG = LogManager.getLogger("Blockly2JSONTrigger");
 
 	private boolean hasTrigger = false;
-	private int criteria = 1;
 
 	public BlocklyToJSONTrigger(Workspace workspace, ModElement parent, String sourceXML,
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
@@ -67,22 +63,15 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 				Document doc = dBuilder.parse(new InputSource(new StringReader(sourceXML)));
 				doc.getDocumentElement().normalize();
 
-				XPathFactory xpathFactory = XPathFactory.newInstance();
-				XPath xpath = xpathFactory.newXPath();
+				Element start_block = BlocklyBlockUtil.getStartBlock(doc, editorType.startBlockName());
 
-				NodeList blocks = (NodeList) xpath.evaluate("block", doc.getDocumentElement(), XPathConstants.NODESET);
+				// if there is no start block, we return empty string
+				if (start_block == null)
+					throw new ParseException("Could not find start block!", -1);
 
-				if (blocks.getLength() > 0) {
-					Element start_block = (Element) blocks.item(0);
-					String type = start_block.getAttribute("type");
-					if (!type.equals(editorType.startBlockName())) {
-						hasTrigger = true;
-						List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
-						criteria = Math.max(base_blocks.size(), 1);
-						base_blocks.add(0, start_block);
-						processBlockProcedure(base_blocks);
-					}
-				}
+				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
+				hasTrigger = !base_blocks.isEmpty();
+				processBlockProcedure(base_blocks);
 			} catch (TemplateGeneratorException e) {
 				throw e;
 			} catch (Exception e) {
@@ -97,7 +86,4 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 		return hasTrigger;
 	}
 
-	public int getCriteria() {
-		return criteria;
-	}
 }

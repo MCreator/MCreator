@@ -60,7 +60,8 @@ public class ConverterRegistry {
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
 		put(ModElementType.ADVANCEMENT, List.of(
 			new AchievementFixer(),
-			new AdvancementTextureConverter()
+			new AdvancementTextureConverter(),
+			new AdvancementTriggerInverter()
 		));
 		put(ModElementType.ARMOR, List.of(
 			new ArmorTexturesConverter(),
