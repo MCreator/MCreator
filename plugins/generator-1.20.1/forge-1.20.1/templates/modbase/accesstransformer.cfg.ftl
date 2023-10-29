@@ -18,5 +18,5 @@ public-f net.minecraft.world.entity.npc.Villager f_35373_ #updateMerchantTimer
 public-f net.minecraft.world.entity.npc.Villager f_35374_ #increaseProfessionLevelOnUpdate
 public net.minecraft.world.entity.npc.Villager m_35528_()V #increaseMerchantCareer
 public-f net.minecraft.world.entity.npc.Villager f_35375_ #lastTradedPlayer
-public net.minecraft.world.entity.npc.Villager m_35540_()Lnet/minecraft/world/entity/player/Player; #updateSpecialPrices()
+public net.minecraft.world.entity.npc.Villager m_35540_(Lnet/minecraft/world/entity/player/Player;)V #updateSpecialPrices()
 </#if>
