@@ -42,8 +42,7 @@ public class JPotionList extends JSimpleEntriesList<JPotionListEntry, Potion.Cus
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 	}
 
-	@Override
-	protected JPotionListEntry newEntry(JPanel parent, List<JPotionListEntry> entryList, boolean userAction) {
+	@Override protected JPotionListEntry newEntry(JPanel parent, List<JPotionListEntry> entryList, boolean userAction) {
 		return new JPotionListEntry(mcreator, gui, parent, entryList);
 	}
 

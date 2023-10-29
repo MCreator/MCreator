@@ -18,9 +18,11 @@
 
 package net.mcreator.ui.action;
 
+import net.mcreator.io.OS;
 import net.mcreator.ui.init.L10N;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.InputEvent;
@@ -43,6 +45,19 @@ class AcceleratorDialog {
 		map.setBorder(BorderFactory.createEmptyBorder());
 		map.setGridColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		map.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+
+		if (OS.getOS() == OS.MAC) {
+			map.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+				@Override
+				public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+						boolean hasFocus, int row, int column) {
+					Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+					if (column == 1)
+						c.setFont(new Font(".SF NS Text", Font.PLAIN, 12));
+					return c;
+				}
+			});
+		}
 
 		DefaultTableModel model = (DefaultTableModel) map.getModel();
 		SortedSet<BasicAction> keys = new TreeSet<>(acceleratorMap.getActionKeyStrokeMap().keySet());

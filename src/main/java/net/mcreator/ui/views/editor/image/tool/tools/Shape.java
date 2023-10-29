@@ -25,7 +25,6 @@ import java.util.Locale;
 public enum Shape {
 	SQUARE, FRAME, CIRCLE, RING;
 
-
 	@Override public String toString() {
 		return L10N.t("dialog.image_maker.tools.types.shape." + this.name().toLowerCase(Locale.ENGLISH));
 	}
