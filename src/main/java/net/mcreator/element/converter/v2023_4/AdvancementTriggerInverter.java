@@ -91,6 +91,8 @@ public class AdvancementTriggerInverter implements IConverter {
 
 		Element start_block = bh.createBlock(BlocklyEditorType.JSON_TRIGGER.startBlockName());
 		start_block.setAttribute("deletable", "false");
+		start_block.setAttribute("x", "40");
+		start_block.setAttribute("y", "80");
 		Element next = doc.createElement("next");
 		if (trigger != null)
 			trigger.removeChild(XMLUtil.getFirstChildrenWithName(trigger, "next"));

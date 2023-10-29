@@ -32,8 +32,8 @@ public class AchievementFixer implements IConverter {
 		Achievement achievement = (Achievement) input;
 		achievement.showPopup = true;
 		achievement.announceToChat = true;
-		achievement.triggerxml = "<xml><block type=\"custom_trigger\" x=\"40\" y=\"80\"><next>"
-				+ "<block type=\"advancement_trigger\" deletable=\"false\"/></next></block></xml>";
+		achievement.triggerxml = "<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>"
+				+ "<block type=\"custom_trigger\"/></next></block></xml>";
 		return achievement;
 	}
 
