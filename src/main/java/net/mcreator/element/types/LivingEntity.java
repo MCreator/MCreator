@@ -99,6 +99,8 @@ import java.util.*;
 	public int health;
 	public int xpAmount;
 	public boolean waterMob;
+	public LogicProcedure breatheUnderwater;
+	public LogicProcedure pushedByFluids;
 	public boolean flyingMob;
 
 	public String guiBoundTo;

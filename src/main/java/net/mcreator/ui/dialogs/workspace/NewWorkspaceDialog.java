@@ -143,7 +143,8 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			cardLayout.show(workspacePanels, "forge");
 		});
 
-		JToggleButton neoforge = new JToggleButton(L10N.t("dialog.new_workspace.neoforge.toggle"), UIRES.get("16px.neoforge"));
+		JToggleButton neoforge = new JToggleButton(L10N.t("dialog.new_workspace.neoforge.toggle"),
+				UIRES.get("16px.neoforge"));
 		neoforge.setHorizontalAlignment(SwingConstants.LEFT);
 		neoforge.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
@@ -166,8 +167,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			cardLayout.show(workspacePanels, "fabric");
 		});
 
-		JToggleButton quilt = new JToggleButton(L10N.t("dialog.new_workspace.quilt.toggle"),
-				UIRES.get("16px.quilt"));
+		JToggleButton quilt = new JToggleButton(L10N.t("dialog.new_workspace.quilt.toggle"), UIRES.get("16px.quilt"));
 		quilt.setHorizontalAlignment(SwingConstants.LEFT);
 		quilt.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),

@@ -26,6 +26,7 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.WorkspaceSelectorLoadedEvent;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.ImagePanel;
@@ -438,18 +439,45 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private void initWebsitePanel() {
 		CompletableFuture<String[]> newsFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getWebsiteNews(newsFuture);
-		JLabel nov = new JLabel("<html>" + L10N.t("dialog.workspace_selector.news")
-				+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + L10N.t(
+		JLabel nov = new JLabel("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
+				+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + L10N.t(
 				"dialog.workspace_selector.webdata.loading"));
 		nov.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		nov.setForeground(new Color(0xf5f5f5));
 		newsFuture.whenComplete((news, throwable) -> SwingUtilities.invokeLater(() -> {
-			if (news != null)
-				nov.setText("<html>" + L10N.t("dialog.workspace_selector.news")
-						+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
+			if (news != null) {
+				nov.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
+						+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
 						news[0], 43));
-			else
+
+				if (PreferencesManager.PREFERENCES.notifications.showWebsiteNewsNotifications.get()) {
+					String id = news[4];
+
+					// Do not show notification the first time
+					if (PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().isBlank())
+						PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id);
+
+					if (!PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().equals(id)) {
+						String title = L10N.t("notification.news.title", news[0]);
+						String link = news[1];
+						String description = StringUtils.justifyText(StringUtils.abbreviateString(news[2], 300), 50,
+								"<br>");
+						ImageIcon newsIcon = null;
+						if (news[3] != null && !news[3].isBlank()) {
+							newsIcon = WebIO.getIconFromURL(MCreatorApplication.SERVER_DOMAIN + news[3], 3 * 60, 60,
+									null);
+						}
+						addNotification(title, newsIcon, description,
+								new NotificationsRenderer.ActionButton(L10N.t("notification.news.read_more"), e -> {
+									DesktopUtils.browseSafe(link);
+									PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id);
+								}), new NotificationsRenderer.ActionButton(L10N.t("notification.news.hide"),
+										e -> PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id)));
+					}
+				}
+			} else {
 				nov.setText("");
+			}
 			nov.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent en) {
 					if (news != null)
@@ -460,8 +488,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		CompletableFuture<String[]> motwFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getModOfTheWeekData(motwFuture);
-		JLabel lab3 = new JLabel("<html>" + L10N.t("dialog.workspace_selector.motw")
-				+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + L10N.t(
+		JLabel lab3 = new JLabel("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.motw")
+				+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + L10N.t(
 				"dialog.workspace_selector.webdata.loading"));
 		lab3.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		lab3.setForeground(new Color(0xf5f5f5));
@@ -476,12 +504,13 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						DesktopUtils.browseSafe(motw[1]);
 				}
 			});
-			if (motw != null)
-				lab3.setText("<html>" + L10N.t("dialog.workspace_selector.motw")
-						+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
+			if (motw != null) {
+				lab3.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.motw")
+						+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
 						motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
-			else
+			} else {
 				lab3.setText("");
+			}
 			ImageIcon defaultIcon;
 			if (motw != null && (defaultIcon = WebIO.getIconFromURL(motw[4], 48, 48, null, true)) != null)
 				lab2.setIcon(defaultIcon);

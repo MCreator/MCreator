@@ -118,6 +118,17 @@ public class ExternalBlockLoader {
 		}
 		toolboxCategories.sort(Comparator.comparing(ToolboxCategory::getName));
 
+		for (ToolboxCategory toolboxCategory : toolboxCategories) {
+			if (toolboxCategory.parent_category != null) {
+				for (ToolboxCategory parent : toolboxCategories) {
+					if (parent.id.equals(toolboxCategory.parent_category)) {
+						toolboxCategory.parent = parent;
+						break;
+					}
+				}
+			}
+		}
+
 		// setup lookup cache of loaded blocks
 		this.toolboxBlocks = new HashMap<>();
 		for (ToolboxBlock toolboxBlock : toolboxBlocksList)
