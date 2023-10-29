@@ -91,7 +91,7 @@ import java.util.List;
 
 			String triggerCode = blocklyToJSONTrigger.getGeneratedCode();
 			if (triggerCode.isEmpty())
-				triggerCode = "\"%s_0\": {\"trigger\": \"minecraft:impossible\"}".formatted(
+				triggerCode = "\"%s\": {\"trigger\": \"minecraft:impossible\"}".formatted(
 						getModElement().getRegistryName());
 
 			additionalData.put("triggercode", triggerCode);
