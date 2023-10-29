@@ -140,6 +140,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			}
 		};
 		</#if>
+
+		<#if data.boundingBoxScale?? && data.boundingBoxScale.getFixedValue() != 1 && !hasProcedure(data.boundingBoxScale)>
+		refreshDimensions();
+		</#if>
 	}
 
 	@Override public Packet<ClientGamePacketListener> getAddEntityPacket() {
