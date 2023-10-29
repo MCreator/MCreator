@@ -12,13 +12,11 @@ public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lco
 public-f net.minecraft.world.level.levelgen.feature.TreeFeature m_142674_(Lnet/minecraft/world/level/levelgen/feature/FeaturePlaceContext;)Z #place
 </#if>
 
-<#if w.getGElementsOfType("livingentity")?filter(e -> e.canTrade)?size != 0>
+<#if w.getGElementsOfType("livingentity")?filter(e -> e.canTrade && e.villagerTradingType)?size != 0>
 public-f net.minecraft.world.entity.npc.Villager f_35366_ #assignProfessionWhenSpawned
 public-f net.minecraft.world.entity.npc.Villager f_35373_ #updateMerchantTimer
 public-f net.minecraft.world.entity.npc.Villager f_35374_ #increaseProfessionLevelOnUpdate
 public net.minecraft.world.entity.npc.Villager m_35528_()V #increaseMerchantCareer
 public-f net.minecraft.world.entity.npc.Villager f_35375_ #lastTradedPlayer
-<#if w.getGElementsOfType("livingentity")?filter(e -> e.villagerTradingType)?size != 0>
 public net.minecraft.world.entity.npc.Villager m_35540_()Lnet/minecraft/world/entity/player/Player; #updateSpecialPrices()
-</#if>
 </#if>

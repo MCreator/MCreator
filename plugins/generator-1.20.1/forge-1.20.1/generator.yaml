@@ -64,7 +64,7 @@ base_templates:
     condition_any:
       - ${w.hasElementsOfType('feature')}
       - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
-      - "${w.getGElementsOfType('livingentity')?filter(e -> e.canTrade)?size != 0}"
+      - "${w.getGElementsOfType('livingentity')?filter(e -> e.canTrade && e.villagerTradingType)?size != 0}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
