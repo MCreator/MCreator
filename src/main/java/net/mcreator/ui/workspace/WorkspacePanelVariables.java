@@ -219,7 +219,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(createToolBarButton("common.show_usages", UIRES.get("16px.search"), e -> {
+		bar.add(createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			if (elements.getSelectedRow() != -1) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
