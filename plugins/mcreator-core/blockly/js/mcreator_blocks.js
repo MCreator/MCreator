@@ -99,7 +99,6 @@ Blockly.Blocks['advancement_trigger'] = {
         this.setStyle('hat_blocks');
         this.setNextStatement(true);
         this.setColour(150);
-        this.setTooltip(javabridge.t("blockly.block.advancement_trigger.tooltip"));
     }
 };
 
