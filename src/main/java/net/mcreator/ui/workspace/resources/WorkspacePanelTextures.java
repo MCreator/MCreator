@@ -142,7 +142,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.duplicate_selected",
 				UIRES.get("16px.duplicate.gif"), e -> duplicateSelectedFile()));
 
-		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.delete_selected",
+		bar.add(AbstractWorkspacePanel.createToolBarButton("common.delete_selected",
 				UIRES.get("16px.delete.gif"), e -> deleteCurrentlySelected()));
 
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.export_selected",
