@@ -95,6 +95,11 @@ public class SearchUsagesDialog {
 		AtomicBoolean retVal = new AtomicBoolean(false);
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.search_usages.title"), true);
 
+		JButton edit = L10N.button("dialog.search_usages.open_selected");
+		JButton close = deletionRequested ?
+				new JButton(UIManager.getString("OptionPane.cancelButtonText")) :
+				L10N.button("common.close");
+
 		JList<ModElement> refList = new JList<>(
 				references.stream().sorted(Comparator.comparing(ModElement::getName)).toArray(ModElement[]::new));
 		refList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -111,15 +116,16 @@ public class SearchUsagesDialog {
 					edit(mcreator, refList.getModel().getElementAt(refList.locationToIndex(e.getPoint())), dialog);
 			}
 		});
+		refList.addListSelectionListener(e -> {
+			edit.setEnabled(!refList.getSelectedValue().isCodeLocked());
+			edit.setToolTipText(refList.getSelectedValue().isCodeLocked() ?
+					L10N.t("dialog.search_usages.open_selected.locked") :
+					null);
+		});
 
 		JScrollPane sp = new JScrollPane(refList);
 		sp.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		sp.setPreferredSize(new Dimension(150, 140));
-
-		JButton edit = L10N.button("dialog.search_usages.open_selected");
-		JButton close = deletionRequested ?
-				new JButton(UIManager.getString("OptionPane.cancelButtonText")) :
-				L10N.button("common.close");
 
 		edit.addActionListener(e -> {
 			if (!refList.isSelectionEmpty())

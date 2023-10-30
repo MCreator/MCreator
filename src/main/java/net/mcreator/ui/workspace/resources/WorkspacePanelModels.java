@@ -114,7 +114,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
 			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
-					L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(refs), true)) {
+					L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(references), true)) {
 				elements.forEach(model -> Arrays.stream(model.getFiles()).forEach(File::delete));
 				reloadElements();
 			}
