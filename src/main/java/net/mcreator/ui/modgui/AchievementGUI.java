@@ -101,15 +101,14 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	public AchievementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
-		super.finalizeGUI();
+		super.finalizeGUI(false);
 	}
 
 	@Override protected void initGUI() {
 		achievementIcon = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-		JPanel panel1 = new JPanel(new BorderLayout(10, 10));
-		JPanel propertiesPanel = new JPanel(new GridLayout(10, 2, 15, 2));
-		JPanel logicPanel = new JPanel(new GridLayout(4, 2, 10, 2));
+		JPanel propertiesPanel = new JPanel(new GridLayout(7, 2, 10, 2));
+		JPanel logicPanel = new JPanel(new GridLayout(7, 2, 10, 2));
 
 		rewardLoot = new ModElementListField(mcreator, ModElementType.LOOTTABLE);
 		rewardRecipes = new ModElementListField(mcreator, ModElementType.RECIPE);
@@ -156,18 +155,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 				L10N.label("elementgui.advancement.show_toast")));
 		propertiesPanel.add(showPopup);
 
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/announce_to_chat"),
-				L10N.label("elementgui.advancement.announce_to_chat")));
-		propertiesPanel.add(announceToChat);
-
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_if_not_completed"),
-				L10N.label("elementgui.advancement.hide_if_not_completed")));
-		propertiesPanel.add(hideIfNotCompleted);
-
-		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"),
-				L10N.label("elementgui.advancement.hide_display")));
-		propertiesPanel.add(disableDisplay);
-
 		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/reward_xp"),
 				L10N.label("elementgui.advancement.reward_xp")));
 		logicPanel.add(rewardXP);
@@ -184,13 +171,24 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 				L10N.label("elementgui.advancement.reward_recipes")));
 		logicPanel.add(rewardRecipes);
 
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/announce_to_chat"),
+				L10N.label("elementgui.advancement.announce_to_chat")));
+		logicPanel.add(announceToChat);
+
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_if_not_completed"),
+				L10N.label("elementgui.advancement.hide_if_not_completed")));
+		logicPanel.add(hideIfNotCompleted);
+
+		logicPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("advancement/hide_display"),
+				L10N.label("elementgui.advancement.hide_display")));
+		logicPanel.add(disableDisplay);
+
 		logicPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.advancement.logic"), 0, 0, logicPanel.getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		JComponent selpouter = PanelUtils.pullElementUp(propertiesPanel);
-		selpouter.setBorder(BorderFactory.createTitledBorder(
+		propertiesPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.advancement.display_paramters"), 0, 0, propertiesPanel.getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
@@ -223,19 +221,16 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 			}
 		});
 
-		JPanel triggerPanel = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
-		triggerPanel.setBorder(BorderFactory.createTitledBorder(
+		JPanel advancementTrigger = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
+		advancementTrigger.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.advancement.trigger_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
 
-		panel1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(
-				PanelUtils.centerAndSouthElement(selpouter, logicPanel))));
-
-		panel1.setOpaque(false);
-
-		addPage("Page 1", panel1);
-		addPage("Page 2", triggerPanel);
+		JComponent wrap = PanelUtils.northAndCenterElement(PanelUtils.westAndCenterElement(propertiesPanel, logicPanel),
+				advancementTrigger);
+		wrap.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		addPage(wrap);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
