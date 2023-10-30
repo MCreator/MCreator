@@ -57,8 +57,8 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 					refs.addAll(ReferencesFinder.searchSoundUsages(workspacePanel.getMCreator().getWorkspace(), sound));
 
 				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-				SearchUsagesDialog.showUsages(workspacePanel.getMCreator(),
-						L10N.t("dialog.search_usages.type.resource.sound"), new ArrayList<>(refs));
+				SearchUsagesDialog.show(workspacePanel.getMCreator(),
+						L10N.t("dialog.search_usages.type.resource.sound"), new ArrayList<>(refs), false);
 			}
 		});
 		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),

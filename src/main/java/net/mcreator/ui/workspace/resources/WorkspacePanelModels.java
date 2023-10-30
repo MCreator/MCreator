@@ -90,8 +90,8 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 					refs.addAll(ReferencesFinder.searchModelUsages(workspacePanel.getMCreator().getWorkspace(), model));
 
 				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-				SearchUsagesDialog.showUsages(workspacePanel.getMCreator(),
-						L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(refs));
+				SearchUsagesDialog.show(workspacePanel.getMCreator(),
+						L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(refs), false);
 			}
 		});
 		addToolBarButton("workspace.3dmodels.edit_texture_mappings", UIRES.get("16px.edit.gif"),
@@ -114,7 +114,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
 			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
-					L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(refs), true)) {
+					L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(references), true)) {
 				elements.forEach(model -> Arrays.stream(model.getFiles()).forEach(File::delete));
 				reloadElements();
 			}
