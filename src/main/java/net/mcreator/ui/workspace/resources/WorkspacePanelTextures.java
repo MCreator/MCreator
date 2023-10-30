@@ -146,7 +146,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.delete_selected",
 				UIRES.get("16px.delete.gif"), e -> deleteCurrentlySelected()));
 
-		bar.add(AbstractWorkspacePanel.createToolBarButton("common.show_usages", UIRES.get("16px.search"), e -> {
+		bar.add(AbstractWorkspacePanel.createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			Set<ModElement> refs = new HashSet<>();
