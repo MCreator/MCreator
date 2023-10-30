@@ -123,9 +123,10 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>[]</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getFileChooserDialog(java.awt.Window,net.mcreator.ui.dialogs.file.FileChooserType,boolean,javafx.stage.FileChooser.ExtensionFilter...)" class="member-name-link">getFileChooserDialog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;f,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getFileChooserDialog(java.awt.Window,net.mcreator.ui.dialogs.file.FileChooserType,boolean,java.lang.String,javafx.stage.FileChooser.ExtensionFilter...)" class="member-name-link">getFileChooserDialog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;f,
  <a href="FileChooserType.html" title="enum class in net.mcreator.ui.dialogs.file">FileChooserType</a>&nbsp;type,
  boolean&nbsp;multiSelect,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;suggestedFileName,
  javafx.stage.FileChooser.ExtensionFilter...&nbsp;filters)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>[]</code></div>
@@ -141,13 +142,18 @@ loadScripts(document, 'script');</script>
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;exp)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getWorkspaceDirectorySelectDialog(java.awt.Window,java.io.File)" class="member-name-link">getWorkspaceDirectorySelectDialog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;f,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getSaveDialog(java.awt.Window,java.lang.String,java.lang.String%5B%5D)" class="member-name-link">getSaveDialog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;f,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;suggestedFileName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;exp)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>protected static boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isWorkspaceFolderInvalid(java.awt.Window,java.io.File)" class="member-name-link">isWorkspaceFolderInvalid</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;parent,
- <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;selectedFile)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getWorkspaceDirectorySelectDialog(java.awt.Window,java.io.File)" class="member-name-link">getWorkspaceDirectorySelectDialog</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;f,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;file)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>protected static boolean</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#isWorkspaceFolderInvalid(java.awt.Window,java.io.File)" class="member-name-link">isWorkspaceFolderInvalid</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;parent,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;selectedFile)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -221,11 +227,22 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="getFileChooserDialog(java.awt.Window,net.mcreator.ui.dialogs.file.FileChooserType,boolean,javafx.stage.FileChooser.ExtensionFilter...)">
+<section class="detail" id="getSaveDialog(java.awt.Window,java.lang.String,java.lang.String[])">
+<h3>getSaveDialog</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a></span>&nbsp;<span class="element-name">getSaveDialog</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;f,
+ @Nullable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;suggestedFileName,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>[]&nbsp;exp)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="getFileChooserDialog(java.awt.Window,net.mcreator.ui.dialogs.file.FileChooserType,boolean,java.lang.String,javafx.stage.FileChooser.ExtensionFilter...)">
 <h3>getFileChooserDialog</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>[]</span>&nbsp;<span class="element-name">getFileChooserDialog</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;f,
  <a href="FileChooserType.html" title="enum class in net.mcreator.ui.dialogs.file">FileChooserType</a>&nbsp;type,
  boolean&nbsp;multiSelect,
+ @Nullable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;suggestedFileName,
  javafx.stage.FileChooser.ExtensionFilter...&nbsp;filters)</span></div>
 </section>
 </li>
