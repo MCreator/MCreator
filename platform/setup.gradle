@@ -102,7 +102,7 @@ tasks.register('downloadNSIS') {
                     overwrite false
                 }
                 copy { from zipTree(file('build/tmp/nsis')) into file('build/tools/') }
-                file('build/tools/nsis-3.08').renameTo(file('build/tools/nsis'))
+                file('build/tools/nsis-3.09').renameTo(file('build/tools/nsis'))
                 delete 'build/tmp/nsis'
 
                 download.run {
