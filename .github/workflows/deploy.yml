@@ -111,7 +111,7 @@ jobs:
           overwrite: true
   exportMacOS:
     name: Build and Export for MacOS
-    needs: exportLinux
+    needs: exportWindows
     runs-on: macos-latest
     environment: production
     steps:
