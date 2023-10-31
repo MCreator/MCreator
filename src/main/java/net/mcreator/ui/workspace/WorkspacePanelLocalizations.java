@@ -26,14 +26,11 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.workspace.references.ReferencesFinder;
-import net.mcreator.workspace.elements.ModElement;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -64,7 +61,6 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 	private final JButton del;
 	private final JButton exp;
 	private final JButton imp;
-	private final JButton use;
 
 	WorkspacePanelLocalizations(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
@@ -97,7 +93,6 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(use = createToolBarButton("common.search_usages", UIRES.get("16px.search")));
 		bar.add(del = createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif")));
 		bar.add(exp = createToolBarButton("workspace.localization.export_to_csv", UIRES.get("16px.ext.gif")));
 		bar.add(imp = createToolBarButton("workspace.localization.import_csv", UIRES.get("16px.open.gif")));
@@ -106,9 +101,6 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 	}
 
 	@Override public void reloadElements() {
-		for (var al : use.getActionListeners())
-			use.removeActionListener(al);
-
 		for (var al : del.getActionListeners())
 			del.removeActionListener(al);
 
@@ -241,22 +233,6 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			tab.add(button);
 			pane.setTabComponentAt(id, tab);
 
-			use.addActionListener(a -> {
-				if (elements.getSelectedRow() != -1 && pane.getSelectedIndex() == id) {
-					workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-					Set<ModElement> references = new HashSet<>();
-					for (int i : elements.getSelectedRows()) {
-						references.addAll(ReferencesFinder.searchLocalizationKeyUsages(
-								workspacePanel.getMCreator().getWorkspace(), (String) elements.getValueAt(i, 0)));
-					}
-
-					workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-					SearchUsagesDialog.show(workspacePanel.getMCreator(),
-							L10N.t("dialog.search_usages.type.localization_key"), new ArrayList<>(references), false);
-				}
-			});
-
 			del.addActionListener(a -> deleteCurrentlySelected(elements, id));
 
 			elements.addKeyListener(new KeyAdapter() {
@@ -358,19 +334,12 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		if (elements.getSelectedRow() == -1 || pane.getSelectedIndex() != id)
 			return;
 
-		if (elements.getValueAt(elements.getSelectedRow(), 0) != null) {
-			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-			Set<ModElement> references = new HashSet<>();
-			for (int i : elements.getSelectedRows()) {
-				references.addAll(ReferencesFinder.searchLocalizationKeyUsages(
-						workspacePanel.getMCreator().getWorkspace(), (String) elements.getValueAt(i, 0)));
-			}
-
-			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-
-			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
-					L10N.t("dialog.search_usages.type.localization_key"), new ArrayList<>(references), true)) {
+		String key = (String) elements.getValueAt(elements.getSelectedRow(), 0);
+		if (key != null) {
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+					L10N.t("workspace.localization.confirm_delete_entry"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (n == 0) {
 				Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 						.forEach(workspacePanel.getMCreator().getWorkspace()::removeLocalizationEntryByKey);
 				reloadElements();

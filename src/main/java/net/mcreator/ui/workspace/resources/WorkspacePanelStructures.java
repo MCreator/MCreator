@@ -19,19 +19,13 @@
 package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.WorkspacePanel;
-import net.mcreator.workspace.references.ReferencesFinder;
-import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 
@@ -42,21 +36,6 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 				e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());
 		addToolBarButton("action.workspace.resources.import_structure_from_minecraft", UIRES.get("16px.open.gif"),
 				e -> workspacePanel.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
-		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
-			if (!elementList.isSelectionEmpty()) {
-				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-				Set<ModElement> refs = new HashSet<>();
-				for (String structure : elementList.getSelectedValuesList()) {
-					refs.addAll(ReferencesFinder.searchStructureUsages(workspacePanel.getMCreator().getWorkspace(),
-							structure));
-				}
-
-				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-				SearchUsagesDialog.show(workspacePanel.getMCreator(),
-						L10N.t("dialog.search_usages.type.resource.structure"), new ArrayList<>(refs), false);
-			}
-		});
 		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
 				e -> deleteCurrentlySelected());
 	}
@@ -64,18 +43,10 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 	@Override void deleteCurrentlySelected() {
 		List<String> elements = elementList.getSelectedValuesList();
 		if (!elements.isEmpty()) {
-			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-			Set<ModElement> references = new HashSet<>();
-			for (String structure : elements) {
-				references.addAll(
-						ReferencesFinder.searchStructureUsages(workspacePanel.getMCreator().getWorkspace(), structure));
-			}
-
-			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-
-			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
-					L10N.t("dialog.search_usages.type.resource.structure"), new ArrayList<>(references), true)) {
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+					L10N.t("workspace.structure.confirm_deletion_message"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if (n == 0) {
 				elements.forEach(workspacePanel.getMCreator().getFolderManager()::removeStructure);
 				reloadElements();
 			}

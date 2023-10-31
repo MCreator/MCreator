@@ -25,14 +25,11 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
 import net.mcreator.ui.dialogs.ProgressDialog;
-import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.TextureMappingDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.StringUtils;
-import net.mcreator.workspace.references.ReferencesFinder;
-import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -41,8 +38,10 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
@@ -81,19 +80,6 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 			addToolBarButton("action.workspace.resources.import_obj_mtl_model", UIRES.get("16px.importobjmodel"),
 					e -> workspacePanel.getMCreator().actionRegistry.importOBJModel.doAction());
 
-		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
-			if (!elementList.isSelectionEmpty()) {
-				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
-
-				Set<ModElement> refs = new HashSet<>();
-				for (Model model : elementList.getSelectedValuesList())
-					refs.addAll(ReferencesFinder.searchModelUsages(workspacePanel.getMCreator().getWorkspace(), model));
-
-				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-				SearchUsagesDialog.show(workspacePanel.getMCreator(),
-						L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(refs), false);
-			}
-		});
 		addToolBarButton("workspace.3dmodels.edit_texture_mappings", UIRES.get("16px.edit.gif"),
 				e -> editSelectedModelTextureMappings());
 		addToolBarButton("workspace.3dmodels.redefine_animations", UIRES.get("16px.edit.gif"),
@@ -105,16 +91,11 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 	@Override void deleteCurrentlySelected() {
 		List<Model> elements = elementList.getSelectedValuesList();
 		if (!elements.isEmpty()) {
-			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+					L10N.t("workspace.3dmodels.delete_confirm_message"), L10N.t("common.confirmation"),
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
 
-			Set<ModElement> references = new HashSet<>();
-			for (Model m : elementList.getSelectedValuesList())
-				references.addAll(ReferencesFinder.searchModelUsages(workspacePanel.getMCreator().getWorkspace(), m));
-
-			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
-
-			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
-					L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(references), true)) {
+			if (n == 0) {
 				elements.forEach(model -> Arrays.stream(model.getFiles()).forEach(File::delete));
 				reloadElements();
 			}
