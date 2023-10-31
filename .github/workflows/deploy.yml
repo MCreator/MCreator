@@ -114,7 +114,7 @@ jobs:
           overwrite: true
   exportWindows:
     name: Build and Export for Windows
-    needs: exportMacOS
+    needs: exportLinux
     runs-on: windows-latest
     environment: production
     steps:
