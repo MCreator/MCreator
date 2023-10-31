@@ -107,7 +107,6 @@ import java.util.stream.Collectors;
 	private final JLabel but3 = new JLabel(TiledImageCache.workspaceDelete);
 	private final JLabel but5 = new JLabel(TiledImageCache.workspaceCode);
 	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
-	private final JLabel but6 = new JLabel(TiledImageCache.workspaceModElementIDs);
 
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
 	private final JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
@@ -721,17 +720,6 @@ import java.util.stream.Collectors;
 		but5a.setToolTipText(L10N.t("workspace.elements.lock_code_tooltip"));
 		but5a.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but5a);
-
-		but6.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				if (but6.isEnabled()) {
-					editIDOfCurrentlySelectedModElement();
-				}
-			}
-		});
-		but6.setToolTipText(L10N.t("workspace.elements.edit_registry_names.tooltip"));
-		but6.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		pne.add(but6);
 
 		JPanel toolp = new JPanel(new BorderLayout(0, 0)) {
 			@Override public void paintComponent(Graphics g) {
