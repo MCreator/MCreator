@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.minecraft.ElementUtil;
@@ -35,6 +36,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -124,15 +126,22 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		smithingRecipeMaker.setOpaque(false);
 		brewingRecipeMaker.setOpaque(false);
 
-		name.setValidator(
-				new RegistryNameValidator(name, L10N.t("modelement.recipe")).setValidChars(Arrays.asList('_', '/')));
+		//@formatter:off
+		name.setValidator(new UniqueNameValidator(
+			L10N.t("modelement.recipe"),
+			() -> namespace.getSelectedItem() + ":" + ((JTextField) name.getEditor().getEditorComponent()).getText(),
+			() -> mcreator.getWorkspace().getModElements().stream()
+				.filter(me -> me.getType() == ModElementType.RECIPE)
+				.map(ModElement::getGeneratableElement)
+				.filter(Objects::nonNull)
+				.map(ge -> ((Recipe) ge).namespace + ":" + ((Recipe) ge).name),
+			new RegistryNameValidator(name, L10N.t("modelement.recipe")).setValidChars(Arrays.asList('_', '/'))
+		).setIsPresentOnList(this::isEditingMode));
+		//@formatter:on
 		name.enableRealtimeValidation();
-
 		name.addItem("crafting_table");
 		name.addItem("diamond_block");
-
 		name.setEditable(true);
-		name.setOpaque(false);
 
 		ComponentUtils.deriveFont(group, 16);
 
