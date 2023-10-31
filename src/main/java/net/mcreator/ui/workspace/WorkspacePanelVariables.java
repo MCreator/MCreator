@@ -217,7 +217,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(createToolBarButton("workspace.variables.remove_selected", UIRES.get("16px.delete.gif"),
+		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
 				e -> deleteCurrentlySelected()));
 
 		bar.add(createToolBarButton("workspace.variables.help", UIRES.get("16px.info"),
