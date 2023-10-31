@@ -21,6 +21,7 @@ package net.mcreator.ui.views.editor.image.canvas;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
 /**
  * Class used to transfer selection data between objects
@@ -117,6 +118,39 @@ public class Selection {
 
 	public boolean isEditStarted() {
 		return editStarted;
+	}
+
+	public BufferedImage cropCanvas(BufferedImage canvasRender) {
+		return cropAndExtend(canvasRender, 0, 0);
+	}
+
+	public BufferedImage cropLayer(BufferedImage layer, int xOffset, int yOffset) {
+		return cropAndExtend(layer, xOffset, yOffset);
+	}
+
+	private BufferedImage cropAndExtend(BufferedImage image, int xOffset, int yOffset) {
+		if (hasSurface() && getEditing() != SelectedBorder.NONE){
+			BufferedImage newImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
+			Graphics2D g2d = newImage.createGraphics();
+			int xImage = getLeft() - xOffset;
+			int yImage = getTop() - yOffset;
+
+			int xLimited = Math.max(0, xImage);
+			int yLimited = Math.max(0, yImage);
+
+			int xLimOffset = Math.min(0, xImage);
+			int yLimOffset = Math.min(0, yImage);
+
+			int widthLimited = Math.min(image.getWidth() - xLimited, getWidth());
+			int heightLimited = Math.min(image.getHeight() - yLimited, getHeight());
+
+			BufferedImage croppedImage = image.getSubimage(xLimited, yLimited, widthLimited, heightLimited);
+
+			g2d.drawImage(croppedImage, -xLimOffset, -yLimOffset, null);
+			g2d.dispose();
+			return newImage;
+		}
+		return image;
 	}
 
 	/**

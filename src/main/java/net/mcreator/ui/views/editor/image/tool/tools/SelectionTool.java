@@ -71,7 +71,6 @@ public class SelectionTool extends AbstractTool {
 		Selection selection = canvas.getSelection();
 		selection.setEditStarted(true);
 		editingBorder = selection.getEditing();
-		System.out.println(editingBorder);
 
 		switch (editingBorder) {
 		case TOP_LEFT -> {

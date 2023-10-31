@@ -24,10 +24,12 @@ import net.mcreator.ui.views.editor.image.layer.Layer;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Arrays;
 
 public class LayerTransferable implements Transferable {
+	private final BufferedImage image;
 	private final Layer layer;
 	
 	// Don't include the layer name to improve compatibility with other software
@@ -35,6 +37,7 @@ public class LayerTransferable implements Transferable {
 
 	public LayerTransferable(Layer layer) {
 		this.layer = layer.copy();
+		image = layer.getCanvas().getSelection().cropLayer(layer.copyImage(), layer.getX(), layer.getY());
 	}
 
 	public Layer getLayer() {
@@ -51,7 +54,7 @@ public class LayerTransferable implements Transferable {
 
 	@Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 		if (flavor == DataFlavor.imageFlavor)
-			return layer.copyImage();
+			return image;
 		//else if (flavor == DataFlavor.stringFlavor)
 		//	return layer.getName();
 		throw new UnsupportedFlavorException(flavor);

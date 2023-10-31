@@ -32,9 +32,11 @@ import java.util.Arrays;
 public class CanvasTransferable implements Transferable {
 	private final BufferedImage image;
 	private final DataFlavor[] flavours = new DataFlavor[] { DataFlavor.imageFlavor};
+	private final Canvas canvas;
 
 	public CanvasTransferable(Canvas canvas) {
-		this.image = canvas.getCanvasRenderer().render();
+		this.canvas = canvas;
+		image = canvas.getSelection().cropCanvas(canvas.getCanvasRenderer().render());
 	}
 
 	public BufferedImage getRender() {
@@ -51,7 +53,7 @@ public class CanvasTransferable implements Transferable {
 
 	@Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 		if (flavor == DataFlavor.imageFlavor)
-			return ImageUtils.deepCopy(image);
+			return image;
 		throw new UnsupportedFlavorException(flavor);
 	}
 }
