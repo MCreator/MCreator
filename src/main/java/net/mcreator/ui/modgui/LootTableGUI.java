@@ -59,8 +59,8 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		name.setValidator(new RegistryNameValidator(name, L10N.t("elementgui.loot_table.name")).setValidChars(
-				Arrays.asList('_', '/')));
+		name.setValidator(
+				new RegistryNameValidator(name, L10N.t("modelement.loottable")).setValidChars(Arrays.asList('_', '/')));
 		name.enableRealtimeValidation();
 
 		name.addItem("blocks/stone");

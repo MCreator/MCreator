@@ -61,7 +61,8 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		name.setValidator(new RegistryNameValidator(name, "Function").setValidChars(Arrays.asList('_', '/')));
+		name.setValidator(
+				new RegistryNameValidator(name, L10N.t("modelement.function")).setValidChars(Arrays.asList('_', '/')));
 		name.enableRealtimeValidation();
 
 		if (isEditingMode()) {

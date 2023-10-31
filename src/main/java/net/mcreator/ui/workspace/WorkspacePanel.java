@@ -725,12 +725,7 @@ import java.util.stream.Collectors;
 		but6.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but6.isEnabled()) {
-					IElement mu = list.getSelectedValue();
-					if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
-						ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
-						if (modified != null)
-							mcreator.getWorkspace().markDirty();
-					}
+					editIDOfCurrentlySelectedModElement();
 				}
 			}
 		});
@@ -807,14 +802,7 @@ import java.util.stream.Collectors;
 
 		lockElement.addActionListener(e -> lockCode());
 
-		idElement.addActionListener(e -> {
-			IElement mu = list.getSelectedValue();
-			if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
-				ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
-				if (modified != null)
-					mcreator.getWorkspace().markDirty();
-			}
-		});
+		idElement.addActionListener(e -> editIDOfCurrentlySelectedModElement());
 
 		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
 		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
@@ -991,6 +979,20 @@ import java.util.stream.Collectors;
 		but3.setEnabled(true);
 		deleteElement.setEnabled(true);
 		but3.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+
+	private void editIDOfCurrentlySelectedModElement() {
+		IElement mu = list.getSelectedValue();
+		if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
+			ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
+			if (modified != null)
+				mcreator.getWorkspace().markDirty();
+		} else {
+			JOptionPane.showMessageDialog(mcreator,
+					L10N.t("workspace.elements.edit_registry_names.not_possible_message"),
+					L10N.t("workspace.elements.edit_registry_names.not_possible_title"),
+					JOptionPane.WARNING_MESSAGE);
+		}
 	}
 
 	private void lockCode() {

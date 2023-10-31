@@ -123,7 +123,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		smithingRecipeMaker.setOpaque(false);
 		brewingRecipeMaker.setOpaque(false);
 
-		name.setValidator(new RegistryNameValidator(name, "Loot table").setValidChars(Arrays.asList('_', '/')));
+		name.setValidator(
+				new RegistryNameValidator(name, L10N.t("modelement.recipe")).setValidChars(Arrays.asList('_', '/')));
 		name.enableRealtimeValidation();
 
 		name.addItem("crafting_table");
