@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Function;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -30,6 +31,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 import org.fife.rsta.ac.LanguageSupportFactory;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
@@ -43,6 +45,7 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class FunctionGUI extends ModElementGUI<Function> {
 
@@ -61,8 +64,18 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		name.setValidator(
-				new RegistryNameValidator(name, L10N.t("modelement.function")).setValidChars(Arrays.asList('_', '/')));
+		//@formatter:off
+		name.setValidator(new UniqueNameValidator(
+			L10N.t("modelement.function"),
+			() -> namespace.getSelectedItem() + ":" + name.getText(),
+			() -> mcreator.getWorkspace().getModElements().stream()
+				.filter(me -> me.getType() == ModElementType.FUNCTION)
+				.map(ModElement::getGeneratableElement)
+				.filter(Objects::nonNull)
+				.map(ge -> ((Function) ge).namespace + ":" + ((Function) ge).name),
+			new RegistryNameValidator(name, L10N.t("modelement.function")).setValidChars(Arrays.asList('_', '/'))
+		).setIsPresentOnList(this::isEditingMode));
+		//@formatter:on
 		name.enableRealtimeValidation();
 
 		if (isEditingMode()) {
