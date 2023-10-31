@@ -93,7 +93,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(del = createToolBarButton("workspace.localization.remove_selected", UIRES.get("16px.delete.gif")));
+		bar.add(del = createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif")));
 		bar.add(exp = createToolBarButton("workspace.localization.export_to_csv", UIRES.get("16px.ext.gif")));
 		bar.add(imp = createToolBarButton("workspace.localization.import_csv", UIRES.get("16px.open.gif")));
 
