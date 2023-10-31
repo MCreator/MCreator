@@ -54,15 +54,13 @@ public class SearchUsagesDialog {
 	}
 
 	/**
-	 * @param mcreator          Workspace window calling this method.
-	 * @param queryType         Localized string representing type of elements used by mod elements in the given list.
-	 * @param references        List of referencing/dependent mod elements.
-	 * @param deletionRequested Whether user wants to delete selected elements or just view their usages.
-	 * @return Whether elements deletion was requested and the user confirmed deletion.
+	 * @param mcreator   Workspace window calling this method.
+	 * @param queryType  Localized string representing type of elements used by mod elements in the given list.
+	 * @param references List of referencing/dependent mod elements.
+	 * @return Whether the user confirmed deletion of selected elements.
 	 */
-	public static boolean show(MCreator mcreator, String queryType, List<ModElement> references,
-			boolean deletionRequested) {
-		return show(mcreator, queryType, references, deletionRequested, null);
+	public static boolean canDelete(MCreator mcreator, String queryType, List<ModElement> references) {
+		return show(mcreator, queryType, references, true, null);
 	}
 
 	/**
@@ -112,15 +110,15 @@ public class SearchUsagesDialog {
 		refList.setCellRenderer(new CompactModElementListCellRenderer());
 		refList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2)
-					edit(mcreator, refList.getModel().getElementAt(refList.locationToIndex(e.getPoint())), dialog);
+				ModElement selected = refList.getModel().getElementAt(refList.locationToIndex(e.getPoint()));
+				if (e.getClickCount() == 2) {
+					edit(mcreator, selected, dialog);
+				} else {
+					edit.setEnabled(!selected.isCodeLocked());
+					edit.setToolTipText(
+							selected.isCodeLocked() ? L10N.t("dialog.search_usages.open_selected.locked") : null);
+				}
 			}
-		});
-		refList.addListSelectionListener(e -> {
-			edit.setEnabled(!refList.getSelectedValue().isCodeLocked());
-			edit.setToolTipText(refList.getSelectedValue().isCodeLocked() ?
-					L10N.t("dialog.search_usages.open_selected.locked") :
-					null);
 		});
 
 		JScrollPane sp = new JScrollPane(refList);
@@ -138,8 +136,14 @@ public class SearchUsagesDialog {
 		} else { // otherwise focus is put on the references list
 			refList.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_ENTER)
-						edit(mcreator, refList.getSelectedValue(), dialog);
+					ModElement selected = refList.getSelectedValue();
+					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+						edit(mcreator, selected, dialog);
+					} else {
+						edit.setEnabled(!selected.isCodeLocked());
+						edit.setToolTipText(
+								selected.isCodeLocked() ? L10N.t("dialog.search_usages.open_selected.locked") : null);
+					}
 				}
 			});
 		}

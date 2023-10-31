@@ -81,6 +81,10 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 			addToolBarButton("action.workspace.resources.import_obj_mtl_model", UIRES.get("16px.importobjmodel"),
 					e -> workspacePanel.getMCreator().actionRegistry.importOBJModel.doAction());
 
+		addToolBarButton("workspace.3dmodels.edit_texture_mappings", UIRES.get("16px.edit.gif"),
+				e -> editSelectedModelTextureMappings());
+		addToolBarButton("workspace.3dmodels.redefine_animations", UIRES.get("16px.edit.gif"),
+				e -> editSelectedModelAnimations());
 		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			if (!elementList.isSelectionEmpty()) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -94,10 +98,6 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 						L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(refs));
 			}
 		});
-		addToolBarButton("workspace.3dmodels.edit_texture_mappings", UIRES.get("16px.edit.gif"),
-				e -> editSelectedModelTextureMappings());
-		addToolBarButton("workspace.3dmodels.redefine_animations", UIRES.get("16px.edit.gif"),
-				e -> editSelectedModelAnimations());
 		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
 				e -> deleteCurrentlySelected());
 	}
@@ -113,8 +113,8 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
-			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
-					L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(references), true)) {
+			if (SearchUsagesDialog.canDelete(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.model"), new ArrayList<>(references))) {
 				elements.forEach(model -> Arrays.stream(model.getFiles()).forEach(File::delete));
 				reloadElements();
 			}

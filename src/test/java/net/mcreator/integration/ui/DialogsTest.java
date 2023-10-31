@@ -212,7 +212,7 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> SearchUsagesDialog.showUsages(mcreator, "", Collections.emptyList()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.show(mcreator, "", Collections.emptyList(), true));
+				() -> SearchUsagesDialog.canDelete(mcreator, "", Collections.emptyList()));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

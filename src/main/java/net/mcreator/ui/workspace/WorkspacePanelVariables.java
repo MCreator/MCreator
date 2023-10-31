@@ -299,8 +299,8 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 		workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
-		if (SearchUsagesDialog.show(workspacePanel.getMCreator(), L10N.t("dialog.search_usages.type.global_variable"),
-				new ArrayList<>(references), true)) {
+		if (SearchUsagesDialog.canDelete(workspacePanel.getMCreator(), L10N.t("dialog.search_usages.type.global_variable"),
+				new ArrayList<>(references))) {
 			Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 					.forEach(el -> {
 						VariableElement element = new VariableElement(el);

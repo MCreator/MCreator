@@ -143,9 +143,6 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.duplicate_selected",
 				UIRES.get("16px.duplicate.gif"), e -> duplicateSelectedFile()));
 
-		bar.add(AbstractWorkspacePanel.createToolBarButton("common.delete_selected",
-				UIRES.get("16px.delete.gif"), e -> deleteCurrentlySelected()));
-
 		bar.add(AbstractWorkspacePanel.createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -165,6 +162,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			SearchUsagesDialog.showUsages(workspacePanel.getMCreator(),
 					L10N.t("dialog.search_usages.type.resource.texture"), new ArrayList<>(refs));
 		}));
+
+		bar.add(AbstractWorkspacePanel.createToolBarButton("common.delete_selected",
+				UIRES.get("16px.delete.gif"), e -> deleteCurrentlySelected()));
 
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.export_selected",
 				UIRES.get("16px.ext.gif"), e -> exportSelectedImages()));
@@ -190,8 +190,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
-			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
-					L10N.t("dialog.search_usages.type.resource.texture"), new ArrayList<>(references), true)) {
+			if (SearchUsagesDialog.canDelete(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.texture"), new ArrayList<>(references))) {
 				files.forEach(file -> {
 					if (file != null) {
 						file.delete();

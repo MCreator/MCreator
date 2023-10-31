@@ -28,7 +28,9 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 
@@ -71,8 +73,8 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
-			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
-					L10N.t("dialog.search_usages.type.resource.structure"), new ArrayList<>(references), true)) {
+			if (SearchUsagesDialog.canDelete(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.structure"), new ArrayList<>(references))) {
 				elements.forEach(workspacePanel.getMCreator().getFolderManager()::removeStructure);
 				reloadElements();
 			}

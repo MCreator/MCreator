@@ -36,7 +36,9 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 
@@ -100,8 +102,8 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
 
-			if (SearchUsagesDialog.show(workspacePanel.getMCreator(),
-					L10N.t("dialog.search_usages.type.resource.sound"), new ArrayList<>(references), true)) {
+			if (SearchUsagesDialog.canDelete(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.sound"), new ArrayList<>(references))) {
 				elements.forEach(workspacePanel.getMCreator().getWorkspace()::removeSoundElement);
 				reloadElements();
 			}
