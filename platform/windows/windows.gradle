@@ -72,7 +72,7 @@ tasks.register('buildInstallerWin64', Exec.class) {
 
     def nsis_binary
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        nsis_binary = projectDir.toString() + '/build/tools/nsis/makensis'
+        nsis_binary = new File(projectDir, '/build/tools/nsis/makensis')
     } else {
         nsis_binary = 'makensis'
     }
