@@ -3,7 +3,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 launch4j {
     outfile = 'mcreator.exe'
     mainClassName = 'net.mcreator.Launcher'
-    dontWrapJar = true
+    dontWrapJar = false
     copyConfigurable = []
     classpath = ["./lib/*"]
     jvmOptions = ["--add-opens=java.base/java.lang=ALL-UNNAMED"]
@@ -36,12 +36,11 @@ tasks.register('exportWin64', Copy.class) {
     into 'build/export/win64'
     into('') {
         from file('LICENSE.txt')
-        from file('platform/windows/mcreator.bat')
         from file('build/launch4j/mcreator.exe')
     }
     into('lib') {
         from 'build/libs'
-        from configurations.export
+        from configurations.export exclude('mcreator.jar')
         from configurations.win64
     }
     into('plugins') { from 'build/plugins/' }
