@@ -71,47 +71,9 @@ jobs:
             }
             ]]-->
           overwrite: true
-  exportWindows:
-    name: Build and Export for Windows
-    needs: exportLinux
-    runs-on: windows-latest
-    environment: production
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17.0.8+7'
-          distribution: 'adopt'
-      - name: Build and Export Release Using Gradle
-        if: github.event.inputs.release-type == 'release'
-        run: ./gradlew generateExportReport exportWindows -Pbuilddate=${{ needs.export1.outputs.build_date }}
-      - name: Build and Export Snapshot Using Gradle
-        if: github.event.inputs.release-type == 'snapshot'
-        run: ./gradlew generateExportReport exportWindows -Psnapshot=true -Pbuilddate=${{ needs.export1.outputs.build_date }}
-      - name: Upload Binaries and Tag Release
-        uses: Pylo/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ needs.export1.outputs.mcr_version }}
-          release_name: ${{ needs.export1.outputs.mcr_version }}
-          prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
-          file_glob: true
-          file: build/export/*
-          body: >
-            ### **Download: https://mcreator.net/download**
-            
-            ### Changelog: https://mcreator.net/changelog
-            
-            <!--[[
-            {
-            "minecraft": "${{ needs.export1.outputs.mc_version }}"
-            }
-            ]]-->
-          overwrite: true
   exportMacOS:
     name: Build and Export for MacOS
-    needs: exportWindows
+    needs: exportLinux
     runs-on: macos-latest
     environment: production
     steps:
@@ -126,16 +88,16 @@ jobs:
           brew install create-dmg
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
-        run: ./gradlew generateExportReport exportMac -Pbuilddate=${{ needs.export1.outputs.build_date }}
+        run: ./gradlew exportMac -Pbuilddate=${{ needs.exportLinux.outputs.build_date }}
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
-        run: ./gradlew generateExportReport exportMac -Psnapshot=true -Pbuilddate=${{ needs.export1.outputs.build_date }}
+        run: ./gradlew exportMac -Psnapshot=true -Pbuilddate=${{ needs.exportLinux.outputs.build_date }}
       - name: Upload Binaries and Tag Release
         uses: Pylo/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ needs.export1.outputs.mcr_version }}
-          release_name: ${{ needs.export1.outputs.mcr_version }}
+          tag: ${{ needs.exportLinux.outputs.mcr_version }}
+          release_name: ${{ needs.exportLinux.outputs.mcr_version }}
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
@@ -146,7 +108,45 @@ jobs:
             
             <!--[[
             {
-            "minecraft": "${{ needs.export1.outputs.mc_version }}"
+            "minecraft": "${{ needs.exportLinux.outputs.mc_version }}"
+            }
+            ]]-->
+          overwrite: true
+  exportWindows:
+    name: Build and Export for Windows
+    needs: exportMacOS
+    runs-on: windows-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17.0.8+7'
+          distribution: 'adopt'
+      - name: Build and Export Release Using Gradle
+        if: github.event.inputs.release-type == 'release'
+        run: ./gradlew exportWindows -Pbuilddate=${{ needs.exportLinux.outputs.build_date }}
+      - name: Build and Export Snapshot Using Gradle
+        if: github.event.inputs.release-type == 'snapshot'
+        run: ./gradlew exportWindows -Psnapshot=true -Pbuilddate=${{ needs.exportLinux.outputs.build_date }}
+      - name: Upload Binaries and Tag Release
+        uses: Pylo/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          tag: ${{ needs.exportLinux.outputs.mcr_version }}
+          release_name: ${{ needs.exportLinux.outputs.mcr_version }}
+          prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
+          file_glob: true
+          file: build/export/*
+          body: >
+            ### **Download: https://mcreator.net/download**
+            
+            ### Changelog: https://mcreator.net/changelog
+            
+            <!--[[
+            {
+            "minecraft": "${{ needs.exportLinux.outputs.mc_version }}"
             }
             ]]-->
           overwrite: true
