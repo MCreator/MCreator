@@ -26,6 +26,8 @@ import net.mcreator.element.types.interfaces.IGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,9 +40,9 @@ import java.util.List;
 	private static final Logger LOG = LogManager.getLogger(Overlay.class);
 
 	public String priority;
-	public List<GUIComponent> components;
+	@ModElementReference @TextureReference(TextureType.SCREEN) public List<GUIComponent> components;
 
-	public String baseTexture;
+	@TextureReference(TextureType.SCREEN) public String baseTexture;
 	public String overlayTarget;
 
 	public Procedure displayCondition;
