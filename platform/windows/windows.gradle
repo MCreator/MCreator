@@ -46,6 +46,21 @@ tasks.register('exportWin64', Copy.class) {
     into('plugins') { from 'build/plugins/' }
     into('license') { from 'license' }
     into('jdk') { from 'jdk/jdk17_win_64' }
+
+    if (project.hasProperty('windowsSign')) {
+        doLast {
+            jsign(file: 'build/export/win64/mcreator.exe',
+                    name: 'MCreator',
+                    url: 'https://mcreator.net/',
+                    storetype: "GOOGLECLOUD",
+                    storepass: project.getProperty('windowsSignStorepass'),
+                    keystore: project.getProperty('windowsSignKeystore'),
+                    alias: project.getProperty('windowsSignKeyname'),
+                    certfile: "codesign-chain.pem",
+                    tsmode: "RFC3161",
+                    tsaurl: 'http://timestamp.globalsign.com/tsa/r6advanced1')
+        }
+    }
 }
 
 tasks.register('exportWindowsZip', Zip.class) {
@@ -80,6 +95,21 @@ tasks.register('buildInstallerWin64', Exec.class) {
     commandLine nsis_binary, 'build/export/install64.nsi'
 
     doLast { delete 'build/export/install64.nsi' }
+
+    if (project.hasProperty('windowsSign')) {
+        doLast {
+            jsign(file: 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Windows 64bit.exe',
+                    name: 'MCreator',
+                    url: 'https://mcreator.net/',
+                    storetype: "GOOGLECLOUD",
+                    storepass: project.getProperty('windowsSignStorepass'),
+                    keystore: project.getProperty('windowsSignKeystore'),
+                    alias: project.getProperty('windowsSignKeyname'),
+                    certfile: "codesign-chain.pem",
+                    tsmode: "RFC3161",
+                    tsaurl: 'http://timestamp.globalsign.com/tsa/r6advanced1')
+        }
+    }
 }
 
 tasks.register('exportWindows') {
