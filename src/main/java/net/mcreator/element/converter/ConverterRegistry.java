@@ -108,7 +108,8 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.LIVINGENTITY, List.of(
 			new EntityTexturesConverter(),
-			new EntitiesRangedAttackConverter()
+			new EntitiesRangedAttackConverter(),
+			new WaterEntitiesConverter()
 		));
 		put(ModElementType.OVERLAY, List.of(
 			new OverlayCoordinateConverter(),
@@ -167,7 +168,7 @@ public class ConverterRegistry {
 			new FeatureDimensionRestrictionConverter()
 		));
 		put(ModElementType.STRUCTURE, List.of(
-			new StructureDimensionRestrictionConverter()
+			new StructureToFeatureConverter()
 		));
 		put(ModElementType.MUSICDISC, List.of(
 			new SpecialInformationConverter(),

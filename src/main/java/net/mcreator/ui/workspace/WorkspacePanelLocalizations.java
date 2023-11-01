@@ -36,6 +36,7 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -66,7 +67,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 		pane = new JTabbedPane();
 		pane.setOpaque(false);
-		pane.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
+		pane.setUI(new BasicTabbedPaneUI() {
 			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 			}
 		});
@@ -82,40 +83,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton add = L10N.button("workspace.localization.add_entry");
-		add.setIcon(UIRES.get("16px.add.gif"));
-		add.setContentAreaFilled(false);
-		add.setOpaque(false);
-		ComponentUtils.deriveFont(add, 12);
-		add.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(add);
-
-		del = L10N.button("workspace.localization.remove_selected");
-		del.setIcon(UIRES.get("16px.delete.gif"));
-		del.setOpaque(false);
-		del.setContentAreaFilled(false);
-		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(del);
-
-		bar.addSeparator();
-
-		exp = L10N.button("workspace.localization.export_to_csv");
-		exp.setIcon(UIRES.get("16px.ext.gif"));
-		exp.setOpaque(false);
-		exp.setContentAreaFilled(false);
-		exp.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(exp);
-
-		imp = L10N.button("workspace.localization.import_csv");
-		imp.setIcon(UIRES.get("16px.open.gif"));
-		imp.setOpaque(false);
-		imp.setContentAreaFilled(false);
-		imp.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(imp);
-
-		add("North", bar);
-
-		add.addActionListener(e -> {
+		bar.add(createToolBarButton("workspace.localization.add_entry", UIRES.get("16px.add.gif"), e -> {
 			String key = JOptionPane.showInputDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.localization.key_name_message"), L10N.t("workspace.localization.key_name_title"),
 					JOptionPane.QUESTION_MESSAGE);
@@ -123,7 +91,13 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 				workspacePanel.getMCreator().getWorkspace().setLocalization(key, "");
 				reloadElements();
 			}
-		});
+		}));
+
+		bar.add(del = createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif")));
+		bar.add(exp = createToolBarButton("workspace.localization.export_to_csv", UIRES.get("16px.ext.gif")));
+		bar.add(imp = createToolBarButton("workspace.localization.import_csv", UIRES.get("16px.open.gif")));
+
+		add("North", bar);
 	}
 
 	@Override public void reloadElements() {

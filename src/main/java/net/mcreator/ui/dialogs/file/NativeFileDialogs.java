@@ -26,6 +26,7 @@ import net.mcreator.ui.component.filebrowser.SynchronousJFXFileChooser;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.WorkspaceFolderManager;
 
+import javax.annotation.Nullable;
 import java.awt.*;
 import java.io.File;
 import java.util.Arrays;
@@ -39,12 +40,15 @@ import static net.mcreator.ui.dialogs.file.FileDialogs.prevDir;
 class NativeFileDialogs {
 
 	protected static File[] getFileChooserDialog(FileChooserType type, boolean multiSelect,
-			FileChooser.ExtensionFilter... filters) {
+			@Nullable String suggestedFileName, FileChooser.ExtensionFilter... filters) {
 		if (multiSelect && type == FileChooserType.SAVE)
 			throw new RuntimeException("Invalid file chooser type for multi selection mode");
 
 		SynchronousJFXFileChooser chooser = new SynchronousJFXFileChooser(null, () -> {
 			FileChooser ch = new FileChooser();
+
+			if (suggestedFileName != null)
+				ch.setInitialFileName(suggestedFileName);
 
 			if (prevDir != null && prevDir.isDirectory())
 				ch.setInitialDirectory(prevDir);

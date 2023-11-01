@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Recipe;
 import net.mcreator.minecraft.ElementUtil;
@@ -35,6 +36,7 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -46,6 +48,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 public class RecipeGUI extends ModElementGUI<Recipe> {
 
@@ -97,11 +100,14 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 	}
 
 	@Override protected void initGUI() {
-		craftingRecipeMaker = new CraftingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
-		smeltingRecipeMaker = new SmeltingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
+		craftingRecipeMaker = new CraftingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
+				ElementUtil::loadBlocksAndItems);
+		smeltingRecipeMaker = new SmeltingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
+				ElementUtil::loadBlocksAndItems);
 		blastFurnaceRecipeMaker = new BlastFurnaceRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
 				ElementUtil::loadBlocksAndItems);
-		smokerRecipeMaker = new SmokerRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags, ElementUtil::loadBlocksAndItems);
+		smokerRecipeMaker = new SmokerRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
+				ElementUtil::loadBlocksAndItems);
 		stoneCutterRecipeMaker = new StoneCutterRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
 				ElementUtil::loadBlocksAndItems);
 		campfireCookingRecipeMaker = new CampfireCookingRecipeMaker(mcreator, ElementUtil::loadBlocksAndItemsAndTags,
@@ -120,14 +126,22 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		smithingRecipeMaker.setOpaque(false);
 		brewingRecipeMaker.setOpaque(false);
 
-		name.setValidator(new RegistryNameValidator(name, "Loot table").setValidChars(Arrays.asList('_', '/')));
+		//@formatter:off
+		name.setValidator(new UniqueNameValidator(
+			L10N.t("modelement.recipe"),
+			() -> namespace.getSelectedItem() + ":" + ((JTextField) name.getEditor().getEditorComponent()).getText(),
+			() -> mcreator.getWorkspace().getModElements().stream()
+				.filter(me -> me.getType() == ModElementType.RECIPE)
+				.map(ModElement::getGeneratableElement)
+				.filter(Objects::nonNull)
+				.map(ge -> ((Recipe) ge).namespace + ":" + ((Recipe) ge).name),
+			new RegistryNameValidator(name, L10N.t("modelement.recipe")).setValidChars(Arrays.asList('_', '/'))
+		).setIsPresentOnList(this::isEditingMode));
+		//@formatter:on
 		name.enableRealtimeValidation();
-
 		name.addItem("crafting_table");
 		name.addItem("diamond_block");
-
 		name.setEditable(true);
-		name.setOpaque(false);
 
 		ComponentUtils.deriveFont(group, 16);
 
@@ -251,10 +265,11 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		if ("Crafting".equals(recipeType.getSelectedItem())) {
 			if (!craftingRecipeMaker.cb10.containsItem()) {
 				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_result"));
-			} else if (!(
-					craftingRecipeMaker.cb1.containsItem() || craftingRecipeMaker.cb2.containsItem() || craftingRecipeMaker.cb3.containsItem()
-					|| craftingRecipeMaker.cb4.containsItem() || craftingRecipeMaker.cb5.containsItem() || craftingRecipeMaker.cb6.containsItem() || craftingRecipeMaker.cb7.containsItem()
-					|| craftingRecipeMaker.cb8.containsItem() || craftingRecipeMaker.cb9.containsItem())) {
+			} else if (!(craftingRecipeMaker.cb1.containsItem() || craftingRecipeMaker.cb2.containsItem()
+					|| craftingRecipeMaker.cb3.containsItem() || craftingRecipeMaker.cb4.containsItem()
+					|| craftingRecipeMaker.cb5.containsItem() || craftingRecipeMaker.cb6.containsItem()
+					|| craftingRecipeMaker.cb7.containsItem() || craftingRecipeMaker.cb8.containsItem()
+					|| craftingRecipeMaker.cb9.containsItem())) {
 				return new AggregatedValidationResult.FAIL(L10N.t("elementgui.recipe.error_crafting_no_ingredient"));
 			}
 		} else if ("Smelting".equals(recipeType.getSelectedItem())) {
@@ -283,12 +298,14 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 						L10N.t("elementgui.recipe.error_campfire_no_ingredient_and_result"));
 			}
 		} else if ("Smithing".equals(recipeType.getSelectedItem())) {
-			if (!smithingRecipeMaker.cb1.containsItem() || !smithingRecipeMaker.cb2.containsItem() || !smithingRecipeMaker.cb3.containsItem()) {
+			if (!smithingRecipeMaker.cb1.containsItem() || !smithingRecipeMaker.cb2.containsItem()
+					|| !smithingRecipeMaker.cb3.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
 			}
 		} else if ("Brewing".equals(recipeType.getSelectedItem())) {
-			if (!brewingRecipeMaker.cb1.containsItem() || !brewingRecipeMaker.cb2.containsItem() || !brewingRecipeMaker.cb3.containsItem()) {
+			if (!brewingRecipeMaker.cb1.containsItem() || !brewingRecipeMaker.cb2.containsItem()
+					|| !brewingRecipeMaker.cb3.containsItem()) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_brewing_no_input_ingredient_and_result"));
 			}
@@ -308,7 +325,8 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		cookingBookCategory.setSelectedItem(recipe.cookingBookCategory);
 		craftingBookCategory.setSelectedItem(recipe.craftingBookCategory);
 
-		if ("Crafting".equals(recipe.recipeType)) {
+		switch (recipe.recipeType) {
+		case "Crafting" -> {
 			recipeShapeless.setSelected(recipe.recipeShapeless);
 			craftingRecipeMaker.cb1.setBlock(recipe.recipeSlots[0]);
 			craftingRecipeMaker.cb2.setBlock(recipe.recipeSlots[3]);
@@ -322,46 +340,55 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			craftingRecipeMaker.cb10.setBlock(recipe.recipeReturnStack);
 			craftingRecipeMaker.sp.setValue(recipe.recipeRetstackSize);
 			craftingRecipeMaker.setShapeless(recipeShapeless.isSelected());
-		} else if ("Smelting".equals(recipe.recipeType)) {
+		}
+		case "Smelting" -> {
 			smeltingRecipeMaker.cb1.setBlock(recipe.smeltingInputStack);
 			smeltingRecipeMaker.cb2.setBlock(recipe.smeltingReturnStack);
 			xpReward.setValue(recipe.xpReward);
 			cookingTime.setValue(recipe.cookingTime);
-		} else if ("Blasting".equals(recipe.recipeType)) {
+		}
+		case "Blasting" -> {
 			blastFurnaceRecipeMaker.cb1.setBlock(recipe.blastingInputStack);
 			blastFurnaceRecipeMaker.cb2.setBlock(recipe.blastingReturnStack);
 			xpReward.setValue(recipe.xpReward);
 			cookingTime.setValue(recipe.cookingTime);
-		} else if ("Smoking".equals(recipe.recipeType)) {
+		}
+		case "Smoking" -> {
 			smokerRecipeMaker.cb1.setBlock(recipe.smokingInputStack);
 			smokerRecipeMaker.cb2.setBlock(recipe.smokingReturnStack);
 			xpReward.setValue(recipe.xpReward);
 			cookingTime.setValue(recipe.cookingTime);
-		} else if ("Stone cutting".equals(recipe.recipeType)) {
+		}
+		case "Stone cutting" -> {
 			stoneCutterRecipeMaker.cb1.setBlock(recipe.stoneCuttingInputStack);
 			stoneCutterRecipeMaker.cb2.setBlock(recipe.stoneCuttingReturnStack);
 			stoneCutterRecipeMaker.sp.setValue(recipe.recipeRetstackSize);
-		} else if ("Campfire cooking".equals(recipe.recipeType)) {
+		}
+		case "Campfire cooking" -> {
 			campfireCookingRecipeMaker.cb1.setBlock(recipe.campfireCookingInputStack);
 			campfireCookingRecipeMaker.cb2.setBlock(recipe.campfireCookingReturnStack);
 			xpReward.setValue(recipe.xpReward);
 			cookingTime.setValue(recipe.cookingTime);
-		} else if ("Smithing".equals(recipe.recipeType)) {
+		}
+		case "Smithing" -> {
 			smithingRecipeMaker.cb1.setBlock(recipe.smithingInputStack);
 			smithingRecipeMaker.cb2.setBlock(recipe.smithingInputAdditionStack);
 			smithingRecipeMaker.cb3.setBlock(recipe.smithingReturnStack);
-		} else if ("Brewing".equals(recipe.recipeType)) {
+		}
+		case "Brewing" -> {
 			brewingRecipeMaker.cb1.setBlock(recipe.brewingInputStack);
 			brewingRecipeMaker.cb2.setBlock(recipe.brewingIngredientStack);
 			brewingRecipeMaker.cb3.setBlock(recipe.brewingReturnStack);
+		}
 		}
 	}
 
 	@Override public Recipe getElementFromGUI() {
 		Recipe recipe = new Recipe(modElement);
-		recipe.recipeType = (String) recipeType.getSelectedItem();
+		recipe.recipeType = (String) Objects.requireNonNull(recipeType.getSelectedItem());
 
-		if ("Crafting".equals(recipe.recipeType)) {
+		switch (recipe.recipeType) {
+		case "Crafting" -> {
 			MItemBlock[] recipeSlots = new MItemBlock[9];
 			recipeSlots[0] = craftingRecipeMaker.cb1.getBlock();
 			recipeSlots[3] = craftingRecipeMaker.cb2.getBlock();
@@ -376,38 +403,46 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			recipe.recipeShapeless = recipeShapeless.isSelected();
 			recipe.recipeReturnStack = craftingRecipeMaker.cb10.getBlock();
 			recipe.recipeSlots = recipeSlots;
-		} else if ("Smelting".equals(recipe.recipeType)) {
+		}
+		case "Smelting" -> {
 			recipe.smeltingInputStack = smeltingRecipeMaker.getBlock();
 			recipe.smeltingReturnStack = smeltingRecipeMaker.getBlock2();
 			recipe.xpReward = (double) xpReward.getValue();
 			recipe.cookingTime = (int) cookingTime.getValue();
-		} else if ("Blasting".equals(recipe.recipeType)) {
+		}
+		case "Blasting" -> {
 			recipe.blastingInputStack = blastFurnaceRecipeMaker.getBlock();
 			recipe.blastingReturnStack = blastFurnaceRecipeMaker.getBlock2();
 			recipe.xpReward = (double) xpReward.getValue();
 			recipe.cookingTime = (int) cookingTime.getValue();
-		} else if ("Smoking".equals(recipe.recipeType)) {
+		}
+		case "Smoking" -> {
 			recipe.smokingInputStack = smokerRecipeMaker.getBlock();
 			recipe.smokingReturnStack = smokerRecipeMaker.getBlock2();
 			recipe.xpReward = (double) xpReward.getValue();
 			recipe.cookingTime = (int) cookingTime.getValue();
-		} else if ("Stone cutting".equals(recipe.recipeType)) {
+		}
+		case "Stone cutting" -> {
 			recipe.recipeRetstackSize = (int) stoneCutterRecipeMaker.sp.getValue();
 			recipe.stoneCuttingInputStack = stoneCutterRecipeMaker.getBlock();
 			recipe.stoneCuttingReturnStack = stoneCutterRecipeMaker.getBlock2();
-		} else if ("Campfire cooking".equals(recipe.recipeType)) {
+		}
+		case "Campfire cooking" -> {
 			recipe.campfireCookingInputStack = campfireCookingRecipeMaker.getBlock();
 			recipe.campfireCookingReturnStack = campfireCookingRecipeMaker.getBlock2();
 			recipe.xpReward = (double) xpReward.getValue();
 			recipe.cookingTime = (int) cookingTime.getValue();
-		} else if ("Smithing".equals(recipe.recipeType)) {
+		}
+		case "Smithing" -> {
 			recipe.smithingInputStack = smithingRecipeMaker.cb1.getBlock();
 			recipe.smithingInputAdditionStack = smithingRecipeMaker.cb2.getBlock();
 			recipe.smithingReturnStack = smithingRecipeMaker.cb3.getBlock();
-		} else if ("Brewing".equals(recipe.recipeType)) {
+		}
+		case "Brewing" -> {
 			recipe.brewingInputStack = brewingRecipeMaker.cb1.getBlock();
 			recipe.brewingIngredientStack = brewingRecipeMaker.cb2.getBlock();
 			recipe.brewingReturnStack = brewingRecipeMaker.cb3.getBlock();
+		}
 		}
 
 		recipe.namespace = (String) namespace.getSelectedItem();
