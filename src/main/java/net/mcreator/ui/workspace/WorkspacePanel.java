@@ -72,7 +72,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends JPanel {
+public class WorkspacePanel extends JPanel {
 
 	private final FilterModel dml = new FilterModel();
 	public final JTextField search;
