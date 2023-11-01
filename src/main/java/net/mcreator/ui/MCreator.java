@@ -31,8 +31,9 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
+import net.mcreator.ui.component.BlockingGlassPane;
 import net.mcreator.ui.component.ImagePanel;
-import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
@@ -318,6 +319,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				workspace.getModElements().forEach(ModElement::getMCItems);
 
 				getGlassPane().setVisible(false);
+				setGlassPane(new JEmptyBox());
 			}, "ME preloader").start();
 
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -436,14 +438,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 	}
 
 	private JComponent getPreloaderPane() {
-		JPanel wrap = new JPanel(new BorderLayout()) {
-			@Override protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				g.setColor(new Color(0, 0, 0, 100));
-				g.fillRect(0, 0, getWidth(), getHeight());
-			}
-		};
-		wrap.setOpaque(false);
+		JPanel wrap = new BlockingGlassPane();
 		JLabel loading = L10N.label("workspace.loading");
 		loading.setFont(loading.getFont().deriveFont(16f));
 		loading.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
