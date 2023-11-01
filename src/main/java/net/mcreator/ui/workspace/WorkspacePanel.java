@@ -1232,17 +1232,11 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	private boolean updateRunning = false;
-
+	/**
+	 * Reloads all workspace panels. Better name would be reloadWorkspacePanels
+	 */
 	public synchronized void updateMods() {
-		if (updateRunning)
-			return;
-
-		updateRunning = true;
-
 		sectionTabs.get(currentTab).reloadElements();
-
-		updateRunning = false;
 	}
 
 	public void reloadElements() {
