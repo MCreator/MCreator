@@ -63,7 +63,7 @@ public class ZoomedMouseEvent extends MouseEvent {
 	}
 
 	/**
-	 * Returns precise X coordinate of the mouse event. If floored, this should be
+	 * Returns precise X coordinate of the mouse event. If floored, this should be the same as getX().
 	 *
 	 * @return precise X coordinate of the mouse event
 	 */
@@ -72,7 +72,7 @@ public class ZoomedMouseEvent extends MouseEvent {
 	}
 
 	/**
-	 * Returns precise Y coordinate of the mouse event. If floored, this should be
+	 * Returns precise Y coordinate of the mouse event. If floored, this should be the same as getY().
 	 *
 	 * @return precise Y coordinate of the mouse event
 	 */
