@@ -115,31 +115,35 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		this.tabIn = new MCreatorTabs.Tab(this, modElement);
 
-		// reload data lists in a background thread
-		this.tabIn.setTabShownListener(tab -> {
-			if (PreferencesManager.PREFERENCES.ui.autoReloadTabs.get()) {
-				listeningEnabled = false;
-				reloadDataLists();
-				listeningEnabled = true;
-			}
-		});
-		this.tabIn.setTabClosingListener(tab -> {
-			if (changed && PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges.get())
-				return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(mcreator,
-						L10N.label("dialog.unsaved_changes.message"), L10N.t("dialog.unsaved_changes.title"),
-						JOptionPane.YES_NO_OPTION);
-			return true;
-		});
-
+		ViewBase retval;
 		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(this.tabIn);
 		if (existing == null) {
 			mcreator.mcreatorTabs.addTab(this.tabIn);
-			return this;
+
+			this.tabIn.setTabShownListener(tab -> {
+				if (PreferencesManager.PREFERENCES.ui.autoReloadTabs.get()) {
+					listeningEnabled = false;
+					reloadDataLists();
+					listeningEnabled = true;
+				}
+			});
+
+			this.tabIn.setTabClosingListener(tab -> {
+				if (changed && PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges.get())
+					return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(mcreator,
+							L10N.label("dialog.unsaved_changes.message"), L10N.t("dialog.unsaved_changes.title"),
+							JOptionPane.YES_NO_OPTION);
+				return true;
+			});
+
+			retval = this;
+		} else {
+			retval = (ViewBase) existing.getContent();
 		}
 
 		MCREvent.event(new ModElementGUIEvent.AfterLoading(mcreator, existing, this));
 
-		return (ViewBase) existing.getContent();
+		return retval;
 	}
 
 	protected final void finalizeGUI() {

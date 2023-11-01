@@ -143,19 +143,7 @@ public class Model {
 		List<Model> models = new ArrayList<>();
 		File[] candidates = workspace.getFolderManager().getModelsDir().listFiles();
 		for (File f : candidates != null ? candidates : new File[0]) {
-			Model m = new Model(f);
-			if (m.getType() != null) {
-				Map<String, TexturedModel.TextureMapping> textureMappingMap = TexturedModel.getTextureMappingsForModel(
-						m);
-				if (textureMappingMap != null) {
-					// we add all variations of texturemappings for model
-					for (Map.Entry<String, TexturedModel.TextureMapping> entry : textureMappingMap.entrySet()) {
-						models.add(new TexturedModel(f, entry.getValue()));
-					}
-				} else {
-					models.add(m);
-				}
-			}
+			models.addAll(TexturedModel.getModelTextureMapVariations(new Model(f)));
 		}
 		return models;
 	}

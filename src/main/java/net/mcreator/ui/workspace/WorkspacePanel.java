@@ -109,7 +109,6 @@ import java.util.stream.Collectors;
 	private final JLabel but3 = new JLabel(TiledImageCache.workspaceDelete);
 	private final JLabel but5 = new JLabel(TiledImageCache.workspaceCode);
 	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
-	private final JLabel but6 = new JLabel(TiledImageCache.workspaceModElementIDs);
 
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
 	private final JMenuItem searchElement = new JMenuItem(L10N.t("common.search_usages"));
@@ -729,22 +728,6 @@ import java.util.stream.Collectors;
 		but5a.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but5a);
 
-		but6.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				if (but6.isEnabled()) {
-					IElement mu = list.getSelectedValue();
-					if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
-						ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
-						if (modified != null)
-							mcreator.getWorkspace().markDirty();
-					}
-				}
-			}
-		});
-		but6.setToolTipText(L10N.t("workspace.elements.edit_registry_names.tooltip"));
-		but6.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		pne.add(but6);
-
 		JPanel toolp = new JPanel(new BorderLayout(0, 0)) {
 			@Override public void paintComponent(Graphics g) {
 				g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
@@ -817,14 +800,7 @@ import java.util.stream.Collectors;
 
 		lockElement.addActionListener(e -> lockCode());
 
-		idElement.addActionListener(e -> {
-			IElement mu = list.getSelectedValue();
-			if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
-				ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
-				if (modified != null)
-					mcreator.getWorkspace().markDirty();
-			}
-		});
+		idElement.addActionListener(e -> editIDOfCurrentlySelectedModElement());
 
 		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
 		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
@@ -1002,6 +978,20 @@ import java.util.stream.Collectors;
 		but3.setEnabled(true);
 		deleteElement.setEnabled(true);
 		but3.setCursor(new Cursor(Cursor.HAND_CURSOR));
+	}
+
+	private void editIDOfCurrentlySelectedModElement() {
+		IElement mu = list.getSelectedValue();
+		if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
+			ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
+			if (modified != null)
+				mcreator.getWorkspace().markDirty();
+		} else {
+			JOptionPane.showMessageDialog(mcreator,
+					L10N.t("workspace.elements.edit_registry_names.not_possible_message"),
+					L10N.t("workspace.elements.edit_registry_names.not_possible_title"),
+					JOptionPane.WARNING_MESSAGE);
+		}
 	}
 
 	private void lockCode() {

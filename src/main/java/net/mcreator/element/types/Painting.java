@@ -24,13 +24,14 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class Painting extends GeneratableElement {
 
-	public String texture;
+	@TextureReference(TextureType.OTHER) public String texture;
 	public int width;
 	public int height;
 	public String title;

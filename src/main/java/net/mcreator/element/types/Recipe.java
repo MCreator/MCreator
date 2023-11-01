@@ -23,6 +23,7 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
@@ -43,7 +44,7 @@ import java.util.Arrays;
 	// Crafting recipe
 	public String craftingBookCategory;
 	public boolean recipeShapeless;
-	public MItemBlock[] recipeSlots;
+	@ModElementReference public MItemBlock[] recipeSlots;
 	public MItemBlock recipeReturnStack;
 
 	// Smelting recipe
