@@ -867,7 +867,7 @@ import java.util.stream.Collectors;
 		search.setText(null); // clear the search bar
 		currentFolder = switchTo;
 
-		reloadElements();
+		refilterElements();
 
 		// reload breadcrumb
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
@@ -1242,7 +1242,7 @@ import java.util.stream.Collectors;
 	public void reloadElements() {
 		if (mcreator.getWorkspaceSettings() != null) {
 			// first we need to get current folder from the workspace
-			// as current reference to the folder may be out of date (eg. reload from disk)
+			// as current reference to the folder may be out of date (e.g. reload from disk)
 			List<FolderElement> folders = mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren();
 			int folderIdx = folders.indexOf(currentFolder);
 			if (folderIdx == -1) {
