@@ -27,7 +27,9 @@ import net.mcreator.ui.views.editor.image.canvas.Selection;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
+import net.mcreator.ui.views.editor.image.versioning.change.SelectionChange;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
@@ -37,6 +39,8 @@ public class SelectionTool extends AbstractTool {
 	private SelectedBorder editingBorder = SelectedBorder.NONE, lastBorder = SelectedBorder.NONE;
 	private Point x = null, y = null;
 
+	SelectionChange change = null;
+
 	public SelectionTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager) {
 		super(L10N.t("dialog.image_maker.tools.types.select"),
 				L10N.t("dialog.image_maker.tools.types.select_description"), UIRES.get("img_editor.select"), canvas,
@@ -45,93 +49,110 @@ public class SelectionTool extends AbstractTool {
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
-		Selection selection = canvas.getSelection();
-		switch (editingBorder) {
-		case ANY, NONE -> {
-			if (first) {
-				selection.setEditing(SelectedBorder.ANY);
-				selection.getFirst().x = (int) Math.round(e.getPreciseX());
-				selection.getFirst().y = (int) Math.round(e.getPreciseY());
-				first = false;
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			Selection selection = canvas.getSelection();
+			switch (editingBorder) {
+			case ANY, NONE -> {
+				if (first) {
+					selection.setEditing(SelectedBorder.ANY);
+					selection.getFirst().x = (int) Math.round(e.getPreciseX());
+					selection.getFirst().y = (int) Math.round(e.getPreciseY());
+					first = false;
+				}
+				selection.getSecond().x = (int) Math.round(e.getPreciseX());
+				selection.getSecond().y = (int) Math.round(e.getPreciseY());
 			}
-			selection.getSecond().x = (int) Math.round(e.getPreciseX());
-			selection.getSecond().y = (int) Math.round(e.getPreciseY());
-		}
-		case TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT -> {
-			x.x = (int) Math.round(e.getPreciseX());
-			y.y = (int) Math.round(e.getPreciseY());
-		}
-		case TOP, BOTTOM -> y.y = (int) Math.round(e.getPreciseY());
-		case LEFT, RIGHT -> x.x = (int) Math.round(e.getPreciseX());
+			case TOP_LEFT, TOP_RIGHT, BOTTOM_RIGHT, BOTTOM_LEFT -> {
+				x.x = (int) Math.round(e.getPreciseX());
+				y.y = (int) Math.round(e.getPreciseY());
+			}
+			case TOP, BOTTOM -> y.y = (int) Math.round(e.getPreciseY());
+			case LEFT, RIGHT -> x.x = (int) Math.round(e.getPreciseX());
+			}
+			return true;
 		}
 		return false;
 	}
 
 	@Override public void mousePressed(MouseEvent e) {
-		Selection selection = canvas.getSelection();
-		selection.setEditStarted(true);
-		editingBorder = selection.getEditing();
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			change = new SelectionChange(canvas, layer);
+			Selection selection = canvas.getSelection();
 
-		switch (editingBorder) {
-		case TOP_LEFT -> {
-			x = selection.getLeftPoint();
-			y = selection.getTopPoint();
-		}
-		case TOP -> {
-			x = null;
-			y = selection.getTopPoint();
-		}
-		case TOP_RIGHT -> {
-			x = selection.getRightPoint();
-			y = selection.getTopPoint();
-		}
-		case RIGHT -> {
-			x = selection.getRightPoint();
-			y = null;
-		}
-		case BOTTOM_RIGHT -> {
-			x = selection.getRightPoint();
-			y = selection.getBottomPoint();
-		}
-		case BOTTOM -> {
-			x = null;
-			y = selection.getBottomPoint();
-		}
-		case BOTTOM_LEFT -> {
-			x = selection.getLeftPoint();
-			y = selection.getBottomPoint();
-		}
-		case LEFT -> {
-			x = selection.getLeftPoint();
-			y = null;
-		}
+			selection.setEditStarted(true);
+			editingBorder = selection.getEditing();
+
+			switch (editingBorder) {
+			case TOP_LEFT -> {
+				x = selection.getLeftPoint();
+				y = selection.getTopPoint();
+			}
+			case TOP -> {
+				x = null;
+				y = selection.getTopPoint();
+			}
+			case TOP_RIGHT -> {
+				x = selection.getRightPoint();
+				y = selection.getTopPoint();
+			}
+			case RIGHT -> {
+				x = selection.getRightPoint();
+				y = null;
+			}
+			case BOTTOM_RIGHT -> {
+				x = selection.getRightPoint();
+				y = selection.getBottomPoint();
+			}
+			case BOTTOM -> {
+				x = null;
+				y = selection.getBottomPoint();
+			}
+			case BOTTOM_LEFT -> {
+				x = selection.getLeftPoint();
+				y = selection.getBottomPoint();
+			}
+			case LEFT -> {
+				x = selection.getLeftPoint();
+				y = null;
+			}
+			}
 		}
 		super.mousePressed(e);
 	}
 
 	@Override public void mouseReleased(MouseEvent e) {
-		Selection selection = canvas.getSelection();
-		if (selection.hasSurface())
-			selection.setEditing(SelectedBorder.ANY);
-		else {
-			selection.setEditing(SelectedBorder.NONE);
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			Selection selection = canvas.getSelection();
+
+			if (selection.hasSurface())
+				selection.setEditing(SelectedBorder.ANY);
+			else {
+				selection.setEditing(SelectedBorder.NONE);
+			}
+
+			first = true;
+			selection.setEditStarted(false);
+
+			if (change != null) {
+				change.setAfter();
+				if (change.isChanged())
+					versionManager.addRevision(change);
+			}
 		}
-
-		first = true;
-		selection.setEditStarted(false);
-
 		super.mouseReleased(e);
 	}
 
 	@Override public void mouseClicked(MouseEvent e) {
 		super.mouseClicked(e);
-		Selection selection = canvas.getSelection();
+		if (SwingUtilities.isLeftMouseButton(e)) {
+			Selection selection = canvas.getSelection();
 
-		ZoomedMouseEvent zme = (ZoomedMouseEvent) e;
+			ZoomedMouseEvent zme = (ZoomedMouseEvent) e;
 
-		SelectedBorder border = selection.checkHandles((int) zme.getRawX(), (int) zme.getRawY());
-		if (border != SelectedBorder.ANY) {
-			selection.setEditing(SelectedBorder.NONE);
+			SelectedBorder border = selection.checkHandles((int) zme.getRawX(), (int) zme.getRawY());
+			if (border != SelectedBorder.ANY) {
+				selection.setEditing(SelectedBorder.NONE);
+			}
 		}
 	}
 

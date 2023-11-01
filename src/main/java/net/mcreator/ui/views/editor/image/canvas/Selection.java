@@ -48,6 +48,15 @@ public class Selection {
 		return editing;
 	}
 
+	/**
+	 * Returns the editing state of the selection if no cursor was hovering over it.
+	 * This way we have a way to store the selection visibility state without another variable.
+	 * @return editing visibility state of the selection
+	 */
+	public SelectedBorder getVisibilityState() {
+		return editing == SelectedBorder.NONE ? SelectedBorder.NONE : SelectedBorder.ANY;
+	}
+
 	public void setEditing(SelectedBorder editing) {
 		this.editing = editing;
 	}
