@@ -85,7 +85,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		add.setEnabled(enabled);
 	}
 
-	public void refreshList() {
+	public final void refreshList() {
 		depsMap.clear();
 		procedures.removeAllItems();
 
@@ -94,13 +94,12 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		for (ModElement mod : mcreator.getWorkspace().getModElements()) {
 			if (mod.getType() == ModElementType.PROCEDURE) {
 				List<?> dependenciesList = (List<?>) mod.getMetadata("dependencies");
-
-				List<Dependency> realdepsList = new ArrayList<>();
 				if (dependenciesList == null)
 					continue;
 
-				boolean missing = false;
+				List<Dependency> realdepsList = new ArrayList<>();
 
+				boolean missing = false;
 				for (Object depobj : dependenciesList) {
 					Dependency dependency = gson.fromJson(gson.toJsonTree(depobj).getAsJsonObject(), Dependency.class);
 					realdepsList.add(dependency);
