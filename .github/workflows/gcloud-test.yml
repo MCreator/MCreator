@@ -1,0 +1,21 @@
+name: Test Google Cloud
+
+on:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout Repository
+      - uses: google-github-actions/auth@35b0e87d162680511bf346c299f71c9c5c379033
+        name: Authenticate to Google Cloud
+        with:
+          workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GC_SERVICE_ACCOUNT }}''
