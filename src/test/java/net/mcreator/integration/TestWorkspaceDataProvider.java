@@ -1650,7 +1650,7 @@ public class TestWorkspaceDataProvider {
 		if (!emptyLists) {
 			LivingEntity.ModelLayerEntry modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.model = "Default";
-			modelLayer.texture = "test.png";
+			modelLayer.texture = "entityTx2.png";
 			modelLayer.glow = true;
 			modelLayer.condition = null;
 			livingEntity.modelLayers.add(modelLayer);
@@ -1662,7 +1662,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.modelLayers.add(modelLayer);
 			modelLayer = new LivingEntity.ModelLayerEntry();
 			modelLayer.model = "Default";
-			modelLayer.texture = "test.png";
+			modelLayer.texture = "entityTx2.png";
 			modelLayer.glow = true;
 			modelLayer.condition = null;
 			livingEntity.modelLayers.add(modelLayer);
