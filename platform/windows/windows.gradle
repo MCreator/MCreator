@@ -17,7 +17,9 @@ launch4j {
     errTitle = 'MCreator'
     supportUrl = 'https://mcreator.net/support'
 
-    fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator')
+    fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
+    version = (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
+    textVersion = (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
     productName = "MCreator"
     companyName = "Pylo"
     copyright = "Pylo"
@@ -72,7 +74,7 @@ tasks.register('buildInstallerWin64', Exec.class) {
 
     def nsis_binary
     if (Os.isFamily(Os.FAMILY_WINDOWS)) {
-        nsis_binary = projectDir.toString() + '/build/tools/nsis/makensis'
+        nsis_binary = new File(projectDir, '/build/tools/nsis/makensis')
     } else {
         nsis_binary = 'makensis'
     }

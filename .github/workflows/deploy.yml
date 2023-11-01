@@ -12,6 +12,7 @@ jobs:
   export1:
     name: Build and Export (all but MacOS)
     runs-on: ubuntu-latest
+    environment: production
     outputs:
       mcr_version: ${{ steps.determineExportVersion.outputs.mcr_version }}
       mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
@@ -79,6 +80,7 @@ jobs:
     name: Build and Export (only MacOS)
     needs: export1
     runs-on: macos-latest
+    environment: production
     steps:
       - uses: actions/checkout@v3
       - name: Set up JDK 17
