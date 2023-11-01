@@ -80,7 +80,7 @@ public class ReferencesFinder {
 					procedureXmlPattern.matcher(t).find()
 				)
 			)
-			.map(GeneratableElement::getModElement).filter(me -> !me.equals(element)).collect(Collectors.toSet());
+			.map(GeneratableElement::getModElement).filter(me -> !me.equals(element) && !me.isCodeLocked()).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchTextureUsages(Workspace workspace, File texture, TextureType type) {
@@ -102,7 +102,7 @@ public class ReferencesFinder {
 					return false;
 				})
 			)
-			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+			.map(GeneratableElement::getModElement).filter(me -> !me.isCodeLocked()).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchModelUsages(Workspace workspace, Model model) {
@@ -115,7 +115,7 @@ public class ReferencesFinder {
 					model.equals(t) || TexturedModel.getModelTextureMapVariations(model).contains(t)
 				)
 			)
-			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+			.map(GeneratableElement::getModElement).filter(me -> !me.isCodeLocked()).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchSoundUsages(Workspace workspace, SoundElement sound) {
@@ -131,7 +131,7 @@ public class ReferencesFinder {
 					t.contains(">CUSTOM:" + sound.getName() + "</field>")
 				)
 			)
-			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+			.map(GeneratableElement::getModElement).filter(me -> !me.isCodeLocked()).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchStructureUsages(Workspace workspace, String structure) {
@@ -147,7 +147,7 @@ public class ReferencesFinder {
 					t.contains(">" + structure + "</field>")
 				)
 			)
-			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+			.map(GeneratableElement::getModElement).filter(me -> !me.isCodeLocked()).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchGlobalVariableUsages(Workspace workspace, String variableName) {
@@ -157,7 +157,7 @@ public class ReferencesFinder {
 					t.contains("<field name=\"VAR\">global:" + variableName + "</field>")
 				)
 			)
-			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+			.map(GeneratableElement::getModElement).filter(me -> !me.isCodeLocked()).collect(Collectors.toSet());
 	}
 
 	public static Set<ModElement> searchLocalizationKeyUsages(Workspace workspace, String localizationKey) {
@@ -168,7 +168,7 @@ public class ReferencesFinder {
 					t.contains(">" + localizationKey + "</field>")
 				)
 			)
-			.map(GeneratableElement::getModElement).collect(Collectors.toSet());
+			.map(GeneratableElement::getModElement).filter(me -> !me.isCodeLocked()).collect(Collectors.toSet());
 	}
 
 	//@formatter:on
