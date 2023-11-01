@@ -87,17 +87,18 @@ public class ClipboardManager implements ClipboardOwner {
 			if (clp.isDataFlavorSupported(DataFlavor.imageFlavor)) {
 				try {
 					Image img = (Image) clp.getTransferData(DataFlavor.imageFlavor);
-					if (clp.isDataFlavorSupported(DataFlavor.stringFlavor)) {
-						Layer layer = new Layer((String) clp.getTransferData(DataFlavor.stringFlavor), img);
-						layer.setPasted(!imageMakerView.getCanvas().isEmpty());
 
-						addFloatingLayer(layer);
-					} else {
-						Layer layer = new Layer("Pasted layer", img);
-						layer.setPasted(!imageMakerView.getCanvas().isEmpty());
-						addFloatingLayer(layer);
-					}
+					Layer layer;
+					if (clp.isDataFlavorSupported(DataFlavor.stringFlavor))
+						layer = new Layer((String) clp.getTransferData(DataFlavor.stringFlavor), img);
+					else
+						layer = new Layer("Pasted layer", img);
 
+					layer.setX(imageMakerView.getCanvas().getWidth() / 2 - layer.getWidth() / 2);
+					layer.setY(imageMakerView.getCanvas().getHeight() / 2 - layer.getHeight() / 2);
+					layer.setPasted(!imageMakerView.getCanvas().isEmpty());
+
+					addFloatingLayer(layer);
 				} catch (UnsupportedFlavorException | IOException e) {
 					throw new RuntimeException(e);
 				}
