@@ -56,7 +56,8 @@ public class ReferencesFinder {
 	 * @return List of all generatable elements contained in the provided workspace.
 	 */
 	private static List<GeneratableElement> getGeneratableElements(Workspace workspace) {
-		return workspace.getModElements().stream().map(ModElement::getGeneratableElement).collect(Collectors.toList());
+		return workspace.getModElements().stream().filter(me -> !me.isCodeLocked())
+				.map(ModElement::getGeneratableElement).collect(Collectors.toList());
 	}
 
 	//@formatter:off
