@@ -74,7 +74,7 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends JPanel {
 
-	private FilterModel dml = new FilterModel();
+	private FilterModel dml = new FilterModel(new ArrayList<>());
 	public final JTextField search;
 
 	public FolderElement currentFolder;
@@ -978,8 +978,7 @@ import java.util.stream.Collectors;
 		} else {
 			JOptionPane.showMessageDialog(mcreator,
 					L10N.t("workspace.elements.edit_registry_names.not_possible_message"),
-					L10N.t("workspace.elements.edit_registry_names.not_possible_title"),
-					JOptionPane.WARNING_MESSAGE);
+					L10N.t("workspace.elements.edit_registry_names.not_possible_title"), JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
@@ -1258,21 +1257,18 @@ import java.util.stream.Collectors;
 
 				// reload list model partially in the background
 				new Thread(() -> {
-					List<IElement> selected = list.getSelectedValuesList();
-
-					FilterModel newModel = new FilterModel();
-
 					// add folders
-					currentFolder.getRecursiveFolderChildren().forEach(newModel::addElement);
+					ArrayList<IElement> newDataModel = new ArrayList<>(currentFolder.getRecursiveFolderChildren());
 
 					// add mod elements
-					mcreator.getWorkspace().getModElements().forEach(newModel::addElement);
+					newDataModel.addAll(mcreator.getWorkspace().getModElements());
 
 					SwingUtilities.invokeLater(() -> {
-						list.setModel(dml = newModel);
-
+						List<IElement> selected = list.getSelectedValuesList();
+						list.setModel(dml = new FilterModel(newDataModel));
 						ListUtil.setSelectedValues(list, selected);
 
+						// we need to refilter items so that FilterModel can update its internal list
 						this.refilterElements();
 					});
 				}, "WorkspaceListReloader").start();
@@ -1308,13 +1304,12 @@ import java.util.stream.Collectors;
 
 	private class FilterModel extends DefaultListModel<IElement> {
 		ArrayList<IElement> items;
-		ArrayList<IElement> filterItems;
+		ArrayList<IElement> filterItems = new ArrayList<>();
 
 		private final static Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
 
-		FilterModel() {
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
+		FilterModel(ArrayList<IElement> newItems) {
+			this.items = newItems;
 		}
 
 		@Override public IElement getElementAt(int index) {
