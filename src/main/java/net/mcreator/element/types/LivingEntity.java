@@ -24,10 +24,7 @@ import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.BiomeEntry;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Sound;
-import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
@@ -193,15 +190,22 @@ import java.util.*;
 		this.modelLayers = new ArrayList<>();
 	}
 
-	public static class ModelLayerEntry {
+	public static class ModelLayerEntry implements IWorkspaceDependent {
 
 		public String model;
-		public String texture;
-
+		@TextureReference(TextureType.ENTITY) public String texture;
 		public boolean glow;
-
 		public Procedure condition;
 
+		@Nullable transient Workspace workspace;
+
+		public Model getLayerModel() {
+			return model.equals("Default") ? null : Model.getModelByParams(workspace, model, Model.Type.JAVA);
+		}
+
+		@Override public void setWorkspace(@Nullable Workspace workspace) {
+			this.workspace = workspace;
+		}
 	}
 
 	@Override public Model getEntityModel() {
