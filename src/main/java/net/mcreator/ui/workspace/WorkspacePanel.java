@@ -74,7 +74,7 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends JPanel {
 
-	private FilterModel dml = new FilterModel(new ArrayList<>());
+	private final FilterModel dml = new FilterModel();
 	public final JTextField search;
 
 	public FolderElement currentFolder;
@@ -1255,23 +1255,16 @@ import java.util.stream.Collectors;
 					|| !currentFolder.getDirectFolderChildren().isEmpty()) {
 				mainpcl.show(mainp, "sp");
 
-				// reload list model partially in the background
-				new Thread(() -> {
-					// add folders
-					ArrayList<IElement> newDataModel = new ArrayList<>(currentFolder.getRecursiveFolderChildren());
+				// add folders
+				ArrayList<IElement> newDataModel = new ArrayList<>(currentFolder.getRecursiveFolderChildren());
 
-					// add mod elements
-					newDataModel.addAll(mcreator.getWorkspace().getModElements());
+				// add mod elements
+				newDataModel.addAll(mcreator.getWorkspace().getModElements());
 
-					SwingUtilities.invokeLater(() -> {
-						List<IElement> selected = list.getSelectedValuesList();
-						list.setModel(dml = new FilterModel(newDataModel));
-						ListUtil.setSelectedValues(list, selected);
-
-						// we need to refilter items so that FilterModel can update its internal list
-						this.refilterElements();
-					});
-				}, "WorkspaceListReloader").start();
+				List<IElement> selected = list.getSelectedValuesList();
+				dml.removeAllElements();
+				dml.addAll(newDataModel);
+				ListUtil.setSelectedValues(list, selected);
 			} else {
 				mainpcl.show(mainp, "ep");
 			}
@@ -1304,12 +1297,18 @@ import java.util.stream.Collectors;
 
 	private class FilterModel extends DefaultListModel<IElement> {
 		ArrayList<IElement> items;
-		ArrayList<IElement> filterItems = new ArrayList<>();
+		ArrayList<IElement> filterItems;
 
 		private final static Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
 
-		FilterModel(ArrayList<IElement> newItems) {
-			this.items = newItems;
+		FilterModel() {
+			items = new ArrayList<>();
+			filterItems = new ArrayList<>();
+		}
+
+		@Override public void addAll(Collection<? extends IElement> collection) {
+			items.addAll(collection);
+			refilter();
 		}
 
 		@Override public IElement getElementAt(int index) {
