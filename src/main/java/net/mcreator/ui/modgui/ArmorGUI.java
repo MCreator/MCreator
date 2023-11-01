@@ -204,19 +204,19 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 	}
 
 	@Override protected void initGUI() {
-		helmetGlowCondition = new LogicProcedureSelector(this.withEntry("armor/glowing_effect"), mcreator,
+		helmetGlowCondition = new LogicProcedureSelector(this.withEntry("item/glowing_effect"), mcreator,
 				L10N.t("elementgui.armor.glowing_effect"), AbstractProcedureSelector.Side.CLIENT,
 				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		bodyGlowCondition = new LogicProcedureSelector(this.withEntry("armor/glowing_effect"), mcreator,
+		bodyGlowCondition = new LogicProcedureSelector(this.withEntry("item/glowing_effect"), mcreator,
 				L10N.t("elementgui.armor.glowing_effect"), AbstractProcedureSelector.Side.CLIENT,
 				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		leggingsGlowCondition = new LogicProcedureSelector(this.withEntry("armor/glowing_effect"), mcreator,
+		leggingsGlowCondition = new LogicProcedureSelector(this.withEntry("item/glowing_effect"), mcreator,
 				L10N.t("elementgui.armor.glowing_effect"), AbstractProcedureSelector.Side.CLIENT,
 				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		bootsGlowCondition = new LogicProcedureSelector(this.withEntry("armor/glowing_effect"), mcreator,
+		bootsGlowCondition = new LogicProcedureSelector(this.withEntry("item/glowing_effect"), mcreator,
 				L10N.t("elementgui.armor.glowing_effect"), AbstractProcedureSelector.Side.CLIENT,
 				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
@@ -388,8 +388,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JPanel helmetConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		helmetConditionsPanel.setOpaque(false);
 		helmetConditionsPanel.add(helmetGlowCondition);
-		helmetConditionsPanel.add(helmetPiglinNeutral);
 		helmetConditionsPanel.add(helmetSpecialInformation);
+		helmetConditionsPanel.add(helmetPiglinNeutral);
 
 		helmetCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_helmet"),
 				PanelUtils.northAndCenterElement(helmetSubPanel, helmetConditionsPanel));
@@ -439,8 +439,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JPanel bodyConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		bodyConditionsPanel.setOpaque(false);
 		bodyConditionsPanel.add(bodyGlowCondition);
-		bodyConditionsPanel.add(bodyPiglinNeutral);
 		bodyConditionsPanel.add(bodySpecialInformation);
+		bodyConditionsPanel.add(bodyPiglinNeutral);
 
 		bodyCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_chestplate"),
 				PanelUtils.centerAndSouthElement(bodySubPanel, bodyConditionsPanel));
@@ -484,8 +484,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JPanel leggingsConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		leggingsConditionsPanel.setOpaque(false);
 		leggingsConditionsPanel.add(leggingsGlowCondition);
-		leggingsConditionsPanel.add(leggingsPiglinNeutral);
 		leggingsConditionsPanel.add(leggingsSpecialInformation);
+		leggingsConditionsPanel.add(leggingsPiglinNeutral);
 
 		leggingsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_leggings"),
 				PanelUtils.centerAndSouthElement(leggingsSubPanel, leggingsConditionsPanel));
@@ -529,8 +529,8 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JPanel bootsConditionsPanel = new JPanel(new GridLayout(3, 1, 2, 2));
 		bootsConditionsPanel.setOpaque(false);
 		bootsConditionsPanel.add(bootsGlowCondition);
-		bootsConditionsPanel.add(bootsPiglinNeutral);
 		bootsConditionsPanel.add(bootsSpecialInformation);
+		bootsConditionsPanel.add(bootsPiglinNeutral);
 
 		bootsCollapsiblePanel = new CollapsiblePanel(L10N.t("elementgui.armor.advanced_boots"),
 				PanelUtils.centerAndSouthElement(bootsSubPanel, bootsConditionsPanel));

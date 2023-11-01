@@ -1,1 +1,0 @@
-This condition controls whether the armor piece glows, like golden apple or enchanted items.
