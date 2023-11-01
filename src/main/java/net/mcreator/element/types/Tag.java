@@ -24,6 +24,7 @@ import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
@@ -34,11 +35,11 @@ import java.util.Locale;
 
 	@Nonnull public String type;
 
-	public List<MItemBlock> items;
-	public List<MItemBlock> blocks;
-	public List<String> functions;
-	public List<EntityEntry> entities;
-	public List<BiomeEntry> biomes;
+	@ModElementReference public List<MItemBlock> items;
+	@ModElementReference public List<MItemBlock> blocks;
+	@ModElementReference public List<String> functions;
+	@ModElementReference public List<EntityEntry> entities;
+	@ModElementReference public List<BiomeEntry> biomes;
 
 	public Tag(ModElement element) {
 		super(element);

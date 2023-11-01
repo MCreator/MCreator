@@ -27,8 +27,10 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.element.types.interfaces.IEntityWithModel;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 
 import java.awt.image.BufferedImage;
@@ -45,7 +47,7 @@ public class Projectile extends GeneratableElement implements IEntityWithModel, 
 	public double damage;
 	public int knockback;
 	public String entityModel;
-	public String customModelTexture;
+	@TextureReference(TextureType.ENTITY) public String customModelTexture;
 
 	public Procedure onHitsBlock;
 	public Procedure onHitsPlayer;
