@@ -51,10 +51,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableType;
-import net.mcreator.workspace.elements.VariableTypeLoader;
+import net.mcreator.workspace.elements.*;
 
 import java.awt.*;
 import java.awt.image.RenderedImage;
@@ -105,9 +102,8 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getCommandExample(me(workspace, type, "2"), "SINGLEPLAYER_ONLY", random));
 			generatableElements.add(getCommandExample(me(workspace, type, "3"), "MULTIPLAYER_ONLY", random));
 			generatableElements.add(getCommandExample(me(workspace, type, "4"), "CLIENTSIDE", random));
-		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING
-				|| type == ModElementType.KEYBIND || type == ModElementType.PROCEDURE || type == ModElementType.FEATURE
-				|| type == ModElementType.CODE) {
+		} else if (type == ModElementType.FUNCTION || type == ModElementType.PAINTING || type == ModElementType.KEYBIND
+				|| type == ModElementType.PROCEDURE || type == ModElementType.FEATURE || type == ModElementType.CODE) {
 			generatableElements.add(
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
 							true, true, 0));
@@ -127,6 +123,13 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static void fillWorkspaceWithTestData(Workspace workspace) {
+		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("sounds") == GeneratorStats.CoverageStatus.FULL) {
+			for (int i = 1; i <= 3; i++) {
+				SoundElement sound = new SoundElement("test" + i, List.of(), "neutral", null);
+				workspace.addSoundElement(sound);
+			}
+		}
+
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")
 				== GeneratorStats.CoverageStatus.FULL) {
 			VariableElement sampleVariable1 = new VariableElement("test");
@@ -618,7 +621,8 @@ public class TestWorkspaceDataProvider {
 			gui.components = components;
 			return gui;
 		} else if (ModElementType.LIVINGENTITY.equals(modElement.getType())) {
-			return getLivingEntity(modElement, random, _true, emptyLists, valueIndex, blocksAndItems, blocksAndItemsAndTags, biomes);
+			return getLivingEntity(modElement, random, _true, emptyLists, valueIndex, blocksAndItems,
+					blocksAndItemsAndTags, biomes);
 		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
 			Dimension dimension = new Dimension(modElement);
 			dimension.texture = "test";
@@ -978,7 +982,7 @@ public class TestWorkspaceDataProvider {
 			itemExtension.dispenseSuccessCondition = _true ? new Procedure("condition1") : null;
 			itemExtension.dispenseResultItemstack = _true ? new Procedure("itemstack1") : null;
 			return itemExtension;
-		} else if (ModElementType.PROJECTILE.equals(modElement.getType())){
+		} else if (ModElementType.PROJECTILE.equals(modElement.getType())) {
 			Projectile projectile = new Projectile(modElement);
 			projectile.actionSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
@@ -1154,7 +1158,8 @@ public class TestWorkspaceDataProvider {
 			block.fluidRestrictions = new ArrayList<>();
 			if (!emptyLists) {
 				block.fluidRestrictions.addAll(ElementUtil.loadAllFluids(modElement.getWorkspace()).stream()
-						.map(e -> new net.mcreator.element.parts.Fluid(modElement.getWorkspace(), e.getName())).toList());
+						.map(e -> new net.mcreator.element.parts.Fluid(modElement.getWorkspace(), e.getName()))
+						.toList());
 			}
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
@@ -1507,7 +1512,8 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static LivingEntity getLivingEntity(ModElement modElement, Random random, boolean _true, boolean emptyLists,
-			int valueIndex, List<MCItem> blocksAndItems, List<MCItem> blocksAndItemsAndTags, List<DataListEntry> biomes) {
+			int valueIndex, List<MCItem> blocksAndItems, List<MCItem> blocksAndItemsAndTags,
+			List<DataListEntry> biomes) {
 		LivingEntity livingEntity = new LivingEntity(modElement);
 		livingEntity.mobName = modElement.getName();
 		livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
@@ -1605,16 +1611,16 @@ public class TestWorkspaceDataProvider {
 		livingEntity.tameable = _true;
 		livingEntity.breedTriggerItems = new ArrayList<>();
 		if (!emptyLists) {
-			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
-			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
-			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
-			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
-			livingEntity.breedTriggerItems.add(
-					new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random, blocksAndItemsAndTags).getName()));
+			livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName()));
+			livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName()));
+			livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName()));
+			livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName()));
+			livingEntity.breedTriggerItems.add(new MItemBlock(modElement.getWorkspace(),
+					getRandomMCItem(random, blocksAndItemsAndTags).getName()));
 		}
 		livingEntity.ranged = _true;
 		livingEntity.rangedAttackItem = new MItemBlock(modElement.getWorkspace(),
@@ -1681,7 +1687,8 @@ public class TestWorkspaceDataProvider {
 		tool.damageOnCrafting = emptyLists;
 		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
-		tool.glowCondition = new LogicProcedure(emptyLists ? "condition2" : null, _true);;
+		tool.glowCondition = new LogicProcedure(emptyLists ? "condition2" : null, _true);
+		;
 		tool.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 				Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 		if (!emptyLists) {

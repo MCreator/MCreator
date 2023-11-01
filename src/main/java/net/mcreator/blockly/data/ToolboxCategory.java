@@ -25,7 +25,6 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.awt.*;
-import java.util.List;
 
 public class ToolboxCategory {
 	private static final Logger LOG = LogManager.getLogger("Toolbox category");
@@ -35,6 +34,8 @@ public class ToolboxCategory {
 
 	boolean api;
 	boolean is_expanded;
+
+	@Nullable transient ToolboxCategory parent = null;
 
 	public String getName() {
 		String localized_name = L10N.t("blockly.category." + id);
@@ -50,6 +51,10 @@ public class ToolboxCategory {
 			return localized_desc;
 
 		return description;
+	}
+
+	@Nullable public ToolboxCategory getParent() {
+		return parent;
 	}
 
 	/**

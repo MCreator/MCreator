@@ -76,7 +76,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final JSpinner stackSize = new JSpinner(new SpinnerNumberModel(64, 0, 64, 1));
 	private final VTextField name = new VTextField(20);
-	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON" , "UNCOMMON" , "RARE" , "EPIC" });
+	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 
 	private final MCItemHolder recipeRemainder = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
@@ -137,7 +137,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox isMeat = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox isAlwaysEdible = L10N.checkbox("elementgui.common.enable");
 	private final JComboBox<String> animation = new JComboBox<>(
-			new String[] { "none" , "eat" , "block" , "bow" , "crossbow" , "drink" , "spear" });
+			new String[] { "none", "eat", "block", "bow", "crossbow", "drink", "spear" });
 	private final MCItemHolder eatResultItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	public ItemGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -227,7 +227,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel destal2 = new JPanel(new BorderLayout(0, 5));
 		destal2.setOpaque(false);
 
-		destal2.add("Center" , PanelUtils.northAndCenterElement(glowCondition, specialInformation, 0, 5));
+		destal2.add("Center", PanelUtils.northAndCenterElement(glowCondition, specialInformation, 0, 5));
 
 		ComponentUtils.deriveFont(renderType, 16);
 
@@ -246,20 +246,20 @@ public class ItemGUI extends ModElementGUI<Item> {
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.item.item_3d_model"), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		destal2.add("North" , PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
+		destal2.add("North", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 		sbbp2.setOpaque(false);
 
-		sbbp2.add("West" , destal2);
+		sbbp2.add("West", destal2);
 
-		pane2.add("Center" , PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(sbbp2)));
+		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.centerInPanel(sbbp2)));
 
 		pane2.setOpaque(false);
 
 		cipp.setOpaque(false);
-		cipp.add("Center" , customProperties);
+		cipp.add("Center", customProperties);
 
 		JPanel subpane2 = new JPanel(new GridLayout(15, 2, 2, 2));
 
@@ -337,7 +337,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		subpane2.setOpaque(false);
 
 		pane3.setOpaque(false);
-		pane3.add("Center" , PanelUtils.totalCenterInPanel(subpane2));
+		pane3.add("Center", PanelUtils.totalCenterInPanel(subpane2));
 
 		JPanel foodSubpane = new JPanel(new GridLayout(6, 2, 2, 2));
 		foodSubpane.setOpaque(false);
@@ -382,7 +382,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.is_edible")));
 		foodSubpane.add(isAlwaysEdible);
 
-		foodProperties.add("Center" , PanelUtils.totalCenterInPanel(foodSubpane));
+		foodProperties.add("Center", PanelUtils.totalCenterInPanel(foodSubpane));
 		foodProperties.setOpaque(false);
 
 		advancedProperties.setOpaque(false);
@@ -399,7 +399,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		events.add(onEntitySwing);
 		events.add(onDroppedByPlayer);
 		events.add(onFinishUsingItem);
-		pane4.add("Center" , PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
+		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
 		pane4.setOpaque(false);
 
 		JPanel inventoryProperties = new JPanel(new GridLayout(3, 2, 35, 2));
@@ -447,13 +447,13 @@ public class ItemGUI extends ModElementGUI<Item> {
 		rangedTriggers.add(onRangedItemUsed);
 
 		rangedPanel.setOpaque(false);
-		rangedPanel.add("Center" , PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers));
+		rangedPanel.add("Center", PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers));
 		rangedPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("elementgui.item.ranged_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
-		advancedProperties.add("Center" , PanelUtils.totalCenterInPanel(
+		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(
 				PanelUtils.centerAndEastElement(PanelUtils.pullElementUp(inventoryProperties), rangedPanel, 10, 10)));
 
 		texture.setValidator(new TileHolderValidator(texture));

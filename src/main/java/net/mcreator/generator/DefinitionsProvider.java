@@ -53,7 +53,8 @@ public class DefinitionsProvider {
 				continue;
 
 			try {
-				cache.put(type, new ConcurrentHashMap<>((Map<?, ?>) yamlLoad.loadFromString(config))); // add definition to the cache
+				cache.put(type, new ConcurrentHashMap<>(
+						(Map<?, ?>) yamlLoad.loadFromString(config))); // add definition to the cache
 			} catch (YamlEngineException e) {
 				LOG.error("[" + generatorName + "] Error: " + e.getMessage());
 			}
@@ -67,8 +68,8 @@ public class DefinitionsProvider {
 				continue;
 
 			try {
-				global_cache.put(type,
-						new ConcurrentHashMap<>((Map<?, ?>) yamlLoad.loadFromString(config))); // add definition to the cache
+				global_cache.put(type, new ConcurrentHashMap<>(
+						(Map<?, ?>) yamlLoad.loadFromString(config))); // add definition to the cache
 			} catch (YamlEngineException e) {
 				LOG.info("[" + generatorName + "] Error: " + e.getMessage());
 			}

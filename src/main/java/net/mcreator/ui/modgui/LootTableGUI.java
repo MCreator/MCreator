@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.LootTable;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -29,6 +30,7 @@ import net.mcreator.ui.minecraft.loottable.JLootTablePoolsList;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
+import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -37,6 +39,7 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class LootTableGUI extends ModElementGUI<LootTable> {
 
@@ -59,16 +62,23 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		pane3.setOpaque(false);
 
-		name.setValidator(new RegistryNameValidator(name, L10N.t("elementgui.loot_table.name")).setValidChars(
-				Arrays.asList('_', '/')));
+		//@formatter:off
+		name.setValidator(new UniqueNameValidator(
+			L10N.t("modelement.loottable"),
+			() -> namespace.getSelectedItem() + ":" + ((JTextField) name.getEditor().getEditorComponent()).getText(),
+			() -> mcreator.getWorkspace().getModElements().stream()
+				.filter(me -> me.getType() == ModElementType.LOOTTABLE)
+				.map(ModElement::getGeneratableElement)
+				.filter(Objects::nonNull)
+				.map(ge -> ((LootTable) ge).namespace + ":" + ((LootTable) ge).name),
+			new RegistryNameValidator(name, L10N.t("modelement.loottable")).setValidChars(Arrays.asList('_', '/'))
+		).setIsPresentOnList(this::isEditingMode));
+		//@formatter:on
 		name.enableRealtimeValidation();
-
 		name.addItem("blocks/stone");
 		name.addItem("entities/chicken");
 		name.addItem("gameplay/fishing");
-
 		name.setEditable(true);
-		name.setOpaque(false);
 
 		if (isEditingMode()) {
 			name.setEnabled(false);
