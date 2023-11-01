@@ -1688,7 +1688,6 @@ public class TestWorkspaceDataProvider {
 		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
 		tool.glowCondition = new LogicProcedure(emptyLists ? "condition2" : null, _true);
-		;
 		tool.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 				Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 		if (!emptyLists) {
