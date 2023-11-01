@@ -867,7 +867,7 @@ import java.util.stream.Collectors;
 		search.setText(null); // clear the search bar
 		currentFolder = switchTo;
 
-		refilterElements();
+		reloadElements();
 
 		// reload breadcrumb
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
@@ -1310,10 +1310,9 @@ import java.util.stream.Collectors;
 		ArrayList<IElement> items;
 		ArrayList<IElement> filterItems;
 
-		final Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
+		private final static Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
 
 		FilterModel() {
-			super();
 			items = new ArrayList<>();
 			filterItems = new ArrayList<>();
 		}
