@@ -109,7 +109,7 @@ import java.util.*;
 
 	public boolean canTrade;
 	public boolean villagerTradingType;
-	public List<ProfessionEntry> tradeProfessions;
+	@ModElementReference public List<ProfessionEntry> tradeProfessions;
 	public boolean tradeProfessionsExclude;
 	public Sound tradeAmbientSound;
 	public Sound tradeFullUpdateSound;
