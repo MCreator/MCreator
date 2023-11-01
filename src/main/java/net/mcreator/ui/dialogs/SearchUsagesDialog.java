@@ -125,6 +125,9 @@ public class SearchUsagesDialog {
 		sp.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		sp.setPreferredSize(new Dimension(150, 140));
 
+		ModElement selected = refList.getModel().getElementAt(0);
+		edit.setEnabled(!selected.isCodeLocked());
+		edit.setToolTipText(selected.isCodeLocked() ? L10N.t("dialog.search_usages.open_selected.locked") : null);
 		edit.addActionListener(e -> {
 			if (!refList.isSelectionEmpty())
 				edit(mcreator, refList.getSelectedValue(), dialog);
