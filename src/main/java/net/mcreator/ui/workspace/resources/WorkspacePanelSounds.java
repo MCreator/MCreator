@@ -88,8 +88,7 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 
 	@Override public void reloadElements() {
 		filterModel.removeAllElements();
-		workspacePanel.getMCreator().getWorkspace().getSoundElements().forEach(filterModel::addElement);
-		refilterElements();
+		filterModel.addAll(workspacePanel.getMCreator().getWorkspace().getSoundElements());
 	}
 
 	static class Render extends JPanel implements ListCellRenderer<SoundElement> {

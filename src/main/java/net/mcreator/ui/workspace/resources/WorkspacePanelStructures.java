@@ -55,8 +55,7 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 
 	@Override public void reloadElements() {
 		filterModel.removeAllElements();
-		workspacePanel.getMCreator().getFolderManager().getStructureList().forEach(filterModel::addElement);
-		refilterElements();
+		filterModel.addAll(workspacePanel.getMCreator().getFolderManager().getStructureList());
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<String> {

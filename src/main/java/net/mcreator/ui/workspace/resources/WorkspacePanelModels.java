@@ -102,8 +102,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 	@Override public void reloadElements() {
 		filterModel.removeAllElements();
-		Model.getModels(workspacePanel.getMCreator().getWorkspace()).forEach(filterModel::addElement);
-		refilterElements();
+		filterModel.addAll(Model.getModels(workspacePanel.getMCreator().getWorkspace()));
 	}
 
 	private void editSelectedModelAnimations() {
