@@ -93,11 +93,6 @@ public class SearchUsagesDialog {
 		AtomicBoolean retVal = new AtomicBoolean(false);
 		MCreatorDialog dialog = new MCreatorDialog(mcreator, L10N.t("dialog.search_usages.title"), true);
 
-		JButton edit = L10N.button("dialog.search_usages.open_selected");
-		JButton close = deletionRequested ?
-				new JButton(UIManager.getString("OptionPane.cancelButtonText")) :
-				L10N.button("common.close");
-
 		JList<ModElement> refList = new JList<>(
 				references.stream().sorted(Comparator.comparing(ModElement::getName)).toArray(ModElement[]::new));
 		refList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
@@ -110,14 +105,8 @@ public class SearchUsagesDialog {
 		refList.setCellRenderer(new CompactModElementListCellRenderer());
 		refList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				ModElement selected = refList.getModel().getElementAt(refList.locationToIndex(e.getPoint()));
-				if (e.getClickCount() == 2) {
-					edit(mcreator, selected, dialog);
-				} else {
-					edit.setEnabled(!selected.isCodeLocked());
-					edit.setToolTipText(
-							selected.isCodeLocked() ? L10N.t("dialog.search_usages.open_selected.locked") : null);
-				}
+				if (e.getClickCount() == 2)
+					edit(mcreator, refList.getModel().getElementAt(refList.locationToIndex(e.getPoint())), dialog);
 			}
 		});
 
@@ -125,9 +114,11 @@ public class SearchUsagesDialog {
 		sp.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		sp.setPreferredSize(new Dimension(150, 140));
 
-		ModElement selected = refList.getModel().getElementAt(0);
-		edit.setEnabled(!selected.isCodeLocked());
-		edit.setToolTipText(selected.isCodeLocked() ? L10N.t("dialog.search_usages.open_selected.locked") : null);
+		JButton edit = L10N.button("dialog.search_usages.open_selected");
+		JButton close = deletionRequested ?
+				new JButton(UIManager.getString("OptionPane.cancelButtonText")) :
+				L10N.button("common.close");
+
 		edit.addActionListener(e -> {
 			if (!refList.isSelectionEmpty())
 				edit(mcreator, refList.getSelectedValue(), dialog);
@@ -139,14 +130,8 @@ public class SearchUsagesDialog {
 		} else { // otherwise focus is put on the references list
 			refList.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
-					ModElement selected = refList.getSelectedValue();
-					if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-						edit(mcreator, selected, dialog);
-					} else {
-						edit.setEnabled(!selected.isCodeLocked());
-						edit.setToolTipText(
-								selected.isCodeLocked() ? L10N.t("dialog.search_usages.open_selected.locked") : null);
-					}
+					if (e.getKeyCode() == KeyEvent.VK_ENTER)
+						edit(mcreator, refList.getSelectedValue(), dialog);
 				}
 			});
 		}
