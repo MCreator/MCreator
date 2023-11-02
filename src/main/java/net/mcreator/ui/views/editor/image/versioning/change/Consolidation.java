@@ -21,6 +21,9 @@ package net.mcreator.ui.views.editor.image.versioning.change;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 
+/**
+ * When a floating layer changes into a solid layer (by pressing the purple + button in the layer list).
+ */
 public class Consolidation extends MultiStateChange {
 	private boolean newState;
 	private final boolean prevState;
