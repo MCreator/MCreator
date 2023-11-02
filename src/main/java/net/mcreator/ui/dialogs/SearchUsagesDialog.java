@@ -138,13 +138,6 @@ public class SearchUsagesDialog {
 
 		if (deletionRequested) { // if deletion is pending, focus the close button
 			dialog.getRootPane().setDefaultButton(close);
-		} else { // otherwise focus is put on the references list
-			refList.addKeyListener(new KeyAdapter() {
-				@Override public void keyReleased(KeyEvent e) {
-					if (e.getKeyCode() == KeyEvent.VK_ENTER)
-						edit(mcreator, refList.getSelectedValue(), dialog);
-				}
-			});
 		}
 
 		JLabel msgLabel = new JLabel();
