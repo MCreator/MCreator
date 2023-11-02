@@ -61,33 +61,29 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ImageMakerView extends ViewBase implements MouseListener, MouseMotionListener {
-
 	private static final Logger LOG = LogManager.getLogger("Image Maker View");
 	private static final int FPS = 4;
 
-	private String name = L10N.t("tab.image_maker");
+	public static final ExecutorService toolExecutor = Executors.newSingleThreadExecutor();
 
-	private Canvas canvas;
 	private final CanvasRenderer canvasRenderer;
 	private final JZoomPane zoomPane;
 	private final JSplitPane leftSplitPane;
 	private final JSplitPane rightSplitPane;
 	private final ToolPanel toolPanel;
 	private final LayerPanel layerPanel;
-
 	private final VersionManager versionManager;
-
 	private final ClipboardManager clipboardManager;
-
 	private final JLabel imageInfo = new JLabel("");
 
 	public final JButton save;
 
-	public static final ExecutorService toolExecutor = Executors.newSingleThreadExecutor();
-	private Cursor currentCursor = null;
-	private boolean active;
+	private String name = L10N.t("tab.image_maker");
 	private MCreatorTabs.Tab tab;
 	private File image;
+	private Canvas canvas;
+	private Cursor currentCursor = null;
+	private boolean active;
 	private boolean canEdit = true;
 
 	public ImageMakerView(MCreator f) {
@@ -178,7 +174,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		Thread animator = new Thread(() -> {
 			active = true;
 			while (active) {
-				if (canvas != null && canvas.getSelection() != null && canvas.getSelection().getEditing() != SelectedBorder.NONE) {
+				if (canvas != null && canvas.getSelection() != null
+						&& canvas.getSelection().getEditing() != SelectedBorder.NONE) {
 					canvasRenderer.addPhaseToOutline((float) Math.PI / FPS / 2);
 					repaint();
 				}
@@ -414,7 +411,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	@Override public void mouseMoved(MouseEvent e) {
-		if(toolPanel.getCurrentTool().getHoverCursor() != null) {
+		if (toolPanel.getCurrentTool().getHoverCursor() != null) {
 			setEditorCursor(toolPanel.getCurrentTool().getHoverCursor());
 		}
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseMoved(e));
