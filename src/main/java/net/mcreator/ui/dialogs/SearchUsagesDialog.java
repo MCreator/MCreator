@@ -196,7 +196,8 @@ public class SearchUsagesDialog {
 			JLabel label = L10N.label("dialog.search_usages.list.item",
 					StringUtils.abbreviateString(value.getName(), 20), value.getType().getReadableName());
 			label.setOpaque(true);
-			label.setIcon(ImageUtils.fit(ModElementManager.getModElementIcon(value).getImage(), 32));
+			label.setIcon(
+					new ImageIcon(ImageUtils.resizeAA(ModElementManager.getModElementIcon(value).getImage(), 32)));
 			label.setIconTextGap(10);
 			label.setBackground(isSelected ?
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
