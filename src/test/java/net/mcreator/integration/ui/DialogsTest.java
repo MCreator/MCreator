@@ -210,9 +210,9 @@ public class DialogsTest {
 
 	@Test public void testUsagesSearchDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.showUsages(mcreator, "", Collections.emptyList()));
+				() -> SearchUsagesDialog.showUsagesDialog(mcreator, "", Collections.emptyList()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
-				() -> SearchUsagesDialog.canDelete(mcreator, "", Collections.emptyList()));
+				() -> SearchUsagesDialog.showDeleteDialog(mcreator, "", Collections.emptyList(), "test sufix"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

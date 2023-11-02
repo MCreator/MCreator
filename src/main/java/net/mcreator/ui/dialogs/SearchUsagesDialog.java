@@ -35,8 +35,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.Collection;
 import java.util.Comparator;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -45,12 +45,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class SearchUsagesDialog {
 
 	/**
-	 * @param mcreator          Workspace window calling this method.
-	 * @param queryType         Localized string representing type of elements used by mod elements in the given list.
-	 * @param references        List of referencing/dependent mod elements.
+	 * @param mcreator   Workspace window calling this method.
+	 * @param queryType  Localized string representing type of elements used by mod elements in the given list.
+	 * @param references List of referencing/dependent mod elements.
 	 */
-	public static void showUsages(MCreator mcreator, String queryType, List<ModElement> references) {
-		show(mcreator, queryType, references, false, null);
+	public static void showUsagesDialog(MCreator mcreator, String queryType, Collection<ModElement> references) {
+		showDialog(mcreator, queryType, references, false, null);
 	}
 
 	/**
@@ -59,8 +59,20 @@ public class SearchUsagesDialog {
 	 * @param references List of referencing/dependent mod elements.
 	 * @return Whether the user confirmed deletion of selected elements.
 	 */
-	public static boolean canDelete(MCreator mcreator, String queryType, List<ModElement> references) {
-		return show(mcreator, queryType, references, true, null);
+	public static boolean showDeleteDialog(MCreator mcreator, String queryType, Collection<ModElement> references) {
+		return showDialog(mcreator, queryType, references, true, null);
+	}
+
+	/**
+	 * @param mcreator      Workspace window calling this method.
+	 * @param queryType     Localized string representing type of elements used by mod elements in the given list.
+	 * @param references    List of referencing/dependent mod elements.
+	 * @param messageSuffix Additional information to be displayed by deletion dialog.
+	 * @return Whether the user confirmed deletion of selected elements.
+	 */
+	public static boolean showDeleteDialog(MCreator mcreator, String queryType, Collection<ModElement> references,
+			@Nullable String messageSuffix) {
+		return showDialog(mcreator, queryType, references, true, messageSuffix);
 	}
 
 	/**
@@ -71,15 +83,14 @@ public class SearchUsagesDialog {
 	 * @param messageSuffix     Additional information to be displayed by deletion dialog.
 	 * @return Whether elements deletion was requested and the user confirmed deletion.
 	 */
-	public static boolean show(MCreator mcreator, String queryType, List<ModElement> references,
+	public static boolean showDialog(MCreator mcreator, String queryType, Collection<ModElement> references,
 			boolean deletionRequested, @Nullable String messageSuffix) {
 		if (references.isEmpty()) { // skip custom dialog if there are no references to show
 			if (deletionRequested) {
 				String msg = L10N.t("dialog.search_usages.deletion_safe.confirm_msg", queryType);
 				int n = JOptionPane.showConfirmDialog(mcreator,
 						messageSuffix != null ? msg + "<br><br><small>" + messageSuffix : msg,
-						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION,
-						JOptionPane.QUESTION_MESSAGE);
+						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 				return n == JOptionPane.YES_OPTION;
 			} else {
 				JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.search_usages.list.empty", queryType),
@@ -112,7 +123,7 @@ public class SearchUsagesDialog {
 
 		JScrollPane sp = new JScrollPane(refList);
 		sp.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		sp.setPreferredSize(new Dimension(150, 140));
+		sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		JButton edit = L10N.button("dialog.search_usages.open_selected");
 		JButton close = deletionRequested ?
@@ -136,40 +147,44 @@ public class SearchUsagesDialog {
 			});
 		}
 
-		JPanel list = new JPanel(new BorderLayout(10, 10));
-		list.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		list.add("Center", sp);
+		JLabel msgLabel = new JLabel();
+		msgLabel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		dialog.add("North", msgLabel);
+
+		dialog.add("Center", sp);
 
 		if (deletionRequested) {
 			String msg = L10N.t("dialog.search_usages.deletion.confirm_msg", queryType);
 			if (messageSuffix != null)
 				msg += "<br><br><small>" + messageSuffix;
-			list.add("North", PanelUtils.centerInPanel(new JLabel(msg)));
+			msgLabel.setText(msg);
 
 			JButton delete = L10N.button("dialog.search_usages.deletion.confirm");
 			delete.addActionListener(e -> {
 				retVal.set(true);
 				dialog.setVisible(false);
 			});
-			list.add("South", PanelUtils.join(edit, delete, close));
+			dialog.add("South", PanelUtils.join(edit, delete, close));
 		} else {
-			list.add("North", PanelUtils.centerInPanel(L10N.label("dialog.search_usages.list", queryType)));
-			list.add("South", PanelUtils.join(edit, close));
+			msgLabel.setText(L10N.t("dialog.search_usages.list", queryType));
+
+			dialog.add("South", PanelUtils.join(edit, close));
 		}
 
-		dialog.getContentPane().add(list);
-		dialog.pack();
+		dialog.setSize(640, 350);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
 
 		return retVal.get();
 	}
 
-	private static void edit(MCreator mcreator, ModElement element, MCreatorDialog dialog) {
-		ModElementGUI<?> gui = element.getType().getModElementGUI(mcreator, element, true);
-		if (gui != null) {
-			gui.showView();
-			dialog.setVisible(false);
+	private static void edit(MCreator mcreator, ModElement modElement, MCreatorDialog dialog) {
+		if (modElement.getGeneratableElement() != null && !modElement.isCodeLocked()) {
+			ModElementGUI<?> gui = modElement.getType().getModElementGUI(mcreator, modElement, true);
+			if (gui != null) {
+				gui.showView();
+				dialog.setVisible(false);
+			}
 		}
 	}
 
@@ -193,4 +208,5 @@ public class SearchUsagesDialog {
 			return label;
 		}
 	}
+
 }

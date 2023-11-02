@@ -1066,6 +1066,7 @@ import java.util.stream.Collectors;
 			boolean tagsSelected = false, nonTagsSelected = false;
 			for (IElement el : list.getSelectedValuesList()) {
 				if (el instanceof ModElement mod) {
+					// We don't look for tag references since those are "weak" references also affected by other mods
 					if (mod.getType() == ModElementType.TAG) {
 						tagsSelected = true;
 					} else {
@@ -1081,8 +1082,7 @@ import java.util.stream.Collectors;
 						L10N.t("workspace.elements.list.edit.usages.tags.title"), JOptionPane.WARNING_MESSAGE);
 			}
 			if (nonTagsSelected) {
-				SearchUsagesDialog.showUsages(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
-						new ArrayList<>(references));
+				SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"), references);
 			}
 		}
 	}
@@ -1214,8 +1214,8 @@ import java.util.stream.Collectors;
 
 				mcreator.setCursor(Cursor.getDefaultCursor());
 
-				if (SearchUsagesDialog.show(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
-						new ArrayList<>(references), true, L10N.t("workspace.elements.confirm_delete_msg_suffix"))) {
+				if (SearchUsagesDialog.showDeleteDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
+						references, L10N.t("workspace.elements.confirm_delete_msg_suffix"))) {
 					AtomicBoolean buildNeeded = new AtomicBoolean(false);
 					list.getSelectedValuesList().forEach(re -> {
 						if (re instanceof ModElement) {
