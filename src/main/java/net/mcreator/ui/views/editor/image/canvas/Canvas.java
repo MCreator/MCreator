@@ -132,6 +132,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 		removal.setUUID(group);
 		versionManager.addRevision(removal);
 		floatingCheck(null);
+		versionManager.refreshPreview();
 		return removed;
 	}
 
@@ -142,6 +143,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 		removal.setUUID(group);
 		versionManager.addRevision(removal);
 		floatingCheck(null);
+		versionManager.refreshPreview();
 		return removed;
 	}
 
@@ -150,6 +152,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 		Layer removed = super.remove(index);
 		layerPanel.select(Math.max(index - 1, 0));
 		floatingCheck(null);
+		versionManager.refreshPreview();
 		return removed;
 	}
 
@@ -159,6 +162,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 		boolean removed = super.remove(o);
 		layerPanel.select(Math.max(index - 1, 0));
 		floatingCheck(null);
+		versionManager.refreshPreview();
 		return removed;
 	}
 
