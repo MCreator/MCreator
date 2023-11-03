@@ -25,6 +25,7 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,7 +35,7 @@ import java.io.File;
 @SuppressWarnings("unused") public class PotionEffect extends GeneratableElement {
 
 	public String effectName;
-	public String icon;
+	@TextureReference(TextureType.EFFECT) public String icon;
 	public Color color;
 	public boolean isInstant;
 	public boolean isBad;
