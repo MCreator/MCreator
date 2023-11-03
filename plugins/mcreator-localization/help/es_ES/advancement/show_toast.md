@@ -1,0 +1,1 @@
+Mostrar el avance en la esquina superior derecha de la pantalla cuando el jugador consiga el avance.
