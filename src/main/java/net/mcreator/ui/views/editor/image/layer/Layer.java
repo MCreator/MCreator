@@ -19,6 +19,8 @@
 package net.mcreator.ui.views.editor.image.layer;
 
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
+import net.mcreator.ui.views.editor.image.canvas.SelectedBorder;
+import net.mcreator.ui.views.editor.image.canvas.Selection;
 import net.mcreator.util.image.ImageUtils;
 
 import java.awt.*;
@@ -209,6 +211,22 @@ public class Layer {
 		g2d.fillRect(0, 0, getWidth(), getHeight());
 		g2d.setComposite(composite);
 		g2d.dispose();
+	}
+
+	public void clearSelection(){
+		Selection selection = canvas.getSelection();
+		if (selection.hasSurface() && selection.getEditing() != SelectedBorder.NONE){
+			Graphics2D g2d = createGraphics();
+			Composite composite = g2d.getComposite();
+			g2d.setComposite(AlphaComposite.Clear);
+			int x = selection.getLeft() - getX();
+			int y = selection.getTop() - getY();
+			g2d.fillRect(x, y, selection.getWidth(), selection.getHeight());
+			g2d.setComposite(composite);
+			g2d.dispose();
+		} else {
+			clear();
+		}
 	}
 
 	public BufferedImage getRaster() {

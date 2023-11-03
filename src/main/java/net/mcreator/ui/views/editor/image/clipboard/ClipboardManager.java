@@ -51,12 +51,8 @@ public class ClipboardManager implements ClipboardOwner {
 	public void cut() {
 		addLayerToClipboard();
 		Layer selected = imageMakerView.getLayerPanel().selected();
-		if (imageMakerView.getCanvas().size() > 1)
-			imageMakerView.getCanvas().remove(selected);
-		else {
-			selected.clear();
-			imageMakerView.getVersionManager().addRevision(new Modification(imageMakerView.getCanvas(), selected));
-		}
+		selected.clearSelection();
+		imageMakerView.getVersionManager().addRevision(new Modification(imageMakerView.getCanvas(), selected));
 	}
 
 	private void addCanvasToClipboard() {
