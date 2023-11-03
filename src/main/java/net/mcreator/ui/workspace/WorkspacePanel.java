@@ -36,6 +36,7 @@ import net.mcreator.ui.component.util.ListUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ModElementIDsDialog;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
@@ -53,6 +54,7 @@ import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -109,6 +111,7 @@ import java.util.stream.Collectors;
 	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
 
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
+	private final JMenuItem searchElement = new JMenuItem(L10N.t("common.search_usages"));
 	private final JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
 	private final JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
 	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
@@ -225,12 +228,14 @@ import java.util.stream.Collectors;
 					selected = list.getSelectedValue();
 
 					if (selected instanceof FolderElement) {
+						searchElement.setVisible(false);
 						duplicateElement.setVisible(false);
 						codeElement.setVisible(false);
 						lockElement.setVisible(false);
 						idElement.setVisible(false);
 						renameElementFolder.setVisible(true);
 					} else {
+						searchElement.setVisible(true);
 						duplicateElement.setVisible(true);
 						codeElement.setVisible(true);
 						lockElement.setVisible(true);
@@ -258,7 +263,9 @@ import java.util.stream.Collectors;
 
 		list.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+				if (e.getKeyCode() == KeyEvent.VK_F && e.isControlDown() && e.isShiftDown()) {
+					searchModElementsUsages();
+				} else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					deleteCurrentlySelectedModElement();
 				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					IElement selected = list.getSelectedValue();
@@ -774,6 +781,9 @@ import java.util.stream.Collectors;
 
 		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
 
+		searchElement.setIcon(UIRES.get("16px.search"));
+		searchElement.addActionListener(e -> searchModElementsUsages());
+
 		codeElement.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
@@ -811,6 +821,7 @@ import java.util.stream.Collectors;
 		contextMenu.addSeparator();
 		contextMenu.add(deleteElement);
 		contextMenu.addSeparator();
+		contextMenu.add(searchElement);
 		contextMenu.add(duplicateElement);
 		contextMenu.add(lockElement);
 		contextMenu.add(idElement);
@@ -1047,6 +1058,35 @@ import java.util.stream.Collectors;
 		}
 	}
 
+	private void searchModElementsUsages() {
+		if (list.getSelectedValuesList().stream().anyMatch(i -> i instanceof ModElement)) {
+			mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+			Set<ModElement> references = new HashSet<>();
+			boolean tagsSelected = false, nonTagsSelected = false;
+			for (IElement el : list.getSelectedValuesList()) {
+				if (el instanceof ModElement mod) {
+					// We don't look for tag references since those are "weak" references also affected by other mods
+					if (mod.getType() == ModElementType.TAG) {
+						tagsSelected = true;
+					} else {
+						nonTagsSelected = true;
+						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
+					}
+				}
+			}
+
+			mcreator.setCursor(Cursor.getDefaultCursor());
+			if (tagsSelected) {
+				JOptionPane.showMessageDialog(mcreator, L10N.t("workspace.elements.list.edit.usages.tags"),
+						L10N.t("workspace.elements.list.edit.usages.tags.title"), JOptionPane.WARNING_MESSAGE);
+			}
+			if (nonTagsSelected) {
+				SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"), references);
+			}
+		}
+	}
+
 	private void duplicateCurrentlySelectedModElement() {
 		if (list.getSelectedValue() instanceof ModElement mu) {
 			GeneratableElement generatableElementOriginal = mu.getGeneratableElement();
@@ -1162,11 +1202,20 @@ import java.util.stream.Collectors;
 	private void deleteCurrentlySelectedModElement() {
 		if (but3.isEnabled()) {
 			if (list.getSelectedValue() != null) {
-				int n = JOptionPane.showConfirmDialog(mcreator,
-						L10N.t("workspace.elements.confirm_delete_message", list.getSelectedValuesList().size()),
-						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+				mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-				if (n == 0) {
+				Set<ModElement> references = new HashSet<>();
+				for (IElement el : list.getSelectedValuesList()) {
+					if (el instanceof ModElement mod)
+						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
+				}
+				list.getSelectedValuesList().stream() // exclude usages by other mod elements being removed
+						.filter(e -> e instanceof ModElement).map(e -> (ModElement) e).forEach(references::remove);
+
+				mcreator.setCursor(Cursor.getDefaultCursor());
+
+				if (SearchUsagesDialog.showDeleteDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
+						references, L10N.t("workspace.elements.confirm_delete_msg_suffix"))) {
 					AtomicBoolean buildNeeded = new AtomicBoolean(false);
 					list.getSelectedValuesList().forEach(re -> {
 						if (re instanceof ModElement) {
