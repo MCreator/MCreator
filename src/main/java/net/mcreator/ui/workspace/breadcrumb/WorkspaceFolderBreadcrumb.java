@@ -96,6 +96,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 		int idx = 0;
 		MouseAdapter adapter = null;
 		for (FolderElement filePathPart : path) {
+			int currentLevel = idx;
 			JLabel entry = new FolderElementCrumb(filePathPart);
 
 			if (filePathPart.equals(mcreator.getWorkspace().getFoldersRoot())) {
@@ -126,7 +127,11 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 						}
 
 						for (IElement file : files) {
-							JMenuItem menuItem = new JMenuItem("<html>&nbsp;" + file.getName());
+							JMenuItem menuItem;
+							if (currentLevel < path.size() - 1 && path.get(currentLevel + 1).equals(file))
+								menuItem = new JMenuItem("<html>&nbsp;<b>" + file.getName());
+							else
+								menuItem = new JMenuItem("<html>&nbsp;" + file.getName());
 							if (file instanceof ModElement)
 								menuItem.setIcon(new ImageIcon(ImageUtils.resizeAA(
 										ModElementManager.getModElementIcon((ModElement) file).getImage(), 16)));
