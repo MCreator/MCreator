@@ -172,7 +172,13 @@ import java.util.stream.Collectors;
 
 		this.resourcesPan = new WorkspacePanelResources(this);
 
-		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator);
+		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 10, false);
+		this.elementsBreadcrumb.setSelectionListener((element, component, event) -> {
+			if (element instanceof ModElement me)
+				WorkspacePanel.this.editCurrentlySelectedModElement(me, component, event.getX(), event.getY());
+			else if (element instanceof FolderElement fe)
+				WorkspacePanel.this.switchFolder(fe);
+		});
 
 		JPopupMenu contextMenu = new JPopupMenu();
 
