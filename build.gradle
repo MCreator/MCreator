@@ -92,7 +92,7 @@ dependencies {
     implementation fileTree(dir: 'lib', include: ['*.jar'])
 
     // from maven
-    implementation group: 'commons-io', name: 'commons-io', version: '2.14.0'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.15.0'
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.32'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
     implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'
@@ -103,8 +103,8 @@ dependencies {
     implementation group: 'com.google.guava', name: 'guava', version: '32.1.2-jre'
     implementation group: 'de.javagl', name: 'obj', version: '0.4.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.21.0'
-    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.21.1'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.11.0'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.9'
     implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.4'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
@@ -124,7 +124,7 @@ dependencies {
 }
 
 javafx {
-    version = '21'
+    version = '21.0.1'
     modules = ['javafx.web', 'javafx.swing']
     configurations = ['provided', 'win64', 'macX64', 'macAarch64', 'linux64'] // we provide natives during deployment or with SDK
 }

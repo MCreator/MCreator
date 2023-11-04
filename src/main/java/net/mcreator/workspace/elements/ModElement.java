@@ -206,7 +206,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		return name;
 	}
 
-
 	public ModElementType<?> getType() {
 		try {
 			return ModElementTypeLoader.getModElementType(type);
@@ -286,7 +285,8 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	 */
 	public Collection<BaseType> getBaseTypesProvided() {
 		return this.getGeneratableElement() instanceof ICommonType iCommonType ?
-				iCommonType.getBaseTypesProvided() : Collections.emptyList();
+				iCommonType.getBaseTypesProvided() :
+				Collections.emptyList();
 	}
 
 	public static class ModElementDeserializer implements JsonDeserializer<ModElement> {

@@ -65,7 +65,8 @@ public class BlockGenerationConditionRemover implements IConverter {
 						definition.getAsJsonArray("restrictionBiomes").iterator().forEachRemaining(
 								e -> feature.restrictionBiomes.add(
 										new BiomeEntry(workspace, e.getAsJsonObject().get("value").getAsString())));
-					} else if (spawnWorldTypes.size() == 1) { // If there are no restriction biomes, consider restiction dimensions
+					} else if (spawnWorldTypes.size()
+							== 1) { // If there are no restriction biomes, consider restiction dimensions
 						String spawnWorldType = spawnWorldTypes.get(0).getAsString();
 						if (spawnWorldType.equals("Surface")) {
 							feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_overworld"));

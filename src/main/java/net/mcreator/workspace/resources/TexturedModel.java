@@ -24,6 +24,8 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.init.L10N;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class TexturedModel extends Model {
@@ -49,6 +51,22 @@ public class TexturedModel extends Model {
 
 	public TextureMapping getTextureMapping() {
 		return textureMapping;
+	}
+
+	public static List<Model> getModelTextureMapVariations(Model m) {
+		List<Model> variations = new ArrayList<>();
+		if (m.getType() != null && m.getFiles() != null && m.getFile() != null) {
+			Map<String, TextureMapping> textureMappingMap = getTextureMappingsForModel(m);
+			if (textureMappingMap != null) {
+				// we add all variations of texture mappings for model
+				for (TextureMapping mapping : textureMappingMap.values()) {
+					variations.add(new TexturedModel(m.getFile(), mapping));
+				}
+			} else {
+				variations.add(m);
+			}
+		}
+		return variations;
 	}
 
 	public static Map<String, TextureMapping> getTextureMappingsForModel(Model model) {

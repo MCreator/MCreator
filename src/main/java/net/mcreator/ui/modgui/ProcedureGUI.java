@@ -21,12 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.Command;
-import net.mcreator.element.types.GUI;
-import net.mcreator.element.types.Item;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
@@ -52,6 +47,9 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
+import net.mcreator.workspace.references.ReferencesFinder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,6 +60,8 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure> implements IBlocklyPanelHolder {
+
+	private static final Logger LOG = LogManager.getLogger(ProcedureGUI.class);
 
 	private final JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 
@@ -619,54 +619,27 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				new HashSet<>(dependenciesArrayList));
 
 		// this procedure could be in use and new dependencies were added
-		if (isEditingMode() && dependenciesChanged) {
-			for (ModElement element : mcreator.getWorkspace().getModElements()) {
-				// if this mod element is not locked and has procedures, we try to update dependencies
-				// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
-				if (!element.isCodeLocked()) {
-					GeneratableElement generatableElement = element.getGeneratableElement();
-					if (generatableElement instanceof GUI gui) {
-						boolean procedureUsedByGUI = false;
-						for (GUIComponent component : gui.components) {
-							if (Procedure.isElementUsingProcedure(component, modElement.getName())) {
-								procedureUsedByGUI = true;
-								break;
-							}
-						}
-						if (procedureUsedByGUI || Procedure.isElementUsingProcedure(generatableElement,
-								modElement.getName()))
-							mcreator.getGenerator().generateElement(generatableElement);
-					} else if (generatableElement instanceof Item item) {
-						boolean procedureUsedByItem = false;
-						for (Procedure procedure : item.customProperties.values()) {
-							if (modElement.getName().equals(procedure.getName())) {
-								procedureUsedByItem = true;
-								break;
-							}
-						}
-						if (procedureUsedByItem || Procedure.isElementUsingProcedure(generatableElement,
-								modElement.getName()))
-							mcreator.getGenerator().generateElement(generatableElement);
-					} else if (generatableElement != null && element.getType().hasProcedureTriggers()) {
-						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {
-							mcreator.getGenerator().generateElement(generatableElement);
-						}
-					} else if (generatableElement instanceof Command command) {
-						if (command.argsxml != null && command.argsxml.contains(
-								"<field name=\"procedure\">" + modElement.getName() + "</field>")) {
-							mcreator.getGenerator().generateElement(generatableElement);
-						}
-					} else if (generatableElement instanceof net.mcreator.element.types.Procedure procedure) {
-						if (procedure.procedurexml != null && procedure.procedurexml.contains(
-								"<field name=\"procedure\">" + modElement.getName() + "</field>")) {
-							mcreator.getGenerator().generateElement(generatableElement);
-						}
-					}
+		if (isEditingMode() && dependenciesChanged)
+			regenerateProcedureCallers(modElement, modElement);
+
+		dependenciesBeforeEdit = dependenciesArrayList;
+	}
+
+	private void regenerateProcedureCallers(ModElement procedure, ModElement recursionLock) {
+		for (ModElement element : ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), procedure)) {
+			// if this mod element is not locked and has procedures, we try to update dependencies
+			// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
+			if (!element.isCodeLocked() && element.getGeneratableElement() != null) {
+				LOG.info("Regenerating " + element.getName() + " (" + element.getType()
+						+ ") because it triggers procedure " + procedure.getName());
+				mcreator.getGenerator().generateElement(element.getGeneratableElement());
+
+				// Procedure may call other procedures that also need updating
+				if (element.getType() == ModElementType.PROCEDURE && !element.equals(recursionLock)) {
+					regenerateProcedureCallers(element, recursionLock);
 				}
 			}
 		}
-
-		dependenciesBeforeEdit = dependenciesArrayList;
 	}
 
 	@Override public void openInEditingMode(net.mcreator.element.types.Procedure procedure) {
