@@ -22,6 +22,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.Validator;
@@ -29,6 +30,8 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
+import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
@@ -41,6 +44,13 @@ public class NewModElementDialog {
 				L10N.t("dialog.new_modelement.registry_name.empty"));
 		regName.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+
+		WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, true);
+		breadcrumb.reloadPath(mcreator.mv.currentFolder, FolderElement.class);
+		breadcrumb.setSelectionListener((element, component, event) -> {
+			if (element instanceof FolderElement fe)
+				breadcrumb.reloadPath(fe, FolderElement.class);
+		});
 
 		String modName = VOptionPane.showInputDialog(mcreator,
 				L10N.t("dialog.new_modelement.desc", type.getReadableName()),
@@ -56,12 +66,15 @@ public class NewModElementDialog {
 								L10N.t("common.mod_element_name")).validate();
 					}
 				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
-				UIManager.getString("OptionPane.cancelButtonText"), null, regName);
+				UIManager.getString("OptionPane.cancelButtonText"), null,
+				PanelUtils.northAndCenterElement(new JScrollPane(breadcrumb, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+						JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS), regName));
 
 		if (modName != null && !modName.isEmpty()) {
 			modName = JavaConventions.convertToValidClassName(modName);
 
 			ModElement element = new ModElement(mcreator.getWorkspace(), modName, type);
+			element.setParentFolder(breadcrumb.getFolder());
 
 			ModElementGUI<?> newGUI = type.getModElementGUI(mcreator, element, false);
 			if (newGUI != null) {

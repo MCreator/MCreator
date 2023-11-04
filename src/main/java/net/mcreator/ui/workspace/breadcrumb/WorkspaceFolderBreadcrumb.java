@@ -39,11 +39,19 @@ import java.util.stream.Collectors;
 public class WorkspaceFolderBreadcrumb extends JPanel {
 
 	private final MCreator mcreator;
+	private final boolean alwaysSuggestChoose;
+	private FolderElement currentFolder;
+	private SelectionListener selectionListener;
 
 	public WorkspaceFolderBreadcrumb(MCreator mcreator) {
+		this(mcreator, false);
+	}
+
+	public WorkspaceFolderBreadcrumb(MCreator mcreator, boolean alwaysSuggestChoose) {
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		this.mcreator = mcreator;
+		this.alwaysSuggestChoose = alwaysSuggestChoose;
 		setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 0));
 		setOpaque(false);
 	}
@@ -54,8 +62,18 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 		super.paintComponent(g);
 	}
 
+	public FolderElement getFolder() {
+		return currentFolder;
+	}
+
+	public void setSelectionListener(SelectionListener selectionListener) {
+		this.selectionListener = selectionListener;
+	}
+
 	@SuppressWarnings("EqualsBetweenInconvertibleTypes")
 	public void reloadPath(FolderElement file, Class<? extends IElement> childElement) {
+		currentFolder = file;
+
 		removeAll();
 
 		List<FolderElement> path = new ArrayList<>();
@@ -84,11 +102,12 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 			add(entry);
 
-			if (idx < path.size() - 1) {
+			if (idx < path.size() - 1 || alwaysSuggestChoose) {
 				adapter = new MouseAdapter() {
 					@Override public void mouseClicked(MouseEvent mouseEvent) {
 						if (mouseEvent.getClickCount() == 2) {
-							mcreator.mv.switchFolder(filePathPart);
+							if (selectionListener != null)
+								selectionListener.elementSelected(filePathPart, entry, mouseEvent);
 							return;
 						}
 
@@ -113,12 +132,8 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 								menuItem.setIcon(UIRES.get("laf.directory.gif"));
 
 							menuItem.addActionListener(e -> {
-								if (file instanceof ModElement) {
-									mcreator.mv.editCurrentlySelectedModElement((ModElement) file, entry,
-											mouseEvent.getX(), mouseEvent.getY());
-								} else if (file instanceof FolderElement) {
-									mcreator.mv.switchFolder((FolderElement) file);
-								}
+								if (selectionListener != null)
+									selectionListener.elementSelected(file, entry, mouseEvent);
 							});
 							popupMenu.add(menuItem);
 						}
@@ -130,7 +145,8 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 					}
 				};
 				entry.addMouseListener(adapter);
-				add(new JLabel(UIRES.get("16px.subpath")));
+				if (idx < path.size() - 1)
+					add(new JLabel(UIRES.get("16px.subpath")));
 			}
 
 			idx++;
@@ -144,6 +160,10 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 			if (finalAdapter != null)
 				finalAdapter.mouseReleased(new MouseEvent(this, 0, 0, 0, 0, 0, 0, false, 0));
 		});
+	}
+
+	public interface SelectionListener {
+		void elementSelected(IElement element, JComponent component, MouseEvent event);
 	}
 
 }
