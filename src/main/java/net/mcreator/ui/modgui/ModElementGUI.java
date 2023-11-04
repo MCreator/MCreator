@@ -529,7 +529,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		MCREvent.event(new ModElementGUIEvent.WhenSaving(mcreator, tabIn, this, !closeTab));
 		GE element = getElementFromGUI();
 
-		// if new element, and if we are not in the root folder, specify the folder of the mod element
+		// if new element, and its folder is invalid (does not exist), specify the folder of the mod element
 		if (!editingMode && mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren()
 				.stream().noneMatch(e -> e.equals(modElement.getFolderPath())))
 			modElement.setParentFolder(mcreator.mv.currentFolder);
