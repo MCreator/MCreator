@@ -150,11 +150,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			for (TextureType section : TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(),
 					true)) {
 				JList<File> list = mapLists.get(section.getID()).list();
-				if (list.getSelectedValue() != null) {
-					for (File texture : list.getSelectedValuesList()) {
-						refs.addAll(ReferencesFinder.searchTextureUsages(workspacePanel.getMCreator().getWorkspace(),
-								texture, section));
-					}
+				for (File texture : list.getSelectedValuesList()) {
+					refs.addAll(ReferencesFinder.searchTextureUsages(workspacePanel.getMCreator().getWorkspace(),
+							texture, section));
 				}
 			}
 
@@ -181,10 +179,10 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 			for (TextureType section : TextureType.getSupportedTypes(workspacePanel.getMCreator().getWorkspace(),
 					true)) {
 				JList<File> list = mapLists.get(section.getID()).list();
-				if (list.getSelectedValue() != null) {
-					list.getSelectedValuesList().stream()
-							.map(t -> ReferencesFinder.searchTextureUsages(workspacePanel.getMCreator().getWorkspace(),
-									t, section)).forEach(references::addAll);
+				for (File texture : list.getSelectedValuesList()) {
+					references.addAll(
+							ReferencesFinder.searchTextureUsages(workspacePanel.getMCreator().getWorkspace(), texture,
+									section));
 				}
 			}
 
