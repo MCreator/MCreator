@@ -850,7 +850,7 @@ import java.util.stream.Collectors;
 								(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 					}
 					cardLayout.show(panels, id);
-					updateMods();
+					reloadElementsInCurrentTab();
 					modElementsBar.setVisible(id.equals("mods"));
 				}
 			});
@@ -1008,7 +1008,7 @@ import java.util.stream.Collectors;
 						mcreator.getWorkspace().markDirty();
 					}
 				});
-				updateMods();
+				reloadElementsInCurrentTab();
 
 				p0.ok();
 				dial.refreshDisplay();
@@ -1108,7 +1108,7 @@ import java.util.stream.Collectors;
 
 					mcreator.getWorkspace().addModElement(duplicateModElement);
 
-					updateMods();
+					reloadElementsInCurrentTab();
 				}
 			}
 		}
@@ -1200,7 +1200,7 @@ import java.util.stream.Collectors;
 							folder.getParent().removeChild(folder);
 						}
 					});
-					updateMods();
+					reloadElementsInCurrentTab();
 
 					if (buildNeeded.get())
 						mcreator.actionRegistry.buildWorkspace.doAction();
@@ -1231,10 +1231,7 @@ import java.util.stream.Collectors;
 		}
 	}
 
-	/**
-	 * Reloads all workspace panels. Better name would be reloadWorkspacePanels
-	 */
-	public synchronized void updateMods() {
+	public synchronized void reloadElementsInCurrentTab() {
 		sectionTabs.get(currentTab).reloadElements();
 	}
 
@@ -1465,4 +1462,5 @@ import java.util.stream.Collectors;
 			dml.refilter();
 		}
 	}
+
 }
