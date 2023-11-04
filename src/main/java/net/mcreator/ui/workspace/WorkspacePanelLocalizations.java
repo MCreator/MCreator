@@ -97,8 +97,8 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(use = createToolBarButton("common.search_usages", UIRES.get("16px.search")));
 		bar.add(del = createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif")));
+		bar.add(use = createToolBarButton("common.search_usages", UIRES.get("16px.search")));
 		bar.add(exp = createToolBarButton("workspace.localization.export_to_csv", UIRES.get("16px.ext.gif")));
 		bar.add(imp = createToolBarButton("workspace.localization.import_csv", UIRES.get("16px.open.gif")));
 
@@ -106,11 +106,11 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 	}
 
 	@Override public void reloadElements() {
-		for (var al : use.getActionListeners())
-			use.removeActionListener(al);
-
 		for (var al : del.getActionListeners())
 			del.removeActionListener(al);
+
+		for (var al : use.getActionListeners())
+			use.removeActionListener(al);
 
 		for (var al : imp.getActionListeners())
 			imp.removeActionListener(al);

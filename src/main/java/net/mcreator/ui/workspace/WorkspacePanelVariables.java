@@ -219,6 +219,9 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			}
 		}));
 
+		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
+				e -> deleteCurrentlySelected()));
+
 		bar.add(createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			if (elements.getSelectedRow() != -1) {
 				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -234,9 +237,6 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 						L10N.t("dialog.search_usages.type.global_variable"), refs);
 			}
 		}));
-
-		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
-				e -> deleteCurrentlySelected()));
 
 		bar.add(createToolBarButton("workspace.variables.help", UIRES.get("16px.info"),
 				e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/variables")));
