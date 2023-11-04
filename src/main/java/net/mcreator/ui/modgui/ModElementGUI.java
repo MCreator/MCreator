@@ -530,8 +530,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		GE element = getElementFromGUI();
 
 		// if new element, and its folder is invalid (does not exist), specify the folder of the mod element
-		if (!editingMode && mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren()
-				.stream().noneMatch(e -> e.equals(modElement.getFolderPath())))
+		if (!editingMode && mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren().stream()
+				.noneMatch(e -> e.equals(modElement.getFolderPath())))
 			modElement.setParentFolder(mcreator.mv.currentFolder);
 
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed

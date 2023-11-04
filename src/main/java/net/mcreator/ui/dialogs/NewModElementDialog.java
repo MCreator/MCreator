@@ -76,8 +76,7 @@ public class NewModElementDialog {
 			modName = JavaConventions.convertToValidClassName(modName);
 
 			ModElement element = new ModElement(mcreator.getWorkspace(), modName, type);
-			if (!mcreator.mv.currentFolder.equals(breadcrumb.getFolder()))
-				element.setParentFolder(breadcrumb.getFolder());
+			element.setParentFolder(breadcrumb.getFolder());
 
 			ModElementGUI<?> newGUI = type.getModElementGUI(mcreator, element, false);
 			if (newGUI != null) {
