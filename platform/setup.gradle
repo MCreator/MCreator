@@ -1,6 +1,6 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-def jdk17_win_64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.9+9/windows/x64/jdk/hotspot/normal/eclipse?project=jdk'
+def jdk17_win_64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.9+9.1/windows/x64/jdk/hotspot/normal/eclipse?project=jdk'
 def jdk17_linux_64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.9+9/linux/x64/jdk/hotspot/normal/eclipse?project=jdk'
 def jdk17_mac_x64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.9+9/mac/x64/jdk/hotspot/normal/eclipse?project=jdk'
 def jdk17_mac_aarch64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.9+9/mac/aarch64/jdk/hotspot/normal/eclipse?project=jdk'
