@@ -34,21 +34,21 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class WorkspaceFolderBreadcrumb extends JPanel {
 
 	private final MCreator mcreator;
-	private final boolean alwaysSuggestChoose;
 	private final int pathLengthLimit;
 	private FolderElement currentFolder;
+	private Predicate<FolderElement> selectionCondition;
 	private SelectionListener selectionListener;
 
-	public WorkspaceFolderBreadcrumb(MCreator mcreator, boolean alwaysSuggestChoose, int pathLengthLimit) {
+	public WorkspaceFolderBreadcrumb(MCreator mcreator, int pathLengthLimit) {
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		this.mcreator = mcreator;
-		this.alwaysSuggestChoose = alwaysSuggestChoose;
 		this.pathLengthLimit = pathLengthLimit;
 		setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 0));
 		setOpaque(false);
@@ -62,6 +62,10 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 	public FolderElement getFolder() {
 		return currentFolder;
+	}
+
+	public void setSelectionCondition(Predicate<FolderElement> selectionCondition) {
+		this.selectionCondition = selectionCondition;
 	}
 
 	public void setSelectionListener(SelectionListener selectionListener) {
@@ -100,7 +104,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 			add(entry);
 
-			if (idx < path.size() - 1 || alwaysSuggestChoose) {
+			if (selectionCondition == null || selectionCondition.test(filePathPart)) {
 				adapter = new MouseAdapter() {
 					@Override public void mouseClicked(MouseEvent mouseEvent) {
 						if (mouseEvent.getClickCount() == 2) {
@@ -143,10 +147,10 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 					}
 				};
 				entry.addMouseListener(adapter);
-				if (idx < path.size() - 1)
-					add(new JLabel(UIRES.get("16px.subpath")));
 			}
 
+			if (idx < path.size() - 1)
+				add(new JLabel(UIRES.get("16px.subpath")));
 			idx++;
 		}
 

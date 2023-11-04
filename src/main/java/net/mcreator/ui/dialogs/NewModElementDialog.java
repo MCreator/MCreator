@@ -45,7 +45,7 @@ public class NewModElementDialog {
 		regName.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
-		WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, true, 3);
+		WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 2);
 		breadcrumb.reloadPath(mcreator.mv.currentFolder, FolderElement.class);
 		breadcrumb.setSelectionListener((element, component, event) -> {
 			if (element instanceof FolderElement fe)
