@@ -172,7 +172,7 @@ import java.util.stream.Collectors;
 
 		this.resourcesPan = new WorkspacePanelResources(this);
 
-		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator);
+		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator, false, 9);
 		this.elementsBreadcrumb.setSelectionListener((element, component, event) -> {
 			if (element instanceof ModElement me)
 				WorkspacePanel.this.editCurrentlySelectedModElement(me, component, event.getX(), event.getY());

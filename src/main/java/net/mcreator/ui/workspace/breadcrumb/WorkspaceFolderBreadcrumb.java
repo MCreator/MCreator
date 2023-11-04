@@ -40,18 +40,16 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 	private final MCreator mcreator;
 	private final boolean alwaysSuggestChoose;
+	private final int pathLengthLimit;
 	private FolderElement currentFolder;
 	private SelectionListener selectionListener;
 
-	public WorkspaceFolderBreadcrumb(MCreator mcreator) {
-		this(mcreator, false);
-	}
-
-	public WorkspaceFolderBreadcrumb(MCreator mcreator, boolean alwaysSuggestChoose) {
+	public WorkspaceFolderBreadcrumb(MCreator mcreator, boolean alwaysSuggestChoose, int pathLengthLimit) {
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		this.mcreator = mcreator;
 		this.alwaysSuggestChoose = alwaysSuggestChoose;
+		this.pathLengthLimit = pathLengthLimit;
 		setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 0));
 		setOpaque(false);
 	}
@@ -86,7 +84,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 			file = file.getParent();
 
 			depth++;
-			if (depth > 9)
+			if (depth > pathLengthLimit)
 				break;
 		}
 		Collections.reverse(path);
