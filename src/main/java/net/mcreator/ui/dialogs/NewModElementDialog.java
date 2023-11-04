@@ -54,7 +54,6 @@ public class NewModElementDialog {
 		JScrollPane targetFile = new JScrollPane(breadcrumb, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
 				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
 		targetFile.getHorizontalScrollBar().setPreferredSize(new Dimension());
-		targetFile.setWheelScrollingEnabled(true);
 
 		String modName = VOptionPane.showInputDialog(mcreator,
 				L10N.t("dialog.new_modelement.desc", type.getReadableName()),
