@@ -19,7 +19,6 @@
 package net.mcreator.ui.workspace.breadcrumb;
 
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.FolderElement;
 
 import javax.swing.*;
@@ -32,7 +31,7 @@ public class FolderElementCrumb extends JLabel {
 	private final FolderElement element;
 
 	public FolderElementCrumb(FolderElement element) {
-		super(StringUtils.abbreviateString(element.getName(), 16));
+		super(element.getName());
 
 		this.element = element;
 

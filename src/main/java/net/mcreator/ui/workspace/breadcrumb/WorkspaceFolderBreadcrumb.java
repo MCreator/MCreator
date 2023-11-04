@@ -34,21 +34,26 @@ import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class WorkspaceFolderBreadcrumb extends JPanel {
 
 	private final MCreator mcreator;
+	private final boolean canExpandTrailHead;
 	private final int pathLengthLimit;
 	private FolderElement currentFolder;
-	private Predicate<FolderElement> selectionCondition;
 	private SelectionListener selectionListener;
 
-	public WorkspaceFolderBreadcrumb(MCreator mcreator, int pathLengthLimit) {
+	/**
+	 * @param mcreator           Window with workspace from which to load folder structure.
+	 * @param canExpandTrailHead Whether trailing folder in the shown path opens popup with its contents.
+	 * @param pathLengthLimit    Maximum number of parent folders added before the trailing/target one.
+	 */
+	public WorkspaceFolderBreadcrumb(MCreator mcreator, boolean canExpandTrailHead, int pathLengthLimit) {
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		this.mcreator = mcreator;
+		this.canExpandTrailHead = canExpandTrailHead;
 		this.pathLengthLimit = pathLengthLimit;
 		setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 0));
 		setOpaque(false);
@@ -60,18 +65,26 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 		super.paintComponent(g);
 	}
 
+	/**
+	 * @return Currently selected target folder.
+	 */
 	public FolderElement getFolder() {
 		return currentFolder;
 	}
 
-	public void setSelectionCondition(Predicate<FolderElement> selectionCondition) {
-		this.selectionCondition = selectionCondition;
-	}
-
+	/**
+	 * @param selectionListener Listener for when a mod element or folder element is "opened".
+	 */
 	public void setSelectionListener(SelectionListener selectionListener) {
 		this.selectionListener = selectionListener;
 	}
 
+	/**
+	 * Updates this breadcrumb to show path to the specified folder.
+	 *
+	 * @param file         New target folder to show the path to in this breadcrumb.
+	 * @param childElement Type of elements to include in popup menus opened when a path part is clicked.
+	 */
 	@SuppressWarnings("EqualsBetweenInconvertibleTypes")
 	public void reloadPath(FolderElement file, Class<? extends IElement> childElement) {
 		currentFolder = file;
@@ -96,7 +109,6 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 		int idx = 0;
 		MouseAdapter adapter = null;
 		for (FolderElement filePathPart : path) {
-			int currentLevel = idx;
 			JLabel entry = new FolderElementCrumb(filePathPart);
 
 			if (filePathPart.equals(mcreator.getWorkspace().getFoldersRoot())) {
@@ -105,7 +117,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 			add(entry);
 
-			if (selectionCondition == null || selectionCondition.test(filePathPart)) {
+			if (idx < path.size() - 1 || canExpandTrailHead) {
 				adapter = new MouseAdapter() {
 					@Override public void mouseClicked(MouseEvent mouseEvent) {
 						if (mouseEvent.getClickCount() == 2) {
@@ -127,11 +139,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 						}
 
 						for (IElement file : files) {
-							JMenuItem menuItem;
-							if (currentLevel < path.size() - 1 && path.get(currentLevel + 1).equals(file))
-								menuItem = new JMenuItem("<html>&nbsp;<b>" + file.getName());
-							else
-								menuItem = new JMenuItem("<html>&nbsp;" + file.getName());
+							JMenuItem menuItem = new JMenuItem("<html>&nbsp;" + file.getName());
 							if (file instanceof ModElement)
 								menuItem.setIcon(new ImageIcon(ImageUtils.resizeAA(
 										ModElementManager.getModElementIcon((ModElement) file).getImage(), 16)));

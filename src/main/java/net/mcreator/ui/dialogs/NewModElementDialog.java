@@ -45,12 +45,16 @@ public class NewModElementDialog {
 		regName.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
-		WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 2);
+		WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, true, 3);
 		breadcrumb.reloadPath(mcreator.mv.currentFolder, FolderElement.class);
 		breadcrumb.setSelectionListener((element, component, event) -> {
 			if (element instanceof FolderElement fe)
 				breadcrumb.reloadPath(fe, FolderElement.class);
 		});
+		JScrollPane targetFile = new JScrollPane(breadcrumb, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		targetFile.getHorizontalScrollBar().setPreferredSize(new Dimension());
+		targetFile.setWheelScrollingEnabled(true);
 
 		String modName = VOptionPane.showInputDialog(mcreator,
 				L10N.t("dialog.new_modelement.desc", type.getReadableName()),
@@ -67,7 +71,7 @@ public class NewModElementDialog {
 					}
 				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
 				UIManager.getString("OptionPane.cancelButtonText"), null,
-				PanelUtils.northAndCenterElement(breadcrumb, regName));
+				PanelUtils.northAndCenterElement(targetFile, regName));
 
 		if (modName != null && !modName.isEmpty()) {
 			modName = JavaConventions.convertToValidClassName(modName);
