@@ -525,14 +525,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	/**
 	 * This method implements the mod element saving and generation
 	 */
-	@SuppressWarnings("EqualsBetweenInconvertibleTypes") private void finishModCreation(boolean closeTab) {
+	private void finishModCreation(boolean closeTab) {
 		MCREvent.event(new ModElementGUIEvent.WhenSaving(mcreator, tabIn, this, !closeTab));
 		GE element = getElementFromGUI();
-
-		// if new element, and its folder is invalid (does not exist), specify the folder of the mod element
-		if (!editingMode && mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren().stream()
-				.noneMatch(e -> e.equals(modElement.getFolderPath())))
-			modElement.setParentFolder(mcreator.mv.currentFolder);
 
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
 		// add it before generating so all references are loaded

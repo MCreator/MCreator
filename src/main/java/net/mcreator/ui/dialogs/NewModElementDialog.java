@@ -22,7 +22,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.Validator;
@@ -45,7 +44,7 @@ public class NewModElementDialog {
 		regName.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
-		WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, true, 3);
+		WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 3, true);
 		breadcrumb.reloadPath(mcreator.mv.currentFolder, FolderElement.class);
 		breadcrumb.setSelectionListener((element, component, event) -> {
 			if (element instanceof FolderElement fe)
@@ -75,7 +74,7 @@ public class NewModElementDialog {
 			modName = JavaConventions.convertToValidClassName(modName);
 
 			ModElement element = new ModElement(mcreator.getWorkspace(), modName, type);
-			element.setParentFolder(breadcrumb.getFolder());
+			element.setParentFolder(breadcrumb.getCurrentFolder());
 
 			ModElementGUI<?> newGUI = type.getModElementGUI(mcreator, element, false);
 			if (newGUI != null) {
