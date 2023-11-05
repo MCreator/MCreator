@@ -1014,7 +1014,7 @@ import java.util.stream.Collectors;
 			Thread t = new Thread(() -> {
 				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
 						L10N.t("workspace.elements.lock_modelement_locking_unlocking"));
-				dial.addProgress(p0);
+				dial.addProgressUnit(p0);
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
 				list.getSelectedValuesList().forEach(el -> {
@@ -1031,14 +1031,13 @@ import java.util.stream.Collectors;
 				});
 				updateMods();
 
-				p0.ok();
-				dial.refreshDisplay();
+				p0.markStateOk();
 
 				// if we have new unlocked elements, we recreate their code
 				if (!elementsThatGotUnlocked.isEmpty()) {
 					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 							L10N.t("workspace.elements.lock_modelement_regeneration"));
-					dial.addProgress(p1);
+					dial.addProgressUnit(p1);
 					int i = 0;
 					for (ModElement mod : elementsThatGotUnlocked) {
 						GeneratableElement generatableElement = mod.getGeneratableElement();
@@ -1048,19 +1047,16 @@ import java.util.stream.Collectors;
 						}
 						i++;
 						p1.setPercent((int) (((float) i / (float) elementsThatGotUnlocked.size()) * 100.0f));
-						dial.refreshDisplay();
 					}
-					p1.ok();
-					dial.refreshDisplay();
+					p1.markStateOk();
 
 					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 							L10N.t("workspace.elements.lock_modelement_rebuilding_workspace"));
-					dial.addProgress(p2);
+					dial.addProgressUnit(p2);
 					mcreator.actionRegistry.buildWorkspace.doAction();
-					p2.ok();
-					dial.refreshDisplay();
+					p2.markStateOk();
 				}
-				dial.hideAll();
+				dial.hideDialog();
 			}, "CodeLock");
 			t.start();
 			dial.setVisible(true);
