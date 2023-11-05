@@ -22,17 +22,13 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.renderer.elementlist.special.CompactModElementListCellRenderer;
 import net.mcreator.ui.modgui.ModElementGUI;
-import net.mcreator.util.StringUtils;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.ModElementManager;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;
@@ -178,28 +174,6 @@ public class SearchUsagesDialog {
 				gui.showView();
 				dialog.setVisible(false);
 			}
-		}
-	}
-
-	private static class CompactModElementListCellRenderer implements ListCellRenderer<ModElement> {
-
-		@Override
-		public Component getListCellRendererComponent(JList<? extends ModElement> list, ModElement value, int index,
-				boolean isSelected, boolean cellHasFocus) {
-			JLabel label = L10N.label("dialog.search_usages.list.item",
-					StringUtils.abbreviateString(value.getName(), 20), value.getType().getReadableName());
-			label.setOpaque(true);
-			label.setIcon(
-					new ImageIcon(ImageUtils.resizeAA(ModElementManager.getModElementIcon(value).getImage(), 32)));
-			label.setIconTextGap(10);
-			label.setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
-					(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-			label.setForeground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.DARK_ACCENT") :
-					(Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
-			label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-			return label;
 		}
 	}
 

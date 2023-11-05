@@ -106,21 +106,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	/**
-	 * @apiNote This method performs sensitive operations on this mod element. Avoid using it!
-	 * @param other The mod element to copy settings from.
-	 */
-	@SuppressWarnings("unused") public void loadDataFrom(ModElement other) {
-		this.compiles = other.compiles;
-		this.locked_code = other.locked_code;
-		this.sortid = other.sortid;
-		this.registry_name = other.registry_name;
-		this.metadata = other.metadata;
-		this.mcItems = other.mcItems;
-		this.elementIcon = other.elementIcon;
-		this.workspace = other.workspace;
-	}
-
-	/**
 	 * Call this method to reinit ME icon, mcItems cache or update associated workspace
 	 *
 	 * @param workspace Workspace this ME belongs to
@@ -278,10 +263,16 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	public void setParentFolder(@Nullable FolderElement parent) {
-		if (parent == null || parent.isRoot())
+		if (parent == null || parent.isRoot()) {
 			this.path = null;
-		else
-			this.path = parent.getPath();
+		} else {
+			// Make sure that the specified parent folder exists in the workspace
+			if (workspace.getFoldersRoot().getRecursiveFolderChildren().stream().anyMatch(e -> e.equals(parent))) {
+				this.path = parent.getPath();
+			} else {
+				this.path = null;
+			}
+		}
 	}
 
 	/**
@@ -292,6 +283,21 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 				iCommonType.getBaseTypesProvided() :
 				Collections.emptyList();
 	}
+	/**
+	 * @apiNote This method performs sensitive operations on this mod element. Avoid using it!
+	 * @param other The mod element to copy settings from.
+	 */
+	@SuppressWarnings("unused") public void loadDataFrom(ModElement other) {
+		this.compiles = other.compiles;
+		this.locked_code = other.locked_code;
+		this.sortid = other.sortid;
+		this.registry_name = other.registry_name;
+		this.metadata = other.metadata;
+		this.mcItems = other.mcItems;
+		this.elementIcon = other.elementIcon;
+		this.workspace = other.workspace;
+	}
+
 
 	public static class ModElementDeserializer implements JsonDeserializer<ModElement> {
 

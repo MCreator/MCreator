@@ -45,13 +45,13 @@ public class VOptionPane {
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
 			OptionPaneValidatior validator, String ok, String cancel, String defaultValue) {
-		return showInputDialog(frame, text, title, icon, validator, ok, cancel, defaultValue, null);
+		return showInputDialog(frame, text, title, icon, validator, ok, cancel, defaultValue, null, null);
 	}
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
 			OptionPaneValidatior validator, String ok, String cancel, String defaultValue,
-			@Nullable JComponent optionalComponent) {
-		JPanel inp = new JPanel(new BorderLayout(10, 15));
+			@Nullable JComponent optionalNorthComponent, @Nullable JComponent optionalSouthComponent) {
+		JPanel inp = new JPanel(new BorderLayout(0, 0));
 
 		VTextField textField = new VTextField(20);
 		ComponentUtils.deriveFont(textField, 17);
@@ -65,12 +65,14 @@ public class VOptionPane {
 			textField.getValidationStatus();
 		}
 
-		if (optionalComponent == null) {
-			inp.add("Center", new JLabel(text));
-			inp.add("South", textField);
-		} else {
-			inp.add("Center", new JLabel(text));
-			inp.add("South", PanelUtils.northAndCenterElement(textField, optionalComponent));
+		inp.add("Center", PanelUtils.centerAndSouthElement(new JLabel(text), textField, 10, 10));
+
+		if (optionalNorthComponent != null) {
+			inp.add("North", optionalNorthComponent);
+		}
+
+		if (optionalSouthComponent != null) {
+			inp.add("South", optionalSouthComponent);
 		}
 
 		textField.addAncestorListener(new AncestorListener() {
@@ -84,6 +86,7 @@ public class VOptionPane {
 			@Override public void ancestorAdded(AncestorEvent event) {
 				event.getComponent().requestFocusInWindow();
 			}
+
 		});
 
 		int option = JOptionPane.showOptionDialog(frame, inp, title, JOptionPane.OK_CANCEL_OPTION,
