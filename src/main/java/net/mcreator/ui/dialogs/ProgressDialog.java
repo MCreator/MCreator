@@ -29,6 +29,7 @@ import java.awt.*;
 
 public class ProgressDialog extends MCreatorDialog {
 
+	private final JLabel titleLabel;
 	private final DefaultListModel<ProgressUnit> lModel = new DefaultListModel<>();
 	private final JList<ProgressUnit> progress = new JList<>(lModel);
 
@@ -48,7 +49,7 @@ public class ProgressDialog extends MCreatorDialog {
 		setUndecorated(true);
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-		JLabel titleLabel = new JLabel(title);
+		titleLabel = new JLabel(title);
 		titleLabel.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		titleLabel.setOpaque(true);
 		titleLabel.setBorder(BorderFactory.createCompoundBorder(
@@ -78,6 +79,12 @@ public class ProgressDialog extends MCreatorDialog {
 
 	public void hideAll() {
 		SwingUtilities.invokeLater(() -> setVisible(false));
+	}
+
+	@Override public void setTitle(String title) {
+		super.setTitle(title);
+
+		titleLabel.setText(title);
 	}
 
 	@Override public void setVisible(boolean visible) {
