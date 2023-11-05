@@ -208,6 +208,13 @@ public class DialogsTest {
 				false));
 	}
 
+	@Test public void testUsagesSearchDialogs() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.showUsagesDialog(mcreator, "", Collections.emptyList()));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.showDeleteDialog(mcreator, "", Collections.emptyList(), "test sufix"));
+	}
+
 	@Test public void testFileDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> FileDialogs.getWorkspaceDirectorySelectDialog(mcreator,
 				new File(System.getProperty("user.home"))));

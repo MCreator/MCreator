@@ -168,13 +168,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private MCItemHolder equipmentBoots;
 	private MCItemHolder equipmentOffHand;
 
-	private final JComboBox<String> guiBoundTo = new JComboBox<>();
+	private final SearchableComboBox<String> guiBoundTo = new SearchableComboBox<>();
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
 
 	private MCItemHolder rangedAttackItem;
 
-	private final JComboBox<String> rangedItemType = new JComboBox<>();
+	private final SearchableComboBox<String> rangedItemType = new SearchableComboBox<>();
 
 	private final JTextField mobLabel = new JTextField();
 
@@ -199,14 +199,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private static final Model witch = new Model.BuiltInModel("Witch");
 	public static final Model[] builtinmobmodels = new Model[] { biped, chicken, cod, cow, creeper, ghast, ocelot, pig,
 			piglin, salmon, silverfish, slime, spider, villager, witch };
-	private final JComboBox<Model> mobModel = new JComboBox<>(builtinmobmodels);
+	private final SearchableComboBox<Model> mobModel = new SearchableComboBox<>(builtinmobmodels);
 
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
 
 	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(
 			BlocklyCompileNote.Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
 
-	private final JComboBox<String> aiBase = new JComboBox<>(
+	private final SearchableComboBox<String> aiBase = new SearchableComboBox<>(
 			Stream.of("(none)", "Creeper", "Skeleton", "Enderman", "Blaze", "Slime", "Witch", "Zombie", "MagmaCube",
 					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
 					"IronGolem").sorted().toArray(String[]::new));
@@ -560,6 +560,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		ComponentUtils.deriveFont(aiBase, 16);
 		ComponentUtils.deriveFont(mobModel, 16);
 		ComponentUtils.deriveFont(rangedItemType, 16);
+
+		rangedItemType.setPrototypeDisplayValue("XXXXXXXXXXXXX");
 
 		mobModel.setRenderer(new ModelComboBoxRenderer());
 

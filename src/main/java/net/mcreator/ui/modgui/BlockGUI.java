@@ -186,7 +186,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "NONE", "XZ", "XYZ" });
-	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
+	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
@@ -222,7 +222,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox hasInventory = L10N.checkbox("elementgui.block.has_inventory");
 
 	private final JCheckBox openGUIOnRightClick = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> guiBoundTo = new JComboBox<>();
+	private final SearchableComboBox<String> guiBoundTo = new SearchableComboBox<>();
 
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
@@ -235,7 +235,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page3group = new ValidationGroup();
 
-	private final JComboBox<String> blockBase = new JComboBox<>(
+	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
 					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" });
 
