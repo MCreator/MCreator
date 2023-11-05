@@ -339,25 +339,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						removeRecentWorkspace(defaultListModel.elementAt(idx));
 						reloadRecents();
 					} else if (mouseEvent.getClickCount() == 2) {
-						int n = JOptionPane.YES_OPTION;
-						RecentWorkspaceEntry selectedEntry = recentsList.getSelectedValue();
-						String mcrVersion = selectedEntry.getMCRVersion();
-						if (mcrVersion != null) {
-							String major = mcrVersion.substring(0, mcrVersion.indexOf('.', mcrVersion.indexOf('.') + 1));
-							String build = mcrVersion.substring(mcrVersion.indexOf('.', mcrVersion.indexOf('.') + 1) + 1);
-							long majorLong = MCreatorVersionNumber.majorStringToLong(major + "." + build);
-							long buildLong = Long.parseLong(build);
-							long versionLong = majorLong * (long) Math.pow(10, 5) + buildLong;
-							if (versionLong < Launcher.version.versionlong) {
-								n = JOptionPane.showConfirmDialog(WorkspaceSelector.this,
-										L10N.t("dialog.workspace_selector.version_update.message",
-												selectedEntry.getMCRVersion(), Launcher.version.full),
-										L10N.t("dialog.workspace_selector.version_update.title"), JOptionPane.YES_NO_OPTION,
-										JOptionPane.QUESTION_MESSAGE);
-							}
-						}
-						if (n == JOptionPane.YES_OPTION)
-							workspaceOpenListener.workspaceOpened(selectedEntry.getPath());
+						workspaceOpenListener.workspaceOpened(recentsList.getSelectedValue().getPath());
 					}
 				}
 			});
