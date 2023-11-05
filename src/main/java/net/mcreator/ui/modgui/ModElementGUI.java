@@ -39,6 +39,7 @@ import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.views.ViewBase;
+import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -63,6 +64,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private final ModElementChangedListener elementUpdateListener;
 
 	@Nonnull protected ModElement modElement;
+	@Nullable private FolderElement targetFolder;
 
 	private ModElementCreatedListener<GE> modElementCreatedListener;
 
@@ -89,6 +91,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	public final void addPage(String name, JComponent component) {
 		pages.put(name, component);
+	}
+
+	public void setTargetFolder(@Nullable FolderElement targetFolder) {
+		this.targetFolder = targetFolder;
 	}
 
 	public void setModElementCreatedListener(ModElementCreatedListener<GE> modElementCreatedListener) {
@@ -528,6 +534,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private void finishModCreation(boolean closeTab) {
 		MCREvent.event(new ModElementGUIEvent.WhenSaving(mcreator, tabIn, this, !closeTab));
 		GE element = getElementFromGUI();
+
+		// if new element, specify the folder of the mod element
+		if (!editingMode)
+			modElement.setParentFolder(Objects.requireNonNullElse(targetFolder, mcreator.mv.currentFolder));
 
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
 		// add it before generating so all references are loaded
