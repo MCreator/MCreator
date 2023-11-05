@@ -51,7 +51,7 @@ public class VOptionPane {
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
 			OptionPaneValidatior validator, String ok, String cancel, String defaultValue,
 			@Nullable JComponent optionalNorthComponent, @Nullable JComponent optionalSouthComponent) {
-		JPanel inp = new JPanel(new BorderLayout(0, 0));
+		JPanel inp = new JPanel(new BorderLayout(10, 10));
 
 		VTextField textField = new VTextField(20);
 		ComponentUtils.deriveFont(textField, 17);
@@ -65,15 +65,19 @@ public class VOptionPane {
 			textField.getValidationStatus();
 		}
 
-		inp.add("Center", PanelUtils.centerAndSouthElement(new JLabel(text), textField, 10, 10));
+		JPanel textFieldPanel = new JPanel(new BorderLayout(0, 0));
+		textFieldPanel.add("Center", textField);
 
 		if (optionalNorthComponent != null) {
-			inp.add("North", optionalNorthComponent);
+			textFieldPanel.add("North", optionalNorthComponent);
 		}
 
 		if (optionalSouthComponent != null) {
-			inp.add("South", optionalSouthComponent);
+			textFieldPanel.add("South", optionalSouthComponent);
 		}
+
+		inp.add("North", new JLabel(text));
+		inp.add("Center", textFieldPanel);
 
 		textField.addAncestorListener(new AncestorListener() {
 

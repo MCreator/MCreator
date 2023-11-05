@@ -547,9 +547,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// we perform any custom defined after all other operations are complete
 		afterGeneratableElementStored();
 
-		// generate mod base as it may be needed
-		mcreator.getGenerator().generateBase();
-
 		// generate mod element code
 		mcreator.getGenerator().generateElement(element);
 
@@ -561,6 +558,15 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		afterGeneratableElementGenerated();
 
+		// build if selected and needed
+		if (PreferencesManager.PREFERENCES.gradle.compileOnSave.get() && mcreator.getModElementManager()
+				.requiresElementGradleBuild(element)) {
+			mcreator.actionRegistry.buildWorkspace.doAction();
+		} else {
+			// Explicitly generate mod base if we don't call build action which does this for us
+			mcreator.getGenerator().generateBase();
+		}
+
 		if (editingMode) {
 			mcreator.getApplication().getAnalytics()
 					.trackEvent(AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT, modElement.getType().getRegistryName());
@@ -568,11 +574,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			mcreator.getApplication().getAnalytics()
 					.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT, modElement.getType().getRegistryName());
 		}
-
-		// build if selected and needed
-		if (PreferencesManager.PREFERENCES.gradle.compileOnSave.get() && mcreator.getModElementManager()
-				.requiresElementGradleBuild(element))
-			mcreator.actionRegistry.buildWorkspace.doAction();
 
 		changed = false;
 
