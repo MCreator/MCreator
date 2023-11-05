@@ -275,14 +275,20 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return changed;
 	}
 
-	protected void reloadModElements() {
+	/**
+	 * @apiNote This method performs sensitive operations on this workspace. Avoid using it!
+	 */
+	public void reloadModElements() {
 		// While reiniting, list may change due to converters, so we need to copy it
 		for (ModElement modElement : Set.copyOf(mod_elements)) {
 			modElement.reinit(this);
 		}
 	}
 
-	protected void reloadFolderStructure() {
+	/**
+	 * @apiNote This method performs sensitive operations on this workspace. Avoid using it!
+	 */
+	public void reloadFolderStructure() {
 		this.foldersRoot.updateStructure();
 
 		Set<String> validPaths = foldersRoot.getRecursiveFolderChildren().stream().map(FolderElement::getPath)
@@ -469,7 +475,11 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	// Below are methods that may still be used by some plugins
 
-	@SuppressWarnings("unused") void loadStoredDataFrom(Workspace other) {
+	/**
+	 * @apiNote This method performs sensitive operations on this workspace. Avoid using it!
+	 * @param other The workspace to copy elements and settings from.
+	 */
+	@SuppressWarnings("unused") public void loadStoredDataFrom(Workspace other) {
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;

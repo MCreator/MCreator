@@ -22,6 +22,7 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.util.image.EmptyIcon;
@@ -32,7 +33,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class DataListComboBox extends JComboBox<DataListEntry> {
+public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 
 	public DataListComboBox(MCreator mcreator, List<DataListEntry> list) {
 		super(list.toArray(new DataListEntry[0]));
@@ -67,7 +68,7 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 		if (superretval == null)
 			return new DataListEntry.Null();
 
-		return (DataListEntry) super.getSelectedItem();
+		return super.getSelectedItem();
 	}
 
 	public static class CustomRenderer extends JLabel implements ListCellRenderer<DataListEntry> {

@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.renderer.elementlist.special.CompactModElementListCellRenderer;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -38,7 +39,7 @@ import java.util.stream.Collectors;
 
 public class CodeErrorDialog {
 
-	private static final Logger LOG = LogManager.getLogger("Code Error Parser");
+	private static final Logger LOG = LogManager.getLogger(CodeErrorDialog.class);
 
 	/**
 	 * @param mcreator     MCreator instance
@@ -59,7 +60,6 @@ public class CodeErrorDialog {
 
 		Set<ModElement> problematicMods = new HashSet<>();
 		boolean moddefinitionfileerrors = false;
-
 		for (File problematicFile : problematicFiles) {
 			ModElement modElementWithError = mcreator.getGenerator().getModElementThisFileBelongsTo(problematicFile);
 			if (modElementWithError != null) {
@@ -72,9 +72,6 @@ public class CodeErrorDialog {
 			} else {
 				LOG.warn("[ForgeGradleUtil] Error from non MCreator generated class!");
 			}
-
-			if (problematicMods.size() > 10)
-				break;
 		}
 
 		mcreator.setCursor(Cursor.getDefaultCursor());
@@ -100,19 +97,25 @@ public class CodeErrorDialog {
 		}
 
 		JList<ModElement> problematicModsList = new JList<>(problematicMods.toArray(new ModElement[0]));
+		problematicModsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		problematicModsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		problematicModsList.setFixedCellHeight(40);
+		problematicModsList.setFixedCellWidth(200);
+		problematicModsList.setVisibleRowCount(-1);
+		problematicModsList.setCellRenderer(new CompactModElementListCellRenderer());
+
 		JScrollPane sp = new JScrollPane(problematicModsList);
 		sp.setPreferredSize(new Dimension(150, 140));
-
 		sp.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		problematicModsList.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 
-		JPanel list = new JPanel(new BorderLayout());
-		list.add("North", L10N.label("dialog.code_error.compilation_list"));
-		list.add("Center", sp);
+		JPanel wrapper = new JPanel(new BorderLayout());
+		wrapper.add("North", L10N.label("dialog.code_error.compilation_list"));
+		wrapper.add("Center", sp);
 
 		Object[] options = { L10N.t("dialog.code_error.show_in_workspace"), L10N.t("dialog.code_error.show_build_log"),
 				L10N.t("gradle.errors.do_nothing"), L10N.t("action.support") };
-		int n = JOptionPane.showOptionDialog(mcreator, list, L10N.t("dialog.code_error.title"),
+		int n = JOptionPane.showOptionDialog(mcreator, wrapper, L10N.t("dialog.code_error.title"),
 				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.WARNING_MESSAGE, null, options, options[0]);
 		if (n == 0) {
 			mcreator.mcreatorTabs.showTab(mcreator.workspaceTab);
