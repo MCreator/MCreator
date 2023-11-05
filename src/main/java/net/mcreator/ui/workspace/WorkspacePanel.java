@@ -172,12 +172,12 @@ import java.util.stream.Collectors;
 
 		this.resourcesPan = new WorkspacePanelResources(this);
 
-		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator, false, 9);
+		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 10, false);
 		this.elementsBreadcrumb.setSelectionListener((element, component, event) -> {
 			if (element instanceof ModElement me)
-				WorkspacePanel.this.editCurrentlySelectedModElement(me, component, event.getX(), event.getY());
+				editCurrentlySelectedModElement(me, component, event.getX(), event.getY());
 			else if (element instanceof FolderElement fe)
-				WorkspacePanel.this.switchFolder(fe);
+				switchFolder(fe);
 		});
 
 		JPopupMenu contextMenu = new JPopupMenu();
@@ -768,7 +768,7 @@ import java.util.stream.Collectors;
 		addVerticalTab("locales", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
 		addVerticalTab("variables", L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
 
-		verticalTabs.get(0).doClick();
+		switchToVerticalTab("mods");
 
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
@@ -852,6 +852,7 @@ import java.util.stream.Collectors;
 
 		if (section.isSupportedInWorkspace()) {
 			VerticalTabButton tab = new VerticalTabButton(name);
+			tab.setName(id);
 			tab.setContentAreaFilled(false);
 			tab.setMargin(new Insets(7, 1, 7, 2));
 			tab.setBorderPainted(false);
@@ -859,18 +860,7 @@ import java.util.stream.Collectors;
 			tab.setOpaque(true);
 			tab.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			tab.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			tab.addActionListener(e -> {
-				if (section.canSwitchToSection()) {
-					for (JButton btt : verticalTabs) {
-						btt.setBackground(btt == tab ?
-								(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
-								(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-					}
-					cardLayout.show(panels, id);
-					updateMods();
-					modElementsBar.setVisible(id.equals("mods"));
-				}
-			});
+			tab.addActionListener(e -> switchToVerticalTab(id));
 			verticalTabs.add(tab);
 			rotatablePanel.add(tab);
 		}
@@ -878,6 +868,19 @@ import java.util.stream.Collectors;
 
 	public AbstractWorkspacePanel getVerticalTab(String id) {
 		return sectionTabs.get(id);
+	}
+
+	public void switchToVerticalTab(String id) {
+		if (sectionTabs.get(id).canSwitchToSection()) {
+			for (JButton btt : verticalTabs) {
+				btt.setBackground(btt.getName().equals(id) ?
+						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
+						(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			}
+			cardLayout.show(panels, id);
+			updateMods();
+			modElementsBar.setVisible(id.equals("mods"));
+		}
 	}
 
 	public void switchFolder(FolderElement switchTo) {

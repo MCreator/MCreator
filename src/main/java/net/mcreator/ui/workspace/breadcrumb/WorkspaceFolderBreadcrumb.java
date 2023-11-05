@@ -39,22 +39,19 @@ import java.util.stream.Collectors;
 public class WorkspaceFolderBreadcrumb extends JPanel {
 
 	private final MCreator mcreator;
+	private final int maxDepth;
 	private final boolean canExpandTrailHead;
-	private final int pathLengthLimit;
-	private FolderElement currentFolder;
+
 	private SelectionListener selectionListener;
 
-	/**
-	 * @param mcreator           Window with workspace from which to load folder structure.
-	 * @param canExpandTrailHead Whether trailing folder in the shown path opens popup with its contents.
-	 * @param pathLengthLimit    Maximum number of parent folders added before the trailing/target one.
-	 */
-	public WorkspaceFolderBreadcrumb(MCreator mcreator, boolean canExpandTrailHead, int pathLengthLimit) {
-		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
+	private FolderElement currentFolder;
 
+	public WorkspaceFolderBreadcrumb(MCreator mcreator, int maxDepth, boolean canExpandTrailHead) {
+		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		this.mcreator = mcreator;
+		this.maxDepth = maxDepth;
 		this.canExpandTrailHead = canExpandTrailHead;
-		this.pathLengthLimit = pathLengthLimit;
+
 		setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 0));
 		setOpaque(false);
 	}
@@ -65,29 +62,9 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 		super.paintComponent(g);
 	}
 
-	/**
-	 * @return Currently selected target folder.
-	 */
-	public FolderElement getFolder() {
-		return currentFolder;
-	}
-
-	/**
-	 * @param selectionListener Listener for when a mod element or folder element is "opened".
-	 */
-	public void setSelectionListener(SelectionListener selectionListener) {
-		this.selectionListener = selectionListener;
-	}
-
-	/**
-	 * Updates this breadcrumb to show path to the specified folder.
-	 *
-	 * @param file         New target folder to show the path to in this breadcrumb.
-	 * @param childElement Type of elements to include in popup menus opened when a path part is clicked.
-	 */
 	@SuppressWarnings("EqualsBetweenInconvertibleTypes")
 	public void reloadPath(FolderElement file, Class<? extends IElement> childElement) {
-		currentFolder = file;
+		this.currentFolder = file;
 
 		removeAll();
 
@@ -101,7 +78,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 			file = file.getParent();
 
 			depth++;
-			if (depth > pathLengthLimit)
+			if (depth > maxDepth - 1)
 				break;
 		}
 		Collections.reverse(path);
@@ -164,6 +141,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 			if (idx < path.size() - 1)
 				add(new JLabel(UIRES.get("16px.subpath")));
+
 			idx++;
 		}
 
@@ -175,6 +153,14 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 			if (finalAdapter != null)
 				finalAdapter.mouseReleased(new MouseEvent(this, 0, 0, 0, 0, 0, 0, false, 0));
 		});
+	}
+
+	public FolderElement getCurrentFolder() {
+		return currentFolder;
+	}
+
+	public void setSelectionListener(SelectionListener selectionListener) {
+		this.selectionListener = selectionListener;
 	}
 
 	public interface SelectionListener {
