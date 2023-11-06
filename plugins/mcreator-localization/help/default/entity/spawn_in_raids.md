@@ -1,1 +1,1 @@
-If checked, the entity will spawn in raids.
+If checked, the entity will spawn in raids. The spawn rate is the same as the Pillager.
