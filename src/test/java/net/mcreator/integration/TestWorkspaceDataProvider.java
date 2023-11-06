@@ -943,6 +943,7 @@ public class TestWorkspaceDataProvider {
 					}
 
 					Item.StateEntry stateEntry = new Item.StateEntry();
+					stateEntry.setWorkspace(modElement.getWorkspace());
 					stateEntry.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
 					stateEntry.texture = i == 0 ? "test" : "test" + i;
 					stateEntry.renderType = 0;
