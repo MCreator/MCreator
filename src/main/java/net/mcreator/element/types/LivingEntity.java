@@ -170,6 +170,8 @@ import java.util.*;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
 
+	public boolean spawnInRaids;
+
 	private LivingEntity() {
 		this(null);
 	}

@@ -1644,6 +1644,7 @@ public class TestWorkspaceDataProvider {
 			livingEntity.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
 		}
 		livingEntity.spawnInDungeons = _true;
+		livingEntity.spawnInRaids = _true;
 		livingEntity.modelWidth = 0.4;
 		livingEntity.modelHeight = 1.3;
 		livingEntity.mountedYOffset = -3.1;

@@ -178,6 +178,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JTextField mobLabel = new JTextField();
 
 	private final JCheckBox spawnInDungeons = L10N.checkbox("elementgui.living_entity.spawn_dungeons");
+
+	private final JCheckBox spawnInRaids = L10N.checkbox("elementgui.living_entity.spawn_raids");
 	private final JColor spawnEggBaseColor = new JColor(mcreator, false, false);
 	private final JColor spawnEggDotColor = new JColor(mcreator, false, false);
 
@@ -383,6 +385,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		});
 
 		spawnInDungeons.setOpaque(false);
+		spawnInRaids.setOpaque(false);
 		mobModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 		mobModelGlowTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
@@ -814,7 +817,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		pane4.setOpaque(false);
 
-		JPanel selp = new JPanel(new GridLayout(7, 2, 30, 2));
+		JPanel selp = new JPanel(new GridLayout(8, 2, 30, 2));
 
 		ComponentUtils.deriveFont(mobName, 16);
 
@@ -853,6 +856,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_in_dungeons"),
 				L10N.label("elementgui.living_entity.does_spawn_in_dungeons")));
 		selp.add(spawnInDungeons);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_in_raids"),
+				L10N.label("elementgui.living_entity.does_spawn_in_raids")));
+		selp.add(spawnInRaids);
 
 		selp.setOpaque(false);
 
@@ -1042,6 +1049,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		numberOfMobsPerGroup.setMinValue(livingEntity.minNumberOfMobsPerGroup);
 		numberOfMobsPerGroup.setMaxValue(livingEntity.maxNumberOfMobsPerGroup);
 		spawnInDungeons.setSelected(livingEntity.spawnInDungeons);
+		spawnInRaids.setSelected(livingEntity.spawnInRaids);
 		restrictionBiomes.setListElements(livingEntity.restrictionBiomes);
 		spawningCondition.setSelectedProcedure(livingEntity.spawningCondition);
 		breedTriggerItems.setListElements(livingEntity.breedTriggerItems);
@@ -1189,6 +1197,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.maxNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMaxValue();
 		livingEntity.restrictionBiomes = restrictionBiomes.getListElements();
 		livingEntity.spawnInDungeons = spawnInDungeons.isSelected();
+		livingEntity.spawnInRaids = spawnInRaids.isSelected();
 		livingEntity.modelWidth = (double) modelWidth.getValue();
 		livingEntity.modelHeight = (double) modelHeight.getValue();
 		livingEntity.mountedYOffset = (double) mountedYOffset.getValue();

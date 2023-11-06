@@ -1,0 +1,1 @@
+If checked, the entity will spawn in raids.

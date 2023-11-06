@@ -53,6 +53,10 @@ import javax.annotation.Nullable;
 	<#assign extendsClass = data.tameable?then("TamableAnimal", "Animal")>
 </#if>
 
+<#if data.spawnInRaids>
+	<#assign extendsClass = "Raider">
+</#if>
+
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
 
 	<#if data.isBoss>
@@ -239,6 +243,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override public SoundEvent getDeathSound() {
 		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
 	}
+	</#if>
+
+	<#if data.spawnInRaids>
+   	@Override public SoundEvent getCelebrateSound() {
+   		return null;
+   	}
 	</#if>
 
 	<#if hasProcedure(data.onStruckByLightning)>
@@ -824,6 +834,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		<#if data.spawnInDungeons>
 			DungeonHooks.addDungeonMob(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), 180);
 		</#if>
+
+		<#if data.spawnInRaids>
+		Raid.RaiderType.create("${registryname}", ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), new int[]{0, 4, 3, 3, 4, 4, 4, 2});
+		</#if>
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
@@ -856,6 +870,20 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 		return builder;
 	}
+
+		<#if data.spawnInRaids>
+		@Override public boolean isAlliedTo(Entity ent) {
+		if (super.isAlliedTo(ent)) {
+			return true;
+		} else if (ent instanceof LivingEntity && ((LivingEntity)ent).getMobType() == MobType.ILLAGER) {
+			return this.getTeam() == null && ent.getTeam() == null;
+		} else {
+			return false;
+			}
+		}
+
+	   	@Override public void applyRaidBuffs(int num, boolean logic) {}
+	   	</#if>
 
 }
 <#-- @formatter:on -->
