@@ -84,8 +84,9 @@ public class ProgressDialog extends MCreatorDialog {
 
 	@Override public void setTitle(String title) {
 		super.setTitle(title);
-
-		titleLabel.setText(title);
+		// setTitle can be called before the titleLabel is initialized
+		if (titleLabel != null)
+			titleLabel.setText(title);
 	}
 
 	@Override public void setVisible(boolean visible) {
