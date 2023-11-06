@@ -75,7 +75,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Container.html" title="class or interface in java.awt" class="external-link">java.awt.Container</a>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">javax.swing.JComponent</a>
 <div class="inheritance"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">javax.swing.JPanel</a>
+<div class="inheritance"><a href="AbstractResourcePanel.html" title="class in net.mcreator.ui.workspace.resources">net.mcreator.ui.workspace.resources.AbstractResourcePanel</a>&lt;<a href="../../../workspace/elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&gt;
 <div class="inheritance">net.mcreator.ui.workspace.resources.WorkspacePanelSounds</div>
+</div>
 </div>
 </div>
 </div>
@@ -88,8 +90,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">WorkspacePanelSounds</span>
-<span class="extends-implements">extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a>
-implements <a href="../IReloadableFilterable.html" title="interface in net.mcreator.ui.workspace">IReloadableFilterable</a></span></div>
+<span class="extends-implements">extends <a href="AbstractResourcePanel.html" title="class in net.mcreator.ui.workspace.resources">AbstractResourcePanel</a>&lt;<a href="../../../workspace/elements/SoundElement.html" title="class in net.mcreator.workspace.elements">SoundElement</a>&gt;</span></div>
 <dl class="notes">
 <dt>See Also:</dt>
 <dd>
@@ -124,6 +125,9 @@ implements <a href="../IReloadableFilterable.html" title="interface in net.mcrea
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
 <div class="inherited-list">
+<h3 id="fields-inherited-from-class-net.mcreator.ui.workspace.resources.AbstractResourcePanel">Fields inherited from class&nbsp;net.mcreator.ui.workspace.resources.<a href="AbstractResourcePanel.html" title="class in net.mcreator.ui.workspace.resources">AbstractResourcePanel</a></h3>
+<code><a href="AbstractResourcePanel.html#elementList">elementList</a>, <a href="AbstractResourcePanel.html#filterModel">filterModel</a>, <a href="AbstractResourcePanel.html#workspacePanel">workspacePanel</a></code></div>
+<div class="inherited-list">
 <h3 id="fields-inherited-from-class-javax.swing.JComponent">Fields inherited from class&nbsp;javax.swing.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html#listenerList" title="class or interface in javax.swing" class="external-link">listenerList</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html#TOOL_TIP_TEXT_KEY" title="class or interface in javax.swing" class="external-link">TOOL_TIP_TEXT_KEY</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html#ui" title="class or interface in javax.swing" class="external-link">ui</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html#UNDEFINED_CONDITION" title="class or interface in javax.swing" class="external-link">UNDEFINED_CONDITION</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html#WHEN_ANCESTOR_OF_FOCUSED_COMPONENT" title="class or interface in javax.swing" class="external-link">WHEN_ANCESTOR_OF_FOCUSED_COMPONENT</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html#WHEN_FOCUSED" title="class or interface in javax.swing" class="external-link">WHEN_FOCUSED</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html#WHEN_IN_FOCUSED_WINDOW" title="class or interface in javax.swing" class="external-link">WHEN_IN_FOCUSED_WINDOW</a></code></div>
 <div class="inherited-list">
@@ -146,14 +150,14 @@ implements <a href="../IReloadableFilterable.html" title="interface in net.mcrea
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#refilterElements()" class="member-name-link">refilterElements</a>()</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadElements()" class="member-name-link">reloadElements</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#reloadElements()" class="member-name-link">reloadElements</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
+<div class="inherited-list">
+<h3 id="methods-inherited-from-class-net.mcreator.ui.workspace.resources.AbstractResourcePanel">Methods inherited from class&nbsp;net.mcreator.ui.workspace.resources.<a href="AbstractResourcePanel.html" title="class in net.mcreator.ui.workspace.resources">AbstractResourcePanel</a></h3>
+<code><a href="AbstractResourcePanel.html#addToolBarButton(java.lang.String,javax.swing.ImageIcon,java.awt.event.ActionListener)">addToolBarButton</a>, <a href="AbstractResourcePanel.html#addToolBarButton(java.lang.String,javax.swing.ImageIcon,java.awt.event.MouseListener)">addToolBarButton</a>, <a href="AbstractResourcePanel.html#refilterElements()">refilterElements</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-javax.swing.JPanel">Methods inherited from class&nbsp;javax.swing.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html#getAccessibleContext()" title="class or interface in javax.swing" class="external-link">getAccessibleContext</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html#getUI()" title="class or interface in javax.swing" class="external-link">getUI</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html#getUIClassID()" title="class or interface in javax.swing" class="external-link">getUIClassID</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html#paramString()" title="class or interface in javax.swing" class="external-link">paramString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html#setUI(javax.swing.plaf.PanelUI)" title="class or interface in javax.swing" class="external-link">setUI</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html#updateUI()" title="class or interface in javax.swing" class="external-link">updateUI</a></code></div>
@@ -184,20 +188,6 @@ implements <a href="../IReloadableFilterable.html" title="interface in net.mcrea
 <section class="detail" id="reloadElements()">
 <h3>reloadElements</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">reloadElements</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../IReloadableFilterable.html#reloadElements()">reloadElements</a></code>&nbsp;in interface&nbsp;<code><a href="../IReloadableFilterable.html" title="interface in net.mcreator.ui.workspace">IReloadableFilterable</a></code></dd>
-</dl>
-</section>
-</li>
-<li>
-<section class="detail" id="refilterElements()">
-<h3>refilterElements</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">refilterElements</span>()</div>
-<dl class="notes">
-<dt>Specified by:</dt>
-<dd><code><a href="../IReloadableFilterable.html#refilterElements()">refilterElements</a></code>&nbsp;in interface&nbsp;<code><a href="../IReloadableFilterable.html" title="interface in net.mcreator.ui.workspace">IReloadableFilterable</a></code></dd>
-</dl>
 </section>
 </li>
 </ul>
