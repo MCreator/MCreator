@@ -880,7 +880,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		@Override public boolean isAlliedTo(Entity ent) {
 		if (super.isAlliedTo(ent)) {
 			return true;
-		} else if (ent instanceof LivingEntity && ((LivingEntity)ent).getMobType() == MobType.ILLAGER) {
+		} else if (ent instanceof LivingEntity _livingentity && _livingentity.getMobType() == MobType.ILLAGER) {
+
 			return this.getTeam() == null && ent.getTeam() == null;
 		} else {
 			return false;
