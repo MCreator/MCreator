@@ -31,23 +31,23 @@ public class ReloadGradleProjectAction extends GradleAction {
 			new Thread(() -> {
 				ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 						L10N.t("dialog.setup_workspace.progress.reloading_gradle_dependencies"));
-				progressDialog.addProgress(p1);
+				progressDialog.addProgressUnit(p1);
 
 				actionRegistry.getMCreator().getGradleConsole().exec("dependencies", finished -> {
-					p1.ok();
+					p1.markStateOk();
 
 					ProgressDialog.ProgressUnit p3 = new ProgressDialog.ProgressUnit(
 							L10N.t("dialog.setup_workspace.progress.reloading_gradle_project"));
-					progressDialog.addProgress(p3);
+					progressDialog.addProgressUnit(p3);
 
 					new Thread(() -> {
 						try {
 							actionRegistry.getMCreator().getGenerator().reloadGradleCaches();
-							p3.ok();
-							progressDialog.hideAll();
+							p3.markStateOk();
+							progressDialog.hideDialog();
 						} catch (Exception e) {
-							p3.err();
-							progressDialog.hideAll();
+							p3.markStateError();
+							progressDialog.hideDialog();
 						}
 					}, "GradleProjectCacheReload").start();
 				});

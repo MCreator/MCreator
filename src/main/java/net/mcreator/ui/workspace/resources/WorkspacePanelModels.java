@@ -141,7 +141,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 				Thread t = new Thread(() -> {
 					ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
 							L10N.t("workspace.3dmodels.regenerating_entity_code"));
-					dial.addProgress(p0);
+					dial.addProgressUnit(p0);
 
 					AtomicInteger i = new AtomicInteger();
 					// this model might be in use, we need to regenerate code of mobs
@@ -157,20 +157,17 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 						i.getAndIncrement();
 						p0.setPercent((int) (((float) i.get() / (float) workspacePanel.getMCreator().getWorkspace()
 								.getModElements().size()) * 100.0f));
-						dial.refreshDisplay();
 					});
 
-					p0.ok();
-					dial.refreshDisplay();
+					p0.markStateOk();
 
 					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 							L10N.t("workspace.3dmodels.rebuilding_workspace"));
-					dial.addProgress(p2);
+					dial.addProgressUnit(p2);
 					workspacePanel.getMCreator().actionRegistry.buildWorkspace.doAction();
-					p2.ok();
-					dial.refreshDisplay();
+					p2.markStateOk();
 
-					dial.hideAll();
+					dial.hideDialog();
 				}, "WorkspaceModelsReload");
 				t.start();
 				dial.setVisible(true);
