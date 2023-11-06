@@ -113,6 +113,7 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 
 	@Override public LivingEntity.ModelLayerEntry getEntry() {
 		LivingEntity.ModelLayerEntry entry = new LivingEntity.ModelLayerEntry();
+		entry.setWorkspace(mcreator.getWorkspace());
 		entry.model = ((Model) Objects.requireNonNull(model.getSelectedItem())).getReadableName();
 		entry.texture = texture.getSelectedItem();
 		entry.glow = glow.isSelected();

@@ -22,6 +22,7 @@ package net.mcreator.integration.ui;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -147,7 +148,11 @@ public class ModElementUITest {
 
 				// back to GeneratableElement
 				generatableElement = workspace.getModElementManager()
-						.fromJSONtoGeneratableElement(exportedJSON, modElement);// from JSON to generatableelement
+						.fromJSONtoGeneratableElement(exportedJSON, modElement);// from JSON to GeneratableElement
+
+				// Check if all workspace fields are not null after re-import
+				IWorkspaceDependent.processWorkspaceDependentObjects(generatableElement,
+						workspaceDependent -> assertNotNull(workspaceDependent.getWorkspace()));
 
 				assertNotNull(generatableElement);
 
@@ -176,6 +181,10 @@ public class ModElementUITest {
 
 				// test UI -> GeneratableElement
 				generatableElement = modElementGUI.getElementFromGUI();
+
+				// Check if all workspace fields are not null after reading from GUI
+				IWorkspaceDependent.processWorkspaceDependentObjects(generatableElement,
+						workspaceDependent -> assertNotNull(workspaceDependent.getWorkspace()));
 
 				// compare GeneratableElements, no fields should change in the process
 				String exportedJSON2 = workspace.getModElementManager().generatableElementToJSON(generatableElement);

@@ -943,6 +943,7 @@ public class TestWorkspaceDataProvider {
 					}
 
 					Item.StateEntry stateEntry = new Item.StateEntry();
+					stateEntry.setWorkspace(modElement.getWorkspace());
 					stateEntry.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
 					stateEntry.texture = i == 0 ? "test" : "test" + i;
 					stateEntry.renderType = 0;
@@ -1649,18 +1650,21 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelLayers = new ArrayList<>();
 		if (!emptyLists) {
 			LivingEntity.ModelLayerEntry modelLayer = new LivingEntity.ModelLayerEntry();
+			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
 			modelLayer.texture = "entityTx2.png";
 			modelLayer.glow = true;
 			modelLayer.condition = null;
 			livingEntity.modelLayers.add(modelLayer);
 			modelLayer = new LivingEntity.ModelLayerEntry();
+			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
 			modelLayer.texture = "test.png";
 			modelLayer.glow = false;
 			modelLayer.condition = new Procedure("condition1");
 			livingEntity.modelLayers.add(modelLayer);
 			modelLayer = new LivingEntity.ModelLayerEntry();
+			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
 			modelLayer.texture = "entityTx2.png";
 			modelLayer.glow = true;

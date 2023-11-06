@@ -208,6 +208,10 @@ import java.util.*;
 		@Override public void setWorkspace(@Nullable Workspace workspace) {
 			this.workspace = workspace;
 		}
+
+		@Override public @Nullable Workspace getWorkspace() {
+			return workspace;
+		}
 	}
 
 	@Override public Model getEntityModel() {

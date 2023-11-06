@@ -44,6 +44,7 @@ public class EntityGlowLayerConverter implements IConverter {
 				String glowTexture = jsonObject.get("mobModelGlowTexture").getAsString();
 				if (!glowTexture.isEmpty()) {
 					LivingEntity.ModelLayerEntry glowLayer = new LivingEntity.ModelLayerEntry();
+					glowLayer.setWorkspace(workspace);
 					glowLayer.model = "Default";
 					glowLayer.texture = glowTexture;
 					glowLayer.glow = true;
