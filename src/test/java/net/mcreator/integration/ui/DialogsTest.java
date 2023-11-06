@@ -112,14 +112,16 @@ public class DialogsTest {
 	}
 
 	@Test public void testProgressDialog() throws Throwable {
-		ProgressDialog dialog = new ProgressDialog(mcreator, "Test progress dialog");
-		ProgressDialog.ProgressUnit unit = new ProgressDialog.ProgressUnit("Test progress unit");
-		dialog.addProgressUnit(unit);
-		unit.setPercent(50);
-		unit.markStateError();
-		unit.markStateWarning();
-		unit.markStateOk();
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> dialog.setVisible(true));
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> {
+			ProgressDialog dialog = new ProgressDialog(null, "Test progress dialog");
+			ProgressDialog.ProgressUnit unit = new ProgressDialog.ProgressUnit("Test progress unit");
+			dialog.addProgressUnit(unit);
+			unit.setPercent(50);
+			unit.markStateError();
+			unit.markStateWarning();
+			unit.markStateOk();
+			dialog.setVisible(true);
+		});
 	}
 
 	@Test public void testAboutDialog() throws Throwable {
