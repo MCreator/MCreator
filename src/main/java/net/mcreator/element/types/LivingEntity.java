@@ -192,28 +192,6 @@ import java.util.*;
 		this.modelLayers = new ArrayList<>();
 	}
 
-	public static class ModelLayerEntry implements IWorkspaceDependent {
-
-		public String model;
-		@TextureReference(TextureType.ENTITY) public String texture;
-		public boolean glow;
-		public Procedure condition;
-
-		@Nullable transient Workspace workspace;
-
-		public Model getLayerModel() {
-			return model.equals("Default") ? null : Model.getModelByParams(workspace, model, Model.Type.JAVA);
-		}
-
-		@Override public void setWorkspace(@Nullable Workspace workspace) {
-			this.workspace = workspace;
-		}
-
-		@Override public @Nullable Workspace getWorkspace() {
-			return workspace;
-		}
-	}
-
 	@Override public Model getEntityModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (Arrays.stream(LivingEntityGUI.builtinmobmodels).map(Model::getReadableName).noneMatch(mobModelName::equals)
@@ -288,4 +266,28 @@ import java.util.*;
 
 		return null;
 	}
+
+	public static class ModelLayerEntry implements IWorkspaceDependent {
+
+		public String model;
+		@TextureReference(TextureType.ENTITY) public String texture;
+		public boolean glow;
+		public Procedure condition;
+
+		@Nullable transient Workspace workspace;
+
+		// This method is primarily here for the usages system to detect the model usage
+		public Model getLayerModel() {
+			return model.equals("Default") ? null : Model.getModelByParams(workspace, model, Model.Type.JAVA);
+		}
+
+		@Override public void setWorkspace(@Nullable Workspace workspace) {
+			this.workspace = workspace;
+		}
+
+		@Override public @Nullable Workspace getWorkspace() {
+			return workspace;
+		}
+	}
+
 }
