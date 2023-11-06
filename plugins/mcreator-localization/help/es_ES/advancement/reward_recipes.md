@@ -1,0 +1,1 @@
+Las recetas que se desbloquearán cuando el jugador consiga el avance.

@@ -58,7 +58,8 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 					new ModElement(workspace, input.getModElement().getName() + "Projectile",
 							ModElementType.PROJECTILE));
 
-			if (rangedItem.get("bulletItemTexture") != null)
+			if (rangedItem.get("bulletItemTexture") != null && !rangedItem.get("bulletItemTexture").getAsJsonObject()
+					.get("value").getAsString().isEmpty())
 				projectile.projectileItem = new MItemBlock(workspace,
 						rangedItem.get("bulletItemTexture").getAsJsonObject().get("value").getAsString());
 			else if (rangedItem.get("ammoItem") != null && !rangedItem.get("ammoItem").getAsJsonObject().get("value")
