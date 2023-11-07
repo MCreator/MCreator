@@ -178,8 +178,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JTextField mobLabel = new JTextField();
 
 	private final JCheckBox spawnInDungeons = L10N.checkbox("elementgui.living_entity.spawn_dungeons");
-
 	private final JCheckBox spawnInRaids = L10N.checkbox("elementgui.living_entity.spawn_raids");
+	
 	private final JColor spawnEggBaseColor = new JColor(mcreator, false, false);
 	private final JColor spawnEggDotColor = new JColor(mcreator, false, false);
 
