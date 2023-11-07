@@ -58,7 +58,8 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 					new ModElement(workspace, input.getModElement().getName() + "Projectile",
 							ModElementType.PROJECTILE));
 
-			if (rangedItem.get("bulletItemTexture") != null)
+			if (rangedItem.get("bulletItemTexture") != null && !rangedItem.get("bulletItemTexture").getAsJsonObject()
+					.get("value").getAsString().isEmpty())
 				projectile.projectileItem = new MItemBlock(workspace,
 						rangedItem.get("bulletItemTexture").getAsJsonObject().get("value").getAsString());
 			else if (rangedItem.get("ammoItem") != null && !rangedItem.get("ammoItem").getAsJsonObject().get("value")
@@ -150,7 +151,9 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 
 			if (rangedItem.has("glowCondition")) {
 				JsonObject rangedGlow = rangedItem.getAsJsonObject("glowCondition");
-				String glowConditionProcedureName = rangedGlow.has("name") ? rangedGlow.get("name").getAsString() : null;
+				String glowConditionProcedureName = rangedGlow.has("name") ?
+						rangedGlow.get("name").getAsString() :
+						null;
 				boolean value = rangedItem.has("hasGlow") ? rangedItem.get("hasGlow").getAsBoolean() : // Old format
 						rangedGlow.get("fixedValue").getAsBoolean(); // New format of 2023.4
 

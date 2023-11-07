@@ -47,6 +47,10 @@ public class NameMapper {
 		this.workspace = workspace;
 	}
 
+	public Workspace getWorkspace() {
+		return workspace;
+	}
+
 	public String getMapping(String origName) {
 		return this.getMapping(origName, 0);
 	}

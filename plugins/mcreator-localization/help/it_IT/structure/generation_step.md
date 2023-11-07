@@ -1,0 +1,1 @@
+Questa opzione determina in quale fase della generazione mondiale dovrebbe essere aggiunta la struttura.

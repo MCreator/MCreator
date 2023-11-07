@@ -55,11 +55,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -113,6 +109,19 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> GeneratorSelector.getGeneratorSelector(mcreator, mcreator.getGeneratorConfiguration(),
 						GeneratorFlavor.FORGE, true));
+	}
+
+	@Test public void testProgressDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> {
+			ProgressDialog dialog = new ProgressDialog(null, "Test progress dialog");
+			ProgressDialog.ProgressUnit unit = new ProgressDialog.ProgressUnit("Test progress unit");
+			dialog.addProgressUnit(unit);
+			unit.setPercent(50);
+			unit.markStateError();
+			unit.markStateWarning();
+			unit.markStateOk();
+			dialog.setVisible(true);
+		});
 	}
 
 	@Test public void testAboutDialog() throws Throwable {
@@ -210,6 +219,13 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> ListEditorDialog.open(mcreator,
 				Collections.enumeration(Arrays.asList("info 1", "info 2", "test \\, is this", "another one")), null,
 				false));
+	}
+
+	@Test public void testUsagesSearchDialogs() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.showUsagesDialog(mcreator, "", Collections.emptyList()));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.showDeleteDialog(mcreator, "", Collections.emptyList(), "test sufix"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

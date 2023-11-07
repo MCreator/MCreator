@@ -149,22 +149,21 @@ public class WorkspaceSettingsAction extends GradleAction {
 				Thread t = new Thread(() -> {
 					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 							L10N.t("dialog.workspace.settings.workspace_switch.progress.preparing"));
-					dial.addProgress(p1);
+					dial.addProgressUnit(p1);
 
 					WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(mcreator.getWorkspace(),
 							Generator.GENERATOR_CACHE.get(change.workspaceSettings.getCurrentGenerator()));
 
-					p1.ok();
-					dial.refreshDisplay();
+					p1.markStateOk();
 
 					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 							L10N.t("dialog.workspace.settings.workspace_switch.progress.switching_version"));
-					dial.addProgress(p2);
+					dial.addProgressUnit(p2);
 
 					mcreator.getWorkspace().switchGenerator(change.workspaceSettings.getCurrentGenerator());
 
-					p2.ok();
-					dial.hideAll();
+					p2.markStateOk();
+					dial.hideDialog();
 
 					WorkspaceGeneratorSetupDialog.runSetup(mcreator, false);
 

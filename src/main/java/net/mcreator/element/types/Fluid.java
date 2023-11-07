@@ -33,6 +33,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -47,8 +48,8 @@ import java.util.List;
 	public String name;
 	public String bucketName;
 
-	public String textureStill;
-	public String textureFlowing;
+	@TextureReference(TextureType.BLOCK) public String textureStill;
+	@TextureReference(TextureType.BLOCK) public String textureFlowing;
 
 	public String tintType;
 
@@ -67,7 +68,7 @@ import java.util.List;
 	@Nonnull public String type;
 
 	public boolean generateBucket;
-	public String textureBucket;
+	@TextureReference(TextureType.ITEM) public String textureBucket;
 	public TabEntry creativeTab;
 	public Sound emptySound;
 	public String rarity;

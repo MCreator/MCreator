@@ -22,11 +22,11 @@ import net.mcreator.element.types.LootTable;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
+import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.component.entries.JEntriesList;
 
 import javax.swing.*;
 import java.awt.*;

@@ -27,6 +27,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.SpinnerCellEditor;
 import net.mcreator.ui.component.util.TableUtil;
 import net.mcreator.ui.dialogs.NewVariableDialog;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
@@ -36,7 +37,9 @@ import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.validators.JavaMemberNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 import net.mcreator.util.DesktopUtils;
+import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -47,8 +50,7 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
 
 class WorkspacePanelVariables extends AbstractWorkspacePanel {
@@ -197,35 +199,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton addvar = L10N.button("workspace.variables.add_new");
-		addvar.setIcon(UIRES.get("16px.add.gif"));
-		addvar.setContentAreaFilled(false);
-		addvar.setOpaque(false);
-		ComponentUtils.deriveFont(addvar, 12);
-		addvar.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(addvar);
-
-		JButton delvar = L10N.button("workspace.variables.remove_selected");
-		delvar.setIcon(UIRES.get("16px.delete.gif"));
-		delvar.setContentAreaFilled(false);
-		delvar.setOpaque(false);
-		ComponentUtils.deriveFont(delvar, 12);
-		delvar.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(delvar);
-
-		JButton help = L10N.button("workspace.variables.help");
-		help.setIcon(UIRES.get("16px.info"));
-		help.setContentAreaFilled(false);
-		help.setOpaque(false);
-		ComponentUtils.deriveFont(help, 12);
-		help.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(help);
-
-		help.addActionListener(e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/variables"));
-
-		add("North", bar);
-
-		addvar.addActionListener(e -> {
+		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add.gif"), e -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
@@ -243,9 +217,31 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 				workspacePanel.getMCreator().getWorkspace().addVariableElement(element);
 				reloadElements();
 			}
-		});
+		}));
 
-		delvar.addActionListener(a -> deleteCurrentlySelected());
+		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
+				e -> deleteCurrentlySelected()));
+
+		bar.add(createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
+			if (elements.getSelectedRow() != -1) {
+				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+				Set<ModElement> refs = new HashSet<>();
+				for (int i : elements.getSelectedRows()) {
+					refs.addAll(ReferencesFinder.searchGlobalVariableUsages(workspacePanel.getMCreator().getWorkspace(),
+							(String) elements.getValueAt(i, 0)));
+				}
+
+				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+				SearchUsagesDialog.showUsagesDialog(workspacePanel.getMCreator(),
+						L10N.t("dialog.search_usages.type.global_variable"), refs);
+			}
+		}));
+
+		bar.add(createToolBarButton("workspace.variables.help", UIRES.get("16px.info"),
+				e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/variables")));
+
+		add("North", bar);
 
 		elements.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
@@ -293,10 +289,18 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		if (elements.getSelectedRow() == -1)
 			return;
 
-		int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-				L10N.t("workspace.variables.remove_variable_confirmation"), L10N.t("common.confirmation"),
-				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-		if (n == JOptionPane.YES_OPTION) {
+		workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+		Set<ModElement> references = new HashSet<>();
+		for (int i : elements.getSelectedRows()) {
+			references.addAll(ReferencesFinder.searchGlobalVariableUsages(workspacePanel.getMCreator().getWorkspace(),
+					(String) elements.getValueAt(i, 0)));
+		}
+
+		workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+
+		if (SearchUsagesDialog.showDeleteDialog(workspacePanel.getMCreator(),
+				L10N.t("dialog.search_usages.type.global_variable"), references)) {
 			Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 					.forEach(el -> {
 						VariableElement element = new VariableElement(el);
