@@ -135,6 +135,7 @@ import java.util.*;
 	public Sound hurtSound;
 	public Sound deathSound;
 	public Sound stepSound;
+	public Sound celebrationSound;
 
 	public Procedure onStruckByLightning;
 	public Procedure whenMobFalls;

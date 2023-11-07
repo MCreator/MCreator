@@ -105,6 +105,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final SoundSelector hurtSound = new SoundSelector(mcreator);
 	private final SoundSelector deathSound = new SoundSelector(mcreator);
 	private final SoundSelector stepSound = new SoundSelector(mcreator);
+	private final SoundSelector celebrationSound = new SoundSelector(mcreator);
 
 	private final VTextField mobName = new VTextField();
 
@@ -502,6 +503,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingSound.setText("");
 		hurtSound.setText("entity.generic.hurt");
 		deathSound.setText("entity.generic.death");
+		celebrationSound.setText("entity.pillager.celebrate");
 
 		JPanel subpanel2 = new JPanel(new GridLayout(1, 2, 0, 2));
 		subpanel2.setOpaque(false);
@@ -673,12 +675,16 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
 
-		JPanel spo6 = new JPanel(new GridLayout(4, 2, 2, 2));
+		JPanel spo6 = new JPanel(new GridLayout(5, 2, 2, 2));
 		spo6.setOpaque(false);
 
 		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/sound"),
 				L10N.label("elementgui.living_entity.sound")));
 		spo6.add(livingSound);
+
+		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/celebration_sound"),
+				L10N.label("elementgui.living_entity.celebration_sound")));
+		spo6.add(celebrationSound);
 
 		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/step_sound"),
 				L10N.label("elementgui.living_entity.step_sound")));
@@ -1040,6 +1046,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		hurtSound.setSound(livingEntity.hurtSound);
 		deathSound.setSound(livingEntity.deathSound);
 		stepSound.setSound(livingEntity.stepSound);
+		celebrationSound.setSound(livingEntity.celebrationSound);
 		hasAI.setSelected(livingEntity.hasAI);
 		isBoss.setSelected(livingEntity.isBoss);
 		hasSpawnEgg.setSelected(livingEntity.hasSpawnEgg);
@@ -1168,6 +1175,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.hurtSound = hurtSound.getSound();
 		livingEntity.deathSound = deathSound.getSound();
 		livingEntity.stepSound = stepSound.getSound();
+		livingEntity.celebrationSound = celebrationSound.getSound();
 		livingEntity.spawningCondition = spawningCondition.getSelectedProcedure();
 		livingEntity.onStruckByLightning = onStruckByLightning.getSelectedProcedure();
 		livingEntity.whenMobFalls = whenMobFalls.getSelectedProcedure();
