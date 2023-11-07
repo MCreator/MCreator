@@ -253,9 +253,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	<#if data.spawnInRaids>
 		<#if data.celebrationSound?has_content && data.celebrationSound.getMappedValue()?has_content>
 	@Override public SoundEvent getCelebrateSound() {
-		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.celebrationSound}"));
+		return <#if data.celebrationSound?has_content && data.celebrationSound.getMappedValue()?has_content>ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.celebrationSound}"));<#else>null</#if>
 	}
-		</#if>
 	</#if>
 
 	<#if hasProcedure(data.onStruckByLightning)>
