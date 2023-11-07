@@ -869,6 +869,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		selp.setOpaque(false);
 
+		spawnInRaids.addActionListener(e -> {
+			celebrationSound.setEnabled(spawnInRaids.isSelected());
+		});
+
 		JComponent selpcont = PanelUtils.northAndCenterElement(selp,
 				PanelUtils.gridElements(1, 2, 5, 5, L10N.label("elementgui.living_entity.spawn_general_condition"),
 						PanelUtils.westAndCenterElement(new JEmptyBox(12, 5), spawningCondition)), 5, 5);
@@ -1114,6 +1118,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		bossBarColor.setEnabled(isBoss.isSelected());
 		bossBarType.setEnabled(isBoss.isSelected());
+		celebrationSound.setEnabled(spawnInRaids.isSelected());
 
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
 
