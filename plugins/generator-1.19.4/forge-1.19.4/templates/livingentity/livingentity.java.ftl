@@ -877,17 +877,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 
 		<#if data.spawnInRaids>
-		@Override public boolean isAlliedTo(Entity ent) {
-		if (super.isAlliedTo(ent)) {
-			return true;
-		} else if (ent instanceof LivingEntity _livingentity && _livingentity.getMobType() == MobType.ILLAGER) {
-
-			return this.getTeam() == null && ent.getTeam() == null;
-		} else {
-			return false;
-			}
-		}
-
 	   	@Override public void applyRaidBuffs(int num, boolean logic) {}
 	   	</#if>
 }
