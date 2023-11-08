@@ -1,0 +1,53 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "name",
+      "check": "String"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "visibility",
+      "options": [
+        [
+          "ALWAYS",
+          "ALWAYS"
+        ],
+        [
+          "NEVER",
+          "NEVER"
+        ],
+        [
+          "HIDE_FOR_OTHER_TEAMS",
+          "HIDE_FOR_OTHER_TEAMS"
+        ],
+        [
+          "HIDE_FOR_OWN_TEAM",
+          "HIDE_FOR_OWN_TEAM"
+        ]
+      ]
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "group": "team",
+    "toolbox_id": "scoreboard",
+    "toolbox_init": [
+      "<value name=\"name\"><block type=\"text\"><field name=\"TEXT\">team_name</field></block></value>"
+    ],
+    "inputs": [
+      "name"
+    ],
+    "fields": [
+      "visibility"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}
