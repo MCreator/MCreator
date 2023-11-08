@@ -123,9 +123,9 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 		addPage(L10N.t("elementgui.common.page_properties"), page);
 
 		if (!isEditingMode()) {
-			normalDeathMessage.setText("%s died");
-			itemDeathMessage.setText("%s was killed by %s using %s");
-			playerDeathMessage.setText("%s died whilst trying to escape %s");
+			normalDeathMessage.setText("<player> died");
+			itemDeathMessage.setText("<player> was killed by <attacker> using <item>");
+			playerDeathMessage.setText("<player> died whilst trying to escape <attacker>");
 		}
 
 	}
@@ -140,9 +140,12 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 		exhaustion.setValue(damageType.exhaustion);
 		scaling.setSelectedItem(damageType.scaling);
 		effects.setSelectedItem(damageType.effects);
-		normalDeathMessage.setText(damageType.normalDeathMessage);
-		itemDeathMessage.setText(damageType.itemDeathMessage);
-		playerDeathMessage.setText(damageType.playerDeathMessage);
+		normalDeathMessage.setText(damageType.normalDeathMessage
+				.replace("%1$s", "<player>").replace("%2$s", "<attacker>"));
+		itemDeathMessage.setText(damageType.itemDeathMessage
+				.replace("%1$s", "<player>").replace("%2$s", "<attacker>").replace("%3$s", "<item>"));
+		playerDeathMessage.setText(damageType.playerDeathMessage
+				.replace("%1$s", "<player>").replace("%2$s", "<attacker>"));
 	}
 
 	@Override public DamageType getElementFromGUI() {
@@ -150,9 +153,12 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 		damageType.exhaustion = (double) exhaustion.getValue();
 		damageType.scaling = (String) scaling.getSelectedItem();
 		damageType.effects = (String) effects.getSelectedItem();
-		damageType.normalDeathMessage = normalDeathMessage.getText();
-		damageType.itemDeathMessage = itemDeathMessage.getText();
-		damageType.playerDeathMessage = playerDeathMessage.getText();
+		damageType.normalDeathMessage = normalDeathMessage.getText()
+				.replace("<player>", "%1$s").replace("<attacker>", "%2$s");
+		damageType.itemDeathMessage = itemDeathMessage.getText()
+				.replace("<player>", "%1$s").replace("<attacker>", "%2$s").replace("<item>", "%3$s");
+		damageType.playerDeathMessage = playerDeathMessage.getText()
+				.replace("<player>", "%1$s").replace("<attacker>", "%2$s");
 		return damageType;
 	}
 }
