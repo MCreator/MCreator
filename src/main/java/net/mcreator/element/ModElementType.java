@@ -117,6 +117,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> BIOME;
 	public static ModElementType<?> BLOCK;
 	public static ModElementType<?> COMMAND;
+	public static ModElementType<?> DAMAGETYPE;
 	public static ModElementType<?> DIMENSION;
 	public static ModElementType<?> CODE;
 	public static ModElementType<?> ENCHANTMENT;

@@ -36,6 +36,7 @@ public class ModElementTypeLoader {
 		ModElementType.BIOME = register(new ModElementType<>("biome", 'o', BaseType.BIOME, BiomeGUI::new, Biome.class));
 		ModElementType.BLOCK = register(new ModElementType<>("block", 'b', BaseType.BLOCK, BlockGUI::new, Block.class));
 		ModElementType.COMMAND = register(new ModElementType<>("command", 'c', BaseType.OTHER, CommandGUI::new, Command.class));
+		ModElementType.DAMAGETYPE = register(new ModElementType<>("damagetype", null, BaseType.DATAPACK, DamageTypeGUI::new, DamageType.class));
 		ModElementType.DIMENSION = register(new ModElementType<>("dimension", 'd', BaseType.OTHER, DimensionGUI::new, Dimension.class));
 		ModElementType.CODE = register(new ModElementType<>("code", null, BaseType.OTHER, CustomElementGUI::new, CustomElement.class));
 		ModElementType.ENCHANTMENT = register(new ModElementType<>("enchantment", 'm', BaseType.OTHER, EnchantmentGUI::new, Enchantment.class));
