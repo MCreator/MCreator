@@ -102,7 +102,7 @@ public class OrePackMakerTool {
 				addOrePackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
 						(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(),
 						(Double) power.getValue());
-				mcreator.mv.updateMods();
+				mcreator.mv.reloadElementsInCurrentTab();
 				dialog.setCursor(Cursor.getDefaultCursor());
 				dialog.setVisible(false);
 			}
