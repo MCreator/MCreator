@@ -51,19 +51,18 @@ public interface ModElementChangedListener
 	/**
 	 * <p>Registers the given UI component to trigger this listener when a change is detected on it</p>
 	 *
-	 * @param container The UI element to register
+	 * @param component The UI element to register
 	 */
-	default void registerUI(JComponent container) {
-		for (Component component : container.getComponents()) {
+	default void registerUI(JComponent component) {
+		{
 			if ("TechnicalComponent".equals(component.getName()))
-				continue; // don't add listeners if component triggers actions not affecting mod element directly
+				return; // don't add listeners if component triggers actions not affecting mod element directly
 
 			if (component instanceof MCItemHolder itemHolder) {
 				itemHolder.addBlockSelectedListener(this);
 			} else if (component instanceof JItemListField<?> listField) {
 				listField.addChangeListener(this);
 			} else if (component instanceof JEntriesList entriesList) {
-				registerUI(entriesList);
 				entriesList.addEntryRegisterListener(c -> {
 					registerUI(c);
 					modElementChanged();
@@ -80,13 +79,13 @@ public interface ModElementChangedListener
 			} else if (component instanceof JFXPanel) {
 				component.addMouseListener(this);
 				component.addKeyListener(this);
-			} else if (component instanceof JComponent jcomponent) {
-				registerUI(jcomponent);
-
-				if (!isGenericComponent(component)) {
-					component.addMouseListener(this);
-					component.addKeyListener(this);
-				}
+			} else if (!isGenericComponent(component)) {
+				component.addMouseListener(this);
+				component.addKeyListener(this);
+			}
+			for (Component subComponent : component.getComponents()) {
+				if (subComponent instanceof JComponent jcomponent)
+					registerUI(jcomponent);
 			}
 		}
 	}
