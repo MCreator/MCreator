@@ -58,10 +58,6 @@ import javax.annotation.Nullable;
 	<#assign extendsClass = "TamableAnimal">
 </#if>
 
-<#if data.spawnInRaids>
-	<#assign extendsClass = "Raider">
-</#if>
-
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
 
 	<#if data.isBoss>

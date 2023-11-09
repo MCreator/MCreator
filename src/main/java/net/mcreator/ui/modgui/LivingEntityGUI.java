@@ -214,7 +214,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 					"Pig", "Villager", "Wolf", "Cow", "Bat", "Chicken", "Ocelot", "Squid", "Horse", "Spider",
 					"IronGolem").sorted().toArray(String[]::new));
 
-	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature" });
+	private final JComboBox<String> mobBehaviourType = new JComboBox<>(new String[] { "Mob", "Creature", "Raider" });
 	private final JComboBox<String> mobCreatureType = new JComboBox<>(
 			new String[] { "UNDEFINED", "UNDEAD", "ARTHROPOD", "ILLAGER", "WATER" });
 	private final JComboBox<String> bossBarColor = new JComboBox<>(
@@ -428,6 +428,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/behaviour"),
 				L10N.label("elementgui.living_entity.behaviour")));
 		subpane1.add(mobBehaviourType);
+
+		mobBehaviourType.addActionListener(e -> {
+			spawnInRaids.setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
+			celebrationSound.setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
+			tameable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
+			breedable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
+			breedTriggerItems.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
+		});
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/creature_type"),
 				L10N.label("elementgui.living_entity.creature_type")));
@@ -869,10 +877,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		selp.setOpaque(false);
 
-		spawnInRaids.addActionListener(e -> {
-			celebrationSound.setEnabled(spawnInRaids.isSelected());
-		});
-
 		JComponent selpcont = PanelUtils.northAndCenterElement(selp,
 				PanelUtils.gridElements(1, 2, 5, 5, L10N.label("elementgui.living_entity.spawn_general_condition"),
 						PanelUtils.westAndCenterElement(new JEmptyBox(12, 5), spawningCondition)), 5, 5);
@@ -1118,8 +1122,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		bossBarColor.setEnabled(isBoss.isSelected());
 		bossBarType.setEnabled(isBoss.isSelected());
-		celebrationSound.setEnabled(spawnInRaids.isSelected());
-
+		spawnInRaids.setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
+		celebrationSound.setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
+		tameable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
+		breedable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
+		breedTriggerItems.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
 
 		disableMobModelCheckBoxListener = false;
