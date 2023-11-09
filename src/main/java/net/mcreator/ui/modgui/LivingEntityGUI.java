@@ -271,6 +271,22 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				</block></next></block></next></block></next></block></next></block></xml>""");
 	}
 
+	private void updateRaiderState() {
+		if ("Raider".equals(mobBehaviourType.getSelectedItem())) {
+			spawnInRaids.setEnabled(true);
+			celebrationSound.setEnabled(true);
+			tameable.setEnabled(false);
+			breedable.setEnabled(false);
+			breedTriggerItems.setEnabled(false);
+		} else {
+			spawnInRaids.setEnabled(false);
+			celebrationSound.setEnabled(false);
+			tameable.setEnabled(true);
+			breedable.setEnabled(true);
+			breedTriggerItems.setEnabled(true);
+		}
+	}
+
 	private synchronized void regenerateAITasks() {
 		BlocklyBlockCodeGenerator blocklyBlockCodeGenerator = new BlocklyBlockCodeGenerator(externalBlocks,
 				mcreator.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK));
@@ -429,13 +445,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.behaviour")));
 		subpane1.add(mobBehaviourType);
 
-		mobBehaviourType.addActionListener(e -> {
-			spawnInRaids.setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
-			celebrationSound.setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
-			tameable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
-			breedable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
-			breedTriggerItems.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
-		});
+		updateRaiderState();
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/creature_type"),
 				L10N.label("elementgui.living_entity.creature_type")));
@@ -1122,11 +1132,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		bossBarColor.setEnabled(isBoss.isSelected());
 		bossBarType.setEnabled(isBoss.isSelected());
-		spawnInRaids.setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
-		celebrationSound.setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
-		tameable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
-		breedable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
-		breedTriggerItems.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
+		updateRaiderState();
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
 
 		disableMobModelCheckBoxListener = false;
