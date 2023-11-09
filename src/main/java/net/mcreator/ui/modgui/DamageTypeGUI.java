@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.element.types.DamageType;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -32,9 +33,12 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class DamageTypeGUI extends ModElementGUI<DamageType> {
 
@@ -161,4 +165,9 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 				.replace("<player>", "%1$s").replace("<attacker>", "%2$s");
 		return damageType;
 	}
+
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-damage-type");
+	}
+
 }

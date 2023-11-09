@@ -23,6 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.workspace.elements.ModElement;
 
 public class DamageType extends GeneratableElement {
+
 	public double exhaustion;
 	public String scaling;
 	public String effects;
@@ -33,4 +34,5 @@ public class DamageType extends GeneratableElement {
 	public DamageType(ModElement element) {
 		super(element);
 	}
+
 }
