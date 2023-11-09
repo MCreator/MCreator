@@ -27,6 +27,7 @@ public class DamageType extends GeneratableElement {
 	public double exhaustion;
 	public String scaling;
 	public String effects;
+
 	public String normalDeathMessage;
 	public String itemDeathMessage;
 	public String playerDeathMessage;
