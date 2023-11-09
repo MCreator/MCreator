@@ -2,27 +2,20 @@
   "args0": [
     {
       "type": "input_value",
-      "name": "score",
-      "check": "String"
-    },
-    {
-      "type": "input_value",
       "name": "entity",
       "check": "Entity"
     }
   ],
   "inputsInline": true,
-  "output": "Number",
-  "colour": "%{BKY_MATH_HUE}",
+  "output": "String",
+  "colour": "%{BKY_TEXTS_HUE}",
   "mcreator": {
-    "group": "scoreboard",
+    "group": "team",
     "toolbox_id": "scoreboard",
     "toolbox_init": [
-      "<value name=\"score\"><block type=\"text\"><field name=\"TEXT\">custom_score</field></block></value>",
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "inputs": [
-      "score",
       "entity"
     ]
   }

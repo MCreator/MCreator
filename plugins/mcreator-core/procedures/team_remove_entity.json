@@ -2,13 +2,8 @@
   "args0": [
     {
       "type": "input_value",
-      "name": "score",
+      "name": "name",
       "check": "String"
-    },
-    {
-      "type": "input_value",
-      "name": "value",
-      "check": "Number"
     },
     {
       "type": "input_value",
@@ -21,16 +16,14 @@
   "nextStatement": null,
   "colour": 35,
   "mcreator": {
-    "group": "scoreboard",
+    "group": "team",
     "toolbox_id": "scoreboard",
     "toolbox_init": [
-      "<value name=\"score\"><block type=\"text\"><field name=\"TEXT\">custom_score</field></block></value>",
-      "<value name=\"value\"><block type=\"math_number\"><field name=\"NUM\">1</field></block></value>",
+      "<value name=\"name\"><block type=\"text\"><field name=\"TEXT\">team_name</field></block></value>",
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"
     ],
     "inputs": [
-      "score",
-      "value",
+      "name",
       "entity"
     ]
   }
