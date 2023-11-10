@@ -1,1 +1,3 @@
-Questo parametro aggiunge un suggerimento al blocco quando tieni la tua icona sopra il blocco nel tuo inventario. Se utilizzi un suggerimento generato da una procedura e il tuo blocco non è mantenuto da un'entità o da una gemma, la dipendenza `entità` sarà nulla.
+Questo parametro aggiunge una descrizione al blocco quando tieni la tua icona sopra di esso nel tuo inventario.
+
+Se utilizzi una descrizione generata da una procedura e il tuo blocco non è impugnato da un'entità o attualmente un'entità item per terra, la dipendenza `entità` sarà nulla.

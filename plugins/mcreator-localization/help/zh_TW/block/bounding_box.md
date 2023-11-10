@@ -2,4 +2,4 @@
 
 不過，這只會設置大小，而不是形狀。
 
-要了解碰撞箱參數的具體信息，請點擊[這裏](https://mcreator.net/wiki/block-dimensions-and-bonding-box)。
+要了解碰撞箱引數的具體信息，請點擊[這裏](https://mcreator.net/wiki/block-dimensions-and-bonding-box)。
