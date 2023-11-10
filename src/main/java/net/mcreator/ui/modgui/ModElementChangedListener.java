@@ -75,9 +75,8 @@ public interface ModElementChangedListener
 			comboBox.addActionListener(this);
 		} else if (component instanceof JTextComponent textComponent) {
 			textComponent.getDocument().addDocumentListener(this);
-		} else if (component instanceof BlocklyPanel) {
-			component.addMouseListener(this);
-			component.addKeyListener(this);
+		} else if (component instanceof BlocklyPanel blocklyPanel) {
+			blocklyPanel.addChangeListener(this);
 		} else if (!isGenericComponent(component)) {
 			component.addMouseListener(this);
 			component.addKeyListener(this);
