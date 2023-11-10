@@ -33,6 +33,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
+import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -52,8 +53,7 @@ import java.util.Locale;
 
 public class StructureGUI extends ModElementGUI<Structure> {
 
-	private final JComboBox<String> ignoreBlocks = new JComboBox<>(
-			new String[] { "STRUCTURE_BLOCK", "AIR_AND_STRUCTURE_BLOCK", "AIR" });
+	private MCItemListField ignoreBlocks;
 
 	private final JComboBox<String> surfaceDetectionType = new JComboBox<>(
 			new String[] { "WORLD_SURFACE_WG", "WORLD_SURFACE", "OCEAN_FLOOR_WG", "OCEAN_FLOOR", "MOTION_BLOCKING",
@@ -83,6 +83,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 	@Override protected void initGUI() {
 		restrictionBiomes = new BiomeListField(mcreator, true);
+		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
 		separation_spacing.setAllowEqualValues(false);
 
@@ -168,7 +169,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	}
 
 	@Override public void openInEditingMode(Structure structure) {
-		ignoreBlocks.setSelectedItem(structure.ignoreBlocks);
+		ignoreBlocks.setListElements(structure.ignoredBlocks);
 		projection.setSelectedItem(structure.projection);
 		surfaceDetectionType.setSelectedItem(structure.surfaceDetectionType);
 		terrainAdaptation.setSelectedItem(structure.terrainAdaptation);
@@ -181,7 +182,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 	@Override public Structure getElementFromGUI() {
 		Structure structure = new Structure(modElement);
-		structure.ignoreBlocks = (String) ignoreBlocks.getSelectedItem();
+		structure.ignoredBlocks = ignoreBlocks.getListElements();
 		structure.projection = (String) projection.getSelectedItem();
 		structure.surfaceDetectionType = (String) surfaceDetectionType.getSelectedItem();
 		structure.terrainAdaptation = (String) terrainAdaptation.getSelectedItem();
