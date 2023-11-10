@@ -67,7 +67,6 @@ public interface ModElementChangedListener
 				registerUI(c);
 				modElementChanged();
 			});
-			component.addMouseListener(this);
 		} else if (component instanceof AbstractButton button) {
 			button.addActionListener(this);
 		} else if (component instanceof JSpinner spinner) {
