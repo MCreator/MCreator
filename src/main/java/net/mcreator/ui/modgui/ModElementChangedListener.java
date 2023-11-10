@@ -77,14 +77,16 @@ public interface ModElementChangedListener
 			textComponent.getDocument().addDocumentListener(this);
 		} else if (component instanceof BlocklyPanel blocklyPanel) {
 			blocklyPanel.addChangeListener(this);
-		} else if (!isGenericComponent(component)) {
-			component.addMouseListener(this);
-			component.addKeyListener(this);
-		}
+		} else {
+			if (!isGenericComponent(component)) {
+				component.addMouseListener(this);
+				component.addKeyListener(this);
+			}
 
-		for (Component subComponent : component.getComponents()) {
-			if (subComponent instanceof JComponent jcomponent)
-				registerUI(jcomponent);
+			for (Component subComponent : component.getComponents()) {
+				if (subComponent instanceof JComponent jcomponent)
+					registerUI(jcomponent);
+			}
 		}
 	}
 
