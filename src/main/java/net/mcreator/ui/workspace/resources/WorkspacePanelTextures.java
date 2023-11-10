@@ -229,11 +229,13 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 	private void replaceSelectedFile() {
 		File file = listGroup.getSelectedItem();
-		File newTexture = FileDialogs.getOpenDialog(workspacePanel.getMCreator(), new String[] { ".png" });
-		if (file != null && newTexture != null) {
-			FileIO.copyFile(newTexture, file);
-			new ImageIcon(file.getAbsolutePath()).getImage().flush();
-			reloadElements();
+		if (file != null) {
+			File newTexture = FileDialogs.getOpenDialog(workspacePanel.getMCreator(), new String[] { ".png" });
+			if (newTexture != null) {
+				FileIO.copyFile(newTexture, file);
+				new ImageIcon(file.getAbsolutePath()).getImage().flush();
+				reloadElements();
+			}
 		}
 	}
 
