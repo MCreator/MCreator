@@ -16,7 +16,9 @@
               "processor_type": "minecraft:block_ignore",
               "blocks": [
                 <#list data.ignoredBlocks as block>
-                ${mappedMCItemToBlockStateJSON(block)}<#sep>,
+                {
+                  "Name": "${mappedMCItemToRegistryName(block)}"
+                }<#sep>,
                 </#list>
               ]
             }
