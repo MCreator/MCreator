@@ -19,7 +19,8 @@
 
 package net.mcreator.ui.modgui;
 
-import javafx.embed.swing.JFXPanel;
+import net.mcreator.ui.blockly.BlocklyPanel;
+import net.mcreator.ui.component.ITechnicalComponent;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
@@ -54,7 +55,7 @@ public interface ModElementChangedListener
 	 * @param component The UI element to register
 	 */
 	default void registerUI(JComponent component) {
-		if ("TechnicalComponent".equals(component.getName()))
+		if (component instanceof ITechnicalComponent)
 			return; // don't add listeners if component triggers actions not affecting mod element directly
 
 		if (component instanceof MCItemHolder itemHolder) {
@@ -75,7 +76,7 @@ public interface ModElementChangedListener
 			comboBox.addActionListener(this);
 		} else if (component instanceof JTextComponent textComponent) {
 			textComponent.getDocument().addDocumentListener(this);
-		} else if (component instanceof JFXPanel) {
+		} else if (component instanceof BlocklyPanel) {
 			component.addMouseListener(this);
 			component.addKeyListener(this);
 		} else if (!isGenericComponent(component)) {
