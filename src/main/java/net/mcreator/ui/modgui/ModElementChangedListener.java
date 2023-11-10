@@ -22,6 +22,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.component.ITechnicalComponent;
 import net.mcreator.ui.component.JItemListField;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
 
@@ -62,6 +63,8 @@ public interface ModElementChangedListener
 			itemHolder.addBlockSelectedListener(this);
 		} else if (component instanceof JItemListField<?> listField) {
 			listField.addChangeListener(this);
+		} else if (component instanceof JStringListField stringList) {
+			stringList.addChangeListener(this);
 		} else if (component instanceof JEntriesList entriesList) {
 			entriesList.addEntryRegisterListener(c -> {
 				registerUI(c);

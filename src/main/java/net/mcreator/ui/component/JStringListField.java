@@ -27,9 +27,12 @@ import net.mcreator.ui.validation.component.VTextField;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +47,8 @@ public class JStringListField extends JPanel {
 
 	private final TechnicalButton edit = new TechnicalButton(UIRES.get("18px.edit"));
 	private final TechnicalButton clear = new TechnicalButton(UIRES.get("18px.removeall"));
+
+	private final List<ChangeListener> changeListeners = new ArrayList<>();
 
 	private boolean uniqueEntries = false;
 
@@ -116,6 +121,13 @@ public class JStringListField extends JPanel {
 	}
 
 	/**
+	 * @param listener Listener object to be registered for listening to value changes of this component.
+	 */
+	public void addChangeListener(ChangeListener listener) {
+		changeListeners.add(listener);
+	}
+
+	/**
 	 * @param uniqueEntries Whether duplicate string entries in the list are forbidden.
 	 * @return This field instance.
 	 */
@@ -137,6 +149,7 @@ public class JStringListField extends JPanel {
 	public void setTextList(Collection<String> newTextList) {
 		entriesModel.clear();
 		entriesModel.addAll(newTextList);
+		changeListeners.forEach(l -> l.stateChanged(new ChangeEvent(newTextList)));
 	}
 
 	private static class CustomListCellRenderer extends JLabel implements ListCellRenderer<String> {
