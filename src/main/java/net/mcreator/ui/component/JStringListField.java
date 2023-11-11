@@ -103,7 +103,10 @@ public class JStringListField extends JPanel {
 		clear.setMargin(new Insets(0, 0, 0, 0));
 		clear.setBorder(BorderFactory.createEmptyBorder());
 		clear.setContentAreaFilled(false);
-		clear.addActionListener(e -> entriesModel.clear());
+		clear.addActionListener(e -> {
+			entriesModel.clear();
+			changeListeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
+		});
 
 		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, clear));
 		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
