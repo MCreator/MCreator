@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Structure;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.Transliteration;
@@ -51,6 +52,7 @@ import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class StructureGUI extends ModElementGUI<Structure> {
@@ -92,6 +94,9 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		JPanel pane5 = new JPanel(new BorderLayout(3, 3));
 
 		ComponentUtils.deriveFont(structureSelector, 16);
+
+		if (!isEditingMode())
+			ignoreBlocks.setListElements(List.of(new MItemBlock(modElement.getWorkspace(), "Blocks.STRUCTURE_BLOCK")));
 
 		JPanel params = new JPanel(new GridLayout(8, 2, 50, 2));
 		params.setOpaque(false);
