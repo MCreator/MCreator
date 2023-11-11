@@ -87,8 +87,8 @@ public class BlocklyPanel extends JFXPanel {
 			if (newXml.length() > MINIMAL_XML.length()) {
 				this.currentXML = newXml;
 
-				ThreadUtil.runOnSwingThread(
-						() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(newXml))));
+				ThreadUtil.runOnSwingThread(() -> changeListeners.forEach(
+						listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this))));
 
 				return true;
 			}

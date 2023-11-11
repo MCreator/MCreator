@@ -149,7 +149,7 @@ public class JStringListField extends JPanel {
 	public void setTextList(Collection<String> newTextList) {
 		entriesModel.clear();
 		entriesModel.addAll(newTextList);
-		changeListeners.forEach(l -> l.stateChanged(new ChangeEvent(newTextList)));
+		changeListeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
 	}
 
 	private static class CustomListCellRenderer extends JLabel implements ListCellRenderer<String> {
