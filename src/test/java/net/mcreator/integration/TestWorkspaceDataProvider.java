@@ -679,22 +679,23 @@ public class TestWorkspaceDataProvider {
 					Arrays.asList("WORLD_SURFACE_WG", "WORLD_SURFACE", "OCEAN_FLOOR_WG", "OCEAN_FLOOR",
 							"MOTION_BLOCKING", "MOTION_BLOCKING_NO_LEAVES"));
 			structure.ignoredBlocks = new ArrayList<>();
+			if (!emptyLists) {
+				structure.ignoredBlocks.addAll(
+						blocks.stream().skip(_true ? 0 : ((long) (blocks.size() / 4) * valueIndex))
+								.limit(blocks.size() / 4)
+								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+			}
 			structure.terrainAdaptation = getRandomString(random,
 					Arrays.asList("none", "beard_thin", "beard_box", "bury"));
 			structure.projection = getRandomString(random, Arrays.asList("rigid", "terrain_matching"));
 			structure.restrictionBiomes = new ArrayList<>();
 			structure.spacing = 14;
 			structure.separation = 6;
-			if (!emptyLists) {
-				structure.ignoredBlocks.addAll(
-						blocks.stream().skip(_true ? 0 : ((long) (blocks.size() / 4) * valueIndex))
-								.limit(blocks.size() / 4)
-								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+			if (_true) {
 				structure.restrictionBiomes.addAll(
 						biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_surface"));
+			} else {
 				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
-				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:test/tag"));
 			}
 			structure.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));
