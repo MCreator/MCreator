@@ -82,9 +82,6 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
-
-		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
-
 		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
 
 		JPanel page1 = new JPanel(new BorderLayout(10, 10));
