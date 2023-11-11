@@ -25,6 +25,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JMinMaxSpinner;
+import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -36,6 +37,7 @@ import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -69,7 +71,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	private final JMinMaxSpinner separation_spacing = new JMinMaxSpinner(2, 5, 0, 1000000, 1,
 			L10N.t("elementgui.structuregen.separation"), L10N.t("elementgui.structuregen.spacing"));
 
-	private final JComboBox<String> structureSelector = new JComboBox<>();
+	private final SearchableComboBox<String> structureSelector = new SearchableComboBox<>();
 
 	private final JComboBox<String> generationStep = new JComboBox<>();
 
@@ -149,6 +151,14 @@ public class StructureGUI extends ModElementGUI<Structure> {
 				new ItemListFieldSingleTagValidator(restrictionBiomes)));
 		page1group.addValidationElement(restrictionBiomes);
 
+		structureSelector.setValidator(() -> {
+			if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().isEmpty())
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("elementgui.structuregen.error_select_structure_spawn"));
+			return Validator.ValidationResult.PASSED;
+		});
+		page1group.addValidationElement(structureSelector);
+
 		addPage(pane5);
 	}
 
@@ -162,8 +172,6 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().toString().isEmpty())
-			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.structuregen.error_select_structure_spawn"));
 		return new AggregatedValidationResult(page1group);
 	}
 
