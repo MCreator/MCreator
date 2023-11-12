@@ -231,7 +231,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadCustomEntities(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
+		List<DataListEntry> retval = getCustomElements(workspace, mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
 		Collections.sort(retval);
 		return retval;
 	}
