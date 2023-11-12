@@ -36,16 +36,17 @@ import java.util.List;
 
 public class MCItemHolder extends JButton implements IValidable {
 
+	private static final Color err = new Color(204, 166, 175);
+	private static final Color warn = new Color(236, 238, 207);
+	private static final Color bg = new Color(140, 140, 140);
+
 	private String block = "";
 	private final MCItemSelectorDialog bs;
 
 	private boolean showValidation = true;
-	private final List<ActionListener> listeners = new ArrayList<>();
 	private boolean removeButtonHover;
 
-	private static final Color err = new Color(204, 166, 175);
-	private static final Color warn = new Color(236, 238, 207);
-	private static final Color bg = new Color(140, 140, 140);
+	private final List<ActionListener> listeners = new ArrayList<>();
 
 	private final MCreator mcreator;
 
@@ -64,11 +65,7 @@ public class MCItemHolder extends JButton implements IValidable {
 		bs.setItemSelectedListener(e -> {
 			MCItem bsa = bs.getSelectedMCItem();
 			if (bsa != null) {
-				setIcon(new ImageIcon(ImageUtils.resizeAA(bsa.icon.getImage(), 25)));
-				this.block = bsa.getName();
-				this.setToolTipText(bsa.getName());
-				listeners.forEach(listener -> listener.actionPerformed(new ActionEvent("", 0, "")));
-				getValidationStatus();
+				setBlock(new MItemBlock(mcreator.getWorkspace(), bsa.getName()));
 			}
 		});
 		initGUI();
