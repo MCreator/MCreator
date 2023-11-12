@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +19,7 @@
 
 package net.mcreator.element.types;
 
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.EntityEntry;
@@ -27,6 +29,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nonnull;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Locale;
@@ -57,6 +60,17 @@ import java.util.Locale;
 
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateTagPreviewPicture(type);
+	}
+
+	public static Color getColor(String type) {
+		return switch(type) {
+			case "Items" -> Dependency.getColor("itemstack");
+			case "Blocks" -> Dependency.getColor("blockstate");
+			case "Entities" -> Dependency.getColor("entity");
+			case "Functions" -> Dependency.getColor("string");
+			case "Biomes" -> Dependency.getColor("world");
+			default -> Color.WHITE;
+		};
 	}
 
 }

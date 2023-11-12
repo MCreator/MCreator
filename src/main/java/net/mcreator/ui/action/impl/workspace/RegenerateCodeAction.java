@@ -222,7 +222,7 @@ public class RegenerateCodeAction extends GradleAction {
 			mcreator.getGenerator().runResourceSetupTasks();
 			// generate base files without organizing imports as we first need all files generated so we can properly organize imports
 			mcreator.getGenerator().generateBase(false);
-			mcreator.mv.updateMods();
+			mcreator.mv.reloadElementsInCurrentTab();
 
 			// remove custom API libraries so they get re-downloaded
 			ModAPIManager.deleteAPIs(mcreator.getWorkspace(), mcreator.getWorkspaceSettings());

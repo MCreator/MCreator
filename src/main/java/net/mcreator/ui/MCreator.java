@@ -159,7 +159,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		mcreatorTabs.addTabShownListener(tab -> {
 			if (tab.equals(workspaceTab))
-				mv.updateMods();
+				mv.reloadElementsInCurrentTab();
 
 			menuBar.refreshMenuBar();
 

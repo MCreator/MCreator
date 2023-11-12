@@ -122,8 +122,9 @@ public class MCItemHolder extends JButton implements IValidable {
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (isEnabled()) {
-					if (e.getX() > 1 && e.getX() < 11 && e.getY() < getHeight() - 1 && e.getY() > getHeight() - 11
-							&& !block.isEmpty()) {
+					if ((e.getButton() == MouseEvent.BUTTON2
+							|| e.getX() > 1 && e.getX() < 11 && e.getY() < getHeight() - 1
+							&& e.getY() > getHeight() - 11) && !block.isEmpty()) {
 						setBlock(null);
 					} else {
 						bs.setVisible(true); // show block selector

@@ -686,12 +686,11 @@ public class TestWorkspaceDataProvider {
 			structure.restrictionBiomes = new ArrayList<>();
 			structure.spacing = 14;
 			structure.separation = 6;
-			if (!emptyLists) {
+			if (_true) {
 				structure.restrictionBiomes.addAll(
 						biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_surface"));
+			} else {
 				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
-				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:test/tag"));
 			}
 			structure.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));

@@ -1019,7 +1019,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.isReplaceable = isReplaceable.isSelected();
 		plant.colorOnMap = colorOnMap.getSelectedItem().toString();
 		plant.offsetType = (String) offsetType.getSelectedItem();
-		plant.aiPathNodeType = (String) aiPathNodeType.getSelectedItem();
+		plant.aiPathNodeType = aiPathNodeType.getSelectedItem();
 		plant.creativePickItem = creativePickItem.getBlock();
 		plant.flammability = (int) flammability.getValue();
 		plant.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();
