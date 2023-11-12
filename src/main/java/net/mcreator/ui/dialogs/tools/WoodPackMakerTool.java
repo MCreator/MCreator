@@ -113,7 +113,9 @@ public class WoodPackMakerTool {
 			double factor) {
 		if (!PackMakerToolUtils.checkIfNamesAvailable(workspace, name + "Wood", name + "Log", name + "Planks",
 				name + "Leaves", name + "Stairs", name + "Slab", name + "Fence", name + "FenceGate",
-				name + "PressurePlate", name + "Button", name + "ItemsTag", name + "WoodRecipe", name + "PlanksRecipe",
+				name + "PressurePlate", name + "Button", name + "StrippedLog", name + "StrippedWood",
+				name + "Sign", name + "Door", name + "Trapdoor", name + "Sapling",
+				name + "HangingSign", name + "ItemsTag", name + "WoodRecipe", name + "PlanksRecipe",
 				name + "StairsRecipe", name + "SlabRecipe", name + "FenceRecipe", name + "FenceGateRecipe",
 				name + "PressurePlateRecipe", name + "ButtonRecipe", name + "StickRecipe"))
 			return;
@@ -140,6 +142,23 @@ public class WoodPackMakerTool {
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(log.getImage()),
 				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(logTextureName), TextureType.BLOCK));
 
+		// generate stripped wood texture
+		ImageIcon strippedWood = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
+						"templates/textures/texturemaker/" + ListUtils.getRandomItem(
+								Arrays.asList("stripped_log_side", "stripped_log_top_outside")) + ".png")),
+				color, true);
+		String strippedWoodTextureName = (name + "_stripped_log_side").toLowerCase(Locale.ENGLISH);
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(wood.getImage()),
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(woodTextureName), TextureType.BLOCK));
+
+		// generate stripped log texture
+		ImageIcon strippedLog = ImageUtils.colorize(
+				ImageMakerTexturesCache.CACHE.get(new ResourcePointer("templates/textures/texturemaker/log_top.png")),
+				color, true);
+		String strippedLogTextureName = (name + "_stripped_log_top").toLowerCase(Locale.ENGLISH);
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(log.getImage()),
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(logTextureName), TextureType.BLOCK));
+
 		//then we generate the planks texture
 		ImageIcon planks = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
 				"templates/textures/texturemaker/" + ListUtils.getRandomItem(Arrays.asList("planks_0", "planks_1"))
@@ -156,6 +175,46 @@ public class WoodPackMakerTool {
 		String leavesTextureName = (name + "_leaves").toLowerCase(Locale.ENGLISH);
 		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(leaves.getImage()), mcreator.getFolderManager()
 				.getTextureFile(RegistryNameFixer.fix(leavesTextureName), TextureType.BLOCK));
+
+		// generate sign texture
+		ImageIcon sign = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
+						"templates/textures/texturemaker/" + ListUtils.getRandomItem(
+								Arrays.asList("sign", "sign_stand")) + ".png")),
+				color, true);
+		String signTextureName = (name + "_sign").toLowerCase(Locale.ENGLISH);
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(sign.getImage()),
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(signTextureName), TextureType.BLOCK));
+
+		// generate door texture
+		ImageIcon door = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
+						"templates/textures/texturemaker/" + ListUtils.getRandomItem(
+								Arrays.asList("door_top", "door_bottom")) + ".png")),
+				color, true);
+		String doorTextureName = (name + "_door").toLowerCase(Locale.ENGLISH);
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(door.getImage()),
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(doorTextureName), TextureType.BLOCK));
+
+		// generate trapdoor texture
+		ImageIcon trapdoor = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
+				"templates/textures/texturemaker/trapdoor.png")), color, true);
+		String trapdoorTextureName = (name + "_trapdoor").toLowerCase(Locale.ENGLISH);
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(trapdoor.getImage()),
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(trapdoorTextureName), TextureType.BLOCK));
+
+		// generate sapling texture
+		ImageIcon sapling = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
+				"templates/textures/texturemaker/sapling.png")), color, true);
+		String saplingTextureName = (name + "_sapling").toLowerCase(Locale.ENGLISH);
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(sapling.getImage()),
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(saplingTextureName), TextureType.BLOCK));
+
+		// generate hanging sign texture
+		ImageIcon hangingSign = ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(new ResourcePointer(
+				"templates/textures/texturemaker/hanging_sign.png")), color, true);
+		String hangingSignTextureName = (name + "_hanging_sign").toLowerCase(Locale.ENGLISH);
+		FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(hangingSign.getImage()),
+				mcreator.getFolderManager().getTextureFile(RegistryNameFixer.fix(hangingSignTextureName), TextureType.BLOCK));
+
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
 		Block woodBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
@@ -331,6 +390,86 @@ public class WoodPackMakerTool {
 		buttonBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, buttonBlock);
 
+		// create sign block
+		Block signBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "Sign", ModElementType.BLOCK), false).getElementFromGUI();
+		signBlock.name = name + " Sign";
+		signBlock.blockBase = "Sign";
+		signBlock.material = new Material(workspace, "WOOD");
+		signBlock.texture = signTextureName;
+		signBlock.soundOnStep = new StepSound(workspace, "WOOD");
+		signBlock.hardness = 1.0;
+		signBlock.resistance = 1.0;
+		signBlock.breakHarvestLevel = 0;
+		signBlock.lightOpacity = 0;
+		signBlock.flammability = 20;
+		signBlock.creativeTab = new TabEntry(workspace, "DECORATIONS");
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, signBlock);
+
+		// create door block
+		Block doorBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "Door", ModElementType.BLOCK), false).getElementFromGUI();
+		doorBlock.name = name + " Door";
+		doorBlock.blockBase = "Door";
+		doorBlock.material = new Material(workspace, "WOOD");
+		doorBlock.texture = doorTextureName;
+		doorBlock.soundOnStep = new StepSound(workspace, "WOOD");
+		doorBlock.hardness = 3.0;
+		doorBlock.resistance = 5.0;
+		doorBlock.breakHarvestLevel = 0;
+		doorBlock.lightOpacity = 0;
+		doorBlock.flammability = 20;
+		doorBlock.creativeTab = new TabEntry(workspace, "REDSTONE");
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, doorBlock);
+
+		// create trapdoor block
+		Block trapdoorBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "Trapdoor", ModElementType.BLOCK), false).getElementFromGUI();
+		trapdoorBlock.name = name + " Trapdoor";
+		trapdoorBlock.blockBase = "Trapdoor";
+		trapdoorBlock.material = new Material(workspace, "WOOD");
+		trapdoorBlock.texture = trapdoorTextureName;
+		trapdoorBlock.soundOnStep = new StepSound(workspace, "WOOD");
+		trapdoorBlock.hardness = 2.0;
+		trapdoorBlock.resistance = 3.0;
+		trapdoorBlock.breakHarvestLevel = 0;
+		trapdoorBlock.lightOpacity = 0;
+		trapdoorBlock.flammability = 20;
+		trapdoorBlock.creativeTab = new TabEntry(workspace, "REDSTONE");
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, trapdoorBlock);
+
+		// create sapling block
+		Block saplingBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "Sapling", ModElementType.BLOCK), false).getElementFromGUI();
+		saplingBlock.name = name + " Sapling";
+		saplingBlock.blockBase = "Sapling";
+		saplingBlock.material = new Material(workspace, "WOOD");
+		saplingBlock.texture = saplingTextureName;
+		saplingBlock.soundOnStep = new StepSound(workspace, "WOOD");
+		saplingBlock.hardness = 0.0;
+		saplingBlock.resistance = 0.0;
+		saplingBlock.breakHarvestLevel = 0;
+		saplingBlock.lightOpacity = 0;
+		saplingBlock.flammability = 100;
+		saplingBlock.creativeTab = new TabEntry(workspace, "DECORATIONS");
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, saplingBlock);
+
+		// create hanging sign block
+		Block hangingSignBlock = (Block) ModElementType.BLOCK.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "HangingSign", ModElementType.BLOCK), false).getElementFromGUI();
+		hangingSignBlock.name = name + " Hanging Sign";
+		hangingSignBlock.blockBase = "HangingSign";
+		hangingSignBlock.material = new Material(workspace, "WOOD");
+		hangingSignBlock.texture = hangingSignTextureName;
+		hangingSignBlock.soundOnStep = new StepSound(workspace, "WOOD");
+		hangingSignBlock.hardness = 1.0;
+		hangingSignBlock.resistance = 1.0;
+		hangingSignBlock.breakHarvestLevel = 0;
+		hangingSignBlock.lightOpacity = 0;
+		hangingSignBlock.flammability = 20;
+		hangingSignBlock.creativeTab = new TabEntry(workspace, "DECORATIONS");
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, hangingSignBlock);
+
 		//Tag - Items
 		//Mainly used for recipes and loot tables
 		Tag woodItemTag = (Tag) ModElementType.TAG.getModElementGUI(mcreator,
@@ -450,6 +589,70 @@ public class WoodPackMakerTool {
 		stickRecipe.recipeReturnStack = new MItemBlock(workspace, "Items.STICK");
 		stickRecipe.recipeRetstackSize = 4;
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, stickRecipe);
+
+		// create sign recipe
+		Recipe signRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "SignRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		signRecipe.craftingBookCategory = "DECORATIONS";
+		signRecipe.group = "wooden_sign";
+		signRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		signRecipe.recipeSlots[1] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		signRecipe.recipeSlots[2] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		signRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		signRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		signRecipe.recipeSlots[5] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		signRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
+		signRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Sign");
+		signRecipe.recipeRetstackSize = 3;  // Adjusted for three signs in a single recipe
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, signRecipe);
+
+		// create door recipe
+		Recipe doorRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "DoorRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		doorRecipe.craftingBookCategory = "REDSTONE";
+		doorRecipe.group = "wooden_door";
+		doorRecipe.recipeSlots[0] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		doorRecipe.recipeSlots[1] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		doorRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		doorRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		doorRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		doorRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		doorRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Door");
+		doorRecipe.recipeRetstackSize = 3;  // Adjusted for three doors in a single recipe
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, doorRecipe);
+
+		// create trapdoor recipe
+		Recipe trapdoorRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "TrapdoorRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		trapdoorRecipe.craftingBookCategory = "REDSTONE";
+		trapdoorRecipe.group = "wooden_trapdoor";
+		trapdoorRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		trapdoorRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		trapdoorRecipe.recipeSlots[5] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		trapdoorRecipe.recipeSlots[6] = new MItemBlock(workspace, "Items.STICK");
+		trapdoorRecipe.recipeSlots[7] = new MItemBlock(workspace, "Items.STICK");
+		trapdoorRecipe.recipeSlots[8] = new MItemBlock(workspace, "Items.STICK");
+		trapdoorRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "Trapdoor");
+		trapdoorRecipe.recipeRetstackSize = 2;  // Adjusted for two trapdoors in a single recipe
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, trapdoorRecipe);
+
+		// create hanging sign recipe
+		Recipe hangingSignRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
+				new ModElement(workspace, name + "HangingSignRecipe", ModElementType.RECIPE), false).getElementFromGUI();
+		hangingSignRecipe.craftingBookCategory = "DECORATIONS";
+		hangingSignRecipe.group = "wooden_hanging_sign";
+		hangingSignRecipe.recipeSlots[0] = new MItemBlock(workspace, "Items.CHAIN");
+		hangingSignRecipe.recipeSlots[2] = new MItemBlock(workspace, "Items.CHAIN");
+		hangingSignRecipe.recipeSlots[3] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		hangingSignRecipe.recipeSlots[4] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		hangingSignRecipe.recipeSlots[5] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		hangingSignRecipe.recipeSlots[6] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		hangingSignRecipe.recipeSlots[7] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		hangingSignRecipe.recipeSlots[8] = new MItemBlock(workspace, "CUSTOM:" + planksBlock.getModElement().getName());
+		hangingSignRecipe.recipeReturnStack = new MItemBlock(workspace, "CUSTOM:" + name + "HangingSign");
+		hangingSignRecipe.recipeRetstackSize = 1;
+		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, hangingSignRecipe);
+
 	}
 
 	public static BasicAction getAction(ActionRegistry actionRegistry) {
