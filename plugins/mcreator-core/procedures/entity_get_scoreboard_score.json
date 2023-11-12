@@ -16,7 +16,7 @@
   "colour": "%{BKY_MATH_HUE}",
   "mcreator": {
     "group": "scoreboard",
-    "toolbox_id": "entitydata",
+    "toolbox_id": "scoreboard",
     "toolbox_init": [
       "<value name=\"score\"><block type=\"text\"><field name=\"TEXT\">custom_score</field></block></value>",
       "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>"

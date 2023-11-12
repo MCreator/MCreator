@@ -76,7 +76,7 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends JPanel {
 
-	private FilterModel dml = new FilterModel();
+	private final FilterModel dml = new FilterModel();
 	public final JTextField search;
 
 	public FolderElement currentFolder;
@@ -203,7 +203,7 @@ import java.util.stream.Collectors;
 					}
 				}
 				mcreator.getWorkspace().markDirty();
-				reloadElements();
+				sectionTabs.get("mods").reloadElements();
 			} else {
 				Toolkit.getDefaultToolkit().beep();
 			}
@@ -340,15 +340,15 @@ import java.util.stream.Collectors;
 		search.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override public void removeUpdate(DocumentEvent arg0) {
-				refilterElements();
+				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 			}
 
 			@Override public void insertUpdate(DocumentEvent arg0) {
-				refilterElements();
+				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 			}
 
 			@Override public void changedUpdate(DocumentEvent arg0) {
-				refilterElements();
+				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 			}
 		});
 
@@ -572,12 +572,12 @@ import java.util.stream.Collectors;
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
 		filterPopup.add(
-				new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"), e -> togglefilter("f:locked")));
+				new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"), e -> toggleFilter("f:locked")));
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
-				e -> togglefilter("f:err")));
+				e -> toggleFilter("f:err")));
 		filterPopup.addSeparator();
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
-			filterPopup.add(new UnregisteredAction(type.getReadableName(), e -> togglefilter(
+			filterPopup.add(new UnregisteredAction(type.getReadableName(), e -> toggleFilter(
 					"f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))).setIcon(
 					new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
 		}
@@ -878,7 +878,7 @@ import java.util.stream.Collectors;
 						(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			}
 			cardLayout.show(panels, id);
-			updateMods();
+			reloadElementsInCurrentTab();
 			modElementsBar.setVisible(id.equals("mods"));
 		}
 	}
@@ -887,7 +887,7 @@ import java.util.stream.Collectors;
 		search.setText(null); // clear the search bar
 		currentFolder = switchTo;
 
-		reloadElements();
+		sectionTabs.get("mods").reloadElements();
 
 		// reload breadcrumb
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
@@ -895,7 +895,7 @@ import java.util.stream.Collectors;
 		upFolder.setEnabled(!currentFolder.isRoot());
 	}
 
-	private void togglefilter(String filter) {
+	private void toggleFilter(String filter) {
 		String currentSearchText = search.getText().trim();
 		if (currentSearchText.contains(filter)) {
 			search.setText(currentSearchText.replace(filter, "").replaceAll("\\s{2,}", " ").trim());
@@ -917,7 +917,7 @@ import java.util.stream.Collectors;
 
 		PreferencesManager.PREFERENCES.hidden.workspaceSortAscending.set(!desc.isSelected());
 
-		refilterElements();
+		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 	}
 
 	private void updateElementListRenderer() {
@@ -998,8 +998,7 @@ import java.util.stream.Collectors;
 		} else {
 			JOptionPane.showMessageDialog(mcreator,
 					L10N.t("workspace.elements.edit_registry_names.not_possible_message"),
-					L10N.t("workspace.elements.edit_registry_names.not_possible_title"),
-					JOptionPane.WARNING_MESSAGE);
+					L10N.t("workspace.elements.edit_registry_names.not_possible_title"), JOptionPane.WARNING_MESSAGE);
 		}
 	}
 
@@ -1029,7 +1028,7 @@ import java.util.stream.Collectors;
 						mcreator.getWorkspace().markDirty();
 					}
 				});
-				updateMods();
+				reloadElementsInCurrentTab();
 
 				p0.markStateOk();
 
@@ -1154,7 +1153,7 @@ import java.util.stream.Collectors;
 
 					mcreator.getWorkspace().addModElement(duplicateModElement);
 
-					updateMods();
+					reloadElementsInCurrentTab();
 				}
 			}
 		}
@@ -1255,7 +1254,7 @@ import java.util.stream.Collectors;
 							folder.getParent().removeChild(folder);
 						}
 					});
-					updateMods();
+					reloadElementsInCurrentTab();
 
 					if (buildNeeded.get())
 						mcreator.actionRegistry.buildWorkspace.doAction();
@@ -1271,7 +1270,7 @@ import java.util.stream.Collectors;
 		if (name != null) {
 			currentFolder.addChild(new FolderElement(name, currentFolder));
 			mcreator.getWorkspace().markDirty();
-			reloadElements();
+			sectionTabs.get("mods").reloadElements();
 		}
 	}
 
@@ -1282,84 +1281,12 @@ import java.util.stream.Collectors;
 			selected.setName(mcreator.getWorkspace(), newName);
 
 			mcreator.getWorkspace().markDirty();
-			reloadElements();
+			sectionTabs.get("mods").reloadElements();
 		}
 	}
 
-	private boolean updateRunning = false;
-
-	public synchronized void updateMods() {
-		if (updateRunning)
-			return;
-
-		updateRunning = true;
-
+	public synchronized void reloadElementsInCurrentTab() {
 		sectionTabs.get(currentTab).reloadElements();
-
-		updateRunning = false;
-	}
-
-	public void reloadElements() {
-		if (mcreator.getWorkspaceSettings() != null) {
-			// first we need to get current folder from the workspace
-			// as current reference to the folder may be out of date (eg. reload from disk)
-			List<FolderElement> folders = mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren();
-			int folderIdx = folders.indexOf(currentFolder);
-			if (folderIdx == -1) {
-				currentFolder = mcreator.getWorkspace().getFoldersRoot();
-			} else {
-				currentFolder = folders.get(folderIdx);
-			}
-
-			if (mcreator.getWorkspace().getModElements().stream()
-					.anyMatch(el -> currentFolder.equals(el.getFolderPath()))
-					|| !currentFolder.getDirectFolderChildren().isEmpty()) {
-				mainpcl.show(mainp, "sp");
-
-				// reload list model partially in the background
-				new Thread(() -> {
-					List<IElement> selected = list.getSelectedValuesList();
-
-					FilterModel newModel = new FilterModel();
-
-					// add folders
-					currentFolder.getRecursiveFolderChildren().forEach(newModel::addElement);
-
-					// add mod elements
-					mcreator.getWorkspace().getModElements().forEach(newModel::addElement);
-
-					SwingUtilities.invokeLater(() -> {
-						list.setModel(dml = newModel);
-
-						ListUtil.setSelectedValues(list, selected);
-
-						this.refilterElements();
-					});
-				}, "WorkspaceListReloader").start();
-			} else {
-				mainpcl.show(mainp, "ep");
-			}
-
-			if (mcreator.getWorkspace().getModElements().isEmpty()) {
-				elementsCount.setText(L10N.t("workspace.stats.empty", mcreator.getWorkspaceSettings().getModName(),
-						mcreator.getGenerator().getGeneratorName()));
-			} else {
-				elementsCount.setText(
-						L10N.t("workspace.stats.current_workspace", mcreator.getWorkspaceSettings().getModName(),
-								mcreator.getGenerator().getGeneratorName(),
-								mcreator.getWorkspace().getModElements().size()));
-			}
-
-			if (mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("mcreator_link")) {
-				elementsCount.setIcon(UIRES.get("16px.link"));
-			} else {
-				elementsCount.setIcon(new EmptyIcon(0, 0));
-			}
-		}
-	}
-
-	public void refilterElements() {
-		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 	}
 
 	public MCreator getMCreator() {
@@ -1370,12 +1297,16 @@ import java.util.stream.Collectors;
 		ArrayList<IElement> items;
 		ArrayList<IElement> filterItems;
 
-		final Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
+		private final static Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
 
 		FilterModel() {
-			super();
 			items = new ArrayList<>();
 			filterItems = new ArrayList<>();
+		}
+
+		@Override public void addAll(Collection<? extends IElement> collection) {
+			items.addAll(collection);
+			refilter();
 		}
 
 		@Override public IElement getElementAt(int index) {
@@ -1533,11 +1464,57 @@ import java.util.stream.Collectors;
 		}
 
 		@Override public void reloadElements() {
-			WorkspacePanel.this.reloadElements();
+			if (mcreator.getWorkspaceSettings() != null) {
+				// first we need to get current folder from the workspace
+				// as current reference to the folder may be out of date (e.g. reload from disk)
+				List<FolderElement> folders = mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren();
+				int folderIdx = folders.indexOf(currentFolder);
+				if (folderIdx == -1) {
+					currentFolder = mcreator.getWorkspace().getFoldersRoot();
+				} else {
+					currentFolder = folders.get(folderIdx);
+				}
+
+				if (mcreator.getWorkspace().getModElements().stream()
+						.anyMatch(el -> currentFolder.equals(el.getFolderPath()))
+						|| !currentFolder.getDirectFolderChildren().isEmpty()) {
+					mainpcl.show(mainp, "sp");
+
+					// add folders
+					ArrayList<IElement> newDataModel = new ArrayList<>(currentFolder.getRecursiveFolderChildren());
+
+					// add mod elements
+					newDataModel.addAll(mcreator.getWorkspace().getModElements());
+
+					List<IElement> selected = list.getSelectedValuesList();
+					dml.removeAllElements();
+					dml.addAll(newDataModel);
+					ListUtil.setSelectedValues(list, selected);
+				} else {
+					mainpcl.show(mainp, "ep");
+				}
+
+				if (mcreator.getWorkspace().getModElements().isEmpty()) {
+					elementsCount.setText(L10N.t("workspace.stats.empty", mcreator.getWorkspaceSettings().getModName(),
+							mcreator.getGenerator().getGeneratorName()));
+				} else {
+					elementsCount.setText(
+							L10N.t("workspace.stats.current_workspace", mcreator.getWorkspaceSettings().getModName(),
+									mcreator.getGenerator().getGeneratorName(),
+									mcreator.getWorkspace().getModElements().size()));
+				}
+
+				if (mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("mcreator_link")) {
+					elementsCount.setIcon(UIRES.get("16px.link"));
+				} else {
+					elementsCount.setIcon(new EmptyIcon(0, 0));
+				}
+			}
 		}
 
 		@Override public void refilterElements() {
 			dml.refilter();
 		}
 	}
+
 }

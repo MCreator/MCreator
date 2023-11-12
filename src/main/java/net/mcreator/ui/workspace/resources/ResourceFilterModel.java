@@ -60,6 +60,11 @@ public class ResourceFilterModel<T> extends DefaultListModel<T> {
 		filterItems = new ArrayList<>();
 	}
 
+	@Override public void addAll(Collection<? extends T> collection) {
+		items.addAll(collection);
+		refilter();
+	}
+
 	@SuppressWarnings("SuspiciousMethodCalls") @Override public int indexOf(Object elem) {
 		try {
 			return filterItems.indexOf(elem);
