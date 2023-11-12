@@ -1,5 +1,4 @@
 name: Add-On for Bedrock Edition @minecraft
-partial_support: [item, food, biome, tool, block, mob]
 status: experimental
 buildfileversion: 1.3
 

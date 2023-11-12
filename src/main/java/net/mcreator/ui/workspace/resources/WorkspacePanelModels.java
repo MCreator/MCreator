@@ -18,21 +18,18 @@
 
 package net.mcreator.ui.workspace.resources;
 
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.JavaModelAnimationEditorDialog;
-import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.TextureMappingDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.StringUtils;
-import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -41,9 +38,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.*;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.*;
 
 public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
@@ -98,8 +94,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 						L10N.t("dialog.search_usages.type.resource.model"), refs);
 			}
 		});
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
-				e -> deleteCurrentlySelected());
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"), e -> deleteCurrentlySelected());
 	}
 
 	@Override void deleteCurrentlySelected() {
@@ -123,8 +118,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 
 	@Override public void reloadElements() {
 		filterModel.removeAllElements();
-		Model.getModels(workspacePanel.getMCreator().getWorkspace()).forEach(filterModel::addElement);
-		refilterElements();
+		filterModel.addAll(Model.getModels(workspacePanel.getMCreator().getWorkspace()));
 	}
 
 	private void editSelectedModelAnimations() {
@@ -135,45 +129,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 			code = JavaModelAnimationEditorDialog.openAnimationEditorDialog(workspacePanel.getMCreator(), code);
 			if (code != null) {
 				FileIO.writeStringToFile(code, file);
-
-				ProgressDialog dial = new ProgressDialog(workspacePanel.getMCreator(),
-						L10N.t("workspace.3dmodels.regenerating_code"));
-				Thread t = new Thread(() -> {
-					ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
-							L10N.t("workspace.3dmodels.regenerating_entity_code"));
-					dial.addProgress(p0);
-
-					AtomicInteger i = new AtomicInteger();
-					// this model might be in use, we need to regenerate code of mobs
-					workspacePanel.getMCreator().getWorkspace().getModElements().forEach(e -> {
-						if (e.getType() == ModElementType.LIVINGENTITY && !e.isCodeLocked()) {
-							GeneratableElement generatableElement = e.getGeneratableElement();
-							if (generatableElement != null) {
-								// generate mod element
-								workspacePanel.getMCreator().getGenerator().generateElement(generatableElement);
-							}
-						}
-
-						i.getAndIncrement();
-						p0.setPercent((int) (((float) i.get() / (float) workspacePanel.getMCreator().getWorkspace()
-								.getModElements().size()) * 100.0f));
-						dial.refreshDisplay();
-					});
-
-					p0.ok();
-					dial.refreshDisplay();
-
-					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
-							L10N.t("workspace.3dmodels.rebuilding_workspace"));
-					dial.addProgress(p2);
-					workspacePanel.getMCreator().actionRegistry.buildWorkspace.doAction();
-					p2.ok();
-					dial.refreshDisplay();
-
-					dial.hideAll();
-				}, "WorkspaceModelsReload");
-				t.start();
-				dial.setVisible(true);
+				workspacePanel.getMCreator().actionRegistry.buildWorkspace.doAction();
 			}
 		} else {
 			JOptionPane.showMessageDialog(workspacePanel.getMCreator(),

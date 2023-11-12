@@ -111,6 +111,19 @@ public class DialogsTest {
 						GeneratorFlavor.FORGE, true));
 	}
 
+	@Test public void testProgressDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> {
+			ProgressDialog dialog = new ProgressDialog(null, "Test progress dialog");
+			ProgressDialog.ProgressUnit unit = new ProgressDialog.ProgressUnit("Test progress unit");
+			dialog.addProgressUnit(unit);
+			unit.setPercent(50);
+			unit.markStateError();
+			unit.markStateWarning();
+			unit.markStateOk();
+			dialog.setVisible(true);
+		});
+	}
+
 	@Test public void testAboutDialog() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AboutAction.showDialog(mcreator));
 	}

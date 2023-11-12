@@ -111,7 +111,7 @@ public class InjectTagsTool {
 		ok.addActionListener(e -> {
 			dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 			callables.forEach(c -> c.accept(false));
-			mcreator.mv.updateMods();
+			mcreator.mv.reloadElementsInCurrentTab();
 			dialog.setCursor(Cursor.getDefaultCursor());
 			dialog.setVisible(false);
 		});
