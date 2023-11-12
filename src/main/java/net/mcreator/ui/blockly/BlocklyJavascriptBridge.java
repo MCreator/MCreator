@@ -139,7 +139,7 @@ public class BlocklyJavascriptBridge {
 			case "spawnableEntity" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "entity");
-			case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUI(w).toArray(String[]::new), "gui");
+			case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUIs(w).toArray(String[]::new), "gui");
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"biome");
@@ -307,7 +307,7 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "gui":
-			retval = ElementUtil.loadBasicGUI(workspace);
+			retval = ElementUtil.loadBasicGUIs(workspace);
 			break;
 		case "achievement":
 			return ElementUtil.loadAllAchievements(workspace).stream().map(DataListEntry::getName)
