@@ -26,7 +26,6 @@ import net.mcreator.util.YamlUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.snakeyaml.engine.v2.api.Load;
-import org.snakeyaml.engine.v2.api.LoadSettings;
 
 import java.io.IOException;
 import java.net.URL;
@@ -62,7 +61,8 @@ public class MappingLoader {
 					String config = FileIO.readResourceToString(resource);
 
 					try {
-						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(new LinkedHashMap<>((Map<?, ?>) yamlLoad.loadFromString(config)));
+						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(
+								new LinkedHashMap<>((Map<?, ?>) yamlLoad.loadFromString(config)));
 
 						boolean mergeWithExisting = true;
 						if (mappingsFromFile.containsKey("_merge_with_existing"))
@@ -79,7 +79,8 @@ public class MappingLoader {
 							mappings.put(mappingName, merged);
 						}
 					} catch (Exception e) {
-						LOG.error("[" + mappingName + "] Error: " + e.getMessage());
+						LOG.error("[" + mappingName + "] Error: " + e.getMessage() + " for mapping file "
+								+ mappingResource);
 					}
 				});
 			} catch (IOException e) {

@@ -49,7 +49,7 @@ public class ModElementTypeLoader {
 		ModElementType.KEYBIND = register(new ModElementType<>("keybind", 'k', BaseType.OTHER, KeyBindGUI::new, KeyBinding.class));
 		ModElementType.LIVINGENTITY = register(new ModElementType<>("livingentity", 'e', BaseType.ENTITY, LivingEntityGUI::new, LivingEntity.class));
 		ModElementType.LOOTTABLE = register(new ModElementType<>("loottable", 'l', BaseType.DATAPACK, LootTableGUI::new, LootTable.class));
-		ModElementType.MUSICDISC = register(new ModElementType<>("musicdisc", 'x', BaseType.OTHER, MusicDiscGUI::new, MusicDisc.class));
+		ModElementType.MUSICDISC = register(new ModElementType<>("musicdisc", 'x', BaseType.ITEM, MusicDiscGUI::new, MusicDisc.class));
 		ModElementType.OVERLAY = register(new ModElementType<>("overlay", 'v', BaseType.OTHER, OverlayGUI::new, Overlay.class));
 		ModElementType.PAINTING = register(new ModElementType<>("painting", null, BaseType.OTHER, PaintingGUI::new, Painting.class));
 		ModElementType.PARTICLE = register(new ModElementType<>("particle", 'y', BaseType.OTHER, ParticleGUI::new, Particle.class));
@@ -57,9 +57,9 @@ public class ModElementTypeLoader {
 		ModElementType.POTION = register(new ModElementType<>("potion", 'z', BaseType.OTHER, PotionGUI::new, Potion.class));
 		ModElementType.POTIONEFFECT = register(new ModElementType<>("potioneffect", null, BaseType.OTHER, PotionEffectGUI::new, PotionEffect.class));
 		ModElementType.PROCEDURE = register(new ModElementType<>("procedure", 'p', BaseType.OTHER, ProcedureGUI::new, Procedure.class));
-		ModElementType.RANGEDITEM = register(new ModElementType<>("rangeditem", 'q', BaseType.ITEM, RangedItemGUI::new, RangedItem.class));
+		ModElementType.PROJECTILE = register(new ModElementType<>("projectile", 'q', BaseType.ENTITY, ProjectileGUI::new, Projectile.class));
 		ModElementType.RECIPE = register(new ModElementType<>("recipe", 'r', BaseType.DATAPACK, RecipeGUI::new, Recipe.class));
-		ModElementType.STRUCTURE = register(new ModElementType<>("structure", 's', BaseType.FEATURE, StructureGenGUI::new, Structure.class));
+		ModElementType.STRUCTURE = register(new ModElementType<>("structure", 's', BaseType.DATAPACK, StructureGUI::new, Structure.class));
 		ModElementType.TAB = register(new ModElementType<>("tab", 'w', BaseType.OTHER, TabGUI::new, Tab.class));
 		ModElementType.TAG = register(new ModElementType<>("tag", 'j', BaseType.DATAPACK, TagGUI::new, Tag.class));
 		ModElementType.TOOL = register(new ModElementType<>("tool", 't', BaseType.ITEM, ToolGUI::new, Tool.class));
@@ -79,9 +79,7 @@ public class ModElementTypeLoader {
 
 	public static ModElementType<?> getModElementType(String typeName) throws IllegalArgumentException {
 		// legacy support in case name was not converted up to this point
-		if (typeName.equals("gun")) {
-			typeName = "rangeditem";
-		} else if (typeName.equals("mob")) {
+		if (typeName.equals("mob")) {
 			typeName = "livingentity";
 		}
 

@@ -143,18 +143,13 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(iconComponent, selp, 30, 30)));
 		pane3.setOpaque(false);
 
-		JPanel events = new JPanel();
-		events.setLayout(new BoxLayout(events, BoxLayout.PAGE_AXIS));
-		JPanel events2 = new JPanel(new GridLayout(2, 2, 8, 8));
-		events2.setOpaque(false);
-		events2.add(onStarted);
-		events2.add(onExpired);
-		events2.add(activeTickCondition);
-		events2.add(onActiveTick);
-		events.add(PanelUtils.join(events2));
+		JPanel events = new JPanel(new GridLayout(1, 4, 5, 5));
 		events.setOpaque(false);
+		events.add(onStarted);
+		events.add(onExpired);
+		events.add(activeTickCondition);
+		events.add(onActiveTick);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
-		pane4.setOpaque(false);
 		pane4.setOpaque(false);
 
 		icon.setValidator(new TileHolderValidator(icon));

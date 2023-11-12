@@ -50,12 +50,16 @@ import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.lang.module.ModuleDescriptor;
 import java.util.List;
@@ -78,15 +82,7 @@ public class WorkspaceDialogs {
 			else
 				showErrorsMessage(mcreator, new AggregatedValidationResult(wdp.validationGroup));
 		});
-
-		workspaceDialog.addWindowListener(new WindowAdapter() {
-			@Override public void windowClosed(WindowEvent windowEvent) {
-				if (wdp.validationGroup.validateIsErrorFree())
-					workspaceDialog.setVisible(false);
-				else
-					showErrorsMessage(mcreator, new AggregatedValidationResult(wdp.validationGroup));
-			}
-		});
+		workspaceDialog.setClosable(false);
 
 		workspaceDialog.getRootPane().setDefaultButton(ok);
 		workspaceDialog.pack();
@@ -188,7 +184,7 @@ public class WorkspaceDialogs {
 				JTabbedPane master = new JTabbedPane();
 				master.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 				master.setForeground(Color.white);
-				master.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
+				master.setUI(new BasicTabbedPaneUI() {
 					@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 					}
 				});

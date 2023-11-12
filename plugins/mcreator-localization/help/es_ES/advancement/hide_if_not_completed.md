@@ -1,0 +1,1 @@
+Este parámetro esconde el logro en la pestaña de avances hasta que se ha conseguido.

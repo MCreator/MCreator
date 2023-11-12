@@ -21,7 +21,10 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.parts.Material;
+import net.mcreator.element.parts.StepSound;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.InputSlot;
 import net.mcreator.element.parts.gui.OutputSlot;
@@ -183,7 +186,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "NONE", "XZ", "XYZ" });
-	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
+	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
@@ -219,7 +222,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox hasInventory = L10N.checkbox("elementgui.block.has_inventory");
 
 	private final JCheckBox openGUIOnRightClick = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> guiBoundTo = new JComboBox<>();
+	private final SearchableComboBox<String> guiBoundTo = new SearchableComboBox<>();
 
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
@@ -232,7 +235,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page3group = new ValidationGroup();
 
-	private final JComboBox<String> blockBase = new JComboBox<>(
+	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
 					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" });
 
@@ -883,25 +886,25 @@ public class BlockGUI extends ModElementGUI<Block> {
 				PanelUtils.westAndEastElement(selp, PanelUtils.centerAndSouthElement(selp3, soundProperties))));
 		pane3.setOpaque(false);
 
-		JPanel events2 = new JPanel(new GridLayout(4, 5, 5, 5));
-		events2.setOpaque(false);
+		JPanel events = new JPanel(new GridLayout(4, 5, 5, 5));
+		events.setOpaque(false);
 
-		events2.add(onRightClicked);
-		events2.add(onBlockAdded);
-		events2.add(onNeighbourBlockChanges);
-		events2.add(onTickUpdate);
-		events2.add(onDestroyedByPlayer);
-		events2.add(onDestroyedByExplosion);
-		events2.add(onStartToDestroy);
-		events2.add(onEntityCollides);
-		events2.add(onEntityWalksOn);
-		events2.add(onHitByProjectile);
-		events2.add(onBlockPlayedBy);
-		events2.add(onRedstoneOn);
-		events2.add(onRedstoneOff);
-		events2.add(onRandomUpdateEvent);
+		events.add(onRightClicked);
+		events.add(onBlockAdded);
+		events.add(onNeighbourBlockChanges);
+		events.add(onTickUpdate);
+		events.add(onDestroyedByPlayer);
+		events.add(onDestroyedByExplosion);
+		events.add(onStartToDestroy);
+		events.add(onEntityCollides);
+		events.add(onEntityWalksOn);
+		events.add(onHitByProjectile);
+		events.add(onBlockPlayedBy);
+		events.add(onRedstoneOn);
+		events.add(onRedstoneOff);
+		events.add(onRandomUpdateEvent);
 
-		pane4.add("Center", PanelUtils.totalCenterInPanel(events2));
+		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 
 		pane4.setOpaque(false);
 
@@ -963,7 +966,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
-				String selected = (String) guiBoundTo.getSelectedItem();
+				String selected = guiBoundTo.getSelectedItem();
 				if (selected != null) {
 					ModElement element = mcreator.getWorkspace().getModElementByName(selected);
 					if (element != null) {
@@ -1484,7 +1487,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.transparencyType = (String) transparencyType.getSelectedItem();
 		block.tintType = (String) tintType.getSelectedItem();
 		block.isItemTinted = isItemTinted.isSelected();
-		block.guiBoundTo = (String) guiBoundTo.getSelectedItem();
+		block.guiBoundTo = guiBoundTo.getSelectedItem();
 		block.rotationMode = rotationMode.getSelectedIndex();
 		block.enablePitch = enablePitch.isSelected();
 		block.enchantPowerBonus = (double) enchantPowerBonus.getValue();
@@ -1587,7 +1590,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.canProvidePower = canProvidePower.isSelected();
 		block.colorOnMap = colorOnMap.getSelectedItem().toString();
 		block.offsetType = (String) offsetType.getSelectedItem();
-		block.aiPathNodeType = (String) aiPathNodeType.getSelectedItem();
+		block.aiPathNodeType = aiPathNodeType.getSelectedItem();
 		block.creativePickItem = creativePickItem.getBlock();
 		block.placingCondition = placingCondition.getSelectedProcedure();
 
@@ -1601,7 +1604,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.jumpFactor = (double) jumpFactor.getValue();
 
 		if (blockBase.getSelectedIndex() != 0)
-			block.blockBase = (String) blockBase.getSelectedItem();
+			block.blockBase = blockBase.getSelectedItem();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;

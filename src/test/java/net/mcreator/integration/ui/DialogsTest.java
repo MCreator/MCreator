@@ -55,11 +55,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
@@ -113,6 +109,19 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> GeneratorSelector.getGeneratorSelector(mcreator, mcreator.getGeneratorConfiguration(),
 						GeneratorFlavor.FORGE, true));
+	}
+
+	@Test public void testProgressDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> {
+			ProgressDialog dialog = new ProgressDialog(null, "Test progress dialog");
+			ProgressDialog.ProgressUnit unit = new ProgressDialog.ProgressUnit("Test progress unit");
+			dialog.addProgressUnit(unit);
+			unit.setPercent(50);
+			unit.markStateError();
+			unit.markStateWarning();
+			unit.markStateOk();
+			dialog.setVisible(true);
+		});
 	}
 
 	@Test public void testAboutDialog() throws Throwable {
@@ -184,7 +193,8 @@ public class DialogsTest {
 		testProps.add(new PropertyData.IntegerType("integer2", -100, 100));
 		testProps.add(new PropertyData.NumberType("number"));
 		testProps.add(new PropertyData.NumberType("number2", -0.0001, 1000000));
-		testProps.add(new PropertyData.StringType("text", ElementUtil.loadDirections()));
+		testProps.add(new PropertyData.StringType("text"));
+		testProps.add(new PropertyData.StringType("text2", ElementUtil.loadDirections()));
 		Random rng = new Random();
 		StateMap testState = new StateMap();
 		if (rng.nextBoolean())
@@ -199,6 +209,8 @@ public class DialogsTest {
 			testState.put(testProps.get(4), rng.nextDouble());
 		if (rng.nextBoolean())
 			testState.put(testProps.get(5), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
+		if (rng.nextBoolean())
+			testState.put(testProps.get(6), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> StateEditorDialog.open(mcreator, testProps, testState, JStateLabel.NumberMatchType.EQUAL));
 	}
@@ -207,6 +219,13 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> ListEditorDialog.open(mcreator,
 				Collections.enumeration(Arrays.asList("info 1", "info 2", "test \\, is this", "another one")), null,
 				false));
+	}
+
+	@Test public void testUsagesSearchDialogs() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.showUsagesDialog(mcreator, "", Collections.emptyList()));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.showDeleteDialog(mcreator, "", Collections.emptyList(), "test sufix"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

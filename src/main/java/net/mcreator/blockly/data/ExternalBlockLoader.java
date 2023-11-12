@@ -118,6 +118,17 @@ public class ExternalBlockLoader {
 		}
 		toolboxCategories.sort(Comparator.comparing(ToolboxCategory::getName));
 
+		for (ToolboxCategory toolboxCategory : toolboxCategories) {
+			if (toolboxCategory.parent_category != null) {
+				for (ToolboxCategory parent : toolboxCategories) {
+					if (parent.id.equals(toolboxCategory.parent_category)) {
+						toolboxCategory.parent = parent;
+						break;
+					}
+				}
+			}
+		}
+
 		// setup lookup cache of loaded blocks
 		this.toolboxBlocks = new HashMap<>();
 		for (ToolboxBlock toolboxBlock : toolboxBlocksList)
@@ -161,7 +172,7 @@ public class ExternalBlockLoader {
 		for (ToolboxCategory category : toolboxCategories) {
 			if (category.parent_category == null) {
 				String categoryCode = generateCategoryXML(category, toolboxCategories, toolboxBlocksList);
-				if (categoryCode.contains("<block type="))
+				if (categoryCode.contains("<block type=") || categoryCode.contains("<category name="))
 					toolbox.get(category.api ? "apis" : "other").add(new Tuple<>(null, categoryCode));
 			}
 		}

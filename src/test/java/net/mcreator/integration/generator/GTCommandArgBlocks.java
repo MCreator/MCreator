@@ -82,6 +82,8 @@ public class GTCommandArgBlocks {
 			Command command = new Command(modElement);
 			command.commandName = modElement.getName();
 			command.permissionLevel = getRandomItem(random, new String[] { "No requirement", "1", "2", "3", "4" });
+			command.type = getRandomItem(random,
+					new String[] { "STANDARD", "SINGLEPLAYER_ONLY", "MULTIPLAYER_ONLY", "CLIENTSIDE" });
 
 			if (commandArg.getType() == IBlockGenerator.BlockType.PROCEDURAL)
 				command.argsxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"args_start\""

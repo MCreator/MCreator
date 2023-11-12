@@ -28,6 +28,7 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -37,7 +38,7 @@ import java.io.IOException;
 
 public class Particle extends GeneratableElement {
 
-	public String texture;
+	@TextureReference(TextureType.PARTICLE) public String texture;
 
 	public boolean animate;
 	public int frameDuration;

@@ -1,12 +1,10 @@
 templates:
-  - template: structure/structure.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/@NAMEFeature.java"
-  - template: json/structure_feature_biome_modifier.json.ftl
+  - template: structure/structure_set.json.ftl # loaded from datapack generator
     writer: json
-    name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
-  - template: structure/configured_structure.json.ftl
+    name: "@MODDATAROOT/worldgen/structure_set/@registryname.json"
+  - template: structure/structure.json.ftl # loaded from datapack generator
     writer: json
-    name: "@MODDATAROOT/worldgen/configured_feature/@registryname.json"
-  - template: structure/placed_structure.json.ftl
+    name: "@MODDATAROOT/worldgen/structure/@registryname.json"
+  - template: structure/template_pool.json.ftl # loaded from datapack generator
     writer: json
-    name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
+    name: "@MODDATAROOT/worldgen/template_pool/@registryname.json"

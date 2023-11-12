@@ -185,7 +185,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllBiomes(Workspace workspace) {
-		List<DataListEntry> biomes = getCustomElementsOfType(workspace, BaseType.BIOME);
+		List<DataListEntry> biomes = getCustomElementsOfType(workspace, ModElementType.BIOME);
 		biomes.addAll(DataListLoader.loadDataList("biomes"));
 		Collections.sort(biomes);
 		return biomes;
@@ -208,7 +208,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
+		List<DataListEntry> retval = getCustomElements(workspace, mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
 		retval.addAll(DataListLoader.loadDataList("entities"));
 		Collections.sort(retval);
 		return retval;
@@ -222,7 +222,7 @@ public class ElementUtil {
 	 * @return All entities that can be spawned
 	 */
 	public static List<DataListEntry> loadAllSpawnableEntities(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, BaseType.ENTITY);
+		List<DataListEntry> retval = getCustomElements(workspace, mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
 		retval.addAll(DataListLoader.loadDataList("entities").stream().filter(typeMatches("spawnable")).toList());
 		Collections.sort(retval);
 		return retval;
@@ -286,19 +286,19 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static String[] loadAllFluids(Workspace workspace) {
-		ArrayList<String> retval = new ArrayList<>();
+	public static List<DataListEntry> loadAllFluids(Workspace workspace) {
+		List<DataListEntry> retval = new ArrayList<>();
 
 		for (ModElement modElement : workspace.getModElements()) {
 			if (modElement.getType() == ModElementType.FLUID) {
-				retval.add("CUSTOM:" + modElement.getName());
-				retval.add("CUSTOM:" + modElement.getName() + ":Flowing");
+				retval.add(new DataListEntry.Custom(modElement));
+				retval.add(new DataListEntry.Custom(modElement, ":Flowing"));
 			}
 		}
 
-		retval.addAll(DataListLoader.loadDataList("fluids").stream().map(DataListEntry::getName).toList());
+		retval.addAll(DataListLoader.loadDataList("fluids"));
 
-		return retval.toArray(new String[0]);
+		return retval.stream().filter(e -> e.isSupportedInWorkspace(workspace)).toList();
 	}
 
 	public static String[] getAllSounds(Workspace workspace) {
@@ -318,7 +318,7 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadArrowProjectiles(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.RANGEDITEM);
+		List<DataListEntry> retval = getCustomElementsOfType(workspace, ModElementType.PROJECTILE);
 
 		retval.addAll(DataListLoader.loadDataList("projectiles").stream().filter(typeMatches("arrow")).toList());
 		return retval;
@@ -341,14 +341,12 @@ public class ElementUtil {
 		return new String[] { "DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST" };
 	}
 
-	public static ArrayList<String> loadBasicGUI(Workspace workspace) {
+	public static ArrayList<String> loadBasicGUIs(Workspace workspace) {
 		ArrayList<String> blocks = new ArrayList<>();
-
 		for (ModElement mu : workspace.getModElements()) {
-			if (mu.getType().getBaseType() == BaseType.GUI)
+			if (mu.getType() == ModElementType.GUI)
 				blocks.add(mu.getName());
 		}
-
 		return blocks;
 	}
 
@@ -364,10 +362,6 @@ public class ElementUtil {
 
 	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, ModElementType<?> type) {
 		return getCustomElements(workspace, modelement -> modelement.getType() == type);
-	}
-
-	private static List<DataListEntry> getCustomElementsOfType(@Nonnull Workspace workspace, BaseType type) {
-		return getCustomElements(workspace, mu -> mu.getType().getBaseType() == type);
 	}
 
 	/**

@@ -38,8 +38,8 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TextureHolder;
-import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -77,7 +77,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final VTextField name = new VTextField(28);
 
 	private final JComboBox<String> toolType = new JComboBox<>(
-			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Fishing rod", "Special",
+			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
 					"MultiTool" });
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
@@ -85,7 +85,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
 
 	private final Model normal = new Model.BuiltInModel("Normal");
+	private final Model normalBlocking = new Model.BuiltInModel("Normal blocking");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal });
+	private final SearchableComboBox<Model> blockingModel = new SearchableComboBox<>(new Model[] { normalBlocking });
 
 	private LogicProcedureSelector glowCondition;
 
@@ -191,13 +193,17 @@ public class ToolGUI extends ModElementGUI<Tool> {
 						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")), rent), visualBottom,
 				0, 5)));
 
-		JPanel selp = new JPanel(new GridLayout(14, 2, 10, 2));
+		JPanel selp = new JPanel(new GridLayout(15, 2, 10, 2));
 		selp.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
 
 		harvestLevel.setOpaque(false);
 		efficiency.setOpaque(false);
+
+		blockingModel.setFont(blockingModel.getFont().deriveFont(16.0f));
+		blockingModel.setRenderer(new ModelComboBoxRenderer());
+		blockingModel.setEnabled(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
@@ -233,6 +239,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
 				L10N.label("elementgui.tool.usage_count")));
 		selp.add(usageCount);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/shield_blocking_model"),
+				L10N.label("elementgui.tool.shield_blocking_model")));
+		selp.add(blockingModel);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
 				L10N.label("elementgui.common.repair_items")));
@@ -297,6 +307,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 	private void updateFields() {
 		if (toolType.getSelectedItem() != null) {
+			blockingModel.setEnabled(true);
+			if (!toolType.getSelectedItem().equals("Shield")) {
+				blockingModel.setEnabled(false);
+				blockingModel.setSelectedItem(normalBlocking);
+			}
+
 			harvestLevel.setEnabled(true);
 			efficiency.setEnabled(true);
 			damageVsEntity.setEnabled(true);
@@ -307,7 +323,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			if (toolType.getSelectedItem().equals("Special")) {
 				harvestLevel.setEnabled(false);
 				repairItems.setEnabled(false);
-			} else if (toolType.getSelectedItem().equals("Fishing rod")) {
+			} else if (toolType.getSelectedItem().equals("Fishing rod") || toolType.getSelectedItem()
+					.equals("Shield")) {
 				harvestLevel.setEnabled(false);
 				efficiency.setEnabled(false);
 				damageVsEntity.setEnabled(false);
@@ -342,6 +359,11 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				new DataListEntry.Dummy("TOOLS"));
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal),
+				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+						.collect(Collectors.toList())));
+
+		ComboBoxUtil.updateComboBoxContents(blockingModel, ListUtils.merge(Collections.singletonList(normalBlocking),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
@@ -391,6 +413,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		Model model = tool.getItemModel();
 		if (model != null)
 			renderType.setSelectedItem(model);
+
+		Model modelBlocking = tool.getBlockingModel();
+		if (modelBlocking != null)
+			blockingModel.setSelectedItem(modelBlocking);
 	}
 
 	@Override public Tool getElementFromGUI() {
@@ -430,6 +456,14 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		else if (modelType == Model.Type.OBJ)
 			tool.renderType = 2;
 		tool.customModelName = (Objects.requireNonNull(renderType.getSelectedItem())).getReadableName();
+
+		Model.Type blockingModelType = Objects.requireNonNull(blockingModel.getSelectedItem()).getType();
+		tool.blockingRenderType = 0;
+		if (blockingModelType == Model.Type.JSON)
+			tool.blockingRenderType = 1;
+		else if (blockingModelType == Model.Type.OBJ)
+			tool.blockingRenderType = 2;
+		tool.blockingModelName = Objects.requireNonNull(blockingModel.getSelectedItem()).getReadableName();
 
 		return tool;
 	}

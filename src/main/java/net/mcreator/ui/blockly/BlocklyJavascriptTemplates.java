@@ -181,7 +181,8 @@ public class BlocklyJavascriptTemplates {
 	public static String returnBlock(VariableType variableType) {
 		// The previous "Return" text is used as fallback if the specific key is missing
 		String blockText = L10N.t("blockly.block.return_" + variableType.getName()) != null ?
-				L10N.t("blockly.block.return_" + variableType.getName()) : L10N.t("blockly.block.return");
+				L10N.t("blockly.block.return_" + variableType.getName()) :
+				L10N.t("blockly.block.return");
 		return """
 				Blockly.defineBlocksWithJsonArray([{
 					"type": "return_%s",

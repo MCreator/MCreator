@@ -156,6 +156,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
+	<#if data.aiBase == "Villager">
+	@Override protected Component getTypeName() {
+		return this.getType().getDescription();
+	}
+	</#if>
+
 	<#if data.hasAI>
 	@Override protected void registerGoals() {
 		super.registerGoals();
@@ -588,22 +594,36 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		}
 
 		@Override public boolean isFood(ItemStack stack) {
-			return List.of(<#list data.breedTriggerItems as breedTriggerItem>${mappedMCItemToItem(breedTriggerItem)}<#sep>,</#list>).contains(stack.getItem());
+			return ${mappedMCItemsToIngredient(data.breedTriggerItems)}.test(stack);
 		}
     </#if>
 
 	<#if data.waterMob>
-	@Override public boolean canBreatheUnderwater() {
-    	return true;
-    }
-
-    @Override public boolean checkSpawnObstruction(LevelReader world) {
+	@Override public boolean checkSpawnObstruction(LevelReader world) {
 		return world.isUnobstructed(this);
 	}
+	</#if>
 
-    @Override public boolean isPushedByFluid() {
-		return false;
-    }
+	<#if data.breatheUnderwater?? && (hasProcedure(data.breatheUnderwater) || data.breatheUnderwater.getFixedValue())>
+	@Override public boolean canBreatheUnderwater() {
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
+		Level world = this.level();
+		Entity entity = this;
+		return <@procedureOBJToConditionCode data.breatheUnderwater true false/>;
+	}
+	</#if>
+
+	<#if data.pushedByFluids?? && (hasProcedure(data.pushedByFluids) || !data.pushedByFluids.getFixedValue())>
+	@Override public boolean isPushedByFluid() {
+		double x = this.getX();
+		double y = this.getY();
+		double z = this.getZ();
+		Level world = this.level();
+		Entity entity = this;
+		return <@procedureOBJToConditionCode data.pushedByFluids false false/>;
+	}
 	</#if>
 
 	<#if data.disableCollisions>

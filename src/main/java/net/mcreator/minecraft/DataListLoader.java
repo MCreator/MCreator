@@ -24,7 +24,6 @@ import net.mcreator.util.YamlUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.snakeyaml.engine.v2.api.Load;
-import org.snakeyaml.engine.v2.api.LoadSettings;
 import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
 import java.io.IOException;
@@ -69,45 +68,47 @@ public class DataListLoader {
 				String config = FileIO.readResourceToString(resource);
 
 				try {
-					((List<?>) new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(config)).forEach(elementObj -> {
-						if (elementObj instanceof String elementObjStr) {
-							if (list.get().containsKey(elementObjStr))
-								LOG.warn("Duplicate datalist key: " + elementObjStr);
-							list.get().put(elementObjStr, new DataListEntry(elementObjStr));
-						} else if (elementObj instanceof Map<?, ?> element) {
-							String elementName = null;
-							for (Map.Entry<?, ?> entry : element.entrySet())
-								if (entry.getValue() == null)
-									elementName = entry.getKey().toString();
+					((List<?>) new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(config)).forEach(
+							elementObj -> {
+								if (elementObj instanceof String elementObjStr) {
+									if (list.get().containsKey(elementObjStr))
+										LOG.warn("Duplicate datalist key: " + elementObjStr);
+									list.get().put(elementObjStr, new DataListEntry(elementObjStr));
+								} else if (elementObj instanceof Map<?, ?> element) {
+									String elementName = null;
+									for (Map.Entry<?, ?> entry : element.entrySet())
+										if (entry.getValue() == null)
+											elementName = entry.getKey().toString();
 
-							if (elementName != null) {
-								DataListEntry entry = new DataListEntry(elementName);
-								entry.setReadableName((String) element.get("readable_name"));
-								entry.setType((String) element.get("type"));
-								entry.setDescription((String) element.get("description"));
-								entry.setOther(element.get("other"));
-								entry.setTexture((String) element.get("texture"));
+									if (elementName != null) {
+										DataListEntry entry = new DataListEntry(elementName);
+										entry.setReadableName((String) element.get("readable_name"));
+										entry.setType((String) element.get("type"));
+										entry.setDescription((String) element.get("description"));
+										entry.setOther(element.get("other"));
+										entry.setTexture((String) element.get("texture"));
 
-								if (element.get("required_apis") instanceof List<?> requiredAPIs)
-									entry.setRequiredAPIs(requiredAPIs.stream().map(Object::toString)
+										if (element.get("required_apis") instanceof List<?> requiredAPIs)
+											entry.setRequiredAPIs(requiredAPIs.stream().map(Object::toString)
 													.collect(Collectors.toList()));
 
-								if (listName.equals("blocksitems")) {
-									MCItem mcitem = new MCItem(entry);
-									if (element.get("subtypes") != null)
-										mcitem.setSubtypes(Boolean.parseBoolean((String) element.get("subtypes")));
+										if (listName.equals("blocksitems")) {
+											MCItem mcitem = new MCItem(entry);
+											if (element.get("subtypes") != null)
+												mcitem.setSubtypes(
+														Boolean.parseBoolean((String) element.get("subtypes")));
 
-									if (list.get().containsKey(elementName))
-										LOG.warn("Duplicate datalist key: " + elementName);
-									list.get().put(elementName, mcitem);
-								} else {
-									if (list.get().containsKey(elementName))
-										LOG.warn("Duplicate datalist key: " + elementName);
-									list.get().put(elementName, entry);
+											if (list.get().containsKey(elementName))
+												LOG.warn("Duplicate datalist key: " + elementName);
+											list.get().put(elementName, mcitem);
+										} else {
+											if (list.get().containsKey(elementName))
+												LOG.warn("Duplicate datalist key: " + elementName);
+											list.get().put(elementName, entry);
+										}
+									}
 								}
-							}
-						}
-					});
+							});
 				} catch (YamlEngineException e) {
 					LOG.error("Failed to parse datalist " + listName, e);
 				}

@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.ProjectileEntry;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
@@ -91,11 +92,21 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private LogicProcedureSelector glowCondition;
 
+	private final JCheckBox enableRanged = L10N.checkbox("elementgui.common.enable");
+
+	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
+
+	private ProcedureSelector onRangedItemUsed;
+	private ProcedureSelector rangedUseCondition;
+
+	private final DataListComboBox projectile = new DataListComboBox(mcreator);
+
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
 	private static final Model normal = new Model.BuiltInModel("Normal");
 	private static final Model tool = new Model.BuiltInModel("Tool");
-	public static final Model[] builtinitemmodels = new Model[] { normal, tool };
+	private static final Model rangedItem = new Model.BuiltInModel("Ranged item");
+	public static final Model[] builtinitemmodels = new Model[] { normal, tool, rangedItem };
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(builtinitemmodels);
 	private JItemPropertiesStatesList customProperties;
 
@@ -115,7 +126,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JSpinner damageVsEntity = new JSpinner(new SpinnerNumberModel(0, 0, 128000, 0.1));
 	private final JCheckBox enableMeleeDamage = new JCheckBox();
 
-	private final JComboBox<String> guiBoundTo = new JComboBox<>();
+	private final SearchableComboBox<String> guiBoundTo = new SearchableComboBox<>();
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
 
@@ -167,6 +178,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onFinishUsingItem = new ProcedureSelector(this.withEntry("item/when_stopped_using"), mcreator,
 				L10N.t("elementgui.item.player_useitem_finish"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		onRangedItemUsed = new ProcedureSelector(this.withEntry("item/when_used"), mcreator,
+				L10N.t("elementgui.item.event_on_use"), Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
 				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
 				new JStringListField(mcreator, null), 0,
@@ -175,13 +189,16 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.t("elementgui.item.glowing_effect"), ProcedureSelector.Side.CLIENT,
 				L10N.checkbox("elementgui.common.enable"), 160,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
+		rangedUseCondition = new ProcedureSelector(this.withEntry("item/ranged_use_condition"), mcreator,
+				L10N.t("elementgui.item.can_use_ranged"), VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
 
 		customProperties = new JItemPropertiesStatesList(mcreator, this);
 		customProperties.setPreferredSize(new Dimension(0, 0)); // prevent resizing beyond the editor tab
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
-				String selected = (String) guiBoundTo.getSelectedItem();
+				String selected = guiBoundTo.getSelectedItem();
 				if (selected != null) {
 					ModElement element = mcreator.getWorkspace().getModElementByName(selected);
 					if (element != null) {
@@ -201,6 +218,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel foodProperties = new JPanel(new BorderLayout(10, 10));
 		JPanel advancedProperties = new JPanel(new BorderLayout(10, 10));
+		JPanel rangedPanel = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
@@ -403,7 +421,40 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.common.max_stack_size")));
 		inventoryProperties.add(inventoryStackSize);
 
-		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(inventoryProperties));
+		updateRangedPanel();
+
+		JPanel rangedProperties = new JPanel(new GridLayout(3, 2, 2, 2));
+		rangedProperties.setOpaque(false);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
+				L10N.label("elementgui.item.enable_ranged_item")));
+		enableRanged.setOpaque(false);
+		enableRanged.addActionListener(e -> updateRangedPanel());
+		rangedProperties.add(enableRanged);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/projectile"),
+				L10N.label("elementgui.item.projectile")));
+		rangedProperties.add(projectile);
+
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/shoot_constantly"),
+				L10N.label("elementgui.item.shoot_constantly")));
+		shootConstantly.setOpaque(false);
+		rangedProperties.add(shootConstantly);
+
+		JPanel rangedTriggers = new JPanel(new GridLayout(2, 1, 2, 2));
+		rangedTriggers.setOpaque(false);
+		rangedTriggers.add(rangedUseCondition);
+		rangedTriggers.add(onRangedItemUsed);
+
+		rangedPanel.setOpaque(false);
+		rangedPanel.add("Center", PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers));
+		rangedPanel.setBorder(BorderFactory.createTitledBorder(
+				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				L10N.t("elementgui.item.ranged_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
+				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+
+		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(
+				PanelUtils.centerAndEastElement(PanelUtils.pullElementUp(inventoryProperties), rangedPanel, 10, 10)));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -443,6 +494,35 @@ public class ItemGUI extends ModElementGUI<Item> {
 		}
 	}
 
+	private void updateRangedPanel() {
+		if (enableRanged.isSelected()) {
+			shootConstantly.setEnabled(true);
+			projectile.setEnabled(true);
+			onRangedItemUsed.setEnabled(true);
+			rangedUseCondition.setEnabled(true);
+			if (!isEditingMode()) {
+				if ((int) useDuration.getValue() == 0)
+					useDuration.setValue(72000);
+				if (renderType.getSelectedItem() == normal)
+					renderType.setSelectedItem(rangedItem);
+				if ("none".equals(animation.getSelectedItem()))
+					animation.setSelectedItem("bow");
+			}
+		} else {
+			shootConstantly.setEnabled(false);
+			projectile.setEnabled(false);
+			onRangedItemUsed.setEnabled(false);
+			rangedUseCondition.setEnabled(false);
+			if (!isEditingMode()) {
+				if ((int) useDuration.getValue() == 72000)
+					useDuration.setValue(0);
+				if (renderType.getSelectedItem() == rangedItem)
+					renderType.setSelectedItem(normal);
+				animation.setSelectedItem("none");
+			}
+		}
+	}
+
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClickedInAir.refreshListKeepSelected();
@@ -457,6 +537,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onFinishUsingItem.refreshListKeepSelected();
 		specialInformation.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
+		onRangedItemUsed.refreshListKeepSelected();
+		rangedUseCondition.refreshListKeepSelected();
+
+		ComboBoxUtil.updateComboBoxContents(projectile, ElementUtil.loadArrowProjectiles(mcreator.getWorkspace()));
 
 		customProperties.reloadDataLists();
 
@@ -521,8 +605,14 @@ public class ItemGUI extends ModElementGUI<Item> {
 		saturation.setValue(item.saturation);
 		animation.setSelectedItem(item.animation);
 		eatResultItem.setBlock(item.eatResultItem);
+		enableRanged.setSelected(item.enableRanged);
+		shootConstantly.setSelected(item.shootConstantly);
+		projectile.setSelectedItem(item.projectile);
+		rangedUseCondition.setSelectedProcedure(item.rangedUseCondition);
+		onRangedItemUsed.setSelectedProcedure(item.onRangedItemUsed);
 
 		updateFoodPanel();
+		updateRangedPanel();
 		onStoppedUsing.setEnabled((int) useDuration.getValue() > 0);
 
 		Model model = item.getItemModel();
@@ -563,7 +653,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.enableMeleeDamage = enableMeleeDamage.isSelected();
 		item.inventorySize = (int) inventorySize.getValue();
 		item.inventoryStackSize = (int) inventoryStackSize.getValue();
-		item.guiBoundTo = (String) guiBoundTo.getSelectedItem();
+		item.guiBoundTo = guiBoundTo.getSelectedItem();
 		item.isFood = isFood.isSelected();
 		item.nutritionalValue = (int) nutritionalValue.getValue();
 		item.saturation = (double) saturation.getValue();
@@ -572,6 +662,11 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.animation = (String) animation.getSelectedItem();
 		item.onFinishUsingItem = onFinishUsingItem.getSelectedProcedure();
 		item.eatResultItem = eatResultItem.getBlock();
+		item.enableRanged = enableRanged.isSelected();
+		item.shootConstantly = shootConstantly.isSelected();
+		item.projectile = new ProjectileEntry(mcreator.getWorkspace(), projectile.getSelectedItem());
+		item.onRangedItemUsed = onRangedItemUsed.getSelectedProcedure();
+		item.rangedUseCondition = rangedUseCondition.getSelectedProcedure();
 
 		item.texture = texture.getID();
 		item.renderType = Item.encodeModelType(Objects.requireNonNull(renderType.getSelectedItem()).getType());

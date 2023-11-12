@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.EntityModel;
+import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
@@ -40,7 +41,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 	public EntityModelDialog(WYSIWYGEditor editor, @Nullable EntityModel model) {
 		super(editor, model);
 		setModal(true);
-		setSize(500, editor.isNotOverlayType ? 270 : 230);
+		setSize(500, 270);
 		setLocationRelativeTo(editor.mcreator);
 		setTitle(L10N.t("dialog.gui.add_entity_model"));
 
@@ -88,6 +89,13 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 			opts.add(followMouseMovement);
 		}
 
+		JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
+		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
+		if (!editor.isNotOverlayType) {
+			opts.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor")));
+			opts.add(anchor);
+		}
+
 		options.add("North", PanelUtils.join(entityModel, displayCondition));
 		options.add("Center", PanelUtils.join(FlowLayout.LEFT, opts));
 		options.add("South", PanelUtils.join(ok, cancel));
@@ -101,6 +109,7 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 			scale.setValue(model.scale);
 			rotationX.setValue(model.rotationX);
 			followMouseMovement.setSelected(model.followMouseMovement);
+			anchor.setSelectedItem(model.anchorPoint);
 		}
 
 		cancel.addActionListener(e -> setVisible(false));
@@ -111,6 +120,8 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 					EntityModel component = new EntityModel(0, 0, entityModel.getSelectedProcedure(),
 							displayCondition.getSelectedProcedure(), (int) scale.getValue(), (int) rotationX.getValue(),
 							followMouseMovement.isSelected());
+					if (!editor.isNotOverlayType)
+						component.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 					setEditingComponent(component);
 					editor.editor.addComponent(component);
 					editor.list.setSelectedValue(component, true);
@@ -121,6 +132,8 @@ public class EntityModelDialog extends AbstractWYSIWYGDialog<EntityModel> {
 					EntityModel modelNew = new EntityModel(model.getX(), model.getY(),
 							entityModel.getSelectedProcedure(), displayCondition.getSelectedProcedure(),
 							(int) scale.getValue(), (int) rotationX.getValue(), followMouseMovement.isSelected());
+					if (!editor.isNotOverlayType)
+						modelNew.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 					editor.components.add(idx, modelNew);
 					setEditingComponent(modelNew);
 				}

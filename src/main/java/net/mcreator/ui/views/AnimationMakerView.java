@@ -258,35 +258,33 @@ public class AnimationMakerView extends ViewBase {
 					try {
 						ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 								L10N.t("dialog.animation_maker.gif_reading"));
-						dial.addProgress(p1);
+						dial.addProgressUnit(p1);
 						BufferedImage[] frames = GifUtil.readAnimatedGif(frame);
 						if (frames.length > 0)
-							p1.ok();
+							p1.markStateOk();
 						else {
-							p1.err();
-							dial.hideAll();
+							p1.markStateError();
+							dial.hideDialog();
 
 							JOptionPane.showMessageDialog(fra, L10N.t("dialog.animation_maker.gif_format_unsupported"),
 									L10N.t("common.warning"), JOptionPane.ERROR_MESSAGE);
 
 							return;
 						}
-						dial.refreshDisplay();
 						int frameCount = frames.length;
 						ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 								L10N.t("dialog.animation_maker.gif_processing"));
-						dial.addProgress(p2);
+						dial.addProgressUnit(p2);
 						for (int i = 0; i < frameCount; i++) {
 							int finalI = i;
 							SwingUtilities.invokeLater(
 									() -> timelinevector.addElement(new AnimationFrame(frames[finalI])));
 							p2.setPercent((int) (((float) i / (float) frameCount) * 100.0f));
 						}
-						p2.ok();
-						dial.refreshDisplay();
-						dial.hideAll();
+						p2.markStateOk();
+						dial.hideDialog();
 					} catch (Exception e) {
-						dial.hideAll();
+						dial.hideDialog();
 						LOG.error(e.getMessage(), e);
 					}
 
