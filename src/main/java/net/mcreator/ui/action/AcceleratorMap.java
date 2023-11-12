@@ -18,8 +18,6 @@
 
 package net.mcreator.ui.action;
 
-import net.mcreator.preferences.PreferencesManager;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyEvent;
@@ -32,7 +30,8 @@ public class AcceleratorMap {
 
 	public AcceleratorMap(ActionRegistry actionRegistry) {
 		// Init defaults
-		actionKeyStrokeMap.put(actionRegistry.preferences, PreferencesManager.PREFERENCES.ui.testKey.get());
+		actionKeyStrokeMap.put(actionRegistry.preferences, KeyStroke.getKeyStroke(KeyEvent.VK_P,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.SHIFT_DOWN_MASK));
 		actionKeyStrokeMap.put(actionRegistry.showFindBar,
 				KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.showReplaceBar,

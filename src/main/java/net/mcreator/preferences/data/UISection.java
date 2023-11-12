@@ -22,19 +22,17 @@ package net.mcreator.preferences.data;
 import net.mcreator.io.OS;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesSection;
-import net.mcreator.preferences.entries.*;
+import net.mcreator.preferences.entries.BooleanEntry;
+import net.mcreator.preferences.entries.ColorEntry;
+import net.mcreator.preferences.entries.LocaleEntry;
+import net.mcreator.preferences.entries.StringEntry;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.MCreatorTheme;
 
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.util.Locale;
 
 public class UISection extends PreferencesSection {
 
-	public AcceleratorEntry testKey;
-	public AcceleratorEntry testKey2;
 	public PreferencesEntry<Locale> language;
 	public ColorEntry interfaceAccentColor;
 	public StringEntry backgroundSource;
@@ -51,10 +49,6 @@ public class UISection extends PreferencesSection {
 	public UISection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
-		testKey = addEntry(new AcceleratorEntry("testkey",  KeyStroke.getKeyStroke(KeyEvent.VK_P,
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.SHIFT_DOWN_MASK)));
-		testKey2 = addEntry(new AcceleratorEntry("testkey2",  KeyStroke.getKeyStroke(KeyEvent.VK_R,
-				Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx())));
 		language = addEntry(new LocaleEntry("language", L10N.DEFAULT_LOCALE));
 		interfaceAccentColor = addEntry(new ColorEntry("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT));
 		backgroundSource = addEntry(
