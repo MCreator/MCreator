@@ -67,6 +67,7 @@ public class MCItemHolder extends JButton implements IValidable {
 				setIcon(new ImageIcon(ImageUtils.resizeAA(bsa.icon.getImage(), 25)));
 				this.block = bsa.getName();
 				this.setToolTipText(bsa.getName());
+				listeners.forEach(listener -> listener.actionPerformed(new ActionEvent("", 0, "")));
 				getValidationStatus();
 			}
 		});
@@ -89,6 +90,7 @@ public class MCItemHolder extends JButton implements IValidable {
 			block = "";
 			this.setToolTipText(null);
 		}
+		listeners.forEach(listener -> listener.actionPerformed(new ActionEvent("", 0, "")));
 		getValidationStatus();
 	}
 
@@ -128,7 +130,6 @@ public class MCItemHolder extends JButton implements IValidable {
 					} else {
 						bs.setVisible(true); // show block selector
 					}
-					listeners.forEach(listener -> listener.actionPerformed(new ActionEvent("", 0, "")));
 					repaint();
 				}
 			}
