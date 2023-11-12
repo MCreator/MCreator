@@ -33,7 +33,6 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
@@ -70,12 +69,11 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 		filterModel.removeAllElements();
 		File[] screenshots = new File(workspacePanel.getMCreator().getWorkspaceFolder(),
 				"run/screenshots/").listFiles();
+
 		if (screenshots != null)
-			Arrays.stream(screenshots).forEach(filterModel::addElement);
+			filterModel.addAll(List.of(screenshots));
 
 		ListUtil.setSelectedValues(elementList, selected);
-
-		refilterElements();
 	}
 
 	private void useSelectedAsBackgrounds() {
