@@ -505,7 +505,7 @@ public class TestWorkspaceDataProvider {
 			keyBinding.triggerKey = getRandomString(random,
 					DataListLoader.loadDataList("keybuttons").stream().map(DataListEntry::getName).toList());
 			keyBinding.keyBindingName = modElement.getName();
-			keyBinding.keyBindingCategoryKey = "key.categories.misc";
+			keyBinding.keyBindingCategoryKey = "test_category";
 			if (!emptyLists)
 				keyBinding.onKeyPressed = new Procedure("procedure3");
 			if (_true)
@@ -622,8 +622,8 @@ public class TestWorkspaceDataProvider {
 			gui.components = components;
 			return gui;
 		} else if (ModElementType.LIVINGENTITY.equals(modElement.getType())) {
-			return getLivingEntity(modElement, random, _true, emptyLists, valueIndex, blocksAndItems,
-					blocksAndItemsAndTags, biomes);
+			return getLivingEntity(modElement, random, _true, emptyLists, blocksAndItems, blocksAndItemsAndTags,
+					biomes);
 		} else if (ModElementType.DIMENSION.equals(modElement.getType())) {
 			Dimension dimension = new Dimension(modElement);
 			dimension.texture = "test";
@@ -847,11 +847,12 @@ public class TestWorkspaceDataProvider {
 			}
 			plant.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
-				plant.restrictionBiomes.addAll(
-						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
-								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
-				plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
+				if (_true) {
+					plant.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
+				} else {
+					plant.restrictionBiomes.addAll(
+							biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+				}
 			}
 			plant.onNeighbourBlockChanges = new Procedure("procedure7");
 			plant.onTickUpdate = new Procedure("procedure2");
@@ -1164,11 +1165,12 @@ public class TestWorkspaceDataProvider {
 			}
 			block.restrictionBiomes = new ArrayList<>();
 			if (!emptyLists) {
-				block.restrictionBiomes.addAll(
-						biomes.stream().skip(_true ? 0 : ((biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
-								.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-				block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
-				block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
+				if (_true) {
+					block.restrictionBiomes.addAll(
+							biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+				} else {
+					block.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
+				}
 			}
 			block.blocksToReplace = new ArrayList<>();
 			if (!emptyLists) {
@@ -1227,7 +1229,7 @@ public class TestWorkspaceDataProvider {
 			Tag tag = new Tag(modElement);
 			tag.namespace = getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
 			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Entities", "Functions", "Biomes" });
-			tag.name = modElement.getName();
+			tag.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			tag.items = new ArrayList<>();
 			tag.blocks = new ArrayList<>();
 			tag.functions = new ArrayList<>();
@@ -1513,8 +1515,7 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static LivingEntity getLivingEntity(ModElement modElement, Random random, boolean _true, boolean emptyLists,
-			int valueIndex, List<MCItem> blocksAndItems, List<MCItem> blocksAndItemsAndTags,
-			List<DataListEntry> biomes) {
+			List<MCItem> blocksAndItems, List<MCItem> blocksAndItemsAndTags, List<DataListEntry> biomes) {
 		LivingEntity livingEntity = new LivingEntity(modElement);
 		livingEntity.mobName = modElement.getName();
 		livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
@@ -1637,11 +1638,12 @@ public class TestWorkspaceDataProvider {
 		livingEntity.maxNumberOfMobsPerGroup = 40;
 		livingEntity.restrictionBiomes = new ArrayList<>();
 		if (!emptyLists) {
-			livingEntity.restrictionBiomes.addAll(
-					biomes.stream().skip(_true ? 0 : ((long) (biomes.size() / 4) * valueIndex)).limit(biomes.size() / 4)
-							.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-			livingEntity.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
-			livingEntity.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
+			if (_true) {
+				livingEntity.restrictionBiomes.addAll(
+						biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
+			} else {
+				livingEntity.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
+			}
 		}
 		livingEntity.spawnInDungeons = _true;
 		livingEntity.modelWidth = 0.4;

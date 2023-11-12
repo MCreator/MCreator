@@ -236,7 +236,7 @@ public class BlocklyTestUtil {
 			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "gui":
-			return ElementUtil.loadBasicGUI(workspace).toArray(String[]::new);
+			return ElementUtil.loadBasicGUIs(workspace).toArray(String[]::new);
 		case "direction":
 			return ElementUtil.loadDirections();
 		case "biome":
