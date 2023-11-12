@@ -70,7 +70,7 @@ public class ArmorImageMakerView extends ViewBase {
 		controls.add(L10N.label("dialog.armor_image_maker.saturation_lightness_lock"));
 		controls.add(type1);
 
-		col.setColorSelectedListener(event -> updateARM());
+		col.addColorSelectedListener(event -> updateARM());
 		str.addActionListener(e -> updateARM());
 		type1.addActionListener(e -> updateARM());
 

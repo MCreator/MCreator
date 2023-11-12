@@ -21,10 +21,12 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.component.ITechnicalComponent;
+import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.SoundSelector;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -61,6 +63,10 @@ public interface ModElementChangedListener
 
 		if (component instanceof MCItemHolder itemHolder) {
 			itemHolder.addBlockSelectedListener(this);
+		} else if (component instanceof JColor jcolor) {
+			jcolor.addColorSelectedListener(this);
+		} else if (component instanceof SoundSelector soundSelector) {
+			soundSelector.addSoundSelectedListener(this);
 		} else if (component instanceof JItemListField<?> listField) {
 			listField.addChangeListener(this);
 		} else if (component instanceof JStringListField stringList) {
