@@ -22,7 +22,9 @@ package net.mcreator.minecraft;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.LivingEntity;
 import net.mcreator.element.types.interfaces.IPOIProvider;
+import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
@@ -226,6 +228,25 @@ public class ElementUtil {
 		retval.addAll(DataListLoader.loadDataList("entities").stream().filter(typeMatches("spawnable")).toList());
 		Collections.sort(retval);
 		return retval;
+	}
+
+	public static List<DataListEntry> loadCustomEntities(Workspace workspace) {
+		List<DataListEntry> retval = getCustomElements(workspace, mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
+		Collections.sort(retval);
+		return retval;
+	}
+
+	public static List<String> loadEntityDataListFromCustomEntity(Workspace workspace, String entityName,
+			Class<? extends PropertyData<?>> type) {
+		if (entityName != null) {
+			LivingEntity entity = (LivingEntity) workspace.getModElementByName(entityName.replace("CUSTOM:", ""))
+					.getGeneratableElement();
+			if (entity != null) {
+				return entity.entityDataEntries.stream().filter(e -> e.property().getClass().equals(type))
+						.map(e -> e.property().getName()).toList();
+			}
+		}
+		return new ArrayList<>();
 	}
 
 	public static List<DataListEntry> loadAllParticles(Workspace workspace) {

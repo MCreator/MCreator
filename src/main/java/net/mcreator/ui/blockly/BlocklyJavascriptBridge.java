@@ -31,6 +31,7 @@ import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -139,6 +140,16 @@ public class BlocklyJavascriptBridge {
 			case "spawnableEntity" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "entity");
+			case "customEntity" -> openDataListEntrySelector(ElementUtil::loadCustomEntities, "entity");
+			case "entitydata_logic" -> openStringEntrySelector(
+					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
+							PropertyData.LogicType.class).toArray(String[]::new), "entity_data");
+			case "entitydata_integer" -> openStringEntrySelector(
+					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
+							PropertyData.IntegerType.class).toArray(String[]::new), "entity_data");
+			case "entitydata_string" -> openStringEntrySelector(
+					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
+							PropertyData.StringType.class).toArray(String[]::new), "entity_data");
 			case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUIs(w).toArray(String[]::new), "gui");
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),

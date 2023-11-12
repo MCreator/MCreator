@@ -122,6 +122,9 @@ public class BlocklyTestUtil {
 						if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
 							processed += appendFieldXML(workspace, random, additionalXML, arg, field);
 							break;
+						} else if (toolboxBlock.getToolboxTestXML().contains("<field name=\"" + field + "\">")) {
+							processed++;
+							break;
 						}
 					}
 				}

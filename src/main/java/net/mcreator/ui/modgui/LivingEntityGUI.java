@@ -54,6 +54,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.states.entity.JEntityDataList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -202,6 +203,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
+
+	private JEntityDataList entityDataList;
 
 	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(
 			BlocklyCompileNote.Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
@@ -359,6 +362,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
 
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
+		entityDataList = new JEntityDataList(mcreator, this);
 
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 
@@ -511,6 +515,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 						immuneToAnvil, immuneToTrident, immuneToDragonBreath, immuneToWither));
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
+
+		JPanel entityDataListPanel = new JPanel(new GridLayout());
+
+		JComponent entityDataListComp = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/entity_data"),
+						L10N.label("elementgui.living_entity.entity_data")), entityDataList);
+		entityDataListPanel.setOpaque(false);
+		entityDataListComp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		entityDataListPanel.add(entityDataListComp);
 
 		JPanel spo2 = new JPanel(new GridLayout(11, 2, 2, 2));
 
@@ -899,6 +912,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2);
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
+		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3);
@@ -1072,6 +1086,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
 
+		entityDataList.setEntries(livingEntity.entityDataEntries);
+
 		if (livingEntity.creativeTab != null)
 			creativeTab.setSelectedItem(livingEntity.creativeTab);
 
@@ -1203,6 +1219,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.inventorySize = (int) inventorySize.getValue();
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.guiBoundTo = guiBoundTo.getSelectedItem();
+		livingEntity.entityDataEntries = entityDataList.getEntries();
 		return livingEntity;
 	}
 

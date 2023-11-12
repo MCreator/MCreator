@@ -43,6 +43,7 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.modgui.ItemGUI;
@@ -1649,6 +1650,14 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelHeight = 1.3;
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
+		if (!emptyLists) {
+			livingEntity.entityDataEntries.add(
+					new PropertyDataWithValue<>(new PropertyData.LogicType("Logic"), _true));
+			livingEntity.entityDataEntries.add(
+					new PropertyDataWithValue<>(new PropertyData.IntegerType("Integer"), random.nextInt()));
+			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.StringType("String"),
+					getRandomItem(random, new String[] { "value1", "value2", "value3" })));
+		}
 		return livingEntity;
 	}
 
