@@ -104,7 +104,7 @@ dependencies {
     implementation group: 'de.javagl', name: 'obj', version: '0.4.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.21.1'
-    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.10.0'
+    implementation group: 'org.apache.commons', name: 'commons-text', version: '1.11.0'
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.9'
     implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.4'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
@@ -119,8 +119,8 @@ dependencies {
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.13.0' // needed by discord-rpc.jar
 
     // test dependencies
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.0'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.0'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.1'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.1'
 }
 
 javafx {

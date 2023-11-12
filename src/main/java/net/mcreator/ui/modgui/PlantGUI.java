@@ -134,7 +134,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { cross, crop });
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
-	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
+	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
 
 	private final JComboBox<String> tintType = new JComboBox<>(
 			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
@@ -1019,7 +1019,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.isReplaceable = isReplaceable.isSelected();
 		plant.colorOnMap = colorOnMap.getSelectedItem().toString();
 		plant.offsetType = (String) offsetType.getSelectedItem();
-		plant.aiPathNodeType = (String) aiPathNodeType.getSelectedItem();
+		plant.aiPathNodeType = aiPathNodeType.getSelectedItem();
 		plant.creativePickItem = creativePickItem.getBlock();
 		plant.flammability = (int) flammability.getValue();
 		plant.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();

@@ -38,6 +38,9 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.ResourceReference;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -50,11 +53,11 @@ import java.util.*;
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
 
 	public int renderType;
-	public String texture;
+	@TextureReference(TextureType.ITEM) public String texture;
 	@Nonnull public String customModelName;
 
-	public Map<String, Procedure> customProperties;
-	public List<StateEntry> states;
+	@ModElementReference public Map<String, Procedure> customProperties;
+	@TextureReference(TextureType.ITEM) @ResourceReference("model") public List<StateEntry> states;
 
 	public String name;
 	public String rarity;
@@ -77,7 +80,7 @@ import java.util.*;
 	public StringListProcedure specialInformation;
 	public LogicProcedure glowCondition;
 
-	@Nullable public String guiBoundTo;
+	@Nullable @ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
 
@@ -218,7 +221,7 @@ import java.util.*;
 	public static class StateEntry implements IWorkspaceDependent {
 
 		public int renderType;
-		public String texture;
+		@TextureReference(TextureType.ITEM) public String texture;
 		public String customModelName;
 
 		public StateMap stateMap;
@@ -227,6 +230,10 @@ import java.util.*;
 
 		@Override public void setWorkspace(@Nullable Workspace workspace) {
 			this.workspace = workspace;
+		}
+
+		@Nullable @Override public Workspace getWorkspace() {
+			return workspace;
 		}
 
 		public Model getItemModel() {

@@ -52,10 +52,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElement;
-import net.mcreator.workspace.elements.VariableType;
-import net.mcreator.workspace.elements.VariableTypeLoader;
+import net.mcreator.workspace.elements.*;
 
 import java.awt.*;
 import java.awt.image.RenderedImage;
@@ -127,6 +124,13 @@ public class TestWorkspaceDataProvider {
 	}
 
 	public static void fillWorkspaceWithTestData(Workspace workspace) {
+		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("sounds") == GeneratorStats.CoverageStatus.FULL) {
+			for (int i = 1; i <= 3; i++) {
+				SoundElement sound = new SoundElement("test" + i, List.of(), "neutral", null);
+				workspace.addSoundElement(sound);
+			}
+		}
+
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")
 				== GeneratorStats.CoverageStatus.FULL) {
 			VariableElement sampleVariable1 = new VariableElement("test");
@@ -683,12 +687,11 @@ public class TestWorkspaceDataProvider {
 			structure.restrictionBiomes = new ArrayList<>();
 			structure.spacing = 14;
 			structure.separation = 6;
-			if (!emptyLists) {
+			if (_true) {
 				structure.restrictionBiomes.addAll(
 						biomes.stream().map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_surface"));
+			} else {
 				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
-				structure.restrictionBiomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:test/tag"));
 			}
 			structure.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));
@@ -940,6 +943,7 @@ public class TestWorkspaceDataProvider {
 					}
 
 					Item.StateEntry stateEntry = new Item.StateEntry();
+					stateEntry.setWorkspace(modElement.getWorkspace());
 					stateEntry.customModelName = getRandomItem(random, ItemGUI.builtinitemmodels).getReadableName();
 					stateEntry.texture = i == 0 ? "test" : "test" + i;
 					stateEntry.renderType = 0;
@@ -1673,7 +1677,6 @@ public class TestWorkspaceDataProvider {
 		tool.immuneToFire = _true;
 		tool.blocksAffected = new ArrayList<>();
 		tool.glowCondition = new LogicProcedure(emptyLists ? "condition2" : null, _true);
-		;
 		tool.specialInformation = new StringListProcedure(emptyLists ? null : "string1",
 				Arrays.asList("info 1", "info 2", "test, is this", "another one"));
 		if (!emptyLists) {
