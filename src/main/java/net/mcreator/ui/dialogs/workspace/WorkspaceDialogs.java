@@ -126,6 +126,7 @@ public class WorkspaceDialogs {
 
 		JComboBox<String> modPicture = new JComboBox<>();
 		JCheckBox lockBaseModFiles = L10N.checkbox("dialog.workspace_settings.lock_base_files");
+		JCheckBox lockWorkspaceToCurrentVersion = L10N.checkbox("dialog.workspace_settings.lock_workspace_version");
 		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
 		JCheckBox disableForgeVersionCheck = new JCheckBox();
 		JTextField updateJSON = new JTextField(24);
@@ -506,7 +507,7 @@ public class WorkspaceDialogs {
 			_advancedSettings.add(forgeVersionCheckPan);
 			_advancedSettings.add(new JEmptyBox(5, 5));
 
-			JPanel advancedSettings = new JPanel(new GridLayout(3, 2, 5, 2));
+			JPanel advancedSettings = new JPanel(new GridLayout(4, 2, 5, 2));
 			advancedSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 					L10N.t("dialog.workspace_settings.section.advanced")));
 			_advancedSettings.add(advancedSettings);
@@ -514,6 +515,8 @@ public class WorkspaceDialogs {
 			advancedSettings.add(serverSideOnly);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.lock_base_files_label"));
 			advancedSettings.add(lockBaseModFiles);
+			advancedSettings.add(L10N.label("dialog.workspace_settings.lock_workspace_version_label"));
+			advancedSettings.add(lockWorkspaceToCurrentVersion);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.update_url"));
 			advancedSettings.add(updateJSON);
 
@@ -547,6 +550,7 @@ public class WorkspaceDialogs {
 						workspace.getWorkspaceSettings().getModPicture());
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
 				lockBaseModFiles.setSelected(workspace.getWorkspaceSettings().isLockBaseModFiles());
+				lockWorkspaceToCurrentVersion.setSelected(workspace.getWorkspaceSettings().isLockWorkspaceToCurrentVersion());
 				disableForgeVersionCheck.setSelected(workspace.getWorkspaceSettings().isDisableForgeVersionCheck());
 				updateJSON.setText(workspace.getWorkspaceSettings().getUpdateURL());
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
@@ -584,6 +588,7 @@ public class WorkspaceDialogs {
 			retVal.setModElementsPackage(packageName.getText().isEmpty() ? null : packageName.getText());
 			retVal.setServerSideOnly(serverSideOnly.isSelected());
 			retVal.setLockBaseModFiles(lockBaseModFiles.isSelected());
+			retVal.setLockWorkspaceToCurrentVersion(lockWorkspaceToCurrentVersion.isSelected());
 			retVal.setDisableForgeVersionCheck(disableForgeVersionCheck.isSelected());
 			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());
 			retVal.setCurrentGenerator(

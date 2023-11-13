@@ -61,6 +61,7 @@ import java.util.stream.Stream;
 	protected String modElementsPackage;
 
 	private boolean lockBaseModFiles = false;
+	private boolean lockWorkspaceToCurrentVersion = false;
 
 	private transient Workspace workspace; // we should never serialize this!!
 
@@ -86,6 +87,7 @@ import java.util.stream.Stream;
 		this.credits = other.credits;
 		this.modElementsPackage = other.modElementsPackage;
 		this.lockBaseModFiles = other.lockBaseModFiles;
+		this.lockWorkspaceToCurrentVersion = other.lockWorkspaceToCurrentVersion;
 
 		this.workspace = other.workspace;
 	}
@@ -260,6 +262,14 @@ import java.util.stream.Stream;
 
 	public void setLockBaseModFiles(boolean lockBaseModFiles) {
 		this.lockBaseModFiles = lockBaseModFiles;
+	}
+
+	public boolean isLockWorkspaceToCurrentVersion() {
+		return lockWorkspaceToCurrentVersion;
+	}
+
+	public void setLockWorkspaceToCurrentVersion(boolean lockWorkspaceToCurrentVersion) {
+		this.lockWorkspaceToCurrentVersion = lockWorkspaceToCurrentVersion;
 	}
 
 	public String getModElementsPackage() {
