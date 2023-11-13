@@ -629,6 +629,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		return editingMode;
 	}
 
+	public final AggregatedValidationResult validateAllPages() {
+		List<ValidationGroup> errors = new ArrayList<>();
+		for (int i = 0; i < pages.size(); i++) {
+			AggregatedValidationResult validationResult = validatePage(i);
+			if (!validationResult.validateIsErrorFree())
+				errors.add(validationResult);
+		}
+		return new AggregatedValidationResult(errors);
+	}
+
 	public interface ModElementCreatedListener<GE extends GeneratableElement> {
 		void modElementCreated(GE generatableElement);
 	}

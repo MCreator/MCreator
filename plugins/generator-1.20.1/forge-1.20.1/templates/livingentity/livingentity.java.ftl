@@ -37,6 +37,7 @@ package ${package}.entity;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.nbt.Tag;
+import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.sounds.SoundEvent;
 
 import javax.annotation.Nullable;
@@ -54,6 +55,16 @@ import javax.annotation.Nullable;
 </#if>
 
 public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements RangedAttackMob</#if> {
+
+	<#list data.entityDataEntries as entry>
+		<#if entry.value().getClass().getSimpleName() == "Integer">
+			public static final EntityDataAccessor<Integer> DATA_${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.INT);
+		<#elseif entry.value().getClass().getSimpleName() == "Boolean">
+			public static final EntityDataAccessor<Boolean> DATA_${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.BOOLEAN);
+		<#elseif entry.value().getClass().getSimpleName() == "String">
+			public static final EntityDataAccessor<String> DATA_${entry.property().getName()} = SynchedEntityData.defineId(${name}Entity.class, EntityDataSerializers.STRING);
+		</#if>
+	</#list>
 
 	<#if data.isBoss>
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(),
@@ -145,6 +156,15 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	@Override public Packet<ClientGamePacketListener> getAddEntityPacket() {
 		return NetworkHooks.getEntitySpawningPacket(this);
 	}
+
+	<#if data.entityDataEntries?has_content>
+	@Override protected void defineSynchedData() {
+		super.defineSynchedData();
+		<#list data.entityDataEntries as entry>
+			this.entityData.define(DATA_${entry.property().getName()}, ${entry.value()?is_string?then("\"" + entry.value() + "\"", entry.value())});
+		</#list>
+	}
+	</#if>
 
 	<#if data.flyingMob>
 	@Override protected PathNavigation createNavigation(Level world) {
@@ -409,19 +429,43 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			}
 		}
 	}
+    </#if>
 
+	<#if data.entityDataEntries?has_content || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 	@Override public void addAdditionalSaveData(CompoundTag compound) {
-    	super.addAdditionalSaveData(compound);
+		super.addAdditionalSaveData(compound);
+		<#list data.entityDataEntries as entry>
+			<#if entry.value().getClass().getSimpleName() == "Integer">
+			compound.putInt("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
+			<#elseif entry.value().getClass().getSimpleName() == "Boolean">
+			compound.putBoolean("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
+			<#elseif entry.value().getClass().getSimpleName() == "String">
+			compound.putString("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
+			</#if>
+		</#list>
+		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
 		compound.put("InventoryCustom", inventory.serializeNBT());
+		</#if>
 	}
 
 	@Override public void readAdditionalSaveData(CompoundTag compound) {
-    	super.readAdditionalSaveData(compound);
-		Tag inventoryCustom = compound.get("InventoryCustom");
-		if (inventoryCustom instanceof CompoundTag inventoryTag)
+		super.readAdditionalSaveData(compound);
+		<#list data.entityDataEntries as entry>
+			if (compound.contains("Data${entry.property().getName()}"))
+				<#if entry.value().getClass().getSimpleName() == "Integer">
+				this.entityData.set(DATA_${entry.property().getName()}, compound.getInt("Data${entry.property().getName()}"));
+				<#elseif entry.value().getClass().getSimpleName() == "Boolean">
+				this.entityData.set(DATA_${entry.property().getName()}, compound.getBoolean("Data${entry.property().getName()}"));
+				<#elseif entry.value().getClass().getSimpleName() == "String">
+				this.entityData.set(DATA_${entry.property().getName()}, compound.getString("Data${entry.property().getName()}"));
+				</#if>
+		</#list>
+		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+		if (compound.get("InventoryCustom") instanceof CompoundTag inventoryTag)
 			inventory.deserializeNBT(inventoryTag);
-    }
-    </#if>
+		</#if>
+	}
+	</#if>
 
 	<#if hasProcedure(data.onRightClickedOn) || data.ridable || (data.tameable && data.breedable) || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
 	@Override public InteractionResult mobInteract(Player sourceentity, InteractionHand hand) {

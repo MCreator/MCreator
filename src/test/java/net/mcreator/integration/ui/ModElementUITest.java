@@ -34,6 +34,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.settings.WorkspaceSettings;
@@ -178,6 +179,13 @@ public class ModElementUITest {
 
 				// test if data remains the same after reloading the data lists
 				modElementGUI.reloadDataLists();
+
+				// test if UI validation is error free (skip advancement and feature as provider provides empty Blockly setup)
+				AggregatedValidationResult validationResult = modElementGUI.validateAllPages();
+				if ((modElement.getType() != ModElementType.ADVANCEMENT
+						&& modElement.getType() != ModElementType.FEATURE) && !validationResult.validateIsErrorFree()) {
+					fail(String.join(",", validationResult.getValidationProblemMessages()));
+				}
 
 				// test UI -> GeneratableElement
 				generatableElement = modElementGUI.getElementFromGUI();
