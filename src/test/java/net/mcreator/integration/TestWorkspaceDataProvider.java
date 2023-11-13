@@ -1482,6 +1482,17 @@ public class TestWorkspaceDataProvider {
 			net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(modElement);
 			procedure.procedurexml = net.mcreator.element.types.Procedure.XML_BASE;
 			return procedure;
+		} else if (ModElementType.DAMAGETYPE.equals(modElement.getType())) {
+			DamageType damageType = new DamageType(modElement);
+			damageType.exhaustion = 0.37;
+			damageType.scaling = getRandomString(random,
+					Arrays.asList("never", "always", "when_caused_by_living_non_player"));
+			damageType.effects = getRandomString(random,
+					Arrays.asList("hurt", "thorns", "drowning", "burning", "poking", "freezing"));
+			damageType.normalDeathMessage = "%1$s was slain";
+			damageType.itemDeathMessage = "%1$s was slain by %2$s using %3$s";
+			damageType.playerDeathMessage = "%1$s was slain whilst escaping %2$s";
+			return damageType;
 		}
 		// As feature requires placement and feature to place, this GE is only returned for uiTests
 		// For generator tests, it will be tested by GTFeatureBlocks anyway
