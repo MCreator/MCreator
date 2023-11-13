@@ -25,6 +25,7 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -104,7 +105,7 @@ import java.util.Locale;
 	public boolean spawnEndCity;
 	public String spawnRuinedPortal;
 
-	public List<SpawnEntry> spawnEntries;
+	@ModElementReference public List<SpawnEntry> spawnEntries;
 
 	private Biome() {
 		this(null);

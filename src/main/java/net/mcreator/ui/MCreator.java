@@ -31,7 +31,9 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
+import net.mcreator.ui.component.BlockingGlassPane;
 import net.mcreator.ui.component.ImagePanel;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
@@ -157,7 +159,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		mcreatorTabs.addTabShownListener(tab -> {
 			if (tab.equals(workspaceTab))
-				mv.updateMods();
+				mv.reloadElementsInCurrentTab();
 
 			menuBar.refreshMenuBar();
 
@@ -308,10 +310,16 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				RegenerateCodeAction.regenerateCode(this, true, true);
 			}
 
-			// reinit (preload) MCItems so workspace is more snappy when loaded
+			// reinit (preload) MCItems (also loads GEs and performs conversions if needed)
 			new Thread(() -> {
+				// it is not safe to do user operations on workspace while it is being preloaded
+				setGlassPane(getPreloaderPane());
+				getGlassPane().setVisible(true);
+
 				workspace.getModElements().forEach(ModElement::getMCItems);
-				LOG.debug("MCItems preload for mod elements completed");
+
+				getGlassPane().setVisible(false);
+				setGlassPane(new JEmptyBox());
 			}, "ME preloader").start();
 
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
@@ -427,6 +435,17 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (workspace != null)
 			return workspace.getFileManager().getWorkspaceFile().hashCode();
 		return Long.valueOf(windowUID).hashCode();
+	}
+
+	private JComponent getPreloaderPane() {
+		JPanel wrap = new BlockingGlassPane();
+		JLabel loading = L10N.label("workspace.loading");
+		loading.setIconTextGap(5);
+		loading.setFont(loading.getFont().deriveFont(16f));
+		loading.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		loading.setIcon(UIRES.get("16px.loading.gif"));
+		wrap.add(PanelUtils.totalCenterInPanel(loading));
+		return wrap;
 	}
 
 	public ActionRegistry getActionRegistry() {

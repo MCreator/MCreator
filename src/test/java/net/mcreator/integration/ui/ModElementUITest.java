@@ -22,6 +22,7 @@ package net.mcreator.integration.ui;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -33,6 +34,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
+import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.settings.WorkspaceSettings;
@@ -147,7 +149,11 @@ public class ModElementUITest {
 
 				// back to GeneratableElement
 				generatableElement = workspace.getModElementManager()
-						.fromJSONtoGeneratableElement(exportedJSON, modElement);// from JSON to generatableelement
+						.fromJSONtoGeneratableElement(exportedJSON, modElement);// from JSON to GeneratableElement
+
+				// Check if all workspace fields are not null after re-import
+				IWorkspaceDependent.processWorkspaceDependentObjects(generatableElement,
+						workspaceDependent -> assertNotNull(workspaceDependent.getWorkspace()));
 
 				assertNotNull(generatableElement);
 
@@ -174,8 +180,19 @@ public class ModElementUITest {
 				// test if data remains the same after reloading the data lists
 				modElementGUI.reloadDataLists();
 
+				// test if UI validation is error free (skip advancement and feature as provider provides empty Blockly setup)
+				AggregatedValidationResult validationResult = modElementGUI.validateAllPages();
+				if ((modElement.getType() != ModElementType.ADVANCEMENT
+						&& modElement.getType() != ModElementType.FEATURE) && !validationResult.validateIsErrorFree()) {
+					fail(String.join(",", validationResult.getValidationProblemMessages()));
+				}
+
 				// test UI -> GeneratableElement
 				generatableElement = modElementGUI.getElementFromGUI();
+
+				// Check if all workspace fields are not null after reading from GUI
+				IWorkspaceDependent.processWorkspaceDependentObjects(generatableElement,
+						workspaceDependent -> assertNotNull(workspaceDependent.getWorkspace()));
 
 				// compare GeneratableElements, no fields should change in the process
 				String exportedJSON2 = workspace.getModElementManager().generatableElementToJSON(generatableElement);

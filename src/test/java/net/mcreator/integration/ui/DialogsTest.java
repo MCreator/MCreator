@@ -111,6 +111,19 @@ public class DialogsTest {
 						GeneratorFlavor.FORGE, true));
 	}
 
+	@Test public void testProgressDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> {
+			ProgressDialog dialog = new ProgressDialog(null, "Test progress dialog");
+			ProgressDialog.ProgressUnit unit = new ProgressDialog.ProgressUnit("Test progress unit");
+			dialog.addProgressUnit(unit);
+			unit.setPercent(50);
+			unit.markStateError();
+			unit.markStateWarning();
+			unit.markStateOk();
+			dialog.setVisible(true);
+		});
+	}
+
 	@Test public void testAboutDialog() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AboutAction.showDialog(mcreator));
 	}
@@ -206,6 +219,13 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> ListEditorDialog.open(mcreator,
 				Collections.enumeration(Arrays.asList("info 1", "info 2", "test \\, is this", "another one")), null,
 				false));
+	}
+
+	@Test public void testUsagesSearchDialogs() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.showUsagesDialog(mcreator, "", Collections.emptyList()));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.showDeleteDialog(mcreator, "", Collections.emptyList(), "test sufix"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

@@ -49,7 +49,7 @@ public class ModElementTypeLoader {
 		ModElementType.KEYBIND = register(new ModElementType<>("keybind", 'k', BaseType.OTHER, KeyBindGUI::new, KeyBinding.class));
 		ModElementType.LIVINGENTITY = register(new ModElementType<>("livingentity", 'e', BaseType.ENTITY, LivingEntityGUI::new, LivingEntity.class));
 		ModElementType.LOOTTABLE = register(new ModElementType<>("loottable", 'l', BaseType.DATAPACK, LootTableGUI::new, LootTable.class));
-		ModElementType.MUSICDISC = register(new ModElementType<>("musicdisc", 'x', BaseType.OTHER, MusicDiscGUI::new, MusicDisc.class));
+		ModElementType.MUSICDISC = register(new ModElementType<>("musicdisc", 'x', BaseType.ITEM, MusicDiscGUI::new, MusicDisc.class));
 		ModElementType.OVERLAY = register(new ModElementType<>("overlay", 'v', BaseType.OTHER, OverlayGUI::new, Overlay.class));
 		ModElementType.PAINTING = register(new ModElementType<>("painting", null, BaseType.OTHER, PaintingGUI::new, Painting.class));
 		ModElementType.PARTICLE = register(new ModElementType<>("particle", 'y', BaseType.OTHER, ParticleGUI::new, Particle.class));
@@ -59,7 +59,7 @@ public class ModElementTypeLoader {
 		ModElementType.PROCEDURE = register(new ModElementType<>("procedure", 'p', BaseType.OTHER, ProcedureGUI::new, Procedure.class));
 		ModElementType.PROJECTILE = register(new ModElementType<>("projectile", 'q', BaseType.ENTITY, ProjectileGUI::new, Projectile.class));
 		ModElementType.RECIPE = register(new ModElementType<>("recipe", 'r', BaseType.DATAPACK, RecipeGUI::new, Recipe.class));
-		ModElementType.STRUCTURE = register(new ModElementType<>("structure", 's', BaseType.FEATURE, StructureGUI::new, Structure.class));
+		ModElementType.STRUCTURE = register(new ModElementType<>("structure", 's', BaseType.DATAPACK, StructureGUI::new, Structure.class));
 		ModElementType.TAB = register(new ModElementType<>("tab", 'w', BaseType.OTHER, TabGUI::new, Tab.class));
 		ModElementType.TAG = register(new ModElementType<>("tag", 'j', BaseType.DATAPACK, TagGUI::new, Tag.class));
 		ModElementType.TOOL = register(new ModElementType<>("tool", 't', BaseType.ITEM, ToolGUI::new, Tool.class));
