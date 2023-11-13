@@ -66,11 +66,6 @@ public class ClipboardManager implements ClipboardOwner {
 	}
 
 	private void addLayerToClipboard(Transferable transferable) {
-		// Prevent crashing on systems that lock clipboards to specific programs.
-		// This still prints the stack trace due to a bug in java's clipboard implementation.
-		// https://stackoverflow.com/questions/59140881/error-copying-an-image-object-to-the-clipboard
-		// https://bugs.java.com/bugdatabase/view_bug?bug_id=8286481
-		// This could potentially be fixed in Adoptium 17.0.9 on 17. October 2023
 		try {
 			clipboard.setContents(transferable, this);
 		} catch (IllegalStateException ignored) {
