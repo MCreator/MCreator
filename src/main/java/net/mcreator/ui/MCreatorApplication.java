@@ -267,17 +267,23 @@ public final class MCreatorApplication {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 		String workspaceString = FileIO.readFileToString(workspaceFile);
 		JsonObject workspaceJson = WorkspaceFileManager.gson.fromJson(workspaceString, JsonObject.class);
-		if (workspaceJson.has("mcreatorVersion")) {
-			long workspaceVersion = workspaceJson.get("mcreatorVersion").getAsLong();
-			int n = JOptionPane.YES_OPTION;
-			if (workspaceVersion < Launcher.version.versionlong) {
-				n = JOptionPane.showConfirmDialog(this.workspaceSelector,
-						L10N.t("dialog.workspace.open_warning_message"), L10N.t("dialog.workspace.open_warning_title"),
-						JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
-			}
-			if (n == JOptionPane.NO_OPTION) {
-				this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				return null;
+		if (workspaceJson.has("workspaceSettings") && workspaceJson.has("mcreatorVersion")) {
+			JsonObject workspaceSettings = workspaceJson.getAsJsonObject("workspaceSettings");
+			if (workspaceSettings.has("lockWorkspaceToCurrentVersion")
+					&& workspaceSettings.get("lockWorkspaceToCurrentVersion").getAsBoolean()) {
+				Long workspaceVersion = workspaceJson.get("mcreatorVersion").getAsLong();
+				int retval = JOptionPane.YES_OPTION;
+				if (!workspaceVersion.equals(Launcher.version.versionlong)) {
+					retval = JOptionPane.showConfirmDialog(this.workspaceSelector,
+							L10N.t("dialog.workspace.version_locked_message", workspaceJson.get("mcreatorVersion").getAsString()),
+							L10N.t("dialog.workspace.version_locked_title"),
+							JOptionPane.YES_NO_OPTION,
+							JOptionPane.WARNING_MESSAGE);
+				}
+				if (retval != JOptionPane.YES_OPTION) {
+					this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+					return null;
+				}
 			}
 		}
 		Workspace workspace = null;
