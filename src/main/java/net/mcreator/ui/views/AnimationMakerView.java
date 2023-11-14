@@ -419,7 +419,7 @@ public class AnimationMakerView extends ViewBase {
 
 		types.addActionListener(al);
 		cbox.addActionListener(al);
-		colors.setColorSelectedListener(al);
+		colors.addColorSelectedListener(al);
 
 		od.add("North", lab1);
 		od.add("Center", centerPanel);
@@ -502,7 +502,7 @@ public class AnimationMakerView extends ViewBase {
 					preview.setIcon(new ImageIcon(ImageUtils.resize(tilImgUtl.get().getIcon(1, 1).getImage(), 128)));
 		};
 
-		colors.setColorSelectedListener(al);
+		colors.addColorSelectedListener(al);
 		cbox.addActionListener(al);
 		cbox2.addActionListener(al);
 
