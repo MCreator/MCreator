@@ -123,6 +123,7 @@ public class MainMenuBar extends JMenuBar {
 		imageEditor.add(mcreator.actionRegistry.imageEditorCopyAll);
 		imageEditor.add(mcreator.actionRegistry.imageEditorCut);
 		imageEditor.add(mcreator.actionRegistry.imageEditorPaste);
+		imageEditor.add(mcreator.actionRegistry.imageEditorDelete);
 		imageEditor.addSeparator();
 		imageEditor.add(mcreator.actionRegistry.imageEditorSave);
 		imageEditor.add(mcreator.actionRegistry.imageEditorSaveAs);

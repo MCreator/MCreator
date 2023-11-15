@@ -299,6 +299,10 @@ public class Canvas extends ArrayListListModel<Layer> {
 		return layerPanel;
 	}
 
+	public VersionManager getVersionManager() {
+		return versionManager;
+	}
+
 	public void setSize(int width, int height, UUID group) {
 		CanvasResize canvasResize = new CanvasResize(this, layerPanel.selected(), width, height);
 		canvasResize.setUUID(group);

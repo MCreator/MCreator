@@ -21,6 +21,7 @@ package net.mcreator.ui.views.editor.image.layer;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.canvas.SelectedBorder;
 import net.mcreator.ui.views.editor.image.canvas.Selection;
+import net.mcreator.ui.views.editor.image.versioning.change.Modification;
 import net.mcreator.util.image.ImageUtils;
 
 import java.awt.*;
@@ -331,5 +332,11 @@ public class Layer {
 			setRaster(ImageUtils.resizeAA(raster, width, height));
 		else
 			setRaster(ImageUtils.resize(raster, width, height));
+	}
+
+	public void deleteSelection() {
+		Layer selected = canvas.getLayerPanel().selected();
+		selected.clearSelection();
+		canvas.getVersionManager().addRevision(new Modification(canvas, selected));
 	}
 }
