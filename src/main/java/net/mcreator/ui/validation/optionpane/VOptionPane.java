@@ -19,7 +19,6 @@
 package net.mcreator.ui.validation.optionpane;
 
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -45,13 +44,13 @@ public class VOptionPane {
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
 			OptionPaneValidatior validator, String ok, String cancel, String defaultValue) {
-		return showInputDialog(frame, text, title, icon, validator, ok, cancel, defaultValue, null);
+		return showInputDialog(frame, text, title, icon, validator, ok, cancel, defaultValue, null, null);
 	}
 
 	public static String showInputDialog(Window frame, String text, String title, ImageIcon icon,
 			OptionPaneValidatior validator, String ok, String cancel, String defaultValue,
-			@Nullable JComponent optionalComponent) {
-		JPanel inp = new JPanel(new BorderLayout(10, 15));
+			@Nullable JComponent optionalNorthComponent, @Nullable JComponent optionalSouthComponent) {
+		JPanel inp = new JPanel(new BorderLayout(10, 10));
 
 		VTextField textField = new VTextField(20);
 		ComponentUtils.deriveFont(textField, 17);
@@ -65,13 +64,19 @@ public class VOptionPane {
 			textField.getValidationStatus();
 		}
 
-		if (optionalComponent == null) {
-			inp.add("Center", new JLabel(text));
-			inp.add("South", textField);
-		} else {
-			inp.add("Center", new JLabel(text));
-			inp.add("South", PanelUtils.northAndCenterElement(textField, optionalComponent));
+		JPanel textFieldPanel = new JPanel(new BorderLayout(0, 0));
+		textFieldPanel.add("Center", textField);
+
+		if (optionalNorthComponent != null) {
+			textFieldPanel.add("North", optionalNorthComponent);
 		}
+
+		if (optionalSouthComponent != null) {
+			textFieldPanel.add("South", optionalSouthComponent);
+		}
+
+		inp.add("North", new JLabel(text));
+		inp.add("Center", textFieldPanel);
 
 		textField.addAncestorListener(new AncestorListener() {
 
@@ -84,6 +89,7 @@ public class VOptionPane {
 			@Override public void ancestorAdded(AncestorEvent event) {
 				event.getComponent().requestFocusInWindow();
 			}
+
 		});
 
 		int option = JOptionPane.showOptionDialog(frame, inp, title, JOptionPane.OK_CANCEL_OPTION,

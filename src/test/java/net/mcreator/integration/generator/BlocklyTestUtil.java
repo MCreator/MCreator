@@ -122,6 +122,9 @@ public class BlocklyTestUtil {
 						if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
 							processed += appendFieldXML(workspace, random, additionalXML, arg, field);
 							break;
+						} else if (toolboxBlock.getToolboxTestXML().contains("<field name=\"" + field + "\">")) {
+							processed++;
+							break;
 						}
 					}
 				}
@@ -233,7 +236,7 @@ public class BlocklyTestUtil {
 			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "gui":
-			return ElementUtil.loadBasicGUI(workspace).toArray(String[]::new);
+			return ElementUtil.loadBasicGUIs(workspace).toArray(String[]::new);
 		case "direction":
 			return ElementUtil.loadDirections();
 		case "biome":

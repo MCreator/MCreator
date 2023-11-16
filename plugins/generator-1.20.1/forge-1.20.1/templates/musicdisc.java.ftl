@@ -38,13 +38,11 @@ import net.minecraft.network.chat.Component;
 public class ${name}Item extends RecordItem {
 
 	public ${name}Item() {
-		super(${data.analogOutput}, () ->
-			ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
-				"${(data.music?has_content && data.music.getMappedValue()?has_content)?then(data.music, "intentionally_empty")}"
-			)),
-			new Item.Properties().stacksTo(1).rarity(Rarity.RARE), ${data.lengthInTicks}
-		);
+		super(${data.analogOutput}, () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}" )),
+			new Item.Properties().stacksTo(1).rarity(Rarity.RARE), ${data.lengthInTicks});
 	}
+
+	<@addSpecialInformation data.specialInformation/>
 
 	<@onRightClickedInAir data.onRightClickedInAir/>
 

@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,11 +17,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.workspace;
+package net.mcreator.ui.component;
 
-public class TooNewWorkspaceVerisonException extends Exception {
-
-	public TooNewWorkspaceVerisonException(String s) {
-		super(s);
-	}
-}
+public interface ITechnicalComponent {}

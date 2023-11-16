@@ -41,9 +41,13 @@ import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.modgui.LivingEntityGUI;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 
 import javax.annotation.Nonnull;
@@ -61,8 +65,8 @@ import java.util.*;
 	public String mobLabel;
 
 	@Nonnull public String mobModelName;
-	public String mobModelTexture;
-	public String mobModelGlowTexture;
+	@TextureReference(TextureType.ENTITY) public String mobModelTexture;
+	@TextureReference(TextureType.ENTITY) public String mobModelGlowTexture;
 	public LogicProcedure transparentModelCondition;
 	public LogicProcedure isShakingCondition;
 	public LogicProcedure solidBoundingBox;
@@ -105,7 +109,7 @@ import java.util.*;
 	public LogicProcedure pushedByFluids;
 	public boolean flyingMob;
 
-	public String guiBoundTo;
+	@ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
 	public int inventorySize;
 	public int inventoryStackSize;
 
@@ -136,6 +140,8 @@ import java.util.*;
 	public Sound deathSound;
 	public Sound stepSound;
 
+	public List<PropertyDataWithValue<?>> entityDataEntries;
+
 	public Procedure onStruckByLightning;
 	public Procedure whenMobFalls;
 	public Procedure whenMobDies;
@@ -152,11 +158,11 @@ import java.util.*;
 
 	public boolean breedable;
 	public boolean tameable;
-	public List<MItemBlock> breedTriggerItems;
+	@ModElementReference public List<MItemBlock> breedTriggerItems;
 
 	public boolean ranged;
 	public MItemBlock rangedAttackItem;
-	public String rangedItemType;
+	@ModElementReference(defaultValues = "Default item") public String rangedItemType;
 	public int rangedAttackInterval;
 	public double rangedAttackRadius;
 
@@ -167,7 +173,7 @@ import java.util.*;
 	public String mobSpawningType;
 	public int minNumberOfMobsPerGroup;
 	public int maxNumberOfMobsPerGroup;
-	public List<BiomeEntry> restrictionBiomes;
+	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
 
 	private LivingEntity() {
@@ -188,6 +194,8 @@ import java.util.*;
 
 		this.inventorySize = 9;
 		this.inventoryStackSize = 64;
+
+		this.entityDataEntries = new ArrayList<>();
 	}
 
 	@Override public Model getEntityModel() {

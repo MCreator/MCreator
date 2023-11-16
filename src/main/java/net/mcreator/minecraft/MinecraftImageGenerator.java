@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +22,7 @@ package net.mcreator.minecraft;
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.element.types.Tag;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.TiledImageCache;
@@ -1429,24 +1431,8 @@ public class MinecraftImageGenerator {
 		 * @return Returns generated image of the appropriate colour.
 		 */
 		public static BufferedImage generateTagPreviewPicture(String type) {
-			return switch (type) {
-				case "Items" -> ImageUtils.toBufferedImage(
-						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("itemstack"), false)
-								.getImage());
-				case "Blocks" -> ImageUtils.toBufferedImage(
-						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("blockstate"),
-								false).getImage());
-				case "Entities" -> ImageUtils.toBufferedImage(
-						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("entity"), false)
-								.getImage());
-				case "Functions" -> ImageUtils.toBufferedImage(
-						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("string"), false)
-								.getImage());
-				case "Biomes" -> ImageUtils.toBufferedImage(
-						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("world"), false)
-								.getImage());
-				default -> null;
-			};
+			return ImageUtils.toBufferedImage(
+					ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Tag.getColor(type), false).getImage());
 		}
 
 		/**
