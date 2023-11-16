@@ -43,8 +43,8 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
-import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.PropertyData;
+import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
@@ -1662,8 +1662,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
 		if (!emptyLists) {
-			livingEntity.entityDataEntries.add(
-					new PropertyDataWithValue<>(new PropertyData.LogicType("Logic"), _true));
+			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.LogicType("Logic"), _true));
 			livingEntity.entityDataEntries.add(
 					new PropertyDataWithValue<>(new PropertyData.IntegerType("Integer"), random.nextInt()));
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.StringType("String"),
@@ -1733,99 +1732,100 @@ public class TestWorkspaceDataProvider {
 				new String[] { "MISC", "BUILDING", "REDSTONE", "EQUIPMENT" });
 		recipe.recipeType = recipeType;
 
-		List<MCItem> blocksAndItemsAndTags = ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace());
-		List<MCItem> blocksAndItems = ElementUtil.loadBlocksAndItems(modElement.getWorkspace());
+		List<MCItem> blocksAndItemsAndTagsNoAir = filterAir(
+				ElementUtil.loadBlocksAndItemsAndTags(modElement.getWorkspace()));
+		List<MCItem> blocksAndItemsNoAir = filterAir(ElementUtil.loadBlocksAndItems(modElement.getWorkspace()));
 
 		switch (recipe.recipeType) {
 		case "Crafting" -> {
 			MItemBlock[] recipeSlots = new MItemBlock[9];
 			Arrays.fill(recipeSlots, new MItemBlock(modElement.getWorkspace(), ""));
 			recipeSlots[0] = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItemsAndTags).getName());
+					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			if (random.nextBoolean())
 				recipeSlots[3] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, blocksAndItemsAndTags).getName());
+						getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			if (random.nextBoolean())
 				recipeSlots[6] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, blocksAndItemsAndTags).getName());
+						getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			if (random.nextBoolean())
 				recipeSlots[1] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, blocksAndItemsAndTags).getName());
+						getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			if (random.nextBoolean())
 				recipeSlots[4] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, blocksAndItemsAndTags).getName());
+						getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			if (random.nextBoolean())
 				recipeSlots[7] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, blocksAndItemsAndTags).getName());
+						getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			if (random.nextBoolean())
 				recipeSlots[2] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, blocksAndItemsAndTags).getName());
+						getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			if (random.nextBoolean())
 				recipeSlots[5] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, blocksAndItemsAndTags).getName());
+						getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			if (random.nextBoolean())
 				recipeSlots[8] = new MItemBlock(modElement.getWorkspace(),
-						getRandomMCItem(random, blocksAndItemsAndTags).getName());
+						getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.recipeRetstackSize = 11;
 			recipe.recipeShapeless = _true;
 			recipe.recipeReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
+					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 			recipe.recipeSlots = recipeSlots;
 		}
 		case "Smelting" -> {
 			recipe.smeltingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItemsAndTags).getName());
+					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.smeltingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
+					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 			recipe.xpReward = 1.234;
 			recipe.cookingTime = 123;
 		}
 		case "Smoking" -> {
 			recipe.smokingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItemsAndTags).getName());
+					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.smokingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
+					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 			recipe.xpReward = 1.34;
 			recipe.cookingTime = 42;
 		}
 		case "Blasting" -> {
 			recipe.blastingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItemsAndTags).getName());
+					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.blastingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
+					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 			recipe.xpReward = 6.45;
 			recipe.cookingTime = 1000;
 		}
 		case "Stone cutting" -> {
 			recipe.stoneCuttingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItemsAndTags).getName());
+					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.stoneCuttingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
+					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 			recipe.recipeRetstackSize = 32;
 		}
 		case "Campfire cooking" -> {
 			recipe.campfireCookingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItemsAndTags).getName());
+					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.campfireCookingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
+					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 			recipe.xpReward = 24.234;
 			recipe.cookingTime = 2983;
 		}
 		case "Smithing" -> {
 			recipe.smithingInputStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItemsAndTags).getName());
+					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.smithingInputAdditionStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItemsAndTags).getName());
+					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItems).getName());
+					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 		}
 		case "Brewing" -> {
 			recipe.brewingInputStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItemsAndTagsAndPotions(modElement.getWorkspace())).getName());
+					filterAir(ElementUtil.loadBlocksAndItemsAndTagsAndPotions(modElement.getWorkspace()))).getName());
 			recipe.brewingIngredientStack = new MItemBlock(modElement.getWorkspace(),
-					getRandomMCItem(random, blocksAndItemsAndTags).getName());
+					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.brewingReturnStack = new MItemBlock(modElement.getWorkspace(), getRandomMCItem(random,
-					ElementUtil.loadBlocksAndItemsAndPotions(modElement.getWorkspace())).getName());
+					filterAir(ElementUtil.loadBlocksAndItemsAndPotions(modElement.getWorkspace()))).getName());
 		}
 		default -> throw new RuntimeException("Unknown recipe type");
 		}
