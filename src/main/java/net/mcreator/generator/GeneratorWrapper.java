@@ -122,9 +122,9 @@ import java.util.stream.Collectors;
 	public String getResourceLocationForModElement(ModElement element) {
 		// check if we are dealing with namespaced element
 		if (NamespacedGeneratableElement.class.isAssignableFrom(element.getType().getModElementStorageClass())) {
-			GeneratableElement namespacedgeneratableemenet = element.getGeneratableElement();
-			if (namespacedgeneratableemenet instanceof NamespacedGeneratableElement) {
-				return ((NamespacedGeneratableElement) namespacedgeneratableemenet).getResourceLocation();
+			GeneratableElement generatableElement = element.getGeneratableElement();
+			if (generatableElement instanceof NamespacedGeneratableElement namespacedGeneratableElement) {
+				return namespacedGeneratableElement.getResourceLocation();
 			}
 		}
 

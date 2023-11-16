@@ -54,6 +54,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.states.entity.JEntityDataList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -205,6 +206,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
 	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
+
+	private JEntityDataList entityDataList;
 
 	private static final BlocklyCompileNote aiUnmodifiableCompileNote = new BlocklyCompileNote(
 			BlocklyCompileNote.Type.INFO, L10N.t("blockly.warnings.unmodifiable_ai_bases"));
@@ -378,6 +381,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
 
 		breedTriggerItems = new MCItemListField(mcreator, ElementUtil::loadBlocksAndItemsAndTags, false, true);
+		entityDataList = new JEntityDataList(mcreator, this);
 
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 
@@ -388,7 +392,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
-				String selected = (String) guiBoundTo.getSelectedItem();
+				String selected = guiBoundTo.getSelectedItem();
 				if (selected != null) {
 					ModElement element = mcreator.getWorkspace().getModElementByName(selected);
 					if (element != null) {
@@ -534,6 +538,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 						immuneToAnvil, immuneToTrident, immuneToDragonBreath, immuneToWither));
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
+
+		JPanel entityDataListPanel = new JPanel(new GridLayout());
+
+		JComponent entityDataListComp = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/entity_data"),
+						L10N.label("elementgui.living_entity.entity_data")), entityDataList);
+		entityDataListPanel.setOpaque(false);
+		entityDataListComp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		entityDataListPanel.add(entityDataListComp);
 
 		JPanel spo2 = new JPanel(new GridLayout(11, 2, 2, 2));
 
@@ -930,6 +943,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2);
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
+		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3);
@@ -995,12 +1009,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0) {
 			return new AggregatedValidationResult(mobModelTexture, mobName);
-		} else if (page == 5) {
+		} else if (page == 6) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
 						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
 						.collect(Collectors.toList()));
-		} else if (page == 6) {
+		} else if (page == 7) {
 			return new AggregatedValidationResult(restrictionBiomes);
 		}
 		return new AggregatedValidationResult.PASS();
@@ -1105,6 +1119,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
 
+		entityDataList.setEntries(livingEntity.entityDataEntries);
+
 		if (livingEntity.creativeTab != null)
 			creativeTab.setSelectedItem(livingEntity.creativeTab);
 
@@ -1205,7 +1221,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.onPlayerCollidesWith = onPlayerCollidesWith.getSelectedProcedure();
 		livingEntity.onInitialSpawn = onInitialSpawn.getSelectedProcedure();
 		livingEntity.hasAI = hasAI.isSelected();
-		livingEntity.aiBase = (String) aiBase.getSelectedItem();
+		livingEntity.aiBase = aiBase.getSelectedItem();
 		livingEntity.aixml = blocklyPanel.getXML();
 		livingEntity.breedable = breedable.isSelected();
 		livingEntity.tameable = tameable.isSelected();
@@ -1218,7 +1234,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.doesDespawnWhenIdle = doesDespawnWhenIdle.isSelected();
 		livingEntity.spawningProbability = (int) spawningProbability.getValue();
 		livingEntity.mobSpawningType = (String) mobSpawningType.getSelectedItem();
-		livingEntity.rangedItemType = (String) rangedItemType.getSelectedItem();
+		livingEntity.rangedItemType = rangedItemType.getSelectedItem();
 		livingEntity.minNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMinValue();
 		livingEntity.maxNumberOfMobsPerGroup = numberOfMobsPerGroup.getIntMaxValue();
 		livingEntity.restrictionBiomes = restrictionBiomes.getListElements();
@@ -1229,7 +1245,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.mountedYOffset = (double) mountedYOffset.getValue();
 		livingEntity.modelShadowSize = (double) modelShadowSize.getValue();
 		livingEntity.armorBaseValue = (double) armorBaseValue.getValue();
-		livingEntity.mobModelName = ((Model) Objects.requireNonNull(mobModel.getSelectedItem())).getReadableName();
+		livingEntity.mobModelName = Objects.requireNonNull(mobModel.getSelectedItem()).getReadableName();
 		livingEntity.waterMob = waterMob.isSelected();
 		livingEntity.breatheUnderwater = breatheUnderwater.getSelectedProcedure();
 		livingEntity.pushedByFluids = pushedByFluids.getSelectedProcedure();
@@ -1237,7 +1253,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
 		livingEntity.inventorySize = (int) inventorySize.getValue();
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
-		livingEntity.guiBoundTo = (String) guiBoundTo.getSelectedItem();
+		livingEntity.guiBoundTo = guiBoundTo.getSelectedItem();
+		livingEntity.entityDataEntries = entityDataList.getEntries();
 		return livingEntity;
 	}
 

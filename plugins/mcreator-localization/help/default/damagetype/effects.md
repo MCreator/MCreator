@@ -1,0 +1,1 @@
+This parameter determines what sounds should be played when receiving damage of this type

@@ -194,7 +194,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		structure.surfaceDetectionType = (String) surfaceDetectionType.getSelectedItem();
 		structure.terrainAdaptation = (String) terrainAdaptation.getSelectedItem();
 		structure.restrictionBiomes = restrictionBiomes.getListElements();
-		structure.structure = (String) structureSelector.getSelectedItem();
+		structure.structure = structureSelector.getSelectedItem();
 		structure.separation = separation_spacing.getIntMinValue();
 		structure.spacing = separation_spacing.getIntMaxValue();
 		structure.generationStep = (String) generationStep.getSelectedItem();
