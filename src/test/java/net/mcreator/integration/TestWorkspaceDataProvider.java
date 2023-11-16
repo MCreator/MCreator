@@ -679,8 +679,13 @@ public class TestWorkspaceDataProvider {
 			structure.surfaceDetectionType = getRandomString(random,
 					Arrays.asList("WORLD_SURFACE_WG", "WORLD_SURFACE", "OCEAN_FLOOR_WG", "OCEAN_FLOOR",
 							"MOTION_BLOCKING", "MOTION_BLOCKING_NO_LEAVES"));
-			structure.ignoreBlocks = getRandomString(random,
-					Arrays.asList("STRUCTURE_BLOCK", "AIR_AND_STRUCTURE_BLOCK", "AIR"));
+			structure.ignoredBlocks = new ArrayList<>();
+			if (!emptyLists) {
+				structure.ignoredBlocks.addAll(
+						blocks.stream().skip(_true ? 0 : ((long) (blocks.size() / 4) * valueIndex))
+								.limit(blocks.size() / 4)
+								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
+			}
 			structure.terrainAdaptation = getRandomString(random,
 					Arrays.asList("none", "beard_thin", "beard_box", "bury"));
 			structure.projection = getRandomString(random, Arrays.asList("rigid", "terrain_matching"));
