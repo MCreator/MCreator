@@ -32,6 +32,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 
 public class SmithingRecipeMaker extends JPanel {
+	public MCItemHolder cb4;
 	public MCItemHolder cb1;
 	public MCItemHolder cb2;
 	public MCItemHolder cb3;
@@ -42,6 +43,7 @@ public class SmithingRecipeMaker extends JPanel {
 		ip.fitToImage();
 		ip.setLayout(null);
 
+		cb4 = new MCItemHolder(mcreator, itemsWithTags, true);
 		cb1 = new MCItemHolder(mcreator, itemsWithTags, true);
 		cb2 = new MCItemHolder(mcreator, itemsWithTags, true);
 		cb3 = new MCItemHolder(mcreator, items);
@@ -56,6 +58,7 @@ public class SmithingRecipeMaker extends JPanel {
 		ip.add(export);
 		export.addActionListener(event -> {
 			export.setVisible(false);
+			cb4.setValidationShownFlag(false);
 			cb1.setValidationShownFlag(false);
 			cb2.setValidationShownFlag(false);
 			cb3.setValidationShownFlag(false);
@@ -67,15 +70,18 @@ public class SmithingRecipeMaker extends JPanel {
 				FileIO.writeImageToPNGFile(im, fi);
 			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			export.setVisible(true);
+			cb4.setValidationShownFlag(true);
 			cb1.setValidationShownFlag(true);
 			cb2.setValidationShownFlag(true);
 			cb3.setValidationShownFlag(true);
 		});
 
-		cb1.setBounds(50, 60, 28, 28);
-		cb2.setBounds(117, 60, 28, 28);
-		cb3.setBounds(211, 60, 28, 28);
+		cb4.setBounds(18, 60, 28, 28);
+		cb1.setBounds(85, 60, 28, 28);
+		cb2.setBounds(152, 60, 28, 28);
+		cb3.setBounds(246, 60, 28, 28);
 
+		ip.add(cb4);
 		ip.add(cb1);
 		ip.add(cb2);
 		ip.add(cb3);

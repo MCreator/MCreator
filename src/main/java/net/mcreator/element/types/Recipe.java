@@ -72,6 +72,7 @@ import java.util.Map;
 	// Smithing recipe
 	public MItemBlock smithingInputStack;
 	public MItemBlock smithingInputAdditionStack;
+	public MItemBlock smithingInputTemplateStack;
 	public MItemBlock smithingReturnStack;
 
 	// Brewing recipe
