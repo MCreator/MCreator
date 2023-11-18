@@ -45,8 +45,8 @@ body:
     label: Plugin
     description: Are you using any MCreator plugins?
     options:
+     - No plugin installed
      - Yes (Tell us at the Specifications part)
-     - No
    validations:
      required: true
  - type: textarea
