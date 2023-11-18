@@ -43,7 +43,7 @@ body:
  - type: dropdown
    attributes:
     label: Plugin
-    description: Are you using plugins?
+    description: Are you using any MCreator plugins?
     options:
      - Yes (Tell us at the Specifications part)
      - No
