@@ -151,6 +151,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			}
 		};
 		</#if>
+
+		<#if data.boundingBoxScale?? && data.boundingBoxScale.getFixedValue() != 1 && !hasProcedure(data.boundingBoxScale)>
+		refreshDimensions();
+		</#if>
 	}
 
 	@Override public Packet<ClientGamePacketListener> getAddEntityPacket() {
@@ -590,16 +594,21 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
     </#if>
 
-	<#if hasProcedure(data.onMobTickUpdate)>
+	<#if hasProcedure(data.onMobTickUpdate) || hasProcedure(data.boundingBoxScale)>
 	@Override public void baseTick() {
 		super.baseTick();
-		<@procedureCode data.onMobTickUpdate, {
-			"x": "this.getX()",
-			"y": "this.getY()",
-			"z": "this.getZ()",
-			"entity": "this",
-			"world": "this.level()"
-		}/>
+		<#if hasProcedure(data.onMobTickUpdate)>
+			<@procedureCode data.onMobTickUpdate, {
+				"x": "this.getX()",
+				"y": "this.getY()",
+				"z": "this.getZ()",
+				"entity": "this",
+				"world": "this.level()"
+			}/>
+		</#if>
+		<#if hasProcedure(data.boundingBoxScale)>
+			this.refreshDimensions();
+		</#if>
 	}
     </#if>
 
@@ -772,6 +781,21 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			super.travel(dir);
 		}
     </#if>
+
+	<#if hasProcedure(data.boundingBoxScale) || (data.boundingBoxScale?? && data.boundingBoxScale.getFixedValue() != 1)>
+	@Override public EntityDimensions getDimensions(Pose pose) {
+		<#if hasProcedure(data.boundingBoxScale)>
+			Entity entity = this;
+			Level world = this.level();
+			double x = this.getX();
+			double y = this.getY();
+			double z = this.getZ();
+			return super.getDimensions(pose).scale((float) <@procedureOBJToNumberCode data.boundingBoxScale/>);
+		<#else>
+			return super.getDimensions(pose).scale(${data.boundingBoxScale.getFixedValue()}f);
+		</#if>
+	}
+	</#if>
 
 	<#if data.flyingMob>
 	@Override protected void checkFallDamage(double y, boolean onGroundIn, BlockState state, BlockPos pos) {
