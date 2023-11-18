@@ -10,6 +10,8 @@ body:
        required: true
      - label: "I have checked that my problem is not covered on <a href='https://mcreator.net/support/knowledgebase' target='_blank'>Knowledge Base</a> or on <a href='https://mcreator.net/wiki' target='_blank'>MCreator's Wiki</a>"
        required: true
+     - label: "I have made sure this bug is not plugin-related (tested with MCreator without plugins installed)"
+       required: true
      - label: "I have checked that my written content does not violate the <a href='https://mcreator.net/wiki/general-publishing-guidelines' target='_blank'>publishing guidelines</a>"
        required: true
  - type: textarea
@@ -38,15 +40,6 @@ body:
      - macOS
      - Linux
      - Other (Tell us at the Specifications part)
-   validations:
-     required: true
- - type: dropdown
-   attributes:
-    label: Plugin
-    description: Are you using any MCreator plugins?
-    options:
-     - No plugin installed
-     - Yes (Tell us at the Specifications part)
    validations:
      required: true
  - type: textarea
