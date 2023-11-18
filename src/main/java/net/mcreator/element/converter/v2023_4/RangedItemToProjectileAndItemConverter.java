@@ -124,8 +124,8 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 			} else {
 				item.customModelName = "Ranged item";
 			}
-			item.creativeTab = new TabEntry(workspace,
-					rangedItem.get("creativeTab").getAsJsonObject().get("value").getAsString());
+			item.creativeTabs = List.of(new TabEntry(workspace,
+					rangedItem.get("creativeTab").getAsJsonObject().get("value").getAsString()));
 
 			List<String> infoFixedValues = new ArrayList<>();
 			String infoProcedureName = null;

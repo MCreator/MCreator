@@ -67,6 +67,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -129,7 +130,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final JRadioButton doubleType = L10N.radiobutton("elementgui.plant.use_double_plant_type");
 
-	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private final TabListField creativeTabs = new TabListField(mcreator);
 	private final JRadioButton growapableType = L10N.radiobutton("elementgui.plant.use_growable_plant_type");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { cross, crop });
 
@@ -466,9 +467,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.common.name_in_gui")));
 		selp.add(name);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				L10N.label("elementgui.common.creative_tab")));
-		selp.add(creativeTab);
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.common.creative_tabs")));
+		selp.add(creativeTabs);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("block/hardness"),
 				L10N.label("elementgui.common.hardness")));
@@ -723,6 +724,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		addPage(L10N.t("elementgui.common.page_generation"), PanelUtils.totalCenterInPanel(pane4));
 
 		if (!isEditingMode()) {
+			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "DECORATIONS")));
+
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			name.setText(readableNameFromModElement);
 		}
@@ -823,9 +826,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		isBonemealTargetCondition.refreshListKeepSelected();
 		bonemealSuccessCondition.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
-				new DataListEntry.Dummy("DECORATIONS"));
-
 		ComboBoxUtil.updateComboBoxContents(soundOnStep, ElementUtil.loadStepSounds(),
 				new DataListEntry.Dummy("PLANT"));
 
@@ -881,7 +881,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		useLootTableForDrops.setSelected(plant.useLootTableForDrops);
 		customDrop.setBlock(plant.customDrop);
 		dropAmount.setValue(plant.dropAmount);
-		creativeTab.setSelectedItem(plant.creativeTab);
+		creativeTabs.setListElements(plant.creativeTabs);
 		onBlockAdded.setSelectedProcedure(plant.onBlockAdded);
 		onNeighbourBlockChanges.setSelectedProcedure(plant.onNeighbourBlockChanges);
 		onTickUpdate.setSelectedProcedure(plant.onTickUpdate);
@@ -963,7 +963,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	@Override public Plant getElementFromGUI() {
 		Plant plant = new Plant(modElement);
 		plant.name = name.getText();
-		plant.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
+		plant.creativeTabs = creativeTabs.getListElements();
 		plant.texture = texture.getID();
 		plant.textureBottom = textureBottom.getID();
 		plant.itemTexture = itemTexture.getID();

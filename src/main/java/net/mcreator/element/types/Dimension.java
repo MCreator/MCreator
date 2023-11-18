@@ -74,7 +74,7 @@ import java.util.List;
 	public boolean enableIgniter;
 	public String igniterName;
 	public StringListProcedure specialInformation;
-	public TabEntry igniterTab;
+	public List<TabEntry> creativeTabs;
 	@TextureReference(TextureType.ITEM) public String texture;
 	@TextureReference(TextureType.BLOCK) public String portalTexture;
 	public boolean enablePortal;
@@ -93,6 +93,7 @@ import java.util.List;
 		// DEFAULT VALUES
 		this.enablePortal = true;
 		this.enableIgniter = true;
+		this.creativeTabs = new ArrayList<>();
 		this.sleepResult = "ALLOW";
 	}
 
@@ -110,8 +111,8 @@ import java.util.List;
 				null;
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return igniterTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {

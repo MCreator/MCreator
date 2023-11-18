@@ -1,5 +1,3 @@
-- No creative tab entry:
-  texture: BARRIER
 - BUILDING_BLOCKS:
   texture: BRICK_BLOCK
   readable_name: Building Blocks

@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
@@ -58,32 +59,29 @@ public class ElementOrderEditor {
 				.forEach(modElement -> {
 					GeneratableElement generatableElement = modElement.getGeneratableElement();
 					if (generatableElement instanceof ITabContainedElement element) {
-						if (element.getCreativeTab() == null || element.getCreativeTab().getUnmappedValue()
-								.equals("No creative tab entry")) {
-							return;
+						for (TabEntry tab : element.getCreativeTabs()) {
+							if (tabEditors.get(tab.getUnmappedValue()) == null) {
+								DefaultListModel<ModElement> model = new DefaultListModel<>() {
+									@Override public void add(int idx, ModElement element) {
+										super.add(idx, element);
+										element.reinit(mcreator.getWorkspace());
+									}
+								};
+								JList<ModElement> list = new JList<>(model);
+								list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+								list.setVisibleRowCount(-1);
+								list.setTransferHandler(new ReordarableListTransferHandler());
+								list.setDropMode(DropMode.INSERT);
+								list.setDragEnabled(true);
+								list.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+
+								list.setCellRenderer(new SmallIconModListRender(false));
+								tabs.addTab(tab.getUnmappedValue(), new JScrollPane(list));
+
+								tabEditors.put(tab.getUnmappedValue(), model);
+							}
+							tabEditors.get(tab.getUnmappedValue()).addElement(modElement);
 						}
-
-						if (tabEditors.get(element.getCreativeTab().getUnmappedValue()) == null) {
-							DefaultListModel<ModElement> model = new DefaultListModel<>() {
-								@Override public void add(int idx, ModElement element) {
-									super.add(idx, element);
-									element.reinit(mcreator.getWorkspace());
-								}
-							};
-							JList<ModElement> list = new JList<>(model);
-							list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-							list.setVisibleRowCount(-1);
-							list.setTransferHandler(new ReordarableListTransferHandler());
-							list.setDropMode(DropMode.INSERT);
-							list.setDragEnabled(true);
-							list.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-
-							list.setCellRenderer(new SmallIconModListRender(false));
-							tabs.addTab(element.getCreativeTab().getUnmappedValue(), new JScrollPane(list));
-
-							tabEditors.put(element.getCreativeTab().getUnmappedValue(), model);
-						}
-						tabEditors.get(element.getCreativeTab().getUnmappedValue()).addElement(modElement);
 					}
 				});
 

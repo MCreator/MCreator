@@ -177,7 +177,7 @@ public class OrePackMakerTool {
 				new ModElement(workspace, oreItemName, ModElementType.ITEM), false).getElementFromGUI();
 		oreItem.name = name;
 		oreItem.texture = gemTextureName;
-		oreItem.creativeTab = new TabEntry(workspace, "MATERIALS");
+		oreItem.creativeTabs = List.of(new TabEntry(workspace, "MATERIALS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreItem);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -200,7 +200,7 @@ public class OrePackMakerTool {
 		oreBlock.maxGenerateHeight = (int) (63 / Math.pow(factor, 0.9));
 		oreBlock.frequencyPerChunks = (int) (11 / Math.pow(factor, 0.9));
 		oreBlock.frequencyOnChunk = (int) (7 / Math.pow(factor, 0.9));
-		oreBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		oreBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		if (type.equals("Dust based")) {
 			oreBlock.dropAmount = 3;
 		}
@@ -221,7 +221,7 @@ public class OrePackMakerTool {
 		oreBlockBlock.breakHarvestLevel = (int) Math.round(2 * factor);
 		oreBlockBlock.requiresCorrectTool = true;
 		oreBlockBlock.renderType = 11; // single texture
-		oreBlockBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
+		oreBlockBlock.creativeTabs = List.of(new TabEntry(workspace, "BUILDING_BLOCKS"));
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreBlockBlock);
 
 		Recipe itemToBlockRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,

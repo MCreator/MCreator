@@ -38,6 +38,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
@@ -58,6 +59,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
@@ -96,7 +98,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private BiomeListField biomesInDimension;
 
-	private final DataListComboBox igniterTab = new DataListComboBox(mcreator);
+	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private final JSpinner luminance = new JSpinner(new SpinnerNumberModel(0, 0, 15, 1));
 
@@ -253,9 +255,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.portal_igniter_name")));
 		proper22.add(igniterName);
 
-		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				L10N.label("elementgui.dimension.portal_igniter_tab")));
-		proper22.add(igniterTab);
+		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.dimension.portal_igniter_tabs")));
+		proper22.add(creativeTabs);
 
 		portalSound.setText("block.portal.ambient");
 
@@ -353,6 +355,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		addPage(L10N.t("elementgui.common.page_triggers"), pane5);
 
 		if (!isEditingMode()) {
+			creativeTabs.setListElements(List.of(new TabEntry(mcreator.getWorkspace(), "TOOLS")));
+
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
 			igniterName.setText(readableNameFromModElement + " Portal Igniter");
 		}
@@ -371,7 +375,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private void updateIgniterElements(boolean enabled) {
 		igniterName.setEnabled(enabled);
-		igniterTab.setEnabled(enabled);
+		creativeTabs.setEnabled(enabled);
 		specialInformation.setEnabled(enabled);
 		texture.setEnabled(enabled);
 		portalMakeCondition.setEnabled(enabled);
@@ -387,9 +391,6 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalMakeCondition.refreshListKeepSelected();
 		portalUseCondition.refreshListKeepSelected();
 		specialInformation.refreshListKeepSelected();
-
-		ComboBoxUtil.updateComboBoxContents(igniterTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
-				new DataListEntry.Dummy("TOOLS"));
 
 		ComboBoxUtil.updateComboBoxContents(portalParticles, ElementUtil.loadAllParticles(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("PORTAL"));
@@ -415,7 +416,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		texture.setTextureFromTextureName(dimension.texture);
 		worldGenType.setSelectedItem(dimension.worldGenType);
 		sleepResult.setSelectedItem(dimension.sleepResult);
-		igniterTab.setSelectedItem(dimension.igniterTab.getUnmappedValue());
+		creativeTabs.setListElements(dimension.creativeTabs);
 		portalParticles.setSelectedItem(dimension.portalParticles);
 		biomesInDimension.setListElements(dimension.biomesInDimension);
 		airColor.setColor(dimension.airColor);
@@ -442,7 +443,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.texture = texture.getID();
 		dimension.portalTexture = portalTexture.getID();
 		dimension.portalParticles = new Particle(mcreator.getWorkspace(), portalParticles.getSelectedItem());
-		dimension.igniterTab = new TabEntry(mcreator.getWorkspace(), igniterTab.getSelectedItem());
+		dimension.creativeTabs = creativeTabs.getListElements();
 		dimension.portalSound = portalSound.getSound();
 		dimension.biomesInDimension = biomesInDimension.getListElements();
 		dimension.airColor = airColor.getColor();

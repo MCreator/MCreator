@@ -22,7 +22,6 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.ProjectileEntry;
-import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.GUI;
 import net.mcreator.element.types.Item;
 import net.mcreator.minecraft.ElementUtil;
@@ -39,6 +38,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.minecraft.states.item.JItemPropertiesStatesList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
@@ -101,7 +101,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 	private final DataListComboBox projectile = new DataListComboBox(mcreator);
 
-	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private static final Model normal = new Model.BuiltInModel("Normal");
 	private static final Model tool = new Model.BuiltInModel("Tool");
@@ -273,9 +273,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
 		subpane2.add(rarity);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				L10N.label("elementgui.common.creative_tab")));
-		subpane2.add(creativeTab);
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.common.creative_tabs")));
+		subpane2.add(creativeTabs);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/stack_size"),
 				L10N.label("elementgui.common.max_stack_size")));
@@ -544,8 +544,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		customProperties.reloadDataLists();
 
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
-
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Arrays.asList(ItemGUI.builtinitemmodels),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
@@ -579,7 +577,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		onStoppedUsing.setSelectedProcedure(item.onStoppedUsing);
 		onEntitySwing.setSelectedProcedure(item.onEntitySwing);
 		onDroppedByPlayer.setSelectedProcedure(item.onDroppedByPlayer);
-		creativeTab.setSelectedItem(item.creativeTab);
+		creativeTabs.setListElements(item.creativeTabs);
 		stackSize.setValue(item.stackSize);
 		enchantability.setValue(item.enchantability);
 		toolType.setValue(item.toolType);
@@ -627,7 +625,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		Item item = new Item(modElement);
 		item.name = name.getText();
 		item.rarity = (String) rarity.getSelectedItem();
-		item.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
+		item.creativeTabs = creativeTabs.getListElements();
 		item.stackSize = (int) stackSize.getValue();
 		item.enchantability = (int) enchantability.getValue();
 		item.useDuration = (int) useDuration.getValue();

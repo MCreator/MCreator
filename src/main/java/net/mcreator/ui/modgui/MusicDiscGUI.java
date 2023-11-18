@@ -19,21 +19,18 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.blockly.data.Dependency;
-import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.MusicDisc;
-import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JStringListField;
-import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.SoundSelector;
+import net.mcreator.ui.minecraft.TabListField;
 import net.mcreator.ui.minecraft.TextureHolder;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
@@ -68,7 +65,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
 	private LogicProcedureSelector glowCondition;
 
-	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
+	private final TabListField creativeTabs = new TabListField(mcreator);
 
 	private ProcedureSelector onRightClickedInAir;
 	private ProcedureSelector onCrafted;
@@ -155,9 +152,9 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 				L10N.label("elementgui.music_disc.disc_analog_output")));
 		subpane2.add(analogOutput);
 
-		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
-				L10N.label("elementgui.common.creative_tab")));
-		subpane2.add(creativeTab);
+		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
+				L10N.label("elementgui.common.creative_tabs")));
+		subpane2.add(creativeTabs);
 
 		JPanel subpane3 = new JPanel(new BorderLayout(0, 2));
 		subpane3.setOpaque(false);
@@ -226,8 +223,6 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		specialInformation.refreshListKeepSelected();
 
 		glowCondition.refreshListKeepSelected();
-
-		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -248,7 +243,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		onItemInUseTick.setSelectedProcedure(musicDisc.onItemInUseTick);
 		onEntitySwing.setSelectedProcedure(musicDisc.onEntitySwing);
 		specialInformation.setSelectedProcedure(musicDisc.specialInformation);
-		creativeTab.setSelectedItem(musicDisc.creativeTab);
+		creativeTabs.setListElements(musicDisc.creativeTabs);
 		glowCondition.setSelectedProcedure(musicDisc.glowCondition);
 		music.setSound(musicDisc.music);
 		lengthInTicks.setValue(musicDisc.lengthInTicks);
@@ -259,7 +254,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		MusicDisc musicDisc = new MusicDisc(modElement);
 		musicDisc.name = name.getText();
 		musicDisc.description = description.getText();
-		musicDisc.creativeTab = new TabEntry(mcreator.getWorkspace(), creativeTab.getSelectedItem());
+		musicDisc.creativeTabs = creativeTabs.getListElements();
 		musicDisc.glowCondition = glowCondition.getSelectedProcedure();
 		musicDisc.onRightClickedInAir = onRightClickedInAir.getSelectedProcedure();
 		musicDisc.onRightClickedOnBlock = onRightClickedOnBlock.getSelectedProcedure();

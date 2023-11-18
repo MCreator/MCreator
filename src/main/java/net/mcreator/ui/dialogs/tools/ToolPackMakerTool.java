@@ -53,6 +53,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 public class ToolPackMakerTool {
@@ -194,7 +195,7 @@ public class ToolPackMakerTool {
 		pickaxeTool.texture = pickaxeTextureName;
 		pickaxeTool.toolType = "Pickaxe";
 		pickaxeTool.repairItems = Collections.singletonList(base);
-		pickaxeTool.creativeTab = new TabEntry(workspace, "TOOLS");
+		pickaxeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, pickaxeTool, folder);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
@@ -204,7 +205,7 @@ public class ToolPackMakerTool {
 		axeTool.texture = axeTextureName;
 		axeTool.toolType = "Axe";
 		axeTool.repairItems = Collections.singletonList(base);
-		axeTool.creativeTab = new TabEntry(workspace, "TOOLS");
+		axeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, axeTool, folder);
 		axeTool.damageVsEntity = (double) Math.round(9.0f * factor);
 
@@ -214,7 +215,7 @@ public class ToolPackMakerTool {
 		swordTool.name = name + " Sword";
 		swordTool.texture = swordTextureName;
 		swordTool.toolType = "Sword";
-		swordTool.creativeTab = new TabEntry(mcreator.getWorkspace(), "COMBAT");
+		swordTool.creativeTabs = List.of(new TabEntry(workspace, "COMBAT"));
 		swordTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, swordTool, folder);
 		swordTool.damageVsEntity = (double) Math.round(6.0f * factor);
@@ -226,7 +227,7 @@ public class ToolPackMakerTool {
 		shovelTool.texture = shovelTextureName;
 		shovelTool.toolType = "Spade";
 		shovelTool.repairItems = Collections.singletonList(base);
-		shovelTool.creativeTab = new TabEntry(workspace, "TOOLS");
+		shovelTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, shovelTool, folder);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
@@ -236,7 +237,7 @@ public class ToolPackMakerTool {
 		hoeTool.texture = hoeTextureName;
 		hoeTool.toolType = "Hoe";
 		hoeTool.repairItems = Collections.singletonList(base);
-		hoeTool.creativeTab = new TabEntry(workspace, "TOOLS");
+		hoeTool.creativeTabs = List.of(new TabEntry(workspace, "TOOLS"));
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, hoeTool, folder);
 
 		Recipe pickaxeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,

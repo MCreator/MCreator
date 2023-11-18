@@ -137,8 +137,7 @@ import java.util.*;
 
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
-				TabEntry tab = tabElement.getCreativeTab();
-				if (tab != null && !tab.getUnmappedValue().equals("No creative tab entry")) {
+				if (!tabElement.getCreativeTabs().isEmpty()) {
 					if (!tabElement.getCreativeTabItems().isEmpty())
 						return true;
 				}
@@ -157,18 +156,19 @@ import java.util.*;
 
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
-				TabEntry tabEntry = tabElement.getCreativeTab();
 				List<MCItem> tabItems = tabElement.getCreativeTabItems();
 
-				if (tabEntry != null && tabItems != null && !tabItems.isEmpty()) {
-					String tab = tabEntry.getUnmappedValue();
-					if (tab != null && !tab.equals("No creative tab entry")) {
-						if (!tabMap.containsKey(tab)) {
-							tabMap.put(tab, new ArrayList<>());
-						}
+				if (tabItems != null && !tabItems.isEmpty()) {
+					for (TabEntry tabEntry : tabElement.getCreativeTabs()) {
+						String tab = tabEntry.getUnmappedValue();
+						if (tab != null) {
+							if (!tabMap.containsKey(tab)) {
+								tabMap.put(tab, new ArrayList<>());
+							}
 
-						tabMap.get(tab)
-								.addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName())).toList());
+							tabMap.get(tab).addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
+									.toList());
+						}
 					}
 				}
 			}
