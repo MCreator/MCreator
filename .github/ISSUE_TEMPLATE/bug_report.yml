@@ -40,6 +40,15 @@ body:
      - Other (Tell us at the Specifications part)
    validations:
      required: true
+ - type: dropdown
+   attributes:
+    label: Plugin
+    description: Are you using plugins?
+    options:
+     - Yes (Tell us at the Specifications part)
+     - No
+   validations:
+     required: true
  - type: textarea
    attributes:
     label: Details
