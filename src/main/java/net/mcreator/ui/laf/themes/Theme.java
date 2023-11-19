@@ -49,7 +49,9 @@ import javax.swing.*;
 	}
 
 	protected void init() {
-
+		if (colorScheme != null) {
+			colorScheme.init();
+		}
 	}
 
 	/**

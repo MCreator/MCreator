@@ -42,56 +42,72 @@ public class ColorScheme {
 	private String foregroundColor;
 	private String altForegroundColor;
 
-	@Nullable String interfaceAccentColor;
+	@Nullable private String interfaceAccentColor;
+
+	// Caches
+	private transient Color backgroundColorCache;
+	private transient Color altBackgroundColorCache;
+	private transient Color secondAltBackgroundColorCache;
+	private transient Color foregroundColorCache;
+	private transient Color altForegroundColorCache;
+	private transient Color interfaceAccentColorCache;
+
+	protected void init() {
+		this.backgroundColorCache = Color.decode(backgroundColor);
+		this.altBackgroundColorCache = Color.decode(altBackgroundColor);
+		this.secondAltBackgroundColorCache = Color.decode(secondAltBackgroundColor);
+		this.foregroundColorCache = Color.decode(foregroundColor);
+		this.altForegroundColorCache = Color.decode(altForegroundColor);
+
+		interfaceAccentColorCache = PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get();
+		if (interfaceAccentColor != null) {
+			try {
+				interfaceAccentColorCache = Color.decode(interfaceAccentColor);
+			} catch (NumberFormatException ignored) {
+			}
+		}
+	}
 
 	/**
 	 * @return Background of UI panels
 	 */
 	public Color getBackgroundColor() {
-		return Color.decode(backgroundColor);
+		return backgroundColorCache;
 	}
 
 	/**
 	 * @return Background of components (e.g. text fields, checkboxes and sound selectors)
 	 */
 	public Color getAltBackgroundColor() {
-		return Color.decode(altBackgroundColor);
+		return altBackgroundColorCache;
 	}
 
 	/**
 	 * @return Second background color used (e.g. workspace background)
 	 */
 	public Color getSecondAltBackgroundColor() {
-		return Color.decode(secondAltBackgroundColor);
+		return secondAltBackgroundColorCache;
 	}
 
 	/**
 	 * @return <p>Secondary text color </p>
 	 */
 	public Color getAltForegroundColor() {
-		return Color.decode(altForegroundColor);
+		return altForegroundColorCache;
 	}
 
 	/**
 	 * @return <p>Color used for most of texts </p>
 	 */
 	public Color getForegroundColor() {
-		return Color.decode(foregroundColor);
+		return foregroundColorCache;
 	}
 
 	/**
 	 * @return <p>Returns the interfaceAccentColor if defined by theme, otherwise the one defined by the user in {@link PreferencesData}</p>
 	 */
 	public Color getInterfaceAccentColor() {
-		if (interfaceAccentColor != null) {
-			try {
-				return Color.decode(interfaceAccentColor);
-			} catch (NumberFormatException exception) {
-				return PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get();
-			}
-		} else {
-			return PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get();
-		}
+		return interfaceAccentColorCache;
 	}
 
 }
