@@ -565,10 +565,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.texture")));
 		spo2.add(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture, 0, 0));
 
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
-				L10N.label("elementgui.living_entity.glow_texture")));
-		spo2.add(mobModelGlowTexture);
-
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
 				L10N.label("elementgui.living_entity.bounding_box")));
 		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(2, 2), modelHeight,
