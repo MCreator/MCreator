@@ -20,6 +20,7 @@
 package net.mcreator.integration;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -94,6 +95,10 @@ public class WorkspaceConvertersTest {
 						GeneratableElement ge = mod.getGeneratableElement();
 
 						assertNotNull(ge);
+
+						// Check if all workspace fields are not null
+						IWorkspaceDependent.processWorkspaceDependentObjects(ge,
+								workspaceDependent -> assertNotNull(workspaceDependent.getWorkspace()));
 
 						// test if methods below work and no exceptions are thrown
 

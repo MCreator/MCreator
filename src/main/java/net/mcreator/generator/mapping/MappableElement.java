@@ -84,6 +84,10 @@ public abstract class MappableElement implements IWorkspaceDependent {
 		mapper.setWorkspace(workspace);
 	}
 
+	@Nullable @Override public Workspace getWorkspace() {
+		return mapper.getWorkspace();
+	}
+
 	@Override public int hashCode() {
 		return value.hashCode();
 	}

@@ -47,6 +47,8 @@ import org.w3c.dom.Text;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +75,8 @@ public class BlocklyPanel extends JFXPanel {
 
 	private static final String MINIMAL_XML = "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>";
 
+	private final List<ChangeListener> changeListeners = new ArrayList<>();
+
 	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
 		this.mcreator = mcreator;
 		this.type = type;
@@ -82,6 +86,10 @@ public class BlocklyPanel extends JFXPanel {
 
 			if (newXml.length() > MINIMAL_XML.length()) {
 				this.currentXML = newXml;
+
+				ThreadUtil.runOnSwingThread(() -> changeListeners.forEach(
+						listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this))));
+
 				return true;
 			}
 
@@ -193,6 +201,10 @@ public class BlocklyPanel extends JFXPanel {
 			runAfterLoaded.add(runnable);
 		else
 			runnable.run();
+	}
+
+	public void addChangeListener(ChangeListener listener) {
+		changeListeners.add(listener);
 	}
 
 	public String getXML() {

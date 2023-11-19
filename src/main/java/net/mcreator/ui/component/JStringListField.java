@@ -27,9 +27,12 @@ import net.mcreator.ui.validation.component.VTextField;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +47,8 @@ public class JStringListField extends JPanel {
 
 	private final TechnicalButton edit = new TechnicalButton(UIRES.get("18px.edit"));
 	private final TechnicalButton clear = new TechnicalButton(UIRES.get("18px.removeall"));
+
+	private final List<ChangeListener> changeListeners = new ArrayList<>();
 
 	private boolean uniqueEntries = false;
 
@@ -98,7 +103,10 @@ public class JStringListField extends JPanel {
 		clear.setMargin(new Insets(0, 0, 0, 0));
 		clear.setBorder(BorderFactory.createEmptyBorder());
 		clear.setContentAreaFilled(false);
-		clear.addActionListener(e -> entriesModel.clear());
+		clear.addActionListener(e -> {
+			entriesModel.clear();
+			changeListeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
+		});
 
 		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, clear));
 		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
@@ -113,6 +121,13 @@ public class JStringListField extends JPanel {
 		super.setEnabled(b);
 		edit.setEnabled(b);
 		clear.setEnabled(b);
+	}
+
+	/**
+	 * @param listener Listener object to be registered for listening to value changes of this component.
+	 */
+	public void addChangeListener(ChangeListener listener) {
+		changeListeners.add(listener);
 	}
 
 	/**
@@ -137,6 +152,7 @@ public class JStringListField extends JPanel {
 	public void setTextList(Collection<String> newTextList) {
 		entriesModel.clear();
 		entriesModel.addAll(newTextList);
+		changeListeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
 	}
 
 	private static class CustomListCellRenderer extends JLabel implements ListCellRenderer<String> {
