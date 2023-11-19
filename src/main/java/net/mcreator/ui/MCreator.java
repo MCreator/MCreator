@@ -212,7 +212,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		mv = new WorkspacePanel(this);
 
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
-		pon.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		pon.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0,
 				Theme.current().getColorScheme().getSecondAltBackgroundColor()));
 

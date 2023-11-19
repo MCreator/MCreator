@@ -52,7 +52,7 @@ class AutocompleteStyle {
 				JList<?> list = (JList<?>) field2.get(autoCompletePopupWindowRaw);
 				list.setForeground(new Color(0xD9D9D9));
 				list.setSelectionForeground(Color.white);
-				list.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				list.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 
 				JWindow autoCompletePopupWindow = (JWindow) field.get(ac);
 				autoCompletePopupWindow.setOpacity(0.93f);
@@ -62,15 +62,15 @@ class AutocompleteStyle {
 					if (com instanceof JComponent)
 						((JComponent) com).setBorder(null);
 					if (com instanceof JScrollPane pane) {
-						pane.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+						pane.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 						pane.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0,
-								(Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+								Theme.current().getColorScheme().getBackgroundColor()));
 						pane.getVerticalScrollBar()
-								.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+								.setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 										(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"),
 										pane.getVerticalScrollBar()));
 						pane.getHorizontalScrollBar()
-								.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+								.setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 										(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"),
 										pane.getHorizontalScrollBar()));
 						pane.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));

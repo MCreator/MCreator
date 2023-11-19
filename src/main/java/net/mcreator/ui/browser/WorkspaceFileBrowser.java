@@ -115,7 +115,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		tree.setShowsRootHandles(true);
 
 		JScrollPane jsp = new JScrollPane(tree);
-		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Theme.current().getColorScheme().getBackgroundColor()));
 
 		SlickTreeUI treeUI = new SlickTreeUI();
 		tree.setUI(treeUI);
@@ -123,26 +123,26 @@ public class WorkspaceFileBrowser extends JPanel {
 		treeUI.setRightChildIndent(11);
 		treeUI.setLeftChildIndent(3);
 
-		jsp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+		jsp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 				Theme.current().getColorScheme().getSecondAltBackgroundColor(), jsp.getVerticalScrollBar()));
 		jsp.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 		jsp.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 
 		JPanel cornerDummy1 = new JPanel();
-		cornerDummy1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cornerDummy1.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		jsp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy1);
 
 		JPanel cornerDummy2 = new JPanel();
-		cornerDummy2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cornerDummy2.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy2);
 
 		setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 
-		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, Theme.current().getColorScheme().getBackgroundColor()));
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
-		jtf1.setBorder(BorderFactory.createLineBorder(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter()));
-		jtf1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		jtf1.setBorder(BorderFactory.createLineBorder((Theme.current().getColorScheme().getBackgroundColor()).brighter()));
+		jtf1.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		jtf1.setForeground(new Color(0xCBCBCB));
 		jtf1.setOpaque(true);
 		ComponentUtils.deriveFont(jtf1, 12);
@@ -168,9 +168,9 @@ public class WorkspaceFileBrowser extends JPanel {
 		});
 
 		JPanel bar = new JPanel(new BorderLayout());
-		bar.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		bar.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		bar.add(jtf1);
-		bar.setBorder(BorderFactory.createMatteBorder(3, 5, 3, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		bar.setBorder(BorderFactory.createMatteBorder(3, 5, 3, 0, Theme.current().getColorScheme().getBackgroundColor()));
 
 		JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		topBar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
@@ -179,14 +179,14 @@ public class WorkspaceFileBrowser extends JPanel {
 						(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")));
 
 		topBar.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getColorScheme().getBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 5, 2, 0)));
 
 		JLabel sil = new JLabel(UIRES.get("16px.search"));
 		sil.setPreferredSize(new Dimension(sil.getIcon().getIconWidth(), sil.getIcon().getIconHeight()));
 
 		JComponent search = PanelUtils.westAndCenterElement(sil, bar);
-		search.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		search.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		search.setOpaque(true);
 		search.setBorder(BorderFactory.createEmptyBorder(3, 4, 0, 3));
 
@@ -523,10 +523,10 @@ public class WorkspaceFileBrowser extends JPanel {
 			}
 
 			if (sel) {
-				a.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				a.setForeground(Theme.current().getColorScheme().getBackgroundColor());
 				a.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 			} else {
-				a.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				a.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 				a.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 			}
 			return a;

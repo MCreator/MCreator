@@ -37,6 +37,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
@@ -426,7 +427,7 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel zoomHolder = new JPanel(new BorderLayout()) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				g2d.setColor(Theme.current().getColorScheme().getBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.6f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();
@@ -508,7 +509,7 @@ public class WYSIWYGEditor extends JPanel {
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			if (isSelected) {
-				setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				setForeground(Theme.current().getColorScheme().getBackgroundColor());
 				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				setOpaque(true);
 			} else {

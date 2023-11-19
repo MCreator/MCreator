@@ -100,7 +100,7 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 			setOpaque(isSelected);
 			setBackground(isSelected ?
 					Theme.current().getColorScheme().getInterfaceAccentColor() :
-					(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+					Theme.current().getColorScheme().getBackgroundColor());
 			setText(" " + ma);
 			ComponentUtils.deriveFont(this, 17);
 			setIcon(UIRES.get("16px.ext.gif"));

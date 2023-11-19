@@ -19,6 +19,7 @@
 package net.mcreator.ui.component.util;
 
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
@@ -43,7 +44,7 @@ public class ComponentUtils {
 	public static void normalizeButton2(JButton button) {
 		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 1),
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getColorScheme().getBackgroundColor(), 1),
 						BorderFactory.createLineBorder(new Color(30, 30, 30), 4))));
 		button.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 	}
@@ -51,11 +52,11 @@ public class ComponentUtils {
 	public static void normalizeButton2(JToggleButton button) {
 		Border off = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 1),
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getColorScheme().getBackgroundColor(), 1),
 						BorderFactory.createLineBorder(new Color(30, 30, 30), 4)));
 		Border on = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 1),
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getColorScheme().getBackgroundColor(), 1),
 						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 4)));
 		button.setBorder(button.isSelected() ? on : off);
 		button.setBackground(

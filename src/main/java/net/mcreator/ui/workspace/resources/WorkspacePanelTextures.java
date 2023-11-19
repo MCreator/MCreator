@@ -97,7 +97,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
 		sp.getVerticalScrollBar().setUnitIncrement(20);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		sp.setBorder(null);
@@ -312,7 +312,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		public Component getListCellRendererComponent(JList<? extends File> list, File ma, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			if (isSelected) {
-				setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				setForeground(Theme.current().getColorScheme().getBackgroundColor());
 				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				setOpaque(true);
 			} else {

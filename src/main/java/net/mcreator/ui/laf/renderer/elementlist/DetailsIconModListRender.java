@@ -23,6 +23,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -61,11 +62,11 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 			boolean isSelected, boolean cellHasFocus) {
 		if (isSelected) {
 			setOpaque(true);
-			label.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			label2.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			label3.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			label4.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			label5.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			label.setForeground(Theme.current().getColorScheme().getBackgroundColor());
+			label2.setForeground(Theme.current().getColorScheme().getBackgroundColor());
+			label3.setForeground(Theme.current().getColorScheme().getBackgroundColor());
+			label4.setForeground(Theme.current().getColorScheme().getBackgroundColor());
+			label5.setForeground(Theme.current().getColorScheme().getBackgroundColor());
 		} else {
 			setOpaque(false);
 			label.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));

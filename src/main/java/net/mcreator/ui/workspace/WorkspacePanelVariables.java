@@ -166,10 +166,10 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		sorter = new TableRowSorter<>(elements.getModel());
 		elements.setRowSorter(sorter);
 
-		elements.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		elements.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		elements.setSelectionBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		elements.setForeground(Color.white);
-		elements.setSelectionForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		elements.setSelectionForeground(Theme.current().getColorScheme().getBackgroundColor());
 		elements.setBorder(BorderFactory.createEmptyBorder());
 		elements.setGridColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		elements.setRowHeight(28);
@@ -178,13 +178,13 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 		JTableHeader header = elements.getTableHeader();
 		header.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
-		header.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		header.setForeground(Theme.current().getColorScheme().getBackgroundColor());
 
 		JScrollPane sp = new JScrollPane(elements);
-		sp.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sp.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		sp.getViewport().setOpaque(false);
 		sp.getVerticalScrollBar().setUnitIncrement(11);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 

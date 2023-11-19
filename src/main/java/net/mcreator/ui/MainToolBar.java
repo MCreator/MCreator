@@ -135,7 +135,7 @@ public class MainToolBar extends JToolBar {
 
 			@Override public void mouseExited(MouseEvent mouseEvent) {
 				super.mouseExited(mouseEvent);
-				button.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				button.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 			}
 		});
 		return button;

@@ -142,10 +142,10 @@ public class GradleConsole extends JPanel {
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
 		aae.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getSecondAltBackgroundColor(),
-				(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), aae.getVerticalScrollBar()));
+				Theme.current().getColorScheme().getBackgroundColor(), aae.getVerticalScrollBar()));
 		aae.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 		aae.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getSecondAltBackgroundColor(),
-				(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), aae.getHorizontalScrollBar()));
+				Theme.current().getColorScheme().getBackgroundColor(), aae.getHorizontalScrollBar()));
 		aae.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 		aae.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 0, Theme.current().getColorScheme().getSecondAltBackgroundColor()));
 		aae.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());

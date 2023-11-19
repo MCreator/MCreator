@@ -19,6 +19,7 @@
 package net.mcreator.ui.ide;
 
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
@@ -74,7 +75,7 @@ public class SearchBar extends JToolBar {
 		});
 
 		setFloatable(false);
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		setBackground(Theme.current().getColorScheme().getBackgroundColor());
 
 		add(jtf1);
 		add(Box.createHorizontalStrut(10));

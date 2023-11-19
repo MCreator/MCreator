@@ -132,10 +132,10 @@ public class NBTEditorView extends ViewBase {
 				setText(nbtTagNode.toString());
 
 			if (sel) {
-				a.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				a.setForeground(Theme.current().getColorScheme().getBackgroundColor());
 				a.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 			} else {
-				a.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				a.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 				a.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 			}
 			return a;

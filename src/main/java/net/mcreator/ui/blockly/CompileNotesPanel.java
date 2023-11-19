@@ -23,6 +23,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,13 +50,13 @@ public class CompileNotesPanel extends JPanel {
 		scrollPaneCompileNotes.getViewport().setOpaque(false);
 		scrollPaneCompileNotes.getVerticalScrollBar().setUnitIncrement(11);
 		scrollPaneCompileNotes.getVerticalScrollBar()
-				.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+				.setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"),
 						scrollPaneCompileNotes.getVerticalScrollBar()));
 		scrollPaneCompileNotes.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneCompileNotes.getHorizontalScrollBar().setUnitIncrement(11);
 		scrollPaneCompileNotes.getHorizontalScrollBar()
-				.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+				.setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"),
 						scrollPaneCompileNotes.getHorizontalScrollBar()));
 		scrollPaneCompileNotes.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
@@ -95,7 +96,7 @@ public class CompileNotesPanel extends JPanel {
 		public Component getListCellRendererComponent(JList<? extends BlocklyCompileNote> list,
 				BlocklyCompileNote value, int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setBackground(Theme.current().getColorScheme().getBackgroundColor());
 			setForeground(Color.white);
 			ComponentUtils.deriveFont(this, 12);
 			if (value.type() == BlocklyCompileNote.Type.ERROR) {

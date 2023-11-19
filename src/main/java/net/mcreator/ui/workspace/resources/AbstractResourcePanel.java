@@ -22,6 +22,7 @@ package net.mcreator.ui.workspace.resources;
 import net.mcreator.ui.component.JSelectableList;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -75,7 +76,7 @@ public abstract class AbstractResourcePanel<T> extends JPanel implements IReload
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
 		sp.getVerticalScrollBar().setUnitIncrement(11);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 

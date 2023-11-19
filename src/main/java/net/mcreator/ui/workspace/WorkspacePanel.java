@@ -290,7 +290,7 @@ import java.util.stream.Collectors;
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
 
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		sp.setBorder(null);
@@ -554,12 +554,12 @@ import java.util.stream.Collectors;
 
 		ComponentUtils.deriveFont(filter, 11);
 		filter.setMargin(new Insets(1, 3, 1, 3));
-		filter.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		filter.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		filter.setBorderPainted(false);
 
 		ComponentUtils.deriveFont(sort, 11);
 		sort.setMargin(new Insets(1, 3, 1, 3));
-		sort.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sort.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		sort.setBorderPainted(false);
 
 		leftPan.add(new JEmptyBox(2, 2));
@@ -661,7 +661,7 @@ import java.util.stream.Collectors;
 		slo.setBorder(null);
 
 		rotatablePanel.setLayout(new BoxLayout(rotatablePanel, BoxLayout.PAGE_AXIS));
-		rotatablePanel.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		rotatablePanel.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		slo.add("West", rotatablePanel);
 
 		add("Center", slo);
@@ -859,7 +859,7 @@ import java.util.stream.Collectors;
 			tab.setBorderPainted(false);
 			tab.setFocusPainted(false);
 			tab.setOpaque(true);
-			tab.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			tab.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 			tab.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			tab.addActionListener(e -> switchToVerticalTab(id));
 			verticalTabs.add(tab);
@@ -876,7 +876,7 @@ import java.util.stream.Collectors;
 			for (JButton btt : verticalTabs) {
 				btt.setBackground(btt.getName().equals(id) ?
 						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
-						(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+						Theme.current().getColorScheme().getBackgroundColor());
 			}
 			cardLayout.show(panels, id);
 			reloadElementsInCurrentTab();

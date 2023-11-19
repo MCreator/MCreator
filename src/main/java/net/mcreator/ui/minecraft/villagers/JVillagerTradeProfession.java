@@ -29,6 +29,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.workspace.Workspace;
 
@@ -65,7 +66,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 		parent.add(container);
 		professionList.add(this);
 
-		setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
+		setBackground((Theme.current().getColorScheme().getBackgroundColor()).brighter());
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setOpaque(false);
@@ -89,7 +90,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 		JComponent component = PanelUtils.centerAndEastElement(topbar, PanelUtils.join(FlowLayout.RIGHT, add, remove));
 		component.setOpaque(true);
-		component.setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
+		component.setBackground((Theme.current().getColorScheme().getBackgroundColor()).brighter());
 
 		add("North", component);
 		entries.setOpaque(false);

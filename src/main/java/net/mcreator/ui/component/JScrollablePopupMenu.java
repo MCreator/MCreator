@@ -51,7 +51,7 @@ public class JScrollablePopupMenu extends JPopupMenu {
 	protected JScrollBar getScrollBar() {
 		if (popupScrollBar == null) {
 			popupScrollBar = new JScrollBar(JScrollBar.VERTICAL);
-			popupScrollBar.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+			popupScrollBar.setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 					Theme.current().getColorScheme().getInterfaceAccentColor(), popupScrollBar));
 			popupScrollBar.setPreferredSize(new Dimension(5, 0));
 			popupScrollBar.addAdjustmentListener(e -> {

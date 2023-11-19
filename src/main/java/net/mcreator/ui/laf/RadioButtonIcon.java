@@ -48,7 +48,7 @@ public class RadioButtonIcon implements Icon {
 			g.setColor(Theme.current().getColorScheme().getInterfaceAccentColor());
 
 		} else {
-			g.setColor((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			g.setColor(Theme.current().getColorScheme().getBackgroundColor());
 			g.fillOval(x, y, controlSize - 1, controlSize - 1);
 		}
 

@@ -300,7 +300,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 				codeViewer.setFocusPainted(false);
 				codeViewer.setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getColorScheme().getBackgroundColor(), 1),
 						BorderFactory.createEmptyBorder(2, 40, 2, 40)));
 				codeViewer.addActionListener(e -> {
 					if (codeViewer.isSelected()) {
@@ -375,7 +375,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 				codeViewer.setFocusPainted(false);
 				codeViewer.setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getColorScheme().getBackgroundColor(), 1),
 						BorderFactory.createEmptyBorder(2, 40, 2, 40)));
 				codeViewer.addActionListener(e -> {
 					if (codeViewer.isSelected()) {

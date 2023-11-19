@@ -23,6 +23,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
@@ -53,7 +54,7 @@ public class LargeIconModListRender extends JPanel implements ListCellRenderer<I
 			boolean isSelected, boolean cellHasFocus) {
 		if (isSelected) {
 			setOpaque(true);
-			label.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			label.setForeground(Theme.current().getColorScheme().getBackgroundColor());
 		} else {
 			setOpaque(false);
 			label.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));

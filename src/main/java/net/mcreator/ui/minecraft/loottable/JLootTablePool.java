@@ -54,7 +54,7 @@ public class JLootTablePool extends JEntriesList {
 		parent.add(container);
 		pollList.add(this);
 
-		setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
+		setBackground((Theme.current().getColorScheme().getBackgroundColor()).brighter());
 
 		rolls.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createLineBorder(Theme.current().getColorScheme().getSecondAltBackgroundColor()),
@@ -95,7 +95,7 @@ public class JLootTablePool extends JEntriesList {
 		JComponent component = PanelUtils.centerAndEastElement(topbar, PanelUtils.join(FlowLayout.RIGHT, add, remove));
 		component.setOpaque(true);
 
-		component.setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
+		component.setBackground((Theme.current().getColorScheme().getBackgroundColor()).brighter());
 
 		add("North", component);
 

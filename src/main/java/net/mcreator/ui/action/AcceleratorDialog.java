@@ -20,6 +20,7 @@ package net.mcreator.ui.action;
 
 import net.mcreator.io.OS;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -39,9 +40,9 @@ class AcceleratorDialog {
 				return false;
 			}
 		});
-		map.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		map.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		map.setSelectionBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-		map.setSelectionForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		map.setSelectionForeground(Theme.current().getColorScheme().getBackgroundColor());
 		map.setBorder(BorderFactory.createEmptyBorder());
 		map.setGridColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		map.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);

@@ -31,6 +31,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -141,7 +142,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			}
 		});
 
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 
 		if (returnType != null) {

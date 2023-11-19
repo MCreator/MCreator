@@ -20,6 +20,7 @@ package net.mcreator.ui.ide;
 
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
@@ -51,13 +52,13 @@ public class ReplaceBar extends JPanel {
 		matches.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 
 		JToolBar top = new JToolBar();
-		top.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		top.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		top.setBorder(null);
 		top.setFloatable(false);
 
 		JToolBar bottom = new JToolBar();
 		bottom.setBorder(null);
-		bottom.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		bottom.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		bottom.setFloatable(false);
 
 		jtf1.addKeyListener(new KeyAdapter() {
@@ -127,7 +128,7 @@ public class ReplaceBar extends JPanel {
 		bottom.add(Box.createHorizontalStrut(10));
 		bottom.add(replaceAll);
 
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		setBackground(Theme.current().getColorScheme().getBackgroundColor());
 
 		top.add(jtf1);
 		top.add(Box.createHorizontalStrut(10));

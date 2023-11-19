@@ -24,6 +24,7 @@ import net.java.balloontip.styles.EdgedBalloonStyle;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -86,7 +87,7 @@ public class NotificationsRenderer {
 		}
 
 		BalloonTip balloonTip = new BalloonTip(this.anchor, tipContents,
-				new EdgedBalloonStyle((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+				new EdgedBalloonStyle(Theme.current().getColorScheme().getBackgroundColor(),
 						(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")), BalloonTip.Orientation.RIGHT_BELOW,
 				BalloonTip.AttachLocation.SOUTHEAST, -10, 10, false);
 

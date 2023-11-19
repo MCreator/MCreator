@@ -35,6 +35,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -227,7 +228,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 		if (enabled) {
 			setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 		} else {
-			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		}
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();

@@ -28,6 +28,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -93,7 +94,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 		add("Center", spne);
 
-		sections.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sections.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		ComponentUtils.deriveFont(sections, 13);
 
 		JButton ok = L10N.button("dialog.preferences.save");

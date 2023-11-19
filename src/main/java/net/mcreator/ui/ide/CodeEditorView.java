@@ -138,7 +138,7 @@ public class CodeEditorView extends ViewBase {
 
 		this.codeCleanup = new CodeCleanup();
 
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		setBackground(Theme.current().getColorScheme().getBackgroundColor());
 
 		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, fileWorkingOn, fa.getWorkspaceFolder());
 
@@ -176,42 +176,42 @@ public class CodeEditorView extends ViewBase {
 
 		sp.setFoldIndicatorEnabled(true);
 
-		sp.getGutter().setFoldBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		sp.getGutter().setBorderColor((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		sp.getGutter().setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sp.getGutter().setFoldBackground(Theme.current().getColorScheme().getBackgroundColor());
+		sp.getGutter().setBorderColor(Theme.current().getColorScheme().getBackgroundColor());
+		sp.getGutter().setBackground(Theme.current().getColorScheme().getBackgroundColor());
 
 		sp.getGutter().setBookmarkingEnabled(true);
 		sp.setIconRowHeaderEnabled(false);
 
-		sp.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sp.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		sp.setBorder(null);
 
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
-		sp.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+		sp.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getHorizontalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 		sp.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 
 		JPanel cornerDummy1 = new JPanel();
-		cornerDummy1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cornerDummy1.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		sp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy1);
 
 		JPanel cornerDummy2 = new JPanel();
-		cornerDummy2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cornerDummy2.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		sp.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy2);
 
 		JPanel cornerDummy12 = new JPanel();
-		cornerDummy12.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cornerDummy12.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		treeSP.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy12);
 
 		JPanel cornerDummy22 = new JPanel();
-		cornerDummy22.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cornerDummy22.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		treeSP.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy22);
 
-		treeSP.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+		treeSP.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), treeSP.getVerticalScrollBar()));
-		treeSP.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
+		treeSP.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
 				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), treeSP.getHorizontalScrollBar()));
 		treeSP.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 		treeSP.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
@@ -245,13 +245,13 @@ public class CodeEditorView extends ViewBase {
 		spne.setRightComponent(rightDummy);
 
 		JPanel cp = new JPanel(new BorderLayout());
-		cp.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cp.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		cp.add(sp);
 
 		if (PreferencesManager.PREFERENCES.ide.errorInfoEnable.get()) {
 			ErrorStrip errorStrip = new ErrorStrip(te);
 			errorStrip.setFollowCaret(false);
-			errorStrip.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			errorStrip.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 			cp.add(errorStrip, BorderLayout.LINE_END);
 		}
 
@@ -265,7 +265,7 @@ public class CodeEditorView extends ViewBase {
 					}
 
 					@Override public void paint(Graphics g) {
-						g.setColor((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+						g.setColor(Theme.current().getColorScheme().getBackgroundColor());
 						g.fillRect(0, 0, getSize().width, getSize().height);
 						super.paint(g);
 					}
@@ -568,7 +568,7 @@ public class CodeEditorView extends ViewBase {
 		if (tree != null) {
 			tree.setCellRenderer(new AstTreeCellRendererCustom());
 			tree.listenTo(te);
-			tree.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			tree.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 			tree.setForeground(Color.white);
 			tree.setRowHeight(18);
 			tree.setUI(new SlickTreeUI());

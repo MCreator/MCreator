@@ -24,6 +24,7 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.StringUtils;
 
@@ -107,7 +108,7 @@ public class StatusBar extends JPanel {
 
 		add("East", right);
 
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		setPreferredSize(new Dimension(22, 22));
 		setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0,
 				((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker()));

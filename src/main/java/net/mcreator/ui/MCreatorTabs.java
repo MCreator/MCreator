@@ -222,7 +222,7 @@ public class MCreatorTabs {
 				}
 				existing = tab;
 			} else {
-				tab.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				tab.setBackground(Theme.current().getColorScheme().getBackgroundColor());
 				tab.selected = false;
 			}
 			tab.updateBorder();
@@ -373,7 +373,7 @@ public class MCreatorTabs {
 			}
 			updateSize();
 			updateBorder();
-			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		}
 
 		public void updateSize() {
