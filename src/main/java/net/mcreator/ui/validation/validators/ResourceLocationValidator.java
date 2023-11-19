@@ -20,11 +20,22 @@ package net.mcreator.ui.validation.validators;
 
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.component.VTextField;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;
 
 public class ResourceLocationValidator<T> extends RegistryNameValidator {
+
+	public ResourceLocationValidator(String name, VTextField holder, boolean allowNamespace) {
+		super(holder, name);
+
+		if (allowNamespace) {
+			setValidChars(Arrays.asList('_', '/', '-', ':'));
+		} else {
+			setValidChars(Arrays.asList('_', '/', '-'));
+		}
+	}
 
 	public ResourceLocationValidator(String name, VComboBox<T> holder, boolean allowNamespace) {
 		super(holder, name);
