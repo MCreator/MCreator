@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.themes;
+package net.mcreator.ui.laf.themes;
 
 import net.mcreator.ui.init.L10N;
 
@@ -26,7 +26,7 @@ import javax.swing.*;
 
 /**
  * <p>A Theme can change images MCreator will use and redefine the colors and the style
- * of {@link net.mcreator.ui.blockly.BlocklyPanel} and {@link net.mcreator.ui.ide.RSyntaxTextAreaStyler} by creating a new {@link net.mcreator.themes.ColorScheme}</p>.
+ * of {@link net.mcreator.ui.blockly.BlocklyPanel} and {@link net.mcreator.ui.ide.RSyntaxTextAreaStyler} by creating a new {@link ColorScheme}</p>.
  */
 @SuppressWarnings("unused") public class Theme {
 
@@ -133,9 +133,9 @@ import javax.swing.*;
 	}
 
 	/**
-	 * <p>This methods gets the {@link net.mcreator.themes.ColorScheme} to use with the theme</p>
+	 * <p>This methods gets the {@link ColorScheme} to use with the theme</p>
 	 *
-	 * @return Returns the {@link net.mcreator.themes.ColorScheme} of the Theme if one is defined. If the Theme does not create a new {@link net.mcreator.themes.ColorScheme}, the Dark's theme {@link net.mcreator.themes.ColorScheme} will be used.
+	 * @return Returns the {@link ColorScheme} of the Theme if one is defined. If the Theme does not create a new {@link ColorScheme}, the Dark's theme {@link ColorScheme} will be used.
 	 */
 	public ColorScheme getColorScheme() {
 		if (colorScheme != null)

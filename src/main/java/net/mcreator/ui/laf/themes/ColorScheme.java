@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.themes;
+package net.mcreator.ui.laf.themes;
 
 import net.mcreator.preferences.data.PreferencesData;
 

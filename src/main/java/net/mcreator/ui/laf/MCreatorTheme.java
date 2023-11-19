@@ -20,8 +20,8 @@ package net.mcreator.ui.laf;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ColorScheme;
-import net.mcreator.themes.Theme;
+import net.mcreator.ui.laf.themes.ColorScheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;

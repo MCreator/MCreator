@@ -20,8 +20,8 @@
 package net.mcreator.ui.dialogs.preferences;
 
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.Theme;
-import net.mcreator.themes.ThemeLoader;
+import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.laf.themes.ThemeLoader;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;

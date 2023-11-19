@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.themes;
+package net.mcreator.ui.laf.themes;
 
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
@@ -50,7 +50,7 @@ public class ThemeLoader {
 	protected static Theme CURRENT_THEME;
 
 	/**
-	 * <p>This method loads the {@link net.mcreator.themes.Theme} of all plugins loaded into the current {@link net.mcreator.plugin.PluginLoader} instance.</p>
+	 * <p>This method loads the {@link Theme} of all plugins loaded into the current {@link net.mcreator.plugin.PluginLoader} instance.</p>
 	 */
 	public static void initUIThemes() {
 		LOG.debug("Loading UI themes");
@@ -80,7 +80,7 @@ public class ThemeLoader {
 	}
 
 	/**
-	 * <p>This method gets the ID of each loaded {@link net.mcreator.themes.Theme}.</p>
+	 * <p>This method gets the ID of each loaded {@link Theme}.</p>
 	 *
 	 * @return Returns a {@link java.util.List} of all loaded theme IDs
 	 */
@@ -92,7 +92,7 @@ public class ThemeLoader {
 	 * <p>This method checks in all loaded themes to get the theme matching the ID.</p>
 	 *
 	 * @param id The theme's id we want to get
-	 * @return Returns the {@link net.mcreator.themes.Theme}, if found in the cache, otherwise null
+	 * @return Returns the {@link Theme}, if found in the cache, otherwise null
 	 */
 	static Theme getTheme(String id) {
 		for (Theme pack : THEMES) {

@@ -21,7 +21,7 @@ package net.mcreator.ui.init;
 
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.themes.Theme;
+import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

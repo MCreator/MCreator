@@ -46,9 +46,9 @@ public class RSyntaxTextAreaStyler {
 			Theme theme;
 
 			if (PluginLoader.INSTANCE.getResourceAsStream(
-					"themes/" + net.mcreator.themes.Theme.current().getID() + "/styles/code_editor.xml") != null) {
+					"themes/" + net.mcreator.ui.laf.themes.Theme.current().getID() + "/styles/code_editor.xml") != null) {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
-						"themes/" + net.mcreator.themes.Theme.current().getID() + "/styles/code_editor.xml");
+						"themes/" + net.mcreator.ui.laf.themes.Theme.current().getID() + "/styles/code_editor.xml");
 				themeXML = themeXML.replace("${mainTint}",
 						Integer.toHexString(((Color) UIManager.get("MCreatorLAF.MAIN_TINT")).getRGB()).substring(2));
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));

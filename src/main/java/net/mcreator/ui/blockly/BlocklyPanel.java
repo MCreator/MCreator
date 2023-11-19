@@ -30,7 +30,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.Theme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
