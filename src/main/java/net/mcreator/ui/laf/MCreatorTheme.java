@@ -19,11 +19,10 @@
 package net.mcreator.ui.laf;
 
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.laf.themes.ColorScheme;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.ColorScheme;
+import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,7 +45,6 @@ public class MCreatorTheme extends OceanTheme {
 	public static final List<String> SYSTEM_FONT_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
 
 	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
-	private Color MAIN_TINT;
 	private final ColorScheme colorScheme;
 
 	private final Theme theme;
@@ -59,19 +57,6 @@ public class MCreatorTheme extends OceanTheme {
 	public MCreatorTheme(Theme theme) {
 		this.theme = theme;
 		this.colorScheme = theme.getColorScheme();
-
-		if (colorScheme.getInterfaceAccentColor() != null) {
-			try {
-				MAIN_TINT = Color.decode(colorScheme.getInterfaceAccentColor());
-			} catch (NumberFormatException exception) {
-				LOG.warn(colorScheme.getInterfaceAccentColor()
-								+ " in the current theme is not a valid hexadecimal number. The color defined by the user will be used.",
-						exception.getMessage());
-				MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get();
-			}
-		} else {
-			MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get();
-		}
 
 		try {
 			default_font = new Font(theme.getDefaultFont(), Font.PLAIN, theme.getFontSize());
@@ -105,21 +90,13 @@ public class MCreatorTheme extends OceanTheme {
 		}
 	}
 
-	public Color getMainTint() {
-		return MAIN_TINT;
-	}
-
-	public ColorScheme getColorScheme() {
-		return colorScheme;
-	}
-
 	protected void initMCreatorThemeColors(UIDefaults table) {
 		table.put("MCreatorLAF.BLACK_ACCENT", colorScheme.getSecondAltBackgroundColor());
 		table.put("MCreatorLAF.DARK_ACCENT", colorScheme.getBackgroundColor());
 		table.put("MCreatorLAF.LIGHT_ACCENT", colorScheme.getAltBackgroundColor());
 		table.put("MCreatorLAF.GRAY_COLOR", colorScheme.getAltForegroundColor());
 		table.put("MCreatorLAF.BRIGHT_COLOR", colorScheme.getForegroundColor());
-		table.put("MCreatorLAF.MAIN_TINT", MAIN_TINT);
+		table.put("MCreatorLAF.MAIN_TINT", colorScheme.getInterfaceAccentColor());
 	}
 
 	@Override public void addCustomEntriesToTable(UIDefaults table) {
@@ -134,7 +111,7 @@ public class MCreatorTheme extends OceanTheme {
 			if (key.toString().toLowerCase(Locale.ENGLISH).contains("font")) {
 				table.put(key, secondary_font.deriveFont((float) theme.getFontSize()));
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).contains("bordercolor")) {
-				table.put(key, MAIN_TINT);
+				table.put(key, colorScheme.getInterfaceAccentColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".background")) {
 				table.put(key, colorScheme.getBackgroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".foreground")) {
@@ -159,7 +136,7 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("SplitPane.dividerFocusColor", colorScheme.getAltBackgroundColor());
 		table.put("SplitPane.darkShadow", colorScheme.getAltBackgroundColor());
 		table.put("SplitPane.shadow", colorScheme.getAltBackgroundColor());
-		table.put("SplitPaneDivider.draggingColor", MAIN_TINT);
+		table.put("SplitPaneDivider.draggingColor", colorScheme.getInterfaceAccentColor());
 
 		table.put("OptionPane.messageForeground", colorScheme.getForegroundColor());
 
@@ -312,11 +289,11 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	@Override protected ColorUIResource getPrimary2() {
-		return new ColorUIResource(MAIN_TINT);
+		return new ColorUIResource(colorScheme.getInterfaceAccentColor());
 	}
 
 	@Override protected ColorUIResource getPrimary3() {
-		return new ColorUIResource(MAIN_TINT);
+		return new ColorUIResource(colorScheme.getInterfaceAccentColor());
 	}
 
 	@Override protected ColorUIResource getSecondary1() {

@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.laf.themes;
 
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.preferences.data.PreferencesData;
 
 import javax.annotation.Nullable;
@@ -77,9 +78,18 @@ public class ColorScheme {
 	}
 
 	/**
-	 * @return <p>Overrides the interfaceAccentColor defined by the user in {@link PreferencesData}</p>
+	 * @return <p>Returns the interfaceAccentColor if defined by theme, otherwise the one defined by the user in {@link PreferencesData}</p>
 	 */
-	@Nullable public String getInterfaceAccentColor() {
-		return interfaceAccentColor;
+	public Color getInterfaceAccentColor() {
+		if (interfaceAccentColor != null) {
+			try {
+				return Color.decode(interfaceAccentColor);
+			} catch (NumberFormatException exception) {
+				return PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get();
+			}
+		} else {
+			return PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get();
+		}
 	}
+
 }
