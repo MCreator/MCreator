@@ -48,6 +48,10 @@ import javax.swing.*;
 		return ThemeLoader.CURRENT_THEME;
 	}
 
+	protected void init() {
+
+	}
+
 	/**
 	 * The ID is the theme's registry name. It is used to differentiate each theme in the code.
 	 * This ID is also the main folder's name of the theme.

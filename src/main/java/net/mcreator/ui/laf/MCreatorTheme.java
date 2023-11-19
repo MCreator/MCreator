@@ -44,9 +44,6 @@ public class MCreatorTheme extends OceanTheme {
 
 	public static final List<String> SYSTEM_FONT_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
 
-	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
-	private final ColorScheme colorScheme;
-
 	private final Theme theme;
 
 	public static Font secondary_font;
@@ -56,7 +53,6 @@ public class MCreatorTheme extends OceanTheme {
 
 	public MCreatorTheme(Theme theme) {
 		this.theme = theme;
-		this.colorScheme = theme.getColorScheme();
 
 		try {
 			default_font = new Font(theme.getDefaultFont(), Font.PLAIN, theme.getFontSize());
@@ -92,6 +88,8 @@ public class MCreatorTheme extends OceanTheme {
 
 	@Override public void addCustomEntriesToTable(UIDefaults table) {
 		super.addCustomEntriesToTable(table);
+
+		ColorScheme colorScheme = theme.getColorScheme();
 
 		Set<Object> keySet = table.keySet();
 		for (Object key : keySet) {
@@ -274,23 +272,23 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	@Override protected ColorUIResource getPrimary1() {
-		return new ColorUIResource(colorScheme.getBackgroundColor());
+		return new ColorUIResource(theme.getColorScheme().getBackgroundColor());
 	}
 
 	@Override protected ColorUIResource getPrimary2() {
-		return new ColorUIResource(colorScheme.getInterfaceAccentColor());
+		return new ColorUIResource(theme.getColorScheme().getInterfaceAccentColor());
 	}
 
 	@Override protected ColorUIResource getPrimary3() {
-		return new ColorUIResource(colorScheme.getInterfaceAccentColor());
+		return new ColorUIResource(theme.getColorScheme().getInterfaceAccentColor());
 	}
 
 	@Override protected ColorUIResource getSecondary1() {
-		return new ColorUIResource(colorScheme.getAltBackgroundColor());
+		return new ColorUIResource(theme.getColorScheme().getAltBackgroundColor());
 	}
 
 	@Override protected ColorUIResource getSecondary2() {
-		return new ColorUIResource(colorScheme.getAltBackgroundColor());
+		return new ColorUIResource(theme.getColorScheme().getAltBackgroundColor());
 	}
 
 	@Override protected ColorUIResource getSecondary3() {
@@ -298,15 +296,15 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	@Override public ColorUIResource getControl() {
-		return new ColorUIResource(colorScheme.getAltBackgroundColor());
+		return new ColorUIResource(theme.getColorScheme().getAltBackgroundColor());
 	}
 
 	@Override public ColorUIResource getControlHighlight() {
-		return new ColorUIResource(colorScheme.getAltBackgroundColor());
+		return new ColorUIResource(theme.getColorScheme().getAltBackgroundColor());
 	}
 
 	@Override public ColorUIResource getPrimaryControlHighlight() {
-		return new ColorUIResource(colorScheme.getAltForegroundColor());
+		return new ColorUIResource(theme.getColorScheme().getAltForegroundColor());
 	}
 
 	@Override public FontUIResource getControlTextFont() {

@@ -33,6 +33,8 @@ import java.awt.*;
  */
 public class ColorScheme {
 
+	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
+
 	private String backgroundColor;
 	private String altBackgroundColor;
 	private String secondAltBackgroundColor;

@@ -63,6 +63,9 @@ public class ThemeLoader {
 			// The ID will be used to get images from this theme if the user select it.
 			theme.setID(new File(file).getParentFile().getName());
 
+			// Initialize the theme
+			theme.init();
+
 			// Load the custom icon if provided, otherwise load the default one
 			if (PluginLoader.INSTANCE.getResource("themes/" + theme.getID() + "/icon.png") != null)
 				theme.setIcon(new ImageIcon(ImageUtils.resize(
