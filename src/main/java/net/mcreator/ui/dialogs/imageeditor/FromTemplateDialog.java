@@ -198,9 +198,9 @@ public class FromTemplateDialog extends MCreatorDialog {
 		pas.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_four"), cbs4, bt4, col4,
 				type3, L10N.label("dialog.imageeditor.template_rotation"), ang3));
 
-		col1.setColorSelectedListener(event -> refreshIcon());
-		col2.setColorSelectedListener(event -> refreshIcon());
-		col4.setColorSelectedListener(event -> refreshIcon());
+		col1.addColorSelectedListener(event -> refreshIcon());
+		col2.addColorSelectedListener(event -> refreshIcon());
+		col4.addColorSelectedListener(event -> refreshIcon());
 		cbs.addActionListener(event -> refreshIcon());
 		cbs2.addActionListener(event -> refreshIcon());
 		cbs3.addActionListener(event -> refreshIcon());

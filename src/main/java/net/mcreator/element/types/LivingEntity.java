@@ -25,6 +25,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.*;
+import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.interfaces.ICommonType;
@@ -66,6 +67,8 @@ import java.util.*;
 	public LogicProcedure transparentModelCondition;
 	public LogicProcedure isShakingCondition;
 	public LogicProcedure solidBoundingBox;
+	public NumberProcedure visualScale;
+	public NumberProcedure boundingBoxScale;
 
 	@ModElementReference @TextureReference(TextureType.ENTITY) @ResourceReference("model")
 	public List<ModelLayerEntry> modelLayers;

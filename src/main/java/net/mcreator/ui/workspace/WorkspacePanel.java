@@ -54,10 +54,10 @@ import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -991,7 +991,8 @@ import java.util.stream.Collectors;
 
 	private void editIDOfCurrentlySelectedModElement() {
 		IElement mu = list.getSelectedValue();
-		if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
+		if (mu instanceof ModElement modElement && !NamespacedGeneratableElement.class.isAssignableFrom(
+				modElement.getType().getModElementStorageClass())) {
 			ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
 			if (modified != null)
 				mcreator.getWorkspace().markDirty();
@@ -1086,7 +1087,8 @@ import java.util.stream.Collectors;
 						L10N.t("workspace.elements.list.edit.usages.tags.title"), JOptionPane.WARNING_MESSAGE);
 			}
 			if (nonTagsSelected) {
-				SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"), references);
+				SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
+						references);
 			}
 		}
 	}
