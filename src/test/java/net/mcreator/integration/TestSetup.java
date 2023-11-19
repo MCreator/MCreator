@@ -95,10 +95,9 @@ public class TestSetup {
 
 		// We load UI themes now as theme plugins are loaded at this point
 		ThemeLoader.initUIThemes();
+		MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
 
-		// init UI theme
 		try {
-			MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
 		} catch (UnsupportedLookAndFeelException e) {
 			LOG.error("Failed to set look and feel: " + e.getMessage());

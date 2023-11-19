@@ -104,17 +104,17 @@ public final class MCreatorApplication {
 
 			// We load UI themes now as theme plugins are loaded at this point
 			ThemeLoader.initUIThemes();
-
-			splashScreen.setProgress(15, "Loading UI core");
-
-			UIRES.preloadImages();
+			MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
 
 			try {
-				MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
 				UIManager.setLookAndFeel(new MetalLookAndFeel());
 			} catch (UnsupportedLookAndFeelException e) {
 				LOG.error("Failed to set look and feel: " + e.getMessage());
 			}
+
+			splashScreen.setProgress(15, "Loading UI core");
+
+			UIRES.preloadImages();
 
 			SoundUtils.initSoundSystem();
 
