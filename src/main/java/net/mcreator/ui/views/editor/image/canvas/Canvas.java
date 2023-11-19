@@ -86,6 +86,21 @@ public class Canvas extends ArrayListListModel<Layer> {
 		return true;
 	}
 
+	public boolean addOnTop(Layer layer, UUID group) {
+		super.add(layerPanel.selectedID(), layer);
+		layer.setCanvas(this);
+		layerPanel.select(indexOf(layer));
+		Addition addition = new Addition(this, layer);
+		addition.setUUID(group);
+		versionManager.addRevision(addition);
+		floatingCheck(layer);
+		return true;
+	}
+
+	public boolean addOnTop(Layer layer) {
+		return addOnTop(layer, null);
+	}
+
 	@Override public void add(int index, Layer element) {
 		super.add(index, element);
 		element.setCanvas(this);

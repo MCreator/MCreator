@@ -102,9 +102,9 @@ public class ClipboardManager implements ClipboardOwner {
 			Canvas canvas = imageMakerView.getCanvas();
 			UUID uuid = UUID.randomUUID();
 			canvas.mergeDown(canvas.indexOf(canvas.getFloatingLayer()), uuid);
-			canvas.add(layer, 0, uuid);
+			canvas.addOnTop(layer, uuid);
 		} else {
-			imageMakerView.getCanvas().add(layer);
+			imageMakerView.getCanvas().addOnTop(layer);
 		}
 	}
 
