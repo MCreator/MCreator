@@ -40,10 +40,6 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 				theme = new MCreatorTheme(ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme.get())));
 	}
 
-	@Override protected void initClassDefaults(UIDefaults table) {
-		super.initClassDefaults(table);
-	}
-
 	@Override public UIDefaults getDefaults() {
 		try {
 			final Field keyField = HTMLEditorKit.class.getDeclaredField("DEFAULT_STYLES_KEY");
@@ -82,14 +78,6 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 
 	@Override public String getDescription() {
 		return "MCreator Look and Feel";
-	}
-
-	@Override public boolean isNativeLookAndFeel() {
-		return false;
-	}
-
-	@Override public boolean isSupportedLookAndFeel() {
-		return true;
 	}
 
 }
