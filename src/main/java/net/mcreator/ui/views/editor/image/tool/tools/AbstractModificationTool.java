@@ -41,7 +41,7 @@ public abstract class AbstractModificationTool extends AbstractTool {
 	}
 
 	@Override public void mouseReleased(MouseEvent e) {
-		if (SwingUtilities.isLeftMouseButton(e)) {
+		if (SwingUtilities.isLeftMouseButton(e) && (startSuccess || processSuccess)) {
 			layer.mergeOverlay();
 			versionManager.addRevision(new Modification(canvas, layer));
 		}

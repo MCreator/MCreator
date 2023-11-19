@@ -19,8 +19,11 @@
 
 package net.mcreator.ui.views.editor.image.canvas;
 
+import net.mcreator.ui.views.editor.image.layer.Layer;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 
 /**
@@ -127,6 +130,26 @@ public class Selection {
 
 	public boolean isEditStarted() {
 		return editStarted;
+	}
+
+	public Shape getLayerMask(Layer layer){
+		if (hasSurface() && getEditing() != SelectedBorder.NONE) {
+			int xStart = getLeft() - layer.getX();
+			int yStart = getTop() - layer.getY();
+
+			int xStartLimited = Math.max(0, xStart);
+			int yStartLimited = Math.max(0, yStart);
+
+			int widthLimited = Math.min(layer.getWidth() - xStartLimited, getWidth());
+			int heightLimited = Math.min(layer.getHeight() - yStartLimited, getHeight());
+
+			return new Rectangle2D.Float(xStartLimited, yStartLimited, widthLimited, heightLimited);
+		}
+		return null;
+	}
+
+	public boolean isInside(Shape shape, int x, int y){
+		return shape == null || shape.contains(x, y);
 	}
 
 	public BufferedImage cropCanvas(BufferedImage canvasRender) {

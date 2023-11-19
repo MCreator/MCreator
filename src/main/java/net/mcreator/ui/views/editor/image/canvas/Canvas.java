@@ -36,7 +36,6 @@ public class Canvas extends ArrayListListModel<Layer> {
 	private final VersionManager versionManager;
 	private final Selection selection;
 	private CanvasRenderer canvasRenderer;
-
 	private boolean drawPreview;
 	private MouseEvent previewEvent;
 	private Shape shape;
