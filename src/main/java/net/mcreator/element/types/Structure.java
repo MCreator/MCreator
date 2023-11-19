@@ -25,6 +25,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
 
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Structure extends GeneratableElement {
@@ -41,12 +42,49 @@ import java.util.List;
 	public String terrainAdaptation;
 	public String generationStep;
 
+	public int size;
+	public int maxDistanceFromCenter;
+	@ModElementReference @ResourceReference("structure") public List<JigsawPool> jigsawPools;
+
 	private Structure() {
 		this(null);
 	}
 
 	public Structure(ModElement element) {
 		super(element);
+
+		size = 1;
+		maxDistanceFromCenter = 64;
+	}
+
+	public List<JigsawPool.JigsawPart> getPoolParts() {
+		JigsawPool.JigsawPart part = new JigsawPool.JigsawPart();
+		part.weight = 1;
+		part.structure = structure;
+		part.projection = projection;
+		part.ignoredBlocks = ignoredBlocks;
+		return Collections.singletonList(part);
+	}
+
+	public static class JigsawPool {
+
+		public String poolName;
+		public String fallbackPool;
+		@ModElementReference @ResourceReference("structure") public List<JigsawPart> poolParts;
+
+		public List<JigsawPart> getPoolParts() {
+			return poolParts;
+		}
+
+		public static class JigsawPart {
+
+			public int weight;
+			@ResourceReference("structure") public String structure;
+			public String projection;
+			@ModElementReference public List<MItemBlock> ignoredBlocks;
+
+		}
+
 	}
 
 }
