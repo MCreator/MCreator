@@ -144,6 +144,8 @@ public class InjectTagsTool {
 				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.LIVINGENTITY.getIcon().getImage(), 32)));
 		case "Biomes" ->
 				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.BIOME.getIcon().getImage(), 32)));
+		case "Damage Types" ->
+				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.DAMAGETYPE.getIcon().getImage(), 32)));
 		}
 
 		panel.add(PanelUtils.centerAndEastElement(box, icon));

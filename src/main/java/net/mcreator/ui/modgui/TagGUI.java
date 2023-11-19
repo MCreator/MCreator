@@ -27,10 +27,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.BiomeListField;
-import net.mcreator.ui.minecraft.MCItemListField;
-import net.mcreator.ui.minecraft.ModElementListField;
-import net.mcreator.ui.minecraft.SpawnableEntityListField;
+import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.NamespaceValidator;
@@ -48,13 +45,14 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 	private final VComboBox<String> namespace = new VComboBox<>(new String[] { "minecraft", "mod", "forge", "c" });
 	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "Items", "Blocks", "Entities", "Biomes", "Functions" });
+			new String[] { "Items", "Blocks", "Entities", "Biomes", "Functions", "Damage Types" });
 
 	private MCItemListField items;
 	private MCItemListField blocks;
 	private SpawnableEntityListField entities;
 	private BiomeListField biomes;
 	private ModElementListField functions;
+	private DamageTypeListField damageTypes;
 
 	private final VComboBox<String> name = new VComboBox<>();
 
@@ -73,6 +71,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		entities = new SpawnableEntityListField(mcreator, true);
 		biomes = new BiomeListField(mcreator, true);
 		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
+		damageTypes = new DamageTypeListField(mcreator, true);
 
 		name.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), name, false));
 		name.enableRealtimeValidation();
@@ -100,6 +99,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		valuesPan.add(functions, "Functions");
 		valuesPan.add(entities, "Entities");
 		valuesPan.add(biomes, "Biomes");
+		valuesPan.add(damageTypes, "Damage Types");
 
 		if (isEditingMode()) {
 			type.setEnabled(false);
@@ -154,6 +154,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		functions.setListElements(tag.functions);
 		entities.setListElements(tag.entities);
 		biomes.setListElements(tag.biomes);
+		damageTypes.setListElements(tag.damageTypes);
 	}
 
 	@Override public Tag getElementFromGUI() {
@@ -166,6 +167,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		tag.functions = functions.getListElements();
 		tag.entities = entities.getListElements();
 		tag.biomes = biomes.getListElements();
+		tag.damageTypes = damageTypes.getListElements();
 
 		tag.name = name.getEditor().getItem().toString();
 		return tag;
