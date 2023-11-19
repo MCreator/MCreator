@@ -20,11 +20,13 @@ package net.mcreator.ui.views.editor.image.tool.tools;
 
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
+import net.mcreator.ui.views.editor.image.canvas.Selection;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.Shape;
 import java.awt.geom.Point2D;
 
 public abstract class AbstractDrawingTool extends AbstractModificationTool {
@@ -45,7 +47,16 @@ public abstract class AbstractDrawingTool extends AbstractModificationTool {
 	@Override public boolean process(ZoomedMouseEvent e) {
 		preProcess(e);
 		int sx = e.getX() - layer.getX(), sy = e.getY() - layer.getY();
+
+		Selection selection = canvas.getSelection();
+		Shape validArea = selection.getLayerMask(layer);
+
 		Graphics2D graphics2D = layer.getOverlay().createGraphics();
+		Shape previousShape = graphics2D.getClip();
+
+		if (validArea != null)
+			graphics2D.setClip(validArea);
+
 		if (aliasing.isSelected())
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		draw(graphics2D, sx, sy, e.getRawX(), e.getRawY(), e.getZoom());
@@ -73,7 +84,12 @@ public abstract class AbstractDrawingTool extends AbstractModificationTool {
 		}
 		first = false;
 		prevPoint = new Point(e.getX() - layer.getX(), e.getY() - layer.getY());
+
+		if (validArea != null)
+			graphics2D.setClip(previousShape);
+
 		graphics2D.dispose();
+
 		canvas.getCanvasRenderer().repaint();
 		return true;
 	}
