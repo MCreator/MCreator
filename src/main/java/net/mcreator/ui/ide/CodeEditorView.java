@@ -187,9 +187,9 @@ public class CodeEditorView extends ViewBase {
 		sp.setBorder(null);
 
 		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
+				Theme.current().getColorScheme().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 		sp.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getHorizontalScrollBar()));
+				Theme.current().getColorScheme().getAltBackgroundColor(), sp.getHorizontalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 		sp.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 
@@ -210,9 +210,9 @@ public class CodeEditorView extends ViewBase {
 		treeSP.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy22);
 
 		treeSP.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), treeSP.getVerticalScrollBar()));
+				Theme.current().getColorScheme().getAltBackgroundColor(), treeSP.getVerticalScrollBar()));
 		treeSP.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), treeSP.getHorizontalScrollBar()));
+				Theme.current().getColorScheme().getAltBackgroundColor(), treeSP.getHorizontalScrollBar()));
 		treeSP.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 		treeSP.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 
@@ -701,7 +701,7 @@ public class CodeEditorView extends ViewBase {
 					fileTab.setInactiveColor((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 				} else {
 					fileTab.setActiveColor(Theme.current().getColorScheme().getInterfaceAccentColor());
-					fileTab.setInactiveColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					fileTab.setInactiveColor(Theme.current().getColorScheme().getAltBackgroundColor());
 				}
 			}
 		});

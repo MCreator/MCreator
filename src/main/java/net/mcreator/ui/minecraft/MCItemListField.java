@@ -80,7 +80,7 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 
 			setBackground(isSelected ?
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					Theme.current().getColorScheme().getAltBackgroundColor());
 
 			setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(0, 2, 0, 2, Theme.current().getColorScheme().getBackgroundColor()),

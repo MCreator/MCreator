@@ -520,7 +520,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JComponent south = PanelUtils.westAndEastElement(nov, motwpan, 20, 20);
 		south.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		JComponent hol = PanelUtils.gridElements(1, 1, south);
-		hol.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		hol.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getColorScheme().getAltBackgroundColor()));
 
 		JPanel soim;
 		if (!Launcher.version.isSnapshot()) {
@@ -533,7 +533,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		}
 
 		soim.setLayout(new BorderLayout());
-		soim.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		soim.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getColorScheme().getAltBackgroundColor()));
 
 		soim.add(south);
 

@@ -54,7 +54,7 @@ public class ConsoleSearchBar extends JToolBar {
 		add(results);
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
-		jtf1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		jtf1.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		jtf1.setOpaque(true);
 
 		results.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));

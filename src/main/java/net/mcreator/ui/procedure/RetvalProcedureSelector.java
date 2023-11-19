@@ -74,7 +74,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 
 		setOpaque(true);
 		procedures.setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
-		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
 		procedures.addPopupMenuListener(new ComboBoxFullWidthPopup());
@@ -226,7 +226,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			fixedValue.setEnabled(enabled);
 
 		if (enabled) {
-			setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		} else {
 			setBackground(Theme.current().getColorScheme().getBackgroundColor());
 		}

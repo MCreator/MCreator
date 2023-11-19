@@ -105,13 +105,13 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		JButton saveNew = L10N.button("dialog.image_maker.save_as_new");
 		saveNew.setMargin(new Insets(1, 40, 1, 40));
-		saveNew.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		saveNew.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		saveNew.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 		saveNew.setFocusPainted(false);
 
 		JButton template = L10N.button("dialog.image_maker.generate_from_template");
 		template.setMargin(new Insets(1, 40, 1, 40));
-		template.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		template.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		template.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 		template.setFocusPainted(false);
 
@@ -126,7 +126,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		rightSplitPane = new JSplitPane() {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				g2d.setColor(Theme.current().getColorScheme().getAltBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();

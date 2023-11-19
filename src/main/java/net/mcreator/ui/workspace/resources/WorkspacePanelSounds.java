@@ -24,6 +24,7 @@ import net.mcreator.ui.dialogs.SoundElementDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.SoundUtils;
@@ -130,8 +131,8 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 
 			JPanel cont = new JPanel(new BorderLayout());
 			cont.setBackground(isSelected ?
-					((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).brighter() :
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					(Theme.current().getColorScheme().getAltBackgroundColor()).brighter() :
+					Theme.current().getColorScheme().getAltBackgroundColor());
 			cont.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 
 			JPanel namepan = new JPanel(new BorderLayout());

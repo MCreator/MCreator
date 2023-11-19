@@ -30,6 +30,7 @@ import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -53,7 +54,7 @@ public class JSpawnListEntry extends JSimpleListEntry<Biome.SpawnEntry> {
 		this.workspace = mcreator.getWorkspace();
 
 		numberOfMobsPerGroup.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 

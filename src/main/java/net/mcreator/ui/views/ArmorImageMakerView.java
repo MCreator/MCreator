@@ -96,7 +96,7 @@ public class ArmorImageMakerView extends ViewBase {
 
 		JPanel spom = PanelUtils.totalCenterInPanel(spo);
 		spom.setOpaque(true);
-		spom.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		spom.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		spom.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
 				L10N.t("dialog.armor_image_maker.preview"), 0, 0, getFont().deriveFont(12.0f),

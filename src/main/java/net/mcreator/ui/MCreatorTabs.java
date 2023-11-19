@@ -83,7 +83,7 @@ public class MCreatorTabs {
 		moreTabs.setPreferredSize(new Dimension(40, 39));
 		moreTabs.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 1,
 				Theme.current().getColorScheme().getSecondAltBackgroundColor()), BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 5, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createMatteBorder(0, 0, 5, 0, Theme.current().getColorScheme().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(0, 10, 0, 10))));
 		moreTabs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		moreTabs.addMouseListener(new MouseAdapter() {
@@ -95,7 +95,7 @@ public class MCreatorTabs {
 		filler = new JPanel();
 		filler.setOpaque(false);
 		filler.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 5, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+				BorderFactory.createMatteBorder(0, 0, 5, 0, Theme.current().getColorScheme().getAltBackgroundColor()));
 	}
 
 	void reloadTabStrip() {
@@ -212,7 +212,7 @@ public class MCreatorTabs {
 		for (Tab tab : tabs) {
 			if (tab.identifier.equals(identifier)) {
 				cardLayout.show(container, identifier.toString());
-				tab.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				tab.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 				tab.selected = true;
 				this.current = tab;
 				if (notify) {
@@ -293,7 +293,7 @@ public class MCreatorTabs {
 		private TabClosingListener tabClosingListener;
 		private TabShownListener tabShownListener;
 
-		private Color inactiveColor = (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT");
+		private Color inactiveColor = Theme.current().getColorScheme().getAltBackgroundColor();
 		private Color activeColor = Theme.current().getColorScheme().getInterfaceAccentColor();
 
 		private boolean selected = false;

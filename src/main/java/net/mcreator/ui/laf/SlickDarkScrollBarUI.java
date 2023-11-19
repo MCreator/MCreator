@@ -38,7 +38,7 @@ public class SlickDarkScrollBarUI extends BasicScrollBarUI {
 
 	public static ComponentUI createUI(JComponent var0) {
 		return new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), var0);
+				Theme.current().getColorScheme().getAltBackgroundColor(), var0);
 	}
 
 	public SlickDarkScrollBarUI(Color bg, Color fg, final JComponent bar) {

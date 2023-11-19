@@ -296,7 +296,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			setOpaque(true);
 			setBackground(isSelected ?
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					Theme.current().getColorScheme().getAltBackgroundColor());
 			setForeground(isSelected ?
 					Theme.current().getColorScheme().getSecondAltBackgroundColor() :
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));

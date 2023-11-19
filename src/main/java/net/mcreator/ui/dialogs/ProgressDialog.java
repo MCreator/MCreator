@@ -52,11 +52,11 @@ public class ProgressDialog extends MCreatorDialog {
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 		titleLabel = new JLabel(title);
-		titleLabel.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		titleLabel.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		titleLabel.setOpaque(true);
 		titleLabel.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(8, 5, 0, 0, Theme.current().getColorScheme().getBackgroundColor()),
-				BorderFactory.createMatteBorder(0, 4, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"))));
+				BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current().getColorScheme().getAltBackgroundColor())));
 		ComponentUtils.deriveFont(titleLabel, 13);
 		add("North", titleLabel);
 
@@ -71,7 +71,7 @@ public class ProgressDialog extends MCreatorDialog {
 		panes.setBorder(BorderFactory.createMatteBorder(4, 8, 4, 4, Theme.current().getColorScheme().getBackgroundColor()));
 
 		((JComponent) getContentPane()).setBorder(
-				BorderFactory.createMatteBorder(0, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+				BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current().getColorScheme().getAltBackgroundColor()));
 
 		add("Center", panes);
 

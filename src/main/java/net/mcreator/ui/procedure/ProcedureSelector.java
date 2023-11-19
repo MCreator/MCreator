@@ -143,7 +143,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		});
 
 		setBackground(Theme.current().getColorScheme().getBackgroundColor());
-		setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		setBorder(BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor()));
 
 		if (returnType != null) {
 			setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
@@ -318,7 +318,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 		if (returnType != null)
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(1, 0, 1, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+					BorderFactory.createMatteBorder(1, 0, 1, 1, Theme.current().getColorScheme().getAltBackgroundColor()),
 					BorderFactory.createMatteBorder(0, 5, 0, 0, returnType.getBlocklyColor())));
 
 		return (ProcedureSelector) retval;

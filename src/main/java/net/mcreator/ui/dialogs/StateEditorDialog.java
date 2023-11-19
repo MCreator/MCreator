@@ -106,7 +106,7 @@ public class StateEditorDialog {
 			entryComponent = component;
 
 			JPanel settings = new JPanel();
-			settings.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			settings.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 			settings.add(new JLabel(property.replace("CUSTOM:", "")));
 			settings.add(new JLabel(matchSymbol));
 			settings.add(entryComponent);
@@ -116,7 +116,7 @@ public class StateEditorDialog {
 			useEntry.addChangeListener(e -> {
 				entryComponent.setEnabled(useEntry.isSelected());
 				settings.setBackground(useEntry.isSelected() ?
-						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
+						Theme.current().getColorScheme().getAltBackgroundColor() :
 						Theme.current().getColorScheme().getSecondAltBackgroundColor());
 			});
 

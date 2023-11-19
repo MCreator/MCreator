@@ -46,7 +46,7 @@ public class ComponentUtils {
 				BorderFactory.createCompoundBorder(
 						BorderFactory.createLineBorder(Theme.current().getColorScheme().getBackgroundColor(), 1),
 						BorderFactory.createLineBorder(new Color(30, 30, 30), 4))));
-		button.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		button.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 	}
 
 	public static void normalizeButton2(JToggleButton button) {
@@ -57,21 +57,21 @@ public class ComponentUtils {
 		Border on = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 1),
 				BorderFactory.createCompoundBorder(
 						BorderFactory.createLineBorder(Theme.current().getColorScheme().getBackgroundColor(), 1),
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 4)));
+						BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 4)));
 		button.setBorder(button.isSelected() ? on : off);
 		button.setBackground(
-				button.isSelected() ? (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") : new Color(30, 30, 30));
+				button.isSelected() ? Theme.current().getColorScheme().getAltBackgroundColor() : new Color(30, 30, 30));
 		button.addChangeListener(e -> {
 			button.setBorder(button.isSelected() ? on : off);
 			button.setBackground(
-					button.isSelected() ? (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") : new Color(30, 30, 30));
+					button.isSelected() ? Theme.current().getColorScheme().getAltBackgroundColor() : new Color(30, 30, 30));
 		});
 	}
 
 	public static void normalizeButton4(AbstractButton button) {
 		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0, 0, 0, 0), 1),
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
 						BorderFactory.createMatteBorder(1, 3, 1, 3, new Color(0, 0, 0, 0)))));
 		button.setBackground(new Color(0, 0, 0, 0));
 		button.setOpaque(false);

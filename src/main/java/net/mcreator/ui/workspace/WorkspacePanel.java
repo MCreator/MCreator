@@ -291,7 +291,7 @@ import java.util.stream.Collectors;
 		sp.getViewport().setOpaque(false);
 
 		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
+				Theme.current().getColorScheme().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		sp.setBorder(null);
 
@@ -336,7 +336,7 @@ import java.util.stream.Collectors;
 		ComponentUtils.deriveFont(search, 14);
 		search.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
 		search.setOpaque(false);
-		search.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		search.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 
 		search.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -875,7 +875,7 @@ import java.util.stream.Collectors;
 		if (sectionTabs.get(id).canSwitchToSection()) {
 			for (JButton btt : verticalTabs) {
 				btt.setBackground(btt.getName().equals(id) ?
-						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
+						Theme.current().getColorScheme().getAltBackgroundColor() :
 						Theme.current().getColorScheme().getBackgroundColor());
 			}
 			cardLayout.show(panels, id);

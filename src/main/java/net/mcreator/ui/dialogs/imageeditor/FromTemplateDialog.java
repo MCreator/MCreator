@@ -218,7 +218,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		JButton randomize = L10N.button("dialog.imageeditor.template_randomize");
 		randomize.setMargin(new Insets(1, 40, 1, 40));
-		randomize.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		randomize.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		randomize.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 		randomize.setFocusPainted(false);
 

@@ -81,7 +81,7 @@ public class PreferencesDialog extends MCreatorDialog {
 					}
 
 					@Override public void paint(Graphics g) {
-						g.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+						g.setColor(Theme.current().getColorScheme().getAltBackgroundColor());
 						g.fillRect(0, 0, getSize().width, getSize().height);
 						super.paint(g);
 					}
@@ -91,7 +91,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		spne.setContinuousLayout(true);
 		spne.setDividerLocation(0.3);
 		spne.setDividerSize(2);
-		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Theme.current().getColorScheme().getAltBackgroundColor()));
 		add("Center", spne);
 
 		sections.setBackground(Theme.current().getColorScheme().getBackgroundColor());

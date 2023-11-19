@@ -35,13 +35,13 @@ public class RadioButtonIcon implements Icon {
 		int controlSize = getControlSize();
 		if (model.isEnabled()) {
 			if (model.isPressed() && model.isArmed()) {
-				g.setColor(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).brighter());
+				g.setColor((Theme.current().getColorScheme().getAltBackgroundColor()).brighter());
 				g.fillOval(x, y, controlSize - 1, controlSize - 1);
 			} else if (model.isRollover()) {
-				g.setColor(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+				g.setColor((Theme.current().getColorScheme().getAltBackgroundColor()).darker());
 				g.fillOval(x, y, controlSize - 1, controlSize - 1);
 			} else {
-				g.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				g.setColor(Theme.current().getColorScheme().getAltBackgroundColor());
 				g.fillOval(x, y, controlSize - 1, controlSize - 1);
 			}
 

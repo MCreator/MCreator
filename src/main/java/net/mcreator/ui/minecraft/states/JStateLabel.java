@@ -75,7 +75,7 @@ public class JStateLabel extends JPanel {
 		edit.addActionListener(e -> editState());
 
 		JPanel controls = new JPanel();
-		controls.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		controls.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		controls.add(edit);
 		add("East", PanelUtils.centerInPanelPadding(controls, 2, 2));
 	}

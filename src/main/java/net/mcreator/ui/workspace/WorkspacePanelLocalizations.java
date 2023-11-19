@@ -170,7 +170,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			elements.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 			elements.setSelectionForeground(Theme.current().getColorScheme().getBackgroundColor());
 			elements.setBorder(BorderFactory.createEmptyBorder());
-			elements.setGridColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			elements.setGridColor(Theme.current().getColorScheme().getAltBackgroundColor());
 			elements.setRowHeight(22);
 			elements.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 			elements.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
@@ -202,7 +202,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			sp.getViewport().setOpaque(false);
 			sp.getVerticalScrollBar().setUnitIncrement(11);
 			sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
+					Theme.current().getColorScheme().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 			sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 
 			sp.setColumnHeaderView(null);

@@ -25,6 +25,7 @@ import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.generator.ListTemplate;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementChangedListener;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.util.image.ImageUtils;
@@ -57,7 +58,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		this.modElementGUI = modElementGUI;
 		this.codeChangeListener = this::reload;
 
-		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		setOpaque(true);
 
 		addComponentListener(new ComponentAdapter() {
@@ -84,7 +85,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 						}
 					});
 
-					listPane.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					listPane.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 					listPane.setOpaque(true);
 
 					listPane.addComponentListener(new ComponentAdapter() {
@@ -179,7 +180,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					if (!isEnabledAt(getSelectedIndex()) && !cache.isEmpty())
 						setSelectedIndex(IntStream.range(0, getTabCount()).filter(this::isEnabledAt).min().orElse(0));
 
-					setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 				} catch (Exception ignored) {
 					setBackground(new Color(0x8D5C5C));
 				}

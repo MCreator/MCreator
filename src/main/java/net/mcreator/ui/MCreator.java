@@ -259,7 +259,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser,
 				PanelUtils.northAndCenterElement(pon, mpan));
-		splitPane.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		splitPane.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		splitPane.setOneTouchExpandable(true);
 
 		splitPane.setDividerLocation(280);

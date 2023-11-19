@@ -130,7 +130,7 @@ public class MainToolBar extends JToolBar {
 		button.addMouseListener(new MouseAdapter() {
 			@Override public void mouseEntered(MouseEvent mouseEvent) {
 				super.mouseEntered(mouseEvent);
-				button.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				button.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 			}
 
 			@Override public void mouseExited(MouseEvent mouseEvent) {

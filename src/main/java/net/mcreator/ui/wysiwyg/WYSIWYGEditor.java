@@ -192,7 +192,7 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel comppan = new JPanel(new BorderLayout());
 		comppan.setOpaque(false);
 		comppan.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
 				(L10N.t("elementgui.gui.component_list")), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
@@ -316,7 +316,7 @@ public class WYSIWYGEditor extends JPanel {
 		moveComponentDown.setEnabled(false);
 
 		adds.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
 				(L10N.t("elementgui.gui.editor_options")), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
@@ -328,7 +328,7 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel adds2 = new JPanel();
 		adds2.setLayout(new BoxLayout(adds2, BoxLayout.PAGE_AXIS));
 		adds2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
 				(L10N.t("elementgui.gui.gui_properties")), 0, 0, getFont().deriveFont(12.0f),
 				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 
@@ -383,7 +383,7 @@ public class WYSIWYGEditor extends JPanel {
 			ovst2.setOpaque(false);
 
 			ovst.setBorder(BorderFactory.createTitledBorder(
-					BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+					BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
 					L10N.t("elementgui.gui.overlay_properties"), 0, 0, getFont().deriveFont(12.0f),
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
 

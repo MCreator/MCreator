@@ -44,7 +44,7 @@ class AcceleratorDialog {
 		map.setSelectionBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 		map.setSelectionForeground(Theme.current().getColorScheme().getBackgroundColor());
 		map.setBorder(BorderFactory.createEmptyBorder());
-		map.setGridColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		map.setGridColor(Theme.current().getColorScheme().getAltBackgroundColor());
 		map.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		if (OS.getOS() == OS.MAC) {

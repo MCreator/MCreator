@@ -67,11 +67,11 @@ class AutocompleteStyle {
 								Theme.current().getColorScheme().getBackgroundColor()));
 						pane.getVerticalScrollBar()
 								.setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-										(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"),
+										Theme.current().getColorScheme().getAltBackgroundColor(),
 										pane.getVerticalScrollBar()));
 						pane.getHorizontalScrollBar()
 								.setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-										(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"),
+										Theme.current().getColorScheme().getAltBackgroundColor(),
 										pane.getHorizontalScrollBar()));
 						pane.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 						pane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));

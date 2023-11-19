@@ -261,7 +261,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
-			saveOnly.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			saveOnly.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 			saveOnly.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
@@ -337,7 +337,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		} else {
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
-			saveOnly.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			saveOnly.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 			saveOnly.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {

@@ -43,7 +43,7 @@ public class JZoomPane extends JPanel {
 		if (zoomable instanceof IZoomable)
 			((IZoomable) zoomable).setZoomPane(this);
 
-		popup.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		popup.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		popup.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getColorScheme().getInterfaceAccentColor()));
 		JMenuItem recenter = new JMenuItem("Center view");
 		popup.add(recenter);
@@ -85,7 +85,7 @@ public class JZoomPane extends JPanel {
 		horizontalScrollBar.setOpaque(false);
 		verticalScrollBar.setOpaque(false);
 
-		quickActions.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		quickActions.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		quickActions.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 		quickActions.setMargin(new Insets(0, 0, 0, 0));
 		ComponentUtils.deriveFont(quickActions, 8);

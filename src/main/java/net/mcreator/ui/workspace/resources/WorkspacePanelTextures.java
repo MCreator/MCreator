@@ -98,7 +98,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		sp.getViewport().setOpaque(false);
 		sp.getVerticalScrollBar().setUnitIncrement(20);
 		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
+				Theme.current().getColorScheme().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		sp.setBorder(null);
 
@@ -110,7 +110,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		JPopupMenu createMenu = new JPopupMenu();
 		createMenu.setBorder(
 				BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getColorScheme().getInterfaceAccentColor()));
-		createMenu.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		createMenu.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createMCItemTexture);
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createArmorTexture);
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createAnimatedTexture);
@@ -123,7 +123,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		JPopupMenu importMenu = new JPopupMenu();
 		importMenu.setBorder(
 				BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getColorScheme().getInterfaceAccentColor()));
-		importMenu.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		importMenu.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importBlockTexture);
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importItemTexture);
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importEntityTexture);

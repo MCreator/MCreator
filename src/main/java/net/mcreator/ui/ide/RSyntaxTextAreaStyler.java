@@ -69,7 +69,7 @@ public class RSyntaxTextAreaStyler {
 								.toLowerCase(Locale.ENGLISH) + ".xml"));
 			}
 
-			theme.matchedBracketBG = (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT");
+			theme.matchedBracketBG = net.mcreator.ui.laf.themes.Theme.current().getColorScheme().getAltBackgroundColor();
 			theme.matchedBracketFG = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
 
 			theme.apply(te);

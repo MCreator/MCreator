@@ -25,6 +25,7 @@ import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.component.ReordarableListTransferHandler;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.elementlist.SmallIconModListRender;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
@@ -76,7 +77,7 @@ public class ElementOrderEditor {
 							list.setTransferHandler(new ReordarableListTransferHandler());
 							list.setDropMode(DropMode.INSERT);
 							list.setDragEnabled(true);
-							list.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+							list.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 
 							list.setCellRenderer(new SmallIconModListRender(false));
 							tabs.addTab(element.getCreativeTab().getUnmappedValue(), new JScrollPane(list));

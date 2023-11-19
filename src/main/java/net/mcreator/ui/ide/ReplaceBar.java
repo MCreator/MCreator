@@ -151,11 +151,11 @@ public class ReplaceBar extends JPanel {
 		cb5.setForeground(new Color(0xE2E2E2));
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
-		jtf1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		jtf1.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		jtf1.setOpaque(true);
 
 		jtf2.setMaximumSize(jtf1.getPreferredSize());
-		jtf2.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		jtf2.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		jtf2.setOpaque(true);
 
 		JButton close = new JButton(UIRES.get("close_small"));

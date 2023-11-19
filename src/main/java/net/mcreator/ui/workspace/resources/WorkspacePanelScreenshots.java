@@ -100,7 +100,7 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 				boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
+					Theme.current().getColorScheme().getAltBackgroundColor() :
 					Theme.current().getColorScheme().getBackgroundColor());
 			setText(ma.getName());
 			ComponentUtils.deriveFont(this, 11);
