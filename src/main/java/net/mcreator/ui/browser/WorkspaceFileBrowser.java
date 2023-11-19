@@ -124,7 +124,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		treeUI.setLeftChildIndent(3);
 
 		jsp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"), jsp.getVerticalScrollBar()));
+				Theme.current().getColorScheme().getSecondAltBackgroundColor(), jsp.getVerticalScrollBar()));
 		jsp.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 		jsp.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 
@@ -136,7 +136,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		cornerDummy2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy2);
 
-		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 
 		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
 

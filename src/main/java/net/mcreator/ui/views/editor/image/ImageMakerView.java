@@ -97,7 +97,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		save = L10N.button("dialog.image_maker.save");
 		save.setMargin(new Insets(1, 40, 1, 40));
 		save.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
-		save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		save.setForeground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 		save.setFocusPainted(false);
 
 		imageInfo.setForeground(((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")).darker());
@@ -163,7 +163,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		controls.add(rightControls, BorderLayout.EAST);
 
 		controls.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
+				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getColorScheme().getSecondAltBackgroundColor()));
 
 		add(controls, BorderLayout.NORTH);
 		add(leftSplitPane, BorderLayout.CENTER);

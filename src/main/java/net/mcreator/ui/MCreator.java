@@ -40,6 +40,7 @@ import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -202,7 +203,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			((ImagePanel) mpan).setKeepRatio(true);
 		} else {
 			mpan = new JPanel();
-			mpan.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			mpan.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 		}
 
 		mpan.setLayout(new BorderLayout());
@@ -212,7 +213,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
 		pon.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
+		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0,
+				Theme.current().getColorScheme().getSecondAltBackgroundColor()));
 
 		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"),
 				PanelUtils.maxMargin(mv, 5, true, true, true, true), "Workspace", true, false);

@@ -27,6 +27,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -56,11 +57,11 @@ public class JLootTablePool extends JEntriesList {
 		setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
 
 		rolls.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
+				BorderFactory.createLineBorder(Theme.current().getColorScheme().getSecondAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		rolls.setAllowEqualValues(true);
 		bonusrolls.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
+				BorderFactory.createLineBorder(Theme.current().getColorScheme().getSecondAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		bonusrolls.setAllowEqualValues(true);
 		hasbonusrolls.setOpaque(false);

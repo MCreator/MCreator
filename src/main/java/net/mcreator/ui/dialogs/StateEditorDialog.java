@@ -24,6 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -116,7 +117,7 @@ public class StateEditorDialog {
 				entryComponent.setEnabled(useEntry.isSelected());
 				settings.setBackground(useEntry.isSelected() ?
 						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
-						(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+						Theme.current().getColorScheme().getSecondAltBackgroundColor());
 			});
 
 			add(useEntry);

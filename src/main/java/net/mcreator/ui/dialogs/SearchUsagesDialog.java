@@ -23,6 +23,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.elementlist.special.CompactModElementListCellRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -108,7 +109,7 @@ public class SearchUsagesDialog {
 		refList.setFixedCellHeight(40);
 		refList.setFixedCellWidth(200);
 		refList.setVisibleRowCount(-1);
-		refList.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		refList.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 		refList.setCellRenderer(new CompactModElementListCellRenderer());
 		refList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -118,7 +119,7 @@ public class SearchUsagesDialog {
 		});
 
 		JScrollPane sp = new JScrollPane(refList);
-		sp.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		sp.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 		sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		JButton edit = L10N.button("dialog.search_usages.open_selected");

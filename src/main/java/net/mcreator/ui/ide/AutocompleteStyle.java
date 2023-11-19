@@ -94,7 +94,7 @@ class AutocompleteStyle {
 				descWindow.setOpacity(0.85f);
 				descWindow.setSize(390, 220);
 				((JPanel) descWindow.getContentPane()).setBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
+						BorderFactory.createLineBorder(Theme.current().getColorScheme().getSecondAltBackgroundColor()));
 
 			} catch (ClassNotFoundException | SecurityException | IllegalArgumentException | IllegalAccessException |
 					 NoSuchFieldException e1) {

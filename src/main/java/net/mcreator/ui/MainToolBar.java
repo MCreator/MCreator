@@ -19,6 +19,7 @@
 package net.mcreator.ui;
 
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +32,7 @@ public class MainToolBar extends JToolBar {
 	private final JToolBar pluginToolbarRight = new JToolBar();
 
 	MainToolBar(MCreator mcreator) {
-		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
+		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getColorScheme().getSecondAltBackgroundColor()));
 		setFloatable(false);
 
 		pluginToolbarLeft.setBorder(BorderFactory.createEmptyBorder());

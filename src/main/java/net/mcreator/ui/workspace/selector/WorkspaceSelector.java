@@ -39,6 +39,7 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.util.DesktopUtils;
@@ -218,7 +219,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		add("Center", centerComponent);
 
-		recentPanel.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		recentPanel.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 		recentPanel.setPreferredSize(new Dimension(225, 10));
 
 		initWebsitePanel();
@@ -330,7 +331,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 			recentWorkspaces.getList().forEach(defaultListModel::addElement);
 			JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
-			recentsList.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			recentsList.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 			recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			recentsList.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
@@ -528,7 +529,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			((ImagePanel) soim).setOffsetY(-400);
 		} else {
 			soim = new JPanel();
-			soim.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			soim.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 		}
 
 		soim.setLayout(new BorderLayout());

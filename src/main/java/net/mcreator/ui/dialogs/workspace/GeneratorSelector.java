@@ -237,7 +237,7 @@ public class GeneratorSelector {
 			}
 
 			@Override protected Color getSelectionForeground() {
-				return (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT");
+				return Theme.current().getColorScheme().getSecondAltBackgroundColor();
 			}
 		});
 

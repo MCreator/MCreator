@@ -235,7 +235,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			JButton save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
-			save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			save.setForeground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 			save.setFocusPainted(false);
 			save.addActionListener(event -> {
 				List<ValidationGroup> errors = new ArrayList<>();
@@ -296,7 +296,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			if (modElementCodeViewer != null) {
 				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+				codeViewer.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 				codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 				codeViewer.setFocusPainted(false);
 				codeViewer.setBorder(BorderFactory.createCompoundBorder(
@@ -351,7 +351,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			JButton save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
-			save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			save.setForeground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 			save.setFocusPainted(false);
 			save.addActionListener(event -> {
 				AggregatedValidationResult validationResult = validatePage(0);
@@ -371,7 +371,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			if (modElementCodeViewer != null) {
 				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+				codeViewer.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 				codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 				codeViewer.setFocusPainted(false);
 				codeViewer.setBorder(BorderFactory.createCompoundBorder(

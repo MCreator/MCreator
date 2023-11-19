@@ -176,7 +176,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		JComponent buttons = PanelUtils.totalCenterInPanel(buttonsPanel);
 		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getColorScheme().getInterfaceAccentColor()));
 		buttons.setOpaque(true);
-		buttons.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		buttons.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 
 		if (excludeButton) {
 			include.setSelected(true);
@@ -298,7 +298,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
 					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			setForeground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT") :
+					Theme.current().getColorScheme().getSecondAltBackgroundColor() :
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 			setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(0, 5, 0, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),

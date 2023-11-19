@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.elementlist.special.CompactModElementListCellRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -106,8 +107,8 @@ public class CodeErrorDialog {
 
 		JScrollPane sp = new JScrollPane(problematicModsList);
 		sp.setPreferredSize(new Dimension(150, 140));
-		sp.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		problematicModsList.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		sp.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		problematicModsList.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 
 		JPanel wrapper = new JPanel(new BorderLayout());
 		wrapper.add("North", L10N.label("dialog.code_error.compilation_list"));

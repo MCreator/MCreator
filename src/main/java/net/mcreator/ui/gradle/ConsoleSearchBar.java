@@ -45,7 +45,7 @@ public class ConsoleSearchBar extends JToolBar {
 
 	ConsoleSearchBar() {
 		setFloatable(false);
-		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 
 		add(jtf1);
 		add(Box.createHorizontalStrut(10));

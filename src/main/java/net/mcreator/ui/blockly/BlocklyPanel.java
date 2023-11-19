@@ -99,7 +99,7 @@ public class BlocklyPanel extends JFXPanel {
 		ThreadUtil.runOnFxThread(() -> {
 			WebView browser = new WebView();
 			Scene scene = new Scene(browser);
-			java.awt.Color bg = (java.awt.Color) UIManager.get("MCreatorLAF.BLACK_ACCENT");
+			java.awt.Color bg = Theme.current().getColorScheme().getSecondAltBackgroundColor();
 			scene.setFill(Color.rgb(bg.getRed(), bg.getGreen(), bg.getBlue()));
 			setScene(scene);
 

@@ -91,7 +91,6 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	protected void initMCreatorThemeColors(UIDefaults table) {
-		table.put("MCreatorLAF.BLACK_ACCENT", colorScheme.getSecondAltBackgroundColor());
 		table.put("MCreatorLAF.DARK_ACCENT", colorScheme.getBackgroundColor());
 		table.put("MCreatorLAF.LIGHT_ACCENT", colorScheme.getAltBackgroundColor());
 		table.put("MCreatorLAF.GRAY_COLOR", colorScheme.getAltForegroundColor());

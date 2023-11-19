@@ -107,7 +107,7 @@ public class ArmorImageMakerView extends ViewBase {
 		JButton save = L10N.button("dialog.armor_image_maker.save");
 		save.setMargin(new Insets(1, 40, 1, 40));
 		save.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
-		save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		save.setForeground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 		save.setFocusPainted(false);
 		add("North", PanelUtils.maxMargin(
 				PanelUtils.westAndEastElement(new JEmptyBox(0, 0), PanelUtils.centerInPanelPadding(save, 0, 0)), 5,

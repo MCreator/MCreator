@@ -81,11 +81,10 @@ public class MCreatorTabs {
 
 		moreTabs = new JLabel(UIRES.get("more"));
 		moreTabs.setPreferredSize(new Dimension(40, 39));
-		moreTabs.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createMatteBorder(0, 0, 5, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
-						BorderFactory.createEmptyBorder(0, 10, 0, 10))));
+		moreTabs.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 1,
+				Theme.current().getColorScheme().getSecondAltBackgroundColor()), BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(0, 0, 5, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createEmptyBorder(0, 10, 0, 10))));
 		moreTabs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		moreTabs.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -420,12 +419,12 @@ public class MCreatorTabs {
 			if (selected)
 				setBorder(BorderFactory.createCompoundBorder(
 						BorderFactory.createMatteBorder(0, 0, 0, hasRightBorder ? 1 : 0,
-								(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
+								Theme.current().getColorScheme().getSecondAltBackgroundColor()),
 						BorderFactory.createMatteBorder(0, 0, 5, 0, activeColor)));
 			else
 				setBorder(BorderFactory.createCompoundBorder(
 						BorderFactory.createMatteBorder(0, 0, 0, hasRightBorder ? 1 : 0,
-								(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")),
+								Theme.current().getColorScheme().getSecondAltBackgroundColor()),
 						BorderFactory.createMatteBorder(0, 0, 5, 0, inactiveColor)));
 		}
 

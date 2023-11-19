@@ -112,7 +112,7 @@ public class JStringListField extends JPanel {
 		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, clear));
 		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getColorScheme().getInterfaceAccentColor()));
 		controls.setOpaque(true);
-		controls.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		controls.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 
 		add("Center", pane);
 		add("East", controls);
@@ -166,7 +166,7 @@ public class JStringListField extends JPanel {
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
 					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 			setForeground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT") :
+					Theme.current().getColorScheme().getSecondAltBackgroundColor() :
 					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 			setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(0, 5, 0, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
