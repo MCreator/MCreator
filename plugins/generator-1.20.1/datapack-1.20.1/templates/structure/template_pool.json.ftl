@@ -1,21 +1,27 @@
 <#include "../mcitems.ftl">
 {
+  <#if data.poolName??>
+  "name": "${modid}:${registryname}_${data.poolName}",
+  "fallback": "${data.fallbackPool?has_content?then(data.fallbackPool, "minecraft:empty")}",
+  <#else>
   "name": "${modid}:${registryname}",
   "fallback": "minecraft:empty",
+  </#if>
   "elements": [
+    <#list data.getPoolParts() as part>
     {
-      "weight": 1,
+      "weight": ${part.weight},
       "element": {
         "element_type": "minecraft:single_pool_element",
-        "location": "${modid}:${data.structure}",
-        "projection": "${data.projection}"
-        <#if data.ignoredBlocks?has_content>,
+        "location": "${modid}:${part.structure}",
+        "projection": "${part.projection}"
+        <#if part.ignoredBlocks?has_content>,
         "processors": {
           "processors": [
             {
               "processor_type": "minecraft:block_ignore",
               "blocks": [
-                <#list data.ignoredBlocks as block>
+                <#list part.ignoredBlocks as block>
                 {
                   "Name": "${mappedMCItemToRegistryName(block)}"
                 }<#sep>,
@@ -26,6 +32,7 @@
         }
         </#if>
       }
-    }
+    }<#sep>,
+    </#list>
   ]
 }
