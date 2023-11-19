@@ -26,6 +26,8 @@ import javax.swing.colorchooser.AbstractColorChooserPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JColor extends JPanel {
 
@@ -34,8 +36,8 @@ public class JColor extends JPanel {
 	private Color currentColor = Color.white;
 
 	private final JTextField fl1 = new JTextField(10);
-	private ActionListener al = null;
 	private final JButton bt1 = new JButton("...");
+	private final List<ActionListener> listeners = new ArrayList<>();
 
 	private final boolean allowNullColor;
 	private final boolean allowTransparency;
@@ -91,8 +93,8 @@ public class JColor extends JPanel {
 		bt1.setEnabled(enabled);
 	}
 
-	public void setColorSelectedListener(ActionListener a) {
-		this.al = a;
+	public void addColorSelectedListener(ActionListener a) {
+		listeners.add(a);
 	}
 
 	public void setColor(Color c) {
@@ -113,8 +115,7 @@ public class JColor extends JPanel {
 			fl1.setForeground(getColorLuminance(c) > 128 ? Color.black : Color.white);
 		}
 
-		if (al != null)
-			al.actionPerformed(new ActionEvent("", 0, ""));
+		listeners.forEach(l -> l.actionPerformed(new ActionEvent("", 0, "")));
 	}
 
 	public Color getColor() {

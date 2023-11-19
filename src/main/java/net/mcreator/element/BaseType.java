@@ -22,15 +22,10 @@ package net.mcreator.element;
 public enum BaseType {
 
 	// @formatter:off
-	ARMOR,
-	BIOME,
 	BLOCK,
 	BLOCKENTITY,
-	DATAPACK,
-	ENTITY,
-	GUI,
 	ITEM,
-	OTHER,
+	ENTITY,
 	FEATURE;
 	// @formatter:on
 
