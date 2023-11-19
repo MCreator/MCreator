@@ -47,7 +47,7 @@ public class ConsolePane extends JTextPane {
 		setEditable(false);
 
 		putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-		setFont(MCreatorTheme.console_font);
+		setFont(Theme.current().getConsoleFont());
 
 		setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 		setSelectedTextColor(Theme.current().getColorScheme().getSecondAltBackgroundColor());

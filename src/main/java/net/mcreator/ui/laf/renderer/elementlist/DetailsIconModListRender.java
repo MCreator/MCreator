@@ -46,11 +46,11 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 		setBorder(null);
 		setBackground(Theme.current().getColorScheme().getForegroundColor());
 
-		label.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
-		label2.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
-		label3.setFont(MCreatorTheme.secondary_font.deriveFont(12.0f));
-		label4.setFont(MCreatorTheme.secondary_font.deriveFont(12.0f));
-		label5.setFont(MCreatorTheme.secondary_font.deriveFont(12.0f));
+		label.setFont(Theme.current().getSecondaryFont().deriveFont(14.0f));
+		label2.setFont(Theme.current().getSecondaryFont().deriveFont(14.0f));
+		label3.setFont(Theme.current().getSecondaryFont().deriveFont(12.0f));
+		label4.setFont(Theme.current().getSecondaryFont().deriveFont(12.0f));
+		label5.setFont(Theme.current().getSecondaryFont().deriveFont(12.0f));
 		icon.setBorder(BorderFactory.createEmptyBorder(0, 9, 0, 0));
 
 		add("Center", PanelUtils.gridElements(1, 6, label, label2, label3, label4, label5));

@@ -60,11 +60,8 @@ public class ThemeLoader {
 		for (String file : files) {
 			Theme theme = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), Theme.class);
 
-			// The ID will be used to get images from this theme if the user select it.
-			theme.setID(new File(file).getParentFile().getName());
-
-			// Initialize the theme
-			theme.init();
+			// Initialize the theme and ID - the ID will be used to get images from this theme if the user select it.
+			theme.init(new File(file).getParentFile().getName());
 
 			// Load the custom icon if provided, otherwise load the default one
 			if (PluginLoader.INSTANCE.getResource("themes/" + theme.getID() + "/icon.png") != null)

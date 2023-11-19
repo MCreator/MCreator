@@ -19,16 +19,28 @@
 
 package net.mcreator.ui.laf.themes;
 
+import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.init.L10N;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import java.awt.*;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * <p>A Theme can change images MCreator will use and redefine the colors and the style
  * of {@link net.mcreator.ui.blockly.BlocklyPanel} and {@link net.mcreator.ui.ide.RSyntaxTextAreaStyler} by creating a new {@link ColorScheme}</p>.
  */
 @SuppressWarnings("unused") public class Theme {
+
+	private static final Logger LOG = LogManager.getLogger(Theme.class);
+
+	public static Theme current() {
+		return ThemeLoader.CURRENT_THEME;
+	}
 
 	private String id;
 	private String name;
@@ -42,15 +54,49 @@ import javax.swing.*;
 
 	@Nullable private ColorScheme colorScheme;
 
-	private ImageIcon icon;
+	private transient ImageIcon icon;
 
-	public static Theme current() {
-		return ThemeLoader.CURRENT_THEME;
-	}
+	private transient Font defaultThemeFont;
+	private transient Font secondaryFont;
+	private transient Font consoleFont;
 
-	protected void init() {
+	protected void init(String id) {
+		this.id = id;
+
 		if (colorScheme != null) {
 			colorScheme.init();
+		}
+
+		try {
+			defaultThemeFont = new Font(defaultFont != null ? defaultFont : "Sans-Serif", Font.PLAIN,
+					this.getFontSize());
+			secondaryFont = defaultThemeFont;
+
+			String lang = L10N.getLocale().getLanguage();
+			if (!L10N.SYSTEM_FONT_LANGUAGES.contains(lang) && !useDefaultFontForSecondary) {
+				InputStream secondaryFontStream = PluginLoader.INSTANCE.getResourceAsStream(
+						"themes/" + id + "/fonts/secondary_font.ttf");
+				if (secondaryFontStream != null) { // Font loaded from a file in the theme
+					secondaryFont = Font.createFont(Font.TRUETYPE_FONT, secondaryFontStream);
+				} else { // Default secondary front (from the default_dark theme)
+					secondaryFont = Font.createFont(Font.TRUETYPE_FONT,
+							PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/secondary_font.ttf"));
+					LOG.info("Main font from default_dark will be used.");
+				}
+			}
+
+			InputStream consoleFontStream = PluginLoader.INSTANCE.getResourceAsStream(
+					"themes/" + id + "/fonts/console_font.ttf");
+			if (consoleFontStream != null) {
+				consoleFont = Font.createFont(Font.TRUETYPE_FONT, consoleFontStream);
+			} else {
+				// Default main front (from the default_dark theme)
+				consoleFont = Font.createFont(Font.TRUETYPE_FONT,
+						PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/console_font.ttf"));
+				LOG.info("Console font from default_dark will be used.");
+			}
+		} catch (NullPointerException | FontFormatException | IOException e2) {
+			LOG.info("Failed to init MCreator Theme! Error " + e2.getMessage());
 		}
 	}
 
@@ -62,15 +108,6 @@ import javax.swing.*;
 	 */
 	public String getID() {
 		return id;
-	}
-
-	/**
-	 * This method sets the id of this theme using the name of its main folder.
-	 *
-	 * @param id <p>The theme's ID</p>
-	 */
-	public void setID(String id) {
-		this.id = id;
 	}
 
 	/**
@@ -121,21 +158,16 @@ import javax.swing.*;
 			return 12;
 	}
 
-	/**
-	 * @return The default font to use with some languages.
-	 */
-	public String getDefaultFont() {
-		if (defaultFont != null)
-			return defaultFont;
-		else
-			return "Sans-Serif";
+	public Font getFont() {
+		return defaultThemeFont;
 	}
 
-	/**
-	 * @return <p>Use the default font as the main font</p>
-	 */
-	public boolean useDefaultFontForSecondary() {
-		return useDefaultFontForSecondary;
+	public Font getSecondaryFont() {
+		return secondaryFont;
+	}
+
+	public Font getConsoleFont() {
+		return consoleFont;
 	}
 
 	/**
@@ -171,4 +203,5 @@ import javax.swing.*;
 	@Override public String toString() {
 		return getID() + ": " + getName();
 	}
+
 }

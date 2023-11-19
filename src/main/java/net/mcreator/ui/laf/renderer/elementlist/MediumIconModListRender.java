@@ -43,7 +43,7 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 		setBorder(null);
 		setBackground(Theme.current().getColorScheme().getForegroundColor());
 
-		label.setFont(MCreatorTheme.secondary_font.deriveFont(19.0f));
+		label.setFont(Theme.current().getSecondaryFont().deriveFont(19.0f));
 
 		icon.setBorder(BorderFactory.createEmptyBorder(0, 6, 0, 6));
 

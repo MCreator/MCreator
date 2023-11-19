@@ -43,7 +43,7 @@ public class ListIconModListRender extends JPanel implements ListCellRenderer<IE
 		setBackground(Theme.current().getColorScheme().getForegroundColor());
 
 		icon.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-		label.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
+		label.setFont(Theme.current().getSecondaryFont().deriveFont(14.0f));
 
 		add("Center", label);
 		add("West", icon);

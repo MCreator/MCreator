@@ -43,7 +43,7 @@ public class LargeIconModListRender extends JPanel implements ListCellRenderer<I
 		setBorder(null);
 		setBackground(Theme.current().getColorScheme().getForegroundColor());
 
-		label.setFont(MCreatorTheme.secondary_font.deriveFont(13.0f));
+		label.setFont(Theme.current().getSecondaryFont().deriveFont(13.0f));
 
 		add("South", PanelUtils.centerInPanel(label));
 		add("Center", PanelUtils.centerInPanel(icon));

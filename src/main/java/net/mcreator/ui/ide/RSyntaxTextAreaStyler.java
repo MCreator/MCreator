@@ -21,7 +21,6 @@ package net.mcreator.ui.ide;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.laf.MCreatorTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -29,8 +28,6 @@ import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.InputEvent;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -69,7 +66,8 @@ public class RSyntaxTextAreaStyler {
 								.toLowerCase(Locale.ENGLISH) + ".xml"));
 			}
 
-			theme.matchedBracketBG = net.mcreator.ui.laf.themes.Theme.current().getColorScheme().getAltBackgroundColor();
+			theme.matchedBracketBG = net.mcreator.ui.laf.themes.Theme.current().getColorScheme()
+					.getAltBackgroundColor();
 			theme.matchedBracketFG = net.mcreator.ui.laf.themes.Theme.current().getColorScheme().getForegroundColor();
 
 			theme.apply(te);
@@ -80,8 +78,9 @@ public class RSyntaxTextAreaStyler {
 		SyntaxScheme ss = te.getSyntaxScheme();
 		for (int i = 0; i < ss.getStyleCount(); i++)
 			if (ss.getStyle(i) != null)
-				ss.getStyle(i).font = MCreatorTheme.console_font.deriveFont((float) initialFontSize);
-		te.setFont(MCreatorTheme.console_font.deriveFont((float) initialFontSize));
+				ss.getStyle(i).font = net.mcreator.ui.laf.themes.Theme.current().getConsoleFont()
+						.deriveFont((float) initialFontSize);
+		te.setFont(net.mcreator.ui.laf.themes.Theme.current().getConsoleFont().deriveFont((float) initialFontSize));
 		te.revalidate();
 
 		sp.addMouseWheelListener(mouseWheelEvent -> {

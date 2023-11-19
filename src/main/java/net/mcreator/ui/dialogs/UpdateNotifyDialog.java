@@ -51,7 +51,7 @@ public class UpdateNotifyDialog {
 				ComponentUtils.deriveFont(upde, 13);
 				pan.add("North", upde);
 				JTextPane ar = new JTextPane();
-				ar.setFont(MCreatorTheme.console_font);
+				ar.setFont(Theme.current().getConsoleFont());
 				ar.setEnabled(false);
 				ar.setMargin(new Insets(5, 10, 5, 5));
 				DefaultCaret caret = (DefaultCaret) ar.getCaret();
@@ -80,7 +80,7 @@ public class UpdateNotifyDialog {
 				ComponentUtils.deriveFont(upde, 13);
 				pan.add("North", upde);
 				JTextPane ar = new JTextPane();
-				ar.setFont(MCreatorTheme.console_font);
+				ar.setFont(Theme.current().getConsoleFont());
 				ar.setEnabled(false);
 				ar.setMargin(new Insets(5, 10, 5, 5));
 				DefaultCaret caret = (DefaultCaret) ar.getCaret();

@@ -56,7 +56,7 @@ public class MinecraftCompletionCellRenderer extends JavaCellRenderer {
 			}
 		}
 
-		setFont(MCreatorTheme.console_font.deriveFont(12.0f));
+		setFont(Theme.current().getConsoleFont().deriveFont(12.0f));
 
 		if (selected) {
 			setBackground(new Color(0, 58, 80));

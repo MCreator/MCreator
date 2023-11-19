@@ -18,21 +18,15 @@
 
 package net.mcreator.ui.laf;
 
-import net.mcreator.plugin.PluginLoader;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.ColorScheme;
 import net.mcreator.ui.laf.themes.Theme;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.metal.OceanTheme;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -40,50 +34,10 @@ import java.util.Set;
 
 public class MCreatorTheme extends OceanTheme {
 
-	private static final Logger LOG = LogManager.getLogger("Theme");
-
-	public static final List<String> SYSTEM_FONT_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
-
 	private final Theme theme;
-
-	public static Font secondary_font;
-	public static Font console_font;
-
-	private static Font default_font;
 
 	public MCreatorTheme(Theme theme) {
 		this.theme = theme;
-
-		try {
-			default_font = new Font(theme.getDefaultFont(), Font.PLAIN, theme.getFontSize());
-			secondary_font = default_font;
-
-			String lang = L10N.getLocale().getLanguage();
-			if (!SYSTEM_FONT_LANGUAGES.contains(lang) && !theme.useDefaultFontForSecondary()) {
-				InputStream secondaryFontStream = PluginLoader.INSTANCE.getResourceAsStream(
-						"themes/" + theme.getID() + "/fonts/secondary_font.ttf");
-				if (secondaryFontStream != null) { // Font loaded from a file in the theme
-					secondary_font = Font.createFont(Font.TRUETYPE_FONT, secondaryFontStream);
-				} else { // Default secondary front (from the default_dark theme)
-					secondary_font = Font.createFont(Font.TRUETYPE_FONT,
-							PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/secondary_font.ttf"));
-					LOG.info("Main font from default_dark will be used.");
-				}
-			}
-
-			InputStream consoleFontStream = PluginLoader.INSTANCE.getResourceAsStream(
-					"themes/" + theme.getID() + "/fonts/console_font.ttf");
-			if (consoleFontStream != null) {
-				console_font = Font.createFont(Font.TRUETYPE_FONT, consoleFontStream);
-			} else {
-				// Default main front (from the default_dark theme)
-				console_font = Font.createFont(Font.TRUETYPE_FONT,
-						PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/console_font.ttf"));
-				LOG.info("Console font from default_dark will be used.");
-			}
-		} catch (NullPointerException | FontFormatException | IOException e2) {
-			LOG.info("Failed to init MCreator Theme! Error " + e2.getMessage());
-		}
 	}
 
 	@Override public void addCustomEntriesToTable(UIDefaults table) {
@@ -96,7 +50,7 @@ public class MCreatorTheme extends OceanTheme {
 			if (key == null)
 				continue;
 			if (key.toString().toLowerCase(Locale.ENGLISH).contains("font")) {
-				table.put(key, secondary_font.deriveFont((float) theme.getFontSize()));
+				table.put(key, theme.getSecondaryFont().deriveFont((float) theme.getFontSize()));
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).contains("bordercolor")) {
 				table.put(key, colorScheme.getInterfaceAccentColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".background")) {
@@ -308,27 +262,27 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	@Override public FontUIResource getControlTextFont() {
-		return new FontUIResource(default_font);
+		return new FontUIResource(theme.getFont());
 	}
 
 	@Override public FontUIResource getSystemTextFont() {
-		return new FontUIResource(default_font);
+		return new FontUIResource(theme.getFont());
 	}
 
 	@Override public FontUIResource getUserTextFont() {
-		return new FontUIResource(default_font);
+		return new FontUIResource(theme.getFont());
 	}
 
 	@Override public FontUIResource getMenuTextFont() {
-		return new FontUIResource(default_font);
+		return new FontUIResource(theme.getFont());
 	}
 
 	@Override public FontUIResource getWindowTitleFont() {
-		return new FontUIResource(default_font);
+		return new FontUIResource(theme.getFont());
 	}
 
 	@Override public FontUIResource getSubTextFont() {
-		return new FontUIResource(default_font);
+		return new FontUIResource(theme.getFont());
 	}
 
 }

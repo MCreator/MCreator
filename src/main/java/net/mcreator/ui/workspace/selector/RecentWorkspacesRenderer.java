@@ -58,7 +58,7 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 				Theme.current().getColorScheme().getInterfaceAccentColor() :
 				Theme.current().getColorScheme().getAltForegroundColor());
 
-		setFont(MCreatorTheme.secondary_font.deriveFont(16.0f));
+		setFont(Theme.current().getSecondaryFont().deriveFont(16.0f));
 
 		setToolTipText(L10N.t("dialog.workspace_selector.recent_workspace", value.getName(), path,
 				Objects.requireNonNullElse(value.getMCRVersion(), L10N.t("common.not_applicable"))));

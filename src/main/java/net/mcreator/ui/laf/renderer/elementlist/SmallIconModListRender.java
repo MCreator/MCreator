@@ -47,7 +47,7 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 		setBorder(null);
 		setBackground(Theme.current().getColorScheme().getForegroundColor());
 
-		label.setFont(MCreatorTheme.secondary_font.deriveFont(18.0f));
+		label.setFont(Theme.current().getSecondaryFont().deriveFont(18.0f));
 	}
 
 	@Override

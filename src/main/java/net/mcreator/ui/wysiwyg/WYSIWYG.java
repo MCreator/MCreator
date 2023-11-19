@@ -83,7 +83,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 	WYSIWYG(WYSIWYGEditor wysiwygEditor) {
 		if (fontMC == null)
-			fontMC = MCreatorTheme.console_font.deriveFont(8f).deriveFont(Font.BOLD);
+			fontMC = Theme.current().getConsoleFont().deriveFont(8f).deriveFont(Font.BOLD);
 
 		this.wysiwygEditor = wysiwygEditor;
 
