@@ -444,7 +444,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		JLabel loading = L10N.label("workspace.loading");
 		loading.setIconTextGap(5);
 		loading.setFont(loading.getFont().deriveFont(16f));
-		loading.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		loading.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 		loading.setIcon(UIRES.get("16px.loading.gif"));
 		wrap.add(PanelUtils.totalCenterInPanel(loading));
 		return wrap;

@@ -20,6 +20,7 @@ package net.mcreator.ui.component;
 
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
@@ -50,7 +51,7 @@ public class JColor extends JPanel {
 		fl1.setBackground(Color.white);
 		bt1.setOpaque(false);
 
-		fl1.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")));
+		fl1.setBorder(BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltForegroundColor()));
 		fl1.setHorizontalAlignment(JTextField.CENTER);
 
 		add("Center", fl1);

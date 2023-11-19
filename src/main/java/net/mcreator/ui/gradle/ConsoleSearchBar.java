@@ -57,7 +57,7 @@ public class ConsoleSearchBar extends JToolBar {
 		jtf1.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		jtf1.setOpaque(true);
 
-		results.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		results.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 	}
 
 	public void reinstall(ConsolePane consolePane) {

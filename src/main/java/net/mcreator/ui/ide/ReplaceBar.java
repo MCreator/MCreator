@@ -49,7 +49,7 @@ public class ReplaceBar extends JPanel {
 		this.ra = ra;
 
 		final JLabel matches = new JLabel();
-		matches.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		matches.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 
 		JToolBar top = new JToolBar();
 		top.setBackground(Theme.current().getColorScheme().getBackgroundColor());
@@ -76,7 +76,7 @@ public class ReplaceBar extends JPanel {
 
 				matches.setText(marked.getMarkedCount() + " results");
 				if (marked.getMarkedCount() > 0) {
-					matches.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+					matches.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 				} else {
 					matches.setForeground(new Color(239, 96, 96));
 				}

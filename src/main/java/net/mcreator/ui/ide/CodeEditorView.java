@@ -692,13 +692,13 @@ public class CodeEditorView extends ViewBase {
 			return true;
 		});
 		if (readOnly)
-			fileTab.setActiveColor((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+			fileTab.setActiveColor(Theme.current().getColorScheme().getAltForegroundColor());
 
 		setChangeListener(changeEvent -> {
 			if (!readOnly) {
 				if (changed) {
 					fileTab.setActiveColor((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-					fileTab.setInactiveColor((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+					fileTab.setInactiveColor(Theme.current().getColorScheme().getAltForegroundColor());
 				} else {
 					fileTab.setActiveColor(Theme.current().getColorScheme().getInterfaceAccentColor());
 					fileTab.setInactiveColor(Theme.current().getColorScheme().getAltBackgroundColor());

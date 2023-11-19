@@ -56,7 +56,7 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 		setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 		setForeground(isSelected ?
 				Theme.current().getColorScheme().getInterfaceAccentColor() :
-				(Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				Theme.current().getColorScheme().getAltForegroundColor());
 
 		setFont(MCreatorTheme.secondary_font.deriveFont(16.0f));
 
@@ -95,7 +95,7 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 
 			g2.setColor(isSelected ?
 					Theme.current().getColorScheme().getInterfaceAccentColor() :
-					(Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+					Theme.current().getColorScheme().getAltForegroundColor());
 
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 

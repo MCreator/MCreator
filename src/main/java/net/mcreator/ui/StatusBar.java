@@ -86,7 +86,7 @@ public class StatusBar extends JPanel {
 		left.add(preferences);
 		left.add(new JEmptyBox(10, 10));
 
-		messages.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		messages.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 		left.add(messages);
 
 		add("West", left);
@@ -94,7 +94,7 @@ public class StatusBar extends JPanel {
 		JPanel right = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 1));
 		right.setOpaque(false);
 
-		gradleMessages.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		gradleMessages.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 		right.add(gradleMessages);
 
 		ComponentUtils.deriveFont(gradleMessages, 12);
@@ -163,7 +163,7 @@ public class StatusBar extends JPanel {
 			super.paintComponent(g);
 			switch (mcreator.getGradleConsole().getStatus()) {
 			case GradleConsole.READY:
-				g.setColor((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				g.setColor(Theme.current().getColorScheme().getAltForegroundColor());
 				break;
 			case GradleConsole.RUNNING:
 				g.setColor(new Color(158, 247, 89));

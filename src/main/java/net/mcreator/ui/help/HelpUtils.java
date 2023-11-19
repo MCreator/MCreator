@@ -96,7 +96,7 @@ public class HelpUtils {
 
 					balloonTip = new BalloonTip(lab, scrollPane,
 							new EdgedBalloonStyle(Theme.current().getColorScheme().getBackgroundColor(),
-									(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")), BalloonTip.Orientation.LEFT_BELOW,
+									Theme.current().getColorScheme().getAltForegroundColor()), BalloonTip.Orientation.LEFT_BELOW,
 							BalloonTip.AttachLocation.ALIGNED, 10, 10, false);
 
 					balloonTip.setFocusable(true);

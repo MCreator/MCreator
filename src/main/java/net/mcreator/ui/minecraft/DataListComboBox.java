@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 
@@ -111,7 +112,7 @@ public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 				if (imageIcon instanceof ImageIcon)
 					setIcon(ImageUtils.changeSaturation((ImageIcon) imageIcon, 0.1f));
 				setText(L10N.t("datalist_combobox.not_supported", getText()));
-				setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 			}
 
 			setHorizontalTextPosition(SwingConstants.RIGHT);

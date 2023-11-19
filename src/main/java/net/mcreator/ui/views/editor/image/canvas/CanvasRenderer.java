@@ -111,7 +111,7 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 				int scaledSize = (int) Math.round(size * zoom);
 
 				Graphics2D graphics2D = (Graphics2D) g;
-				graphics2D.setColor((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				graphics2D.setColor(Theme.current().getColorScheme().getAltForegroundColor());
 
 				Stroke original = graphics2D.getStroke();
 				Stroke dashed = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 3 },

@@ -381,11 +381,11 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			recentPanel.add(scrollPane);
 		} else if (recentWorkspaces == null) {
 			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces_loaded");
-			norecents.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+			norecents.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 			recentPanel.add(PanelUtils.totalCenterInPanel(norecents));
 		} else {
 			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
-			norecents.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+			norecents.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 			recentPanel.add(PanelUtils.totalCenterInPanel(norecents));
 		}
 

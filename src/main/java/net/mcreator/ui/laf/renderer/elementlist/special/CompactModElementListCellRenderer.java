@@ -44,7 +44,7 @@ public class CompactModElementListCellRenderer implements ListCellRenderer<ModEl
 				Theme.current().getColorScheme().getSecondAltBackgroundColor());
 		label.setForeground(isSelected ?
 				Theme.current().getColorScheme().getBackgroundColor() :
-				(Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				Theme.current().getColorScheme().getAltForegroundColor());
 		label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		return label;
 	}

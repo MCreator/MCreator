@@ -297,7 +297,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			if (modElementCodeViewer != null) {
 				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
 				codeViewer.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
-				codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				codeViewer.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 				codeViewer.setFocusPainted(false);
 				codeViewer.setBorder(BorderFactory.createCompoundBorder(
 						BorderFactory.createLineBorder(Theme.current().getColorScheme().getBackgroundColor(), 1),
@@ -372,7 +372,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			if (modElementCodeViewer != null) {
 				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
 				codeViewer.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
-				codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				codeViewer.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 				codeViewer.setFocusPainted(false);
 				codeViewer.setBorder(BorderFactory.createCompoundBorder(
 						BorderFactory.createLineBorder(Theme.current().getColorScheme().getBackgroundColor(), 1),

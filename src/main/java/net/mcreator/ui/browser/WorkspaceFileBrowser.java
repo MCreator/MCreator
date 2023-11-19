@@ -176,7 +176,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		topBar.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
 		topBar.add(
 				ComponentUtils.setForeground(ComponentUtils.deriveFont(L10N.label("workspace_file_browser.title"), 10f),
-						(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")));
+						Theme.current().getColorScheme().getAltForegroundColor()));
 
 		topBar.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getColorScheme().getBackgroundColor()),

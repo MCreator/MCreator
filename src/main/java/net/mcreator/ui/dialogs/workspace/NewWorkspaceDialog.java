@@ -216,7 +216,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		JLabel wt = L10N.label("dialog.new_workspace.type");
 		ComponentUtils.deriveFont(wt, 10);
-		wt.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		wt.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 		wt.setBorder(BorderFactory.createEmptyBorder(8, 8, 3, 30));
 
 		workspaceType.add(wt);
