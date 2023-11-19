@@ -21,7 +21,6 @@ package net.mcreator.ui.ide;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.laf.MCreatorTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,9 +46,9 @@ public class RSyntaxTextAreaStyler {
 			Theme theme;
 
 			if (PluginLoader.INSTANCE.getResourceAsStream(
-					"themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml") != null) {
+					"themes/" + net.mcreator.themes.Theme.current().getID() + "/styles/code_editor.xml") != null) {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
-						"themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml");
+						"themes/" + net.mcreator.themes.Theme.current().getID() + "/styles/code_editor.xml");
 				themeXML = themeXML.replace("${mainTint}",
 						Integer.toHexString(((Color) UIManager.get("MCreatorLAF.MAIN_TINT")).getRGB()).substring(2));
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));

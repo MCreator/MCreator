@@ -18,8 +18,7 @@
 
 package net.mcreator.ui.laf;
 
-import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ThemeLoader;
+import net.mcreator.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -34,10 +33,10 @@ public class MCreatorLookAndFeel extends MetalLookAndFeel {
 	private static final Logger LOG = LogManager.getLogger("Look and Feel");
 
 	private final MCreatorTheme theme;
-
+	
 	public MCreatorLookAndFeel() {
-		setCurrentTheme(
-				theme = new MCreatorTheme(ThemeLoader.getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme.get())));
+		this.theme = new MCreatorTheme(Theme.current());
+		setCurrentTheme(theme);
 	}
 
 	@Override public UIDefaults getDefaults() {

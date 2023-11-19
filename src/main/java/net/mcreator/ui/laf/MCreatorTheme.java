@@ -22,7 +22,6 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.themes.ColorScheme;
 import net.mcreator.themes.Theme;
-import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import org.apache.logging.log4j.LogManager;
@@ -50,12 +49,15 @@ public class MCreatorTheme extends OceanTheme {
 	private Color MAIN_TINT;
 	private final ColorScheme colorScheme;
 
+	private final Theme theme;
+
 	public static Font secondary_font;
 	public static Font console_font;
 
 	private static Font default_font;
 
 	public MCreatorTheme(Theme theme) {
+		this.theme = theme;
 		this.colorScheme = theme.getColorScheme();
 
 		if (colorScheme.getInterfaceAccentColor() != null) {
@@ -130,7 +132,7 @@ public class MCreatorTheme extends OceanTheme {
 			if (key == null)
 				continue;
 			if (key.toString().toLowerCase(Locale.ENGLISH).contains("font")) {
-				table.put(key, secondary_font.deriveFont((float) ThemeLoader.CURRENT_THEME.getFontSize()));
+				table.put(key, secondary_font.deriveFont((float) theme.getFontSize()));
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).contains("bordercolor")) {
 				table.put(key, MAIN_TINT);
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".background")) {

@@ -47,7 +47,7 @@ public class ThemeLoader {
 
 	private static final LinkedHashSet<Theme> THEMES = new LinkedHashSet<>();
 
-	public static Theme CURRENT_THEME;
+	protected static Theme CURRENT_THEME;
 
 	/**
 	 * <p>This method loads the {@link net.mcreator.themes.Theme} of all plugins loaded into the current {@link net.mcreator.plugin.PluginLoader} instance.</p>
@@ -94,7 +94,7 @@ public class ThemeLoader {
 	 * @param id The theme's id we want to get
 	 * @return Returns the {@link net.mcreator.themes.Theme}, if found in the cache, otherwise null
 	 */
-	public static Theme getTheme(String id) {
+	static Theme getTheme(String id) {
 		for (Theme pack : THEMES) {
 			if (pack.getID().equals(id))
 				return pack;
@@ -107,4 +107,5 @@ public class ThemeLoader {
 
 		return getTheme("default_dark");
 	}
+
 }
