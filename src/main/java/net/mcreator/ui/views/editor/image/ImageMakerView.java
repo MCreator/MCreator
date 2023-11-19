@@ -106,13 +106,13 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		JButton saveNew = L10N.button("dialog.image_maker.save_as_new");
 		saveNew.setMargin(new Insets(1, 40, 1, 40));
 		saveNew.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
-		saveNew.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		saveNew.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		saveNew.setFocusPainted(false);
 
 		JButton template = L10N.button("dialog.image_maker.generate_from_template");
 		template.setMargin(new Insets(1, 40, 1, 40));
 		template.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
-		template.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		template.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		template.setFocusPainted(false);
 
 		save.addActionListener(event -> save());

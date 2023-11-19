@@ -111,14 +111,14 @@ class PluginsPanel {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Plugin> list, Plugin value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setBackground(Theme.current().getColorScheme().getForegroundColor());
 
 			setOpaque(false);
 
 			if (value.isBuiltin()) {
 				setForeground(Theme.current().getColorScheme().getAltForegroundColor());
 			} else {
-				setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				setForeground(Theme.current().getColorScheme().getForegroundColor());
 			}
 
 			ComponentUtils.deriveFont(this, 12);

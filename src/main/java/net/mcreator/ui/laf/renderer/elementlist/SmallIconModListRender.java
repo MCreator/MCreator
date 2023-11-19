@@ -45,7 +45,7 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 
 		add("West", icon);
 		setBorder(null);
-		setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		setBackground(Theme.current().getColorScheme().getForegroundColor());
 
 		label.setFont(MCreatorTheme.secondary_font.deriveFont(18.0f));
 	}
@@ -59,7 +59,7 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 				label.setForeground(Theme.current().getColorScheme().getBackgroundColor());
 			} else {
 				setOpaque(false);
-				label.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				label.setForeground(Theme.current().getColorScheme().getForegroundColor());
 			}
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 24));

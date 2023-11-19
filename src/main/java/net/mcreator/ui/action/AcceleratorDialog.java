@@ -41,7 +41,7 @@ class AcceleratorDialog {
 			}
 		});
 		map.setBackground(Theme.current().getColorScheme().getBackgroundColor());
-		map.setSelectionBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		map.setSelectionBackground(Theme.current().getColorScheme().getForegroundColor());
 		map.setSelectionForeground(Theme.current().getColorScheme().getBackgroundColor());
 		map.setBorder(BorderFactory.createEmptyBorder());
 		map.setGridColor(Theme.current().getColorScheme().getAltBackgroundColor());

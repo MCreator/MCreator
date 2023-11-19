@@ -20,6 +20,7 @@
 package net.mcreator.ui.component;
 
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -72,7 +73,7 @@ public class UnsupportedComponent extends JPanel {
 		if (getWidth() > 100) {
 			g.setFont(g.getFont().deriveFont(12f));
 			g.drawImage(warning, x - g.getFontMetrics().stringWidth("Not supported") / 2, y, null);
-			g.setColor((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			g.setColor(Theme.current().getColorScheme().getForegroundColor());
 			g.drawString("Not supported", x - g.getFontMetrics().stringWidth("Not supported") / 2 + 18 + 4, y + 13);
 		} else {
 			g.drawImage(warning, x, y, null);

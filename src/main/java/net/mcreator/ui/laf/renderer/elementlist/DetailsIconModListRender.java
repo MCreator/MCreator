@@ -44,7 +44,7 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 	public DetailsIconModListRender() {
 		setLayout(new BorderLayout(15, 0));
 		setBorder(null);
-		setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		setBackground(Theme.current().getColorScheme().getForegroundColor());
 
 		label.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
 		label2.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
@@ -69,11 +69,11 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 			label5.setForeground(Theme.current().getColorScheme().getBackgroundColor());
 		} else {
 			setOpaque(false);
-			label.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			label2.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			label3.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			label4.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			label5.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			label.setForeground(Theme.current().getColorScheme().getForegroundColor());
+			label2.setForeground(Theme.current().getColorScheme().getForegroundColor());
+			label3.setForeground(Theme.current().getColorScheme().getForegroundColor());
+			label4.setForeground(Theme.current().getColorScheme().getForegroundColor());
+			label5.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		}
 
 		label.setText(StringUtils.abbreviate(element.getName(), 24));

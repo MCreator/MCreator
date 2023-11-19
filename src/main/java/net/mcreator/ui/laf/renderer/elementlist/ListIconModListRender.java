@@ -40,7 +40,7 @@ public class ListIconModListRender extends JPanel implements ListCellRenderer<IE
 	public ListIconModListRender() {
 		setLayout(new BorderLayout(5, 0));
 		setBorder(null);
-		setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		setBackground(Theme.current().getColorScheme().getForegroundColor());
 
 		icon.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
 		label.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
@@ -57,7 +57,7 @@ public class ListIconModListRender extends JPanel implements ListCellRenderer<IE
 			label.setForeground(Theme.current().getColorScheme().getBackgroundColor());
 		} else {
 			setOpaque(false);
-			label.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			label.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		}
 
 		label.setText(StringUtils.abbreviateString(element.getName(), 200));

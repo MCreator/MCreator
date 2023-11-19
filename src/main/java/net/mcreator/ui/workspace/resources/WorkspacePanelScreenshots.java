@@ -104,7 +104,7 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 					Theme.current().getColorScheme().getBackgroundColor());
 			setText(ma.getName());
 			ComponentUtils.deriveFont(this, 11);
-			setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setForeground(Theme.current().getColorScheme().getForegroundColor());
 			setVerticalTextPosition(BOTTOM);
 			setHorizontalTextPosition(CENTER);
 			setHorizontalAlignment(CENTER);

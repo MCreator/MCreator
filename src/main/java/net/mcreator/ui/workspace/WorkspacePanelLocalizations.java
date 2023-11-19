@@ -166,8 +166,8 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			sorters.add(sorter);
 
 			elements.setBackground(Theme.current().getColorScheme().getBackgroundColor());
-			elements.setSelectionBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			elements.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			elements.setSelectionBackground(Theme.current().getColorScheme().getForegroundColor());
+			elements.setForeground(Theme.current().getColorScheme().getForegroundColor());
 			elements.setSelectionForeground(Theme.current().getColorScheme().getBackgroundColor());
 			elements.setBorder(BorderFactory.createEmptyBorder());
 			elements.setGridColor(Theme.current().getColorScheme().getAltBackgroundColor());

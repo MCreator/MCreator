@@ -188,7 +188,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 			if (isSelected) {
 				setOpaque(true);
-				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				setBackground(Theme.current().getColorScheme().getForegroundColor());
 			} else {
 				setOpaque(false);
 			}

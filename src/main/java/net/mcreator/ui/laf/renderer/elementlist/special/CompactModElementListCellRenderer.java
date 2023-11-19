@@ -40,7 +40,7 @@ public class CompactModElementListCellRenderer implements ListCellRenderer<ModEl
 		label.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementManager.getModElementIcon(value).getImage(), 32)));
 		label.setIconTextGap(10);
 		label.setBackground(isSelected ?
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
+				Theme.current().getColorScheme().getForegroundColor() :
 				Theme.current().getColorScheme().getSecondAltBackgroundColor());
 		label.setForeground(isSelected ?
 				Theme.current().getColorScheme().getBackgroundColor() :

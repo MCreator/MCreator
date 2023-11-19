@@ -90,14 +90,8 @@ public class MCreatorTheme extends OceanTheme {
 		}
 	}
 
-	protected void initMCreatorThemeColors(UIDefaults table) {
-		table.put("MCreatorLAF.BRIGHT_COLOR", colorScheme.getForegroundColor());
-	}
-
 	@Override public void addCustomEntriesToTable(UIDefaults table) {
 		super.addCustomEntriesToTable(table);
-
-		initMCreatorThemeColors(table);
 
 		Set<Object> keySet = table.keySet();
 		for (Object key : keySet) {

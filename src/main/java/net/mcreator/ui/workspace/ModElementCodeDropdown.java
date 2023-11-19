@@ -73,7 +73,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 				JMenu listMenu = new JMenu(list.groupName());
 				listMenu.setIcon(UIRES.get("16px.list.gif"));
 				listMenu.setBackground((Theme.current().getColorScheme().getAltBackgroundColor()).darker());
-				listMenu.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				listMenu.setForeground(Theme.current().getColorScheme().getForegroundColor());
 				listMenu.setIconTextGap(8);
 				listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
 
@@ -104,7 +104,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 						.getFolderManager().getPathInWorkspace(template.getFile()));
 		item.setIcon(FileIcons.getIconForFile(template.getFile()));
 		item.setBackground((Theme.current().getColorScheme().getAltBackgroundColor()).darker());
-		item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		item.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		item.setIconTextGap(8);
 		item.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
 		item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, template.getFile()));

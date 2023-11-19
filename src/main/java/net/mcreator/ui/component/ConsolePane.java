@@ -51,7 +51,7 @@ public class ConsolePane extends JTextPane {
 
 		setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
 		setSelectedTextColor(Theme.current().getColorScheme().getSecondAltBackgroundColor());
-		setSelectionColor((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		setSelectionColor(Theme.current().getColorScheme().getForegroundColor());
 		setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		setBorder(null);
 

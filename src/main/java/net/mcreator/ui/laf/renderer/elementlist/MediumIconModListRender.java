@@ -41,7 +41,7 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 	public MediumIconModListRender() {
 		setLayout(new BorderLayout(5, 0));
 		setBorder(null);
-		setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		setBackground(Theme.current().getColorScheme().getForegroundColor());
 
 		label.setFont(MCreatorTheme.secondary_font.deriveFont(19.0f));
 
@@ -60,7 +60,7 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 				label.setForeground(Theme.current().getColorScheme().getBackgroundColor());
 			} else {
 				setOpaque(false);
-				label.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				label.setForeground(Theme.current().getColorScheme().getForegroundColor());
 			}
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 25));

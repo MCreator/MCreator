@@ -26,6 +26,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -65,9 +66,9 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 
 		JPanel damageProperties = new JPanel(new GridLayout(3, 2, 20, 2));
 		damageProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
 				L10N.t("elementgui.damagetype.damage_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getColorScheme().getForegroundColor()));
 		damageProperties.setOpaque(false);
 
 		exhaustion.setOpaque(false);
@@ -86,9 +87,9 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 
 		JPanel localizationPanel = new JPanel(new GridLayout(3, 2, 20, 2));
 		localizationPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
 				L10N.t("elementgui.damagetype.death_messages"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getColorScheme().getForegroundColor()));
 		localizationPanel.setOpaque(false);
 
 		ComponentUtils.deriveFont(normalDeathMessage, 16);

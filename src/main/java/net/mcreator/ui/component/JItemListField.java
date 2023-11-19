@@ -295,11 +295,11 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				boolean cellHasFocus) {
 			setOpaque(true);
 			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
+					Theme.current().getColorScheme().getForegroundColor() :
 					Theme.current().getColorScheme().getAltBackgroundColor());
 			setForeground(isSelected ?
 					Theme.current().getColorScheme().getSecondAltBackgroundColor() :
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+					Theme.current().getColorScheme().getForegroundColor());
 			setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getColorScheme().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(2, 5, 2, 5)));

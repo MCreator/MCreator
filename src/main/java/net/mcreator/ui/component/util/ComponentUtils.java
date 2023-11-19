@@ -75,7 +75,7 @@ public class ComponentUtils {
 						BorderFactory.createMatteBorder(1, 3, 1, 3, new Color(0, 0, 0, 0)))));
 		button.setBackground(new Color(0, 0, 0, 0));
 		button.setOpaque(false);
-		button.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		button.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		deriveFont(button, 11);
 	}
 
@@ -116,7 +116,7 @@ public class ComponentUtils {
 	}
 
 	public static JPanel squareAndBorder(Component gor, String text) {
-		return squareAndBorder(gor, (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), text);
+		return squareAndBorder(gor, Theme.current().getColorScheme().getForegroundColor(), text);
 	}
 
 }

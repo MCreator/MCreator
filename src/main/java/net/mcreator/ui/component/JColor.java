@@ -107,7 +107,7 @@ public class JColor extends JPanel {
 		if (currentColor == null) {
 			fl1.setOpaque(false);
 			fl1.setText("DEFAULT");
-			fl1.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			fl1.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		} else {
 			String color = c.getRed() + "," + c.getGreen() + "," + c.getBlue();
 			fl1.setText(color);

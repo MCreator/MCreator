@@ -70,7 +70,7 @@ public class RSyntaxTextAreaStyler {
 			}
 
 			theme.matchedBracketBG = net.mcreator.ui.laf.themes.Theme.current().getColorScheme().getAltBackgroundColor();
-			theme.matchedBracketFG = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
+			theme.matchedBracketFG = net.mcreator.ui.laf.themes.Theme.current().getColorScheme().getForegroundColor();
 
 			theme.apply(te);
 		} catch (IOException ioe) {

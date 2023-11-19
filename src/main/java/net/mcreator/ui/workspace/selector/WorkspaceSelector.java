@@ -149,7 +149,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		donate.setIcon(UIRES.get("donate"));
 		donate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(donate, 13);
-		donate.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		donate.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		donate.setBorder(BorderFactory.createEmptyBorder());
 		donate.setHorizontalTextPosition(JLabel.LEFT);
 		donate.addMouseListener(new MouseAdapter() {
@@ -182,7 +182,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		prefs.setIcon(UIRES.get("settings"));
 		prefs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(prefs, 13);
-		prefs.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		prefs.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		prefs.setBorder(BorderFactory.createEmptyBorder());
 		prefs.setHorizontalTextPosition(JLabel.LEFT);
 		prefs.addMouseListener(new MouseAdapter() {
@@ -202,7 +202,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			}
 		});
 		ComponentUtils.deriveFont(version, 13);
-		version.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		version.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		version.setHorizontalTextPosition(SwingConstants.LEFT);
 		version.setIcon(UIRES.get("info"));
 		version.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -401,7 +401,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private JButton mainWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
 		JButton newWorkspace = new JButton(text);
 		ComponentUtils.deriveFont(newWorkspace, 15);
-		newWorkspace.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		newWorkspace.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		newWorkspace.setPreferredSize(new Dimension(240, 48));
 		newWorkspace.setMargin(new Insets(0, 0, 0, 0));
 		newWorkspace.setIcon(icon);
@@ -423,7 +423,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	public void addWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
 		JButton workspaceButton = new JButton(text);
 		ComponentUtils.deriveFont(workspaceButton, 11);
-		workspaceButton.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		workspaceButton.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		workspaceButton.setPreferredSize(new Dimension(240, 22));
 		workspaceButton.setMargin(new Insets(0, 0, 0, 0));
 		workspaceButton.setIcon(

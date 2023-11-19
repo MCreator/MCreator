@@ -194,7 +194,7 @@ public class WYSIWYGEditor extends JPanel {
 		comppan.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
 				(L10N.t("elementgui.gui.component_list")), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getColorScheme().getForegroundColor()));
 
 		TransparentToolBar bar2 = new TransparentToolBar();
 		bar2.setBorder(null);
@@ -318,7 +318,7 @@ public class WYSIWYGEditor extends JPanel {
 		adds.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
 				(L10N.t("elementgui.gui.editor_options")), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getColorScheme().getForegroundColor()));
 
 		adds.setOpaque(false);
 
@@ -330,7 +330,7 @@ public class WYSIWYGEditor extends JPanel {
 		adds2.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
 				(L10N.t("elementgui.gui.gui_properties")), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getColorScheme().getForegroundColor()));
 
 		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), guiType);
 
@@ -385,7 +385,7 @@ public class WYSIWYGEditor extends JPanel {
 			ovst.setBorder(BorderFactory.createTitledBorder(
 					BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
 					L10N.t("elementgui.gui.overlay_properties"), 0, 0, getFont().deriveFont(12.0f),
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+					Theme.current().getColorScheme().getForegroundColor()));
 
 			overlayBaseTexture.addActionListener(e -> editor.repaint());
 			overlayBaseTexture.setPrototypeDisplayValue("XXXXXX");
@@ -510,10 +510,10 @@ public class WYSIWYGEditor extends JPanel {
 				boolean cellHasFocus) {
 			if (isSelected) {
 				setForeground(Theme.current().getColorScheme().getBackgroundColor());
-				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				setBackground(Theme.current().getColorScheme().getForegroundColor());
 				setOpaque(true);
 			} else {
-				setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				setForeground(Theme.current().getColorScheme().getForegroundColor());
 				setOpaque(false);
 			}
 

@@ -598,7 +598,7 @@ public class GradleConsole extends JPanel {
 	}
 
 	public void append(String text) {
-		append(text, (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		append(text, Theme.current().getColorScheme().getForegroundColor());
 	}
 
 	private Color textAccent = null;
@@ -607,7 +607,7 @@ public class GradleConsole extends JPanel {
 		pan.beginTransaction();
 
 		if (!text.isEmpty()) {
-			Color c = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
+			Color c = Theme.current().getColorScheme().getForegroundColor();
 
 			if (!text.endsWith("\n"))
 				text = text + "\n";

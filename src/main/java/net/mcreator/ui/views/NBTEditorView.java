@@ -136,7 +136,7 @@ public class NBTEditorView extends ViewBase {
 				a.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 			} else {
 				a.setBackground(Theme.current().getColorScheme().getBackgroundColor());
-				a.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				a.setForeground(Theme.current().getColorScheme().getForegroundColor());
 			}
 			return a;
 		}

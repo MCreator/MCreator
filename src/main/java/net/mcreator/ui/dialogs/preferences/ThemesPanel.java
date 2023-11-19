@@ -80,7 +80,7 @@ public class ThemesPanel {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Theme> list, Theme value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setBackground(Theme.current().getColorScheme().getForegroundColor());
 
 			setOpaque(false);
 

@@ -42,7 +42,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 	public TilesModListRender() {
 		super(new BorderLayout(0, 0));
 		setBorder(null);
-		setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		setBackground(Theme.current().getColorScheme().getForegroundColor());
 
 		label.setFont(MCreatorTheme.secondary_font.deriveFont(24.0f));
 		text.setOpaque(false);
@@ -62,8 +62,8 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 				label_details.setForeground(Theme.current().getColorScheme().getBackgroundColor());
 			} else {
 				setOpaque(false);
-				label.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				label_details.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				label.setForeground(Theme.current().getColorScheme().getForegroundColor());
+				label_details.setForeground(Theme.current().getColorScheme().getForegroundColor());
 			}
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 18));

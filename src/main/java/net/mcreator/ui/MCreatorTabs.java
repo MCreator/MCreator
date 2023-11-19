@@ -340,7 +340,7 @@ public class MCreatorTabs {
 			blo.setVerticalAlignment(SwingConstants.CENTER);
 			blo.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			blo.setBackground(new Color(80, 80, 80));
-			blo.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			blo.setForeground(Theme.current().getColorScheme().getForegroundColor());
 
 			setText(name);
 

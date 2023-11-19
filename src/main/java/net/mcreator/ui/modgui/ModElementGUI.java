@@ -214,7 +214,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 				page.addChangeListener(e -> page.setForeground(page.isSelected() ?
 						(Theme.current().getColorScheme().getInterfaceAccentColor()) :
-						((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"))));
+						(Theme.current().getColorScheme().getForegroundColor())));
 				pager.add(page);
 				buttonGroup.add(page);
 
@@ -262,7 +262,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
-			saveOnly.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			saveOnly.setForeground(Theme.current().getColorScheme().getForegroundColor());
 			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
 				List<ValidationGroup> errors = new ArrayList<>();
@@ -338,7 +338,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
-			saveOnly.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			saveOnly.setForeground(Theme.current().getColorScheme().getForegroundColor());
 			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
 				AggregatedValidationResult validationResult = validatePage(0);

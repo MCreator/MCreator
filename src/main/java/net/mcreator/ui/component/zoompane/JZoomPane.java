@@ -86,7 +86,7 @@ public class JZoomPane extends JPanel {
 		verticalScrollBar.setOpaque(false);
 
 		quickActions.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
-		quickActions.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		quickActions.setForeground(Theme.current().getColorScheme().getForegroundColor());
 		quickActions.setMargin(new Insets(0, 0, 0, 0));
 		ComponentUtils.deriveFont(quickActions, 8);
 

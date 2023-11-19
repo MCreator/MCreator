@@ -233,7 +233,7 @@ public class GeneratorSelector {
 
 		bar.setUI(new BasicProgressBarUI() {
 			@Override protected Color getSelectionBackground() {
-				return (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
+				return Theme.current().getColorScheme().getForegroundColor();
 			}
 
 			@Override protected Color getSelectionForeground() {

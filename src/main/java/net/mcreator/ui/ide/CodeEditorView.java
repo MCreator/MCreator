@@ -697,7 +697,7 @@ public class CodeEditorView extends ViewBase {
 		setChangeListener(changeEvent -> {
 			if (!readOnly) {
 				if (changed) {
-					fileTab.setActiveColor((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+					fileTab.setActiveColor(Theme.current().getColorScheme().getForegroundColor());
 					fileTab.setInactiveColor(Theme.current().getColorScheme().getAltForegroundColor());
 				} else {
 					fileTab.setActiveColor(Theme.current().getColorScheme().getInterfaceAccentColor());

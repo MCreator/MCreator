@@ -313,10 +313,10 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 				boolean isSelected, boolean cellHasFocus) {
 			if (isSelected) {
 				setForeground(Theme.current().getColorScheme().getBackgroundColor());
-				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				setBackground(Theme.current().getColorScheme().getForegroundColor());
 				setOpaque(true);
 			} else {
-				setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				setForeground(Theme.current().getColorScheme().getForegroundColor());
 				setOpaque(false);
 			}
 

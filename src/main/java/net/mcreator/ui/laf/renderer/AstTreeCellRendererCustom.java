@@ -51,7 +51,7 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 
 		if (!sel) {
 			setBackground(Theme.current().getColorScheme().getBackgroundColor());
-			setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setForeground(Theme.current().getColorScheme().getForegroundColor());
 		} else {
 			setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 			setForeground(Theme.current().getColorScheme().getBackgroundColor());

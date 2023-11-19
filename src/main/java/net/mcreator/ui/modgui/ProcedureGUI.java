@@ -273,7 +273,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			setBorder(null);
 			Color col = value.getColor();
 			setBackground(isSelected ? col : Theme.current().getColorScheme().getBackgroundColor());
-			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : col.brighter());
+			setForeground(isSelected ? Theme.current().getColorScheme().getForegroundColor() : col.brighter());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			setToolTipText(value.toString());
@@ -290,7 +290,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			setBackground(
 					isSelected ? value.getType().getBlocklyColor() : Theme.current().getColorScheme().getBackgroundColor());
 			setForeground(
-					isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : value.getType().getBlocklyColor());
+					isSelected ? Theme.current().getColorScheme().getForegroundColor() : value.getType().getBlocklyColor());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			return this;
