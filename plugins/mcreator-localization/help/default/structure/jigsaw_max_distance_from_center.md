@@ -1,0 +1,1 @@
+This option controls how far from the main structure may a jigsaw part be generated.
