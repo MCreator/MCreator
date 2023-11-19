@@ -29,12 +29,13 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
+import net.mcreator.themes.Theme;
 import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
-import net.mcreator.ui.laf.MCreatorLookAndFeel;
+import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.TerribleModuleHacks;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -42,6 +43,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Properties;
@@ -96,7 +98,8 @@ public class TestSetup {
 
 		// init UI theme
 		try {
-			UIManager.setLookAndFeel(new MCreatorLookAndFeel());
+			MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
+			UIManager.setLookAndFeel(new MetalLookAndFeel());
 		} catch (UnsupportedLookAndFeelException e) {
 			LOG.error("Failed to set look and feel: " + e.getMessage());
 		}
