@@ -278,6 +278,9 @@ public class TestWorkspaceDataProvider {
 
 		if (workspace.getFolderManager().getStructuresDir() != null) {
 			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
+			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test1.nbt"));
+			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
+			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
 		}
 	}
 
@@ -727,6 +730,7 @@ public class TestWorkspaceDataProvider {
 				structure.jigsawPools.add(pool);
 				pool = new Structure.JigsawPool();
 				pool.poolName = "pool2";
+				pool.fallbackPool = "";
 				pool.poolParts = new ArrayList<>();
 				part = new Structure.JigsawPool.JigsawPart();
 				part.weight = 1;
