@@ -19,6 +19,7 @@
 package net.mcreator.ui.views.editor.image.layer;
 
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -59,7 +60,7 @@ public class LayerListCellRenderer extends JPanel implements ListCellRenderer<La
 
 		if (isSelected) {
 			setOpaque(true);
-			setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 		} else if (cellHasFocus) {
 			setOpaque(true);
 			setBackground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));

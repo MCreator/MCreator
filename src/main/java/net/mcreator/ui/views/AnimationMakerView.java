@@ -32,6 +32,7 @@ import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
@@ -327,7 +328,7 @@ public class AnimationMakerView extends ViewBase {
 
 		JButton save = L10N.button("dialog.animation_maker.save_animated_texture");
 		save.setMargin(new Insets(1, 40, 1, 40));
-		save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		save.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 		save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		save.setFocusPainted(false);
 		add("North", PanelUtils.maxMargin(

@@ -22,6 +22,7 @@ import com.google.gson.JsonElement;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -38,7 +39,7 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 	public AstTreeCellRendererCustom() {
 		setBorderSelectionColor((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		setBackgroundSelectionColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		setBackgroundSelectionColor(Theme.current().getColorScheme().getInterfaceAccentColor());
 		ComponentUtils.deriveFont(this, 11);
 	}
 
@@ -52,7 +53,7 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 			setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 		} else {
-			setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 			setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 		}
 

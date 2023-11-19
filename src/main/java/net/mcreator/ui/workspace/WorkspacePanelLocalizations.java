@@ -31,6 +31,7 @@ import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.elements.ModElement;
@@ -175,7 +176,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			elements.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
 
 			JTableHeader header = elements.getTableHeader();
-			header.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			header.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 			header.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
 			DefaultTableModel model = (DefaultTableModel) elements.getModel();

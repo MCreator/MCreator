@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.laf;
 
+import net.mcreator.ui.laf.themes.Theme;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -43,7 +45,7 @@ public class RadioButtonIcon implements Icon {
 				g.fillOval(x, y, controlSize - 1, controlSize - 1);
 			}
 
-			g.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			g.setColor(Theme.current().getColorScheme().getInterfaceAccentColor());
 
 		} else {
 			g.setColor((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));

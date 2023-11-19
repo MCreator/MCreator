@@ -29,6 +29,7 @@ import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.dialogs.imageeditor.FromTemplateDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.views.ViewBase;
@@ -95,7 +96,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		save = L10N.button("dialog.image_maker.save");
 		save.setMargin(new Insets(1, 40, 1, 40));
-		save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		save.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 		save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		save.setFocusPainted(false);
 

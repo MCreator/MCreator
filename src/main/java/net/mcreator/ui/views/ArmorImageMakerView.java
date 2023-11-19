@@ -26,6 +26,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.ArmorMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
@@ -105,7 +106,7 @@ public class ArmorImageMakerView extends ViewBase {
 
 		JButton save = L10N.button("dialog.armor_image_maker.save");
 		save.setMargin(new Insets(1, 40, 1, 40));
-		save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		save.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 		save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		save.setFocusPainted(false);
 		add("North", PanelUtils.maxMargin(
@@ -127,7 +128,7 @@ public class ArmorImageMakerView extends ViewBase {
 		});
 
 		type1.setSelected(true);
-		col.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		col.setColor(Theme.current().getColorScheme().getInterfaceAccentColor());
 
 		updateARM();
 	}

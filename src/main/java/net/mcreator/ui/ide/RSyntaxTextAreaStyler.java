@@ -46,17 +46,20 @@ public class RSyntaxTextAreaStyler {
 			Theme theme;
 
 			if (PluginLoader.INSTANCE.getResourceAsStream(
-					"themes/" + net.mcreator.ui.laf.themes.Theme.current().getID() + "/styles/code_editor.xml") != null) {
+					"themes/" + net.mcreator.ui.laf.themes.Theme.current().getID() + "/styles/code_editor.xml")
+					!= null) {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
 						"themes/" + net.mcreator.ui.laf.themes.Theme.current().getID() + "/styles/code_editor.xml");
-				themeXML = themeXML.replace("${mainTint}",
-						Integer.toHexString(((Color) UIManager.get("MCreatorLAF.MAIN_TINT")).getRGB()).substring(2));
+				themeXML = themeXML.replace("${mainTint}", Integer.toHexString(
+						(net.mcreator.ui.laf.themes.Theme.current().getColorScheme()
+								.getInterfaceAccentColor()).getRGB()).substring(2));
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			} else {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
 						"themes/default_dark/styles/code_editor.xml");
-				themeXML = themeXML.replace("${mainTint}",
-						Integer.toHexString(((Color) UIManager.get("MCreatorLAF.MAIN_TINT")).getRGB()).substring(2));
+				themeXML = themeXML.replace("${mainTint}", Integer.toHexString(
+						(net.mcreator.ui.laf.themes.Theme.current().getColorScheme()
+								.getInterfaceAccentColor()).getRGB()).substring(2));
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			}
 

@@ -35,6 +35,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.help.ModElementHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -212,7 +213,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				ComponentUtils.deriveFont(page, 13);
 
 				page.addChangeListener(e -> page.setForeground(page.isSelected() ?
-						((Color) UIManager.get("MCreatorLAF.MAIN_TINT")) :
+						(Theme.current().getColorScheme().getInterfaceAccentColor()) :
 						((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"))));
 				pager.add(page);
 				buttonGroup.add(page);
@@ -233,7 +234,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			JButton save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
-			save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			save.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 			save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 			save.setFocusPainted(false);
 			save.addActionListener(event -> {
@@ -349,7 +350,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			JButton save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
-			save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			save.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 			save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 			save.setFocusPainted(false);
 			save.addActionListener(event -> {

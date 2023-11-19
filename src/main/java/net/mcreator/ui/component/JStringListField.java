@@ -22,6 +22,7 @@ package net.mcreator.ui.component;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ListEditorDialog;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 
@@ -109,7 +110,7 @@ public class JStringListField extends JPanel {
 		});
 
 		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, clear));
-		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getColorScheme().getInterfaceAccentColor()));
 		controls.setOpaque(true);
 		controls.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 

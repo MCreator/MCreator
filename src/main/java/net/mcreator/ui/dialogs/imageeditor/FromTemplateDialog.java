@@ -27,6 +27,7 @@ import net.mcreator.ui.dialogs.TextureSelectorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
@@ -57,7 +58,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 			"Dye" };
 
 	private static final Color[] presetColors = new Color[] { Color.red, Color.green, Color.blue,
-			(Color) UIManager.get("MCreatorLAF.MAIN_TINT"), Color.magenta, Color.cyan, new Color(244, 67, 54),
+			Theme.current().getColorScheme().getInterfaceAccentColor(), Color.magenta, Color.cyan, new Color(244, 67, 54),
 			new Color(233, 30, 99), new Color(255, 235, 59), new Color(205, 220, 57), new Color(255, 87, 34),
 			new Color(158, 158, 158), new Color(255, 152, 0), new Color(0, 188, 212), new Color(139, 195, 74) };
 
@@ -257,8 +258,6 @@ public class FromTemplateDialog extends MCreatorDialog {
 		JButton merge = L10N.button("dialog.imageeditor.template_create_and_merge");
 		JButton ok = L10N.button("action.common.create");
 
-		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		getRootPane().setDefaultButton(ok);
 
 		cancel.addActionListener(e -> setVisible(false));

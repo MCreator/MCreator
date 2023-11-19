@@ -31,6 +31,7 @@ import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -176,7 +177,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		ComponentUtils.deriveFont(elements, 13);
 
 		JTableHeader header = elements.getTableHeader();
-		header.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		header.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 		header.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 
 		JScrollPane sp = new JScrollPane(elements);

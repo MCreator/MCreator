@@ -25,6 +25,7 @@ import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
@@ -107,8 +108,8 @@ public class MCreatorTabs {
 		}
 
 		moreTabsMenu = new JScrollablePopupMenu();
-		moreTabsMenu.setBorder(
-				BorderFactory.createMatteBorder(0, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+		moreTabsMenu.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0,
+				Theme.current().getColorScheme().getInterfaceAccentColor()));
 		moreTabsMenu.setMaximumVisibleRows(11);
 
 		int maxWidth = tabsStrip.getWidth();
@@ -294,7 +295,7 @@ public class MCreatorTabs {
 		private TabShownListener tabShownListener;
 
 		private Color inactiveColor = (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT");
-		private Color activeColor = (Color) UIManager.get("MCreatorLAF.MAIN_TINT");
+		private Color activeColor = Theme.current().getColorScheme().getInterfaceAccentColor();
 
 		private boolean selected = false;
 

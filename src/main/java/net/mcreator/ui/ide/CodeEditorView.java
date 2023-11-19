@@ -39,6 +39,7 @@ import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
 import net.mcreator.ui.laf.renderer.AstTreeCellRendererCustom;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
@@ -699,7 +700,7 @@ public class CodeEditorView extends ViewBase {
 					fileTab.setActiveColor((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 					fileTab.setInactiveColor((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
 				} else {
-					fileTab.setActiveColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+					fileTab.setActiveColor(Theme.current().getColorScheme().getInterfaceAccentColor());
 					fileTab.setInactiveColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
 				}
 			}

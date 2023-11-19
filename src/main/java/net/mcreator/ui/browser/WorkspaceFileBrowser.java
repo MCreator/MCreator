@@ -37,6 +37,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
@@ -73,7 +74,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
 			if (getSelectionCount() > 0) {
-				g.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+				g.setColor(Theme.current().getColorScheme().getInterfaceAccentColor());
 				for (int i : Objects.requireNonNull(getSelectionRows())) {
 					Rectangle r = getRowBounds(i);
 					g.fillRect(0, r.y, getWidth(), r.height);
@@ -523,7 +524,7 @@ public class WorkspaceFileBrowser extends JPanel {
 
 			if (sel) {
 				a.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				a.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+				a.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 			} else {
 				a.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 				a.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));

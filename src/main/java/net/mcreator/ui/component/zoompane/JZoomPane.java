@@ -20,6 +20,7 @@ package net.mcreator.ui.component.zoompane;
 
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,7 +44,7 @@ public class JZoomPane extends JPanel {
 			((IZoomable) zoomable).setZoomPane(this);
 
 		popup.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		popup.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+		popup.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getColorScheme().getInterfaceAccentColor()));
 		JMenuItem recenter = new JMenuItem("Center view");
 		popup.add(recenter);
 		JMenuItem fit = new JMenuItem("Zoom to fit");

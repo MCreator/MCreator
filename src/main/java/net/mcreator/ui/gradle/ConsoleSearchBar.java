@@ -20,6 +20,7 @@ package net.mcreator.ui.gradle;
 
 import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -176,7 +177,7 @@ public class ConsoleSearchBar extends JToolBar {
 
 	private static class SearchResultHighlightPainter extends DefaultHighlighter.DefaultHighlightPainter {
 		SearchResultHighlightPainter() {
-			super((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			super(Theme.current().getColorScheme().getInterfaceAccentColor());
 		}
 	}
 

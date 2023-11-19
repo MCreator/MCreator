@@ -21,6 +21,7 @@ package net.mcreator.ui.views;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.laf.SlickTreeUI;
+import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jnbt.CompoundTag;
@@ -132,7 +133,7 @@ public class NBTEditorView extends ViewBase {
 
 			if (sel) {
 				a.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				a.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+				a.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
 			} else {
 				a.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
 				a.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
