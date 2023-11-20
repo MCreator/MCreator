@@ -20,7 +20,6 @@ package net.mcreator.ui.component;
 
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
@@ -93,7 +92,7 @@ public class JColor extends JPanel {
 		JPanel controls = PanelUtils.totalCenterInPanel(
 				allowNullColor ? PanelUtils.gridElements(1, 2, 2, 0, edit, remove) : edit);
 		controls.setOpaque(true);
-		controls.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		controls.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		for (AbstractColorChooserPanel panel : colorChooser.getChooserPanels())
 			panel.setColorTransparencySelectionEnabled(allowTransparency);
