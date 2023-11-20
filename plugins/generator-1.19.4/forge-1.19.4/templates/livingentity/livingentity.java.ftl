@@ -270,7 +270,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
-	<#if data.spawnInRaids>
+	<#if data.mobBehaviourType == "Raider">
 	@Override public SoundEvent getCelebrateSound() {
 		return <#if data.celebrationSound?has_content && data.celebrationSound.getMappedValue()?has_content>ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.celebrationSound}"))<#else>null</#if>;
 	}
@@ -940,7 +940,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		return builder;
 	}
 
-		<#if data.spawnInRaids>
+		<#if data.mobBehaviourType == "Raider">
 	   	@Override public void applyRaidBuffs(int num, boolean logic) {}
 	   	</#if>
 }

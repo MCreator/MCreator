@@ -278,19 +278,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	}
 
 	private void updateRaiderState() {
-		if ("Raider".equals(mobBehaviourType.getSelectedItem())) {
-			spawnInRaids.setEnabled(true);
-			celebrationSound.setEnabled(true);
-			tameable.setEnabled(false);
-			breedable.setEnabled(false);
-			breedTriggerItems.setEnabled(false);
-		} else {
-			spawnInRaids.setEnabled(false);
-			celebrationSound.setEnabled(false);
-			tameable.setEnabled(true);
-			breedable.setEnabled(true);
-			breedTriggerItems.setEnabled(true);
-		}
+			LivingEntity livingEntity = new LivingEntity(modElement);
+			spawnInRaids.setEnabled(livingEntity.mobBehaviourType == "Raider");
+			celebrationSound.setEnabled(livingEntity.mobBehaviourType == "Raider");
+			tameable.setEnabled(livingEntity.mobBehaviourType != "Raider");
+			breedable.setEnabled(livingEntity.mobBehaviourType != "Raider");
+			breedTriggerItems.setEnabled(livingEntity.mobBehaviourType != "Raider");
 	}
 
 	private synchronized void regenerateAITasks() {
@@ -417,7 +410,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		});
 
 		spawnInDungeons.setOpaque(false);
-		spawnInRaids.setOpaque(false);
 		mobModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 		mobModelGlowTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
@@ -852,6 +844,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			bossBarType.setEnabled(isBoss.isSelected());
 		});
 
+		mobBehaviourType.addActionListener(e -> {
+			spawnInRaids.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
+			celebrationSound.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
+			breedable.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
+			tameable.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
+			breedTriggerItems.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
+		});
+
 		pane3.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(3, 4, 5, 5));
@@ -915,6 +915,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.does_spawn_in_raids")));
 		selp.add(spawnInRaids);
 
+		spawnInRaids.setOpaque(false);
 		selp.setOpaque(false);
 
 		JComponent selpcont = PanelUtils.northAndCenterElement(selp,
@@ -1043,6 +1044,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		disableMobModelCheckBoxListener = true;
 		editorReady = false;
 
+		updateRaiderState();
 		mobName.setText(livingEntity.mobName);
 		mobModelTexture.setSelectedItem(livingEntity.mobModelTexture);
 		mobModelGlowTexture.setSelectedItem(livingEntity.mobModelGlowTexture);
@@ -1169,7 +1171,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		bossBarColor.setEnabled(isBoss.isSelected());
 		bossBarType.setEnabled(isBoss.isSelected());
-		updateRaiderState();
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
 
 		disableMobModelCheckBoxListener = false;
