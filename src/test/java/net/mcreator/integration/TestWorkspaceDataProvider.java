@@ -95,9 +95,6 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(getToolExample(me(workspace, type, "11"), "Shears", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "12"), "Fishing rod", random, true, false));
 			generatableElements.add(getToolExample(me(workspace, type, "13"), "Shield", random, true, false));
-		} else if (type == ModElementType.TAB) {
-			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
-			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 		} else if (type == ModElementType.COMMAND) {
 			generatableElements.add(getCommandExample(me(workspace, type, "1"), "STANDARD", random));
 			generatableElements.add(getCommandExample(me(workspace, type, "2"), "SINGLEPLAYER_ONLY", random));
@@ -108,7 +105,7 @@ public class TestWorkspaceDataProvider {
 			generatableElements.add(
 					getExampleFor(new ModElement(workspace, "Example" + type.getRegistryName(), type), uiTest, random,
 							true, true, 0));
-		} else {
+		} else if (type != ModElementType.TAB) {
 			generatableElements.add(getExampleFor(me(workspace, type, "1"), uiTest, random, true, true, 0));
 			generatableElements.add(getExampleFor(me(workspace, type, "2"), uiTest, random, true, false, 1));
 			generatableElements.add(getExampleFor(me(workspace, type, "3"), uiTest, random, false, true, 2));
@@ -123,12 +120,22 @@ public class TestWorkspaceDataProvider {
 		return generatableElements;
 	}
 
-	public static void fillWorkspaceWithTestData(Workspace workspace) {
+	public static void fillWorkspaceWithTestData(Workspace workspace, boolean uiTest, Random random) {
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("sounds") == GeneratorStats.CoverageStatus.FULL) {
 			for (int i = 1; i <= 3; i++) {
 				SoundElement sound = new SoundElement("test" + i, List.of(), "neutral", null);
 				workspace.addSoundElement(sound);
 			}
+		}
+
+		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.TAB)
+				!= GeneratorStats.CoverageStatus.NONE) {
+			ModElement tab1 = me(workspace, ModElementType.TAB, "1");
+			workspace.addModElement(tab1);
+			workspace.getModElementManager().storeModElement(getExampleFor(tab1, uiTest, random, true, true, 0));
+			ModElement tab2 = me(workspace, ModElementType.TAB, "2");
+			workspace.addModElement(tab2);
+			workspace.getModElementManager().storeModElement(getExampleFor(tab2, uiTest, random, true, false, 1));
 		}
 
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")

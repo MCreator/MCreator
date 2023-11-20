@@ -83,7 +83,7 @@ public class ReferencesFinderTest {
 				workspaceSettings);
 
 		LOG.info("Generating sample elements");
-		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
+		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace, false, random);
 		GTSampleElements.provideAndGenerateSampleElements(random, workspace);
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(type)

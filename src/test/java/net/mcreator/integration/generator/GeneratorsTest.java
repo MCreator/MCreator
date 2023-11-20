@@ -121,7 +121,7 @@ public class GeneratorsTest {
 				LOG.info("[" + generator + "] ----- Test workspace folder: " + workspace.getFolderManager()
 						.getWorkspaceFolder());
 
-				TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
+				TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace, false, random);
 
 				LOG.info("[" + generator + "] ----- Setting up workspace base for selected generator");
 				WorkspaceGeneratorSetup.setupWorkspaceBase(workspace);

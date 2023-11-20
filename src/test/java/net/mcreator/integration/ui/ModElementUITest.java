@@ -88,8 +88,9 @@ public class ModElementUITest {
 
 		mcreator = new MCreator(null, workspace);
 
-		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
-		GTSampleElements.provideAndGenerateSampleElements(new Random(), workspace);
+		Random random = new Random();
+		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace, true, random);
+		GTSampleElements.provideAndGenerateSampleElements(random, workspace);
 
 		// reduce autosave interval for tests
 		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
