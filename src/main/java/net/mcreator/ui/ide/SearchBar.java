@@ -44,7 +44,7 @@ public class SearchBar extends JToolBar {
 		this.ra = ra;
 
 		final JLabel matches = new JLabel();
-		matches.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+		matches.setForeground(Theme.current().getAltForegroundColor());
 
 		jtf1.addKeyListener(new KeyAdapter() {
 			@Override public void keyReleased(KeyEvent keyEvent) {
@@ -61,7 +61,7 @@ public class SearchBar extends JToolBar {
 
 				matches.setText(marked.getMarkedCount() + " results");
 				if (marked.getMarkedCount() > 0) {
-					matches.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+					matches.setForeground(Theme.current().getAltForegroundColor());
 				} else {
 					matches.setForeground(new Color(239, 96, 96));
 				}
@@ -75,7 +75,7 @@ public class SearchBar extends JToolBar {
 		});
 
 		setFloatable(false);
-		setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		setBackground(Theme.current().getBackgroundColor());
 
 		add(jtf1);
 		add(Box.createHorizontalStrut(10));
@@ -89,7 +89,7 @@ public class SearchBar extends JToolBar {
 		add(Box.createHorizontalGlue());
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
-		jtf1.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		jtf1.setBackground(Theme.current().getAltBackgroundColor());
 		jtf1.setOpaque(true);
 
 		JButton close = new JButton(UIRES.get("close_small"));

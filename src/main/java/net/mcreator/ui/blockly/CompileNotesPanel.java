@@ -50,14 +50,14 @@ public class CompileNotesPanel extends JPanel {
 		scrollPaneCompileNotes.getViewport().setOpaque(false);
 		scrollPaneCompileNotes.getVerticalScrollBar().setUnitIncrement(11);
 		scrollPaneCompileNotes.getVerticalScrollBar()
-				.setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-						Theme.current().getColorScheme().getAltBackgroundColor(),
+				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+						Theme.current().getAltBackgroundColor(),
 						scrollPaneCompileNotes.getVerticalScrollBar()));
 		scrollPaneCompileNotes.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneCompileNotes.getHorizontalScrollBar().setUnitIncrement(11);
 		scrollPaneCompileNotes.getHorizontalScrollBar()
-				.setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-						Theme.current().getColorScheme().getAltBackgroundColor(),
+				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+						Theme.current().getAltBackgroundColor(),
 						scrollPaneCompileNotes.getHorizontalScrollBar()));
 		scrollPaneCompileNotes.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneCompileNotes.setBorder(null);
@@ -96,7 +96,7 @@ public class CompileNotesPanel extends JPanel {
 		public Component getListCellRendererComponent(JList<? extends BlocklyCompileNote> list,
 				BlocklyCompileNote value, int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground(Theme.current().getColorScheme().getBackgroundColor());
+			setBackground(Theme.current().getBackgroundColor());
 			setForeground(Color.white);
 			ComponentUtils.deriveFont(this, 12);
 			if (value.type() == BlocklyCompileNote.Type.ERROR) {

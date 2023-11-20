@@ -39,12 +39,12 @@ public class FolderElementCrumb extends JLabel {
 		setIcon(UIRES.get("laf.directory.gif"));
 
 		setOpaque(false);
-		setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		setBackground(Theme.current().getBackgroundColor());
 
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseExited(MouseEvent e) {
 				setOpaque(false);
-				setBackground(Theme.current().getColorScheme().getBackgroundColor());
+				setBackground(Theme.current().getBackgroundColor());
 			}
 		});
 	}

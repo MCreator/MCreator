@@ -174,9 +174,9 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		buttonsPanel.add(bt3);
 
 		JComponent buttons = PanelUtils.totalCenterInPanel(buttonsPanel);
-		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getColorScheme().getInterfaceAccentColor()));
+		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getInterfaceAccentColor()));
 		buttons.setOpaque(true);
-		buttons.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		buttons.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		if (excludeButton) {
 			include.setSelected(true);
@@ -189,7 +189,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 			JComponent incexc = PanelUtils.totalCenterInPanel(PanelUtils.join(include, exclude));
 			incexc.setBorder(
-					BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getColorScheme().getInterfaceAccentColor()));
+					BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getInterfaceAccentColor()));
 
 			add(incexc, BorderLayout.WEST);
 		}
@@ -295,13 +295,13 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				boolean cellHasFocus) {
 			setOpaque(true);
 			setBackground(isSelected ?
-					Theme.current().getColorScheme().getForegroundColor() :
-					Theme.current().getColorScheme().getAltBackgroundColor());
+					Theme.current().getForegroundColor() :
+					Theme.current().getAltBackgroundColor());
 			setForeground(isSelected ?
-					Theme.current().getColorScheme().getSecondAltBackgroundColor() :
-					Theme.current().getColorScheme().getForegroundColor());
+					Theme.current().getSecondAltBackgroundColor() :
+					Theme.current().getForegroundColor());
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getColorScheme().getBackgroundColor()),
+					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setVerticalAlignment(SwingConstants.CENTER);

@@ -192,9 +192,9 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel comppan = new JPanel(new BorderLayout());
 		comppan.setOpaque(false);
 		comppan.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 				(L10N.t("elementgui.gui.component_list")), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 
 		TransparentToolBar bar2 = new TransparentToolBar();
 		bar2.setBorder(null);
@@ -316,9 +316,9 @@ public class WYSIWYGEditor extends JPanel {
 		moveComponentDown.setEnabled(false);
 
 		adds.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 				(L10N.t("elementgui.gui.editor_options")), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 
 		adds.setOpaque(false);
 
@@ -328,9 +328,9 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel adds2 = new JPanel();
 		adds2.setLayout(new BoxLayout(adds2, BoxLayout.PAGE_AXIS));
 		adds2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 				(L10N.t("elementgui.gui.gui_properties")), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 
 		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), guiType);
 
@@ -383,9 +383,9 @@ public class WYSIWYGEditor extends JPanel {
 			ovst2.setOpaque(false);
 
 			ovst.setBorder(BorderFactory.createTitledBorder(
-					BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor(), 1),
+					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 					L10N.t("elementgui.gui.overlay_properties"), 0, 0, getFont().deriveFont(12.0f),
-					Theme.current().getColorScheme().getForegroundColor()));
+					Theme.current().getForegroundColor()));
 
 			overlayBaseTexture.addActionListener(e -> editor.repaint());
 			overlayBaseTexture.setPrototypeDisplayValue("XXXXXX");
@@ -427,7 +427,7 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel zoomHolder = new JPanel(new BorderLayout()) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor(Theme.current().getColorScheme().getBackgroundColor());
+				g2d.setColor(Theme.current().getBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.6f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();
@@ -509,11 +509,11 @@ public class WYSIWYGEditor extends JPanel {
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			if (isSelected) {
-				setForeground(Theme.current().getColorScheme().getBackgroundColor());
-				setBackground(Theme.current().getColorScheme().getForegroundColor());
+				setForeground(Theme.current().getBackgroundColor());
+				setBackground(Theme.current().getForegroundColor());
 				setOpaque(true);
 			} else {
-				setForeground(Theme.current().getColorScheme().getForegroundColor());
+				setForeground(Theme.current().getForegroundColor());
 				setOpaque(false);
 			}
 

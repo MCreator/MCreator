@@ -20,6 +20,7 @@
 package net.mcreator.ui.laf.themes;
 
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.preferences.data.PreferencesData;
 import net.mcreator.ui.init.L10N;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -202,6 +203,50 @@ import java.io.InputStream;
 
 	@Override public String toString() {
 		return getID() + ": " + getName();
+	}
+
+	// Color scheme getters below (to keep code shorter)
+
+	/**
+	 * @return Background of UI panels
+	 */
+	public Color getBackgroundColor() {
+		return getColorScheme().getBackgroundColor();
+	}
+
+	/**
+	 * @return Background of components (e.g. text fields, checkboxes and sound selectors)
+	 */
+	public Color getAltBackgroundColor() {
+		return getColorScheme().getAltBackgroundColor();
+	}
+
+	/**
+	 * @return Second background color used (e.g. workspace background)
+	 */
+	public Color getSecondAltBackgroundColor() {
+		return getColorScheme().getSecondAltBackgroundColor();
+	}
+
+	/**
+	 * @return <p>Secondary text color </p>
+	 */
+	public Color getAltForegroundColor() {
+		return getColorScheme().getAltForegroundColor();
+	}
+
+	/**
+	 * @return <p>Color used for most of texts </p>
+	 */
+	public Color getForegroundColor() {
+		return getColorScheme().getForegroundColor();
+	}
+
+	/**
+	 * @return <p>Returns the interfaceAccentColor if defined by theme, otherwise the one defined by the user in {@link PreferencesData}</p>
+	 */
+	public Color getInterfaceAccentColor() {
+		return getColorScheme().getInterfaceAccentColor();
 	}
 
 }

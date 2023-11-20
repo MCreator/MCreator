@@ -38,7 +38,7 @@ public class JavaKeywordCompletition extends JavaTemplateCompletion {
 
 	@Override public void rendererText(Graphics g, int x, int y, boolean selected) {
 		Color orig = g.getColor();
-		g.setColor(Theme.current().getColorScheme().getInterfaceAccentColor());
+		g.setColor(Theme.current().getInterfaceAccentColor());
 
 		g.drawString(getInputText(), x, y);
 		if (getShortDescription() != null) {

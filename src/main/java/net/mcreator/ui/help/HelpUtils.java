@@ -95,8 +95,8 @@ public class HelpUtils {
 					scrollPane.setPreferredSize(new Dimension(335, 190));
 
 					balloonTip = new BalloonTip(lab, scrollPane,
-							new EdgedBalloonStyle(Theme.current().getColorScheme().getBackgroundColor(),
-									Theme.current().getColorScheme().getAltForegroundColor()), BalloonTip.Orientation.LEFT_BELOW,
+							new EdgedBalloonStyle(Theme.current().getBackgroundColor(),
+									Theme.current().getAltForegroundColor()), BalloonTip.Orientation.LEFT_BELOW,
 							BalloonTip.AttachLocation.ALIGNED, 10, 10, false);
 
 					balloonTip.setFocusable(true);

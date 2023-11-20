@@ -96,23 +96,23 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		save = L10N.button("dialog.image_maker.save");
 		save.setMargin(new Insets(1, 40, 1, 40));
-		save.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
-		save.setForeground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		save.setBackground(Theme.current().getInterfaceAccentColor());
+		save.setForeground(Theme.current().getSecondAltBackgroundColor());
 		save.setFocusPainted(false);
 
-		imageInfo.setForeground((Theme.current().getColorScheme().getAltForegroundColor()).darker());
+		imageInfo.setForeground((Theme.current().getAltForegroundColor()).darker());
 		imageInfo.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
 		JButton saveNew = L10N.button("dialog.image_maker.save_as_new");
 		saveNew.setMargin(new Insets(1, 40, 1, 40));
-		saveNew.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
-		saveNew.setForeground(Theme.current().getColorScheme().getForegroundColor());
+		saveNew.setBackground(Theme.current().getAltBackgroundColor());
+		saveNew.setForeground(Theme.current().getForegroundColor());
 		saveNew.setFocusPainted(false);
 
 		JButton template = L10N.button("dialog.image_maker.generate_from_template");
 		template.setMargin(new Insets(1, 40, 1, 40));
-		template.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
-		template.setForeground(Theme.current().getColorScheme().getForegroundColor());
+		template.setBackground(Theme.current().getAltBackgroundColor());
+		template.setForeground(Theme.current().getForegroundColor());
 		template.setFocusPainted(false);
 
 		save.addActionListener(event -> save());
@@ -126,7 +126,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		rightSplitPane = new JSplitPane() {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor(Theme.current().getColorScheme().getAltBackgroundColor());
+				g2d.setColor(Theme.current().getAltBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();
@@ -163,7 +163,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		controls.add(rightControls, BorderLayout.EAST);
 
 		controls.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getColorScheme().getSecondAltBackgroundColor()));
+				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		add(controls, BorderLayout.NORTH);
 		add(leftSplitPane, BorderLayout.CENTER);

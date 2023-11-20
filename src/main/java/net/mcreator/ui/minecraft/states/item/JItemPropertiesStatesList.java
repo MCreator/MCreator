@@ -106,7 +106,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		JScrollPane scrollProperties = new JScrollPane(PanelUtils.pullElementUp(propertyEntries)) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor(Theme.current().getColorScheme().getAltBackgroundColor());
+				g2d.setColor(Theme.current().getAltBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();
@@ -117,9 +117,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		scrollProperties.setOpaque(false);
 		scrollProperties.getViewport().setOpaque(false);
 		scrollProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.item.custom_properties.title"), 0, 0, scrollProperties.getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 		JPanel left = new JPanel(new BorderLayout());
 		left.setOpaque(false);
 		left.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5),
@@ -130,7 +130,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		JScrollPane scrollStates = new JScrollPane(PanelUtils.pullElementUp(stateEntries)) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor(Theme.current().getColorScheme().getAltBackgroundColor());
+				g2d.setColor(Theme.current().getAltBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();
@@ -141,9 +141,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		scrollStates.setOpaque(false);
 		scrollStates.getViewport().setOpaque(false);
 		scrollStates.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.item.custom_states.title"), 0, 0, scrollStates.getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 		JPanel right = new JPanel(new BorderLayout());
 		right.setOpaque(false);
 		right.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addState, new JEmptyBox(5, 5),

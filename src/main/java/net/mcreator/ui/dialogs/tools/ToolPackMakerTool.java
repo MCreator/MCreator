@@ -73,7 +73,7 @@ public class ToolPackMakerTool {
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-		color.setColor(Theme.current().getColorScheme().getInterfaceAccentColor());
+		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
 
 		props.add(L10N.label("dialog.tools.tool_pack_base_item"));

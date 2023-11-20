@@ -164,8 +164,8 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 				boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBackground(isSelected ?
-					Theme.current().getColorScheme().getAltBackgroundColor() :
-					Theme.current().getColorScheme().getBackgroundColor());
+					Theme.current().getAltBackgroundColor() :
+					Theme.current().getBackgroundColor());
 			setText(StringUtils.abbreviateString(ma.getReadableName(), 13));
 			setToolTipText(ma.getReadableName());
 			ComponentUtils.deriveFont(this, 11);

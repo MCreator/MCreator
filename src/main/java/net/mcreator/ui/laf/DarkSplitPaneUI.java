@@ -34,7 +34,7 @@ public class DarkSplitPaneUI extends MetalSplitPaneUI {
 
 	@Override public BasicSplitPaneDivider createDefaultDivider() {
 		BasicSplitPaneDivider divider = super.createDefaultDivider();
-		divider.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		divider.setBackground(Theme.current().getAltBackgroundColor());
 		return divider;
 	}
 

@@ -109,7 +109,7 @@ public class SearchUsagesDialog {
 		refList.setFixedCellHeight(40);
 		refList.setFixedCellWidth(200);
 		refList.setVisibleRowCount(-1);
-		refList.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		refList.setBackground(Theme.current().getSecondAltBackgroundColor());
 		refList.setCellRenderer(new CompactModElementListCellRenderer());
 		refList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -119,7 +119,7 @@ public class SearchUsagesDialog {
 		});
 
 		JScrollPane sp = new JScrollPane(refList);
-		sp.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		sp.setBackground(Theme.current().getSecondAltBackgroundColor());
 		sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		JButton edit = L10N.button("dialog.search_usages.open_selected");

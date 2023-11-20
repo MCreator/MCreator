@@ -21,7 +21,6 @@ package net.mcreator.ui.laf.renderer.elementlist;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -42,7 +41,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 	public TilesModListRender() {
 		super(new BorderLayout(0, 0));
 		setBorder(null);
-		setBackground(Theme.current().getColorScheme().getForegroundColor());
+		setBackground(Theme.current().getForegroundColor());
 
 		label.setFont(Theme.current().getSecondaryFont().deriveFont(24.0f));
 		text.setOpaque(false);
@@ -58,12 +57,12 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 		if (element != null) {
 			if (isSelected) {
 				setOpaque(true);
-				label.setForeground(Theme.current().getColorScheme().getBackgroundColor());
-				label_details.setForeground(Theme.current().getColorScheme().getBackgroundColor());
+				label.setForeground(Theme.current().getBackgroundColor());
+				label_details.setForeground(Theme.current().getBackgroundColor());
 			} else {
 				setOpaque(false);
-				label.setForeground(Theme.current().getColorScheme().getForegroundColor());
-				label_details.setForeground(Theme.current().getColorScheme().getForegroundColor());
+				label.setForeground(Theme.current().getForegroundColor());
+				label_details.setForeground(Theme.current().getForegroundColor());
 			}
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 18));
@@ -72,7 +71,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 				label_details.setText(
 						"<html><div width=210 style=\"overflow: hidden;\"><small" + (isSelected ?
 								(" color=#" + Integer.toHexString(
-										(Theme.current().getColorScheme().getBackgroundColor()).getRGB()).substring(2)) :
+										(Theme.current().getBackgroundColor()).getRGB()).substring(2)) :
 								"") + ">" + modElement.getType().getDescription());
 				text.setBorder(BorderFactory.createEmptyBorder(0, 5, 10, 0));
 			} else {

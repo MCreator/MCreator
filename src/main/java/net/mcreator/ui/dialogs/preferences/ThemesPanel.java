@@ -80,7 +80,7 @@ public class ThemesPanel {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Theme> list, Theme value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setBackground(Theme.current().getColorScheme().getForegroundColor());
+			setBackground(Theme.current().getForegroundColor());
 
 			setOpaque(false);
 

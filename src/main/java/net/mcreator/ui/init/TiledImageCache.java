@@ -80,7 +80,7 @@ public class TiledImageCache {
 			modTabPurple = modTabTile.getIcon(4, 1);
 
 			workspaceAdd = ImageUtils.colorize(workspaceIcons.getIcon(1, 1),
-					Theme.current().getColorScheme().getInterfaceAccentColor(), false);
+					Theme.current().getInterfaceAccentColor(), false);
 			workspaceCode = workspaceIcons.getIcon(2, 1);
 			workspaceDelete = workspaceIcons.getIcon(3, 1);
 			workspaceDeleteAll = workspaceIcons.getIcon(4, 1);

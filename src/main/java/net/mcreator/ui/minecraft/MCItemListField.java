@@ -79,11 +79,11 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 			setOpaque(isSelected);
 
 			setBackground(isSelected ?
-					Theme.current().getColorScheme().getForegroundColor() :
-					Theme.current().getColorScheme().getAltBackgroundColor());
+					Theme.current().getForegroundColor() :
+					Theme.current().getAltBackgroundColor());
 
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 2, 0, 2, Theme.current().getColorScheme().getBackgroundColor()),
+					BorderFactory.createMatteBorder(0, 2, 0, 2, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setVerticalAlignment(SwingConstants.CENTER);

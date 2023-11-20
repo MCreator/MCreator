@@ -372,7 +372,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
 				enableHelmet);
 		helText.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltForegroundColor()),
+				BorderFactory.createLineBorder(Theme.current().getAltForegroundColor()),
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		helText.setPreferredSize(new Dimension(145, 110));
 
@@ -385,7 +385,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JComponent bodText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureBody, 0, 0),
 				enableBody);
 		bodText.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltForegroundColor()),
+				BorderFactory.createLineBorder(Theme.current().getAltForegroundColor()),
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		bodText.setPreferredSize(new Dimension(145, 110));
 
@@ -424,7 +424,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JComponent legText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureLeggings, 0, 0),
 				enableLeggings);
 		legText.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltForegroundColor()),
+				BorderFactory.createLineBorder(Theme.current().getAltForegroundColor()),
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		legText.setPreferredSize(new Dimension(145, 110));
 
@@ -464,7 +464,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JComponent bootText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureBoots, 0, 0),
 				enableBoots);
 		bootText.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltForegroundColor()),
+				BorderFactory.createLineBorder(Theme.current().getAltForegroundColor()),
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		bootText.setPreferredSize(new Dimension(145, 110));
 

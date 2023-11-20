@@ -66,9 +66,9 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 
 		JPanel damageProperties = new JPanel(new GridLayout(3, 2, 20, 2));
 		damageProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.damagetype.damage_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getColorScheme().getForegroundColor()));
+				getFont(), Theme.current().getForegroundColor()));
 		damageProperties.setOpaque(false);
 
 		exhaustion.setOpaque(false);
@@ -87,9 +87,9 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 
 		JPanel localizationPanel = new JPanel(new GridLayout(3, 2, 20, 2));
 		localizationPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.damagetype.death_messages"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Theme.current().getColorScheme().getForegroundColor()));
+				getFont(), Theme.current().getForegroundColor()));
 		localizationPanel.setOpaque(false);
 
 		ComponentUtils.deriveFont(normalDeathMessage, 16);

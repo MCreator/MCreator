@@ -22,7 +22,6 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.IElement;
@@ -44,7 +43,7 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 	public DetailsIconModListRender() {
 		setLayout(new BorderLayout(15, 0));
 		setBorder(null);
-		setBackground(Theme.current().getColorScheme().getForegroundColor());
+		setBackground(Theme.current().getForegroundColor());
 
 		label.setFont(Theme.current().getSecondaryFont().deriveFont(14.0f));
 		label2.setFont(Theme.current().getSecondaryFont().deriveFont(14.0f));
@@ -62,18 +61,18 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 			boolean isSelected, boolean cellHasFocus) {
 		if (isSelected) {
 			setOpaque(true);
-			label.setForeground(Theme.current().getColorScheme().getBackgroundColor());
-			label2.setForeground(Theme.current().getColorScheme().getBackgroundColor());
-			label3.setForeground(Theme.current().getColorScheme().getBackgroundColor());
-			label4.setForeground(Theme.current().getColorScheme().getBackgroundColor());
-			label5.setForeground(Theme.current().getColorScheme().getBackgroundColor());
+			label.setForeground(Theme.current().getBackgroundColor());
+			label2.setForeground(Theme.current().getBackgroundColor());
+			label3.setForeground(Theme.current().getBackgroundColor());
+			label4.setForeground(Theme.current().getBackgroundColor());
+			label5.setForeground(Theme.current().getBackgroundColor());
 		} else {
 			setOpaque(false);
-			label.setForeground(Theme.current().getColorScheme().getForegroundColor());
-			label2.setForeground(Theme.current().getColorScheme().getForegroundColor());
-			label3.setForeground(Theme.current().getColorScheme().getForegroundColor());
-			label4.setForeground(Theme.current().getColorScheme().getForegroundColor());
-			label5.setForeground(Theme.current().getColorScheme().getForegroundColor());
+			label.setForeground(Theme.current().getForegroundColor());
+			label2.setForeground(Theme.current().getForegroundColor());
+			label3.setForeground(Theme.current().getForegroundColor());
+			label4.setForeground(Theme.current().getForegroundColor());
+			label5.setForeground(Theme.current().getForegroundColor());
 		}
 
 		label.setText(StringUtils.abbreviate(element.getName(), 24));

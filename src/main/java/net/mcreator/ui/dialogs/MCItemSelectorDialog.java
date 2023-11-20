@@ -53,7 +53,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		jtf.setEnabled(false);
-		jtf.setBorder(BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor()));
+		jtf.setBorder(BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()));
 
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent evt) {
@@ -188,7 +188,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 			if (isSelected) {
 				setOpaque(true);
-				setBackground(Theme.current().getColorScheme().getForegroundColor());
+				setBackground(Theme.current().getForegroundColor());
 			} else {
 				setOpaque(false);
 			}

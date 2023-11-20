@@ -38,12 +38,12 @@ public class DarkComboBoxUI extends MetalComboBoxUI {
 			@Override protected JScrollPane createScroller() {
 				JScrollPane scroller = super.createScroller();
 				scroller.getVerticalScrollBar()
-						.setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getAltBackgroundColor(),
-								Theme.current().getColorScheme().getBackgroundColor(), scroller.getVerticalScrollBar()));
+						.setUI(new SlickDarkScrollBarUI(Theme.current().getAltBackgroundColor(),
+								Theme.current().getBackgroundColor(), scroller.getVerticalScrollBar()));
 				return scroller;
 			}
 		};
-		comboPopup.setBorder(BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor()));
+		comboPopup.setBorder(BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()));
 		return comboPopup;
 	}
 

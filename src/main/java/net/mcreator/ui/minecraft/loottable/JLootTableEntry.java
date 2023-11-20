@@ -51,15 +51,15 @@ public class JLootTableEntry extends JPanel {
 	public JLootTableEntry(MCreator mcreator, JPanel parent, List<JLootTableEntry> entryList) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		setBackground((Theme.current().getColorScheme().getAltBackgroundColor()).darker());
+		setBackground((Theme.current().getAltBackgroundColor()).darker());
 
 		item = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		count.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor()),
+				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		count.setAllowEqualValues(true);
 		enchantmentsLevel.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor()),
+				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		enchantmentsLevel.setAllowEqualValues(true);
 

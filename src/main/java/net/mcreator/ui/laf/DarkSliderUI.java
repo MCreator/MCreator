@@ -54,7 +54,7 @@ public class DarkSliderUI extends BasicSliderUI {
 		}
 		if (clip.intersects(thumbRect)) {
 			Color savedColor = slider.getBackground();
-			slider.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
+			slider.setBackground(Theme.current().getInterfaceAccentColor());
 			paintThumb(g);
 			slider.setBackground(savedColor);
 		}

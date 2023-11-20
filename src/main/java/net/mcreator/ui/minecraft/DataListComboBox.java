@@ -112,7 +112,7 @@ public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 				if (imageIcon instanceof ImageIcon)
 					setIcon(ImageUtils.changeSaturation((ImageIcon) imageIcon, 0.1f));
 				setText(L10N.t("datalist_combobox.not_supported", getText()));
-				setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+				setForeground(Theme.current().getAltForegroundColor());
 			}
 
 			setHorizontalTextPosition(SwingConstants.RIGHT);

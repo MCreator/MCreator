@@ -54,7 +54,7 @@ public class JStateLabel extends JPanel {
 		this.properties = properties;
 		this.otherStates = otherStates;
 
-		setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		setBackground(Theme.current().getSecondAltBackgroundColor());
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		label.setEditable(false);
@@ -75,7 +75,7 @@ public class JStateLabel extends JPanel {
 		edit.addActionListener(e -> editState());
 
 		JPanel controls = new JPanel();
-		controls.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		controls.setBackground(Theme.current().getAltBackgroundColor());
 		controls.add(edit);
 		add("East", PanelUtils.centerInPanelPadding(controls, 2, 2));
 	}

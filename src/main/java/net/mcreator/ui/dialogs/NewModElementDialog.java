@@ -40,7 +40,7 @@ public class NewModElementDialog {
 	public static void showNameDialog(MCreator mcreator, ModElementType<?> type) {
 		JLabel regName = L10N.label("dialog.new_modelement.registry_name",
 				L10N.t("dialog.new_modelement.registry_name.empty"));
-		regName.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+		regName.setForeground(Theme.current().getAltForegroundColor());
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
 		String modName = VOptionPane.showInputDialog(mcreator,

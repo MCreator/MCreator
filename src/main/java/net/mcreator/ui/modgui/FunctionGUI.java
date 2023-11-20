@@ -113,12 +113,12 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		te.setTabsEmulated(false);
 
 		sp.setFoldIndicatorEnabled(true);
-		sp.getGutter().setFoldBackground(Theme.current().getColorScheme().getBackgroundColor());
-		sp.getGutter().setBorderColor(Theme.current().getColorScheme().getBackgroundColor());
-		sp.getGutter().setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		sp.getGutter().setFoldBackground(Theme.current().getBackgroundColor());
+		sp.getGutter().setBorderColor(Theme.current().getBackgroundColor());
+		sp.getGutter().setBackground(Theme.current().getBackgroundColor());
 		sp.getGutter().setBookmarkingEnabled(true);
 		sp.setIconRowHeaderEnabled(false);
-		sp.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		sp.setBackground(Theme.current().getBackgroundColor());
 		sp.setBorder(null);
 
 		AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();

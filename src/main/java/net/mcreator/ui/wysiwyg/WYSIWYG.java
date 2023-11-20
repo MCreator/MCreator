@@ -25,7 +25,6 @@ import net.mcreator.ui.component.zoompane.IZoomable;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.component.zoompane.JZoomport;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -138,7 +137,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 		g.drawImage(background, 0, 0, null);
 
-		g.setColor(Theme.current().getColorScheme().getInterfaceAccentColor());
+		g.setColor(Theme.current().getInterfaceAccentColor());
 		g.drawRect(0, 0, getWidth(), getHeight());
 
 		// draw wysiwyg

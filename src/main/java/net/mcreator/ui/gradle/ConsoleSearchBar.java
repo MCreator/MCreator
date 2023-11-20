@@ -45,7 +45,7 @@ public class ConsoleSearchBar extends JToolBar {
 
 	ConsoleSearchBar() {
 		setFloatable(false);
-		setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		add(jtf1);
 		add(Box.createHorizontalStrut(10));
@@ -54,10 +54,10 @@ public class ConsoleSearchBar extends JToolBar {
 		add(results);
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
-		jtf1.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		jtf1.setBackground(Theme.current().getAltBackgroundColor());
 		jtf1.setOpaque(true);
 
-		results.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+		results.setForeground(Theme.current().getAltForegroundColor());
 	}
 
 	public void reinstall(ConsolePane consolePane) {
@@ -177,7 +177,7 @@ public class ConsoleSearchBar extends JToolBar {
 
 	private static class SearchResultHighlightPainter extends DefaultHighlighter.DefaultHighlightPainter {
 		SearchResultHighlightPainter() {
-			super(Theme.current().getColorScheme().getInterfaceAccentColor());
+			super(Theme.current().getInterfaceAccentColor());
 		}
 	}
 

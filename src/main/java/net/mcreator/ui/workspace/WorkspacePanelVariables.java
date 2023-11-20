@@ -166,26 +166,26 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		sorter = new TableRowSorter<>(elements.getModel());
 		elements.setRowSorter(sorter);
 
-		elements.setBackground(Theme.current().getColorScheme().getBackgroundColor());
-		elements.setSelectionBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		elements.setBackground(Theme.current().getBackgroundColor());
+		elements.setSelectionBackground(Theme.current().getAltBackgroundColor());
 		elements.setForeground(Color.white);
-		elements.setSelectionForeground(Theme.current().getColorScheme().getBackgroundColor());
+		elements.setSelectionForeground(Theme.current().getBackgroundColor());
 		elements.setBorder(BorderFactory.createEmptyBorder());
-		elements.setGridColor(Theme.current().getColorScheme().getAltBackgroundColor());
+		elements.setGridColor(Theme.current().getAltBackgroundColor());
 		elements.setRowHeight(28);
 		elements.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 		ComponentUtils.deriveFont(elements, 13);
 
 		JTableHeader header = elements.getTableHeader();
-		header.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
-		header.setForeground(Theme.current().getColorScheme().getBackgroundColor());
+		header.setBackground(Theme.current().getInterfaceAccentColor());
+		header.setForeground(Theme.current().getBackgroundColor());
 
 		JScrollPane sp = new JScrollPane(elements);
-		sp.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		sp.setBackground(Theme.current().getBackgroundColor());
 		sp.getViewport().setOpaque(false);
 		sp.getVerticalScrollBar().setUnitIncrement(11);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-				Theme.current().getColorScheme().getAltBackgroundColor(), sp.getVerticalScrollBar()));
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 
 		sp.setColumnHeaderView(null);

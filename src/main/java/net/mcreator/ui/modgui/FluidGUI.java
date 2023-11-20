@@ -265,17 +265,17 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		});
 
 		bcProp.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.fluid.bucket_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont().deriveFont(12.0f), Theme.current().getColorScheme().getForegroundColor()));
+				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
 		JComponent destala = PanelUtils.northAndCenterElement(destal,
 				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), flowCondition), 0, 2);
 
 		destala.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.fluid.fluid_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont().deriveFont(12.0f), Theme.current().getColorScheme().getForegroundColor()));
+				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
 		JComponent fluidBucketProperties = PanelUtils.westAndEastElement(destala, PanelUtils.pullElementUp(bcProp));
 		fluidBucketProperties.setOpaque(false);
@@ -328,9 +328,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		blockProperties.add(emissiveRendering);
 
 		blockProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.fluid.block_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont().deriveFont(12.0f), Theme.current().getColorScheme().getForegroundColor()));
+				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
 		JPanel forgeProperties = new JPanel(new GridLayout(4, 2, 20, 2));
 		forgeProperties.setOpaque(false);
@@ -361,9 +361,9 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		forgeProperties.add(temperature);
 
 		forgeProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.fluid.modded_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont().deriveFont(12.0f), Theme.current().getColorScheme().getForegroundColor()));
+				getFont().deriveFont(12.0f), Theme.current().getForegroundColor()));
 
 		JComponent properties = PanelUtils.westAndEastElement(blockProperties,
 				PanelUtils.pullElementUp(forgeProperties));

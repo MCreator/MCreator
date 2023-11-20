@@ -118,7 +118,7 @@ public class AnimationMakerView extends ViewBase {
 		JPanel preview2 = new JPanel(new GridLayout()) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor(Theme.current().getColorScheme().getAltBackgroundColor());
+				g2d.setColor(Theme.current().getAltBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();
@@ -139,9 +139,9 @@ public class AnimationMakerView extends ViewBase {
 
 		JComponent stp = PanelUtils.centerInPanel(settings);
 		stp.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("dialog.animation_maker.settings"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 
 		editor.add("Center", PanelUtils.centerAndEastElement(preview2, stp));
 
@@ -218,9 +218,9 @@ public class AnimationMakerView extends ViewBase {
 		JPanel timelinee = new JPanel(new BorderLayout());
 		timelinee.setOpaque(false);
 		timelinee.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("dialog.animation_maker.animation_timeline"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 
 		JToolBar timelinebar = new JToolBar();
 		timelinebar.setFloatable(false);
@@ -328,8 +328,8 @@ public class AnimationMakerView extends ViewBase {
 
 		JButton save = L10N.button("dialog.animation_maker.save_animated_texture");
 		save.setMargin(new Insets(1, 40, 1, 40));
-		save.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
-		save.setForeground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		save.setBackground(Theme.current().getInterfaceAccentColor());
+		save.setForeground(Theme.current().getSecondAltBackgroundColor());
 		save.setFocusPainted(false);
 		add("North", PanelUtils.maxMargin(
 				PanelUtils.westAndEastElement(new JEmptyBox(0, 0), PanelUtils.centerInPanelPadding(save, 0, 0)), 5,

@@ -51,7 +51,7 @@ public class JColor extends JPanel {
 		fl1.setBackground(Color.white);
 		bt1.setOpaque(false);
 
-		fl1.setBorder(BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltForegroundColor()));
+		fl1.setBorder(BorderFactory.createLineBorder(Theme.current().getAltForegroundColor()));
 		fl1.setHorizontalAlignment(JTextField.CENTER);
 
 		add("Center", fl1);
@@ -107,7 +107,7 @@ public class JColor extends JPanel {
 		if (currentColor == null) {
 			fl1.setOpaque(false);
 			fl1.setText("DEFAULT");
-			fl1.setForeground(Theme.current().getColorScheme().getForegroundColor());
+			fl1.setForeground(Theme.current().getForegroundColor());
 		} else {
 			String color = c.getRed() + "," + c.getGreen() + "," + c.getBlue();
 			fl1.setText(color);

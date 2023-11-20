@@ -74,7 +74,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 
 		setOpaque(true);
 		procedures.setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
-		setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		setBackground(Theme.current().getAltBackgroundColor());
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
 		procedures.addPopupMenuListener(new ComboBoxFullWidthPopup());
@@ -226,9 +226,9 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			fixedValue.setEnabled(enabled);
 
 		if (enabled) {
-			setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+			setBackground(Theme.current().getAltBackgroundColor());
 		} else {
-			setBackground(Theme.current().getColorScheme().getBackgroundColor());
+			setBackground(Theme.current().getBackgroundColor());
 		}
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();

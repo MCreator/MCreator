@@ -58,7 +58,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		this.modElementGUI = modElementGUI;
 		this.codeChangeListener = this::reload;
 
-		setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		setBackground(Theme.current().getAltBackgroundColor());
 		setOpaque(true);
 
 		addComponentListener(new ComponentAdapter() {
@@ -85,7 +85,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 						}
 					});
 
-					listPane.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+					listPane.setBackground(Theme.current().getAltBackgroundColor());
 					listPane.setOpaque(true);
 
 					listPane.addComponentListener(new ComponentAdapter() {
@@ -180,7 +180,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					if (!isEnabledAt(getSelectedIndex()) && !cache.isEmpty())
 						setSelectedIndex(IntStream.range(0, getTabCount()).filter(this::isEnabledAt).min().orElse(0));
 
-					setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+					setBackground(Theme.current().getAltBackgroundColor());
 				} catch (Exception ignored) {
 					setBackground(new Color(0x8D5C5C));
 				}

@@ -165,19 +165,19 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			elements.setRowSorter(sorter);
 			sorters.add(sorter);
 
-			elements.setBackground(Theme.current().getColorScheme().getBackgroundColor());
-			elements.setSelectionBackground(Theme.current().getColorScheme().getForegroundColor());
-			elements.setForeground(Theme.current().getColorScheme().getForegroundColor());
-			elements.setSelectionForeground(Theme.current().getColorScheme().getBackgroundColor());
+			elements.setBackground(Theme.current().getBackgroundColor());
+			elements.setSelectionBackground(Theme.current().getForegroundColor());
+			elements.setForeground(Theme.current().getForegroundColor());
+			elements.setSelectionForeground(Theme.current().getBackgroundColor());
 			elements.setBorder(BorderFactory.createEmptyBorder());
-			elements.setGridColor(Theme.current().getColorScheme().getAltBackgroundColor());
+			elements.setGridColor(Theme.current().getAltBackgroundColor());
 			elements.setRowHeight(22);
 			elements.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 			elements.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
 
 			JTableHeader header = elements.getTableHeader();
-			header.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
-			header.setForeground(Theme.current().getColorScheme().getBackgroundColor());
+			header.setBackground(Theme.current().getInterfaceAccentColor());
+			header.setForeground(Theme.current().getBackgroundColor());
 
 			DefaultTableModel model = (DefaultTableModel) elements.getModel();
 			for (Map.Entry<String, String> langs : entries.entrySet()) {
@@ -201,8 +201,8 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			sp.setOpaque(false);
 			sp.getViewport().setOpaque(false);
 			sp.getVerticalScrollBar().setUnitIncrement(11);
-			sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-					Theme.current().getColorScheme().getAltBackgroundColor(), sp.getVerticalScrollBar()));
+			sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+					Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 			sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 
 			sp.setColumnHeaderView(null);

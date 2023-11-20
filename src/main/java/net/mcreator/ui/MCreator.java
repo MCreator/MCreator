@@ -203,7 +203,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			((ImagePanel) mpan).setKeepRatio(true);
 		} else {
 			mpan = new JPanel();
-			mpan.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+			mpan.setBackground(Theme.current().getSecondAltBackgroundColor());
 		}
 
 		mpan.setLayout(new BorderLayout());
@@ -212,9 +212,9 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		mv = new WorkspacePanel(this);
 
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
-		pon.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		pon.setBackground(Theme.current().getBackgroundColor());
 		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0,
-				Theme.current().getColorScheme().getSecondAltBackgroundColor()));
+				Theme.current().getSecondAltBackgroundColor()));
 
 		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"),
 				PanelUtils.maxMargin(mv, 5, true, true, true, true), "Workspace", true, false);
@@ -259,7 +259,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser,
 				PanelUtils.northAndCenterElement(pon, mpan));
-		splitPane.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		splitPane.setBackground(Theme.current().getAltBackgroundColor());
 		splitPane.setOneTouchExpandable(true);
 
 		splitPane.setDividerLocation(280);
@@ -444,7 +444,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		JLabel loading = L10N.label("workspace.loading");
 		loading.setIconTextGap(5);
 		loading.setFont(loading.getFont().deriveFont(16f));
-		loading.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+		loading.setForeground(Theme.current().getAltForegroundColor());
 		loading.setIcon(UIRES.get("16px.loading.gif"));
 		wrap.add(PanelUtils.totalCenterInPanel(loading));
 		return wrap;

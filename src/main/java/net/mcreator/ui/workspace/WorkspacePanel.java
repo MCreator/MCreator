@@ -290,8 +290,8 @@ import java.util.stream.Collectors;
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
 
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-				Theme.current().getColorScheme().getAltBackgroundColor(), sp.getVerticalScrollBar()));
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		sp.setBorder(null);
 
@@ -336,7 +336,7 @@ import java.util.stream.Collectors;
 		ComponentUtils.deriveFont(search, 14);
 		search.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
 		search.setOpaque(false);
-		search.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		search.setBackground(Theme.current().getAltBackgroundColor());
 
 		search.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -554,12 +554,12 @@ import java.util.stream.Collectors;
 
 		ComponentUtils.deriveFont(filter, 11);
 		filter.setMargin(new Insets(1, 3, 1, 3));
-		filter.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		filter.setBackground(Theme.current().getBackgroundColor());
 		filter.setBorderPainted(false);
 
 		ComponentUtils.deriveFont(sort, 11);
 		sort.setMargin(new Insets(1, 3, 1, 3));
-		sort.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		sort.setBackground(Theme.current().getBackgroundColor());
 		sort.setBorderPainted(false);
 
 		leftPan.add(new JEmptyBox(2, 2));
@@ -651,7 +651,7 @@ import java.util.stream.Collectors;
 				L10N.label("workspace.elements.details.id"), L10N.label("workspace.elements.details.type"),
 				L10N.label("workspace.elements.details.lock"), L10N.label("workspace.elements.details.compile")));
 		detailsbar.setBorder(BorderFactory.createEmptyBorder(4, 47, 4, 8));
-		detailsbar.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		detailsbar.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		modElementsPanel.add("North", PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0));
 		modElementsPanel.add("Center", mainp);
@@ -661,7 +661,7 @@ import java.util.stream.Collectors;
 		slo.setBorder(null);
 
 		rotatablePanel.setLayout(new BoxLayout(rotatablePanel, BoxLayout.PAGE_AXIS));
-		rotatablePanel.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		rotatablePanel.setBackground(Theme.current().getBackgroundColor());
 		slo.add("West", rotatablePanel);
 
 		add("Center", slo);
@@ -859,7 +859,7 @@ import java.util.stream.Collectors;
 			tab.setBorderPainted(false);
 			tab.setFocusPainted(false);
 			tab.setOpaque(true);
-			tab.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+			tab.setBackground(Theme.current().getBackgroundColor());
 			tab.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			tab.addActionListener(e -> switchToVerticalTab(id));
 			verticalTabs.add(tab);
@@ -875,8 +875,8 @@ import java.util.stream.Collectors;
 		if (sectionTabs.get(id).canSwitchToSection()) {
 			for (JButton btt : verticalTabs) {
 				btt.setBackground(btt.getName().equals(id) ?
-						Theme.current().getColorScheme().getAltBackgroundColor() :
-						Theme.current().getColorScheme().getBackgroundColor());
+						Theme.current().getAltBackgroundColor() :
+						Theme.current().getBackgroundColor());
 			}
 			cardLayout.show(panels, id);
 			reloadElementsInCurrentTab();

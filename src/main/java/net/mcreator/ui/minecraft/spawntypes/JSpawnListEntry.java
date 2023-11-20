@@ -54,7 +54,7 @@ public class JSpawnListEntry extends JSimpleListEntry<Biome.SpawnEntry> {
 		this.workspace = mcreator.getWorkspace();
 
 		numberOfMobsPerGroup.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getAltBackgroundColor()),
+				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 

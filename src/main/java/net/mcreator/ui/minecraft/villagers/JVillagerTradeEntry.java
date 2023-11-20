@@ -56,7 +56,7 @@ public class JVillagerTradeEntry extends JPanel {
 			List<JVillagerTradeEntry> entryList) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		setBackground((Theme.current().getColorScheme().getAltBackgroundColor()).darker());
+		setBackground((Theme.current().getAltBackgroundColor()).darker());
 
 		price1 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		price2 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);

@@ -88,9 +88,9 @@ public class TabGUI extends ModElementGUI<Tab> {
 		slpa.setMaximumSize(new Dimension(700, 110));
 
 		slpa.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.tab.add_stuff_tip"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 
 		pane3.add(PanelUtils.totalCenterInPanel(slpa));
 		pane3.setOpaque(false);

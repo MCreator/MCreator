@@ -118,7 +118,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		JComponent center = PanelUtils.centerInPanel(workspacePanels);
 		center.setBorder(
-				BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getColorScheme().getAltBackgroundColor()));
+				BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		add("Center", center);
 
@@ -136,7 +136,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		JToggleButton forge = new JToggleButton(L10N.t("dialog.new_workspace.forge.toggle"), UIRES.get("16px.forge"));
 		forge.setHorizontalAlignment(SwingConstants.LEFT);
 		forge.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getColorScheme().getAltBackgroundColor()),
+				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
 		buttonGroup.add(forge);
 		forge.addActionListener(e -> {
@@ -148,7 +148,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 				UIRES.get("16px.neoforge"));
 		neoforge.setHorizontalAlignment(SwingConstants.LEFT);
 		neoforge.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getColorScheme().getAltBackgroundColor()),
+				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
 		buttonGroup.add(neoforge);
 		neoforge.addActionListener(e -> {
@@ -160,7 +160,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 				UIRES.get("16px.fabric"));
 		fabric.setHorizontalAlignment(SwingConstants.LEFT);
 		fabric.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getColorScheme().getAltBackgroundColor()),
+				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
 		buttonGroup.add(fabric);
 		fabric.addActionListener(e -> {
@@ -171,7 +171,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		JToggleButton quilt = new JToggleButton(L10N.t("dialog.new_workspace.quilt.toggle"), UIRES.get("16px.quilt"));
 		quilt.setHorizontalAlignment(SwingConstants.LEFT);
 		quilt.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getColorScheme().getAltBackgroundColor()),
+				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
 		buttonGroup.add(quilt);
 		quilt.addActionListener(e -> {
@@ -183,7 +183,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 				UIRES.get("16px.spigot"));
 		spigot.setHorizontalAlignment(SwingConstants.LEFT);
 		spigot.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getColorScheme().getAltBackgroundColor()),
+				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
 		buttonGroup.add(spigot);
 		spigot.addActionListener(e -> {
@@ -195,7 +195,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 				UIRES.get("16px.datapack"));
 		datapack.setHorizontalAlignment(SwingConstants.LEFT);
 		datapack.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getColorScheme().getAltBackgroundColor()),
+				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
 		buttonGroup.add(datapack);
 		datapack.addActionListener(e -> {
@@ -206,7 +206,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		JToggleButton addon = new JToggleButton(L10N.t("dialog.new_workspace.addon.toggle"), UIRES.get("16px.bedrock"));
 		addon.setHorizontalAlignment(SwingConstants.LEFT);
 		addon.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getColorScheme().getAltBackgroundColor()),
+				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
 		buttonGroup.add(addon);
 		addon.addActionListener(e -> {
@@ -216,7 +216,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		JLabel wt = L10N.label("dialog.new_workspace.type");
 		ComponentUtils.deriveFont(wt, 10);
-		wt.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+		wt.setForeground(Theme.current().getAltForegroundColor());
 		wt.setBorder(BorderFactory.createEmptyBorder(8, 8, 3, 30));
 
 		workspaceType.add(wt);
@@ -265,7 +265,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		JComponent wrapPan = PanelUtils.northAndCenterElement(workspaceType, new JEmptyBox());
 		wrapPan.setBorder(
-				BorderFactory.createMatteBorder(1, 0, 0, 1, Theme.current().getColorScheme().getAltBackgroundColor()));
+				BorderFactory.createMatteBorder(1, 0, 0, 1, Theme.current().getAltBackgroundColor()));
 		add("West", wrapPan);
 
 		getRootPane().setDefaultButton(ok);

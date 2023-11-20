@@ -171,7 +171,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		JComponent recwrap = PanelUtils.maxMargin(recipesPanel, 10, true, true, true, true);
 		recwrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.recipe.definition"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
 				Color.white));
 

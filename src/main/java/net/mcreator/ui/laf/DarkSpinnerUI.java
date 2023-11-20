@@ -47,12 +47,12 @@ public class DarkSpinnerUI extends BasicSpinnerUI {
 	}
 
 	private Component createArrowButton(int var1) {
-		BasicArrowButton var2 = new BasicArrowButton(var1, Theme.current().getColorScheme().getBackgroundColor(),
-				Theme.current().getColorScheme().getBackgroundColor(), Theme.current().getColorScheme().getForegroundColor(),
-				Theme.current().getColorScheme().getBackgroundColor());
-		var2.setBackground(Theme.current().getColorScheme().getBackgroundColor());
-		var2.setForeground(Theme.current().getColorScheme().getForegroundColor());
-		var2.setBorder(BorderFactory.createLineBorder(Theme.current().getColorScheme().getBackgroundColor(), 1));
+		BasicArrowButton var2 = new BasicArrowButton(var1, Theme.current().getBackgroundColor(),
+				Theme.current().getBackgroundColor(), Theme.current().getForegroundColor(),
+				Theme.current().getBackgroundColor());
+		var2.setBackground(Theme.current().getBackgroundColor());
+		var2.setForeground(Theme.current().getForegroundColor());
+		var2.setBorder(BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1));
 		var2.setInheritsPopupMenu(true);
 		return var2;
 	}

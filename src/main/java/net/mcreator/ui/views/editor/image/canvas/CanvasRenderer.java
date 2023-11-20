@@ -111,7 +111,7 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 				int scaledSize = (int) Math.round(size * zoom);
 
 				Graphics2D graphics2D = (Graphics2D) g;
-				graphics2D.setColor(Theme.current().getColorScheme().getAltForegroundColor());
+				graphics2D.setColor(Theme.current().getAltForegroundColor());
 
 				Stroke original = graphics2D.getStroke();
 				Stroke dashed = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 3 },
@@ -232,9 +232,9 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 	}
 
 	private void drawOutline(Graphics2D graphics2D, int x, int y, int width, int height) {
-		graphics2D.setPaint(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		graphics2D.setPaint(Theme.current().getSecondAltBackgroundColor());
 		graphics2D.drawRect(x, y, width - 1, height - 1);
-		graphics2D.setPaint(Theme.current().getColorScheme().getInterfaceAccentColor());
+		graphics2D.setPaint(Theme.current().getInterfaceAccentColor());
 		graphics2D.setStroke(dashed);
 		graphics2D.drawRect(x, y, width - 1, height - 1);
 	}

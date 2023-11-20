@@ -110,9 +110,9 @@ public class JStringListField extends JPanel {
 		});
 
 		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, clear));
-		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getColorScheme().getInterfaceAccentColor()));
+		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getInterfaceAccentColor()));
 		controls.setOpaque(true);
-		controls.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		controls.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		add("Center", pane);
 		add("East", controls);
@@ -163,13 +163,13 @@ public class JStringListField extends JPanel {
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(true);
 			setBackground(isSelected ?
-					Theme.current().getColorScheme().getForegroundColor() :
-					Theme.current().getColorScheme().getAltBackgroundColor());
+					Theme.current().getForegroundColor() :
+					Theme.current().getAltBackgroundColor());
 			setForeground(isSelected ?
-					Theme.current().getColorScheme().getSecondAltBackgroundColor() :
-					Theme.current().getColorScheme().getForegroundColor());
+					Theme.current().getSecondAltBackgroundColor() :
+					Theme.current().getForegroundColor());
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getColorScheme().getBackgroundColor()),
+					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 			setHorizontalAlignment(JLabel.CENTER);
 			setVerticalAlignment(JLabel.CENTER);

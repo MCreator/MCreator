@@ -58,7 +58,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 			"Dye" };
 
 	private static final Color[] presetColors = new Color[] { Color.red, Color.green, Color.blue,
-			Theme.current().getColorScheme().getInterfaceAccentColor(), Color.magenta, Color.cyan, new Color(244, 67, 54),
+			Theme.current().getInterfaceAccentColor(), Color.magenta, Color.cyan, new Color(244, 67, 54),
 			new Color(233, 30, 99), new Color(255, 235, 59), new Color(205, 220, 57), new Color(255, 87, 34),
 			new Color(158, 158, 158), new Color(255, 152, 0), new Color(0, 188, 212), new Color(139, 195, 74) };
 
@@ -218,8 +218,8 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		JButton randomize = L10N.button("dialog.imageeditor.template_randomize");
 		randomize.setMargin(new Insets(1, 40, 1, 40));
-		randomize.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
-		randomize.setForeground(Theme.current().getColorScheme().getForegroundColor());
+		randomize.setBackground(Theme.current().getAltBackgroundColor());
+		randomize.setForeground(Theme.current().getForegroundColor());
 		randomize.setFocusPainted(false);
 
 		templates.add(new JLabel(""));

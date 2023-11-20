@@ -233,11 +233,11 @@ public class GeneratorSelector {
 
 		bar.setUI(new BasicProgressBarUI() {
 			@Override protected Color getSelectionBackground() {
-				return Theme.current().getColorScheme().getForegroundColor();
+				return Theme.current().getForegroundColor();
 			}
 
 			@Override protected Color getSelectionForeground() {
-				return Theme.current().getColorScheme().getSecondAltBackgroundColor();
+				return Theme.current().getSecondAltBackgroundColor();
 			}
 		});
 
@@ -250,7 +250,7 @@ public class GeneratorSelector {
 		else if (bar.getValue() < 100)
 			bar.setForeground(new Color(0xF5F984));
 		else
-			bar.setForeground(Theme.current().getColorScheme().getInterfaceAccentColor());
+			bar.setForeground(Theme.current().getInterfaceAccentColor());
 
 		supportedElements.add(new JLabel(label + ": "));
 		supportedElements.add(bar);

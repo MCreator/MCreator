@@ -37,9 +37,9 @@ public class JSpawnEntriesList extends JSimpleEntriesList<JSpawnListEntry, Biome
 		add.setText(L10N.t("elementgui.spawnlist.add_entry"));
 
 		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.spawnlist.spawn_entries"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 		setPreferredSize(new Dimension(getPreferredSize().width, (int) (mcreator.getSize().height * 0.6)));
 	}
 

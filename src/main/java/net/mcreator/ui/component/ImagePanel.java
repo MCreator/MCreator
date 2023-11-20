@@ -32,7 +32,7 @@ public class ImagePanel extends JPanel {
 	private boolean original = false;
 	private boolean fitToWidth = false;
 
-	private final Color defaultColor = Theme.current().getColorScheme().getBackgroundColor();
+	private final Color defaultColor = Theme.current().getBackgroundColor();
 
 	private int offsetY = 0;
 

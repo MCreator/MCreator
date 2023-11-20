@@ -57,7 +57,7 @@ public class MaterialPackMakerTool {
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 		JComboBox<String> type = new JComboBox<>(new String[] { "Gem based", "Dust based", "Ingot based" });
 
-		color.setColor(Theme.current().getColorScheme().getInterfaceAccentColor());
+		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
 
 		props.add(L10N.label("dialog.tools.material_pack_name"));

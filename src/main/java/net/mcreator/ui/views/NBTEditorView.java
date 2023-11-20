@@ -132,11 +132,11 @@ public class NBTEditorView extends ViewBase {
 				setText(nbtTagNode.toString());
 
 			if (sel) {
-				a.setForeground(Theme.current().getColorScheme().getBackgroundColor());
-				a.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
+				a.setForeground(Theme.current().getBackgroundColor());
+				a.setBackground(Theme.current().getInterfaceAccentColor());
 			} else {
-				a.setBackground(Theme.current().getColorScheme().getBackgroundColor());
-				a.setForeground(Theme.current().getColorScheme().getForegroundColor());
+				a.setBackground(Theme.current().getBackgroundColor());
+				a.setForeground(Theme.current().getForegroundColor());
 			}
 			return a;
 		}

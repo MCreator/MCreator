@@ -48,7 +48,7 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Proper
 
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
 	}
 

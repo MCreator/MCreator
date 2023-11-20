@@ -49,16 +49,16 @@ public class ReplaceBar extends JPanel {
 		this.ra = ra;
 
 		final JLabel matches = new JLabel();
-		matches.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+		matches.setForeground(Theme.current().getAltForegroundColor());
 
 		JToolBar top = new JToolBar();
-		top.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		top.setBackground(Theme.current().getBackgroundColor());
 		top.setBorder(null);
 		top.setFloatable(false);
 
 		JToolBar bottom = new JToolBar();
 		bottom.setBorder(null);
-		bottom.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		bottom.setBackground(Theme.current().getBackgroundColor());
 		bottom.setFloatable(false);
 
 		jtf1.addKeyListener(new KeyAdapter() {
@@ -76,7 +76,7 @@ public class ReplaceBar extends JPanel {
 
 				matches.setText(marked.getMarkedCount() + " results");
 				if (marked.getMarkedCount() > 0) {
-					matches.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+					matches.setForeground(Theme.current().getAltForegroundColor());
 				} else {
 					matches.setForeground(new Color(239, 96, 96));
 				}
@@ -128,7 +128,7 @@ public class ReplaceBar extends JPanel {
 		bottom.add(Box.createHorizontalStrut(10));
 		bottom.add(replaceAll);
 
-		setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		setBackground(Theme.current().getBackgroundColor());
 
 		top.add(jtf1);
 		top.add(Box.createHorizontalStrut(10));
@@ -151,11 +151,11 @@ public class ReplaceBar extends JPanel {
 		cb5.setForeground(new Color(0xE2E2E2));
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
-		jtf1.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		jtf1.setBackground(Theme.current().getAltBackgroundColor());
 		jtf1.setOpaque(true);
 
 		jtf2.setMaximumSize(jtf1.getPreferredSize());
-		jtf2.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		jtf2.setBackground(Theme.current().getAltBackgroundColor());
 		jtf2.setOpaque(true);
 
 		JButton close = new JButton(UIRES.get("close_small"));

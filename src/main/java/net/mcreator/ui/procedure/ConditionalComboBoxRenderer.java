@@ -37,7 +37,7 @@ class ConditionalComboBoxRenderer implements ListCellRenderer<CBoxEntry> {
 				cellHasFocus);
 
 		if (!value.correctDependencies) {
-			component.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+			component.setForeground(Theme.current().getAltForegroundColor());
 			component.setText("<html>" + component.getText() + L10N.t("action.procedure.missing_dependencies"));
 		}
 

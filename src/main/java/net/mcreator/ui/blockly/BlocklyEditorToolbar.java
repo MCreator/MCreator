@@ -212,7 +212,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			}
 		});
 		ComponentUtils.normalizeButton4(export);
-		export.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+		export.setForeground(Theme.current().getAltForegroundColor());
 
 		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".import");
 		import_.setIcon(UIRES.get("18px.import"));
@@ -247,7 +247,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			}
 		});
 		ComponentUtils.normalizeButton4(import_);
-		import_.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+		import_.setForeground(Theme.current().getAltForegroundColor());
 	}
 
 	public void setTemplateLibButtonWidth(int w) {

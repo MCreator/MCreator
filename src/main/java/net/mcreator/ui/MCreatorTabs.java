@@ -82,8 +82,8 @@ public class MCreatorTabs {
 		moreTabs = new JLabel(UIRES.get("more"));
 		moreTabs.setPreferredSize(new Dimension(40, 39));
 		moreTabs.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 1,
-				Theme.current().getColorScheme().getSecondAltBackgroundColor()), BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 5, 0, Theme.current().getColorScheme().getAltBackgroundColor()),
+				Theme.current().getSecondAltBackgroundColor()), BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(0, 0, 5, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(0, 10, 0, 10))));
 		moreTabs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		moreTabs.addMouseListener(new MouseAdapter() {
@@ -95,7 +95,7 @@ public class MCreatorTabs {
 		filler = new JPanel();
 		filler.setOpaque(false);
 		filler.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 5, 0, Theme.current().getColorScheme().getAltBackgroundColor()));
+				BorderFactory.createMatteBorder(0, 0, 5, 0, Theme.current().getAltBackgroundColor()));
 	}
 
 	void reloadTabStrip() {
@@ -108,7 +108,7 @@ public class MCreatorTabs {
 
 		moreTabsMenu = new JScrollablePopupMenu();
 		moreTabsMenu.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0,
-				Theme.current().getColorScheme().getInterfaceAccentColor()));
+				Theme.current().getInterfaceAccentColor()));
 		moreTabsMenu.setMaximumVisibleRows(11);
 
 		int maxWidth = tabsStrip.getWidth();
@@ -212,7 +212,7 @@ public class MCreatorTabs {
 		for (Tab tab : tabs) {
 			if (tab.identifier.equals(identifier)) {
 				cardLayout.show(container, identifier.toString());
-				tab.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+				tab.setBackground(Theme.current().getAltBackgroundColor());
 				tab.selected = true;
 				this.current = tab;
 				if (notify) {
@@ -222,7 +222,7 @@ public class MCreatorTabs {
 				}
 				existing = tab;
 			} else {
-				tab.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+				tab.setBackground(Theme.current().getBackgroundColor());
 				tab.selected = false;
 			}
 			tab.updateBorder();
@@ -293,8 +293,8 @@ public class MCreatorTabs {
 		private TabClosingListener tabClosingListener;
 		private TabShownListener tabShownListener;
 
-		private Color inactiveColor = Theme.current().getColorScheme().getAltBackgroundColor();
-		private Color activeColor = Theme.current().getColorScheme().getInterfaceAccentColor();
+		private Color inactiveColor = Theme.current().getAltBackgroundColor();
+		private Color activeColor = Theme.current().getInterfaceAccentColor();
 
 		private boolean selected = false;
 
@@ -340,7 +340,7 @@ public class MCreatorTabs {
 			blo.setVerticalAlignment(SwingConstants.CENTER);
 			blo.setCursor(new Cursor(Cursor.HAND_CURSOR));
 			blo.setBackground(new Color(80, 80, 80));
-			blo.setForeground(Theme.current().getColorScheme().getForegroundColor());
+			blo.setForeground(Theme.current().getForegroundColor());
 
 			setText(name);
 
@@ -373,7 +373,7 @@ public class MCreatorTabs {
 			}
 			updateSize();
 			updateBorder();
-			setBackground(Theme.current().getColorScheme().getBackgroundColor());
+			setBackground(Theme.current().getBackgroundColor());
 		}
 
 		public void updateSize() {
@@ -419,12 +419,12 @@ public class MCreatorTabs {
 			if (selected)
 				setBorder(BorderFactory.createCompoundBorder(
 						BorderFactory.createMatteBorder(0, 0, 0, hasRightBorder ? 1 : 0,
-								Theme.current().getColorScheme().getSecondAltBackgroundColor()),
+								Theme.current().getSecondAltBackgroundColor()),
 						BorderFactory.createMatteBorder(0, 0, 5, 0, activeColor)));
 			else
 				setBorder(BorderFactory.createCompoundBorder(
 						BorderFactory.createMatteBorder(0, 0, 0, hasRightBorder ? 1 : 0,
-								Theme.current().getColorScheme().getSecondAltBackgroundColor()),
+								Theme.current().getSecondAltBackgroundColor()),
 						BorderFactory.createMatteBorder(0, 0, 5, 0, inactiveColor)));
 		}
 

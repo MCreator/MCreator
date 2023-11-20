@@ -82,7 +82,7 @@ public class LocaleEntry extends PreferencesEntry<Locale> {
 		public Component getListCellRendererComponent(JList<? extends Locale> list, Locale value, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
+			setBackground(Theme.current().getInterfaceAccentColor());
 			setForeground(Color.white);
 			setBorder(new EmptyBorder(0, 1, 0, 0));
 

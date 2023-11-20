@@ -37,9 +37,9 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 	private static final Logger LOG = LogManager.getLogger(AstTreeCellRendererCustom.class);
 
 	public AstTreeCellRendererCustom() {
-		setBorderSelectionColor(Theme.current().getColorScheme().getBackgroundColor());
-		setBackground(Theme.current().getColorScheme().getBackgroundColor());
-		setBackgroundSelectionColor(Theme.current().getColorScheme().getInterfaceAccentColor());
+		setBorderSelectionColor(Theme.current().getBackgroundColor());
+		setBackground(Theme.current().getBackgroundColor());
+		setBackgroundSelectionColor(Theme.current().getInterfaceAccentColor());
 		ComponentUtils.deriveFont(this, 11);
 	}
 
@@ -50,11 +50,11 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 		setOpaque(true);
 
 		if (!sel) {
-			setBackground(Theme.current().getColorScheme().getBackgroundColor());
-			setForeground(Theme.current().getColorScheme().getForegroundColor());
+			setBackground(Theme.current().getBackgroundColor());
+			setForeground(Theme.current().getForegroundColor());
 		} else {
-			setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
-			setForeground(Theme.current().getColorScheme().getBackgroundColor());
+			setBackground(Theme.current().getInterfaceAccentColor());
+			setForeground(Theme.current().getBackgroundColor());
 		}
 
 		if (value instanceof JsonTree.JsonObjectNode) {

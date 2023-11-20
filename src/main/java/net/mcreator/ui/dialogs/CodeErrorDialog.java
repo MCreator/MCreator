@@ -107,8 +107,8 @@ public class CodeErrorDialog {
 
 		JScrollPane sp = new JScrollPane(problematicModsList);
 		sp.setPreferredSize(new Dimension(150, 140));
-		sp.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
-		problematicModsList.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		sp.setBackground(Theme.current().getSecondAltBackgroundColor());
+		problematicModsList.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		JPanel wrapper = new JPanel(new BorderLayout());
 		wrapper.add("North", L10N.label("dialog.code_error.compilation_list"));

@@ -39,7 +39,7 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 	public JSimpleListEntry(JPanel parent, List<? extends JSimpleListEntry<T>> entryList) {
 		this.parent = parent;
 
-		setBackground((Theme.current().getColorScheme().getAltBackgroundColor()).darker());
+		setBackground((Theme.current().getAltBackgroundColor()).darker());
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		JComponent container = PanelUtils.expandHorizontally(this);

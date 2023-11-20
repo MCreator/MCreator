@@ -74,7 +74,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
 			if (getSelectionCount() > 0) {
-				g.setColor(Theme.current().getColorScheme().getInterfaceAccentColor());
+				g.setColor(Theme.current().getInterfaceAccentColor());
 				for (int i : Objects.requireNonNull(getSelectionRows())) {
 					Rectangle r = getRowBounds(i);
 					g.fillRect(0, r.y, getWidth(), r.height);
@@ -115,7 +115,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		tree.setShowsRootHandles(true);
 
 		JScrollPane jsp = new JScrollPane(tree);
-		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Theme.current().getColorScheme().getBackgroundColor()));
+		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Theme.current().getBackgroundColor()));
 
 		SlickTreeUI treeUI = new SlickTreeUI();
 		tree.setUI(treeUI);
@@ -123,26 +123,26 @@ public class WorkspaceFileBrowser extends JPanel {
 		treeUI.setRightChildIndent(11);
 		treeUI.setLeftChildIndent(3);
 
-		jsp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getColorScheme().getBackgroundColor(),
-				Theme.current().getColorScheme().getSecondAltBackgroundColor(), jsp.getVerticalScrollBar()));
+		jsp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getSecondAltBackgroundColor(), jsp.getVerticalScrollBar()));
 		jsp.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 		jsp.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 
 		JPanel cornerDummy1 = new JPanel();
-		cornerDummy1.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		cornerDummy1.setBackground(Theme.current().getBackgroundColor());
 		jsp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy1);
 
 		JPanel cornerDummy2 = new JPanel();
-		cornerDummy2.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		cornerDummy2.setBackground(Theme.current().getBackgroundColor());
 		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy2);
 
-		setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		setBackground(Theme.current().getSecondAltBackgroundColor());
 
-		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, Theme.current().getColorScheme().getBackgroundColor()));
+		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, Theme.current().getBackgroundColor()));
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
-		jtf1.setBorder(BorderFactory.createLineBorder((Theme.current().getColorScheme().getBackgroundColor()).brighter()));
-		jtf1.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		jtf1.setBorder(BorderFactory.createLineBorder((Theme.current().getBackgroundColor()).brighter()));
+		jtf1.setBackground(Theme.current().getBackgroundColor());
 		jtf1.setForeground(new Color(0xCBCBCB));
 		jtf1.setOpaque(true);
 		ComponentUtils.deriveFont(jtf1, 12);
@@ -168,25 +168,25 @@ public class WorkspaceFileBrowser extends JPanel {
 		});
 
 		JPanel bar = new JPanel(new BorderLayout());
-		bar.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		bar.setBackground(Theme.current().getBackgroundColor());
 		bar.add(jtf1);
-		bar.setBorder(BorderFactory.createMatteBorder(3, 5, 3, 0, Theme.current().getColorScheme().getBackgroundColor()));
+		bar.setBorder(BorderFactory.createMatteBorder(3, 5, 3, 0, Theme.current().getBackgroundColor()));
 
 		JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		topBar.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		topBar.setBackground(Theme.current().getAltBackgroundColor());
 		topBar.add(
 				ComponentUtils.setForeground(ComponentUtils.deriveFont(L10N.label("workspace_file_browser.title"), 10f),
-						Theme.current().getColorScheme().getAltForegroundColor()));
+						Theme.current().getAltForegroundColor()));
 
 		topBar.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getColorScheme().getBackgroundColor()),
+				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 5, 2, 0)));
 
 		JLabel sil = new JLabel(UIRES.get("16px.search"));
 		sil.setPreferredSize(new Dimension(sil.getIcon().getIconWidth(), sil.getIcon().getIconHeight()));
 
 		JComponent search = PanelUtils.westAndCenterElement(sil, bar);
-		search.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		search.setBackground(Theme.current().getBackgroundColor());
 		search.setOpaque(true);
 		search.setBorder(BorderFactory.createEmptyBorder(3, 4, 0, 3));
 
@@ -523,11 +523,11 @@ public class WorkspaceFileBrowser extends JPanel {
 			}
 
 			if (sel) {
-				a.setForeground(Theme.current().getColorScheme().getBackgroundColor());
-				a.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
+				a.setForeground(Theme.current().getBackgroundColor());
+				a.setBackground(Theme.current().getInterfaceAccentColor());
 			} else {
-				a.setBackground(Theme.current().getColorScheme().getBackgroundColor());
-				a.setForeground(Theme.current().getColorScheme().getForegroundColor());
+				a.setBackground(Theme.current().getBackgroundColor());
+				a.setForeground(Theme.current().getForegroundColor());
 			}
 			return a;
 		}

@@ -40,7 +40,7 @@ public abstract class JSingleEntriesList<T extends JPanel, U> extends JEntriesLi
 		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
 
-		topbar.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		topbar.setBackground(Theme.current().getAltBackgroundColor());
 
 		topbar.add(add);
 		add("North", topbar);
@@ -50,7 +50,7 @@ public abstract class JSingleEntriesList<T extends JPanel, U> extends JEntriesLi
 		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(entries)) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor(Theme.current().getColorScheme().getAltBackgroundColor());
+				g2d.setColor(Theme.current().getAltBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();

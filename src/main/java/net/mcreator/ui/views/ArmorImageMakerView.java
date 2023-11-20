@@ -77,9 +77,9 @@ public class ArmorImageMakerView extends ViewBase {
 
 		JPanel wrap = PanelUtils.centerInPanelPadding(controls, 10, 10);
 		wrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("dialog.armor_image_maker.properties"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 
 		add("Center", wrap);
 
@@ -96,18 +96,18 @@ public class ArmorImageMakerView extends ViewBase {
 
 		JPanel spom = PanelUtils.totalCenterInPanel(spo);
 		spom.setOpaque(true);
-		spom.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+		spom.setBackground(Theme.current().getAltBackgroundColor());
 		spom.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("dialog.armor_image_maker.preview"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 
 		add("South", spom);
 
 		JButton save = L10N.button("dialog.armor_image_maker.save");
 		save.setMargin(new Insets(1, 40, 1, 40));
-		save.setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
-		save.setForeground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		save.setBackground(Theme.current().getInterfaceAccentColor());
+		save.setForeground(Theme.current().getSecondAltBackgroundColor());
 		save.setFocusPainted(false);
 		add("North", PanelUtils.maxMargin(
 				PanelUtils.westAndEastElement(new JEmptyBox(0, 0), PanelUtils.centerInPanelPadding(save, 0, 0)), 5,
@@ -128,7 +128,7 @@ public class ArmorImageMakerView extends ViewBase {
 		});
 
 		type1.setSelected(true);
-		col.setColor(Theme.current().getColorScheme().getInterfaceAccentColor());
+		col.setColor(Theme.current().getInterfaceAccentColor());
 
 		updateARM();
 	}

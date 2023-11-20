@@ -77,7 +77,7 @@ public class ElementOrderEditor {
 							list.setTransferHandler(new ReordarableListTransferHandler());
 							list.setDropMode(DropMode.INSERT);
 							list.setDragEnabled(true);
-							list.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+							list.setBackground(Theme.current().getAltBackgroundColor());
 
 							list.setCellRenderer(new SmallIconModListRender(false));
 							tabs.addTab(element.getCreativeTab().getUnmappedValue(), new JScrollPane(list));

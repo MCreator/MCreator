@@ -22,7 +22,6 @@ package net.mcreator.ui.laf.renderer.elementlist;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
@@ -41,7 +40,7 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 	public MediumIconModListRender() {
 		setLayout(new BorderLayout(5, 0));
 		setBorder(null);
-		setBackground(Theme.current().getColorScheme().getForegroundColor());
+		setBackground(Theme.current().getForegroundColor());
 
 		label.setFont(Theme.current().getSecondaryFont().deriveFont(19.0f));
 
@@ -57,10 +56,10 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 		if (element != null) {
 			if (isSelected) {
 				setOpaque(true);
-				label.setForeground(Theme.current().getColorScheme().getBackgroundColor());
+				label.setForeground(Theme.current().getBackgroundColor());
 			} else {
 				setOpaque(false);
-				label.setForeground(Theme.current().getColorScheme().getForegroundColor());
+				label.setForeground(Theme.current().getForegroundColor());
 			}
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 25));

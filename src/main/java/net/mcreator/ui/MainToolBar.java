@@ -32,7 +32,7 @@ public class MainToolBar extends JToolBar {
 	private final JToolBar pluginToolbarRight = new JToolBar();
 
 	MainToolBar(MCreator mcreator) {
-		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getColorScheme().getSecondAltBackgroundColor()));
+		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getSecondAltBackgroundColor()));
 		setFloatable(false);
 
 		pluginToolbarLeft.setBorder(BorderFactory.createEmptyBorder());
@@ -130,12 +130,12 @@ public class MainToolBar extends JToolBar {
 		button.addMouseListener(new MouseAdapter() {
 			@Override public void mouseEntered(MouseEvent mouseEvent) {
 				super.mouseEntered(mouseEvent);
-				button.setBackground(Theme.current().getColorScheme().getAltBackgroundColor());
+				button.setBackground(Theme.current().getAltBackgroundColor());
 			}
 
 			@Override public void mouseExited(MouseEvent mouseEvent) {
 				super.mouseExited(mouseEvent);
-				button.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+				button.setBackground(Theme.current().getBackgroundColor());
 			}
 		});
 		return button;

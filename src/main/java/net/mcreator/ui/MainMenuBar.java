@@ -51,7 +51,7 @@ public class MainMenuBar extends JMenuBar {
 				OS.getOS() == OS.MAC && "true".equals(System.getProperty("apple.laf.useScreenMenuBar"));
 
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0,
-				Theme.current().getColorScheme().getSecondAltBackgroundColor()));
+				Theme.current().getSecondAltBackgroundColor()));
 
 		if (!macOSscreenMenuBar) {
 			JMenu logo = new JMenu("  MCreator");

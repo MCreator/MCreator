@@ -81,7 +81,7 @@ public class PreferencesDialog extends MCreatorDialog {
 					}
 
 					@Override public void paint(Graphics g) {
-						g.setColor(Theme.current().getColorScheme().getAltBackgroundColor());
+						g.setColor(Theme.current().getAltBackgroundColor());
 						g.fillRect(0, 0, getSize().width, getSize().height);
 						super.paint(g);
 					}
@@ -91,10 +91,10 @@ public class PreferencesDialog extends MCreatorDialog {
 		spne.setContinuousLayout(true);
 		spne.setDividerLocation(0.3);
 		spne.setDividerSize(2);
-		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Theme.current().getColorScheme().getAltBackgroundColor()));
+		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Theme.current().getAltBackgroundColor()));
 		add("Center", spne);
 
-		sections.setBackground(Theme.current().getColorScheme().getBackgroundColor());
+		sections.setBackground(Theme.current().getBackgroundColor());
 		ComponentUtils.deriveFont(sections, 13);
 
 		JButton ok = L10N.button("dialog.preferences.save");

@@ -100,11 +100,11 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 				boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBackground(isSelected ?
-					Theme.current().getColorScheme().getAltBackgroundColor() :
-					Theme.current().getColorScheme().getBackgroundColor());
+					Theme.current().getAltBackgroundColor() :
+					Theme.current().getBackgroundColor());
 			setText(ma.getName());
 			ComponentUtils.deriveFont(this, 11);
-			setForeground(Theme.current().getColorScheme().getForegroundColor());
+			setForeground(Theme.current().getForegroundColor());
 			setVerticalTextPosition(BOTTOM);
 			setHorizontalTextPosition(CENTER);
 			setHorizontalAlignment(CENTER);

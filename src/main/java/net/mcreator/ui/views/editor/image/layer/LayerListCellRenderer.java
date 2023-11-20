@@ -60,10 +60,10 @@ public class LayerListCellRenderer extends JPanel implements ListCellRenderer<La
 
 		if (isSelected) {
 			setOpaque(true);
-			setBackground(Theme.current().getColorScheme().getInterfaceAccentColor());
+			setBackground(Theme.current().getInterfaceAccentColor());
 		} else if (cellHasFocus) {
 			setOpaque(true);
-			setBackground(Theme.current().getColorScheme().getAltForegroundColor());
+			setBackground(Theme.current().getAltForegroundColor());
 		} else
 			setOpaque(false);
 

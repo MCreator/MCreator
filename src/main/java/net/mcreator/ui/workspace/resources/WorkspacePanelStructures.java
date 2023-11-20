@@ -99,8 +99,8 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBackground(isSelected ?
-					Theme.current().getColorScheme().getInterfaceAccentColor() :
-					Theme.current().getColorScheme().getBackgroundColor());
+					Theme.current().getInterfaceAccentColor() :
+					Theme.current().getBackgroundColor());
 			setText(" " + ma);
 			ComponentUtils.deriveFont(this, 17);
 			setIcon(UIRES.get("16px.ext.gif"));

@@ -40,11 +40,11 @@ class AcceleratorDialog {
 				return false;
 			}
 		});
-		map.setBackground(Theme.current().getColorScheme().getBackgroundColor());
-		map.setSelectionBackground(Theme.current().getColorScheme().getForegroundColor());
-		map.setSelectionForeground(Theme.current().getColorScheme().getBackgroundColor());
+		map.setBackground(Theme.current().getBackgroundColor());
+		map.setSelectionBackground(Theme.current().getForegroundColor());
+		map.setSelectionForeground(Theme.current().getBackgroundColor());
 		map.setBorder(BorderFactory.createEmptyBorder());
-		map.setGridColor(Theme.current().getColorScheme().getAltBackgroundColor());
+		map.setGridColor(Theme.current().getAltBackgroundColor());
 		map.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		if (OS.getOS() == OS.MAC) {

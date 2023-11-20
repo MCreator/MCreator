@@ -354,9 +354,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		JPanel sbbp3 = new JPanel(new GridLayout(1, 2, 0, 0));
 		sbbp3.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.biome.vanilla_features"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/default_features"),
 				L10N.label("elementgui.biome.default_features")));
@@ -368,9 +368,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		JPanel sbbp5 = new JPanel(new GridLayout(8, 2, 0, 2));
 		sbbp5.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.biome.custom_tree_properties"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 		sbbp5.setOpaque(false);
 
 		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/trees_per_chunk"),
@@ -490,9 +490,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sounds.add(moodSoundDelay);
 
 		sounds.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.biome.sounds"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 
 		sounds.setOpaque(false);
 
@@ -513,9 +513,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		particles.setOpaque(false);
 
 		particles.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getColorScheme().getForegroundColor(), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.biome.particles"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getColorScheme().getForegroundColor()));
+				Theme.current().getForegroundColor()));
 
 		spawnParticle.setOpaque(false);
 		spawnParticle.addActionListener(event -> updateParticleParameters());

@@ -149,7 +149,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		donate.setIcon(UIRES.get("donate"));
 		donate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(donate, 13);
-		donate.setForeground(Theme.current().getColorScheme().getForegroundColor());
+		donate.setForeground(Theme.current().getForegroundColor());
 		donate.setBorder(BorderFactory.createEmptyBorder());
 		donate.setHorizontalTextPosition(JLabel.LEFT);
 		donate.addMouseListener(new MouseAdapter() {
@@ -182,7 +182,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		prefs.setIcon(UIRES.get("settings"));
 		prefs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(prefs, 13);
-		prefs.setForeground(Theme.current().getColorScheme().getForegroundColor());
+		prefs.setForeground(Theme.current().getForegroundColor());
 		prefs.setBorder(BorderFactory.createEmptyBorder());
 		prefs.setHorizontalTextPosition(JLabel.LEFT);
 		prefs.addMouseListener(new MouseAdapter() {
@@ -202,7 +202,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			}
 		});
 		ComponentUtils.deriveFont(version, 13);
-		version.setForeground(Theme.current().getColorScheme().getForegroundColor());
+		version.setForeground(Theme.current().getForegroundColor());
 		version.setHorizontalTextPosition(SwingConstants.LEFT);
 		version.setIcon(UIRES.get("info"));
 		version.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -219,7 +219,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		add("Center", centerComponent);
 
-		recentPanel.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+		recentPanel.setBackground(Theme.current().getSecondAltBackgroundColor());
 		recentPanel.setPreferredSize(new Dimension(225, 10));
 
 		initWebsitePanel();
@@ -331,7 +331,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 			recentWorkspaces.getList().forEach(defaultListModel::addElement);
 			JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
-			recentsList.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+			recentsList.setBackground(Theme.current().getSecondAltBackgroundColor());
 			recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			recentsList.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
@@ -381,11 +381,11 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			recentPanel.add(scrollPane);
 		} else if (recentWorkspaces == null) {
 			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces_loaded");
-			norecents.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+			norecents.setForeground(Theme.current().getAltForegroundColor());
 			recentPanel.add(PanelUtils.totalCenterInPanel(norecents));
 		} else {
 			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
-			norecents.setForeground(Theme.current().getColorScheme().getAltForegroundColor());
+			norecents.setForeground(Theme.current().getAltForegroundColor());
 			recentPanel.add(PanelUtils.totalCenterInPanel(norecents));
 		}
 
@@ -401,7 +401,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private JButton mainWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
 		JButton newWorkspace = new JButton(text);
 		ComponentUtils.deriveFont(newWorkspace, 15);
-		newWorkspace.setForeground(Theme.current().getColorScheme().getForegroundColor());
+		newWorkspace.setForeground(Theme.current().getForegroundColor());
 		newWorkspace.setPreferredSize(new Dimension(240, 48));
 		newWorkspace.setMargin(new Insets(0, 0, 0, 0));
 		newWorkspace.setIcon(icon);
@@ -423,7 +423,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	public void addWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
 		JButton workspaceButton = new JButton(text);
 		ComponentUtils.deriveFont(workspaceButton, 11);
-		workspaceButton.setForeground(Theme.current().getColorScheme().getForegroundColor());
+		workspaceButton.setForeground(Theme.current().getForegroundColor());
 		workspaceButton.setPreferredSize(new Dimension(240, 22));
 		workspaceButton.setMargin(new Insets(0, 0, 0, 0));
 		workspaceButton.setIcon(
@@ -520,7 +520,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JComponent south = PanelUtils.westAndEastElement(nov, motwpan, 20, 20);
 		south.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
 		JComponent hol = PanelUtils.gridElements(1, 1, south);
-		hol.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getColorScheme().getAltBackgroundColor()));
+		hol.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		JPanel soim;
 		if (!Launcher.version.isSnapshot()) {
@@ -529,11 +529,11 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			((ImagePanel) soim).setOffsetY(-400);
 		} else {
 			soim = new JPanel();
-			soim.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+			soim.setBackground(Theme.current().getSecondAltBackgroundColor());
 		}
 
 		soim.setLayout(new BorderLayout());
-		soim.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getColorScheme().getAltBackgroundColor()));
+		soim.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		soim.add(south);
 

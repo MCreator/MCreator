@@ -25,7 +25,6 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.MCreatorVersionNumber;
@@ -61,7 +60,7 @@ public class UpdateNotifyDialog {
 				pan.add(new JLabel("   "));
 				pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
 				pan.setPreferredSize(new Dimension(585, 290));
-				ar.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+				ar.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 				ar.setText(fullChangelog(updateInfo));
 
@@ -90,7 +89,7 @@ public class UpdateNotifyDialog {
 				pan.add(new JLabel("   "));
 				pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
 				pan.setPreferredSize(new Dimension(585, 290));
-				ar.setBackground(Theme.current().getColorScheme().getSecondAltBackgroundColor());
+				ar.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 				ar.setText(releaseChangelog(updateInfo.getReleases().get(Launcher.version.major).getBuilds(),
 						Launcher.version.buildlong));
