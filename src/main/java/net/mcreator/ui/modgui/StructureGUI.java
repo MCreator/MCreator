@@ -51,7 +51,6 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -75,7 +74,8 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 	private SearchableComboBox<String> structureSelector;
 
-	private JComboBox<String> generationStep;
+	private final JComboBox<String> generationStep = new JComboBox<>(
+			ElementUtil.getDataListAsStringArray("generationsteps"));
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -88,8 +88,6 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	@Override protected void initGUI() {
 		structureSelector = new SearchableComboBox<>(
 				mcreator.getFolderManager().getStructureList().toArray(String[]::new));
-		generationStep = new JComboBox<>(ElementUtil.getDataListAsStringArray("generationsteps"));
-
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
@@ -176,9 +174,6 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-
-		ComboBoxUtil.updateComboBoxContents(generationStep,
-				Arrays.asList(ElementUtil.getDataListAsStringArray("generationsteps")), "SURFACE_STRUCTURES");
 
 		ComboBoxUtil.updateComboBoxContents(structureSelector, mcreator.getFolderManager().getStructureList());
 	}
