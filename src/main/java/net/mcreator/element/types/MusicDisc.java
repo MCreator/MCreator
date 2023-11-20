@@ -39,6 +39,7 @@ import java.util.List;
 public class MusicDisc extends GeneratableElement implements IItem, IItemWithTexture, ITabContainedElement {
 
 	public String name;
+	public String rarity;
 	@TextureReference(TextureType.ITEM) public String texture;
 	public String description;
 	public TabEntry creativeTab;
@@ -59,6 +60,8 @@ public class MusicDisc extends GeneratableElement implements IItem, IItemWithTex
 
 	public MusicDisc(ModElement element) {
 		super(element);
+
+		this.rarity = "RARE";
 	}
 
 	@Override public String getTexture() {

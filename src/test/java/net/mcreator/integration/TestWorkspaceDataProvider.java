@@ -1316,6 +1316,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.MUSICDISC.equals(modElement.getType())) {
 			MusicDisc musicDisc = new MusicDisc(modElement);
 			musicDisc.name = modElement.getName();
+			musicDisc.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			musicDisc.description = modElement.getName();
 			musicDisc.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));

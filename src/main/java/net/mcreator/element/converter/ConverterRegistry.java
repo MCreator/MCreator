@@ -173,7 +173,8 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.MUSICDISC, List.of(
 			new SpecialInformationConverter(),
-			new ItemHasGlowConverter()
+			new ItemHasGlowConverter(),
+			new MusicDiscRarityConverter()
 		));
 		put(ModElementType.TOOL, List.of(
 			new SpecialInformationConverter(),
