@@ -37,7 +37,6 @@ import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
@@ -53,7 +52,6 @@ import javax.annotation.Nonnull;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -62,7 +60,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 	private ProcedureSelector generateCondition;
 	private BiomeListField restrictionBiomes;
-	private final JComboBox<String> generationStep = new JComboBox<>();
+	private final JComboBox<String> generationStep = new JComboBox<>(
+			ElementUtil.getDataListAsStringArray("generationsteps"));
 
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
@@ -80,6 +79,9 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				L10N.t("elementgui.feature.additional_generation_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
+
+		if (!isEditingMode())
+			generationStep.setSelectedItem("SURFACE_STRUCTURES");
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
@@ -174,8 +176,6 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-		ComboBoxUtil.updateComboBoxContents(generationStep,
-				Arrays.asList(ElementUtil.getDataListAsStringArray("generationsteps")), "SURFACE_STRUCTURES");
 		generateCondition.refreshListKeepSelected();
 	}
 
