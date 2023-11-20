@@ -1540,6 +1540,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.transparentModelCondition = new LogicProcedure(emptyLists ? "condition1" : null, _true);
 		livingEntity.isShakingCondition = new LogicProcedure(emptyLists ? "condition2" : null, !_true);
 		livingEntity.solidBoundingBox = new LogicProcedure(emptyLists ? "condition3" : null, _true);
+		livingEntity.visualScale = new NumberProcedure(emptyLists ? null : "number1", 8.123);
+		livingEntity.boundingBoxScale = new NumberProcedure(emptyLists ? null : "number2", 4.223);
 		livingEntity.mobModelName = getRandomItem(random, LivingEntityGUI.builtinmobmodels).getReadableName();
 		livingEntity.spawnEggBaseColor = Color.red;
 		livingEntity.spawnEggDotColor = Color.green;

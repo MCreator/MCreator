@@ -55,6 +55,7 @@ import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.states.entity.JEntityDataList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -100,6 +101,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private LogicProcedureSelector solidBoundingBox;
 	private LogicProcedureSelector breatheUnderwater;
 	private LogicProcedureSelector pushedByFluids;
+	private NumberProcedureSelector visualScale;
+	private NumberProcedureSelector boundingBoxScale;
 
 	private final SoundSelector livingSound = new SoundSelector(mcreator);
 	private final SoundSelector hurtSound = new SoundSelector(mcreator);
@@ -356,6 +359,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.t("elementgui.living_entity.condition_fluids_can_push"), AbstractProcedureSelector.Side.BOTH,
 				L10N.checkbox("elementgui.common.enable"), 160,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
+		visualScale = new NumberProcedureSelector(this.withEntry("entity/visual_scale"), mcreator,
+				L10N.t("elementgui.living_entity.visual_scale"), AbstractProcedureSelector.Side.CLIENT,
+				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 308, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity"));
+		boundingBoxScale = new NumberProcedureSelector(this.withEntry("entity/bounding_box_scale"), mcreator,
+				L10N.t("elementgui.living_entity.bounding_box_scale"), AbstractProcedureSelector.Side.BOTH,
+				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 300, Dependency.fromString(
+				"x:number/y:number/z:number/world:world/entity:entity"));
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
@@ -524,7 +535,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		entityDataListComp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		entityDataListPanel.add(entityDataListComp);
 
-		JPanel spo2 = new JPanel(new GridLayout(11, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(13, 2, 2, 2));
 
 		spo2.setOpaque(false);
 
@@ -535,21 +546,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/model"),
 				L10N.label("elementgui.living_entity.entity_model")));
 		spo2.add(mobModel);
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
-				L10N.label("elementgui.living_entity.bounding_box")));
-		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(2, 2), modelHeight,
-				new JEmptyBox(2, 2), modelShadowSize, new JEmptyBox(2, 2), mountedYOffset, new JEmptyBox(2, 2),
-				disableCollisions));
-
-		spo2.add(new JEmptyBox());
-		spo2.add(solidBoundingBox);
-
-		spo2.add(new JEmptyBox());
-		spo2.add(transparentModelCondition);
-
-		spo2.add(new JEmptyBox());
-		spo2.add(isShakingCondition);
 
 		JButton importmobtexture = new JButton(UIRES.get("18px.add"));
 		importmobtexture.setToolTipText(L10N.t("elementgui.living_entity.entity_model_import"));
@@ -573,6 +569,27 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
 				L10N.label("elementgui.living_entity.glow_texture")));
 		spo2.add(mobModelGlowTexture);
+
+		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
+				L10N.label("elementgui.living_entity.bounding_box")));
+		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, modelWidth, new JEmptyBox(2, 2), modelHeight,
+				new JEmptyBox(2, 2), modelShadowSize, new JEmptyBox(2, 2), mountedYOffset, new JEmptyBox(2, 2),
+				disableCollisions));
+
+		spo2.add(new JEmptyBox());
+		spo2.add(visualScale);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(boundingBoxScale);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(solidBoundingBox);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(transparentModelCondition);
+
+		spo2.add(new JEmptyBox());
+		spo2.add(isShakingCondition);
 
 		ComponentUtils.deriveFont(mobModelTexture, 16);
 		ComponentUtils.deriveFont(mobModelGlowTexture, 16);
@@ -945,6 +962,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		solidBoundingBox.refreshListKeepSelected();
 		breatheUnderwater.refreshListKeepSelected();
 		pushedByFluids.refreshListKeepSelected();
+		visualScale.refreshListKeepSelected();
+		boundingBoxScale.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
 				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
@@ -995,6 +1014,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		transparentModelCondition.setSelectedProcedure(livingEntity.transparentModelCondition);
 		isShakingCondition.setSelectedProcedure(livingEntity.isShakingCondition);
 		solidBoundingBox.setSelectedProcedure(livingEntity.solidBoundingBox);
+		visualScale.setSelectedProcedure(livingEntity.visualScale);
+		boundingBoxScale.setSelectedProcedure(livingEntity.boundingBoxScale);
 		mobSpawningType.setSelectedItem(livingEntity.mobSpawningType);
 		rangedItemType.setSelectedItem(livingEntity.rangedItemType);
 		spawnEggBaseColor.setColor(livingEntity.spawnEggBaseColor);
@@ -1127,6 +1148,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.transparentModelCondition = transparentModelCondition.getSelectedProcedure();
 		livingEntity.isShakingCondition = isShakingCondition.getSelectedProcedure();
 		livingEntity.solidBoundingBox = solidBoundingBox.getSelectedProcedure();
+		livingEntity.visualScale = visualScale.getSelectedProcedure();
+		livingEntity.boundingBoxScale = boundingBoxScale.getSelectedProcedure();
 		livingEntity.spawnEggDotColor = spawnEggDotColor.getColor();
 		livingEntity.hasSpawnEgg = hasSpawnEgg.isSelected();
 		livingEntity.disableCollisions = disableCollisions.isSelected();
