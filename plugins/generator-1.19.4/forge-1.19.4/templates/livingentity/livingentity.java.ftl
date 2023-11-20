@@ -904,8 +904,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			DungeonHooks.addDungeonMob(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), 180);
 		</#if>
 
-		<#if data.spawnInRaids>
+		<#if data.mobBehaviourType == "Raider">
+			<#if data.spawnInRaids>
 		Raid.RaiderType.create("${registryname}", ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), new int[]{0, 4, 3, 3, 4, 4, 4, 2});
+			</#if>
 		</#if>
 	}
 
