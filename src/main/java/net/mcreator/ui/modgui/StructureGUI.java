@@ -74,9 +74,9 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	private final JMinMaxSpinner separation_spacing = new JMinMaxSpinner(2, 5, 0, 1000000, 1,
 			L10N.t("elementgui.structuregen.separation"), L10N.t("elementgui.structuregen.spacing"));
 
-	private final SearchableComboBox<String> structureSelector = new SearchableComboBox<>();
+	private SearchableComboBox<String> structureSelector;
 
-	private final JComboBox<String> generationStep = new JComboBox<>();
+	private JComboBox<String> generationStep;
 
 	private final JSpinner size = new JSpinner(new SpinnerNumberModel(1, 0, 7, 1));
 	private final JSpinner maxDistanceFromCenter = new JSpinner(new SpinnerNumberModel(64, 1, 128, 1));
@@ -91,6 +91,10 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	}
 
 	@Override protected void initGUI() {
+		structureSelector = new SearchableComboBox<>(
+				mcreator.getFolderManager().getStructureList().toArray(String[]::new));
+		generationStep = new JComboBox<>(ElementUtil.getDataListAsStringArray("generationsteps"));
+
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		jigsaw = new JJigsawPoolsList(mcreator, this);
@@ -108,8 +112,10 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 		ComponentUtils.deriveFont(structureSelector, 16);
 
-		if (!isEditingMode())
+		if (!isEditingMode()) {
+			generationStep.setSelectedItem("SURFACE_STRUCTURES");
 			ignoreBlocks.setListElements(List.of(new MItemBlock(modElement.getWorkspace(), "Blocks.STRUCTURE_BLOCK")));
+		}
 
 		JPanel params = new JPanel(new GridLayout(8, 2, 50, 2));
 		params.setOpaque(false);
