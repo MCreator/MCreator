@@ -55,8 +55,9 @@ public class JColor extends JPanel {
 		this.allowNullColor = allowNullColor;
 		this.allowTransparency = allowTransparency;
 
-		colorText = new JTextField();
+		colorText = new JTextField(9);
 		colorText.setEditable(false);
+		colorText.setPreferredSize(new Dimension(0, 38));
 		colorText.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 		colorText.setHorizontalAlignment(JTextField.CENTER);
 		colorText.addMouseListener(new MouseAdapter() {
@@ -128,7 +129,7 @@ public class JColor extends JPanel {
 			colorText.setText("DEFAULT");
 			colorText.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 		} else {
-			colorText.setText(String.format("%06X", 0xFFFFFF & color.getRGB()));
+			colorText.setText(String.format("#%06X", 0xFFFFFF & color.getRGB()));
 			colorText.setOpaque(true);
 			colorText.setBackground(color);
 			colorText.setForeground(getColorLuminance(color) > 128 ? Color.black : Color.white);
