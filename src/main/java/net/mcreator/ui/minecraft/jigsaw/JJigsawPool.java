@@ -20,6 +20,7 @@
 package net.mcreator.ui.minecraft.jigsaw;
 
 import net.mcreator.element.types.Structure;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -27,6 +28,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ResourceLocationValidator;
@@ -38,7 +40,7 @@ import java.util.List;
 
 public class JJigsawPool extends JEntriesList {
 
-	private final JTextField poolName = new JTextField();
+	private final JTextField poolName = new JTextField(10);
 	private final VTextField fallbackPool = new VTextField(20);
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
@@ -49,7 +51,7 @@ public class JJigsawPool extends JEntriesList {
 			String name) {
 		super(jigsawPools.getMCreator(), new BorderLayout(0, 5), gui);
 		setOpaque(false);
-		setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
+		setBackground(Theme.current().getBackgroundColor().brighter());
 
 		entries.setOpaque(false);
 
@@ -64,12 +66,13 @@ public class JJigsawPool extends JEntriesList {
 		ComponentUtils.deriveFont(poolName, 16);
 		ComponentUtils.deriveFont(fallbackPool, 16);
 
-		JComponent poolParams = new JPanel(new GridLayout(2, 2, 3, 3));
+		JComponent poolParams = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		poolParams.setOpaque(false);
 
 		poolParams.add(HelpUtils.wrapWithHelpButton(gui.withEntry("structure/jigsaw_pool_name"),
 				L10N.label("elementgui.structuregen.jigsaw_pool_name")));
 		poolParams.add(poolName);
+		poolParams.add(new JEmptyBox(15, 5));
 
 		poolParams.add(HelpUtils.wrapWithHelpButton(gui.withEntry("structure/jigsaw_fallback_pool"),
 				L10N.label("elementgui.structuregen.jigsaw_fallback")));
@@ -98,9 +101,9 @@ public class JJigsawPool extends JEntriesList {
 		add("Center", entries);
 
 		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.structuregen.jigsaw_pool"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		parent.revalidate();
 		parent.repaint();

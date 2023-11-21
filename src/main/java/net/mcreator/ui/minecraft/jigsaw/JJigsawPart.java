@@ -28,6 +28,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
@@ -50,7 +51,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 		super(new BorderLayout());
 		this.mcreator = mcreator;
 
-		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+		setBackground((Theme.current().getAltBackgroundColor()).darker());
 
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		ignoreBlocks.setPreferredSize(new Dimension(250, 30));
