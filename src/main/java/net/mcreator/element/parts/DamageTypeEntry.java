@@ -40,4 +40,6 @@ public class DamageTypeEntry extends MappableElement {
 
 	public DamageTypeEntry(@Nonnull Workspace owner, DataListEntry name) {
 		this(owner, name.getName());
-	}}
+	}
+
+}

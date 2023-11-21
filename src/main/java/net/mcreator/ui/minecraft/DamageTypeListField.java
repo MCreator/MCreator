@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DamageTypeListField extends JItemListField<DamageTypeEntry> {
+
 	public DamageTypeListField(MCreator mcreator, boolean allowTags) {
 		super(mcreator, false, allowTags);
 	}
@@ -53,4 +54,6 @@ public class DamageTypeListField extends JItemListField<DamageTypeEntry> {
 			tags.add(new DamageTypeEntry(mcreator.getWorkspace(), "#" + tag));
 
 		return tags;
-	}}
+	}
+
+}
