@@ -26,6 +26,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
 import net.mcreator.ui.validation.Validator;
@@ -47,7 +48,7 @@ public class JEntityDataList extends JSimpleEntriesList<JEntityDataEntry, Proper
 
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
 	}
 

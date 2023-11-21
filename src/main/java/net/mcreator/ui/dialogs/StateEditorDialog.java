@@ -24,6 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -105,7 +106,7 @@ public class StateEditorDialog {
 			entryComponent = component;
 
 			JPanel settings = new JPanel();
-			settings.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			settings.setBackground(Theme.current().getAltBackgroundColor());
 			settings.add(new JLabel(property.replace("CUSTOM:", "")));
 			settings.add(new JLabel(matchSymbol));
 			settings.add(entryComponent);
@@ -115,8 +116,8 @@ public class StateEditorDialog {
 			useEntry.addChangeListener(e -> {
 				entryComponent.setEnabled(useEntry.isSelected());
 				settings.setBackground(useEntry.isSelected() ?
-						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
-						(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+						Theme.current().getAltBackgroundColor() :
+						Theme.current().getSecondAltBackgroundColor());
 			});
 
 			add(useEntry);

@@ -33,6 +33,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -342,8 +343,7 @@ public class WorkspaceDialogs {
 			});
 			generator.remove(this.getComponent(0));
 			generator.setEnabled(false);
-			generator.setBorder(
-					BorderFactory.createMatteBorder(1, 1, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+			generator.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, Theme.current().getAltBackgroundColor()));
 
 			JButton selectGenerator = new JButton(UIRES.get("18px.edit"));
 			selectGenerator.setMargin(new Insets(4, 4, 4, 4));
@@ -523,7 +523,7 @@ public class WorkspaceDialogs {
 
 			JPanel dependencySettings = new JPanel(new GridLayout(3, 2, 7, 5));
 			dependencySettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-			dependencySettings.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			dependencySettings.setBackground(Theme.current().getAltBackgroundColor());
 			dependencySettings.add(L10N.label("dialog.workspace_settings.required_mods"));
 			dependencySettings.add(requiredMods);
 			dependencySettings.add(L10N.label("dialog.workspace_settings.dependencies"));

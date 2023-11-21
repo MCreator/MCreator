@@ -26,6 +26,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -174,9 +175,9 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		buttonsPanel.add(removeall);
 
 		JComponent buttons = PanelUtils.totalCenterInPanel(buttonsPanel);
-		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getInterfaceAccentColor()));
 		buttons.setOpaque(true);
-		buttons.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		buttons.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		if (excludeButton) {
 			include.setSelected(true);
@@ -188,8 +189,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			exclude.setMargin(new Insets(0, 1, 0, 1));
 
 			JComponent incexc = PanelUtils.totalCenterInPanel(PanelUtils.join(include, exclude));
-			incexc.setBorder(
-					BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+			incexc.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getInterfaceAccentColor()));
 
 			add(incexc, BorderLayout.WEST);
 		}
@@ -294,14 +294,11 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		public Component getListCellRendererComponent(JList<? extends T> list, T value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			setOpaque(true);
-			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-			setForeground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT") :
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getAltBackgroundColor());
+			setForeground(
+					isSelected ? Theme.current().getSecondAltBackgroundColor() : Theme.current().getForegroundColor());
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 5, 0, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setVerticalAlignment(SwingConstants.CENTER);
