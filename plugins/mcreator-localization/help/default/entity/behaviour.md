@@ -1,6 +1,6 @@
 Living entity set to Mob will be able to attack, while a living entity set to Creature will be passive.
 
-A raider will spawn on a raid and is a monster.
+A raider will spawn on a raid and is a monster, the spawn rate is the same as the Pillager.
 
 This parameter is overridden by the AI base when used.
 
