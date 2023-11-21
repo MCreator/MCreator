@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.laf;
 
+import net.mcreator.ui.laf.themes.Theme;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -33,20 +35,20 @@ public class RadioButtonIcon implements Icon {
 		int controlSize = getControlSize();
 		if (model.isEnabled()) {
 			if (model.isPressed() && model.isArmed()) {
-				g.setColor(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).brighter());
+				g.setColor((Theme.current().getAltBackgroundColor()).brighter());
 				g.fillOval(x, y, controlSize - 1, controlSize - 1);
 			} else if (model.isRollover()) {
-				g.setColor(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+				g.setColor((Theme.current().getAltBackgroundColor()).darker());
 				g.fillOval(x, y, controlSize - 1, controlSize - 1);
 			} else {
-				g.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				g.setColor(Theme.current().getAltBackgroundColor());
 				g.fillOval(x, y, controlSize - 1, controlSize - 1);
 			}
 
-			g.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			g.setColor(Theme.current().getInterfaceAccentColor());
 
 		} else {
-			g.setColor((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			g.setColor(Theme.current().getBackgroundColor());
 			g.fillOval(x, y, controlSize - 1, controlSize - 1);
 		}
 

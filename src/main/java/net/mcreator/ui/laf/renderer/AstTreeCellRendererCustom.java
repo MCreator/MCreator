@@ -22,6 +22,7 @@ import com.google.gson.JsonElement;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -36,9 +37,9 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 	private static final Logger LOG = LogManager.getLogger(AstTreeCellRendererCustom.class);
 
 	public AstTreeCellRendererCustom() {
-		setBorderSelectionColor((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		setBackgroundSelectionColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		setBorderSelectionColor(Theme.current().getBackgroundColor());
+		setBackground(Theme.current().getBackgroundColor());
+		setBackgroundSelectionColor(Theme.current().getInterfaceAccentColor());
 		ComponentUtils.deriveFont(this, 11);
 	}
 
@@ -49,11 +50,11 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 		setOpaque(true);
 
 		if (!sel) {
-			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setBackground(Theme.current().getBackgroundColor());
+			setForeground(Theme.current().getForegroundColor());
 		} else {
-			setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-			setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setBackground(Theme.current().getInterfaceAccentColor());
+			setForeground(Theme.current().getBackgroundColor());
 		}
 
 		if (value instanceof JsonTree.JsonObjectNode) {

@@ -24,8 +24,8 @@ import com.google.gson.annotations.JsonAdapter;
 
 import java.lang.reflect.Type;
 
-@JsonAdapter(PropertyDataWithValue.GSONAdapter.class)
-public record PropertyDataWithValue<T>(PropertyData<T> property, T value) {
+@JsonAdapter(PropertyDataWithValue.GSONAdapter.class) public record PropertyDataWithValue<T>(PropertyData<T> property,
+																							 T value) {
 
 	@SuppressWarnings("unchecked")
 	private static <T> PropertyDataWithValue<T> create(PropertyData<T> property, Object value) {

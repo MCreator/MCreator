@@ -20,6 +20,7 @@ package net.mcreator.ui.ide;
 
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import org.fife.ui.rtextarea.RTextArea;
 import org.fife.ui.rtextarea.SearchContext;
 import org.fife.ui.rtextarea.SearchEngine;
@@ -48,16 +49,16 @@ public class ReplaceBar extends JPanel {
 		this.ra = ra;
 
 		final JLabel matches = new JLabel();
-		matches.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		matches.setForeground(Theme.current().getAltForegroundColor());
 
 		JToolBar top = new JToolBar();
-		top.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		top.setBackground(Theme.current().getBackgroundColor());
 		top.setBorder(null);
 		top.setFloatable(false);
 
 		JToolBar bottom = new JToolBar();
 		bottom.setBorder(null);
-		bottom.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		bottom.setBackground(Theme.current().getBackgroundColor());
 		bottom.setFloatable(false);
 
 		jtf1.addKeyListener(new KeyAdapter() {
@@ -75,7 +76,7 @@ public class ReplaceBar extends JPanel {
 
 				matches.setText(marked.getMarkedCount() + " results");
 				if (marked.getMarkedCount() > 0) {
-					matches.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+					matches.setForeground(Theme.current().getAltForegroundColor());
 				} else {
 					matches.setForeground(new Color(239, 96, 96));
 				}
@@ -127,7 +128,7 @@ public class ReplaceBar extends JPanel {
 		bottom.add(Box.createHorizontalStrut(10));
 		bottom.add(replaceAll);
 
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		setBackground(Theme.current().getBackgroundColor());
 
 		top.add(jtf1);
 		top.add(Box.createHorizontalStrut(10));
@@ -150,11 +151,11 @@ public class ReplaceBar extends JPanel {
 		cb5.setForeground(new Color(0xE2E2E2));
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
-		jtf1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		jtf1.setBackground(Theme.current().getAltBackgroundColor());
 		jtf1.setOpaque(true);
 
 		jtf2.setMaximumSize(jtf1.getPreferredSize());
-		jtf2.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		jtf2.setBackground(Theme.current().getAltBackgroundColor());
 		jtf2.setOpaque(true);
 
 		JButton close = new JButton(UIRES.get("close_small"));

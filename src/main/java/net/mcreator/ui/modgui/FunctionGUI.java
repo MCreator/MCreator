@@ -28,6 +28,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.ide.RSyntaxTextAreaStyler;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
@@ -112,12 +113,12 @@ public class FunctionGUI extends ModElementGUI<Function> {
 		te.setTabsEmulated(false);
 
 		sp.setFoldIndicatorEnabled(true);
-		sp.getGutter().setFoldBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		sp.getGutter().setBorderColor((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		sp.getGutter().setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sp.getGutter().setFoldBackground(Theme.current().getBackgroundColor());
+		sp.getGutter().setBorderColor(Theme.current().getBackgroundColor());
+		sp.getGutter().setBackground(Theme.current().getBackgroundColor());
 		sp.getGutter().setBookmarkingEnabled(true);
 		sp.setIconRowHeaderEnabled(false);
-		sp.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sp.setBackground(Theme.current().getBackgroundColor());
 		sp.setBorder(null);
 
 		AbstractTokenMakerFactory atmf = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();

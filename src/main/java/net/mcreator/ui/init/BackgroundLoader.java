@@ -21,7 +21,7 @@ package net.mcreator.ui.init;
 
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.themes.ThemeLoader;
+import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -54,8 +54,8 @@ public class BackgroundLoader {
 	}
 
 	public static List<Image> loadThemeBackgrounds() {
-		Set<String> bgFiles = PluginLoader.INSTANCE.getResources(
-				"themes." + ThemeLoader.CURRENT_THEME.getID() + ".backgrounds", Pattern.compile("^[^$].*\\.png"));
+		Set<String> bgFiles = PluginLoader.INSTANCE.getResources("themes." + Theme.current().getID() + ".backgrounds",
+				Pattern.compile("^[^$].*\\.png"));
 
 		List<Image> backgrounds = new ArrayList<>();
 		for (String name : bgFiles) {

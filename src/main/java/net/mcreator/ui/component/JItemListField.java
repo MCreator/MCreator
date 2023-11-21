@@ -26,6 +26,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -46,10 +47,10 @@ import java.util.Optional;
 
 public abstract class JItemListField<T> extends JPanel implements IValidable {
 
-	private final JButton bt = new JButton(UIRES.get("18px.add"));
-	private final JButton bt2 = new JButton(UIRES.get("18px.remove"));
-	private final JButton bt3 = new JButton(UIRES.get("18px.removeall"));
-	private final JButton bt4 = new JButton(UIRES.get("18px.addtag"));
+	private final TechnicalButton add = new TechnicalButton(UIRES.get("18px.add"));
+	private final TechnicalButton remove = new TechnicalButton(UIRES.get("18px.remove"));
+	private final TechnicalButton removeall = new TechnicalButton(UIRES.get("18px.removeall"));
+	private final TechnicalButton addtag = new TechnicalButton(UIRES.get("18px.addtag"));
 	private final JToggleButton include = L10N.togglebutton("elementgui.common.include");
 	private final JToggleButton exclude = L10N.togglebutton("elementgui.common.exclude");
 
@@ -82,27 +83,27 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		elementsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		elementsList.setCellRenderer(new CustomListCellRenderer());
 
-		bt.setOpaque(false);
-		bt.setMargin(new Insets(0, 0, 0, 0));
-		bt.setBorder(BorderFactory.createEmptyBorder());
-		bt.setContentAreaFilled(false);
+		add.setOpaque(false);
+		add.setMargin(new Insets(0, 0, 0, 0));
+		add.setBorder(BorderFactory.createEmptyBorder());
+		add.setContentAreaFilled(false);
 
-		bt2.setOpaque(false);
-		bt2.setMargin(new Insets(0, 0, 0, 0));
-		bt2.setBorder(BorderFactory.createEmptyBorder());
-		bt2.setContentAreaFilled(false);
+		remove.setOpaque(false);
+		remove.setMargin(new Insets(0, 0, 0, 0));
+		remove.setBorder(BorderFactory.createEmptyBorder());
+		remove.setContentAreaFilled(false);
 
-		bt3.setOpaque(false);
-		bt3.setMargin(new Insets(0, 0, 0, 0));
-		bt3.setBorder(BorderFactory.createEmptyBorder());
-		bt3.setContentAreaFilled(false);
+		removeall.setOpaque(false);
+		removeall.setMargin(new Insets(0, 0, 0, 0));
+		removeall.setBorder(BorderFactory.createEmptyBorder());
+		removeall.setContentAreaFilled(false);
 
-		bt4.setOpaque(false);
-		bt4.setMargin(new Insets(0, 0, 0, 0));
-		bt4.setBorder(BorderFactory.createEmptyBorder());
-		bt4.setContentAreaFilled(false);
+		addtag.setOpaque(false);
+		addtag.setMargin(new Insets(0, 0, 0, 0));
+		addtag.setBorder(BorderFactory.createEmptyBorder());
+		addtag.setContentAreaFilled(false);
 
-		bt.addActionListener(e -> {
+		add.addActionListener(e -> {
 			List<T> list = getElementsToAdd();
 			for (T el : list)
 				if (!elementsListModel.contains(el))
@@ -112,7 +113,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
 		});
 
-		bt2.addActionListener(e -> {
+		remove.addActionListener(e -> {
 			List<T> elements = elementsList.getSelectedValuesList();
 			for (var element : elements) {
 				if (element != null) {
@@ -122,20 +123,21 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			}
 		});
 
-		bt3.addActionListener(e -> {
+		removeall.addActionListener(e -> {
 			elementsListModel.removeAllElements();
 			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
 		});
 
-		bt4.addActionListener(e -> {
+		addtag.addActionListener(e -> {
 			List<T> list = getTagsToAdd();
 			for (T el : list)
 				if (!elementsListModel.contains(el))
 					elementsListModel.addElement(el);
-
-			if (!list.isEmpty())
-				this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
+			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
 		});
+
+		include.addActionListener(e -> this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource()))));
+		exclude.addActionListener(e -> this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource()))));
 
 		JScrollPane pane = new JScrollPane(PanelUtils.totalCenterInPanel(elementsList));
 		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
@@ -166,16 +168,16 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		JPanel buttonsPanel = new JPanel();
 		buttonsPanel.setOpaque(false);
-		buttonsPanel.add(bt);
+		buttonsPanel.add(add);
 		if (allowTags)
-			buttonsPanel.add(bt4);
-		buttonsPanel.add(bt2);
-		buttonsPanel.add(bt3);
+			buttonsPanel.add(addtag);
+		buttonsPanel.add(remove);
+		buttonsPanel.add(removeall);
 
 		JComponent buttons = PanelUtils.totalCenterInPanel(buttonsPanel);
-		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getInterfaceAccentColor()));
 		buttons.setOpaque(true);
-		buttons.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		buttons.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		if (excludeButton) {
 			include.setSelected(true);
@@ -187,8 +189,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			exclude.setMargin(new Insets(0, 1, 0, 1));
 
 			JComponent incexc = PanelUtils.totalCenterInPanel(PanelUtils.join(include, exclude));
-			incexc.setBorder(
-					BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+			incexc.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getInterfaceAccentColor()));
 
 			add(incexc, BorderLayout.WEST);
 		}
@@ -204,10 +205,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	}
 
 	@Override public void setEnabled(boolean enabled) {
-		bt.setEnabled(enabled);
-		bt2.setEnabled(enabled);
-		bt3.setEnabled(enabled);
-		bt4.setEnabled(enabled);
+		add.setEnabled(enabled);
+		remove.setEnabled(enabled);
+		removeall.setEnabled(enabled);
+		addtag.setEnabled(enabled);
 		include.setEnabled(enabled);
 		exclude.setEnabled(enabled);
 	}
@@ -293,14 +294,11 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		public Component getListCellRendererComponent(JList<? extends T> list, T value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			setOpaque(true);
-			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-			setForeground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT") :
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getAltBackgroundColor());
+			setForeground(
+					isSelected ? Theme.current().getSecondAltBackgroundColor() : Theme.current().getForegroundColor());
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 5, 0, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setVerticalAlignment(SwingConstants.CENTER);

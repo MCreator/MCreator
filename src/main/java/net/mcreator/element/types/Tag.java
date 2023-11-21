@@ -68,7 +68,7 @@ import java.util.Locale;
 	}
 
 	public static Color getColor(String type) {
-		return switch(type) {
+		return switch (type) {
 			case "Items" -> Dependency.getColor("itemstack");
 			case "Blocks" -> Dependency.getColor("blockstate");
 			case "Entities" -> Dependency.getColor("entity");

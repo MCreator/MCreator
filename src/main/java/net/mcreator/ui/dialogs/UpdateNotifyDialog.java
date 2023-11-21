@@ -25,7 +25,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.MCreatorVersionNumber;
 
@@ -50,7 +50,7 @@ public class UpdateNotifyDialog {
 				ComponentUtils.deriveFont(upde, 13);
 				pan.add("North", upde);
 				JTextPane ar = new JTextPane();
-				ar.setFont(MCreatorTheme.console_font);
+				ar.setFont(Theme.current().getConsoleFont());
 				ar.setEnabled(false);
 				ar.setMargin(new Insets(5, 10, 5, 5));
 				DefaultCaret caret = (DefaultCaret) ar.getCaret();
@@ -60,7 +60,7 @@ public class UpdateNotifyDialog {
 				pan.add(new JLabel("   "));
 				pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
 				pan.setPreferredSize(new Dimension(585, 290));
-				ar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+				ar.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 				ar.setText(fullChangelog(updateInfo));
 
@@ -79,7 +79,7 @@ public class UpdateNotifyDialog {
 				ComponentUtils.deriveFont(upde, 13);
 				pan.add("North", upde);
 				JTextPane ar = new JTextPane();
-				ar.setFont(MCreatorTheme.console_font);
+				ar.setFont(Theme.current().getConsoleFont());
 				ar.setEnabled(false);
 				ar.setMargin(new Insets(5, 10, 5, 5));
 				DefaultCaret caret = (DefaultCaret) ar.getCaret();
@@ -89,7 +89,7 @@ public class UpdateNotifyDialog {
 				pan.add(new JLabel("   "));
 				pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
 				pan.setPreferredSize(new Dimension(585, 290));
-				ar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+				ar.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 				ar.setText(releaseChangelog(updateInfo.getReleases().get(Launcher.version.major).getBuilds(),
 						Launcher.version.buildlong));

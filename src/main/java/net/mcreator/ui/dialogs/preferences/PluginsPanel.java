@@ -30,6 +30,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
@@ -110,14 +111,14 @@ class PluginsPanel {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Plugin> list, Plugin value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setBackground(Theme.current().getForegroundColor());
 
 			setOpaque(false);
 
 			if (value.isBuiltin()) {
-				setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				setForeground(Theme.current().getAltForegroundColor());
 			} else {
-				setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				setForeground(Theme.current().getForegroundColor());
 			}
 
 			ComponentUtils.deriveFont(this, 12);
