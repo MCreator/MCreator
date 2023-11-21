@@ -39,6 +39,7 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
@@ -378,6 +379,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			recentsList.setCellRenderer(new RecentWorkspacesRenderer());
 			JScrollPane scrollPane = new JScrollPane(recentsList);
 			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollPane.getVerticalScrollBar()
+					.setUI(new SlickDarkScrollBarUI(Theme.current().getSecondAltBackgroundColor(),
+							Theme.current().getAltBackgroundColor(), scrollPane.getVerticalScrollBar()));
 			recentPanel.add(scrollPane);
 		} else if (recentWorkspaces == null) {
 			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces_loaded");
@@ -519,8 +523,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		JComponent south = PanelUtils.westAndEastElement(nov, motwpan, 20, 20);
 		south.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-		JComponent hol = PanelUtils.gridElements(1, 1, south);
-		hol.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		JPanel soim;
 		if (!Launcher.version.isSnapshot()) {
@@ -534,7 +536,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		soim.setLayout(new BorderLayout());
 		soim.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
-
 		soim.add(south);
 
 		add("South", soim);

@@ -65,8 +65,16 @@ public class PreferencesDialog extends MCreatorDialog {
 		setTitle(L10N.t("dialog.preferences.title_mcreator"));
 
 		sections.setBackground(getBackground());
-		sections.setFixedCellHeight(26);
-		sections.setBorder(new EmptyBorder(5, 10, 5, 0));
+		sections.setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				JLabel retval = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,
+						cellHasFocus);
+				retval.setBorder(new EmptyBorder(4, 10, 4, 10));
+				return retval;
+			}
+		});
 
 		preferences.setLayout(preferencesLayout);
 
@@ -89,7 +97,7 @@ public class PreferencesDialog extends MCreatorDialog {
 			}
 		});
 		spne.setContinuousLayout(true);
-		spne.setDividerLocation(0.3);
+		spne.setDividerLocation(150);
 		spne.setDividerSize(2);
 		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Theme.current().getAltBackgroundColor()));
 		add("Center", spne);

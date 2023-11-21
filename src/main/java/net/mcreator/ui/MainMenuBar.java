@@ -56,7 +56,7 @@ public class MainMenuBar extends JMenuBar {
 		if (!macOSscreenMenuBar) {
 			JMenu logo = new JMenu("  MCreator");
 			logo.setMnemonic('M');
-			logo.setIcon(new ImageIcon(ImageUtils.resizeAA(UIRES.getAppIcon().getImage(), 14, 14)));
+			logo.setIcon(new ImageIcon(ImageUtils.resize(UIRES.getAppIcon().getImage(), 16, 16)));
 			logo.add(mcreator.actionRegistry.mcreatorWebsite);
 			logo.add(mcreator.actionRegistry.mcreatorCommunity);
 			SocialButtons socialButtons = new SocialButtons();

@@ -74,6 +74,7 @@ public class SlickDarkScrollBarUI extends BasicScrollBarUI {
 			@Override public void mouseDragged(MouseEvent mouseEvent) {
 				super.mouseDragged(mouseEvent);
 				drag = true;
+				bar.repaint();
 			}
 		});
 	}
