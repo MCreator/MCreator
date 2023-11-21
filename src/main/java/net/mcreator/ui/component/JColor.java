@@ -20,7 +20,7 @@ package net.mcreator.ui.component;
 
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
@@ -50,7 +50,9 @@ public class JColor extends JPanel {
 	private final boolean allowTransparency;
 
 	public JColor(Window window, boolean allowNullColor, boolean allowTransparency) {
-		setLayout(new BorderLayout(3, 0));
+		setLayout(new BorderLayout(0, 0));
+		setBackground(Theme.current().getBackgroundColor());
+		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 3, getBackground()));
 
 		this.allowNullColor = allowNullColor;
 		this.allowTransparency = allowTransparency;
@@ -58,7 +60,9 @@ public class JColor extends JPanel {
 		colorText = new JTextField(9);
 		colorText.setEditable(false);
 		colorText.setPreferredSize(new Dimension(0, 38));
-		colorText.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		colorText.setBorder(
+				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 3, getBackground()),
+						BorderFactory.createMatteBorder(1, 1, 1, 0, getBackground())));
 		colorText.setHorizontalAlignment(JTextField.CENTER);
 		colorText.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -92,7 +96,7 @@ public class JColor extends JPanel {
 		JPanel controls = PanelUtils.totalCenterInPanel(
 				allowNullColor ? PanelUtils.gridElements(1, 2, 2, 0, edit, remove) : edit);
 		controls.setOpaque(true);
-		controls.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		controls.setBackground(getBackground());
 
 		for (AbstractColorChooserPanel panel : colorChooser.getChooserPanels())
 			panel.setColorTransparencySelectionEnabled(allowTransparency);
@@ -127,7 +131,7 @@ public class JColor extends JPanel {
 		if (currentColor == null) {
 			colorText.setOpaque(false);
 			colorText.setText("DEFAULT");
-			colorText.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			colorText.setForeground(Theme.current().getForegroundColor());
 		} else {
 			colorText.setText(String.format("#%06X", 0xFFFFFF & color.getRGB()));
 			colorText.setOpaque(true);

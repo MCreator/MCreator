@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.laf;
 
+import net.mcreator.ui.laf.themes.Theme;
+
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicSliderUI;
@@ -52,7 +54,7 @@ public class DarkSliderUI extends BasicSliderUI {
 		}
 		if (clip.intersects(thumbRect)) {
 			Color savedColor = slider.getBackground();
-			slider.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			slider.setBackground(Theme.current().getInterfaceAccentColor());
 			paintThumb(g);
 			slider.setBackground(savedColor);
 		}

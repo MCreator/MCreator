@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.AddTagDialog;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -78,11 +79,11 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 			setOpaque(isSelected);
 
 			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					Theme.current().getForegroundColor() :
+					Theme.current().getAltBackgroundColor());
 
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 2, 0, 2, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+					BorderFactory.createMatteBorder(0, 2, 0, 2, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setVerticalAlignment(SwingConstants.CENTER);

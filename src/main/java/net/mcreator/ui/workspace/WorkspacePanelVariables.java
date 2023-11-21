@@ -31,6 +31,7 @@ import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -165,26 +166,26 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		sorter = new TableRowSorter<>(elements.getModel());
 		elements.setRowSorter(sorter);
 
-		elements.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		elements.setSelectionBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		elements.setBackground(Theme.current().getBackgroundColor());
+		elements.setSelectionBackground(Theme.current().getAltBackgroundColor());
 		elements.setForeground(Color.white);
-		elements.setSelectionForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		elements.setSelectionForeground(Theme.current().getBackgroundColor());
 		elements.setBorder(BorderFactory.createEmptyBorder());
-		elements.setGridColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		elements.setGridColor(Theme.current().getAltBackgroundColor());
 		elements.setRowHeight(28);
 		elements.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 		ComponentUtils.deriveFont(elements, 13);
 
 		JTableHeader header = elements.getTableHeader();
-		header.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-		header.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		header.setBackground(Theme.current().getInterfaceAccentColor());
+		header.setForeground(Theme.current().getBackgroundColor());
 
 		JScrollPane sp = new JScrollPane(elements);
-		sp.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sp.setBackground(Theme.current().getBackgroundColor());
 		sp.getViewport().setOpaque(false);
 		sp.getVerticalScrollBar().setUnitIncrement(11);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 
 		sp.setColumnHeaderView(null);

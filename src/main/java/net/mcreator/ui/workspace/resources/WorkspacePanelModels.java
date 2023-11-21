@@ -26,6 +26,7 @@ import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.TextureMappingDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -163,8 +164,8 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 				boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
-					(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+					Theme.current().getAltBackgroundColor() :
+					Theme.current().getBackgroundColor());
 			setText(StringUtils.abbreviateString(ma.getReadableName(), 13));
 			setToolTipText(ma.getReadableName());
 			ComponentUtils.deriveFont(this, 11);

@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -73,7 +74,7 @@ public class MCreatorDialog extends JDialog {
 			}
 		});
 
-		super.getContentPane().setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		super.getContentPane().setBackground(Theme.current().getBackgroundColor());
 	}
 
 	@Override public void setSize(int i, int i1) {

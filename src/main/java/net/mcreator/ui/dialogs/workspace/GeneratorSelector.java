@@ -30,6 +30,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -232,11 +233,11 @@ public class GeneratorSelector {
 
 		bar.setUI(new BasicProgressBarUI() {
 			@Override protected Color getSelectionBackground() {
-				return (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
+				return Theme.current().getForegroundColor();
 			}
 
 			@Override protected Color getSelectionForeground() {
-				return (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT");
+				return Theme.current().getSecondAltBackgroundColor();
 			}
 		});
 
@@ -249,7 +250,7 @@ public class GeneratorSelector {
 		else if (bar.getValue() < 100)
 			bar.setForeground(new Color(0xF5F984));
 		else
-			bar.setForeground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			bar.setForeground(Theme.current().getInterfaceAccentColor());
 
 		supportedElements.add(new JLabel(label + ": "));
 		supportedElements.add(bar);

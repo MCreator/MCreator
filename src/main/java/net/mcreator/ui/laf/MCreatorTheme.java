@@ -18,23 +18,14 @@
 
 package net.mcreator.ui.laf;
 
-import net.mcreator.plugin.PluginLoader;
-import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ColorScheme;
-import net.mcreator.themes.Theme;
-import net.mcreator.themes.ThemeLoader;
-import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import javax.swing.plaf.FontUIResource;
 import javax.swing.plaf.metal.OceanTheme;
 import java.awt.*;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
@@ -42,109 +33,35 @@ import java.util.Set;
 
 public class MCreatorTheme extends OceanTheme {
 
-	private static final Logger LOG = LogManager.getLogger("Theme");
-
-	public static final List<String> SYSTEM_FONT_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
-
-	public static final Color MAIN_TINT_DEFAULT = new Color(0x93c54b);
-	private Color MAIN_TINT;
-	private final ColorScheme colorScheme;
-
-	public static Font secondary_font;
-	public static Font console_font;
-
-	private static Font default_font;
+	private final Theme theme;
 
 	public MCreatorTheme(Theme theme) {
-		this.colorScheme = theme.getColorScheme();
-
-		if (colorScheme.getInterfaceAccentColor() != null) {
-			try {
-				MAIN_TINT = Color.decode(colorScheme.getInterfaceAccentColor());
-			} catch (NumberFormatException exception) {
-				LOG.warn(colorScheme.getInterfaceAccentColor()
-								+ " in the current theme is not a valid hexadecimal number. The color defined by the user will be used.",
-						exception.getMessage());
-				MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get();
-			}
-		} else {
-			MAIN_TINT = PreferencesManager.PREFERENCES.ui.interfaceAccentColor.get();
-		}
-
-		try {
-			default_font = new Font(theme.getDefaultFont(), Font.PLAIN, theme.getFontSize());
-			secondary_font = default_font;
-
-			String lang = L10N.getLocale().getLanguage();
-			if (!SYSTEM_FONT_LANGUAGES.contains(lang) && !theme.useDefaultFontForSecondary()) {
-				InputStream secondaryFontStream = PluginLoader.INSTANCE.getResourceAsStream(
-						"themes/" + theme.getID() + "/fonts/secondary_font.ttf");
-				if (secondaryFontStream != null) { // Font loaded from a file in the theme
-					secondary_font = Font.createFont(Font.TRUETYPE_FONT, secondaryFontStream);
-				} else { // Default secondary front (from the default_dark theme)
-					secondary_font = Font.createFont(Font.TRUETYPE_FONT,
-							PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/secondary_font.ttf"));
-					LOG.info("Main font from default_dark will be used.");
-				}
-			}
-
-			InputStream consoleFontStream = PluginLoader.INSTANCE.getResourceAsStream(
-					"themes/" + theme.getID() + "/fonts/console_font.ttf");
-			if (consoleFontStream != null) {
-				console_font = Font.createFont(Font.TRUETYPE_FONT, consoleFontStream);
-			} else {
-				// Default main front (from the default_dark theme)
-				console_font = Font.createFont(Font.TRUETYPE_FONT,
-						PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/console_font.ttf"));
-				LOG.info("Console font from default_dark will be used.");
-			}
-		} catch (NullPointerException | FontFormatException | IOException e2) {
-			LOG.info("Failed to init MCreator Theme! Error " + e2.getMessage());
-		}
-	}
-
-	public Color getMainTint() {
-		return MAIN_TINT;
-	}
-
-	public ColorScheme getColorScheme() {
-		return colorScheme;
-	}
-
-	protected void initMCreatorThemeColors(UIDefaults table) {
-		table.put("MCreatorLAF.BLACK_ACCENT", colorScheme.getSecondAltBackgroundColor());
-		table.put("MCreatorLAF.DARK_ACCENT", colorScheme.getBackgroundColor());
-		table.put("MCreatorLAF.LIGHT_ACCENT", colorScheme.getAltBackgroundColor());
-		table.put("MCreatorLAF.GRAY_COLOR", colorScheme.getAltForegroundColor());
-		table.put("MCreatorLAF.BRIGHT_COLOR", colorScheme.getForegroundColor());
-		table.put("MCreatorLAF.MAIN_TINT", MAIN_TINT);
+		this.theme = theme;
 	}
 
 	@Override public void addCustomEntriesToTable(UIDefaults table) {
 		super.addCustomEntriesToTable(table);
-
-		initMCreatorThemeColors(table);
 
 		Set<Object> keySet = table.keySet();
 		for (Object key : keySet) {
 			if (key == null)
 				continue;
 			if (key.toString().toLowerCase(Locale.ENGLISH).contains("font")) {
-				table.put(key, secondary_font.deriveFont((float) ThemeLoader.CURRENT_THEME.getFontSize()));
+				table.put(key, theme.getSecondaryFont().deriveFont((float) theme.getFontSize()));
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).contains("bordercolor")) {
-				table.put(key, MAIN_TINT);
+				table.put(key, theme.getInterfaceAccentColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".background")) {
-				table.put(key, colorScheme.getBackgroundColor());
+				table.put(key, theme.getBackgroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".foreground")) {
-				table.put(key, colorScheme.getForegroundColor());
+				table.put(key, theme.getForegroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".inactiveforeground")) {
-				table.put(key, colorScheme.getAltForegroundColor());
+				table.put(key, theme.getAltForegroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".disabledbackground")) {
-				table.put(key, colorScheme.getBackgroundColor());
+				table.put(key, theme.getBackgroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".disabledforeground")) {
-				table.put(key, colorScheme.getAltForegroundColor());
+				table.put(key, theme.getAltForegroundColor());
 			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".caretforeground")) {
-				table.put(key, colorScheme.getForegroundColor());
+				table.put(key, theme.getForegroundColor());
 			}
 		}
 
@@ -152,27 +69,27 @@ public class MCreatorTheme extends OceanTheme {
 
 		table.put("Tree.rendererFillBackground", false);
 
-		table.put("TitledBorder.titleColor", colorScheme.getForegroundColor());
+		table.put("TitledBorder.titleColor", theme.getForegroundColor());
 
-		table.put("SplitPane.dividerFocusColor", colorScheme.getAltBackgroundColor());
-		table.put("SplitPane.darkShadow", colorScheme.getAltBackgroundColor());
-		table.put("SplitPane.shadow", colorScheme.getAltBackgroundColor());
-		table.put("SplitPaneDivider.draggingColor", MAIN_TINT);
+		table.put("SplitPane.dividerFocusColor", theme.getAltBackgroundColor());
+		table.put("SplitPane.darkShadow", theme.getAltBackgroundColor());
+		table.put("SplitPane.shadow", theme.getAltBackgroundColor());
+		table.put("SplitPaneDivider.draggingColor", theme.getInterfaceAccentColor());
 
-		table.put("OptionPane.messageForeground", colorScheme.getForegroundColor());
+		table.put("OptionPane.messageForeground", theme.getForegroundColor());
 
-		table.put("Label.foreground", colorScheme.getForegroundColor());
-		table.put("Label.disabledForeground", colorScheme.getForegroundColor());
-		table.put("Label.inactiveforeground", colorScheme.getForegroundColor());
-		table.put("Label.textForeground", colorScheme.getForegroundColor());
+		table.put("Label.foreground", theme.getForegroundColor());
+		table.put("Label.disabledForeground", theme.getForegroundColor());
+		table.put("Label.inactiveforeground", theme.getForegroundColor());
+		table.put("Label.textForeground", theme.getForegroundColor());
 
-		table.put("Button.toolBarBorderBackground", colorScheme.getForegroundColor());
-		table.put("Button.disabledToolBarBorderBackground", colorScheme.getAltBackgroundColor());
+		table.put("Button.toolBarBorderBackground", theme.getForegroundColor());
+		table.put("Button.disabledToolBarBorderBackground", theme.getAltBackgroundColor());
 		table.put("ToolBar.rolloverBorder",
-				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(colorScheme.getBackgroundColor(), 1),
+				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(theme.getBackgroundColor(), 1),
 						BorderFactory.createCompoundBorder(
-								BorderFactory.createLineBorder(colorScheme.getAltBackgroundColor(), 1),
-								BorderFactory.createLineBorder(colorScheme.getBackgroundColor(), 3))));
+								BorderFactory.createLineBorder(theme.getAltBackgroundColor(), 1),
+								BorderFactory.createLineBorder(theme.getBackgroundColor(), 3))));
 
 		table.put("ScrollBarUI", SlickDarkScrollBarUI.class.getName());
 		table.put("SpinnerUI", DarkSpinnerUI.class.getName());
@@ -183,41 +100,40 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("Menu.border", BorderFactory.createEmptyBorder(3, 4, 3, 4));
 		table.put("MenuItem.border", BorderFactory.createEmptyBorder(3, 4, 3, 4));
 
-		table.put("PopupMenu.border", BorderFactory.createLineBorder(colorScheme.getAltBackgroundColor()));
+		table.put("PopupMenu.border", BorderFactory.createLineBorder(theme.getAltBackgroundColor()));
 
-		table.put("Separator.foreground", colorScheme.getAltBackgroundColor());
-		table.put("Separator.background", colorScheme.getBackgroundColor());
+		table.put("Separator.foreground", theme.getAltBackgroundColor());
+		table.put("Separator.background", theme.getBackgroundColor());
 
-		table.put("Menu.foreground", colorScheme.getForegroundColor());
-		table.put("MenuItem.foreground", colorScheme.getForegroundColor());
+		table.put("Menu.foreground", theme.getForegroundColor());
+		table.put("MenuItem.foreground", theme.getForegroundColor());
 
-		table.put("ComboBox.foreground", colorScheme.getForegroundColor());
-		table.put("ComboBox.background", colorScheme.getAltBackgroundColor());
-		table.put("ComboBox.disabledForeground", colorScheme.getAltForegroundColor());
+		table.put("ComboBox.foreground", theme.getForegroundColor());
+		table.put("ComboBox.background", theme.getAltBackgroundColor());
+		table.put("ComboBox.disabledForeground", theme.getAltForegroundColor());
 
-		table.put("Spinner.foreground", colorScheme.getForegroundColor());
-		table.put("Spinner.background", colorScheme.getAltBackgroundColor());
+		table.put("Spinner.foreground", theme.getForegroundColor());
+		table.put("Spinner.background", theme.getAltBackgroundColor());
 
-		table.put("FormattedTextField.foreground", colorScheme.getForegroundColor());
-		table.put("FormattedTextField.inactiveForeground", colorScheme.getAltForegroundColor());
-		table.put("FormattedTextField.background", colorScheme.getAltBackgroundColor());
+		table.put("FormattedTextField.foreground", theme.getForegroundColor());
+		table.put("FormattedTextField.inactiveForeground", theme.getAltForegroundColor());
+		table.put("FormattedTextField.background", theme.getAltBackgroundColor());
 		table.put("FormattedTextField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
-		table.put("TextField.foreground", colorScheme.getForegroundColor());
-		table.put("TextField.inactiveForeground", colorScheme.getAltForegroundColor());
-		table.put("TextField.background", colorScheme.getAltBackgroundColor());
+		table.put("TextField.foreground", theme.getForegroundColor());
+		table.put("TextField.inactiveForeground", theme.getAltForegroundColor());
+		table.put("TextField.background", theme.getAltBackgroundColor());
 		table.put("TextField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
-		table.put("PasswordField.foreground", colorScheme.getForegroundColor());
-		table.put("PasswordField.inactiveForeground", colorScheme.getAltForegroundColor());
-		table.put("PasswordField.background", colorScheme.getAltBackgroundColor());
+		table.put("PasswordField.foreground", theme.getForegroundColor());
+		table.put("PasswordField.inactiveForeground", theme.getAltForegroundColor());
+		table.put("PasswordField.background", theme.getAltBackgroundColor());
 		table.put("PasswordField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
 		table.put("ComboBox.border", null);
 
-		List<?> buttonGradient = Arrays.asList(0f, 0f, new ColorUIResource(colorScheme.getForegroundColor()),
-				new ColorUIResource(colorScheme.getForegroundColor()),
-				new ColorUIResource(colorScheme.getForegroundColor()));
+		List<?> buttonGradient = Arrays.asList(0f, 0f, new ColorUIResource(theme.getForegroundColor()),
+				new ColorUIResource(theme.getForegroundColor()), new ColorUIResource(theme.getForegroundColor()));
 
 		table.put("Button.gradient", buttonGradient);
 		table.put("Button.rollover", true);
@@ -234,11 +150,10 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("ToggleButton.gradient", buttonGradient);
 		table.put("ToggleButton.rollover", true);
 
-		List<?> sliderGradient = Arrays.asList(0f, 0f, new ColorUIResource(colorScheme.getBackgroundColor()),
-				new ColorUIResource(colorScheme.getBackgroundColor()),
-				new ColorUIResource(colorScheme.getBackgroundColor()));
+		List<?> sliderGradient = Arrays.asList(0f, 0f, new ColorUIResource(theme.getBackgroundColor()),
+				new ColorUIResource(theme.getBackgroundColor()), new ColorUIResource(theme.getBackgroundColor()));
 
-		table.put("Slider.altTrackColor", new ColorUIResource(colorScheme.getBackgroundColor()));
+		table.put("Slider.altTrackColor", new ColorUIResource(theme.getBackgroundColor()));
 		table.put("Slider.gradient", sliderGradient);
 		table.put("Slider.focusGradient", sliderGradient);
 
@@ -263,16 +178,16 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("RadioButton.icon", new RadioButtonIcon());
 		table.put("RadioButtonMenuItem.icon", new RadioButtonIcon());
 
-		table.put("TabbedPane.contentAreaColor", colorScheme.getBackgroundColor());
+		table.put("TabbedPane.contentAreaColor", theme.getBackgroundColor());
 		table.put("TabbedPane.contentBorderInsets", new Insets(4, 2, 3, 3));
-		table.put("TabbedPane.selected", colorScheme.getBackgroundColor());
-		table.put("TabbedPane.tabAreaBackground", colorScheme.getAltBackgroundColor());
+		table.put("TabbedPane.selected", theme.getBackgroundColor());
+		table.put("TabbedPane.tabAreaBackground", theme.getAltBackgroundColor());
 		table.put("TabbedPane.tabAreaInsets", new Insets(2, 2, 0, 6));
-		table.put("TabbedPane.unselectedBackground", colorScheme.getBackgroundColor());
+		table.put("TabbedPane.unselectedBackground", theme.getBackgroundColor());
 
-		table.put("ToolTip.border", BorderFactory.createLineBorder(colorScheme.getForegroundColor()));
-		table.put("ToolTip.foreground", colorScheme.getForegroundColor());
-		table.put("ToolTip.background", colorScheme.getBackgroundColor());
+		table.put("ToolTip.border", BorderFactory.createLineBorder(theme.getForegroundColor()));
+		table.put("ToolTip.foreground", theme.getForegroundColor());
+		table.put("ToolTip.background", theme.getBackgroundColor());
 
 		table.put("ScrollBar.width", 7);
 
@@ -298,7 +213,7 @@ public class MCreatorTheme extends OceanTheme {
 		table.put("OptionPane.questionIcon", UIRES.get("laf.question"));
 		table.put("OptionPane.informationIcon", UIRES.get("laf.info"));
 
-		table.put("MenuItem.acceleratorForeground", colorScheme.getAltForegroundColor());
+		table.put("MenuItem.acceleratorForeground", theme.getAltForegroundColor());
 	}
 
 	@Override public String getName() {
@@ -306,23 +221,23 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	@Override protected ColorUIResource getPrimary1() {
-		return new ColorUIResource(colorScheme.getBackgroundColor());
+		return new ColorUIResource(theme.getBackgroundColor());
 	}
 
 	@Override protected ColorUIResource getPrimary2() {
-		return new ColorUIResource(MAIN_TINT);
+		return new ColorUIResource(theme.getInterfaceAccentColor());
 	}
 
 	@Override protected ColorUIResource getPrimary3() {
-		return new ColorUIResource(MAIN_TINT);
+		return new ColorUIResource(theme.getInterfaceAccentColor());
 	}
 
 	@Override protected ColorUIResource getSecondary1() {
-		return new ColorUIResource(colorScheme.getAltBackgroundColor());
+		return new ColorUIResource(theme.getAltBackgroundColor());
 	}
 
 	@Override protected ColorUIResource getSecondary2() {
-		return new ColorUIResource(colorScheme.getAltBackgroundColor());
+		return new ColorUIResource(theme.getAltBackgroundColor());
 	}
 
 	@Override protected ColorUIResource getSecondary3() {
@@ -330,39 +245,39 @@ public class MCreatorTheme extends OceanTheme {
 	}
 
 	@Override public ColorUIResource getControl() {
-		return new ColorUIResource(colorScheme.getAltBackgroundColor());
+		return new ColorUIResource(theme.getAltBackgroundColor());
 	}
 
 	@Override public ColorUIResource getControlHighlight() {
-		return new ColorUIResource(colorScheme.getAltBackgroundColor());
+		return new ColorUIResource(theme.getAltBackgroundColor());
 	}
 
 	@Override public ColorUIResource getPrimaryControlHighlight() {
-		return new ColorUIResource(colorScheme.getAltForegroundColor());
+		return new ColorUIResource(theme.getAltForegroundColor());
 	}
 
 	@Override public FontUIResource getControlTextFont() {
-		return new FontUIResource(default_font);
+		return new FontUIResource(theme.getFont());
 	}
 
 	@Override public FontUIResource getSystemTextFont() {
-		return new FontUIResource(default_font);
+		return new FontUIResource(theme.getFont());
 	}
 
 	@Override public FontUIResource getUserTextFont() {
-		return new FontUIResource(default_font);
+		return new FontUIResource(theme.getFont());
 	}
 
 	@Override public FontUIResource getMenuTextFont() {
-		return new FontUIResource(default_font);
+		return new FontUIResource(theme.getFont());
 	}
 
 	@Override public FontUIResource getWindowTitleFont() {
-		return new FontUIResource(default_font);
+		return new FontUIResource(theme.getFont());
 	}
 
 	@Override public FontUIResource getSubTextFont() {
-		return new FontUIResource(default_font);
+		return new FontUIResource(theme.getFont());
 	}
 
 }
