@@ -441,7 +441,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.behaviour")));
 		subpane1.add(mobBehaviourType);
 
-		mobBehaviourType.addActionListener(e -> enableOrDisableFields());
+		enableOrDisableFields();
 
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/creature_type"),
 				L10N.label("elementgui.living_entity.creature_type")));
@@ -811,6 +811,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		breedable.addActionListener(actionEvent -> enableOrDisableFields());
 		isBoss.addActionListener(e -> enableOrDisableFields());
+		mobBehaviourType.addActionListener(e -> enableOrDisableFields());
 
 		pane3.setOpaque(false);
 
@@ -1019,6 +1020,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			tameable.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
 			breedTriggerItems.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
 		});
+		LivingEntity livingEntity = new LivingEntity(modElement);
+		celebrationSound.setEnabled(livingEntity.mobBehaviourType == "Raider");
+		tameable.setEnabled(livingEntity.mobBehaviourType != "Raider");
+		breedable.setEnabled(livingEntity.mobBehaviourType != "Raider");
+		breedTriggerItems.setEnabled(livingEntity.mobBehaviourType != "Raider");
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
