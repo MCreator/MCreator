@@ -51,7 +51,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 		super(new BorderLayout());
 		this.mcreator = mcreator;
 
-		setBackground((Theme.current().getAltBackgroundColor()).darker());
+		setBackground(Theme.current().getAltBackgroundColor().darker());
 
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		ignoreBlocks.setPreferredSize(new Dimension(250, 30));
