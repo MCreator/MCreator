@@ -21,7 +21,7 @@ package net.mcreator.ui.laf.renderer.elementlist;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
@@ -44,9 +44,9 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 
 		add("West", icon);
 		setBorder(null);
-		setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		setBackground(Theme.current().getForegroundColor());
 
-		label.setFont(MCreatorTheme.secondary_font.deriveFont(18.0f));
+		label.setFont(Theme.current().getSecondaryFont().deriveFont(18.0f));
 	}
 
 	@Override
@@ -55,10 +55,10 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 		if (element != null) {
 			if (isSelected) {
 				setOpaque(true);
-				label.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				label.setForeground(Theme.current().getBackgroundColor());
 			} else {
 				setOpaque(false);
-				label.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				label.setForeground(Theme.current().getForegroundColor());
 			}
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 24));

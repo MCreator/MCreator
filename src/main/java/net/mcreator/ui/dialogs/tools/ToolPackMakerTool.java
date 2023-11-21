@@ -38,6 +38,7 @@ import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -73,7 +74,7 @@ public class ToolPackMakerTool {
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-		color.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
 
 		props.add(L10N.label("dialog.tools.tool_pack_base_item"));

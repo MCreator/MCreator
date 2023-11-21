@@ -39,6 +39,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
@@ -311,9 +312,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		texturesAndRent.add("East", PanelUtils.centerAndSouthElement(rent, specialInformation, 2, 2));
 
 		texturesAndRent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.textures_and_model"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		JPanel sbbp2 = new JPanel(new BorderLayout());
 
@@ -346,9 +347,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel ptipe1 = new JPanel(new BorderLayout());
 		ptipe1.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.type_static"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		JPanel staticPlantProperties = new JPanel(new GridLayout(2, 2, 0, 4));
 		staticPlantProperties.setOpaque(false);
@@ -366,9 +367,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel ptipe2 = new JPanel(new BorderLayout());
 		ptipe2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.type_growable"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 		ptipe2.add("West", dyn);
 
 		JPanel mlo = new JPanel(new GridLayout(1, 2));
@@ -385,9 +386,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel ptipe3 = new JPanel(new BorderLayout());
 		ptipe3.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.type_double"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 		ptipe3.add("Center", dbl);
 		ptipe3.add("North", doubleType);
 		ptipe3.setOpaque(false);
@@ -436,23 +437,23 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel selp = new JPanel(new GridLayout(9, 2, 5, 2));
 		selp.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getForegroundColor()));
 		selp.setOpaque(false);
 
 		JPanel selp2 = new JPanel(new GridLayout(6, 2, 5, 2));
 		selp2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getForegroundColor()));
 		selp2.setOpaque(false);
 
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 		soundProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_sound"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getForegroundColor()));
 		soundProperties.setOpaque(false);
 
 		useLootTableForDrops.setOpaque(false);
@@ -583,9 +584,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JComponent bonemealMerger = PanelUtils.northAndCenterElement(bonemealPanel, bonemealEvents, 2, 2);
 		bonemealMerger.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_bonemeal"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
 				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(selp, bonemealMerger)),
@@ -637,9 +638,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JComponent plocb = PanelUtils.northAndCenterElement(advancedProperties,
 				PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), placingCondition), 2, 2);
 		plocb.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.properties_advanced_plant"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				TitledBorder.DEFAULT_POSITION, getFont(), Theme.current().getForegroundColor()));
 		plocb.setOpaque(false);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(plocb));

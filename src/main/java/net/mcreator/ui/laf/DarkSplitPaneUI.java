@@ -18,11 +18,12 @@
 
 package net.mcreator.ui.laf;
 
+import net.mcreator.ui.laf.themes.Theme;
+
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicSplitPaneDivider;
 import javax.swing.plaf.metal.MetalSplitPaneUI;
-import java.awt.*;
 
 public class DarkSplitPaneUI extends MetalSplitPaneUI {
 
@@ -32,7 +33,7 @@ public class DarkSplitPaneUI extends MetalSplitPaneUI {
 
 	@Override public BasicSplitPaneDivider createDefaultDivider() {
 		BasicSplitPaneDivider divider = super.createDefaultDivider();
-		divider.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		divider.setBackground(Theme.current().getAltBackgroundColor());
 		return divider;
 	}
 

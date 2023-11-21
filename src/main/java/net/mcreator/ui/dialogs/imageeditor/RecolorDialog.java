@@ -55,8 +55,6 @@ public class RecolorDialog extends MCreatorDialog {
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("dialog.imageeditor.recolor_action");
-		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		getRootPane().setDefaultButton(ok);
 
 		GridBagConstraints layoutConstraints = new GridBagConstraints();

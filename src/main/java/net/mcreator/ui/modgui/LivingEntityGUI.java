@@ -52,11 +52,12 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.states.entity.JEntityDataList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
-import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
+import net.mcreator.ui.procedure.NumberProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
@@ -361,12 +362,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		visualScale = new NumberProcedureSelector(this.withEntry("entity/visual_scale"), mcreator,
 				L10N.t("elementgui.living_entity.visual_scale"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 308, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity"));
+				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 308,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		boundingBoxScale = new NumberProcedureSelector(this.withEntry("entity/bounding_box_scale"), mcreator,
 				L10N.t("elementgui.living_entity.bounding_box_scale"), AbstractProcedureSelector.Side.BOTH,
-				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 300, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity"));
+				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 300,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		restrictionBiomes.setValidator(new ItemListFieldSingleTagValidator(restrictionBiomes));
@@ -680,9 +681,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		spo2.add(PanelUtils.westAndCenterElement(PanelUtils.join(FlowLayout.LEFT, 0, 0, hasSpawnEgg,
 				new JEmptyBox(2, 2), spawnEggBaseColor, new JEmptyBox(2, 2), spawnEggDotColor), creativeTabs, 5, 0));
 
-		bossBarColor.setEnabled(false);
-		bossBarType.setEnabled(false);
-
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/boss_entity"),
 				L10N.label("elementgui.living_entity.mob_boss")));
 		spo2.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, isBoss, new JEmptyBox(5, 5), bossBarColor, new JEmptyBox(5, 5),
@@ -749,19 +747,16 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				HelpUtils.wrapWithHelpButton(this.withEntry("entity/do_ranged_attacks"), ranged), rangedItemType,
 				rangedAttackItem, rangedAttackInterval, rangedAttackRadius));
 
-		rangedAttackItem.setEnabled(false);
-
-		rangedItemType.addActionListener(
-				e -> rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem())));
+		rangedItemType.addActionListener(e -> enableOrDisableFields());
 
 		ridable.setOpaque(false);
 		canControlStrafe.setOpaque(false);
 		canControlForward.setOpaque(false);
 
 		aitopoveral.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.living_entity.ai_parameters"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		JPanel aipan = new JPanel(new BorderLayout(0, 5));
 		aipan.setOpaque(false);
@@ -784,7 +779,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JPanel bpb = new JPanel(new GridLayout());
 		bpb.setOpaque(false);
 		bpb.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.living_entity.ai_tasks"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
 		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.AI_TASK,
@@ -804,23 +799,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		hasAI.setSelected(true);
 
-		breedable.addActionListener(actionEvent -> {
-			if (breedable.isSelected()) {
-				hasAI.setSelected(true);
-				hasAI.setEnabled(false);
-				this.breedTriggerItems.setEnabled(true);
-				this.tameable.setEnabled(true);
-			} else {
-				hasAI.setEnabled(true);
-				this.breedTriggerItems.setEnabled(false);
-				this.tameable.setEnabled(false);
-			}
-		});
-
-		isBoss.addActionListener(e -> {
-			bossBarColor.setEnabled(isBoss.isSelected());
-			bossBarType.setEnabled(isBoss.isSelected());
-		});
+		breedable.addActionListener(actionEvent -> enableOrDisableFields());
+		isBoss.addActionListener(e -> enableOrDisableFields());
 
 		pane3.setOpaque(false);
 
@@ -939,6 +919,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			mobName.setText(readableNameFromModElement);
 		}
 
+		enableOrDisableFields();
+
 		editorReady = true;
 	}
 
@@ -1002,6 +984,24 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			return new AggregatedValidationResult(restrictionBiomes);
 		}
 		return new AggregatedValidationResult.PASS();
+	}
+
+	private void enableOrDisableFields() {
+		if (breedable.isSelected()) {
+			hasAI.setSelected(true);
+			hasAI.setEnabled(false);
+			breedTriggerItems.setEnabled(true);
+			tameable.setEnabled(true);
+		} else {
+			hasAI.setEnabled(true);
+			breedTriggerItems.setEnabled(false);
+			tameable.setEnabled(false);
+		}
+
+		bossBarColor.setEnabled(isBoss.isSelected());
+		bossBarType.setEnabled(isBoss.isSelected());
+
+		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
@@ -1118,21 +1118,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			regenerateAITasks();
 		});
 
-		if (breedable.isSelected()) {
-			hasAI.setSelected(true);
-			hasAI.setEnabled(false);
-			this.breedTriggerItems.setEnabled(true);
-			this.tameable.setEnabled(true);
-		} else {
-			hasAI.setEnabled(true);
-			this.breedTriggerItems.setEnabled(false);
-			this.tameable.setEnabled(false);
-		}
-
-		bossBarColor.setEnabled(isBoss.isSelected());
-		bossBarType.setEnabled(isBoss.isSelected());
-
-		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
+		enableOrDisableFields();
 
 		disableMobModelCheckBoxListener = false;
 		editorReady = true;
