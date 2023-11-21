@@ -142,6 +142,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.duplicate_selected",
 				UIRES.get("16px.duplicate.gif"), e -> duplicateSelectedFile()));
 
+		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.replace_selected",
+				UIRES.get("16px.editorder.png"), e -> replaceSelectedFile()));
+
 		bar.add(AbstractWorkspacePanel.createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
@@ -221,6 +224,18 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		if (file != null) {
 			TextureImportDialogs.importSingleTexture(workspacePanel.getMCreator(), file,
 					L10N.t("workspace.textures.select_dupplicate_type"));
+		}
+	}
+
+	private void replaceSelectedFile() {
+		File file = listGroup.getSelectedItem();
+		if (file != null) {
+			File newTexture = FileDialogs.getOpenDialog(workspacePanel.getMCreator(), new String[] { ".png" });
+			if (newTexture != null) {
+				FileIO.copyFile(newTexture, file);
+				new ImageIcon(file.getAbsolutePath()).getImage().flush();
+				reloadElements();
+			}
 		}
 	}
 
