@@ -1,0 +1,28 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "name",
+      "check": "String"
+    }
+  ],
+  "inputsInline": true,
+  "output": "Boolean",
+  "colour": "%{BKY_LOGIC_HUE}",
+  "mcreator": {
+    "group": "team",
+    "toolbox_id": "scoreboard",
+    "toolbox_init": [
+      "<value name=\"name\"><block type=\"text\"><field name=\"TEXT\">team_name</field></block></value>"
+    ],
+    "inputs": [
+      "name"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}

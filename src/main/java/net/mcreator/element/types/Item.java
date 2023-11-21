@@ -232,6 +232,10 @@ import java.util.*;
 			this.workspace = workspace;
 		}
 
+		@Nullable @Override public Workspace getWorkspace() {
+			return workspace;
+		}
+
 		public Model getItemModel() {
 			return Model.getModelByParams(workspace, customModelName, decodeModelType(renderType));
 		}

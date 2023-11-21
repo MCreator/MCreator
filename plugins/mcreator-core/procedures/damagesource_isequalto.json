@@ -8,7 +8,8 @@
     {
       "type": "field_data_list_selector",
       "name": "damagetype",
-      "datalist": "damagesources"
+      "datalist": "damagesources",
+      "customEntryProviders": "damagetype"
     }
   ],
   "inputsInline": true,

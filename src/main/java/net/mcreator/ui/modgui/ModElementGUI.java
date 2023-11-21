@@ -35,6 +35,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.help.ModElementHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -218,8 +219,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				ComponentUtils.deriveFont(page, 13);
 
 				page.addChangeListener(e -> page.setForeground(page.isSelected() ?
-						((Color) UIManager.get("MCreatorLAF.MAIN_TINT")) :
-						((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"))));
+						(Theme.current().getInterfaceAccentColor()) :
+						(Theme.current().getForegroundColor())));
 				pager.add(page);
 				buttonGroup.add(page);
 
@@ -239,8 +240,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			JButton save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
-			save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-			save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			save.setBackground(Theme.current().getInterfaceAccentColor());
+			save.setForeground(Theme.current().getSecondAltBackgroundColor());
 			save.setFocusPainted(false);
 			save.addActionListener(event -> {
 				List<ValidationGroup> errors = new ArrayList<>();
@@ -266,8 +267,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
-			saveOnly.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-			saveOnly.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
+			saveOnly.setForeground(Theme.current().getForegroundColor());
 			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
 				List<ValidationGroup> errors = new ArrayList<>();
@@ -301,11 +302,11 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			if (modElementCodeViewer != null) {
 				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-				codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				codeViewer.setBackground(Theme.current().getSecondAltBackgroundColor());
+				codeViewer.setForeground(Theme.current().getAltForegroundColor());
 				codeViewer.setFocusPainted(false);
 				codeViewer.setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
 						BorderFactory.createEmptyBorder(2, 40, 2, 40)));
 				codeViewer.addActionListener(e -> {
 					if (codeViewer.isSelected()) {
@@ -342,8 +343,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		} else {
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
-			saveOnly.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-			saveOnly.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
+			saveOnly.setForeground(Theme.current().getForegroundColor());
 			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
 				AggregatedValidationResult validationResult = validatePage(0);
@@ -355,8 +356,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			JButton save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
-			save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-			save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			save.setBackground(Theme.current().getInterfaceAccentColor());
+			save.setForeground(Theme.current().getSecondAltBackgroundColor());
 			save.setFocusPainted(false);
 			save.addActionListener(event -> {
 				AggregatedValidationResult validationResult = validatePage(0);
@@ -376,11 +377,11 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			if (modElementCodeViewer != null) {
 				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-				codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				codeViewer.setBackground(Theme.current().getSecondAltBackgroundColor());
+				codeViewer.setForeground(Theme.current().getAltForegroundColor());
 				codeViewer.setFocusPainted(false);
 				codeViewer.setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
 						BorderFactory.createEmptyBorder(2, 40, 2, 40)));
 				codeViewer.addActionListener(e -> {
 					if (codeViewer.isSelected()) {
@@ -633,6 +634,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	public final boolean isEditingMode() {
 		return editingMode;
+	}
+
+	public final AggregatedValidationResult validateAllPages() {
+		List<ValidationGroup> errors = new ArrayList<>();
+		for (int i = 0; i < pages.size(); i++) {
+			AggregatedValidationResult validationResult = validatePage(i);
+			if (!validationResult.validateIsErrorFree())
+				errors.add(validationResult);
+		}
+		return new AggregatedValidationResult(errors);
 	}
 
 	public interface ModElementCreatedListener<GE extends GeneratableElement> {

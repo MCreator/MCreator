@@ -2,6 +2,18 @@ name: Bug report
 description: Create a report to help us improve (search for duplicates first)
 labels: bug
 body:
+ - type: checkboxes
+   attributes:
+    label: Issue tracker rule checks (please read carefully)
+    options:
+     - label: "I have checked that my problem <a href='https://github.com/MCreator/MCreator/issues?q=is%3Aissue' target='_blank'>is not already reported</a>"
+       required: true
+     - label: "I have checked that my problem is not covered on <a href='https://mcreator.net/support/knowledgebase' target='_blank'>Knowledge Base</a> or on <a href='https://mcreator.net/wiki' target='_blank'>MCreator's Wiki</a>"
+       required: true
+     - label: "I have made sure this bug is not plugin-related (tested with MCreator without plugins installed)"
+       required: true
+     - label: "I have checked that my written content does not violate the <a href='https://mcreator.net/wiki/general-publishing-guidelines' target='_blank'>publishing guidelines</a>"
+       required: true
  - type: textarea
    attributes:
     label: Issue description
@@ -61,13 +73,3 @@ body:
     placeholder: https://gist.github.com/...
    validations:
     required: false
- - type: checkboxes
-   attributes:
-    label: Issue tracker rule checks (please read carefully)
-    options:
-     - label: "I have checked that my problem <a href='https://github.com/MCreator/MCreator/issues?q=is%3Aissue' target='_blank'>is not already reported</a>"
-       required: true
-     - label: "I have checked that my problem is not covered on <a href='https://mcreator.net/support/knowledgebase' target='_blank'>Knowledge Base</a> or on <a href='https://mcreator.net/wiki' target='_blank'>MCreator's Wiki</a>"
-       required: true
-     - label: "I have checked that my written content does not violate the <a href='https://mcreator.net/wiki/general-publishing-guidelines' target='_blank'>publishing guidelines</a>"
-       required: true

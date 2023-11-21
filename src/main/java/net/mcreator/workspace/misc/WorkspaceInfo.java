@@ -124,11 +124,8 @@ import java.util.*;
 	public Map<String, String> getItemTextureMap() {
 		Map<String, String> textureMap = new HashMap<>();
 		for (ModElement element : workspace.getModElements()) {
-			if (element.getType().getBaseType() == BaseType.ITEM) {
-				GeneratableElement generatableElement = element.getGeneratableElement();
-				if (generatableElement instanceof IItemWithTexture) {
-					textureMap.put(element.getRegistryName(), ((IItemWithTexture) generatableElement).getTexture());
-				}
+			if (element.getGeneratableElement() instanceof IItemWithTexture itemWithTexture) {
+				textureMap.put(element.getRegistryName(), itemWithTexture.getTexture());
 			}
 		}
 		return textureMap;
