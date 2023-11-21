@@ -276,17 +276,15 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		MCREvent.event(new MCreatorLoadedEvent(this));
 	}
 
-	@Override public void setVisible(boolean b) {
-		super.setVisible(b);
-		if (b) {
+	@Override public void setVisible(boolean makeVisible) {
+		super.setVisible(makeVisible);
+		if (makeVisible) {
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 			if (MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
 				workspace.setMCreatorVersion(
 						Launcher.version.versionlong); // if we open dev version, store new version number in it
 			}
-
-			new Thread(this.workspaceFileBrowser::reloadTree, "File browser preloader").start();
 
 			// backup if new version and backups are enabled
 			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
@@ -312,19 +310,23 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				RegenerateCodeAction.regenerateCode(this, true, true);
 			}
 
+			// it is not safe to do user operations on workspace while it is being preloaded, so we lock the UI
+			setGlassPane(getPreloaderPane());
+			getGlassPane().setVisible(true);
+
+			// Preload workspace file browser
+			new Thread(this.workspaceFileBrowser::reloadTree, "File browser preloader").start();
+
 			// reinit (preload) MCItems (also loads GEs and performs conversions if needed)
 			new Thread(() -> {
-				// it is not safe to do user operations on workspace while it is being preloaded
-				setGlassPane(getPreloaderPane());
-				getGlassPane().setVisible(true);
-
 				workspace.getModElements().forEach(ModElement::getMCItems);
 
-				getGlassPane().setVisible(false);
-				setGlassPane(new JEmptyBox());
+				SwingUtilities.invokeLater(() -> {
+					getGlassPane().setVisible(false);
+					setGlassPane(new JEmptyBox());
+					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				});
 			}, "ME preloader").start();
-
-			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 	}
 

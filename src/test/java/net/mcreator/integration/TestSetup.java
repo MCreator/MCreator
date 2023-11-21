@@ -35,6 +35,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
+import net.mcreator.ui.laf.LafUtil;
 import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.TerribleModuleHacks;
@@ -99,6 +100,7 @@ public class TestSetup {
 
 		try {
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
+			LafUtil.fixMacOSActions();
 		} catch (UnsupportedLookAndFeelException e) {
 			LOG.error("Failed to set look and feel: " + e.getMessage());
 		}

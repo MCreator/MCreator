@@ -45,6 +45,7 @@ import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
+import net.mcreator.ui.laf.LafUtil;
 import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.notifications.StartupNotifications;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
@@ -108,6 +109,7 @@ public final class MCreatorApplication {
 
 			try {
 				UIManager.setLookAndFeel(new MetalLookAndFeel());
+				LafUtil.fixMacOSActions();
 			} catch (UnsupportedLookAndFeelException e) {
 				LOG.error("Failed to set look and feel: " + e.getMessage());
 			}
