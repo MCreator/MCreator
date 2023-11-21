@@ -21,7 +21,7 @@ package net.mcreator.ui.laf.renderer.elementlist;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
@@ -41,9 +41,9 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 	public TilesModListRender() {
 		super(new BorderLayout(0, 0));
 		setBorder(null);
-		setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		setBackground(Theme.current().getForegroundColor());
 
-		label.setFont(MCreatorTheme.secondary_font.deriveFont(24.0f));
+		label.setFont(Theme.current().getSecondaryFont().deriveFont(24.0f));
 		text.setOpaque(false);
 		text.add("Center", label);
 		text.add("South", label_details);
@@ -57,12 +57,12 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 		if (element != null) {
 			if (isSelected) {
 				setOpaque(true);
-				label.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				label_details.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				label.setForeground(Theme.current().getBackgroundColor());
+				label_details.setForeground(Theme.current().getBackgroundColor());
 			} else {
 				setOpaque(false);
-				label.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				label_details.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				label.setForeground(Theme.current().getForegroundColor());
+				label_details.setForeground(Theme.current().getForegroundColor());
 			}
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 18));
@@ -71,7 +71,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 				label_details.setText(
 						"<html><div width=210 style=\"overflow: hidden;\"><small" + (isSelected ?
 								(" color=#" + Integer.toHexString(
-										((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).getRGB()).substring(2)) :
+										(Theme.current().getBackgroundColor()).getRGB()).substring(2)) :
 								"") + ">" + modElement.getType().getDescription());
 				text.setBorder(BorderFactory.createEmptyBorder(0, 5, 10, 0));
 			} else {

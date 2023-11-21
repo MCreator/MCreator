@@ -41,6 +41,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.ModElementListField;
@@ -184,14 +185,14 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		logicPanel.add(disableDisplay);
 
 		logicPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.advancement.logic"), 0, 0, logicPanel.getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		propertiesPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.advancement.display_paramters"), 0, 0, propertiesPanel.getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		propertiesPanel.setOpaque(false);
 		logicPanel.setOpaque(false);
@@ -223,7 +224,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		JPanel advancementTrigger = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
 		advancementTrigger.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.advancement.trigger_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
 

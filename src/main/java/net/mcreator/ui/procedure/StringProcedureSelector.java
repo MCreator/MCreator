@@ -25,6 +25,7 @@ import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
@@ -64,7 +65,7 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 		this.fixedValue = fixedValue;
 
 		if (fixedValue != null) {
-			fixedValue.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			fixedValue.setBackground(Theme.current().getBackgroundColor());
 			fixedValue.setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(1, 5, 1, allowInlineEditor ? 5 : 0, this.getBackground()),
 					BorderFactory.createMatteBorder(0, 5, 0, 5, fixedValue.getBackground())));

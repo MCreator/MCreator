@@ -20,8 +20,8 @@
 package net.mcreator.ui.dialogs.preferences;
 
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.Theme;
-import net.mcreator.themes.ThemeLoader;
+import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.laf.themes.ThemeLoader;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
@@ -80,7 +80,7 @@ public class ThemesPanel {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Theme> list, Theme value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setBackground(Theme.current().getForegroundColor());
 
 			setOpaque(false);
 

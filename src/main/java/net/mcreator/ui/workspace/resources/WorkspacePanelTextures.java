@@ -31,6 +31,7 @@ import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
 import net.mcreator.ui.workspace.IReloadableFilterable;
@@ -96,8 +97,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
 		sp.getVerticalScrollBar().setUnitIncrement(20);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		sp.setBorder(null);
 
@@ -108,8 +109,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		JPopupMenu createMenu = new JPopupMenu();
 		createMenu.setBorder(
-				BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
-		createMenu.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
+		createMenu.setBackground(Theme.current().getAltBackgroundColor());
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createMCItemTexture);
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createArmorTexture);
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createAnimatedTexture);
@@ -121,8 +122,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		JPopupMenu importMenu = new JPopupMenu();
 		importMenu.setBorder(
-				BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
-		importMenu.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
+		importMenu.setBackground(Theme.current().getAltBackgroundColor());
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importBlockTexture);
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importItemTexture);
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importEntityTexture);
@@ -311,11 +312,11 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		public Component getListCellRendererComponent(JList<? extends File> list, File ma, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			if (isSelected) {
-				setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				setForeground(Theme.current().getBackgroundColor());
+				setBackground(Theme.current().getForegroundColor());
 				setOpaque(true);
 			} else {
-				setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				setForeground(Theme.current().getForegroundColor());
 				setOpaque(false);
 			}
 

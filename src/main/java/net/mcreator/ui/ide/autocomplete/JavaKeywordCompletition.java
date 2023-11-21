@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.ide.autocomplete;
 
+import net.mcreator.ui.laf.themes.Theme;
 import org.fife.rsta.ac.java.JavaTemplateCompletion;
 import org.fife.ui.autocomplete.CompletionProvider;
 
@@ -37,7 +38,7 @@ public class JavaKeywordCompletition extends JavaTemplateCompletion {
 
 	@Override public void rendererText(Graphics g, int x, int y, boolean selected) {
 		Color orig = g.getColor();
-		g.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		g.setColor(Theme.current().getInterfaceAccentColor());
 
 		g.drawString(getInputText(), x, y);
 		if (getShortDescription() != null) {

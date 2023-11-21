@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.laf;
 
+import net.mcreator.ui.laf.themes.Theme;
+
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicComboPopup;
@@ -36,12 +38,12 @@ public class DarkComboBoxUI extends MetalComboBoxUI {
 			@Override protected JScrollPane createScroller() {
 				JScrollPane scroller = super.createScroller();
 				scroller.getVerticalScrollBar()
-						.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"),
-								(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), scroller.getVerticalScrollBar()));
+						.setUI(new SlickDarkScrollBarUI(Theme.current().getAltBackgroundColor(),
+								Theme.current().getBackgroundColor(), scroller.getVerticalScrollBar()));
 				return scroller;
 			}
 		};
-		comboPopup.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		comboPopup.setBorder(BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()));
 		return comboPopup;
 	}
 
