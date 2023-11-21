@@ -22,6 +22,7 @@ package net.mcreator.ui.component;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ListEditorDialog;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 
@@ -109,9 +110,9 @@ public class JStringListField extends JPanel {
 		});
 
 		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, clear));
-		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getInterfaceAccentColor()));
 		controls.setOpaque(true);
-		controls.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		controls.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		add("Center", pane);
 		add("East", controls);
@@ -162,13 +163,13 @@ public class JStringListField extends JPanel {
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(true);
 			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					Theme.current().getForegroundColor() :
+					Theme.current().getAltBackgroundColor());
 			setForeground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT") :
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+					Theme.current().getSecondAltBackgroundColor() :
+					Theme.current().getForegroundColor());
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 5, 0, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 			setHorizontalAlignment(JLabel.CENTER);
 			setVerticalAlignment(JLabel.CENTER);

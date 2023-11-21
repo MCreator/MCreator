@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.ui.laf.themes.Theme;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -27,18 +29,10 @@ public class ProgressBar extends JPanel {
 	private int curr = -1;
 	private int wid = -1;
 
-	private Color emptyColor = new Color(80, 80, 80);
-	private Color barColor = (Color) UIManager.get("MCreatorLAF.MAIN_TINT");
-
 	@Override public void paint(Graphics g) {
-		if (emptyColor != null) {
-			g.setColor(emptyColor);
-			g.fillRect(0, 0, getWidth(), getHeight());
-		} else {
-			super.paint(g);
-		}
+		super.paint(g);
 
-		g.setColor(barColor);
+		g.setColor(Color.white);
 		if (curr >= 0 && wid == -1 && max != 0)
 			g.fillRect(0, 0, (int) (((double) getWidth() / ((double) max)) * (double) curr), getHeight());
 		else if (max != 0 && curr >= 0)
@@ -61,11 +55,4 @@ public class ProgressBar extends JPanel {
 		repaint();
 	}
 
-	public void setEmptyColor(Color emptyColor) {
-		this.emptyColor = emptyColor;
-	}
-
-	public void setBarColor(Color barColor) {
-		this.barColor = barColor;
-	}
 }

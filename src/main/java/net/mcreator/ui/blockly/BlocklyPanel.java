@@ -30,7 +30,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ThemeLoader;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
@@ -99,7 +99,7 @@ public class BlocklyPanel extends JFXPanel {
 		ThreadUtil.runOnFxThread(() -> {
 			WebView browser = new WebView();
 			Scene scene = new Scene(browser);
-			java.awt.Color bg = (java.awt.Color) UIManager.get("MCreatorLAF.BLACK_ACCENT");
+			java.awt.Color bg = Theme.current().getSecondAltBackgroundColor();
 			scene.setFill(Color.rgb(bg.getRed(), bg.getGreen(), bg.getBlue()));
 			setScene(scene);
 
@@ -115,9 +115,9 @@ public class BlocklyPanel extends JFXPanel {
 					String css = FileIO.readResourceToString("/blockly/css/mcreator_blockly.css");
 
 					if (PluginLoader.INSTANCE.getResourceAsStream(
-							"themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css") != null) {
+							"themes/" + Theme.current().getID() + "/styles/blockly.css") != null) {
 						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
-								"/themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css");
+								"/themes/" + Theme.current().getID() + "/styles/blockly.css");
 					} else {
 						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
 								"/themes/default_dark/styles/blockly.css");

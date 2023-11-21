@@ -78,7 +78,6 @@ public class SplashScreen extends JWindow {
 			imagePanel.add(snapshot);
 		}
 
-		initloadprogress.setEmptyColor(null);
 		initloadprogress.setOpaque(false);
 		initloadprogress.setForeground(Color.white);
 		initloadprogress.setMaximalValue(100);

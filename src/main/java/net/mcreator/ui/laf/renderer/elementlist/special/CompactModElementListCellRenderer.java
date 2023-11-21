@@ -20,6 +20,7 @@
 package net.mcreator.ui.laf.renderer.elementlist.special;
 
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -39,11 +40,11 @@ public class CompactModElementListCellRenderer implements ListCellRenderer<ModEl
 		label.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementManager.getModElementIcon(value).getImage(), 32)));
 		label.setIconTextGap(10);
 		label.setBackground(isSelected ?
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
-				(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+				Theme.current().getForegroundColor() :
+				Theme.current().getSecondAltBackgroundColor());
 		label.setForeground(isSelected ?
-				(Color) UIManager.get("MCreatorLAF.DARK_ACCENT") :
-				(Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				Theme.current().getBackgroundColor() :
+				Theme.current().getAltForegroundColor());
 		label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		return label;
 	}

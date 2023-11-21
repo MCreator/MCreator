@@ -22,6 +22,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ReferencesFinder;
@@ -98,8 +99,8 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.MAIN_TINT") :
-					(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+					Theme.current().getInterfaceAccentColor() :
+					Theme.current().getBackgroundColor());
 			setText(" " + ma);
 			ComponentUtils.deriveFont(this, 17);
 			setIcon(UIRES.get("16px.ext.gif"));
