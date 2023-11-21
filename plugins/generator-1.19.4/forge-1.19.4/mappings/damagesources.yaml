@@ -1,4 +1,6 @@
 _default: DamageTypes.GENERIC
+_mcreator_prefix: "CUSTOM:"
+_mcreator_map_template: "ResourceKey.create(Registries.DAMAGE_TYPE, new ResourceLocation(\"@modid:@registryname\"))"
 IN_FIRE: DamageTypes.IN_FIRE
 LIGHTNING_BOLT: DamageTypes.LIGHTNING_BOLT
 ON_FIRE: DamageTypes.ON_FIRE
