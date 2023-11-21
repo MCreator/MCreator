@@ -63,7 +63,7 @@ import java.util.List;
 
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
-	private final VTextField igniterName = new VTextField(14);
+	private final VTextField igniterName = new VTextField(22);
 
 	private StringListProcedureSelector specialInformation;
 
@@ -258,6 +258,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
 				L10N.label("elementgui.dimension.portal_igniter_tabs")));
 		proper22.add(creativeTabs);
+
+		creativeTabs.setPreferredSize(new java.awt.Dimension(0, 42));
 
 		portalSound.setText("block.portal.ambient");
 
