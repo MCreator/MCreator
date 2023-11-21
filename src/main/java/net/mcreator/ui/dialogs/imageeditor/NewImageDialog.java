@@ -26,7 +26,6 @@ import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.dialogs.TextureSelectorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.util.image.ImageUtils;

@@ -29,7 +29,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Collection;

@@ -163,9 +163,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 		public JLabel getListCellRendererComponent(JList<? extends Model> list, Model ma, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground(isSelected ?
-					Theme.current().getAltBackgroundColor() :
-					Theme.current().getBackgroundColor());
+			setBackground(isSelected ? Theme.current().getAltBackgroundColor() : Theme.current().getBackgroundColor());
 			setText(StringUtils.abbreviateString(ma.getReadableName(), 13));
 			setToolTipText(ma.getReadableName());
 			ComponentUtils.deriveFont(this, 11);

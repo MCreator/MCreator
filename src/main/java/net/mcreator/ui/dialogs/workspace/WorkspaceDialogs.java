@@ -343,8 +343,7 @@ public class WorkspaceDialogs {
 			});
 			generator.remove(this.getComponent(0));
 			generator.setEnabled(false);
-			generator.setBorder(
-					BorderFactory.createMatteBorder(1, 1, 1, 0, Theme.current().getAltBackgroundColor()));
+			generator.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, Theme.current().getAltBackgroundColor()));
 
 			JButton selectGenerator = new JButton(UIRES.get("18px.edit"));
 			selectGenerator.setMargin(new Insets(4, 4, 4, 4));

@@ -33,8 +33,8 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -364,8 +364,9 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 			Set<ModElement> references = new HashSet<>();
 			for (int i : elements.getSelectedRows()) {
-				references.addAll(ReferencesFinder.searchLocalizationKeyUsages(
-						workspacePanel.getMCreator().getWorkspace(), (String) elements.getValueAt(i, 0)));
+				references.addAll(
+						ReferencesFinder.searchLocalizationKeyUsages(workspacePanel.getMCreator().getWorkspace(),
+								(String) elements.getValueAt(i, 0)));
 			}
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());

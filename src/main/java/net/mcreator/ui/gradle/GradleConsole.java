@@ -150,8 +150,7 @@ public class GradleConsole extends JPanel {
 		aae.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 		aae.setBackground(Theme.current().getSecondAltBackgroundColor());
 
-		holder.setBorder(
-				BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current().getSecondAltBackgroundColor()));
+		holder.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		searchBar.setVisible(false);
 

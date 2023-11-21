@@ -108,8 +108,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
 		JPopupMenu createMenu = new JPopupMenu();
-		createMenu.setBorder(
-				BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
+		createMenu.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
 		createMenu.setBackground(Theme.current().getAltBackgroundColor());
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createMCItemTexture);
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createArmorTexture);
@@ -121,8 +120,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(create);
 
 		JPopupMenu importMenu = new JPopupMenu();
-		importMenu.setBorder(
-				BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
+		importMenu.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
 		importMenu.setBackground(Theme.current().getAltBackgroundColor());
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importBlockTexture);
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importItemTexture);

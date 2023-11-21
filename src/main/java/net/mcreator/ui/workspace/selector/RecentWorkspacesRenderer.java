@@ -53,9 +53,7 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 		setOpaque(true);
 
 		setBackground(Theme.current().getSecondAltBackgroundColor());
-		setForeground(isSelected ?
-				Theme.current().getInterfaceAccentColor() :
-				Theme.current().getAltForegroundColor());
+		setForeground(isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getAltForegroundColor());
 
 		setFont(Theme.current().getSecondaryFont().deriveFont(16.0f));
 
@@ -68,9 +66,7 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 			ImageIcon icon = new ImageIcon(
 					ImageUtils.darken(ImageUtils.toBufferedImage(value.getType().getIcon().getImage())));
 
-			setIcon(isSelected ?
-					ImageUtils.colorize(icon, Theme.current().getInterfaceAccentColor(), false) :
-					icon);
+			setIcon(isSelected ? ImageUtils.colorize(icon, Theme.current().getInterfaceAccentColor(), false) : icon);
 
 			setIconTextGap(8);
 			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.getName(), 17)
@@ -92,9 +88,8 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 		if (version != null) {
 			Graphics2D g2 = (Graphics2D) g;
 
-			g2.setColor(isSelected ?
-					Theme.current().getInterfaceAccentColor() :
-					Theme.current().getAltForegroundColor());
+			g2.setColor(
+					isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getAltForegroundColor());
 
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 

@@ -34,7 +34,6 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 import java.util.stream.Collectors;
 

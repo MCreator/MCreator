@@ -81,10 +81,11 @@ public class MCreatorTabs {
 
 		moreTabs = new JLabel(UIRES.get("more"));
 		moreTabs.setPreferredSize(new Dimension(40, 39));
-		moreTabs.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 1,
-				Theme.current().getSecondAltBackgroundColor()), BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 5, 0, Theme.current().getAltBackgroundColor()),
-				BorderFactory.createEmptyBorder(0, 10, 0, 10))));
+		moreTabs.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getSecondAltBackgroundColor()),
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createMatteBorder(0, 0, 5, 0, Theme.current().getAltBackgroundColor()),
+						BorderFactory.createEmptyBorder(0, 10, 0, 10))));
 		moreTabs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		moreTabs.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -94,8 +95,7 @@ public class MCreatorTabs {
 
 		filler = new JPanel();
 		filler.setOpaque(false);
-		filler.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 5, 0, Theme.current().getAltBackgroundColor()));
+		filler.setBorder(BorderFactory.createMatteBorder(0, 0, 5, 0, Theme.current().getAltBackgroundColor()));
 	}
 
 	void reloadTabStrip() {
@@ -107,8 +107,7 @@ public class MCreatorTabs {
 		}
 
 		moreTabsMenu = new JScrollablePopupMenu();
-		moreTabsMenu.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0,
-				Theme.current().getInterfaceAccentColor()));
+		moreTabsMenu.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current().getInterfaceAccentColor()));
 		moreTabsMenu.setMaximumVisibleRows(11);
 
 		int maxWidth = tabsStrip.getWidth();

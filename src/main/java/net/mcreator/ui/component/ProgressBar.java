@@ -18,8 +18,6 @@
 
 package net.mcreator.ui.component;
 
-import net.mcreator.ui.laf.themes.Theme;
-
 import javax.swing.*;
 import java.awt.*;
 

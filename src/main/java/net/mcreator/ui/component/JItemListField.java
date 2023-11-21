@@ -189,8 +189,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			exclude.setMargin(new Insets(0, 1, 0, 1));
 
 			JComponent incexc = PanelUtils.totalCenterInPanel(PanelUtils.join(include, exclude));
-			incexc.setBorder(
-					BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getInterfaceAccentColor()));
+			incexc.setBorder(BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getInterfaceAccentColor()));
 
 			add(incexc, BorderLayout.WEST);
 		}
@@ -295,12 +294,9 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		public Component getListCellRendererComponent(JList<? extends T> list, T value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			setOpaque(true);
-			setBackground(isSelected ?
-					Theme.current().getForegroundColor() :
-					Theme.current().getAltBackgroundColor());
-			setForeground(isSelected ?
-					Theme.current().getSecondAltBackgroundColor() :
-					Theme.current().getForegroundColor());
+			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getAltBackgroundColor());
+			setForeground(
+					isSelected ? Theme.current().getSecondAltBackgroundColor() : Theme.current().getForegroundColor());
 			setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(2, 5, 2, 5)));
