@@ -210,7 +210,8 @@ public class ElementUtil {
 	}
 
 	public static List<DataListEntry> loadAllEntities(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElements(workspace, mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
+		List<DataListEntry> retval = getCustomElements(workspace,
+				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
 		retval.addAll(DataListLoader.loadDataList("entities"));
 		Collections.sort(retval);
 		return retval;
@@ -224,14 +225,16 @@ public class ElementUtil {
 	 * @return All entities that can be spawned
 	 */
 	public static List<DataListEntry> loadAllSpawnableEntities(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElements(workspace, mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
+		List<DataListEntry> retval = getCustomElements(workspace,
+				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
 		retval.addAll(DataListLoader.loadDataList("entities").stream().filter(typeMatches("spawnable")).toList());
 		Collections.sort(retval);
 		return retval;
 	}
 
 	public static List<DataListEntry> loadCustomEntities(Workspace workspace) {
-		List<DataListEntry> retval = getCustomElements(workspace, mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
+		List<DataListEntry> retval = getCustomElements(workspace,
+				mu -> mu.getBaseTypesProvided().contains(BaseType.ENTITY));
 		Collections.sort(retval);
 		return retval;
 	}

@@ -20,6 +20,7 @@ package net.mcreator.ui.gradle;
 
 import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -44,7 +45,7 @@ public class ConsoleSearchBar extends JToolBar {
 
 	ConsoleSearchBar() {
 		setFloatable(false);
-		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		add(jtf1);
 		add(Box.createHorizontalStrut(10));
@@ -53,10 +54,10 @@ public class ConsoleSearchBar extends JToolBar {
 		add(results);
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
-		jtf1.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		jtf1.setBackground(Theme.current().getAltBackgroundColor());
 		jtf1.setOpaque(true);
 
-		results.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		results.setForeground(Theme.current().getAltForegroundColor());
 	}
 
 	public void reinstall(ConsolePane consolePane) {
@@ -176,7 +177,7 @@ public class ConsoleSearchBar extends JToolBar {
 
 	private static class SearchResultHighlightPainter extends DefaultHighlighter.DefaultHighlightPainter {
 		SearchResultHighlightPainter() {
-			super((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			super(Theme.current().getInterfaceAccentColor());
 		}
 	}
 

@@ -476,8 +476,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	// Below are methods that may still be used by some plugins
 
 	/**
-	 * @apiNote This method performs sensitive operations on this workspace. Avoid using it!
 	 * @param other The workspace to copy elements and settings from.
+	 * @apiNote This method performs sensitive operations on this workspace. Avoid using it!
 	 */
 	@SuppressWarnings("unused") public void loadStoredDataFrom(Workspace other) {
 		this.mod_elements = other.mod_elements;

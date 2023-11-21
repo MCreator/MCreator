@@ -109,9 +109,21 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 		</#if>
 	}
 
-	<#if data.mobModelName == "Villager">
-	@Override protected void scale(${name}Entity villager, PoseStack poseStack, float f) {
-		poseStack.scale(0.9375f, 0.9375f, 0.9375f);
+	<#if data.mobModelName == "Villager" || (data.visualScale?? && (data.visualScale.getFixedValue() != 1 || hasProcedure(data.visualScale)))>
+	@Override protected void scale(${name}Entity entity, PoseStack poseStack, float f) {
+		<#if hasProcedure(data.visualScale)>
+			Level world = entity.level;
+			double x = entity.getX();
+			double y = entity.getY();
+			double z = entity.getZ();
+			float scale = (float) <@procedureOBJToNumberCode data.visualScale/>;
+			poseStack.scale(scale, scale, scale);
+		<#elseif data.visualScale?? && data.visualScale.getFixedValue() != 1>
+			poseStack.scale(${data.visualScale.getFixedValue()}f, ${data.visualScale.getFixedValue()}f, ${data.visualScale.getFixedValue()}f);
+		</#if>
+		<#if data.mobModelName == "Villager">
+			poseStack.scale(0.9375f, 0.9375f, 0.9375f);
+		</#if>
 	}
 	</#if>
 
