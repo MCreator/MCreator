@@ -55,14 +55,25 @@ public class UnsupportedComponent extends JPanel {
 		setOpaque(false);
 		if (rawBounds)
 			setBounds(origin.getBounds());
+		mute(origin);
+		add(origin);
+	}
 
-		// disable origin component and prevent any mouse clicks/key presses from being handled by it
+	/**
+	 * Disables origin component and prevents any mouse clicks/key presses from being handled by it.
+	 * @param origin The component to be disabled.
+	 */
+	private void mute(Component origin) {
 		origin.setEnabled(false);
 		Arrays.stream(origin.getMouseListeners()).forEach(origin::removeMouseListener);
 		Arrays.stream(origin.getMouseMotionListeners()).forEach(origin::removeMouseMotionListener);
 		Arrays.stream(origin.getMouseWheelListeners()).forEach(origin::removeMouseWheelListener);
 		Arrays.stream(origin.getKeyListeners()).forEach(origin::removeKeyListener);
-		add(origin);
+
+		if (origin instanceof Container container) {
+			for (Component comp : container.getComponents())
+				mute(comp);
+		}
 	}
 
 	@Override public void paint(Graphics g) {
