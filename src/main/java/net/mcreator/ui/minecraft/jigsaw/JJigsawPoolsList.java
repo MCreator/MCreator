@@ -24,6 +24,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSingleEntriesList;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -63,7 +64,10 @@ public class JJigsawPoolsList extends JSingleEntriesList<JJigsawPool, Structure.
 			}
 		});
 
-		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
+				BorderFactory.createCompoundBorder(
+						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
+						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
 	}
 
 	@Override public void reloadDataLists() {

@@ -106,7 +106,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		});
 
 		JPanel pane5 = new JPanel(new BorderLayout(3, 3));
-		JPanel pane7 = new JPanel(new BorderLayout());
+		JPanel pane7 = new JPanel(new BorderLayout(10, 10));
 
 		ComponentUtils.deriveFont(structureSelector, 16);
 
@@ -169,9 +169,8 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(params));
 
-		JPanel jigsawSize = new JPanel(new GridLayout(1, 0, 50, 0));
+		JPanel jigsawSize = new JPanel(new GridLayout(2, 2, 10, 2));
 		jigsawSize.setOpaque(false);
-		jigsawSize.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
 
 		jigsawSize.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/jigsaw_size"),
 				L10N.label("elementgui.structuregen.jigsaw_size")));
@@ -184,10 +183,10 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		pane7.setOpaque(false);
 		pane7.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 5));
 
-		pane7.add("North", PanelUtils.gridElements(0, 1, 0, 20, jigsawSize,
-				PanelUtils.join(FlowLayout.LEFT, HelpUtils.wrapWithHelpButton(this.withEntry("structure/jigsaw_pools"),
-						L10N.label("elementgui.structuregen.jigsaw_pools")))));
-		pane7.add("Center", jigsaw);
+		pane7.add("North", PanelUtils.join(FlowLayout.LEFT, jigsawSize));
+		pane7.add("Center", PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT,
+				HelpUtils.wrapWithHelpButton(this.withEntry("structure/jigsaw_pools"),
+						L10N.label("elementgui.structuregen.jigsaw_pools"))), jigsaw));
 
 		restrictionBiomes.setValidator(new CompoundValidator(
 				new ItemListFieldValidator(restrictionBiomes, L10N.t("elementgui.structuregen.error_select_biomes")),
