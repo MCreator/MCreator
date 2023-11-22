@@ -267,7 +267,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.mobBehaviourType == "Raider">
 	@Override public SoundEvent getCelebrateSound() {
-		return <#if data.celebrationSound?has_content && data.celebrationSound.getMappedValue()?has_content>ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.celebrationSound}"))<#else>null</#if>;
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.celebrationSound}"));
 	}
 	</#if>
 
