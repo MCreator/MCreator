@@ -450,8 +450,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.behaviour")));
 		subpane1.add(mobBehaviourType);
 
-		enableOrDisableFields();
-
 		subpane1.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/creature_type"),
 				L10N.label("elementgui.living_entity.creature_type")));
 		subpane1.add(mobCreatureType);
@@ -818,9 +816,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		hasAI.setSelected(true);
 
+		enableOrDisableFields();
 		breedable.addActionListener(actionEvent -> enableOrDisableFields());
 		isBoss.addActionListener(e -> enableOrDisableFields());
-		mobBehaviourType.addActionListener(e -> enableOrDisableFields());
 
 		pane3.setOpaque(false);
 
