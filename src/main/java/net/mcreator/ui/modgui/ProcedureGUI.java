@@ -287,10 +287,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBorder(null);
-			setBackground(
-					isSelected ? value.getType().getBlocklyColor() : Theme.current().getBackgroundColor());
-			setForeground(
-					isSelected ? Theme.current().getForegroundColor() : value.getType().getBlocklyColor());
+			setBackground(isSelected ? value.getType().getBlocklyColor() : Theme.current().getBackgroundColor());
+			setForeground(isSelected ? Theme.current().getForegroundColor() : value.getType().getBlocklyColor());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			return this;
@@ -341,8 +339,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		returnType.setOpaque(false);
 		returnType.setPreferredSize(new Dimension(150, 46));
 
-		returnType.setBorder(
-				BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
+		returnType.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		triggerInfoPanel.setOpaque(false);
 		triggerInfoPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));
@@ -357,14 +354,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		scrollPane.setBackground(Theme.current().getBackgroundColor());
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPane.getVerticalScrollBar()
-				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-						Theme.current().getAltBackgroundColor(), scrollPane.getVerticalScrollBar()));
+		scrollPane.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), scrollPane.getVerticalScrollBar()));
 		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPane.getHorizontalScrollBar()
-				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-						Theme.current().getAltBackgroundColor(), scrollPane.getHorizontalScrollBar()));
+		scrollPane.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), scrollPane.getHorizontalScrollBar()));
 		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		localVarsPan.add("Center", scrollPane);
@@ -496,21 +491,18 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		depsPan.add("North", depsHeader);
 		depsPan.setOpaque(false);
-		depsPan.setBorder(
-				BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
+		depsPan.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		JScrollPane scrollPaneDeps = new JScrollPane(dependenciesList);
 		scrollPaneDeps.setBackground(Theme.current().getBackgroundColor());
 		scrollPaneDeps.getViewport().setOpaque(false);
 		scrollPaneDeps.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPaneDeps.getVerticalScrollBar()
-				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-						Theme.current().getAltBackgroundColor(), scrollPaneDeps.getVerticalScrollBar()));
+		scrollPaneDeps.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), scrollPaneDeps.getVerticalScrollBar()));
 		scrollPaneDeps.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneDeps.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPaneDeps.getHorizontalScrollBar()
-				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-						Theme.current().getAltBackgroundColor(), scrollPaneDeps.getHorizontalScrollBar()));
+		scrollPaneDeps.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), scrollPaneDeps.getHorizontalScrollBar()));
 		scrollPaneDeps.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		depsPan.add("Center", scrollPaneDeps);
@@ -529,21 +521,18 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		triggerDepsPan.add("North", extdepsHeader);
 		triggerDepsPan.setBackground(Theme.current().getBackgroundColor());
-		triggerDepsPan.setBorder(
-				BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
+		triggerDepsPan.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		JScrollPane scrollPaneExtDeps = new JScrollPane(dependenciesExtTrigList);
 		scrollPaneExtDeps.setBackground(Theme.current().getBackgroundColor());
 		scrollPaneExtDeps.getViewport().setOpaque(false);
 		scrollPaneExtDeps.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPaneExtDeps.getVerticalScrollBar()
-				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-						Theme.current().getAltBackgroundColor(), scrollPaneExtDeps.getVerticalScrollBar()));
+		scrollPaneExtDeps.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), scrollPaneExtDeps.getVerticalScrollBar()));
 		scrollPaneExtDeps.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneExtDeps.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPaneExtDeps.getHorizontalScrollBar()
-				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-						Theme.current().getAltBackgroundColor(), scrollPaneExtDeps.getHorizontalScrollBar()));
+		scrollPaneExtDeps.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), scrollPaneExtDeps.getHorizontalScrollBar()));
 		scrollPaneExtDeps.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneExtDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
@@ -557,8 +546,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		JPanel eastPan = new JPanel();
 		eastPan.setLayout(new BoxLayout(eastPan, BoxLayout.PAGE_AXIS));
 		eastPan.setBackground(Theme.current().getBackgroundColor());
-		eastPan.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getBackgroundColor()));
+		eastPan.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getBackgroundColor()));
 
 		eastPan.add(localVarsPan);
 		eastPan.add(depsPan);

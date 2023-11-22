@@ -59,12 +59,10 @@ public class ComponentUtils {
 						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
 						BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 4)));
 		button.setBorder(button.isSelected() ? on : off);
-		button.setBackground(
-				button.isSelected() ? Theme.current().getAltBackgroundColor() : new Color(30, 30, 30));
+		button.setBackground(button.isSelected() ? Theme.current().getAltBackgroundColor() : new Color(30, 30, 30));
 		button.addChangeListener(e -> {
 			button.setBorder(button.isSelected() ? on : off);
-			button.setBackground(
-					button.isSelected() ? Theme.current().getAltBackgroundColor() : new Color(30, 30, 30));
+			button.setBackground(button.isSelected() ? Theme.current().getAltBackgroundColor() : new Color(30, 30, 30));
 		});
 	}
 

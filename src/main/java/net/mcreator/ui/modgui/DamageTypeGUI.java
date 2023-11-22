@@ -145,12 +145,12 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 		exhaustion.setValue(damageType.exhaustion);
 		scaling.setSelectedItem(damageType.scaling);
 		effects.setSelectedItem(damageType.effects);
-		normalDeathMessage.setText(damageType.normalDeathMessage
-				.replace("%1$s", "<player>").replace("%2$s", "<attacker>"));
-		itemDeathMessage.setText(damageType.itemDeathMessage
-				.replace("%1$s", "<player>").replace("%2$s", "<attacker>").replace("%3$s", "<item>"));
-		playerDeathMessage.setText(damageType.playerDeathMessage
-				.replace("%1$s", "<player>").replace("%2$s", "<attacker>"));
+		normalDeathMessage.setText(
+				damageType.normalDeathMessage.replace("%1$s", "<player>").replace("%2$s", "<attacker>"));
+		itemDeathMessage.setText(damageType.itemDeathMessage.replace("%1$s", "<player>").replace("%2$s", "<attacker>")
+				.replace("%3$s", "<item>"));
+		playerDeathMessage.setText(
+				damageType.playerDeathMessage.replace("%1$s", "<player>").replace("%2$s", "<attacker>"));
 	}
 
 	@Override public DamageType getElementFromGUI() {
@@ -158,12 +158,12 @@ public class DamageTypeGUI extends ModElementGUI<DamageType> {
 		damageType.exhaustion = (double) exhaustion.getValue();
 		damageType.scaling = (String) scaling.getSelectedItem();
 		damageType.effects = (String) effects.getSelectedItem();
-		damageType.normalDeathMessage = normalDeathMessage.getText()
-				.replace("<player>", "%1$s").replace("<attacker>", "%2$s");
-		damageType.itemDeathMessage = itemDeathMessage.getText()
-				.replace("<player>", "%1$s").replace("<attacker>", "%2$s").replace("<item>", "%3$s");
-		damageType.playerDeathMessage = playerDeathMessage.getText()
-				.replace("<player>", "%1$s").replace("<attacker>", "%2$s");
+		damageType.normalDeathMessage = normalDeathMessage.getText().replace("<player>", "%1$s")
+				.replace("<attacker>", "%2$s");
+		damageType.itemDeathMessage = itemDeathMessage.getText().replace("<player>", "%1$s")
+				.replace("<attacker>", "%2$s").replace("<item>", "%3$s");
+		damageType.playerDeathMessage = playerDeathMessage.getText().replace("<player>", "%1$s")
+				.replace("<attacker>", "%2$s");
 		return damageType;
 	}
 

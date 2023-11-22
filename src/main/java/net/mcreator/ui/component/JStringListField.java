@@ -162,12 +162,9 @@ public class JStringListField extends JPanel {
 		public Component getListCellRendererComponent(JList<? extends String> list, String value, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(true);
-			setBackground(isSelected ?
-					Theme.current().getForegroundColor() :
-					Theme.current().getAltBackgroundColor());
-			setForeground(isSelected ?
-					Theme.current().getSecondAltBackgroundColor() :
-					Theme.current().getForegroundColor());
+			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getAltBackgroundColor());
+			setForeground(
+					isSelected ? Theme.current().getSecondAltBackgroundColor() : Theme.current().getForegroundColor());
 			setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(2, 5, 2, 5)));

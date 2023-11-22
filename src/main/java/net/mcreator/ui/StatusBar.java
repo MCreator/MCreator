@@ -110,8 +110,7 @@ public class StatusBar extends JPanel {
 
 		setBackground(Theme.current().getBackgroundColor());
 		setPreferredSize(new Dimension(22, 22));
-		setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0,
-				(Theme.current().getAltBackgroundColor()).darker()));
+		setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, (Theme.current().getAltBackgroundColor()).darker()));
 
 		addToolTipReader();
 	}

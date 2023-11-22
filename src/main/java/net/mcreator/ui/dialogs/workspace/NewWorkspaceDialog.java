@@ -117,8 +117,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		workspacePanels.add("addon", PanelUtils.pullElementUp(addonWorkspacePanel));
 
 		JComponent center = PanelUtils.centerInPanel(workspacePanels);
-		center.setBorder(
-				BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
+		center.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		add("Center", center);
 
@@ -264,8 +263,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		}
 
 		JComponent wrapPan = PanelUtils.northAndCenterElement(workspaceType, new JEmptyBox());
-		wrapPan.setBorder(
-				BorderFactory.createMatteBorder(1, 0, 0, 1, Theme.current().getAltBackgroundColor()));
+		wrapPan.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 1, Theme.current().getAltBackgroundColor()));
 		add("West", wrapPan);
 
 		getRootPane().setDefaultButton(ok);

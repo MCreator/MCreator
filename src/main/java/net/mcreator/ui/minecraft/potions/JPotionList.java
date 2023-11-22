@@ -27,7 +27,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 public class JPotionList extends JSimpleEntriesList<JPotionListEntry, Potion.CustomEffectEntry> {

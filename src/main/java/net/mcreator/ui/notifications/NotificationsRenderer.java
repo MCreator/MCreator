@@ -87,9 +87,8 @@ public class NotificationsRenderer {
 		}
 
 		BalloonTip balloonTip = new BalloonTip(this.anchor, tipContents,
-				new EdgedBalloonStyle(Theme.current().getBackgroundColor(),
-						Theme.current().getAltForegroundColor()), BalloonTip.Orientation.RIGHT_BELOW,
-				BalloonTip.AttachLocation.SOUTHEAST, -10, 10, false);
+				new EdgedBalloonStyle(Theme.current().getBackgroundColor(), Theme.current().getAltForegroundColor()),
+				BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.SOUTHEAST, -10, 10, false);
 
 		closeButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		closeButton.setContentAreaFilled(false);

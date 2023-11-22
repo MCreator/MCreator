@@ -51,14 +51,12 @@ public class CompileNotesPanel extends JPanel {
 		scrollPaneCompileNotes.getVerticalScrollBar().setUnitIncrement(11);
 		scrollPaneCompileNotes.getVerticalScrollBar()
 				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-						Theme.current().getAltBackgroundColor(),
-						scrollPaneCompileNotes.getVerticalScrollBar()));
+						Theme.current().getAltBackgroundColor(), scrollPaneCompileNotes.getVerticalScrollBar()));
 		scrollPaneCompileNotes.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneCompileNotes.getHorizontalScrollBar().setUnitIncrement(11);
 		scrollPaneCompileNotes.getHorizontalScrollBar()
 				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-						Theme.current().getAltBackgroundColor(),
-						scrollPaneCompileNotes.getHorizontalScrollBar()));
+						Theme.current().getAltBackgroundColor(), scrollPaneCompileNotes.getHorizontalScrollBar()));
 		scrollPaneCompileNotes.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneCompileNotes.setBorder(null);
 		add("Center", scrollPaneCompileNotes);

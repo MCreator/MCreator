@@ -63,16 +63,13 @@ class AutocompleteStyle {
 						((JComponent) com).setBorder(null);
 					if (com instanceof JScrollPane pane) {
 						pane.setBackground(Theme.current().getBackgroundColor());
-						pane.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0,
-								Theme.current().getBackgroundColor()));
-						pane.getVerticalScrollBar()
-								.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-										Theme.current().getAltBackgroundColor(),
-										pane.getVerticalScrollBar()));
+						pane.setBorder(
+								BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getBackgroundColor()));
+						pane.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+								Theme.current().getAltBackgroundColor(), pane.getVerticalScrollBar()));
 						pane.getHorizontalScrollBar()
 								.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-										Theme.current().getAltBackgroundColor(),
-										pane.getHorizontalScrollBar()));
+										Theme.current().getAltBackgroundColor(), pane.getHorizontalScrollBar()));
 						pane.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 						pane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 						JPanel dummyCorner = new JPanel();

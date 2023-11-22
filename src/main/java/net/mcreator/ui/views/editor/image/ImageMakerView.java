@@ -162,8 +162,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		controls.add(leftControls, BorderLayout.WEST);
 		controls.add(rightControls, BorderLayout.EAST);
 
-		controls.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getSecondAltBackgroundColor()));
+		controls.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		add(controls, BorderLayout.NORTH);
 		add(leftSplitPane, BorderLayout.CENTER);

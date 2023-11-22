@@ -33,7 +33,6 @@ import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class NewModElementDialog {
 
