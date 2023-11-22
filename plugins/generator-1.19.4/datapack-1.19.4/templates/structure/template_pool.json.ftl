@@ -8,10 +8,9 @@
       "element": {
         "element_type": "minecraft:single_pool_element",
         "location": "${modid}:${data.structure}",
-        "projection": "${data.projection}"
-        <#if data.ignoredBlocks?has_content>,
-        "processors": {
-          "processors": [
+        "projection": "${data.projection}",
+        "processors": [
+          <#if data.ignoredBlocks?has_content>
             {
               "processor_type": "minecraft:block_ignore",
               "blocks": [
@@ -22,9 +21,8 @@
                 </#list>
               ]
             }
-          ]
-        }
-        </#if>
+          </#if>
+        ]
       }
     }
   ]
