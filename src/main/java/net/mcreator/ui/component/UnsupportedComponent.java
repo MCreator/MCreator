@@ -38,7 +38,7 @@ public class UnsupportedComponent extends JPanel {
 		if (parent != null && !(parent instanceof UnsupportedComponent)) {
 			int index = Arrays.asList(parent.getComponents()).indexOf(comp);
 			parent.remove(index);
-			parent.add(new UnsupportedComponent(comp), index);
+			parent.add(new UnsupportedComponent(comp, parent.getLayout() == null), index);
 		}
 	}
 
@@ -47,11 +47,14 @@ public class UnsupportedComponent extends JPanel {
 	/**
 	 * Constructs a panel that displays an overlay with "unsupported" warning over the component marked as such.
 	 *
-	 * @param origin The component to be marked.
+	 * @param origin    The component to be marked.
+	 * @param rawBounds Whether the component has its bounds assigned manually.
 	 */
-	UnsupportedComponent(Component origin) {
+	UnsupportedComponent(Component origin, boolean rawBounds) {
 		setLayout(new GridLayout());
 		setOpaque(false);
+		if (rawBounds)
+			setBounds(origin.getBounds());
 
 		// disable origin component and prevent any mouse clicks/key presses from being handled by it
 		origin.setEnabled(false);
