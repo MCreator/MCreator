@@ -1,0 +1,1 @@
+Here you can set how many times the entity will spawn in each raid wave.

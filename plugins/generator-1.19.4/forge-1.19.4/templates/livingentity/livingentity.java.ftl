@@ -905,7 +905,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#if>
 
 		<#if data.mobBehaviourType == "Raider">
-		Raid.RaiderType.create("${registryname}", ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), new int[]{0, 4, 3, 3, 4, 4, 4, 2});
+		Raid.RaiderType.create("${registryname}", ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), new int[]{0, ${data.spawnPercentageRaidOne}, ${data.spawnPercentageRaidTwo}, ${data.spawnPercentageRaidThree}, ${data.spawnPercentageRaidFour}, ${data.spawnPercentageRaidFive}, ${data.spawnPercentageRaidSix}, ${data.spawnPercentageRaidSeven}});
 		</#if>
 	}
 
