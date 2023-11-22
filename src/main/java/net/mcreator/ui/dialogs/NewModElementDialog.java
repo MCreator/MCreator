@@ -35,6 +35,7 @@ import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
+import java.awt.*;
 
 public class NewModElementDialog {
 
