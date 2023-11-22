@@ -816,7 +816,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		hasAI.setSelected(true);
 
-		enableOrDisableFields();
+		mobBehaviourType.addActionListener(actionEvent -> enableOrDisableFields());
 		breedable.addActionListener(actionEvent -> enableOrDisableFields());
 		isBoss.addActionListener(e -> enableOrDisableFields());
 
@@ -1035,31 +1035,18 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		bossBarType.setEnabled(isBoss.isSelected());
 
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
-		mobBehaviourType.addActionListener(e -> {
-			celebrationSound.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-			breedable.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
-			tameable.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
-			breedTriggerItems.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
-			spawnPercentageRaidOne.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-			spawnPercentageRaidTwo.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-			spawnPercentageRaidThree.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-			spawnPercentageRaidFour.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-			spawnPercentageRaidFive.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-			spawnPercentageRaidSix.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-			spawnPercentageRaidSeven.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-		});
-		LivingEntity livingEntity = new LivingEntity(modElement);
-		celebrationSound.setEnabled(livingEntity.mobBehaviourType == "Raider");
-		tameable.setEnabled(livingEntity.mobBehaviourType != "Raider");
-		breedable.setEnabled(livingEntity.mobBehaviourType != "Raider");
-		breedTriggerItems.setEnabled(livingEntity.mobBehaviourType != "Raider");
-		spawnPercentageRaidOne.setEnabled(livingEntity.mobBehaviourType == "Raider");
-		spawnPercentageRaidTwo.setEnabled(livingEntity.mobBehaviourType == "Raider");
-		spawnPercentageRaidThree.setEnabled(livingEntity.mobBehaviourType == "Raider");
-		spawnPercentageRaidFour.setEnabled(livingEntity.mobBehaviourType == "Raider");
-		spawnPercentageRaidFive.setEnabled(livingEntity.mobBehaviourType == "Raider");
-		spawnPercentageRaidSix.setEnabled(livingEntity.mobBehaviourType == "Raider");
-		spawnPercentageRaidSeven.setEnabled(livingEntity.mobBehaviourType == "Raider");
+
+		celebrationSound.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
+		breedable.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
+		tameable.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
+		breedTriggerItems.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
+		spawnPercentageRaidOne.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
+		spawnPercentageRaidTwo.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
+		spawnPercentageRaidThree.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
+		spawnPercentageRaidFour.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
+		spawnPercentageRaidFive.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
+		spawnPercentageRaidSix.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
+		spawnPercentageRaidSeven.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
