@@ -73,7 +73,7 @@ import java.util.List;
 	public Sound portalSound;
 	public boolean enableIgniter;
 	public String igniterName;
-	public String rarity;
+	public String igniterRarity;
 	public StringListProcedure specialInformation;
 	public TabEntry igniterTab;
 	@TextureReference(TextureType.ITEM) public String texture;
@@ -94,7 +94,7 @@ import java.util.List;
 		// DEFAULT VALUES
 		this.enablePortal = true;
 		this.enableIgniter = true;
-		this.rarity = "COMMON";
+		this.igniterRarity = "COMMON";
 		this.sleepResult = "ALLOW";
 	}
 
