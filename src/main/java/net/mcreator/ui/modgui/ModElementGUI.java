@@ -85,11 +85,30 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	public final void addPage(JComponent component) {
-		pages.put(modElement.getType().getReadableName(), component);
+		addPage(component, true);
+	}
+
+	public final void addPage(JComponent component, boolean scroll) {
+		addPage(modElement.getType().getReadableName(), component, scroll);
 	}
 
 	public final void addPage(String name, JComponent component) {
-		pages.put(name, component);
+		addPage(name, component, true);
+	}
+
+	public final void addPage(String name, JComponent component, boolean scroll) {
+		if (scroll) {
+			JScrollPane splitScroll = new JScrollPane(component);
+			splitScroll.setOpaque(false);
+			splitScroll.getViewport().setOpaque(false);
+			splitScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			splitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			splitScroll.getVerticalScrollBar().setUnitIncrement(15);
+			splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
+			pages.put(name, new JLayer<>(splitScroll, new ScrollWheelPassLayer()));
+		} else {
+			pages.put(name, component);
+		}
 	}
 
 	public void setModElementCreatedListener(ModElementCreatedListener<GE> modElementCreatedListener) {
@@ -148,10 +167,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	protected final void finalizeGUI() {
-		finalizeGUI(true);
-	}
-
-	protected final void finalizeGUI(boolean wrapInScrollPane) {
 		JComponent centerComponent, parameters = new JPanel();
 
 		if (allowCodePreview())
@@ -321,19 +336,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			add("North", PanelUtils.maxMargin(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, true, false,
 					false));
 
-			if (wrapInScrollPane) {
-				JScrollPane splitScroll = new JScrollPane(split);
-				splitScroll.setOpaque(false);
-				splitScroll.getViewport().setOpaque(false);
-				splitScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-				splitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-				splitScroll.getVerticalScrollBar().setUnitIncrement(15);
-				splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
-				parameters = new JLayer<>(splitScroll, new ScrollWheelPassLayer());
-			} else {
-				parameters = PanelUtils.join(split);
-			}
-			centerComponent = PanelUtils.centerAndSouthElement(parameters, pager);
+			centerComponent = PanelUtils.centerAndSouthElement(parameters = split, pager);
 		} else {
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
@@ -397,18 +400,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					PanelUtils.maxMargin(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false, false,
 							false));
 
-			if (wrapInScrollPane) {
-				JScrollPane splitScroll = new JScrollPane(new ArrayList<>(pages.values()).get(0));
-				splitScroll.setOpaque(false);
-				splitScroll.getViewport().setOpaque(false);
-				splitScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-				splitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-				splitScroll.getVerticalScrollBar().setUnitIncrement(15);
-				splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
-				centerComponent = new JLayer<>(splitScroll, new ScrollWheelPassLayer());
-			} else {
-				centerComponent = new ArrayList<>(pages.values()).get(0);
-			}
+			centerComponent = new ArrayList<>(pages.values()).get(0);
 		}
 
 		if (modElementCodeViewer != null) {
