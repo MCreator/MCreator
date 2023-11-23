@@ -106,7 +106,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	public ProcedureGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
-		super.finalizeGUI(false);
+		super.finalizeGUI();
 	}
 
 	private synchronized void regenerateProcedure() {
@@ -589,7 +589,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
 		pane5.add("North", blocklyEditorToolbar);
 
-		addPage(PanelUtils.gridElements(1, 1, pane5));
+		addPage(PanelUtils.gridElements(1, 1, pane5), false);
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

@@ -52,7 +52,7 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 		pane.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
 		pane.add(villagerTradeProfessions);
-		addPage(pane);
+		addPage(pane, false);
 
 		// Add first pool
 		if (!isEditingMode()) {

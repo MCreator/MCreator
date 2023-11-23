@@ -1187,7 +1187,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page3group.addValidationElement(stepSound.getVTextField());
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
+		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane7);
 		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8);
