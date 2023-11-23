@@ -331,7 +331,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
 				parameters = new JLayer<>(splitScroll, new ScrollWheelPassLayer());
 			} else {
-				parameters = PanelUtils.join(split);
+				parameters = split;
 			}
 			centerComponent = PanelUtils.centerAndSouthElement(parameters, pager);
 		} else {
