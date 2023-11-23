@@ -87,7 +87,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	public StructureGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
-		super.finalizeGUI(false);
+		super.finalizeGUI();
 	}
 
 	@Override protected void initGUI() {
@@ -205,7 +205,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		page1group.addValidationElement(structureSelector);
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane5);
-		addPage(L10N.t("elementgui.structuregen.page_jigsaw"), pane7);
+		addPage(L10N.t("elementgui.structuregen.page_jigsaw"), pane7, false);
 	}
 
 	@Override public void reloadDataLists() {
