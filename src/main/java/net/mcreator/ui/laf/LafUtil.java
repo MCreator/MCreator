@@ -20,12 +20,44 @@
 package net.mcreator.ui.laf;
 
 import net.mcreator.io.OS;
+import net.mcreator.ui.laf.themes.Theme;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import javax.swing.text.DefaultEditorKit;
+import javax.swing.text.html.HTMLEditorKit;
+import javax.swing.text.html.StyleSheet;
 import java.awt.event.KeyEvent;
+import java.lang.reflect.Field;
 
 public class LafUtil {
+
+	private static final Logger LOG = LogManager.getLogger(LafUtil.class);
+
+	public static void applyDefaultHTMLStyles() {
+		try {
+			final Field keyField = HTMLEditorKit.class.getDeclaredField("DEFAULT_STYLES_KEY");
+			keyField.setAccessible(true);
+			final Object key = keyField.get(null);
+
+			Object appContext = Class.forName("sun.awt.AppContext").getMethod("getAppContext").invoke(null);
+
+			StyleSheet defaultStyles = (StyleSheet) appContext.getClass().getMethod("get", Object.class)
+					.invoke(appContext, key);
+
+			if (defaultStyles != null) {
+				defaultStyles.addRule(
+						"a {color: #" + Integer.toHexString(Theme.current().getInterfaceAccentColor().getRGB())
+								.substring(2) + ";}");
+
+				appContext.getClass().getMethod("put", Object.class, Object.class)
+						.invoke(appContext, key, defaultStyles);
+			}
+		} catch (Throwable throwable) {
+			LOG.warn("Failed to apply custom CSS style sheets", throwable);
+		}
+	}
 
 	public static void fixMacOSActions() {
 		if (OS.getOS() == OS.MAC) {
