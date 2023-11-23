@@ -47,7 +47,7 @@ public class DamageTypeListField extends JItemListField<DamageTypeEntry> {
 	@Override protected List<DamageTypeEntry> getTagsToAdd() {
 		List<DamageTypeEntry> tags = new ArrayList<>();
 
-		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, "Damage Types", "is_drowning", "is_explosion",
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, "Damage types", "is_drowning", "is_explosion",
 				"is_fall", "is_fire", "is_freezing", "is_lightning", "is_projectile", "bypasses_armor",
 				"bypasses_effects", "bypasses_enchantments", "bypasses_shield");
 		if (tag != null)

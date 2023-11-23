@@ -1234,7 +1234,7 @@ public class TestWorkspaceDataProvider {
 			Tag tag = new Tag(modElement);
 			tag.namespace = getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
 			tag.type = getRandomItem(random,
-					new String[] { "Items", "Blocks", "Entities", "Functions", "Biomes", "Damage Types" });
+					new String[] { "Items", "Blocks", "Entities", "Functions", "Biomes", "Damage types" });
 			tag.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			tag.items = new ArrayList<>();
 			tag.blocks = new ArrayList<>();

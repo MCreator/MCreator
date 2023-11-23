@@ -45,7 +45,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 	private final VComboBox<String> namespace = new VComboBox<>(new String[] { "minecraft", "mod", "forge", "c" });
 	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "Items", "Blocks", "Entities", "Biomes", "Functions", "Damage Types" });
+			new String[] { "Items", "Blocks", "Entities", "Biomes", "Functions", "Damage types" });
 
 	private MCItemListField items;
 	private MCItemListField blocks;
@@ -99,7 +99,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		valuesPan.add(functions, "Functions");
 		valuesPan.add(entities, "Entities");
 		valuesPan.add(biomes, "Biomes");
-		valuesPan.add(damageTypes, "Damage Types");
+		valuesPan.add(damageTypes, "Damage types");
 
 		if (isEditingMode()) {
 			type.setEnabled(false);

@@ -57,7 +57,7 @@ import java.util.Locale;
 		if (type.equals("Biomes"))
 			return "worldgen/biome";
 
-		if (type.equals("Damage Types"))
+		if (type.equals("Damage types"))
 			return "damage_type";
 
 		return type.toLowerCase(Locale.ENGLISH);
@@ -74,7 +74,7 @@ import java.util.Locale;
 			case "Entities" -> Dependency.getColor("entity");
 			case "Functions" -> Dependency.getColor("string");
 			case "Biomes" -> Dependency.getColor("world");
-			case "Damage Types" -> Dependency.getColor("damagesource");
+			case "Damage types" -> Dependency.getColor("damagesource");
 			default -> Color.WHITE;
 		};
 	}
