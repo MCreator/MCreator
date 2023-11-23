@@ -73,6 +73,7 @@ import java.util.List;
 	public Sound portalSound;
 	public boolean enableIgniter;
 	public String igniterName;
+	public String rarity;
 	public StringListProcedure specialInformation;
 	public TabEntry igniterTab;
 	@TextureReference(TextureType.ITEM) public String texture;
