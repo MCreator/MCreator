@@ -78,8 +78,8 @@ public class JJigsawPoolsList extends JSingleEntriesList<JJigsawPool, Structure.
 		return entryList.stream().map(JJigsawPool::getPool).filter(Objects::nonNull).toList();
 	}
 
-	@Override public void setEntries(List<Structure.JigsawPool> lootTablePools) {
-		lootTablePools.forEach(e -> {
+	@Override public void setEntries(List<Structure.JigsawPool> jigsawPools) {
+		jigsawPools.forEach(e -> {
 			JJigsawPool pool = new JJigsawPool(this, gui, entries, entryList, e.poolName);
 			registerEntryUI(pool);
 			pool.setPool(e);

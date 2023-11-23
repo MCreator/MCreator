@@ -25,6 +25,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -55,6 +56,7 @@ import java.util.List;
 
 		this.size = 1;
 		this.maxDistanceFromCenter = 64;
+		this.jigsawPools = new ArrayList<>();
 	}
 
 	public List<JigsawPool.JigsawPart> getPoolParts() {
