@@ -94,7 +94,7 @@ import java.util.List;
 		// DEFAULT VALUES
 		this.enablePortal = true;
 		this.enableIgniter = true;
-		this.rarity = "UNCOMMON";
+		this.rarity = "COMMON";
 		this.sleepResult = "ALLOW";
 	}
 
