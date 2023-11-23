@@ -34,8 +34,10 @@ import java.io.File;
 
 public class CampfireCookingRecipeMaker extends JPanel {
 
-	public MCItemHolder cb1;
-	public MCItemHolder cb2;
+	public final MCItemHolder cb1;
+	public final MCItemHolder cb2;
+
+	private final JButton export = new JButton(UIRES.get("18px.export"));
 
 	public CampfireCookingRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
 		ImagePanel ip = new ImagePanel(UIRES.get("recipe.campfire_cooking").getImage());
@@ -45,8 +47,6 @@ public class CampfireCookingRecipeMaker extends JPanel {
 
 		cb1 = new MCItemHolder(mcreator, itemsWithTags, true);
 		cb2 = new MCItemHolder(mcreator, items);
-
-		JButton export = new JButton(UIRES.get("18px.export"));
 
 		export.setContentAreaFilled(false);
 		export.setMargin(new Insets(0, 0, 0, 0));
@@ -86,6 +86,13 @@ public class CampfireCookingRecipeMaker extends JPanel {
 
 	public MItemBlock getBlock2() {
 		return cb2.getBlock();
+	}
+
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		cb1.setEnabled(enabled);
+		cb2.setEnabled(enabled);
+		export.setEnabled(enabled);
 	}
 
 }
