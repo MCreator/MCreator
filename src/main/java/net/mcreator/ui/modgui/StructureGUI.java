@@ -87,7 +87,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	public StructureGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
-		super.finalizeGUI();
+		super.finalizeGUI(false);
 	}
 
 	@Override protected void initGUI() {
