@@ -129,7 +129,7 @@ import java.util.Map;
 		} else if ("Smithing".equals(recipeType) && !smithingInputStack.isEmpty()
 				&& !smithingInputAdditionStack.isEmpty() && !smithingReturnStack.isEmpty()) {
 			mod = MinecraftImageGenerator.Preview.generateSmithingPreviewPicture(getModElement().getWorkspace(),
-					smithingInputStack, smithingInputAdditionStack, smithingReturnStack);
+					smithingInputTemplateStack, smithingInputStack, smithingInputAdditionStack, smithingReturnStack);
 		} else if ("Brewing".equals(recipeType) && !brewingInputStack.isEmpty() && !brewingIngredientStack.isEmpty()
 				&& !brewingReturnStack.isEmpty()) {
 			mod = MinecraftImageGenerator.Preview.generateBrewingPreviewPicture(getModElement().getWorkspace(),

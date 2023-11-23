@@ -325,29 +325,72 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates smithing recipe images.</p>
 		 *
+		 * @param template Template of the recipe.
 		 * @param input    Input of the recipe.
-		 * @param addition Addition of the recipe
+		 * @param addition Addition of the recipe.
 		 * @param result   Result of the recipe.
 		 * @return Returns the generated image.
 		 */
-		public static BufferedImage generateSmithingPreviewPicture(Workspace workspace, MItemBlock input,
-				MItemBlock addition, MItemBlock result) {
+		public static BufferedImage generateSmithingPreviewPicture(Workspace workspace, MItemBlock template,
+				MItemBlock input, MItemBlock addition, MItemBlock result) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			int plusY = 11;
 			Graphics2D graphics2D = icon.createGraphics();
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			graphics2D.setColor(new Color(190, 190, 190, 65));
 
-			drawTwoSlotRecipe(graphics2D, workspace, input, addition);
+			if (template.isEmpty()) {
+				drawTwoSlotRecipe(graphics2D, workspace, input, addition);
+			} else {
+				plusY += 9;
+
+				//box 1
+				graphics2D.drawLine(10, 0, 17, 0);
+				graphics2D.drawLine(10, 9, 17, 9);
+				graphics2D.drawLine(9, 0, 9, 9);
+				graphics2D.drawLine(18, 0, 18, 9);
+
+				//box 2
+				graphics2D.drawLine(1, 18, 8, 18);
+				graphics2D.drawLine(1, 27, 8, 27);
+				graphics2D.drawLine(0, 18, 0, 27);
+				graphics2D.drawLine(9, 18, 9, 27);
+
+				//box 3
+				graphics2D.drawLine(19, 18, 26, 18);
+				graphics2D.drawLine(19, 27, 26, 27);
+				graphics2D.drawLine(18, 18, 18, 27);
+				graphics2D.drawLine(27, 18, 27, 27);
+
+				//arrow
+				graphics2D.drawLine(13, 11, 13, 14);
+				graphics2D.drawLine(14, 11, 14, 14);
+
+				graphics2D.drawLine(11, 15, 16, 15);
+				graphics2D.drawLine(12, 16, 15, 16);
+				graphics2D.drawLine(13, 17, 14, 17);
+
+				//elements
+				graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+								MCItem.getBlockIconBasedOnName(workspace, template.getUnmappedValue()).getImage())), 8), 10, 1,
+						null);
+				graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+								MCItem.getBlockIconBasedOnName(workspace, input.getUnmappedValue()).getImage())), 8), 1, 19,
+						null);
+				graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+								MCItem.getBlockIconBasedOnName(workspace, addition.getUnmappedValue()).getImage())), 8), 19, 19,
+						null);
+			}
 
 			//plus
-			graphics2D.drawLine(11, 13, 12, 13);
-			graphics2D.drawLine(11, 14, 12, 14);
+			graphics2D.drawLine(11, plusY + 2, 12, plusY + 2);
+			graphics2D.drawLine(11, plusY + 3, 12, plusY + 3);
 
-			graphics2D.drawLine(15, 13, 16, 13);
-			graphics2D.drawLine(15, 14, 16, 14);
+			graphics2D.drawLine(15, plusY + 2, 16, plusY + 2);
+			graphics2D.drawLine(15, plusY + 3, 16, plusY + 3);
 
-			graphics2D.drawLine(13, 11, 13, 16);
-			graphics2D.drawLine(14, 11, 14, 16);
+			graphics2D.drawLine(13, plusY, 13, plusY + 5);
+			graphics2D.drawLine(14, plusY, 14, plusY + 5);
 			graphics2D.dispose();
 
 			return icon;
