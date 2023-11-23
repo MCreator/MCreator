@@ -52,7 +52,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 	public OverlayGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
-		super.finalizeGUI(false);
+		super.finalizeGUI();
 	}
 
 	@Override protected void initGUI() {
@@ -75,7 +75,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		pane5.setOpaque(false);
 		pane5.add("Center", PanelUtils.maxMargin(editor, 5, true, true, true, true));
 
-		addPage(pane5);
+		addPage(pane5, false);
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {

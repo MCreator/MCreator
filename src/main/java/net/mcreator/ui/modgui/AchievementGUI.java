@@ -102,7 +102,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	public AchievementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
-		super.finalizeGUI(false);
+		super.finalizeGUI();
 	}
 
 	@Override protected void initGUI() {
@@ -231,7 +231,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		JComponent wrap = PanelUtils.northAndCenterElement(PanelUtils.westAndCenterElement(propertiesPanel, logicPanel),
 				advancementTrigger);
 		wrap.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		addPage(wrap);
+		addPage(wrap, false);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
