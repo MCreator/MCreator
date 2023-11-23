@@ -37,8 +37,6 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.laf.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
 import net.mcreator.ui.component.util.ThreadUtil;
@@ -47,6 +45,8 @@ import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.LafUtil;
 import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.laf.themes.ThemeLoader;
 import net.mcreator.ui.notifications.StartupNotifications;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
@@ -109,6 +109,7 @@ public final class MCreatorApplication {
 
 			try {
 				UIManager.setLookAndFeel(new MetalLookAndFeel());
+				LafUtil.applyDefaultHTMLStyles();
 				LafUtil.fixMacOSActions();
 			} catch (UnsupportedLookAndFeelException e) {
 				LOG.error("Failed to set look and feel: " + e.getMessage());

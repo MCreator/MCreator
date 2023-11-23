@@ -39,12 +39,10 @@ public class CompactModElementListCellRenderer implements ListCellRenderer<ModEl
 		label.setOpaque(true);
 		label.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementManager.getModElementIcon(value).getImage(), 32)));
 		label.setIconTextGap(10);
-		label.setBackground(isSelected ?
-				Theme.current().getForegroundColor() :
-				Theme.current().getSecondAltBackgroundColor());
-		label.setForeground(isSelected ?
-				Theme.current().getBackgroundColor() :
-				Theme.current().getAltForegroundColor());
+		label.setBackground(
+				isSelected ? Theme.current().getForegroundColor() : Theme.current().getSecondAltBackgroundColor());
+		label.setForeground(
+				isSelected ? Theme.current().getBackgroundColor() : Theme.current().getAltForegroundColor());
 		label.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		return label;
 	}

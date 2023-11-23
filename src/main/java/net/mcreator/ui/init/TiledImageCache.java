@@ -26,7 +26,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class TiledImageCache {
 
@@ -79,8 +78,8 @@ public class TiledImageCache {
 			modTabBlue = modTabTile.getIcon(3, 1);
 			modTabPurple = modTabTile.getIcon(4, 1);
 
-			workspaceAdd = ImageUtils.colorize(workspaceIcons.getIcon(1, 1),
-					Theme.current().getInterfaceAccentColor(), false);
+			workspaceAdd = ImageUtils.colorize(workspaceIcons.getIcon(1, 1), Theme.current().getInterfaceAccentColor(),
+					false);
 			workspaceCode = workspaceIcons.getIcon(2, 1);
 			workspaceDelete = workspaceIcons.getIcon(3, 1);
 			workspaceDeleteAll = workspaceIcons.getIcon(4, 1);

@@ -53,12 +53,16 @@ public class UnsupportedComponent extends JPanel {
 		setLayout(new GridLayout());
 		setOpaque(false);
 
+		setBounds(origin.getBounds());
+
 		// disable origin component and prevent any mouse clicks/key presses from being handled by it
 		origin.setEnabled(false);
+
 		Arrays.stream(origin.getMouseListeners()).forEach(origin::removeMouseListener);
 		Arrays.stream(origin.getMouseMotionListeners()).forEach(origin::removeMouseMotionListener);
 		Arrays.stream(origin.getMouseWheelListeners()).forEach(origin::removeMouseWheelListener);
 		Arrays.stream(origin.getKeyListeners()).forEach(origin::removeKeyListener);
+
 		add(origin);
 	}
 
@@ -80,4 +84,5 @@ public class UnsupportedComponent extends JPanel {
 			g.drawImage(warning, x, y, null);
 		}
 	}
+
 }

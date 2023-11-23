@@ -31,7 +31,6 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 public class StringListProcedureSelector extends RetvalProcedureSelector<List<String>, StringListProcedure> {

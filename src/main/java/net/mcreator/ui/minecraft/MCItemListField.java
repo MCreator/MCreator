@@ -78,9 +78,7 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 
-			setBackground(isSelected ?
-					Theme.current().getForegroundColor() :
-					Theme.current().getAltBackgroundColor());
+			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getAltBackgroundColor());
 
 			setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(0, 2, 0, 2, Theme.current().getBackgroundColor()),

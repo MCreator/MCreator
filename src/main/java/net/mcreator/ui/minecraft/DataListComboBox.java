@@ -55,7 +55,7 @@ public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 
 	public void setSelectedItem(MappableElement mappableElement) {
 		if (mappableElement == null)
-			setSelectedIndex(0);
+			setSelectedIndex(getItemCount() > 0 ? 0 : -1);
 		else
 			this.setSelectedItem(new DataListEntry.Dummy(mappableElement.getUnmappedValue()));
 	}

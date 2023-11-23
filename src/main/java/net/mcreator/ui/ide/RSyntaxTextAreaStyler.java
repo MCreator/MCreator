@@ -48,15 +48,13 @@ public class RSyntaxTextAreaStyler {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
 						"themes/" + net.mcreator.ui.laf.themes.Theme.current().getID() + "/styles/code_editor.xml");
 				themeXML = themeXML.replace("${mainTint}", Integer.toHexString(
-						(net.mcreator.ui.laf.themes.Theme.current()
-								.getInterfaceAccentColor()).getRGB()).substring(2));
+						(net.mcreator.ui.laf.themes.Theme.current().getInterfaceAccentColor()).getRGB()).substring(2));
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			} else {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
 						"themes/default_dark/styles/code_editor.xml");
 				themeXML = themeXML.replace("${mainTint}", Integer.toHexString(
-						(net.mcreator.ui.laf.themes.Theme.current()
-								.getInterfaceAccentColor()).getRGB()).substring(2));
+						(net.mcreator.ui.laf.themes.Theme.current().getInterfaceAccentColor()).getRGB()).substring(2));
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			}
 
@@ -66,8 +64,7 @@ public class RSyntaxTextAreaStyler {
 								.toLowerCase(Locale.ENGLISH) + ".xml"));
 			}
 
-			theme.matchedBracketBG = net.mcreator.ui.laf.themes.Theme.current()
-					.getAltBackgroundColor();
+			theme.matchedBracketBG = net.mcreator.ui.laf.themes.Theme.current().getAltBackgroundColor();
 			theme.matchedBracketFG = net.mcreator.ui.laf.themes.Theme.current().getForegroundColor();
 
 			theme.apply(te);

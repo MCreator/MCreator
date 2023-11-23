@@ -28,7 +28,6 @@ import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 

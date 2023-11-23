@@ -108,8 +108,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
 		JPopupMenu createMenu = new JPopupMenu();
-		createMenu.setBorder(
-				BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
+		createMenu.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
 		createMenu.setBackground(Theme.current().getAltBackgroundColor());
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createMCItemTexture);
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createArmorTexture);
@@ -121,8 +120,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(create);
 
 		JPopupMenu importMenu = new JPopupMenu();
-		importMenu.setBorder(
-				BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
+		importMenu.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
 		importMenu.setBackground(Theme.current().getAltBackgroundColor());
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importBlockTexture);
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importItemTexture);
@@ -143,6 +141,9 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.duplicate_selected",
 				UIRES.get("16px.duplicate.gif"), e -> duplicateSelectedFile()));
+
+		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.replace_selected",
+				UIRES.get("16px.editorder.png"), e -> replaceSelectedFile()));
 
 		bar.add(AbstractWorkspacePanel.createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
@@ -223,6 +224,18 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		if (file != null) {
 			TextureImportDialogs.importSingleTexture(workspacePanel.getMCreator(), file,
 					L10N.t("workspace.textures.select_dupplicate_type"));
+		}
+	}
+
+	private void replaceSelectedFile() {
+		File file = listGroup.getSelectedItem();
+		if (file != null) {
+			File newTexture = FileDialogs.getOpenDialog(workspacePanel.getMCreator(), new String[] { ".png" });
+			if (newTexture != null) {
+				FileIO.copyFile(newTexture, file);
+				new ImageIcon(file.getAbsolutePath()).getImage().flush();
+				reloadElements();
+			}
 		}
 	}
 

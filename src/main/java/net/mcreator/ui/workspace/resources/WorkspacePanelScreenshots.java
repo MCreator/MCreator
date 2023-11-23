@@ -30,7 +30,6 @@ import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -99,9 +98,7 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 		public JLabel getListCellRendererComponent(JList<? extends File> list, File ma, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground(isSelected ?
-					Theme.current().getAltBackgroundColor() :
-					Theme.current().getBackgroundColor());
+			setBackground(isSelected ? Theme.current().getAltBackgroundColor() : Theme.current().getBackgroundColor());
 			setText(ma.getName());
 			ComponentUtils.deriveFont(this, 11);
 			setForeground(Theme.current().getForegroundColor());
