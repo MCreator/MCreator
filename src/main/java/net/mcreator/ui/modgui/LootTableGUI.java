@@ -55,7 +55,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 	public LootTableGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
-		super.finalizeGUI(false);
+		super.finalizeGUI();
 	}
 
 	@Override protected void initGUI() {
@@ -128,7 +128,7 @@ public class LootTableGUI extends ModElementGUI<LootTable> {
 		lootTablePools = new JLootTablePoolsList(mcreator, this);
 
 		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), lootTablePools));
-		addPage(pane3);
+		addPage(pane3, false);
 
 		// add first pool
 		if (!isEditingMode())

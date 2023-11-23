@@ -465,7 +465,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		name.enableRealtimeValidation();
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.item.page_item_states"), cipp);
+		addPage(L10N.t("elementgui.item.page_item_states"), cipp, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
