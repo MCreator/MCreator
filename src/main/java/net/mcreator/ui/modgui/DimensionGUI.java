@@ -63,7 +63,7 @@ import java.net.URISyntaxException;
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final VTextField igniterName = new VTextField(14);
-	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
+	private final JComboBox<String> igniterRarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 
 	private StringListProcedureSelector specialInformation;
 
@@ -256,7 +256,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		proper22.add(igniterName);
 
 		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
-		proper22.add(rarity);
+		proper22.add(igniterRarity);
 
 		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.dimension.portal_igniter_tab")));
@@ -415,7 +415,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalSound.setSound(dimension.portalSound);
 		enableIgniter.setSelected(dimension.enableIgniter);
 		igniterName.setText(dimension.igniterName);
-		rarity.setSelectedItem(dimension.igniterRarity);
+		igniterRarity.setSelectedItem(dimension.igniterRarity);
 		specialInformation.setSelectedProcedure(dimension.specialInformation);
 		portalTexture.setTextureFromTextureName(dimension.portalTexture);
 		texture.setTextureFromTextureName(dimension.texture);
@@ -461,7 +461,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.portalFrame = portalFrame.getBlock();
 		dimension.enableIgniter = enableIgniter.isSelected();
 		dimension.igniterName = igniterName.getText();
-		dimension.igniterRarity = (String) rarity.getSelectedItem();
+		dimension.igniterRarity = (String) igniterRarity.getSelectedItem();
 		dimension.specialInformation = specialInformation.getSelectedProcedure();
 		dimension.worldGenType = (String) worldGenType.getSelectedItem();
 		dimension.sleepResult = (String) sleepResult.getSelectedItem();
