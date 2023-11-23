@@ -53,8 +53,8 @@ import java.util.List;
 	public Structure(ModElement element) {
 		super(element);
 
-		size = 1;
-		maxDistanceFromCenter = 64;
+		this.size = 1;
+		this.maxDistanceFromCenter = 64;
 	}
 
 	public List<JigsawPool.JigsawPart> getPoolParts() {
