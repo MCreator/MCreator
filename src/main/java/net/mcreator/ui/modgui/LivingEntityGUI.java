@@ -345,31 +345,31 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.t("condition.common.use_vanilla")).makeInline();
 		transparentModelCondition = new LogicProcedureSelector(this.withEntry("entity/condition_is_model_transparent"),
 				mcreator, L10N.t("elementgui.living_entity.condition_is_model_transparent"),
-				ProcedureSelector.Side.CLIENT, L10N.checkbox("elementgui.common.enable"), 160,
+				ProcedureSelector.Side.CLIENT, L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		isShakingCondition = new LogicProcedureSelector(this.withEntry("entity/condition_is_shaking"), mcreator,
 				L10N.t("elementgui.living_entity.condition_is_shaking"), ProcedureSelector.Side.CLIENT,
-				L10N.checkbox("elementgui.common.enable"), 160,
+				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		solidBoundingBox = new LogicProcedureSelector(this.withEntry("entity/condition_solid_bounding_box"), mcreator,
 				L10N.t("elementgui.living_entity.condition_solid_bounding_box"), AbstractProcedureSelector.Side.BOTH,
-				L10N.checkbox("elementgui.common.enable"), 160,
+				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		breatheUnderwater = new LogicProcedureSelector(this.withEntry("entity/condition_can_breathe_underwater"),
 				mcreator, L10N.t("elementgui.living_entity.condition_can_breathe_underwater"),
-				AbstractProcedureSelector.Side.BOTH, L10N.checkbox("elementgui.common.enable"), 160,
+				AbstractProcedureSelector.Side.BOTH, L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		pushedByFluids = new LogicProcedureSelector(this.withEntry("entity/condition_fluids_can_push"), mcreator,
 				L10N.t("elementgui.living_entity.condition_fluids_can_push"), AbstractProcedureSelector.Side.BOTH,
-				L10N.checkbox("elementgui.common.enable"), 160,
+				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		visualScale = new NumberProcedureSelector(this.withEntry("entity/visual_scale"), mcreator,
 				L10N.t("elementgui.living_entity.visual_scale"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 308,
+				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		boundingBoxScale = new NumberProcedureSelector(this.withEntry("entity/bounding_box_scale"), mcreator,
 				L10N.t("elementgui.living_entity.bounding_box_scale"), AbstractProcedureSelector.Side.BOTH,
-				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 300,
+				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 210,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
@@ -539,7 +539,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		entityDataListComp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		entityDataListPanel.add(entityDataListComp);
 
-		JPanel spo2 = new JPanel(new GridLayout(13, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(12, 2, 2, 2));
 
 		spo2.setOpaque(false);
 
