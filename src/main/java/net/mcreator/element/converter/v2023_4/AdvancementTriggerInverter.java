@@ -63,7 +63,7 @@ public class AdvancementTriggerInverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 56;
+		return 57;
 	}
 
 	private String fixXML(String xml) throws Exception {
