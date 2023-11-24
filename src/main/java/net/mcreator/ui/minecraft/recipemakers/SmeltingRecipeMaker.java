@@ -35,8 +35,10 @@ import java.io.File;
 
 public class SmeltingRecipeMaker extends JPanel {
 
-	public MCItemHolder cb1;
-	public MCItemHolder cb2;
+	public final MCItemHolder cb1;
+	public final MCItemHolder cb2;
+
+	private final JButton export = new JButton(UIRES.get("18px.export"));
 
 	public SmeltingRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
 		ImagePanel ip = new ImagePanel(UIRES.get("recipe.furnace").getImage());
@@ -48,7 +50,6 @@ public class SmeltingRecipeMaker extends JPanel {
 		cb2 = new MCItemHolder(mcreator, items);
 
 		JLabel drop = new JLabel("1");
-		JButton export = new JButton(UIRES.get("18px.export"));
 
 		export.setContentAreaFilled(false);
 		export.setMargin(new Insets(0, 0, 0, 0));
@@ -98,4 +99,10 @@ public class SmeltingRecipeMaker extends JPanel {
 		return cb2.getBlock();
 	}
 
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		cb1.setEnabled(enabled);
+		cb2.setEnabled(enabled);
+		export.setEnabled(enabled);
+	}
 }

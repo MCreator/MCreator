@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -31,7 +32,7 @@ public class ImagePanel extends JPanel {
 	private boolean original = false;
 	private boolean fitToWidth = false;
 
-	private final Color defaultColor = (Color) UIManager.get("MCreatorLAF.DARK_ACCENT");
+	private final Color defaultColor = Theme.current().getBackgroundColor();
 
 	private int offsetY = 0;
 

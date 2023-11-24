@@ -22,6 +22,7 @@ package net.mcreator.ui.component.entries;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -39,7 +40,7 @@ public abstract class JSingleEntriesList<T extends JPanel, U> extends JEntriesLi
 		super(mcreator, new BorderLayout(), gui);
 		setOpaque(false);
 
-		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		topbar.setBackground(Theme.current().getAltBackgroundColor());
 
 		topbar.add(add);
 		add("North", topbar);
@@ -49,7 +50,7 @@ public abstract class JSingleEntriesList<T extends JPanel, U> extends JEntriesLi
 		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(entries)) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				g2d.setColor(Theme.current().getAltBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();

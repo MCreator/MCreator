@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.init;
 
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
@@ -25,7 +26,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class TiledImageCache {
 
@@ -78,8 +78,8 @@ public class TiledImageCache {
 			modTabBlue = modTabTile.getIcon(3, 1);
 			modTabPurple = modTabTile.getIcon(4, 1);
 
-			workspaceAdd = ImageUtils.colorize(workspaceIcons.getIcon(1, 1),
-					(Color) UIManager.get("MCreatorLAF.MAIN_TINT"), false);
+			workspaceAdd = ImageUtils.colorize(workspaceIcons.getIcon(1, 1), Theme.current().getInterfaceAccentColor(),
+					false);
 			workspaceCode = workspaceIcons.getIcon(2, 1);
 			workspaceDelete = workspaceIcons.getIcon(3, 1);
 			workspaceDeleteAll = workspaceIcons.getIcon(4, 1);

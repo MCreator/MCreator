@@ -28,7 +28,7 @@ import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.image.ImageUtils;
 
@@ -88,7 +88,7 @@ public class AboutAction extends BasicAction {
 		JScrollPane gradlesp = new JScrollPane(licenseText);
 		licenseText.setEditable(false);
 		licenseText.setLineWrap(true);
-		licenseText.setFont(MCreatorTheme.console_font);
+		licenseText.setFont(Theme.current().getConsoleFont());
 		ComponentUtils.deriveFont(licenseText, 12);
 		licenseText.setWrapStyleWord(true);
 		licenseText.setText(FileIO.readFileToString(new File("./LICENSE.txt")));

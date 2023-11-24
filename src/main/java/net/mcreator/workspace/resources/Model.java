@@ -21,7 +21,10 @@ package net.mcreator.workspace.resources;
 import net.mcreator.workspace.Workspace;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Model {
