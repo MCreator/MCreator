@@ -1148,13 +1148,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
-		spawnPercentageRaidOne.setValue(livingEntity.spawnPercentageRaidOne);
-		spawnPercentageRaidTwo.setValue(livingEntity.spawnPercentageRaidTwo);
-		spawnPercentageRaidThree.setValue(livingEntity.spawnPercentageRaidThree);
-		spawnPercentageRaidFour.setValue(livingEntity.spawnPercentageRaidFour);
-		spawnPercentageRaidFive.setValue(livingEntity.spawnPercentageRaidFive);
-		spawnPercentageRaidSix.setValue(livingEntity.spawnPercentageRaidSix);
-		spawnPercentageRaidSeven.setValue(livingEntity.spawnPercentageRaidSeven);
+		spawnPercentageRaidOne.setValue(livingEntity.spawnPercentageRaid[0]);
+		spawnPercentageRaidTwo.setValue(livingEntity.spawnPercentageRaid[1]);
+		spawnPercentageRaidThree.setValue(livingEntity.spawnPercentageRaid[2]);
+		spawnPercentageRaidFour.setValue(livingEntity.spawnPercentageRaid[3]);
+		spawnPercentageRaidFive.setValue(livingEntity.spawnPercentageRaid[4]);
+		spawnPercentageRaidSix.setValue(livingEntity.spawnPercentageRaid[5]);
+		spawnPercentageRaidSeven.setValue(livingEntity.spawnPercentageRaid[6]);
 
 		entityDataList.setEntries(livingEntity.entityDataEntries);
 
@@ -1279,13 +1279,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.guiBoundTo = guiBoundTo.getSelectedItem();
 		livingEntity.entityDataEntries = entityDataList.getEntries();
-		livingEntity.spawnPercentageRaidOne = (int) spawnPercentageRaidOne.getValue();
-		livingEntity.spawnPercentageRaidTwo = (int) spawnPercentageRaidTwo.getValue();
-		livingEntity.spawnPercentageRaidThree = (int) spawnPercentageRaidThree.getValue();
-		livingEntity.spawnPercentageRaidFour = (int) spawnPercentageRaidFour.getValue();
-		livingEntity.spawnPercentageRaidFive = (int) spawnPercentageRaidFive.getValue();
-		livingEntity.spawnPercentageRaidSix = (int) spawnPercentageRaidSix.getValue();
-		livingEntity.spawnPercentageRaidSeven = (int) spawnPercentageRaidSeven.getValue();
+		livingEntity.spawnPercentageRaid[0] = (int) spawnPercentageRaidOne.getValue();
+		livingEntity.spawnPercentageRaid[1] = (int) spawnPercentageRaidTwo.getValue();
+		livingEntity.spawnPercentageRaid[2] = (int) spawnPercentageRaidThree.getValue();
+		livingEntity.spawnPercentageRaid[3] = (int) spawnPercentageRaidFour.getValue();
+		livingEntity.spawnPercentageRaid[4] = (int) spawnPercentageRaidFive.getValue();
+		livingEntity.spawnPercentageRaid[5] = (int) spawnPercentageRaidSix.getValue();
+		livingEntity.spawnPercentageRaid[6] = (int) spawnPercentageRaidSeven.getValue();
 
 		return livingEntity;
 	}

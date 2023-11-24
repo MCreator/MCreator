@@ -1670,13 +1670,13 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelHeight = 1.3;
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
-		livingEntity.spawnPercentageRaidOne = 4;
-		livingEntity.spawnPercentageRaidTwo = 3;
-		livingEntity.spawnPercentageRaidThree = 3;
-		livingEntity.spawnPercentageRaidFour = 4;
-		livingEntity.spawnPercentageRaidFive = 4;
-		livingEntity.spawnPercentageRaidSix = 4;
-		livingEntity.spawnPercentageRaidSeven = 2;
+		livingEntity.spawnPercentageRaid[0] = 4;
+		livingEntity.spawnPercentageRaid[1] = 3;
+		livingEntity.spawnPercentageRaid[2] = 3;
+		livingEntity.spawnPercentageRaid[3] = 4;
+		livingEntity.spawnPercentageRaid[4] = 4;
+		livingEntity.spawnPercentageRaid[5] = 4;
+		livingEntity.spawnPercentageRaid[6] = 2;
 		if (!emptyLists) {
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.LogicType("Logic"), _true));
 			livingEntity.entityDataEntries.add(
