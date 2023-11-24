@@ -20,112 +20,64 @@ package net.mcreator.ui.workspace.resources;
 
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
-import net.mcreator.ui.component.JSelectableList;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.ListUtil;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.workspace.IReloadableFilterable;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
-import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
-class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable {
-
-	private final WorkspacePanel workspacePanel;
-
-	private final ResourceFilterModel<File> filterModel;
-	private final JSelectableList<File> screenshotsList;
+class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 
 	WorkspacePanelScreenshots(WorkspacePanel workspacePanel) {
-		super(new BorderLayout());
-		setOpaque(false);
+		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, File::getName), new Render(),
+				JList.HORIZONTAL_WRAP);
 
-		this.workspacePanel = workspacePanel;
-		filterModel = new ResourceFilterModel<>(workspacePanel, File::getName);
-		screenshotsList = new JSelectableList<>(filterModel);
-
-		screenshotsList.setOpaque(false);
-		screenshotsList.setCellRenderer(new Render());
-		screenshotsList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-		screenshotsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		screenshotsList.setVisibleRowCount(-1);
-
-		JScrollPane sp = new JScrollPane(screenshotsList);
-		sp.setOpaque(false);
-		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUnitIncrement(11);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
-
-		add("Center", sp);
-
-		TransparentToolBar bar = new TransparentToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
-
-		JButton edit = L10N.button("workspace.screenshots.export_selected");
-		edit.setIcon(UIRES.get("16px.ext.gif"));
-		edit.setOpaque(false);
-		edit.setContentAreaFilled(false);
-		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(edit);
-		edit.addActionListener(e -> exportSelectedScreenshots());
-
-		JButton useasbg = L10N.button("workspace.screenshots.use_as_background");
-		useasbg.setIcon(UIRES.get("16px.textures"));
-		useasbg.setOpaque(false);
-		useasbg.setContentAreaFilled(false);
-		useasbg.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(useasbg);
-		useasbg.addActionListener(e -> useSelectedAsBackgrounds());
-
-		JButton del = L10N.button("workspace.screenshots.delete_selected");
-		del.setIcon(UIRES.get("16px.delete.gif"));
-		del.setOpaque(false);
-		del.setContentAreaFilled(false);
-		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(del);
-		del.addActionListener(e -> {
-			screenshotsList.getSelectedValuesList().forEach(File::delete);
-			reloadElements();
-		});
-		screenshotsList.addKeyListener(new KeyAdapter() {
-			@Override public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
-					screenshotsList.getSelectedValuesList().forEach(File::delete);
-					reloadElements();
-				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-					exportSelectedScreenshots();
-				}
-			}
-		});
-
-		screenshotsList.addMouseListener(new MouseAdapter() {
+		elementList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (e.getClickCount() == 2)
 					exportSelectedScreenshots();
 			}
 		});
 
-		add("North", bar);
+		addToolBarButton("workspace.screenshots.export_selected", UIRES.get("16px.ext.gif"),
+				e -> exportSelectedScreenshots());
+		addToolBarButton("workspace.screenshots.use_as_background", UIRES.get("16px.textures"),
+				e -> useSelectedAsBackgrounds());
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"), e -> {
+			deleteCurrentlySelected();
+			reloadElements();
+		});
+	}
+
+	@Override void deleteCurrentlySelected() {
+		List<File> elements = elementList.getSelectedValuesList();
+		elements.forEach(File::delete);
+	}
+
+	@Override public void reloadElements() {
+		List<File> selected = elementList.getSelectedValuesList();
+
+		filterModel.removeAllElements();
+		File[] screenshots = new File(workspacePanel.getMCreator().getWorkspaceFolder(),
+				"run/screenshots/").listFiles();
+
+		if (screenshots != null)
+			filterModel.addAll(List.of(screenshots));
+
+		ListUtil.setSelectedValues(elementList, selected);
 	}
 
 	private void useSelectedAsBackgrounds() {
-		screenshotsList.getSelectedValuesList().forEach(
+		elementList.getSelectedValuesList().forEach(
 				f -> FileIO.copyFile(f, new File(UserFolderManager.getFileFromUserFolder("backgrounds"), f.getName())));
 		JOptionPane.showMessageDialog(workspacePanel.getMCreator(),
 				L10N.t("workspace.screenshots.use_background_message"), L10N.t("workspace.screenshots.action_complete"),
@@ -133,29 +85,11 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 	}
 
 	private void exportSelectedScreenshots() {
-		screenshotsList.getSelectedValuesList().forEach(f -> {
+		elementList.getSelectedValuesList().forEach(f -> {
 			File to = FileDialogs.getSaveDialog(workspacePanel.getMCreator(), new String[] { ".png" });
 			if (to != null)
 				FileIO.copyFile(f, to);
 		});
-	}
-
-	@Override public void reloadElements() {
-		List<File> selected = screenshotsList.getSelectedValuesList();
-
-		filterModel.removeAllElements();
-		File[] screenshots = new File(workspacePanel.getMCreator().getWorkspaceFolder(),
-				"run/screenshots/").listFiles();
-		if (screenshots != null)
-			Arrays.stream(screenshots).forEach(filterModel::addElement);
-
-		ListUtil.setSelectedValues(screenshotsList, selected);
-
-		refilterElements();
-	}
-
-	@Override public void refilterElements() {
-		filterModel.refilter();
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<File> {
@@ -164,12 +98,10 @@ class WorkspacePanelScreenshots extends JPanel implements IReloadableFilterable 
 		public JLabel getListCellRendererComponent(JList<? extends File> list, File ma, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
-					(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setBackground(isSelected ? Theme.current().getAltBackgroundColor() : Theme.current().getBackgroundColor());
 			setText(ma.getName());
 			ComponentUtils.deriveFont(this, 11);
-			setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setForeground(Theme.current().getForegroundColor());
 			setVerticalTextPosition(BOTTOM);
 			setHorizontalTextPosition(CENTER);
 			setHorizontalAlignment(CENTER);

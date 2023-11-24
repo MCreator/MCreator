@@ -26,11 +26,15 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -61,6 +65,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 	private final JButton del;
 	private final JButton exp;
 	private final JButton imp;
+	private final JButton use;
 
 	WorkspacePanelLocalizations(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
@@ -93,7 +98,8 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(del = createToolBarButton("workspace.localization.remove_selected", UIRES.get("16px.delete.gif")));
+		bar.add(del = createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif")));
+		bar.add(use = createToolBarButton("common.search_usages", UIRES.get("16px.search")));
 		bar.add(exp = createToolBarButton("workspace.localization.export_to_csv", UIRES.get("16px.ext.gif")));
 		bar.add(imp = createToolBarButton("workspace.localization.import_csv", UIRES.get("16px.open.gif")));
 
@@ -103,6 +109,9 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 	@Override public void reloadElements() {
 		for (var al : del.getActionListeners())
 			del.removeActionListener(al);
+
+		for (var al : use.getActionListeners())
+			use.removeActionListener(al);
 
 		for (var al : imp.getActionListeners())
 			imp.removeActionListener(al);
@@ -156,19 +165,19 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			elements.setRowSorter(sorter);
 			sorters.add(sorter);
 
-			elements.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			elements.setSelectionBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			elements.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			elements.setSelectionForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			elements.setBackground(Theme.current().getBackgroundColor());
+			elements.setSelectionBackground(Theme.current().getForegroundColor());
+			elements.setForeground(Theme.current().getForegroundColor());
+			elements.setSelectionForeground(Theme.current().getBackgroundColor());
 			elements.setBorder(BorderFactory.createEmptyBorder());
-			elements.setGridColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			elements.setGridColor(Theme.current().getAltBackgroundColor());
 			elements.setRowHeight(22);
 			elements.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 			elements.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
 
 			JTableHeader header = elements.getTableHeader();
-			header.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-			header.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			header.setBackground(Theme.current().getInterfaceAccentColor());
+			header.setForeground(Theme.current().getBackgroundColor());
 
 			DefaultTableModel model = (DefaultTableModel) elements.getModel();
 			for (Map.Entry<String, String> langs : entries.entrySet()) {
@@ -192,8 +201,8 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			sp.setOpaque(false);
 			sp.getViewport().setOpaque(false);
 			sp.getVerticalScrollBar().setUnitIncrement(11);
-			sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
+			sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+					Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 			sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 
 			sp.setColumnHeaderView(null);
@@ -232,6 +241,22 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			tab.add(label);
 			tab.add(button);
 			pane.setTabComponentAt(id, tab);
+
+			use.addActionListener(a -> {
+				if (elements.getSelectedRow() != -1 && pane.getSelectedIndex() == id) {
+					workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+					Set<ModElement> references = new HashSet<>();
+					for (int i : elements.getSelectedRows()) {
+						references.addAll(ReferencesFinder.searchLocalizationKeyUsages(
+								workspacePanel.getMCreator().getWorkspace(), (String) elements.getValueAt(i, 0)));
+					}
+
+					workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+					SearchUsagesDialog.showUsagesDialog(workspacePanel.getMCreator(),
+							L10N.t("dialog.search_usages.type.localization_key"), references);
+				}
+			});
 
 			del.addActionListener(a -> deleteCurrentlySelected(elements, id));
 
@@ -334,12 +359,20 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		if (elements.getSelectedRow() == -1 || pane.getSelectedIndex() != id)
 			return;
 
-		String key = (String) elements.getValueAt(elements.getSelectedRow(), 0);
-		if (key != null) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.localization.confirm_delete_entry"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (n == 0) {
+		if (elements.getValueAt(elements.getSelectedRow(), 0) != null) {
+			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+			Set<ModElement> references = new HashSet<>();
+			for (int i : elements.getSelectedRows()) {
+				references.addAll(
+						ReferencesFinder.searchLocalizationKeyUsages(workspacePanel.getMCreator().getWorkspace(),
+								(String) elements.getValueAt(i, 0)));
+			}
+
+			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+
+			if (SearchUsagesDialog.showDeleteDialog(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.localization_key"), references)) {
 				Arrays.stream(elements.getSelectedRows()).mapToObj(el -> (String) elements.getValueAt(el, 0))
 						.forEach(workspacePanel.getMCreator().getWorkspace()::removeLocalizationEntryByKey);
 				reloadElements();

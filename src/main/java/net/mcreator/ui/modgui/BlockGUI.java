@@ -46,6 +46,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
@@ -186,7 +187,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 			new String[] { "NORMAL", "DESTROY", "BLOCK", "PUSH_ONLY", "IGNORE" });
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "NONE", "XZ", "XYZ" });
-	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
+	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
 
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
 
@@ -222,7 +223,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final JCheckBox hasInventory = L10N.checkbox("elementgui.block.has_inventory");
 
 	private final JCheckBox openGUIOnRightClick = L10N.checkbox("elementgui.common.enable");
-	private final JComboBox<String> guiBoundTo = new JComboBox<>();
+	private final SearchableComboBox<String> guiBoundTo = new SearchableComboBox<>();
 
 	private final JSpinner inventorySize = new JSpinner(new SpinnerNumberModel(9, 0, 256, 1));
 	private final JSpinner inventoryStackSize = new JSpinner(new SpinnerNumberModel(64, 1, 1024, 1));
@@ -235,7 +236,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 	private final ValidationGroup page1group = new ValidationGroup();
 	private final ValidationGroup page3group = new ValidationGroup();
 
-	private final JComboBox<String> blockBase = new JComboBox<>(
+	private final SearchableComboBox<String> blockBase = new SearchableComboBox<>(
 			new String[] { "Default basic block", "Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane",
 					"Door", "FenceGate", "EndRod", "PressurePlate", "Button" });
 
@@ -485,9 +486,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JPanel txblock4 = new JPanel(new BorderLayout());
 		txblock4.setOpaque(false);
 		txblock4.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.block_base_item_texture"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		txblock4.add("Center", PanelUtils.gridElements(3, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("block/base"), L10N.label("elementgui.block.block_base")),
@@ -505,9 +506,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		plantsGrowOn.setOpaque(false);
 
 		sbbp22.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.block_textures"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		JPanel topnbot = new JPanel(new BorderLayout());
 		topnbot.setOpaque(false);
@@ -516,9 +517,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JComponent txblock3 = PanelUtils.gridElements(1, 1, specialInformation);
 		txblock3.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.special_information"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		sbbp2.add("Center", topnbot);
 
@@ -595,17 +596,17 @@ public class BlockGUI extends ModElementGUI<Block> {
 		topnbot.add("South", PanelUtils.northAndCenterElement(tintPanel, txblock4));
 
 		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.render_type"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 		transparencySettings.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.transparency"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 		tintPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.block_tint"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		render.add(rent);
 		render.add(transparencySettings);
@@ -861,23 +862,23 @@ public class BlockGUI extends ModElementGUI<Block> {
 		});
 
 		selp.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getForegroundColor()));
 		selp3.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getForegroundColor()));
 
 		soundProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_sound"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getForegroundColor()));
 
 		advancedWithCondition.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.properties_advanced_block"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				TitledBorder.DEFAULT_POSITION, getFont(), Theme.current().getForegroundColor()));
 
 		selp.setOpaque(false);
 		soundProperties.setOpaque(false);
@@ -966,7 +967,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
-				String selected = (String) guiBoundTo.getSelectedItem();
+				String selected = guiBoundTo.getSelectedItem();
 				if (selected != null) {
 					ModElement element = mcreator.getWorkspace().getModElementByName(selected);
 					if (element != null) {
@@ -998,14 +999,14 @@ public class BlockGUI extends ModElementGUI<Block> {
 		fluidTank.setOpaque(false);
 
 		energyStorage.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.energy_storage"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		fluidTank.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.fluid_tank"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		hasEnergyStorage.setOpaque(false);
 		isFluidTank.setOpaque(false);
@@ -1051,9 +1052,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		refreshFieldsTileEntity();
 
 		props.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.settings_inventory"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		invblock.add("Center", props);
 
@@ -1107,9 +1108,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		JComponent redstoneMerger = PanelUtils.northAndCenterElement(redstoneParameters, emittedRedstonePower, 2, 2);
 
 		redstoneMerger.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.block.properties_redstone"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		canProvidePower.addActionListener(e -> refreshRedstoneEmitted());
 		refreshRedstoneEmitted();
@@ -1130,9 +1131,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 		JComponent bonemealMerger = PanelUtils.northAndCenterElement(bonemealPanel, bonemealEvents, 2, 2);
 		bonemealMerger.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_bonemeal"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		isBonemealable.addActionListener(e -> refreshBonemealProperties());
 		refreshBonemealProperties();
@@ -1186,7 +1187,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page3group.addValidationElement(stepSound.getVTextField());
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
+		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane7);
 		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8);
@@ -1487,7 +1488,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.transparencyType = (String) transparencyType.getSelectedItem();
 		block.tintType = (String) tintType.getSelectedItem();
 		block.isItemTinted = isItemTinted.isSelected();
-		block.guiBoundTo = (String) guiBoundTo.getSelectedItem();
+		block.guiBoundTo = guiBoundTo.getSelectedItem();
 		block.rotationMode = rotationMode.getSelectedIndex();
 		block.enablePitch = enablePitch.isSelected();
 		block.enchantPowerBonus = (double) enchantPowerBonus.getValue();
@@ -1590,7 +1591,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.canProvidePower = canProvidePower.isSelected();
 		block.colorOnMap = colorOnMap.getSelectedItem().toString();
 		block.offsetType = (String) offsetType.getSelectedItem();
-		block.aiPathNodeType = (String) aiPathNodeType.getSelectedItem();
+		block.aiPathNodeType = aiPathNodeType.getSelectedItem();
 		block.creativePickItem = creativePickItem.getBlock();
 		block.placingCondition = placingCondition.getSelectedProcedure();
 
@@ -1604,7 +1605,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		block.jumpFactor = (double) jumpFactor.getValue();
 
 		if (blockBase.getSelectedIndex() != 0)
-			block.blockBase = (String) blockBase.getSelectedItem();
+			block.blockBase = blockBase.getSelectedItem();
 
 		Model model = Objects.requireNonNull(renderType.getSelectedItem());
 		block.renderType = 10;

@@ -25,6 +25,7 @@ import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
 import java.awt.Image;
@@ -34,7 +35,7 @@ public class ImageButton extends GUIComponent {
 
 	public String name;
 
-	public String image, hoveredImage;
+	@TextureReference(TextureType.SCREEN) public String image, hoveredImage;
 
 	public Procedure onClick, displayCondition;
 

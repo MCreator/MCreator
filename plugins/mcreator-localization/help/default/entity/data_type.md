@@ -1,0 +1,1 @@
+This option controls the type of this entity variable. Supported types are logic, number and string variables.

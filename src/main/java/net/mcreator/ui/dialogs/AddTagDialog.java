@@ -19,7 +19,6 @@
 
 package net.mcreator.ui.dialogs;
 
-import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Tag;
@@ -44,13 +43,7 @@ public class AddTagDialog {
 		JPanel wrap = new JPanel(new GridLayout());
 		VComboBox<String> tagName = new VComboBox<>();
 
-		switch (tagType) {
-		case "Items" -> wrap.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Dependency.getColor("itemstack")));
-		case "Blocks" -> wrap.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Dependency.getColor("blockstate")));
-		case "Entities" -> wrap.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Dependency.getColor("entity")));
-		case "Biomes" -> wrap.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Dependency.getColor("world")));
-		}
-
+		wrap.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Tag.getColor(tagType)));
 		tagName.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), tagName, true));
 
 		for (ModElement modElement : mcreator.getWorkspace().getModElements()) {

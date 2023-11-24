@@ -29,7 +29,7 @@ import javax.swing.*;
  * add fresh entries to a {@link JEntriesList JEntriesList} or import missing resources)
  * and should not trigger {@link net.mcreator.ui.modgui.ModElementChangedListener ModElementChangedListeners}.
  */
-public class TechnicalButton extends JButton {
+public class TechnicalButton extends JButton implements ITechnicalComponent {
 
 	public TechnicalButton(Icon icon) {
 		super(icon);
@@ -39,7 +39,4 @@ public class TechnicalButton extends JButton {
 		super(text);
 	}
 
-	@Override public String getName() {
-		return "TechnicalComponent";
-	}
 }

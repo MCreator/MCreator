@@ -36,12 +36,14 @@ import net.mcreator.ui.component.util.ListUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ModElementIDsDialog;
 import net.mcreator.ui.dialogs.ProgressDialog;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.renderer.elementlist.*;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.ModTypeDropdown;
 import net.mcreator.ui.validation.Validator;
@@ -56,6 +58,7 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -74,7 +77,7 @@ import java.util.stream.Collectors;
 
 @SuppressWarnings("EqualsBetweenInconvertibleTypes") public class WorkspacePanel extends JPanel {
 
-	private FilterModel dml = new FilterModel();
+	private final FilterModel dml = new FilterModel();
 	public final JTextField search;
 
 	public FolderElement currentFolder;
@@ -107,9 +110,9 @@ import java.util.stream.Collectors;
 	private final JLabel but3 = new JLabel(TiledImageCache.workspaceDelete);
 	private final JLabel but5 = new JLabel(TiledImageCache.workspaceCode);
 	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
-	private final JLabel but6 = new JLabel(TiledImageCache.workspaceModElementIDs);
 
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
+	private final JMenuItem searchElement = new JMenuItem(L10N.t("common.search_usages"));
 	private final JMenuItem duplicateElement = new JMenuItem(L10N.t("workspace.elements.list.edit.duplicate"));
 	private final JMenuItem codeElement = new JMenuItem(L10N.t("workspace.elements.list.edit.code"));
 	private final JMenuItem lockElement = new JMenuItem(L10N.t("workspace.elements.list.edit.lock"));
@@ -170,7 +173,13 @@ import java.util.stream.Collectors;
 
 		this.resourcesPan = new WorkspacePanelResources(this);
 
-		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator);
+		this.elementsBreadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 10, false);
+		this.elementsBreadcrumb.setSelectionListener((element, component, event) -> {
+			if (element instanceof ModElement me)
+				editCurrentlySelectedModElement(me, component, event.getX(), event.getY());
+			else if (element instanceof FolderElement fe)
+				switchFolder(fe);
+		});
 
 		JPopupMenu contextMenu = new JPopupMenu();
 
@@ -195,7 +204,7 @@ import java.util.stream.Collectors;
 					}
 				}
 				mcreator.getWorkspace().markDirty();
-				reloadElements();
+				sectionTabs.get("mods").reloadElements();
 			} else {
 				Toolkit.getDefaultToolkit().beep();
 			}
@@ -226,12 +235,14 @@ import java.util.stream.Collectors;
 					selected = list.getSelectedValue();
 
 					if (selected instanceof FolderElement) {
+						searchElement.setVisible(false);
 						duplicateElement.setVisible(false);
 						codeElement.setVisible(false);
 						lockElement.setVisible(false);
 						idElement.setVisible(false);
 						renameElementFolder.setVisible(true);
 					} else {
+						searchElement.setVisible(true);
 						duplicateElement.setVisible(true);
 						codeElement.setVisible(true);
 						lockElement.setVisible(true);
@@ -259,7 +270,9 @@ import java.util.stream.Collectors;
 
 		list.addKeyListener(new KeyAdapter() {
 			@Override public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_DELETE) {
+				if (e.getKeyCode() == KeyEvent.VK_F && e.isControlDown() && e.isShiftDown()) {
+					searchModElementsUsages();
+				} else if (e.getKeyCode() == KeyEvent.VK_DELETE) {
 					deleteCurrentlySelectedModElement();
 				} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 					IElement selected = list.getSelectedValue();
@@ -277,8 +290,8 @@ import java.util.stream.Collectors;
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
 
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		sp.setBorder(null);
 
@@ -323,20 +336,20 @@ import java.util.stream.Collectors;
 		ComponentUtils.deriveFont(search, 14);
 		search.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
 		search.setOpaque(false);
-		search.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		search.setBackground(Theme.current().getAltBackgroundColor());
 
 		search.getDocument().addDocumentListener(new DocumentListener() {
 
 			@Override public void removeUpdate(DocumentEvent arg0) {
-				refilterElements();
+				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 			}
 
 			@Override public void insertUpdate(DocumentEvent arg0) {
-				refilterElements();
+				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 			}
 
 			@Override public void changedUpdate(DocumentEvent arg0) {
-				refilterElements();
+				sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 			}
 		});
 
@@ -541,12 +554,12 @@ import java.util.stream.Collectors;
 
 		ComponentUtils.deriveFont(filter, 11);
 		filter.setMargin(new Insets(1, 3, 1, 3));
-		filter.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		filter.setBackground(Theme.current().getBackgroundColor());
 		filter.setBorderPainted(false);
 
 		ComponentUtils.deriveFont(sort, 11);
 		sort.setMargin(new Insets(1, 3, 1, 3));
-		sort.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sort.setBackground(Theme.current().getBackgroundColor());
 		sort.setBorderPainted(false);
 
 		leftPan.add(new JEmptyBox(2, 2));
@@ -560,12 +573,12 @@ import java.util.stream.Collectors;
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_all"), e -> search.setText("")));
 		filterPopup.addSeparator();
 		filterPopup.add(
-				new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"), e -> togglefilter("f:locked")));
+				new UnregisteredAction(L10N.t("workspace.elements.list.filter_locked"), e -> toggleFilter("f:locked")));
 		filterPopup.add(new UnregisteredAction(L10N.t("workspace.elements.list.filter_witherrors"),
-				e -> togglefilter("f:err")));
+				e -> toggleFilter("f:err")));
 		filterPopup.addSeparator();
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
-			filterPopup.add(new UnregisteredAction(type.getReadableName(), e -> togglefilter(
+			filterPopup.add(new UnregisteredAction(type.getReadableName(), e -> toggleFilter(
 					"f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))).setIcon(
 					new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
 		}
@@ -638,7 +651,7 @@ import java.util.stream.Collectors;
 				L10N.label("workspace.elements.details.id"), L10N.label("workspace.elements.details.type"),
 				L10N.label("workspace.elements.details.lock"), L10N.label("workspace.elements.details.compile")));
 		detailsbar.setBorder(BorderFactory.createEmptyBorder(4, 47, 4, 8));
-		detailsbar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		detailsbar.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		modElementsPanel.add("North", PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0));
 		modElementsPanel.add("Center", mainp);
@@ -648,7 +661,7 @@ import java.util.stream.Collectors;
 		slo.setBorder(null);
 
 		rotatablePanel.setLayout(new BoxLayout(rotatablePanel, BoxLayout.PAGE_AXIS));
-		rotatablePanel.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		rotatablePanel.setBackground(Theme.current().getBackgroundColor());
 		slo.add("West", rotatablePanel);
 
 		add("Center", slo);
@@ -722,22 +735,6 @@ import java.util.stream.Collectors;
 		but5a.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		pne.add(but5a);
 
-		but6.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				if (but6.isEnabled()) {
-					IElement mu = list.getSelectedValue();
-					if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
-						ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
-						if (modified != null)
-							mcreator.getWorkspace().markDirty();
-					}
-				}
-			}
-		});
-		but6.setToolTipText(L10N.t("workspace.elements.edit_registry_names.tooltip"));
-		but6.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		pne.add(but6);
-
 		JPanel toolp = new JPanel(new BorderLayout(0, 0)) {
 			@Override public void paintComponent(Graphics g) {
 				g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
@@ -772,7 +769,7 @@ import java.util.stream.Collectors;
 		addVerticalTab("locales", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
 		addVerticalTab("variables", L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
 
-		verticalTabs.get(0).doClick();
+		switchToVerticalTab("mods");
 
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
 
@@ -791,6 +788,9 @@ import java.util.stream.Collectors;
 
 		duplicateElement.addActionListener(e -> duplicateCurrentlySelectedModElement());
 
+		searchElement.setIcon(UIRES.get("16px.search"));
+		searchElement.addActionListener(e -> searchModElementsUsages());
+
 		codeElement.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				super.mouseClicked(e);
@@ -807,14 +807,7 @@ import java.util.stream.Collectors;
 
 		lockElement.addActionListener(e -> lockCode());
 
-		idElement.addActionListener(e -> {
-			IElement mu = list.getSelectedValue();
-			if (mu instanceof ModElement && ((ModElement) mu).getType().getBaseType() != BaseType.DATAPACK) {
-				ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
-				if (modified != null)
-					mcreator.getWorkspace().markDirty();
-			}
-		});
+		idElement.addActionListener(e -> editIDOfCurrentlySelectedModElement());
 
 		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
 		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
@@ -835,6 +828,7 @@ import java.util.stream.Collectors;
 		contextMenu.addSeparator();
 		contextMenu.add(deleteElement);
 		contextMenu.addSeparator();
+		contextMenu.add(searchElement);
 		contextMenu.add(duplicateElement);
 		contextMenu.add(lockElement);
 		contextMenu.add(idElement);
@@ -859,25 +853,15 @@ import java.util.stream.Collectors;
 
 		if (section.isSupportedInWorkspace()) {
 			VerticalTabButton tab = new VerticalTabButton(name);
+			tab.setName(id);
 			tab.setContentAreaFilled(false);
 			tab.setMargin(new Insets(7, 1, 7, 2));
 			tab.setBorderPainted(false);
 			tab.setFocusPainted(false);
 			tab.setOpaque(true);
-			tab.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			tab.setBackground(Theme.current().getBackgroundColor());
 			tab.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			tab.addActionListener(e -> {
-				if (section.canSwitchToSection()) {
-					for (JButton btt : verticalTabs) {
-						btt.setBackground(btt == tab ?
-								(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
-								(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-					}
-					cardLayout.show(panels, id);
-					updateMods();
-					modElementsBar.setVisible(id.equals("mods"));
-				}
-			});
+			tab.addActionListener(e -> switchToVerticalTab(id));
 			verticalTabs.add(tab);
 			rotatablePanel.add(tab);
 		}
@@ -887,11 +871,24 @@ import java.util.stream.Collectors;
 		return sectionTabs.get(id);
 	}
 
+	public void switchToVerticalTab(String id) {
+		if (sectionTabs.get(id).canSwitchToSection()) {
+			for (JButton btt : verticalTabs) {
+				btt.setBackground(btt.getName().equals(id) ?
+						Theme.current().getAltBackgroundColor() :
+						Theme.current().getBackgroundColor());
+			}
+			cardLayout.show(panels, id);
+			reloadElementsInCurrentTab();
+			modElementsBar.setVisible(id.equals("mods"));
+		}
+	}
+
 	public void switchFolder(FolderElement switchTo) {
 		search.setText(null); // clear the search bar
 		currentFolder = switchTo;
 
-		reloadElements();
+		sectionTabs.get("mods").reloadElements();
 
 		// reload breadcrumb
 		elementsBreadcrumb.reloadPath(currentFolder, ModElement.class);
@@ -899,7 +896,7 @@ import java.util.stream.Collectors;
 		upFolder.setEnabled(!currentFolder.isRoot());
 	}
 
-	private void togglefilter(String filter) {
+	private void toggleFilter(String filter) {
 		String currentSearchText = search.getText().trim();
 		if (currentSearchText.contains(filter)) {
 			search.setText(currentSearchText.replace(filter, "").replaceAll("\\s{2,}", " ").trim());
@@ -921,7 +918,7 @@ import java.util.stream.Collectors;
 
 		PreferencesManager.PREFERENCES.hidden.workspaceSortAscending.set(!desc.isSelected());
 
-		refilterElements();
+		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 	}
 
 	private void updateElementListRenderer() {
@@ -993,6 +990,20 @@ import java.util.stream.Collectors;
 		but3.setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
 
+	private void editIDOfCurrentlySelectedModElement() {
+		IElement mu = list.getSelectedValue();
+		if (mu instanceof ModElement modElement && !NamespacedGeneratableElement.class.isAssignableFrom(
+				modElement.getType().getModElementStorageClass())) {
+			ModElement modified = ModElementIDsDialog.openModElementIDDialog(mcreator, ((ModElement) mu));
+			if (modified != null)
+				mcreator.getWorkspace().markDirty();
+		} else {
+			JOptionPane.showMessageDialog(mcreator,
+					L10N.t("workspace.elements.edit_registry_names.not_possible_message"),
+					L10N.t("workspace.elements.edit_registry_names.not_possible_title"), JOptionPane.WARNING_MESSAGE);
+		}
+	}
+
 	private void lockCode() {
 		Object[] options = { L10N.t("workspace.elements.lock_modelement_lock_unlock"),
 				UIManager.getString("OptionPane.cancelButtonText") };
@@ -1004,7 +1015,7 @@ import java.util.stream.Collectors;
 			Thread t = new Thread(() -> {
 				ProgressDialog.ProgressUnit p0 = new ProgressDialog.ProgressUnit(
 						L10N.t("workspace.elements.lock_modelement_locking_unlocking"));
-				dial.addProgress(p0);
+				dial.addProgressUnit(p0);
 
 				List<ModElement> elementsThatGotUnlocked = new ArrayList<>();
 				list.getSelectedValuesList().forEach(el -> {
@@ -1019,16 +1030,15 @@ import java.util.stream.Collectors;
 						mcreator.getWorkspace().markDirty();
 					}
 				});
-				updateMods();
+				reloadElementsInCurrentTab();
 
-				p0.ok();
-				dial.refreshDisplay();
+				p0.markStateOk();
 
 				// if we have new unlocked elements, we recreate their code
 				if (!elementsThatGotUnlocked.isEmpty()) {
 					ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 							L10N.t("workspace.elements.lock_modelement_regeneration"));
-					dial.addProgress(p1);
+					dial.addProgressUnit(p1);
 					int i = 0;
 					for (ModElement mod : elementsThatGotUnlocked) {
 						GeneratableElement generatableElement = mod.getGeneratableElement();
@@ -1038,22 +1048,49 @@ import java.util.stream.Collectors;
 						}
 						i++;
 						p1.setPercent((int) (((float) i / (float) elementsThatGotUnlocked.size()) * 100.0f));
-						dial.refreshDisplay();
 					}
-					p1.ok();
-					dial.refreshDisplay();
+					p1.markStateOk();
 
 					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 							L10N.t("workspace.elements.lock_modelement_rebuilding_workspace"));
-					dial.addProgress(p2);
+					dial.addProgressUnit(p2);
 					mcreator.actionRegistry.buildWorkspace.doAction();
-					p2.ok();
-					dial.refreshDisplay();
+					p2.markStateOk();
 				}
-				dial.hideAll();
+				dial.hideDialog();
 			}, "CodeLock");
 			t.start();
 			dial.setVisible(true);
+		}
+	}
+
+	private void searchModElementsUsages() {
+		if (list.getSelectedValuesList().stream().anyMatch(i -> i instanceof ModElement)) {
+			mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+			Set<ModElement> references = new HashSet<>();
+			boolean tagsSelected = false, nonTagsSelected = false;
+			for (IElement el : list.getSelectedValuesList()) {
+				if (el instanceof ModElement mod) {
+					// We don't look for tag references since those are "weak" references also affected by other mods
+					if (mod.getType() == ModElementType.TAG) {
+						tagsSelected = true;
+					} else {
+						nonTagsSelected = true;
+						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
+					}
+				}
+			}
+
+			mcreator.setCursor(Cursor.getDefaultCursor());
+			if (tagsSelected) {
+				JOptionPane.showMessageDialog(mcreator, L10N.t("workspace.elements.list.edit.usages.tags"),
+						L10N.t("workspace.elements.list.edit.usages.tags.title"), JOptionPane.WARNING_MESSAGE);
+			}
+			if (nonTagsSelected) {
+				SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
+						references);
+			}
 		}
 	}
 
@@ -1119,7 +1156,7 @@ import java.util.stream.Collectors;
 
 					mcreator.getWorkspace().addModElement(duplicateModElement);
 
-					updateMods();
+					reloadElementsInCurrentTab();
 				}
 			}
 		}
@@ -1172,11 +1209,20 @@ import java.util.stream.Collectors;
 	private void deleteCurrentlySelectedModElement() {
 		if (but3.isEnabled()) {
 			if (list.getSelectedValue() != null) {
-				int n = JOptionPane.showConfirmDialog(mcreator,
-						L10N.t("workspace.elements.confirm_delete_message", list.getSelectedValuesList().size()),
-						L10N.t("common.confirmation"), JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+				mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-				if (n == 0) {
+				Set<ModElement> references = new HashSet<>();
+				for (IElement el : list.getSelectedValuesList()) {
+					if (el instanceof ModElement mod)
+						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
+				}
+				list.getSelectedValuesList().stream() // exclude usages by other mod elements being removed
+						.filter(e -> e instanceof ModElement).map(e -> (ModElement) e).forEach(references::remove);
+
+				mcreator.setCursor(Cursor.getDefaultCursor());
+
+				if (SearchUsagesDialog.showDeleteDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
+						references, L10N.t("workspace.elements.confirm_delete_msg_suffix"))) {
 					AtomicBoolean buildNeeded = new AtomicBoolean(false);
 					list.getSelectedValuesList().forEach(re -> {
 						if (re instanceof ModElement) {
@@ -1211,7 +1257,7 @@ import java.util.stream.Collectors;
 							folder.getParent().removeChild(folder);
 						}
 					});
-					updateMods();
+					reloadElementsInCurrentTab();
 
 					if (buildNeeded.get())
 						mcreator.actionRegistry.buildWorkspace.doAction();
@@ -1227,7 +1273,7 @@ import java.util.stream.Collectors;
 		if (name != null) {
 			currentFolder.addChild(new FolderElement(name, currentFolder));
 			mcreator.getWorkspace().markDirty();
-			reloadElements();
+			sectionTabs.get("mods").reloadElements();
 		}
 	}
 
@@ -1238,84 +1284,12 @@ import java.util.stream.Collectors;
 			selected.setName(mcreator.getWorkspace(), newName);
 
 			mcreator.getWorkspace().markDirty();
-			reloadElements();
+			sectionTabs.get("mods").reloadElements();
 		}
 	}
 
-	private boolean updateRunning = false;
-
-	public synchronized void updateMods() {
-		if (updateRunning)
-			return;
-
-		updateRunning = true;
-
+	public synchronized void reloadElementsInCurrentTab() {
 		sectionTabs.get(currentTab).reloadElements();
-
-		updateRunning = false;
-	}
-
-	public void reloadElements() {
-		if (mcreator.getWorkspaceSettings() != null) {
-			// first we need to get current folder from the workspace
-			// as current reference to the folder may be out of date (eg. reload from disk)
-			List<FolderElement> folders = mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren();
-			int folderIdx = folders.indexOf(currentFolder);
-			if (folderIdx == -1) {
-				currentFolder = mcreator.getWorkspace().getFoldersRoot();
-			} else {
-				currentFolder = folders.get(folderIdx);
-			}
-
-			if (mcreator.getWorkspace().getModElements().stream()
-					.anyMatch(el -> currentFolder.equals(el.getFolderPath()))
-					|| !currentFolder.getDirectFolderChildren().isEmpty()) {
-				mainpcl.show(mainp, "sp");
-
-				// reload list model partially in the background
-				new Thread(() -> {
-					List<IElement> selected = list.getSelectedValuesList();
-
-					FilterModel newModel = new FilterModel();
-
-					// add folders
-					currentFolder.getRecursiveFolderChildren().forEach(newModel::addElement);
-
-					// add mod elements
-					mcreator.getWorkspace().getModElements().forEach(newModel::addElement);
-
-					SwingUtilities.invokeLater(() -> {
-						list.setModel(dml = newModel);
-
-						ListUtil.setSelectedValues(list, selected);
-
-						this.refilterElements();
-					});
-				}, "WorkspaceListReloader").start();
-			} else {
-				mainpcl.show(mainp, "ep");
-			}
-
-			if (mcreator.getWorkspace().getModElements().isEmpty()) {
-				elementsCount.setText(L10N.t("workspace.stats.empty", mcreator.getWorkspaceSettings().getModName(),
-						mcreator.getGenerator().getGeneratorName()));
-			} else {
-				elementsCount.setText(
-						L10N.t("workspace.stats.current_workspace", mcreator.getWorkspaceSettings().getModName(),
-								mcreator.getGenerator().getGeneratorName(),
-								mcreator.getWorkspace().getModElements().size()));
-			}
-
-			if (mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("mcreator_link")) {
-				elementsCount.setIcon(UIRES.get("16px.link"));
-			} else {
-				elementsCount.setIcon(new EmptyIcon(0, 0));
-			}
-		}
-	}
-
-	public void refilterElements() {
-		sectionTabs.values().forEach(IReloadableFilterable::refilterElements);
 	}
 
 	public MCreator getMCreator() {
@@ -1326,12 +1300,16 @@ import java.util.stream.Collectors;
 		ArrayList<IElement> items;
 		ArrayList<IElement> filterItems;
 
-		final Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
+		private final static Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
 
 		FilterModel() {
-			super();
 			items = new ArrayList<>();
 			filterItems = new ArrayList<>();
+		}
+
+		@Override public void addAll(Collection<? extends IElement> collection) {
+			items.addAll(collection);
+			refilter();
 		}
 
 		@Override public IElement getElementAt(int index) {
@@ -1489,11 +1467,57 @@ import java.util.stream.Collectors;
 		}
 
 		@Override public void reloadElements() {
-			WorkspacePanel.this.reloadElements();
+			if (mcreator.getWorkspaceSettings() != null) {
+				// first we need to get current folder from the workspace
+				// as current reference to the folder may be out of date (e.g. reload from disk)
+				List<FolderElement> folders = mcreator.getWorkspace().getFoldersRoot().getRecursiveFolderChildren();
+				int folderIdx = folders.indexOf(currentFolder);
+				if (folderIdx == -1) {
+					currentFolder = mcreator.getWorkspace().getFoldersRoot();
+				} else {
+					currentFolder = folders.get(folderIdx);
+				}
+
+				if (mcreator.getWorkspace().getModElements().stream()
+						.anyMatch(el -> currentFolder.equals(el.getFolderPath()))
+						|| !currentFolder.getDirectFolderChildren().isEmpty()) {
+					mainpcl.show(mainp, "sp");
+
+					// add folders
+					ArrayList<IElement> newDataModel = new ArrayList<>(currentFolder.getRecursiveFolderChildren());
+
+					// add mod elements
+					newDataModel.addAll(mcreator.getWorkspace().getModElements());
+
+					List<IElement> selected = list.getSelectedValuesList();
+					dml.removeAllElements();
+					dml.addAll(newDataModel);
+					ListUtil.setSelectedValues(list, selected);
+				} else {
+					mainpcl.show(mainp, "ep");
+				}
+
+				if (mcreator.getWorkspace().getModElements().isEmpty()) {
+					elementsCount.setText(L10N.t("workspace.stats.empty", mcreator.getWorkspaceSettings().getModName(),
+							mcreator.getGenerator().getGeneratorName()));
+				} else {
+					elementsCount.setText(
+							L10N.t("workspace.stats.current_workspace", mcreator.getWorkspaceSettings().getModName(),
+									mcreator.getGenerator().getGeneratorName(),
+									mcreator.getWorkspace().getModElements().size()));
+				}
+
+				if (mcreator.getWorkspaceSettings().getMCreatorDependencies().contains("mcreator_link")) {
+					elementsCount.setIcon(UIRES.get("16px.link"));
+				} else {
+					elementsCount.setIcon(new EmptyIcon(0, 0));
+				}
+			}
 		}
 
 		@Override public void refilterElements() {
 			dml.refilter();
 		}
 	}
+
 }

@@ -38,6 +38,7 @@ import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -72,7 +73,7 @@ public class ToolPackMakerTool {
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-		color.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
 
 		props.add(L10N.label("dialog.tools.tool_pack_base_item"));
@@ -118,7 +119,7 @@ public class ToolPackMakerTool {
 				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
 						color.getColor(), (Double) power.getValue());
-				mcreator.mv.updateMods();
+				mcreator.mv.reloadElementsInCurrentTab();
 				dialog.setCursor(Cursor.getDefaultCursor());
 				dialog.setVisible(false);
 			}
@@ -138,9 +139,7 @@ public class ToolPackMakerTool {
 			return;
 
 		// select folder the mod pack should be in
-		FolderElement folder = null;
-		if (!mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
-			folder = mcreator.mv.currentFolder;
+		FolderElement folder = mcreator.mv.currentFolder;
 
 		// first we generate pickaxe texture
 		ImageIcon pickaxe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(

@@ -37,6 +37,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -111,9 +112,9 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 						new BlocklyEditorToolbar(mcreator, BlocklyEditorType.COMMAND_ARG, blocklyPanel), blocklyPanel),
 				compileNotesPanel);
 		args.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.command.arguments"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 		args.setOpaque(false);
 
 		commandName.setValidator(

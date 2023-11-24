@@ -1,3 +1,4 @@
+<#include "../mcitems.ftl">
 {
   "name": "${modid}:${registryname}",
   "fallback": "minecraft:empty",
@@ -10,27 +11,18 @@
         "projection": "${data.projection}",
         "processors": {
           "processors": [
+            <#if data.ignoredBlocks?has_content>
             {
               "processor_type": "minecraft:block_ignore",
               "blocks": [
-                <#if data.ignoreBlocks == "STRUCTURE_BLOCK">
+                <#list data.ignoredBlocks as block>
                 {
-                  "Name": "minecraft:structure_block"
-                }
-                <#elseif data.ignoreBlocks == "AIR_AND_STRUCTURE_BLOCK">
-                {
-                  "Name": "minecraft:structure_block"
-                },
-                {
-                  "Name": "minecraft:air"
-                }
-                <#elseif data.ignoreBlocks == "AIR">
-                {
-                  "Name": "minecraft:air"
-                }
-                </#if>
+                  "Name": "${mappedMCItemToRegistryName(block)}"
+                }<#sep>,
+                </#list>
               ]
             }
+            </#if>
           ]
         }
       }

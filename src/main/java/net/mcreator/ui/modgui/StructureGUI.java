@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.types.Structure;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.Transliteration;
@@ -25,6 +26,7 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JMinMaxSpinner;
+import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -33,9 +35,11 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
+import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.ui.validation.validators.ItemListFieldValidator;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -47,13 +51,12 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 
 public class StructureGUI extends ModElementGUI<Structure> {
 
-	private final JComboBox<String> ignoreBlocks = new JComboBox<>(
-			new String[] { "STRUCTURE_BLOCK", "AIR_AND_STRUCTURE_BLOCK", "AIR" });
+	private MCItemListField ignoreBlocks;
 
 	private final JComboBox<String> surfaceDetectionType = new JComboBox<>(
 			new String[] { "WORLD_SURFACE_WG", "WORLD_SURFACE", "OCEAN_FLOOR_WG", "OCEAN_FLOOR", "MOTION_BLOCKING",
@@ -69,9 +72,10 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	private final JMinMaxSpinner separation_spacing = new JMinMaxSpinner(2, 5, 0, 1000000, 1,
 			L10N.t("elementgui.structuregen.separation"), L10N.t("elementgui.structuregen.spacing"));
 
-	private final JComboBox<String> structureSelector = new JComboBox<>();
+	private SearchableComboBox<String> structureSelector;
 
-	private final JComboBox<String> generationStep = new JComboBox<>();
+	private final JComboBox<String> generationStep = new JComboBox<>(
+			ElementUtil.getDataListAsStringArray("generationsteps"));
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -82,13 +86,21 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	}
 
 	@Override protected void initGUI() {
+		structureSelector = new SearchableComboBox<>(
+				mcreator.getFolderManager().getStructureList().toArray(String[]::new));
 		restrictionBiomes = new BiomeListField(mcreator, true);
+		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
 		separation_spacing.setAllowEqualValues(false);
 
 		JPanel pane5 = new JPanel(new BorderLayout(3, 3));
 
 		ComponentUtils.deriveFont(structureSelector, 16);
+
+		if (!isEditingMode()) {
+			generationStep.setSelectedItem("SURFACE_STRUCTURES");
+			ignoreBlocks.setListElements(List.of(new MItemBlock(modElement.getWorkspace(), "Blocks.STRUCTURE_BLOCK")));
+		}
 
 		JPanel params = new JPanel(new GridLayout(8, 2, 50, 2));
 		params.setOpaque(false);
@@ -149,26 +161,29 @@ public class StructureGUI extends ModElementGUI<Structure> {
 				new ItemListFieldSingleTagValidator(restrictionBiomes)));
 		page1group.addValidationElement(restrictionBiomes);
 
+		structureSelector.setValidator(() -> {
+			if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().isEmpty())
+				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
+						L10N.t("elementgui.structuregen.error_select_structure_spawn"));
+			return Validator.ValidationResult.PASSED;
+		});
+		page1group.addValidationElement(structureSelector);
+
 		addPage(pane5);
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
-		ComboBoxUtil.updateComboBoxContents(generationStep,
-				Arrays.asList(ElementUtil.getDataListAsStringArray("generationsteps")), "SURFACE_STRUCTURES");
-
 		ComboBoxUtil.updateComboBoxContents(structureSelector, mcreator.getFolderManager().getStructureList());
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().toString().isEmpty())
-			return new AggregatedValidationResult.FAIL(L10N.t("elementgui.structuregen.error_select_structure_spawn"));
 		return new AggregatedValidationResult(page1group);
 	}
 
 	@Override public void openInEditingMode(Structure structure) {
-		ignoreBlocks.setSelectedItem(structure.ignoreBlocks);
+		ignoreBlocks.setListElements(structure.ignoredBlocks);
 		projection.setSelectedItem(structure.projection);
 		surfaceDetectionType.setSelectedItem(structure.surfaceDetectionType);
 		terrainAdaptation.setSelectedItem(structure.terrainAdaptation);
@@ -181,12 +196,12 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 	@Override public Structure getElementFromGUI() {
 		Structure structure = new Structure(modElement);
-		structure.ignoreBlocks = (String) ignoreBlocks.getSelectedItem();
+		structure.ignoredBlocks = ignoreBlocks.getListElements();
 		structure.projection = (String) projection.getSelectedItem();
 		structure.surfaceDetectionType = (String) surfaceDetectionType.getSelectedItem();
 		structure.terrainAdaptation = (String) terrainAdaptation.getSelectedItem();
 		structure.restrictionBiomes = restrictionBiomes.getListElements();
-		structure.structure = (String) structureSelector.getSelectedItem();
+		structure.structure = structureSelector.getSelectedItem();
 		structure.separation = separation_spacing.getIntMinValue();
 		structure.spacing = separation_spacing.getIntMaxValue();
 		structure.generationStep = (String) generationStep.getSelectedItem();

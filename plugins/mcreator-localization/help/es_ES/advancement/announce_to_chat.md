@@ -1,0 +1,1 @@
+Mandar un mensaje por el chat cuando un jugador consigue el progreso.
