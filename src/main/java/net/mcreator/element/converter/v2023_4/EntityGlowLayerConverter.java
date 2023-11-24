@@ -17,55 +17,52 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.converter.v2022_2;
+package net.mcreator.element.converter.v2023_4;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.LivingEntity;
-import net.mcreator.io.FileIO;
-import net.mcreator.ui.workspace.resources.TextureType;
-import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class EntityTexturesConverter implements IConverter {
+import java.util.ArrayList;
 
-	private static final Logger LOG = LogManager.getLogger(EntityTexturesConverter.class);
+public class EntityGlowLayerConverter implements IConverter {
+
+	private static final Logger LOG = LogManager.getLogger(EntityGlowLayerConverter.class);
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		LivingEntity entity = (LivingEntity) input;
-
-		FileIO.copyFile(workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelTexture), TextureType.OTHER),
-				workspace.getFolderManager()
-						.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelTexture),
-								TextureType.ENTITY));
 
 		try {
 			JsonObject jsonObject = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
 			if (jsonObject.get("mobModelGlowTexture") != null) {
 				String glowTexture = jsonObject.get("mobModelGlowTexture").getAsString();
 				if (!glowTexture.isEmpty()) {
-					FileIO.copyFile(workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(glowTexture), TextureType.OTHER),
-							workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(glowTexture),
-											TextureType.ENTITY));
+					LivingEntity.ModelLayerEntry glowLayer = new LivingEntity.ModelLayerEntry();
+					glowLayer.setWorkspace(workspace);
+					glowLayer.model = "Default";
+					glowLayer.texture = glowTexture;
+					glowLayer.glow = true;
+					glowLayer.condition = null;
+
+					entity.modelLayers = new ArrayList<>();
+					entity.modelLayers.add(glowLayer);
 				}
 			}
 		} catch (Exception e) {
-			LOG.warn("Failed to migrate entity glow texture", e);
+			LOG.warn("Failed to convert entity glow texture", e);
 		}
 
 		return entity;
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 31;
+		return 57;
 	}
 
 }
