@@ -106,7 +106,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		});
 
 		JPanel pane5 = new JPanel(new BorderLayout(3, 3));
-		JPanel pane7 = new JPanel(new BorderLayout(10, 10));
+		JPanel pane7 = new JPanel(new BorderLayout(2, 2));
 
 		ComponentUtils.deriveFont(structureSelector, 16);
 
@@ -180,9 +180,11 @@ public class StructureGUI extends ModElementGUI<Structure> {
 				L10N.label("elementgui.structuregen.jigsaw_max_distance_from_center")));
 		jigsawSize.add(maxDistanceFromCenter);
 
+		jigsawSize.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
+
 		pane7.setOpaque(false);
 
-		pane7.add("North", PanelUtils.join(FlowLayout.LEFT, jigsawSize));
+		pane7.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 0, jigsawSize));
 
 		JComponent jigsawPoolsListComp = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("structure/jigsaw_pools"),
