@@ -26,9 +26,8 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
-import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
 
@@ -45,29 +44,21 @@ public class JJigsawPoolsList extends JSingleEntriesList<JJigsawPool, Structure.
 
 		add.setText(L10N.t("elementgui.structuregen.jigsaw_add_pool"));
 		add.addActionListener(e -> {
-			String name = VOptionPane.showInputDialog(mcreator,
-					L10N.t("elementgui.structuregen.jigsaw_add_pool.message"),
-					L10N.t("elementgui.structuregen.jigsaw_pool_name"), null, new OptionPaneValidatior() {
-						@Override public ValidationResult validate(JComponent component) {
-							RegistryNameValidator validator = new RegistryNameValidator((VTextField) component,
-									L10N.t("elementgui.structuregen.jigsaw_pool_name"));
-							return new UniqueNameValidator(L10N.t("elementgui.structuregen.jigsaw_pool_name"),
-									((VTextField) component)::getText,
-									() -> entryList.stream().map(JJigsawPool::getPoolName),
-									validator).setIsPresentOnList(false).validate();
-						}
-					});
-			if (name != null) {
-				JJigsawPool pool = new JJigsawPool(this, gui, entries, entryList, name);
-				registerEntryUI(pool);
-				pool.addInitialEntry();
-			}
+			JJigsawPool pool = new JJigsawPool(this, gui, entries, entryList);
+			registerEntryUI(pool);
+			pool.addInitialEntry();
 		});
 
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
 				BorderFactory.createCompoundBorder(
 						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
+	}
+
+	Validator newPoolNameValidator(VTextField nameField) {
+		return new UniqueNameValidator(L10N.t("elementgui.structuregen.jigsaw_pool_name"), nameField::getText,
+				() -> entryList.stream().map(JJigsawPool::getPoolName), new RegistryNameValidator(nameField,
+				L10N.t("elementgui.structuregen.jigsaw_pool_name")));
 	}
 
 	@Override public void reloadDataLists() {
@@ -80,7 +71,7 @@ public class JJigsawPoolsList extends JSingleEntriesList<JJigsawPool, Structure.
 
 	@Override public void setEntries(List<Structure.JigsawPool> jigsawPools) {
 		jigsawPools.forEach(e -> {
-			JJigsawPool pool = new JJigsawPool(this, gui, entries, entryList, e.poolName);
+			JJigsawPool pool = new JJigsawPool(this, gui, entries, entryList);
 			registerEntryUI(pool);
 			pool.setPool(e);
 		});

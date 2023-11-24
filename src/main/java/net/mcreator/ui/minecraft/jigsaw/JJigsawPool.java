@@ -40,24 +40,22 @@ import java.util.List;
 
 public class JJigsawPool extends JEntriesList {
 
-	private final JTextField poolName = new JTextField(10);
+	private final VTextField poolName = new VTextField(10);
 	private final VTextField fallbackPool = new VTextField(20);
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
 	private final List<JJigsawPart> entryList = new ArrayList<>();
 	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
 
-	public JJigsawPool(JJigsawPoolsList jigsawPools, IHelpContext gui, JPanel parent, List<JJigsawPool> poolList,
-			String name) {
+	public JJigsawPool(JJigsawPoolsList jigsawPools, IHelpContext gui, JPanel parent, List<JJigsawPool> poolList) {
 		super(jigsawPools.getMCreator(), new BorderLayout(0, 5), gui);
 		setOpaque(false);
 		setBackground(Theme.current().getBackgroundColor().brighter());
 
 		entries.setOpaque(false);
 
-		poolName.setText(name);
-		poolName.setEditable(false);
-		poolName.setForeground(poolName.getDisabledTextColor());
+		poolName.setValidator(jigsawPools.newPoolNameValidator(poolName));
+		poolName.enableRealtimeValidation();
 
 		fallbackPool.setValidator(
 				new ResourceLocationValidator<>(L10N.t("elementgui.structuregen.jigsaw_fallback"), fallbackPool,
@@ -151,7 +149,7 @@ public class JJigsawPool extends JEntriesList {
 	}
 
 	public AggregatedValidationResult getValidationResult() {
-		AggregatedValidationResult validationResult = new AggregatedValidationResult();
+		AggregatedValidationResult validationResult = new AggregatedValidationResult(poolName);
 		entryList.forEach(validationResult::addValidationElement);
 		return validationResult;
 	}

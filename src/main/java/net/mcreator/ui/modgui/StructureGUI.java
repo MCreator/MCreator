@@ -184,12 +184,12 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 		pane7.add("North", PanelUtils.join(FlowLayout.LEFT, jigsawSize));
 
-		JComponent entityDataListComp = PanelUtils.northAndCenterElement(
+		JComponent jigsawPoolsListComp = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("structure/jigsaw_pools"),
 						L10N.label("elementgui.structuregen.jigsaw_pools")), jigsaw);
-		entityDataListComp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		jigsawPoolsListComp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-		pane7.add("Center", entityDataListComp);
+		pane7.add("Center", jigsawPoolsListComp);
 
 		restrictionBiomes.setValidator(new CompoundValidator(
 				new ItemListFieldValidator(restrictionBiomes, L10N.t("elementgui.structuregen.error_select_biomes")),
