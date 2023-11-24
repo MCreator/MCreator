@@ -331,22 +331,24 @@ public class MinecraftImageGenerator {
 		public static BufferedImage generateSmithingPreviewPicture(Workspace workspace, MItemBlock template,
 				MItemBlock input, MItemBlock addition, MItemBlock result) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
-			int plusY = 11;
+			int offsetY = 9;
 			Graphics2D graphics2D = icon.createGraphics();
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			graphics2D.setColor(new Color(190, 190, 190, 65));
 
-			if (template.isEmpty()) {
-				drawTwoSlotRecipe(graphics2D, 9, 9, workspace, input, addition);
-			} else {
-				plusY += 9;
-				drawTwoSlotRecipe(graphics2D, 18, 18, workspace, input, addition);
+			if (!template.isEmpty()) {
+				offsetY += 9;
 
 				//box 3
 				graphics2D.drawLine(10, 0, 17, 0);
 				graphics2D.drawLine(10, 9, 17, 9);
 				graphics2D.drawLine(9, 0, 9, 9);
 				graphics2D.drawLine(18, 0, 18, 9);
+
+				//template
+				graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+								MCItem.getBlockIconBasedOnName(workspace, template.getUnmappedValue()).getImage())), 8), 10, 1,
+						null);
 
 				//arrow
 				graphics2D.drawLine(13, 11, 13, 14);
@@ -355,22 +357,19 @@ public class MinecraftImageGenerator {
 				graphics2D.drawLine(11, 15, 16, 15);
 				graphics2D.drawLine(12, 16, 15, 16);
 				graphics2D.drawLine(13, 17, 14, 17);
-
-				//template
-				graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
-								MCItem.getBlockIconBasedOnName(workspace, template.getUnmappedValue()).getImage())), 8), 19, 19,
-						null);
 			}
 
+			drawTwoSlotRecipe(graphics2D, offsetY, offsetY, workspace, input, addition);
+
 			//plus
-			graphics2D.drawLine(11, plusY + 2, 12, plusY + 2);
-			graphics2D.drawLine(11, plusY + 3, 12, plusY + 3);
+			graphics2D.drawLine(11, offsetY + 4, 12, offsetY + 4);
+			graphics2D.drawLine(11, offsetY + 5, 12, offsetY + 5);
 
-			graphics2D.drawLine(15, plusY + 2, 16, plusY + 2);
-			graphics2D.drawLine(15, plusY + 3, 16, plusY + 3);
+			graphics2D.drawLine(15, offsetY + 4, 16, offsetY + 4);
+			graphics2D.drawLine(15, offsetY + 5, 16, offsetY + 5);
 
-			graphics2D.drawLine(13, plusY, 13, plusY + 5);
-			graphics2D.drawLine(14, plusY, 14, plusY + 5);
+			graphics2D.drawLine(13, offsetY + 2, 13, offsetY + 7);
+			graphics2D.drawLine(14, offsetY + 2, 14, offsetY + 7);
 			graphics2D.dispose();
 
 			return icon;
