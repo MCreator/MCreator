@@ -340,24 +340,13 @@ public class MinecraftImageGenerator {
 				drawTwoSlotRecipe(graphics2D, 9, 9, workspace, input, addition);
 			} else {
 				plusY += 9;
+				drawTwoSlotRecipe(graphics2D, 18, 18, workspace, input, addition);
 
-				//box 1
+				//box 3
 				graphics2D.drawLine(10, 0, 17, 0);
 				graphics2D.drawLine(10, 9, 17, 9);
 				graphics2D.drawLine(9, 0, 9, 9);
 				graphics2D.drawLine(18, 0, 18, 9);
-
-				//box 2
-				graphics2D.drawLine(1, 18, 8, 18);
-				graphics2D.drawLine(1, 27, 8, 27);
-				graphics2D.drawLine(0, 18, 0, 27);
-				graphics2D.drawLine(9, 18, 9, 27);
-
-				//box 3
-				graphics2D.drawLine(19, 18, 26, 18);
-				graphics2D.drawLine(19, 27, 26, 27);
-				graphics2D.drawLine(18, 18, 18, 27);
-				graphics2D.drawLine(27, 18, 27, 27);
 
 				//arrow
 				graphics2D.drawLine(13, 11, 13, 14);
@@ -367,15 +356,9 @@ public class MinecraftImageGenerator {
 				graphics2D.drawLine(12, 16, 15, 16);
 				graphics2D.drawLine(13, 17, 14, 17);
 
-				//elements
+				//template
 				graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
-								MCItem.getBlockIconBasedOnName(workspace, template.getUnmappedValue()).getImage())), 8), 10, 1,
-						null);
-				graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
-								MCItem.getBlockIconBasedOnName(workspace, input.getUnmappedValue()).getImage())), 8), 1, 19,
-						null);
-				graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
-								MCItem.getBlockIconBasedOnName(workspace, addition.getUnmappedValue()).getImage())), 8), 19, 19,
+								MCItem.getBlockIconBasedOnName(workspace, template.getUnmappedValue()).getImage())), 8), 19, 19,
 						null);
 			}
 
