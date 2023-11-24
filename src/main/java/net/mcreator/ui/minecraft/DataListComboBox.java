@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 
@@ -54,7 +55,7 @@ public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 
 	public void setSelectedItem(MappableElement mappableElement) {
 		if (mappableElement == null)
-			setSelectedIndex(0);
+			setSelectedIndex(getItemCount() > 0 ? 0 : -1);
 		else
 			this.setSelectedItem(new DataListEntry.Dummy(mappableElement.getUnmappedValue()));
 	}
@@ -111,7 +112,7 @@ public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 				if (imageIcon instanceof ImageIcon)
 					setIcon(ImageUtils.changeSaturation((ImageIcon) imageIcon, 0.1f));
 				setText(L10N.t("datalist_combobox.not_supported", getText()));
-				setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				setForeground(Theme.current().getAltForegroundColor());
 			}
 
 			setHorizontalTextPosition(SwingConstants.RIGHT);

@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.laf;
 
+import net.mcreator.ui.laf.themes.Theme;
+
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicScrollBarUI;
@@ -35,8 +37,8 @@ public class SlickDarkScrollBarUI extends BasicScrollBarUI {
 	private final boolean hasButtons;
 
 	public static ComponentUI createUI(JComponent var0) {
-		return new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), var0);
+		return new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(), Theme.current().getAltBackgroundColor(),
+				var0);
 	}
 
 	public SlickDarkScrollBarUI(Color bg, Color fg, final JComponent bar) {
@@ -72,6 +74,7 @@ public class SlickDarkScrollBarUI extends BasicScrollBarUI {
 			@Override public void mouseDragged(MouseEvent mouseEvent) {
 				super.mouseDragged(mouseEvent);
 				drag = true;
+				bar.repaint();
 			}
 		});
 	}

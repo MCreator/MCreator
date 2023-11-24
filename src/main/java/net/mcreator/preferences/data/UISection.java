@@ -27,7 +27,7 @@ import net.mcreator.preferences.entries.ColorEntry;
 import net.mcreator.preferences.entries.LocaleEntry;
 import net.mcreator.preferences.entries.StringEntry;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.ColorScheme;
 
 import java.util.Locale;
 
@@ -50,7 +50,7 @@ public class UISection extends PreferencesSection {
 		super(preferencesIdentifier);
 
 		language = addEntry(new LocaleEntry("language", L10N.DEFAULT_LOCALE));
-		interfaceAccentColor = addEntry(new ColorEntry("interfaceAccentColor", MCreatorTheme.MAIN_TINT_DEFAULT));
+		interfaceAccentColor = addEntry(new ColorEntry("interfaceAccentColor", ColorScheme.MAIN_TINT_DEFAULT));
 		backgroundSource = addEntry(
 				new StringEntry("backgroundSource", "All", "All", "Current theme", "Custom", "None"));
 		aaText = addEntry(new BooleanEntry("aaText", true));

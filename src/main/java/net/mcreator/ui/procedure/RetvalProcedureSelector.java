@@ -35,6 +35,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -73,7 +74,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 
 		setOpaque(true);
 		procedures.setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
-		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		setBackground(Theme.current().getAltBackgroundColor());
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
 		procedures.addPopupMenuListener(new ComboBoxFullWidthPopup());
@@ -225,9 +226,9 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			fixedValue.setEnabled(enabled);
 
 		if (enabled) {
-			setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			setBackground(Theme.current().getAltBackgroundColor());
 		} else {
-			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setBackground(Theme.current().getBackgroundColor());
 		}
 
 		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();

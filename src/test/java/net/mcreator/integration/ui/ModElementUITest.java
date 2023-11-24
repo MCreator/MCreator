@@ -158,8 +158,7 @@ public class ModElementUITest {
 				assertNotNull(generatableElement);
 
 				ModElementGUI<?> modElementGUI = modElementType.getModElementGUI(mcreator, modElement, false);
-
-				modElementGUI.showView();
+				modElementGUI.reloadDataLists();
 
 				Field field = modElementGUI.getClass().getSuperclass().getDeclaredField("editingMode");
 				field.setAccessible(true);
