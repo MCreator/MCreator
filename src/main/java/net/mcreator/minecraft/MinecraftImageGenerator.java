@@ -336,7 +336,7 @@ public class MinecraftImageGenerator {
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			graphics2D.setColor(new Color(190, 190, 190, 65));
 
-			if (!template.isEmpty()) {
+			if (template != null && !template.isEmpty()) {
 				offsetY += 9;
 
 				//box 3
