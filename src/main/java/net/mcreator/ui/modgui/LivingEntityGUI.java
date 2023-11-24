@@ -909,7 +909,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane1.setOpaque(false);
 
 		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2);
-		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8);
+		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false);
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
 		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
