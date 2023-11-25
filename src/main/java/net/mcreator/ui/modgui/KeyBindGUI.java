@@ -23,6 +23,7 @@ import net.mcreator.element.types.KeyBinding;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -37,8 +38,12 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Objects;
 
 public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
@@ -146,12 +151,16 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 	@Override public KeyBinding getElementFromGUI() {
 		KeyBinding keyBinding = new KeyBinding(modElement);
-		keyBinding.triggerKey = (String) triggerKey.getSelectedItem();
+		keyBinding.triggerKey = (String) Objects.requireNonNull(triggerKey.getSelectedItem());
 		keyBinding.keyBindingName = keyBindingName.getText();
 		keyBinding.onKeyPressed = onKeyPressed.getSelectedProcedure();
 		keyBinding.onKeyReleased = onKeyReleased.getSelectedProcedure();
 		keyBinding.keyBindingCategoryKey = keyBindingCategoryKey.getEditor().getItem().toString();
 		return keyBinding;
+	}
+
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-key-binding");
 	}
 
 }

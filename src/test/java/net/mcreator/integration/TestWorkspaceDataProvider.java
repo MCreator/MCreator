@@ -1531,7 +1531,6 @@ public class TestWorkspaceDataProvider {
 		livingEntity.mobName = modElement.getName();
 		livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
 		livingEntity.mobModelTexture = "entityTx1.png";
-		livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
 		livingEntity.transparentModelCondition = new LogicProcedure(emptyLists ? "condition1" : null, _true);
 		livingEntity.isShakingCondition = new LogicProcedure(emptyLists ? "condition2" : null, !_true);
 		livingEntity.solidBoundingBox = new LogicProcedure(emptyLists ? "condition3" : null, _true);
@@ -1663,12 +1662,34 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelHeight = 1.3;
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
+		livingEntity.modelLayers = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.LogicType("Logic"), _true));
 			livingEntity.entityDataEntries.add(
 					new PropertyDataWithValue<>(new PropertyData.IntegerType("Integer"), random.nextInt()));
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.StringType("String"),
 					getRandomItem(random, new String[] { "value1", "value2", "value3" })));
+			LivingEntity.ModelLayerEntry modelLayer = new LivingEntity.ModelLayerEntry();
+			modelLayer.setWorkspace(modElement.getWorkspace());
+			modelLayer.model = "Default";
+			modelLayer.texture = "entityTx2.png";
+			modelLayer.glow = true;
+			modelLayer.condition = null;
+			livingEntity.modelLayers.add(modelLayer);
+			modelLayer = new LivingEntity.ModelLayerEntry();
+			modelLayer.setWorkspace(modElement.getWorkspace());
+			modelLayer.model = "Default";
+			modelLayer.texture = "test.png";
+			modelLayer.glow = false;
+			modelLayer.condition = new Procedure("condition1");
+			livingEntity.modelLayers.add(modelLayer);
+			modelLayer = new LivingEntity.ModelLayerEntry();
+			modelLayer.setWorkspace(modElement.getWorkspace());
+			modelLayer.model = "Default";
+			modelLayer.texture = "entityTx2.png";
+			modelLayer.glow = true;
+			modelLayer.condition = null;
+			livingEntity.modelLayers.add(modelLayer);
 		}
 		return livingEntity;
 	}

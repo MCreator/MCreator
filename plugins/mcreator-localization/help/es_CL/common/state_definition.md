@@ -1,0 +1,1 @@
+Especifique valores que sean aceptados por las propiedades de tu elemento para este estado. Si desmarcas la casilla a la izquierda de una propiedad, no afectará este estado de ninguna forma.

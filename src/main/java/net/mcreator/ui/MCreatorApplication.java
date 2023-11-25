@@ -109,6 +109,7 @@ public final class MCreatorApplication {
 
 			try {
 				UIManager.setLookAndFeel(new MetalLookAndFeel());
+				LafUtil.applyDefaultHTMLStyles();
 				LafUtil.fixMacOSActions();
 			} catch (UnsupportedLookAndFeelException e) {
 				LOG.error("Failed to set look and feel: " + e.getMessage());
