@@ -26,6 +26,7 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.util.WrapLayout;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -54,7 +55,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 		setBackground(Theme.current().getAltBackgroundColor().darker());
 
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
-		ignoreBlocks.setPreferredSize(new Dimension(250, 30));
+		ignoreBlocks.setPreferredSize(new Dimension(200, 30));
 
 		structureSelector.setValidator(() -> {
 			if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().isEmpty())
@@ -65,7 +66,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 		ComponentUtils.deriveFont(structureSelector, 16);
 		reloadDataLists();
 
-		JPanel line = new JPanel(new GridLayout(2, 2, 10, 10));
+		JPanel line = new JPanel(new WrapLayout(FlowLayout.LEFT, 10, 0));
 		line.setOpaque(false);
 
 		line.add(L10N.label("elementgui.structuregen.jigsaw_entry_weight"));
@@ -96,7 +97,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 		add("West", line);
 		add("East", PanelUtils.join(FlowLayout.CENTER, 0, 0, remove));
 
-		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 5));
 
 		parent.revalidate();
 		parent.repaint();
@@ -105,7 +106,6 @@ public class JJigsawPart extends JPanel implements IValidable {
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
 		remove.setEnabled(enabled);
-
 		weight.setEnabled(enabled);
 		structureSelector.setEnabled(enabled);
 		projection.setEnabled(enabled);
@@ -119,17 +119,14 @@ public class JJigsawPart extends JPanel implements IValidable {
 	public Structure.JigsawPool.JigsawPart getEntry() {
 		Structure.JigsawPool.JigsawPart part = new Structure.JigsawPool.JigsawPart();
 		part.weight = (int) weight.getValue();
-
 		part.structure = structureSelector.getSelectedItem();
 		part.projection = (String) projection.getSelectedItem();
 		part.ignoredBlocks = ignoreBlocks.getListElements();
-
 		return part;
 	}
 
 	public void setEntry(Structure.JigsawPool.JigsawPart part) {
 		weight.setValue(part.weight);
-
 		structureSelector.setSelectedItem(part.structure);
 		projection.setSelectedItem(part.projection);
 		ignoreBlocks.setListElements(part.ignoredBlocks);
@@ -145,4 +142,5 @@ public class JJigsawPart extends JPanel implements IValidable {
 	@Override public Validator getValidator() {
 		return structureSelector.getValidator();
 	}
+
 }
