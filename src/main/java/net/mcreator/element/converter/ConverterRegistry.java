@@ -115,6 +115,7 @@ public class ConverterRegistry {
 			new EntityTexturesConverter(),
 			new EntitiesRangedAttackConverter(),
 			new WaterEntitiesConverter(),
+			new EntityGlowLayerConverter(),
 			new ItemsCreativeTabsConverter()
 		));
 		put(ModElementType.OVERLAY, List.of(
