@@ -728,6 +728,7 @@ public class TestWorkspaceDataProvider {
 						.toList();
 				pool.poolParts.add(part);
 				structure.jigsawPools.add(pool);
+
 				pool = new Structure.JigsawPool();
 				pool.poolName = "pool2";
 				pool.fallbackPool = "";

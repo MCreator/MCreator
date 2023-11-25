@@ -209,6 +209,10 @@ public class ReferencesFinderTest {
 		String structure = "test";
 		assertTrue(ReferencesFinder.searchStructureUsages(workspace, structure).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Examplestructure")));
+
+		structure = "test2";
+		assertTrue(ReferencesFinder.searchStructureUsages(workspace, structure).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Examplestructure")));
 	}
 
 	@Test void testGlobalVariableUsagesSearch() {
