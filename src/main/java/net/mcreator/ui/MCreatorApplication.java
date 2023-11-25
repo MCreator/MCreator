@@ -37,7 +37,6 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
 import net.mcreator.ui.component.util.ThreadUtil;
@@ -45,7 +44,9 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.LafUtil;
-import net.mcreator.ui.laf.MCreatorLookAndFeel;
+import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.laf.themes.ThemeLoader;
 import net.mcreator.ui.notifications.StartupNotifications;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
@@ -59,6 +60,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -103,17 +105,19 @@ public final class MCreatorApplication {
 
 			// We load UI themes now as theme plugins are loaded at this point
 			ThemeLoader.initUIThemes();
-
-			splashScreen.setProgress(15, "Loading UI core");
-
-			UIRES.preloadImages();
+			MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
 
 			try {
-				UIManager.setLookAndFeel(new MCreatorLookAndFeel());
+				UIManager.setLookAndFeel(new MetalLookAndFeel());
+				LafUtil.applyDefaultHTMLStyles();
 				LafUtil.fixMacOSActions();
 			} catch (UnsupportedLookAndFeelException e) {
 				LOG.error("Failed to set look and feel: " + e.getMessage());
 			}
+
+			splashScreen.setProgress(15, "Loading UI core");
+
+			UIRES.preloadImages();
 
 			SoundUtils.initSoundSystem();
 

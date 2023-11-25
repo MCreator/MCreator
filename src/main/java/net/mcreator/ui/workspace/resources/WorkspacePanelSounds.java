@@ -23,13 +23,13 @@ import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.SoundElementDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.SoundUtils;
-import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
+import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,8 +62,7 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 						L10N.t("dialog.search_usages.type.resource.sound"), refs);
 			}
 		});
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
-				e -> deleteCurrentlySelected());
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"), e -> deleteCurrentlySelected());
 		addToolBarButton("workspace.sounds.play_selected", UIRES.get("16px.play"), new MouseAdapter() {
 			@Override public void mousePressed(MouseEvent e) {
 				SoundElement soundElement = elementList.getSelectedValue();
@@ -130,8 +129,8 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 
 			JPanel cont = new JPanel(new BorderLayout());
 			cont.setBackground(isSelected ?
-					((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).brighter() :
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					(Theme.current().getAltBackgroundColor()).brighter() :
+					Theme.current().getAltBackgroundColor());
 			cont.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 
 			JPanel namepan = new JPanel(new BorderLayout());
@@ -139,7 +138,7 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 			namepan.setOpaque(false);
 
 			JLabel name = new JLabel(ma.getName());
-			name.setFont(MCreatorTheme.secondary_font.deriveFont(20.0f));
+			name.setFont(Theme.current().getSecondaryFont().deriveFont(20.0f));
 			namepan.add("North", name);
 
 			JLabel name2 = L10N.label("workspace.sounds.files", String.join(", ", ma.getFiles()));

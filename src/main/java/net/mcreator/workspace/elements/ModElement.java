@@ -285,8 +285,8 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	}
 
 	/**
-	 * @apiNote This method performs sensitive operations on this mod element. Avoid using it!
 	 * @param other The mod element to copy settings from.
+	 * @apiNote This method performs sensitive operations on this mod element. Avoid using it!
 	 */
 	@SuppressWarnings("unused") public void loadDataFrom(ModElement other) {
 		this.compiles = other.compiles;

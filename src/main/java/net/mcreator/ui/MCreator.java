@@ -40,6 +40,7 @@ import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -202,7 +203,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			((ImagePanel) mpan).setKeepRatio(true);
 		} else {
 			mpan = new JPanel();
-			mpan.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			mpan.setBackground(Theme.current().getSecondAltBackgroundColor());
 		}
 
 		mpan.setLayout(new BorderLayout());
@@ -211,8 +212,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		mv = new WorkspacePanel(this);
 
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
-		pon.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
+		pon.setBackground(Theme.current().getBackgroundColor());
+		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"),
 				PanelUtils.maxMargin(mv, 5, true, true, true, true), "Workspace", true, false);
@@ -257,7 +258,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser,
 				PanelUtils.northAndCenterElement(pon, mpan));
-		splitPane.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		splitPane.setBackground(Theme.current().getAltBackgroundColor());
 		splitPane.setOneTouchExpandable(true);
 
 		splitPane.setDividerLocation(280);
@@ -444,7 +445,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		JLabel loading = L10N.label("workspace.loading");
 		loading.setIconTextGap(5);
 		loading.setFont(loading.getFont().deriveFont(16f));
-		loading.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		loading.setForeground(Theme.current().getAltForegroundColor());
 		loading.setIcon(UIRES.get("16px.loading.gif"));
 		wrap.add(PanelUtils.totalCenterInPanel(loading));
 		return wrap;
