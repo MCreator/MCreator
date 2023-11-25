@@ -40,8 +40,9 @@ import java.util.List;
 
 public class JJigsawPool extends JEntriesList {
 
-	private final VTextField poolName = new VTextField(10);
+	private final VTextField poolName = new VTextField(20);
 	private final VTextField fallbackPool = new VTextField(20);
+
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
 	private final List<JJigsawPart> entryList = new ArrayList<>();
@@ -64,12 +65,13 @@ public class JJigsawPool extends JEntriesList {
 		ComponentUtils.deriveFont(poolName, 16);
 		ComponentUtils.deriveFont(fallbackPool, 16);
 
-		JComponent poolParams = new JPanel(new FlowLayout(FlowLayout.LEFT));
+		JComponent poolParams = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		poolParams.setOpaque(false);
 
 		poolParams.add(HelpUtils.wrapWithHelpButton(gui.withEntry("structure/jigsaw_pool_name"),
 				L10N.label("elementgui.structuregen.jigsaw_pool_name")));
 		poolParams.add(poolName);
+
 		poolParams.add(new JEmptyBox(15, 5));
 
 		poolParams.add(HelpUtils.wrapWithHelpButton(gui.withEntry("structure/jigsaw_fallback_pool"),
