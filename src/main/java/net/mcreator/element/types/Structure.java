@@ -25,6 +25,7 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -72,9 +73,9 @@ import java.util.List;
 
 		public String poolName;
 		public String fallbackPool;
-		@ModElementReference @ResourceReference("structure") public List<JigsawPart> poolParts;
+		@ModElementReference @ResourceReference("structure") @Nullable public List<JigsawPart> poolParts;
 
-		public List<JigsawPart> getPoolParts() {
+		@Nullable public List<JigsawPart> getPoolParts() {
 			return poolParts;
 		}
 
