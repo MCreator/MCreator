@@ -20,6 +20,7 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.AddTagDialog;
@@ -55,11 +56,11 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 	}
 
 	@Override protected List<MItemBlock> getTagsToAdd() {
-		String tagType = "Blocks";
+		TagType tagType = TagType.BLOCKS;
 		List<MCItem> items = supplier.provide(mcreator.getWorkspace());
 		for (MCItem item : items) {
 			if (item.getType().equals("item")) {
-				tagType = "Items";
+				tagType = TagType.ITEMS;
 				break;
 			}
 		}
