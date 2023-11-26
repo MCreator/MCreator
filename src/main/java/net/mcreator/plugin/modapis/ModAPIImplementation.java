@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.minecraft.api;
+package net.mcreator.plugin.modapis;
 
 import javax.annotation.Nullable;
 import java.util.List;
