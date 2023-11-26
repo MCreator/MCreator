@@ -27,32 +27,33 @@ import java.util.Locale;
 
 public enum TagType {
 
-	ITEMS, BLOCKS, ENTITIES, FUNCTIONS, BIOMES, DAMAGE_TYPES;
+	//@formatter:off
+	ITEMS("items", Dependency.getColor("itemstack")),
+	BLOCKS("blocks", Dependency.getColor("blockstate")),
+	ENTITIES("entity_types", Dependency.getColor("entity")),
+	FUNCTIONS("functions", Dependency.getColor("string")),
+	BIOMES("worldgen/biome", Dependency.getColor("world")),
+	DAMAGE_TYPES("damage_type", Dependency.getColor("damagesource"));
+	//@formatter:on
 
-	@Override public String toString() {
-		return L10N.t("tag.type." + name().toLowerCase(Locale.ENGLISH));
+	private final String folder;
+	private final Color color;
+
+	TagType(String folder, Color color) {
+		this.folder = folder;
+		this.color = color;
 	}
 
 	public String getFolder() {
-		return switch (this) {
-			case ITEMS -> "items";
-			case BLOCKS -> "blocks";
-			case ENTITIES -> "entity_types";
-			case FUNCTIONS -> "functions";
-			case BIOMES -> "worldgen/biome";
-			case DAMAGE_TYPES -> "damage_type";
-		};
+		return folder;
 	}
 
 	public Color getColor() {
-		return switch (this) {
-			case ITEMS -> Dependency.getColor("itemstack");
-			case BLOCKS -> Dependency.getColor("blockstate");
-			case ENTITIES -> Dependency.getColor("entity");
-			case FUNCTIONS -> Dependency.getColor("string");
-			case BIOMES -> Dependency.getColor("world");
-			case DAMAGE_TYPES -> Dependency.getColor("damagesource");
-		};
+		return color;
+	}
+
+	@Override public String toString() {
+		return L10N.t("tag.type." + name().toLowerCase(Locale.ENGLISH));
 	}
 
 	public static TagType fromLegacyName(String readableName) {
