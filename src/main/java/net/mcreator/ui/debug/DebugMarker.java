@@ -17,30 +17,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * MCreator (https://mcreator.net/)
- * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2023, Pylo, opensource contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package net.mcreator.ui.debug;
 
 import com.sun.jdi.event.BreakpointEvent;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -57,7 +39,7 @@ import static net.mcreator.ui.debug.DebugPanel.DEBUG_COLOR;
 
 public class DebugMarker extends JPanel {
 
-	private final Border IDLE = BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+	private final Border IDLE = BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor());
 	private final Border ACTIVE = BorderFactory.createLineBorder(DEBUG_COLOR);
 
 	private boolean active = false;
@@ -74,7 +56,7 @@ public class DebugMarker extends JPanel {
 	public DebugMarker(DebugPanel debugPanel, String markerName) {
 		setPreferredSize(new Dimension(230, 90));
 		setLayout(new BorderLayout());
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		setBackground(Theme.current().getBackgroundColor());
 
 		String[] markerNameParts = markerName.split(":", 2);
 		JLabel title = new JLabel();
@@ -114,7 +96,7 @@ public class DebugMarker extends JPanel {
 		hitCountOtherLabel.setIcon(UIRES.get("16px.any"));
 
 		updateDisplay();
-		setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		setBorder(BorderFactory.createLineBorder(Theme.current().getBackgroundColor()));
 
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(java.awt.event.MouseEvent evt) {

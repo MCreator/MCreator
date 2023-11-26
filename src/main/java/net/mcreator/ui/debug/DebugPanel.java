@@ -17,25 +17,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * MCreator (https://mcreator.net/)
- * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2023, Pylo, opensource contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package net.mcreator.ui.debug;
 
 import com.sun.jdi.IncompatibleThreadStateException;
@@ -55,6 +36,7 @@ import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -102,7 +84,7 @@ public class DebugPanel extends JPanel {
 	public DebugPanel(MCreator mcreator) {
 		this.mcreator = mcreator;
 
-		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		setLayout(cardLayout);
 
@@ -114,7 +96,7 @@ public class DebugPanel extends JPanel {
 		waitingToConnect.setOpaque(false);
 		JLabel loading = L10N.label("debug.loading");
 		loading.setFont(loading.getFont().deriveFont(16f));
-		loading.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		loading.setForeground(Theme.current().getAltForegroundColor());
 		loading.setIcon(UIRES.get("16px.loading.gif"));
 		waitingToConnect.add("Center", PanelUtils.totalCenterInPanel(loading));
 		add(waitingToConnect, WAITING_TO_CONNECT);
@@ -135,7 +117,7 @@ public class DebugPanel extends JPanel {
 
 		JLabel nomarkers = L10N.label("debug.no_markers");
 		nomarkers.setFont(loading.getFont().deriveFont(14f));
-		nomarkers.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		nomarkers.setForeground(Theme.current().getAltForegroundColor());
 		JComponent nomarkerwrap = PanelUtils.totalCenterInPanel(nomarkers);
 		nomarkerwrap.setPreferredSize(new Dimension(475, 0));
 

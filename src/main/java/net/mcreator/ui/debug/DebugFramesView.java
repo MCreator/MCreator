@@ -17,25 +17,6 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
- * MCreator (https://mcreator.net/)
- * Copyright (C) 2012-2020, Pylo
- * Copyright (C) 2020-2023, Pylo, opensource contributors
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <https://www.gnu.org/licenses/>.
- */
-
 package net.mcreator.ui.debug;
 
 import com.sun.jdi.*;
@@ -44,6 +25,7 @@ import net.mcreator.ui.component.util.TreeUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickTreeUI;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
 
 import javax.swing.*;
@@ -69,13 +51,13 @@ public class DebugFramesView extends JPanel {
 
 		frames.setCellRenderer(new FramesCellRenderer());
 		frames.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		frames.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		frames.setBackground(Theme.current().getSecondAltBackgroundColor());
 		frames.setRootVisible(false);
 		frames.setShowsRootHandles(true);
 
 		JLabel noframes = L10N.label("debug.frames.no_frames");
 		noframes.setFont(noframes.getFont().deriveFont(14f));
-		noframes.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		noframes.setForeground(Theme.current().getAltForegroundColor());
 
 		JScrollPane framesScroll = new JScrollPane(frames);
 		framesScroll.setOpaque(false);
@@ -189,10 +171,10 @@ public class DebugFramesView extends JPanel {
 
 			if (sel) {
 				a.setBackground(DEBUG_COLOR);
-				a.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				a.setForeground(Theme.current().getForegroundColor());
 			} else {
-				a.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-				a.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				a.setBackground(Theme.current().getSecondAltBackgroundColor());
+				a.setForeground(Theme.current().getForegroundColor());
 			}
 			return a;
 		}
