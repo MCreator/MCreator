@@ -26,6 +26,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.ArmorMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
@@ -70,15 +71,15 @@ public class ArmorImageMakerView extends ViewBase {
 		controls.add(L10N.label("dialog.armor_image_maker.saturation_lightness_lock"));
 		controls.add(type1);
 
-		col.setColorSelectedListener(event -> updateARM());
+		col.addColorSelectedListener(event -> updateARM());
 		str.addActionListener(e -> updateARM());
 		type1.addActionListener(e -> updateARM());
 
 		JPanel wrap = PanelUtils.centerInPanelPadding(controls, 10, 10);
 		wrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("dialog.armor_image_maker.properties"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		add("Center", wrap);
 
@@ -95,18 +96,18 @@ public class ArmorImageMakerView extends ViewBase {
 
 		JPanel spom = PanelUtils.totalCenterInPanel(spo);
 		spom.setOpaque(true);
-		spom.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		spom.setBackground(Theme.current().getAltBackgroundColor());
 		spom.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("dialog.armor_image_maker.preview"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		add("South", spom);
 
 		JButton save = L10N.button("dialog.armor_image_maker.save");
 		save.setMargin(new Insets(1, 40, 1, 40));
-		save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-		save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		save.setBackground(Theme.current().getInterfaceAccentColor());
+		save.setForeground(Theme.current().getSecondAltBackgroundColor());
 		save.setFocusPainted(false);
 		add("North", PanelUtils.maxMargin(
 				PanelUtils.westAndEastElement(new JEmptyBox(0, 0), PanelUtils.centerInPanelPadding(save, 0, 0)), 5,
@@ -127,7 +128,7 @@ public class ArmorImageMakerView extends ViewBase {
 		});
 
 		type1.setSelected(true);
-		col.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		col.setColor(Theme.current().getInterfaceAccentColor());
 
 		updateARM();
 	}

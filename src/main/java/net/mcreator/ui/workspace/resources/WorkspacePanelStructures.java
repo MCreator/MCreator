@@ -22,6 +22,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ReferencesFinder;
@@ -56,8 +57,7 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 						L10N.t("dialog.search_usages.type.resource.structure"), refs);
 			}
 		});
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
-				e -> deleteCurrentlySelected());
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"), e -> deleteCurrentlySelected());
 	}
 
 	@Override void deleteCurrentlySelected() {
@@ -83,8 +83,7 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 
 	@Override public void reloadElements() {
 		filterModel.removeAllElements();
-		workspacePanel.getMCreator().getFolderManager().getStructureList().forEach(filterModel::addElement);
-		refilterElements();
+		filterModel.addAll(workspacePanel.getMCreator().getFolderManager().getStructureList());
 	}
 
 	static class Render extends JLabel implements ListCellRenderer<String> {
@@ -98,9 +97,8 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 		public JLabel getListCellRendererComponent(JList<? extends String> list, String ma, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.MAIN_TINT") :
-					(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setBackground(
+					isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getBackgroundColor());
 			setText(" " + ma);
 			ComponentUtils.deriveFont(this, 17);
 			setIcon(UIRES.get("16px.ext.gif"));

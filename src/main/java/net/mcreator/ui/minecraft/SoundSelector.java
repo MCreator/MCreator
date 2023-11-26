@@ -33,9 +33,13 @@ import net.mcreator.workspace.elements.SoundElement;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SoundSelector extends JPanel {
 
@@ -43,6 +47,7 @@ public class SoundSelector extends JPanel {
 	private final JButton bt = new JButton("...");
 	private final JButton rm = new JButton(UIRES.get("18px.remove"));
 	private final JButton play = new JButton(UIRES.get("16px.play"));
+	private final List<ActionListener> listeners = new ArrayList<>();
 
 	private final MCreator mcreator;
 
@@ -113,6 +118,10 @@ public class SoundSelector extends JPanel {
 		return new Sound(mcreator.getWorkspace(), tfe.getText());
 	}
 
+	public void addSoundSelectedListener(ActionListener a) {
+		listeners.add(a);
+	}
+
 	public void setSound(Sound sound) {
 		if (sound != null)
 			this.setSound(sound.getUnmappedValue());
@@ -131,6 +140,8 @@ public class SoundSelector extends JPanel {
 			play.setVisible(false);
 			rm.setEnabled(false);
 		}
+
+		listeners.forEach(l -> l.actionPerformed(new ActionEvent("", 0, "")));
 	}
 
 	public void setText(String text) {

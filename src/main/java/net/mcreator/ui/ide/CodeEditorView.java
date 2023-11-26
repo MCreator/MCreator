@@ -40,6 +40,7 @@ import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
 import net.mcreator.ui.laf.renderer.AstTreeCellRendererCustom;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
@@ -142,7 +143,7 @@ public class CodeEditorView extends ViewBase {
 
 		this.codeCleanup = new CodeCleanup();
 
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		setBackground(Theme.current().getBackgroundColor());
 
 		this.fileBreadCrumb = new JFileBreadCrumb(mcreator, fileWorkingOn, fa.getWorkspaceFolder());
 
@@ -180,44 +181,44 @@ public class CodeEditorView extends ViewBase {
 
 		sp.setFoldIndicatorEnabled(true);
 
-		sp.getGutter().setFoldBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		sp.getGutter().setBorderColor((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		sp.getGutter().setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sp.getGutter().setFoldBackground(Theme.current().getBackgroundColor());
+		sp.getGutter().setBorderColor(Theme.current().getBackgroundColor());
+		sp.getGutter().setBackground(Theme.current().getBackgroundColor());
 
 		sp.setIconRowHeaderEnabled(true);
 
-		sp.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sp.setBackground(Theme.current().getBackgroundColor());
 		sp.setBorder(null);
 
 		sp.getGutter().setShowCollapsedRegionToolTips(true);
 
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
-		sp.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getHorizontalScrollBar()));
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
+		sp.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), sp.getHorizontalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 		sp.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 
 		JPanel cornerDummy1 = new JPanel();
-		cornerDummy1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cornerDummy1.setBackground(Theme.current().getBackgroundColor());
 		sp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy1);
 
 		JPanel cornerDummy2 = new JPanel();
-		cornerDummy2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cornerDummy2.setBackground(Theme.current().getBackgroundColor());
 		sp.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy2);
 
 		JPanel cornerDummy12 = new JPanel();
-		cornerDummy12.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cornerDummy12.setBackground(Theme.current().getBackgroundColor());
 		treeSP.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy12);
 
 		JPanel cornerDummy22 = new JPanel();
-		cornerDummy22.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cornerDummy22.setBackground(Theme.current().getBackgroundColor());
 		treeSP.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy22);
 
-		treeSP.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), treeSP.getVerticalScrollBar()));
-		treeSP.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), treeSP.getHorizontalScrollBar()));
+		treeSP.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), treeSP.getVerticalScrollBar()));
+		treeSP.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), treeSP.getHorizontalScrollBar()));
 		treeSP.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 		treeSP.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 
@@ -250,13 +251,13 @@ public class CodeEditorView extends ViewBase {
 		spne.setRightComponent(rightDummy);
 
 		JPanel cp = new JPanel(new BorderLayout());
-		cp.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cp.setBackground(Theme.current().getBackgroundColor());
 		cp.add(sp);
 
 		if (PreferencesManager.PREFERENCES.ide.errorInfoEnable.get()) {
 			ErrorStrip errorStrip = new ErrorStrip(te);
 			errorStrip.setFollowCaret(false);
-			errorStrip.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			errorStrip.setBackground(Theme.current().getBackgroundColor());
 			cp.add(errorStrip, BorderLayout.LINE_END);
 		}
 
@@ -574,7 +575,7 @@ public class CodeEditorView extends ViewBase {
 		if (tree != null) {
 			tree.setCellRenderer(new AstTreeCellRendererCustom());
 			tree.listenTo(te);
-			tree.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			tree.setBackground(Theme.current().getBackgroundColor());
 			tree.setForeground(Color.white);
 			tree.setRowHeight(18);
 			tree.setUI(new SlickTreeUI(treeSP));
@@ -698,16 +699,16 @@ public class CodeEditorView extends ViewBase {
 			return true;
 		});
 		if (readOnly)
-			fileTab.setActiveColor((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+			fileTab.setActiveColor(Theme.current().getAltForegroundColor());
 
 		setChangeListener(changeEvent -> {
 			if (!readOnly) {
 				if (changed) {
-					fileTab.setActiveColor((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-					fileTab.setInactiveColor((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+					fileTab.setActiveColor(Theme.current().getForegroundColor());
+					fileTab.setInactiveColor(Theme.current().getAltForegroundColor());
 				} else {
-					fileTab.setActiveColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-					fileTab.setInactiveColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					fileTab.setActiveColor(Theme.current().getInterfaceAccentColor());
+					fileTab.setInactiveColor(Theme.current().getAltBackgroundColor());
 				}
 			}
 		});

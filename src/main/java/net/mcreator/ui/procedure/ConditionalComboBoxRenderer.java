@@ -20,6 +20,7 @@
 package net.mcreator.ui.procedure;
 
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
@@ -36,7 +37,7 @@ class ConditionalComboBoxRenderer implements ListCellRenderer<CBoxEntry> {
 				cellHasFocus);
 
 		if (!value.correctDependencies) {
-			component.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+			component.setForeground(Theme.current().getAltForegroundColor());
 			component.setText("<html>" + component.getText() + L10N.t("action.procedure.missing_dependencies"));
 		}
 

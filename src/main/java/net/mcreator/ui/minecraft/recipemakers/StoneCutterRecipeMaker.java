@@ -35,9 +35,11 @@ import java.io.File;
 
 public class StoneCutterRecipeMaker extends JPanel {
 
-	public JSpinner sp;
-	public MCItemHolder cb1;
-	public MCItemHolder cb2;
+	public final JSpinner sp;
+	public final MCItemHolder cb1;
+	public final MCItemHolder cb2;
+
+	private final JButton export = new JButton(UIRES.get("18px.export"));
 
 	public StoneCutterRecipeMaker(MCreator mcreator, MCItem.ListProvider itemsWithTags, MCItem.ListProvider items) {
 		ImagePanel ip = new ImagePanel(UIRES.get("recipe.stonecutter").getImage());
@@ -48,8 +50,11 @@ public class StoneCutterRecipeMaker extends JPanel {
 		cb1 = new MCItemHolder(mcreator, itemsWithTags, true);
 		cb2 = new MCItemHolder(mcreator, items);
 
+		sp = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
+		sp.setBounds(203, 109, 38, 17);
+		ip.add(sp);
+
 		JLabel drop = new JLabel("1");
-		JButton export = new JButton(UIRES.get("18px.export"));
 
 		export.setContentAreaFilled(false);
 		export.setMargin(new Insets(0, 0, 0, 0));
@@ -78,10 +83,6 @@ public class StoneCutterRecipeMaker extends JPanel {
 			drop.setVisible(false);
 		});
 
-		sp = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
-		sp.setBounds(203, 109, 38, 17);
-		ip.add(sp);
-
 		drop.setBounds(203, 109, 38, 17);
 		drop.setVisible(false);
 		drop.setForeground(Color.white);
@@ -103,6 +104,14 @@ public class StoneCutterRecipeMaker extends JPanel {
 
 	public MItemBlock getBlock2() {
 		return cb2.getBlock();
+	}
+
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		cb1.setEnabled(enabled);
+		cb2.setEnabled(enabled);
+		sp.setEnabled(enabled);
+		export.setEnabled(enabled);
 	}
 
 }

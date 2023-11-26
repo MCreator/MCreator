@@ -22,6 +22,7 @@ package net.mcreator.ui.component.entries;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +39,7 @@ public abstract class JSimpleListEntry<T> extends JPanel {
 	public JSimpleListEntry(JPanel parent, List<? extends JSimpleListEntry<T>> entryList) {
 		this.parent = parent;
 
-		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+		setBackground((Theme.current().getAltBackgroundColor()).darker());
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
 		JComponent container = PanelUtils.expandHorizontally(this);

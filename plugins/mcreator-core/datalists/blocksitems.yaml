@@ -6907,7 +6907,7 @@
   texture: GLASS_BOTTLE
 
 - Items.POTIONITEM:
-  readable_name: "Water Bottle/Any Potion"
+  readable_name: "Uncraftable Potion"
   type: item
   texture: POTIONITEM
 

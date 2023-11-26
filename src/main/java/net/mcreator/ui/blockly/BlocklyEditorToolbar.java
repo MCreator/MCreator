@@ -34,6 +34,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ProcedureGUI;
 import net.mcreator.workspace.elements.VariableElement;
 import org.apache.logging.log4j.LogManager;
@@ -211,7 +212,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			}
 		});
 		ComponentUtils.normalizeButton4(export);
-		export.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		export.setForeground(Theme.current().getAltForegroundColor());
 
 		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".import");
 		import_.setIcon(UIRES.get("18px.import"));
@@ -246,7 +247,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			}
 		});
 		ComponentUtils.normalizeButton4(import_);
-		import_.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		import_.setForeground(Theme.current().getAltForegroundColor());
 	}
 
 	public void setTemplateLibButtonWidth(int w) {

@@ -28,6 +28,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 
 import javax.swing.*;
@@ -55,7 +56,7 @@ public class JVillagerTradeEntry extends JPanel {
 			List<JVillagerTradeEntry> entryList) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+		setBackground((Theme.current().getAltBackgroundColor()).darker());
 
 		price1 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		price2 = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
