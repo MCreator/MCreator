@@ -766,6 +766,7 @@ import java.util.stream.Collectors;
 		addVerticalTab("mods", L10N.t("workspace.category.mod_elements"),
 				new WorkspacePanelMods(PanelUtils.westAndCenterElement(toolp, modElementsPanel)));
 		addVerticalTab("resources", L10N.t("workspace.category.resources"), resourcesPan);
+		addVerticalTab("tags", L10N.t("workspace.category.tags"), new WorkspacePanelTags(this));
 		addVerticalTab("variables", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
 		addVerticalTab("localization", L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
 
