@@ -67,7 +67,8 @@ public class AddTagDialog {
 		wrap.add(tagName);
 
 		int result = JOptionPane.showConfirmDialog(parent, PanelUtils.northAndCenterElement(
-						L10N.label("dialog.item_selector.enter_tag_name." + tagType.toLowerCase(Locale.ENGLISH)), wrap, 5, 5),
+						L10N.label("dialog.item_selector.enter_tag_name." + tagType.toLowerCase(Locale.ENGLISH)
+								.replace(' ', '_')), wrap, 5, 5),
 				L10N.t("dialog.item_selector.use_tag"), JOptionPane.OK_CANCEL_OPTION);
 		if (result == JOptionPane.OK_OPTION) {
 			if (tagName.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
