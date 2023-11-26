@@ -26,7 +26,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.net.analytics.GoogleAnalytics;
 import net.mcreator.minecraft.DataListLoader;
-import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;

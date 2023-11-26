@@ -25,7 +25,7 @@ import net.mcreator.generator.GeneratorTokens;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.StructureUtils;
-import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.workspace.WorkspaceRefactoringEvent;
 import net.mcreator.ui.MCreator;
