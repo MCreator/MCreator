@@ -22,6 +22,7 @@ package net.mcreator.element.types;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.DamageTypeEntry;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -43,6 +44,7 @@ import java.util.Locale;
 	@ModElementReference public List<String> functions;
 	@ModElementReference public List<EntityEntry> entities;
 	@ModElementReference public List<BiomeEntry> biomes;
+	@ModElementReference public List<DamageTypeEntry> damageTypes;
 
 	public Tag(ModElement element) {
 		super(element);
@@ -54,6 +56,9 @@ import java.util.Locale;
 
 		if (type.equals("Biomes"))
 			return "worldgen/biome";
+
+		if (type.equals("Damage types"))
+			return "damage_type";
 
 		return type.toLowerCase(Locale.ENGLISH);
 	}
@@ -69,6 +74,7 @@ import java.util.Locale;
 			case "Entities" -> Dependency.getColor("entity");
 			case "Functions" -> Dependency.getColor("string");
 			case "Biomes" -> Dependency.getColor("world");
+			case "Damage types" -> Dependency.getColor("damagesource");
 			default -> Color.WHITE;
 		};
 	}
