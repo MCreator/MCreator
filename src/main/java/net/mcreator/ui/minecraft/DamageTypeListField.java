@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.DamageTypeEntry;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.AddTagDialog;
@@ -47,8 +48,8 @@ public class DamageTypeListField extends JItemListField<DamageTypeEntry> {
 	@Override protected List<DamageTypeEntry> getTagsToAdd() {
 		List<DamageTypeEntry> tags = new ArrayList<>();
 
-		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, "Damage types", "is_drowning", "is_explosion",
-				"is_fall", "is_fire", "is_freezing", "is_lightning", "is_projectile", "bypasses_armor",
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.DAMAGE_TYPES, "is_drowning",
+				"is_explosion", "is_fall", "is_fire", "is_freezing", "is_lightning", "is_projectile", "bypasses_armor",
 				"bypasses_effects", "bypasses_enchantments", "bypasses_shield");
 		if (tag != null)
 			tags.add(new DamageTypeEntry(mcreator.getWorkspace(), "#" + tag));

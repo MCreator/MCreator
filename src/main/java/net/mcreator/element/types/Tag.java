@@ -19,7 +19,6 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.DamageTypeEntry;
@@ -27,13 +26,12 @@ import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nonnull;
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.List;
-import java.util.Locale;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tag extends NamespacedGeneratableElement {
 
@@ -51,32 +49,11 @@ import java.util.Locale;
 	}
 
 	public String tagType() {
-		if (type.equals("Entities"))
-			return "entity_types";
-
-		if (type.equals("Biomes"))
-			return "worldgen/biome";
-
-		if (type.equals("Damage types"))
-			return "damage_type";
-
-		return type.toLowerCase(Locale.ENGLISH);
+		return TagType.fromLegacyName(type).getFolder();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
 		return MinecraftImageGenerator.Preview.generateTagPreviewPicture(type);
-	}
-
-	public static Color getColor(String type) {
-		return switch (type) {
-			case "Items" -> Dependency.getColor("itemstack");
-			case "Blocks" -> Dependency.getColor("blockstate");
-			case "Entities" -> Dependency.getColor("entity");
-			case "Functions" -> Dependency.getColor("string");
-			case "Biomes" -> Dependency.getColor("world");
-			case "Damage types" -> Dependency.getColor("damagesource");
-			default -> Color.WHITE;
-		};
 	}
 
 }
