@@ -65,6 +65,8 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 	private final List<ChangeListener> listeners = new ArrayList<>();
 
+	private final JScrollPane pane;
+
 	protected JItemListField(MCreator mcreator) {
 		this(mcreator, false);
 	}
@@ -139,7 +141,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		include.addActionListener(e -> this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource()))));
 		exclude.addActionListener(e -> this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource()))));
 
-		JScrollPane pane = new JScrollPane(PanelUtils.totalCenterInPanel(elementsList));
+		pane = new JScrollPane(PanelUtils.totalCenterInPanel(elementsList));
 		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		pane.setWheelScrollingEnabled(false);
@@ -196,6 +198,15 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		add(pane, BorderLayout.CENTER);
 		add(buttons, BorderLayout.EAST);
+	}
+
+	public void disableItemCentering() {
+		Box verticalBox = Box.createVerticalBox();
+		verticalBox.add(Box.createVerticalGlue());
+		verticalBox.add(elementsList);
+		verticalBox.add(Box.createVerticalGlue());
+		elementsList.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		pane.setViewportView(verticalBox);
 	}
 
 	protected abstract List<T> getElementsToAdd();

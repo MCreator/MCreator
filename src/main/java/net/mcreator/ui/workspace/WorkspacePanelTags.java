@@ -195,26 +195,32 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		//@formatter:off
 		if (tagElement.type() == TagType.ITEMS) {
 			MCItemListField retval = new MCItemListField(workspacePanel.getMCreator(), ElementUtil::loadBlocksAndItems, false, true);
+			retval.disableItemCentering();
 			retval.setListElements(elements.stream().map(e -> new MItemBlock(workspacePanel.getMCreator().getWorkspace(), e)).toList());
 			return retval;
 		} else if (tagElement.type() == TagType.BLOCKS) {
 			MCItemListField retval = new MCItemListField(workspacePanel.getMCreator(), ElementUtil::loadBlocks, false, true);
+			retval.disableItemCentering();
 			retval.setListElements(elements.stream().map(e -> new MItemBlock(workspacePanel.getMCreator().getWorkspace(), e)).toList());
 			return retval;
 		} else if (tagElement.type() == TagType.ENTITIES) {
 			SpawnableEntityListField retval = new SpawnableEntityListField(workspacePanel.getMCreator(), true);
+			retval.disableItemCentering();
 			retval.setListElements(elements.stream().map(e -> new EntityEntry(workspacePanel.getMCreator().getWorkspace(), e)).toList());
 			return retval;
 		} else if (tagElement.type() == TagType.BIOMES) {
 			BiomeListField retval = new BiomeListField(workspacePanel.getMCreator(), true);
+			retval.disableItemCentering();
 			retval.setListElements(elements.stream().map(e -> new BiomeEntry(workspacePanel.getMCreator().getWorkspace(), e)).toList());
 			return retval;
 		} else if (tagElement.type() == TagType.FUNCTIONS) {
 			ModElementListField retval = new ModElementListField(workspacePanel.getMCreator(), ModElementType.FUNCTION);
+			retval.disableItemCentering();
 			retval.setListElements(elements.stream().toList());
 			return retval;
 		} else if (tagElement.type() == TagType.DAMAGE_TYPES) {
 			DamageTypeListField retval = new DamageTypeListField(workspacePanel.getMCreator(), true);
+			retval.disableItemCentering();
 			retval.setListElements(elements.stream().map(e -> new DamageTypeEntry(workspacePanel.getMCreator().getWorkspace(), e)).toList());
 			return retval;
 		}
