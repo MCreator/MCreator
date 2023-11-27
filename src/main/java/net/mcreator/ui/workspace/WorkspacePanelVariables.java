@@ -168,7 +168,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 
 		elements.setBackground(Theme.current().getBackgroundColor());
 		elements.setSelectionBackground(Theme.current().getAltBackgroundColor());
-		elements.setForeground(Color.white);
+		elements.setForeground(Theme.current().getForegroundColor());
 		elements.setSelectionForeground(Theme.current().getBackgroundColor());
 		elements.setBorder(BorderFactory.createEmptyBorder());
 		elements.setGridColor(Theme.current().getAltBackgroundColor());
