@@ -25,6 +25,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import net.mcreator.minecraft.TagType;
 
+import java.util.Collection;
 import java.util.List;
 
 public record TagElement(TagType type, String resourcePath) implements IElement {
@@ -62,7 +63,7 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 
 	// Helper functions for tag entries below
 
-	public static List<String> getUnmmapedNames(List<String> rawData) {
+	public static Collection<String> getUnmmapedNames(List<String> rawData) {
 		return rawData.stream().map(e -> e.replace("~", "")).toList();
 	}
 
@@ -78,7 +79,7 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 			String raw = json.getAsJsonPrimitive().getAsString();
 			String[] parts = raw.split(":", 2);
 			if (parts.length == 2) {
-				return new TagElement(TagType.BLOCKS, parts[1]);
+				return new TagElement(TagType.valueOf(parts[0]), parts[1]);
 			} else {
 				throw new IllegalArgumentException("Invalid JSON format for TagElement: " + raw);
 			}

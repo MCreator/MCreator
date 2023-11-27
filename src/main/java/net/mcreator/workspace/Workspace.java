@@ -114,11 +114,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return Collections.unmodifiableSet(sound_elements);
 	}
 
-	/**
-	 * @return UNMODIFIABLE! map of tag elements
-	 */
 	public Map<TagElement, List<String>> getTagElements() {
-		return Collections.unmodifiableMap(tag_elements);
+		return tag_elements;
 	}
 
 	public Map<String, ConcurrentHashMap<String, String>> getLanguageMap() {
