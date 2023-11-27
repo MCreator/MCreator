@@ -19,6 +19,9 @@
 
 package net.mcreator.ui.workspace;
 
+import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.DamageTypeEntry;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.ElementUtil;
@@ -31,8 +34,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.minecraft.MCItemListField;
-import net.mcreator.ui.minecraft.SpawnableEntityListField;
+import net.mcreator.ui.minecraft.*;
 import net.mcreator.workspace.elements.TagElement;
 
 import javax.swing.*;
@@ -203,6 +205,18 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			SpawnableEntityListField retval = new SpawnableEntityListField(workspacePanel.getMCreator(), true);
 			retval.setListElements(elements.stream().map(e -> new EntityEntry(workspacePanel.getMCreator().getWorkspace(), e)).toList());
 			return retval;
+		} else if (tagElement.type() == TagType.BIOMES) {
+			BiomeListField retval = new BiomeListField(workspacePanel.getMCreator(), true);
+			retval.setListElements(elements.stream().map(e -> new BiomeEntry(workspacePanel.getMCreator().getWorkspace(), e)).toList());
+			return retval;
+		} else if (tagElement.type() == TagType.FUNCTIONS) {
+			ModElementListField retval = new ModElementListField(workspacePanel.getMCreator(), ModElementType.FUNCTION);
+			retval.setListElements(elements.stream().toList());
+			return retval;
+		} else if (tagElement.type() == TagType.DAMAGE_TYPES) {
+			DamageTypeListField retval = new DamageTypeListField(workspacePanel.getMCreator(), true);
+			retval.setListElements(elements.stream().map(e -> new DamageTypeEntry(workspacePanel.getMCreator().getWorkspace(), e)).toList());
+			return retval;
 		}
 		//@formatter:on
 
@@ -224,6 +238,12 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 						return ((MCItemListField) itemList).getListElements().stream().map(MItemBlock::getUnmappedValue).toList();
 					} else if (tagType == TagType.ENTITIES) {
 						return ((SpawnableEntityListField) itemList).getListElements().stream().map(EntityEntry::getUnmappedValue).toList();
+					} else if (tagType == TagType.BIOMES) {
+						return ((BiomeListField) itemList).getListElements().stream().map(BiomeEntry::getUnmappedValue).toList();
+					} else if (tagType == TagType.FUNCTIONS) {
+						return ((ModElementListField) itemList).getListElements().stream().toList();
+					} else if (tagType == TagType.DAMAGE_TYPES) {
+						return ((DamageTypeListField) itemList).getListElements().stream().map(DamageTypeEntry::getUnmappedValue).toList();
 					}
 					//@formatter:on
 					return null;
@@ -243,13 +263,16 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		if (elements.getSelectedRow() == -1)
 			return;
 
-		// TODO: are you sure dialog
-
-		Arrays.stream(elements.getSelectedRows()).mapToObj(this::tagElementForRow).forEach(tagElement -> {
-			// TODO: verify tag element has no managed entries
-			workspacePanel.getMCreator().getWorkspace().removeTagElement(tagElement);
-		});
-		reloadElements();
+		int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
+				L10N.t("workspace.tags.remove_tags_confirmation"), L10N.t("common.confirmation"),
+				JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+		if (n == JOptionPane.YES_OPTION) {
+			Arrays.stream(elements.getSelectedRows()).mapToObj(this::tagElementForRow).forEach(tagElement -> {
+				// TODO: verify tag element has no managed entries
+				workspacePanel.getMCreator().getWorkspace().removeTagElement(tagElement);
+			});
+			reloadElements();
+		}
 	}
 
 	@Override public void reloadElements() {
