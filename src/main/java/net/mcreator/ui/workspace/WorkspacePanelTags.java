@@ -19,7 +19,10 @@
 
 package net.mcreator.ui.workspace;
 
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.TagType;
+import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.NewTagDialog;
@@ -27,16 +30,19 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.workspace.elements.TagElement;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
@@ -55,14 +61,22 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			}
 		}) {
 			@Override public TableCellEditor getCellEditor(int row, int column) {
-				// https://stackoverflow.com/questions/11858286/how-to-use-custom-jtable-cell-editor-and-cell-renderer
-				// TODO: implement
+				if (column == 3) {
+					ItemListFieldCellEditor retval = cellEditorForRow(row);
+					if (retval != null)
+						return retval;
+				}
 				return super.getCellEditor(row, column);
 			}
 
 			@Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
-				// https://stackoverflow.com/questions/11858286/how-to-use-custom-jtable-cell-editor-and-cell-renderer
-				// TODO: implement
+				if (column == 3) {
+					JItemListField<?> retval = itemListFieldForRow(row);
+					if (retval != null) {
+						retval.setEnabled(false);
+						return retval;
+					}
+				}
 				return super.prepareRenderer(renderer, row, column);
 			}
 		};
@@ -73,11 +87,12 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		elements.setBackground(Theme.current().getBackgroundColor());
 		elements.setSelectionBackground(Theme.current().getAltBackgroundColor());
 		elements.setForeground(Color.white);
-		elements.setSelectionForeground(Theme.current().getBackgroundColor());
+		elements.setSelectionForeground(Color.white);
 		elements.setBorder(BorderFactory.createEmptyBorder());
 		elements.setGridColor(Theme.current().getAltBackgroundColor());
-		elements.setRowHeight(28);
+		elements.setRowHeight(32);
 		elements.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
+		elements.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		ComponentUtils.deriveFont(elements, 13);
 
 		JTableHeader header = elements.getTableHeader();
@@ -131,6 +146,66 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				}
 			}
 		});
+
+		elements.getSelectionModel().addListSelectionListener(e -> {
+			if (!e.getValueIsAdjusting()) {
+				int selectedRow = elements.getSelectedRow();
+				if (selectedRow >= 0) {
+					elements.editCellAt(selectedRow, 3);
+				}
+			}
+		});
+
+		elements.getModel().addTableModelListener(e -> {
+			if (e.getType() == TableModelEvent.UPDATE && e.getColumn() != TableModelEvent.ALL_COLUMNS) {
+				int row = e.getFirstRow();
+				//noinspection unchecked
+				List<String> newValue = (List<String>) elements.getModel().getValueAt(row, e.getColumn());
+				if (newValue != null) {
+					workspacePanel.getMCreator().getWorkspace().getTagElements().put(tagElementForRow(row), newValue);
+					workspacePanel.getMCreator().getWorkspace().markDirty();
+				}
+			}
+		});
+	}
+
+	private TagElement tagElementForRow(int row) {
+		return new TagElement((TagType) elements.getValueAt(row, 0),
+				elements.getValueAt(row, 1).toString() + ":" + elements.getValueAt(row, 2).toString());
+	}
+
+	private JItemListField<?> itemListFieldForRow(int row) {
+		TagElement tagElement = tagElementForRow(row);
+		Collection<String> elements = TagElement.getUnmmapedNames(
+				workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement));
+
+		if (tagElement.type() == TagType.ITEMS) {
+			MCItemListField retval = new MCItemListField(workspacePanel.getMCreator(), ElementUtil::loadBlocksAndItems,
+					false, true);
+			retval.setListElements(
+					elements.stream().map(e -> new MItemBlock(workspacePanel.getMCreator().getWorkspace(), e))
+							.toList());
+			return retval;
+		}
+
+		return null;
+	}
+
+	private ItemListFieldCellEditor cellEditorForRow(int row) {
+		JItemListField<?> itemList = itemListFieldForRow(row);
+		if (itemList != null) {
+			return new ItemListFieldCellEditor(itemList) {
+				@Override public Object getCellEditorValue() {
+					// TODO: pass managed/unmanaged info back
+
+					if (itemList instanceof MCItemListField mcItemListField) {
+						return mcItemListField.getListElements().stream().map(MItemBlock::getUnmappedValue).toList();
+					}
+					return null;
+				}
+			};
+		}
+		return null;
 	}
 
 	// TODO: implement
@@ -145,13 +220,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		// TODO: are you sure dialog
 
-		Arrays.stream(elements.getSelectedRows()).mapToObj(el -> new TagElement((TagType) elements.getValueAt(el, 0),
-						elements.getValueAt(el, 1).toString() + ":" + elements.getValueAt(el, 2).toString()))
-				.forEach(tagElement -> {
-					System.err.println(tagElement);
-					// TODO: verify tag element has no managed entries
-					workspacePanel.getMCreator().getWorkspace().removeTagElement(tagElement);
-				});
+		Arrays.stream(elements.getSelectedRows()).mapToObj(this::tagElementForRow).forEach(tagElement -> {
+			// TODO: verify tag element has no managed entries
+			workspacePanel.getMCreator().getWorkspace().removeTagElement(tagElement);
+		});
 		reloadElements();
 	}
 
@@ -179,6 +251,22 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			sorter.setRowFilter(RowFilter.regexFilter(workspacePanel.search.getText()));
 		} catch (Exception ignored) {
 		}
+	}
+
+	private static abstract class ItemListFieldCellEditor extends AbstractCellEditor implements TableCellEditor {
+
+		private final JItemListField<?> listField;
+
+		public ItemListFieldCellEditor(JItemListField<?> listField) {
+			this.listField = listField;
+		}
+
+		@Override
+		public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected, int row,
+				int column) {
+			return listField;
+		}
+
 	}
 
 }
