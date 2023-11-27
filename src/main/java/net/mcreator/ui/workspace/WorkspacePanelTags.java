@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.workspace;
 
+import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.TagType;
@@ -31,18 +32,19 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemListField;
+import net.mcreator.ui.minecraft.SpawnableEntityListField;
 import net.mcreator.workspace.elements.TagElement;
 
 import javax.swing.*;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
@@ -63,8 +65,9 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			@Override public TableCellEditor getCellEditor(int row, int column) {
 				if (column == 3) {
 					ItemListFieldCellEditor retval = cellEditorForRow(row);
-					if (retval != null)
+					if (retval != null) {
 						return retval;
+					}
 				}
 				return super.getCellEditor(row, column);
 			}
@@ -77,7 +80,15 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 						return retval;
 					}
 				}
-				return super.prepareRenderer(renderer, row, column);
+
+				Component retval = super.prepareRenderer(renderer, row, column);
+				if (column == 0) {
+					TagType tagType = (TagType) elements.getValueAt(row, 0);
+					retval.setForeground(tagType.getColor().brighter());
+				} else {
+					retval.setForeground(Theme.current().getForegroundColor());
+				}
+				return retval;
 			}
 		};
 
@@ -86,8 +97,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		elements.setBackground(Theme.current().getBackgroundColor());
 		elements.setSelectionBackground(Theme.current().getAltBackgroundColor());
-		elements.setForeground(Color.white);
-		elements.setSelectionForeground(Color.white);
+		elements.setForeground(Theme.current().getForegroundColor());
+		elements.setSelectionForeground(Theme.current().getForegroundColor());
 		elements.setBorder(BorderFactory.createEmptyBorder());
 		elements.setGridColor(Theme.current().getAltBackgroundColor());
 		elements.setRowHeight(32);
@@ -179,28 +190,42 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		Collection<String> elements = TagElement.getUnmmapedNames(
 				workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement));
 
+		//@formatter:off
 		if (tagElement.type() == TagType.ITEMS) {
-			MCItemListField retval = new MCItemListField(workspacePanel.getMCreator(), ElementUtil::loadBlocksAndItems,
-					false, true);
-			retval.setListElements(
-					elements.stream().map(e -> new MItemBlock(workspacePanel.getMCreator().getWorkspace(), e))
-							.toList());
+			MCItemListField retval = new MCItemListField(workspacePanel.getMCreator(), ElementUtil::loadBlocksAndItems, false, true);
+			retval.setListElements(elements.stream().map(e -> new MItemBlock(workspacePanel.getMCreator().getWorkspace(), e)).toList());
+			return retval;
+		} else if (tagElement.type() == TagType.BLOCKS) {
+			MCItemListField retval = new MCItemListField(workspacePanel.getMCreator(), ElementUtil::loadBlocks, false, true);
+			retval.setListElements(elements.stream().map(e -> new MItemBlock(workspacePanel.getMCreator().getWorkspace(), e)).toList());
+			return retval;
+		} else if (tagElement.type() == TagType.ENTITIES) {
+			SpawnableEntityListField retval = new SpawnableEntityListField(workspacePanel.getMCreator(), true);
+			retval.setListElements(elements.stream().map(e -> new EntityEntry(workspacePanel.getMCreator().getWorkspace(), e)).toList());
 			return retval;
 		}
+		//@formatter:on
 
 		return null;
 	}
 
 	private ItemListFieldCellEditor cellEditorForRow(int row) {
 		JItemListField<?> itemList = itemListFieldForRow(row);
+		TagType tagType = (TagType) elements.getValueAt(row, 0);
 		if (itemList != null) {
 			return new ItemListFieldCellEditor(itemList) {
 				@Override public Object getCellEditorValue() {
 					// TODO: pass managed/unmanaged info back
 
-					if (itemList instanceof MCItemListField mcItemListField) {
-						return mcItemListField.getListElements().stream().map(MItemBlock::getUnmappedValue).toList();
+					//@formatter:off
+					if (tagType == TagType.ITEMS) {
+						return ((MCItemListField) itemList).getListElements().stream().map(MItemBlock::getUnmappedValue).toList();
+					} else if (tagType == TagType.BLOCKS) {
+						return ((MCItemListField) itemList).getListElements().stream().map(MItemBlock::getUnmappedValue).toList();
+					} else if (tagType == TagType.ENTITIES) {
+						return ((SpawnableEntityListField) itemList).getListElements().stream().map(EntityEntry::getUnmappedValue).toList();
 					}
+					//@formatter:on
 					return null;
 				}
 			};
