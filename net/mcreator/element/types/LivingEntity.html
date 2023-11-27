@@ -91,6 +91,15 @@ implements <a href="interfaces/IEntityWithModel.html" title="interface in net.mc
 <li>
 <section class="nested-class-summary" id="nested-class-summary">
 <h2>Nested Class Summary</h2>
+<div class="caption"><span>Nested Classes</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Class</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static class&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="LivingEntity.ModelLayerEntry.html" class="type-name-link" title="class in net.mcreator.element.types">LivingEntity.ModelLayerEntry</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+</div>
 <div class="inherited-list">
 <h2 id="nested-classes-inherited-from-class-net.mcreator.element.GeneratableElement">Nested classes/interfaces inherited from class&nbsp;net.mcreator.element.<a href="../GeneratableElement.html" title="class in net.mcreator.element">GeneratableElement</a></h2>
 <code><a href="../GeneratableElement.GSONAdapter.html" title="class in net.mcreator.element">GeneratableElement.GSONAdapter</a>, <a href="../GeneratableElement.Unknown.html" title="class in net.mcreator.element">GeneratableElement.Unknown</a></code></div>
@@ -274,22 +283,22 @@ implements <a href="interfaces/IEntityWithModel.html" title="interface in net.mc
 <div class="col-second odd-row-color"><code><a href="#mobLabel" class="member-name-link">mobLabel</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#mobModelGlowTexture" class="member-name-link">mobModelGlowTexture</a></code></div>
+<div class="col-second even-row-color"><code><a href="#mobModelName" class="member-name-link">mobModelName</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#mobModelName" class="member-name-link">mobModelName</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#mobModelTexture" class="member-name-link">mobModelTexture</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#mobModelTexture" class="member-name-link">mobModelTexture</a></code></div>
+<div class="col-second even-row-color"><code><a href="#mobName" class="member-name-link">mobName</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second odd-row-color"><code><a href="#mobName" class="member-name-link">mobName</a></code></div>
+<div class="col-second odd-row-color"><code><a href="#mobSpawningType" class="member-name-link">mobSpawningType</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
-<div class="col-second even-row-color"><code><a href="#mobSpawningType" class="member-name-link">mobSpawningType</a></code></div>
+<div class="col-first even-row-color"><code>double</code></div>
+<div class="col-second even-row-color"><code><a href="#modelHeight" class="member-name-link">modelHeight</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>double</code></div>
-<div class="col-second odd-row-color"><code><a href="#modelHeight" class="member-name-link">modelHeight</a></code></div>
+<div class="col-first odd-row-color"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="LivingEntity.ModelLayerEntry.html" title="class in net.mcreator.element.types">LivingEntity.ModelLayerEntry</a>&gt;</code></div>
+<div class="col-second odd-row-color"><code><a href="#modelLayers" class="member-name-link">modelLayers</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 <div class="col-first even-row-color"><code>double</code></div>
 <div class="col-second even-row-color"><code><a href="#modelShadowSize" class="member-name-link">modelShadowSize</a></code></div>
@@ -515,12 +524,6 @@ implements <a href="interfaces/IEntityWithModel.html" title="interface in net.mc
 </section>
 </li>
 <li>
-<section class="detail" id="mobModelGlowTexture">
-<h3>mobModelGlowTexture</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></span>&nbsp;<span class="element-name">mobModelGlowTexture</span></div>
-</section>
-</li>
-<li>
 <section class="detail" id="transparentModelCondition">
 <h3>transparentModelCondition</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/LogicProcedure.html" title="class in net.mcreator.element.parts.procedure">LogicProcedure</a></span>&nbsp;<span class="element-name">transparentModelCondition</span></div>
@@ -548,6 +551,12 @@ implements <a href="interfaces/IEntityWithModel.html" title="interface in net.mc
 <section class="detail" id="boundingBoxScale">
 <h3>boundingBoxScale</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../parts/procedure/NumberProcedure.html" title="class in net.mcreator.element.parts.procedure">NumberProcedure</a></span>&nbsp;<span class="element-name">boundingBoxScale</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="modelLayers">
+<h3>modelLayers</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="LivingEntity.ModelLayerEntry.html" title="class in net.mcreator.element.types">LivingEntity.ModelLayerEntry</a>&gt;</span>&nbsp;<span class="element-name">modelLayers</span></div>
 </section>
 </li>
 <li>
