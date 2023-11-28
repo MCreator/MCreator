@@ -67,13 +67,17 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 	}
 
 	public static MappableElement entryToMappableElement(Workspace workspace, TagType type, String entry) {
-		MappableElement retval = type.getMappableElementProvider().apply(workspace, entry.replace("~", ""));
+		MappableElement retval = type.getMappableElementProvider().apply(workspace, getEntryName(entry));
 		retval.setManaged(TagElement.isEntryManaged(entry));
 		return retval;
 	}
 
 	public static boolean isEntryManaged(String rawData) {
 		return rawData.startsWith("~");
+	}
+
+	public static String getEntryName(String rawData) {
+		return rawData.replace("~", "");
 	}
 
 	public static class TagElementDeserializer implements JsonDeserializer<TagElement> {

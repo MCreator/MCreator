@@ -38,10 +38,7 @@ import net.mcreator.element.types.*;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
-import net.mcreator.minecraft.DataListEntry;
-import net.mcreator.minecraft.DataListLoader;
-import net.mcreator.minecraft.ElementUtil;
-import net.mcreator.minecraft.MCItem;
+import net.mcreator.minecraft.*;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
@@ -129,6 +126,34 @@ public class TestWorkspaceDataProvider {
 				SoundElement sound = new SoundElement("test" + i, List.of(), "neutral", null);
 				workspace.addSoundElement(sound);
 			}
+		}
+
+		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("tags")
+				== GeneratorStats.CoverageStatus.FULL) {
+			TagElement tag = new TagElement(TagType.ITEMS, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:stone");
+			workspace.getTagElements().get(tag).add("~minecraft:grass");
+
+			tag = new TagElement(TagType.BLOCKS, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:stone");
+			workspace.getTagElements().get(tag).add("~minecraft:grass");
+
+			tag = new TagElement(TagType.ENTITIES, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:creeper");
+			workspace.getTagElements().get(tag).add("~minecraft:zombie");
+
+			tag = new TagElement(TagType.BIOMES, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:plains");
+			workspace.getTagElements().get(tag).add("~testmod:testbiome");
+
+			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("testmod:testdamage");
+			workspace.getTagElements().get(tag).add("~testmod:testdamage2");
 		}
 
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")

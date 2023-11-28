@@ -20,3 +20,7 @@ base_templates:
   - template: pack.mcmeta.ftl
     writer: json
     name: "@SRCROOT/pack.mcmeta"
+
+tags:
+  template: tags.json.ftl
+  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"

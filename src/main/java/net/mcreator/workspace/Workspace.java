@@ -19,10 +19,7 @@
 package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
-import net.mcreator.generator.Generator;
-import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.generator.IGeneratorProvider;
+import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
@@ -236,6 +233,12 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void removeTagElement(TagElement element) {
 		tag_elements.remove(element);
+
+		File tagFile = TagsUtils.getTagFileFor(this, element);
+		if (tagFile != null) {
+			tagFile.delete();
+		}
+
 		markDirty();
 	}
 

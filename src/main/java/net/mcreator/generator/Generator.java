@@ -176,6 +176,9 @@ public class Generator implements IGenerator, Closeable {
 		// generate lang files
 		LocalizationUtils.generateLanguageFiles(this, workspace, generatorConfiguration.getLanguageFileSpecification());
 
+		// generate tags files
+		TagsUtils.generateTagsFiles(this, workspace, generatorConfiguration.getTagsSpecification());
+
 		return success.get();
 	}
 

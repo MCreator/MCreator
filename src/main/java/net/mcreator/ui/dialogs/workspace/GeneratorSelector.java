@@ -95,6 +95,7 @@ public class GeneratorSelector {
 			addStatusLabel(L10N.t(covpfx + "structures"), stats.getBaseCoverageInfo().get("structures"),
 					baseCoverageInfo);
 			addStatusLabel(L10N.t(covpfx + "translations"), stats.getBaseCoverageInfo().get("i18n"), baseCoverageInfo);
+			addStatusLabel(L10N.t(covpfx + "tags"), stats.getBaseCoverageInfo().get("tags"), baseCoverageInfo);
 
 			if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
 				addStatusLabel(L10N.t(covpfx + "variables"), stats.getBaseCoverageInfo().get("variables"),
