@@ -77,9 +77,9 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends MItemBlock> list, MItemBlock value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setOpaque(isSelected);
+			setOpaque(true);
 
-			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getAltBackgroundColor());
+			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getBackgroundColor());
 
 			setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(0, 2, 0, 2, Theme.current().getBackgroundColor()),
@@ -92,6 +92,10 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 
 			setIcon(new ImageIcon(ImageUtils.resizeAA(
 					MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.getUnmappedValue()).getImage(), 25)));
+
+			if (value.isManaged()) {
+				setBackground(getBackground().brighter());
+			}
 
 			return this;
 		}

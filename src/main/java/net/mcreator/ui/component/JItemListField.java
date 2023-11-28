@@ -42,6 +42,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -117,17 +118,36 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		remove.addActionListener(e -> {
 			List<T> elements = elementsList.getSelectedValuesList();
+			boolean anyRemoved = false;
 			for (var element : elements) {
 				if (element != null) {
+					if (element instanceof MappableElement mappableElement && mappableElement.isManaged())
+						continue; // Managed elements cannot be removed
+
 					elementsListModel.removeElement(element);
-					this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
+					anyRemoved = true;
 				}
+			}
+			if (anyRemoved) {
+				this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
 			}
 		});
 
 		removeall.addActionListener(e -> {
-			elementsListModel.removeAllElements();
-			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
+			List<T> elements = Collections.list(elementsListModel.elements());
+			boolean anyRemoved = false;
+			for (var element : elements) {
+				if (element != null) {
+					if (element instanceof MappableElement mappableElement && mappableElement.isManaged())
+						continue; // Managed elements cannot be removed
+
+					elementsListModel.removeElement(element);
+					anyRemoved = true;
+				}
+			}
+			if (anyRemoved) {
+				this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
+			}
 		});
 
 		addtag.addActionListener(e -> {
@@ -317,6 +337,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			setIcon(null);
 
 			if (value instanceof MappableElement mappableElement) {
+				if (mappableElement.isManaged()) {
+					setBackground(getBackground().brighter());
+				}
+
 				Optional<DataListEntry> dataListEntryOpt = mappableElement.getDataListEntry();
 				if (dataListEntryOpt.isPresent()) {
 					DataListEntry dataListEntry = dataListEntryOpt.get();

@@ -23,10 +23,8 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.TagType;
-
-import java.util.Collection;
-import java.util.List;
 
 public record TagElement(TagType type, String resourcePath) implements IElement {
 
@@ -63,11 +61,15 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 
 	// Helper functions for tag entries below
 
-	public static Collection<String> getUnmmapedNames(List<String> rawData) {
-		return rawData.stream().map(e -> e.replace("~", "")).toList();
+	public static String entryFromMappableElement(MappableElement element) {
+		return (element.isManaged() ? "~" : "") + element.getUnmappedValue();
 	}
 
-	public static boolean isManaged(String rawData) {
+	public static String getEntryName(String rawData) {
+		return rawData.replace("~", "");
+	}
+
+	public static boolean isEntryManaged(String rawData) {
 		return rawData.startsWith("~");
 	}
 
