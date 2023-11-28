@@ -25,6 +25,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.TagType;
+import net.mcreator.workspace.Workspace;
 
 public record TagElement(TagType type, String resourcePath) implements IElement {
 
@@ -65,8 +66,10 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 		return (element.isManaged() ? "~" : "") + element.getUnmappedValue();
 	}
 
-	public static String getEntryName(String rawData) {
-		return rawData.replace("~", "");
+	public static MappableElement entryToMappableElement(Workspace workspace, TagType type, String entry) {
+		MappableElement retval = type.getMappableElementProvider().apply(workspace, entry.replace("~", ""));
+		retval.setManaged(TagElement.isEntryManaged(entry));
+		return retval;
 	}
 
 	public static boolean isEntryManaged(String rawData) {

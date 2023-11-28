@@ -24,6 +24,7 @@ import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.DamageTypeEntry;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.TagType;
@@ -189,70 +190,42 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	private JItemListField<?> itemListFieldForRow(int row) {
 		TagElement tagElement = tagElementForRow(row);
 
-		if (tagElement.type() == TagType.ITEMS) {
-			MCItemListField retval = new MCItemListField(workspacePanel.getMCreator(), ElementUtil::loadBlocksAndItems,
+		if (tagElement.type() == TagType.ITEMS || tagElement.type() == TagType.BLOCKS) {
+			MCItemListField retval = new MCItemListField(workspacePanel.getMCreator(),
+					tagElement.type() == TagType.ITEMS ? ElementUtil::loadBlocksAndItems : ElementUtil::loadBlocks,
 					false, true);
 			retval.disableItemCentering();
-			retval.setListElements(
-					workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream().map(e -> {
-						MItemBlock itemBlock = new MItemBlock(workspacePanel.getMCreator().getWorkspace(),
-								TagElement.getEntryName(e));
-						itemBlock.setManaged(TagElement.isEntryManaged(e));
-						return itemBlock;
-					}).toList());
-			return retval;
-		} else if (tagElement.type() == TagType.BLOCKS) {
-			MCItemListField retval = new MCItemListField(workspacePanel.getMCreator(), ElementUtil::loadBlocks, false,
-					true);
-			retval.disableItemCentering();
-			retval.setListElements(
-					workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream().map(e -> {
-						MItemBlock itemBlock = new MItemBlock(workspacePanel.getMCreator().getWorkspace(),
-								TagElement.getEntryName(e));
-						itemBlock.setManaged(TagElement.isEntryManaged(e));
-						return itemBlock;
-					}).toList());
+			retval.setListElements(workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
+					.map(e -> (MItemBlock) TagElement.entryToMappableElement(
+							workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
 			return retval;
 		} else if (tagElement.type() == TagType.ENTITIES) {
 			SpawnableEntityListField retval = new SpawnableEntityListField(workspacePanel.getMCreator(), true);
 			retval.disableItemCentering();
-			retval.setListElements(
-					workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream().map(e -> {
-						EntityEntry entityEntry = new EntityEntry(workspacePanel.getMCreator().getWorkspace(), e);
-						entityEntry.setManaged(TagElement.isEntryManaged(e));
-						return entityEntry;
-					}).toList());
+			retval.setListElements(workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
+					.map(e -> (EntityEntry) TagElement.entryToMappableElement(
+							workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
 			return retval;
 		} else if (tagElement.type() == TagType.BIOMES) {
 			BiomeListField retval = new BiomeListField(workspacePanel.getMCreator(), true);
 			retval.disableItemCentering();
-			retval.setListElements(
-					workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream().map(e -> {
-						BiomeEntry biomeEntry = new BiomeEntry(workspacePanel.getMCreator().getWorkspace(), e);
-						biomeEntry.setManaged(TagElement.isEntryManaged(e));
-						return biomeEntry;
-					}).toList());
+			retval.setListElements(workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
+					.map(e -> (BiomeEntry) TagElement.entryToMappableElement(
+							workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
 			return retval;
 		} else if (tagElement.type() == TagType.FUNCTIONS) {
 			ModElementListField retval = new ModElementListField(workspacePanel.getMCreator(), ModElementType.FUNCTION);
 			retval.disableItemCentering();
-			retval.setListElements(
-					workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream().map(e -> {
-						NonMappableElement nonMappableElement = new NonMappableElement(e);
-						nonMappableElement.setManaged(TagElement.isEntryManaged(e));
-						return nonMappableElement;
-					}).toList());
+			retval.setListElements(workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
+					.map(e -> (NonMappableElement) TagElement.entryToMappableElement(
+							workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
 			return retval;
 		} else if (tagElement.type() == TagType.DAMAGE_TYPES) {
 			DamageTypeListField retval = new DamageTypeListField(workspacePanel.getMCreator(), true);
 			retval.disableItemCentering();
-			retval.setListElements(
-					workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream().map(e -> {
-						DamageTypeEntry damageTypeEntry = new DamageTypeEntry(
-								workspacePanel.getMCreator().getWorkspace(), e);
-						damageTypeEntry.setManaged(TagElement.isEntryManaged(e));
-						return damageTypeEntry;
-					}).toList());
+			retval.setListElements(workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
+					.map(e -> (DamageTypeEntry) TagElement.entryToMappableElement(
+							workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
 			return retval;
 		}
 
@@ -261,26 +234,12 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 	private ItemListFieldCellEditor cellEditorForRow(int row) {
 		JItemListField<?> itemList = itemListFieldForRow(row);
-		TagType tagType = (TagType) elements.getValueAt(row, 0);
 		if (itemList != null) {
 			return new ItemListFieldCellEditor(itemList) {
 				@Override public Object getCellEditorValue() {
-					//@formatter:off
-					if (tagType == TagType.ITEMS) {
-						return ((MCItemListField) itemList).getListElements().stream().map(TagElement::entryFromMappableElement).toList();
-					} else if (tagType == TagType.BLOCKS) {
-						return ((MCItemListField) itemList).getListElements().stream().map(TagElement::entryFromMappableElement).toList();
-					} else if (tagType == TagType.ENTITIES) {
-						return ((SpawnableEntityListField) itemList).getListElements().stream().map(TagElement::entryFromMappableElement).toList();
-					} else if (tagType == TagType.BIOMES) {
-						return ((BiomeListField) itemList).getListElements().stream().map(TagElement::entryFromMappableElement).toList();
-					} else if (tagType == TagType.FUNCTIONS) {
-						return ((ModElementListField) itemList).getListElements().stream().map(TagElement::entryFromMappableElement).toList();
-					} else if (tagType == TagType.DAMAGE_TYPES) {
-						return ((DamageTypeListField) itemList).getListElements().stream().map(TagElement::entryFromMappableElement).toList();
-					}
-					//@formatter:on
-					return null;
+					//noinspection unchecked
+					return ((JItemListField<? extends MappableElement>) itemList).getListElements().stream()
+							.map(TagElement::entryFromMappableElement).toList();
 				}
 			};
 		}
