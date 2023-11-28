@@ -192,6 +192,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		Collection<String> elements = TagElement.getUnmmapedNames(
 				workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement));
 
+		//TODO: pass managed/unmanaged info to list field
+
 		//@formatter:off
 		if (tagElement.type() == TagType.ITEMS) {
 			MCItemListField retval = new MCItemListField(workspacePanel.getMCreator(), ElementUtil::loadBlocksAndItems, false, true);
