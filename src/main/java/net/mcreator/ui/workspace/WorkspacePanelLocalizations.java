@@ -162,6 +162,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			});
 
 			TableRowSorter<TableModel> sorter = new TableRowSorter<>(elements.getModel());
+			sorter.toggleSortOrder(0);
 			elements.setRowSorter(sorter);
 			sorters.add(sorter);
 

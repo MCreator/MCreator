@@ -28,6 +28,7 @@ import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.mapping.UniquelyMappedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.workspace.Workspace;
@@ -102,13 +103,15 @@ import java.util.*;
 		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
-	public <T extends MappableElement> Set<UniquelyMappedElement> filterBrokenReferences(List<T> input) {
+	public <T extends MappableElement> Set<MappableElement> filterBrokenReferences(List<T> input) {
 		if (input == null)
 			return Collections.emptySet();
 
-		Set<UniquelyMappedElement> retval = new HashSet<>();
+		Set<MappableElement> retval = new HashSet<>();
 		for (T t : input) {
-			if (t.getUnmappedValue().startsWith("CUSTOM:")) {
+			if (t instanceof NonMappableElement) {
+				retval.add(t);
+			} else if (t.getUnmappedValue().startsWith("CUSTOM:")) {
 				if (workspace.getModElementByName(GeneratorWrapper.getElementPlainName(t.getUnmappedValue())) != null) {
 					retval.add(new UniquelyMappedElement(t));
 				} else {
