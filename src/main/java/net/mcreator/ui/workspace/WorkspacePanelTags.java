@@ -24,6 +24,7 @@ import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.DamageTypeEntry;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
@@ -45,6 +46,9 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.util.EventObject;
 import java.util.List;
 import java.util.Map;
 
@@ -95,6 +99,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		};
 
 		sorter = new TableRowSorter<>(elements.getModel());
+		sorter.toggleSortOrder(2);
 		elements.setRowSorter(sorter);
 
 		elements.setBackground(Theme.current().getBackgroundColor());
@@ -168,18 +173,6 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				}
 			}
 		});
-
-		elements.getModel().addTableModelListener(e -> {
-			if (e.getType() == TableModelEvent.UPDATE && e.getColumn() != TableModelEvent.ALL_COLUMNS) {
-				int row = e.getFirstRow();
-				//noinspection unchecked
-				List<String> newValue = (List<String>) elements.getModel().getValueAt(row, e.getColumn());
-				if (newValue != null) {
-					workspacePanel.getMCreator().getWorkspace().getTagElements().put(tagElementForRow(row), newValue);
-					workspacePanel.getMCreator().getWorkspace().markDirty();
-				}
-			}
-		});
 	}
 
 	private TagElement tagElementForRow(int row) {
@@ -241,16 +234,26 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					return ((JItemListField<? extends MappableElement>) itemList).getListElements().stream()
 							.map(TagElement::entryFromMappableElement).toList();
 				}
+
+				@Override public boolean stopCellEditing() {
+					//noinspection unchecked
+					List<String> newValue = (List<String>) getCellEditorValue();
+					if (newValue != null) {
+						workspacePanel.getMCreator().getWorkspace().getTagElements().put(tagElementForRow(row), newValue);
+						workspacePanel.getMCreator().getWorkspace().markDirty();
+					}
+
+					return super.stopCellEditing();
+				}
 			};
 		}
 		return null;
 	}
 
-	// TODO: implement
-	/*@Override public boolean isSupportedInWorkspace() {
+	@Override public boolean isSupportedInWorkspace() {
 		return workspacePanel.getMCreator().getGeneratorStats().getBaseCoverageInfo().get("tags")
 				!= GeneratorStats.CoverageStatus.NONE;
-	}*/
+	}
 
 	private void deleteCurrentlySelected() {
 		if (elements.getSelectedRow() == -1)
