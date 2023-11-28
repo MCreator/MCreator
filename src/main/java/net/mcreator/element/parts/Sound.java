@@ -29,13 +29,11 @@ public class Sound extends MappableElement {
 	}
 
 	public Sound(Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "sounds"), name);
 	}
 
 	@Override public String getMappedValue() {
-		return super.getMappedValue().replace("CUSTOM:", mapper.workspace.getWorkspaceSettings().getModID() + ":");
+		return super.getMappedValue().replace("CUSTOM:", mapper.getWorkspace().getWorkspaceSettings().getModID() + ":");
 	}
 
 }
