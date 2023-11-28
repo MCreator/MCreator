@@ -20,6 +20,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Tag;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -40,6 +41,7 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class TagGUI extends ModElementGUI<Tag> {
 
@@ -151,7 +153,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 		items.setListElements(tag.items);
 		blocks.setListElements(tag.blocks);
-		functions.setListElements(tag.functions);
+		functions.setListElements(tag.functions.stream().map(NonMappableElement::new).toList());
 		entities.setListElements(tag.entities);
 		biomes.setListElements(tag.biomes);
 		damageTypes.setListElements(tag.damageTypes);
@@ -164,7 +166,8 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 		tag.items = items.getListElements();
 		tag.blocks = blocks.getListElements();
-		tag.functions = functions.getListElements();
+		tag.functions = functions.getListElements().stream().map(NonMappableElement::getUnmappedValue)
+				.collect(Collectors.toList());
 		tag.entities = entities.getListElements();
 		tag.biomes = biomes.getListElements();
 		tag.damageTypes = damageTypes.getListElements();
