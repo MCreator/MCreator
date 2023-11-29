@@ -183,7 +183,6 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		JScrollPane sp = new JScrollPane(elements);
 		sp.setBackground(Theme.current().getBackgroundColor());
 		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUnitIncrement(11);
 		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
 				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
