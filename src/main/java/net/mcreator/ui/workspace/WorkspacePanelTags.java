@@ -55,7 +55,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	private final TableRowSorter<TableModel> sorter;
 	private final JTable elements;
 
-	// Cached of list fields
+	// Cache of list fields (so cell renderer just sets the value instead of making a new object)
 	private final MCItemListField listFieldItems = new MCItemListField(workspacePanel.getMCreator(),
 			ElementUtil::loadBlocksAndItems, false, true);
 	private final MCItemListField listFieldBlocks = new MCItemListField(workspacePanel.getMCreator(),
