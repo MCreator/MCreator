@@ -26,17 +26,18 @@ import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
 
-public class ProjectileEntry extends MappableElement {
+public class DamageTypeEntry extends MappableElement {
 
-	private ProjectileEntry() {
-		super(new NameMapper(null, "projectiles"));
+	private DamageTypeEntry() {
+		super(new NameMapper(null, "damagesources"));
 	}
 
-	public ProjectileEntry(@Nonnull Workspace owner, String name) {
-		super(new NameMapper(owner, "projectiles"), name);
+	public DamageTypeEntry(@Nonnull Workspace owner, String name) {
+		super(new NameMapper(owner, "damagesources"), name);
 	}
 
-	public ProjectileEntry(@Nonnull Workspace owner, DataListEntry name) {
+	public DamageTypeEntry(@Nonnull Workspace owner, DataListEntry name) {
 		this(owner, name.getName());
 	}
+
 }

@@ -19,7 +19,7 @@
 
 package net.mcreator.ui.minecraft;
 
-import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.DamageTypeEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
@@ -31,30 +31,28 @@ import net.mcreator.ui.init.L10N;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BiomeListField extends JItemListField<BiomeEntry> {
+public class DamageTypeListField extends JItemListField<DamageTypeEntry> {
 
-	public BiomeListField(MCreator mcreator) {
-		super(mcreator, false);
-	}
-
-	public BiomeListField(MCreator mcreator, boolean allowTags) {
+	public DamageTypeListField(MCreator mcreator, boolean allowTags) {
 		super(mcreator, false, allowTags);
 	}
 
-	@Override protected List<BiomeEntry> getElementsToAdd() {
-		return DataListSelectorDialog.openMultiSelectorDialog(mcreator, ElementUtil::loadAllBiomes,
-						L10N.t("dialog.list_field.biome_list_title"), L10N.t("dialog.list_field.biome_list_message")).stream()
-				.map(e -> new BiomeEntry(mcreator.getWorkspace(), e)).toList();
+	@Override protected List<DamageTypeEntry> getElementsToAdd() {
+		return DataListSelectorDialog.openMultiSelectorDialog(mcreator,
+						w -> ElementUtil.loadDataListAndElements(w, "damagesources", true, null, "damagetype"),
+						L10N.t("dialog.list_field.damage_type_list_title"),
+						L10N.t("dialog.list_field.damage_type_list_message")).stream()
+				.map(e -> new DamageTypeEntry(mcreator.getWorkspace(), e)).toList();
 	}
 
-	@Override protected List<BiomeEntry> getTagsToAdd() {
-		List<BiomeEntry> tags = new ArrayList<>();
+	@Override protected List<DamageTypeEntry> getTagsToAdd() {
+		List<DamageTypeEntry> tags = new ArrayList<>();
 
-		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.BIOMES, "is_overworld", "is_nether",
-				"is_end", "is_badlands", "is_beach", "is_deep_ocean", "is_forest", "is_hill", "is_jungle",
-				"is_mountain", "is_ocean", "is_river", "is_savanna", "is_taiga");
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.DAMAGE_TYPES, "is_drowning",
+				"is_explosion", "is_fall", "is_fire", "is_freezing", "is_lightning", "is_projectile", "bypasses_armor",
+				"bypasses_effects", "bypasses_enchantments", "bypasses_shield");
 		if (tag != null)
-			tags.add(new BiomeEntry(mcreator.getWorkspace(), "#" + tag));
+			tags.add(new DamageTypeEntry(mcreator.getWorkspace(), "#" + tag));
 
 		return tags;
 	}

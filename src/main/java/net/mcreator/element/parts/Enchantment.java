@@ -32,9 +32,7 @@ public class Enchantment extends MappableElement {
 	}
 
 	public Enchantment(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "enchantments"), name);
 	}
 
 	public Enchantment(@Nonnull Workspace owner, DataListEntry name) {

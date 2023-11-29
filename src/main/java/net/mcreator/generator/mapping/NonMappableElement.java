@@ -17,26 +17,43 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.parts;
+package net.mcreator.generator.mapping;
 
-import net.mcreator.generator.mapping.MappableElement;
-import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.workspace.Workspace;
 
-import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import java.util.Optional;
 
-public class ProjectileEntry extends MappableElement {
+/**
+ * In some cases, one may need to pass a string where a MappableElement is expected. This class is used for such cases.
+ */
+public class NonMappableElement extends MappableElement {
 
-	private ProjectileEntry() {
-		super(new NameMapper(null, "projectiles"));
+	@Nullable private Workspace workspace = null;
+
+	public NonMappableElement(String value) {
+		super(null, value);
 	}
 
-	public ProjectileEntry(@Nonnull Workspace owner, String name) {
-		super(new NameMapper(owner, "projectiles"), name);
+	@Override public String getMappedValue() {
+		return getUnmappedValue();
 	}
 
-	public ProjectileEntry(@Nonnull Workspace owner, DataListEntry name) {
-		this(owner, name.getName());
+	@Override public boolean canProperlyMap() {
+		return true;
 	}
+
+	@Override public Optional<DataListEntry> getDataListEntry() {
+		return Optional.empty();
+	}
+
+	@Override public void setWorkspace(@Nullable Workspace workspace) {
+		this.workspace = workspace;
+	}
+
+	@Nullable @Override public Workspace getWorkspace() {
+		return this.workspace;
+	}
+
 }
