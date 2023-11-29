@@ -16,7 +16,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.minecraft.api;
+package net.mcreator.plugin.modapis;
 
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;

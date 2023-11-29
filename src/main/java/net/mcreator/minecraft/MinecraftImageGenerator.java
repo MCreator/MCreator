@@ -22,7 +22,6 @@ package net.mcreator.minecraft;
 import net.mcreator.blockly.BlocklyBlockUtil;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.types.Tag;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.TiledImageCache;
@@ -1432,7 +1431,8 @@ public class MinecraftImageGenerator {
 		 */
 		public static BufferedImage generateTagPreviewPicture(String type) {
 			return ImageUtils.toBufferedImage(
-					ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Tag.getColor(type), false).getImage());
+					ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), TagType.fromLegacyName(type).getColor(),
+							false).getImage());
 		}
 
 		/**
