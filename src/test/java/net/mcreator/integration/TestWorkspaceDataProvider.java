@@ -1255,38 +1255,6 @@ public class TestWorkspaceDataProvider {
 			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
 					"Grass block" }[valueIndex];
 			return block;
-		} else if (ModElementType.TAG.equals(modElement.getType())) {
-			Tag tag = new Tag(modElement);
-			tag.namespace = getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
-			tag.type = getRandomItem(random,
-					new String[] { "Items", "Blocks", "Entities", "Functions", "Biomes", "Damage types" });
-			tag.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			tag.items = new ArrayList<>();
-			tag.blocks = new ArrayList<>();
-			tag.functions = new ArrayList<>();
-			tag.entities = new ArrayList<>();
-			tag.biomes = new ArrayList<>();
-			tag.damageTypes = new ArrayList<>();
-			if (!emptyLists) {
-				tag.items.addAll(
-						blocksAndItems.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
-								.toList());
-				tag.blocks.addAll(
-						blocks.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				tag.entities.addAll(ElementUtil.loadAllEntities(modElement.getWorkspace()).stream()
-						.map(e -> new EntityEntry(modElement.getWorkspace(), e.getName())).toList());
-				tag.biomes.addAll(ElementUtil.loadAllBiomes(modElement.getWorkspace()).stream()
-						.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-				tag.biomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
-				tag.biomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
-				tag.damageTypes.addAll(ElementUtil.loadDataListAndElements(
-						modElement.getWorkspace(), "damagesources", false, null, "damagetype").stream()
-						.map(e -> new DamageTypeEntry(modElement.getWorkspace(), e.getName())).toList());
-
-				tag.functions.add("ExampleFunction1");
-				tag.functions.add("ExampleFunction2");
-			}
-			return tag;
 		} else if (ModElementType.LOOTTABLE.equals(modElement.getType())) {
 			LootTable lootTable = new LootTable(modElement);
 

@@ -70,16 +70,4 @@ public enum TagType {
 		return L10N.t("tag.type." + name().toLowerCase(Locale.ENGLISH));
 	}
 
-	public static TagType fromLegacyName(String readableName) {
-		return switch (readableName) {
-			case "Items" -> ITEMS;
-			case "Blocks" -> BLOCKS;
-			case "Entities" -> ENTITIES;
-			case "Functions" -> FUNCTIONS;
-			case "Biomes" -> BIOMES;
-			case "Damage types" -> DAMAGE_TYPES;
-			default -> null;
-		};
-	}
-
 }

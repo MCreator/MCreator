@@ -137,7 +137,6 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> RECIPE;
 	public static ModElementType<?> STRUCTURE;
 	public static ModElementType<?> TAB;
-	public static ModElementType<?> TAG;
 	public static ModElementType<?> TOOL;
 	public static ModElementType<?> VILLAGERPROFESSION;
 	public static ModElementType<?> VILLAGERTRADE;
