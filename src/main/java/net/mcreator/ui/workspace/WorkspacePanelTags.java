@@ -32,6 +32,7 @@ import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.dialogs.AddCommonTagsDialog;
 import net.mcreator.ui.dialogs.NewTagDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -41,14 +42,10 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.workspace.elements.TagElement;
 
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.beans.PropertyChangeEvent;
-import java.beans.PropertyChangeListener;
-import java.util.EventObject;
 import java.util.List;
 import java.util.Map;
 
@@ -152,6 +149,11 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			}
 		}));
 
+		bar.add(createToolBarButton("workspace.tags.add_common", UIRES.get("16px.injecttags"), e -> {
+			AddCommonTagsDialog.open(workspacePanel.getMCreator());
+			reloadElements();
+		}));
+
 		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
 				e -> deleteCurrentlySelected()));
 
@@ -239,7 +241,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					//noinspection unchecked
 					List<String> newValue = (List<String>) getCellEditorValue();
 					if (newValue != null) {
-						workspacePanel.getMCreator().getWorkspace().getTagElements().put(tagElementForRow(row), newValue);
+						workspacePanel.getMCreator().getWorkspace().getTagElements()
+								.put(tagElementForRow(row), newValue);
 						workspacePanel.getMCreator().getWorkspace().markDirty();
 					}
 
