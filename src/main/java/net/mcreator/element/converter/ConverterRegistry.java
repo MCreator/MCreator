@@ -49,6 +49,7 @@ import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
 import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
 import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
 import net.mcreator.element.converter.v2023_4.*;
+import net.mcreator.element.converter.v2024_5.TagModElementConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -188,6 +189,7 @@ public class ConverterRegistry {
 		put("food", new FoodToItemConverter());
 		put("fuel", new FuelToItemExtensionConverter());
 		put("rangeditem", new RangedItemToProjectileAndItemConverter());
+		put("tag", new TagModElementConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
