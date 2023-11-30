@@ -50,11 +50,11 @@ public class LayerListCellRenderer extends JPanel implements ListCellRenderer<La
 			boolean isSelected, boolean cellHasFocus) {
 
 		if (layer.isPasted()) {
-			name.setForeground((Color) UIManager.get("MCreatorLAF.gray_color"));
+			name.setForeground(Theme.current().getAltForegroundColor().brighter());
 			name.setFont(italic);
 			name.setText(layer.getName() + " (floating)");
 		} else {
-			name.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			name.setForeground(Theme.current().getForegroundColor());
 			name.setFont(normal);
 			name.setText(layer.getName());
 		}

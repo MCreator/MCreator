@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.views.editor.image.canvas;
 
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 
 import javax.swing.*;
@@ -209,7 +210,7 @@ public class Selection {
 			// Save the previous stroke to avoid unwanted changes
 			Stroke prevStroke = g2d.getStroke();
 
-			Color baseColor = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
+			Color baseColor = Theme.current().getForegroundColor();
 
 			Color strokeColor = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 120);
 			Color strokeColorHighlighted = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(),

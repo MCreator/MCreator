@@ -254,7 +254,7 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 		shadow = new BasicStroke(3);
 
 		// Builds the semi-transparent color for the outline shadow
-		Color baseColor = (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT");
+		Color baseColor = Theme.current().getSecondAltBackgroundColor();
 		shadowColor = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 120);
 	}
 
