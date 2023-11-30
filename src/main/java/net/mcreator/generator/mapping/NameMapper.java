@@ -35,8 +35,8 @@ public class NameMapper {
 
 	public static final String UNKNOWN_ELEMENT = "deleted_mod_element";
 
-	String mappingSource;
-	public Workspace workspace;
+	private final String mappingSource;
+	private Workspace workspace;
 
 	public NameMapper(Workspace workspace, String mappingSource) {
 		this.mappingSource = mappingSource;
@@ -49,6 +49,10 @@ public class NameMapper {
 
 	public Workspace getWorkspace() {
 		return workspace;
+	}
+
+	public String getMappingSource() {
+		return mappingSource;
 	}
 
 	public String getMapping(String origName) {

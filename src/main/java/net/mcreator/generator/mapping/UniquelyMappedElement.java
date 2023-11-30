@@ -17,26 +17,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.element.parts;
+package net.mcreator.generator.mapping;
 
-import net.mcreator.generator.mapping.MappableElement;
-import net.mcreator.generator.mapping.NameMapper;
-import net.mcreator.minecraft.DataListEntry;
-import net.mcreator.workspace.Workspace;
+/**
+ * Used to make sure that the element is unique after mapping by overriding {@link #hashCode()} and {@link #equals(Object)} methods
+ * that compare the mapped values instead of the unmapped ones as done by the default implementation of MappableElement.
+ */
+public class UniquelyMappedElement extends MappableElement {
 
-import javax.annotation.Nonnull;
-
-public class ProjectileEntry extends MappableElement {
-
-	private ProjectileEntry() {
-		super(new NameMapper(null, "projectiles"));
+	public UniquelyMappedElement(MappableElement original) {
+		super(original.mapper, original.getUnmappedValue());
 	}
 
-	public ProjectileEntry(@Nonnull Workspace owner, String name) {
-		super(new NameMapper(owner, "projectiles"), name);
+	@Override public int hashCode() {
+		return getMappedValue().hashCode();
 	}
 
-	public ProjectileEntry(@Nonnull Workspace owner, DataListEntry name) {
-		this(owner, name.getName());
+	@Override public boolean equals(Object element) {
+		return element instanceof MappableElement && getMappedValue().equals(
+				((MappableElement) element).getMappedValue());
 	}
+
 }
