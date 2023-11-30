@@ -91,14 +91,13 @@ public class AcceleratorMap {
 				KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorCopy,
 				KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.imageEditorCopyAll,
-				KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorCopyAll, KeyStroke.getKeyStroke(KeyEvent.VK_X,
+				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorCut,
 				KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorPaste,
 				KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.imageEditorDelete,
-				KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorDelete, KeyStroke.getKeyStroke(KeyEvent.VK_DELETE, 0));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorSave,
 				KeyStroke.getKeyStroke(KeyEvent.VK_S, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorSaveAs, KeyStroke.getKeyStroke(KeyEvent.VK_S,
@@ -118,7 +117,7 @@ public class AcceleratorMap {
 				KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorFloodFill,
 				KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.imageEditorColorPicker, KeyStroke.getKeyStroke(KeyEvent.VK_C,
+		actionKeyStrokeMap.put(actionRegistry.imageEditorColorPicker, KeyStroke.getKeyStroke(KeyEvent.VK_P,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorColorize,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
