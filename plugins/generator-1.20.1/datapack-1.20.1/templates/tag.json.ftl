@@ -24,6 +24,10 @@
           <#list w.filterBrokenReferences(data.biomes) as value>
             "${value}"<#if value?has_next>,</#if>
           </#list>
+      <#elseif data.type == "Damage types">
+          <#list w.filterBrokenReferences(data.damageTypes) as value>
+            "${generator.map(value.getUnmappedValue(), "damagesources", 1)}"<#sep>,
+          </#list>
       </#if>
     ]
 }

@@ -19,6 +19,7 @@
 package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -123,6 +124,11 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	@Nonnull public WorkspaceInfo getWorkspaceInfo() {
 		return workspaceInfo;
+	}
+
+	public boolean containsModElement(String elementName) {
+		// We create "dummy" mod element for contains check since hashcode of ME is only based on its name
+		return mod_elements.contains(new ModElement(this, elementName, ModElementType.UNKNOWN));
 	}
 
 	public ModElement getModElementByName(String elementName) {
@@ -476,8 +482,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	// Below are methods that may still be used by some plugins
 
 	/**
-	 * @apiNote This method performs sensitive operations on this workspace. Avoid using it!
 	 * @param other The workspace to copy elements and settings from.
+	 * @apiNote This method performs sensitive operations on this workspace. Avoid using it!
 	 */
 	@SuppressWarnings("unused") public void loadStoredDataFrom(Workspace other) {
 		this.mod_elements = other.mod_elements;

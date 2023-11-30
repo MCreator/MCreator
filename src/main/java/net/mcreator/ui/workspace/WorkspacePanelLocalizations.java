@@ -31,9 +31,10 @@ import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.workspace.references.ReferencesFinder;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -161,22 +162,23 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			});
 
 			TableRowSorter<TableModel> sorter = new TableRowSorter<>(elements.getModel());
+			sorter.toggleSortOrder(0);
 			elements.setRowSorter(sorter);
 			sorters.add(sorter);
 
-			elements.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			elements.setSelectionBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			elements.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			elements.setSelectionForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			elements.setBackground(Theme.current().getBackgroundColor());
+			elements.setSelectionBackground(Theme.current().getForegroundColor());
+			elements.setForeground(Theme.current().getForegroundColor());
+			elements.setSelectionForeground(Theme.current().getBackgroundColor());
 			elements.setBorder(BorderFactory.createEmptyBorder());
-			elements.setGridColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			elements.setGridColor(Theme.current().getAltBackgroundColor());
 			elements.setRowHeight(22);
 			elements.putClientProperty("terminateEditOnFocusLost", Boolean.TRUE);
 			elements.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 13));
 
 			JTableHeader header = elements.getTableHeader();
-			header.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-			header.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			header.setBackground(Theme.current().getInterfaceAccentColor());
+			header.setForeground(Theme.current().getBackgroundColor());
 
 			DefaultTableModel model = (DefaultTableModel) elements.getModel();
 			for (Map.Entry<String, String> langs : entries.entrySet()) {
@@ -199,9 +201,8 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			JScrollPane sp = new JScrollPane(elements);
 			sp.setOpaque(false);
 			sp.getViewport().setOpaque(false);
-			sp.getVerticalScrollBar().setUnitIncrement(11);
-			sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
+			sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+					Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 			sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 
 			sp.setColumnHeaderView(null);
@@ -363,8 +364,9 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 			Set<ModElement> references = new HashSet<>();
 			for (int i : elements.getSelectedRows()) {
-				references.addAll(ReferencesFinder.searchLocalizationKeyUsages(
-						workspacePanel.getMCreator().getWorkspace(), (String) elements.getValueAt(i, 0)));
+				references.addAll(
+						ReferencesFinder.searchLocalizationKeyUsages(workspacePanel.getMCreator().getWorkspace(),
+								(String) elements.getValueAt(i, 0)));
 			}
 
 			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());

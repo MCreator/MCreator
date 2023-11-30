@@ -17,7 +17,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.themes;
+package net.mcreator.ui.laf.themes;
 
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
@@ -47,10 +47,10 @@ public class ThemeLoader {
 
 	private static final LinkedHashSet<Theme> THEMES = new LinkedHashSet<>();
 
-	public static Theme CURRENT_THEME;
+	protected static Theme CURRENT_THEME;
 
 	/**
-	 * <p>This method loads the {@link net.mcreator.themes.Theme} of all plugins loaded into the current {@link net.mcreator.plugin.PluginLoader} instance.</p>
+	 * <p>This method loads the {@link Theme} of all plugins loaded into the current {@link net.mcreator.plugin.PluginLoader} instance.</p>
 	 */
 	public static void initUIThemes() {
 		LOG.debug("Loading UI themes");
@@ -60,8 +60,8 @@ public class ThemeLoader {
 		for (String file : files) {
 			Theme theme = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), Theme.class);
 
-			// The ID will be used to get images from this theme if the user select it.
-			theme.setID(new File(file).getParentFile().getName());
+			// Initialize the theme and ID - the ID will be used to get images from this theme if the user select it.
+			theme.id = new File(file).getParentFile().getName();
 
 			// Load the custom icon if provided, otherwise load the default one
 			if (PluginLoader.INSTANCE.getResource("themes/" + theme.getID() + "/icon.png") != null)
@@ -71,7 +71,7 @@ public class ThemeLoader {
 			THEMES.add(theme);
 		}
 
-		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme.get());
+		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme.get()).init();
 		LOG.info("Using MCreator UI theme: " + CURRENT_THEME.getID());
 	}
 
@@ -80,7 +80,7 @@ public class ThemeLoader {
 	}
 
 	/**
-	 * <p>This method gets the ID of each loaded {@link net.mcreator.themes.Theme}.</p>
+	 * <p>This method gets the ID of each loaded {@link Theme}.</p>
 	 *
 	 * @return Returns a {@link java.util.List} of all loaded theme IDs
 	 */
@@ -92,9 +92,9 @@ public class ThemeLoader {
 	 * <p>This method checks in all loaded themes to get the theme matching the ID.</p>
 	 *
 	 * @param id The theme's id we want to get
-	 * @return Returns the {@link net.mcreator.themes.Theme}, if found in the cache, otherwise null
+	 * @return Returns the {@link Theme}, if found in the cache, otherwise null
 	 */
-	public static Theme getTheme(String id) {
+	static Theme getTheme(String id) {
 		for (Theme pack : THEMES) {
 			if (pack.getID().equals(id))
 				return pack;
@@ -107,4 +107,5 @@ public class ThemeLoader {
 
 		return getTheme("default_dark");
 	}
+
 }

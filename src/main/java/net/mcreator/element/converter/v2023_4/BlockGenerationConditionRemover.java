@@ -48,7 +48,7 @@ public class BlockGenerationConditionRemover implements IConverter {
 		Block block = (Block) input;
 		try {
 			String modElementName = input.getModElement().getName();
-			if (workspace.getModElementByName(modElementName + "Feature") == null) {
+			if (!workspace.containsModElement(modElementName + "Feature")) {
 				JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
 				// Check if we need to convert the element
@@ -77,9 +77,11 @@ public class BlockGenerationConditionRemover implements IConverter {
 						} else if (spawnWorldType.startsWith("CUSTOM:")) {
 							ModElement modElement = workspace.getModElementByName(
 									spawnWorldType.replaceFirst("CUSTOM:", ""));
-							GeneratableElement generatableElement = modElement.getGeneratableElement();
-							if (generatableElement instanceof Dimension dimension) {
-								feature.restrictionBiomes.addAll(dimension.biomesInDimension);
+							if (modElement != null) {
+								GeneratableElement generatableElement = modElement.getGeneratableElement();
+								if (generatableElement instanceof Dimension dimension) {
+									feature.restrictionBiomes.addAll(dimension.biomesInDimension);
+								}
 							}
 						}
 					}

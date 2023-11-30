@@ -29,6 +29,7 @@ import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.dialogs.imageeditor.FromTemplateDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.views.ViewBase;
@@ -99,23 +100,23 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		save = L10N.button("dialog.image_maker.save");
 		save.setMargin(new Insets(1, 40, 1, 40));
-		save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-		save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		save.setBackground(Theme.current().getInterfaceAccentColor());
+		save.setForeground(Theme.current().getSecondAltBackgroundColor());
 		save.setFocusPainted(false);
 
-		imageInfo.setForeground(((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")).darker());
+		imageInfo.setForeground((Theme.current().getAltForegroundColor()).darker());
 		imageInfo.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 5));
 
 		JButton saveNew = L10N.button("dialog.image_maker.save_as_new");
 		saveNew.setMargin(new Insets(1, 40, 1, 40));
-		saveNew.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		saveNew.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		saveNew.setBackground(Theme.current().getAltBackgroundColor());
+		saveNew.setForeground(Theme.current().getForegroundColor());
 		saveNew.setFocusPainted(false);
 
 		JButton template = L10N.button("dialog.image_maker.generate_from_template");
 		template.setMargin(new Insets(1, 40, 1, 40));
-		template.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		template.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		template.setBackground(Theme.current().getAltBackgroundColor());
+		template.setForeground(Theme.current().getForegroundColor());
 		template.setFocusPainted(false);
 
 		save.addActionListener(event -> save());
@@ -129,7 +130,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		rightSplitPane = new JSplitPane() {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				g2d.setColor(Theme.current().getAltBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();
@@ -165,8 +166,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		controls.add(leftControls, BorderLayout.WEST);
 		controls.add(rightControls, BorderLayout.EAST);
 
-		controls.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
+		controls.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		add(controls, BorderLayout.NORTH);
 		add(leftSplitPane, BorderLayout.CENTER);

@@ -28,6 +28,7 @@ import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.types.Achievement;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -41,6 +42,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.ModElementListField;
@@ -101,7 +103,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	public AchievementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
-		super.finalizeGUI(false);
+		super.finalizeGUI();
 	}
 
 	@Override protected void initGUI() {
@@ -184,14 +186,14 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		logicPanel.add(disableDisplay);
 
 		logicPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.advancement.logic"), 0, 0, logicPanel.getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		propertiesPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.advancement.display_paramters"), 0, 0, propertiesPanel.getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		propertiesPanel.setOpaque(false);
 		logicPanel.setOpaque(false);
@@ -223,14 +225,14 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		JPanel advancementTrigger = (JPanel) PanelUtils.centerAndSouthElement(blocklyPanel, compileNotesPanel);
 		advancementTrigger.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.advancement.trigger_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Color.white));
 
 		JComponent wrap = PanelUtils.northAndCenterElement(PanelUtils.westAndCenterElement(propertiesPanel, logicPanel),
 				advancementTrigger);
 		wrap.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		addPage(wrap);
+		addPage(wrap, false);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
@@ -305,8 +307,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		hideIfNotCompleted.setSelected(achievement.hideIfNotCompleted);
 		rewardFunction.setSelectedItem(achievement.rewardFunction);
 		background.setSelectedItem(achievement.background);
-		rewardLoot.setListElements(achievement.rewardLoot);
-		rewardRecipes.setListElements(achievement.rewardRecipes);
+		rewardLoot.setListElements(achievement.rewardLoot.stream().map(NonMappableElement::new).toList());
+		rewardRecipes.setListElements(achievement.rewardRecipes.stream().map(NonMappableElement::new).toList());
 		rewardXP.setValue(achievement.rewardXP);
 
 		blocklyPanel.setXMLDataOnly(achievement.triggerxml);
@@ -331,8 +333,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		achievement.hideIfNotCompleted = hideIfNotCompleted.isSelected();
 		achievement.rewardFunction = (String) rewardFunction.getSelectedItem();
 		achievement.background = (String) background.getSelectedItem();
-		achievement.rewardLoot = rewardLoot.getListElements();
-		achievement.rewardRecipes = rewardRecipes.getListElements();
+		achievement.rewardLoot = rewardLoot.getListElements().stream().map(NonMappableElement::getUnmappedValue)
+				.collect(Collectors.toList());
+		achievement.rewardRecipes = rewardRecipes.getListElements().stream().map(NonMappableElement::getUnmappedValue)
+				.collect(Collectors.toList());
 		achievement.rewardXP = (int) rewardXP.getValue();
 
 		achievement.triggerxml = blocklyPanel.getXML();

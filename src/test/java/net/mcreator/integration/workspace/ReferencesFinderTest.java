@@ -112,8 +112,11 @@ public class ReferencesFinderTest {
 		modElement = workspace.getModElementByName("Examplelivingentity3");
 		ReferencesFinder.searchModElementUsages(workspace, modElement);
 
-		modElement = workspace.getModElementByName("condition4");
+		modElement = workspace.getModElementByName("condition1");
 		Set<ModElement> references = ReferencesFinder.searchModElementUsages(workspace, modElement);
+		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplelivingentity")));
+		modElement = workspace.getModElementByName("condition4");
+		references = ReferencesFinder.searchModElementUsages(workspace, modElement);
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Exampleoverlay")));
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplegui")));
 		assertTrue(references.stream().map(ModElement::getName).anyMatch(e -> e.contains("Examplearmor")));
@@ -153,6 +156,9 @@ public class ReferencesFinderTest {
 
 		section = TextureType.ENTITY;
 		texture = workspace.getFolderManager().getTextureFile("entityTx1", section);
+		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Examplelivingentity")));
+		texture = workspace.getFolderManager().getTextureFile("entityTx2", section);
 		assertTrue(ReferencesFinder.searchTextureUsages(workspace, texture, section).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Examplelivingentity")));
 

@@ -43,6 +43,7 @@ import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.renderer.elementlist.*;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.modgui.ModTypeDropdown;
 import net.mcreator.ui.validation.Validator;
@@ -289,8 +290,8 @@ import java.util.stream.Collectors;
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
 
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
+		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		sp.setBorder(null);
 
@@ -335,7 +336,7 @@ import java.util.stream.Collectors;
 		ComponentUtils.deriveFont(search, 14);
 		search.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
 		search.setOpaque(false);
-		search.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		search.setBackground(Theme.current().getAltBackgroundColor());
 
 		search.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -553,12 +554,12 @@ import java.util.stream.Collectors;
 
 		ComponentUtils.deriveFont(filter, 11);
 		filter.setMargin(new Insets(1, 3, 1, 3));
-		filter.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		filter.setBackground(Theme.current().getBackgroundColor());
 		filter.setBorderPainted(false);
 
 		ComponentUtils.deriveFont(sort, 11);
 		sort.setMargin(new Insets(1, 3, 1, 3));
-		sort.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sort.setBackground(Theme.current().getBackgroundColor());
 		sort.setBorderPainted(false);
 
 		leftPan.add(new JEmptyBox(2, 2));
@@ -650,7 +651,7 @@ import java.util.stream.Collectors;
 				L10N.label("workspace.elements.details.id"), L10N.label("workspace.elements.details.type"),
 				L10N.label("workspace.elements.details.lock"), L10N.label("workspace.elements.details.compile")));
 		detailsbar.setBorder(BorderFactory.createEmptyBorder(4, 47, 4, 8));
-		detailsbar.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		detailsbar.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		modElementsPanel.add("North", PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0));
 		modElementsPanel.add("Center", mainp);
@@ -660,7 +661,7 @@ import java.util.stream.Collectors;
 		slo.setBorder(null);
 
 		rotatablePanel.setLayout(new BoxLayout(rotatablePanel, BoxLayout.PAGE_AXIS));
-		rotatablePanel.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		rotatablePanel.setBackground(Theme.current().getBackgroundColor());
 		slo.add("West", rotatablePanel);
 
 		add("Center", slo);
@@ -764,9 +765,9 @@ import java.util.stream.Collectors;
 
 		addVerticalTab("mods", L10N.t("workspace.category.mod_elements"),
 				new WorkspacePanelMods(PanelUtils.westAndCenterElement(toolp, modElementsPanel)));
-		addVerticalTab("res", L10N.t("workspace.category.resources"), resourcesPan);
-		addVerticalTab("locales", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
-		addVerticalTab("variables", L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
+		addVerticalTab("resources", L10N.t("workspace.category.resources"), resourcesPan);
+		addVerticalTab("variables", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
+		addVerticalTab("localization", L10N.t("workspace.category.localization"), new WorkspacePanelLocalizations(this));
 
 		switchToVerticalTab("mods");
 
@@ -858,7 +859,7 @@ import java.util.stream.Collectors;
 			tab.setBorderPainted(false);
 			tab.setFocusPainted(false);
 			tab.setOpaque(true);
-			tab.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			tab.setBackground(Theme.current().getBackgroundColor());
 			tab.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			tab.addActionListener(e -> switchToVerticalTab(id));
 			verticalTabs.add(tab);
@@ -874,8 +875,8 @@ import java.util.stream.Collectors;
 		if (sectionTabs.get(id).canSwitchToSection()) {
 			for (JButton btt : verticalTabs) {
 				btt.setBackground(btt.getName().equals(id) ?
-						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
-						(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+						Theme.current().getAltBackgroundColor() :
+						Theme.current().getBackgroundColor());
 			}
 			cardLayout.show(panels, id);
 			reloadElementsInCurrentTab();

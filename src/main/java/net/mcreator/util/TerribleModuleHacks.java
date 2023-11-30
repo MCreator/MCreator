@@ -35,13 +35,13 @@ public class TerribleModuleHacks {
 	}
 
 	public static void openMCreatorRequirements() {
-		// MCreator theme
+		// Required by: LafUtil - to apply custom CSS styles
 		ModuleLayer.boot().findModule("java.desktop").ifPresent(
-				module -> addOpens(module, "sun.awt", net.mcreator.ui.laf.MCreatorLookAndFeel.class.getModule()));
+				module -> addOpens(module, "sun.awt", net.mcreator.ui.laf.LafUtil.class.getModule()));
 		ModuleLayer.boot().findModule("java.desktop").ifPresent(module -> addOpens(module, "javax.swing.text.html",
-				net.mcreator.ui.laf.MCreatorLookAndFeel.class.getModule()));
+				net.mcreator.ui.laf.LafUtil.class.getModule()));
 
-		// Blockly panel transparency
+		// Required by: BlocklyPanel - for transparency
 		ModuleLayer.boot().findModule("javafx.web").ifPresent(module -> addOpens(module, "com.sun.javafx.webkit",
 				net.mcreator.ui.blockly.BlocklyPanel.class.getModule()));
 		ModuleLayer.boot().findModule("javafx.web").ifPresent(

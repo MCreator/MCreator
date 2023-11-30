@@ -31,6 +31,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -141,8 +142,8 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			}
 		});
 
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		setBackground(Theme.current().getBackgroundColor());
+		setBorder(BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()));
 
 		if (returnType != null) {
 			setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
@@ -317,7 +318,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 		if (returnType != null)
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(1, 0, 1, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+					BorderFactory.createMatteBorder(1, 0, 1, 1, Theme.current().getAltBackgroundColor()),
 					BorderFactory.createMatteBorder(0, 5, 0, 0, returnType.getBlocklyColor())));
 
 		return (ProcedureSelector) retval;

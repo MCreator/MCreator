@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.component;
 
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,11 +46,11 @@ public class ConsolePane extends JTextPane {
 		setEditable(false);
 
 		putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-		setFont(MCreatorTheme.console_font);
+		setFont(Theme.current().getConsoleFont());
 
-		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		setSelectedTextColor((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		setSelectionColor((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		setBackground(Theme.current().getSecondAltBackgroundColor());
+		setSelectedTextColor(Theme.current().getSecondAltBackgroundColor());
+		setSelectionColor(Theme.current().getForegroundColor());
 		setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		setBorder(null);
 

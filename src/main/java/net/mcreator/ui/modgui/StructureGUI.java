@@ -51,7 +51,6 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
@@ -73,9 +72,10 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	private final JMinMaxSpinner separation_spacing = new JMinMaxSpinner(2, 5, 0, 1000000, 1,
 			L10N.t("elementgui.structuregen.separation"), L10N.t("elementgui.structuregen.spacing"));
 
-	private final SearchableComboBox<String> structureSelector = new SearchableComboBox<>();
+	private SearchableComboBox<String> structureSelector;
 
-	private final JComboBox<String> generationStep = new JComboBox<>();
+	private final JComboBox<String> generationStep = new JComboBox<>(
+			ElementUtil.getDataListAsStringArray("generationsteps"));
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -86,6 +86,8 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	}
 
 	@Override protected void initGUI() {
+		structureSelector = new SearchableComboBox<>(
+				mcreator.getFolderManager().getStructureList().toArray(String[]::new));
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 
@@ -95,8 +97,10 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 		ComponentUtils.deriveFont(structureSelector, 16);
 
-		if (!isEditingMode())
+		if (!isEditingMode()) {
+			generationStep.setSelectedItem("SURFACE_STRUCTURES");
 			ignoreBlocks.setListElements(List.of(new MItemBlock(modElement.getWorkspace(), "Blocks.STRUCTURE_BLOCK")));
+		}
 
 		JPanel params = new JPanel(new GridLayout(8, 2, 50, 2));
 		params.setOpaque(false);
@@ -170,9 +174,6 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
-
-		ComboBoxUtil.updateComboBoxContents(generationStep,
-				Arrays.asList(ElementUtil.getDataListAsStringArray("generationsteps")), "SURFACE_STRUCTURES");
 
 		ComboBoxUtil.updateComboBoxContents(structureSelector, mcreator.getFolderManager().getStructureList());
 	}
