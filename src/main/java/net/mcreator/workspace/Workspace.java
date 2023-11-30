@@ -19,6 +19,7 @@
 package net.mcreator.workspace;
 
 import net.mcreator.Launcher;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
@@ -125,6 +126,11 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	@Nonnull public WorkspaceInfo getWorkspaceInfo() {
 		return workspaceInfo;
+	}
+
+	public boolean containsModElement(String elementName) {
+		// We create "dummy" mod element for contains check since hashcode of ME is only based on its name
+		return mod_elements.contains(new ModElement(this, elementName, ModElementType.UNKNOWN));
 	}
 
 	public ModElement getModElementByName(String elementName) {
