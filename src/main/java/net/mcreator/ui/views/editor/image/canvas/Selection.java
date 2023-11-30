@@ -133,6 +133,14 @@ public class Selection {
 		return editStarted;
 	}
 
+	public void clear(){
+		first.x = 0;
+		first.y = 0;
+		second.x = 0;
+		second.y = 0;
+		setEditing(SelectedBorder.NONE);
+	}
+
 	public Shape getLayerMask(Layer layer){
 		if (hasSurface() && getEditing() != SelectedBorder.NONE) {
 			int xStart = getLeft() - layer.getX();
