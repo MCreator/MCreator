@@ -33,9 +33,7 @@ public class ProfessionEntry extends MappableElement {
 	}
 
 	public ProfessionEntry(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "villagerprofessions"), name);
 	}
 
 	public ProfessionEntry(@Nonnull Workspace owner, DataListEntry name) {
