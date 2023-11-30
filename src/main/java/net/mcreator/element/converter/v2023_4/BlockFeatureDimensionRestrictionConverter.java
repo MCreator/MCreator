@@ -62,9 +62,11 @@ public class BlockFeatureDimensionRestrictionConverter implements IConverter {
 					} else if (spawnWorldType.startsWith("CUSTOM:")) {
 						ModElement modElement = workspace.getModElementByName(
 								spawnWorldType.replaceFirst("CUSTOM:", ""));
-						GeneratableElement generatableElement = modElement.getGeneratableElement();
-						if (generatableElement instanceof Dimension dimension) {
-							restrictionBiomes.addAll(dimension.biomesInDimension);
+						if (modElement != null) {
+							GeneratableElement generatableElement = modElement.getGeneratableElement();
+							if (generatableElement instanceof Dimension dimension) {
+								restrictionBiomes.addAll(dimension.biomesInDimension);
+							}
 						}
 					}
 				}

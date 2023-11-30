@@ -136,7 +136,7 @@ public class InjectTagsTool {
 
 	private static Consumer<Boolean> addTag(MCreator mcreator, JPanel panel, String name, String namespace, String type,
 			boolean checked) {
-		boolean existing = mcreator.getWorkspace().getModElementByName(getNameForTag(name, type)) != null;
+		boolean existing = mcreator.getWorkspace().containsModElement(getNameForTag(name, type));
 
 		JCheckBox box = new JCheckBox(
 				"<html><kbd>" + namespace + ":" + name + (existing ? (" -> " + getNameForTag(name, type)) : "")
@@ -183,7 +183,7 @@ public class InjectTagsTool {
 		String modElementName = getNameForTag(name, type);
 		Workspace workspace = mcreator.getWorkspace();
 
-		if (workspace.getModElementByName(modElementName) == null) {
+		if (!workspace.containsModElement(modElementName)) {
 			Tag tag = new Tag(new ModElement(workspace, modElementName, ModElementType.TAG));
 			tag.name = name;
 			tag.namespace = namespace;
