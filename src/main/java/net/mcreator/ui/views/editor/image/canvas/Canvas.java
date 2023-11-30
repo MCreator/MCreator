@@ -236,6 +236,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 	public void update(int index) {
 		fireContentsChanged(this, index, index);
+		canvasRenderer.repaint();
 	}
 
 	public int getWidth() {
