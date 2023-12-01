@@ -1,0 +1,1 @@
+To jest, ile punktów doświadczenia gracz dostanie po ukończeniu osiągnięcia.

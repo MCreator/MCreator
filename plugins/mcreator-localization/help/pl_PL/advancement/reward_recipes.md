@@ -1,0 +1,1 @@
+Przepisy, które się odblokują, gdy gracz ukończy postęp.
