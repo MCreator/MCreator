@@ -1,0 +1,1 @@
+Gracz dostanie niektóre przedmioty z wybranych w tabeli łupu zdefiniowanej w tym polu, gdy ukończy osiągnięcie.
