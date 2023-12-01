@@ -31,6 +31,7 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.LafUtil;
@@ -81,11 +82,7 @@ public class TestSetup {
 		Launcher.version = new MCreatorVersionNumber(conf);
 
 		// Init JFX Toolkit
-		try {
-			SwingUtilities.invokeAndWait(JFXPanel::new);
-		} catch (InterruptedException | InvocationTargetException e) {
-			LOG.error("Failed to start JFX toolkit", e);
-		}
+		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
 
 		// load preferences
 		PreferencesManager.init();
