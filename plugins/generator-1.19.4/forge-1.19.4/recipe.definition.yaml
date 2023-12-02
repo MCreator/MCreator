@@ -30,3 +30,5 @@ templates:
   - template: recipe/brewingrecipe.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/recipes/brewing/@NAMEBrewingRecipe.java"
     condition: "recipeType %= Brewing"
+
+field_exclusions: [smithingRecipeMaker.cb4]
