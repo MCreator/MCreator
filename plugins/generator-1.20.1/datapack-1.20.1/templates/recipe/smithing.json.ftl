@@ -2,7 +2,13 @@
 <#include "../mcitems.ftl">
 {
     "type": "minecraft:smithing_transform",
+    <#if data.smithingInputTemplateStack?? && !data.smithingInputTemplateStack.isEmpty()>
+    "template": {
+      ${mappedMCItemToItemObjectJSON(data.smithingInputTemplateStack)}
+    },
+    <#else>
     "template": [],
+    </#if>
     "base": {
       ${mappedMCItemToItemObjectJSON(data.smithingInputStack)}
     },

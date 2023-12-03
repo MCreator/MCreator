@@ -58,10 +58,6 @@ import java.util.stream.Collectors;
 		return new NameMapper(generator.getWorkspace(), mappingMap).getMapping(rawName, mappingTable);
 	}
 
-	public VariableElement getVariableElementByName(String elementName) {
-		return generator.getWorkspace().getVariableElementByName(elementName);
-	}
-
 	public Collection<String> sortByMappings(Collection<String> input, String mappingTable) {
 		List<?> mappingkeys = new ArrayList<>(generator.getMappings().getMapping(mappingTable).keySet());
 		return new LinkedHashSet<>(input.stream().sorted(Comparator.comparingInt(mappingkeys::indexOf)).toList());
