@@ -34,8 +34,11 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 public class CanvasRenderer extends JComponent implements IZoomable {
+
 	private static final int CHECKERBOARD_TILE_SIZE = 8;
 	private static final int OUTLINE_LINE_LENGTH = CHECKERBOARD_TILE_SIZE / 2;
+
+	private static final Color FLOATING_LAYER_OUTLINE = new Color(0x8D7DD2);
 
 	private Canvas canvas;
 	private JZoomPane jZoomPane;
@@ -289,8 +292,10 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 		graphics2D.drawRect(x, y, width - 1, height - 1);
 
 		// If pasted, the outline is brighter
-		if (pasted)
+		if (pasted && animated)
 			graphics2D.setPaint(Theme.current().getAltForegroundColor());
+		else if (pasted)
+			graphics2D.setPaint(FLOATING_LAYER_OUTLINE);
 		else
 			graphics2D.setPaint(Theme.current().getInterfaceAccentColor());
 

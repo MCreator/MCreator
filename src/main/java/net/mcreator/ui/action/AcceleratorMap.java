@@ -117,8 +117,8 @@ public class AcceleratorMap {
 				KeyStroke.getKeyStroke(KeyEvent.VK_T, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorFloodFill,
 				KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
-		actionKeyStrokeMap.put(actionRegistry.imageEditorColorPicker, KeyStroke.getKeyStroke(KeyEvent.VK_P,
-				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
+		actionKeyStrokeMap.put(actionRegistry.imageEditorColorPicker,
+				KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.SHIFT_DOWN_MASK));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorColorize,
 				KeyStroke.getKeyStroke(KeyEvent.VK_O, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
 		actionKeyStrokeMap.put(actionRegistry.imageEditorDesaturate, KeyStroke.getKeyStroke(KeyEvent.VK_D,
