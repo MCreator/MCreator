@@ -59,7 +59,6 @@ public class LayerListCellRenderer extends JPanel implements ListCellRenderer<La
 			name.setText(layer.getName());
 		}
 
-
 		ImageIcon iconImage = ImageUtils.fit(layer.getRaster(), 32);
 		if (!layer.isVisible())
 			iconImage = ImageUtils.changeSaturation(iconImage, 0);

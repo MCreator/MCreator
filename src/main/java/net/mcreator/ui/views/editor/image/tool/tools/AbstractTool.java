@@ -124,6 +124,7 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 	public Cursor getUsingCursor() {
 		return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
 	}
+
 	public Cursor getHoverCursor() {
 		return null;
 	}

@@ -31,7 +31,7 @@ import java.util.Arrays;
 
 public class CanvasTransferable implements Transferable {
 	private final BufferedImage image;
-	private final DataFlavor[] flavours = new DataFlavor[] { DataFlavor.imageFlavor};
+	private final DataFlavor[] flavours = new DataFlavor[] { DataFlavor.imageFlavor };
 	private final Canvas canvas;
 
 	public CanvasTransferable(Canvas canvas) {

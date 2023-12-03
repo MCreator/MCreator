@@ -27,8 +27,8 @@ import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.tool.component.JSlidingSpinner;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
-import java.awt.*;
 import java.awt.Shape;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
@@ -105,28 +105,32 @@ public class FloodFillTool extends AbstractModificationTool {
 				y = stack[index][1];
 				index--;
 
-				if ((x > 0) && toPaint(image.getRGB(x - 1, y), overlay.getRGB(x - 1, y), originalint) && selection.isInside(validArea, x - 1, y)) {
+				if ((x > 0) && toPaint(image.getRGB(x - 1, y), overlay.getRGB(x - 1, y), originalint)
+						&& selection.isInside(validArea, x - 1, y)) {
 					g2d.fillRect(x - 1, y, 1, 1);
 					index++;
 					stack[index][0] = x - 1;
 					stack[index][1] = y;
 				}
 
-				if ((x < maxX) && toPaint(image.getRGB(x + 1, y), overlay.getRGB(x + 1, y), originalint) && selection.isInside(validArea, x + 1, y)) {
+				if ((x < maxX) && toPaint(image.getRGB(x + 1, y), overlay.getRGB(x + 1, y), originalint)
+						&& selection.isInside(validArea, x + 1, y)) {
 					g2d.fillRect(x + 1, y, 1, 1);
 					index++;
 					stack[index][0] = x + 1;
 					stack[index][1] = y;
 				}
 
-				if ((y > 0) && toPaint(image.getRGB(x, y - 1), overlay.getRGB(x, y - 1), originalint) && selection.isInside(validArea, x, y - 1)) {
+				if ((y > 0) && toPaint(image.getRGB(x, y - 1), overlay.getRGB(x, y - 1), originalint)
+						&& selection.isInside(validArea, x, y - 1)) {
 					g2d.fillRect(x, y - 1, 1, 1);
 					index++;
 					stack[index][0] = x;
 					stack[index][1] = y - 1;
 				}
 
-				if ((y < maxY) && toPaint(image.getRGB(x, y + 1), overlay.getRGB(x, y + 1), originalint) && selection.isInside(validArea, x, y + 1)) {
+				if ((y < maxY) && toPaint(image.getRGB(x, y + 1), overlay.getRGB(x, y + 1), originalint)
+						&& selection.isInside(validArea, x, y + 1)) {
 					g2d.fillRect(x, y + 1, 1, 1);
 					index++;
 					stack[index][0] = x;

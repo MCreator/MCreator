@@ -214,9 +214,9 @@ public class Layer {
 		g2d.dispose();
 	}
 
-	public void clearSelection(){
+	public void clearSelection() {
 		Selection selection = canvas.getSelection();
-		if (selection.hasSurface() && selection.getEditing() != SelectedBorder.NONE){
+		if (selection.hasSurface() && selection.getEditing() != SelectedBorder.NONE) {
 			Graphics2D g2d = createGraphics();
 			Composite composite = g2d.getComposite();
 			g2d.setComposite(AlphaComposite.Clear);

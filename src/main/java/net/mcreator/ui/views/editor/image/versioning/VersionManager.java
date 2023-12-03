@@ -72,7 +72,7 @@ public class VersionManager {
 		revisionListener.revisionChanged();
 	}
 
-	public void refreshPreview(){
+	public void refreshPreview() {
 		imageMakerView.refreshTab();
 		if (layerPanel != null)
 			layerPanel.repaintList();

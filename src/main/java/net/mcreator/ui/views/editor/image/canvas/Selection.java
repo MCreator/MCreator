@@ -22,7 +22,6 @@ package net.mcreator.ui.views.editor.image.canvas;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 
-import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
@@ -55,6 +54,7 @@ public class Selection {
 	/**
 	 * Returns the editing state of the selection if no cursor was hovering over it.
 	 * This way we have a way to store the selection visibility state without another variable.
+	 *
 	 * @return editing visibility state of the selection
 	 */
 	public SelectedBorder getVisibilityState() {
@@ -133,7 +133,7 @@ public class Selection {
 		return editStarted;
 	}
 
-	public void clear(){
+	public void clear() {
 		first.x = 0;
 		first.y = 0;
 		second.x = 0;
@@ -141,7 +141,7 @@ public class Selection {
 		setEditing(SelectedBorder.NONE);
 	}
 
-	public Shape getLayerMask(Layer layer){
+	public Shape getLayerMask(Layer layer) {
 		if (hasSurface() && getEditing() != SelectedBorder.NONE) {
 			int xStart = getLeft() - layer.getX();
 			int yStart = getTop() - layer.getY();
@@ -157,7 +157,7 @@ public class Selection {
 		return null;
 	}
 
-	public boolean isInside(Shape shape, int x, int y){
+	public boolean isInside(Shape shape, int x, int y) {
 		return shape == null || shape.contains(x, y);
 	}
 
@@ -173,13 +173,13 @@ public class Selection {
 	 * Crops the image to the selection and extends it to the selection size if the
 	 * selection extends out of the image borders.
 	 *
-	 * @param image    image to crop
-	 * @param xOffset  x offset of the image (the layer's offset)
-	 * @param yOffset  y offset of the image (the layer's offset)
+	 * @param image   image to crop
+	 * @param xOffset x offset of the image (the layer's offset)
+	 * @param yOffset y offset of the image (the layer's offset)
 	 * @return cropped image
 	 */
 	private BufferedImage cropAndExtend(BufferedImage image, int xOffset, int yOffset) {
-		if (hasSurface() && getEditing() != SelectedBorder.NONE){
+		if (hasSurface() && getEditing() != SelectedBorder.NONE) {
 			BufferedImage newImage = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_ARGB);
 			Graphics2D g2d = newImage.createGraphics();
 			int xImage = getLeft() - xOffset;
@@ -194,7 +194,8 @@ public class Selection {
 			int widthLimited = Math.min(image.getWidth() - xLimited, getWidth());
 			int heightLimited = Math.min(image.getHeight() - yLimited, getHeight());
 
-			if (xLimited >= image.getWidth() || yLimited >= image.getHeight() || widthLimited <= 0 || heightLimited <= 0) {
+			if (xLimited >= image.getWidth() || yLimited >= image.getHeight() || widthLimited <= 0
+					|| heightLimited <= 0) {
 				g2d.dispose();
 				return newImage;
 			}

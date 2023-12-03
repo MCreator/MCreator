@@ -31,9 +31,9 @@ import java.util.Arrays;
 public class LayerTransferable implements Transferable {
 	private final BufferedImage image;
 	private final Layer layer;
-	
+
 	// Don't include the layer name to improve compatibility with other software
-	private final DataFlavor[] flavours = new DataFlavor[] { DataFlavor.imageFlavor/*, DataFlavor.stringFlavor */};
+	private final DataFlavor[] flavours = new DataFlavor[] { DataFlavor.imageFlavor/*, DataFlavor.stringFlavor */ };
 
 	public LayerTransferable(Layer layer) {
 		this.layer = layer.copy();

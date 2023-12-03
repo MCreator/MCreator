@@ -22,8 +22,6 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
-import net.mcreator.ui.views.editor.image.canvas.SelectedBorder;
-import net.mcreator.ui.views.editor.image.canvas.Selection;
 
 import javax.swing.*;
 

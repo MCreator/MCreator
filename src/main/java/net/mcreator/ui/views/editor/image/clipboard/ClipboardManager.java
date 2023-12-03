@@ -20,10 +20,10 @@
 package net.mcreator.ui.views.editor.image.clipboard;
 
 import net.mcreator.ui.views.editor.image.ImageMakerView;
+import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.clipboard.transferables.CanvasTransferable;
 import net.mcreator.ui.views.editor.image.clipboard.transferables.LayerTransferable;
 import net.mcreator.ui.views.editor.image.layer.Layer;
-import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.versioning.change.Modification;
 
 import java.awt.*;

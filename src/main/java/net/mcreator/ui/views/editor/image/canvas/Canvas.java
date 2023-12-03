@@ -126,6 +126,7 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 	/**
 	 * Returns the selection.
+	 *
 	 * @return the selection
 	 */
 	public Selection getSelection() {
