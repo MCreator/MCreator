@@ -20,30 +20,38 @@ package net.mcreator.ui.views.editor.image.versioning.change;
 
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
-import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 
-public class Removal extends Addition {
+/**
+ * When a floating layer changes into a solid layer (by pressing the purple + button in the layer list).
+ */
+public class Consolidation extends MultiStateChange {
+	private boolean newState;
+	private final boolean prevState;
 
-	private LayerPanel layerPanel = null;
-	private int lastIndex = -1;
-
-	public Removal(Canvas canvas, Layer layer, LayerPanel layerPanel, int lastIndex) {
-		this(canvas, layer);
-		this.layerPanel = layerPanel;
-		this.lastIndex = lastIndex;
+	public Consolidation(Canvas canvas, Layer layer) {
+		super(canvas, layer);
+		this.prevState = layer.isPasted();
 	}
 
-	public Removal(Canvas canvas, Layer layer) {
-		super(canvas, layer);
+	@Override public void setAfter(Layer after) {
+		this.newState = layer.isPasted();
 	}
 
 	@Override public void apply() {
-		super.revert();
-		if (layerPanel != null && lastIndex >= 0)
-			layerPanel.select(lastIndex);
+		layer.setPasted(newState);
+		updatePastedStates();
 	}
 
 	@Override public void revert() {
-		super.apply();
+		layer.setPasted(prevState);
+		updatePastedStates();
+	}
+
+	/**
+	 * Updates controls after paste state change.
+	 */
+	private void updatePastedStates() {
+		canvas.floatingCheck(layer);
+		canvas.getLayerPanel().updateControls();
 	}
 }
