@@ -113,6 +113,8 @@ net.mcreator.ui.views
 net.mcreator.ui.views.editor.image
 net.mcreator.ui.views.editor.image.action
 net.mcreator.ui.views.editor.image.canvas
+net.mcreator.ui.views.editor.image.clipboard
+net.mcreator.ui.views.editor.image.clipboard.transferables
 net.mcreator.ui.views.editor.image.layer
 net.mcreator.ui.views.editor.image.tool
 net.mcreator.ui.views.editor.image.tool.action

@@ -3366,7 +3366,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="serialized-class-details" id="net.mcreator.ui.minecraft.ModElementListField">
 <h3>Class&nbsp;<a href="net/mcreator/ui/minecraft/ModElementListField.html" title="class in net.mcreator.ui.minecraft">net.mcreator.ui.minecraft.ModElementListField</a></h3>
-<div class="type-signature">class ModElementListField extends <a href="net/mcreator/ui/component/JItemListField.html" title="class in net.mcreator.ui.component">JItemListField</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<div class="type-signature">class ModElementListField extends <a href="net/mcreator/ui/component/JItemListField.html" title="class in net.mcreator.ui.component">JItemListField</a>&lt;<a href="net/mcreator/generator/mapping/NonMappableElement.html" title="class in net.mcreator.generator.mapping">NonMappableElement</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <ul class="block-list">
 <li>
 <section class="detail">
@@ -3944,6 +3944,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>cb3</h5>
 <pre><a href="net/mcreator/ui/minecraft/MCItemHolder.html" title="class in net.mcreator.ui.minecraft">MCItemHolder</a> cb3</pre>
+</li>
+<li class="block-list">
+<h5>cb4</h5>
+<pre><a href="net/mcreator/ui/minecraft/MCItemHolder.html" title="class in net.mcreator.ui.minecraft">MCItemHolder</a> cb4</pre>
 </li>
 <li class="block-list">
 <h5>export</h5>
@@ -7063,6 +7067,10 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/validation/ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a> page1group</pre>
 </li>
 <li class="block-list">
+<h5>rarity</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComboBox.html" title="class or interface in javax.swing" class="external-link">JComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; rarity</pre>
+</li>
+<li class="block-list">
 <h5>specialInformation</h5>
 <pre><a href="net/mcreator/ui/procedure/StringListProcedureSelector.html" title="class in net.mcreator.ui.procedure">StringListProcedureSelector</a> specialInformation</pre>
 </li>
@@ -8821,6 +8829,10 @@ loadScripts(document, 'script');</script>
 <h4>Serialized Fields</h4>
 <ul class="block-list">
 <li class="block-list">
+<h5>active</h5>
+<pre>boolean active</pre>
+</li>
+<li class="block-list">
 <h5>canEdit</h5>
 <pre>boolean canEdit</pre>
 </li>
@@ -8831,6 +8843,14 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>canvasRenderer</h5>
 <pre><a href="net/mcreator/ui/views/editor/image/canvas/CanvasRenderer.html" title="class in net.mcreator.ui.views.editor.image.canvas">CanvasRenderer</a> canvasRenderer</pre>
+</li>
+<li class="block-list">
+<h5>clipboardManager</h5>
+<pre><a href="net/mcreator/ui/views/editor/image/clipboard/ClipboardManager.html" title="class in net.mcreator.ui.views.editor.image.clipboard">ClipboardManager</a> clipboardManager</pre>
+</li>
+<li class="block-list">
+<h5>currentCursor</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Cursor.html" title="class or interface in java.awt" class="external-link">Cursor</a> currentCursor</pre>
 </li>
 <li class="block-list">
 <h5>image</h5>
@@ -8890,6 +8910,42 @@ loadScripts(document, 'script');</script>
 <h2 title="Package">Package&nbsp;<a href="net/mcreator/ui/views/editor/image/action/package-summary.html">net.mcreator.ui.views.editor.image.action</a></h2>
 <ul class="block-list">
 <li>
+<section class="serialized-class-details" id="net.mcreator.ui.views.editor.image.action.ImageEditorClearSelectionAction">
+<h3>Class&nbsp;<a href="net/mcreator/ui/views/editor/image/action/ImageEditorClearSelectionAction.html" title="class in net.mcreator.ui.views.editor.image.action">net.mcreator.ui.views.editor.image.action.ImageEditorClearSelectionAction</a></h3>
+<div class="type-signature">class ImageEditorClearSelectionAction extends <a href="net/mcreator/ui/action/BasicAction.html" title="class in net.mcreator.ui.action">BasicAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.views.editor.image.action.ImageEditorCopyAction">
+<h3>Class&nbsp;<a href="net/mcreator/ui/views/editor/image/action/ImageEditorCopyAction.html" title="class in net.mcreator.ui.views.editor.image.action">net.mcreator.ui.views.editor.image.action.ImageEditorCopyAction</a></h3>
+<div class="type-signature">class ImageEditorCopyAction extends <a href="net/mcreator/ui/action/BasicAction.html" title="class in net.mcreator.ui.action">BasicAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.views.editor.image.action.ImageEditorCopyAllAction">
+<h3>Class&nbsp;<a href="net/mcreator/ui/views/editor/image/action/ImageEditorCopyAllAction.html" title="class in net.mcreator.ui.views.editor.image.action">net.mcreator.ui.views.editor.image.action.ImageEditorCopyAllAction</a></h3>
+<div class="type-signature">class ImageEditorCopyAllAction extends <a href="net/mcreator/ui/action/BasicAction.html" title="class in net.mcreator.ui.action">BasicAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.views.editor.image.action.ImageEditorCutAction">
+<h3>Class&nbsp;<a href="net/mcreator/ui/views/editor/image/action/ImageEditorCutAction.html" title="class in net.mcreator.ui.views.editor.image.action">net.mcreator.ui.views.editor.image.action.ImageEditorCutAction</a></h3>
+<div class="type-signature">class ImageEditorCutAction extends <a href="net/mcreator/ui/action/BasicAction.html" title="class in net.mcreator.ui.action">BasicAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.views.editor.image.action.ImageEditorDeleteAction">
+<h3>Class&nbsp;<a href="net/mcreator/ui/views/editor/image/action/ImageEditorDeleteAction.html" title="class in net.mcreator.ui.views.editor.image.action">net.mcreator.ui.views.editor.image.action.ImageEditorDeleteAction</a></h3>
+<div class="type-signature">class ImageEditorDeleteAction extends <a href="net/mcreator/ui/action/BasicAction.html" title="class in net.mcreator.ui.action">BasicAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.views.editor.image.action.ImageEditorPasteAction">
+<h3>Class&nbsp;<a href="net/mcreator/ui/views/editor/image/action/ImageEditorPasteAction.html" title="class in net.mcreator.ui.views.editor.image.action">net.mcreator.ui.views.editor.image.action.ImageEditorPasteAction</a></h3>
+<div class="type-signature">class ImageEditorPasteAction extends <a href="net/mcreator/ui/action/BasicAction.html" title="class in net.mcreator.ui.action">BasicAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+</section>
+</li>
+<li>
 <section class="serialized-class-details" id="net.mcreator.ui.views.editor.image.action.ImageEditorRedoAction">
 <h3>Class&nbsp;<a href="net/mcreator/ui/views/editor/image/action/ImageEditorRedoAction.html" title="class in net.mcreator.ui.views.editor.image.action">net.mcreator.ui.views.editor.image.action.ImageEditorRedoAction</a></h3>
 <div class="type-signature">class ImageEditorRedoAction extends <a href="net/mcreator/ui/action/BasicAction.html" title="class in net.mcreator.ui.action">BasicAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
@@ -8942,6 +8998,10 @@ loadScripts(document, 'script');</script>
 <pre>boolean drawPreview</pre>
 </li>
 <li class="block-list">
+<h5>floatingLayer</h5>
+<pre><a href="net/mcreator/ui/views/editor/image/layer/Layer.html" title="class in net.mcreator.ui.views.editor.image.layer">Layer</a> floatingLayer</pre>
+</li>
+<li class="block-list">
 <h5>height</h5>
 <pre>int height</pre>
 </li>
@@ -8956,6 +9016,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>previewImage</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a> previewImage</pre>
+</li>
+<li class="block-list">
+<h5>selection</h5>
+<pre><a href="net/mcreator/ui/views/editor/image/canvas/Selection.html" title="class in net.mcreator.ui.views.editor.image.canvas">Selection</a> selection</pre>
 </li>
 <li class="block-list">
 <h5>shape</h5>
@@ -9001,8 +9065,24 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Stroke.html" title="class or interface in java.awt" class="external-link">Stroke</a> dashed</pre>
 </li>
 <li class="block-list">
+<h5>dashed_animated</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Stroke.html" title="class or interface in java.awt" class="external-link">Stroke</a> dashed_animated</pre>
+</li>
+<li class="block-list">
 <h5>jZoomPane</h5>
 <pre><a href="net/mcreator/ui/component/zoompane/JZoomPane.html" title="class in net.mcreator.ui.component.zoompane">JZoomPane</a> jZoomPane</pre>
+</li>
+<li class="block-list">
+<h5>shadow</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Stroke.html" title="class or interface in java.awt" class="external-link">Stroke</a> shadow</pre>
+</li>
+<li class="block-list">
+<h5>shadowColor</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Color.html" title="class or interface in java.awt" class="external-link">Color</a> shadowColor</pre>
+</li>
+<li class="block-list">
+<h5>stroke_phase</h5>
+<pre>float stroke_phase</pre>
 </li>
 </ul>
 </section>
@@ -9031,8 +9111,16 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JLabel.html" title="class or interface in javax.swing" class="external-link">JLabel</a> icon</pre>
 </li>
 <li class="block-list">
+<h5>italic</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Font.html" title="class or interface in java.awt" class="external-link">Font</a> italic</pre>
+</li>
+<li class="block-list">
 <h5>name</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JLabel.html" title="class or interface in javax.swing" class="external-link">JLabel</a> name</pre>
+</li>
+<li class="block-list">
+<h5>normal</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Font.html" title="class or interface in java.awt" class="external-link">Font</a> normal</pre>
 </li>
 <li class="block-list">
 <h5>visible</h5>
@@ -9088,6 +9176,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>layerPanel</h5>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> layerPanel</pre>
+</li>
+<li class="block-list">
+<h5>mergeDown</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> mergeDown</pre>
 </li>
 <li class="block-list">
 <h5>mode</h5>
@@ -9260,6 +9352,12 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="net.mcreator.ui.views.editor.image.tool.action.ResizeToolAction">
 <h3>Class&nbsp;<a href="net/mcreator/ui/views/editor/image/tool/action/ResizeToolAction.html" title="class in net.mcreator.ui.views.editor.image.tool.action">net.mcreator.ui.views.editor.image.tool.action.ResizeToolAction</a></h3>
 <div class="type-signature">class ResizeToolAction extends <a href="net/mcreator/ui/views/editor/image/tool/action/ToolChangeAction.html" title="class in net.mcreator.ui.views.editor.image.tool.action">ToolChangeAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.views.editor.image.tool.action.SelectionToolAction">
+<h3>Class&nbsp;<a href="net/mcreator/ui/views/editor/image/tool/action/SelectionToolAction.html" title="class in net.mcreator.ui.views.editor.image.tool.action">net.mcreator.ui.views.editor.image.tool.action.SelectionToolAction</a></h3>
+<div class="type-signature">class SelectionToolAction extends <a href="net/mcreator/ui/views/editor/image/tool/action/ToolChangeAction.html" title="class in net.mcreator.ui.views.editor.image.tool.action">ToolChangeAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 </section>
 </li>
 <li>

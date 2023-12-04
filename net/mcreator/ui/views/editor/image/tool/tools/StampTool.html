@@ -73,7 +73,9 @@ loadScripts(document, 'script');</script>
 <div class="inheritance" title="Inheritance Tree"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">java.lang.Object</a>
 <div class="inheritance"><a href="AbstractTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">net.mcreator.ui.views.editor.image.tool.tools.AbstractTool</a>
 <div class="inheritance"><a href="AbstractModificationTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">net.mcreator.ui.views.editor.image.tool.tools.AbstractModificationTool</a>
+<div class="inheritance"><a href="AbstractDrawingTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">net.mcreator.ui.views.editor.image.tool.tools.AbstractDrawingTool</a>
 <div class="inheritance">net.mcreator.ui.views.editor.image.tool.tools.StampTool</div>
+</div>
 </div>
 </div>
 </div>
@@ -84,7 +86,7 @@ loadScripts(document, 'script');</script>
 </dl>
 <hr>
 <div class="type-signature"><span class="modifiers">public class </span><span class="element-name type-name-label">StampTool</span>
-<span class="extends-implements">extends <a href="AbstractModificationTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractModificationTool</a></span></div>
+<span class="extends-implements">extends <a href="AbstractDrawingTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractDrawingTool</a></span></div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -93,8 +95,11 @@ loadScripts(document, 'script');</script>
 <section class="field-summary" id="field-summary">
 <h2>Field Summary</h2>
 <div class="inherited-list">
+<h3 id="fields-inherited-from-class-net.mcreator.ui.views.editor.image.tool.tools.AbstractDrawingTool">Fields inherited from class&nbsp;net.mcreator.ui.views.editor.image.tool.tools.<a href="AbstractDrawingTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractDrawingTool</a></h3>
+<code><a href="AbstractDrawingTool.html#aliasing">aliasing</a>, <a href="AbstractDrawingTool.html#connect">connect</a>, <a href="AbstractDrawingTool.html#first">first</a>, <a href="AbstractDrawingTool.html#prevPoint">prevPoint</a></code></div>
+<div class="inherited-list">
 <h3 id="fields-inherited-from-class-net.mcreator.ui.views.editor.image.tool.tools.AbstractTool">Fields inherited from class&nbsp;net.mcreator.ui.views.editor.image.tool.tools.<a href="AbstractTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractTool</a></h3>
-<code><a href="AbstractTool.html#canvas">canvas</a>, <a href="AbstractTool.html#colorSelector">colorSelector</a>, <a href="AbstractTool.html#description">description</a>, <a href="AbstractTool.html#icon">icon</a>, <a href="AbstractTool.html#layer">layer</a>, <a href="AbstractTool.html#layerPanel">layerPanel</a>, <a href="AbstractTool.html#name">name</a>, <a href="AbstractTool.html#settingsPanel">settingsPanel</a>, <a href="AbstractTool.html#versionManager">versionManager</a></code></div>
+<code><a href="AbstractTool.html#canvas">canvas</a>, <a href="AbstractTool.html#colorSelector">colorSelector</a>, <a href="AbstractTool.html#description">description</a>, <a href="AbstractTool.html#icon">icon</a>, <a href="AbstractTool.html#layer">layer</a>, <a href="AbstractTool.html#layerPanel">layerPanel</a>, <a href="AbstractTool.html#name">name</a>, <a href="AbstractTool.html#processSuccess">processSuccess</a>, <a href="AbstractTool.html#settingsPanel">settingsPanel</a>, <a href="AbstractTool.html#startSuccess">startSuccess</a>, <a href="AbstractTool.html#versionManager">versionManager</a></code></div>
 </section>
 </li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
@@ -125,8 +130,17 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getImage()" class="member-name-link">getImage</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#doDrawing(java.awt.Graphics2D,int,int,java.awt.Dimension)" class="member-name-link">doDrawing</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Graphics2D.html" title="class or interface in java.awt" class="external-link">Graphics2D</a>&nbsp;g,
+ int&nbsp;x,
+ int&nbsp;y,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Dimension.html" title="class or interface in java.awt" class="external-link">Dimension</a>&nbsp;d)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Image.html" title="class or interface in java.awt" class="external-link">Image</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getImage()" class="member-name-link">getImage</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Dimension.html" title="class or interface in java.awt" class="external-link">Dimension</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getShapeDimension()" class="member-name-link">getShapeDimension</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mouseEntered(java.awt.event.MouseEvent)" class="member-name-link">mouseEntered</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/event/MouseEvent.html" title="class or interface in java.awt.event" class="external-link">MouseEvent</a>&nbsp;e)</code></div>
@@ -140,8 +154,8 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#mouseReleased(java.awt.event.MouseEvent)" class="member-name-link">mouseReleased</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/event/MouseEvent.html" title="class or interface in java.awt.event" class="external-link">MouseEvent</a>&nbsp;e)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#process(net.mcreator.ui.component.zoompane.ZoomedMouseEvent)" class="member-name-link">process</a><wbr>(<a href="../../../../../component/zoompane/ZoomedMouseEvent.html" title="class in net.mcreator.ui.component.zoompane">ZoomedMouseEvent</a>&nbsp;e)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#preProcess(net.mcreator.ui.component.zoompane.ZoomedMouseEvent)" class="member-name-link">preProcess</a><wbr>(<a href="../../../../../component/zoompane/ZoomedMouseEvent.html" title="class in net.mcreator.ui.component.zoompane">ZoomedMouseEvent</a>&nbsp;e)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toolDisabled(net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent)" class="member-name-link">toolDisabled</a><wbr>(<a href="event/ToolActivationEvent.html" title="class in net.mcreator.ui.views.editor.image.tool.tools.event">ToolActivationEvent</a>&nbsp;e)</code></div>
@@ -153,11 +167,14 @@ loadScripts(document, 'script');</script>
 </div>
 </div>
 <div class="inherited-list">
+<h3 id="methods-inherited-from-class-net.mcreator.ui.views.editor.image.tool.tools.AbstractDrawingTool">Methods inherited from class&nbsp;net.mcreator.ui.views.editor.image.tool.tools.<a href="AbstractDrawingTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractDrawingTool</a></h3>
+<code><a href="AbstractDrawingTool.html#process(net.mcreator.ui.component.zoompane.ZoomedMouseEvent)">process</a></code></div>
+<div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.views.editor.image.tool.tools.AbstractModificationTool">Methods inherited from class&nbsp;net.mcreator.ui.views.editor.image.tool.tools.<a href="AbstractModificationTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractModificationTool</a></h3>
 <code><a href="AbstractModificationTool.html#mousePressed(java.awt.event.MouseEvent)">mousePressed</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.views.editor.image.tool.tools.AbstractTool">Methods inherited from class&nbsp;net.mcreator.ui.views.editor.image.tool.tools.<a href="AbstractTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractTool</a></h3>
-<code><a href="AbstractTool.html#getCursor()">getCursor</a>, <a href="AbstractTool.html#getDescription()">getDescription</a>, <a href="AbstractTool.html#getIcon()">getIcon</a>, <a href="AbstractTool.html#getLayer()">getLayer</a>, <a href="AbstractTool.html#getName()">getName</a>, <a href="AbstractTool.html#getPropertiesPanel()">getPropertiesPanel</a>, <a href="AbstractTool.html#getToolPanelButton()">getToolPanelButton</a>, <a href="AbstractTool.html#getUsingCursor()">getUsingCursor</a>, <a href="AbstractTool.html#mouseClicked(java.awt.event.MouseEvent)">mouseClicked</a>, <a href="AbstractTool.html#mouseDragged(java.awt.event.MouseEvent)">mouseDragged</a>, <a href="AbstractTool.html#noSettings(boolean)">noSettings</a>, <a href="AbstractTool.html#setCanvas(net.mcreator.ui.views.editor.image.canvas.Canvas)">setCanvas</a>, <a href="AbstractTool.html#setLayer(net.mcreator.ui.views.editor.image.layer.Layer)">setLayer</a>, <a href="AbstractTool.html#setLayerPanel(net.mcreator.ui.views.editor.image.layer.LayerPanel)">setLayerPanel</a>, <a href="AbstractTool.html#setToolPanelButton(javax.swing.JToggleButton)">setToolPanelButton</a>, <a href="AbstractTool.html#toolActivationChanged(net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent)">toolActivationChanged</a></code></div>
+<code><a href="AbstractTool.html#getCursor()">getCursor</a>, <a href="AbstractTool.html#getDescription()">getDescription</a>, <a href="AbstractTool.html#getHoverCursor()">getHoverCursor</a>, <a href="AbstractTool.html#getIcon()">getIcon</a>, <a href="AbstractTool.html#getLayer()">getLayer</a>, <a href="AbstractTool.html#getName()">getName</a>, <a href="AbstractTool.html#getPropertiesPanel()">getPropertiesPanel</a>, <a href="AbstractTool.html#getToolPanelButton()">getToolPanelButton</a>, <a href="AbstractTool.html#getUsingCursor()">getUsingCursor</a>, <a href="AbstractTool.html#mouseClicked(java.awt.event.MouseEvent)">mouseClicked</a>, <a href="AbstractTool.html#mouseDragged(java.awt.event.MouseEvent)">mouseDragged</a>, <a href="AbstractTool.html#noSettings(boolean)">noSettings</a>, <a href="AbstractTool.html#setCanvas(net.mcreator.ui.views.editor.image.canvas.Canvas)">setCanvas</a>, <a href="AbstractTool.html#setLayer(net.mcreator.ui.views.editor.image.layer.Layer)">setLayer</a>, <a href="AbstractTool.html#setLayerPanel(net.mcreator.ui.views.editor.image.layer.LayerPanel)">setLayerPanel</a>, <a href="AbstractTool.html#setToolPanelButton(javax.swing.JToggleButton)">setToolPanelButton</a>, <a href="AbstractTool.html#toolActivationChanged(net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent)">toolActivationChanged</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-java.lang.Object">Methods inherited from class&nbsp;java.lang.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link">Object</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#clone()" title="class or interface in java.lang" class="external-link">clone</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#equals(java.lang.Object)" title="class or interface in java.lang" class="external-link">equals</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#finalize()" title="class or interface in java.lang" class="external-link">finalize</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#getClass()" title="class or interface in java.lang" class="external-link">getClass</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#hashCode()" title="class or interface in java.lang" class="external-link">hashCode</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notify()" title="class or interface in java.lang" class="external-link">notify</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#notifyAll()" title="class or interface in java.lang" class="external-link">notifyAll</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#toString()" title="class or interface in java.lang" class="external-link">toString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait()" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long)" title="class or interface in java.lang" class="external-link">wait</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/Object.html#wait(long,int)" title="class or interface in java.lang" class="external-link">wait</a></code></div>
@@ -191,12 +208,12 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="process(net.mcreator.ui.component.zoompane.ZoomedMouseEvent)">
-<h3>process</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">process</span><wbr><span class="parameters">(<a href="../../../../../component/zoompane/ZoomedMouseEvent.html" title="class in net.mcreator.ui.component.zoompane">ZoomedMouseEvent</a>&nbsp;e)</span></div>
+<section class="detail" id="preProcess(net.mcreator.ui.component.zoompane.ZoomedMouseEvent)">
+<h3>preProcess</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">preProcess</span><wbr><span class="parameters">(<a href="../../../../../component/zoompane/ZoomedMouseEvent.html" title="class in net.mcreator.ui.component.zoompane">ZoomedMouseEvent</a>&nbsp;e)</span></div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="AbstractTool.html#process(net.mcreator.ui.component.zoompane.ZoomedMouseEvent)">process</a></code>&nbsp;in class&nbsp;<code><a href="AbstractTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractTool</a></code></dd>
+<dd><code><a href="AbstractDrawingTool.html#preProcess(net.mcreator.ui.component.zoompane.ZoomedMouseEvent)">preProcess</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDrawingTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractDrawingTool</a></code></dd>
 </dl>
 </section>
 </li>
@@ -209,6 +226,29 @@ loadScripts(document, 'script');</script>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/event/MouseListener.html#mouseReleased(java.awt.event.MouseEvent)" title="class or interface in java.awt.event" class="external-link">mouseReleased</a></code>&nbsp;in interface&nbsp;<code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/event/MouseListener.html" title="class or interface in java.awt.event" class="external-link">MouseListener</a></code></dd>
 <dt>Overrides:</dt>
 <dd><code><a href="AbstractModificationTool.html#mouseReleased(java.awt.event.MouseEvent)">mouseReleased</a></code>&nbsp;in class&nbsp;<code><a href="AbstractModificationTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractModificationTool</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="getShapeDimension()">
+<h3>getShapeDimension</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Dimension.html" title="class or interface in java.awt" class="external-link">Dimension</a></span>&nbsp;<span class="element-name">getShapeDimension</span>()</div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="AbstractDrawingTool.html#getShapeDimension()">getShapeDimension</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDrawingTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractDrawingTool</a></code></dd>
+</dl>
+</section>
+</li>
+<li>
+<section class="detail" id="doDrawing(java.awt.Graphics2D,int,int,java.awt.Dimension)">
+<h3>doDrawing</h3>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">doDrawing</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Graphics2D.html" title="class or interface in java.awt" class="external-link">Graphics2D</a>&nbsp;g,
+ int&nbsp;x,
+ int&nbsp;y,
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Dimension.html" title="class or interface in java.awt" class="external-link">Dimension</a>&nbsp;d)</span></div>
+<dl class="notes">
+<dt>Specified by:</dt>
+<dd><code><a href="AbstractDrawingTool.html#doDrawing(java.awt.Graphics2D,int,int,java.awt.Dimension)">doDrawing</a></code>&nbsp;in class&nbsp;<code><a href="AbstractDrawingTool.html" title="class in net.mcreator.ui.views.editor.image.tool.tools">AbstractDrawingTool</a></code></dd>
 </dl>
 </section>
 </li>

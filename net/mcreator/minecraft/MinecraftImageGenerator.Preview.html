@@ -284,7 +284,8 @@ loadScripts(document, 'script');</script>
 <div class="block">This method generates the block icon for slabs.</div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link">BufferedImage</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#generateSmithingPreviewPicture(net.mcreator.workspace.Workspace,net.mcreator.element.parts.MItemBlock,net.mcreator.element.parts.MItemBlock,net.mcreator.element.parts.MItemBlock)" class="member-name-link">generateSmithingPreviewPicture</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#generateSmithingPreviewPicture(net.mcreator.workspace.Workspace,net.mcreator.element.parts.MItemBlock,net.mcreator.element.parts.MItemBlock,net.mcreator.element.parts.MItemBlock,net.mcreator.element.parts.MItemBlock)" class="member-name-link">generateSmithingPreviewPicture</a><wbr>(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;template,
  <a href="../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;input,
  <a href="../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;addition,
  <a href="../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;result)</code></div>
@@ -386,17 +387,19 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="generateSmithingPreviewPicture(net.mcreator.workspace.Workspace,net.mcreator.element.parts.MItemBlock,net.mcreator.element.parts.MItemBlock,net.mcreator.element.parts.MItemBlock)">
+<section class="detail" id="generateSmithingPreviewPicture(net.mcreator.workspace.Workspace,net.mcreator.element.parts.MItemBlock,net.mcreator.element.parts.MItemBlock,net.mcreator.element.parts.MItemBlock,net.mcreator.element.parts.MItemBlock)">
 <h3>generateSmithingPreviewPicture</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/image/BufferedImage.html" title="class or interface in java.awt.image" class="external-link">BufferedImage</a></span>&nbsp;<span class="element-name">generateSmithingPreviewPicture</span><wbr><span class="parameters">(<a href="../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;template,
  <a href="../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;input,
  <a href="../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;addition,
  <a href="../element/parts/MItemBlock.html" title="class in net.mcreator.element.parts">MItemBlock</a>&nbsp;result)</span></div>
 <div class="block"><p>This method generates smithing recipe images.</p></div>
 <dl class="notes">
 <dt>Parameters:</dt>
+<dd><code>template</code> - Template of the recipe.</dd>
 <dd><code>input</code> - Input of the recipe.</dd>
-<dd><code>addition</code> - Addition of the recipe</dd>
+<dd><code>addition</code> - Addition of the recipe.</dd>
 <dd><code>result</code> - Result of the recipe.</dd>
 <dt>Returns:</dt>
 <dd>Returns the generated image.</dd>

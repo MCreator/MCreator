@@ -15,7 +15,11 @@
 <script type="text/javascript" src="../../../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="package-declaration-page">
-<script type="text/javascript">var pathtoroot = "../../../../../../../";
+<script type="text/javascript">var evenRowColor = "even-row-color";
+var oddRowColor = "odd-row-color";
+var tableTab = "table-tab";
+var activeTableTab = "active-table-tab";
+var pathtoroot = "../../../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -71,25 +75,35 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color">&nbsp;</div>
 <div class="col-first odd-row-color"><a href="../action/package-summary.html">net.mcreator.ui.views.editor.image.action</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="../layer/package-summary.html">net.mcreator.ui.views.editor.image.layer</a></div>
+<div class="col-first even-row-color"><a href="../clipboard/package-summary.html">net.mcreator.ui.views.editor.image.clipboard</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><a href="../tool/package-summary.html">net.mcreator.ui.views.editor.image.tool</a></div>
+<div class="col-first odd-row-color"><a href="../layer/package-summary.html">net.mcreator.ui.views.editor.image.layer</a></div>
 <div class="col-last odd-row-color">&nbsp;</div>
-<div class="col-first even-row-color"><a href="../versioning/package-summary.html">net.mcreator.ui.views.editor.image.versioning</a></div>
+<div class="col-first even-row-color"><a href="../tool/package-summary.html">net.mcreator.ui.views.editor.image.tool</a></div>
 <div class="col-last even-row-color">&nbsp;</div>
+<div class="col-first odd-row-color"><a href="../versioning/package-summary.html">net.mcreator.ui.views.editor.image.versioning</a></div>
+<div class="col-last odd-row-color">&nbsp;</div>
 </div>
 </div>
 </li>
 <li>
 <div id="class-summary">
-<div class="caption"><span>Classes</span></div>
-<div class="summary-table two-column-summary">
+<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="class-summary-tab0" role="tab" aria-selected="true" aria-controls="class-summary.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary', 2)" class="active-table-tab">All Classes and Interfaces</button><button id="class-summary-tab2" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab2', 2)" class="table-tab">Classes</button><button id="class-summary-tab3" role="tab" aria-selected="false" aria-controls="class-summary.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('class-summary', 'class-summary-tab3', 2)" class="table-tab">Enum Classes</button></div>
+<div id="class-summary.tabpanel" role="tabpanel">
+<div class="summary-table two-column-summary" aria-labelledby="class-summary-tab0">
 <div class="table-header col-first">Class</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color class-summary class-summary-tab2"><a href="Canvas.html" title="class in net.mcreator.ui.views.editor.image.canvas">Canvas</a></div>
 <div class="col-last even-row-color class-summary class-summary-tab2">&nbsp;</div>
 <div class="col-first odd-row-color class-summary class-summary-tab2"><a href="CanvasRenderer.html" title="class in net.mcreator.ui.views.editor.image.canvas">CanvasRenderer</a></div>
 <div class="col-last odd-row-color class-summary class-summary-tab2">&nbsp;</div>
+<div class="col-first even-row-color class-summary class-summary-tab3"><a href="SelectedBorder.html" title="enum class in net.mcreator.ui.views.editor.image.canvas">SelectedBorder</a></div>
+<div class="col-last even-row-color class-summary class-summary-tab3">&nbsp;</div>
+<div class="col-first odd-row-color class-summary class-summary-tab2"><a href="Selection.html" title="class in net.mcreator.ui.views.editor.image.canvas">Selection</a></div>
+<div class="col-last odd-row-color class-summary class-summary-tab2">
+<div class="block">Class used to transfer selection data between objects</div>
+</div>
+</div>
 </div>
 </div>
 </li>
