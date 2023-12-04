@@ -25,6 +25,7 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.TerribleModuleHacks;
 import net.mcreator.util.UTF8Forcer;
@@ -79,22 +80,8 @@ public class Launcher {
 		System.setProperty("sun.java2d.d3d", "false");
 		System.setProperty("prism.lcdtext", "false");
 
-		// if the OS is macOS, we enable javafx single thread mode to avoid some deadlocks with JFXPanel
-		if (OS.getOS() == OS.MAC) {
-			System.setProperty("javafx.embed.singleThread", "true");
-		}
-
-		if ("true".equals(System.getProperty("javafx.embed.singleThread"))) {
-			LOG.warn("Running in javafx.embed.singleThread environment. "
-					+ "This is just a note and should not cause any problems.");
-		}
-
 		// Init JFX Toolkit
-		try {
-			SwingUtilities.invokeAndWait(JFXPanel::new);
-		} catch (InterruptedException | InvocationTargetException e) {
-			LOG.error("Failed to start JFX toolkit", e);
-		}
+		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
 
 		WebConsoleListener.registerLogger(LOG);
 
