@@ -136,13 +136,13 @@ public class InjectTagsTool {
 
 	private static Consumer<Boolean> addTag(MCreator mcreator, JPanel panel, String name, String namespace, String type,
 			boolean checked) {
-		boolean existing = mcreator.getWorkspace().getModElementByName(getNameForTag(name, type)) != null;
+		boolean existing = mcreator.getWorkspace().containsModElement(getNameForTag(name, type));
 
 		JCheckBox box = new JCheckBox(
 				"<html><kbd>" + namespace + ":" + name + (existing ? (" -> " + getNameForTag(name, type)) : "")
 						+ "</kbd><small><br>" + L10N.t(
-						"dialog.tools.inject_tags.tag." + type.toLowerCase(Locale.ENGLISH).replace(' ', '_') + "." +
-								namespace + "." + name));
+						"dialog.tools.inject_tags.tag." + type.toLowerCase(Locale.ENGLISH).replace(' ', '_') + "."
+								+ namespace + "." + name));
 		box.setSelected(checked);
 
 		JLabel icon = new JLabel();
@@ -175,15 +175,15 @@ public class InjectTagsTool {
 		if (name.endsWith("s"))
 			name = name.substring(0, name.length() - 1);
 
-		return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name.replace("_blocks", "")) +
-				("Damage types".equals(type) ? "DamageTypes" : type);
+		return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name.replace("_blocks", ""))
+				+ ("Damage types".equals(type) ? "DamageTypes" : type);
 	}
 
 	private static void injectTagToWorkspace(MCreator mcreator, String name, String namespace, String type) {
 		String modElementName = getNameForTag(name, type);
 		Workspace workspace = mcreator.getWorkspace();
 
-		if (workspace.getModElementByName(modElementName) == null) {
+		if (!workspace.containsModElement(modElementName)) {
 			Tag tag = new Tag(new ModElement(workspace, modElementName, ModElementType.TAG));
 			tag.name = name;
 			tag.namespace = namespace;

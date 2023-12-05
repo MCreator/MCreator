@@ -1258,9 +1258,10 @@ public class TestWorkspaceDataProvider {
 						.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 				tag.biomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 				tag.biomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
-				tag.damageTypes.addAll(ElementUtil.loadDataListAndElements(
-						modElement.getWorkspace(), "damagesources", false, null, "damagetype").stream()
-						.map(e -> new DamageTypeEntry(modElement.getWorkspace(), e.getName())).toList());
+				tag.damageTypes.addAll(
+						ElementUtil.loadDataListAndElements(modElement.getWorkspace(), "damagesources", false, null,
+										"damagetype").stream()
+								.map(e -> new DamageTypeEntry(modElement.getWorkspace(), e.getName())).toList());
 
 				tag.functions.add("ExampleFunction1");
 				tag.functions.add("ExampleFunction2");
@@ -1854,6 +1855,8 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.smithingInputAdditionStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
+			recipe.smithingInputTemplateStack = new MItemBlock(modElement.getWorkspace(),
+					_true ? getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName() : "");
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 		}

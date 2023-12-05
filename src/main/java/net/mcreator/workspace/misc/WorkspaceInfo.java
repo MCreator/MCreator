@@ -112,7 +112,7 @@ import java.util.*;
 			if (t instanceof NonMappableElement) {
 				retval.add(t);
 			} else if (t.getUnmappedValue().startsWith("CUSTOM:")) {
-				if (workspace.getModElementByName(GeneratorWrapper.getElementPlainName(t.getUnmappedValue())) != null) {
+				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
 					retval.add(new UniquelyMappedElement(t));
 				} else {
 					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()

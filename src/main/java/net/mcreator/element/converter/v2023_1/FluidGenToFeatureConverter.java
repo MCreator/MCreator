@@ -45,7 +45,7 @@ public class FluidGenToFeatureConverter implements IConverter {
 		try {
 			String modElementName = input.getModElement().getName();
 
-			if (workspace.getModElementByName(modElementName + "Feature") == null) {
+			if (!workspace.containsModElement(modElementName + "Feature")) {
 				JsonObject fluid = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
 				// If the list of restriction dimensions is empty, there's no feature to convert
@@ -78,9 +78,11 @@ public class FluidGenToFeatureConverter implements IConverter {
 							} else if (spawnWorldType.startsWith("CUSTOM:")) {
 								ModElement modElement = workspace.getModElementByName(
 										spawnWorldType.replaceFirst("CUSTOM:", ""));
-								GeneratableElement generatableElement = modElement.getGeneratableElement();
-								if (generatableElement instanceof Dimension dimension) {
-									feature.restrictionBiomes.addAll(dimension.biomesInDimension);
+								if (modElement != null) {
+									GeneratableElement generatableElement = modElement.getGeneratableElement();
+									if (generatableElement instanceof Dimension dimension) {
+										feature.restrictionBiomes.addAll(dimension.biomesInDimension);
+									}
 								}
 							}
 						}

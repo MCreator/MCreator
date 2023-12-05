@@ -692,8 +692,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
 
 		JComponent layerList = PanelUtils.northAndCenterElement(
-				HelpUtils.wrapWithHelpButton(this.withEntry("entity/model_layers"), L10N.label("elementgui.living_entity.model_layers")),
-				modelLayers);
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/model_layers"),
+						L10N.label("elementgui.living_entity.model_layers")), modelLayers);
 
 		layerList.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 

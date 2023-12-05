@@ -44,7 +44,7 @@ public class PlantGenerationConditionRemover implements IConverter {
 		Plant plant = (Plant) input;
 		try {
 			String modElementName = input.getModElement().getName();
-			if (workspace.getModElementByName(modElementName + "Feature") == null) {
+			if (!workspace.containsModElement(modElementName + "Feature")) {
 				JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
 				// Check if we need to convert the element
