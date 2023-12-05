@@ -33,9 +33,7 @@ public class ProjectileEntry extends MappableElement {
 	}
 
 	public ProjectileEntry(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "projectiles"), name);
 	}
 
 	public ProjectileEntry(@Nonnull Workspace owner, DataListEntry name) {

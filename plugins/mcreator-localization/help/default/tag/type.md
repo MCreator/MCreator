@@ -5,3 +5,4 @@
 * **Functions:** this tag type is used for tagging functions into groups. 
 One such group is called "tick" from the "minecraft" namespace. 
 Functions tagged under the "tick" namespace will be executed each game tick.
+* **Damage types:** this tag type is used to group damage types together.

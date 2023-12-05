@@ -26,7 +26,7 @@ import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.integration.TestSetup;
+import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.integration.generator.GTSampleElements;
 import net.mcreator.preferences.PreferencesManager;
@@ -42,6 +42,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,19 +58,14 @@ import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ModElementUITest {
+@ExtendWith(IntegrationTestSetup.class) public class ModElementUITest {
 
-	private static Logger LOG;
+	private static Logger LOG = LogManager.getLogger("Mod Element Test");
 
 	private static Workspace workspace;
 	private static MCreator mcreator;
 
 	@BeforeAll public static void initTest() throws IOException {
-		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
-		LOG = LogManager.getLogger("Mod Element Test");
-
-		TestSetup.setupIntegrationTestEnvironment();
-
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 

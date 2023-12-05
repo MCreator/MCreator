@@ -62,9 +62,11 @@ public class FeatureDimensionRestrictionConverter implements IConverter {
 					} else if (restrictionDimension.startsWith("CUSTOM:")) {
 						ModElement modElement = workspace.getModElementByName(
 								restrictionDimension.replaceFirst("CUSTOM:", ""));
-						GeneratableElement generatableElement = modElement.getGeneratableElement();
-						if (generatableElement instanceof Dimension dimension) {
-							restrictionBiomes.addAll(dimension.biomesInDimension);
+						if (modElement != null) {
+							GeneratableElement generatableElement = modElement.getGeneratableElement();
+							if (generatableElement instanceof Dimension dimension) {
+								restrictionBiomes.addAll(dimension.biomesInDimension);
+							}
 						}
 					}
 				}

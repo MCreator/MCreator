@@ -25,21 +25,19 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.io.zip.ZipIO;
-import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.WorkspaceUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 import org.reflections.util.ConfigurationBuilder;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -50,15 +48,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class WorkspaceConvertersTest {
-
-	@BeforeAll public static void initTest() throws IOException {
-		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
-
-		TestSetup.setupIntegrationTestEnvironment();
-
-		ImageMakerTexturesCache.init();
-	}
+@ExtendWith(IntegrationTestSetup.class) public class WorkspaceConvertersTest {
 
 	public @TestFactory Stream<DynamicTest> testWorkspaceConversions() {
 		Set<String> testWorkspaces = new Reflections(
