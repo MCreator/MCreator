@@ -30,15 +30,18 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.validation.validators.UniqueNameValidator;
+import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.util.List;
 import java.util.Objects;
 
 public class JJigsawPoolsList extends JSingleEntriesList<JJigsawPool, Structure.JigsawPool> {
+	private final ModElement element;
 
-	public JJigsawPoolsList(MCreator mcreator, IHelpContext gui) {
+	public JJigsawPoolsList(MCreator mcreator, IHelpContext gui, ModElement element) {
 		super(mcreator, gui);
+		this.element = element;
 
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 
@@ -59,6 +62,10 @@ public class JJigsawPoolsList extends JSingleEntriesList<JJigsawPool, Structure.
 		return new UniqueNameValidator(L10N.t("elementgui.structuregen.jigsaw_pool_name_validator"), nameField::getText,
 				() -> entryList.stream().map(JJigsawPool::getPoolName), new RegistryNameValidator(nameField,
 				L10N.t("elementgui.structuregen.jigsaw_pool_name_validator")));
+	}
+
+	ModElement getElement() {
+		return element;
 	}
 
 	@Override public void reloadDataLists() {

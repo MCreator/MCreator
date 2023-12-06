@@ -95,7 +95,7 @@ public class StructureGUI extends ModElementGUI<Structure> {
 				mcreator.getFolderManager().getStructureList().toArray(String[]::new));
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
-		jigsaw = new JJigsawPoolsList(mcreator, this);
+		jigsaw = new JJigsawPoolsList(mcreator, this, modElement);
 
 		separation_spacing.setAllowEqualValues(false);
 		terrainAdaptation.addActionListener(e -> {

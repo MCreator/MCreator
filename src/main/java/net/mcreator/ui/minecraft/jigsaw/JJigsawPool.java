@@ -22,6 +22,8 @@ package net.mcreator.ui.minecraft.jigsaw;
 import net.mcreator.element.types.Structure;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.entries.JEntriesList;
+import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
+import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -30,10 +32,12 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ResourceLocationValidator;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,7 +45,7 @@ import java.util.List;
 public class JJigsawPool extends JEntriesList {
 
 	private final VTextField poolName = new VTextField(20);
-	private final VTextField fallbackPool = new VTextField(20);
+	private final VComboBox<String> fallbackPool = new VComboBox<>();
 
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
@@ -58,9 +62,20 @@ public class JJigsawPool extends JEntriesList {
 		poolName.setValidator(jigsawPools.newPoolNameValidator(poolName));
 		poolName.enableRealtimeValidation();
 
+		fallbackPool.setPreferredSize(new Dimension(300, 30));
+		fallbackPool.setEditable(true);
 		fallbackPool.setValidator(
 				new ResourceLocationValidator<>(L10N.t("elementgui.structuregen.jigsaw_fallback"), fallbackPool,
 						true).setAllowEmpty(true));
+		fallbackPool.addPopupMenuListener(new ComboBoxFullWidthPopup() {
+			@Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				super.popupMenuWillBecomeVisible(e);
+				ComboBoxUtil.updateComboBoxContents(fallbackPool, poolList.stream()
+								.map(p -> jigsawPools.getMCreator().getWorkspace().getWorkspaceSettings().getModID() + ":"
+										+ jigsawPools.getElement().getRegistryName() + "_" + p.poolName.getText()).toList(),
+						fallbackPool.getEditor().getItem().toString());
+			}
+		});
 
 		ComponentUtils.deriveFont(poolName, 16);
 		ComponentUtils.deriveFont(fallbackPool, 16);
@@ -133,14 +148,14 @@ public class JJigsawPool extends JEntriesList {
 	public Structure.JigsawPool getPool() {
 		Structure.JigsawPool pool = new Structure.JigsawPool();
 		pool.poolName = poolName.getText();
-		pool.fallbackPool = fallbackPool.getText();
+		pool.fallbackPool = fallbackPool.getEditor().getItem().toString();
 		pool.poolParts = entryList.stream().map(JJigsawPart::getEntry).toList();
 		return pool.poolParts.isEmpty() ? null : pool;
 	}
 
 	public void setPool(Structure.JigsawPool pool) {
 		poolName.setText(pool.poolName);
-		fallbackPool.setText(pool.fallbackPool);
+		fallbackPool.getEditor().setItem(pool.fallbackPool);
 		if (pool.poolParts != null) {
 			pool.poolParts.forEach(e -> {
 				JJigsawPart entry = new JJigsawPart(mcreator, entries, entryList);
