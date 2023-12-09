@@ -32,6 +32,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ResourceLocationValidator;
@@ -70,11 +71,16 @@ public class JJigsawPool extends JEntriesList {
 						true).setAllowEmpty(true));
 		fallbackPool.addPopupMenuListener(new ComboBoxFullWidthPopup() {
 			@Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
-				super.popupMenuWillBecomeVisible(e);
-				ComboBoxUtil.updateComboBoxContents(fallbackPool, poolList.stream()
-								.map(p -> jigsawPools.getMCreator().getWorkspace().getWorkspaceSettings().getModID() + ":"
-										+ jigsawPools.getModElement().getRegistryName() + "_" + p.poolName.getText()).toList(),
+				ComboBoxUtil.updateComboBoxContents(fallbackPool,
+						poolList.stream().filter(p -> !p.poolName.getText().isBlank())
+								.filter(p -> p.poolName.getValidationStatus().getValidationResultType()
+										== Validator.ValidationResultType.PASSED)
+								.filter(p -> !p.poolName.getText().equals(poolName.getText()))
+								.map(p -> jigsawPools.getMCreator().getWorkspace().getWorkspaceSettings().getModID()
+										+ ":" + jigsawPools.getModElement().getRegistryName() + "_"
+										+ p.poolName.getText()).toList(),
 						fallbackPool.getEditor().getItem().toString());
+				super.popupMenuWillBecomeVisible(e);
 			}
 		});
 
