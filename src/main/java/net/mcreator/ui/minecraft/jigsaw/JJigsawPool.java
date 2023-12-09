@@ -59,6 +59,7 @@ public class JJigsawPool extends JEntriesList {
 
 		entries.setOpaque(false);
 
+		poolName.setPreferredSize(new Dimension(300, 30));
 		poolName.setValidator(jigsawPools.newPoolNameValidator(poolName));
 		poolName.enableRealtimeValidation();
 
@@ -72,7 +73,7 @@ public class JJigsawPool extends JEntriesList {
 				super.popupMenuWillBecomeVisible(e);
 				ComboBoxUtil.updateComboBoxContents(fallbackPool, poolList.stream()
 								.map(p -> jigsawPools.getMCreator().getWorkspace().getWorkspaceSettings().getModID() + ":"
-										+ jigsawPools.getElement().getRegistryName() + "_" + p.poolName.getText()).toList(),
+										+ jigsawPools.getModElement().getRegistryName() + "_" + p.poolName.getText()).toList(),
 						fallbackPool.getEditor().getItem().toString());
 			}
 		});

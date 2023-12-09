@@ -37,11 +37,11 @@ import java.util.List;
 import java.util.Objects;
 
 public class JJigsawPoolsList extends JSingleEntriesList<JJigsawPool, Structure.JigsawPool> {
-	private final ModElement element;
+	private final ModElement modElement;
 
 	public JJigsawPoolsList(MCreator mcreator, IHelpContext gui, ModElement element) {
 		super(mcreator, gui);
-		this.element = element;
+		this.modElement = element;
 
 		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 
@@ -64,8 +64,8 @@ public class JJigsawPoolsList extends JSingleEntriesList<JJigsawPool, Structure.
 				L10N.t("elementgui.structuregen.jigsaw_pool_name_validator")));
 	}
 
-	ModElement getElement() {
-		return element;
+	ModElement getModElement() {
+		return modElement;
 	}
 
 	@Override public void reloadDataLists() {
