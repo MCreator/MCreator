@@ -22,9 +22,7 @@ import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.tools.Shape;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
-import net.mcreator.ui.views.editor.image.versioning.change.Addition;
-import net.mcreator.ui.views.editor.image.versioning.change.CanvasResize;
-import net.mcreator.ui.views.editor.image.versioning.change.Removal;
+import net.mcreator.ui.views.editor.image.versioning.change.*;
 import net.mcreator.util.ArrayListListModel;
 
 import java.awt.*;
@@ -36,8 +34,8 @@ public class Canvas extends ArrayListListModel<Layer> {
 	private int height;
 	private final LayerPanel layerPanel;
 	private final VersionManager versionManager;
+	private final Selection selection;
 	private CanvasRenderer canvasRenderer;
-
 	private boolean drawPreview;
 	private MouseEvent previewEvent;
 	private Shape shape;
@@ -45,12 +43,14 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 	private Image previewImage;
 	private boolean drawCustomPreview;
+	private Layer floatingLayer;
 
 	public Canvas(int width, int height, LayerPanel layerPanel, VersionManager versionManager) {
 		this.width = width;
 		this.height = height;
 		this.layerPanel = layerPanel;
 		this.versionManager = versionManager;
+		this.selection = new Selection(this);
 		layerPanel.setCanvas(this);
 		layerPanel.updateSelection();
 	}
@@ -62,21 +62,75 @@ public class Canvas extends ArrayListListModel<Layer> {
 		Addition addition = new Addition(this, layer);
 		addition.setUUID(group);
 		versionManager.addRevision(addition);
+		floatingCheck(layer);
 		return success;
 	}
 
+	public boolean add(Layer layer, int index, UUID group) {
+		super.add(index, layer);
+		layer.setCanvas(this);
+		layerPanel.select(indexOf(layer));
+		Addition addition = new Addition(this, layer);
+		addition.setUUID(group);
+		versionManager.addRevision(addition);
+		floatingCheck(layer);
+		return true;
+	}
+
 	@Override public boolean add(Layer layer) {
-		boolean success = super.add(layer);
+		super.add(0, layer);
 		layer.setCanvas(this);
 		layerPanel.select(indexOf(layer));
 		versionManager.addRevision(new Addition(this, layer));
-		return success;
+		floatingCheck(layer);
+		return true;
+	}
+
+	public boolean addOnTop(Layer layer, UUID group) {
+		super.add(layerPanel.selectedID(), layer);
+		layer.setCanvas(this);
+		layerPanel.select(indexOf(layer));
+		Addition addition = new Addition(this, layer);
+		addition.setUUID(group);
+		versionManager.addRevision(addition);
+		floatingCheck(layer);
+		return true;
+	}
+
+	public boolean addOnTop(Layer layer) {
+		return addOnTop(layer, null);
 	}
 
 	@Override public void add(int index, Layer element) {
 		super.add(index, element);
 		element.setCanvas(this);
 		layerPanel.select(indexOf(element));
+		floatingCheck(element);
+	}
+
+	/**
+	 * Checks if the layer is floating and updates the floating layer.
+	 *
+	 * @param layer the layer to check
+	 */
+	public void floatingCheck(Layer layer) {
+		if (layer == null || layer.isPasted()) {
+			floatingLayer = layer;
+			layerPanel.updateFloatingLayer();
+		}
+	}
+
+	public Layer getFloatingLayer() {
+		return floatingLayer;
+	}
+
+	/**
+	 * Returns the selection.
+	 *
+	 * @return the selection
+	 */
+	public Selection getSelection() {
+		return selection;
 	}
 
 	@Override public Layer set(int index, Layer layer) {
@@ -92,19 +146,45 @@ public class Canvas extends ArrayListListModel<Layer> {
 		layerPanel.select(index - 1);
 		removal.setUUID(group);
 		versionManager.addRevision(removal);
+		floatingCheck(null);
+		versionManager.refreshPreview();
+		return removed;
+	}
+
+	public Layer remove(int index, UUID group, int toSelect) {
+		Removal removal = new Removal(this, get(index), layerPanel, toSelect);
+		Layer removed = super.remove(index);
+		layerPanel.select(toSelect);
+		removal.setUUID(group);
+		versionManager.addRevision(removal);
+		floatingCheck(null);
+		versionManager.refreshPreview();
 		return removed;
 	}
 
 	@Override public Layer remove(int index) {
 		versionManager.addRevision(new Removal(this, get(index)));
 		Layer removed = super.remove(index);
-		layerPanel.select(index - 1);
+		layerPanel.select(Math.max(index - 1, 0));
+		floatingCheck(null);
+		versionManager.refreshPreview();
+		return removed;
+	}
+
+	@Override public boolean remove(Object o) {
+		int index = indexOf(o);
+		versionManager.addRevision(new Removal(this, (Layer) o));
+		boolean removed = super.remove(o);
+		layerPanel.select(Math.max(index - 1, 0));
+		floatingCheck(null);
+		versionManager.refreshPreview();
 		return removed;
 	}
 
 	public Layer removeNR(int index) {
 		Layer removed = super.remove(index);
 		layerPanel.select(index - 1);
+		floatingCheck(null);
 		return removed;
 	}
 
@@ -122,12 +202,42 @@ public class Canvas extends ArrayListListModel<Layer> {
 		return md;
 	}
 
+	public boolean mergeDown(int selectedID) {
+		UUID uuid = UUID.randomUUID();
+		return mergeDown(selectedID, uuid);
+	}
+
+	public boolean mergeDown(int selectedID, UUID uuid) {
+		get(selectedID + 1).mergeOnTop(get(selectedID));
+
+		Modification adt = new Modification(this, get(selectedID + 1));
+		adt.setUUID(uuid);
+		versionManager.addRevision(adt);
+
+		boolean success = remove(selectedID, uuid, selectedID) != null;
+		layerPanel.select(selectedID);
+		return success;
+	}
+
+	public boolean consolidateFloating() {
+		Consolidation consolidation = new Consolidation(this, floatingLayer);
+		floatingLayer.setPasted(false);
+		consolidation.setAfter(floatingLayer);
+		versionManager.addRevision(consolidation);
+		return true;
+	}
+
+	public boolean mergeSelectedDown() {
+		return mergeDown(layerPanel.selectedID());
+	}
+
 	public void update(Layer layer) {
 		update(indexOf(layer));
 	}
 
 	public void update(int index) {
 		fireContentsChanged(this, index, index);
+		canvasRenderer.repaint();
 	}
 
 	public int getWidth() {
@@ -199,6 +309,14 @@ public class Canvas extends ArrayListListModel<Layer> {
 
 	public Layer selected() {
 		return layerPanel.selected();
+	}
+
+	public LayerPanel getLayerPanel() {
+		return layerPanel;
+	}
+
+	public VersionManager getVersionManager() {
+		return versionManager;
 	}
 
 	public void setSize(int width, int height, UUID group) {

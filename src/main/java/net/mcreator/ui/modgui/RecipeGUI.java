@@ -374,6 +374,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		case "Smithing" -> {
 			smithingRecipeMaker.cb1.setBlock(recipe.smithingInputStack);
 			smithingRecipeMaker.cb2.setBlock(recipe.smithingInputAdditionStack);
+			smithingRecipeMaker.cb4.setBlock(recipe.smithingInputTemplateStack);
 			smithingRecipeMaker.cb3.setBlock(recipe.smithingReturnStack);
 		}
 		case "Brewing" -> {
@@ -437,6 +438,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		case "Smithing" -> {
 			recipe.smithingInputStack = smithingRecipeMaker.cb1.getBlock();
 			recipe.smithingInputAdditionStack = smithingRecipeMaker.cb2.getBlock();
+			recipe.smithingInputTemplateStack = smithingRecipeMaker.cb4.getBlock();
 			recipe.smithingReturnStack = smithingRecipeMaker.cb3.getBlock();
 		}
 		case "Brewing" -> {
