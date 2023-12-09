@@ -20,6 +20,7 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Tag;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
@@ -27,10 +28,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.BiomeListField;
-import net.mcreator.ui.minecraft.MCItemListField;
-import net.mcreator.ui.minecraft.ModElementListField;
-import net.mcreator.ui.minecraft.SpawnableEntityListField;
+import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.NamespaceValidator;
@@ -43,18 +41,20 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class TagGUI extends ModElementGUI<Tag> {
 
 	private final VComboBox<String> namespace = new VComboBox<>(new String[] { "minecraft", "mod", "forge", "c" });
 	private final JComboBox<String> type = new JComboBox<>(
-			new String[] { "Items", "Blocks", "Entities", "Biomes", "Functions" });
+			new String[] { "Items", "Blocks", "Entities", "Biomes", "Functions", "Damage types" });
 
 	private MCItemListField items;
 	private MCItemListField blocks;
 	private SpawnableEntityListField entities;
 	private BiomeListField biomes;
 	private ModElementListField functions;
+	private DamageTypeListField damageTypes;
 
 	private final VComboBox<String> name = new VComboBox<>();
 
@@ -73,6 +73,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		entities = new SpawnableEntityListField(mcreator, true);
 		biomes = new BiomeListField(mcreator, true);
 		functions = new ModElementListField(mcreator, ModElementType.FUNCTION);
+		damageTypes = new DamageTypeListField(mcreator, true);
 
 		name.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), name, false));
 		name.enableRealtimeValidation();
@@ -100,6 +101,7 @@ public class TagGUI extends ModElementGUI<Tag> {
 		valuesPan.add(functions, "Functions");
 		valuesPan.add(entities, "Entities");
 		valuesPan.add(biomes, "Biomes");
+		valuesPan.add(damageTypes, "Damage types");
 
 		if (isEditingMode()) {
 			type.setEnabled(false);
@@ -151,9 +153,10 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 		items.setListElements(tag.items);
 		blocks.setListElements(tag.blocks);
-		functions.setListElements(tag.functions);
+		functions.setListElements(tag.functions.stream().map(NonMappableElement::new).toList());
 		entities.setListElements(tag.entities);
 		biomes.setListElements(tag.biomes);
+		damageTypes.setListElements(tag.damageTypes);
 	}
 
 	@Override public Tag getElementFromGUI() {
@@ -163,9 +166,11 @@ public class TagGUI extends ModElementGUI<Tag> {
 
 		tag.items = items.getListElements();
 		tag.blocks = blocks.getListElements();
-		tag.functions = functions.getListElements();
+		tag.functions = functions.getListElements().stream().map(NonMappableElement::getUnmappedValue)
+				.collect(Collectors.toList());
 		tag.entities = entities.getListElements();
 		tag.biomes = biomes.getListElements();
+		tag.damageTypes = damageTypes.getListElements();
 
 		tag.name = name.getEditor().getItem().toString();
 		return tag;

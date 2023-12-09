@@ -25,7 +25,7 @@ import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.gradle.GradleTaskFinishedListener;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.ClassWriter;
-import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.gradle.GradleAction;

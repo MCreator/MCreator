@@ -28,6 +28,7 @@ import net.mcreator.element.parts.AchievementEntry;
 import net.mcreator.element.types.Achievement;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -306,8 +307,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		hideIfNotCompleted.setSelected(achievement.hideIfNotCompleted);
 		rewardFunction.setSelectedItem(achievement.rewardFunction);
 		background.setSelectedItem(achievement.background);
-		rewardLoot.setListElements(achievement.rewardLoot);
-		rewardRecipes.setListElements(achievement.rewardRecipes);
+		rewardLoot.setListElements(achievement.rewardLoot.stream().map(NonMappableElement::new).toList());
+		rewardRecipes.setListElements(achievement.rewardRecipes.stream().map(NonMappableElement::new).toList());
 		rewardXP.setValue(achievement.rewardXP);
 
 		blocklyPanel.setXMLDataOnly(achievement.triggerxml);
@@ -332,8 +333,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		achievement.hideIfNotCompleted = hideIfNotCompleted.isSelected();
 		achievement.rewardFunction = (String) rewardFunction.getSelectedItem();
 		achievement.background = (String) background.getSelectedItem();
-		achievement.rewardLoot = rewardLoot.getListElements();
-		achievement.rewardRecipes = rewardRecipes.getListElements();
+		achievement.rewardLoot = rewardLoot.getListElements().stream().map(NonMappableElement::getUnmappedValue)
+				.collect(Collectors.toList());
+		achievement.rewardRecipes = rewardRecipes.getListElements().stream().map(NonMappableElement::getUnmappedValue)
+				.collect(Collectors.toList());
 		achievement.rewardXP = (int) rewardXP.getValue();
 
 		achievement.triggerxml = blocklyPanel.getXML();

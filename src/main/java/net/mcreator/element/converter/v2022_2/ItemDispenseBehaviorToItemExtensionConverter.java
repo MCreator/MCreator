@@ -42,7 +42,7 @@ public class ItemDispenseBehaviorToItemExtensionConverter implements IConverter 
 		try {
 			String originalName = input.getModElement().getName();
 
-			if (workspace.getModElementByName(originalName + "Extension") == null) {
+			if (!workspace.containsModElement(originalName + "Extension")) {
 
 				JsonObject item = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 				if (item.get("hasDispenseBehavior") != null && item.get("hasDispenseBehavior").getAsBoolean()) {

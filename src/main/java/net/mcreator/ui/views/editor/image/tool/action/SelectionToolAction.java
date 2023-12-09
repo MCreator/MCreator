@@ -16,10 +16,17 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.minecraft.api;
+package net.mcreator.ui.views.editor.image.tool.action;
 
-import javax.annotation.Nullable;
-import java.util.List;
+import net.mcreator.ui.action.ActionRegistry;
+import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.views.editor.image.tool.tools.SelectionTool;
 
-public record ModAPIImplementation(ModAPI parent, String gradle, @Nullable List<String> update_files,
-								   boolean requiredWhenEnabled) {}
+public class SelectionToolAction extends ToolChangeAction {
+	public SelectionToolAction(ActionRegistry actionRegistry) {
+		super(actionRegistry, L10N.t("dialog.image_maker.tools.types.select"),
+				L10N.t("dialog.image_maker.tools.types.select_description"), SelectionTool.class);
+		setIcon(UIRES.get("img_editor.select"));
+	}
+}

@@ -28,6 +28,8 @@ import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NonMappableElement;
+import net.mcreator.generator.mapping.UniquelyMappedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -101,21 +103,23 @@ import java.util.*;
 		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
-	public <T extends MappableElement> Set<MappableElement.Unique> filterBrokenReferences(List<T> input) {
+	public <T extends MappableElement> Set<MappableElement> filterBrokenReferences(List<T> input) {
 		if (input == null)
 			return Collections.emptySet();
 
-		Set<MappableElement.Unique> retval = new HashSet<>();
+		Set<MappableElement> retval = new HashSet<>();
 		for (T t : input) {
-			if (t.getUnmappedValue().startsWith("CUSTOM:")) {
-				if (workspace.getModElementByName(GeneratorWrapper.getElementPlainName(t.getUnmappedValue())) != null) {
-					retval.add(new MappableElement.Unique(t));
+			if (t instanceof NonMappableElement) {
+				retval.add(t);
+			} else if (t.getUnmappedValue().startsWith("CUSTOM:")) {
+				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
+					retval.add(new UniquelyMappedElement(t));
 				} else {
 					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
 							.replaceFirst("CUSTOM:", ""));
 				}
 			} else {
-				retval.add(new MappableElement.Unique(t));
+				retval.add(new UniquelyMappedElement(t));
 			}
 		}
 		return retval;
