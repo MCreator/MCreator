@@ -45,7 +45,7 @@ import java.util.List;
 
 public class JJigsawPool extends JEntriesList {
 
-	private final VTextField poolName = new VTextField(20);
+	private final VTextField poolName = new VTextField();
 	private final VComboBox<String> fallbackPool = new VComboBox<>();
 
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
@@ -75,7 +75,6 @@ public class JJigsawPool extends JEntriesList {
 						poolList.stream().filter(p -> !p.poolName.getText().isBlank())
 								.filter(p -> p.poolName.getValidationStatus().getValidationResultType()
 										== Validator.ValidationResultType.PASSED)
-								.filter(p -> !p.poolName.getText().equals(poolName.getText()))
 								.map(p -> jigsawPools.getMCreator().getWorkspace().getWorkspaceSettings().getModID()
 										+ ":" + jigsawPools.getModElement().getRegistryName() + "_"
 										+ p.poolName.getText()).toList(),
