@@ -58,6 +58,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
 	private StringListProcedureSelector specialInformation;
 	private final VTextField name = new VTextField(20);
+	private final JComboBox<String> rarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 	private final VTextField description = new VTextField(20);
 
 	private final JSpinner lengthInTicks = new JSpinner(new SpinnerNumberModel(100, 0, 20 * 3600, 1));
@@ -127,7 +128,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		ComponentUtils.deriveFont(name, 16);
 		ComponentUtils.deriveFont(description, 16);
 
-		JPanel subpane2 = new JPanel(new GridLayout(6, 2, 45, 2));
+		JPanel subpane2 = new JPanel(new GridLayout(7, 2, 45, 2));
 		subpane2.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -139,6 +140,10 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
 		subpane2.add(name);
+
+		subpane2.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		subpane2.add(rarity);
 
 		subpane2.add(HelpUtils.wrapWithHelpButton(this.withEntry("musicdisc/description"),
 				L10N.label("elementgui.music_disc.disc_description")));
@@ -233,6 +238,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 
 	@Override public void openInEditingMode(MusicDisc musicDisc) {
 		name.setText(musicDisc.name);
+		rarity.setSelectedItem(musicDisc.rarity);
 		description.setText(musicDisc.description);
 		texture.setTextureFromTextureName(musicDisc.texture);
 		onRightClickedInAir.setSelectedProcedure(musicDisc.onRightClickedInAir);
@@ -253,6 +259,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 	@Override public MusicDisc getElementFromGUI() {
 		MusicDisc musicDisc = new MusicDisc(modElement);
 		musicDisc.name = name.getText();
+		musicDisc.rarity = (String) rarity.getSelectedItem();
 		musicDisc.description = description.getText();
 		musicDisc.creativeTabs = creativeTabs.getListElements();
 		musicDisc.glowCondition = glowCondition.getSelectedProcedure();

@@ -1229,13 +1229,15 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.TAG.equals(modElement.getType())) {
 			Tag tag = new Tag(modElement);
 			tag.namespace = getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
-			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Entities", "Functions", "Biomes" });
+			tag.type = getRandomItem(random,
+					new String[] { "Items", "Blocks", "Entities", "Functions", "Biomes", "Damage types" });
 			tag.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			tag.items = new ArrayList<>();
 			tag.blocks = new ArrayList<>();
 			tag.functions = new ArrayList<>();
 			tag.entities = new ArrayList<>();
 			tag.biomes = new ArrayList<>();
+			tag.damageTypes = new ArrayList<>();
 			if (!emptyLists) {
 				tag.items.addAll(
 						blocksAndItems.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
@@ -1248,6 +1250,10 @@ public class TestWorkspaceDataProvider {
 						.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 				tag.biomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 				tag.biomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
+				tag.damageTypes.addAll(
+						ElementUtil.loadDataListAndElements(modElement.getWorkspace(), "damagesources", false, null,
+										"damagetype").stream()
+								.map(e -> new DamageTypeEntry(modElement.getWorkspace(), e.getName())).toList());
 
 				tag.functions.add("ExampleFunction1");
 				tag.functions.add("ExampleFunction2");
@@ -1312,6 +1318,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.MUSICDISC.equals(modElement.getType())) {
 			MusicDisc musicDisc = new MusicDisc(modElement);
 			musicDisc.name = modElement.getName();
+			musicDisc.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			musicDisc.description = modElement.getName();
 			musicDisc.creativeTabs = tabs;
 			musicDisc.glowCondition = new LogicProcedure(emptyLists ? "condition1" : null, _true);
@@ -1839,6 +1846,8 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.smithingInputAdditionStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
+			recipe.smithingInputTemplateStack = new MItemBlock(modElement.getWorkspace(),
+					_true ? getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName() : "");
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 		}

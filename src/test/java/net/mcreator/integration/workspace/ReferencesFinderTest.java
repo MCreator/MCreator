@@ -22,7 +22,7 @@ package net.mcreator.integration.workspace;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.*;
-import net.mcreator.integration.TestSetup;
+import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.integration.generator.GTSampleElements;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -36,9 +36,8 @@ import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,21 +49,16 @@ import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class ReferencesFinderTest {
+@ExtendWith(IntegrationTestSetup.class) public class ReferencesFinderTest {
 
-	private static Logger LOG;
+	private static final Logger LOG = LogManager.getLogger("References Finder Test");
 
 	private static Workspace workspace;
 
 	@BeforeAll public static void initTest() throws IOException {
-		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
-		LOG = LogManager.getLogger("References Finder Test");
-
 		long rgenseed = System.currentTimeMillis();
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
-
-		TestSetup.setupIntegrationTestEnvironment();
 
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
@@ -99,10 +93,6 @@ public class ReferencesFinderTest {
 				});
 			}
 		}
-	}
-
-	@BeforeEach void printName(TestInfo testInfo) {
-		LOG.info("Running " + testInfo.getDisplayName());
 	}
 
 	@Test void testModElementUsagesSearch() {

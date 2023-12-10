@@ -113,15 +113,15 @@ public class NewLayerDialog extends MCreatorDialog {
 		ok.addActionListener(e -> {
 			switch (layerType.getSelectedIndex()) {
 			case 0:
-				canvas.add(new Layer((int) width.getValue(), (int) height.getValue(), (int) offsetX.getValue(),
+				canvas.addOnTop(new Layer((int) width.getValue(), (int) height.getValue(), (int) offsetX.getValue(),
 						(int) offsetY.getValue(), layerName.getText()));
 				break;
 			case 1:
-				canvas.add(new Layer((int) width.getValue(), (int) height.getValue(), (int) offsetX.getValue(),
+				canvas.addOnTop(new Layer((int) width.getValue(), (int) height.getValue(), (int) offsetX.getValue(),
 						(int) offsetY.getValue(), layerName.getText(), colorChoser.getColor()));
 				break;
 			case 2:
-				canvas.add(new Layer((int) width.getValue(), (int) height.getValue(), (int) offsetX.getValue(),
+				canvas.addOnTop(new Layer((int) width.getValue(), (int) height.getValue(), (int) offsetX.getValue(),
 						(int) offsetY.getValue(), layerName.getText(),
 						ImageMakerTexturesCache.CACHE.get(selection).getImage()));
 				break;

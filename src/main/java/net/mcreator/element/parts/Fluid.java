@@ -32,9 +32,7 @@ public class Fluid extends MappableElement {
 	}
 
 	public Fluid(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "fluids"), name);
 	}
 
 	public Fluid(@Nonnull Workspace owner, DataListEntry name) {

@@ -19,8 +19,8 @@
 package net.mcreator.gradle;
 
 import net.mcreator.io.FileIO;
-import net.mcreator.minecraft.api.ModAPIImplementation;
-import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.plugin.modapis.ModAPIImplementation;
+import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;

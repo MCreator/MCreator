@@ -61,7 +61,7 @@ public class ThemeLoader {
 			Theme theme = gson.fromJson(FileIO.readResourceToString(PluginLoader.INSTANCE, file), Theme.class);
 
 			// Initialize the theme and ID - the ID will be used to get images from this theme if the user select it.
-			theme.init(new File(file).getParentFile().getName());
+			theme.id = new File(file).getParentFile().getName();
 
 			// Load the custom icon if provided, otherwise load the default one
 			if (PluginLoader.INSTANCE.getResource("themes/" + theme.getID() + "/icon.png") != null)
@@ -71,7 +71,7 @@ public class ThemeLoader {
 			THEMES.add(theme);
 		}
 
-		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme.get());
+		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme.get()).init();
 		LOG.info("Using MCreator UI theme: " + CURRENT_THEME.getID());
 	}
 

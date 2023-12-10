@@ -33,9 +33,7 @@ public class EffectEntry extends MappableElement {
 	}
 
 	public EffectEntry(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "effects"), name);
 	}
 
 	public EffectEntry(@Nonnull Workspace owner, DataListEntry name) {

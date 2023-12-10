@@ -21,6 +21,7 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.AddTagDialog;
@@ -49,9 +50,9 @@ public class BiomeListField extends JItemListField<BiomeEntry> {
 	@Override protected List<BiomeEntry> getTagsToAdd() {
 		List<BiomeEntry> tags = new ArrayList<>();
 
-		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, "Biomes", "is_overworld", "is_nether", "is_end",
-				"is_badlands", "is_beach", "is_deep_ocean", "is_forest", "is_hill", "is_jungle", "is_mountain",
-				"is_ocean", "is_river", "is_savanna", "is_taiga");
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.BIOMES, "is_overworld", "is_nether",
+				"is_end", "is_badlands", "is_beach", "is_deep_ocean", "is_forest", "is_hill", "is_jungle",
+				"is_mountain", "is_ocean", "is_river", "is_savanna", "is_taiga");
 		if (tag != null)
 			tags.add(new BiomeEntry(mcreator.getWorkspace(), "#" + tag));
 
