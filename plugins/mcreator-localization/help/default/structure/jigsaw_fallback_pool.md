@@ -1,5 +1,5 @@
-This parameter determines what jigsaw pool might be used by the current one as a fallback
-in cases this one can not be generated in the specified position (not enough space or depth limit reached).
+This parameter determines what jigsaw pool might be used by the current one as a fallback to choose a "terminator" jigsaw part
+in cases a part from this one can not be generated in the specified position (not enough space or depth limit reached).
 
 If set to `${modid}:${registryname}_<pool_name>`, the game will choose jigsaw parts from pool `<pool_name>` in this list.
 
