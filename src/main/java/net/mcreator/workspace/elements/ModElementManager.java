@@ -122,11 +122,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 		GeneratableElement cachedGeneratableElement = cache.get(element);
 		if (cachedGeneratableElement != null) {
 			if (cachedGeneratableElement.getModElement() != element) {
-				ModElement cacheModElement = cachedGeneratableElement.getModElement();
-				LOG.error(
-						"Cache contains mod element with same name but different object. This should not happen! Cache element: "
-								+ cacheModElement.getName() + ", type: " + cacheModElement.getType()
-								+ ", queried element: " + element.getName() + ", type: " + element.getType());
+				try {
+					throw new IllegalStateException(
+							"Cache element: " + cachedGeneratableElement.getModElement().getName() + ", type: "
+									+ cachedGeneratableElement.getModElement().getType() + ", queried element: "
+									+ element.getName() + ", type: " + element.getType());
+				} catch (IllegalStateException e) {
+					LOG.error("Cache contains mod element with same name but different object. This should not happen!",
+							e);
+				}
 			}
 			return cachedGeneratableElement;
 		}
