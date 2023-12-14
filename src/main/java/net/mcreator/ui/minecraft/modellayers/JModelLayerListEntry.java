@@ -52,6 +52,7 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 	private final Model default_model = new Model.BuiltInModel("Default");
 	private final JComboBox<Model> model = new JComboBox<>(new Model[] { default_model });
 	private final VComboBox<String> texture = new SearchableComboBox<>();
+	private final JCheckBox hurtAnimation = L10N.checkbox("elementgui.living_entity.layer_hurt_animation");
 	private final JCheckBox glow = L10N.checkbox("elementgui.living_entity.layer_should_glow");
 	private final ProcedureSelector condition;
 	private final MCreator mcreator;
@@ -84,8 +85,11 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 		line.add(L10N.label("elementgui.living_entity.layer_texture"));
 		line.add(texture);
 
+		hurtAnimation.setSelected(true);
+		hurtAnimation.setOpaque(false);
 		glow.setOpaque(false);
 
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/model_layer_hurt_animation"), hurtAnimation));
 		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/glow_texture"), glow));
 
 		line.add(condition);
@@ -116,6 +120,7 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 		entry.setWorkspace(mcreator.getWorkspace());
 		entry.model = ((Model) Objects.requireNonNull(model.getSelectedItem())).getReadableName();
 		entry.texture = texture.getSelectedItem();
+		entry.hurtAnimation = hurtAnimation.isSelected();
 		entry.glow = glow.isSelected();
 		entry.condition = condition.getSelectedProcedure();
 		return entry;
@@ -127,6 +132,7 @@ public class JModelLayerListEntry extends JSimpleListEntry<LivingEntity.ModelLay
 					e.model.equals("Default") ? Model.Type.BUILTIN : Model.Type.JAVA));
 		}
 		texture.setSelectedItem(e.texture);
+		hurtAnimation.setSelected(e.hurtAnimation);
 		glow.setSelected(e.glow);
 		condition.setSelectedProcedure(e.condition);
 	}

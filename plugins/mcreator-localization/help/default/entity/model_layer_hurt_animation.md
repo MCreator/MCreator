@@ -1,0 +1,1 @@
+If checked, this layer will display the animation when the entity is hurt.
