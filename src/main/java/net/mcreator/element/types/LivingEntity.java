@@ -278,7 +278,7 @@ import java.util.*;
 
 		public String model;
 		@TextureReference(TextureType.ENTITY) public String texture;
-		public boolean hurtAnimation;
+		public boolean noHurtAnimation;
 		public boolean glow;
 		public Procedure condition;
 

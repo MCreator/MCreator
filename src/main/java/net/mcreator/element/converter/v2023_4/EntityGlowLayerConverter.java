@@ -47,7 +47,6 @@ public class EntityGlowLayerConverter implements IConverter {
 					glowLayer.setWorkspace(workspace);
 					glowLayer.model = "Default";
 					glowLayer.texture = glowTexture;
-					glowLayer.hurtAnimation = true;
 					glowLayer.glow = true;
 					glowLayer.condition = null;
 
