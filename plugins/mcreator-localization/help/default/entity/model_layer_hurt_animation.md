@@ -1,1 +1,1 @@
-Unless checked, this layer will display the animation when the entity is hurt.
+Unless checked, the red overlay will be shown on this layer when the entity is hurt.

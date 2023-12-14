@@ -122,10 +122,10 @@ public class ${name}Renderer extends <#if humanoid>Humanoid</#if>MobRenderer<${n
 					model.prepareMobModel(entity, limbSwing, limbSwingAmount, partialTicks);
 					model.setupAnim(entity, limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch);
 					model.renderToBuffer(poseStack, vertexConsumer, 15728640,
-						<#if layer.noHurtAnimation>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(entity, 0)</#if>, 1, 1, 1, 1);
+						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(entity, 0)</#if>, 1, 1, 1, 1);
 				<#else>
 					this.getParentModel().renderToBuffer(poseStack, vertexConsumer, 15728640,
-						<#if layer.noHurtAnimation>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(entity, 0)</#if>, 1, 1, 1, 1);
+						<#if layer.disableHurtOverlay>OverlayTexture.NO_OVERLAY<#else>LivingEntityRenderer.getOverlayCoords(entity, 0)</#if>, 1, 1, 1, 1);
 				</#if>
 
 				<#if hasProcedure(layer.condition)>}</#if>
