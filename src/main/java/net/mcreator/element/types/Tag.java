@@ -25,8 +25,8 @@ import net.mcreator.element.parts.DamageTypeEntry;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.minecraft.TagType;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nonnull;
