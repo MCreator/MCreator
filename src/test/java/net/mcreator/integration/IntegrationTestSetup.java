@@ -34,6 +34,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
 import net.mcreator.ui.component.ConsolePane;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.LafUtil;
@@ -95,7 +96,7 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		PreferencesManager.init();
 
 		// Init JFX Toolkit
-		SwingUtilities.invokeAndWait(JFXPanel::new);
+		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
 		WebConsoleListener.registerLogger(LOG);
 		/* ****************************
 		 * END: Launcher.java emulation

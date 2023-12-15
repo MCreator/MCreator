@@ -22,6 +22,7 @@ import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
+import net.mcreator.ui.views.editor.image.canvas.Selection;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.tool.component.JTitledComponentWrapper;
@@ -58,13 +59,26 @@ public class ShapeTool extends AbstractModificationTool {
 	@Override public boolean process(ZoomedMouseEvent e) {
 		layer.resetOverlay();
 		layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
+
+		Selection selection = canvas.getSelection();
+		java.awt.Shape validArea = selection.getLayerMask(layer);
+
 		Graphics2D graphics2D = layer.getOverlay().createGraphics();
+		java.awt.Shape previousShape = graphics2D.getClip();
+
+		if (validArea != null)
+			graphics2D.setClip(validArea);
+
 		graphics2D.setColor(colorSelector.getForegroundColor());
 		if (aliasing.isSelected())
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		if (firstPoint == null)
 			firstPoint = new Point(e.getX() - layer.getX(), e.getY() - layer.getY());
 		draw(graphics2D, firstPoint.x, firstPoint.y, e.getX() - layer.getX(), e.getY() - layer.getY());
+
+		if (validArea != null)
+			graphics2D.setClip(previousShape);
+
 		graphics2D.dispose();
 		canvas.getCanvasRenderer().repaint();
 		return true;

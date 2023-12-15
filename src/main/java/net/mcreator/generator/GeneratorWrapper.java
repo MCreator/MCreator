@@ -24,7 +24,6 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElement;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
