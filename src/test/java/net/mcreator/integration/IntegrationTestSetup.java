@@ -76,7 +76,7 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		 * ******************************/
 		LoggingSystem.init();
 
-		TerribleModuleHacks.openAllUnnamed();
+		TerribleModuleHacks.openAllFor(ClassLoader.getSystemClassLoader().getUnnamedModule());
 		TerribleModuleHacks.openMCreatorRequirements();
 
 		UTF8Forcer.forceGlobalUTF8();
