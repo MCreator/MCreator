@@ -544,6 +544,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// we perform any custom defined after all other operations are complete
 		afterGeneratableElementStored();
 
+		// generate mod base (this is needed so imports tree generator can see base
+		// files while generating imports for the mod element Java files)
+		mcreator.getGenerator().generateBase();
+
 		// generate mod element code
 		mcreator.getGenerator().generateElement(element);
 
