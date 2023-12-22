@@ -25,6 +25,8 @@ import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.MCreator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.IWorkspaceProvider;
@@ -282,7 +284,8 @@ public class ReferencesFinder {
 	 * @return Whether it is safe to scan the {@code value} object deeper.
 	 */
 	private static boolean isCustomObject(Object value) {
-		return value.getClass().getModule() == ReferencesFinder.class.getModule()
+		return (value.getClass().getModule() == MCreator.class.getModule() || PluginLoader.INSTANCE.getPluginModules()
+				.contains(value.getClass().getModule()))
 				&& !(value instanceof IWorkspaceProvider); // prevent from being stuck in app structure
 	}
 
