@@ -122,6 +122,15 @@ public class PluginLoader extends URLClassLoader {
 							try {
 								return super.findClass(name);
 							} catch (Exception e) {
+								for (StackTraceElement element : e.getStackTrace()) {
+									if (element.getClassName().equals(Introspector.class.getName())) {
+										// If class not found was triggered due to Introspector looking for
+										// XXXBeanInfo class or XXXCustomizer class, we can ignore this and
+										// not log error or mark plugin as failed by setting loaded_failure
+										throw e;
+									}
+								}
+
 								plugin.loaded_failure =
 										"internal error: " + e.getClass().getSimpleName() + ": " + e.getMessage();
 								LOG.error("Failed to load class " + name + " for plugin " + plugin.getID(), e);
