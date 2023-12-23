@@ -1,3 +1,3 @@
 植物类型决定了玩家可以将植物放置在何处以及在世界生成期间。 请记住，静态植物总是可以留在砂土、泥土、灰壤、草地和耕地上， 而可生长的植物总是能自己生长。
 
-您可以在[这里](https://mcreator.net/wiki/plant-types-list)找到完整的植物类型列表。
+你可以在[这里](https：//mcreator.net/wiki/plant-types-list)找到完整的植物类型列表。
