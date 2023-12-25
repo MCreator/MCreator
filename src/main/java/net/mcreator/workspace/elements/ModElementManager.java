@@ -79,6 +79,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 	 * @param element GeneratableElement to convert to store
 	 */
 	public void storeModElement(GeneratableElement element) {
+		if (element instanceof CustomElement)
+			return; // Custom elements are not stored as they have no definition file
+
 		if (element == null) {
 			LOG.warn(
 					"Attempted to store null generatable element. Something went wrong previously for this to happen!");
