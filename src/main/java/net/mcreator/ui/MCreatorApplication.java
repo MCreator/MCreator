@@ -18,7 +18,6 @@
 
 package net.mcreator.ui;
 
-import com.google.gson.JsonObject;
 import javafx.application.Platform;
 import net.mcreator.Launcher;
 import net.mcreator.blockly.data.BlocklyLoader;
@@ -54,7 +53,6 @@ import net.mcreator.util.SoundUtils;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.WorkspaceFileManager;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -265,25 +263,18 @@ public final class MCreatorApplication {
 	 */
 	public MCreator openWorkspaceInMCreator(File workspaceFile) {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		String workspaceString = FileIO.readFileToString(workspaceFile);
-		JsonObject workspaceJson = WorkspaceFileManager.gson.fromJson(workspaceString, JsonObject.class);
-		if (workspaceJson.has("workspaceSettings") && workspaceJson.has("mcreatorVersion")) {
-			JsonObject workspaceSettings = workspaceJson.getAsJsonObject("workspaceSettings");
-			if (workspaceSettings.has("lockWorkspaceToCurrentVersion")
-					&& workspaceSettings.get("lockWorkspaceToCurrentVersion").getAsBoolean()) {
-				Long workspaceVersion = workspaceJson.get("mcreatorVersion").getAsLong();
-				int retval = JOptionPane.YES_OPTION;
-				if (!workspaceVersion.equals(Launcher.version.versionlong)) {
-					retval = JOptionPane.showConfirmDialog(this.workspaceSelector,
-							L10N.t("dialog.workspace.version_locked_message", workspaceJson.get("mcreatorVersion").getAsString()),
-							L10N.t("dialog.workspace.version_locked_title"),
-							JOptionPane.YES_NO_OPTION,
-							JOptionPane.WARNING_MESSAGE);
-				}
-				if (retval != JOptionPane.YES_OPTION) {
-					this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-					return null;
-				}
+		if (Workspace.isWorkspaceLockedToVersion(workspaceFile)) {
+			int retval = JOptionPane.YES_OPTION;
+			if (!Workspace.workspaceVersionMatchesCurrentVersion(workspaceFile)) {
+				retval = JOptionPane.showConfirmDialog(this.workspaceSelector,
+						L10N.t("dialog.workspace.version_locked_message"),
+						L10N.t("dialog.workspace.version_locked_title"),
+						JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE);
+			}
+			if (retval != JOptionPane.YES_OPTION) {
+				this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				return null;
 			}
 		}
 		Workspace workspace = null;

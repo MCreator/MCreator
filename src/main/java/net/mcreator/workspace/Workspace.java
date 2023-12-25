@@ -18,6 +18,7 @@
 
 package net.mcreator.workspace;
 
+import com.google.gson.JsonObject;
 import net.mcreator.Launcher;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -480,4 +481,21 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.workspaceSettings.setWorkspace(this);
 	}
 
+	public static boolean isWorkspaceLockedToVersion(File workspaceFile) {
+		String workspaceString = FileIO.readFileToString(workspaceFile);
+		JsonObject workspaceJson = WorkspaceFileManager.gson.fromJson(workspaceString, JsonObject.class);
+		if (workspaceJson.has("workspaceSettings") && workspaceJson.has("mcreatorVersion")) {
+			JsonObject workspaceSettings = workspaceJson.getAsJsonObject("workspaceSettings");
+			return workspaceSettings.has("lockWorkspaceToCurrentVersion") && workspaceSettings.get(
+					"lockWorkspaceToCurrentVersion").getAsBoolean();
+		}
+		return false;
+	}
+
+	public static boolean workspaceVersionMatchesCurrentVersion(File workspaceFile) {
+		String workspaceString = FileIO.readFileToString(workspaceFile);
+		JsonObject workspaceJson = WorkspaceFileManager.gson.fromJson(workspaceString, JsonObject.class);
+		Long workspaceVersion = workspaceJson.get("mcreatorVersion").getAsLong();
+		return workspaceVersion.equals(Launcher.version.versionlong);
+	}
 }
