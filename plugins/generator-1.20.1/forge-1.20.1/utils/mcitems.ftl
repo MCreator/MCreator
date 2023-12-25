@@ -210,8 +210,8 @@
     <#else>
         <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
         <#if mapped.startsWith("#")>
-            <#if customelement?has_content>
-                <#return "#" + mapped>
+            <#if acceptTags>
+                <#return mapped>
             <#else>
                 <#return "minecraft:air">
             </#if>

@@ -125,7 +125,8 @@ public class TemplateGenerator {
 		try {
 			Template freemarkerTemplate = templateGeneratorConfiguration.getConfiguration().getTemplate(templateName);
 			StringWriter stringWriter = new StringWriter();
-			freemarkerTemplate.process(dataModel, stringWriter, templateGeneratorConfiguration.getBeansWrapper());
+			freemarkerTemplate.process(dataModel, stringWriter,
+					templateGeneratorConfiguration.getConfiguration().getObjectWrapper());
 			return stringWriter.getBuffer().toString();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template: " + templateName, e);
@@ -144,7 +145,8 @@ public class TemplateGenerator {
 			}
 
 			StringWriter stringWriter = new StringWriter();
-			freemarkerTemplate.process(dataModel, stringWriter, templateGeneratorConfiguration.getBeansWrapper());
+			freemarkerTemplate.process(dataModel, stringWriter,
+					templateGeneratorConfiguration.getConfiguration().getObjectWrapper());
 			return stringWriter.getBuffer().toString();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template from string", e);
