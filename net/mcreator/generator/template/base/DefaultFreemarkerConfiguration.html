@@ -15,11 +15,7 @@
 <script type="text/javascript" src="../../../../../script-dir/jquery-ui.min.js"></script>
 </head>
 <body class="class-declaration-page">
-<script type="text/javascript">var evenRowColor = "even-row-color";
-var oddRowColor = "odd-row-color";
-var tableTab = "table-tab";
-var activeTableTab = "active-table-tab";
-var pathtoroot = "../../../../../";
+<script type="text/javascript">var pathtoroot = "../../../../../";
 loadScripts(document, 'script');</script>
 <noscript>
 <div>JavaScript is disabled on your browser.</div>
@@ -52,7 +48,7 @@ loadScripts(document, 'script');</script>
 <li>Detail:&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
-<li><a href="#method-detail">Method</a></li>
+<li>Method</li>
 </ul>
 </div>
 <div class="nav-list-search"><label for="search-input">SEARCH:</label>
@@ -126,19 +122,6 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="method-summary" id="method-summary">
 <h2>Method Summary</h2>
-<div id="method-summary-table">
-<div class="table-tabs" role="tablist" aria-orientation="horizontal"><button id="method-summary-table-tab0" role="tab" aria-selected="true" aria-controls="method-summary-table.tabpanel" tabindex="0" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table', 3)" class="active-table-tab">All Methods</button><button id="method-summary-table-tab2" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab2', 3)" class="table-tab">Instance Methods</button><button id="method-summary-table-tab4" role="tab" aria-selected="false" aria-controls="method-summary-table.tabpanel" tabindex="-1" onkeydown="switchTab(event)" onclick="show('method-summary-table', 'method-summary-table-tab4', 3)" class="table-tab">Concrete Methods</button></div>
-<div id="method-summary-table.tabpanel" role="tabpanel">
-<div class="summary-table three-column-summary" aria-labelledby="method-summary-table-tab0">
-<div class="table-header col-first">Modifier and Type</div>
-<div class="table-header col-second">Method</div>
-<div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>freemarker.ext.beans.BeansWrapper</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBeansWrapper()" class="member-name-link">getBeansWrapper</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-</div>
-</div>
-</div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-freemarker.template.Configuration">Methods inherited from class&nbsp;freemarker.template.Configuration</h3>
 <code>clearEncodingMap, clearSharedVariables, clearTemplateCache, clone, doAutoImportsAndIncludes, getAutoEscapingPolicy, getCacheStorage, getCorrectedNameForUnknownSetting, getDefaultConfiguration, getDefaultEncoding, getDefaultObjectWrapper, getEncoding, getFallbackOnNullLoopVariable, getIncompatibleEnhancements, getIncompatibleImprovements, getInterpolationSyntax, getLocalizedLookup, getNamingConvention, getOutputFormat, getOutputFormat, getParsedIncompatibleEnhancements, getRecognizeStandardFileExtensions, getRegisteredCustomOutputFormats, getSettingNames, getSharedVariable, getSharedVariableNames, getStrictSyntaxMode, getSupportedBuiltInDirectiveNames, getSupportedBuiltInDirectiveNames, getSupportedBuiltInNames, getSupportedBuiltInNames, getTabSize, getTagSyntax, getTemplate, getTemplate, getTemplate, getTemplate, getTemplate, getTemplate, getTemplate, getTemplateConfigurations, getTemplateLoader, getTemplateLookupStrategy, getTemplateNameFormat, getTemplateUpdateDelayMilliseconds, getVersion, getVersionNumber, getWhitespaceStripping, isAttemptExceptionReporterExplicitlySet, isCacheStorageExplicitlySet, isCFormatExplicitlySet, isDefaultEncodingExplicitlySet, isLocaleExplicitlySet, isLogTemplateExceptionsExplicitlySet, isObjectWrapperExplicitlySet, isOutputFormatExplicitlySet, isRecognizeStandardFileExtensionsExplicitlySet, isTemplateExceptionHandlerExplicitlySet, isTemplateLoaderExplicitlySet, isTemplateLookupStrategyExplicitlySet, isTemplateNameFormatExplicitlySet, isTimeZoneExplicitlySet, isWrapUncheckedExceptionsExplicitlySet, loadBuiltInEncodingMap, removeTemplateFromCache, removeTemplateFromCache, removeTemplateFromCache, removeTemplateFromCache, removeTemplateFromCache, removeTemplateFromCache, setAllSharedVariables, setAttemptExceptionReporter, setAutoEscapingPolicy, setCacheStorage, setCFormat, setClassForTemplateLoading, setClassLoaderForTemplateLoading, setDefaultConfiguration, setDefaultEncoding, setDirectoryForTemplateLoading, setEncoding, setFallbackOnNullLoopVariable, setIncompatibleEnhancements, setIncompatibleImprovements, setInterpolationSyntax, setLocale, setLocalizedLookup, setLogTemplateExceptions, setNamingConvention, setObjectWrapper, setOutputFormat, setRecognizeStandardFileExtensions, setRegisteredCustomOutputFormats, setServletContextForTemplateLoading, setSetting, setSharedVariable, setSharedVariable, setSharedVariables, setSharedVaribles, setStrictSyntaxMode, setTabSize, setTagSyntax, setTemplateConfigurations, setTemplateExceptionHandler, setTemplateLoader, setTemplateLookupStrategy, setTemplateNameFormat, setTemplateUpdateDelay, setTemplateUpdateDelayMilliseconds, setTimeZone, setWhitespaceStripping, setWrapUncheckedExceptions, unsetAttemptExceptionReporter, unsetCacheStorage, unsetCFormat, unsetDefaultEncoding, unsetLocale, unsetLogTemplateExceptions, unsetObjectWrapper, unsetOutputFormat, unsetRecognizeStandardFileExtensions, unsetTemplateExceptionHandler, unsetTemplateLoader, unsetTemplateLookupStrategy, unsetTemplateNameFormat, unsetTimeZone, unsetWrapUncheckedExceptions</code></div>
@@ -166,20 +149,6 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="&lt;init&gt;()">
 <h3>DefaultFreemarkerConfiguration</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="element-name">DefaultFreemarkerConfiguration</span>()</div>
-</section>
-</li>
-</ul>
-</section>
-</li>
-<!-- ============ METHOD DETAIL ========== -->
-<li>
-<section class="method-details" id="method-detail">
-<h2>Method Details</h2>
-<ul class="member-list">
-<li>
-<section class="detail" id="getBeansWrapper()">
-<h3>getBeansWrapper</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">freemarker.ext.beans.BeansWrapper</span>&nbsp;<span class="element-name">getBeansWrapper</span>()</div>
 </section>
 </li>
 </ul>
