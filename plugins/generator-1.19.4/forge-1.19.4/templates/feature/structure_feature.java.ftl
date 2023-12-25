@@ -52,7 +52,7 @@ import com.mojang.serialization.Codec;
 		// Load the structure template
 		StructureTemplateManager structureManager = worldGenLevel.getLevel().getServer().getStructureManager();
 		StructureTemplate template = structureManager.getOrCreate(config.structure());
-		StructurePlaceSettings placeSettings = (new StructurePlaceSettings()).setRotation(rotation).setMirror(mirror).setRandom(random).setIgnoreEntities(true)
+		StructurePlaceSettings placeSettings = (new StructurePlaceSettings()).setRotation(rotation).setMirror(mirror).setRandom(random).setIgnoreEntities(false)
 				.addProcessor(new BlockIgnoreProcessor(config.ignoredBlocks().stream().map(Holder::get).toList()));
 		template.placeInWorld(worldGenLevel, placePos, placePos, placeSettings, random, 4);
 		return true;
