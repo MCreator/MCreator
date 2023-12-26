@@ -19,6 +19,7 @@
 package net.mcreator.ui.workspace;
 
 import net.mcreator.element.*;
+import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.generator.ListTemplate;
@@ -1086,7 +1087,7 @@ import java.util.stream.Collectors;
 		if (list.getSelectedValue() instanceof ModElement mu) {
 			GeneratableElement generatableElementOriginal = mu.getGeneratableElement();
 
-			if (generatableElementOriginal != null) {
+			if (generatableElementOriginal != null && !(generatableElementOriginal instanceof CustomElement)) {
 				String modName = VOptionPane.showInputDialog(mcreator,
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
