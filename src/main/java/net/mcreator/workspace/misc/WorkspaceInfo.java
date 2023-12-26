@@ -33,6 +33,7 @@ import net.mcreator.generator.mapping.UniquelyMappedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.TagElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
@@ -40,7 +41,6 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.function.Function;
 
 @SuppressWarnings("unused") public record WorkspaceInfo(Workspace workspace) {
 
@@ -184,21 +184,12 @@ import java.util.function.Function;
 
 	public <T extends MappableElement> Set<MappableElement> normalizeTagElements(String tag, int mappingTable,
 			Collection<T> elements) {
-		final Function<String, String> normalizeTag = input -> {
-			input = input.replaceFirst("#", "").replaceFirst("TAG:", "");
-			if (input.contains(":")) {
-				return input;
-			} else {
-				return "minecraft:" + input;
-			}
-		};
-
-		tag = normalizeTag.apply(tag);
+		tag = TagElement.normalizeTag(tag);
 		Set<MappableElement> filtered = filterBrokenReferences(elements);
 
 		Set<MappableElement> retval = new LinkedHashSet<>();
 		for (MappableElement element : filtered) {
-			if (!tag.equals(normalizeTag.apply(element.getMappedValue(mappingTable)))) {
+			if (!tag.equals(TagElement.normalizeTag(element.getMappedValue(mappingTable)))) {
 				retval.add(element);
 			}
 		}

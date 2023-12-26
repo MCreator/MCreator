@@ -80,6 +80,15 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 		return rawData.replace("~", "");
 	}
 
+	public static String normalizeTag(String input) {
+		input = input.replaceFirst("#", "").replaceFirst("TAG:", "");
+		if (input.contains(":")) {
+			return input;
+		} else {
+			return "minecraft:" + input;
+		}
+	}
+
 	public static class TagElementDeserializer implements JsonDeserializer<TagElement> {
 
 		@Override
