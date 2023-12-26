@@ -40,6 +40,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.function.Function;
 
 @SuppressWarnings("unused") public record WorkspaceInfo(Workspace workspace) {
 
@@ -103,28 +104,6 @@ import java.util.*;
 		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
-	public <T extends MappableElement> Set<MappableElement> filterBrokenReferences(List<T> input) {
-		if (input == null)
-			return Collections.emptySet();
-
-		Set<MappableElement> retval = new HashSet<>();
-		for (T t : input) {
-			if (t instanceof NonMappableElement) {
-				retval.add(t);
-			} else if (t.getUnmappedValue().startsWith("CUSTOM:")) {
-				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
-					retval.add(new UniquelyMappedElement(t));
-				} else {
-					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
-							.replaceFirst("CUSTOM:", ""));
-				}
-			} else {
-				retval.add(new UniquelyMappedElement(t));
-			}
-		}
-		return retval;
-	}
-
 	public Map<String, String> getItemTextureMap() {
 		Map<String, String> textureMap = new HashMap<>();
 		for (ModElement element : workspace.getModElements()) {
@@ -179,6 +158,51 @@ import java.util.*;
 		}
 
 		return tabMap;
+	}
+
+	public <T extends MappableElement> Set<MappableElement> filterBrokenReferences(Collection<T> input) {
+		if (input == null)
+			return Collections.emptySet();
+
+		Set<MappableElement> retval = new LinkedHashSet<>();
+		for (T t : input) {
+			if (t instanceof NonMappableElement) {
+				retval.add(t);
+			} else if (t.getUnmappedValue().startsWith("CUSTOM:")) {
+				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
+					retval.add(new UniquelyMappedElement(t));
+				} else {
+					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
+							.replaceFirst("CUSTOM:", ""));
+				}
+			} else {
+				retval.add(new UniquelyMappedElement(t));
+			}
+		}
+		return retval;
+	}
+
+	public <T extends MappableElement> Set<MappableElement> normalizeTagElements(String tag, int mappingTable,
+			Collection<T> elements) {
+		final Function<String, String> normalizeTag = input -> {
+			input = input.replaceFirst("#", "").replaceFirst("TAG:", "");
+			if (input.contains(":")) {
+				return input;
+			} else {
+				return "minecraft:" + input;
+			}
+		};
+
+		tag = normalizeTag.apply(tag);
+		Set<MappableElement> filtered = filterBrokenReferences(elements);
+
+		Set<MappableElement> retval = new LinkedHashSet<>();
+		for (MappableElement element : filtered) {
+			if (!tag.equals(normalizeTag.apply(element.getMappedValue(mappingTable)))) {
+				retval.add(element);
+			}
+		}
+		return retval;
 	}
 
 	public String getUUID(String offset) {
