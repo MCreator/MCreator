@@ -54,8 +54,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelHolder {
 
@@ -67,11 +69,16 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private Map<String, ToolboxBlock> externalBlocks;
+	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
 
 	public FeatureGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	@Override protected void initGUI() {
@@ -154,7 +161,10 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToFeature.getCompileNotes();
 
-		SwingUtilities.invokeLater(() -> compileNotesPanel.updateCompileNotes(compileNotesArrayList));
+		SwingUtilities.invokeLater(() -> {
+			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
+		});
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -191,8 +201,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		return feature;
 	}
 
-	@Override public List<BlocklyPanel> getBlocklyPanels() {
-		return List.of(blocklyPanel);
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {

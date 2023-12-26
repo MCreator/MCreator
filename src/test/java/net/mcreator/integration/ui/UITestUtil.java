@@ -21,6 +21,7 @@ package net.mcreator.integration.ui;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.BlocklyValidationResult;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
@@ -32,9 +33,14 @@ import java.awt.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class UITestUtil {
@@ -49,14 +55,24 @@ public class UITestUtil {
 		field.setAccessible(true);
 		field.set(modElementGUI, true);
 
-		// test opening generatable element
+		CountDownLatch latch = new CountDownLatch(1);
+		if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
+			Set<BlocklyPanel> blocklyPanels = new HashSet<>();
+			panelHolder.addBlocklyChangedListener(blocklyPanel -> {
+				blocklyPanels.add(blocklyPanel);
+				if (blocklyPanels.equals(panelHolder.getBlocklyPanels()))
+					latch.countDown();
+			});
+		}
+
+		// Open GeneratableElement in editing mode
 		Method method = modElementGUI.getClass().getDeclaredMethod("openInEditingMode", GeneratableElement.class);
 		method.setAccessible(true);
 		method.invoke(modElementGUI, generatableElement);
 
-		// If ModElementGUI<?> contains BlocklyPanel, give it time to fully load
-		if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
-			Thread.sleep(3500);
+		// If ModElementGUI<?> contains BlocklyPanel, give it time to fully load by waiting for all panels to report change
+		if (modElementGUI instanceof IBlocklyPanelHolder) {
+			assertTrue(latch.await(5, TimeUnit.SECONDS));
 		}
 
 		return modElementGUI;

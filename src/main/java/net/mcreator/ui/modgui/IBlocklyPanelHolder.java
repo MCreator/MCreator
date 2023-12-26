@@ -22,11 +22,11 @@ package net.mcreator.ui.modgui;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 
-import java.util.List;
+import java.util.Set;
 
 public interface IBlocklyPanelHolder {
 
-	List<BlocklyPanel> getBlocklyPanels();
+	Set<BlocklyPanel> getBlocklyPanels();
 
 	default BlocklyPanel getSpecificBlocklyPanel(BlocklyEditorType type) {
 		for (BlocklyPanel panel : getBlocklyPanels()) {
@@ -38,6 +38,14 @@ public interface IBlocklyPanelHolder {
 
 	default boolean isInitialXMLValid() {
 		return true;
+	}
+
+	void addBlocklyChangedListener(BlocklyChangedListener listener);
+
+	interface BlocklyChangedListener {
+
+		void blocklyChanged(BlocklyPanel panel);
+
 	}
 
 }

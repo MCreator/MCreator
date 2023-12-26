@@ -33,9 +33,9 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.blockly.BlocklyAggregatedValidationResult;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.BlocklyAggregatedValidationResult;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -64,9 +64,8 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AchievementGUI extends ModElementGUI<Achievement> implements IBlocklyPanelHolder {
@@ -99,11 +98,16 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private Map<String, ToolboxBlock> externalBlocks;
+	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
 
 	public AchievementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	@Override protected void initGUI() {
@@ -259,7 +263,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 					L10N.t("elementgui.advancement.need_trigger")));
 		}
 
-		SwingUtilities.invokeLater(() -> compileNotesPanel.updateCompileNotes(compileNotesArrayList));
+		SwingUtilities.invokeLater(() -> {
+			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
+		});
 	}
 
 	@Override public void reloadDataLists() {
@@ -334,8 +341,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-achievement");
 	}
 
-	@Override public List<BlocklyPanel> getBlocklyPanels() {
-		return List.of(blocklyPanel);
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
 	}
 
 	@Override public boolean isInitialXMLValid() {

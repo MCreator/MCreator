@@ -244,6 +244,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private Map<String, ToolboxBlock> externalBlocks;
+	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
 
 	private boolean editorReady = false;
 
@@ -259,6 +260,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	private void setDefaultAISet() {
@@ -291,7 +296,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			compileNotesArrayList = List.of(aiUnmodifiableCompileNote);
 
 		List<BlocklyCompileNote> finalCompileNotesArrayList = compileNotesArrayList;
-		SwingUtilities.invokeLater(() -> compileNotesPanel.updateCompileNotes(finalCompileNotesArrayList));
+		SwingUtilities.invokeLater(() -> {
+			compileNotesPanel.updateCompileNotes(finalCompileNotesArrayList);
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
+		});
 	}
 
 	@Override protected void initGUI() {
@@ -1223,8 +1231,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-mob");
 	}
 
-	@Override public List<BlocklyPanel> getBlocklyPanels() {
-		return List.of(blocklyPanel);
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
 	}
 
 }

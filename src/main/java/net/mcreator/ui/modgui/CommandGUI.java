@@ -48,8 +48,7 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelHolder {
 
@@ -58,15 +57,21 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 			new String[] { "STANDARD", "SINGLEPLAYER_ONLY", "MULTIPLAYER_ONLY", "CLIENTSIDE" });
 	private final JComboBox<String> permissionLevel = new JComboBox<>(
 			new String[] { "No requirement", "1", "2", "3", "4" });
-	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private final ValidationGroup page1group = new ValidationGroup();
+
 	private BlocklyPanel blocklyPanel;
 	private Map<String, ToolboxBlock> externalBlocks;
+	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
+	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
 
 	public CommandGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	@Override protected void initGUI() {
@@ -139,7 +144,10 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
 
-		SwingUtilities.invokeLater(() -> compileNotesPanel.updateCompileNotes(compileNotesArrayList));
+		SwingUtilities.invokeLater(() -> {
+			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
+		});
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -175,8 +183,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/making-command");
 	}
 
-	@Override public List<BlocklyPanel> getBlocklyPanels() {
-		return List.of(blocklyPanel);
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
 	}
 
 }

@@ -98,10 +98,16 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 
+	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
+
 	public ProcedureGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	private synchronized void regenerateProcedure() {
@@ -253,6 +259,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
 		});
 	}
 
@@ -635,8 +642,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		return procedure;
 	}
 
-	@Override public List<BlocklyPanel> getBlocklyPanels() {
-		return List.of(blocklyPanel);
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
