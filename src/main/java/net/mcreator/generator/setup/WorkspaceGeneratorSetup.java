@@ -139,7 +139,7 @@ public class WorkspaceGeneratorSetup {
 						Template freemarkerTemplate = InlineTemplatesHandler.getTemplate(contents);
 						StringWriter stringWriter = new StringWriter();
 						freemarkerTemplate.process(dataModel, stringWriter,
-								InlineTemplatesHandler.getConfiguration().getBeansWrapper());
+								InlineTemplatesHandler.getConfiguration().getObjectWrapper());
 						FileIO.writeStringToFile(stringWriter.getBuffer().toString(), outFile);
 					} else {
 						FileUtils.copyInputStreamToFile(stream, outFile);

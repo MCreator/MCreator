@@ -89,7 +89,7 @@ public class StringListProcedureSelector extends RetvalProcedureSelector<List<St
 	}
 
 	@Override public void setFixedValue(List<String> value) {
-		if (fixedValue != null)
+		if (fixedValue != null && value != null)
 			fixedValue.setTextList(value);
 	}
 

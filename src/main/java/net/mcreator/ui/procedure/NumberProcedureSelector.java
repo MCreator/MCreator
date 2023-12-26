@@ -96,7 +96,7 @@ public class NumberProcedureSelector extends RetvalProcedureSelector<Double, Num
 	}
 
 	@Override public void setFixedValue(Double value) {
-		if (fixedValue != null)
+		if (fixedValue != null && value != null)
 			fixedValue.setValue(value);
 	}
 
