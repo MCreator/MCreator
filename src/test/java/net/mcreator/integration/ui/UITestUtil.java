@@ -22,7 +22,7 @@ package net.mcreator.integration.ui;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.blockly.BlocklyPanel;
+import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 
@@ -31,6 +31,7 @@ import java.awt.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -54,8 +55,7 @@ public class UITestUtil {
 		method.invoke(modElementGUI, generatableElement);
 
 		// If ModElementGUI<?> contains BlocklyPanel, give it time to fully load
-		if (Arrays.stream(modElementGUI.getClass().getDeclaredFields())
-				.anyMatch(f -> f.getType() == BlocklyPanel.class)) {
+		if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
 			Thread.sleep(3500);
 		}
 
@@ -88,7 +88,7 @@ public class UITestUtil {
 		long start = System.currentTimeMillis();
 		while (Window.getWindows().length == frames_start) {
 			//noinspection BusyWait
-			Thread.sleep(100);
+			Thread.sleep(50);
 
 			if (System.currentTimeMillis() - start > 6000)
 				throw new TimeoutException();
