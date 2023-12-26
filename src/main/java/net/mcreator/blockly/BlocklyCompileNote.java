@@ -18,8 +18,6 @@
 
 package net.mcreator.blockly;
 
-import net.mcreator.ui.validation.Validator;
-
 public record BlocklyCompileNote(Type type, String message) {
 
 	@Override public String toString() {
@@ -27,16 +25,7 @@ public record BlocklyCompileNote(Type type, String message) {
 	}
 
 	public enum Type {
-		INFO, WARNING, ERROR;
-
-		public Validator.ValidationResultType toValidationResultType() {
-			return switch (this) {
-				case INFO -> Validator.ValidationResultType.PASSED;
-				case WARNING -> Validator.ValidationResultType.WARNING;
-				case ERROR -> Validator.ValidationResultType.ERROR;
-			};
-		}
-
+		INFO, WARNING, ERROR
 	}
 
 }

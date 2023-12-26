@@ -28,8 +28,16 @@ import java.util.function.Function;
 public class BlocklyValidationResult extends Validator.ValidationResult {
 
 	public BlocklyValidationResult(BlocklyCompileNote note, @Nullable Function<String, String> messageFormatter) {
-		super(note.type().toValidationResultType(),
+		super(toValidationResultType(note.type()),
 				messageFormatter != null ? messageFormatter.apply(note.message()) : note.message());
+	}
+
+	private static Validator.ValidationResultType toValidationResultType(BlocklyCompileNote.Type type) {
+		return switch (type) {
+			case INFO -> Validator.ValidationResultType.PASSED;
+			case WARNING -> Validator.ValidationResultType.WARNING;
+			case ERROR -> Validator.ValidationResultType.ERROR;
+		};
 	}
 
 }
