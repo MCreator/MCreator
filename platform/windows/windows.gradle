@@ -53,9 +53,9 @@ tasks.register('exportWindowsZip', Zip.class) {
     dependsOn exportWin64
 
     from 'build/export/win64/'
-    into 'MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "").replace(" ", "")
+    into 'MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "").replace(" ", "") + (String) project.builddate.replace(".", "").replace(" ", "")
     destinationDirectory = file('build/export/')
-    archiveFileName = 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Windows 64bit.zip'
+    archiveFileName = 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + (String) project.builddate + ' Windows64bit.zip'
 }
 
 tasks.register('buildInstallerWin64', Exec.class) {

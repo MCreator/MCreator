@@ -32,7 +32,7 @@ VIAddVersionKey LegalCopyright   "Copyright %year% (C) Pylo"
 VIAddVersionKey FileDescription  "Installer for MCreator ${MCREATOR_VERSION}.${BUILD}"
 VIProductVersion                 "${MCREATOR_VERSION}.${BUILD}.0"
 
-OutFile "MCreator ${MCREATOR_VERSION} Windows ${BITS}bit.exe"
+OutFile "MCreator ${MCREATOR_VERSION}.${BUILD} Windows${BITS}bit.exe"
 
 InstallDir "$PROGRAMFILES${BITS}\Pylo\MCreator"
 !define INSTALLSIZE 306000

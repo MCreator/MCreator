@@ -89,7 +89,7 @@ tasks.register('exportMacX64', Copy.class) {
             exec { commandLine('codesign', '--force', '--deep', '--sign', '-', exportPathX64) }
         }
 
-        def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
+        def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + (String) project.builddate + ' Mac64bit.dmg'
         makeDMG(file('build/export/mac_x64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
@@ -143,7 +143,7 @@ tasks.register('exportMacAarch64', Copy.class) {
             exec { commandLine('codesign', '--force', '--deep', '--sign', '-', exportPathAarch64) }
         }
 
-        def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
+        def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + (String) project.builddate + ' MacAarch64.dmg'
         makeDMG(file('build/export/mac_aarch64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }

@@ -32,7 +32,7 @@ tasks.register('exportLinux64', Copy.class) {
 tasks.register('tarLinux64', Tar.class) {
     dependsOn exportLinux64
 
-    into ('MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "").replace(" ", "")) {
+    into ('MCreator' + (String) project.mcreatorconf.getProperty('mcreator').replace(".", "").replace(" ", "") + (String) project.builddate.replace(".", "").replace(" ", "")) {
         from('build/export/linux64/') { exclude "mcreator.sh", "jdk/bin*" }
         from('build/export/linux64/mcreator.sh') { fileMode = 0775 }
         from('build/export/linux64/jdk/bin/') { fileMode = 0775 } into 'jdk/bin/'
@@ -40,7 +40,7 @@ tasks.register('tarLinux64', Tar.class) {
 
     destinationDirectory = file('build/export/')
     compression = Compression.GZIP
-    archiveFileName = 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Linux 64bit.tar.gz'
+    archiveFileName = 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + (String) project.builddate + ' Linux64bit.tar.gz'
 }
 
 tasks.register('exportLinux') {
