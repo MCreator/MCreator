@@ -308,8 +308,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(achievement.triggerxml);
-
-			regenerateTrigger();
+			blocklyPanel.triggerEventFunction();
 		});
 	}
 

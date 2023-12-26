@@ -165,7 +165,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(command.argsxml);
-			regenerateArgs();
+			blocklyPanel.triggerEventFunction();
 		});
 	}
 

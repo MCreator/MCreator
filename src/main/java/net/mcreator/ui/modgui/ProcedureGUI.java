@@ -632,7 +632,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			blocklyPanel.setXML(procedure.procedurexml);
 			localVars.removeAllElements();
 			blocklyPanel.getLocalVariablesList().forEach(localVars::addElement);
-			regenerateProcedure();
+			blocklyPanel.triggerEventFunction();
 		});
 	}
 

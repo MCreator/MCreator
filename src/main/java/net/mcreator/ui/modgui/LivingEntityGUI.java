@@ -1115,7 +1115,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(livingEntity.aixml);
-			regenerateAITasks();
+			blocklyPanel.triggerEventFunction();
 		});
 
 		enableOrDisableFields();

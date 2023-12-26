@@ -186,7 +186,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(feature.featurexml);
-			regenerateFeature();
+			blocklyPanel.triggerEventFunction();
 		});
 	}
 
