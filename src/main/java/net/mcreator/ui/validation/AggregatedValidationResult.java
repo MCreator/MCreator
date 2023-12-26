@@ -41,55 +41,29 @@ public class AggregatedValidationResult extends ValidationGroup {
 		this.validationGroups.addAll(validationGroups);
 	}
 
-	@Override public <T extends JComponent & IValidable> void addValidationElement(T validable) {
+	@Override public <T extends JComponent & IValidable> ValidationGroup addValidationElement(T validable) {
 		validationElements.add(validable);
+		return this;
 	}
 
-	public void addValidationGroup(ValidationGroup validable) {
-		validationGroups.add(validable);
-	}
-
-	@Override public boolean validateIsErrorFree() {
-		boolean isErrorFree = true;
-
-		for (IValidable validable : validationElements)
-			if (validable.getValidationStatus().getValidationResultType() == Validator.ValidationResultType.ERROR)
-				isErrorFree = false;
-
-		for (ValidationGroup validable : validationGroups)
-			if (!validable.validateIsErrorFree())
-				isErrorFree = false;
-
-		return isErrorFree;
-	}
-
-	/**
-	 * Returns list of messages of aggregated check with possible HTML elements
-	 *
-	 * @return List of messages
-	 */
-	@Override public List<String> getValidationProblemMessages() {
-		List<String> retval = new ArrayList<>();
+	@Override public List<Validator.ValidationResult> getGroupedValidationResults() {
+		List<Validator.ValidationResult> retval = new ArrayList<>();
 
 		validationElements.stream().map(IValidable::getValidationStatus)
-				.filter(e -> e.getValidationResultType() != Validator.ValidationResultType.PASSED)
-				.forEach(e -> retval.add(e.getMessage()));
+				.filter(e -> e.getValidationResultType() != Validator.ValidationResultType.PASSED).forEach(retval::add);
 
 		validationGroups.stream().filter((e) -> !e.validateIsErrorFree())
-				.forEach((e) -> retval.addAll(e.getValidationProblemMessages()));
+				.forEach((e) -> retval.addAll(e.getGroupedValidationResults()));
 
 		return retval;
 	}
 
 	public static class PASS extends AggregatedValidationResult {
 
-		@Override public List<String> getValidationProblemMessages() {
-			return new ArrayList<>();
+		@Override public List<Validator.ValidationResult> getGroupedValidationResults() {
+			return Collections.emptyList();
 		}
 
-		@Override public boolean validateIsErrorFree() {
-			return true;
-		}
 	}
 
 	public static class FAIL extends AggregatedValidationResult {
@@ -100,30 +74,10 @@ public class AggregatedValidationResult extends ValidationGroup {
 			this.message = message;
 		}
 
-		@Override public List<String> getValidationProblemMessages() {
-			return new ArrayList<>(Collections.singleton(message));
+		@Override public List<Validator.ValidationResult> getGroupedValidationResults() {
+			return List.of(new Validator.ValidationResult(Validator.ValidationResultType.ERROR, message));
 		}
 
-		@Override public boolean validateIsErrorFree() {
-			return false;
-		}
-	}
-
-	public static class MULTIFAIL extends AggregatedValidationResult {
-
-		private final List<String> messages;
-
-		public MULTIFAIL(List<String> messages) {
-			this.messages = messages;
-		}
-
-		@Override public List<String> getValidationProblemMessages() {
-			return messages;
-		}
-
-		@Override public boolean validateIsErrorFree() {
-			return false;
-		}
 	}
 
 }

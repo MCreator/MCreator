@@ -35,6 +35,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
+import net.mcreator.ui.blockly.BlocklyAggregatedValidationResult;
 import net.mcreator.ui.blockly.CompileNotesPanel;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -97,7 +98,6 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
-	private boolean hasErrors = false;
 	private Map<String, ToolboxBlock> externalBlocks;
 
 	public AchievementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -259,18 +259,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 					L10N.t("elementgui.advancement.need_trigger")));
 		}
 
-		SwingUtilities.invokeLater(() -> {
-			hasErrors = false;
-			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.type() == BlocklyCompileNote.Type.ERROR) {
-					hasErrors = true;
-					break;
-				}
-			}
-
-			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-
-		});
+		SwingUtilities.invokeLater(() -> compileNotesPanel.updateCompileNotes(compileNotesArrayList));
 	}
 
 	@Override public void reloadDataLists() {
@@ -287,12 +276,9 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (hasErrors)
-			return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-					.map(compileNote -> L10N.t("elementgui.advancement.trigger", compileNote.message()))
-					.collect(Collectors.toList()));
-
-		return new AggregatedValidationResult(page1group);
+		return new AggregatedValidationResult(page1group,
+				new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
+						compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 	}
 
 	@Override public void openInEditingMode(Achievement achievement) {
@@ -350,6 +336,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	@Override public List<BlocklyPanel> getBlocklyPanels() {
 		return List.of(blocklyPanel);
+	}
+
+	@Override public boolean isInitialXMLValid() {
+		return false;
 	}
 
 }

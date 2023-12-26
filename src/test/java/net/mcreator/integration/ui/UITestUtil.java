@@ -20,18 +20,18 @@
 package net.mcreator.integration.ui;
 
 import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.blockly.BlocklyValidationResult;
 import net.mcreator.ui.modgui.IBlocklyPanelHolder;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.Validator;
 
 import javax.swing.*;
 import java.awt.*;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.TimeoutException;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -62,14 +62,29 @@ public class UITestUtil {
 		return modElementGUI;
 	}
 
-	public static void testIfValidationPasses(ModElementGUI<?> modElementGUI) {
-		// test if UI validation is error free (skip advancement and feature as provider provides empty Blockly setup)
+	public static void testIfValidationPasses(ModElementGUI<?> modElementGUI,
+			boolean skipInitialXMLValidationIfAllowed) {
 		AggregatedValidationResult validationResult = modElementGUI.validateAllPages();
-		if ((modElementGUI.getModElement().getType() != ModElementType.ADVANCEMENT
-				&& modElementGUI.getModElement().getType() != ModElementType.FEATURE)
-				&& !validationResult.validateIsErrorFree()) {
-			fail(String.join(",", validationResult.getValidationProblemMessages()));
+
+		boolean hasErrors = false;
+		for (Validator.ValidationResult result : validationResult.getGroupedValidationResults()) {
+			if (result.getValidationResultType() == Validator.ValidationResultType.ERROR) {
+				if (modElementGUI instanceof IBlocklyPanelHolder panelHolder) {
+					if (result instanceof BlocklyValidationResult) {
+						// skip Blockly validation in case it is marked that initial XML in the editor is not valid
+						// and skipInitialXMLValidationIfAllowed flag is set to true
+						if (skipInitialXMLValidationIfAllowed && !panelHolder.isInitialXMLValid())
+							continue;
+					}
+				}
+
+				hasErrors = true;
+				break;
+			}
 		}
+
+		if (hasErrors)
+			fail(String.join(",", validationResult.getValidationProblemMessages()));
 	}
 
 	public static void waitUntilWindowIsOpen(Window master, Runnable openTask) throws Throwable {

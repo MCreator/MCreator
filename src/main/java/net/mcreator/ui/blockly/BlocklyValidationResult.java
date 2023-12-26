@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,27 +17,19 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.blockly;
+package net.mcreator.ui.blockly;
 
+import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.ui.validation.Validator;
 
-public record BlocklyCompileNote(Type type, String message) {
+import javax.annotation.Nullable;
+import java.util.function.Function;
 
-	@Override public String toString() {
-		return type.name() + ": " + message;
-	}
+public class BlocklyValidationResult extends Validator.ValidationResult {
 
-	public enum Type {
-		INFO, WARNING, ERROR;
-
-		public Validator.ValidationResultType toValidationResultType() {
-			return switch (this) {
-				case INFO -> Validator.ValidationResultType.PASSED;
-				case WARNING -> Validator.ValidationResultType.WARNING;
-				case ERROR -> Validator.ValidationResultType.ERROR;
-			};
-		}
-
+	public BlocklyValidationResult(BlocklyCompileNote note, @Nullable Function<String, String> messageFormatter) {
+		super(note.type().toValidationResultType(),
+				messageFormatter != null ? messageFormatter.apply(note.message()) : note.message());
 	}
 
 }

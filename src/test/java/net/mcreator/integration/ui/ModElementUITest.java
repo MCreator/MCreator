@@ -148,7 +148,7 @@ import static org.junit.jupiter.api.Assertions.*;
 				ModElementGUI<?> modElementGUI = UITestUtil.openModElementGUIFor(mcreator, generatableElement);
 
 				// test if UI validation is error free
-				UITestUtil.testIfValidationPasses(modElementGUI);
+				UITestUtil.testIfValidationPasses(modElementGUI, true);
 
 				// test if data remains the same after reloading the data lists
 				modElementGUI.reloadDataLists();

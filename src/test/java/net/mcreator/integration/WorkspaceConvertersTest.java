@@ -113,7 +113,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 						ModElementGUI<?> modElementGUI = UITestUtil.openModElementGUIFor(mcreator, ge);
 
 						// test if UI validation is error free
-						UITestUtil.testIfValidationPasses(modElementGUI);
+						UITestUtil.testIfValidationPasses(modElementGUI, false);
 					}
 				}
 			});

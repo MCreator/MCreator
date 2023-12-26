@@ -36,4 +36,8 @@ public interface IBlocklyPanelHolder {
 		return null;
 	}
 
+	default boolean isInitialXMLValid() {
+		return true;
+	}
+
 }

@@ -29,10 +29,7 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.BlocklyEditorToolbar;
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -53,7 +50,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelHolder {
 
@@ -65,7 +61,6 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private final ValidationGroup page1group = new ValidationGroup();
 	private BlocklyPanel blocklyPanel;
-	private boolean hasErrors = false;
 	private Map<String, ToolboxBlock> externalBlocks;
 
 	public CommandGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -144,19 +139,13 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToJava.getCompileNotes();
 
-		SwingUtilities.invokeLater(() -> {
-			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			hasErrors = compileNotesArrayList.stream().anyMatch(note -> note.type() == BlocklyCompileNote.Type.ERROR);
-		});
+		SwingUtilities.invokeLater(() -> compileNotesPanel.updateCompileNotes(compileNotesArrayList));
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (!hasErrors)
-			return new AggregatedValidationResult(page1group);
-		else
-			return new AggregatedValidationResult.MULTIFAIL(
-					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::message)
-							.collect(Collectors.toList()));
+		return new AggregatedValidationResult(page1group,
+				new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
+						message -> message.replace("Command", "Command arguments")));
 	}
 
 	@Override public void openInEditingMode(Command command) {
