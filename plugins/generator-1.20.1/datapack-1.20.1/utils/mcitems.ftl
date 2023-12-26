@@ -16,7 +16,7 @@
     <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
         <#return "\"tag\": \"" + mappedBlock.getUnmappedValue().replace("TAG:", "")?lower_case + "\"">
     <#else>
-        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
+        <#assign mapped = mappedBlock.getMappedValue(1) />
         <#if mapped.startsWith("#")>
             <#return "\"tag\": \"" + mapped.replace("#", "") + "\"">
         <#elseif mapped.contains(":")>
@@ -42,7 +42,7 @@
             <#return "minecraft:air">
         </#if>
     <#else>
-        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
+        <#assign mapped = mappedBlock.getMappedValue(1) />
         <#if mapped.startsWith("#")>
             <#if acceptTags>
                 <#return mapped>
@@ -59,7 +59,7 @@
 
 <#function mappedMCItemToBlockStateJSON mappedBlock>
     <#if !mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
+        <#assign mapped = mappedBlock.getMappedValue(1) />
         <#if !mapped.startsWith("#")>
             <#if !mapped.contains(":")>
                 <#assign mapped = "minecraft:" + mapped />

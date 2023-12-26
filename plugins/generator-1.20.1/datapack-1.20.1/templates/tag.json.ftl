@@ -18,7 +18,7 @@
           </#list>
       <#elseif data.type == "Entities">
           <#list w.normalizeTagElements(tag, 2, data.entities) as value>
-            "${generator.map(value.getUnmappedValue(), "entities", 2)}"
+            "${value.getMappedValue(2)}"
             <#if value?has_next>,</#if>
           </#list>
       <#elseif data.type == "Biomes">
@@ -27,7 +27,7 @@
           </#list>
       <#elseif data.type == "Damage types">
           <#list w.normalizeTagElements(tag, 1, data.damageTypes) as value>
-            "${generator.map(value.getUnmappedValue(), "damagesources", 1)}"<#sep>,
+            "${value.getMappedValue(1)}"<#sep>,
           </#list>
       </#if>
     ]
