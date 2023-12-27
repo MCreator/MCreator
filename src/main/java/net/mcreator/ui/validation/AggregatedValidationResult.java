@@ -18,12 +18,10 @@
 
 package net.mcreator.ui.validation;
 
-import javax.swing.*;
 import java.util.*;
 
 public class AggregatedValidationResult extends ValidationGroup {
 
-	private final List<IValidable> validationElements = new ArrayList<>();
 	private final List<ValidationGroup> validationGroups = new ArrayList<>();
 
 	public AggregatedValidationResult() {
@@ -41,8 +39,8 @@ public class AggregatedValidationResult extends ValidationGroup {
 		this.validationGroups.addAll(validationGroups);
 	}
 
-	@Override public <T extends JComponent & IValidable> ValidationGroup addValidationElement(T validable) {
-		validationElements.add(validable);
+	public AggregatedValidationResult addValidationGroup(ValidationGroup validable) {
+		validationGroups.add(validable);
 		return this;
 	}
 

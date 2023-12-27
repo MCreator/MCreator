@@ -24,14 +24,14 @@ import java.util.List;
 
 public class ValidationGroup {
 
-	private final List<IValidable> validationElements = new ArrayList<>();
+	protected final List<IValidable> validationElements = new ArrayList<>();
 
-	public <T extends JComponent & IValidable> ValidationGroup addValidationElement(T validable) {
+	public final <T extends JComponent & IValidable> ValidationGroup addValidationElement(T validable) {
 		validationElements.add(validable);
 		return this;
 	}
 
-	public <T extends JTextField & IValidable> ValidationGroup addValidationElement(T validable) {
+	public final <T extends JTextField & IValidable> ValidationGroup addValidationElement(T validable) {
 		validationElements.add(validable);
 		return this;
 	}
