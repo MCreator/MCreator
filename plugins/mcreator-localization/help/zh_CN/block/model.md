@@ -5,6 +5,6 @@
 * <strongx-id="1">交叉</strong> -植物使用的模型
 * <strongx-id="1">作物（Crop）</strong> - 作物和植物使用的模型
 * <strongx-id="1">草方块（Grass Block）</strong> - 草方块使用的模型（顶部和侧面纹理将被着色）
-* </0>自定义</0> - 你也可以定义自定义 JSON 和 OBJ 模型
+* </0>自定义</0> - 您也可以定义自定义 JSON 和 OBJ 模型
 
 在创建自定义模型时，建议使用 JSON，因为 JSON 支持原版模型类型。
