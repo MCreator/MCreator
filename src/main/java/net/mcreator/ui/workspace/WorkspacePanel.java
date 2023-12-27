@@ -1068,7 +1068,7 @@ import java.util.stream.Collectors;
 
 	private void searchModElementsUsages() {
 		if (list.getSelectedValuesList().stream().anyMatch(i -> i instanceof ModElement)) {
-			mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+			mcreator.mv.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			Set<ModElement> references = new HashSet<>();
 			boolean tagsSelected = false, nonTagsSelected = false;
@@ -1084,7 +1084,7 @@ import java.util.stream.Collectors;
 				}
 			}
 
-			mcreator.setCursor(Cursor.getDefaultCursor());
+			mcreator.mv.setCursor(Cursor.getDefaultCursor());
 			if (tagsSelected) {
 				JOptionPane.showMessageDialog(mcreator, L10N.t("workspace.elements.list.edit.usages.tags"),
 						L10N.t("workspace.elements.list.edit.usages.tags.title"), JOptionPane.WARNING_MESSAGE);
@@ -1211,7 +1211,7 @@ import java.util.stream.Collectors;
 	private void deleteCurrentlySelectedModElement() {
 		if (but3.isEnabled()) {
 			if (list.getSelectedValue() != null) {
-				mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+				mcreator.mv.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 				Set<ModElement> references = new HashSet<>();
 				for (IElement el : list.getSelectedValuesList()) {
@@ -1221,7 +1221,7 @@ import java.util.stream.Collectors;
 				list.getSelectedValuesList().stream() // exclude usages by other mod elements being removed
 						.filter(e -> e instanceof ModElement).map(e -> (ModElement) e).forEach(references::remove);
 
-				mcreator.setCursor(Cursor.getDefaultCursor());
+				mcreator.mv.setCursor(Cursor.getDefaultCursor());
 
 				if (SearchUsagesDialog.showDeleteDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
 						references, L10N.t("workspace.elements.confirm_delete_msg_suffix"))) {

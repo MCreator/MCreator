@@ -50,7 +50,7 @@ public class CodeErrorDialog {
 	public static boolean showCodeErrorDialog(MCreator mcreator, String stderroutput) {
 		Set<File> problematicFiles = new HashSet<>();
 
-		mcreator.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+		mcreator.mv.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 		stderroutput.lines().forEach(line -> {
 			if (line.contains(".java:") && line.contains(": error:")) {
@@ -75,7 +75,7 @@ public class CodeErrorDialog {
 			}
 		}
 
-		mcreator.setCursor(Cursor.getDefaultCursor());
+		mcreator.mv.setCursor(Cursor.getDefaultCursor());
 
 		if (moddefinitionfileerrors) { // first we try to fix mod definition errors
 			Object[] options = { L10N.t("dialog.code_error.regenerate_code"),
