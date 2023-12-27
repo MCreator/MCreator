@@ -130,6 +130,13 @@ public class Plugin implements Comparable<Plugin> {
 	}
 
 	/**
+	 * @return <p>The maximal version of MCreator needed to use the plugin.</p>
+	 */
+	public long getMaxVersion() {
+		return maxversion;
+	}
+
+	/**
 	 * @return <p>The MCreator's version when builtin and the plugin's version in the other case</p>
 	 */
 	public String getPluginVersion() {
@@ -150,6 +157,10 @@ public class Plugin implements Comparable<Plugin> {
 
 	@Nullable public String getLoadFailure() {
 		return loaded_failure;
+	}
+
+	public boolean isJavaPlugin() {
+		return javaplugin != null;
 	}
 
 	@Nullable public String getJavaPlugin() {

@@ -114,7 +114,7 @@ public class PluginLoader extends URLClassLoader {
 						+ plugin.getWeight());
 				addURL(plugin.toURL());
 
-				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get() && plugin.getJavaPlugin() != null) {
+				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get() && plugin.isJavaPlugin()) {
 					@SuppressWarnings("resource") DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(
 							"PluginClassLoader-" + plugin.getID(), new URL[] {},
 							Thread.currentThread().getContextClassLoader()) {
@@ -147,7 +147,7 @@ public class PluginLoader extends URLClassLoader {
 					Constructor<?> ctor = clazz.getConstructor(Plugin.class);
 					JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
 					javaPlugins.add(javaPlugin);
-				} else if (plugin.getJavaPlugin() != null) {
+				} else if (plugin.isJavaPlugin()) {
 					LOG.warn(plugin.getID() + " is Java plugin, but Java plugins are disabled in preferences");
 
 					plugin.loaded_failure = "Java plugins disabled";
@@ -292,6 +292,12 @@ public class PluginLoader extends URLClassLoader {
 		if (plugin.getMinVersion() < 0) {
 			failedPlugins.add(new PluginLoadFailure(plugin, "missing minversion"));
 			LOG.warn("Plugin " + plugin.getID() + " does not specify minversion. Skipping this plugin.");
+			return null;
+		}
+
+		if (plugin.isJavaPlugin() && plugin.getMaxVersion() < 0) {
+			failedPlugins.add(new PluginLoadFailure(plugin, "missing maxversion"));
+			LOG.warn("Plugin " + plugin.getID() + " does not specify maxversion. Skipping this plugin.");
 			return null;
 		}
 
