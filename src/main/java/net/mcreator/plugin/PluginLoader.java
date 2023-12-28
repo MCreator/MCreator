@@ -282,22 +282,16 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	@Nullable private Plugin validatePlugin(Plugin plugin) {
+		if (!plugin.isBuiltin() && plugin.getSupportedVersions() == null) {
+			failedPlugins.add(new PluginLoadFailure(plugin, "missing supportedversions"));
+			LOG.warn("Plugin " + plugin.getID() + " does not specify supportedversions. Skipping this plugin.");
+			return null;
+		}
+
 		if (!plugin.isCompatible()) {
 			failedPlugins.add(new PluginLoadFailure(plugin, "incompatible version"));
 			LOG.warn("Plugin " + plugin.getID()
 					+ " is not compatible with this MCreator version! Skipping this plugin.");
-			return null;
-		}
-
-		if (plugin.getMinVersion() < 0) {
-			failedPlugins.add(new PluginLoadFailure(plugin, "missing minversion"));
-			LOG.warn("Plugin " + plugin.getID() + " does not specify minversion. Skipping this plugin.");
-			return null;
-		}
-
-		if (plugin.isJavaPlugin() && plugin.getMaxVersion() < 0) {
-			failedPlugins.add(new PluginLoadFailure(plugin, "missing maxversion"));
-			LOG.warn("Plugin " + plugin.getID() + " does not specify maxversion. Skipping this plugin.");
 			return null;
 		}
 
