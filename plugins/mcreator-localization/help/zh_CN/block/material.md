@@ -2,4 +2,4 @@
 
 如果您打算使用矿石方块类型，选择岩石（ROCK）材料，以便适当地应用挖掘等级。
 
-点击[这里](https://mcreator.net/wiki/materials)来阅读更多相关资料。
+单击[这里](https://mcreator.net/wiki/materials)来阅读更多相关资料。

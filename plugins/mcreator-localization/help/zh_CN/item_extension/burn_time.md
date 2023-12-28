@@ -6,5 +6,5 @@
 
 `#物品熔炼所需的游戏刻数=#您想要的燃料熔炼的物品数 * 200`
 
-点击 [这里](https://mcreator.net/wiki/burn-time-fuels) 查看原版中熔炼常用物品的燃烧时间表。
+单击 [这里](https://mcreator.net/wiki/burn-time-fuels) 查看原版中熔炼常用物品的燃烧时间表。
 

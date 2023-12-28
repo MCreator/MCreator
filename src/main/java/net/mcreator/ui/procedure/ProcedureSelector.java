@@ -20,8 +20,6 @@ package net.mcreator.ui.procedure;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
-import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
@@ -155,7 +153,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
 		procedures.addPopupMenuListener(new ComboBoxFullWidthPopup());
 		procedures.addActionListener(e -> {
-			CBoxEntry selectedItem = procedures.getSelectedItem();
+			ProcedureEntry selectedItem = procedures.getSelectedItem();
 			if (selectedItem != null) {
 				if (!selectedItem.correctDependencies) {
 					procedures.setSelectedItem(oldItem);
@@ -283,12 +281,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 		procedures.setToolTipText(L10N.t("action.procedure.match_dependencies"));
 
-		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXX", null));
-
-		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
-				== GeneratorStats.CoverageStatus.NONE)
-			setEnabled(false);
+		procedures.setPrototypeDisplayValue(new ProcedureEntry("XXXXXXXXX", null));
 	}
 
 	public ProcedureSelector setDefaultName(String defaultName) {
@@ -324,7 +317,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		return (ProcedureSelector) retval;
 	}
 
-	@Override protected CBoxEntry updateDepsList(boolean smallIcons) {
+	@Override protected ProcedureEntry updateDepsList(boolean smallIcons) {
 		return super.updateDepsList(inline);
 	}
 }

@@ -36,9 +36,20 @@ public class UnsupportedComponent extends JPanel {
 	public static void markUnsupported(Component comp) {
 		Container parent = comp.getParent();
 		if (parent != null && !(parent instanceof UnsupportedComponent)) {
+			LayoutManager parentLayout = parent.getLayout();
 			int index = Arrays.asList(parent.getComponents()).indexOf(comp);
-			parent.remove(index);
-			parent.add(new UnsupportedComponent(comp), index);
+			if (parentLayout instanceof BorderLayout borderLayout) {
+				Object constraints = borderLayout.getConstraints(comp);
+				parent.remove(index);
+				parent.add(new UnsupportedComponent(comp), constraints, index);
+			} else if (parentLayout instanceof GridBagLayout gridBagLayout) {
+				Object constraints = gridBagLayout.getConstraints(comp);
+				parent.remove(index);
+				parent.add(new UnsupportedComponent(comp), constraints, index);
+			} else {
+				parent.remove(index);
+				parent.add(new UnsupportedComponent(comp), index);
+			}
 		}
 	}
 

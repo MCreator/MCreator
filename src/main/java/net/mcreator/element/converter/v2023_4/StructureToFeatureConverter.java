@@ -24,6 +24,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -42,14 +43,15 @@ public class StructureToFeatureConverter implements IConverter {
 
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		// Notes: this not convert onStructureGenerated, onStructureGenerated procedure needs to be manually added to the condition procedure
+		// Note: onStructureGenerated procedure needs to be manually added to the condition procedure
 
 		try {
 			String modElementName = input.getModElement().getName();
 			JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-			Feature feature = new Feature(
-					new ModElement(workspace, modElementName + "Feature", ModElementType.FEATURE));
+			Feature feature = new Feature(new ModElement(workspace,
+					ConverterUtils.findSuitableModElementName(workspace, modElementName + "Feature"),
+					ModElementType.FEATURE));
 
 			if (definition.has("restrictionBiomes") && !definition.getAsJsonArray("restrictionBiomes")
 					.isEmpty()) { // Copy the restriction biomes if there are any
@@ -175,10 +177,15 @@ public class StructureToFeatureConverter implements IConverter {
 		StringBuilder xml = new StringBuilder();
 		int blocksToClose = 0;
 
+		if (spawnProbability <= 0)
+			spawnProbability = 1;
+
+		int placementRarity = (int) Math.max(1, Math.round(1000000 / (double) spawnProbability));
+
 		xml.append("""
 				<block type="placement_rarity">
 					<field name="rarity">%d</field>
-					<next>""".formatted((int) Math.round(1000000 / (double) spawnProbability)));
+					<next>""".formatted(placementRarity));
 		blocksToClose++;
 
 		if (minCountPerChunk != 1 || maxCountPerChunk != 1) {

@@ -76,12 +76,12 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		 * ******************************/
 		LoggingSystem.init();
 
-		TerribleModuleHacks.openAllUnnamed();
+		TerribleModuleHacks.openAllFor(ClassLoader.getSystemClassLoader().getUnnamedModule());
 		TerribleModuleHacks.openMCreatorRequirements();
 
 		UTF8Forcer.forceGlobalUTF8();
 
-		Logger LOG = LogManager.getLogger(IntegrationTestSetup.class);
+		Logger LOG = LogManager.getLogger("Test setup");
 
 		Properties conf = new Properties();
 		conf.load(Launcher.class.getResourceAsStream("/mcreator.conf"));

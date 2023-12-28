@@ -1355,6 +1355,10 @@ public class MinecraftImageGenerator {
 				blockColor = Dependency.getColor("world");
 			}
 
+			// If no colors can be determined, use default mod element icon instead
+			if (startColor == null && returnColor == null && blockColor == null)
+				return null;
+
 			if (startColor != null)
 				graphics2D.drawImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_base"), startColor, false)

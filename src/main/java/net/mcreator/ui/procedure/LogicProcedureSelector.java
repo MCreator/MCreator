@@ -67,7 +67,7 @@ public class LogicProcedureSelector extends RetvalProcedureSelector<Boolean, Log
 	}
 
 	@Override public LogicProcedure getSelectedProcedure() {
-		CBoxEntry selected = procedures.getSelectedItem();
+		ProcedureEntry selected = procedures.getSelectedItem();
 		if (selected == null || selected.string.equals(defaultName))
 			return new LogicProcedure(null, getFixedValue());
 		return new LogicProcedure(selected.string, getFixedValue());
@@ -76,7 +76,8 @@ public class LogicProcedureSelector extends RetvalProcedureSelector<Boolean, Log
 	@Override public void setSelectedProcedure(Procedure procedure) {
 		if (procedure instanceof LogicProcedure logicProcedure) {
 			if (logicProcedure.getName() != null)
-				procedures.setSelectedItem(new CBoxEntry(logicProcedure.getName(), null));
+				procedures.setSelectedItem(new ProcedureEntry(logicProcedure.getName(), null));
+
 			setFixedValue(logicProcedure.getFixedValue());
 		}
 	}
@@ -88,7 +89,7 @@ public class LogicProcedureSelector extends RetvalProcedureSelector<Boolean, Log
 	}
 
 	@Override public void setFixedValue(Boolean value) {
-		if (fixedValue != null)
+		if (fixedValue != null && value != null)
 			fixedValue.setSelected(value);
 	}
 }
