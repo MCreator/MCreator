@@ -21,6 +21,7 @@ package net.mcreator.ui.views.editor.image.canvas;
 import net.mcreator.ui.component.zoompane.IZoomable;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.tool.tools.Shape;
@@ -33,14 +34,19 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 
 public class CanvasRenderer extends JComponent implements IZoomable {
+
 	private static final int CHECKERBOARD_TILE_SIZE = 8;
 	private static final int OUTLINE_LINE_LENGTH = CHECKERBOARD_TILE_SIZE / 2;
+
+	private static final Color FLOATING_LAYER_OUTLINE = new Color(0x8D7DD2);
 
 	private Canvas canvas;
 	private JZoomPane jZoomPane;
 
 	private TexturePaint checkerboard;
-	private Stroke dashed;
+	private Stroke dashed, dashed_animated, shadow;
+	private float stroke_phase = 0;
+	private Color shadowColor;
 
 	public CanvasRenderer(ImageMakerView imageMakerView) {
 		rebuildCheckerboardPattern();
@@ -110,7 +116,7 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 				int scaledSize = (int) Math.round(size * zoom);
 
 				Graphics2D graphics2D = (Graphics2D) g;
-				graphics2D.setColor((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				graphics2D.setColor(Theme.current().getAltForegroundColor());
 
 				Stroke original = graphics2D.getStroke();
 				Stroke dashed = new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[] { 3 },
@@ -150,30 +156,46 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 
 				int x, y;
 				int width = image.getWidth(null), height = image.getHeight(null);
+				int centerX = width / 2, centerY = height / 2;
 
 				if (width % 2.0 == 1) {
-					x = (int) Math.round((mouseEvent.getX() - width / 2) * zoom);
+					x = (int) ((mouseEvent.getX() - centerX) * zoom);
 				} else {
-					x = (int) Math.round(Math.floor((mex / zoom + 0.5 - width / 2)) * zoom);
-
+					x = (int) Math.round(Math.floor((mex / zoom + 0.5 - centerX)) * zoom);
 				}
 
 				if (height % 2.0 == 1) {
-					y = (int) Math.round((mouseEvent.getY() - height / 2) * zoom);
+					y = (int) ((mouseEvent.getY() - centerY) * zoom);
 				} else {
-					y = (int) Math.round(Math.floor((mey / zoom + 0.5 - height / 2)) * zoom);
+					y = (int) Math.round(Math.floor((mey / zoom + 0.5 - centerY)) * zoom);
 				}
 
 				g.drawImage(image, x, y, (int) Math.round(width * zoom), (int) Math.round(height * zoom), null);
 			}
 		}
+		double zoom = jZoomPane.getZoomport().getZoom();
 		Layer outline = canvas.selected();
 		if (outline != null) {
-			double zoom = jZoomPane.getZoomport().getZoom();
-			int x = (int) Math.round(outline.getX() * zoom), y = (int) Math.round(outline.getY() * zoom);
-			int width = (int) Math.round(outline.getWidth() * zoom), height = (int) Math.round(
-					outline.getHeight() * zoom);
-			drawOutline((Graphics2D) g, x, y, width, height);
+			int x = (int) Math.round(outline.getX() * zoom);
+			int y = (int) Math.round(outline.getY() * zoom);
+
+			int width = (int) Math.round(outline.getWidth() * zoom);
+			int height = (int) Math.round(outline.getHeight() * zoom);
+
+			drawOutline((Graphics2D) g, x, y, width, height, outline.isPasted(), false);
+		}
+
+		Selection selection = canvas.getSelection();
+		if (selection.getEditing() != SelectedBorder.NONE) {
+			selection.drawHandles((Graphics2D) g);
+
+			int x = (int) Math.round(selection.getLeft() * zoom);
+			int y = (int) Math.round(selection.getTop() * zoom);
+
+			int width = (int) Math.round((selection.getWidth()) * zoom);
+			int height = (int) Math.round((selection.getHeight()) * zoom);
+
+			drawOutline((Graphics2D) g, x, y, width, height, true, true);
 		}
 	}
 
@@ -189,15 +211,21 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 		return canvas.getHeight();
 	}
 
+	public double getZoom() {
+		return jZoomPane.getZoomport().getZoom();
+	}
+
 	public BufferedImage render() {
 		BufferedImage layerStack = new BufferedImage(canvas.getWidth(), canvas.getHeight(),
 				BufferedImage.TYPE_INT_ARGB);
 		if (canvas != null) {
 			Graphics2D layerStackGraphics2D = layerStack.createGraphics();
-			for (Layer layer : canvas)
+			for (int i = canvas.size() - 1; i >= 0; i--) {
+				Layer layer = canvas.get(i);
 				if (layer.isVisible()) {
 					layerStackGraphics2D.drawImage(layer.mergeOverlay(false), null, layer.getX(), layer.getY());
 				}
+			}
 			layerStackGraphics2D.dispose();
 		}
 		return layerStack;
@@ -221,8 +249,26 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 	}
 
 	private void rebuildOutlineStroke() {
+		// Stroke building
 		dashed = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
-				new float[] { OUTLINE_LINE_LENGTH }, 0);
+				new float[] { OUTLINE_LINE_LENGTH, OUTLINE_LINE_LENGTH }, 0);
+		dashed_animated = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+				new float[] { OUTLINE_LINE_LENGTH, OUTLINE_LINE_LENGTH }, stroke_phase);
+		shadow = new BasicStroke(3);
+
+		// Builds the semi-transparent color for the outline shadow
+		Color baseColor = Theme.current().getSecondAltBackgroundColor();
+		shadowColor = new Color(baseColor.getRed(), baseColor.getGreen(), baseColor.getBlue(), 120);
+	}
+
+	public void addPhaseToOutline(float phase) {
+		float sp = (stroke_phase - phase / ((float) Math.PI) * OUTLINE_LINE_LENGTH) % (OUTLINE_LINE_LENGTH * 2);
+		if (sp < 0)
+			stroke_phase = OUTLINE_LINE_LENGTH * 2 + sp;
+		else
+			stroke_phase = sp;
+		dashed_animated = new BasicStroke(1, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0,
+				new float[] { OUTLINE_LINE_LENGTH, OUTLINE_LINE_LENGTH }, stroke_phase);
 	}
 
 	private void drawCheckerboard(Graphics2D graphics2D, Dimension d) {
@@ -230,12 +276,40 @@ public class CanvasRenderer extends JComponent implements IZoomable {
 		graphics2D.fillRect(0, 0, (int) d.getWidth(), (int) d.getHeight());
 	}
 
-	private void drawOutline(Graphics2D graphics2D, int x, int y, int width, int height) {
-		graphics2D.setPaint((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+	private void drawOutline(Graphics2D graphics2D, int x, int y, int width, int height, boolean pasted,
+			boolean animated) {
+		// Save the previous stroke to avoid unwanted changes
+		Stroke prevStroke = graphics2D.getStroke();
+
+		// The base for the outline
+		graphics2D.setPaint(Theme.current().getSecondAltBackgroundColor());
 		graphics2D.drawRect(x, y, width - 1, height - 1);
-		graphics2D.setPaint((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-		graphics2D.setStroke(dashed);
+
+		// Shadow after the black stroke to avoid shifting strokes
+		// Shouldn't be visible since it's black on black
+		graphics2D.setStroke(shadow);
+		graphics2D.setPaint(shadowColor);
 		graphics2D.drawRect(x, y, width - 1, height - 1);
+
+		// If pasted, the outline is brighter
+		if (pasted && animated)
+			graphics2D.setPaint(Theme.current().getAltForegroundColor());
+		else if (pasted)
+			graphics2D.setPaint(FLOATING_LAYER_OUTLINE);
+		else
+			graphics2D.setPaint(Theme.current().getInterfaceAccentColor());
+
+		// Use the animated stroke if the flag is set
+		if (animated)
+			graphics2D.setStroke(dashed_animated);
+		else
+			graphics2D.setStroke(dashed);
+
+		// Draw the outline
+		graphics2D.drawRect(x, y, width - 1, height - 1);
+
+		// Return the previous stroke to avoid unwanted changes
+		graphics2D.setStroke(prevStroke);
 	}
 
 	public void recalculateBounds() {

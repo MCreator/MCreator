@@ -77,7 +77,7 @@ public class D8WebAPI implements IWebAPI {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 			if (!newsXML.isEmpty()) {
-				news = new String[2];
+				news = new String[5];
 				InputSource is = new InputSource(new StringReader(newsXML));
 				Document doc = dBuilder.parse(is);
 				doc.getDocumentElement().normalize();
@@ -89,6 +89,12 @@ public class D8WebAPI implements IWebAPI {
 					news[0] = ((Element) node).getElementsByTagName("title").item(1).getChildNodes().item(0)
 							.getNodeValue();
 					news[1] = ((Element) node).getElementsByTagName("link").item(1).getChildNodes().item(0)
+							.getNodeValue();
+					news[2] = ((Element) node).getElementsByTagName("description").item(1).getChildNodes().item(0)
+							.getNodeValue();
+					news[3] = ((Element) node).getElementsByTagName("dc:creator").item(0).getChildNodes().item(0)
+							.getNodeValue();
+					news[4] = ((Element) node).getElementsByTagName("guid").item(0).getChildNodes().item(0)
 							.getNodeValue();
 				}
 			}

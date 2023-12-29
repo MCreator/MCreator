@@ -19,23 +19,22 @@
 package net.mcreator;
 
 import javafx.embed.swing.JFXPanel;
+import net.mcreator.io.LoggingSystem;
 import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.WebConsoleListener;
-import net.mcreator.util.*;
-import org.apache.logging.log4j.Level;
+import net.mcreator.ui.component.util.ThreadUtil;
+import net.mcreator.util.MCreatorVersionNumber;
+import net.mcreator.util.TerribleModuleHacks;
+import net.mcreator.util.UTF8Forcer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
 import java.io.IOException;
-import java.io.PrintStream;
-import java.lang.management.ManagementFactory;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Properties;
 
 public class Launcher {
@@ -43,33 +42,18 @@ public class Launcher {
 	public static MCreatorVersionNumber version;
 
 	public static void main(String[] args) {
-		List<String> arguments = Arrays.asList(args);
+		LoggingSystem.init();
 
-		System.setProperty("jna.nosys", "true");
-		System.setProperty("log_directory", UserFolderManager.getFileFromUserFolder("").getAbsolutePath());
-
-		if (OS.getOS() == OS.WINDOWS && ManagementFactory.getRuntimeMXBean().getInputArguments().stream()
-				.noneMatch(arg -> arg.contains("idea_rt.jar"))) {
-			System.setProperty("log_disable_ansi", "true");
-		} else {
-			System.setProperty("log_disable_ansi", "false");
-		}
-
-		final Logger LOG = LogManager.getLogger("Launcher"); // init logger after log directory is set
-
-		System.setErr(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDERR"), Level.ERROR), true));
-		System.setOut(new PrintStream(new LoggingOutputStream(LogManager.getLogger("STDOUT"), Level.INFO), true));
-		Thread.setDefaultUncaughtExceptionHandler(new DefaultExceptionHandler());
-
-		TerribleModuleHacks.openAllUnnamed();
+		TerribleModuleHacks.openAllFor(ClassLoader.getSystemClassLoader().getUnnamedModule());
 		TerribleModuleHacks.openMCreatorRequirements();
 
 		UTF8Forcer.forceGlobalUTF8();
 
+		final Logger LOG = LogManager.getLogger("Launcher"); // init logger after log directory is set
+
 		try {
 			Properties conf = new Properties();
 			conf.load(Launcher.class.getResourceAsStream("/mcreator.conf"));
-
 			version = new MCreatorVersionNumber(conf);
 		} catch (IOException e) {
 			LOG.error("Failed to read MCreator config", e);
@@ -95,22 +79,8 @@ public class Launcher {
 		System.setProperty("sun.java2d.d3d", "false");
 		System.setProperty("prism.lcdtext", "false");
 
-		// if the OS is macOS, we enable javafx single thread mode to avoid some deadlocks with JFXPanel
-		if (OS.getOS() == OS.MAC) {
-			System.setProperty("javafx.embed.singleThread", "true");
-		}
-
-		if ("true".equals(System.getProperty("javafx.embed.singleThread"))) {
-			LOG.warn("Running in javafx.embed.singleThread environment. "
-					+ "This is just a note and should not cause any problems.");
-		}
-
 		// Init JFX Toolkit
-		try {
-			SwingUtilities.invokeAndWait(JFXPanel::new);
-		} catch (InterruptedException | InvocationTargetException e) {
-			LOG.error("Failed to start JFX toolkit", e);
-		}
+		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
 
 		WebConsoleListener.registerLogger(LOG);
 
@@ -133,7 +103,7 @@ public class Launcher {
 			System.exit(-2);
 		}
 
-		MCreatorApplication.createApplication(arguments);
+		MCreatorApplication.createApplication(Arrays.asList(args));
 	}
 
 }

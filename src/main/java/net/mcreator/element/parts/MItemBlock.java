@@ -31,13 +31,7 @@ public class MItemBlock extends MappableElement {
 	}
 
 	public MItemBlock(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
-	}
-
-	public boolean isEmpty() {
-		return value == null || value.isEmpty();
+		super(new NameMapper(owner, "blocksitems"), name);
 	}
 
 }

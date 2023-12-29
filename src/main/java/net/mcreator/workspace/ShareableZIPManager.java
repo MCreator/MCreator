@@ -45,30 +45,28 @@ public class ShareableZIPManager {
 		Thread t = new Thread(() -> {
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.workspace.import_from_zip.extracting"));
-			dial.addProgress(p1);
+			dial.addProgressUnit(p1);
 
 			ZipIO.unzip(file.getAbsolutePath(), workspaceDir.getAbsolutePath());
 
 			retval.set(WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(workspaceDir));
 
 			if (retval.get() != null) {
-				p1.ok();
-				dial.refreshDisplay();
+				p1.markStateOk();
 			} else {
-				p1.err();
-				dial.refreshDisplay();
+				p1.markStateError();
 
 				JOptionPane.showMessageDialog(dial, L10N.t("dialog.workspace.import_from_zip.failed_message"),
 						L10N.t("dialog.workspace.import_from_zip.failed_title"), JOptionPane.ERROR_MESSAGE);
 
-				dial.hideAll();
+				dial.hideDialog();
 
 				return;
 			}
 
 			ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.workspace.regenerate_and_build.progress.loading_mod_elements"));
-			dial.addProgress(p2);
+			dial.addProgressUnit(p2);
 
 			try {
 				Workspace workspace = Workspace.readFromFS(retval.get(), dial);
@@ -80,19 +78,28 @@ public class ShareableZIPManager {
 				// If workspace MCR version is the same, regeneration will not run and thus ME icons will be missing
 				// This is "fixed" by "preloading mod elements" here
 				for (ModElement mod : workspace.getModElements()) {
-					GeneratableElement generatableElement = mod.getGeneratableElement();
+					// During the loading of GeneratableElement, other MEs could be converted too, so we make sure
+					// that the current ME (from list that could be outdated at this point) was not converted to
+					// a different type. If this is the case, we don't preload the ME here as this will result in
+					// warnings because we are trying to load ME that is already stored in GeneratableElement cache
+					// as a different mod element type
+					ModElement check = workspace.getModElementByName(mod.getName());
+					if (check != null && check.getType() == mod.getType()) {
+						GeneratableElement generatableElement = mod.getGeneratableElement();
+						if (generatableElement != null) {
+							// save custom mod element picture if it has one
+							workspace.getModElementManager().storeModElementPicture(generatableElement);
 
-					if (generatableElement != null) {
-						// save custom mod element picture if it has one
-						workspace.getModElementManager().storeModElementPicture(generatableElement);
-
-						// we reinit the mod to load new ME icon
-						generatableElement.getModElement().reinit(workspace);
+							// we reinit the mod to load new ME icon
+							generatableElement.getModElement().reinit(workspace);
+						}
+					} else {
+						LOG.debug("Skipping preloading of mod element " + mod.getName()
+								+ " as it was converted to a different type");
 					}
 
 					i++;
 					p1.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
-					dial.refreshDisplay();
 				}
 
 				// make sure we store any potential changes made to the workspace
@@ -103,10 +110,9 @@ public class ShareableZIPManager {
 				LOG.error("Failed to import workspace", e);
 			}
 
-			p2.ok();
-			dial.refreshDisplay();
+			p2.markStateOk();
 
-			dial.hideAll();
+			dial.hideDialog();
 		}, "ZIPImporter");
 		t.start();
 		dial.setVisible(true);
@@ -119,7 +125,7 @@ public class ShareableZIPManager {
 		Thread t = new Thread(() -> {
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.workspace.export_workspace.compressing"));
-			dial.addProgress(p1);
+			dial.addProgressUnit(p1);
 
 			try {
 				if (excludeRunDir) {
@@ -135,9 +141,8 @@ public class ShareableZIPManager {
 				LOG.error("Failed to export workspace", e);
 			}
 
-			p1.ok();
-			dial.refreshDisplay();
-			dial.hideAll();
+			p1.markStateOk();
+			dial.hideDialog();
 		}, "ZIPExporter");
 		t.start();
 		dial.setVisible(true);

@@ -33,7 +33,6 @@ import org.commonmark.renderer.html.HtmlRenderer;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -117,7 +116,7 @@ public class HelpLoader {
 							Template freemarkerTemplate = InlineTemplatesHandler.getTemplate(helpText);
 							StringWriter stringWriter = new StringWriter();
 							freemarkerTemplate.process(dataModel, stringWriter,
-									InlineTemplatesHandler.getConfiguration().getBeansWrapper());
+									InlineTemplatesHandler.getConfiguration().getObjectWrapper());
 
 							helpString.append(renderer.render(parser.parse(stringWriter.getBuffer().toString())));
 						} catch (TemplateException | IOException e) {

@@ -38,6 +38,7 @@ import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -65,14 +66,14 @@ public class ToolPackMakerTool {
 
 		dialog.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools.tool_pack_info")));
 
-		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
+		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
 		VTextField name = new VTextField(25);
 		JColor color = new JColor(mcreator, false, false);
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-		color.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
 
 		props.add(L10N.label("dialog.tools.tool_pack_base_item"));
@@ -108,9 +109,9 @@ public class ToolPackMakerTool {
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.tool_pack_create");
-		JButton canecel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		canecel.addActionListener(e -> dialog.setVisible(false));
-		dialog.add("South", PanelUtils.join(ok, canecel));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+		cancel.addActionListener(e -> dialog.setVisible(false));
+		dialog.add("South", PanelUtils.join(ok, cancel));
 
 		ok.addActionListener(e -> {
 			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
@@ -118,14 +119,14 @@ public class ToolPackMakerTool {
 				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
 						color.getColor(), (Double) power.getValue());
-				mcreator.mv.updateMods();
+				mcreator.mv.reloadElementsInCurrentTab();
 				dialog.setCursor(Cursor.getDefaultCursor());
 				dialog.setVisible(false);
 			}
 		});
 
 		dialog.getRootPane().setDefaultButton(ok);
-		dialog.setSize(600, 280);
+		dialog.setSize(600, 290);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
 	}
@@ -138,9 +139,7 @@ public class ToolPackMakerTool {
 			return;
 
 		// select folder the mod pack should be in
-		FolderElement folder = null;
-		if (!mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
-			folder = mcreator.mv.currentFolder;
+		FolderElement folder = mcreator.mv.currentFolder;
 
 		// first we generate pickaxe texture
 		ImageIcon pickaxe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(

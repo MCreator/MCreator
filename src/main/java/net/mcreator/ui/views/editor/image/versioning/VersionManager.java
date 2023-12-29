@@ -66,11 +66,16 @@ public class VersionManager {
 		linkChanges(change);
 
 		changes.add(change);
+
+		refreshPreview();
+
+		revisionListener.revisionChanged();
+	}
+
+	public void refreshPreview() {
 		imageMakerView.refreshTab();
 		if (layerPanel != null)
 			layerPanel.repaintList();
-
-		revisionListener.revisionChanged();
 	}
 
 	private void linkChanges(Change change) {

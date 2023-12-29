@@ -50,6 +50,7 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 	protected VersionManager versionManager;
 
 	private JToggleButton toolPanelButton;
+	protected boolean startSuccess = false, processSuccess = false;
 
 	public AbstractTool(String name, String description, ImageIcon icon, Canvas canvas, ColorSelector colorSelector,
 			VersionManager versionManager) {
@@ -121,7 +122,11 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 	}
 
 	public Cursor getUsingCursor() {
-		return Cursor.getPredefinedCursor(Cursor.HAND_CURSOR);
+		return Cursor.getPredefinedCursor(Cursor.CROSSHAIR_CURSOR);
+	}
+
+	public Cursor getHoverCursor() {
+		return null;
 	}
 
 	public void setLayerPanel(LayerPanel layerPanel) {
@@ -130,17 +135,19 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 
 	public abstract boolean process(ZoomedMouseEvent mouseEvent);
 
-	private void startProcess(MouseEvent e) {
+	private boolean startProcess(MouseEvent e) {
 		if (SwingUtilities.isLeftMouseButton(e)) {
-			process((ZoomedMouseEvent) e);
+			return process((ZoomedMouseEvent) e);
 		}
+		return false;
 	}
 
 	@Override public void mouseClicked(MouseEvent e) {
 	}
 
 	@Override public void mousePressed(MouseEvent e) {
-		startProcess(e);
+		startSuccess = startProcess(e);
+		processSuccess = startSuccess;
 	}
 
 	@Override public void mouseReleased(MouseEvent e) {
@@ -155,7 +162,7 @@ public abstract class AbstractTool implements MouseListener, MouseMotionListener
 	}
 
 	@Override public void mouseDragged(MouseEvent e) {
-		startProcess(e);
+		processSuccess |= startProcess(e);
 	}
 
 	@Override public void mouseMoved(MouseEvent e) {

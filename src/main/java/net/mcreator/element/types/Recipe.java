@@ -23,10 +23,13 @@ import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
 import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Recipe extends NamespacedGeneratableElement {
 
@@ -43,7 +46,7 @@ import java.util.Arrays;
 	// Crafting recipe
 	public String craftingBookCategory;
 	public boolean recipeShapeless;
-	public MItemBlock[] recipeSlots;
+	@ModElementReference public MItemBlock[] recipeSlots;
 	public MItemBlock recipeReturnStack;
 
 	// Smelting recipe
@@ -69,6 +72,7 @@ import java.util.Arrays;
 	// Smithing recipe
 	public MItemBlock smithingInputStack;
 	public MItemBlock smithingInputAdditionStack;
+	public MItemBlock smithingInputTemplateStack;
 	public MItemBlock smithingReturnStack;
 
 	// Brewing recipe
@@ -82,8 +86,6 @@ import java.util.Arrays;
 
 	public Recipe(ModElement element) {
 		super(element);
-
-		this.optimisedRecipe = new OptimisedRecipe(this);
 
 		this.recipeRetstackSize = 1;
 		this.namespace = "mod";
@@ -127,7 +129,7 @@ import java.util.Arrays;
 		} else if ("Smithing".equals(recipeType) && !smithingInputStack.isEmpty()
 				&& !smithingInputAdditionStack.isEmpty() && !smithingReturnStack.isEmpty()) {
 			mod = MinecraftImageGenerator.Preview.generateSmithingPreviewPicture(getModElement().getWorkspace(),
-					smithingInputStack, smithingInputAdditionStack, smithingReturnStack);
+					smithingInputTemplateStack, smithingInputStack, smithingInputAdditionStack, smithingReturnStack);
 		} else if ("Brewing".equals(recipeType) && !brewingInputStack.isEmpty() && !brewingIngredientStack.isEmpty()
 				&& !brewingReturnStack.isEmpty()) {
 			mod = MinecraftImageGenerator.Preview.generateBrewingPreviewPicture(getModElement().getWorkspace(),
@@ -136,44 +138,48 @@ import java.util.Arrays;
 		return mod;
 	}
 
-	private final transient OptimisedRecipe optimisedRecipe;
-
 	public MItemBlock[][] getOptimisedRecipe() {
-		return optimisedRecipe.getOptimisedRecipe();
+		MItemBlock[][] mtx = { { recipeSlots[0], recipeSlots[1], recipeSlots[2] },
+				{ recipeSlots[3], recipeSlots[4], recipeSlots[5] },
+				{ recipeSlots[6], recipeSlots[7], recipeSlots[8] } };
+
+		// determine recipe matrix edges
+		int cmin = mtx[0].length;
+		int rmin = mtx.length;
+		int cmax = -1;
+		int rmax = -1;
+		for (int r = 0; r < mtx.length; r++) {
+			for (int c = 0; c < mtx[0].length; c++) {
+				if (!mtx[r][c].isEmpty()) {
+					if (cmin > c)
+						cmin = c;
+					if (cmax < c)
+						cmax = c;
+					if (rmin > r)
+						rmin = r;
+					if (rmax < r)
+						rmax = r;
+				}
+			}
+		}
+
+		// trim array size to the smallest possible
+		MItemBlock[][] result = new MItemBlock[rmax - rmin + 1][];
+		for (int r = rmin, i = 0; r <= rmax; r++, i++)
+			result[i] = Arrays.copyOfRange(mtx[r], cmin, cmax + 1);
+		return result;
 	}
 
-	private record OptimisedRecipe(Recipe recipe) {
-
-		MItemBlock[][] getOptimisedRecipe() {
-			MItemBlock[][] mtx = { { recipe.recipeSlots[0], recipe.recipeSlots[1], recipe.recipeSlots[2] },
-					{ recipe.recipeSlots[3], recipe.recipeSlots[4], recipe.recipeSlots[5] },
-					{ recipe.recipeSlots[6], recipe.recipeSlots[7], recipe.recipeSlots[8] } };
-			int cmin = mtx[0].length;
-			int rmin = mtx.length;
-			int cmax = -1;
-			int rmax = -1;
-			for (int r = 0; r < mtx.length; r++)
-				for (int c = 0; c < mtx[0].length; c++)
-					if (!mtx[r][c].isEmpty()) {
-						if (cmin > c)
-							cmin = c;
-						if (cmax < c)
-							cmax = c;
-						if (rmin > r)
-							rmin = r;
-						if (rmax < r)
-							rmax = r;
-					}
-			return trim(mtx, rmin, rmax, cmin, cmax);
+	public Map<MItemBlock, String> getPatternKeys() {
+		Map<MItemBlock, String> keys = new LinkedHashMap<>();
+		int idx = 0;
+		for (MItemBlock slot : recipeSlots) {
+			if (!slot.isEmpty() && !keys.containsKey(slot)) {
+				keys.put(slot, Character.toString((char) ('a' + idx)));
+				idx++;
+			}
 		}
-
-		private MItemBlock[][] trim(MItemBlock[][] mtx, int rmin, int rmax, int cmin, int cmax) {
-			MItemBlock[][] result = new MItemBlock[rmax - rmin + 1][];
-			for (int r = rmin, i = 0; r <= rmax; r++, i++)
-				result[i] = Arrays.copyOfRange(mtx[r], cmin, cmax + 1);
-			return result;
-		}
-
+		return keys;
 	}
 
 }

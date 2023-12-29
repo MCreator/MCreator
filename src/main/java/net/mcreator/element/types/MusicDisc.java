@@ -25,19 +25,22 @@ import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
+import net.mcreator.element.types.interfaces.IItemWithTexture;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 
 import java.awt.image.BufferedImage;
 import java.util.List;
 
-public class MusicDisc extends GeneratableElement implements IItem, ITabContainedElement {
+public class MusicDisc extends GeneratableElement implements IItem, IItemWithTexture, ITabContainedElement {
 
 	public String name;
-	public String texture;
+	public String rarity;
+	@TextureReference(TextureType.ITEM) public String texture;
 	public String description;
 	public TabEntry creativeTab;
 	public StringListProcedure specialInformation;
@@ -55,8 +58,18 @@ public class MusicDisc extends GeneratableElement implements IItem, ITabContaine
 	public Procedure onItemInUseTick;
 	public Procedure onEntitySwing;
 
+	private MusicDisc() {
+		this(null);
+	}
+
 	public MusicDisc(ModElement element) {
 		super(element);
+
+		this.rarity = "RARE";
+	}
+
+	@Override public String getTexture() {
+		return texture;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

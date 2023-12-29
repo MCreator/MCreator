@@ -25,12 +25,12 @@ import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.text.JTextComponent;
-import java.awt.*;
 
 public class StringProcedureSelector extends RetvalProcedureSelector<String, StringProcedure> {
 
@@ -64,7 +64,7 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 		this.fixedValue = fixedValue;
 
 		if (fixedValue != null) {
-			fixedValue.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			fixedValue.setBackground(Theme.current().getBackgroundColor());
 			fixedValue.setBorder(BorderFactory.createCompoundBorder(
 					BorderFactory.createMatteBorder(1, 5, 1, allowInlineEditor ? 5 : 0, this.getBackground()),
 					BorderFactory.createMatteBorder(0, 5, 0, 5, fixedValue.getBackground())));
@@ -104,7 +104,7 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 	}
 
 	@Override public StringProcedure getSelectedProcedure() {
-		CBoxEntry selected = procedures.getSelectedItem();
+		ProcedureEntry selected = procedures.getSelectedItem();
 		if (selected == null || selected.string.equals(defaultName))
 			return new StringProcedure(null, getFixedValue());
 		return new StringProcedure(selected.string, getFixedValue());
@@ -113,7 +113,7 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 	@Override public void setSelectedProcedure(Procedure procedure) {
 		if (procedure instanceof StringProcedure stringProcedure) {
 			if (stringProcedure.getName() != null)
-				procedures.setSelectedItem(new CBoxEntry(stringProcedure.getName(), null));
+				procedures.setSelectedItem(new ProcedureEntry(stringProcedure.getName(), null));
 
 			setFixedValue(stringProcedure.getFixedValue());
 		}

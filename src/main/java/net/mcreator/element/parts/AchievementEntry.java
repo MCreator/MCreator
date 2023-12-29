@@ -32,9 +32,7 @@ public class AchievementEntry extends MappableElement {
 	}
 
 	public AchievementEntry(Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "achievements"), name);
 	}
 
 	public AchievementEntry(@Nonnull Workspace owner, DataListEntry name) {

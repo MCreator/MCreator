@@ -22,8 +22,8 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.java.JavaConventions;
-import net.mcreator.minecraft.api.ModAPIImplementation;
-import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.plugin.modapis.ModAPIImplementation;
+import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
@@ -33,6 +33,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
@@ -50,20 +51,25 @@ import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
+import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.DocumentFilter;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.lang.module.ModuleDescriptor;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class WorkspaceDialogs {
 
-	public static WorkspaceSettingsChange workspaceSettings(MCreator mcreator, Workspace in) {
+	@Nullable public static WorkspaceSettingsChange workspaceSettings(MCreator mcreator, Workspace in) {
 		MCreatorDialog workspaceDialog = new MCreatorDialog(mcreator, L10N.t("dialog.workspace_settings.title"), true);
 
 		WorkspaceDialogPanel wdp = new WorkspaceDialogPanel(workspaceDialog, in);
@@ -78,32 +84,51 @@ public class WorkspaceDialogs {
 			else
 				showErrorsMessage(mcreator, new AggregatedValidationResult(wdp.validationGroup));
 		});
-		workspaceDialog.setClosable(false);
+
+		AtomicBoolean canceled = new AtomicBoolean(false);
+
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+		buttons.add(cancel);
+		cancel.addActionListener(e -> {
+			canceled.set(true);
+			workspaceDialog.setVisible(false);
+		});
 
 		workspaceDialog.getRootPane().setDefaultButton(ok);
 		workspaceDialog.pack();
 		workspaceDialog.setSize(workspaceDialog.getBounds().width, 620);
 		workspaceDialog.setLocationRelativeTo(mcreator);
+
+		workspaceDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				canceled.set(true);
+			}
+		});
+
 		workspaceDialog.setVisible(true);
 
-		WorkspaceSettings oldsettings = in.getWorkspaceSettings();
-		WorkspaceSettings newsettings = wdp.getWorkspaceSettings(in);
+		if (canceled.get()) {
+			return null; // no workspace setting change
+		} else {
+			WorkspaceSettings oldsettings = in.getWorkspaceSettings();
+			WorkspaceSettings newsettings = wdp.getWorkspaceSettings(in);
 
-		WorkspaceSettingsChange change = new WorkspaceSettingsChange(newsettings, oldsettings);
+			WorkspaceSettingsChange change = new WorkspaceSettingsChange(newsettings, oldsettings);
 
-		if (change.refactorNeeded()) {
-			String[] options = new String[] { L10N.t("dialog.workspace_settings.refactor.yes"),
-					L10N.t("dialog.workspace_settings.refactor.no") };
-			int option = JOptionPane.showOptionDialog(null, change.generatorFlavorChanged ?
-							L10N.t("dialog.workspace_settings.refactor.text_flavor_switch") :
-							L10N.t("dialog.workspace_settings.refactor.text"),
-					L10N.t("dialog.workspace_settings.refactor.title"), JOptionPane.YES_NO_OPTION,
-					JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-			if (option == 1)
-				return new WorkspaceSettingsChange(oldsettings, null);
+			if (change.refactorNeeded()) {
+				String[] options = new String[] { L10N.t("dialog.workspace_settings.refactor.yes"),
+						L10N.t("dialog.workspace_settings.refactor.no") };
+				int option = JOptionPane.showOptionDialog(null, change.generatorFlavorChanged ?
+								L10N.t("dialog.workspace_settings.refactor.text_flavor_switch") :
+								L10N.t("dialog.workspace_settings.refactor.text"),
+						L10N.t("dialog.workspace_settings.refactor.title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+				if (option == 1)
+					return null; // no workspace setting change
+			}
+
+			return change; // we are working with existing workspace
 		}
-
-		return change; // we are working with existing workspace
 	}
 
 	static class WorkspaceDialogPanel extends JPanel {
@@ -181,7 +206,7 @@ public class WorkspaceDialogs {
 				JTabbedPane master = new JTabbedPane();
 				master.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 				master.setForeground(Color.white);
-				master.setUI(new javax.swing.plaf.basic.BasicTabbedPaneUI() {
+				master.setUI(new BasicTabbedPaneUI() {
 					@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 					}
 				});
@@ -339,8 +364,7 @@ public class WorkspaceDialogs {
 			});
 			generator.remove(this.getComponent(0));
 			generator.setEnabled(false);
-			generator.setBorder(
-					BorderFactory.createMatteBorder(1, 1, 1, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+			generator.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, Theme.current().getAltBackgroundColor()));
 
 			JButton selectGenerator = new JButton(UIRES.get("18px.edit"));
 			selectGenerator.setMargin(new Insets(4, 4, 4, 4));
@@ -522,7 +546,7 @@ public class WorkspaceDialogs {
 
 			JPanel dependencySettings = new JPanel(new GridLayout(3, 2, 7, 5));
 			dependencySettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-			dependencySettings.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			dependencySettings.setBackground(Theme.current().getAltBackgroundColor());
 			dependencySettings.add(L10N.label("dialog.workspace_settings.required_mods"));
 			dependencySettings.add(requiredMods);
 			dependencySettings.add(L10N.label("dialog.workspace_settings.dependencies"));

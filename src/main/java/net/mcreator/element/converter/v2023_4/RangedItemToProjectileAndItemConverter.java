@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.ProjectileEntry;
@@ -54,11 +55,12 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 		try {
 			JsonObject rangedItem = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-			Projectile projectile = new Projectile(
-					new ModElement(workspace, input.getModElement().getName() + "Projectile",
-							ModElementType.PROJECTILE));
+			Projectile projectile = new Projectile(new ModElement(workspace,
+					ConverterUtils.findSuitableModElementName(workspace,
+							input.getModElement().getName() + "Projectile"), ModElementType.PROJECTILE));
 
-			if (rangedItem.get("bulletItemTexture") != null)
+			if (rangedItem.get("bulletItemTexture") != null && !rangedItem.get("bulletItemTexture").getAsJsonObject()
+					.get("value").getAsString().isEmpty())
 				projectile.projectileItem = new MItemBlock(workspace,
 						rangedItem.get("bulletItemTexture").getAsJsonObject().get("value").getAsString());
 			else if (rangedItem.get("ammoItem") != null && !rangedItem.get("ammoItem").getAsJsonObject().get("value")
@@ -150,7 +152,9 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 
 			if (rangedItem.has("glowCondition")) {
 				JsonObject rangedGlow = rangedItem.getAsJsonObject("glowCondition");
-				String glowConditionProcedureName = rangedGlow.has("name") ? rangedGlow.get("name").getAsString() : null;
+				String glowConditionProcedureName = rangedGlow.has("name") ?
+						rangedGlow.get("name").getAsString() :
+						null;
 				boolean value = rangedItem.has("hasGlow") ? rangedItem.get("hasGlow").getAsBoolean() : // Old format
 						rangedGlow.get("fixedValue").getAsBoolean(); // New format of 2023.4
 

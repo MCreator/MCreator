@@ -19,6 +19,7 @@
 package net.mcreator.ui.component;
 
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.breadcrumb.FolderElementCrumb;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -71,7 +72,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 			JComponent co = getAdditionalTargetFor(e);
 			if (co instanceof FolderElementCrumb) { // highlight crumbs
 				co.setOpaque(true);
-				co.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				co.setBackground(Theme.current().getAltBackgroundColor());
 			}
 
 			if (finalDNDselection == null) {

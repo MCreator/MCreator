@@ -42,7 +42,8 @@ public class FeatureDimensionRestrictionConverter implements IConverter {
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		try {
 			Feature feature = (Feature) input;
-			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("restrictionDimensions") != null) {
+			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("restrictionDimensions")
+					!= null) {
 				JsonArray restrictionDimensions = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
 						.get("restrictionDimensions").getAsJsonArray();
 
@@ -61,9 +62,11 @@ public class FeatureDimensionRestrictionConverter implements IConverter {
 					} else if (restrictionDimension.startsWith("CUSTOM:")) {
 						ModElement modElement = workspace.getModElementByName(
 								restrictionDimension.replaceFirst("CUSTOM:", ""));
-						GeneratableElement generatableElement = modElement.getGeneratableElement();
-						if (generatableElement instanceof Dimension dimension) {
-							restrictionBiomes.addAll(dimension.biomesInDimension);
+						if (modElement != null) {
+							GeneratableElement generatableElement = modElement.getGeneratableElement();
+							if (generatableElement instanceof Dimension dimension) {
+								restrictionBiomes.addAll(dimension.biomesInDimension);
+							}
 						}
 					}
 				}

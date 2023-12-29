@@ -35,11 +35,12 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TextureHolder;
-import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -181,9 +182,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
 		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.tool.tool_3d_model"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		JComponent visualBottom = PanelUtils.centerAndSouthElement(glowCondition, specialInformation, 0, 5);
 
@@ -323,7 +324,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			if (toolType.getSelectedItem().equals("Special")) {
 				harvestLevel.setEnabled(false);
 				repairItems.setEnabled(false);
-			} else if (toolType.getSelectedItem().equals("Fishing rod") || toolType.getSelectedItem().equals("Shield")) {
+			} else if (toolType.getSelectedItem().equals("Fishing rod") || toolType.getSelectedItem()
+					.equals("Shield")) {
 				harvestLevel.setEnabled(false);
 				efficiency.setEnabled(false);
 				damageVsEntity.setEnabled(false);

@@ -16,19 +16,19 @@
                   <#assign ingredients += "{${mappedMCItemToItemObjectJSON(element)}},">
               </#if>
           </#list>
-            ${ingredients[0..(ingredients?last_index_of(',') - 1)]}
+          ${ingredients[0..(ingredients?last_index_of(',') - 1)]}
         ],
     <#else>
         <#assign recipeArray = data.getOptimisedRecipe()>
-        <#assign rm = [], i = 0>
+        <#assign patternKeys = data.getPatternKeys()>
         "pattern": [
         <#list recipeArray as rl>
-        		"<#list rl as re><#if !re.isEmpty()><#assign rm+=["\"${i}\": {${mappedMCItemToItemObjectJSON(re)}}"]/>${i}<#else> </#if><#assign i+=1></#list>"<#sep>,
+            "<#list rl as re><#if !re.isEmpty()>${patternKeys.get(re)}<#else> </#if></#list>"<#sep>,
         </#list>
         ],
         "key": {
-        <#list rm as recipeMapping>
-            ${recipeMapping}<#sep>,
+        <#list patternKeys.keySet() as item>
+            "${patternKeys.get(item)}": {${mappedMCItemToItemObjectJSON(item)}}<#sep>,
         </#list>
         },
     </#if>

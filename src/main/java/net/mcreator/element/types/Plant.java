@@ -33,6 +33,8 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -45,19 +47,19 @@ import java.util.stream.Collectors;
 		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public int renderType;
-	public String texture;
-	public String textureBottom;
+	@TextureReference(TextureType.BLOCK) public String texture;
+	@TextureReference(TextureType.BLOCK) public String textureBottom;
 	@Nonnull public String customModelName;
 
-	public String itemTexture;
-	public String particleTexture;
+	@TextureReference(TextureType.ITEM) public String itemTexture;
+	@TextureReference(TextureType.BLOCK) public String particleTexture;
 
 	public String tintType;
 	public boolean isItemTinted;
 
 	public String plantType;
 
-	public String suspiciousStewEffect;
+	@ModElementReference public String suspiciousStewEffect;
 	public int suspiciousStewDuration;
 
 	public String growapableSpawnType;
@@ -103,7 +105,7 @@ import java.util.stream.Collectors;
 	public double jumpFactor;
 	public double speedFactor;
 
-	public List<MItemBlock> canBePlacedOn;
+	@ModElementReference public List<MItemBlock> canBePlacedOn;
 	public Procedure placingCondition;
 
 	public boolean isBonemealable;
@@ -113,7 +115,7 @@ import java.util.stream.Collectors;
 
 	public int frequencyOnChunks;
 	public boolean generateFeature;
-	public List<BiomeEntry> restrictionBiomes;
+	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public String generationType;
 	public int patchSize;
 	public boolean generateAtAnyHeight;
@@ -189,7 +191,7 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
-	public boolean isDoubleBlock() {
+	@Override public boolean isDoubleBlock() {
 		return "double".equals(plantType);
 	}
 

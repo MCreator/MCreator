@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -235,11 +236,8 @@ public class MinecraftImageGenerator {
 			return image;
 		}
 
-		private static void drawTwoSlotRecipe(Graphics2D graphics2D, Workspace workspace, MItemBlock input,
-				MItemBlock result) {
-			int slotOffsetY = 9;
-			int oSlotOffsetY = 9;
-
+		private static void drawTwoSlotRecipe(Graphics2D graphics2D, int slotOffsetY, int oSlotOffsetY,
+				Workspace workspace, MItemBlock input, MItemBlock result) {
 			//box 1
 			graphics2D.drawLine(1, slotOffsetY, 8, slotOffsetY);
 			graphics2D.drawLine(1, 9 + slotOffsetY, 8, 9 + slotOffsetY);
@@ -310,7 +308,7 @@ public class MinecraftImageGenerator {
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			graphics2D.setColor(new Color(190, 190, 190, 65));
 
-			drawTwoSlotRecipe(graphics2D, workspace, input, result);
+			drawTwoSlotRecipe(graphics2D, 9, 9, workspace, input, result);
 
 			//explosion
 			graphics2D.drawPolygon(getStarPolygon(14, 13, 4, 2, 6, 0.5235987755982988));
@@ -323,29 +321,54 @@ public class MinecraftImageGenerator {
 		/**
 		 * <p>This method generates smithing recipe images.</p>
 		 *
+		 * @param template Template of the recipe.
 		 * @param input    Input of the recipe.
-		 * @param addition Addition of the recipe
+		 * @param addition Addition of the recipe.
 		 * @param result   Result of the recipe.
 		 * @return Returns the generated image.
 		 */
-		public static BufferedImage generateSmithingPreviewPicture(Workspace workspace, MItemBlock input,
-				MItemBlock addition, MItemBlock result) {
+		public static BufferedImage generateSmithingPreviewPicture(Workspace workspace, MItemBlock template,
+				MItemBlock input, MItemBlock addition, MItemBlock result) {
 			BufferedImage icon = new BufferedImage(28, 28, BufferedImage.TYPE_INT_ARGB);
+			int offsetY = 9;
 			Graphics2D graphics2D = icon.createGraphics();
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			graphics2D.setColor(new Color(190, 190, 190, 65));
 
-			drawTwoSlotRecipe(graphics2D, workspace, input, addition);
+			if (template != null && !template.isEmpty()) {
+				offsetY += 9;
+
+				//box 3
+				graphics2D.drawLine(10, 0, 17, 0);
+				graphics2D.drawLine(10, 9, 17, 9);
+				graphics2D.drawLine(9, 0, 9, 9);
+				graphics2D.drawLine(18, 0, 18, 9);
+
+				//template
+				graphics2D.drawImage(ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageUtils.toBufferedImage(
+								MCItem.getBlockIconBasedOnName(workspace, template.getUnmappedValue()).getImage())), 8), 10, 1,
+						null);
+
+				//arrow
+				graphics2D.drawLine(13, 11, 13, 14);
+				graphics2D.drawLine(14, 11, 14, 14);
+
+				graphics2D.drawLine(11, 15, 16, 15);
+				graphics2D.drawLine(12, 16, 15, 16);
+				graphics2D.drawLine(13, 17, 14, 17);
+			}
+
+			drawTwoSlotRecipe(graphics2D, offsetY, offsetY, workspace, input, addition);
 
 			//plus
-			graphics2D.drawLine(11, 13, 12, 13);
-			graphics2D.drawLine(11, 14, 12, 14);
+			graphics2D.drawLine(11, offsetY + 4, 12, offsetY + 4);
+			graphics2D.drawLine(11, offsetY + 5, 12, offsetY + 5);
 
-			graphics2D.drawLine(15, 13, 16, 13);
-			graphics2D.drawLine(15, 14, 16, 14);
+			graphics2D.drawLine(15, offsetY + 4, 16, offsetY + 4);
+			graphics2D.drawLine(15, offsetY + 5, 16, offsetY + 5);
 
-			graphics2D.drawLine(13, 11, 13, 16);
-			graphics2D.drawLine(14, 11, 14, 16);
+			graphics2D.drawLine(13, offsetY + 2, 13, offsetY + 7);
+			graphics2D.drawLine(14, offsetY + 2, 14, offsetY + 7);
 			graphics2D.dispose();
 
 			return icon;
@@ -413,7 +436,7 @@ public class MinecraftImageGenerator {
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			graphics2D.setColor(new Color(190, 190, 190, 65));
 
-			drawTwoSlotRecipe(graphics2D, workspace, input, result);
+			drawTwoSlotRecipe(graphics2D, 9, 9, workspace, input, result);
 
 			//smoke
 			graphics2D.drawLine(11, 11, 11, 16);
@@ -439,7 +462,7 @@ public class MinecraftImageGenerator {
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			graphics2D.setColor(new Color(190, 190, 190, 65));
 
-			drawTwoSlotRecipe(graphics2D, workspace, input, result);
+			drawTwoSlotRecipe(graphics2D, 9, 9, workspace, input, result);
 
 			//saw
 			graphics2D.drawOval(11, 11, 5, 5);
@@ -463,7 +486,7 @@ public class MinecraftImageGenerator {
 			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			graphics2D.setColor(new Color(190, 190, 190, 65));
 
-			drawTwoSlotRecipe(graphics2D, workspace, input, result);
+			drawTwoSlotRecipe(graphics2D, 9, 9, workspace, input, result);
 
 			//campfire
 			graphics2D.drawLine(12, 11, 12, 16);
@@ -498,7 +521,7 @@ public class MinecraftImageGenerator {
 			graphics2D.setColor(new Color(190, 190, 190, 65));
 
 			if (recipe.length == 1) {
-				drawTwoSlotRecipe(graphics2D, workspace, recipe[0], result);
+				drawTwoSlotRecipe(graphics2D, 9, 9, workspace, recipe[0], result);
 
 				//arrow
 				graphics2D.drawLine(11, 14, 16, 14);
@@ -1332,6 +1355,10 @@ public class MinecraftImageGenerator {
 				blockColor = Dependency.getColor("world");
 			}
 
+			// If no colors can be determined, use default mod element icon instead
+			if (startColor == null && returnColor == null && blockColor == null)
+				return null;
+
 			if (startColor != null)
 				graphics2D.drawImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_base"), startColor, false)
@@ -1429,23 +1456,9 @@ public class MinecraftImageGenerator {
 		 * @return Returns generated image of the appropriate colour.
 		 */
 		public static BufferedImage generateTagPreviewPicture(String type) {
-			return switch (type) {
-				case "Items" -> ImageUtils.toBufferedImage(
-						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("itemstack"), false)
-								.getImage());
-				case "Blocks" -> ImageUtils.toBufferedImage(
-						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("blockstate"), false).getImage());
-				case "Entities" -> ImageUtils.toBufferedImage(
-						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("entity"), false)
-								.getImage());
-				case "Functions" -> ImageUtils.toBufferedImage(
-						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("string"), false)
-								.getImage());
-				case "Biomes" -> ImageUtils.toBufferedImage(
-						ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), Dependency.getColor("world"), false)
-								.getImage());
-				default -> null;
-			};
+			return ImageUtils.toBufferedImage(
+					ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), TagType.fromLegacyName(type).getColor(),
+							false).getImage());
 		}
 
 		/**

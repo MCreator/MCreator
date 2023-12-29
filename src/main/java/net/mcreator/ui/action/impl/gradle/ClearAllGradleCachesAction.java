@@ -53,19 +53,18 @@ public class ClearAllGradleCachesAction extends GradleAction {
 		new Thread(() -> {
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.cache_cleanup.progress.stopping_daemons"));
-			progressDialog.addProgress(p1);
+			progressDialog.addProgressUnit(p1);
 
 			try {
 				GradleDaemonUtils.stopAllDaemons(mcreator.getWorkspace());
-				p1.ok();
+				p1.markStateOk();
 			} catch (IOException | InterruptedException e) {
-				p1.warn();
+				p1.markStateWarning();
 			}
-			progressDialog.refreshDisplay();
 
 			ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.cache_cleanup.progress.clearing_gradle_caches_folder"));
-			progressDialog.addProgress(p2);
+			progressDialog.addProgressUnit(p2);
 
 			try {
 				Thread.sleep(2000); // make sure all files are released
@@ -77,12 +76,11 @@ public class ClearAllGradleCachesAction extends GradleAction {
 			else
 				FileIO.deleteDir(new File(UserFolderManager.getGradleHome(), "caches"));
 
-			p2.ok();
-			progressDialog.refreshDisplay();
+			p2.markStateOk();
 
 			ProgressDialog.ProgressUnit p3 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.cache_cleanup.progress.build_task"));
-			progressDialog.addProgress(p3);
+			progressDialog.addProgressUnit(p3);
 
 			mcreator.getGradleConsole().markRunning(); // so console gets locked while we generate code already
 			try {
@@ -103,15 +101,15 @@ public class ClearAllGradleCachesAction extends GradleAction {
 					new Thread(() -> {
 						ProgressDialog.ProgressUnit p33a = new ProgressDialog.ProgressUnit(
 								L10N.t("dialog.setup_workspace.progress.reloading_gradle_project"));
-						progressDialogSecondStage.addProgress(p33a);
+						progressDialogSecondStage.addProgressUnit(p33a);
 
 						try {
 							mcreator.getGenerator().reloadGradleCaches();
-							p33a.ok();
-							progressDialogSecondStage.hideAll();
+							p33a.markStateOk();
+							progressDialogSecondStage.hideDialog();
 						} catch (Exception e) {
-							p33a.err();
-							progressDialogSecondStage.hideAll();
+							p33a.markStateError();
+							progressDialogSecondStage.hideDialog();
 						}
 
 						if (regenerateCodeFlag) {
@@ -125,10 +123,9 @@ public class ClearAllGradleCachesAction extends GradleAction {
 				mcreator.getGradleConsole().markReady();
 			}
 
-			p3.ok();
-			progressDialog.refreshDisplay();
+			p3.markStateOk();
 
-			progressDialog.hideAll();
+			progressDialog.hideDialog();
 		}, "ClearAllGradleCaches").start();
 		progressDialog.setVisible(true);
 	}

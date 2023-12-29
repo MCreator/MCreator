@@ -24,6 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
+import net.mcreator.ui.views.editor.image.canvas.Selection;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
@@ -55,8 +56,6 @@ public class RecolorDialog extends MCreatorDialog {
 
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
 		JButton ok = L10N.button("dialog.imageeditor.recolor_action");
-		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		getRootPane().setDefaultButton(ok);
 
 		GridBagConstraints layoutConstraints = new GridBagConstraints();
@@ -65,12 +64,26 @@ public class RecolorDialog extends MCreatorDialog {
 
 		ok.addActionListener(e -> {
 			BufferedImage bim = ImageUtils.deepCopy(layer.getRaster());
+
+			Selection selection = canvas.getSelection();
+			Shape validArea = selection.getLayerMask(layer);
+
 			Graphics2D g2d = layer.createGraphics();
+
+			Shape previousShape = g2d.getClip();
+
+			if (validArea != null)
+				g2d.setClip(validArea);
+
 			g2d.setBackground(new Color(0, 0, 0, 0));
 			g2d.clearRect(0, 0, getWidth(), getHeight());
 			g2d.drawImage(ImageUtils.toBufferedImage(
 							ImageUtils.colorize(new ImageIcon(bim), colorChooser.getColor(), !lock.isSelected()).getImage()),
 					null, 0, 0);
+
+			if (validArea != null)
+				g2d.setClip(previousShape);
+
 			g2d.dispose();
 			layer.mergeOverlay();
 			versionManager.addRevision(new Modification(canvas, layer));

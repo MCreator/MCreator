@@ -21,6 +21,7 @@
   "nextStatement": null,
   "colour": 350,
   "mcreator": {
+    "group": "cooldown",
     "toolbox_id": "itemmanagement",
     "toolbox_init": [
       "<value name=\"ticks\"><block type=\"math_number\"><field name=\"NUM\">100</field></block></value>",

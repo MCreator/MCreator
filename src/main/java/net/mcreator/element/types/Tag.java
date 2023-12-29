@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,38 +21,47 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.NamespacedGeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.DamageTypeEntry;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tag extends NamespacedGeneratableElement {
 
 	@Nonnull public String type;
 
-	public List<MItemBlock> items;
-	public List<MItemBlock> blocks;
-	public List<String> functions;
-	public List<EntityEntry> entities;
-	public List<BiomeEntry> biomes;
+	@ModElementReference public List<MItemBlock> items;
+	@ModElementReference public List<MItemBlock> blocks;
+	@ModElementReference public List<String> functions;
+	@ModElementReference public List<EntityEntry> entities;
+	@ModElementReference public List<BiomeEntry> biomes;
+	@ModElementReference public List<DamageTypeEntry> damageTypes;
+
+	private Tag() {
+		this(null);
+	}
 
 	public Tag(ModElement element) {
 		super(element);
+
+		items = new ArrayList<>();
+		blocks = new ArrayList<>();
+		functions = new ArrayList<>();
+		entities = new ArrayList<>();
+		biomes = new ArrayList<>();
+		damageTypes = new ArrayList<>();
 	}
 
 	public String tagType() {
-		if (type.equals("Entities"))
-			return "entity_types";
-
-		if (type.equals("Biomes"))
-			return "worldgen/biome";
-
-		return type.toLowerCase(Locale.ENGLISH);
+		return TagType.fromLegacyName(type).getFolder();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

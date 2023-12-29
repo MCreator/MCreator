@@ -22,10 +22,12 @@ import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
+import net.mcreator.ui.views.editor.image.canvas.Selection;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.tool.component.JSlidingSpinner;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
+import java.awt.Shape;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -47,7 +49,10 @@ public class FloodFillTool extends AbstractModificationTool {
 	}
 
 	@Override public boolean process(ZoomedMouseEvent e) {
-		if (layer.in(e.getX(), e.getY())) {
+		Selection selection = canvas.getSelection();
+		Shape validArea = selection.getLayerMask(layer);
+
+		if (layer.in(e.getX(), e.getY()) && selection.isInside(validArea, e.getX(), e.getY())) {
 			layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
 			fillArea(layer.getRaster(), layer.getOverlay(), e.getX() - layer.getX(), e.getY() - layer.getY(),
 					colorSelector.getForegroundColor());
@@ -80,6 +85,8 @@ public class FloodFillTool extends AbstractModificationTool {
 
 	public void fillArea(BufferedImage image, BufferedImage overlay, int x, int y, Color fill) {
 		Graphics2D g2d = overlay.createGraphics();
+		Selection selection = canvas.getSelection();
+		Shape validArea = selection.getLayerMask(layer);
 		g2d.setColor(fill);
 		int originalint = image.getRGB(x, y);
 		{
@@ -98,28 +105,32 @@ public class FloodFillTool extends AbstractModificationTool {
 				y = stack[index][1];
 				index--;
 
-				if ((x > 0) && toPaint(image.getRGB(x - 1, y), overlay.getRGB(x - 1, y), originalint)) {
+				if ((x > 0) && toPaint(image.getRGB(x - 1, y), overlay.getRGB(x - 1, y), originalint)
+						&& selection.isInside(validArea, x - 1, y)) {
 					g2d.fillRect(x - 1, y, 1, 1);
 					index++;
 					stack[index][0] = x - 1;
 					stack[index][1] = y;
 				}
 
-				if ((x < maxX) && toPaint(image.getRGB(x + 1, y), overlay.getRGB(x + 1, y), originalint)) {
+				if ((x < maxX) && toPaint(image.getRGB(x + 1, y), overlay.getRGB(x + 1, y), originalint)
+						&& selection.isInside(validArea, x + 1, y)) {
 					g2d.fillRect(x + 1, y, 1, 1);
 					index++;
 					stack[index][0] = x + 1;
 					stack[index][1] = y;
 				}
 
-				if ((y > 0) && toPaint(image.getRGB(x, y - 1), overlay.getRGB(x, y - 1), originalint)) {
+				if ((y > 0) && toPaint(image.getRGB(x, y - 1), overlay.getRGB(x, y - 1), originalint)
+						&& selection.isInside(validArea, x, y - 1)) {
 					g2d.fillRect(x, y - 1, 1, 1);
 					index++;
 					stack[index][0] = x;
 					stack[index][1] = y - 1;
 				}
 
-				if ((y < maxY) && toPaint(image.getRGB(x, y + 1), overlay.getRGB(x, y + 1), originalint)) {
+				if ((y < maxY) && toPaint(image.getRGB(x, y + 1), overlay.getRGB(x, y + 1), originalint)
+						&& selection.isInside(validArea, x, y + 1)) {
 					g2d.fillRect(x, y + 1, 1, 1);
 					index++;
 					stack[index][0] = x;
