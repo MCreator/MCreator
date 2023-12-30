@@ -49,7 +49,8 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "procedure_retval_");
 		Element procedureField = XMLUtil.getFirstChildrenWithName(block, "field");
 
-		if (procedureField != null) {
+		if (procedureField != null && procedureField.getTextContent() != null && !"".equals(
+				procedureField.getTextContent())) {
 			Procedure procedure = new Procedure(procedureField.getTextContent());
 			List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
 
@@ -67,8 +68,8 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 			List<String> skippedDepsNames = new ArrayList<>(), processedDepsNames = new ArrayList<>();
 
 			Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
-			if (mutation != null && mutation.hasAttribute("inputs")
-					&& !mutation.getAttribute("inputs").equals("undefined")) {
+			if (mutation != null && mutation.hasAttribute("inputs") && !mutation.getAttribute("inputs")
+					.equals("undefined")) {
 				int depCount = Integer.parseInt(mutation.getAttribute("inputs"));
 				Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
 						.filter(e -> e.getAttribute("name").matches("name\\d+"))
