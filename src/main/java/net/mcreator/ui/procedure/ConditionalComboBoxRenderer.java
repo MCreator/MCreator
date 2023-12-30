@@ -26,12 +26,12 @@ import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
 
-class ConditionalComboBoxRenderer implements ListCellRenderer<CBoxEntry> {
+class ConditionalComboBoxRenderer implements ListCellRenderer<ProcedureEntry> {
 
 	private final BasicComboBoxRenderer renderer = new BasicComboBoxRenderer();
 
 	@Override
-	public Component getListCellRendererComponent(JList list, CBoxEntry value, int index, boolean isSelected,
+	public Component getListCellRendererComponent(JList list, ProcedureEntry value, int index, boolean isSelected,
 			boolean cellHasFocus) {
 		JLabel component = (JLabel) renderer.getListCellRendererComponent(list, value.string, index, isSelected,
 				cellHasFocus);

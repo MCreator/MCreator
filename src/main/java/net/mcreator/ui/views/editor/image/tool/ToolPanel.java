@@ -130,6 +130,7 @@ public class ToolPanel extends JSplitPane {
 		register(new HSVNoiseTool(canvas, cs, versionManager, frame), filters);
 
 		register(new MoveTool(canvas, cs, versionManager), constraints);
+		register(new SelectionTool(canvas, cs, versionManager), constraints);
 		register(new ResizeTool(canvas, cs, versionManager, frame), constraints);
 		register(new ResizeCanvasTool(canvas, cs, versionManager, frame), constraints);
 

@@ -25,12 +25,13 @@ import net.mcreator.element.parts.DamageTypeEntry;
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MinecraftImageGenerator;
-import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.minecraft.TagType;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tag extends NamespacedGeneratableElement {
@@ -44,8 +45,19 @@ import java.util.List;
 	@ModElementReference public List<BiomeEntry> biomes;
 	@ModElementReference public List<DamageTypeEntry> damageTypes;
 
+	private Tag() {
+		this(null);
+	}
+
 	public Tag(ModElement element) {
 		super(element);
+
+		items = new ArrayList<>();
+		blocks = new ArrayList<>();
+		functions = new ArrayList<>();
+		entities = new ArrayList<>();
+		biomes = new ArrayList<>();
+		damageTypes = new ArrayList<>();
 	}
 
 	public String tagType() {

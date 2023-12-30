@@ -191,6 +191,14 @@ import java.util.stream.Collectors;
 			this.max = max;
 		}
 
+		public int getMin() {
+			return min;
+		}
+
+		public int getMax() {
+			return max;
+		}
+
 		@Override @Nonnull public Integer getDefaultValue() {
 			return 0;
 		}
@@ -234,6 +242,14 @@ import java.util.stream.Collectors;
 			this.max = max;
 		}
 
+		public double getMin() {
+			return min;
+		}
+
+		public double getMax() {
+			return max;
+		}
+
 		@Override @Nonnull public Double getDefaultValue() {
 			return 0d;
 		}
@@ -273,6 +289,10 @@ import java.util.stream.Collectors;
 		public StringType(String name, String[] arrayData) {
 			super(name);
 			this.arrayData = arrayData;
+		}
+
+		public String[] getArrayData() {
+			return arrayData;
 		}
 
 		@Override @Nonnull public String getDefaultValue() {

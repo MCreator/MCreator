@@ -116,7 +116,7 @@ public class HelpLoader {
 							Template freemarkerTemplate = InlineTemplatesHandler.getTemplate(helpText);
 							StringWriter stringWriter = new StringWriter();
 							freemarkerTemplate.process(dataModel, stringWriter,
-									InlineTemplatesHandler.getConfiguration().getBeansWrapper());
+									InlineTemplatesHandler.getConfiguration().getObjectWrapper());
 
 							helpString.append(renderer.render(parser.parse(stringWriter.getBuffer().toString())));
 						} catch (TemplateException | IOException e) {
