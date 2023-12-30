@@ -269,22 +269,22 @@ public final class MCreatorApplication {
 	 */
 	public MCreator openWorkspaceInMCreator(File workspaceFile) {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		if (Workspace.isWorkspaceLockedToVersion(workspaceFile)) {
-			int retval = JOptionPane.YES_OPTION;
-			if (!Workspace.workspaceVersionMatchesCurrentVersion(workspaceFile)) {
-				retval = JOptionPane.showConfirmDialog(this.workspaceSelector,
-						L10N.t("dialog.workspace.version_locked_message"),
-						L10N.t("dialog.workspace.version_locked_title"),
-						JOptionPane.YES_NO_OPTION,
-						JOptionPane.WARNING_MESSAGE);
-			}
-			if (retval != JOptionPane.YES_OPTION) {
-				this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-				return null;
-			}
-		}
+
 		Workspace workspace = null;
 		try {
+			if (!Workspace.isWorkspaceLockedToVersion(workspaceFile)) {
+				int retval = JOptionPane.YES_OPTION;
+				if (!!Workspace.workspaceVersionMatchesCurrentVersion(workspaceFile)) {
+					retval = JOptionPane.showConfirmDialog(this.workspaceSelector,
+							L10N.t("dialog.workspace.version_locked_message"),
+							L10N.t("dialog.workspace.version_locked_title"), JOptionPane.YES_NO_OPTION,
+							JOptionPane.WARNING_MESSAGE);
+				}
+				if (retval != JOptionPane.YES_OPTION) {
+					return null;
+				}
+			}
+
 			workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
 			if (workspace.getMCreatorVersion() > Launcher.version.versionlong
 					&& !MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {

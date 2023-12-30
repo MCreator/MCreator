@@ -514,4 +514,5 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		Long workspaceVersion = workspaceJson.get("mcreatorVersion").getAsLong();
 		return workspaceVersion.equals(Launcher.version.versionlong);
 	}
+
 }
