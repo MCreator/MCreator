@@ -60,6 +60,16 @@ public class ImageUtils {
 		return new ImageIcon(resizedImage);
 	}
 
+	public static ImageIcon createColorSquare(Color color, int width, int height) {
+		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = bi.createGraphics();
+		g.setColor(color);
+		g.fillRect(0, 0, width, height);
+		g.dispose();
+
+		return new ImageIcon(bi);
+	}
+
 	public static ImageIcon colorize(ImageIcon icon, Color modifier, boolean type) {
 		return type ? colorize1(icon, modifier) : colorize2(icon, modifier);
 	}
