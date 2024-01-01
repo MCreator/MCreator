@@ -77,7 +77,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 				assertNotNull(generatorConfiguration);
 
-				try (Workspace workspace = Workspace.readFromFS(workspaceFile, generatorConfiguration)) {
+				try (Workspace workspace = Workspace.readFromFSUnsafe(workspaceFile, generatorConfiguration)) {
 					// Conversions
 					for (ModElement mod : workspace.getModElements()) {
 						mod.getGeneratableElement();

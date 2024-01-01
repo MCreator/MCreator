@@ -434,7 +434,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 * @param generatorConfiguration If same as workspace, nothing is done, otherwise regenerateRequired is set to true.
 	 * @return Workspace object for the given file
 	 */
-	public static Workspace readFromFS(File workspaceFile, GeneratorConfiguration generatorConfiguration) {
+	public static Workspace readFromFSUnsafe(File workspaceFile, GeneratorConfiguration generatorConfiguration) {
 		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 
