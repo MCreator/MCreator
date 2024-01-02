@@ -23,7 +23,10 @@ import net.mcreator.element.types.*;
 import net.mcreator.ui.modgui.*;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 public class ModElementTypeLoader {
 
@@ -92,4 +95,9 @@ public class ModElementTypeLoader {
 
 		throw new IllegalArgumentException("Mod element type " + typeName + " is not a registered type");
 	}
+
+	public static Set<ModElementType<?>> getModElementTypes() {
+		return new HashSet<>(REGISTRY);
+	}
+
 }

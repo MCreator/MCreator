@@ -68,9 +68,7 @@ public class ShareableZIPManager {
 					L10N.t("dialog.workspace.regenerate_and_build.progress.loading_mod_elements"));
 			dial.addProgressUnit(p2);
 
-			try {
-				Workspace workspace = Workspace.readFromFS(retval.get(), dial);
-
+			try (Workspace workspace = Workspace.readFromFS(retval.get(), dial)) {
 				int modstoload = workspace.getModElements().size();
 
 				int i = 0;
@@ -104,8 +102,10 @@ public class ShareableZIPManager {
 
 				// make sure we store any potential changes made to the workspace
 				workspace.markDirty();
-
-				workspace.close(); // we need to close the workspace!
+			} catch (UnsupportedGeneratorException | MissingWorkspacePluginsException e) {
+				// Exception that already prompted user action resulting in us landing here happened before
+				// So we just cancel the import at this point by returning null
+				retval.set(null);
 			} catch (Exception e) {
 				LOG.error("Failed to import workspace", e);
 			}
