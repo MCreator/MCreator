@@ -608,8 +608,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	protected boolean allowCodePreview() {
-		return !modElement.getWorkspace().getGenerator().getModElementGeneratorTemplatesList(getElementFromGUI())
-				.isEmpty();
+		return true;
 	}
 
 	public void reloadDataLists() {
