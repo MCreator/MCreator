@@ -30,6 +30,7 @@ import java.util.*;
 import java.util.function.BiFunction;
 import java.util.function.Consumer;
 import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
@@ -40,8 +41,8 @@ public class ZipIO {
 	public static ZipFile openZipFile(File zipFile) throws IOException {
 		try {
 			return new ZipFile(zipFile);
-		} catch (Exception e) {
-			return new ZipFile(zipFile, Charset.forName("Cp437"));
+		} catch (ZipException e) {
+			return new ZipFile(zipFile, Charset.forName("cp437"));
 		}
 	}
 
