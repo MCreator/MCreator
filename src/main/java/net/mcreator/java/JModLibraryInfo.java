@@ -19,6 +19,7 @@
 
 package net.mcreator.java;
 
+import net.mcreator.io.zip.ZipIO;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,7 +63,7 @@ public class JModLibraryInfo extends LibraryInfo {
 
 	@Override public void bulkClassFileCreationStart() {
 		try {
-			bulkCreateZip = new ZipFile(jmodFile);
+			bulkCreateZip = ZipIO.openZipFile(jmodFile);
 		} catch (IOException e) {
 			LOG.error("Failed to start class file creation", e);
 		}
