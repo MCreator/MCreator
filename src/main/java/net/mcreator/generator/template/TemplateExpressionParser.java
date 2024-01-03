@@ -120,9 +120,9 @@ public class TemplateExpressionParser {
 			Map<String, Object> dataModel = new HashMap<>(generator.getBaseDataModelProvider().provide());
 			AtomicReference<?> retVal = new AtomicReference<>(null);
 			dataModel.put("data", dataHolder);
-			dataModel.put("_retVal", retVal);
+			dataModel.put("_", retVal);
 
-			Template t = InlineTemplatesHandler.getTemplate("${_retVal.set(" + expression + ")}");
+			Template t = InlineTemplatesHandler.getTemplate("${_.set(" + expression + ")}");
 			t.process(dataModel, NullWriter.INSTANCE,
 					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration()
 							.getObjectWrapper());
