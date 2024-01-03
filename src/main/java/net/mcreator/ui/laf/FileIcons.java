@@ -26,10 +26,10 @@ import java.io.File;
 public class FileIcons {
 
 	public static ImageIcon getIconForFile(File file) {
-		return getIconForFile(file.getName());
+		return getIconForFile(file.getName(), !file.isDirectory());
 	}
 
-	public static ImageIcon getIconForFile(String file) {
+	public static ImageIcon getIconForFile(String file, boolean leaf) {
 		if (file.endsWith(".java"))
 			return UIRES.get("16px.class.gif");
 		if (file.endsWith(".ogg"))
@@ -45,7 +45,7 @@ public class FileIcons {
 		if (file.endsWith(".png") || file.endsWith(".gif"))
 			return UIRES.get("laf.image.gif");
 
-		return UIRES.get("laf.file.gif");
+		return leaf ? UIRES.get("laf.file.gif") : UIRES.get("laf.directory.gif");
 	}
 
 }
