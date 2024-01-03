@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 public class ImportFormat {
 
-	private Map<String, List<String>> cache = new HashMap<>();
+	private final Map<String, List<String>> cache = new HashMap<>();
 
 	public static String removeImports(String code, String replacement) {
 		CompilationUnit cu = new ASTFactory().getCompilationUnit("", new Scanner(new StringReader(code)));
@@ -73,7 +73,7 @@ public class ImportFormat {
 	public String arrangeImports(@Nullable Workspace workspace, String code, boolean skipModClassReloading) {
 		if (workspace != null && workspace.getGenerator().getGradleCache() != null) {
 			if (!skipModClassReloading) {
-				cache = new HashMap<>();
+				cache.clear();
 				cache.putAll(workspace.getGenerator().getGradleCache().getImportTree());
 				ImportTreeBuilder.reloadClassesFromMod(workspace.getGenerator(), cache);
 			}

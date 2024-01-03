@@ -35,13 +35,10 @@ import java.util.stream.Collectors;
 
 public class ClassWriter {
 
-	private static CodeCleanup codeCleanup;
+	private static final CodeCleanup codeCleanup = new CodeCleanup();
 
 	public static void writeClassToFileWithoutQueue(@Nullable Workspace workspace, String code, File file,
 			boolean formatAndOrganiseImports) {
-		if (codeCleanup == null)
-			codeCleanup = new CodeCleanup();
-
 		if (formatAndOrganiseImports) {
 			FileIO.writeStringToFile(codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code), file);
 		} else {
