@@ -62,7 +62,7 @@ public class DefinitionsProvider {
 
 		for (BaseType type : BaseType.values()) {
 			String config = FileIO.readResourceToString(PluginLoader.INSTANCE,
-					"/" + generatorName + "/common." + type.getPluralName().toLowerCase(Locale.ENGLISH) + ".yaml");
+					"/" + generatorName + "/common." + type.getPluralName() + ".yaml");
 
 			if (config.isEmpty()) // definition not specified
 				continue;
