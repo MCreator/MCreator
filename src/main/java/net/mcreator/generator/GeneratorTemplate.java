@@ -92,7 +92,8 @@ public class GeneratorTemplate {
 	// Helper functions below
 
 	public GeneratorFile toGeneratorFile(String code) {
-		return new GeneratorFile(this, (String) templateDefinition.get("writer"), code);
+		return new GeneratorFile(this, GeneratorFile.Writer.fromString((String) templateDefinition.get("writer")),
+				code);
 	}
 
 	public boolean shouldBeSkippedBasedOnCondition(Generator generator, Object conditionData) {

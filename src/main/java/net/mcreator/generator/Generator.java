@@ -580,29 +580,29 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	private void generateFiles(Collection<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
-		// first create Java files if they do not exist already
+		// first create Java files if they do not exist already for the import formatter to load them
 		// so the imports get properly organised in the next step
 		if (formatAndOrganiseImports) {
 			generatorFiles.forEach(generatorFile -> {
 				if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {
-					if (generatorFile.writer() == null || generatorFile.writer().equals("java"))
+					if (generatorFile.writer() == GeneratorFile.Writer.JAVA)
 						if (!generatorFile.getFile().isFile())
 							FileIO.touchFile(generatorFile.getFile());
 				}
 			});
 		}
 
-		generatorFiles.forEach(generatorFile -> {
+		for (GeneratorFile generatorFile : generatorFiles) {
 			if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {
-				if (generatorFile.writer() == null || generatorFile.writer().equals("java"))
+				if (generatorFile.writer() == GeneratorFile.Writer.JAVA)
 					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(),
 							generatorFile.getFile(), formatAndOrganiseImports);
-				else if (generatorFile.writer().equals("json"))
+				else if (generatorFile.writer() == GeneratorFile.Writer.JSON)
 					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.getFile());
-				else if (generatorFile.writer().equals("file"))
+				else if (generatorFile.writer() == GeneratorFile.Writer.FILE)
 					FileIO.writeStringToFile(generatorFile.contents(), generatorFile.getFile());
 			}
-		});
+		}
 	}
 
 	public void runResourceSetupTasks() {
