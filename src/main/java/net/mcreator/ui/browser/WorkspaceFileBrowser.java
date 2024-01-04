@@ -509,7 +509,7 @@ public class WorkspaceFileBrowser extends JPanel {
 				else if (fileNode.data.startsWith("Java "))
 					a.setIcon(UIRES.get("16px.directory.gif"));
 				else
-					a.setIcon(FileIcons.getIconForFile(fileNode.data, fileNode.isLeaf()));
+					a.setIcon(FileIcons.getIconForFile(fileNode.data, !fileNode.isLeaf()));
 			} else if (node.getUserObject() instanceof File fil) {
 				a.setText(fil.getName());
 				a.setIcon(FileIcons.getIconForFile(fil));

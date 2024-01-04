@@ -26,11 +26,11 @@ import java.io.File;
 public class FileIcons {
 
 	public static ImageIcon getIconForFile(File file) {
-		return getIconForFile(file.getName(), !file.isDirectory());
+		return getIconForFile(file.getName(), file.isDirectory());
 	}
 
-	public static ImageIcon getIconForFile(String file, boolean leaf) {
-		if (!leaf)
+	public static ImageIcon getIconForFile(String file, boolean folder) {
+		if (folder)
 			return UIRES.get("laf.directory.gif");
 
 		if (file.endsWith(".java"))
