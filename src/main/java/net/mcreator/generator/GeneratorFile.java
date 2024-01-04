@@ -18,9 +18,11 @@
 
 package net.mcreator.generator;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.io.File;
 
-public record GeneratorFile(GeneratorTemplate source, String writer, String contents) {
+public record GeneratorFile(GeneratorTemplate source, @Nonnull Writer writer, String contents) {
 
 	public File getFile() {
 		return source.getFile();
@@ -40,6 +42,25 @@ public record GeneratorFile(GeneratorTemplate source, String writer, String cont
 
 	@Override public String toString() {
 		return source.getFile().toString();
+	}
+
+	public enum Writer {
+
+		JAVA, JSON, FILE;
+
+		public static Writer fromString(@Nullable String string) {
+			// Default to JAVA if nothing is specified (null) - for backwards compatibility
+			if (string == null)
+				return JAVA;
+
+			return switch (string) {
+				case "java" -> JAVA;
+				case "json" -> JSON;
+				case "file" -> FILE;
+				default -> throw new IllegalStateException("Unexpected value: " + string);
+			};
+		}
+
 	}
 
 }

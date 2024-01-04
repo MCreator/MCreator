@@ -45,10 +45,6 @@ import java.util.stream.Collectors;
 		return generator.getGeneratorMinecraftVersion();
 	}
 
-	public int getStartIDFor(String baseType) {
-		return generator.getStartIDFor(baseType);
-	}
-
 	public String map(String rawName, String mappingMap) {
 		return new NameMapper(generator.getWorkspace(), mappingMap).getMapping(rawName);
 	}

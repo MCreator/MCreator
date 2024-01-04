@@ -1159,7 +1159,8 @@ public class BlockGUI extends ModElementGUI<Block> {
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);
 
-		JComponent genPanelWithChunk = PanelUtils.westAndCenterElement(new JLabel(UIRES.get("chunk")), genPanel, 25, 0);
+		JComponent genPanelWithChunk = PanelUtils.westAndCenterElement(new JLabel(UIRES.get("chunk")),
+				PanelUtils.pullElementUp(genPanel), 25, 0);
 		pane9.add("Center", PanelUtils.totalCenterInPanel(genPanelWithChunk));
 
 		texture.setValidator(new TileHolderValidator(texture));

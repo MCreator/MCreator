@@ -117,12 +117,6 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return (String) generatorConfig.get("subversion");
 	}
 
-	public Map<?, ?> getStardIDMap() {
-		return generatorConfig.get("start_id_map") != null ?
-				(Map<?, ?>) generatorConfig.get("start_id_map") :
-				new HashMap<>();
-	}
-
 	public Map<?, ?> getLanguageFileSpecification() {
 		return generatorConfig.get("language_file") != null ?
 				(Map<?, ?>) generatorConfig.get("language_file") :

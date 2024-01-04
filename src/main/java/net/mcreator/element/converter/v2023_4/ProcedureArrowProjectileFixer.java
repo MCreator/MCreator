@@ -50,8 +50,13 @@ public class ProcedureArrowProjectileFixer extends ProcedureConverter {
 			String type = element.getAttribute("type");
 			if (type.equals("projectiles_arrow")) {
 				Element field = XMLUtil.getFirstChildrenWithName(element, "field");
-				if (field != null)
-					field.setTextContent(field.getTextContent() + "Projectile");
+				if (field != null) {
+					String textContent = field.getTextContent();
+					if (textContent.isBlank() || textContent.equals("Arrow") || textContent.equals("SpectralArrow"))
+						continue;
+
+					field.setTextContent(textContent + "Projectile");
+				}
 			}
 		}
 
