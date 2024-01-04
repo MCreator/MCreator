@@ -39,10 +39,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RegenerateCodeAction extends GradleAction {
@@ -70,7 +67,13 @@ public class RegenerateCodeAction extends GradleAction {
 			List<File> toBePreserved = new ArrayList<>();
 
 			// remove all sources of mod elements that are not locked
-			for (ModElement mod : mcreator.getWorkspace().getModElements()) {
+			Collection<ModElement> modElementsOld = mcreator.getWorkspace().getModElements();
+			int modstoload = modElementsOld.size();
+			int i = 0;
+			for (ModElement mod : modElementsOld) {
+				p0.setPercent((int) (i / (float) modstoload * 100));
+				i++;
+
 				if (mod.getType() == ModElementType.UNKNOWN)
 					continue; // skip unknown MEs as we don't know what we can remove from them
 
@@ -111,12 +114,12 @@ public class RegenerateCodeAction extends GradleAction {
 			ProgressDialog.ProgressUnit p10 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.workspace.regenerate_and_build.progress.loading_mod_elements"));
 			dial.addProgressUnit(p10);
-			List<ModElement> modElementsOld = new ArrayList<>(mcreator.getWorkspace().getModElements());
-			int modstoload = modElementsOld.size();
-			int i = 0;
+			modElementsOld = mcreator.getWorkspace().getModElements();
+			modstoload = modElementsOld.size();
+			i = 0;
 			for (ModElement mod : modElementsOld) {
 				mod.getGeneratableElement();
-				p10.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
+				p10.setPercent((int) (i / (float) modstoload * 100));
 				i++;
 			}
 			p10.markStateOk();
@@ -136,6 +139,9 @@ public class RegenerateCodeAction extends GradleAction {
 			modstoload = mcreator.getWorkspace().getModElements().size();
 			i = 0;
 			for (ModElement mod : mcreator.getWorkspace().getModElements()) {
+				p1.setPercent((int) (i / (float) modstoload * 100));
+				i++;
+
 				if (mod.isCodeLocked()) {
 					hasLockedElements = true;
 				}
@@ -185,9 +191,6 @@ public class RegenerateCodeAction extends GradleAction {
 				} catch (Exception e) {
 					LOG.error("Failed to regenerate: " + mod.getName(), e);
 				}
-
-				p1.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
-				i++;
 			}
 
 			// save all updated generatable mod elements
