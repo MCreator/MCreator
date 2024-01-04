@@ -165,10 +165,11 @@ public class TemplateGenerator {
 			try {
 				String[] vars = variables.split(";");
 				for (String var : vars) {
-					String[] data = var.split("(?<!/)=");
-					dataModel.put("var_" + data[0].trim().replace("/=", "="), data[1].trim().replace("/=", "="));
+					String[] data = var.split("=");
+					dataModel.put("var_" + data[0].trim(), data[1].trim());
 				}
-			} catch (Exception ignored) {
+			} catch (Exception e) {
+				LOG.warn("Failed to parse hardcoded variables", e);
 			}
 		}
 	}
