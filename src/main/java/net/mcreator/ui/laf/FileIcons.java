@@ -30,6 +30,9 @@ public class FileIcons {
 	}
 
 	public static ImageIcon getIconForFile(String file, boolean leaf) {
+		if (!leaf)
+			return UIRES.get("laf.directory.gif");
+
 		if (file.endsWith(".java"))
 			return UIRES.get("16px.class.gif");
 		if (file.endsWith(".ogg"))
@@ -45,7 +48,7 @@ public class FileIcons {
 		if (file.endsWith(".png") || file.endsWith(".gif"))
 			return UIRES.get("laf.image.gif");
 
-		return leaf ? UIRES.get("laf.file.gif") : UIRES.get("laf.directory.gif");
+		return UIRES.get("laf.file.gif");
 	}
 
 }
