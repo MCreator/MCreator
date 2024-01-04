@@ -2,8 +2,8 @@
     "parent": "item/generated",
     "textures": {
       "layer0": "${modid}:item/${data.texture}"
-    }
-    <#if data.getModels?? && data.getModels()?has_content>,
+    },
+    <#if data.getModels?? && data.getModels()?has_content>
     "overrides": [
         <#list data.getModels() as model>
         {
@@ -16,8 +16,8 @@
             "model": "${modid}:item/${registryname}_${model?index}"
         }<#sep>,
         </#list>
-    ]
-    </#if>,
+    ],
+    </#if>
     "display": {
       "thirdperson_righthand": {
         "rotation": [
