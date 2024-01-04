@@ -82,18 +82,9 @@ public class Generator implements IGenerator, Closeable {
 
 		this.generatorConfiguration = GENERATOR_CACHE.get(generatorName);
 
-		this.baseDataModelProvider = new BaseDataModelProvider(this);
-
 		this.minecraftCodeProvider = new MinecraftCodeProvider(workspace);
-	}
 
-	public int getStartIDFor(String baseType) {
-		try {
-			String idstring = (String) generatorConfiguration.getStardIDMap().get(baseType);
-			return Integer.parseInt(idstring.trim());
-		} catch (Exception e) {
-			return -1;
-		}
+		this.baseDataModelProvider = new BaseDataModelProvider(this);
 	}
 
 	@Override public @Nonnull Workspace getWorkspace() {
