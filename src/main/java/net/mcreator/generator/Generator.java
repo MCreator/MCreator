@@ -49,6 +49,7 @@ import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.io.File;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -581,25 +582,26 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	private void generateFiles(Collection<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
-		// first create Java files if they do not exist already for the import formatter to load them
-		// so the imports get properly organised in the next step
-		if (formatAndOrganiseImports) {
-			for (GeneratorFile generatorFile : generatorFiles) {
-				if (generatorFile.writer() == GeneratorFile.Writer.JAVA)
-					if (!generatorFile.getFile().isFile())
-						FileIO.touchFile(generatorFile.getFile());
-			}
-		}
+		Map<File, String> javaFiles = new ConcurrentHashMap<>();
 
-		for (GeneratorFile generatorFile : generatorFiles) {
-			if (generatorFile.writer() == GeneratorFile.Writer.JAVA)
-				ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(), generatorFile.getFile(),
-						formatAndOrganiseImports);
-			else if (generatorFile.writer() == GeneratorFile.Writer.JSON)
-				JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.getFile());
-			else if (generatorFile.writer() == GeneratorFile.Writer.FILE)
+		generatorFiles.parallelStream().forEach(generatorFile -> {
+			if (generatorFile.writer() == GeneratorFile.Writer.JAVA) {
+				// first create Java files if they do not exist already for the import formatter to load them
+				// so the imports get properly organised in the next step
+				if (formatAndOrganiseImports && !generatorFile.getFile().isFile())
+					FileIO.touchFile(generatorFile.getFile());
+
+				javaFiles.put(generatorFile.getFile(), generatorFile.contents());
+			} else if (generatorFile.writer() == GeneratorFile.Writer.JSON) {
+				JSONWriter.writeJSONToFile(generatorFile.contents(), generatorFile.getFile());
+			} else if (generatorFile.writer() == GeneratorFile.Writer.FILE) {
 				FileIO.writeStringToFile(generatorFile.contents(), generatorFile.getFile());
-		}
+			}
+		});
+
+		// After we have list of Java files, and they are created, we can format and organise imports in them
+		if (!javaFiles.isEmpty())
+			ClassWriter.batchWriteClassToFile(workspace, javaFiles, formatAndOrganiseImports, null);
 	}
 
 	public void runResourceSetupTasks() {
