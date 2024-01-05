@@ -45,6 +45,7 @@ public class MCItem extends DataListEntry {
 
 	private static final Logger LOG = LogManager.getLogger(MCItem.class);
 
+	public static final ImageIcon EMPTY_ICON = new EmptyIcon.ImageIcon(32, 32);
 	public static final ImageIcon DEFAULT_ICON = UIRES.get("mod");
 	public static final ImageIcon TAG_ICON = UIRES.get("tag");
 
@@ -91,7 +92,7 @@ public class MCItem extends DataListEntry {
 
 	public static ImageIcon getBlockIconBasedOnName(Workspace workspace, String name) {
 		if (name == null || name.isBlank())
-			return new EmptyIcon.ImageIcon(32, 32);
+			return EMPTY_ICON;
 
 		if (name.startsWith("TAG:"))
 			return TAG_ICON;
@@ -149,11 +150,10 @@ public class MCItem extends DataListEntry {
 						DataListLoader.loadDataMap("blocksitems").get(name).getTexture());
 			}
 
-			if (retval != null && retval.getImage() != null) {
-				if (retval.getImage().getWidth(null) > -1 && retval.getImage().getHeight(null) > -1) {
-					// The image is cropped to fix an issue with long animated textures
-					return new ImageIcon(ImageUtils.resizeAndCrop(retval.getImage(), 32));
-				}
+			if (retval != null && retval.getImage() != null && retval.getImage().getWidth(null) > -1
+					&& retval.getImage().getHeight(null) > -1) {
+				// The image is cropped to fix an issue with long animated textures
+				return new ImageIcon(ImageUtils.resizeAndCrop(retval.getImage(), 32));
 			}
 
 		} catch (Exception e) {

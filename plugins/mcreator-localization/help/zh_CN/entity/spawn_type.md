@@ -5,4 +5,4 @@
 * 标记为 Ambient 的生物会在任何条件下生成，除非方块类型阻止生成它。 但是该类别应该用于没有游戏效果的生物，如蝙蝠。
 * 水生生物将在水中生成，但没有其他限制
 
-生成类型系统在 [此处](https：//mcreator.net/wiki/mob-spawning-parameters) 有着深入的介绍。
+生成类型系统在 [此处](https://mcreator.net/wiki/mob-spawning-parameters) 有着深入的介绍。

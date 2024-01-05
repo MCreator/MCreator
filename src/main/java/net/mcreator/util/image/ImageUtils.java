@@ -60,6 +60,16 @@ public class ImageUtils {
 		return new ImageIcon(resizedImage);
 	}
 
+	public static ImageIcon createColorSquare(Color color, int width, int height) {
+		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = bi.createGraphics();
+		g.setColor(color);
+		g.fillRect(0, 0, width, height);
+		g.dispose();
+
+		return new ImageIcon(bi);
+	}
+
 	public static ImageIcon colorize(ImageIcon icon, Color modifier, boolean type) {
 		return type ? colorize1(icon, modifier) : colorize2(icon, modifier);
 	}
@@ -83,23 +93,23 @@ public class ImageUtils {
 	}
 
 	public static BufferedImage resize(Image image, int size) {
-		return toBufferedImage(resizeImage(image, size, size));
+		return resizeImage(toBufferedImage(image), size, size);
 	}
 
 	public static BufferedImage resize(Image image, int w, int h) {
-		return toBufferedImage(resizeImage(image, w, h));
+		return resizeImage(toBufferedImage(image), w, h);
 	}
 
 	public static BufferedImage resizeAA(Image image, int size) {
-		return toBufferedImage(resizeImageWithAA(image, size, size));
+		return resizeImageWithAA(toBufferedImage(image), size, size);
 	}
 
 	public static BufferedImage resizeAA(Image image, int w, int h) {
-		return toBufferedImage(resizeImageWithAA(image, w, h));
+		return resizeImageWithAA(toBufferedImage(image), w, h);
 	}
 
 	public static BufferedImage resizeAndCrop(Image image, int size) {
-		return toBufferedImage(resizeImage(autoCropTile(toBufferedImage(image)), size, size));
+		return resizeImage(autoCropTile(toBufferedImage(image)), size, size);
 	}
 
 	public static BufferedImage emptyImageWithSize(int size, int y, Color color) {
@@ -291,7 +301,9 @@ public class ImageUtils {
 	}
 
 	public static BufferedImage autoCropTile(BufferedImage tile) {
-		if (tile.getHeight() > tile.getWidth())
+		if (tile.getHeight() == tile.getWidth())
+			return tile;
+		else if (tile.getHeight() > tile.getWidth())
 			return crop(tile, new Rectangle(0, 0, tile.getWidth(), tile.getWidth()));
 		else
 			return crop(tile, new Rectangle(0, 0, tile.getHeight(), tile.getHeight()));
@@ -403,9 +415,9 @@ public class ImageUtils {
 		return luminance / (float) pixelCount;
 	}
 
-	private static Image resizeImage(Image originalImage, int w, int h) {
+	private static BufferedImage resizeImage(BufferedImage originalImage, int w, int h) {
 		// Optimization to not resize images that are already the correct size
-		if (originalImage.getWidth(null) == w && originalImage.getHeight(null) == h)
+		if (originalImage.getWidth() == w && originalImage.getHeight() == h)
 			return originalImage;
 
 		BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -415,9 +427,9 @@ public class ImageUtils {
 		return resizedImage;
 	}
 
-	private static Image resizeImageWithAA(Image originalImage, int w, int h) {
+	private static BufferedImage resizeImageWithAA(BufferedImage originalImage, int w, int h) {
 		// Optimization to not resize images that are already the correct size
-		if (originalImage.getWidth(null) == w && originalImage.getHeight(null) == h)
+		if (originalImage.getWidth() == w && originalImage.getHeight() == h)
 			return originalImage;
 
 		BufferedImage resizedImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
