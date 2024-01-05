@@ -60,7 +60,7 @@ public class NumberProcedureSelector extends RetvalProcedureSelector<Double, Num
 	}
 
 	@Override public NumberProcedure getSelectedProcedure() {
-		CBoxEntry selected = procedures.getSelectedItem();
+		ProcedureEntry selected = procedures.getSelectedItem();
 		if (selected == null || selected.string.equals(defaultName))
 			return new NumberProcedure(null, getFixedValue());
 		return new NumberProcedure(selected.string, getFixedValue());
@@ -69,7 +69,7 @@ public class NumberProcedureSelector extends RetvalProcedureSelector<Double, Num
 	@Override public void setSelectedProcedure(Procedure procedure) {
 		if (procedure instanceof NumberProcedure numberProcedure) {
 			if (numberProcedure.getName() != null)
-				procedures.setSelectedItem(new CBoxEntry(numberProcedure.getName(), null));
+				procedures.setSelectedItem(new ProcedureEntry(numberProcedure.getName(), null));
 
 			setFixedValue(numberProcedure.getFixedValue());
 		}
@@ -96,7 +96,7 @@ public class NumberProcedureSelector extends RetvalProcedureSelector<Double, Num
 	}
 
 	@Override public void setFixedValue(Double value) {
-		if (fixedValue != null)
+		if (fixedValue != null && value != null)
 			fixedValue.setValue(value);
 	}
 

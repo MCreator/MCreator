@@ -81,7 +81,7 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 
 		UTF8Forcer.forceGlobalUTF8();
 
-		Logger LOG = LogManager.getLogger(IntegrationTestSetup.class);
+		Logger LOG = LogManager.getLogger("Test setup");
 
 		Properties conf = new Properties();
 		conf.load(Launcher.class.getResourceAsStream("/mcreator.conf"));

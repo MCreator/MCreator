@@ -26,51 +26,35 @@ import net.mcreator.java.JavaConventions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("InstantiationOfUtilityClass") public class BaseDataModelProvider {
-
-	private final JavaConventions javaConventions;
-	private final GeneratorWrapper generatorWrapper;
-	private final ProcedureCodeOptimizer codeOptimizer;
-
-	private final Generator generator;
-
-	private final TemplateHelper templateHelper;
-
-	private final FileProvider fileProvider;
+public class BaseDataModelProvider {
 
 	private static final Logger TEMPLATE_LOG = LogManager.getLogger("Template Generator LOG");
 
-	public BaseDataModelProvider(Generator generator) {
-		this.javaConventions = new JavaConventions();
-		this.generatorWrapper = new GeneratorWrapper(generator);
-		this.fileProvider = new FileProvider(generator);
-		this.codeOptimizer = new ProcedureCodeOptimizer();
+	private final Map<String, Object> providedData;
 
-		this.templateHelper = new TemplateHelper();
-
-		this.generator = generator;
+	@SuppressWarnings("InstantiationOfUtilityClass") public BaseDataModelProvider(Generator generator) {
+		Map<String, Object> providedDataBuilder = new HashMap<>();
+		providedDataBuilder.put("generator", new GeneratorWrapper(generator));
+		providedDataBuilder.put("w", generator.getWorkspace().getWorkspaceInfo());
+		providedDataBuilder.put("modid", generator.getWorkspaceSettings().getModID());
+		providedDataBuilder.put("JavaModName", generator.getWorkspaceSettings().getJavaModName());
+		providedDataBuilder.put("package", generator.getWorkspaceSettings().getModElementsPackage());
+		providedDataBuilder.put("settings", generator.getWorkspaceSettings());
+		providedDataBuilder.put("fp", new FileProvider(generator));
+		providedDataBuilder.put("mcc", generator.getMinecraftCodeProvider());
+		providedDataBuilder.put("JavaConventions", new JavaConventions());
+		providedDataBuilder.put("thelper", new TemplateHelper());
+		providedDataBuilder.put("Log", TEMPLATE_LOG);
+		providedDataBuilder.put("opt", new ProcedureCodeOptimizer());
+		this.providedData = Collections.unmodifiableMap(providedDataBuilder);
 	}
 
 	public Map<String, Object> provide() {
-		Map<String, Object> retval = new HashMap<>();
-		retval.put("generator", generatorWrapper);
-
-		retval.put("w", generator.getWorkspace().getWorkspaceInfo());
-		retval.put("modid", generator.getWorkspaceSettings().getModID());
-		retval.put("JavaModName", generator.getWorkspaceSettings().getJavaModName());
-		retval.put("package", generator.getWorkspaceSettings().getModElementsPackage());
-		retval.put("settings", generator.getWorkspaceSettings());
-		retval.put("fp", fileProvider);
-
-		retval.put("mcc", generator.getMinecraftCodeProvider());
-		retval.put("JavaConventions", javaConventions);
-		retval.put("thelper", templateHelper);
-		retval.put("Log", TEMPLATE_LOG);
-		retval.put("opt", codeOptimizer);
-		return retval;
+		return providedData;
 	}
 
 }

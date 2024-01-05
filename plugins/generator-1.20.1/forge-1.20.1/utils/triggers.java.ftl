@@ -3,14 +3,17 @@
 <#-- Item-related triggers -->
 <#macro addSpecialInformation procedure="" isBlock=false>
 	<#if procedure?has_content || hasProcedure(procedure)>
-		@Override public void appendHoverText(ItemStack itemstack, <#if isBlock>BlockGetter<#else>Level</#if> world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
+		@Override public void appendHoverText(ItemStack itemstack, <#if isBlock>BlockGetter<#else>Level</#if> level, List<Component> list, TooltipFlag flag) {
+		super.appendHoverText(itemstack, level, list, flag);
 		<#if hasProcedure(procedure)>
 			Entity entity = itemstack.getEntityRepresentation();
-			double x = entity != null ? entity.getX() : 0.0;
-			double y = entity != null ? entity.getY() : 0.0;
-			double z = entity != null ? entity.getZ() : 0.0;
-			list.add(Component.literal(<@procedureOBJToStringCode procedure/>));
+			list.add(Component.literal(<@procedureCode procedure, {
+				"x": "entity != null ? entity.getX() : 0.0",
+				"y": "entity != null ? entity.getY() : 0.0",
+				"z": "entity != null ? entity.getZ() : 0.0",
+				"entity": "entity",
+				"world": "level instanceof Level ? (LevelAccessor) level : null"
+			}, false/>));
 		<#else>
 			<#list procedure.getFixedValue() as entry>
 				list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));

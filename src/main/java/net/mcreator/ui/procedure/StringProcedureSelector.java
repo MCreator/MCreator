@@ -104,7 +104,7 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 	}
 
 	@Override public StringProcedure getSelectedProcedure() {
-		CBoxEntry selected = procedures.getSelectedItem();
+		ProcedureEntry selected = procedures.getSelectedItem();
 		if (selected == null || selected.string.equals(defaultName))
 			return new StringProcedure(null, getFixedValue());
 		return new StringProcedure(selected.string, getFixedValue());
@@ -113,7 +113,7 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 	@Override public void setSelectedProcedure(Procedure procedure) {
 		if (procedure instanceof StringProcedure stringProcedure) {
 			if (stringProcedure.getName() != null)
-				procedures.setSelectedItem(new CBoxEntry(stringProcedure.getName(), null));
+				procedures.setSelectedItem(new ProcedureEntry(stringProcedure.getName(), null));
 
 			setFixedValue(stringProcedure.getFixedValue());
 		}
