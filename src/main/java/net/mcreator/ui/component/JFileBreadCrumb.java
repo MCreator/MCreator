@@ -87,10 +87,7 @@ public class JFileBreadCrumb extends JPanel {
 			JLabel entry = new JLabel(((idx == path.size() - 1 && !filePathPart.isDirectory()) ? "<html><b>" : "")
 					+ filePathPart.getName());
 
-			if (filePathPart.isFile())
-				entry.setIcon(FileIcons.getIconForFile(filePathPart));
-			else
-				entry.setIcon(UIRES.get("laf.directory.gif"));
+			entry.setIcon(FileIcons.getIconForFile(filePathPart));
 
 			add(entry);
 			if (idx < path.size() - 1 || filePathPart.isDirectory()) {
@@ -100,10 +97,7 @@ public class JFileBreadCrumb extends JPanel {
 						File[] files = filePathPart.listFiles();
 						for (File file : files != null ? files : new File[0]) {
 							JMenuItem menuItem = new JMenuItem(file.getName());
-							if (file.isFile())
-								menuItem.setIcon(FileIcons.getIconForFile(file));
-							else
-								menuItem.setIcon(UIRES.get("laf.directory.gif"));
+							menuItem.setIcon(FileIcons.getIconForFile(file));
 							menuItem.addActionListener(e -> {
 								if (file.isFile()) {
 									FileOpener.openFile(mcreator, file);
