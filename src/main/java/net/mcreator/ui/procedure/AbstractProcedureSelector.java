@@ -23,8 +23,6 @@ import com.google.gson.GsonBuilder;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.L10N;
@@ -45,7 +43,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 	private static final Gson gson = new GsonBuilder().setLenient().create();
 
-	protected final SearchableComboBox<CBoxEntry> procedures = new SearchableComboBox<>();
+	protected final SearchableComboBox<ProcedureEntry> procedures = new SearchableComboBox<>();
 
 	protected final Dependency[] providedDependencies;
 	protected final Map<String, List<Dependency>> depsMap = new HashMap<>();
@@ -54,7 +52,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	protected final JButton edit = new JButton(UIRES.get("18px.edit"));
 	protected final JButton add = new JButton(UIRES.get("18px.add"));
 
-	protected CBoxEntry oldItem;
+	protected ProcedureEntry oldItem;
 
 	protected final MCreator mcreator;
 
@@ -73,11 +71,6 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	}
 
 	@Override public void setEnabled(boolean enabled) {
-		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
-				== GeneratorStats.CoverageStatus.NONE)
-			enabled = false;
-
 		super.setEnabled(enabled);
 
 		procedures.setEnabled(enabled);
@@ -89,7 +82,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		depsMap.clear();
 		procedures.removeAllItems();
 
-		procedures.addItem(new CBoxEntry(defaultName, null));
+		procedures.addItem(new ProcedureEntry(defaultName, null));
 
 		for (ModElement mod : mcreator.getWorkspace().getModElements()) {
 			if (mod.getType() == ModElementType.PROCEDURE) {
@@ -121,7 +114,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 					depsMap.put(mod.getName(), realdepsList);
 
 				if (correctReturnType || (returnTypeCurrent == null && returnTypeOptional))
-					procedures.addItem(new CBoxEntry(mod.getName(), returnTypeCurrent, !missing));
+					procedures.addItem(new ProcedureEntry(mod.getName(), returnTypeCurrent, !missing));
 			}
 		}
 	}
@@ -133,8 +126,8 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		updateDepsList(false);
 	}
 
-	protected CBoxEntry updateDepsList(boolean smallIcons) {
-		CBoxEntry selected = procedures.getSelectedItem();
+	ProcedureEntry updateDepsList(boolean smallIcons) {
+		ProcedureEntry selected = procedures.getSelectedItem();
 
 		List<Dependency> dependencies = null;
 		if (selected != null) {
@@ -182,7 +175,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	}
 
 	public Procedure getSelectedProcedure() {
-		CBoxEntry selected = procedures.getSelectedItem();
+		ProcedureEntry selected = procedures.getSelectedItem();
 		if (selected == null || selected.string.equals(defaultName))
 			return null;
 		return new Procedure(selected.string);
@@ -190,12 +183,12 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 	public void setSelectedProcedure(String procedure) {
 		if (procedure != null)
-			procedures.setSelectedItem(new CBoxEntry(procedure, null));
+			procedures.setSelectedItem(new ProcedureEntry(procedure, null));
 	}
 
 	public void setSelectedProcedure(Procedure procedure) {
 		if (procedure != null)
-			procedures.setSelectedItem(new CBoxEntry(procedure.getName(), null));
+			procedures.setSelectedItem(new ProcedureEntry(procedure.getName(), null));
 	}
 
 	public AbstractProcedureSelector makeReturnValueOptional() {
