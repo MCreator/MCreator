@@ -7,7 +7,6 @@ templates:
 
 tags:
   - tag: ITEMS:minecraft:music_discs
-    entry: "@modid:@registryname"
 
 localizationkeys:
   - key: item.@modid.@registryname

@@ -78,36 +78,57 @@ public class TagsUtils {
 				Map<?, ?> map = (Map<?, ?>) template;
 				TagElement tag = TagElement.fromString((String) map.get("tag"));
 
-				String entry = GeneratorTokens.replaceTokens(generator.getWorkspace(), ((String) map.get("entry"))
-								//@formatter:off
-								.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
-								.replace("@registryname", element.getModElement().getRegistryName())
-								//@formatter:on
-				);
-				String entryManaged = TagElement.makeEntryManaged(entry);
+				boolean shouldSkip = TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, map,
+						element);
 
-				if (deleteMode || TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, map,
-						element)) {
-					List<String> entries = generator.getWorkspace().getTagElements().get(tag);
-					// only delete the entry if it is present in the list as managed
-					if (entries != null && entries.contains(entryManaged)) {
-						if (entries.size() == 1) { // only our entry is present, delete the tag itself
-							generator.getWorkspace().removeTagElement(tag);
-						} else {
-							generator.getWorkspace().getTagElements().get(tag).remove(entryManaged);
+				if (map.containsKey("entryprovider")) {
+					//noinspection unchecked
+					List<String> entryprovider = (List<String>) TemplateExpressionParser.processFTLExpression(generator,
+							(String) map.get("entryprovider"), element);
+					if (entryprovider != null) {
+						for (String entry : entryprovider) {
+							handleTagEntryEntry(generator, tag, entry, deleteMode || shouldSkip);
 						}
 					}
+				} else if (map.containsKey("entry")) {
+					String entry = GeneratorTokens.replaceTokens(generator.getWorkspace(), ((String) map.get("entry"))
+									//@formatter:off
+									.replace("@modid", generator.getWorkspace().getWorkspaceSettings().getModID())
+									.replace("@registryname", element.getModElement().getRegistryName())
+							//@formatter:on
+					);
+
+					handleTagEntryEntry(generator, tag, entry, deleteMode || shouldSkip);
 				} else {
-					List<String> entries = generator.getWorkspace().getTagElements().get(tag);
-					if (entries == null) {
-						generator.getWorkspace().addTagElement(tag);
-						generator.getWorkspace().getTagElements().get(tag).add(entryManaged);
-					}
-					// only add this entry if it does not already exist in managed or unmanaged form
-					else if (!entries.contains(entryManaged) && !entries.contains(entry)) {
-						generator.getWorkspace().getTagElements().get(tag).add(entryManaged);
-					}
+					handleTagEntryEntry(generator, tag, "CUSTOM:" + element.getModElement().getName(),
+							deleteMode || shouldSkip);
 				}
+			}
+		}
+	}
+
+	private static void handleTagEntryEntry(Generator generator, TagElement tag, String entry, boolean delete) {
+		String entryManaged = TagElement.makeEntryManaged(entry);
+
+		List<String> entries = generator.getWorkspace().getTagElements().get(tag);
+
+		if (delete) {
+			// only delete the entry if it is present in the list as managed
+			if (entries != null && entries.contains(entryManaged)) {
+				if (entries.size() == 1) { // only current/our entry is present, delete the tag itself
+					generator.getWorkspace().removeTagElement(tag);
+				} else {
+					generator.getWorkspace().getTagElements().get(tag).remove(entryManaged);
+				}
+			}
+		} else {
+			if (entries == null) {
+				generator.getWorkspace().addTagElement(tag);
+				generator.getWorkspace().getTagElements().get(tag).add(entryManaged);
+			}
+			// only add this entry if it does not already exist in managed or unmanaged form
+			else if (!entries.contains(entryManaged) && !entries.contains(entry)) {
+				generator.getWorkspace().getTagElements().get(tag).add(entryManaged);
 			}
 		}
 	}

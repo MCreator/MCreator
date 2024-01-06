@@ -13,97 +13,66 @@ templates:
 
 tags:
   - tag: BIOMES:minecraft:has_structure/mineshaft
-    entry: "@modid:@registryname"
     condition: spawnMineshaft
   - tag: BIOMES:minecraft:has_structure/igloo
-    entry: "@modid:@registryname"
     condition: spawnIgloo
   - tag: BIOMES:minecraft:has_structure/stronghold
-    entry: "@modid:@registryname"
     condition: spawnStronghold
   - tag: BIOMES:minecraft:has_structure/mineshaft_mesa
-    entry: "@modid:@registryname"
     condition: spawnMineshaftMesa
   - tag: BIOMES:minecraft:has_structure/pillager_outpost
-    entry: "@modid:@registryname"
     condition: spawnPillagerOutpost
   - tag: BIOMES:minecraft:has_structure/woodland_mansion
-    entry: "@modid:@registryname"
     condition: spawnWoodlandMansion
   - tag: BIOMES:minecraft:has_structure/jungle_temple
-    entry: "@modid:@registryname"
     condition: spawnJungleTemple
   - tag: BIOMES:minecraft:has_structure/desert_pyramid
-    entry: "@modid:@registryname"
     condition: spawnDesertPyramid
   - tag: BIOMES:minecraft:has_structure/swamp_hut
-    entry: "@modid:@registryname"
     condition: spawnSwampHut
   - tag: BIOMES:minecraft:has_structure/ocean_monument
-    entry: "@modid:@registryname"
     condition: spawnOceanMonument
   - tag: BIOMES:minecraft:has_structure/shipwreck
-    entry: "@modid:@registryname"
     condition: spawnShipwreck
   - tag: BIOMES:minecraft:has_structure/shipwreck_beached
-    entry: "@modid:@registryname"
     condition: spawnShipwreckBeached
   - tag: BIOMES:minecraft:has_structure/buried_treasure
-    entry: "@modid:@registryname"
     condition: spawnBuriedTreasure
   - tag: BIOMES:minecraft:has_structure/nether_fortress
-    entry: "@modid:@registryname"
     condition: spawnNetherBridge
   - tag: BIOMES:minecraft:has_structure/nether_fossil
-    entry: "@modid:@registryname"
     condition: spawnNetherFossil
   - tag: BIOMES:minecraft:has_structure/bastion_remnant
-    entry: "@modid:@registryname"
     condition: spawnBastionRemnant
   - tag: BIOMES:minecraft:has_structure/end_city
-    entry: "@modid:@registryname"
     condition: spawnEndCity
   - tag: BIOMES:minecraft:has_structure/village_desert
-    entry: "@modid:@registryname"
     condition: "${data.villageType == 'desert'}"
   - tag: BIOMES:minecraft:has_structure/village_plains
-    entry: "@modid:@registryname"
     condition: "${data.villageType == 'plains'}"
   - tag: BIOMES:minecraft:has_structure/village_savanna
-    entry: "@modid:@registryname"
     condition: "${data.villageType == 'savanna'}"
   - tag: BIOMES:minecraft:has_structure/village_snowy
-    entry: "@modid:@registryname"
     condition: "${data.villageType == 'snowy'}"
   - tag: BIOMES:minecraft:has_structure/village_taiga
-    entry: "@modid:@registryname"
     condition: "${data.villageType == 'taiga'}"
   - tag: BIOMES:minecraft:has_structure/ocean_ruin_cold
-    entry: "@modid:@registryname"
     condition: "${data.oceanRuinType == 'COLD'}"
   - tag: BIOMES:minecraft:has_structure/ocean_ruin_warm
-    entry: "@modid:@registryname"
     condition: "${data.oceanRuinType == 'WARM'}"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_standard
-    entry: "@modid:@registryname"
     condition: "${data.spawnRuinedPortal == 'STANDARD'}"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_desert
-    entry: "@modid:@registryname"
     condition: "${data.spawnRuinedPortal == 'DESERT'}"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_jungle
-    entry: "@modid:@registryname"
     condition: "${data.spawnRuinedPortal == 'JUNGLE'}"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_swamp
-    entry: "@modid:@registryname"
     condition: "${data.spawnRuinedPortal == 'SWAMP'}"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_mountain
-    entry: "@modid:@registryname"
     condition: "${data.spawnRuinedPortal == 'MOUNTAIN'}"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_ocean
-    entry: "@modid:@registryname"
     condition: "${data.spawnRuinedPortal == 'OCEAN'}"
   - tag: BIOMES:minecraft:has_structure/ruined_portal_nether
-    entry: "@modid:@registryname"
     condition: "${data.spawnRuinedPortal == 'NETHER'}"
 
 field_exclusions: [name, coverageEstimate, treeVines, treeFruits, spawnBiome, spawnInCaves, spawnBiomeNether]

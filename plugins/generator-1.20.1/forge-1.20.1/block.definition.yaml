@@ -388,14 +388,10 @@ localizationkeys:
 
 tags:
   - tag: BLOCKS:minecraft:mineable/pickaxe
-    entry: "@modid:@registryname"
     condition: "${data.destroyTool == 'pickaxe'}"
   - tag: BLOCKS:minecraft:mineable/axe
-    entry: "@modid:@registryname"
     condition: "${data.destroyTool == 'axe'}"
   - tag: BLOCKS:minecraft:mineable/shovel
-    entry: "@modid:@registryname"
     condition: "${data.destroyTool == 'shovel'}"
   - tag: BLOCKS:minecraft:mineable/hoe
-    entry: "@modid:@registryname"
     condition: "${data.destroyTool == 'hoe'}"
