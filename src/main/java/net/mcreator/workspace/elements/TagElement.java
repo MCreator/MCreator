@@ -62,8 +62,10 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 
 	// Helper functions for tag entries below
 
+	private static final String MANAGED_PREFIX = "~";
+
 	public static String entryFromMappableElement(MappableElement element) {
-		return (element.isManaged() ? "~" : "") + element.getUnmappedValue();
+		return (element.isManaged() ? MANAGED_PREFIX : "") + element.getUnmappedValue();
 	}
 
 	public static MappableElement entryToMappableElement(Workspace workspace, TagType type, String entry) {
@@ -73,11 +75,15 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 	}
 
 	public static boolean isEntryManaged(String rawData) {
-		return rawData.startsWith("~");
+		return rawData.startsWith(MANAGED_PREFIX);
+	}
+
+	public static String makeEntryManaged(String rawData) {
+		return MANAGED_PREFIX + rawData;
 	}
 
 	public static String getEntryName(String rawData) {
-		return rawData.replace("~", "");
+		return rawData.replace(MANAGED_PREFIX, "");
 	}
 
 	public static String normalizeTag(String input) {
@@ -89,18 +95,21 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 		}
 	}
 
+	public static TagElement fromString(String raw) {
+		String[] parts = raw.split(":", 2);
+		if (parts.length == 2) {
+			return new TagElement(TagType.valueOf(parts[0]), parts[1]);
+		} else {
+			throw new IllegalArgumentException("Invalid JSON format for TagElement: " + raw);
+		}
+	}
+
 	public static class TagElementDeserializer implements JsonDeserializer<TagElement> {
 
 		@Override
 		public TagElement deserialize(JsonElement json, java.lang.reflect.Type typeOfT,
 				JsonDeserializationContext context) throws JsonParseException {
-			String raw = json.getAsJsonPrimitive().getAsString();
-			String[] parts = raw.split(":", 2);
-			if (parts.length == 2) {
-				return new TagElement(TagType.valueOf(parts[0]), parts[1]);
-			} else {
-				throw new IllegalArgumentException("Invalid JSON format for TagElement: " + raw);
-			}
+			return fromString(json.getAsJsonPrimitive().getAsString());
 		}
 
 	}

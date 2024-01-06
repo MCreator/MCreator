@@ -206,11 +206,16 @@ global_templates:
     condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_ocean'))?size != 0}"
     name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_ocean.json"
     hidden: true
-  - template: biome/biometag.json.ftl # loaded from datapack generator
-    writer: json
-    variables: "type=ruined_portal_nether"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_nether'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_nether.json"
+#  - template: biome/biometag.json.ftl # loaded from datapack generator
+#    writer: json
+#    variables: "type=ruined_portal_nether"
+#    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_nether'))?size != 0}"
+#    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_nether.json"
+
+tags:
+  - tag: BIOMES:minecraft:has_structure/ruined_portal_nether
+    entry: "@modid:@registryname"
+    condition: "${data.spawnRuinedPortal == 'NETHER'}"
 
 localizationkeys:
   - key: biome.@modid.@registryname
