@@ -33,6 +33,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.AddCommonTagsDialog;
 import net.mcreator.ui.dialogs.NewTagDialog;
 import net.mcreator.ui.init.L10N;
@@ -76,6 +77,12 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldFunctions.disableItemCentering();
 		listFieldDamageTypes.disableItemCentering();
 
+		listFieldBlocksItems.hideButtons();
+		listFieldEntities.hideButtons();
+		listFieldBiomes.hideButtons();
+		listFieldFunctions.hideButtons();
+		listFieldDamageTypes.hideButtons();
+
 		listFieldBlocksItems.setEnabled(false);
 		listFieldEntities.setEnabled(false);
 		listFieldBiomes.setEnabled(false);
@@ -98,44 +105,52 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			@Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				if (column == 3) {
 					TagElement tagElement = tagElementForRow(row);
-					switch (tagElement.type()) {
-					case ITEMS, BLOCKS -> {
-						listFieldBlocksItems.setListElements(
-								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement)
-										.parallelStream().map(e -> (MItemBlock) TagElement.entryToMappableElement(
-												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
-						return listFieldBlocksItems;
-					}
-					case ENTITIES -> {
-						listFieldEntities.setListElements(
-								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement)
-										.parallelStream().map(e -> (EntityEntry) TagElement.entryToMappableElement(
-												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
-						return listFieldEntities;
-					}
-					case BIOMES -> {
-						listFieldBiomes.setListElements(
-								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement)
-										.parallelStream().map(e -> (BiomeEntry) TagElement.entryToMappableElement(
-												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
-						return listFieldBiomes;
-					}
-					case FUNCTIONS -> {
-						listFieldFunctions.setListElements(
-								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement)
-										.parallelStream()
-										.map(e -> (NonMappableElement) TagElement.entryToMappableElement(
-												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
-										.toList());
-						return listFieldFunctions;
-					}
-					case DAMAGE_TYPES -> {
-						listFieldDamageTypes.setListElements(
-								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement)
-										.parallelStream().map(e -> (DamageTypeEntry) TagElement.entryToMappableElement(
-												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
-						return listFieldDamageTypes;
-					}
+					List<String> entries = workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement);
+
+					JComponent listField = switch (tagElement.type()) {
+						case ITEMS, BLOCKS -> {
+							listFieldBlocksItems.setListElements(entries.stream().limit(22)
+									.map(e -> (MItemBlock) TagElement.entryToMappableElement(
+											workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldBlocksItems;
+						}
+						case ENTITIES -> {
+							listFieldEntities.setListElements(entries.stream().limit(22)
+									.map(e -> (EntityEntry) TagElement.entryToMappableElement(
+											workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldEntities;
+						}
+						case BIOMES -> {
+							listFieldBiomes.setListElements(entries.stream().limit(22)
+									.map(e -> (BiomeEntry) TagElement.entryToMappableElement(
+											workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldBiomes;
+						}
+						case FUNCTIONS -> {
+							listFieldFunctions.setListElements(entries.stream().limit(22)
+									.map(e -> (NonMappableElement) TagElement.entryToMappableElement(
+											workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldFunctions;
+						}
+						case DAMAGE_TYPES -> {
+							listFieldDamageTypes.setListElements(entries.stream().limit(22)
+									.map(e -> (DamageTypeEntry) TagElement.entryToMappableElement(
+											workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldDamageTypes;
+						}
+					};
+
+					if (entries.size() > 22) {
+						return PanelUtils.centerAndEastElement(listField,
+								ComponentUtils.setForeground(new JLabel("<html><big>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;"),
+										Theme.current().getAltForegroundColor()));
+					} else {
+						return listField;
 					}
 				}
 
