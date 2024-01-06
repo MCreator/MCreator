@@ -386,28 +386,16 @@ localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
 
-global_templates:
-  - template: block/mineable_tag.json.ftl
-    writer: json
-    variables: "type=pickaxe"
-    name: "@RESROOT/data/minecraft/tags/blocks/mineable/pickaxe.json"
-    condition: "${w.getGElementsOfType('block')?filter(e -> e.destroyTool.equals('pickaxe'))?size != 0}"
-    hidden: true
-  - template: block/mineable_tag.json.ftl
-    writer: json
-    variables: "type=axe"
-    name: "@RESROOT/data/minecraft/tags/blocks/mineable/axe.json"
-    condition: "${w.getGElementsOfType('block')?filter(e -> e.destroyTool.equals('axe'))?size != 0}"
-    hidden: true
-  - template: block/mineable_tag.json.ftl
-    writer: json
-    variables: "type=shovel"
-    name: "@RESROOT/data/minecraft/tags/blocks/mineable/shovel.json"
-    condition: "${w.getGElementsOfType('block')?filter(e -> e.destroyTool.equals('shovel'))?size != 0}"
-    hidden: true
-  - template: block/mineable_tag.json.ftl
-    writer: json
-    variables: "type=hoe"
-    name: "@RESROOT/data/minecraft/tags/blocks/mineable/hoe.json"
-    condition: "${w.getGElementsOfType('block')?filter(e -> e.destroyTool.equals('hoe'))?size != 0}"
-    hidden: true
+tags:
+  - tag: BLOCKS:minecraft:mineable/pickaxe
+    entry: "@modid:@registryname"
+    condition: "${destroyTool == 'pickaxe'}"
+  - tag: BLOCKS:minecraft:mineable/axe
+    entry: "@modid:@registryname"
+    condition: "${destroyTool == 'axe'}"
+  - tag: BLOCKS:minecraft:mineable/shovel
+    entry: "@modid:@registryname"
+    condition: "${destroyTool == 'shovel'}"
+  - tag: BLOCKS:minecraft:mineable/hoe
+    entry: "@modid:@registryname"
+    condition: "${destroyTool == 'hoe'}"
