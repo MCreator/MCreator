@@ -239,7 +239,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		elements.getSelectionModel().addListSelectionListener(e -> {
 			if (!e.getValueIsAdjusting()) {
 				int selectedRow = elements.getSelectedRow();
-				if (selectedRow >= 0) {
+				int selectedColumn = elements.getSelectedColumn();
+				if (selectedRow >= 0 && selectedColumn == 3) {
 					elements.editCellAt(selectedRow, 3);
 				}
 			}
