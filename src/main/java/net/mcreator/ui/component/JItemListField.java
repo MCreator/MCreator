@@ -298,7 +298,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			setForeground(
 					isSelected ? Theme.current().getSecondAltBackgroundColor() : Theme.current().getForegroundColor());
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getBackgroundColor()),
+					BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setVerticalAlignment(SwingConstants.CENTER);
