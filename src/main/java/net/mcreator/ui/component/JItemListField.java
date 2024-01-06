@@ -68,6 +68,8 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 	private final JScrollPane pane;
 
+	private final JComponent buttons;
+
 	protected JItemListField(MCreator mcreator) {
 		this(mcreator, false);
 	}
@@ -196,7 +198,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		buttonsPanel.add(remove);
 		buttonsPanel.add(removeall);
 
-		JComponent buttons = PanelUtils.totalCenterInPanel(buttonsPanel);
+		buttons = PanelUtils.totalCenterInPanel(buttonsPanel);
 		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getInterfaceAccentColor()));
 		buttons.setOpaque(true);
 		buttons.setBackground(Theme.current().getSecondAltBackgroundColor());
@@ -218,6 +220,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		add(pane, BorderLayout.CENTER);
 		add(buttons, BorderLayout.EAST);
+	}
+
+	public void hideButtons() {
+		buttons.setVisible(false);
 	}
 
 	public void disableItemCentering() {
