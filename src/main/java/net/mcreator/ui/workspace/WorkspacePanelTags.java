@@ -56,10 +56,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	private final JTable elements;
 
 	// Cache of list fields (so cell renderer just sets the value instead of making a new object)
-	private final MCItemListField listFieldItems = new MCItemListField(workspacePanel.getMCreator(),
+	private final MCItemListField listFieldBlocksItems = new MCItemListField(workspacePanel.getMCreator(),
 			ElementUtil::loadBlocksAndItems, false, true);
-	private final MCItemListField listFieldBlocks = new MCItemListField(workspacePanel.getMCreator(),
-			ElementUtil::loadBlocks, false, true);
 	private final SpawnableEntityListField listFieldEntities = new SpawnableEntityListField(
 			workspacePanel.getMCreator(), true);
 	private final BiomeListField listFieldBiomes = new BiomeListField(workspacePanel.getMCreator(), true);
@@ -72,15 +70,13 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		super(workspacePanel);
 		setLayout(new BorderLayout(0, 5));
 
-		listFieldItems.disableItemCentering();
-		listFieldBlocks.disableItemCentering();
+		listFieldBlocksItems.disableItemCentering();
 		listFieldEntities.disableItemCentering();
 		listFieldBiomes.disableItemCentering();
 		listFieldFunctions.disableItemCentering();
 		listFieldDamageTypes.disableItemCentering();
 
-		listFieldItems.setEnabled(false);
-		listFieldBlocks.setEnabled(false);
+		listFieldBlocksItems.setEnabled(false);
 		listFieldEntities.setEnabled(false);
 		listFieldBiomes.setEnabled(false);
 		listFieldFunctions.setEnabled(false);
@@ -103,41 +99,31 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				if (column == 3) {
 					TagElement tagElement = tagElementForRow(row);
 					switch (tagElement.type()) {
-					case ITEMS -> {
-						listFieldItems.setListElements(
-								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
-										.map(e -> (MItemBlock) TagElement.entryToMappableElement(
-												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
-										.toList());
-						return listFieldItems;
-					}
-					case BLOCKS -> {
-						listFieldBlocks.setListElements(
-								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
-										.map(e -> (MItemBlock) TagElement.entryToMappableElement(
-												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
-										.toList());
-						return listFieldBlocks;
+					case ITEMS, BLOCKS -> {
+						listFieldBlocksItems.setListElements(
+								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement)
+										.parallelStream().map(e -> (MItemBlock) TagElement.entryToMappableElement(
+												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
+						return listFieldBlocksItems;
 					}
 					case ENTITIES -> {
 						listFieldEntities.setListElements(
-								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
-										.map(e -> (EntityEntry) TagElement.entryToMappableElement(
-												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
-										.toList());
+								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement)
+										.parallelStream().map(e -> (EntityEntry) TagElement.entryToMappableElement(
+												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
 						return listFieldEntities;
 					}
 					case BIOMES -> {
 						listFieldBiomes.setListElements(
-								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
-										.map(e -> (BiomeEntry) TagElement.entryToMappableElement(
-												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
-										.toList());
+								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement)
+										.parallelStream().map(e -> (BiomeEntry) TagElement.entryToMappableElement(
+												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
 						return listFieldBiomes;
 					}
 					case FUNCTIONS -> {
 						listFieldFunctions.setListElements(
-								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
+								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement)
+										.parallelStream()
 										.map(e -> (NonMappableElement) TagElement.entryToMappableElement(
 												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
 										.toList());
@@ -145,10 +131,9 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					}
 					case DAMAGE_TYPES -> {
 						listFieldDamageTypes.setListElements(
-								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement).stream()
-										.map(e -> (DamageTypeEntry) TagElement.entryToMappableElement(
-												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
-										.toList());
+								workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement)
+										.parallelStream().map(e -> (DamageTypeEntry) TagElement.entryToMappableElement(
+												workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
 						return listFieldDamageTypes;
 					}
 					}
