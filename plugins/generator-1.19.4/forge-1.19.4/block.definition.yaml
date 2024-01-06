@@ -389,13 +389,13 @@ localizationkeys:
 tags:
   - tag: BLOCKS:minecraft:mineable/pickaxe
     entry: "@modid:@registryname"
-    condition: "${destroyTool == 'pickaxe'}"
+    condition: "${data.destroyTool == 'pickaxe'}"
   - tag: BLOCKS:minecraft:mineable/axe
     entry: "@modid:@registryname"
-    condition: "${destroyTool == 'axe'}"
+    condition: "${data.destroyTool == 'axe'}"
   - tag: BLOCKS:minecraft:mineable/shovel
     entry: "@modid:@registryname"
-    condition: "${destroyTool == 'shovel'}"
+    condition: "${data.destroyTool == 'shovel'}"
   - tag: BLOCKS:minecraft:mineable/hoe
     entry: "@modid:@registryname"
-    condition: "${destroyTool == 'hoe'}"
+    condition: "${data.destroyTool == 'hoe'}"
