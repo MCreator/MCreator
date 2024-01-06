@@ -28,10 +28,7 @@ import net.mcreator.workspace.elements.TagElement;
 
 import javax.annotation.Nullable;
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class TagsUtils {
 
@@ -83,8 +80,8 @@ public class TagsUtils {
 
 				if (map.containsKey("entryprovider")) {
 					//noinspection unchecked
-					List<String> entryprovider = (List<String>) TemplateExpressionParser.processFTLExpression(generator,
-							(String) map.get("entryprovider"), element);
+					Collection<String> entryprovider = (Collection<String>) TemplateExpressionParser.processFTLExpression(
+							generator, (String) map.get("entryprovider"), element);
 					if (entryprovider != null) {
 						for (String entry : entryprovider) {
 							handleTagEntryEntry(generator, tag, entry, deleteMode || shouldSkip);
