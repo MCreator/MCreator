@@ -84,28 +84,28 @@ public class TagsUtils {
 								.replace("@registryname", element.getModElement().getRegistryName())
 								//@formatter:on
 				);
+				String entryManaged = TagElement.makeEntryManaged(entry);
 
 				if (deleteMode || TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, map,
 						element)) {
 					List<String> entries = generator.getWorkspace().getTagElements().get(tag);
 					// only delete the entry if it is present in the list as managed
-					if (entries != null && entries.contains(TagElement.makeEntryManaged(entry))) {
-						if (entries.size() == 1) { // only our entry is present
+					if (entries != null && entries.contains(entryManaged)) {
+						if (entries.size() == 1) { // only our entry is present, delete the tag itself
 							generator.getWorkspace().removeTagElement(tag);
 						} else {
-							generator.getWorkspace().getTagElements().get(tag)
-									.remove(TagElement.makeEntryManaged(entry));
+							generator.getWorkspace().getTagElements().get(tag).remove(entryManaged);
 						}
 					}
 				} else {
 					List<String> entries = generator.getWorkspace().getTagElements().get(tag);
 					if (entries == null) {
 						generator.getWorkspace().addTagElement(tag);
-						generator.getWorkspace().getTagElements().get(tag).add(TagElement.makeEntryManaged(entry));
+						generator.getWorkspace().getTagElements().get(tag).add(entryManaged);
 					}
 					// only add this entry if it does not already exist in managed or unmanaged form
-					else if (!entries.contains(TagElement.makeEntryManaged(entry)) && !entries.contains(entry)) {
-						generator.getWorkspace().getTagElements().get(tag).add(TagElement.makeEntryManaged(entry));
+					else if (!entries.contains(entryManaged) && !entries.contains(entry)) {
+						generator.getWorkspace().getTagElements().get(tag).add(entryManaged);
 					}
 				}
 			}
