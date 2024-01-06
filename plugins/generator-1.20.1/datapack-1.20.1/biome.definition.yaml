@@ -11,192 +11,100 @@ templates:
     condition: hasTrees()
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname_tree.json"
 
-global_templates:
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=mineshaft"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('mineshaft'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/mineshaft.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=igloo"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('igloo'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/igloo.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=stronghold"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('stronghold'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/stronghold.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=mineshaft_mesa"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('mineshaft_mesa'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/mineshaft_mesa.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=pillager_outpost"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('pillager_outpost'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/pillager_outpost.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=woodland_mansion"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('woodland_mansion'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/woodland_mansion.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=jungle_temple"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('jungle_temple'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/jungle_temple.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=desert_pyramid"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('desert_pyramid'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/desert_pyramid.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=swamp_hut"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('swamp_hut'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/swamp_hut.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=ocean_monument"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ocean_monument'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ocean_monument.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=shipwreck"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('shipwreck'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/shipwreck.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=shipwreck_beached"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('shipwreck_beached'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/shipwreck_beached.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=buried_treasure"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('buried_treasure'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/buried_treasure.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=nether_fortress"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('nether_fortress'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/nether_fortress.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=nether_fossil"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('nether_fossil'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/nether_fossil.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=bastion_remnant"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('bastion_remnant'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/bastion_remnant.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=end_city"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('end_city'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/end_city.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=village_desert"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('village_desert'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_desert.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=village_plains"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('village_plains'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_plains.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=village_savanna"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('village_savanna'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_savanna.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=village_snowy"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('village_snowy'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_snowy.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=village_taiga"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('village_taiga'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/village_taiga.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=ocean_ruin_cold"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ocean_ruin_cold'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ocean_ruin_cold.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=ocean_ruin_warm"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ocean_ruin_warm'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ocean_ruin_warm.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=ruined_portal_standard"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_standard'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_standard.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=ruined_portal_desert"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_desert'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_desert.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=ruined_portal_jungle"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_jungle'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_jungle.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=ruined_portal_swamp"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_swamp'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_swamp.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=ruined_portal_mountain"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_mountain'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_mountain.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=ruined_portal_ocean"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_ocean'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_ocean.json"
-    hidden: true
-  - template: biome/biometag.json.ftl
-    writer: json
-    variables: "type=ruined_portal_nether"
-    condition: "${w.getGElementsOfType('biome')?filter(e -> e.hasStructure('ruined_portal_nether'))?size != 0}"
-    name: "@RESROOT/data/minecraft/tags/worldgen/biome/has_structure/ruined_portal_nether.json"
+tags:
+  - tag: BIOMES:minecraft:has_structure/mineshaft
+    entry: "@modid:@registryname"
+    condition: spawnMineshaft
+  - tag: BIOMES:minecraft:has_structure/igloo
+    entry: "@modid:@registryname"
+    condition: spawnIgloo
+  - tag: BIOMES:minecraft:has_structure/stronghold
+    entry: "@modid:@registryname"
+    condition: spawnStronghold
+  - tag: BIOMES:minecraft:has_structure/mineshaft_mesa
+    entry: "@modid:@registryname"
+    condition: spawnMineshaftMesa
+  - tag: BIOMES:minecraft:has_structure/pillager_outpost
+    entry: "@modid:@registryname"
+    condition: spawnPillagerOutpost
+  - tag: BIOMES:minecraft:has_structure/woodland_mansion
+    entry: "@modid:@registryname"
+    condition: spawnWoodlandMansion
+  - tag: BIOMES:minecraft:has_structure/jungle_temple
+    entry: "@modid:@registryname"
+    condition: spawnJungleTemple
+  - tag: BIOMES:minecraft:has_structure/desert_pyramid
+    entry: "@modid:@registryname"
+    condition: spawnDesertPyramid
+  - tag: BIOMES:minecraft:has_structure/swamp_hut
+    entry: "@modid:@registryname"
+    condition: spawnSwampHut
+  - tag: BIOMES:minecraft:has_structure/ocean_monument
+    entry: "@modid:@registryname"
+    condition: spawnOceanMonument
+  - tag: BIOMES:minecraft:has_structure/shipwreck
+    entry: "@modid:@registryname"
+    condition: spawnShipwreck
+  - tag: BIOMES:minecraft:has_structure/shipwreck_beached
+    entry: "@modid:@registryname"
+    condition: spawnShipwreckBeached
+  - tag: BIOMES:minecraft:has_structure/buried_treasure
+    entry: "@modid:@registryname"
+    condition: spawnBuriedTreasure
+  - tag: BIOMES:minecraft:has_structure/nether_fortress
+    entry: "@modid:@registryname"
+    condition: spawnNetherBridge
+  - tag: BIOMES:minecraft:has_structure/nether_fossil
+    entry: "@modid:@registryname"
+    condition: spawnNetherFossil
+  - tag: BIOMES:minecraft:has_structure/bastion_remnant
+    entry: "@modid:@registryname"
+    condition: spawnBastionRemnant
+  - tag: BIOMES:minecraft:has_structure/end_city
+    entry: "@modid:@registryname"
+    condition: spawnEndCity
+  - tag: BIOMES:minecraft:has_structure/village_desert
+    entry: "@modid:@registryname"
+    condition: "${data.villageType == 'desert'}"
+  - tag: BIOMES:minecraft:has_structure/village_plains
+    entry: "@modid:@registryname"
+    condition: "${data.villageType == 'plains'}"
+  - tag: BIOMES:minecraft:has_structure/village_savanna
+    entry: "@modid:@registryname"
+    condition: "${data.villageType == 'savanna'}"
+  - tag: BIOMES:minecraft:has_structure/village_snowy
+    entry: "@modid:@registryname"
+    condition: "${data.villageType == 'snowy'}"
+  - tag: BIOMES:minecraft:has_structure/village_taiga
+    entry: "@modid:@registryname"
+    condition: "${data.villageType == 'taiga'}"
+  - tag: BIOMES:minecraft:has_structure/ocean_ruin_cold
+    entry: "@modid:@registryname"
+    condition: "${data.oceanRuinType == 'COLD'}"
+  - tag: BIOMES:minecraft:has_structure/ocean_ruin_warm
+    entry: "@modid:@registryname"
+    condition: "${data.oceanRuinType == 'WARM'}"
+  - tag: BIOMES:minecraft:has_structure/ruined_portal_standard
+    entry: "@modid:@registryname"
+    condition: "${data.spawnRuinedPortal == 'STANDARD'}"
+  - tag: BIOMES:minecraft:has_structure/ruined_portal_desert
+    entry: "@modid:@registryname"
+    condition: "${data.spawnRuinedPortal == 'DESERT'}"
+  - tag: BIOMES:minecraft:has_structure/ruined_portal_jungle
+    entry: "@modid:@registryname"
+    condition: "${data.spawnRuinedPortal == 'JUNGLE'}"
+  - tag: BIOMES:minecraft:has_structure/ruined_portal_swamp
+    entry: "@modid:@registryname"
+    condition: "${data.spawnRuinedPortal == 'SWAMP'}"
+  - tag: BIOMES:minecraft:has_structure/ruined_portal_mountain
+    entry: "@modid:@registryname"
+    condition: "${data.spawnRuinedPortal == 'MOUNTAIN'}"
+  - tag: BIOMES:minecraft:has_structure/ruined_portal_ocean
+    entry: "@modid:@registryname"
+    condition: "${data.spawnRuinedPortal == 'OCEAN'}"
+  - tag: BIOMES:minecraft:has_structure/ruined_portal_nether
+    entry: "@modid:@registryname"
+    condition: "${data.spawnRuinedPortal == 'NETHER'}"
 
 field_exclusions: [name, coverageEstimate, treeVines, treeFruits, spawnBiome, spawnInCaves, spawnBiomeNether]
 
