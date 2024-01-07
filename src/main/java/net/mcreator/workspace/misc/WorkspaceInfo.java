@@ -40,6 +40,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
 @SuppressWarnings("unused") public record WorkspaceInfo(Workspace workspace) {
@@ -133,16 +134,14 @@ import java.util.function.Function;
 
 	public Map<String, List<MItemBlock>> getCreativeTabMap() {
 		List<GeneratableElement> elementsList = workspace.getModElements().stream()
-				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
-				.filter(Objects::nonNull).toList();
+				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement).toList();
 
-		Map<String, List<MItemBlock>> tabMap = new HashMap<>();
+		Map<String, List<MItemBlock>> tabMap = new ConcurrentHashMap<>();
 
-		for (GeneratableElement element : elementsList) {
+		elementsList.parallelStream().forEach(element -> {
 			if (element instanceof ITabContainedElement tabElement) {
 				TabEntry tabEntry = tabElement.getCreativeTab();
 				List<MCItem> tabItems = tabElement.getCreativeTabItems();
-
 				if (tabEntry != null && tabItems != null && !tabItems.isEmpty()) {
 					String tab = tabEntry.getUnmappedValue();
 					if (tab != null && !tab.equals("No creative tab entry")) {
@@ -155,7 +154,7 @@ import java.util.function.Function;
 					}
 				}
 			}
-		}
+		});
 
 		return tabMap;
 	}
