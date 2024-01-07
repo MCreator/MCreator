@@ -142,7 +142,12 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		elementsList.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2) {
+				if (e.getButton() == MouseEvent.BUTTON2) {
+					int index = elementsList.locationToIndex(e.getPoint());
+					if (index >= 0)
+						elementsList.setSelectedIndex(index);
+					remove.doClick();
+				} else if (e.getClickCount() == 2) {
 					int index = elementsList.locationToIndex(e.getPoint());
 					if (index >= 0) {
 						T element = elementsListModel.get(index);
@@ -161,11 +166,6 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 							}
 						}
 					}
-				} else if (e.getButton() == MouseEvent.BUTTON2) {
-					int index = elementsList.locationToIndex(e.getPoint());
-					if (index >= 0)
-						elementsList.setSelectedIndex(index);
-					remove.doClick();
 				}
 			}
 		});
