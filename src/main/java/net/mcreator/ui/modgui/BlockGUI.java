@@ -44,6 +44,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
@@ -1158,7 +1159,9 @@ public class BlockGUI extends ModElementGUI<Block> {
 		pane7.setOpaque(false);
 		pane9.setOpaque(false);
 
-		pane9.add("Center", PanelUtils.totalCenterInPanel(genPanel));
+		JComponent genPanelWithChunk = PanelUtils.westAndCenterElement(new JLabel(UIRES.get("chunk")),
+				PanelUtils.pullElementUp(genPanel), 25, 0);
+		pane9.add("Center", PanelUtils.totalCenterInPanel(genPanelWithChunk));
 
 		texture.setValidator(new TileHolderValidator(texture));
 
@@ -1187,7 +1190,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		page3group.addValidationElement(stepSound.getVTextField());
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane);
+		addPage(L10N.t("elementgui.common.page_bounding_boxes"), bbPane, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), pane7);
 		addPage(L10N.t("elementgui.block.page_tile_entity"), pane8);

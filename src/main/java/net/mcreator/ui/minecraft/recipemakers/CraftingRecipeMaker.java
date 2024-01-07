@@ -37,19 +37,21 @@ import java.io.File;
 
 public class CraftingRecipeMaker extends JPanel {
 
-	public JSpinner sp;
-	public MCItemHolder cb1;
-	public MCItemHolder cb2;
-	public MCItemHolder cb3;
-	public MCItemHolder cb4;
-	public MCItemHolder cb5;
-	public MCItemHolder cb6;
-	public MCItemHolder cb7;
-	public MCItemHolder cb8;
-	public MCItemHolder cb9;
-	public MCItemHolder cb10;
+	public final JSpinner sp;
+	public final MCItemHolder cb1;
+	public final MCItemHolder cb2;
+	public final MCItemHolder cb3;
+	public final MCItemHolder cb4;
+	public final MCItemHolder cb5;
+	public final MCItemHolder cb6;
+	public final MCItemHolder cb7;
+	public final MCItemHolder cb8;
+	public final MCItemHolder cb9;
+	public final MCItemHolder cb10;
 
 	private final JLabel shapeless = new JLabel(UIRES.get("recipe.shapeless"));
+
+	private final JButton export = new JButton(UIRES.get("18px.export"));
 
 	private MItemBlock lastItemBlock = null;
 
@@ -127,8 +129,11 @@ public class CraftingRecipeMaker extends JPanel {
 
 		cb.setBounds(205, 53, 40, 40);
 
+		sp = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
+		sp.setBounds(212, 109, 38, 17);
+		ip.add(sp);
+
 		JLabel drop = new JLabel("1");
-		JButton export = new JButton(UIRES.get("18px.export"));
 
 		export.setContentAreaFilled(false);
 		export.setMargin(new Insets(0, 0, 0, 0));
@@ -174,10 +179,6 @@ public class CraftingRecipeMaker extends JPanel {
 
 		});
 
-		sp = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
-		sp.setBounds(212, 109, 38, 17);
-		ip.add(sp);
-
 		drop.setBounds(212, 109, 38, 17);
 		drop.setVisible(false);
 		drop.setForeground(Color.white);
@@ -208,4 +209,22 @@ public class CraftingRecipeMaker extends JPanel {
 	public void setShapeless(boolean shapeless) {
 		this.shapeless.setVisible(shapeless);
 	}
+
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+		cb1.setEnabled(enabled);
+		cb2.setEnabled(enabled);
+		cb3.setEnabled(enabled);
+		cb4.setEnabled(enabled);
+		cb5.setEnabled(enabled);
+		cb6.setEnabled(enabled);
+		cb7.setEnabled(enabled);
+		cb8.setEnabled(enabled);
+		cb9.setEnabled(enabled);
+		cb10.setEnabled(enabled);
+		sp.setEnabled(enabled);
+		shapeless.setEnabled(enabled);
+		export.setEnabled(enabled);
+	}
+
 }

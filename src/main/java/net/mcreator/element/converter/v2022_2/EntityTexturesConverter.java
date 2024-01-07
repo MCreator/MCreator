@@ -20,6 +20,7 @@
 package net.mcreator.element.converter.v2022_2;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.types.LivingEntity;
@@ -27,8 +28,13 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class EntityTexturesConverter implements IConverter {
+
+	private static final Logger LOG = LogManager.getLogger(EntityTexturesConverter.class);
+
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		LivingEntity entity = (LivingEntity) input;
@@ -39,12 +45,20 @@ public class EntityTexturesConverter implements IConverter {
 						.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelTexture),
 								TextureType.ENTITY));
 
-		if (entity.mobModelGlowTexture != null && !entity.mobModelGlowTexture.isEmpty()) {
-			FileIO.copyFile(workspace.getFolderManager()
-					.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelGlowTexture),
-							TextureType.OTHER), workspace.getFolderManager()
-					.getTextureFile(FilenameUtilsPatched.removeExtension(entity.mobModelGlowTexture),
-							TextureType.ENTITY));
+		try {
+			JsonObject jsonObject = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject();
+			if (jsonObject.get("mobModelGlowTexture") != null) {
+				String glowTexture = jsonObject.get("mobModelGlowTexture").getAsString();
+				if (!glowTexture.isEmpty()) {
+					FileIO.copyFile(workspace.getFolderManager()
+									.getTextureFile(FilenameUtilsPatched.removeExtension(glowTexture), TextureType.OTHER),
+							workspace.getFolderManager()
+									.getTextureFile(FilenameUtilsPatched.removeExtension(glowTexture),
+											TextureType.ENTITY));
+				}
+			}
+		} catch (Exception e) {
+			LOG.warn("Failed to migrate entity glow texture", e);
 		}
 
 		return entity;
@@ -53,4 +67,5 @@ public class EntityTexturesConverter implements IConverter {
 	@Override public int getVersionConvertingTo() {
 		return 31;
 	}
+
 }

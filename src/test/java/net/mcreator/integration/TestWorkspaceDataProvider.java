@@ -982,7 +982,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItems).getName());
 
 			itemExtension.enableFuel = !emptyLists;
-			itemExtension.fuelPower = new NumberProcedure(_true ? "number1" : null, 1600);
+			itemExtension.fuelPower = new NumberProcedure(_true ? "number3" : null, 1600);
 			itemExtension.fuelSuccessCondition = _true ? new Procedure("condition1") : null;
 			itemExtension.compostLayerChance = new double[] { 0d, 0.3d, 0.5d, 1d }[valueIndex];
 			itemExtension.hasDispenseBehavior = emptyLists;
@@ -1233,13 +1233,15 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.TAG.equals(modElement.getType())) {
 			Tag tag = new Tag(modElement);
 			tag.namespace = getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
-			tag.type = getRandomItem(random, new String[] { "Items", "Blocks", "Entities", "Functions", "Biomes" });
+			tag.type = getRandomItem(random,
+					new String[] { "Items", "Blocks", "Entities", "Functions", "Biomes", "Damage types" });
 			tag.name = modElement.getName().toLowerCase(Locale.ENGLISH);
 			tag.items = new ArrayList<>();
 			tag.blocks = new ArrayList<>();
 			tag.functions = new ArrayList<>();
 			tag.entities = new ArrayList<>();
 			tag.biomes = new ArrayList<>();
+			tag.damageTypes = new ArrayList<>();
 			if (!emptyLists) {
 				tag.items.addAll(
 						blocksAndItems.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
@@ -1252,6 +1254,10 @@ public class TestWorkspaceDataProvider {
 						.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
 				tag.biomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
 				tag.biomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
+				tag.damageTypes.addAll(
+						ElementUtil.loadDataListAndElements(modElement.getWorkspace(), "damagesources", false, null,
+										"damagetype").stream()
+								.map(e -> new DamageTypeEntry(modElement.getWorkspace(), e.getName())).toList());
 
 				tag.functions.add("ExampleFunction1");
 				tag.functions.add("ExampleFunction2");
@@ -1316,6 +1322,7 @@ public class TestWorkspaceDataProvider {
 		} else if (ModElementType.MUSICDISC.equals(modElement.getType())) {
 			MusicDisc musicDisc = new MusicDisc(modElement);
 			musicDisc.name = modElement.getName();
+			musicDisc.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			musicDisc.description = modElement.getName();
 			musicDisc.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
@@ -1536,7 +1543,6 @@ public class TestWorkspaceDataProvider {
 		livingEntity.mobName = modElement.getName();
 		livingEntity.mobLabel = "mod label " + StringUtils.machineToReadableName(modElement.getName());
 		livingEntity.mobModelTexture = "entityTx1.png";
-		livingEntity.mobModelGlowTexture = emptyLists ? "" : "test.png";
 		livingEntity.transparentModelCondition = new LogicProcedure(emptyLists ? "condition1" : null, _true);
 		livingEntity.isShakingCondition = new LogicProcedure(emptyLists ? "condition2" : null, !_true);
 		livingEntity.solidBoundingBox = new LogicProcedure(emptyLists ? "condition3" : null, _true);
@@ -1668,12 +1674,34 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelHeight = 1.3;
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
+		livingEntity.modelLayers = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.LogicType("Logic"), _true));
 			livingEntity.entityDataEntries.add(
 					new PropertyDataWithValue<>(new PropertyData.IntegerType("Integer"), random.nextInt()));
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.StringType("String"),
 					getRandomItem(random, new String[] { "value1", "value2", "value3" })));
+			LivingEntity.ModelLayerEntry modelLayer = new LivingEntity.ModelLayerEntry();
+			modelLayer.setWorkspace(modElement.getWorkspace());
+			modelLayer.model = "Default";
+			modelLayer.texture = "entityTx2.png";
+			modelLayer.glow = true;
+			modelLayer.condition = null;
+			livingEntity.modelLayers.add(modelLayer);
+			modelLayer = new LivingEntity.ModelLayerEntry();
+			modelLayer.setWorkspace(modElement.getWorkspace());
+			modelLayer.model = "Default";
+			modelLayer.texture = "test.png";
+			modelLayer.glow = false;
+			modelLayer.condition = new Procedure("condition1");
+			livingEntity.modelLayers.add(modelLayer);
+			modelLayer = new LivingEntity.ModelLayerEntry();
+			modelLayer.setWorkspace(modElement.getWorkspace());
+			modelLayer.model = "Default";
+			modelLayer.texture = "entityTx2.png";
+			modelLayer.glow = true;
+			modelLayer.condition = null;
+			livingEntity.modelLayers.add(modelLayer);
 		}
 		return livingEntity;
 	}
@@ -1823,6 +1851,8 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.smithingInputAdditionStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
+			recipe.smithingInputTemplateStack = new MItemBlock(modElement.getWorkspace(),
+					_true ? getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName() : "");
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 		}

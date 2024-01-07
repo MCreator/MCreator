@@ -256,14 +256,16 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		workspace.getFileManager().setDataSavedListener(() -> statusBar.setPersistentMessage(
 				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser,
-				PanelUtils.northAndCenterElement(pon, mpan));
+		JComponent rightPanel = PanelUtils.northAndCenterElement(pon, mpan);
+
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser, rightPanel);
 		splitPane.setBackground(Theme.current().getAltBackgroundColor());
 		splitPane.setOneTouchExpandable(true);
 
 		splitPane.setDividerLocation(280);
 		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.get());
 
+		rightPanel.setMinimumSize(new Dimension(0, 0));
 		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
 		this.notificationsRenderer = new NotificationsRenderer(splitPane);

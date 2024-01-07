@@ -24,7 +24,6 @@ import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.generator.setup.folders.AbstractFolderStructure;
 import net.mcreator.generator.template.InlineTemplatesHandler;
-import net.mcreator.generator.template.base.BaseDataModelProvider;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -38,7 +37,6 @@ import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -124,8 +122,6 @@ public class WorkspaceGeneratorSetup {
 	}
 
 	public static void setupWorkspaceBase(Workspace workspace) {
-		Map<String, Object> dataModel = new BaseDataModelProvider(workspace.getGenerator()).provide();
-
 		Set<String> fileNames = PluginLoader.INSTANCE.getResourcesInPackage(
 				workspace.getGenerator().getGeneratorName() + ".workspacebase");
 		for (String file : fileNames) {
@@ -138,8 +134,8 @@ public class WorkspaceGeneratorSetup {
 						String contents = IOUtils.toString(stream, StandardCharsets.UTF_8);
 						Template freemarkerTemplate = InlineTemplatesHandler.getTemplate(contents);
 						StringWriter stringWriter = new StringWriter();
-						freemarkerTemplate.process(dataModel, stringWriter,
-								InlineTemplatesHandler.getConfiguration().getBeansWrapper());
+						freemarkerTemplate.process(workspace.getGenerator().getBaseDataModelProvider().provide(),
+								stringWriter, InlineTemplatesHandler.getConfiguration().getObjectWrapper());
 						FileIO.writeStringToFile(stringWriter.getBuffer().toString(), outFile);
 					} else {
 						FileUtils.copyInputStreamToFile(stream, outFile);

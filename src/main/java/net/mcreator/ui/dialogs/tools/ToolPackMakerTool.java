@@ -66,7 +66,7 @@ public class ToolPackMakerTool {
 
 		dialog.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools.tool_pack_info")));
 
-		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
+		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
 		VTextField name = new VTextField(25);
 		JColor color = new JColor(mcreator, false, false);
@@ -109,9 +109,9 @@ public class ToolPackMakerTool {
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.tool_pack_create");
-		JButton canecel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		canecel.addActionListener(e -> dialog.setVisible(false));
-		dialog.add("South", PanelUtils.join(ok, canecel));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+		cancel.addActionListener(e -> dialog.setVisible(false));
+		dialog.add("South", PanelUtils.join(ok, cancel));
 
 		ok.addActionListener(e -> {
 			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
@@ -126,7 +126,7 @@ public class ToolPackMakerTool {
 		});
 
 		dialog.getRootPane().setDefaultButton(ok);
-		dialog.setSize(600, 280);
+		dialog.setSize(600, 290);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
 	}

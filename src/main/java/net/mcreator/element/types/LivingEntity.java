@@ -24,10 +24,7 @@ import net.mcreator.blockly.java.BlocklyToJava;
 import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.BiomeEntry;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Sound;
-import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -47,6 +44,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.ResourceReference;
 import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 
@@ -66,12 +64,14 @@ import java.util.*;
 
 	@Nonnull public String mobModelName;
 	@TextureReference(TextureType.ENTITY) public String mobModelTexture;
-	@TextureReference(TextureType.ENTITY) public String mobModelGlowTexture;
 	public LogicProcedure transparentModelCondition;
 	public LogicProcedure isShakingCondition;
 	public LogicProcedure solidBoundingBox;
 	public NumberProcedure visualScale;
 	public NumberProcedure boundingBoxScale;
+
+	@ModElementReference @TextureReference(TextureType.ENTITY) @ResourceReference("model")
+	public List<ModelLayerEntry> modelLayers;
 
 	public double modelWidth, modelHeight, modelShadowSize;
 	public double mountedYOffset;
@@ -196,6 +196,7 @@ import java.util.*;
 		this.inventoryStackSize = 64;
 
 		this.entityDataEntries = new ArrayList<>();
+		this.modelLayers = new ArrayList<>();
 	}
 
 	@Override public Model getEntityModel() {
@@ -272,4 +273,28 @@ import java.util.*;
 
 		return null;
 	}
+
+	public static class ModelLayerEntry implements IWorkspaceDependent {
+
+		public String model;
+		@TextureReference(TextureType.ENTITY) public String texture;
+		public boolean glow;
+		public Procedure condition;
+
+		@Nullable transient Workspace workspace;
+
+		// This method is primarily here for the usages system to detect the model usage
+		public Model getLayerModel() {
+			return model.equals("Default") ? null : Model.getModelByParams(workspace, model, Model.Type.JAVA);
+		}
+
+		@Override public void setWorkspace(@Nullable Workspace workspace) {
+			this.workspace = workspace;
+		}
+
+		@Override public @Nullable Workspace getWorkspace() {
+			return workspace;
+		}
+	}
+
 }

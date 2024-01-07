@@ -32,9 +32,7 @@ public class TabEntry extends MappableElement {
 	}
 
 	public TabEntry(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "tabs"), name);
 	}
 
 	public TabEntry(@Nonnull Workspace owner, DataListEntry name) {

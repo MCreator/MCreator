@@ -33,30 +33,40 @@ public abstract class MappableElement implements IWorkspaceDependent {
 
 	private static final Logger LOG = LogManager.getLogger("Mappable Element");
 
-	protected String value;
+	private final String value;
 
-	protected transient NameMapper mapper;
+	protected transient final NameMapper mapper;
 
 	public MappableElement(NameMapper mapper) {
 		this.mapper = mapper;
+		this.value = null;
+	}
+
+	public MappableElement(NameMapper mapper, String value) {
+		this.mapper = mapper;
+		this.value = value;
 	}
 
 	@Override public String toString() {
 		return getMappedValue();
 	}
 
-	public String getMappedValue() {
-		try {
-			return mapper.getMapping(value);
-		} catch (Exception e) {
-			LOG.fatal("Failed to map value to the mappable element. Value: " + value + ", mapper: "
-					+ mapper.mappingSource, e);
-			return value;
-		}
+	public boolean isEmpty() {
+		return value == null || value.isEmpty();
 	}
 
-	public void setValue(String value) {
-		this.value = value;
+	public String getMappedValue() {
+		return getMappedValue(0);
+	}
+
+	public String getMappedValue(int mappingTable) {
+		try {
+			return mapper.getMapping(value, mappingTable);
+		} catch (Exception e) {
+			LOG.fatal("Failed to map value to the mappable element. Value: " + value + ", mapper: "
+					+ mapper.getMappingSource(), e);
+			return value;
+		}
 	}
 
 	public String getUnmappedValue() {
@@ -70,7 +80,7 @@ public abstract class MappableElement implements IWorkspaceDependent {
 	}
 
 	public Optional<DataListEntry> getDataListEntry() {
-		Map<String, DataListEntry> dataListEntryMap = DataListLoader.loadDataMap(mapper.mappingSource);
+		Map<String, DataListEntry> dataListEntryMap = DataListLoader.loadDataMap(mapper.getMappingSource());
 		if (dataListEntryMap != null) {
 			if (dataListEntryMap.containsKey(getUnmappedValue())) {
 				return Optional.of(dataListEntryMap.get(getUnmappedValue()));
@@ -89,29 +99,11 @@ public abstract class MappableElement implements IWorkspaceDependent {
 	}
 
 	@Override public int hashCode() {
-		return value.hashCode();
+		return value == null ? 0 : value.hashCode();
 	}
 
 	@Override public boolean equals(Object element) {
-		return element instanceof MappableElement && value.equals(((MappableElement) element).value);
-	}
-
-	public static class Unique extends MappableElement {
-
-		public Unique(MappableElement original) {
-			super(original.mapper);
-			this.value = original.value;
-		}
-
-		@Override public int hashCode() {
-			return getMappedValue().hashCode();
-		}
-
-		@Override public boolean equals(Object element) {
-			return element instanceof MappableElement && getMappedValue().equals(
-					((MappableElement) element).getMappedValue());
-		}
-
+		return element instanceof MappableElement && (value != null && value.equals(((MappableElement) element).value));
 	}
 
 }

@@ -310,9 +310,17 @@ public class GradleConsole extends JPanel {
 					.getDeviceInfo().getOsName() + ", JVM " + ref.getApplication().getDeviceInfo().getJvmVersion()
 					+ ", JAVA_HOME: " + (java_home != null ? java_home : "Default (not set)") + ", started on: "
 					+ new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime());
-			append(deviceInfo, new Color(127, 120, 120));
-			append(" ");
+			append(deviceInfo, new Color(120, 120, 120));
 			taskOut.append(deviceInfo);
+
+			if (!ref.getWorkspaceSettings().getMCreatorDependencies().isEmpty()) {
+				String apiInfo = "Loaded APIs: " + ref.getWorkspaceSettings().getMCreatorDependencies().stream()
+						.map(e -> e.split(":")[0]).collect(Collectors.joining(", "));
+				append(apiInfo, new Color(120, 120, 120));
+				taskOut.append(apiInfo);
+			}
+
+			append(" ");
 		}
 
 		// reset mod problems

@@ -18,7 +18,9 @@
 
 package net.mcreator.workspace;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.Launcher;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
@@ -123,6 +125,11 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	@Nonnull public WorkspaceInfo getWorkspaceInfo() {
 		return workspaceInfo;
+	}
+
+	public boolean containsModElement(String elementName) {
+		// We create "dummy" mod element for contains check since hashcode of ME is only based on its name
+		return mod_elements.contains(new ModElement(this, elementName, ModElementType.UNKNOWN));
 	}
 
 	public ModElement getModElementByName(String elementName) {
@@ -428,7 +435,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 * @param generatorConfiguration If same as workspace, nothing is done, otherwise regenerateRequired is set to true.
 	 * @return Workspace object for the given file
 	 */
-	public static Workspace readFromFS(File workspaceFile, GeneratorConfiguration generatorConfiguration) {
+	@VisibleForTesting public static Workspace readFromFSUnsafe(File workspaceFile, GeneratorConfiguration generatorConfiguration) {
 		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 

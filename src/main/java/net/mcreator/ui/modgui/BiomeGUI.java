@@ -540,7 +540,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		addPage(L10N.t("elementgui.biome.biome_generation"), pane5);
 		addPage(L10N.t("elementgui.biome.features"), pane3);
 		addPage(L10N.t("elementgui.biome.structures"), pane2);
-		addPage(L10N.t("elementgui.biome.entity_spawning"), pane1);
+		addPage(L10N.t("elementgui.biome.entity_spawning"), pane1, false);
 		addPage(L10N.t("elementgui.biome.effects"), effectsPane);
 
 		updateBiomeTreesForm();

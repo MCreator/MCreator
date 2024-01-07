@@ -32,6 +32,7 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.blockly.BlocklyEditorToolbar;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
@@ -49,9 +50,12 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -205,6 +209,10 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 	@Override public List<BlocklyPanel> getBlocklyPanels() {
 		return List.of(blocklyPanel);
+	}
+
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-feature");
 	}
 
 }

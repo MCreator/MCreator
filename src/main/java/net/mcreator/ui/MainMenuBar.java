@@ -120,6 +120,12 @@ public class MainMenuBar extends JMenuBar {
 		imageEditor.add(mcreator.actionRegistry.imageEditorUndo);
 		imageEditor.add(mcreator.actionRegistry.imageEditorRedo);
 		imageEditor.addSeparator();
+		imageEditor.add(mcreator.actionRegistry.imageEditorCopy);
+		imageEditor.add(mcreator.actionRegistry.imageEditorCopyAll);
+		imageEditor.add(mcreator.actionRegistry.imageEditorCut);
+		imageEditor.add(mcreator.actionRegistry.imageEditorPaste);
+		imageEditor.add(mcreator.actionRegistry.imageEditorDelete);
+		imageEditor.addSeparator();
 		imageEditor.add(mcreator.actionRegistry.imageEditorSave);
 		imageEditor.add(mcreator.actionRegistry.imageEditorSaveAs);
 		imageEditor.addSeparator();
@@ -136,6 +142,8 @@ public class MainMenuBar extends JMenuBar {
 		imageEditor.add(mcreator.actionRegistry.imageEditorHSVNoise);
 		imageEditor.addSeparator();
 		imageEditor.add(mcreator.actionRegistry.imageEditorMoveLayer);
+		imageEditor.add(mcreator.actionRegistry.imageEditorSelectLayer);
+		imageEditor.add(mcreator.actionRegistry.imageEditorClearSelection);
 		imageEditor.add(mcreator.actionRegistry.imageEditorResizeLayer);
 		imageEditor.add(mcreator.actionRegistry.imageEditorResizeCanvas);
 		add(imageEditor);

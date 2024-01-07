@@ -23,12 +23,14 @@ import net.mcreator.ui.component.zoompane.ZoomedMouseEvent;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
+import net.mcreator.ui.views.editor.image.canvas.Selection;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.tool.component.JSlidingSpinner;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
 import javax.swing.*;
+import java.awt.Shape;
 import java.awt.*;
 import java.awt.event.MouseEvent;
 
@@ -63,7 +65,16 @@ public class LineTool extends AbstractModificationTool {
 	@Override public boolean process(ZoomedMouseEvent e) {
 		layer.resetOverlay();
 		layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
+
+		Selection selection = canvas.getSelection();
+		Shape validArea = selection.getLayerMask(layer);
+
 		Graphics2D g = layer.getOverlay().createGraphics();
+		Shape previousShape = g.getClip();
+
+		if (validArea != null)
+			g.setClip(validArea);
+
 		g.setColor(colorSelector.getForegroundColor());
 		if (aliasing.isSelected())
 			g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -71,7 +82,11 @@ public class LineTool extends AbstractModificationTool {
 			firstPoint = new Point(e.getX() - layer.getX(), e.getY() - layer.getY());
 		g.setStroke(new BasicStroke(size));
 		g.drawLine(firstPoint.x, firstPoint.y, e.getX() - layer.getX(), e.getY() - layer.getY());
+
+		if (validArea != null)
+			g.setClip(previousShape);
 		g.dispose();
+
 		canvas.getCanvasRenderer().repaint();
 		return true;
 	}

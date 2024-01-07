@@ -125,7 +125,8 @@ public class TemplateGenerator {
 		try {
 			Template freemarkerTemplate = templateGeneratorConfiguration.getConfiguration().getTemplate(templateName);
 			StringWriter stringWriter = new StringWriter();
-			freemarkerTemplate.process(dataModel, stringWriter, templateGeneratorConfiguration.getBeansWrapper());
+			freemarkerTemplate.process(dataModel, stringWriter,
+					templateGeneratorConfiguration.getConfiguration().getObjectWrapper());
 			return stringWriter.getBuffer().toString();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template: " + templateName, e);
@@ -144,7 +145,8 @@ public class TemplateGenerator {
 			}
 
 			StringWriter stringWriter = new StringWriter();
-			freemarkerTemplate.process(dataModel, stringWriter, templateGeneratorConfiguration.getBeansWrapper());
+			freemarkerTemplate.process(dataModel, stringWriter,
+					templateGeneratorConfiguration.getConfiguration().getObjectWrapper());
 			return stringWriter.getBuffer().toString();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template from string", e);
@@ -163,10 +165,11 @@ public class TemplateGenerator {
 			try {
 				String[] vars = variables.split(";");
 				for (String var : vars) {
-					String[] data = var.split("(?<!/)=");
-					dataModel.put("var_" + data[0].trim().replace("/=", "="), data[1].trim().replace("/=", "="));
+					String[] data = var.split("=");
+					dataModel.put("var_" + data[0].trim(), data[1].trim());
 				}
-			} catch (Exception ignored) {
+			} catch (Exception e) {
+				LOG.warn("Failed to parse hardcoded variables", e);
 			}
 		}
 	}

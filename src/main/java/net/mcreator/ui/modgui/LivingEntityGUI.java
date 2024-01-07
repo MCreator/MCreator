@@ -55,6 +55,7 @@ import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
+import net.mcreator.ui.minecraft.modellayers.JModelLayerList;
 import net.mcreator.ui.minecraft.states.entity.JEntityDataList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
 import net.mcreator.ui.procedure.LogicProcedureSelector;
@@ -206,7 +207,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final SearchableComboBox<Model> mobModel = new SearchableComboBox<>(builtinmobmodels);
 
 	private final VComboBox<String> mobModelTexture = new SearchableComboBox<>();
-	private final VComboBox<String> mobModelGlowTexture = new SearchableComboBox<>();
 
 	private JEntityDataList entityDataList;
 
@@ -252,6 +252,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private boolean editorReady = false;
 
 	private boolean disableMobModelCheckBoxListener = false;
+
+	private JModelLayerList modelLayers;
 
 	private final List<?> unmodifiableAIBases = (List<?>) mcreator.getWorkspace().getGenerator()
 			.getGeneratorConfiguration().getDefinitionsProvider().getModElementDefinition(ModElementType.LIVINGENTITY)
@@ -343,31 +345,31 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.t("condition.common.use_vanilla")).makeInline();
 		transparentModelCondition = new LogicProcedureSelector(this.withEntry("entity/condition_is_model_transparent"),
 				mcreator, L10N.t("elementgui.living_entity.condition_is_model_transparent"),
-				ProcedureSelector.Side.CLIENT, L10N.checkbox("elementgui.common.enable"), 160,
+				ProcedureSelector.Side.CLIENT, L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		isShakingCondition = new LogicProcedureSelector(this.withEntry("entity/condition_is_shaking"), mcreator,
 				L10N.t("elementgui.living_entity.condition_is_shaking"), ProcedureSelector.Side.CLIENT,
-				L10N.checkbox("elementgui.common.enable"), 160,
+				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		solidBoundingBox = new LogicProcedureSelector(this.withEntry("entity/condition_solid_bounding_box"), mcreator,
 				L10N.t("elementgui.living_entity.condition_solid_bounding_box"), AbstractProcedureSelector.Side.BOTH,
-				L10N.checkbox("elementgui.common.enable"), 160,
+				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		breatheUnderwater = new LogicProcedureSelector(this.withEntry("entity/condition_can_breathe_underwater"),
 				mcreator, L10N.t("elementgui.living_entity.condition_can_breathe_underwater"),
-				AbstractProcedureSelector.Side.BOTH, L10N.checkbox("elementgui.common.enable"), 160,
+				AbstractProcedureSelector.Side.BOTH, L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		pushedByFluids = new LogicProcedureSelector(this.withEntry("entity/condition_fluids_can_push"), mcreator,
 				L10N.t("elementgui.living_entity.condition_fluids_can_push"), AbstractProcedureSelector.Side.BOTH,
-				L10N.checkbox("elementgui.common.enable"), 160,
+				L10N.checkbox("elementgui.common.enable"), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		visualScale = new NumberProcedureSelector(this.withEntry("entity/visual_scale"), mcreator,
 				L10N.t("elementgui.living_entity.visual_scale"), AbstractProcedureSelector.Side.CLIENT,
-				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 308,
+				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 0,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 		boundingBoxScale = new NumberProcedureSelector(this.withEntry("entity/bounding_box_scale"), mcreator,
 				L10N.t("elementgui.living_entity.bounding_box_scale"), AbstractProcedureSelector.Side.BOTH,
-				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 300,
+				new JSpinner(new SpinnerNumberModel(1, 0.01, 1024, 0.01)), 210,
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity"));
 
 		restrictionBiomes = new BiomeListField(mcreator, true);
@@ -379,8 +381,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 
 		mobModelTexture.setRenderer(
-				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
-		mobModelGlowTexture.setRenderer(
 				new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.ENTITY));
 
 		guiBoundTo.addActionListener(e -> {
@@ -400,7 +400,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		spawnInDungeons.setOpaque(false);
 		mobModelTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
-		mobModelGlowTexture.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 
 		mobDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		equipmentMainHand = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
@@ -411,6 +410,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		equipmentOffHand = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		rangedAttackItem = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
+		modelLayers = new JModelLayerList(mcreator, this);
+
 		JPanel pane1 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane2 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane3 = new JPanel(new BorderLayout(0, 0));
@@ -418,6 +419,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane6 = new JPanel(new BorderLayout(0, 0));
 		JPanel pane7 = new JPanel(new BorderLayout(0, 0));
+		JPanel pane8 = new JPanel(new BorderLayout(0, 0));
 
 		JPanel subpane1 = new JPanel(new GridLayout(12, 2, 0, 2));
 
@@ -537,7 +539,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		entityDataListComp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		entityDataListPanel.add(entityDataListComp);
 
-		JPanel spo2 = new JPanel(new GridLayout(13, 2, 2, 2));
+		JPanel spo2 = new JPanel(new GridLayout(12, 2, 2, 2));
 
 		spo2.setOpaque(false);
 
@@ -558,19 +560,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			mobModelTexture.addItem("");
 			mcreator.getFolderManager().getTexturesList(TextureType.ENTITY)
 					.forEach(el -> mobModelTexture.addItem(el.getName()));
-			mobModelGlowTexture.removeAllItems();
-			mobModelGlowTexture.addItem("");
-			mcreator.getFolderManager().getTexturesList(TextureType.ENTITY)
-					.forEach(el -> mobModelGlowTexture.addItem(el.getName()));
 		});
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/texture"),
 				L10N.label("elementgui.living_entity.texture")));
 		spo2.add(PanelUtils.centerAndEastElement(mobModelTexture, importmobtexture, 0, 0));
-
-		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/glow_texture"),
-				L10N.label("elementgui.living_entity.glow_texture")));
-		spo2.add(mobModelGlowTexture);
 
 		spo2.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/bounding_box"),
 				L10N.label("elementgui.living_entity.bounding_box")));
@@ -594,7 +588,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		spo2.add(isShakingCondition);
 
 		ComponentUtils.deriveFont(mobModelTexture, 16);
-		ComponentUtils.deriveFont(mobModelGlowTexture, 16);
 		ComponentUtils.deriveFont(aiBase, 16);
 		ComponentUtils.deriveFont(mobModel, 16);
 		ComponentUtils.deriveFont(rangedItemType, 16);
@@ -697,6 +690,15 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(spo2));
+
+		JComponent layerList = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("entity/model_layers"),
+						L10N.label("elementgui.living_entity.model_layers")), modelLayers);
+
+		layerList.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		pane8.setOpaque(false);
+		pane8.add(layerList);
 
 		JPanel spo6 = new JPanel(new GridLayout(4, 2, 2, 2));
 		spo6.setOpaque(false);
@@ -907,9 +909,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane1.setOpaque(false);
 
 		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2);
+		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false);
 		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
-		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel);
+		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 		addPage(L10N.t("elementgui.living_entity.page_ai_and_goals"), pane3);
@@ -948,11 +951,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		visualScale.refreshListKeepSelected();
 		boundingBoxScale.refreshListKeepSelected();
 
-		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
-				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
-						.collect(Collectors.toList())), "");
+		modelLayers.reloadDataLists();
 
-		ComboBoxUtil.updateComboBoxContents(mobModelGlowTexture, ListUtils.merge(Collections.singleton(""),
+		ComboBoxUtil.updateComboBoxContents(mobModelTexture, ListUtils.merge(Collections.singleton(""),
 				mcreator.getFolderManager().getTexturesList(TextureType.ENTITY).stream().map(File::getName)
 						.collect(Collectors.toList())), "");
 
@@ -979,12 +980,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0) {
 			return new AggregatedValidationResult(mobModelTexture, mobName);
-		} else if (page == 6) {
+		} else if (page == 1) {
+			return modelLayers.getValidationResult();
+		} else if (page == 7) {
 			if (hasErrors)
 				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
 						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
 						.collect(Collectors.toList()));
-		} else if (page == 7) {
+		} else if (page == 8) {
 			return new AggregatedValidationResult(restrictionBiomes);
 		}
 		return new AggregatedValidationResult.PASS();
@@ -1014,7 +1017,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		mobName.setText(livingEntity.mobName);
 		mobModelTexture.setSelectedItem(livingEntity.mobModelTexture);
-		mobModelGlowTexture.setSelectedItem(livingEntity.mobModelGlowTexture);
 		transparentModelCondition.setSelectedProcedure(livingEntity.transparentModelCondition);
 		isShakingCondition.setSelectedProcedure(livingEntity.isShakingCondition);
 		solidBoundingBox.setSelectedProcedure(livingEntity.solidBoundingBox);
@@ -1106,6 +1108,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
+		modelLayers.setEntries(livingEntity.modelLayers);
 
 		entityDataList.setEntries(livingEntity.entityDataEntries);
 
@@ -1134,7 +1137,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.mobName = mobName.getText();
 		livingEntity.mobLabel = mobLabel.getText();
 		livingEntity.mobModelTexture = mobModelTexture.getSelectedItem();
-		livingEntity.mobModelGlowTexture = mobModelGlowTexture.getSelectedItem();
 		livingEntity.spawnEggBaseColor = spawnEggBaseColor.getColor();
 		livingEntity.transparentModelCondition = transparentModelCondition.getSelectedProcedure();
 		livingEntity.isShakingCondition = isShakingCondition.getSelectedProcedure();
@@ -1229,6 +1231,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.guiBoundTo = guiBoundTo.getSelectedItem();
 		livingEntity.entityDataEntries = entityDataList.getEntries();
+		livingEntity.modelLayers = modelLayers.getEntries();
 		return livingEntity;
 	}
 

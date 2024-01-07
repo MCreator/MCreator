@@ -30,6 +30,7 @@ import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.JFileBreadCrumb;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
 import net.mcreator.ui.ide.autocomplete.StringCompletitionProvider;
 import net.mcreator.ui.ide.json.JsonTree;
@@ -421,28 +422,23 @@ public class CodeEditorView extends ViewBase {
 			JavaParser parser = jls.getParser(te);
 
 			te.addKeyListener(new KeyAdapter() {
-				final boolean smartAutocomplete = PreferencesManager.PREFERENCES.ide.autocompleteMode.get()
-						.equals("Smart");
 
-				boolean completitionInAction = false;
+				private boolean completionInAction = false;
 
 				@Override public void keyPressed(KeyEvent keyEvent) {
 					super.keyPressed(keyEvent);
 					if (keyEvent.getKeyCode() == KeyEvent.VK_CONTROL) {
 						te.setCursor(new Cursor(Cursor.HAND_CURSOR));
 						jumpToMode = true;
-					} else if (smartAutocomplete && !completitionInAction && jls.isAutoActivationEnabled()
-							&& Character.isLetterOrDigit(keyEvent.getKeyChar())
-							&& jcp.getAlreadyEnteredText(te).length() > 1) {
-						if (!completitionInAction) {
+					} else if (PreferencesManager.PREFERENCES.ide.autocompleteMode.get().equals("Smart")
+							&& !completionInAction && jls.isAutoActivationEnabled() && Character.isLetterOrDigit(
+							keyEvent.getKeyChar()) && jcp.getAlreadyEnteredText(te).length() > 1) {
+						if (!completionInAction) {
 							new Thread(() -> {
 								if (ac != null) {
-									completitionInAction = true;
-									try {
-										SwingUtilities.invokeAndWait(() -> ac.doCompletion());
-									} catch (InterruptedException | InvocationTargetException ignored) {
-									}
-									completitionInAction = false;
+									completionInAction = true;
+									ThreadUtil.runOnSwingThreadAndWait(() -> ac.doCompletion());
+									completionInAction = false;
 								}
 							}, "AutoComplete").start();
 						}

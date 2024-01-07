@@ -22,22 +22,20 @@ import com.google.gson.Gson;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
-import net.mcreator.integration.TestSetup;
+import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.plugin.PluginLoader;
-import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.io.IOException;
@@ -54,25 +52,9 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class GeneratorsTest {
+@ExtendWith(IntegrationTestSetup.class) public class GeneratorsTest {
 
-	private static Logger LOG;
-
-	@BeforeAll public static void initTest() throws IOException {
-		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
-		LOG = LogManager.getLogger("Generator Test");
-
-		TestSetup.setupIntegrationTestEnvironment();
-
-		// enable logging of HTML panes (gradle console)
-		ConsolePane.DEBUG_CONTENTS_TO_LOG = true;
-
-		// reduce autosave interval for tests
-		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
-
-		// This test is RAM intensive, so we may need more RAM
-		PreferencesManager.PREFERENCES.gradle.xmx.set(3072); // 3G
-	}
+	private static final Logger LOG = LogManager.getLogger("Generator Test");
 
 	public @TestFactory Stream<DynamicTest> testGenerators() {
 		long rgenseed = System.currentTimeMillis();
