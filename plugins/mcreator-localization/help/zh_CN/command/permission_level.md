@@ -4,4 +4,4 @@
 
 1是最基本等级，4是最高等级（服务器管理员，即op）。
 
-点击 [这个页面](https://mcreator.net/wiki/command-permission-levels) 来查看命令与所需权限等级的对应表。
+查看[该页面](https://mcreator.net/wiki/command-permission-levels)中命令与所需权限等级的对应表。

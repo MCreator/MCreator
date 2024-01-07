@@ -56,8 +56,12 @@ public abstract class MappableElement implements IWorkspaceDependent {
 	}
 
 	public String getMappedValue() {
+		return getMappedValue(0);
+	}
+
+	public String getMappedValue(int mappingTable) {
 		try {
-			return mapper.getMapping(value);
+			return mapper.getMapping(value, mappingTable);
 		} catch (Exception e) {
 			LOG.fatal("Failed to map value to the mappable element. Value: " + value + ", mapper: "
 					+ mapper.getMappingSource(), e);

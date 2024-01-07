@@ -36,6 +36,7 @@ import org.reflections.scanners.Scanners;
 import org.reflections.util.ConfigurationBuilder;
 
 import javax.annotation.Nullable;
+import java.beans.Introspector;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -71,6 +72,8 @@ public class PluginLoader extends URLClassLoader {
 
 	private final Reflections reflections;
 
+	private final Set<Module> pluginsModules;
+
 	/**
 	 * <p>The core of the detection and loading</p>
 	 */
@@ -81,6 +84,7 @@ public class PluginLoader extends URLClassLoader {
 		this.failedPlugins = new HashSet<>();
 		this.javaPlugins = new HashSet<>();
 		this.pluginUpdates = new HashSet<>();
+		this.pluginsModules = new HashSet<>();
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 
@@ -118,6 +122,15 @@ public class PluginLoader extends URLClassLoader {
 							try {
 								return super.findClass(name);
 							} catch (Exception e) {
+								for (StackTraceElement element : e.getStackTrace()) {
+									if (element.getClassName().equals(Introspector.class.getName())) {
+										// If class not found was triggered due to Introspector looking for
+										// XXXBeanInfo class or XXXCustomizer class, we can ignore this and
+										// not log error or mark plugin as failed by setting loaded_failure
+										throw e;
+									}
+								}
+
 								plugin.loaded_failure =
 										"internal error: " + e.getClass().getSimpleName() + ": " + e.getMessage();
 								LOG.error("Failed to load class " + name + " for plugin " + plugin.getID(), e);
@@ -127,6 +140,8 @@ public class PluginLoader extends URLClassLoader {
 					};
 
 					javaPluginCL.addURL(plugin.toURL());
+
+					pluginsModules.add(javaPluginCL.getUnnamedModule());
 
 					Class<?> clazz = javaPluginCL.loadClass(plugin.getJavaPlugin());
 					Constructor<?> ctor = clazz.getConstructor(Plugin.class);
@@ -198,6 +213,13 @@ public class PluginLoader extends URLClassLoader {
 	 */
 	public Collection<PluginUpdateInfo> getPluginUpdates() {
 		return Collections.unmodifiableCollection(pluginUpdates);
+	}
+
+	/**
+	 * @return <p>A list of all plugin modules.</p>
+	 */
+	public Collection<Module> getPluginModules() {
+		return Collections.unmodifiableCollection(pluginsModules);
 	}
 
 	synchronized private List<Plugin> listPluginsFromFolder(File folder, boolean builtin) {

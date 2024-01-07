@@ -349,7 +349,14 @@ public class ${name}Item extends Item {
 		}
 
 		<#if hasProcedure(data.onRangedItemUsed)>
-			<@procedureOBJToCode data.onRangedItemUsed/>
+			<@procedureCode data.onRangedItemUsed, {
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
+				"world": "world",
+				"entity": "entity",
+				"itemstack": "stack"
+			}/>
 		</#if>
 	}
 </#macro>

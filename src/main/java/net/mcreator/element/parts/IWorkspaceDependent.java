@@ -19,6 +19,7 @@
 
 package net.mcreator.element.parts;
 
+import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
@@ -65,7 +66,8 @@ public interface IWorkspaceDependent {
 			int length = Array.getLength(object);
 			for (int i = 0; i < length; i++)
 				processWorkspaceDependentObjects(Array.get(object, i), processor);
-		} else if (object.getClass().getModule() == MCreator.class.getModule()) {
+		} else if (object.getClass().getModule() == MCreator.class.getModule()
+				|| PluginLoader.INSTANCE.getPluginModules().contains(object.getClass().getModule())) {
 			for (Field field : object.getClass().getDeclaredFields()) {
 				field.setAccessible(true);
 				if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers())) {

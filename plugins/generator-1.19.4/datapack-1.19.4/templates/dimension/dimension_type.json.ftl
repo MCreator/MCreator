@@ -33,5 +33,9 @@
   },
   "monster_spawn_block_light_limit": 0,
   </#if>
+  <#if var_customeffects?? && var_customeffects == "true">
+  "effects": "${modid}:${registryname}"
+  <#else>
   "effects": "<#if data.hasFog>minecraft:the_nether<#else>minecraft:overworld</#if>"
+  </#if>
 }

@@ -20,6 +20,7 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.image.ImageUtils;
 
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -47,10 +48,16 @@ public class BlockItemIcons {
 	}
 
 	public static ImageIcon getIconForItem(@Nullable String itemName) {
-		if (itemName != null && CACHE.get(itemName) != null)
+		if (itemName != null && CACHE.get(itemName) != null) {
 			return CACHE.get(itemName);
-		else
+		} else if (itemName != null && itemName.matches("[0-9]+")) {
+			// If itemName is number, consider it color and store it in cache
+			ImageIcon result = ImageUtils.createColorSquare(new Color(Integer.parseInt(itemName)), 32, 32);
+			CACHE.put(itemName, result);
+			return result;
+		} else {
 			return UIRES.get("missingblockicon");
+		}
 	}
 
 	public static ImageIcon getIconFor(String itemName) {
