@@ -47,6 +47,7 @@ import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
 import net.mcreator.element.converter.v2023_3.*;
 import net.mcreator.element.converter.v2023_4.*;
+import net.mcreator.element.converter.v2024_1.CallProcedureAtBlockConverter;
 
 import java.util.HashMap;
 import java.util.List;
