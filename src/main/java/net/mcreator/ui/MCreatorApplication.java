@@ -51,7 +51,6 @@ import net.mcreator.ui.notifications.StartupNotifications;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
-import net.mcreator.util.SoundUtils;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
@@ -118,8 +117,6 @@ public final class MCreatorApplication {
 			splashScreen.setProgress(15, "Loading UI core");
 
 			UIRES.preloadImages();
-
-			SoundUtils.initSoundSystem();
 
 			taskbarIntegration = new TaskbarIntegration();
 
@@ -374,8 +371,6 @@ public final class MCreatorApplication {
 		analytics.trackPageSync(AnalyticsConstants.PAGE_CLOSE); // track app close in sync mode
 
 		discordClient.close(); // close discord client
-
-		SoundUtils.close();
 
 		// we close all windows and exit fx platform
 		try {
