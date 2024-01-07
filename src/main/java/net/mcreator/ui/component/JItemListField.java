@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
@@ -27,11 +28,13 @@ import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -39,6 +42,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.util.ArrayList;
@@ -158,6 +162,36 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				if (!elementsListModel.contains(el))
 					elementsListModel.addElement(el);
 			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
+		});
+
+		elementsList.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (e.getButton() == MouseEvent.BUTTON2) {
+					int index = elementsList.locationToIndex(e.getPoint());
+					if (index >= 0)
+						elementsList.setSelectedIndex(index);
+					remove.doClick();
+				} else if (e.getClickCount() == 2) {
+					int index = elementsList.locationToIndex(e.getPoint());
+					if (index >= 0) {
+						T element = elementsListModel.get(index);
+						if (element instanceof MappableElement mappableElement) {
+							String unmappedValue = mappableElement.getUnmappedValue();
+							if (unmappedValue.startsWith("CUSTOM:")) {
+								ModElement modElement = mcreator.getWorkspace()
+										.getModElementByName(GeneratorWrapper.getElementPlainName(unmappedValue));
+								if (modElement != null) {
+									ModElementGUI<?> gui = modElement.getType()
+											.getModElementGUI(mcreator, modElement, true);
+									if (gui != null) {
+										gui.showView();
+									}
+								}
+							}
+						}
+					}
+				}
+			}
 		});
 
 		include.addActionListener(e -> this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource()))));
@@ -335,7 +369,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 			setForeground(
 					isSelected ? Theme.current().getSecondAltBackgroundColor() : Theme.current().getForegroundColor());
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getBackgroundColor()),
+					BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setVerticalAlignment(SwingConstants.CENTER);
