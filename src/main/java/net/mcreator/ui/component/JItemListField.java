@@ -124,36 +124,12 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		remove.addActionListener(e -> {
 			List<T> elements = elementsList.getSelectedValuesList();
-			boolean anyRemoved = false;
-			for (var element : elements) {
-				if (element != null) {
-					if (element instanceof MappableElement mappableElement && mappableElement.isManaged())
-						continue; // Managed elements cannot be removed
-
-					elementsListModel.removeElement(element);
-					anyRemoved = true;
-				}
-			}
-			if (anyRemoved) {
-				this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
-			}
+			deleteElements(elements);
 		});
 
 		removeall.addActionListener(e -> {
 			List<T> elements = Collections.list(elementsListModel.elements());
-			boolean anyRemoved = false;
-			for (var element : elements) {
-				if (element != null) {
-					if (element instanceof MappableElement mappableElement && mappableElement.isManaged())
-						continue; // Managed elements cannot be removed
-
-					elementsListModel.removeElement(element);
-					anyRemoved = true;
-				}
-			}
-			if (anyRemoved) {
-				this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
-			}
+			deleteElements(elements);
 		});
 
 		addtag.addActionListener(e -> {
@@ -169,8 +145,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				if (e.getButton() == MouseEvent.BUTTON2) {
 					int index = elementsList.locationToIndex(e.getPoint());
 					if (index >= 0)
-						elementsList.setSelectedIndex(index);
-					remove.doClick();
+						deleteElements(Collections.singletonList(elementsListModel.get(index)));
 				} else if (e.getClickCount() == 2) {
 					int index = elementsList.locationToIndex(e.getPoint());
 					if (index >= 0) {
@@ -254,6 +229,39 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		add(pane, BorderLayout.CENTER);
 		add(buttons, BorderLayout.EAST);
+	}
+
+	private void deleteElements(List<T> elements) {
+		boolean anyRemoved = false;
+
+		boolean deleteManaged = false;
+		boolean containsManaged = elements.stream()
+				.anyMatch(e -> e instanceof MappableElement mappableElement && mappableElement.isManaged());
+
+		if (containsManaged) {
+			int result = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.itemlistfield.deletemanaged"),
+					L10N.t("dialog.itemlistfield.deletemanaged.title"), JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (result == JOptionPane.YES_OPTION) {
+				deleteManaged = true;
+			} else if (result != JOptionPane.NO_OPTION) {
+				return; // if action is not yes or no, cancel deletion
+			}
+		}
+
+		for (var element : elements) {
+			if (element != null) {
+				if (!deleteManaged && element instanceof MappableElement mappableElement && mappableElement.isManaged())
+					continue; // Managed elements are only delete if deleteManaged is true
+
+				elementsListModel.removeElement(element);
+				anyRemoved = true;
+			}
+		}
+
+		if (anyRemoved) {
+			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
+		}
 	}
 
 	public void hideButtons() {
