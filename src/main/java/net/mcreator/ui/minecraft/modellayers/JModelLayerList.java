@@ -24,10 +24,10 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 public class JModelLayerList extends JSimpleEntriesList<JModelLayerListEntry, LivingEntity.ModelLayerEntry> {
@@ -39,11 +39,12 @@ public class JModelLayerList extends JSimpleEntriesList<JModelLayerListEntry, Li
 
 		setBorder(BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(2, 2, 2, 2),
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+						BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 						BorderFactory.createEmptyBorder(2, 2, 2, 2))));
 	}
 
-	@Override protected JModelLayerListEntry newEntry(JPanel parent, List<JModelLayerListEntry> entryList, boolean userAction) {
+	@Override
+	protected JModelLayerListEntry newEntry(JPanel parent, List<JModelLayerListEntry> entryList, boolean userAction) {
 		return new JModelLayerListEntry(mcreator, gui, parent, entryList);
 	}
 

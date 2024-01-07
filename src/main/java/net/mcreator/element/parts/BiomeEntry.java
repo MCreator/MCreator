@@ -32,9 +32,7 @@ public class BiomeEntry extends MappableElement {
 	}
 
 	public BiomeEntry(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "biomes"), name);
 	}
 
 	public BiomeEntry(@Nonnull Workspace owner, DataListEntry name) {

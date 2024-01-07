@@ -19,6 +19,8 @@
 
 package net.mcreator.element;
 
+import java.util.Locale;
+
 public enum BaseType {
 
 	// @formatter:off
@@ -36,7 +38,7 @@ public enum BaseType {
 		if (this == BLOCKENTITY)
 			return "blockentities";
 
-		return name() + "s";
+		return name().toLowerCase(Locale.ENGLISH) + "s";
 	}
 
 }

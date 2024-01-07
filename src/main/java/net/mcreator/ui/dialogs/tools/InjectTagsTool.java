@@ -59,9 +59,9 @@ public class InjectTagsTool {
 		dialog.add("Center", scrollPane);
 
 		JButton ok = L10N.button("dialog.tools.inject_tags.confirm");
-		JButton canecel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		canecel.addActionListener(e -> dialog.setVisible(false));
-		dialog.add("South", PanelUtils.join(ok, canecel));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+		cancel.addActionListener(e -> dialog.setVisible(false));
+		dialog.add("South", PanelUtils.join(ok, cancel));
 
 		List<Consumer<Boolean>> callables = new ArrayList<>();
 
@@ -108,6 +108,18 @@ public class InjectTagsTool {
 		callables.add(addTag(mcreator, props, "tick", "minecraft", "Functions", false));
 		callables.add(addTag(mcreator, props, "load", "minecraft", "Functions", false));
 
+		callables.add(addTag(mcreator, props, "is_drowning", "minecraft", "Damage types", false));
+		callables.add(addTag(mcreator, props, "is_explosion", "minecraft", "Damage types", false));
+		callables.add(addTag(mcreator, props, "is_fall", "minecraft", "Damage types", false));
+		callables.add(addTag(mcreator, props, "is_fire", "minecraft", "Damage types", false));
+		callables.add(addTag(mcreator, props, "is_freezing", "minecraft", "Damage types", false));
+		callables.add(addTag(mcreator, props, "is_projectile", "minecraft", "Damage types", false));
+		callables.add(addTag(mcreator, props, "bypasses_armor", "minecraft", "Damage types", false));
+		callables.add(addTag(mcreator, props, "bypasses_cooldown", "minecraft", "Damage types", false));
+		callables.add(addTag(mcreator, props, "bypasses_effects", "minecraft", "Damage types", false));
+		callables.add(addTag(mcreator, props, "bypasses_enchantments", "minecraft", "Damage types", false));
+		callables.add(addTag(mcreator, props, "bypasses_shield", "minecraft", "Damage types", false));
+
 		ok.addActionListener(e -> {
 			dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 			callables.forEach(c -> c.accept(false));
@@ -124,13 +136,13 @@ public class InjectTagsTool {
 
 	private static Consumer<Boolean> addTag(MCreator mcreator, JPanel panel, String name, String namespace, String type,
 			boolean checked) {
-		boolean existing = mcreator.getWorkspace().getModElementByName(getNameForTag(name, type)) != null;
+		boolean existing = mcreator.getWorkspace().containsModElement(getNameForTag(name, type));
 
 		JCheckBox box = new JCheckBox(
 				"<html><kbd>" + namespace + ":" + name + (existing ? (" -> " + getNameForTag(name, type)) : "")
 						+ "</kbd><small><br>" + L10N.t(
-						"dialog.tools.inject_tags.tag." + type.toLowerCase(Locale.ENGLISH) + "." + namespace + "."
-								+ name));
+						"dialog.tools.inject_tags.tag." + type.toLowerCase(Locale.ENGLISH).replace(' ', '_') + "."
+								+ namespace + "." + name));
 		box.setSelected(checked);
 
 		JLabel icon = new JLabel();
@@ -144,6 +156,8 @@ public class InjectTagsTool {
 				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.LIVINGENTITY.getIcon().getImage(), 32)));
 		case "Biomes" ->
 				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.BIOME.getIcon().getImage(), 32)));
+		case "Damage types" ->
+				icon.setIcon(new ImageIcon(ImageUtils.resizeAA(ModElementType.DAMAGETYPE.getIcon().getImage(), 32)));
 		}
 
 		panel.add(PanelUtils.centerAndEastElement(box, icon));
@@ -161,14 +175,15 @@ public class InjectTagsTool {
 		if (name.endsWith("s"))
 			name = name.substring(0, name.length() - 1);
 
-		return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name.replace("_blocks", "")) + type;
+		return CaseFormat.UPPER_UNDERSCORE.to(CaseFormat.UPPER_CAMEL, name.replace("_blocks", ""))
+				+ ("Damage types".equals(type) ? "DamageTypes" : type);
 	}
 
 	private static void injectTagToWorkspace(MCreator mcreator, String name, String namespace, String type) {
 		String modElementName = getNameForTag(name, type);
 		Workspace workspace = mcreator.getWorkspace();
 
-		if (workspace.getModElementByName(modElementName) == null) {
+		if (!workspace.containsModElement(modElementName)) {
 			Tag tag = new Tag(new ModElement(workspace, modElementName, ModElementType.TAG));
 			tag.name = name;
 			tag.namespace = namespace;
@@ -179,6 +194,7 @@ public class InjectTagsTool {
 			tag.functions = Collections.emptyList();
 			tag.entities = Collections.emptyList();
 			tag.biomes = Collections.emptyList();
+			tag.damageTypes = Collections.emptyList();
 
 			workspace.getModElementManager().storeModElementPicture(tag);
 			workspace.addModElement(tag.getModElement());

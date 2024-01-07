@@ -32,6 +32,8 @@ public class LayerListCellRenderer extends JPanel implements ListCellRenderer<La
 
 	private final JLabel visible = new JLabel(UIRES.get("16px.shown"));
 
+	private final Font normal = name.getFont().deriveFont(Font.PLAIN), italic = name.getFont().deriveFont(Font.ITALIC);
+
 	public LayerListCellRenderer() {
 		FlowLayout layout = (FlowLayout) getLayout();
 		layout.setAlignment(FlowLayout.LEFT);
@@ -46,7 +48,16 @@ public class LayerListCellRenderer extends JPanel implements ListCellRenderer<La
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Layer> list, Layer layer, int index,
 			boolean isSelected, boolean cellHasFocus) {
-		name.setText(layer.getName());
+
+		if (layer.isPasted()) {
+			name.setForeground(Theme.current().getAltForegroundColor().brighter());
+			name.setFont(italic);
+			name.setText(layer.getName() + " (floating)");
+		} else {
+			name.setForeground(Theme.current().getForegroundColor());
+			name.setFont(normal);
+			name.setText(layer.getName());
+		}
 
 		ImageIcon iconImage = ImageUtils.fit(layer.getRaster(), 32);
 		if (!layer.isVisible())

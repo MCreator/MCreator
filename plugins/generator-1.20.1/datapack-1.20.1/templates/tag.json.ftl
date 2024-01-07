@@ -1,13 +1,14 @@
 <#include "mcitems.ftl">
+<#assign tag = data.getNamespace() + ":" + data.getName()>
 {
     "replace": false,
     "values": [
       <#if data.type == "Items">
-          <#list w.filterBrokenReferences(data.items) as value>
+          <#list w.normalizeTagElements(tag, 1, data.items) as value>
             "${mappedMCItemToRegistryName(value, true)}"<#if value?has_next>,</#if>
           </#list>
       <#elseif data.type == "Blocks">
-          <#list w.filterBrokenReferences(data.blocks) as value>
+          <#list w.normalizeTagElements(tag, 1, data.blocks) as value>
             "${mappedMCItemToRegistryName(value, true)}"<#if value?has_next>,</#if>
           </#list>
       <#elseif data.type == "Functions">
@@ -16,13 +17,17 @@
             <#if value?has_next>,</#if>
           </#list>
       <#elseif data.type == "Entities">
-          <#list w.filterBrokenReferences(data.entities) as value>
-            "${generator.map(value.getUnmappedValue(), "entities", 2)}"
+          <#list w.normalizeTagElements(tag, 2, data.entities) as value>
+            "${value.getMappedValue(2)}"
             <#if value?has_next>,</#if>
           </#list>
       <#elseif data.type == "Biomes">
-          <#list w.filterBrokenReferences(data.biomes) as value>
+          <#list w.normalizeTagElements(tag, 0, data.biomes) as value>
             "${value}"<#if value?has_next>,</#if>
+          </#list>
+      <#elseif data.type == "Damage types">
+          <#list w.normalizeTagElements(tag, 1, data.damageTypes) as value>
+            "${value.getMappedValue(1)}"<#sep>,
           </#list>
       </#if>
     ]

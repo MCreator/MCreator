@@ -43,7 +43,7 @@ import java.io.InputStream;
 		return ThemeLoader.CURRENT_THEME;
 	}
 
-	private String id;
+	protected String id;
 	private String name;
 
 	@Nullable private String description;
@@ -61,12 +61,9 @@ import java.io.InputStream;
 	private transient Font secondaryFont;
 	private transient Font consoleFont;
 
-	protected void init(String id) {
-		this.id = id;
-
-		if (colorScheme != null) {
+	protected Theme init() {
+		if (colorScheme != null)
 			colorScheme.init();
-		}
 
 		try {
 			defaultThemeFont = new Font(defaultFont != null ? defaultFont : "Sans-Serif", Font.PLAIN,
@@ -99,6 +96,8 @@ import java.io.InputStream;
 		} catch (NullPointerException | FontFormatException | IOException e2) {
 			LOG.info("Failed to init MCreator Theme! Error " + e2.getMessage());
 		}
+
+		return this;
 	}
 
 	/**

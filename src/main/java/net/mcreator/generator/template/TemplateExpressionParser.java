@@ -124,7 +124,8 @@ public class TemplateExpressionParser {
 
 			Template t = InlineTemplatesHandler.getTemplate("${_retVal.set(" + expression + ")}");
 			t.process(dataModel, NullWriter.INSTANCE,
-					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getBeansWrapper());
+					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration()
+							.getObjectWrapper());
 
 			return retVal.get();
 		} catch (Exception e) {

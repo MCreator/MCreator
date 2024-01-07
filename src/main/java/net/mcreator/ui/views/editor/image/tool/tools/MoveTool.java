@@ -34,6 +34,8 @@ public class MoveTool extends AbstractTool {
 	private Point prev = null;
 	private Relocation relocation;
 
+	private boolean canMove = false;
+
 	public MoveTool(Canvas canvas, ColorSelector colorSelector, VersionManager versionManager) {
 		super(L10N.t("dialog.image_maker.tools.types.move"), L10N.t("dialog.image_maker.tools.types.move_description"),
 				UIRES.get("img_editor.move"), canvas, colorSelector, versionManager);
@@ -59,15 +61,38 @@ public class MoveTool extends AbstractTool {
 			prev = e.getPoint();
 			original = new Point(layer.getX(), layer.getY());
 			relocation = new Relocation(canvas, layer);
-			versionManager.addRevision(relocation);
 		}
 	}
 
 	@Override public void mouseReleased(MouseEvent e) {
 		prev = null;
-		if (original.x != layer.getX() && original.y != layer.getY()) {
+		if (layer.in(e.getX(), e.getY()) && original.x != layer.getX() && original.y != layer.getY()) {
 			relocation.setAfter(layer);
+			versionManager.addRevision(relocation);
 		}
+
 		super.mouseReleased(e);
+	}
+
+	@Override public void mouseClicked(MouseEvent e) {
+		if (layer.isPasted() && !layer.in(e.getX(), e.getY()))
+			canvas.mergeSelectedDown();
+
+		super.mouseClicked(e);
+	}
+
+	@Override public void mouseMoved(MouseEvent e) {
+		super.mouseMoved(e);
+		canMove = layer.in(e.getX(), e.getY());
+	}
+
+	@Override public Cursor getCursor() {
+		return Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
+	}
+
+	@Override public Cursor getHoverCursor() {
+		if (canMove)
+			return Cursor.getPredefinedCursor(Cursor.MOVE_CURSOR);
+		return getCursor();
 	}
 }

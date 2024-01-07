@@ -68,12 +68,12 @@ public class FileCodeViewer<T extends GeneratableElement> extends JPanel {
 	}
 
 	private String format(GeneratorFile input) throws Exception {
-		if (input.writer() == null || input.writer().equals("java")) {
+		if (input.writer() == GeneratorFile.Writer.JAVA) {
 			String codeformatted = cev.getCodeCleanup().reformatTheCodeOnly(input.contents());
 			if (!codeformatted.contains("\t"))
 				throw new Exception("Format failed");
 			return ImportFormat.removeImports(codeformatted, "\n\n/* imports omitted */\n\n");
-		} else if (input.writer().equals("json")) {
+		} else if (input.writer() == GeneratorFile.Writer.JSON) {
 			return JSONWriter.formatJSON(input.contents());
 		}
 

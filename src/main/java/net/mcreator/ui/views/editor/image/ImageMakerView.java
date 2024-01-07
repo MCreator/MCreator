@@ -35,6 +35,8 @@ import net.mcreator.ui.validation.validators.RegistryNameValidator;
 import net.mcreator.ui.views.ViewBase;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.canvas.CanvasRenderer;
+import net.mcreator.ui.views.editor.image.canvas.SelectedBorder;
+import net.mcreator.ui.views.editor.image.clipboard.ClipboardManager;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
@@ -60,34 +62,36 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class ImageMakerView extends ViewBase implements MouseListener, MouseMotionListener {
-
 	private static final Logger LOG = LogManager.getLogger("Image Maker View");
+	private static final int FPS = 4;
 
-	private String name = L10N.t("tab.image_maker");
+	public static final ExecutorService toolExecutor = Executors.newSingleThreadExecutor();
 
-	private Canvas canvas;
 	private final CanvasRenderer canvasRenderer;
 	private final JZoomPane zoomPane;
 	private final JSplitPane leftSplitPane;
 	private final JSplitPane rightSplitPane;
 	private final ToolPanel toolPanel;
 	private final LayerPanel layerPanel;
-
 	private final VersionManager versionManager;
-
+	private final ClipboardManager clipboardManager;
 	private final JLabel imageInfo = new JLabel("");
 
 	public final JButton save;
 
-	public static final ExecutorService toolExecutor = Executors.newSingleThreadExecutor();
+	private String name = L10N.t("tab.image_maker");
 	private MCreatorTabs.Tab tab;
 	private File image;
+	private Canvas canvas;
+	private Cursor currentCursor = null;
+	private boolean active;
 	private boolean canEdit = true;
 
 	public ImageMakerView(MCreator f) {
 		super(f);
 
 		versionManager = new VersionManager(this);
+		clipboardManager = new ClipboardManager(this);
 
 		JPanel controls = new JPanel(new BorderLayout());
 		controls.setBorder(new EmptyBorder(2, 3, 2, 3));
@@ -166,6 +170,25 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		add(controls, BorderLayout.NORTH);
 		add(leftSplitPane, BorderLayout.CENTER);
+
+		Thread animator = new Thread(() -> {
+			active = true;
+			while (active) {
+				if (canvas != null && canvas.getSelection() != null
+						&& canvas.getSelection().getEditing() != SelectedBorder.NONE) {
+					canvasRenderer.addPhaseToOutline((float) Math.PI / FPS / 2);
+					repaint();
+				}
+
+				try {
+					Thread.sleep(1000 / FPS);
+				} catch (InterruptedException e) {
+					LOG.error(e.getMessage(), e);
+				}
+			}
+		}, "ImageMakerAnimationRenderer");
+
+		animator.start();
 	}
 
 	public void openInEditMode(File image) {
@@ -325,6 +348,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		else
 			this.tab = new MCreatorTabs.Tab(this);
 
+		tab.setTabClosedListener(tab -> this.active = false);
+
 		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(this.tab);
 		if (existing == null) {
 			mcreator.mcreatorTabs.addTab(this.tab);
@@ -362,14 +387,12 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	@Override public void mousePressed(MouseEvent e) {
-		zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
-		canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
+		setEditorCursor(toolPanel.getCurrentTool().getUsingCursor());
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mousePressed(e));
 	}
 
 	@Override public void mouseReleased(MouseEvent e) {
-		zoomPane.setCursor(toolPanel.getCurrentTool().getCursor());
-		canvasRenderer.setCursor(toolPanel.getCurrentTool().getCursor());
+		setEditorCursor(toolPanel.getCurrentTool().getCursor());
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseReleased(e));
 	}
 
@@ -382,15 +405,28 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	}
 
 	@Override public void mouseDragged(MouseEvent e) {
-		zoomPane.setCursor(toolPanel.getCurrentTool().getUsingCursor());
-		canvasRenderer.setCursor(toolPanel.getCurrentTool().getUsingCursor());
+		setEditorCursor(toolPanel.getCurrentTool().getUsingCursor());
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseDragged(e));
 		updateInfoBar(e.getX(), e.getY());
 	}
 
 	@Override public void mouseMoved(MouseEvent e) {
+		if (toolPanel.getCurrentTool().getHoverCursor() != null) {
+			setEditorCursor(toolPanel.getCurrentTool().getHoverCursor());
+		}
 		toolExecutor.execute(() -> toolPanel.getCurrentTool().mouseMoved(e));
 		updateInfoBar(e.getX(), e.getY());
+	}
+
+	public void setEditorCursor(Cursor cursor) {
+		if (currentCursor == cursor)
+			return;
+		currentCursor = cursor;
+
+		SwingUtilities.invokeLater(() -> {
+			zoomPane.getZoomport().setCursor(cursor);
+			canvasRenderer.setCursor(cursor);
+		});
 	}
 
 	private void updateInfoBar(int x, int y) {
@@ -407,6 +443,10 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public VersionManager getVersionManager() {
 		return versionManager;
+	}
+
+	public ClipboardManager getClipboardManager() {
+		return clipboardManager;
 	}
 
 	public ToolPanel getToolPanel() {

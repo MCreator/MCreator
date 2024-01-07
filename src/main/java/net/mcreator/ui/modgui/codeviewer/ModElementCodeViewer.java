@@ -23,6 +23,7 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.generator.ListTemplate;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.themes.Theme;
@@ -119,7 +120,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 					for (GeneratorFile file : files) {
 						if (cache.containsKey(file)) { // existing file
-							SwingUtilities.invokeAndWait(() -> {
+							ThreadUtil.runOnSwingThreadAndWait(() -> {
 								try {
 									if (cache.get(file).update(file)) {
 										if (file.source() instanceof ListTemplate lt) { // file from list
@@ -142,7 +143,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 								}
 							});
 						} else { // new file
-							SwingUtilities.invokeAndWait(() -> {
+							ThreadUtil.runOnSwingThreadAndWait(() -> {
 								try {
 									FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
 									if (file.source() instanceof ListTemplate lt) { // file from list

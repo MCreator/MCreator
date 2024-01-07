@@ -162,6 +162,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			});
 
 			TableRowSorter<TableModel> sorter = new TableRowSorter<>(elements.getModel());
+			sorter.toggleSortOrder(0);
 			elements.setRowSorter(sorter);
 			sorters.add(sorter);
 
@@ -200,7 +201,6 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			JScrollPane sp = new JScrollPane(elements);
 			sp.setOpaque(false);
 			sp.getViewport().setOpaque(false);
-			sp.getVerticalScrollBar().setUnitIncrement(11);
 			sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
 					Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
 			sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));

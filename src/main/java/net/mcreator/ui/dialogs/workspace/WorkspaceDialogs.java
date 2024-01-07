@@ -22,8 +22,8 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.java.JavaConventions;
-import net.mcreator.minecraft.api.ModAPIImplementation;
-import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.plugin.modapis.ModAPIImplementation;
+import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
@@ -65,10 +65,11 @@ import java.io.File;
 import java.lang.module.ModuleDescriptor;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class WorkspaceDialogs {
 
-	public static WorkspaceSettingsChange workspaceSettings(MCreator mcreator, Workspace in) {
+	@Nullable public static WorkspaceSettingsChange workspaceSettings(MCreator mcreator, Workspace in) {
 		MCreatorDialog workspaceDialog = new MCreatorDialog(mcreator, L10N.t("dialog.workspace_settings.title"), true);
 
 		WorkspaceDialogPanel wdp = new WorkspaceDialogPanel(workspaceDialog, in);
@@ -83,32 +84,51 @@ public class WorkspaceDialogs {
 			else
 				showErrorsMessage(mcreator, new AggregatedValidationResult(wdp.validationGroup));
 		});
-		workspaceDialog.setClosable(false);
+
+		AtomicBoolean canceled = new AtomicBoolean(false);
+
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+		buttons.add(cancel);
+		cancel.addActionListener(e -> {
+			canceled.set(true);
+			workspaceDialog.setVisible(false);
+		});
 
 		workspaceDialog.getRootPane().setDefaultButton(ok);
 		workspaceDialog.pack();
 		workspaceDialog.setSize(workspaceDialog.getBounds().width, 620);
 		workspaceDialog.setLocationRelativeTo(mcreator);
+
+		workspaceDialog.addWindowListener(new java.awt.event.WindowAdapter() {
+			@Override public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				canceled.set(true);
+			}
+		});
+
 		workspaceDialog.setVisible(true);
 
-		WorkspaceSettings oldsettings = in.getWorkspaceSettings();
-		WorkspaceSettings newsettings = wdp.getWorkspaceSettings(in);
+		if (canceled.get()) {
+			return null; // no workspace setting change
+		} else {
+			WorkspaceSettings oldsettings = in.getWorkspaceSettings();
+			WorkspaceSettings newsettings = wdp.getWorkspaceSettings(in);
 
-		WorkspaceSettingsChange change = new WorkspaceSettingsChange(newsettings, oldsettings);
+			WorkspaceSettingsChange change = new WorkspaceSettingsChange(newsettings, oldsettings);
 
-		if (change.refactorNeeded()) {
-			String[] options = new String[] { L10N.t("dialog.workspace_settings.refactor.yes"),
-					L10N.t("dialog.workspace_settings.refactor.no") };
-			int option = JOptionPane.showOptionDialog(null, change.generatorFlavorChanged ?
-							L10N.t("dialog.workspace_settings.refactor.text_flavor_switch") :
-							L10N.t("dialog.workspace_settings.refactor.text"),
-					L10N.t("dialog.workspace_settings.refactor.title"), JOptionPane.YES_NO_OPTION,
-					JOptionPane.WARNING_MESSAGE, null, options, options[0]);
-			if (option == 1)
-				return new WorkspaceSettingsChange(oldsettings, null);
+			if (change.refactorNeeded()) {
+				String[] options = new String[] { L10N.t("dialog.workspace_settings.refactor.yes"),
+						L10N.t("dialog.workspace_settings.refactor.no") };
+				int option = JOptionPane.showOptionDialog(null, change.generatorFlavorChanged ?
+								L10N.t("dialog.workspace_settings.refactor.text_flavor_switch") :
+								L10N.t("dialog.workspace_settings.refactor.text"),
+						L10N.t("dialog.workspace_settings.refactor.title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE, null, options, options[0]);
+				if (option == 1)
+					return null; // no workspace setting change
+			}
+
+			return change; // we are working with existing workspace
 		}
-
-		return change; // we are working with existing workspace
 	}
 
 	static class WorkspaceDialogPanel extends JPanel {
