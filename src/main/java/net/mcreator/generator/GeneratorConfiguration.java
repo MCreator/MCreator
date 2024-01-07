@@ -57,7 +57,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	private final GeneratorVariableTypes generatorVariableTypes;
 
-	private final Map<String, TemplateGeneratorConfiguration> templateGeneratorConfigs = new HashMap<>();
+	private final Map<String, TemplateGeneratorConfiguration> templateGeneratorConfigs = new ConcurrentHashMap<>();
 
 	public GeneratorConfiguration(String generatorName) {
 		this.generatorName = generatorName;
