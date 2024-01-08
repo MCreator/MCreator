@@ -57,7 +57,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	private final GeneratorVariableTypes generatorVariableTypes;
 
-	private final Map<String, TemplateGeneratorConfiguration> templateGeneratorConfigs = new HashMap<>();
+	private final Map<String, TemplateGeneratorConfiguration> templateGeneratorConfigs = new ConcurrentHashMap<>();
 
 	public GeneratorConfiguration(String generatorName) {
 		this.generatorName = generatorName;
@@ -115,12 +115,6 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	@Nullable public String getGeneratorSubVersion() {
 		return (String) generatorConfig.get("subversion");
-	}
-
-	public Map<?, ?> getStardIDMap() {
-		return generatorConfig.get("start_id_map") != null ?
-				(Map<?, ?>) generatorConfig.get("start_id_map") :
-				new HashMap<>();
 	}
 
 	public Map<?, ?> getLanguageFileSpecification() {

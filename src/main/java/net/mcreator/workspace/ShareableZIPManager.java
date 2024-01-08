@@ -97,7 +97,7 @@ public class ShareableZIPManager {
 					}
 
 					i++;
-					p1.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
+					p1.setPercent((int) (i / (float) modstoload * 100));
 				}
 
 				// make sure we store any potential changes made to the workspace

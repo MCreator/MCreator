@@ -18,6 +18,7 @@
 
 package net.mcreator.workspace;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.Launcher;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
@@ -452,7 +453,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 * @param generatorConfiguration If same as workspace, nothing is done, otherwise regenerateRequired is set to true.
 	 * @return Workspace object for the given file
 	 */
-	public static Workspace readFromFSUnsafe(File workspaceFile, GeneratorConfiguration generatorConfiguration)
+	@VisibleForTesting public static Workspace readFromFSUnsafe(File workspaceFile, GeneratorConfiguration generatorConfiguration)
 			throws MissingWorkspacePluginsException {
 		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);

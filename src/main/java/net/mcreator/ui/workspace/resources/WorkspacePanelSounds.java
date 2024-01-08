@@ -25,17 +25,12 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.WorkspacePanel;
-import net.mcreator.util.ListUtils;
-import net.mcreator.util.SoundUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
 import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -63,23 +58,6 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 			}
 		});
 		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"), e -> deleteCurrentlySelected());
-		addToolBarButton("workspace.sounds.play_selected", UIRES.get("16px.play"), new MouseAdapter() {
-			@Override public void mousePressed(MouseEvent e) {
-				SoundElement soundElement = elementList.getSelectedValue();
-				if (soundElement != null) {
-					if (!soundElement.getFiles().isEmpty()) {
-						SoundUtils.playSound(
-								new File(workspacePanel.getMCreator().getWorkspace().getFolderManager().getSoundsDir(),
-										ListUtils.getRandomItem(soundElement.getFiles()) + ".ogg"));
-					}
-				}
-			}
-
-			@Override public void mouseReleased(MouseEvent e) {
-				SoundUtils.stopAllSounds();
-			}
-
-		});
 	}
 
 	private void editSelectedSound(SoundElement selectedValue) {
