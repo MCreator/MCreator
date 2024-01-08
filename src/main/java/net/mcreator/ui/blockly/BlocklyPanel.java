@@ -247,6 +247,10 @@ public class BlocklyPanel extends JFXPanel {
 		executeJavaScriptSynchronously("workspace.clear()");
 	}
 
+	public void triggerEventFunction() {
+		executeJavaScriptSynchronously("blocklyEventFunction()");
+	}
+
 	public void addGlobalVariable(String name, String type) {
 		executeJavaScriptSynchronously("global_variables.push({name: '" + name + "', type: '" + type + "'})");
 	}
