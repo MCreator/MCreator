@@ -50,6 +50,7 @@ public class BlocklyLoader {
 		add("features");
 		add("orefeatures");
 		add("treefeatures");
+		add("treedecorators");
 		add("advancedfeatures");
 		add("intproviders");
 		add("placements");
