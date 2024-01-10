@@ -52,6 +52,7 @@ import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
+import net.mcreator.workspace.MissingWorkspacePluginsException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -266,9 +267,8 @@ public final class MCreatorApplication {
 	 */
 	public MCreator openWorkspaceInMCreator(File workspaceFile) {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		Workspace workspace = null;
 		try {
-			workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
+			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
 			if (workspace.getMCreatorVersion() > Launcher.version.versionlong
 					&& !MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
 				ThreadUtil.runOnSwingThreadAndWait(() -> JOptionPane.showMessageDialog(workspaceSelector,
@@ -277,9 +277,8 @@ public final class MCreatorApplication {
 			} else {
 				AtomicReference<MCreator> openResult = new AtomicReference<>(null);
 
-				Workspace finalWorkspace = workspace;
 				ThreadUtil.runOnSwingThreadAndWait(() -> {
-					MCreator mcreator = new MCreator(this, finalWorkspace);
+					MCreator mcreator = new MCreator(this, workspace);
 					if (!this.openMCreators.contains(mcreator)) {
 						this.workspaceSelector.setVisible(false);
 						this.openMCreators.add(mcreator);
@@ -298,6 +297,9 @@ public final class MCreatorApplication {
 						}
 					}
 				});
+
+				this.workspaceSelector.addOrUpdateRecentWorkspace(
+						new RecentWorkspaceEntry(workspace, workspaceFile, Launcher.version.getFullString()));
 
 				return openResult.get();
 			}
@@ -329,13 +331,12 @@ public final class MCreatorApplication {
 				reportFailedWorkspaceOpen(
 						new IOException("Corrupted workspace file and no backups found", corruptedWorkspaceFile));
 			}
+		} catch (MissingWorkspacePluginsException e) {
+			LOG.error("Failed to open workspace due to missing plugins", e);
 		} catch (IOException | UnsupportedGeneratorException e) {
+			LOG.error("Failed to open workspace!", e);
 			reportFailedWorkspaceOpen(e);
 		} finally {
-			if (workspace != null) {
-				this.workspaceSelector.addOrUpdateRecentWorkspace(
-						new RecentWorkspaceEntry(workspace, workspaceFile, Launcher.version.getFullString()));
-			}
 			this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 
