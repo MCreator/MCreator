@@ -49,7 +49,6 @@ import javax.annotation.Nullable;
 import java.io.Closeable;
 import java.io.File;
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -582,9 +581,9 @@ public class Generator implements IGenerator, Closeable {
 	}
 
 	private void generateFiles(Collection<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
-		Map<File, String> javaFiles = new ConcurrentHashMap<>();
+		Map<File, String> javaFiles = new HashMap<>();
 
-		generatorFiles.parallelStream().forEach(generatorFile -> {
+		generatorFiles.forEach(generatorFile -> {
 			if (generatorFile.writer() == GeneratorFile.Writer.JAVA) {
 				// first create Java files if they do not exist already for the import formatter to load them
 				// so the imports get properly organised in the next step
