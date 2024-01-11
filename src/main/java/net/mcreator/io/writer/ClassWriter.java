@@ -54,14 +54,15 @@ public class ClassWriter {
 					.ifPresent(code -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code, false));
 
 			AtomicInteger counter = new AtomicInteger();
-			codes.entrySet().parallelStream().forEach(e -> {
-				FileIO.writeStringToFile(codeCleanup.reformatTheCodeAndOrganiseImports(workspace, e.getValue(), true),
-						e.getKey());
+			Map<File, String> formattedCodes = codes.keySet().parallelStream().peek(file -> {
 				if (intConsumer != null)
 					intConsumer.accept(counter.incrementAndGet());
-			});
+			}).filter(codes::containsKey).collect(Collectors.toMap(file -> file,
+					file -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, codes.get(file), true)));
+
+			formattedCodes.forEach((file, code) -> FileIO.writeStringToFile(code, file));
 		} else {
-			codes.entrySet().parallelStream().forEach(e -> FileIO.writeStringToFile(e.getValue(), e.getKey()));
+			codes.forEach((key, value) -> FileIO.writeStringToFile(value, key));
 		}
 	}
 
