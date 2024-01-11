@@ -293,6 +293,10 @@ Blockly.Extensions.register('pine_tree_feature_validator', validateIntProviderIn
 
 Blockly.Extensions.register('spruce_tree_feature_validator', validateIntProviderInputs(['radius', 0, 16], ['trunk_height', 0, 24]));
 
+Blockly.Extensions.register('azalea_tree_feature_validator', validateIntProviderInputs(['bend_length', 1, 64]));
+
+Blockly.Extensions.register('cherry_tree_feature_validator', validateIntProviderInputs(['branch_count', 1, 3], ['branch_length', 2, 16]));
+
 // Helper function to provide a mixin for mutators that add a single repeating (dummy) input with additional fields
 // The mutator container block must have a "STACK" statement input for this to work
 // The empty message is localized as "blockly.block.block_type.empty"

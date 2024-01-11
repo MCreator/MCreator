@@ -1,0 +1,127 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "dirt",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "trunk",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "foliage_density",
+      "value": 50,
+      "min": 0,
+      "max": 256,
+      "precision": 1
+    },
+    {
+      "type": "input_value",
+      "name": "foliage",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "root_placer",
+      "check": "RootPlacer"
+    },
+    {
+      "type": "input_value",
+      "name": "bend_length",
+      "check": "IntProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "base_height",
+      "value": 4,
+      "min": 0,
+      "max": 32,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "height_variation_a",
+      "value": 2,
+      "min": 0,
+      "max": 24,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "height_variation_b",
+      "value": 0,
+      "min": 0,
+      "max": 24,
+      "precision": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "min_height_for_leaves",
+      "value": 3,
+      "min": 1,
+      "precision": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "force_dirt",
+      "checked": true
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "ignore_vines"
+    },
+    {
+      "type": "input_dummy"
+    }
+  ],
+  "mutator": "tree_decorator_mutator",
+  "output": "Feature",
+  "colour": 0,
+  "extensions": [
+    "add_image_to_bsp_inputs",
+    "azalea_tree_feature_validator"
+  ],
+  "mcreator": {
+    "toolbox_id": "treefeatures",
+    "toolbox_init": [
+      "<mutation inputs=\"0\"></mutation>",
+      "<value name=\"dirt\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"trunk\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"foliage\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"bend_length\"><block type=\"int_provider_uniform\"><field name=\"min\">1</field><field name=\"max\">2</field></block></value>",
+      "<value name=\"root_placer\"><block type=\"root_placer_none\"></block></value>",
+      "~<value name=\"decorator0\"><block type=\"tree_decorator_trunk_vine\"></block></value>"
+    ],
+    "inputs": [
+      "dirt",
+      "trunk",
+      "foliage",
+      "root_placer",
+      "bend_length"
+    ],
+    "fields": [
+      "foliage_density",
+      "base_height",
+      "height_variation_a",
+      "height_variation_b",
+      "min_height_for_leaves",
+      "force_dirt",
+      "ignore_vines"
+    ],
+    "repeating_inputs": [
+      "decorator"
+    ]
+  }
+}
