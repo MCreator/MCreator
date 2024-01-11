@@ -583,7 +583,7 @@ public class Generator implements IGenerator, Closeable {
 	private void generateFiles(Collection<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
 		Map<File, String> javaFiles = new HashMap<>();
 
-		generatorFiles.forEach(generatorFile -> {
+		for (GeneratorFile generatorFile : generatorFiles) {
 			if (generatorFile.writer() == GeneratorFile.Writer.JAVA) {
 				// first create Java files if they do not exist already for the import formatter to load them
 				// so the imports get properly organised in the next step
@@ -596,7 +596,7 @@ public class Generator implements IGenerator, Closeable {
 			} else if (generatorFile.writer() == GeneratorFile.Writer.FILE) {
 				FileIO.writeStringToFile(generatorFile.contents(), generatorFile.getFile());
 			}
-		});
+		}
 
 		// After we have list of Java files, and they are created, we can format and organise imports in them
 		if (!javaFiles.isEmpty())
