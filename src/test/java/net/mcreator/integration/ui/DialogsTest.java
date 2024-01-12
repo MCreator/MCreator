@@ -34,6 +34,7 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.tools.*;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
+import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.JStateLabel;
@@ -86,6 +87,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 	@Test public void testNewWorkspaceDialog() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new NewWorkspaceDialog(mcreator));
+	}
+
+	@Test public void testNewWorkspaceSettingsDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> WorkspaceDialogs.workspaceSettings(mcreator, mcreator.getWorkspace()));
 	}
 
 	@Test public void testGeneratorSelectorDialog() throws Throwable {

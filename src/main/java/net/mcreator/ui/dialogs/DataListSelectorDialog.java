@@ -62,16 +62,17 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 		return dataListSelector.list.getSelectedValuesList();
 	}
 
-	private class DataListCellRenderer extends DefaultListCellRenderer {
+	private static class DataListCellRenderer extends DefaultListCellRenderer {
 		@Override
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
 			DataListEntry entry = (DataListEntry) value;
 			label.setText(entry.getReadableName());
-			if (entry.getName().contains("CUSTOM:")) {
+			if (value instanceof DataListEntry.Custom custom) {
 				setIcon(new ImageIcon(ImageUtils.resizeAA(
-						MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), entry.getName()).getImage(), 18)));
+						MCItem.getBlockIconBasedOnName(custom.getModElement().getWorkspace(), custom.getName())
+								.getImage(), 18)));
 			} else if (entry.getTexture() != null) {
 				setIcon(new ImageIcon(
 						ImageUtils.resizeAA(BlockItemIcons.getIconForItem(entry.getTexture()).getImage(), 18)));
@@ -79,4 +80,5 @@ public class DataListSelectorDialog extends ListSelectorDialog<DataListEntry> {
 			return label;
 		}
 	}
+
 }

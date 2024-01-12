@@ -31,10 +31,8 @@ import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.integration.generator.GTSampleElements;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.modgui.ModElementGUI;
-import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.settings.WorkspaceSettings;
@@ -46,12 +44,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
@@ -60,7 +54,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(IntegrationTestSetup.class) public class ModElementUITest {
 
-	private static Logger LOG = LogManager.getLogger("Mod Element Test");
+	private static final Logger LOG = LogManager.getLogger("Mod Element Test");
 
 	private static Workspace workspace;
 	private static MCreator mcreator;
@@ -121,9 +115,7 @@ import static org.junit.jupiter.api.Assertions.*;
 		testModElementLoading(random);
 	}
 
-	private void testModElementLoading(Random random)
-			throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, NoSuchFieldException,
-			InterruptedException {
+	private void testModElementLoading(Random random) throws Exception {
 		for (ModElementType<?> modElementType : ModElementTypeLoader.REGISTRY) {
 
 			if (modElementType == ModElementType.CODE)
@@ -153,34 +145,13 @@ import static org.junit.jupiter.api.Assertions.*;
 
 				assertNotNull(generatableElement);
 
-				ModElementGUI<?> modElementGUI = modElementType.getModElementGUI(mcreator, modElement, false);
-				modElementGUI.reloadDataLists();
+				ModElementGUI<?> modElementGUI = UITestUtil.openModElementGUIFor(mcreator, generatableElement);
 
-				Field field = modElementGUI.getClass().getSuperclass().getDeclaredField("editingMode");
-				field.setAccessible(true);
-				field.set(modElementGUI, true);
-
-				// test opening generatable element
-				Method method = modElementGUI.getClass()
-						.getDeclaredMethod("openInEditingMode", GeneratableElement.class);
-				method.setAccessible(true);
-				method.invoke(modElementGUI, generatableElement);
-
-				if (Arrays.stream(modElementGUI.getClass().getDeclaredFields())
-						.anyMatch(f -> f.getType() == BlocklyPanel.class)) {
-					// If ModElementGUI<?> contains BlocklyPanel, give it time to fully load
-					Thread.sleep(3500);
-				}
+				// test if UI validation is error free
+				UITestUtil.testIfValidationPasses(modElementGUI, true);
 
 				// test if data remains the same after reloading the data lists
 				modElementGUI.reloadDataLists();
-
-				// test if UI validation is error free (skip advancement and feature as provider provides empty Blockly setup)
-				AggregatedValidationResult validationResult = modElementGUI.validateAllPages();
-				if ((modElement.getType() != ModElementType.ADVANCEMENT
-						&& modElement.getType() != ModElementType.FEATURE) && !validationResult.validateIsErrorFree()) {
-					fail(String.join(",", validationResult.getValidationProblemMessages()));
-				}
 
 				// test UI -> GeneratableElement
 				generatableElement = modElementGUI.getElementFromGUI();

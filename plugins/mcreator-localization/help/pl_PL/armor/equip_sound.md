@@ -1,0 +1,1 @@
+Dźwięk, gdy gracz założy część zbroi.

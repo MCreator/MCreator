@@ -23,6 +23,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.v2019_5.RecipeTypeConverter;
 import net.mcreator.element.converter.v2020_1.AchievementFixer;
 import net.mcreator.element.converter.v2020_2.GUIBindingInverter;
+import net.mcreator.element.converter.v2021_1.LegacyDimensionProcedureRemover;
 import net.mcreator.element.converter.v2020_3.OpenGUIProcedureDepFixer;
 import net.mcreator.element.converter.v2020_3.ProcedureEntityDepFixer;
 import net.mcreator.element.converter.v2020_4.BiomeSpawnListConverter;
@@ -44,15 +45,13 @@ import net.mcreator.element.converter.v2023_2.BiomeCustomFeaturesConverter;
 import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
 import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
-import net.mcreator.element.converter.v2023_3.HugeFungusFeatureConverter;
-import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
-import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
-import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
+import net.mcreator.element.converter.v2023_3.*;
 import net.mcreator.element.converter.v2023_4.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ConverterRegistry {
 
@@ -138,6 +137,7 @@ public class ConverterRegistry {
 			new EffectTextureConverter()
 		));
 		put(ModElementType.PROCEDURE, List.of(
+			new LegacyDimensionProcedureRemover(),
 			new ProcedureEntityDepFixer(),
 			new OpenGUIProcedureDepFixer(),
 			new ProcedureGlobalTriggerFixer(),
@@ -153,6 +153,7 @@ public class ConverterRegistry {
 			new ExplodeProcedureConverter(),
 			new MaterialProcedureConverter(),
 			new ProcedureDamageSourceFixer(),
+			new LegacyGameModeConverter(),
 			new ProcedureArrowProjectileFixer()
 		));
 		put(ModElementType.RECIPE, List.of(
@@ -196,6 +197,10 @@ public class ConverterRegistry {
 
 	public static IConverter getConverterForModElementType(String modElementType) {
 		return converters_legacy.get(modElementType);
+	}
+
+	public static Set<String> getConvertibleModElementTypes() {
+		return converters_legacy.keySet();
 	}
 
 }

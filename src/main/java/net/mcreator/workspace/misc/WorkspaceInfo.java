@@ -40,6 +40,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.function.Function;
 
 @SuppressWarnings("unused") public record WorkspaceInfo(Workspace workspace) {
 
@@ -103,28 +105,6 @@ import java.util.*;
 		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
-	public <T extends MappableElement> Set<MappableElement> filterBrokenReferences(List<T> input) {
-		if (input == null)
-			return Collections.emptySet();
-
-		Set<MappableElement> retval = new HashSet<>();
-		for (T t : input) {
-			if (t instanceof NonMappableElement) {
-				retval.add(t);
-			} else if (t.getUnmappedValue().startsWith("CUSTOM:")) {
-				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
-					retval.add(new UniquelyMappedElement(t));
-				} else {
-					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
-							.replaceFirst("CUSTOM:", ""));
-				}
-			} else {
-				retval.add(new UniquelyMappedElement(t));
-			}
-		}
-		return retval;
-	}
-
 	public Map<String, String> getItemTextureMap() {
 		Map<String, String> textureMap = new HashMap<>();
 		for (ModElement element : workspace.getModElements()) {
@@ -154,16 +134,14 @@ import java.util.*;
 
 	public Map<String, List<MItemBlock>> getCreativeTabMap() {
 		List<GeneratableElement> elementsList = workspace.getModElements().stream()
-				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
-				.filter(Objects::nonNull).toList();
+				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement).toList();
 
-		Map<String, List<MItemBlock>> tabMap = new HashMap<>();
+		Map<String, List<MItemBlock>> tabMap = new ConcurrentHashMap<>();
 
-		for (GeneratableElement element : elementsList) {
+		elementsList.parallelStream().forEach(element -> {
 			if (element instanceof ITabContainedElement tabElement) {
 				TabEntry tabEntry = tabElement.getCreativeTab();
 				List<MCItem> tabItems = tabElement.getCreativeTabItems();
-
 				if (tabEntry != null && tabItems != null && !tabItems.isEmpty()) {
 					String tab = tabEntry.getUnmappedValue();
 					if (tab != null && !tab.equals("No creative tab entry")) {
@@ -176,9 +154,59 @@ import java.util.*;
 					}
 				}
 			}
-		}
+		});
 
 		return tabMap;
+	}
+
+	public <T extends MappableElement> Set<MappableElement> filterBrokenReferences(Collection<T> input) {
+		if (input == null)
+			return Collections.emptySet();
+
+		Set<MappableElement> retval = new LinkedHashSet<>();
+		for (T t : input) {
+			if (t instanceof NonMappableElement) {
+				retval.add(t);
+			} else if (t.getUnmappedValue().startsWith("CUSTOM:")) {
+				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
+					retval.add(new UniquelyMappedElement(t));
+				} else {
+					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
+							.replaceFirst("CUSTOM:", ""));
+				}
+			} else {
+				retval.add(new UniquelyMappedElement(t));
+			}
+		}
+		return retval;
+	}
+
+	public <T extends MappableElement> Set<MappableElement> normalizeTagElements(String tag, int mappingTable,
+			Collection<T> elements) {
+		tag = "#" + tag;
+
+		final Function<String, String> normalizeTag = input -> {
+			if (input.startsWith("#") || input.startsWith("TAG:")) {
+				input = input.replaceFirst("#", "").replaceFirst("TAG:", "");
+				if (input.contains(":")) {
+					return "#" + input;
+				} else {
+					return "#minecraft:" + input;
+				}
+			}
+			return input;
+		};
+
+		tag = normalizeTag.apply(tag);
+		Set<MappableElement> filtered = filterBrokenReferences(elements);
+
+		Set<MappableElement> retval = new LinkedHashSet<>();
+		for (MappableElement element : filtered) {
+			if (!tag.equals(normalizeTag.apply(element.getMappedValue(mappingTable)))) {
+				retval.add(element);
+			}
+		}
+		return retval;
 	}
 
 	public String getUUID(String offset) {
