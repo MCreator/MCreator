@@ -86,15 +86,6 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 		return rawData.replace(MANAGED_PREFIX, "");
 	}
 
-	public static String normalizeTag(String input) {
-		input = input.replaceFirst("#", "").replaceFirst("TAG:", "");
-		if (input.contains(":")) {
-			return input;
-		} else {
-			return "minecraft:" + input;
-		}
-	}
-
 	public static TagElement fromString(String raw) {
 		String[] parts = raw.split(":", 2);
 		if (parts.length == 2) {
@@ -112,6 +103,29 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 			return fromString(json.getAsJsonPrimitive().getAsString());
 		}
 
+	}
+
+	/**
+	 * Utility method for normalizing tag name. If input does not start with # or TAG: prefix,
+	 * normalization is not performed as it is assumed input is not a tag.
+	 * <p>
+	 * When input with TAG: (legacy use) prefix is provided, prefix is changed to #.
+	 * <p>
+	 * In all cases, if no namespace is provided in the input, minecraft: namespace is added.
+	 *
+	 * @param input Tag name to normalize
+	 * @return Normalized tag name
+	 */
+	public static String normalizeTag(String input) {
+		if (input.startsWith("#") || input.startsWith("TAG:")) {
+			input = input.replaceFirst("#", "").replaceFirst("TAG:", "");
+			if (input.contains(":")) {
+				return "#" + input;
+			} else {
+				return "#minecraft:" + input;
+			}
+		}
+		return input;
 	}
 
 }

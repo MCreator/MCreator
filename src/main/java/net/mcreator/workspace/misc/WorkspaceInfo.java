@@ -42,7 +42,6 @@ import org.apache.logging.log4j.Logger;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.function.Function;
 
 @SuppressWarnings("unused") public record WorkspaceInfo(Workspace workspace) {
 
@@ -182,9 +181,18 @@ import java.util.function.Function;
 		return retval;
 	}
 
+	/**
+	 * Returns a set of mappable elements that do not trigger circular dependency to tag
+	 *
+	 * @param tag          Tag name with namespace to check. A plain name without # or TAG: prefix is required.
+	 * @param mappingTable Mapping table to use for getting mapped values of the elements
+	 * @param elements     Collection of elements to normalize/filter
+	 * @param <T>          Type of elements
+	 * @return Set of elements that do not trigger circular dependency to tag
+	 */
 	public <T extends MappableElement> Set<MappableElement> normalizeTagElements(String tag, int mappingTable,
 			Collection<T> elements) {
-		tag = TagElement.normalizeTag(tag);
+		tag = TagElement.normalizeTag("#" + tag);
 		Set<MappableElement> filtered = filterBrokenReferences(elements);
 
 		Set<MappableElement> retval = new LinkedHashSet<>();
