@@ -453,8 +453,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 * @param generatorConfiguration If same as workspace, nothing is done, otherwise regenerateRequired is set to true.
 	 * @return Workspace object for the given file
 	 */
-	@VisibleForTesting public static Workspace readFromFSUnsafe(File workspaceFile, GeneratorConfiguration generatorConfiguration)
-			throws MissingWorkspacePluginsException {
+	@VisibleForTesting public static Workspace readFromFSUnsafe(File workspaceFile,
+			GeneratorConfiguration generatorConfiguration) throws MissingWorkspacePluginsException {
 		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 
@@ -493,7 +493,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		retval.fileManager.saveWorkspaceDirectlyAndWait();
 		retval.getWorkspaceSettings().setWorkspace(retval);
 		LOG.info("Created new workspace with workspace file " + workspaceFile + ", modid: "
-				+ workspaceSettings.getModID());
+				+ workspaceSettings.getModID() + ", generator: " + workspaceSettings.getCurrentGenerator());
 		return retval;
 	}
 
