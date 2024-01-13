@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 20.4.91-beta
+buildfileversion: 20.4.94-beta
 
 #import:
 #  - datapack-1.20.4
@@ -12,10 +12,10 @@ buildfileversion: 20.4.91-beta
 
 # gradle task definitions
 gradle:
-  setup_task: eclipse
+  setup_task: eclipse build
   run_client: runClient
   run_server: runServer
-  export_file: "build/libs/modid-1.0.jar"
+  export_file: build/libs/mod-dist.jar
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"

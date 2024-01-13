@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id 'eclipse'
-    id 'net.neoforged.gradle.userdev' version '7.0.80'
+    id 'net.neoforged.gradle.userdev' version '7.0.82'
 }
 
 version = '1.0'
@@ -9,38 +9,25 @@ group = 'com.yourname.modid'
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
-minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+def at_file = rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+if (at_file.exists()) {
+    minecraft.accessTransformers.file at_file
+}
+
+base {
+    archivesName = "mod-dist.jar"
+}
 
 runs {
-    client {
-        workingDirectory project.file('run')
-
-        property 'forge.logging.markers', 'REGISTRIES'
-        property 'forge.logging.console.level', 'debug'
-
-        mods {
-            examplemod {
-                source sourceSets.main
-            }
-        }
-    }
-
-    server {
-        workingDirectory project.file('run')
-
-        property 'forge.logging.markers', 'REGISTRIES'
-        property 'forge.logging.console.level', 'debug'
-
-        mods {
-            examplemod {
-                source sourceSets.main
-            }
-        }
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+        modSource project.sourceSets.main
     }
 }
 
 dependencies {
-    minecraft 'net.neoforged:neoforge:${generator.getGeneratorMinecraftVersion()}-${generator.getGeneratorBuildFileVersion()}'
+    implementation 'net.neoforged:neoforge:${generator.getGeneratorBuildFileVersion()}'
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -48,4 +35,3 @@ tasks.withType(JavaCompile).configureEach {
 }
 
 apply from: 'mcreator.gradle'
-
