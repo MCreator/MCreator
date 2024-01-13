@@ -61,8 +61,7 @@ public class ZipIO {
 				}
 			}
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
-			LOG.info("Failed to extract zip file:" + e.getMessage());
+			reportError("Unzip file", strZipFile, e);
 		}
 	}
 
@@ -73,7 +72,7 @@ public class ZipIO {
 				entries.sort(Comparator.comparing(ZipEntry::getName));
 			entries.forEach(action);
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			reportError("Iterate zip", zipFilePointer.getAbsolutePath(), e);
 		}
 	}
 
@@ -90,7 +89,7 @@ public class ZipIO {
 				}
 			}
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			reportError("Read file in zip", zipFilePointer.getAbsolutePath(), e);
 		}
 		return null;
 	}
@@ -103,7 +102,7 @@ public class ZipIO {
 				sb.append(line).append("\n");
 			}
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			reportError("Read entry to string", entry.getName(), e);
 		}
 		return sb.toString();
 	}
@@ -196,9 +195,14 @@ public class ZipIO {
 
 	public static boolean checkIfJMod(File zipfile) {
 		try (RandomAccessFile raf = new RandomAccessFile(zipfile, "r")) {
-			return raf.readInt() == 0x4a4d0100;
+			return raf.readInt() == 0x4A4D0100;
 		} catch (IOException e) {
 			return false;
 		}
 	}
+
+	private static void reportError(String action, String path, Throwable exception) {
+		LOG.error(action + ": " + exception.getMessage() + " - for file: " + path, exception);
+	}
+
 }

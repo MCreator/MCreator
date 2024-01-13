@@ -397,21 +397,25 @@ public class WorkspaceFileBrowser extends JPanel {
 				File libraryFile = new File(libraryInfo.getLocationAsString());
 				if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || ZipIO.checkIfJMod(libraryFile))) {
 					String libName = FilenameUtilsPatched.removeExtension(libraryFile.getName());
-
 					if (libName.equals("rt") || libName.equals("java.base"))
 						libName = "Java " + System.getProperty("java.version") + " SDK";
 					else
 						libName = "Gradle: " + libName;
+
 					if (libraryInfo.getSourceLocation() != null) {
 						File sourceFile = new File(libraryInfo.getSourceLocation().getLocationAsString());
-						FileTree libsrc = new FileTree(new FileNode(libName, sourceFile.getAbsolutePath() + ":%:"));
-						ZipIO.iterateZip(sourceFile, entry -> libsrc.addElement(entry.getName()), true);
-						addFileNodeToFilterTreeNode(extDeps, libsrc.root);
-					} else {
-						FileTree lib = new FileTree(new FileNode(libName, libraryFile.getAbsolutePath() + ":%:"));
-						ZipIO.iterateZip(libraryFile, entry -> lib.addElement(entry.getName()), true);
-						addFileNodeToFilterTreeNode(extDeps, lib.root);
+						if (sourceFile.isFile() && (ZipIO.checkIfZip(sourceFile) || ZipIO.checkIfJMod(sourceFile))) {
+							FileTree libsrc = new FileTree(new FileNode(libName, sourceFile.getAbsolutePath() + ":%:"));
+							ZipIO.iterateZip(sourceFile, entry -> libsrc.addElement(entry.getName()), true);
+							addFileNodeToFilterTreeNode(extDeps, libsrc.root);
+							continue;
+						}
 					}
+
+					// If source file is not found, add the library file itself
+					FileTree lib = new FileTree(new FileNode(libName, libraryFile.getAbsolutePath() + ":%:"));
+					ZipIO.iterateZip(libraryFile, entry -> lib.addElement(entry.getName()), true);
+					addFileNodeToFilterTreeNode(extDeps, lib.root);
 				}
 			}
 		}
