@@ -146,9 +146,9 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					};
 
 					if (entries.size() > 22) {
-						return PanelUtils.centerAndEastElement(listField,
-								ComponentUtils.setForeground(new JLabel("<html><big>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;"),
-										Theme.current().getAltForegroundColor()));
+						return PanelUtils.centerAndEastElement(listField, ComponentUtils.setForeground(
+								new JLabel("<html><big>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;"),
+								Theme.current().getAltForegroundColor()));
 					} else {
 						return listField;
 					}
@@ -318,7 +318,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			this.workspacePanelTags = workspacePanelTags;
 			this.tagElement = workspacePanelTags.tagElementForRow(row);
 
-			this.listField = itemListFieldForRow(workspacePanelTags.workspacePanel.getMCreator(), row);
+			this.listField = itemListFieldForRow(workspacePanelTags.workspacePanel.getMCreator());
 			if (this.listField != null)
 				this.listField.disableItemCentering();
 		}
@@ -333,8 +333,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			return listField.getListElements().stream().map(TagElement::entryFromMappableElement).toList();
 		}
 
-		@Override public boolean stopCellEditing() {
-			//noinspection unchecked
+		@SuppressWarnings("unchecked") @Override public boolean stopCellEditing() {
 			List<String> newValue = (List<String>) getCellEditorValue();
 			if (newValue != null) {
 				workspacePanelTags.workspacePanel.getMCreator().getWorkspace().getTagElements()
@@ -345,7 +344,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			return super.stopCellEditing();
 		}
 
-		private JItemListField<? extends MappableElement> itemListFieldForRow(MCreator mcreator, int row) {
+		private JItemListField<? extends MappableElement> itemListFieldForRow(MCreator mcreator) {
 			switch (tagElement.type()) {
 			case ITEMS, BLOCKS -> {
 				MCItemListField retval = new MCItemListField(mcreator,
