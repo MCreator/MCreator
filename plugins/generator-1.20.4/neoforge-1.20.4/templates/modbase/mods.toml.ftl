@@ -1,5 +1,5 @@
 modLoader="javafml"
-loaderVersion="[47,)"
+loaderVersion="[2,)"
 license="${settings.getLicense()}"
 
 [[mods]]
@@ -27,15 +27,15 @@ description="${settings.getDescription()}"
 
 [[dependencies.${settings.getModID()}]]
     modId="minecraft"
-    mandatory=true
+    type="required"
     versionRange="[${generator.getGeneratorMinecraftVersion()}]"
     ordering="NONE"
     side="BOTH"
 
 <#if !settings.isDisableForgeVersionCheck()>
 [[dependencies.${settings.getModID()}]]
-    modId="forge"
-    mandatory=true
+    modId="neoforge"
+    type="required"
     versionRange="[${generator.getGeneratorBuildFileVersion()}]"
     ordering="NONE"
     side="BOTH"
@@ -44,7 +44,7 @@ description="${settings.getDescription()}"
 <#list settings.getRequiredMods() as e>
 [[dependencies.${settings.getModID()}]]
     modId="${e}"
-    mandatory=true
+    type="required"
     versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
@@ -53,7 +53,7 @@ description="${settings.getDescription()}"
 <#list settings.getDependencies() as e>
 [[dependencies.${settings.getModID()}]]
     modId="${e}"
-    mandatory=false
+    type="optional"
     versionRange="[0,)"
     ordering="NONE"
     side="BOTH"
@@ -62,7 +62,7 @@ description="${settings.getDescription()}"
 <#list settings.getDependants() as e>
 [[dependencies.${settings.getModID()}]]
     modId="${e}"
-    mandatory=false
+    type="optional"
     versionRange="[0,)"
     ordering="NONE"
     side="BOTH"

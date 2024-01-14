@@ -6,17 +6,12 @@ plugins {
 
 version = '1.0'
 group = 'com.yourname.modid'
+base.archivesName = "modid"
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 def at_file = rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
-if (at_file.exists()) {
-    minecraft.accessTransformers.file at_file
-}
-
-base {
-    archivesName = "mod-dist.jar"
-}
+if (at_file.exists()) minecraft.accessTransformers.file at_file
 
 runs {
     configureEach {
@@ -24,6 +19,9 @@ runs {
         systemProperty 'forge.logging.console.level', 'debug'
         modSource project.sourceSets.main
     }
+
+    client {}
+    server {}
 }
 
 dependencies {

@@ -1,9 +1,9 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 20.4.94-beta
+buildfileversion: 20.4.96-beta
 
-#import:
-#  - datapack-1.20.4
+import:
+  - datapack-1.20.4
 
 #java_models:
 #  key: mojmap-1.20.x
@@ -15,13 +15,17 @@ gradle:
   setup_task: eclipse build
   run_client: runClient
   run_server: runServer
-  export_file: build/libs/mod-dist.jar
+  export_file: "build/libs/modid-1.0.jar"
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
 res_root: "@WORKSPACEROOT/src/main/resources"
 mod_assets_root: "@RESROOT/assets/@modid"
 mod_data_root: "@RESROOT/data/@modid"
+
+# run folders
+client_run_dir: "@WORKSPACEROOT/runs/client"
+server_run_dir: "@WORKSPACEROOT/runs/server"
 
 # specific resource folders
 #sounds_dir: "@MODASSETSROOT/sounds"
@@ -33,7 +37,7 @@ mod_data_root: "@RESROOT/data/@modid"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
 #screen_textures_dir: "@MODASSETSROOT/textures/screens"
 #armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
-#other_textures_dir: "@MODASSETSROOT/textures"
+other_textures_dir: "@MODASSETSROOT/textures"
 
 base_templates:
   - template: modbase/mod.java.ftl
@@ -42,9 +46,9 @@ base_templates:
   - template: modbase/mods.toml.ftl
     writer: file
     name: "@RESROOT/META-INF/mods.toml"
-#  - template: pack.mcmeta.ftl # loaded from datapack generator
-#    writer: json
-#    name: "@RESROOT/pack.mcmeta"
+  - template: pack.mcmeta.ftl # loaded from datapack generator
+    writer: json
+    name: "@RESROOT/pack.mcmeta"
   - template: modbase/sounds.json.ftl
     writer: json
     name: "@MODASSETSROOT/sounds.json"
@@ -80,10 +84,10 @@ language_file:
   root_folder: "@MODASSETSROOT/lang/"
   langfile_name: "@langname.json"
 
-#resources_setup_tasks:
-#  - task: copy_file
-#    from: "@MODASSETSROOT/textures/@modpicture.png"
-#    to: "@RESROOT/logo.png"
+resources_setup_tasks:
+  - task: copy_file
+    from: "@MODASSETSROOT/textures/@modpicture.png"
+    to: "@RESROOT/logo.png"
 #  - task: copy_models
 #    type: OBJ_inlinetextures
 #    prefix: "@modid:block/"
