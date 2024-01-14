@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.List;
 
 /**
  * <p>A Plugin is a mod for MCreator allowing to alter, improve or extend features. Most of elements inside MCreator are plugin driven.</p>
@@ -38,8 +39,7 @@ public class Plugin implements Comparable<Plugin> {
 	String id;
 	private int weight = 0;
 
-	private long minversion = -1;
-	private long maxversion = -1;
+	@Nullable private List<Long> supportedversions;
 
 	private PluginInfo info;
 
@@ -104,29 +104,20 @@ public class Plugin implements Comparable<Plugin> {
 	}
 
 	/**
-	 * <p>The plugin is compatible when the minimal version is lower or equal to the current MCreator's version and
-	 * the maximal version is higher or equal to the current version. When a field is not defined, the field is considered as compatible.</p>
+	 * <p>The plugin is compatible when the version of MCreator used is included in the supported versions list.</p>
+	 * <p>When the supported versions list is null, the plugin is compatible with all versions of MCreator.</p>
 	 *
 	 * @return <p>If the plugin is compatible with the version used.</p>
 	 */
 	public boolean isCompatible() {
-		if (minversion != -1) {
-			if (Launcher.version.versionlong < minversion)
-				return false;
-		}
-
-		if (maxversion != -1) {
-			return Launcher.version.versionlong <= maxversion;
-		}
-
-		return true;
+		return supportedversions == null || supportedversions.contains(Launcher.version.versionlong);
 	}
 
 	/**
-	 * @return <p>The minimal version of MCreator needed to use the plugin.</p>
+	 * @return <p>The list of supported versions</p>
 	 */
-	public long getMinVersion() {
-		return minversion;
+	@Nullable public List<Long> getSupportedVersions() {
+		return supportedversions;
 	}
 
 	/**
@@ -150,6 +141,10 @@ public class Plugin implements Comparable<Plugin> {
 
 	@Nullable public String getLoadFailure() {
 		return loaded_failure;
+	}
+
+	public boolean isJavaPlugin() {
+		return javaplugin != null;
 	}
 
 	@Nullable public String getJavaPlugin() {

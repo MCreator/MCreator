@@ -52,6 +52,7 @@ import net.mcreator.element.converter.v2024_5.TagModElementConverter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ConverterRegistry {
 
@@ -198,6 +199,10 @@ public class ConverterRegistry {
 
 	public static IConverter getConverterForModElementType(String modElementType) {
 		return converters_legacy.get(modElementType);
+	}
+
+	public static Set<String> getConvertibleModElementTypes() {
+		return converters_legacy.keySet();
 	}
 
 }

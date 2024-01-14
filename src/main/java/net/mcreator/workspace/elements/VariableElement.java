@@ -50,6 +50,10 @@ public class VariableElement implements IElement {
 		this.type = type.getName();
 	}
 
+	public String getTypeString() {
+		return type;
+	}
+
 	@Override public String getName() {
 		return name;
 	}

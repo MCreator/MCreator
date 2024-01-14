@@ -17,35 +17,25 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.modgui;
+package net.mcreator.workspace;
 
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyPanel;
+import java.util.Collection;
+import java.util.Map;
 
-import java.util.Set;
+public class MissingWorkspacePluginsException extends Exception {
 
-public interface IBlocklyPanelHolder {
+	private final Map<String, Collection<String>> missingDefinitions;
 
-	Set<BlocklyPanel> getBlocklyPanels();
-
-	default BlocklyPanel getSpecificBlocklyPanel(BlocklyEditorType type) {
-		for (BlocklyPanel panel : getBlocklyPanels()) {
-			if (panel.getType() == type)
-				return panel;
-		}
-		return null;
+	public MissingWorkspacePluginsException(Map<String, Collection<String>> missingDefinitions) {
+		this.missingDefinitions = missingDefinitions;
 	}
 
-	default boolean isInitialXMLValid() {
-		return true;
+	public Map<String, Collection<String>> getMissingDefinitions() {
+		return missingDefinitions;
 	}
 
-	void addBlocklyChangedListener(BlocklyChangedListener listener);
-
-	interface BlocklyChangedListener {
-
-		void blocklyChanged(BlocklyPanel panel);
-
+	@Override public String getMessage() {
+		return "Missing definitions that should be supplied by plugins: " + missingDefinitions;
 	}
 
 }

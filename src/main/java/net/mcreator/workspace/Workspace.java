@@ -368,18 +368,17 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public static Workspace readFromFS(File workspaceFile, @Nullable Window ui)
-			throws UnsupportedGeneratorException, CorruptedWorkspaceFileException, FileNotFoundException {
+			throws UnsupportedGeneratorException, CorruptedWorkspaceFileException, FileNotFoundException,
+			MissingWorkspacePluginsException {
 		if (workspaceFile.isFile()) {
 			String workspace_string = FileIO.readFileToString(workspaceFile);
 			Workspace retval;
 			try {
 				retval = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
-			} catch (Exception jse) {
-				throw new CorruptedWorkspaceFileException(jse);
+				retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
+			} catch (Exception e) {
+				throw new CorruptedWorkspaceFileException(e);
 			}
-			if (retval == null)
-				throw new CorruptedWorkspaceFileException(new NullPointerException());
-			retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 
 			if (Generator.GENERATOR_CACHE.get(retval.getWorkspaceSettings().getCurrentGenerator()) == null) {
 				if (ui == null) {
@@ -427,8 +426,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 			retval.getWorkspaceSettings().setWorkspace(retval);
 
+			// Handle corrupted mod elements
 			List<ModElement> corruptedElements = new ArrayList<>();
-
 			for (ModElement element : retval.getModElements()) {
 				if (element.getName() == null || element.getTypeString() == null) {
 					corruptedElements.add(element);
@@ -441,6 +440,24 @@ public class Workspace implements Closeable, IGeneratorProvider {
 				LOG.warn("Detected corrupted mod element while deserializing. Element: " + corrupted);
 			}
 
+			// Detect plugin requirements
+			try {
+				WorkspaceUtils.verifyPluginRequirements(retval);
+			} catch (MissingWorkspacePluginsException e) {
+				if (ui != null) {
+					ThreadUtil.runOnSwingThreadAndWait(() -> {
+						StringBuilder problems = new StringBuilder();
+						for (Map.Entry<String, Collection<String>> entry : e.getMissingDefinitions().entrySet()) {
+							problems.append("<b>").append(entry.getKey()).append(":</b> ")
+									.append(String.join(", ", entry.getValue())).append("<br>");
+						}
+						JOptionPane.showMessageDialog(ui, L10N.t("dialog.workspace.missing_plugins_message", problems),
+								L10N.t("dialog.workspace.missing_plugins_title"), JOptionPane.ERROR_MESSAGE);
+					});
+				}
+				throw e;
+			}
+
 			retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
 			retval.reloadFolderStructure(); // assign parents to the folders
 			LOG.info("Loaded workspace file " + workspaceFile);
@@ -451,13 +468,15 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	/**
-	 * Unsafe version of readFromFS with many checks omitted. Only intended to be used by tests.
+	 * Unsafe version of readFromFS with supported generator type checks omitted. Only intended to be used by tests.
+	 * Instead of checking for supported generator, it will force the generator specified by generatorConfiguration.
 	 *
 	 * @param workspaceFile          File containing the output workspace definition.
 	 * @param generatorConfiguration If same as workspace, nothing is done, otherwise regenerateRequired is set to true.
 	 * @return Workspace object for the given file
 	 */
-	@VisibleForTesting public static Workspace readFromFSUnsafe(File workspaceFile, GeneratorConfiguration generatorConfiguration) {
+	@VisibleForTesting public static Workspace readFromFSUnsafe(File workspaceFile,
+			GeneratorConfiguration generatorConfiguration) throws MissingWorkspacePluginsException {
 		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 
@@ -479,6 +498,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		retval.getWorkspaceSettings().setWorkspace(retval);
 
+		WorkspaceUtils.verifyPluginRequirements(retval);
+
 		retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
 		retval.reloadFolderStructure(); // assign parents to the folders
 		LOG.info("Loaded workspace file " + workspaceFile);
@@ -494,7 +515,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		retval.fileManager.saveWorkspaceDirectlyAndWait();
 		retval.getWorkspaceSettings().setWorkspace(retval);
 		LOG.info("Created new workspace with workspace file " + workspaceFile + ", modid: "
-				+ workspaceSettings.getModID());
+				+ workspaceSettings.getModID() + ", generator: " + workspaceSettings.getCurrentGenerator());
 		return retval;
 	}
 
