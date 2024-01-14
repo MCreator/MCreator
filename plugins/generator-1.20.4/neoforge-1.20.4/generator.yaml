@@ -28,7 +28,7 @@ client_run_dir: "@WORKSPACEROOT/runs/client"
 server_run_dir: "@WORKSPACEROOT/runs/server"
 
 # specific resource folders
-#sounds_dir: "@MODASSETSROOT/sounds"
+sounds_dir: "@MODASSETSROOT/sounds"
 #structures_dir: "@MODDATAROOT/structures"
 #block_textures_dir: "@MODASSETSROOT/textures/block"
 #item_textures_dir: "@MODASSETSROOT/textures/item"

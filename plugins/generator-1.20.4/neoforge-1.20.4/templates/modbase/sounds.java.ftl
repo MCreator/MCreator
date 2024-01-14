@@ -40,10 +40,10 @@ import net.minecraft.sounds.SoundEvent;
 
 public class ${JavaModName}Sounds {
 
-	public static final DeferredRegister<SoundEvent> REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, ${JavaModName}.MODID);
+	public static final DeferredRegister<SoundEvent> REGISTRY = DeferredRegister.create(Registries.SOUND_EVENT, ${JavaModName}.MODID);
 
 	<#list sounds as sound>
-	public static final RegistryObject<SoundEvent> ${sound.getName()?upper_case?replace(".", "_")?replace("/", "_")?replace(":", "_")?replace("-", "_")} =
+	public static final DeferredHolder<SoundEvent, SoundEvent> ${sound.getName()?upper_case?replace(".", "_")?replace("/", "_")?replace(":", "_")?replace("-", "_")} =
 			REGISTRY.register("${sound.getName()}", () -> SoundEvent.createVariableRangeEvent(new ResourceLocation("${modid}", "${sound}")));
 	</#list>
 

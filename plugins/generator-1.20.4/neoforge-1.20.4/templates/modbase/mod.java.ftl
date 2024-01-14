@@ -25,6 +25,8 @@ import org.apache.logging.log4j.Logger;
 	public static final String MODID = "${modid}";
 
 	public ${JavaModName}(IEventBus modEventBus) {
+		NeoForge.EVENT_BUS.register(this);
+
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
 	}
 
