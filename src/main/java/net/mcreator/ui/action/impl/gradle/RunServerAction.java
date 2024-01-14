@@ -37,14 +37,14 @@ public class RunServerAction extends GradleAction {
 
 	public RunServerAction(ActionRegistry actionRegistry) {
 		super(actionRegistry, L10N.t("action.run_server_and_client"), evt -> {
+			File eulaFile = new File(actionRegistry.getMCreator().getFolderManager().getServerRunDir(), "eula.txt");
+
 			String eula;
-			if (!new File(actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt").isFile())
+			if (!eulaFile.isFile())
 				eula = "eula=false";
 			else
-				eula = FileIO.readFileToString(
-						new File(actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt"));
-			if (eula.contains("eula=false") || !new File(actionRegistry.getMCreator().getWorkspaceFolder(),
-					"run/eula.txt").isFile()) {
+				eula = FileIO.readFileToString(eulaFile);
+			if (eula.contains("eula=false") || !eulaFile.isFile()) {
 				JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 						L10N.t("dialog.run_server_and_client.eula_intro"));
 
@@ -59,15 +59,13 @@ public class RunServerAction extends GradleAction {
 				if (n == 0) {
 					Properties por = new Properties();
 					try {
-						por.load(new FileInputStream(
-								new File(actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt")));
+						por.load(new FileInputStream(eulaFile));
 					} catch (IOException e) {
 						LOG.warn(e.getMessage());
 					}
 					por.setProperty("eula", "true");
 					try {
-						por.store(new FileOutputStream(
-										new File(actionRegistry.getMCreator().getWorkspaceFolder(), "run/eula.txt")),
+						por.store(new FileOutputStream(eulaFile),
 								"#Edited by MCreator - User agreed with EULA inside MCreator");
 					} catch (FileNotFoundException e) {
 						LOG.error(e.getMessage());

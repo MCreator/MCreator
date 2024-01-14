@@ -261,9 +261,9 @@ public class WorkspaceFileBrowser extends JPanel {
 				node.add(models);
 			}
 
-			if (new File(mcreator.getWorkspaceFolder(), "run/debug").isDirectory()) {
+			if (new File(mcreator.getFolderManager().getClientRunDir(), "debug").isDirectory()) {
 				FilterTreeNode debugFolder = new FilterTreeNode("Debug profiler results");
-				addNodes(debugFolder, new File(mcreator.getWorkspaceFolder(), "run/debug"), true);
+				addNodes(debugFolder, new File(mcreator.getFolderManager().getClientRunDir(), "debug"), true);
 				node.add(debugFolder);
 			}
 
@@ -276,10 +276,25 @@ public class WorkspaceFileBrowser extends JPanel {
 
 			root.add(node);
 
-			if (new File(mcreator.getWorkspaceFolder(), "run/").isDirectory()) {
-				FilterTreeNode minecraft = new FilterTreeNode("Minecraft run folder");
-				addNodes(minecraft, new File(mcreator.getWorkspaceFolder(), "run/"), true);
-				root.add(minecraft);
+			File clientRunDir = mcreator.getFolderManager().getClientRunDir();
+			File serverRunDir = mcreator.getFolderManager().getServerRunDir();
+			if (clientRunDir.equals(serverRunDir)) {
+				if (clientRunDir.isDirectory()) {
+					FilterTreeNode minecraft = new FilterTreeNode("Minecraft run folder");
+					addNodes(minecraft, clientRunDir, true);
+					root.add(minecraft);
+				}
+			} else {
+				if (clientRunDir.isDirectory()) {
+					FilterTreeNode minecraft = new FilterTreeNode("MC client run folder");
+					addNodes(minecraft, clientRunDir, true);
+					root.add(minecraft);
+				}
+				if (serverRunDir.isDirectory()) {
+					FilterTreeNode minecraft = new FilterTreeNode("MC server run folder");
+					addNodes(minecraft, serverRunDir, true);
+					root.add(minecraft);
+				}
 			}
 
 			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
@@ -496,8 +511,11 @@ public class WorkspaceFileBrowser extends JPanel {
 					a.setIcon(UIRES.get("16px.resources.png"));
 				else if (tsi.equals("Models"))
 					a.setIcon(UIRES.get("16px.models.png"));
-				else if (tsi.equals("Minecraft run folder") || tsi.equals("Bedrock Edition"))
+				else if (tsi.equals("Minecraft run folder") || tsi.equals("Bedrock Edition") || tsi.equals(
+						"MC client run folder"))
 					a.setIcon(UIRES.get("16px.minecraft.png"));
+				else if (tsi.equals("MC server run folder"))
+					a.setIcon(UIRES.get("16px.runserver.png"));
 				else if (tsi.equals("Sounds"))
 					a.setIcon(UIRES.get("16px.music.png"));
 				else if (tsi.equals("External libraries"))
