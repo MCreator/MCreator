@@ -13,7 +13,7 @@
     "add_image_to_bsp_inputs"
   ],
   "mcreator": {
-    "toolbox_id": "treefeatures",
+    "toolbox_id": "treedecorators",
     "toolbox_init": [
       "<value name=\"provider\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
     ],
