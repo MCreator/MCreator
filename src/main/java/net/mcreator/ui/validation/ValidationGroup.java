@@ -19,53 +19,35 @@
 package net.mcreator.ui.validation;
 
 import javax.swing.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ValidationGroup {
 
-	private final List<IValidable> validationElements = new ArrayList<>();
-	private ValidationGroupListener validationGroupListener = null;
+	protected final List<IValidable> validationElements = new ArrayList<>();
 
-	public <T extends JComponent & IValidable> void addValidationElement(T validable) {
+	public final <T extends JComponent & IValidable> ValidationGroup addValidationElement(T validable) {
 		validationElements.add(validable);
+		return this;
 	}
 
-	public <T extends JTextField & IValidable> void addValidationElement(T validable) {
+	public final <T extends JTextField & IValidable> ValidationGroup addValidationElement(T validable) {
 		validationElements.add(validable);
-		validable.addKeyListener(new KeyAdapter() {
-			@Override public void keyReleased(KeyEvent e) {
-				super.keyReleased(e);
-				if (validationGroupListener != null)
-					validationGroupListener.validationGroupDataChanged(validateIsErrorFree());
-			}
-		});
+		return this;
 	}
 
-	public void setValidationGroupListener(ValidationGroupListener validationGroupListener) {
-		this.validationGroupListener = validationGroupListener;
+	public final boolean validateIsErrorFree() {
+		return getGroupedValidationResults().stream()
+				.noneMatch(e -> e.getValidationResultType() == Validator.ValidationResultType.ERROR);
 	}
 
-	public boolean validateIsErrorFree() {
-		boolean isErrorFree = true;
-
-		for (IValidable validable : validationElements)
-			if (validable.getValidationStatus().getValidationResultType() == Validator.ValidationResultType.ERROR)
-				isErrorFree = false;
-
-		return isErrorFree;
+	public final List<String> getValidationProblemMessages() {
+		return getGroupedValidationResults().stream().map(Validator.ValidationResult::getMessage).toList();
 	}
 
-	public List<String> getValidationProblemMessages() {
-		List<String> retval = new ArrayList<>();
-
-		validationElements.stream().map(IValidable::getValidationStatus)
-				.filter(e -> e.getValidationResultType() != Validator.ValidationResultType.PASSED)
-				.forEach(e -> retval.add(e.getMessage()));
-
-		return retval;
+	public List<Validator.ValidationResult> getGroupedValidationResults() {
+		return validationElements.stream().map(IValidable::getValidationStatus)
+				.filter(e -> e.getValidationResultType() != Validator.ValidationResultType.PASSED).toList();
 	}
 
 }

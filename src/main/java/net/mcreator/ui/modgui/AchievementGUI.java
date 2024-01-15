@@ -33,6 +33,7 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.blockly.BlocklyAggregatedValidationResult;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.ui.blockly.BlocklyPanel;
 import net.mcreator.ui.blockly.CompileNotesPanel;
@@ -63,9 +64,8 @@ import java.awt.*;
 import java.io.File;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Collections;
 import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AchievementGUI extends ModElementGUI<Achievement> implements IBlocklyPanelHolder {
@@ -97,13 +97,17 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
-	private boolean hasErrors = false;
 	private Map<String, ToolboxBlock> externalBlocks;
+	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
 
 	public AchievementGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	@Override protected void initGUI() {
@@ -260,16 +264,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		}
 
 		SwingUtilities.invokeLater(() -> {
-			hasErrors = false;
-			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.type() == BlocklyCompileNote.Type.ERROR) {
-					hasErrors = true;
-					break;
-				}
-			}
-
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
 		});
 	}
 
@@ -287,12 +283,9 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (hasErrors)
-			return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-					.map(compileNote -> L10N.t("elementgui.advancement.trigger", compileNote.message()))
-					.collect(Collectors.toList()));
-
-		return new AggregatedValidationResult(page1group);
+		return new AggregatedValidationResult(page1group,
+				new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
+						compileNote -> L10N.t("elementgui.advancement.trigger", compileNote)));
 	}
 
 	@Override public void openInEditingMode(Achievement achievement) {
@@ -315,8 +308,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(achievement.triggerxml);
-
-			regenerateTrigger();
+			blocklyPanel.triggerEventFunction();
 		});
 	}
 
@@ -348,8 +340,12 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-achievement");
 	}
 
-	@Override public List<BlocklyPanel> getBlocklyPanels() {
-		return List.of(blocklyPanel);
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
+	}
+
+	@Override public boolean isInitialXMLValid() {
+		return false;
 	}
 
 }

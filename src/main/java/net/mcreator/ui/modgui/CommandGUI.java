@@ -29,10 +29,7 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.BlocklyEditorToolbar;
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -51,9 +48,7 @@ import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelHolder {
 
@@ -62,16 +57,21 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 			new String[] { "STANDARD", "SINGLEPLAYER_ONLY", "MULTIPLAYER_ONLY", "CLIENTSIDE" });
 	private final JComboBox<String> permissionLevel = new JComboBox<>(
 			new String[] { "No requirement", "1", "2", "3", "4" });
-	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 	private final ValidationGroup page1group = new ValidationGroup();
+
 	private BlocklyPanel blocklyPanel;
-	private boolean hasErrors = false;
 	private Map<String, ToolboxBlock> externalBlocks;
+	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
+	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
 
 	public CommandGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	@Override protected void initGUI() {
@@ -146,17 +146,14 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 
 		SwingUtilities.invokeLater(() -> {
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
-			hasErrors = compileNotesArrayList.stream().anyMatch(note -> note.type() == BlocklyCompileNote.Type.ERROR);
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
 		});
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (!hasErrors)
-			return new AggregatedValidationResult(page1group);
-		else
-			return new AggregatedValidationResult.MULTIFAIL(
-					compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::message)
-							.collect(Collectors.toList()));
+		return new AggregatedValidationResult(page1group,
+				new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
+						message -> message.replace("Command", "Command arguments")));
 	}
 
 	@Override public void openInEditingMode(Command command) {
@@ -168,7 +165,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(command.argsxml);
-			regenerateArgs();
+			blocklyPanel.triggerEventFunction();
 		});
 	}
 
@@ -186,8 +183,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/making-command");
 	}
 
-	@Override public List<BlocklyPanel> getBlocklyPanels() {
-		return List.of(blocklyPanel);
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
 	}
 
 }

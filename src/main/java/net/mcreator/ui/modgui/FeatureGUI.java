@@ -33,10 +33,7 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.BlocklyEditorToolbar;
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
@@ -45,6 +42,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
+import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.validators.ItemListFieldSingleTagValidator;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -56,9 +54,10 @@ import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelHolder {
 
@@ -69,13 +68,17 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
-	private boolean hasErrors = false;
 	private Map<String, ToolboxBlock> externalBlocks;
+	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
 
 	public FeatureGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	@Override protected void initGUI() {
@@ -159,23 +162,14 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToFeature.getCompileNotes();
 
 		SwingUtilities.invokeLater(() -> {
-			hasErrors = false;
-			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.type() == BlocklyCompileNote.Type.ERROR) {
-					hasErrors = true;
-					break;
-				}
-			}
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
 		});
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		return hasErrors ?
-				new AggregatedValidationResult.MULTIFAIL(
-						compileNotesPanel.getCompileNotes().stream().map(BlocklyCompileNote::message)
-								.collect(Collectors.toList())) :
-				new AggregatedValidationResult(restrictionBiomes);
+		return new AggregatedValidationResult(new ValidationGroup().addValidationElement(restrictionBiomes),
+				new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes()));
 	}
 
 	@Override public void reloadDataLists() {
@@ -192,7 +186,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(feature.featurexml);
-			regenerateFeature();
+			blocklyPanel.triggerEventFunction();
 		});
 	}
 
@@ -207,12 +201,16 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		return feature;
 	}
 
-	@Override public List<BlocklyPanel> getBlocklyPanels() {
-		return List.of(blocklyPanel);
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-feature");
+	}
+
+	@Override public boolean isInitialXMLValid() {
+		return false;
 	}
 
 }

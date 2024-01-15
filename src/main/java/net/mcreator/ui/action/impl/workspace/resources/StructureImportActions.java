@@ -63,7 +63,8 @@ public class StructureImportActions {
 		public ImportStructureFromMinecraft(ActionRegistry actionRegistry) {
 			super(actionRegistry, L10N.t("action.workspace.resources.import_structure_from_minecraft"), actionEvent -> {
 				List<Structure> mcstucts = new ArrayList<>();
-				File[] saves = new File(actionRegistry.getMCreator().getWorkspaceFolder(), "run/saves/").listFiles();
+				File[] saves = new File(actionRegistry.getMCreator().getFolderManager().getClientRunDir(),
+						"saves/").listFiles();
 				for (File save : saves != null ? saves : new File[0]) {
 					if (save.isDirectory()) {
 						// support < 1.13
