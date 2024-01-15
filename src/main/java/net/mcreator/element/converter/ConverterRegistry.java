@@ -47,6 +47,7 @@ import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
 import net.mcreator.element.converter.v2023_3.*;
 import net.mcreator.element.converter.v2023_4.*;
+import net.mcreator.element.converter.v2024_1.ProcedureCustomDamageRemover;
 
 import java.util.HashMap;
 import java.util.List;
@@ -154,7 +155,8 @@ public class ConverterRegistry {
 			new MaterialProcedureConverter(),
 			new ProcedureDamageSourceFixer(),
 			new LegacyGameModeConverter(),
-			new ProcedureArrowProjectileFixer()
+			new ProcedureArrowProjectileFixer(),
+			new ProcedureCustomDamageRemover()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()
