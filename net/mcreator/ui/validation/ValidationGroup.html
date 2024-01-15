@@ -44,13 +44,13 @@ loadScripts(document, 'script');</script>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
 <li>Nested&nbsp;|&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-summary">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-summary">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
 </ul>
 <ul class="sub-nav-list">
 <li>Detail:&nbsp;</li>
-<li>Field&nbsp;|&nbsp;</li>
+<li><a href="#field-detail">Field</a>&nbsp;|&nbsp;</li>
 <li><a href="#constructor-detail">Constr</a>&nbsp;|&nbsp;</li>
 <li><a href="#method-detail">Method</a></li>
 </ul>
@@ -84,6 +84,21 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- =========== FIELD SUMMARY =========== -->
+<li>
+<section class="field-summary" id="field-summary">
+<h2>Field Summary</h2>
+<div class="caption"><span>Fields</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Field</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>protected final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IValidable.html" title="interface in net.mcreator.ui.validation">IValidable</a>&gt;</code></div>
+<div class="col-second even-row-color"><code><a href="#validationElements" class="member-name-link">validationElements</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+</div>
+</section>
+</li>
 <!-- ======== CONSTRUCTOR SUMMARY ======== -->
 <li>
 <section class="constructor-summary" id="constructor-summary">
@@ -108,16 +123,16 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>&lt;T extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a> &amp; <a href="IValidable.html" title="interface in net.mcreator.ui.validation">IValidable</a>&gt;<br>void</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final &lt;T extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a> &amp; <a href="IValidable.html" title="interface in net.mcreator.ui.validation">IValidable</a>&gt;<br><a href="ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#addValidationElement(T)" class="member-name-link">addValidationElement</a><wbr>(T&nbsp;validable)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidationProblemMessages()" class="member-name-link">getValidationProblemMessages</a>()</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Validator.ValidationResult.html" title="class in net.mcreator.ui.validation">Validator.ValidationResult</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getGroupedValidationResults()" class="member-name-link">getGroupedValidationResults</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setValidationGroupListener(net.mcreator.ui.validation.ValidationGroupListener)" class="member-name-link">setValidationGroupListener</a><wbr>(<a href="ValidationGroupListener.html" title="interface in net.mcreator.ui.validation">ValidationGroupListener</a>&nbsp;validationGroupListener)</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getValidationProblemMessages()" class="member-name-link">getValidationProblemMessages</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>boolean</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final boolean</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#validateIsErrorFree()" class="member-name-link">validateIsErrorFree</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
@@ -132,6 +147,20 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="details">
 <ul class="details-list">
+<!-- ============ FIELD DETAIL =========== -->
+<li>
+<section class="field-details" id="field-detail">
+<h2>Field Details</h2>
+<ul class="member-list">
+<li>
+<section class="detail" id="validationElements">
+<h3>validationElements</h3>
+<div class="member-signature"><span class="modifiers">protected final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="IValidable.html" title="interface in net.mcreator.ui.validation">IValidable</a>&gt;</span>&nbsp;<span class="element-name">validationElements</span></div>
+</section>
+</li>
+</ul>
+</section>
+</li>
 <!-- ========= CONSTRUCTOR DETAIL ======== -->
 <li>
 <section class="constructor-details" id="constructor-detail">
@@ -154,31 +183,33 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="addValidationElement(T)">
 <h3 id="addValidationElement(javax.swing.JComponent)">addValidationElement</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a> &amp; <a href="IValidable.html" title="interface in net.mcreator.ui.validation">IValidable</a>&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addValidationElement</span><wbr><span class="parameters">(T&nbsp;validable)</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComponent.html" title="class or interface in javax.swing" class="external-link">JComponent</a> &amp; <a href="IValidable.html" title="interface in net.mcreator.ui.validation">IValidable</a>&gt;</span>
+<span class="return-type"><a href="ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a></span>&nbsp;<span class="element-name">addValidationElement</span><wbr><span class="parameters">(T&nbsp;validable)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="addValidationElement(T)">
 <h3 id="addValidationElement(javax.swing.JTextField)">addValidationElement</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JTextField.html" title="class or interface in javax.swing" class="external-link">JTextField</a> &amp; <a href="IValidable.html" title="interface in net.mcreator.ui.validation">IValidable</a>&gt;</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">addValidationElement</span><wbr><span class="parameters">(T&nbsp;validable)</span></div>
-</section>
-</li>
-<li>
-<section class="detail" id="setValidationGroupListener(net.mcreator.ui.validation.ValidationGroupListener)">
-<h3>setValidationGroupListener</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setValidationGroupListener</span><wbr><span class="parameters">(<a href="ValidationGroupListener.html" title="interface in net.mcreator.ui.validation">ValidationGroupListener</a>&nbsp;validationGroupListener)</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="type-parameters">&lt;T extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JTextField.html" title="class or interface in javax.swing" class="external-link">JTextField</a> &amp; <a href="IValidable.html" title="interface in net.mcreator.ui.validation">IValidable</a>&gt;</span>
+<span class="return-type"><a href="ValidationGroup.html" title="class in net.mcreator.ui.validation">ValidationGroup</a></span>&nbsp;<span class="element-name">addValidationElement</span><wbr><span class="parameters">(T&nbsp;validable)</span></div>
 </section>
 </li>
 <li>
 <section class="detail" id="validateIsErrorFree()">
 <h3>validateIsErrorFree</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">validateIsErrorFree</span>()</div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">validateIsErrorFree</span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getValidationProblemMessages()">
 <h3>getValidationProblemMessages</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getValidationProblemMessages</span>()</div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt;</span>&nbsp;<span class="element-name">getValidationProblemMessages</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getGroupedValidationResults()">
+<h3>getGroupedValidationResults</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="Validator.ValidationResult.html" title="class in net.mcreator.ui.validation">Validator.ValidationResult</a>&gt;</span>&nbsp;<span class="element-name">getGroupedValidationResults</span>()</div>
 </section>
 </li>
 </ul>

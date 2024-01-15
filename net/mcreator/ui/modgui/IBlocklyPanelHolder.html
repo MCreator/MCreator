@@ -43,7 +43,7 @@ loadScripts(document, 'script');</script>
 <div>
 <ul class="sub-nav-list">
 <li>Summary:&nbsp;</li>
-<li>Nested&nbsp;|&nbsp;</li>
+<li><a href="#nested-class-summary">Nested</a>&nbsp;|&nbsp;</li>
 <li>Field&nbsp;|&nbsp;</li>
 <li>Constr&nbsp;|&nbsp;</li>
 <li><a href="#method-summary">Method</a></li>
@@ -80,6 +80,21 @@ loadScripts(document, 'script');</script>
 </section>
 <section class="summary">
 <ul class="summary-list">
+<!-- ======== NESTED CLASS SUMMARY ======== -->
+<li>
+<section class="nested-class-summary" id="nested-class-summary">
+<h2>Nested Class Summary</h2>
+<div class="caption"><span>Nested Classes</span></div>
+<div class="summary-table three-column-summary">
+<div class="table-header col-first">Modifier and Type</div>
+<div class="table-header col-second">Interface</div>
+<div class="table-header col-last">Description</div>
+<div class="col-first even-row-color"><code>static interface&nbsp;</code></div>
+<div class="col-second even-row-color"><code><a href="IBlocklyPanelHolder.BlocklyChangedListener.html" class="type-name-link" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder.BlocklyChangedListener</a></code></div>
+<div class="col-last even-row-color">&nbsp;</div>
+</div>
+</section>
+</li>
 <!-- ========== METHOD SUMMARY =========== -->
 <li>
 <section class="method-summary" id="method-summary">
@@ -91,11 +106,17 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">BlocklyPanel</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getBlocklyPanels()" class="member-name-link">getBlocklyPanels</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#addBlocklyChangedListener(net.mcreator.ui.modgui.IBlocklyPanelHolder.BlocklyChangedListener)" class="member-name-link">addBlocklyChangedListener</a><wbr>(<a href="IBlocklyPanelHolder.BlocklyChangedListener.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder.BlocklyChangedListener</a>&nbsp;listener)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="../blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">BlocklyPanel</a></code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#getSpecificBlocklyPanel(net.mcreator.ui.blockly.BlocklyEditorType)" class="member-name-link">getSpecificBlocklyPanel</a><wbr>(<a href="../blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">BlocklyPanel</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getBlocklyPanels()" class="member-name-link">getBlocklyPanels</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default <a href="../blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">BlocklyPanel</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#getSpecificBlocklyPanel(net.mcreator.ui.blockly.BlocklyEditorType)" class="member-name-link">getSpecificBlocklyPanel</a><wbr>(<a href="../blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code>default boolean</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5"><code><a href="#isInitialXMLValid()" class="member-name-link">isInitialXMLValid</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab5">&nbsp;</div>
 </div>
 </div>
@@ -114,13 +135,25 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="getBlocklyPanels()">
 <h3>getBlocklyPanels</h3>
-<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">BlocklyPanel</a>&gt;</span>&nbsp;<span class="element-name">getBlocklyPanels</span>()</div>
+<div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">BlocklyPanel</a>&gt;</span>&nbsp;<span class="element-name">getBlocklyPanels</span>()</div>
 </section>
 </li>
 <li>
 <section class="detail" id="getSpecificBlocklyPanel(net.mcreator.ui.blockly.BlocklyEditorType)">
 <h3>getSpecificBlocklyPanel</h3>
 <div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type"><a href="../blockly/BlocklyPanel.html" title="class in net.mcreator.ui.blockly">BlocklyPanel</a></span>&nbsp;<span class="element-name">getSpecificBlocklyPanel</span><wbr><span class="parameters">(<a href="../blockly/BlocklyEditorType.html" title="class in net.mcreator.ui.blockly">BlocklyEditorType</a>&nbsp;type)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="isInitialXMLValid()">
+<h3>isInitialXMLValid</h3>
+<div class="member-signature"><span class="modifiers">default</span>&nbsp;<span class="return-type">boolean</span>&nbsp;<span class="element-name">isInitialXMLValid</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="addBlocklyChangedListener(net.mcreator.ui.modgui.IBlocklyPanelHolder.BlocklyChangedListener)">
+<h3>addBlocklyChangedListener</h3>
+<div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">addBlocklyChangedListener</span><wbr><span class="parameters">(<a href="IBlocklyPanelHolder.BlocklyChangedListener.html" title="interface in net.mcreator.ui.modgui">IBlocklyPanelHolder.BlocklyChangedListener</a>&nbsp;listener)</span></div>
 </section>
 </li>
 </ul>
