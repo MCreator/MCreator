@@ -12,7 +12,7 @@ import:
 
 # gradle task definitions
 gradle:
-  setup_task: eclipse build
+  setup_task: idePostSync
   run_client: runClient
   run_server: runServer
   export_file: "build/libs/modid-1.0.jar"
