@@ -81,6 +81,18 @@ public class GeneratorGradleCache {
 					.replace(workspace.getWorkspaceFolder().getAbsolutePath(), "<workspace_home>");
 		}
 
+		@Override public boolean equals(Object o) {
+			if (this == o)
+				return true;
+			if (o == null || getClass() != o.getClass())
+				return false;
+			return lib.equals(((ClasspathEntry) o).lib);
+		}
+
+		@Override public int hashCode() {
+			return lib.hashCode();
+		}
+
 	}
 
 }

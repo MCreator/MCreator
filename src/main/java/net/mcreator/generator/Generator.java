@@ -36,7 +36,6 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.java.ProjectJarManager;
-import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -549,35 +548,20 @@ public class Generator implements IGenerator, Closeable {
 		if (!file.isFile() || !workspace.getFolderManager().isFileInWorkspace(file))
 			return null;
 
-		for (ModElement element : workspace.getModElements()) {
+		return workspace.getModElements().parallelStream().filter(element -> {
 			if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo().get(element.getType())
 					== GeneratorStats.CoverageStatus.NONE)
-				continue;
+				return false;
 
-			try {
-				GeneratableElement generatableElement = element.getGeneratableElement();
-
-				if (generatableElement == null)
-					continue;
-
-				List<File> modElementFiles = getModElementGeneratorTemplatesList(generatableElement).stream()
-						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
-				if (FileIO.isFileOnFileList(modElementFiles, file))
-					return element;
-
-				// if this is GUI, we check for generated UI texture file too
-				if (element.getType() == ModElementType.GUI) {
-					File guiTextureFile = workspace.getFolderManager()
-							.getTextureFile(element.getName().toLowerCase(Locale.ENGLISH), TextureType.SCREEN);
-					if (guiTextureFile.getCanonicalPath().equals(file.getCanonicalPath()))
-						return element;
-				}
-			} catch (Exception e) {
-				LOG.warn("Failed to get list of mod element files for mod element " + element, e);
+			Object oldFiles = element.getMetadata("files");
+			if (oldFiles instanceof List<?> fileList) {
+				return FileIO.isFileOnFileList(fileList.stream()
+								.map(e -> new File(getWorkspaceFolder(), e.toString().replace("/", File.separator))).toList(),
+						file);
+			} else {
+				return false;
 			}
-		}
-
-		return null;
+		}).findAny().orElse(null);
 	}
 
 	private void generateFiles(Collection<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
