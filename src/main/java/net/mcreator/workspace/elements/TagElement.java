@@ -78,6 +78,10 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 		return rawData.startsWith(MANAGED_PREFIX);
 	}
 
+	public static String makeEntryManaged(String rawData) {
+		return MANAGED_PREFIX + rawData;
+	}
+
 	public static String getEntryName(String rawData) {
 		return rawData.replace(MANAGED_PREFIX, "");
 	}

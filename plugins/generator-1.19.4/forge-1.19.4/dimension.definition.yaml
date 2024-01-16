@@ -48,10 +48,9 @@ templates:
     name: "@MODASSETSROOT/models/item/@registryname.json"
     condition: hasIgniter()
 
-global_templates:
-  - template: json/carvertag.json.ftl
-    writer: json
-    name: "@RESROOT/data/minecraft/tags/blocks/overworld_carver_replaceables.json"
+tags:
+  - tag: BLOCKS:minecraft:overworld_carver_replaceables
+    entryprovider: data.getWorldgenBlocks()
 
 localizationkeys:
   - key: item.@modid.@registryname
