@@ -131,7 +131,7 @@ public class ShareableZIPManager {
 
 			try {
 				Set<String> excludes = new HashSet<>(
-						Set.of(".gradle/", ".mcreator/", "build/", "gradle/", "#build.gradle", "#gradlew",
+						Set.of(".eclipse/", ".gradle/", ".mcreator/", "build/", "gradle/", "#build.gradle", "#gradlew",
 								"#gradlew.bat", "#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/",
 								".settings/"));
 				if (excludeRunDir)
