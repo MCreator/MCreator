@@ -2,4 +2,4 @@
 
 留空以清除共存限制。
 
-<strongx-id="1">可以共存（Include）</strong> 将使所选附魔共存。 <strongx-id="1">不可共存（Exclude）</strong> 将使所选附魔不共存。
+<strongx-id="1">可以共存（Include）</strong> 将使选中附魔共存。 <strongx-id="1">不可共存（Exclude）</strong> 将使选中附魔不共存。

@@ -47,12 +47,13 @@ import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
 import net.mcreator.element.converter.v2023_3.*;
 import net.mcreator.element.converter.v2023_4.*;
-import net.mcreator.element.converter.v2024_1.ProcedureCustomDamageRemover;
 import net.mcreator.element.converter.v2024_1.CallProcedureAtBlockConverter;
+import net.mcreator.element.converter.v2024_1.ProcedureCustomDamageRemover;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ConverterRegistry {
 
@@ -200,6 +201,10 @@ public class ConverterRegistry {
 
 	public static IConverter getConverterForModElementType(String modElementType) {
 		return converters_legacy.get(modElementType);
+	}
+
+	public static Set<String> getConvertibleModElementTypes() {
+		return converters_legacy.keySet();
 	}
 
 }

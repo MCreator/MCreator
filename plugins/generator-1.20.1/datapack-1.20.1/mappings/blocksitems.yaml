@@ -1322,7 +1322,7 @@ Blocks.CONCRETE#15:
   - "black_concrete"
 Blocks.CARPET:
   - Blocks.WHITE_CARPET
-  - "#minecraft:carpets"
+  - "#minecraft:wool_carpets"
 Blocks.CARPET#0:
   - Blocks.WHITE_CARPET
   - "white_carpet"
