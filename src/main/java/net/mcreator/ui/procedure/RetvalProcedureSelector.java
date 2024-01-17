@@ -215,6 +215,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
+
 		if (fixedValue != null)
 			fixedValue.setEnabled(enabled);
 
@@ -223,10 +224,6 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 		} else {
 			setBackground(Theme.current().getBackgroundColor());
 		}
-
-		procedures.setEnabled(enabled);
-		edit.setEnabled(enabled);
-		add.setEnabled(enabled);
 
 		updateDepsList(true);
 	}

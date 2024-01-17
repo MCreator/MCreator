@@ -9,9 +9,6 @@ build/
 # MCreator workspace
 .mcreator/
 
-# Minecraft client/server files
-run/
-
 # MacOS system files
 .DS_STORE
 

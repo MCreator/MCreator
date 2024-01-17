@@ -159,7 +159,7 @@ public class GeneratorFileTasks {
 									generator.getLogger()
 											.error("Failed to generate code for model: " + model.getFile(), e);
 								}
-								ClassWriter.writeClassToFileWithoutQueue(generator.getWorkspace(), modelCode,
+								ClassWriter.writeClassToFile(generator.getWorkspace(), modelCode,
 										new File(to, model.getReadableName() + ".java"), true);
 							}
 						break;

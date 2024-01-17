@@ -46,6 +46,13 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				.findFirst().orElse(null);
 	}
 
+	@Nullable
+	public static GeneratorConfiguration getRecommendedGeneratorForBaseLanguage(
+			Collection<GeneratorConfiguration> generatorConfigurations, GeneratorFlavor.BaseLanguage baseLanguage) {
+		return generatorConfigurations.stream().filter(gc -> gc.getGeneratorFlavor().getBaseLanguage() == baseLanguage)
+				.sorted().findFirst().orElse(null);
+	}
+
 	private Map<?, ?> generatorConfig;
 	private final String generatorName;
 
@@ -57,7 +64,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	private final GeneratorVariableTypes generatorVariableTypes;
 
-	private final Map<String, TemplateGeneratorConfiguration> templateGeneratorConfigs = new HashMap<>();
+	private final Map<String, TemplateGeneratorConfiguration> templateGeneratorConfigs = new ConcurrentHashMap<>();
 
 	public GeneratorConfiguration(String generatorName) {
 		this.generatorName = generatorName;

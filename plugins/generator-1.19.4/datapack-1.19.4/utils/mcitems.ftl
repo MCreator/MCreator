@@ -1,3 +1,11 @@
+<#function mappedBlockToBlockStateProvider mappedBlock>
+    <#if mappedBlock?starts_with("/*@BlockStateProvider*/")>
+        <#return mappedBlock?replace("/*@BlockStateProvider*/", "")>
+    <#else>
+        <#return '{"type": "minecraft:simple_state_provider", "state": ' + mappedBlock + '}'>
+    </#if>
+</#function>
+
 <#function transformExtension mappedBlock>
     <#assign extension = mappedBlock?keep_after_last(".")?replace("body", "chestplate")?replace("legs", "leggings")>
     <#return (extension?has_content)?then("_" + extension, "")>
@@ -16,7 +24,7 @@
     <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
         <#return "\"tag\": \"" + mappedBlock.getUnmappedValue().replace("TAG:", "")?lower_case + "\"">
     <#else>
-        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
+        <#assign mapped = mappedBlock.getMappedValue(1) />
         <#if mapped.startsWith("#")>
             <#return "\"tag\": \"" + mapped.replace("#", "") + "\"">
         <#elseif mapped.contains(":")>
@@ -42,7 +50,7 @@
             <#return "minecraft:air">
         </#if>
     <#else>
-        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
+        <#assign mapped = mappedBlock.getMappedValue(1) />
         <#if mapped.startsWith("#")>
             <#if acceptTags>
                 <#return mapped>
@@ -59,7 +67,7 @@
 
 <#function mappedMCItemToBlockStateJSON mappedBlock>
     <#if !mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#assign mapped = generator.map(mappedBlock.getUnmappedValue(), "blocksitems", 1) />
+        <#assign mapped = mappedBlock.getMappedValue(1) />
         <#if !mapped.startsWith("#")>
             <#if !mapped.contains(":")>
                 <#assign mapped = "minecraft:" + mapped />

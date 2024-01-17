@@ -44,8 +44,8 @@ public class ImportTreeBuilder {
 		List<LibraryInfo> libraryInfos = projectJarManager.getClassFileSources();
 		libraryInfos.parallelStream().forEach(libraryInfo -> {
 			File libraryFile = new File(libraryInfo.getLocationAsString());
-			if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || libraryFile.getName().endsWith(".jmod"))) {
-				try (ZipFile zipFile = new ZipFile(libraryFile)) {
+			if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || ZipIO.checkIfJMod(libraryFile))) {
+				try (ZipFile zipFile = ZipIO.openZipFile(libraryFile)) {
 					Enumeration<? extends ZipEntry> entries = zipFile.entries();
 					boolean isJmod = libraryFile.getName().endsWith(".jmod");
 					while (entries.hasMoreElements()) {
