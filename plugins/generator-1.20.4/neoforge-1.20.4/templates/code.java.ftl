@@ -58,17 +58,17 @@ public class ${name} {
 		new ${name}();
 	}
 
+	@OnlyIn(Dist.CLIENT)
+	@SubscribeEvent
+	public static void clientLoad(FMLClientSetupEvent event) {
+
+	}
+
     @Mod.EventBusSubscriber
 	private static class ForgeBusEvents {
 
 		@SubscribeEvent
 		public static void serverLoad(ServerStartingEvent event) {
-
-		}
-
-		@OnlyIn(Dist.CLIENT)
-		@SubscribeEvent
-		public static void clientLoad(FMLClientSetupEvent event) {
 
 		}
 
