@@ -1,0 +1,6 @@
+defaultvalue: Blocks.AIR.defaultBlockState()
+scopes:
+  local:
+    init: ${var.getType().getJavaType(generator.getWorkspace())} ${var.getName()} = ${var.getType().getDefaultValue(generator.getWorkspace())};
+    get: /*@BlockState*/${name}
+    set: <#include "mcitems.ftl"> ${name} = ${mappedBlockToBlockStateCode(value)};
