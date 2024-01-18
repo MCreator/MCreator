@@ -29,7 +29,7 @@
 -->
 
 <#-- @formatter:off -->
-/**
+/*
  * The code of this mod element is always locked.
  *
  * You can register new events in this class too.
