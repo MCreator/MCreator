@@ -36,8 +36,6 @@
 
 package ${package}.init;
 
-import net.minecraft.sounds.SoundEvent;
-
 public class ${JavaModName}Sounds {
 
 	public static final DeferredRegister<SoundEvent> REGISTRY = DeferredRegister.create(Registries.SOUND_EVENT, ${JavaModName}.MODID);

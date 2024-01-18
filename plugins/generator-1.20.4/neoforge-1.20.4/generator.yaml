@@ -17,6 +17,16 @@ gradle:
   run_server: runServer
   export_file: "build/libs/modid-1.0.jar"
 
+import_formatter:
+  duplicates_whitelist:
+    - java.util
+    - net.minecraft
+  priority_imports:
+    Nullable: javax.annotation
+    Codec: com.mojang.serialization
+    SoundEvent: net.minecraft.sounds
+    Blocks: net.minecraft.world.level.block
+
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
 res_root: "@WORKSPACEROOT/src/main/resources"

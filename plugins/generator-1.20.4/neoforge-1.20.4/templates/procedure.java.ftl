@@ -33,11 +33,6 @@ package ${package}.procedures;
 
 import net.neoforged.bus.api.Event;
 
-import javax.annotation.Nullable;
-
-// TODO: Remove this import, we will handle this differently
-import net.minecraft.world.level.block.Blocks;
-
 <#assign nullableDependencies = []/>
 <#list dependencies as dependency>
 	<#if dependency.getRawType() != "number"
