@@ -34,8 +34,6 @@
 
 package ${package}.world.features.treedecorators;
 
-import com.mojang.serialization.Codec;
-
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}TrunkDecorator extends TrunkVineDecorator {
 
     public static Codec<${name}TrunkDecorator> CODEC = Codec.unit(${name}TrunkDecorator::new);

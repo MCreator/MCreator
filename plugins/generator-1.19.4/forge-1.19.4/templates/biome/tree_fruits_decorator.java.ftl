@@ -34,8 +34,6 @@
 
 package ${package}.world.features.treedecorators;
 
-import com.mojang.serialization.Codec;
-
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}FruitDecorator extends CocoaDecorator {
 
     public static Codec<${name}FruitDecorator> CODEC = Codec.unit(${name}FruitDecorator::new);

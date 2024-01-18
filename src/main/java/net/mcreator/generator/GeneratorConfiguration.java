@@ -196,6 +196,32 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return retval;
 	}
 
+	public List<String> getImportFormatterDuplicatesWhitelist() {
+		List<String> retval = new ArrayList<>();
+
+		if (generatorConfig.get("import_formatter") != null) {
+			if (((Map<?, ?>) generatorConfig.get("import_formatter")).get("duplicates_whitelist") != null) {
+				retval.addAll(((List<?>) ((Map<?, ?>) generatorConfig.get("import_formatter")).get(
+						"duplicates_whitelist")).stream().map(Object::toString).toList());
+			}
+		}
+
+		return retval;
+	}
+
+	public Map<String, String> getImportFormatterPriorityImports() {
+		Map<String, String> retval = new HashMap<>();
+
+		if (generatorConfig.get("import_formatter") != null) {
+			if (((Map<?, ?>) generatorConfig.get("import_formatter")).get("priority_imports") != null) {
+				((Map<?, ?>) ((Map<?, ?>) generatorConfig.get("import_formatter")).get("priority_imports")).forEach(
+						(k, v) -> retval.put("." + k, v + "." + k));
+			}
+		}
+
+		return retval;
+	}
+
 	public String getGeneratorName() {
 		return generatorName;
 	}
