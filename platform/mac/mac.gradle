@@ -4,6 +4,42 @@ static void convertCRLF(File input, File out) {
     out << input.text.replaceAll('\r\n', '\n')
 }
 
+void signAPP(File appDirectory) {
+    if (Os.isFamily(Os.FAMILY_MAC)) {
+        if (System.getenv('MACOS_CERTIFICATE_NAME') != null) {
+            // Sign the app folder
+            exec {
+                commandLine('codesign', '--force', '--deep', '--options', 'runtime', '--sign', "\"${System.getenv('MACOS_CERTIFICATE_NAME')}\"", appDirectory)
+            }
+
+            // Zip app folder for notarization
+            notarizationFile = file(appDirectory.getParent() + "/notarization.zip")
+            ant.zip(destfile: notarizationFile) {
+                fileset(dir: appDirectory.getParent())
+                include(name: appDirectory.getName())
+            }
+
+            // Send notarization request
+            exec {
+                commandLine 'xcrun', 'notarytool', 'submit', notarizationFile, '--keychain-profile', 'notarytool-profile', '--wait'
+            }
+
+            // Attach the notarization stable to the app
+            exec {
+                commandLine 'xcrun', 'stapler', 'staple', appDirectory
+            }
+
+            // Delete the app folder zip
+            delete(notarizationFile)
+        } else {
+            // Ad-hoc sign
+            exec {
+                commandLine('codesign', '--force', '--deep', '--sign', '-', appDirectory)
+            }
+        }
+    }
+}
+
 void makeDMG(File directory, File outputDMGFile, String volumeName) {
     if (Os.isFamily(Os.FAMILY_MAC)) {
         exec {
@@ -84,10 +120,7 @@ tasks.register('exportMacX64', Copy.class) {
             exec { commandLine('chmod', '+x', exportPathX64 + '/Contents/MacOS/mcreator') }
         }
 
-        // If we are on MacOS, we can also ad-hoc sign the executable
-        if (Os.isFamily(Os.FAMILY_MAC)) {
-            exec { commandLine('codesign', '--force', '--deep', '--sign', '-', exportPathX64) }
-        }
+        signAPP(file(exportPathX64));
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
         makeDMG(file('build/export/mac_x64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
@@ -138,10 +171,7 @@ tasks.register('exportMacAarch64', Copy.class) {
             exec { commandLine('chmod', '+x', exportPathAarch64 + '/Contents/MacOS/mcreator') }
         }
 
-        // If we are on MacOS, we can also ad-hoc sign the executable
-        if (Os.isFamily(Os.FAMILY_MAC)) {
-            exec { commandLine('codesign', '--force', '--deep', '--sign', '-', exportPathAarch64) }
-        }
+        signAPP(file(exportPathAarch64));
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
         makeDMG(file('build/export/mac_aarch64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
