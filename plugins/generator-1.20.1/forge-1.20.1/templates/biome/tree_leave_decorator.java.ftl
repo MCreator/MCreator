@@ -34,8 +34,6 @@
 
 package ${package}.world.features.treedecorators;
 
-import com.mojang.serialization.Codec;
-
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}LeaveDecorator extends LeaveVineDecorator {
 
     public static Codec<LeaveVineDecorator> CODEC = Codec.unit(${name}LeaveDecorator::new);

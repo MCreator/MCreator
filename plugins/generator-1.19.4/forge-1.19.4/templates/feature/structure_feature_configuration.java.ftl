@@ -31,9 +31,6 @@
 <#-- @formatter:off -->
 package ${package}.world.features.configurations;
 
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import com.mojang.serialization.Codec;
-
 public record StructureFeatureConfiguration(ResourceLocation structure, boolean randomRotation, boolean randomMirror, HolderSet<Block> ignoredBlocks, Vec3i offset) implements FeatureConfiguration {
 	public static final Codec<StructureFeatureConfiguration> CODEC = RecordCodecBuilder.create(builder -> {
 		return builder.group(ResourceLocation.CODEC.fieldOf("structure").forGetter(config -> {
