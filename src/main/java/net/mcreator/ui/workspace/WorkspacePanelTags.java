@@ -98,7 +98,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		}) {
 			@Override public TableCellEditor getCellEditor(int row, int column) {
 				if (column == 3)
-					return new ItemListFieldCellEditor(WorkspacePanelTags.this, row);
+					return new ItemListFieldCellEditor(row);
 				return super.getCellEditor(row, column);
 			}
 
@@ -237,7 +237,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		});
 
 		elements.getSelectionModel().addListSelectionListener(e -> {
-			if (!e.getValueIsAdjusting()) {
+			if (!e.getValueIsAdjusting() && elements.getCellEditor() == null) {
 				int selectedRow = elements.getSelectedRow();
 				int selectedColumn = elements.getSelectedColumn();
 				if (selectedRow >= 0 && selectedColumn == 3) {
@@ -306,22 +306,22 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		}
 	}
 
-	private static class ItemListFieldCellEditor extends AbstractCellEditor implements TableCellEditor {
+	private class ItemListFieldCellEditor extends AbstractCellEditor implements TableCellEditor {
 
 		private final JItemListField<? extends MappableElement> listField;
 
 		private final TagElement tagElement;
 
-		private final WorkspacePanelTags workspacePanelTags;
+		public ItemListFieldCellEditor(int row) {
+			this.tagElement = WorkspacePanelTags.this.tagElementForRow(row);
 
-		public ItemListFieldCellEditor(WorkspacePanelTags workspacePanelTags, int row) {
-			this.workspacePanelTags = workspacePanelTags;
-			this.tagElement = workspacePanelTags.tagElementForRow(row);
-
-			this.listField = itemListFieldForRow(workspacePanelTags.workspacePanel.getMCreator());
+			this.listField = itemListFieldForRow(workspacePanel.getMCreator());
 			if (this.listField != null) {
 				this.listField.disableItemCentering();
 				this.listField.setWarnOnRemoveAll(true);
+				this.listField.setEnabled(false);
+				// Slight delay before enabling so initial click on the row doesn't trigger button actions
+				new Timer(200, e -> listField.setEnabled(true)).start();
 			}
 		}
 
@@ -338,9 +338,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		@SuppressWarnings("unchecked") @Override public boolean stopCellEditing() {
 			List<String> newValue = (List<String>) getCellEditorValue();
 			if (newValue != null) {
-				workspacePanelTags.workspacePanel.getMCreator().getWorkspace().getTagElements()
-						.put(tagElement, newValue);
-				workspacePanelTags.workspacePanel.getMCreator().getWorkspace().markDirty();
+				workspacePanel.getMCreator().getWorkspace().getTagElements().put(tagElement, newValue);
+				workspacePanel.getMCreator().getWorkspace().markDirty();
 			}
 
 			return super.stopCellEditing();
