@@ -57,7 +57,9 @@ public class TagModElementConverter implements IConverter {
 					case BIOMES -> definition.getAsJsonArray("biomes");
 					case DAMAGE_TYPES -> definition.getAsJsonArray("damageTypes");
 				}) {
-					workspace.getTagElements().get(tagElement).add(value.getAsJsonObject().get("value").getAsString());
+					workspace.getTagElements().get(tagElement).add(type == TagType.FUNCTIONS ?
+							value.getAsString() :
+							value.getAsJsonObject().get("value").getAsString());
 				}
 			} else {
 				throw new NullPointerException("Tag type is null / unknown tag type");
