@@ -33,7 +33,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.AddCommonTagsDialog;
 import net.mcreator.ui.dialogs.NewTagDialog;
 import net.mcreator.ui.init.L10N;
@@ -44,12 +43,15 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.workspace.elements.TagElement;
 
 import javax.swing.*;
+import javax.swing.event.CellEditorListener;
+import javax.swing.event.ChangeEvent;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
@@ -66,6 +68,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			ModElementType.FUNCTION);
 	private final DamageTypeListField listFieldDamageTypes = new DamageTypeListField(workspacePanel.getMCreator(),
 			true);
+	private final JComponent more = ComponentUtils.setForeground(
+			new JLabel("<html><big>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;"), Theme.current().getAltForegroundColor());
 
 	public WorkspacePanelTags(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
@@ -104,53 +108,41 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 			@Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
 				if (column == 3) {
+					// Calculate how many elements can fit in the cell (assuming 31px per element which is true for ITEMS and BLOCKS)
+					int visibleCount = (int) Math.ceil(elements.getColumnModel().getColumn(3).getWidth() / 31.0);
 					TagElement tagElement = tagElementForRow(row);
-					List<String> entries = workspacePanel.getMCreator().getWorkspace().getTagElements().get(tagElement);
-
-					JComponent listField = switch (tagElement.type()) {
-						case ITEMS, BLOCKS -> {
-							listFieldBlocksItems.setListElements(entries.stream().limit(22)
-									.map(e -> (MItemBlock) TagElement.entryToMappableElement(
-											workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
-									.toList());
-							yield listFieldBlocksItems;
-						}
-						case ENTITIES -> {
-							listFieldEntities.setListElements(entries.stream().limit(22)
-									.map(e -> (EntityEntry) TagElement.entryToMappableElement(
-											workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
-									.toList());
-							yield listFieldEntities;
-						}
-						case BIOMES -> {
-							listFieldBiomes.setListElements(entries.stream().limit(22)
-									.map(e -> (BiomeEntry) TagElement.entryToMappableElement(
-											workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
-									.toList());
-							yield listFieldBiomes;
-						}
-						case FUNCTIONS -> {
-							listFieldFunctions.setListElements(entries.stream().limit(22)
-									.map(e -> (NonMappableElement) TagElement.entryToMappableElement(
-											workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
-									.toList());
-							yield listFieldFunctions;
-						}
-						case DAMAGE_TYPES -> {
-							listFieldDamageTypes.setListElements(entries.stream().limit(22)
-									.map(e -> (DamageTypeEntry) TagElement.entryToMappableElement(
-											workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
-									.toList());
-							yield listFieldDamageTypes;
-						}
-					};
-
-					if (entries.size() > 22) {
-						return PanelUtils.centerAndEastElement(listField, ComponentUtils.setForeground(
-								new JLabel("<html><big>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;"),
-								Theme.current().getAltForegroundColor()));
-					} else {
-						return listField;
+					Stream<String> entries = workspacePanel.getMCreator().getWorkspace().getTagElements()
+							.get(tagElement).stream().limit(visibleCount);
+					switch (tagElement.type()) {
+					case ITEMS, BLOCKS -> {
+						listFieldBlocksItems.setListElements(entries.map(
+								e -> (MItemBlock) TagElement.entryToMappableElement(
+										workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
+						return listFieldBlocksItems;
+					}
+					case ENTITIES -> {
+						listFieldEntities.setListElements(entries.map(
+								e -> (EntityEntry) TagElement.entryToMappableElement(
+										workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
+						return listFieldEntities;
+					}
+					case BIOMES -> {
+						listFieldBiomes.setListElements(entries.map(e -> (BiomeEntry) TagElement.entryToMappableElement(
+								workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
+						return listFieldBiomes;
+					}
+					case FUNCTIONS -> {
+						listFieldFunctions.setListElements(entries.map(
+								e -> (NonMappableElement) TagElement.entryToMappableElement(
+										workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
+						return listFieldFunctions;
+					}
+					case DAMAGE_TYPES -> {
+						listFieldDamageTypes.setListElements(entries.map(
+								e -> (DamageTypeEntry) TagElement.entryToMappableElement(
+										workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
+						return listFieldDamageTypes;
+					}
 					}
 				}
 
@@ -184,12 +176,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		header.setBackground(Theme.current().getInterfaceAccentColor());
 		header.setForeground(Theme.current().getBackgroundColor());
 
-		TableColumn lastColumn = header.getColumnModel().getColumn(3);
-		header.setResizingColumn(lastColumn);
-
-		header.getColumnModel().getColumn(0).setWidth(220);
-		header.getColumnModel().getColumn(1).setWidth(220);
-		header.getColumnModel().getColumn(2).setWidth(320);
+		header.getColumnModel().getColumn(0).setWidth(240);
+		header.getColumnModel().getColumn(1).setWidth(240);
+		header.getColumnModel().getColumn(2).setWidth(380);
+		header.setResizingColumn(header.getColumnModel().getColumn(3));
 
 		JScrollPane sp = new JScrollPane(elements);
 		sp.setBackground(Theme.current().getBackgroundColor());
@@ -321,7 +311,17 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				this.listField.setWarnOnRemoveAll(true);
 				this.listField.setEnabled(false);
 				// Slight delay before enabling so initial click on the row doesn't trigger button actions
-				new Timer(200, e -> listField.setEnabled(true)).start();
+				Timer timer = new Timer(250, e -> listField.setEnabled(true));
+				timer.start();
+				addCellEditorListener(new CellEditorListener() {
+					@Override public void editingStopped(ChangeEvent e) {
+						timer.stop();
+					}
+
+					@Override public void editingCanceled(ChangeEvent e) {
+						timer.stop();
+					}
+				});
 			}
 		}
 
