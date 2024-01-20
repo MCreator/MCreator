@@ -74,6 +74,8 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 	private final JComponent buttons;
 
+	private boolean warnOnRemoveAll = false;
+
 	protected JItemListField(MCreator mcreator) {
 		this(mcreator, false);
 	}
@@ -129,6 +131,16 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		removeall.addActionListener(e -> {
 			List<T> elements = Collections.list(elementsListModel.elements());
+
+			if (warnOnRemoveAll && !elements.isEmpty()) {
+				int result = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.itemlistfield.deleteall"),
+						L10N.t("dialog.itemlistfield.deleteall.title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE);
+				if (result != JOptionPane.YES_OPTION) {
+					return; // if user does not agree to deletion, abort the action
+				}
+			}
+
 			deleteElements(elements);
 		});
 
@@ -229,6 +241,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		add(pane, BorderLayout.CENTER);
 		add(buttons, BorderLayout.EAST);
+	}
+
+	public void setWarnOnRemoveAll(boolean warnOnDeleteAll) {
+		this.warnOnRemoveAll = warnOnDeleteAll;
 	}
 
 	private void deleteElements(List<T> elements) {

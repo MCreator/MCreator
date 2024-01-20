@@ -319,8 +319,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			this.tagElement = workspacePanelTags.tagElementForRow(row);
 
 			this.listField = itemListFieldForRow(workspacePanelTags.workspacePanel.getMCreator());
-			if (this.listField != null)
+			if (this.listField != null) {
 				this.listField.disableItemCentering();
+				this.listField.setWarnOnRemoveAll(true);
+			}
 		}
 
 		@Override
