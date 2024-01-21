@@ -30,6 +30,12 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
 	}
 
+	//public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
+	//		new ResourceLocation(MODID, MODID),
+	//		() -> PROTOCOL_VERSION,
+	//		PROTOCOL_VERSION::equals,
+	//			<#if settings.isServerSideOnly()>clientVersion -> true<#else>PROTOCOL_VERSION::equals</#if>
+	//);
 	//public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
 	//									BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
 	//TODO: https://neoforged.net/news/20.4networking-rework/
