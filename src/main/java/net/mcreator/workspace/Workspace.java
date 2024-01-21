@@ -54,7 +54,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
-	private ConcurrentHashMap<TagElement, List<String>> tag_elements = new ConcurrentHashMap<>();
+	private ConcurrentHashMap<TagElement, ArrayList<String>> tag_elements = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<>() {{
 		put("en_us", new ConcurrentHashMap<>());
 	}};
@@ -113,7 +113,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return Collections.unmodifiableSet(sound_elements);
 	}
 
-	public Map<TagElement, List<String>> getTagElements() {
+	public Map<TagElement, ArrayList<String>> getTagElements() {
 		return tag_elements;
 	}
 

@@ -49,8 +49,9 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class WorkspacePanelTags extends AbstractWorkspacePanel {
@@ -274,7 +275,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		DefaultTableModel model = (DefaultTableModel) elements.getModel();
 		model.setRowCount(0);
 
-		for (Map.Entry<TagElement, List<String>> tag : workspacePanel.getMCreator().getWorkspace().getTagElements()
+		for (Map.Entry<TagElement, ArrayList<String>> tag : workspacePanel.getMCreator().getWorkspace().getTagElements()
 				.entrySet()) {
 			model.addRow(new Object[] { tag.getKey().type(), tag.getKey().getNamespace(), tag.getKey().getName(),
 					tag.getValue() });
@@ -330,11 +331,12 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		}
 
 		@Override public Object getCellEditorValue() {
-			return listField.getListElements().stream().map(TagElement::entryFromMappableElement).toList();
+			return listField.getListElements().stream().map(TagElement::entryFromMappableElement)
+					.collect(Collectors.toCollection(ArrayList::new));
 		}
 
 		@SuppressWarnings("unchecked") @Override public boolean stopCellEditing() {
-			List<String> newValue = (List<String>) getCellEditorValue();
+			ArrayList<String> newValue = (ArrayList<String>) getCellEditorValue();
 			if (newValue != null) {
 				workspacePanel.getMCreator().getWorkspace().getTagElements().put(tagElement, newValue);
 				workspacePanel.getMCreator().getWorkspace().markDirty();
