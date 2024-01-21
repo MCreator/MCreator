@@ -34,27 +34,32 @@ public class BaseDataModelProvider {
 
 	private static final Logger TEMPLATE_LOG = LogManager.getLogger("Template Generator LOG");
 
-	private final Map<String, Object> providedData;
+	private final Map<String, Object> providedData = new HashMap<>();
+
+	private final Generator generator;
 
 	@SuppressWarnings("InstantiationOfUtilityClass") public BaseDataModelProvider(Generator generator) {
-		Map<String, Object> providedDataBuilder = new HashMap<>();
-		providedDataBuilder.put("generator", new GeneratorWrapper(generator));
-		providedDataBuilder.put("w", generator.getWorkspace().getWorkspaceInfo());
-		providedDataBuilder.put("modid", generator.getWorkspaceSettings().getModID());
-		providedDataBuilder.put("JavaModName", generator.getWorkspaceSettings().getJavaModName());
-		providedDataBuilder.put("package", generator.getWorkspaceSettings().getModElementsPackage());
-		providedDataBuilder.put("settings", generator.getWorkspaceSettings());
-		providedDataBuilder.put("fp", new FileProvider(generator));
-		providedDataBuilder.put("mcc", generator.getMinecraftCodeProvider());
-		providedDataBuilder.put("JavaConventions", new JavaConventions());
-		providedDataBuilder.put("thelper", new TemplateHelper());
-		providedDataBuilder.put("Log", TEMPLATE_LOG);
-		providedDataBuilder.put("opt", new ProcedureCodeOptimizer());
-		this.providedData = Collections.unmodifiableMap(providedDataBuilder);
+		this.generator = generator;
+
+		// Static helpers
+		providedData.put("Log", TEMPLATE_LOG);
+		providedData.put("thelper", new TemplateHelper());
+		providedData.put("opt", new ProcedureCodeOptimizer());
+		providedData.put("JavaConventions", new JavaConventions());
+
+		// Data that does not change for the current generator (BaseDataModelProvider is generator specific)
+		providedData.put("generator", new GeneratorWrapper(generator));
+		providedData.put("w", generator.getWorkspace().getWorkspaceInfo());
+		providedData.put("fp", new FileProvider(generator));
+		providedData.put("mcc", generator.getMinecraftCodeProvider());
 	}
 
 	public Map<String, Object> provide() {
-		return providedData;
+		providedData.put("settings", generator.getWorkspaceSettings()); // workspaceSettings is not final!
+		providedData.put("modid", generator.getWorkspaceSettings().getModID());
+		providedData.put("JavaModName", generator.getWorkspaceSettings().getJavaModName());
+		providedData.put("package", generator.getWorkspaceSettings().getModElementsPackage());
+		return Collections.unmodifiableMap(providedData);
 	}
 
 }
