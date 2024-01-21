@@ -36,7 +36,6 @@
 
 package ${package}.block;
 
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <#compress>

@@ -324,9 +324,9 @@ public class TestWorkspaceDataProvider {
 				achievement.rewardRecipes.add("ExampleRecipe1");
 				achievement.rewardRecipes.add("ExampleRecipe2");
 			}
-			achievement.triggerxml =
-					"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"tick\" x=\"40\" y=\"80\"><next>"
-							+ "<block type=\"advancement_trigger\" deletable=\"false\"></block></next></block></xml>";
+			achievement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
+					+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>"
+					+ "<block type=\"tick\"></block></next></block></xml>";
 			return achievement;
 		} else if (ModElementType.BIOME.equals(modElement.getType())) {
 			Biome biome = new Biome(modElement);

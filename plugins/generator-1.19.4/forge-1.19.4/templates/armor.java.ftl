@@ -35,7 +35,6 @@
 
 package ${package}.item;
 
-import net.minecraft.sounds.SoundEvent;
 import java.util.function.Consumer;
 import net.minecraft.client.model.Model;
 
