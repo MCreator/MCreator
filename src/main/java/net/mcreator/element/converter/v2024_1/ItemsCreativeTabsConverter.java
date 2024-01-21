@@ -54,6 +54,6 @@ public class ItemsCreativeTabsConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 59;
+		return 60;
 	}
 }
