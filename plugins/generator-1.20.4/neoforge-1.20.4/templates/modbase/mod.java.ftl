@@ -27,48 +27,45 @@ import org.apache.logging.log4j.Logger;
 	public ${JavaModName}(IEventBus modEventBus) {
 		NeoForge.EVENT_BUS.register(this);
 
-		modEventBus.addListener(this::init);
 		modEventBus.addListener(this::registerNetworking);
 
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
 	}
 
-	private void init(FMLCommonSetupEvent event) {
-		System.err.println("FIRST");
+	<#-- Networking support below -->
+	private static boolean networkingRegistered = false;
+	private static final Map<ResourceLocation, NetworkMessage<?>> MESSAGES = new HashMap<>();
+
+	private record NetworkMessage<T extends CustomPacketPayload>(FriendlyByteBuf.Reader<T> reader, IPlayPayloadHandler<T> handler) {}
+
+	public static <T extends CustomPacketPayload> void addNetworkMessage(ResourceLocation id, FriendlyByteBuf.Reader<T> reader, IPlayPayloadHandler<T> handler) {
+		if (networkingRegistered)
+			throw new IllegalStateException("Cannot register new network messages after networking has been registered");
+		MESSAGES.put(id, new NetworkMessage<>(reader, handler));
 	}
 
-	private void registerNetworking(final RegisterPayloadHandlerEvent event) {
+	@SuppressWarnings("rawtypes") private void registerNetworking(final RegisterPayloadHandlerEvent event) {
 		final IPayloadRegistrar registrar = event.registrar(MODID);
-		System.err.println("SECOND");
+		MESSAGES.forEach((id, networkMessage) -> registrar.play(id, ((NetworkMessage) networkMessage).reader(), networkMessage.handler()));
+		networkingRegistered = true;
 	}
 
-	//public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
-	//		new ResourceLocation(MODID, MODID),
-	//		() -> PROTOCOL_VERSION,
-	//		PROTOCOL_VERSION::equals,
-	//			<#if settings.isServerSideOnly()>clientVersion -> true<#else>PROTOCOL_VERSION::equals</#if>
-	//);
-	//public static <T> void addNetworkMessage(Class<T> messageType, BiConsumer<T, FriendlyByteBuf> encoder, Function<FriendlyByteBuf, T> decoder,
-	//									BiConsumer<T, Supplier<NetworkEvent.Context>> messageConsumer) {
-	//TODO: https://neoforged.net/news/20.4networking-rework/
-	//TODO: https://docs.neoforged.net/docs/networking/payload
-	//}
-
-	private static final Collection<AbstractMap.SimpleEntry<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
+	<#-- Wait procedure block support below -->
+	private static final Collection<Tuple<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
 
 	public static void queueServerWork(int tick, Runnable action) {
-		workQueue.add(new AbstractMap.SimpleEntry(action, tick));
+		workQueue.add(new Tuple<>(action, tick));
 	}
 
 	@SubscribeEvent public void tick(TickEvent.ServerTickEvent event) {
 		if (event.phase == TickEvent.Phase.END) {
-			List<AbstractMap.SimpleEntry<Runnable, Integer>> actions = new ArrayList<>();
+			List<Tuple<Runnable, Integer>> actions = new ArrayList<>();
 			workQueue.forEach(work -> {
-				work.setValue(work.getValue() - 1);
-				if (work.getValue() == 0)
+				work.setB(work.getB() - 1);
+				if (work.getB() == 0)
 					actions.add(work);
 			});
-			actions.forEach(e -> e.getKey().run());
+			actions.forEach(e -> e.getA().run());
 			workQueue.removeAll(actions);
 		}
 	}
