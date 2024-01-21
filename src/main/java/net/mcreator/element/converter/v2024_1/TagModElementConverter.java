@@ -72,7 +72,7 @@ public class TagModElementConverter implements IConverter {
 	}
 
 	@Override public int getVersionConvertingTo() {
-		return 59;
+		return 60;
 	}
 
 	private TagType fromLegacyName(String readableName) {
