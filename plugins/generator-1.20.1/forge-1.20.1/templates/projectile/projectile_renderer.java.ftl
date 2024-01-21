@@ -31,6 +31,8 @@
 <#-- @formatter:off -->
 package ${package}.client.renderer;
 
+import com.mojang.math.Axis;
+
 public class ${name}Renderer extends EntityRenderer<${name}Entity> {
 
 	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/entities/${data.customModelTexture}");

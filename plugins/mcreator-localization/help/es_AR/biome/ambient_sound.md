@@ -1,0 +1,1 @@
+El sonido ambiente que es reproducido constantemente en el bioma.

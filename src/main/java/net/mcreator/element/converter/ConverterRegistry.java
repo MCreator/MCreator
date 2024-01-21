@@ -47,6 +47,7 @@ import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
 import net.mcreator.element.converter.v2023_3.*;
 import net.mcreator.element.converter.v2023_4.*;
+import net.mcreator.element.converter.v2024_1.AdvancementTriggerInverter;
 import net.mcreator.element.converter.v2024_1.CallProcedureAtBlockConverter;
 import net.mcreator.element.converter.v2024_1.ProcedureCustomDamageRemover;
 
@@ -61,7 +62,8 @@ public class ConverterRegistry {
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
 		put(ModElementType.ADVANCEMENT, List.of(
 			new AchievementFixer(),
-			new AdvancementTextureConverter()
+			new AdvancementTextureConverter(),
+			new AdvancementTriggerInverter()
 		));
 		put(ModElementType.ARMOR, List.of(
 			new ArmorTexturesConverter(),
