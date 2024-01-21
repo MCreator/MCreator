@@ -27,7 +27,19 @@ import org.apache.logging.log4j.Logger;
 	public ${JavaModName}(IEventBus modEventBus) {
 		NeoForge.EVENT_BUS.register(this);
 
+		modEventBus.addListener(this::init);
+		modEventBus.addListener(this::registerNetworking);
+
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
+	}
+
+	private void init(FMLCommonSetupEvent event) {
+		System.err.println("FIRST");
+	}
+
+	private void registerNetworking(final RegisterPayloadHandlerEvent event) {
+		final IPayloadRegistrar registrar = event.registrar(MODID);
+		System.err.println("SECOND");
 	}
 
 	//public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
