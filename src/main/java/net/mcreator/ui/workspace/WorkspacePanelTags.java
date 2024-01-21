@@ -43,10 +43,10 @@ import net.mcreator.ui.minecraft.*;
 import net.mcreator.workspace.elements.TagElement;
 
 import javax.swing.*;
-import javax.swing.event.CellEditorListener;
-import javax.swing.event.ChangeEvent;
 import javax.swing.table.*;
 import java.awt.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -69,6 +69,9 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			ModElementType.FUNCTION);
 	private final DamageTypeListField listFieldDamageTypes = new DamageTypeListField(workspacePanel.getMCreator(),
 			true);
+
+	// Cache of list editor
+	private ItemListFieldCellEditor lastEditor = null;
 
 	public WorkspacePanelTags(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
@@ -100,8 +103,16 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			}
 		}) {
 			@Override public TableCellEditor getCellEditor(int row, int column) {
-				if (column == 3)
-					return new ItemListFieldCellEditor(row);
+				if (column == 3) {
+					TagElement tagElement = tagElementForRow(row);
+					if (lastEditor != null && lastEditor.getTagElement().equals(tagElement)) {
+						return lastEditor;
+					} else {
+						if (lastEditor != null)
+							lastEditor.cancelTimer();
+						return lastEditor = new ItemListFieldCellEditor(tagElement);
+					}
+				}
 				return super.getCellEditor(row, column);
 			}
 
@@ -226,12 +237,19 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		});
 
 		elements.getSelectionModel().addListSelectionListener(e -> {
-			if (!e.getValueIsAdjusting() && elements.getCellEditor() == null) {
+			if (!e.getValueIsAdjusting()) {
 				int selectedRow = elements.getSelectedRow();
 				int selectedColumn = elements.getSelectedColumn();
 				if (selectedRow >= 0 && selectedColumn == 3) {
 					elements.editCellAt(selectedRow, 3);
 				}
+			}
+		});
+
+		elements.addFocusListener(new FocusAdapter() {
+			@Override public void focusLost(FocusEvent e) {
+				// Clear lastEditor when table loses focus, so we don't keep potentially outdated list in it
+				lastEditor = null;
 			}
 		});
 	}
@@ -272,6 +290,11 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 	@Override public void reloadElements() {
 		int row = elements.getSelectedRow();
 
+		// Clear lastEditor when reloading elements, so we don't keep potentially outdated entries list in it
+		if (elements.isEditing())
+			elements.getCellEditor().stopCellEditing();
+		lastEditor = null;
+
 		DefaultTableModel model = (DefaultTableModel) elements.getModel();
 		model.setRowCount(0);
 
@@ -301,8 +324,10 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		private final TagElement tagElement;
 
-		public ItemListFieldCellEditor(int row) {
-			this.tagElement = WorkspacePanelTags.this.tagElementForRow(row);
+		private Timer timer;
+
+		public ItemListFieldCellEditor(TagElement tagElement) {
+			this.tagElement = tagElement;
 
 			this.listField = itemListFieldForRow(workspacePanel.getMCreator());
 			if (this.listField != null) {
@@ -310,18 +335,18 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				this.listField.setWarnOnRemoveAll(true);
 				this.listField.setEnabled(false);
 				// Slight delay before enabling so initial click on the row doesn't trigger button actions
-				Timer timer = new Timer(250, e -> listField.setEnabled(true));
+				timer = new Timer(250, e -> listField.setEnabled(true));
 				timer.start();
-				addCellEditorListener(new CellEditorListener() {
-					@Override public void editingStopped(ChangeEvent e) {
-						timer.stop();
-					}
-
-					@Override public void editingCanceled(ChangeEvent e) {
-						timer.stop();
-					}
-				});
 			}
+		}
+
+		public void cancelTimer() {
+			if (timer != null)
+				timer.stop();
+		}
+
+		public TagElement getTagElement() {
+			return tagElement;
 		}
 
 		@Override
