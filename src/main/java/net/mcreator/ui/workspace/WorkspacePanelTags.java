@@ -68,8 +68,6 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			ModElementType.FUNCTION);
 	private final DamageTypeListField listFieldDamageTypes = new DamageTypeListField(workspacePanel.getMCreator(),
 			true);
-	private final JComponent more = ComponentUtils.setForeground(
-			new JLabel("<html><big>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;"), Theme.current().getAltForegroundColor());
 
 	public WorkspacePanelTags(WorkspacePanel workspacePanel) {
 		super(workspacePanel);
