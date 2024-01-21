@@ -54,7 +54,9 @@ tasks.register('exportMacX64', Copy.class) {
     into(exportPathX64 + '/Contents/')
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
-            line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
+            line = line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
+            line = line.replace('%build%', project.builddate.toString())
+            return line
         }
         from file('LICENSE.txt')
     }
@@ -108,7 +110,9 @@ tasks.register('exportMacAarch64', Copy.class) {
     into(exportPathAarch64 + '/Contents/')
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
-            line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
+            line = line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
+            line = line.replace('%build%', project.builddate.toString())
+            return line
         }
         from file('LICENSE.txt')
     }
