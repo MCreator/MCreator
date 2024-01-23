@@ -30,6 +30,7 @@ import org.apache.logging.log4j.Logger;
 		modEventBus.addListener(this::registerNetworking);
 
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
+		<#if w.hasVariables()>${JavaModName}Variables.ATTACHMENT_TYPES.register(modEventBus);</#if>
 	}
 
 	<#-- Networking support below -->
@@ -44,7 +45,7 @@ import org.apache.logging.log4j.Logger;
 		MESSAGES.put(id, new NetworkMessage<>(reader, handler));
 	}
 
-	@SuppressWarnings("rawtypes") private void registerNetworking(final RegisterPayloadHandlerEvent event) {
+	@SuppressWarnings({"rawtypes", "unchecked"}) private void registerNetworking(final RegisterPayloadHandlerEvent event) {
 		final IPayloadRegistrar registrar = event.registrar(MODID);
 		MESSAGES.forEach((id, networkMessage) -> registrar.play(id, ((NetworkMessage) networkMessage).reader(), networkMessage.handler()));
 		networkingRegistered = true;

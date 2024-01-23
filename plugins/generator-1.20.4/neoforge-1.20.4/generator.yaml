@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 20.4.117-beta
+buildfileversion: 20.4.123-beta
 
 import:
   - datapack-1.20.4
@@ -66,9 +66,9 @@ base_templates:
   - template: modbase/sounds.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameSounds.java"
     condition: hasSounds()
-#  - template: modbase/variableslist.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
-#    condition: hasVariables()
+  - template: modbase/variableslist.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
+    condition: hasVariables()
 #  - template: elementinits/tabs.java.ftl
 #    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
 #    condition: hasItemsInTabs()
