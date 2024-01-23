@@ -54,7 +54,13 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				}
 
 				public float getAttackDamageBonus() {
+					<#if data.toolType == "Sword">
+					return ${data.damageVsEntity - 4}f;
+					<#elseif data.toolType == "Hoe">
+					return ${data.damageVsEntity - 1}f;
+					<#else>
 					return ${data.damageVsEntity - 2}f;
+					</#if>
 				}
 
 				public int getLevel() {
