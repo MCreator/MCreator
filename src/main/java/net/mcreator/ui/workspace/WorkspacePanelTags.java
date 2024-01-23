@@ -45,8 +45,6 @@ import net.mcreator.workspace.elements.TagElement;
 import javax.swing.*;
 import javax.swing.table.*;
 import java.awt.*;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -158,8 +156,11 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 				Component retval = super.prepareRenderer(renderer, row, column);
 				if (column == 0) {
-					TagType tagType = (TagType) elements.getValueAt(row, 0);
-					retval.setForeground(tagType.getColor().brighter());
+					try {
+						TagType tagType = (TagType) elements.getValueAt(row, 0);
+						retval.setForeground(tagType.getColor().brighter());
+					} catch (Exception ignored) {
+					}
 				} else {
 					retval.setForeground(Theme.current().getForegroundColor());
 				}
@@ -169,6 +170,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		sorter = new TableRowSorter<>(elements.getModel());
 		sorter.toggleSortOrder(2);
+		sorter.addRowSorterListener(e -> clearEditor());
 		elements.setRowSorter(sorter);
 
 		elements.setBackground(Theme.current().getBackgroundColor());
@@ -245,13 +247,6 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				}
 			}
 		});
-
-		elements.addFocusListener(new FocusAdapter() {
-			@Override public void focusLost(FocusEvent e) {
-				// Clear lastEditor when table loses focus, so we don't keep potentially outdated list in it
-				lastEditor = null;
-			}
-		});
 	}
 
 	private TagElement tagElementForRow(int row) {
@@ -287,13 +282,17 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		}
 	}
 
+	private void clearEditor() {
+		if (elements.isEditing())
+			elements.getCellEditor().stopCellEditing();
+		lastEditor = null;
+	}
+
 	@Override public void reloadElements() {
 		int row = elements.getSelectedRow();
 
 		// Clear lastEditor when reloading elements, so we don't keep potentially outdated entries list in it
-		if (elements.isEditing())
-			elements.getCellEditor().stopCellEditing();
-		lastEditor = null;
+		clearEditor();
 
 		DefaultTableModel model = (DefaultTableModel) elements.getModel();
 		model.setRowCount(0);
