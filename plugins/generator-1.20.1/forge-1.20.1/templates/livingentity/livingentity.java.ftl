@@ -38,9 +38,6 @@ import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.sounds.SoundEvent;
-
-import javax.annotation.Nullable;
 
 <#assign extendsClass = "PathfinderMob">
 

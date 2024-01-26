@@ -29,10 +29,7 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.BlocklyEditorToolbar;
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.NewVariableDialog;
@@ -62,7 +59,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure> implements IBlocklyPanelHolder {
 
@@ -75,7 +71,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	public final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
 	private final JList<VariableElement> localVarsList = new JList<>(localVars);
 
-	private boolean hasErrors = false;
 	private boolean hasDependencyErrors = false;
 
 	private List<Dependency> dependenciesArrayList = new ArrayList<>();
@@ -103,10 +98,16 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 
+	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
+
 	public ProcedureGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	private synchronized void regenerateProcedure() {
@@ -256,16 +257,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			dependenciesArrayList.forEach(dependencies::addElement);
 
-			hasErrors = false;
-			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.type() == BlocklyCompileNote.Type.ERROR) {
-					hasErrors = true;
-					break;
-				}
-			}
-
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
 		});
 	}
 
@@ -593,15 +587,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (!hasErrors && !hasDependencyErrors)
-			return new AggregatedValidationResult.PASS();
-		else if (hasErrors)
-			return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-					.filter(note -> note.type() == BlocklyCompileNote.Type.ERROR).map(BlocklyCompileNote::message)
-					.collect(Collectors.toList()));
-		else
+		if (hasDependencyErrors)
 			return new AggregatedValidationResult.FAIL(
 					L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
+		else
+			return new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes());
 	}
 
 	@Override protected void afterGeneratableElementGenerated() {
@@ -642,7 +632,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			blocklyPanel.setXML(procedure.procedurexml);
 			localVars.removeAllElements();
 			blocklyPanel.getLocalVariablesList().forEach(localVars::addElement);
-			regenerateProcedure();
+			blocklyPanel.triggerEventFunction();
 		});
 	}
 
@@ -652,8 +642,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		return procedure;
 	}
 
-	@Override public List<BlocklyPanel> getBlocklyPanels() {
-		return List.of(blocklyPanel);
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {

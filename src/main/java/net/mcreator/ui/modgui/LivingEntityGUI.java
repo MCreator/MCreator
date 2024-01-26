@@ -36,10 +36,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.BlocklyEditorToolbar;
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JMinMaxSpinner;
@@ -255,8 +252,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	private BlocklyPanel blocklyPanel;
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
-	private boolean hasErrors = false;
 	private Map<String, ToolboxBlock> externalBlocks;
+	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
 
 	private boolean editorReady = false;
 
@@ -272,6 +269,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	private void setDefaultAISet() {
@@ -306,14 +307,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		List<BlocklyCompileNote> finalCompileNotesArrayList = compileNotesArrayList;
 		SwingUtilities.invokeLater(() -> {
 			compileNotesPanel.updateCompileNotes(finalCompileNotesArrayList);
-			hasErrors = false;
-
-			for (BlocklyCompileNote note : finalCompileNotesArrayList) {
-				if (note.type() == BlocklyCompileNote.Type.ERROR) {
-					hasErrors = true;
-					break;
-				}
-			}
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
 		});
 	}
 
@@ -1012,10 +1006,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		} else if (page == 1) {
 			return modelLayers.getValidationResult();
 		} else if (page == 7) {
-			if (hasErrors)
-				return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-						.map(compileNote -> "Living entity AI builder: " + compileNote.message())
-						.collect(Collectors.toList()));
+			return new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes(),
+					compileNote -> "Living entity AI builder: " + compileNote);
 		} else if (page == 8) {
 			return new AggregatedValidationResult(restrictionBiomes);
 		}
@@ -1172,7 +1164,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(livingEntity.aixml);
-			regenerateAITasks();
+			blocklyPanel.triggerEventFunction();
 		});
 
 		enableOrDisableFields();
@@ -1296,8 +1288,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-mob");
 	}
 
-	@Override public List<BlocklyPanel> getBlocklyPanels() {
-		return List.of(blocklyPanel);
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
 	}
 
 }

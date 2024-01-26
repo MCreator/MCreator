@@ -67,6 +67,9 @@ public class GradleUtils {
 			retval.withArguments(Arrays.asList("-Porg.gradle.java.installations.auto-detect=false",
 					"-Porg.gradle.java.installations.paths=" + java_home.replace('\\', '/')));
 
+		// some mod API toolchains need to think they are running in IDE, so we make them think we are Eclipse
+		retval.addJvmArguments("-Declipse.application=net.mcreator");
+
 		return retval;
 	}
 

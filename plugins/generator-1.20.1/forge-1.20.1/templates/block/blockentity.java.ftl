@@ -31,8 +31,6 @@
 <#-- @formatter:off -->
 package ${package}.block.entity;
 
-import javax.annotation.Nullable;
-
 public class ${name}BlockEntity extends RandomizableContainerBlockEntity implements WorldlyContainer {
 
 	private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(${data.inventorySize}, ItemStack.EMPTY);
