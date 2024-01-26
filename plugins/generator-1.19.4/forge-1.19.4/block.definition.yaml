@@ -396,12 +396,12 @@ tags:
   - tag: BLOCKS:minecraft:mineable/hoe
     condition: "${data.destroyTool == 'hoe'}"
   - tag: BLOCKS:minecraft:stairs
-    condition: "${data.blockBase!'' == 'Stairs'}"
+    condition: "${data.blockBase! == 'Stairs'}"
   - tag: BLOCKS:minecraft:slabs
-    condition: "${data.blockBase!'' == 'Slab'}"
+    condition: "${data.blockBase! == 'Slab'}"
   - tag: BLOCKS:minecraft:fences
-    condition: "${data.blockBase!'' == 'Fence'}"
+    condition: "${data.blockBase! == 'Fence'}"
   - tag: BLOCKS:minecraft:walls
-    condition: "${data.blockBase!'' == 'Wall'}"
+    condition: "${data.blockBase! == 'Wall'}"
   - tag: BLOCKS:minecraft:leaves
-    condition: "${data.blockBase!'' == 'Leaves'}"
+    condition: "${data.blockBase! == 'Leaves'}"
