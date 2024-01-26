@@ -28,7 +28,9 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
+import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.events.ui.BlocklyPanelRegisterJSObjects;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
@@ -49,9 +51,7 @@ import javax.annotation.Nullable;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -142,6 +142,11 @@ public class BlocklyPanel extends JFXPanel {
 					JSObject window = (JSObject) webEngine.executeScript("window");
 					window.setMember("javabridge", bridge);
 					window.setMember("editorType", type.registryName());
+
+					// allow plugins to register additional JS objects
+					Map<String, Object> domWindowMembers = new HashMap<>();
+					MCREvent.event(new BlocklyPanelRegisterJSObjects(this, domWindowMembers));
+					domWindowMembers.forEach(window::setMember);
 
 					// @formatter:off
 					webEngine.executeScript("var MCR_BLOCKLY_PREF = { "
@@ -240,6 +245,10 @@ public class BlocklyPanel extends JFXPanel {
 
 	public void clearWorkspace() {
 		executeJavaScriptSynchronously("workspace.clear()");
+	}
+
+	public void triggerEventFunction() {
+		executeJavaScriptSynchronously("blocklyEventFunction()");
 	}
 
 	public void addGlobalVariable(String name, String type) {

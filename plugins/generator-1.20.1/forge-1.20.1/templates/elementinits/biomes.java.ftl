@@ -39,21 +39,9 @@ package ${package}.init;
 
 import com.mojang.datafixers.util.Pair;
 
-<#assign spawn_overworld = []>
-<#assign spawn_overworld_caves = []>
-<#assign spawn_nether = []>
-
-<#list biomes as biome>
-	<#if biome.spawnBiome>
-		<#assign spawn_overworld += [biome]>
-	</#if>
-	<#if biome.spawnInCaves>
-		<#assign spawn_overworld_caves += [biome]>
-	</#if>
-	<#if biome.spawnBiomeNether>
-		<#assign spawn_nether += [biome]>
-	</#if>
-</#list>
+<#assign spawn_overworld = biomes?filter(biome -> biome.spawnBiome)>
+<#assign spawn_overworld_caves = biomes?filter(biome -> biome.spawnInCaves)>
+<#assign spawn_nether = biomes?filter(biome -> biome.spawnBiomeNether)>
 
 @Mod.EventBusSubscriber public class ${JavaModName}Biomes {
 

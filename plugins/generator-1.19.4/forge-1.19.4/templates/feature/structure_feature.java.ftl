@@ -31,8 +31,6 @@
 <#-- @formatter:off -->
 package ${package}.world.features;
 
-import com.mojang.serialization.Codec;
-
 <#compress>
 @Mod.EventBusSubscriber public class StructureFeature extends Feature<StructureFeatureConfiguration> {
 	public static final DeferredRegister<Feature<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.FEATURES, ${JavaModName}.MODID);

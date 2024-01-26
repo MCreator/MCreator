@@ -67,8 +67,8 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 		List<File> selected = elementList.getSelectedValuesList();
 
 		filterModel.removeAllElements();
-		File[] screenshots = new File(workspacePanel.getMCreator().getWorkspaceFolder(),
-				"run/screenshots/").listFiles();
+		File[] screenshots = new File(workspacePanel.getMCreator().getFolderManager().getClientRunDir(),
+				"screenshots/").listFiles();
 
 		if (screenshots != null)
 			filterModel.addAll(List.of(screenshots));

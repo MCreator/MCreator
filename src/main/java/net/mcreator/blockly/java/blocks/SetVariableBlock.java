@@ -50,8 +50,6 @@ public class SetVariableBlock implements IBlockGenerator {
 		String type = StringUtils.removeStart(block.getAttribute("type"), "variables_set_");
 		VariableType typeObject = VariableTypeLoader.INSTANCE.fromName(type);
 
-		String javaType = new Dependency("", typeObject.getName()).getType(master.getWorkspace());
-
 		Element variable = XMLUtil.getFirstChildrenWithName(block, "field");
 		List<Element> inputs = XMLUtil.getChildrenWithName(block, "value");
 		Element value = null, entityInput = null;
@@ -129,7 +127,6 @@ public class SetVariableBlock implements IBlockGenerator {
 					dataModel.put("name", name);
 					dataModel.put("scope", scope.toUpperCase(Locale.ENGLISH));
 					dataModel.put("type", type);
-					dataModel.put("javaType", javaType);
 					dataModel.put("value", valuecode);
 
 					if (entitycode != null)

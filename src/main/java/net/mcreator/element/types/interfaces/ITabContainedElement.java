@@ -29,6 +29,14 @@ public interface ITabContainedElement {
 
 	@Nullable TabEntry getCreativeTab();
 
+	/**
+	 * WARNING: Calls to this method are generally not thread safe.
+	 * Implementations can call MCItem.Custom::new that calls
+	 * getBlockIconBasedOnName that calls ModElement#getGeneratableElement
+	 * which is not thread safe
+	 *
+	 * @return list of items in the creative tab of this element
+	 */
 	List<MCItem> getCreativeTabItems();
 
 }

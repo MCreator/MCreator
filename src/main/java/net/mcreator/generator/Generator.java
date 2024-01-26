@@ -23,6 +23,7 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.generator.template.MinecraftCodeProvider;
 import net.mcreator.generator.template.TemplateExpressionParser;
@@ -35,7 +36,6 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.writer.ClassWriter;
 import net.mcreator.io.writer.JSONWriter;
 import net.mcreator.java.ProjectJarManager;
-import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -140,23 +140,23 @@ public class Generator implements IGenerator, Closeable {
 	public boolean generateBase(boolean formatAndOrganiseImports) {
 		AtomicBoolean success = new AtomicBoolean(true);
 
-		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).stream().map(generatorTemplate -> {
-			if (generatorTemplate.canBeLocked()) // can this file be locked
-				if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
-					return null; // if they are, we skip this file
+		TemplateGenerator templateGenerator = getTemplateGeneratorFromName("templates");
 
-			Map<String, Object> dataModel = generatorTemplate.getDataModel();
+		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).stream().map(generatorTemplate -> {
+			if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
+				if (generatorTemplate.canBeLocked()) // can this file be locked
+					return null; // if yes, we skip this file
 
 			try {
-				String code = getTemplateGeneratorFromName("templates").generateBaseFromTemplate(
-						(String) generatorTemplate.getTemplateDefinition().get("template"), dataModel,
+				String code = templateGenerator.generateBaseFromTemplate(
+						(String) generatorTemplate.getTemplateDefinition().get("template"),
+						generatorTemplate.getDataModel(),
 						(String) generatorTemplate.getTemplateDefinition().get("variables"));
 				return generatorTemplate.toGeneratorFile(code);
 			} catch (TemplateGeneratorException e) {
 				success.set(false);
+				return null;
 			}
-
-			return null;
 		}).filter(Objects::nonNull).collect(Collectors.toList());
 
 		generateFiles(generatorFiles, formatAndOrganiseImports);
@@ -212,6 +212,8 @@ public class Generator implements IGenerator, Closeable {
 
 		Set<GeneratorFile> generatorFiles = new HashSet<>();
 
+		TemplateGenerator templateGenerator = getTemplateGeneratorFromName("templates");
+
 		// generate all source files
 		List<GeneratorTemplate> generatorTemplateList = getModElementGeneratorTemplatesList(element);
 		for (GeneratorTemplate generatorTemplate : generatorTemplateList) {
@@ -223,13 +225,13 @@ public class Generator implements IGenerator, Closeable {
 
 			String code;
 			if (generatorTemplate instanceof ListTemplate listTemplate) { // list template - generate it for list data item pointed at
-				code = getTemplateGeneratorFromName("templates").generateListItemFromTemplate(
+				code = templateGenerator.generateListItemFromTemplate(
 						listTemplate.getTemplatesList().listData().get(listTemplate.getListItemIndex()),
 						listTemplate.getListItemIndex(), element, templateFileName, dataModel, variables,
 						element.getAdditionalTemplateData());
 			} else { // regular template
-				code = getTemplateGeneratorFromName("templates").generateElementFromTemplate(element, templateFileName,
-						dataModel, variables, element.getAdditionalTemplateData());
+				code = templateGenerator.generateElementFromTemplate(element, templateFileName, dataModel, variables,
+						element.getAdditionalTemplateData());
 			}
 
 			GeneratorFile generatorFile = generatorTemplate.toGeneratorFile(code);
@@ -305,36 +307,40 @@ public class Generator implements IGenerator, Closeable {
 				processTemplateDefinitionsToGeneratorTemplates(generatorConfiguration.getBaseTemplates(),
 						performFSTasks, templateID));
 
+		// Pre-precess GEs and sort them by sortID
+		List<GeneratableElement> generatableElements = workspace.getModElements().stream()
+				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
+				.filter(Objects::nonNull).toList();
+
 		// Add mod element type specific global files (eg. registries for mod elements)
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			List<GeneratorTemplate> globalTemplatesList = getGlobalTemplatesListForModElementType(type, performFSTasks,
 					templateID);
 
-			List<GeneratableElement> elementsList = workspace.getModElements().stream().filter(e -> e.getType() == type)
-					.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
-					.filter(Objects::nonNull).collect(Collectors.toList());
+			List<GeneratableElement> filteredGeneratableElements = generatableElements.parallelStream()
+					.filter(e -> e.getModElement().getType() == type).toList();
 
-			if (!elementsList.isEmpty()) {
-				globalTemplatesList.forEach(e -> e.addDataModelEntry(type.getRegistryName() + "s", elementsList));
+			if (!filteredGeneratableElements.isEmpty()) {
+				globalTemplatesList.forEach(
+						e -> e.addDataModelEntry(type.getRegistryName() + "s", filteredGeneratableElements));
 
 				files.addAll(globalTemplatesList);
 			} else if (performFSTasks) { // if no elements of this type are present, delete the global template for that type
 				for (GeneratorTemplate template : globalTemplatesList) {
-					if (workspace.getFolderManager().isFileInWorkspace(template.getFile())) {
-						template.getFile().delete();
-					}
+					template.getFile().delete();
 				}
 			}
 		}
 
 		Map<BaseType, List<GeneratableElement>> baseTypeListMap = new HashMap<>();
-		for (ModElement modElement : workspace.getModElements()) {
-			Collection<BaseType> baseTypes = modElement.getBaseTypesProvided();
-			for (BaseType baseType : baseTypes) {
-				if (!baseTypeListMap.containsKey(baseType))
-					baseTypeListMap.put(baseType, new ArrayList<>());
+		for (GeneratableElement generatableElement : generatableElements) {
+			if (generatableElement instanceof ICommonType commonType) {
+				for (BaseType baseType : commonType.getBaseTypesProvided()) {
+					if (!baseTypeListMap.containsKey(baseType))
+						baseTypeListMap.put(baseType, new ArrayList<>());
 
-				baseTypeListMap.get(baseType).add(modElement.getGeneratableElement());
+					baseTypeListMap.get(baseType).add(generatableElement);
+				}
 			}
 		}
 
@@ -346,17 +352,12 @@ public class Generator implements IGenerator, Closeable {
 			if (!baseTypeListMap.containsKey(baseType) || baseTypeListMap.get(baseType).isEmpty()) {
 				if (performFSTasks) { // if no elements of this type are present, delete the base type template for that type
 					for (GeneratorTemplate template : globalTemplatesList) {
-						if (workspace.getFolderManager().isFileInWorkspace(template.getFile())) {
-							template.getFile().delete();
-						}
+						template.getFile().delete();
 					}
 				}
 			} else {
 				globalTemplatesList.forEach(
-						e -> e.addDataModelEntry(baseType.getPluralName().toLowerCase(Locale.ENGLISH),
-								baseTypeListMap.get(baseType).stream()
-										.sorted(Comparator.comparing(ge -> ge.getModElement().getSortID()))
-										.collect(Collectors.toList())));
+						e -> e.addDataModelEntry(baseType.getPluralName(), baseTypeListMap.get(baseType)));
 
 				files.addAll(globalTemplatesList);
 			}
@@ -388,9 +389,12 @@ public class Generator implements IGenerator, Closeable {
 			boolean performFSTasks, AtomicInteger templateID) {
 		Set<GeneratorTemplate> files = new HashSet<>();
 		for (Object template : templates) {
-			String name = GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name"));
+			File file = new File(GeneratorTokens.replaceTokens(workspace, (String) ((Map<?, ?>) template).get("name")));
 
-			GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(name),
+			if (!workspace.getFolderManager().isFileInWorkspace(file))
+				continue; // if file is not in workspace, we skip it
+
+			GeneratorTemplate generatorTemplate = new GeneratorTemplate(file,
 					Integer.toString(templateID.getAndIncrement()) + ((Map<?, ?>) template).get("template"),
 					(Map<?, ?>) template);
 
@@ -398,9 +402,7 @@ public class Generator implements IGenerator, Closeable {
 				// if template is skipped, we delete its potential file if performFSTasks and file was not previously generated
 				// this prevents deletion of files that were previously generated by another passing condition for the same file
 				if (!files.contains(generatorTemplate) && performFSTasks) {
-					if (workspace.getFolderManager().isFileInWorkspace(new File(name))) {
-						new File(name).delete(); // if template is skipped, we delete its potential file
-					}
+					generatorTemplate.getFile().delete(); // if template is skipped, we delete its potential file
 				}
 				continue;
 			}
@@ -434,13 +436,16 @@ public class Generator implements IGenerator, Closeable {
 			int templateID = 0;
 
 			for (Object template : templates) {
-				String name = GeneratorTokens.replaceVariableTokens(generatableElement,
+				File file = new File(GeneratorTokens.replaceVariableTokens(generatableElement,
 						GeneratorTokens.replaceTokens(workspace,
 								((String) ((Map<?, ?>) template).get("name")).replace("@NAME",
 										generatableElement.getModElement().getName()).replace("@registryname",
-										generatableElement.getModElement().getRegistryName())));
+										generatableElement.getModElement().getRegistryName()))));
 
-				GeneratorTemplate generatorTemplate = new GeneratorTemplate(new File(name),
+				if (!workspace.getFolderManager().isFileInWorkspace(file))
+					continue; // if file is not in workspace, we skip it
+
+				GeneratorTemplate generatorTemplate = new GeneratorTemplate(file,
 						Integer.toString(templateID) + ((Map<?, ?>) template).get("template"), (Map<?, ?>) template);
 
 				if (generatorTemplate.shouldBeSkippedBasedOnCondition(this, generatableElement)) {
@@ -502,15 +507,19 @@ public class Generator implements IGenerator, Closeable {
 					for (int index = 0; index < items.size(); index++) {
 						Set<ListTemplate> filesForCurrentItem = new HashSet<>();
 						for (Object template : templates) {
-							String name = GeneratorTokens.replaceVariableTokens(generatableElement, items.get(index),
-									GeneratorTokens.replaceTokens(workspace,
-											((String) ((Map<?, ?>) template).get("name")).replace("@NAME",
-															generatableElement.getModElement().getName())
-													.replace("@registryname",
-															generatableElement.getModElement().getRegistryName())
-													.replace("@itemindex", Integer.toString(index))));
+							File file = new File(
+									GeneratorTokens.replaceVariableTokens(generatableElement, items.get(index),
+											GeneratorTokens.replaceTokens(workspace,
+													((String) ((Map<?, ?>) template).get("name")).replace("@NAME",
+																	generatableElement.getModElement().getName())
+															.replace("@registryname", generatableElement.getModElement()
+																	.getRegistryName())
+															.replace("@itemindex", Integer.toString(index)))));
 
-							ListTemplate listTemplate = new ListTemplate(new File(name),
+							if (!workspace.getFolderManager().isFileInWorkspace(file))
+								continue; // if file is not in workspace, we skip it
+
+							ListTemplate listTemplate = new ListTemplate(file,
 									Integer.toString(templateID) + ((Map<?, ?>) template).get("template"),
 									templatesList, index, (Map<?, ?>) template);
 
@@ -539,61 +548,43 @@ public class Generator implements IGenerator, Closeable {
 		if (!file.isFile() || !workspace.getFolderManager().isFileInWorkspace(file))
 			return null;
 
-		for (ModElement element : workspace.getModElements()) {
+		return workspace.getModElements().parallelStream().filter(element -> {
 			if (generatorConfiguration.getGeneratorStats().getModElementTypeCoverageInfo().get(element.getType())
 					== GeneratorStats.CoverageStatus.NONE)
-				continue;
+				return false;
 
-			try {
-				GeneratableElement generatableElement = element.getGeneratableElement();
-
-				if (generatableElement == null)
-					continue;
-
-				List<File> modElementFiles = getModElementGeneratorTemplatesList(generatableElement).stream()
-						.map(GeneratorTemplate::getFile).collect(Collectors.toList());
-				if (FileIO.isFileOnFileList(modElementFiles, file))
-					return element;
-
-				// if this is GUI, we check for generated UI texture file too
-				if (element.getType() == ModElementType.GUI) {
-					File guiTextureFile = workspace.getFolderManager()
-							.getTextureFile(element.getName().toLowerCase(Locale.ENGLISH), TextureType.SCREEN);
-					if (guiTextureFile.getCanonicalPath().equals(file.getCanonicalPath()))
-						return element;
-				}
-			} catch (Exception e) {
-				LOG.warn("Failed to get list of mod element files for mod element " + element, e);
+			Object oldFiles = element.getMetadata("files");
+			if (oldFiles instanceof List<?> fileList) {
+				return FileIO.isFileOnFileList(fileList.stream()
+								.map(e -> new File(getWorkspaceFolder(), e.toString().replace("/", File.separator))).toList(),
+						file);
+			} else {
+				return false;
 			}
-		}
-
-		return null;
+		}).findAny().orElse(null);
 	}
 
 	private void generateFiles(Collection<GeneratorFile> generatorFiles, boolean formatAndOrganiseImports) {
-		// first create Java files if they do not exist already for the import formatter to load them
-		// so the imports get properly organised in the next step
-		if (formatAndOrganiseImports) {
-			generatorFiles.forEach(generatorFile -> {
-				if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {
-					if (generatorFile.writer() == GeneratorFile.Writer.JAVA)
-						if (!generatorFile.getFile().isFile())
-							FileIO.touchFile(generatorFile.getFile());
-				}
-			});
-		}
+		Map<File, String> javaFiles = new HashMap<>();
 
 		for (GeneratorFile generatorFile : generatorFiles) {
-			if (workspace.getFolderManager().isFileInWorkspace(generatorFile.getFile())) {
-				if (generatorFile.writer() == GeneratorFile.Writer.JAVA)
-					ClassWriter.writeClassToFileWithoutQueue(workspace, generatorFile.contents(),
-							generatorFile.getFile(), formatAndOrganiseImports);
-				else if (generatorFile.writer() == GeneratorFile.Writer.JSON)
-					JSONWriter.writeJSONToFileWithoutQueue(generatorFile.contents(), generatorFile.getFile());
-				else if (generatorFile.writer() == GeneratorFile.Writer.FILE)
-					FileIO.writeStringToFile(generatorFile.contents(), generatorFile.getFile());
+			if (generatorFile.writer() == GeneratorFile.Writer.JAVA) {
+				// first create Java files if they do not exist already for the import formatter to load them
+				// so the imports get properly organised in the next step
+				if (formatAndOrganiseImports && !generatorFile.getFile().isFile())
+					FileIO.touchFile(generatorFile.getFile());
+
+				javaFiles.put(generatorFile.getFile(), generatorFile.contents());
+			} else if (generatorFile.writer() == GeneratorFile.Writer.JSON) {
+				JSONWriter.writeJSONToFile(generatorFile.contents(), generatorFile.getFile());
+			} else if (generatorFile.writer() == GeneratorFile.Writer.FILE) {
+				FileIO.writeStringToFile(generatorFile.contents(), generatorFile.getFile());
 			}
 		}
+
+		// After we have list of Java files, and they are created, we can format and organise imports in them
+		if (!javaFiles.isEmpty())
+			ClassWriter.batchWriteClassToFile(workspace, javaFiles, formatAndOrganiseImports, null);
 	}
 
 	public void runResourceSetupTasks() {
@@ -668,4 +659,5 @@ public class Generator implements IGenerator, Closeable {
 	public void setGradleCache(GeneratorGradleCache generatorGradleCache) {
 		this.generatorGradleCache = generatorGradleCache;
 	}
+
 }
