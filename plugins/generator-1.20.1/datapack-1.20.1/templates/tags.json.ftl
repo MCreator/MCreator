@@ -12,7 +12,7 @@
           </#list>
       <#elseif type == "biomes">
           <#list w.normalizeTagElements(tag.resourcePath(), 0, elements) as value>
-            "${value.getUnmappedValue()}"<#sep>,
+            "${value}"<#sep>,
           </#list>
       <#elseif type == "damage_types">
           <#list w.normalizeTagElements(tag.resourcePath(), 1, elements) as value>
