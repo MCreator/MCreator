@@ -39,6 +39,7 @@ import java.util.Collections;
 
 public class Projectile extends GeneratableElement implements IEntityWithModel, ICommonType {
 
+	public String mobName;
 	public MItemBlock projectileItem;
 	public boolean showParticles;
 	public Sound actionSound;

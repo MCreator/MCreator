@@ -41,9 +41,12 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.MCItemHolderValidator;
+import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ListUtils;
+import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.resources.Model;
 
@@ -61,6 +64,7 @@ import java.util.stream.Collectors;
 
 public class ProjectileGUI extends ModElementGUI<Projectile> {
 
+	private final VTextField mobName = new VTextField();
 	private MCItemHolder projectileItem;
 	private final JCheckBox showParticles = L10N.checkbox("elementgui.common.enable");
 	private final SoundSelector actionSound = new SoundSelector(mcreator);
@@ -117,8 +121,12 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		projectileItem.setOpaque(false);
 		showParticles.setOpaque(false);
 
-		JPanel propertiesPanel = new JPanel(new GridLayout(9, 2, 2, 2));
+		JPanel propertiesPanel = new JPanel(new GridLayout(10, 2, 2, 2));
 		propertiesPanel.setOpaque(false);
+
+		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/name"),
+				L10N.label("elementgui.living_entity.name")));
+		propertiesPanel.add(mobName);
 
 		propertiesPanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("projectile/item_texture"),
 				L10N.label("elementgui.projectile.item_texture")));
@@ -174,6 +182,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		triggersPanels.setOpaque(false);
 
 		JPanel events = new JPanel(new GridLayout(2, 2, 5, 5));
+		ComponentUtils.deriveFont(mobName, 16);
 		events.setOpaque(false);
 		events.add(onHitsBlock);
 		events.add(onHitsEntity);
@@ -182,6 +191,10 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 		triggersPanels.add("Center",
 				PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
+
+		mobName.setValidator(
+				new TextFieldValidator(mobName, L10N.t("elementgui.living_entity.error_entity_needs_name")));
+		mobName.enableRealtimeValidation();
 
 		customModelTexture.setValidator(() -> {
 			if (!modelDefault.equals(model.getSelectedItem()))
@@ -192,11 +205,17 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		});
 		projectileItem.setValidator(new MCItemHolderValidator(projectileItem));
 
+		page1group.addValidationElement(mobName);
 		page1group.addValidationElement(projectileItem);
 		page1group.addValidationElement(customModelTexture);
 
 		addPage(L10N.t("elementgui.common.page_properties"), PanelUtils.totalCenterInPanel(propertiesPanel));
 		addPage(L10N.t("elementgui.common.page_triggers"), triggersPanels);
+
+		if (!isEditingMode()) {
+			String readableNameFromModElement = StringUtils.machineToReadableName(modElement.getName());
+			mobName.setText(readableNameFromModElement);
+		}
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -223,6 +242,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 	}
 
 	@Override protected void openInEditingMode(Projectile projectile) {
+		mobName.setText(projectile.mobName);
 		projectileItem.setBlock(projectile.projectileItem);
 		showParticles.setSelected(projectile.showParticles);
 		actionSound.setSound(projectile.actionSound);
@@ -243,6 +263,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 
 	@Override public Projectile getElementFromGUI() {
 		Projectile projectile = new Projectile(modElement);
+		projectile.mobName = mobName.getText();
 		projectile.projectileItem = projectileItem.getBlock();
 		projectile.showParticles = showParticles.isSelected();
 		projectile.actionSound = actionSound.getSound();

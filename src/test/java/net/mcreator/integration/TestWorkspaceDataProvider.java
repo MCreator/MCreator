@@ -991,6 +991,7 @@ public class TestWorkspaceDataProvider {
 			return itemExtension;
 		} else if (ModElementType.PROJECTILE.equals(modElement.getType())) {
 			Projectile projectile = new Projectile(modElement);
+			projectile.mobName = modElement.getName();
 			projectile.actionSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			projectile.power = 1.5;

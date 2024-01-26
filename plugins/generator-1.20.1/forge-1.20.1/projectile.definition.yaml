@@ -4,3 +4,7 @@ templates:
   - template: projectile/projectile_renderer.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/client/renderer/@NAMERenderer.java"
     condition: isCustomModel()
+
+localizationkeys:
+  - key: entity.@modid.@registryname
+    mapto: mobName
