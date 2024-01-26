@@ -231,9 +231,17 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		MCREvent.event(new WorkspaceSelectorLoadedEvent(this));
 
-		setSize(795, 460);
+		setSize(795, 461);
 		setResizable(false);
 		setLocationRelativeTo(null);
+
+		// On windows high-DPI screens, some visual glitches can happen
+		// but seem to be fixed by resizing the window (we only do 1px)
+		addWindowListener(new WindowAdapter() {
+			@Override public void windowOpened(WindowEvent e) {
+				setSize(795, 460);
+			}
+		});
 	}
 
 	@Override public void dragEnter(DropTargetDragEvent dtde) {
