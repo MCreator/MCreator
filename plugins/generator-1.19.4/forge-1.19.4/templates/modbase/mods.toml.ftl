@@ -35,15 +35,6 @@ displayTest="IGNORE_SERVER_VERSION"
     ordering="NONE"
     side="BOTH"
 
-<#if !settings.isDisableForgeVersionCheck()>
-[[dependencies.${settings.getModID()}]]
-    modId="forge"
-    mandatory=true
-    versionRange="[${generator.getGeneratorBuildFileVersion()}]"
-    ordering="NONE"
-    side="BOTH"
-</#if>
-
 <#list settings.getRequiredMods() as e>
 [[dependencies.${settings.getModID()}]]
     modId="${e}"
