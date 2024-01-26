@@ -23,16 +23,16 @@ import net.mcreator.workspace.elements.VariableType;
 
 import javax.annotation.Nullable;
 
-class CBoxEntry {
+class ProcedureEntry {
 	String string;
 	final boolean correctDependencies;
 	@Nullable private final VariableType variableType;
 
-	CBoxEntry(String string, @Nullable VariableType variableType) {
+	ProcedureEntry(String string, @Nullable VariableType variableType) {
 		this(string, variableType, true);
 	}
 
-	CBoxEntry(String string, @Nullable VariableType variableType, boolean correctDependencies) {
+	ProcedureEntry(String string, @Nullable VariableType variableType, boolean correctDependencies) {
 		this.string = string;
 		if (this.string == null)
 			this.string = "";
@@ -45,7 +45,7 @@ class CBoxEntry {
 	}
 
 	@Override public boolean equals(Object o) {
-		return o instanceof CBoxEntry && ((CBoxEntry) o).string.equals(this.string);
+		return o instanceof ProcedureEntry && ((ProcedureEntry) o).string.equals(this.string);
 	}
 
 	@Override public String toString() {

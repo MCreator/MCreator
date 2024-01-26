@@ -133,16 +133,17 @@ import java.util.function.Function;
 
 	public Map<String, List<MItemBlock>> getCreativeTabMap() {
 		List<GeneratableElement> elementsList = workspace.getModElements().stream()
-				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
-				.filter(Objects::nonNull).toList();
+				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement).toList();
 
 		Map<String, List<MItemBlock>> tabMap = new HashMap<>();
 
+		// Can't use parallelStream here because getCreativeTabItems
+		// call MCItem.Custom::new that calls getBlockIconBasedOnName which calls
+		// ModElement#getGeneratableElement that is not thread safe
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
 				TabEntry tabEntry = tabElement.getCreativeTab();
 				List<MCItem> tabItems = tabElement.getCreativeTabItems();
-
 				if (tabEntry != null && tabItems != null && !tabItems.isEmpty()) {
 					String tab = tabEntry.getUnmappedValue();
 					if (tab != null && !tab.equals("No creative tab entry")) {
@@ -184,13 +185,18 @@ import java.util.function.Function;
 
 	public <T extends MappableElement> Set<MappableElement> normalizeTagElements(String tag, int mappingTable,
 			Collection<T> elements) {
+		tag = "#" + tag;
+
 		final Function<String, String> normalizeTag = input -> {
-			input = input.replaceFirst("#", "").replaceFirst("TAG:", "");
-			if (input.contains(":")) {
-				return input;
-			} else {
-				return "minecraft:" + input;
+			if (input.startsWith("#") || input.startsWith("TAG:")) {
+				input = input.replaceFirst("#", "").replaceFirst("TAG:", "");
+				if (input.contains(":")) {
+					return "#" + input;
+				} else {
+					return "#minecraft:" + input;
+				}
 			}
+			return input;
 		};
 
 		tag = normalizeTag.apply(tag);

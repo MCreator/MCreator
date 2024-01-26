@@ -1049,7 +1049,7 @@ import java.util.stream.Collectors;
 							mcreator.getGenerator().generateElement(generatableElement);
 						}
 						i++;
-						p1.setPercent((int) (((float) i / (float) elementsThatGotUnlocked.size()) * 100.0f));
+						p1.setPercent((int) (i / (float) elementsThatGotUnlocked.size() * 100));
 					}
 					p1.markStateOk();
 

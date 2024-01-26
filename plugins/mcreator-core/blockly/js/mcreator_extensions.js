@@ -291,7 +291,7 @@ Blockly.Extensions.register('state_provider_int_property_validator', validateInt
 
 Blockly.Extensions.register('pine_tree_feature_validator', validateIntProviderInputs(['foliage_height', 0, 24]));
 
-Blockly.Extensions.register('spruce_tree_feature_validator', validateIntProviderInputs(['radius', 0, 24], ['trunk_height', 0, 24]));
+Blockly.Extensions.register('spruce_tree_feature_validator', validateIntProviderInputs(['radius', 0, 16], ['trunk_height', 0, 24]));
 
 // Helper function to provide a mixin for mutators that add a single repeating (dummy) input with additional fields
 // The mutator container block must have a "STACK" statement input for this to work
@@ -370,8 +370,9 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
                 }
                 if (fieldValues[i]) {
                     for (let j = 0; j < fieldNames.length; j++) {
-                        let currentField = this.getField(fieldNames[j] + i);
-                        currentField.setValue(fieldValues[i][j] ?? '');
+                        // If this is a new field, then keep its initial value, otherwise assign the stored value
+                        if (fieldValues[i][j] != null)
+                        	this.getField(fieldNames[j] + i).setValue(fieldValues[i][j]);
                     }
                 }
             }

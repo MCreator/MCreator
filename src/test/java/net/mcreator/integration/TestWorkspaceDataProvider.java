@@ -322,9 +322,9 @@ public class TestWorkspaceDataProvider {
 				achievement.rewardRecipes.add("ExampleRecipe1");
 				achievement.rewardRecipes.add("ExampleRecipe2");
 			}
-			achievement.triggerxml =
-					"<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"tick\" x=\"40\" y=\"80\"><next>"
-							+ "<block type=\"advancement_trigger\" deletable=\"false\"></block></next></block></xml>";
+			achievement.triggerxml = "<xml xmlns=\"https://developers.google.com/blockly/xml\">"
+					+ "<block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"><next>"
+					+ "<block type=\"tick\"></block></next></block></xml>";
 			return achievement;
 		} else if (ModElementType.BIOME.equals(modElement.getType())) {
 			Biome biome = new Biome(modElement);
@@ -982,7 +982,7 @@ public class TestWorkspaceDataProvider {
 					getRandomMCItem(random, blocksAndItems).getName());
 
 			itemExtension.enableFuel = !emptyLists;
-			itemExtension.fuelPower = new NumberProcedure(_true ? "number1" : null, 1600);
+			itemExtension.fuelPower = new NumberProcedure(_true ? "number3" : null, 1600);
 			itemExtension.fuelSuccessCondition = _true ? new Procedure("condition1") : null;
 			itemExtension.compostLayerChance = new double[] { 0d, 0.3d, 0.5d, 1d }[valueIndex];
 			itemExtension.hasDispenseBehavior = emptyLists;

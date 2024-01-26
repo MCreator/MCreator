@@ -96,9 +96,9 @@ Blockly.Blocks['args_start'] = {
 Blockly.Blocks['advancement_trigger'] = {
     init: function () {
         this.appendDummyInput().appendField(javabridge.t("blockly.block.advancement_trigger"));
-        this.setPreviousStatement(true);
+        this.setStyle('hat_blocks');
+        this.setNextStatement(true);
         this.setColour(150);
-        this.setTooltip(javabridge.t("blockly.block.advancement_trigger.tooltip"));
     }
 };
 

@@ -247,9 +247,9 @@ public class WorkspaceFileBrowser extends JPanel {
 				node.add(models);
 			}
 
-			if (new File(mcreator.getWorkspaceFolder(), "run/debug").isDirectory()) {
+			if (new File(mcreator.getFolderManager().getClientRunDir(), "debug").isDirectory()) {
 				FilterTreeNode debugFolder = new FilterTreeNode("Debug profiler results");
-				addNodes(debugFolder, new File(mcreator.getWorkspaceFolder(), "run/debug"), true);
+				addNodes(debugFolder, new File(mcreator.getFolderManager().getClientRunDir(), "debug"), true);
 				node.add(debugFolder);
 			}
 
@@ -262,10 +262,25 @@ public class WorkspaceFileBrowser extends JPanel {
 
 			root.add(node);
 
-			if (new File(mcreator.getWorkspaceFolder(), "run/").isDirectory()) {
-				FilterTreeNode minecraft = new FilterTreeNode("Minecraft run folder");
-				addNodes(minecraft, new File(mcreator.getWorkspaceFolder(), "run/"), true);
-				root.add(minecraft);
+			File clientRunDir = mcreator.getFolderManager().getClientRunDir();
+			File serverRunDir = mcreator.getFolderManager().getServerRunDir();
+			if (clientRunDir.equals(serverRunDir)) {
+				if (clientRunDir.isDirectory()) {
+					FilterTreeNode minecraft = new FilterTreeNode("Minecraft run folder");
+					addNodes(minecraft, clientRunDir, true);
+					root.add(minecraft);
+				}
+			} else {
+				if (clientRunDir.isDirectory()) {
+					FilterTreeNode minecraft = new FilterTreeNode("MC client run folder");
+					addNodes(minecraft, clientRunDir, true);
+					root.add(minecraft);
+				}
+				if (serverRunDir.isDirectory()) {
+					FilterTreeNode minecraft = new FilterTreeNode("MC server run folder");
+					addNodes(minecraft, serverRunDir, true);
+					root.add(minecraft);
+				}
 			}
 
 			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
@@ -383,21 +398,25 @@ public class WorkspaceFileBrowser extends JPanel {
 				File libraryFile = new File(libraryInfo.getLocationAsString());
 				if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || ZipIO.checkIfJMod(libraryFile))) {
 					String libName = FilenameUtilsPatched.removeExtension(libraryFile.getName());
-
 					if (libName.equals("rt") || libName.equals("java.base"))
 						libName = "Java " + System.getProperty("java.version") + " SDK";
 					else
 						libName = "Gradle: " + libName;
+
 					if (libraryInfo.getSourceLocation() != null) {
 						File sourceFile = new File(libraryInfo.getSourceLocation().getLocationAsString());
-						FileTree libsrc = new FileTree(new FileNode(libName, sourceFile.getAbsolutePath() + ":%:"));
-						ZipIO.iterateZip(sourceFile, entry -> libsrc.addElement(entry.getName()), true);
-						addFileNodeToFilterTreeNode(extDeps, libsrc.root);
-					} else {
-						FileTree lib = new FileTree(new FileNode(libName, libraryFile.getAbsolutePath() + ":%:"));
-						ZipIO.iterateZip(libraryFile, entry -> lib.addElement(entry.getName()), true);
-						addFileNodeToFilterTreeNode(extDeps, lib.root);
+						if (sourceFile.isFile() && (ZipIO.checkIfZip(sourceFile) || ZipIO.checkIfJMod(sourceFile))) {
+							FileTree libsrc = new FileTree(new FileNode(libName, sourceFile.getAbsolutePath() + ":%:"));
+							ZipIO.iterateZip(sourceFile, entry -> libsrc.addElement(entry.getName()), true);
+							addFileNodeToFilterTreeNode(extDeps, libsrc.root);
+							continue;
+						}
 					}
+
+					// If source file is not found, add the library file itself
+					FileTree lib = new FileTree(new FileNode(libName, libraryFile.getAbsolutePath() + ":%:"));
+					ZipIO.iterateZip(libraryFile, entry -> lib.addElement(entry.getName()), true);
+					addFileNodeToFilterTreeNode(extDeps, lib.root);
 				}
 			}
 		}
@@ -478,8 +497,11 @@ public class WorkspaceFileBrowser extends JPanel {
 					a.setIcon(UIRES.get("16px.resources.png"));
 				else if (tsi.equals("Models"))
 					a.setIcon(UIRES.get("16px.models.png"));
-				else if (tsi.equals("Minecraft run folder") || tsi.equals("Bedrock Edition"))
+				else if (tsi.equals("Minecraft run folder") || tsi.equals("Bedrock Edition") || tsi.equals(
+						"MC client run folder"))
 					a.setIcon(UIRES.get("16px.minecraft.png"));
+				else if (tsi.equals("MC server run folder"))
+					a.setIcon(UIRES.get("16px.runserver.png"));
 				else if (tsi.equals("Sounds"))
 					a.setIcon(UIRES.get("16px.music.png"));
 				else if (tsi.equals("External libraries"))
@@ -495,13 +517,10 @@ public class WorkspaceFileBrowser extends JPanel {
 				else if (fileNode.data.startsWith("Java "))
 					a.setIcon(UIRES.get("16px.directory.gif"));
 				else
-					a.setIcon(FileIcons.getIconForFile(fileNode.data));
+					a.setIcon(FileIcons.getIconForFile(fileNode.data, !fileNode.isLeaf()));
 			} else if (node.getUserObject() instanceof File fil) {
 				a.setText(fil.getName());
-				if (!fil.isDirectory())
-					a.setIcon(FileIcons.getIconForFile(fil));
-				else
-					a.setIcon(UIRES.get("laf.directory.gif"));
+				a.setIcon(FileIcons.getIconForFile(fil));
 			}
 
 			if (node.getFilter() != null && !node.getFilter().isEmpty()) {
