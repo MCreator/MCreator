@@ -173,6 +173,12 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				new HashMap<>();
 	}
 
+	public Map<?, ?> getTagsSpecification() {
+		return generatorConfig.get("tags") != null ?
+				(Map<?, ?>) generatorConfig.get("tags") :
+				new HashMap<>();
+	}
+
 	public List<?> getBaseTemplates() {
 		return (generatorConfig.get("base_templates") != null) ?
 				(List<?>) generatorConfig.get("base_templates") :

@@ -767,6 +767,7 @@ import java.util.stream.Collectors;
 		addVerticalTab("mods", L10N.t("workspace.category.mod_elements"),
 				new WorkspacePanelMods(PanelUtils.westAndCenterElement(toolp, modElementsPanel)));
 		addVerticalTab("resources", L10N.t("workspace.category.resources"), resourcesPan);
+		addVerticalTab("tags", L10N.t("workspace.category.tags"), new WorkspacePanelTags(this));
 		addVerticalTab("variables", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
 		addVerticalTab("localization", L10N.t("workspace.category.localization"),
 				new WorkspacePanelLocalizations(this));
@@ -1071,28 +1072,14 @@ import java.util.stream.Collectors;
 			mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			Set<ModElement> references = new HashSet<>();
-			boolean tagsSelected = false, nonTagsSelected = false;
 			for (IElement el : list.getSelectedValuesList()) {
 				if (el instanceof ModElement mod) {
-					// We don't look for tag references since those are "weak" references also affected by other mods
-					if (mod.getType() == ModElementType.TAG) {
-						tagsSelected = true;
-					} else {
-						nonTagsSelected = true;
-						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
-					}
+					references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
 				}
 			}
 
 			mcreator.setCursor(Cursor.getDefaultCursor());
-			if (tagsSelected) {
-				JOptionPane.showMessageDialog(mcreator, L10N.t("workspace.elements.list.edit.usages.tags"),
-						L10N.t("workspace.elements.list.edit.usages.tags.title"), JOptionPane.WARNING_MESSAGE);
-			}
-			if (nonTagsSelected) {
-				SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
-						references);
-			}
+			SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"), references);
 		}
 	}
 

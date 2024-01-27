@@ -38,10 +38,7 @@ import net.mcreator.element.types.*;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
-import net.mcreator.minecraft.DataListEntry;
-import net.mcreator.minecraft.DataListLoader;
-import net.mcreator.minecraft.ElementUtil;
-import net.mcreator.minecraft.MCItem;
+import net.mcreator.minecraft.*;
 import net.mcreator.ui.dialogs.wysiwyg.AbstractWYSIWYGDialog;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.PropertyDataWithValue;
@@ -129,6 +126,34 @@ public class TestWorkspaceDataProvider {
 				SoundElement sound = new SoundElement("test" + i, List.of(), "neutral", null);
 				workspace.addSoundElement(sound);
 			}
+		}
+
+		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("tags")
+				== GeneratorStats.CoverageStatus.FULL) {
+			TagElement tag = new TagElement(TagType.ITEMS, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:stone");
+			workspace.getTagElements().get(tag).add("~minecraft:grass");
+
+			tag = new TagElement(TagType.BLOCKS, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:stone");
+			workspace.getTagElements().get(tag).add("~minecraft:grass");
+
+			tag = new TagElement(TagType.ENTITIES, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:creeper");
+			workspace.getTagElements().get(tag).add("~minecraft:zombie");
+
+			tag = new TagElement(TagType.BIOMES, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("minecraft:plains");
+			workspace.getTagElements().get(tag).add("~testmod:testbiome");
+
+			tag = new TagElement(TagType.DAMAGE_TYPES, "minecraft:test");
+			workspace.addTagElement(tag);
+			workspace.getTagElements().get(tag).add("testmod:testdamage");
+			workspace.getTagElements().get(tag).add("~testmod:testdamage2");
 		}
 
 		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("variables")
@@ -1230,39 +1255,6 @@ public class TestWorkspaceDataProvider {
 			block.customModelName = new String[] { "Normal", "Single texture", "Cross model",
 					"Grass block" }[valueIndex];
 			return block;
-		} else if (ModElementType.TAG.equals(modElement.getType())) {
-			Tag tag = new Tag(modElement);
-			tag.namespace = getRandomItem(random, new String[] { "forge", "minecraft", "test1", "test2" });
-			tag.type = getRandomItem(random,
-					new String[] { "Items", "Blocks", "Entities", "Functions", "Biomes", "Damage types" });
-			tag.name = modElement.getName().toLowerCase(Locale.ENGLISH);
-			tag.items = new ArrayList<>();
-			tag.blocks = new ArrayList<>();
-			tag.functions = new ArrayList<>();
-			tag.entities = new ArrayList<>();
-			tag.biomes = new ArrayList<>();
-			tag.damageTypes = new ArrayList<>();
-			if (!emptyLists) {
-				tag.items.addAll(
-						blocksAndItems.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
-								.toList());
-				tag.blocks.addAll(
-						blocks.stream().map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
-				tag.entities.addAll(ElementUtil.loadAllEntities(modElement.getWorkspace()).stream()
-						.map(e -> new EntityEntry(modElement.getWorkspace(), e.getName())).toList());
-				tag.biomes.addAll(ElementUtil.loadAllBiomes(modElement.getWorkspace()).stream()
-						.map(e -> new BiomeEntry(modElement.getWorkspace(), e.getName())).toList());
-				tag.biomes.add(new BiomeEntry(modElement.getWorkspace(), "#is_overworld"));
-				tag.biomes.add(new BiomeEntry(modElement.getWorkspace(), "#forge:tag/test"));
-				tag.damageTypes.addAll(
-						ElementUtil.loadDataListAndElements(modElement.getWorkspace(), "damagesources", false, null,
-										"damagetype").stream()
-								.map(e -> new DamageTypeEntry(modElement.getWorkspace(), e.getName())).toList());
-
-				tag.functions.add("ExampleFunction1");
-				tag.functions.add("ExampleFunction2");
-			}
-			return tag;
 		} else if (ModElementType.LOOTTABLE.equals(modElement.getType())) {
 			LootTable lootTable = new LootTable(modElement);
 
