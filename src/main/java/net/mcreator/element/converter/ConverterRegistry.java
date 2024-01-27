@@ -167,7 +167,6 @@ public class ConverterRegistry {
 		put(ModElementType.ITEM, List.of(
 			new ItemDispenseBehaviorToItemExtensionConverter(),
 			new SpecialInformationConverter(),
-			new ItemDispenseBehaviorToItemExtensionConverter(),
 			new ItemHasGlowConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
