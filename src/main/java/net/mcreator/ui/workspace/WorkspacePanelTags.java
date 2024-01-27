@@ -30,6 +30,7 @@ import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -67,6 +68,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			ModElementType.FUNCTION);
 	private final DamageTypeListField listFieldDamageTypes = new DamageTypeListField(workspacePanel.getMCreator(),
 			true);
+
+	private final JEmptyBox DUMMY_FIELD = new JEmptyBox();
 
 	// Cache of list editor
 	private ItemListFieldCellEditor lastEditor = null;
@@ -154,17 +157,18 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 					}
 				}
 
-				Component retval = super.prepareRenderer(renderer, row, column);
-				if (column == 0) {
-					try {
+				try {
+					Component retval = super.prepareRenderer(renderer, row, column);
+					if (column == 0) {
 						TagType tagType = (TagType) elements.getValueAt(row, 0);
 						retval.setForeground(tagType.getColor().brighter());
-					} catch (Exception ignored) {
+					} else {
+						retval.setForeground(Theme.current().getForegroundColor());
 					}
-				} else {
-					retval.setForeground(Theme.current().getForegroundColor());
+					return retval;
+				} catch (Exception ignored) {
+					return DUMMY_FIELD;
 				}
-				return retval;
 			}
 		};
 
