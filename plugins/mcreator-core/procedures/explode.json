@@ -7,6 +7,11 @@
     },
     {
       "type": "input_value",
+      "name": "condition",
+      "check": "Boolean"
+    },
+    {
+      "type": "input_value",
       "name": "x",
       "check": "Number"
     },
@@ -57,6 +62,7 @@
     "toolbox_id": "worldmanagement",
     "toolbox_init": [
       "<value name=\"power\"><block type=\"math_number\"><field name=\"NUM\">4</field></block></value>",
+      "<value name=\"condition\"><block type=\"logic_boolean\"><field name=\"BOOL\">TRUE</field></block></value>",
       "<value name=\"x\"><block type=\"coord_x\"></block></value>",
       "<value name=\"y\"><block type=\"coord_y\"></block></value>",
       "<value name=\"z\"><block type=\"coord_z\"></block></value>"
@@ -65,6 +71,7 @@
       "x",
       "y",
       "z",
+      "condition",
       "power"
     ],
     "fields": [
