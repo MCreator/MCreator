@@ -46,7 +46,7 @@ import net.mcreator.ui.init.*;
 import net.mcreator.ui.laf.LafUtil;
 import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.laf.themes.ThemeLoader;
+import net.mcreator.ui.laf.themes.ThemeManager;
 import net.mcreator.ui.notifications.StartupNotifications;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
@@ -103,17 +103,8 @@ public final class MCreatorApplication {
 
 			splashScreen.setProgress(10, "Loading UI Themes");
 
-			// We load UI themes now as theme plugins are loaded at this point
-			ThemeLoader.initUIThemes();
-			MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
-
-			try {
-				UIManager.setLookAndFeel(new MetalLookAndFeel());
-				LafUtil.applyDefaultHTMLStyles();
-				LafUtil.fixMacOSActions();
-			} catch (UnsupportedLookAndFeelException e) {
-				LOG.error("Failed to set look and feel: " + e.getMessage());
-			}
+			// We load UI theme now as theme plugins are loaded at this point
+			ThemeManager.init();
 
 			splashScreen.setProgress(15, "Loading UI core");
 
