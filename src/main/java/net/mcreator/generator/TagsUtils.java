@@ -79,8 +79,7 @@ public class TagsUtils {
 						element);
 
 				if (map.containsKey("entryprovider")) {
-					//noinspection unchecked
-					Collection<String> entryprovider = (Collection<String>) TemplateExpressionParser.processFTLExpression(
+					@SuppressWarnings("unchecked") Collection<String> entryprovider = (Collection<String>) TemplateExpressionParser.processFTLExpression(
 							generator, (String) map.get("entryprovider"), element);
 					if (entryprovider != null) {
 						for (String entry : entryprovider) {
