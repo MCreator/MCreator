@@ -93,8 +93,8 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 			setIcon(new ImageIcon(ImageUtils.resizeAA(
 					MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.getUnmappedValue()).getImage(), 25)));
 
-			if (value.isManaged()) {
-				setBackground(getBackground().brighter());
+			if (!isSelected && value.isManaged()) {
+				setBackground(Theme.current().getAltBackgroundColor());
 			}
 
 			return this;

@@ -389,20 +389,28 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		public Component getListCellRendererComponent(JList<? extends T> list, T value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			setOpaque(true);
-			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getAltBackgroundColor());
+			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getBackgroundColor());
 			setForeground(
 					isSelected ? Theme.current().getSecondAltBackgroundColor() : Theme.current().getForegroundColor());
-			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current().getBackgroundColor()),
-					BorderFactory.createEmptyBorder(2, 5, 2, 5)));
+			if (isSelected) {
+				setBorder(BorderFactory.createCompoundBorder(
+						BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current().getBackgroundColor()),
+						BorderFactory.createEmptyBorder(2, 5, 2, 5)));
+			} else {
+				setBorder(BorderFactory.createCompoundBorder(
+						BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current().getBackgroundColor()),
+						BorderFactory.createCompoundBorder(
+								BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
+								BorderFactory.createEmptyBorder(1, 4, 1, 4))));
+			}
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setVerticalAlignment(SwingConstants.CENTER);
 
 			setIcon(null);
 
 			if (value instanceof MappableElement mappableElement) {
-				if (mappableElement.isManaged()) {
-					setBackground(getBackground().brighter());
+				if (!isSelected && mappableElement.isManaged()) {
+					setBackground(Theme.current().getAltBackgroundColor());
 				}
 
 				Optional<DataListEntry> dataListEntryOpt = mappableElement.getDataListEntry();
