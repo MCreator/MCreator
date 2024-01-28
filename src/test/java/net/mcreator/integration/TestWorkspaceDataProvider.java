@@ -128,8 +128,7 @@ public class TestWorkspaceDataProvider {
 			}
 		}
 
-		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("tags")
-				== GeneratorStats.CoverageStatus.FULL) {
+		if (workspace.getGeneratorStats().getBaseCoverageInfo().get("tags") == GeneratorStats.CoverageStatus.FULL) {
 			TagElement tag = new TagElement(TagType.ITEMS, "minecraft:test");
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:stone");

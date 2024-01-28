@@ -140,9 +140,8 @@ public class GeneratorStats {
 				CoverageStatus.NONE :
 				CoverageStatus.FULL);
 
-		baseCoverageInfo.put("tags", generatorConfiguration.getTagsSpecification().isEmpty() ?
-				CoverageStatus.NONE :
-				CoverageStatus.FULL);
+		baseCoverageInfo.put("tags",
+				generatorConfiguration.getTagsSpecification().isEmpty() ? CoverageStatus.NONE : CoverageStatus.FULL);
 
 		baseCoverageInfo.put("sounds", generatorConfiguration.getSpecificRoot("sounds_dir") == null ?
 				CoverageStatus.NONE :

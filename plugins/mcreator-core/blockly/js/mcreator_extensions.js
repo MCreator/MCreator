@@ -372,7 +372,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
                     for (let j = 0; j < fieldNames.length; j++) {
                         // If this is a new field, then keep its initial value, otherwise assign the stored value
                         if (fieldValues[i][j] != null)
-                        	this.getField(fieldNames[j] + i).setValue(fieldValues[i][j]);
+                            this.getField(fieldNames[j] + i).setValue(fieldValues[i][j]);
                     }
                 }
             }

@@ -23,7 +23,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.v2019_5.RecipeTypeConverter;
 import net.mcreator.element.converter.v2020_1.AchievementFixer;
 import net.mcreator.element.converter.v2020_2.GUIBindingInverter;
-import net.mcreator.element.converter.v2021_1.LegacyDimensionProcedureRemover;
 import net.mcreator.element.converter.v2020_3.OpenGUIProcedureDepFixer;
 import net.mcreator.element.converter.v2020_3.ProcedureEntityDepFixer;
 import net.mcreator.element.converter.v2020_4.BiomeSpawnListConverter;
