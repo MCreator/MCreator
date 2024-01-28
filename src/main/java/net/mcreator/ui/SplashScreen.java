@@ -22,7 +22,6 @@ import net.mcreator.Launcher;
 import net.mcreator.ui.component.ProgressBar;
 import net.mcreator.ui.component.SplashScreenPanel;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;

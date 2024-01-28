@@ -40,7 +40,7 @@ import java.io.InputStream;
 	private static final Logger LOG = LogManager.getLogger(Theme.class);
 
 	public static Theme current() {
-		return ThemeLoader.CURRENT_THEME;
+		return ThemeManager.CURRENT_THEME;
 	}
 
 	protected String id;
@@ -179,7 +179,7 @@ import java.io.InputStream;
 		if (colorScheme != null)
 			return colorScheme;
 		else
-			return ThemeLoader.getTheme("default_dark").getColorScheme();
+			return ThemeManager.getTheme("default_dark").getColorScheme();
 	}
 
 	/**

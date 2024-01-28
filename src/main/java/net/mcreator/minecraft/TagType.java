@@ -20,28 +20,42 @@
 package net.mcreator.minecraft;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.DamageTypeEntry;
+import net.mcreator.element.parts.EntityEntry;
+import net.mcreator.element.parts.MItemBlock;
+import net.mcreator.generator.mapping.MappableElement;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.workspace.Workspace;
 
 import java.awt.*;
 import java.util.Locale;
+import java.util.function.BiFunction;
 
 public enum TagType {
 
 	//@formatter:off
-	ITEMS("items", Dependency.getColor("itemstack")),
-	BLOCKS("blocks", Dependency.getColor("blockstate")),
-	ENTITIES("entity_types", Dependency.getColor("entity")),
-	FUNCTIONS("functions", Dependency.getColor("string")),
-	BIOMES("worldgen/biome", Dependency.getColor("world")),
-	DAMAGE_TYPES("damage_type", Dependency.getColor("damagesource"));
+	ITEMS("items", Dependency.getColor("itemstack"), MItemBlock::new),
+	BLOCKS("blocks", Dependency.getColor("blockstate"), MItemBlock::new),
+	ENTITIES("entity_types", Dependency.getColor("entity"), EntityEntry::new),
+	FUNCTIONS("functions", Dependency.getColor("string"), (w, e) -> new NonMappableElement(e)),
+	BIOMES("worldgen/biome", Dependency.getColor("world"), BiomeEntry::new),
+	DAMAGE_TYPES("damage_type", Dependency.getColor("damagesource"), DamageTypeEntry::new);
 	//@formatter:on
 
 	private final String folder;
 	private final Color color;
+	private final BiFunction<Workspace, String, MappableElement> mappableElementProvider;
 
-	TagType(String folder, Color color) {
+	TagType(String folder, Color color, BiFunction<Workspace, String, MappableElement> mappableElementProvider) {
 		this.folder = folder;
 		this.color = color;
+		this.mappableElementProvider = mappableElementProvider;
+	}
+
+	public BiFunction<Workspace, String, MappableElement> getMappableElementProvider() {
+		return mappableElementProvider;
 	}
 
 	public String getFolder() {
@@ -54,18 +68,6 @@ public enum TagType {
 
 	@Override public String toString() {
 		return L10N.t("tag.type." + name().toLowerCase(Locale.ENGLISH));
-	}
-
-	public static TagType fromLegacyName(String readableName) {
-		return switch (readableName) {
-			case "Items" -> ITEMS;
-			case "Blocks" -> BLOCKS;
-			case "Entities" -> ENTITIES;
-			case "Functions" -> FUNCTIONS;
-			case "Biomes" -> BIOMES;
-			case "Damage types" -> DAMAGE_TYPES;
-			default -> null;
-		};
 	}
 
 }

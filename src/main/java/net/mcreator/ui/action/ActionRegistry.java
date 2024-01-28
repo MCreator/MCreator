@@ -95,7 +95,6 @@ public class ActionRegistry {
 	public final BasicAction exportWorkspaceToZIPWithRunDir;
 	public final BasicAction openWorkspaceFolder;
 	public final BasicAction setCreativeTabItemOrder;
-	public final BasicAction injectDefaultTags;
 
 	// IDE actions
 	public final BasicAction openFile;
@@ -305,7 +304,6 @@ public class ActionRegistry {
 		this.knowledgeBase = new VisitURIAction(this, L10N.t("action.knowledge_base"),
 				MCreatorApplication.SERVER_DOMAIN + "/support/knowledgebase");
 		this.setCreativeTabItemOrder = new EditTabOrderAction(this);
-		this.injectDefaultTags = InjectTagsTool.getAction(this);
 		this.donate = new VisitURIAction(this, L10N.t("action.donate"),
 				MCreatorApplication.SERVER_DOMAIN + "/donate").setIcon(UIRES.get("donate"));
 		this.openJavaEditionFolder = new MinecraftFolderActions.OpenJavaEditionFolder(this);
