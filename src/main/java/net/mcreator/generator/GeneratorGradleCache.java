@@ -22,6 +22,7 @@ import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.java.ImportTreeBuilder;
 import net.mcreator.java.ProjectJarManager;
+import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -49,26 +50,49 @@ public class GeneratorGradleCache {
 	}
 
 	public static class ClasspathEntry {
+
 		private final String lib;
 		@Nullable private String src;
 
-		public ClasspathEntry(String lib, @Nullable String src) {
-			this.lib = lib.replace(UserFolderManager.getGradleHome().getAbsolutePath(), "<user.home.mcreator.gradle>");
+		public ClasspathEntry(Workspace workspace, String lib, @Nullable String src) {
+			this.lib = encodePlaceholders(workspace, lib);
 			if (src != null)
-				this.src = src.replace(UserFolderManager.getGradleHome().getAbsolutePath(),
-						"<user.home.mcreator.gradle>");
+				this.src = encodePlaceholders(workspace, src);
 		}
 
-		public String getLib() {
-			return lib.replace("<user.home.mcreator.gradle>", UserFolderManager.getGradleHome().getAbsolutePath());
+		public String getLib(Workspace workspace) {
+			return decodePlaceholders(workspace, lib);
 		}
 
-		@Nullable public String getSrc() {
+		@Nullable public String getSrc(Workspace workspace) {
 			if (src != null)
-				return src.replace("<user.home.mcreator.gradle>", UserFolderManager.getGradleHome().getAbsolutePath());
+				return decodePlaceholders(workspace, src);
 			else
 				return null;
 		}
+
+		private String decodePlaceholders(Workspace workspace, String string) {
+			return string.replace("<gradle_home>", UserFolderManager.getGradleHome().getAbsolutePath())
+					.replace("<workspace_home>", workspace.getWorkspaceFolder().getAbsolutePath());
+		}
+
+		private String encodePlaceholders(Workspace workspace, String string) {
+			return string.replace(UserFolderManager.getGradleHome().getAbsolutePath(), "<gradle_home>")
+					.replace(workspace.getWorkspaceFolder().getAbsolutePath(), "<workspace_home>");
+		}
+
+		@Override public boolean equals(Object o) {
+			if (this == o)
+				return true;
+			if (o == null || getClass() != o.getClass())
+				return false;
+			return lib.equals(((ClasspathEntry) o).lib);
+		}
+
+		@Override public int hashCode() {
+			return lib.hashCode();
+		}
+
 	}
 
 }

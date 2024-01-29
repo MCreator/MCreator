@@ -72,8 +72,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 				File workspaceFile = WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(workspaceDir);
 
-				GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-						Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+				GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
+						Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 
 				assertNotNull(generatorConfiguration);
 

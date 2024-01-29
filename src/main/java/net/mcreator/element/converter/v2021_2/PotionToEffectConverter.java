@@ -97,8 +97,9 @@ public class PotionToEffectConverter implements IConverter {
 					ConverterUtils.findSuitableModElementName(workspace, originalName + "PotionEffect"),
 					ModElementType.POTIONEFFECT));
 
-			potionEffect.getModElement()
-					.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
+			potionEffect.getModElement().setParentFolder(
+					FolderElement.findFolderByPath(input.getModElement().getWorkspace(),
+							input.getModElement().getFolderPath()));
 
 			// for backwards game saves compatibility
 			potionEffect.getModElement().setRegistryName(input.getModElement().getRegistryName());

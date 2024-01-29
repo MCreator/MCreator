@@ -23,6 +23,7 @@ import com.google.gson.GsonBuilder;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.L10N;
@@ -52,7 +53,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 	protected final JButton edit = new JButton(UIRES.get("18px.edit"));
 	protected final JButton add = new JButton(UIRES.get("18px.add"));
 
-	protected ProcedureEntry oldItem;
+	ProcedureEntry oldItem;
 
 	protected final MCreator mcreator;
 
@@ -68,14 +69,16 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		this.returnType = returnType;
 
 		this.providedDependencies = providedDependencies;
+
+		setEnabled(isEnabled());
 	}
 
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-
 		procedures.setEnabled(enabled);
-		edit.setEnabled(enabled);
-		add.setEnabled(enabled);
+		add.setEnabled(enabled && mcreator.getWorkspace().getGeneratorStats().getModElementTypeCoverageInfo()
+				.get(ModElementType.PROCEDURE) != GeneratorStats.CoverageStatus.NONE);
+		edit.setEnabled(enabled && getSelectedProcedure() != null);
 	}
 
 	public final void refreshList() {
@@ -165,11 +168,8 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 		}
 
 		depslab.setText(deps.toString());
-		edit.setEnabled(getSelectedProcedure() != null);
 
-		if (selected == null || !selected.correctDependencies) {
-			edit.setEnabled(false);
-		}
+		edit.setEnabled(isEnabled() && getSelectedProcedure() != null);
 
 		return selected;
 	}

@@ -31,6 +31,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ShareableZIPManager {
@@ -128,15 +130,15 @@ public class ShareableZIPManager {
 			dial.addProgressUnit(p1);
 
 			try {
-				if (excludeRunDir) {
-					ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(), ".gradle/",
-							".mcreator/", "build/", "gradle/", "run/", "#build.gradle", "#gradlew", "#gradlew.bat",
-							"#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/", ".settings/");
-				} else {
-					ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(), ".gradle/",
-							".mcreator/", "build/", "gradle/", "#build.gradle", "#gradlew", "#gradlew.bat",
-							"#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/", ".settings/");
-				}
+				Set<String> excludes = new HashSet<>(
+						Set.of(".eclipse/", ".gradle/", ".mcreator/", "build/", "gradle/", "#build.gradle", "#gradlew",
+								"#gradlew.bat", "#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/",
+								".settings/"));
+				if (excludeRunDir)
+					excludes.addAll(Set.of("run/", "runs/"));
+
+				ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(),
+						excludes.toArray(new String[0]));
 			} catch (IOException e) {
 				LOG.error("Failed to export workspace", e);
 			}

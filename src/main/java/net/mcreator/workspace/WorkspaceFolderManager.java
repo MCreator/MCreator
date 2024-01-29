@@ -179,6 +179,22 @@ public class WorkspaceFolderManager {
 		return GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(), "sounds_dir");
 	}
 
+	@Nonnull public File getClientRunDir() {
+		File retval = GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(),
+				"client_run_dir");
+		if (retval == null) // Support for old generator types that may not specify client_run_dir
+			retval = new File(workspaceFolder, "run/");
+		return retval;
+	}
+
+	@Nonnull public File getServerRunDir() {
+		File retval = GeneratorUtils.getSpecificRoot(workspace, workspace.getGeneratorConfiguration(),
+				"server_run_dir");
+		if (retval == null) // Support for old generator types that may not specify server_run_dir
+			retval = new File(workspaceFolder, "run/");
+		return retval;
+	}
+
 	public File getModElementsDir() {
 		return new File(workspaceFolder, "elements/");
 	}

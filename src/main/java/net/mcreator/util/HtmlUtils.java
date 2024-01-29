@@ -25,8 +25,13 @@ public class HtmlUtils {
 
 	private static HashMap<String, CharSequence> lookupMap = null;
 
-	public static String unescapeHtml(final String input) {
+	public static String html2text(String input) {
+		input = input.replace("\n", "").replace("\r", "").replaceAll("(?i)<br[^>]* */?>", "\n").replaceAll("<.*?>", "")
+				.replaceAll(" +", " ");
+		return unescapeHtml(input).trim();
+	}
 
+	public static String unescapeHtml(final String input) {
 		if (lookupMap == null) {
 			lookupMap = new HashMap<>();
 			for (final CharSequence[] seq : ESCAPES)
@@ -38,7 +43,6 @@ public class HtmlUtils {
 		int i = 1;
 		int st = 0;
 		while (true) {
-
 			while (i < len && input.charAt(i - 1) != '&')
 				i++;
 			if (i >= len)
@@ -53,7 +57,6 @@ public class HtmlUtils {
 			}
 
 			if (input.charAt(i) == '#') {
-
 				int k = i + 1;
 				int radix = 10;
 
@@ -83,7 +86,6 @@ public class HtmlUtils {
 					continue;
 				}
 			} else {
-
 				CharSequence value = lookupMap.get(input.substring(i, j));
 				if (value == null) {
 					i++;
