@@ -560,27 +560,10 @@ registerSimpleMutatorContainer(
         'tree_decorator_mutator_container', 'blockly.block.tree_decorator_mutator.container', 320);
 registerSimpleMutatorInput('tree_decorator_mutator_input', 'blockly.block.tree_decorator_mutator.input', 320);
 
-// Mutator block for "Direction list" mixin
-Blockly.Blocks['direction_list_mutator_container'] = {
-    init: function () {
-        this.appendDummyInput().appendField(javabridge.t('blockly.block.direction_list_mutator.container'));
-        this.appendStatementInput('STACK');
-        this.contextMenu = false;
-        this.setColour(30);
-    }
-};
-
-// Mutator block for "Block list" mixin
-Blockly.Blocks['direction_list_mutator_input'] = {
-    init: function () {
-        this.appendDummyInput().appendField(javabridge.t('blockly.block.direction_list_mutator.input'));
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.contextMenu = false;
-        this.fieldValues_ = [];
-        this.setColour(30);
-    }
-};
+// Mutator blocks for "Direction list" mixin
+registerSimpleMutatorContainer(
+        'direction_list_mutator_container', 'blockly.block.direction_list_mutator.container', 30);
+registerSimpleMutatorInput('direction_list_mutator_input', 'blockly.block.direction_list_mutator.input', 30, true);
 
 Blockly.defineBlocksWithJsonArray([
     {
