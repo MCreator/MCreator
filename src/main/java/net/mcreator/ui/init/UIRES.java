@@ -66,17 +66,9 @@ public class UIRES {
 		}
 	}
 
-	public static ImageIcon getImageFromResourceID(String identifier) {
-		identifier = identifierToResourcePath(identifier);
-
-		if (CACHE.get(identifier) != null)
-			return CACHE.get(identifier);
-		else {
-			ImageIcon newItem = new ImageIcon(
-					Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(identifier)));
-			CACHE.put(identifier, newItem);
-			return newItem;
-		}
+	public static ImageIcon getImageFromResourceID(final String identifier) {
+		return CACHE.computeIfAbsent(identifier, key -> new ImageIcon(Toolkit.getDefaultToolkit()
+				.createImage(PluginLoader.INSTANCE.getResource(identifierToResourcePath(identifier)))));
 	}
 
 	public static String identifierToResourcePath(String identifier) {
@@ -90,8 +82,9 @@ public class UIRES {
 	public static ImageIcon getBuiltIn(String identifier) {
 		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
 			identifier += ".png";
-		return new ImageIcon(Toolkit.getDefaultToolkit()
-				.createImage(ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + identifier)));
+		String finalIdentifier = identifier;
+		return CACHE.computeIfAbsent("@" + identifier, key -> new ImageIcon(Toolkit.getDefaultToolkit().createImage(
+				ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + finalIdentifier))));
 	}
 
 	public static ImageIcon getAppIcon() {
