@@ -96,7 +96,9 @@ loadScripts(document, 'script');</script>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#getCreativeTabItems()" class="member-name-link">getCreativeTabItems</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
+<div class="block">WARNING: Calls to this method are generally not thread safe.</div>
+</div>
 </div>
 </div>
 </div>
@@ -122,6 +124,14 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="getCreativeTabItems()">
 <h3>getCreativeTabItems</h3>
 <div class="member-signature"><span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="../../../minecraft/MCItem.html" title="class in net.mcreator.minecraft">MCItem</a>&gt;</span>&nbsp;<span class="element-name">getCreativeTabItems</span>()</div>
+<div class="block">WARNING: Calls to this method are generally not thread safe.
+ Implementations can call MCItem.Custom::new that calls
+ getBlockIconBasedOnName that calls ModElement#getGeneratableElement
+ which is not thread safe</div>
+<dl class="notes">
+<dt>Returns:</dt>
+<dd>list of items in the creative tab of this element</dd>
+</dl>
 </section>
 </li>
 </ul>

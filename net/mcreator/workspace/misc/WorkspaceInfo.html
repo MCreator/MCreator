@@ -170,7 +170,9 @@ loadScripts(document, 'script');</script>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#normalizeTagElements(java.lang.String,int,java.util.Collection)" class="member-name-link">normalizeTagElements</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tag,
  int&nbsp;mappingTable,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;T&gt;&nbsp;elements)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
+<div class="block">Returns a set of mappable elements that do not trigger circular dependency to tag</div>
+</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>final <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#toString()" class="member-name-link">toString</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
@@ -297,6 +299,17 @@ loadScripts(document, 'script');</script>
 <span class="return-type"><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Set.html" title="class or interface in java.util" class="external-link">Set</a>&lt;<a href="../../generator/mapping/MappableElement.html" title="class in net.mcreator.generator.mapping">MappableElement</a>&gt;</span>&nbsp;<span class="element-name">normalizeTagElements</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;tag,
  int&nbsp;mappingTable,
  <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html" title="class or interface in java.util" class="external-link">Collection</a>&lt;T&gt;&nbsp;elements)</span></div>
+<div class="block">Returns a set of mappable elements that do not trigger circular dependency to tag</div>
+<dl class="notes">
+<dt>Type Parameters:</dt>
+<dd><code>T</code> - Type of elements</dd>
+<dt>Parameters:</dt>
+<dd><code>tag</code> - Tag name with namespace to check. A plain name without # or TAG: prefix is required.</dd>
+<dd><code>mappingTable</code> - Mapping table to use for getting mapped values of the elements</dd>
+<dd><code>elements</code> - Collection of elements to normalize/filter</dd>
+<dt>Returns:</dt>
+<dd>Set of elements that do not trigger circular dependency to tag</dd>
+</dl>
 </section>
 </li>
 <li>
