@@ -59,11 +59,11 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
 
 // Helper function to use in Blockly extensions that validate repeating fields' values meant to be unique
 // The nullValue function is used when mutator needs to set a valid value in the field right after its creation
-function uniqueValueValidator(fieldName, nullValue) {
+function uniqueValueValidator(fieldName) {
     return function (newValue) {
         for (let i = 0; this.sourceBlock_.getField(fieldName + i); i++) {
             if (this.sourceBlock_.getFieldValue(fieldName + i) == newValue && (fieldName + i) != this.name)
-                return this.mutationInProcess_ ? nullValue() : null;
+                return null;
         }
         return newValue;
     };
@@ -204,22 +204,19 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
     },
 
     updateShape_: function () {
-        const thisBlock = this;
         for (let i = 0; i < this.inputCount_; i++) {
             if (!this.getInput('arg' + i)) {
+                const validator = uniqueValueValidator('name');
+                const nameField = validOnLoad(new FieldJavaName('dependency' + i, validator));
                 this.appendValueInput('arg' + i).setAlign(Blockly.Input.Align.RIGHT)
                     .appendField(javabridge.t('blockly.block.call_procedure.name'))
-                    .appendField(validOnLoad(new FieldJavaName('dependency' + i,
-                        uniqueValueValidator('name', function () {
-                            return firstFreeIndex(thisBlock, 'name', i, function (nextIndex) {
-                                return 'dependency' + nextIndex;
-                            });
-                        }))), 'name' + i)
+                    .appendField(nameField, 'name' + i)
                     .appendField(javabridge.t('blockly.block.call_procedure.arg'));
-                const currentField = this.getField('name' + i);
-                currentField.mutationInProcess_ = true;
-                currentField.setValue(currentField.getValue());
-                currentField.mutationInProcess_ = false;
+                if (validator.call(nameField, 'dependency' + i) == null) {
+                    nameField.setValue(firstFreeIndex(this, 'name', i, function (nextIndex) {
+                        return 'dependency' + nextIndex;
+                    }));
+                }
             }
         }
         for (let i = this.inputCount_; this.getInput('arg' + i); i++)
