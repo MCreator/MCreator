@@ -146,10 +146,13 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
         let inputBlock = containerBlock.getInputTargetBlock('STACK');
         const connections = [];
         const fieldValues = {};
+        const fieldValuesDummy = [];
         while (inputBlock && !inputBlock.isInsertionMarker()) {
             connections.push(inputBlock.valueConnection_);
             if (inputBlock.valueConnection_)
                 fieldValues[inputBlock.valueConnection_.sourceBlock_.id] = inputBlock.nameValue_;
+            else
+                fieldValuesDummy.push(inputBlock.nameValue_);
             inputBlock = inputBlock.nextConnection && inputBlock.nextConnection.targetBlock();
         }
         for (let i = 0; i < this.inputCount_; i++) {
@@ -160,19 +163,27 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
         this.inputCount_ = connections.length;
         this.updateShape_();
         const validators = [];
-        for (let i = 0; i < this.inputCount_; i++) {
+        for (let i = 0, j = 0; i < this.inputCount_; i++) {
             Blockly.Mutator.reconnect(connections[i], this, 'arg' + i);
             const currentField = this.getField('name' + i);
             validators.push(currentField.getValidator());
             currentField.setValidator(null);
             if (connections[i])
                 currentField.setValue(fieldValues[connections[i].sourceBlock_.id] || 'dependency' + i);
+            else if (j < fieldValuesDummy.length)
+                currentField.setValue(fieldValuesDummy[j++] || 'dependency' + i);
             else
                 currentField.setValue('dependency' + i);
         }
-        for (let i = 0; i < this.inputCount_; i++) {
-            if (!connections[i])
-                this.getField('name' + i).setValue('dependency' + i);
+        const validNames = [];
+        for (let i = 0, j = 1; i < this.inputCount_; i++) {
+            const currentField = this.getField('name' + i);
+            let currentValue = currentField.getValue();
+            while (validNames.indexOf(currentValue) !== -1)
+                currentValue = 'dependency' + (j++);
+            validNames.push(currentValue);
+            currentField.setValue(currentValue);
+            currentField.setValidator(validators[i]);
         }
     },
 
