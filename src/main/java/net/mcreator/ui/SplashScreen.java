@@ -21,6 +21,7 @@ package net.mcreator.ui;
 import net.mcreator.Launcher;
 import net.mcreator.ui.component.ProgressBar;
 import net.mcreator.ui.component.SplashScreenPanel;
+import net.mcreator.ui.init.SVG;
 import net.mcreator.ui.init.UIRES;
 
 import javax.swing.*;
@@ -58,7 +59,7 @@ public class SplashScreen extends JWindow {
 		label.setBounds(shadowPadding + 30 + 10 - 4, shadowPadding + 330 - 10 - 10, 500, 45);
 		imagePanel.add(label);
 
-		JLabel logo = new JLabel(UIRES.getBuiltIn("logo"));
+		JLabel logo = new JLabel(SVG.getBuiltIn("logo", 350, 63));
 		logo.setBounds(shadowPadding + 24 + 8 - 4, shadowPadding + 70, 350, 63);
 		imagePanel.add(logo);
 

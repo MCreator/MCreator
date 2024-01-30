@@ -38,6 +38,7 @@ import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.SVG;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
@@ -129,8 +130,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		});
 
 		JPanel logoPanel = new JPanel(new BorderLayout(5, 5));
-		JLabel logo = new JLabel(new ImageIcon(
-				ImageUtils.resizeAA(UIRES.getBuiltIn("logo").getImage(), 250, (int) (250 * (63 / 350.0)))));
+		JLabel logo = new JLabel(SVG.getBuiltIn("logo", 250, (int) (250 * (63 / 350.0))));
 		logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		logo.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
