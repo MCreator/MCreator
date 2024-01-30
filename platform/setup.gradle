@@ -1,9 +1,9 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-def jdk17_win_64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.9+9.1/windows/x64/jdk/hotspot/normal/eclipse?project=jdk'
-def jdk17_linux_64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.9+9/linux/x64/jdk/hotspot/normal/eclipse?project=jdk'
-def jdk17_mac_x64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.9+9/mac/x64/jdk/hotspot/normal/eclipse?project=jdk'
-def jdk17_mac_aarch64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.9+9/mac/aarch64/jdk/hotspot/normal/eclipse?project=jdk'
+def jdk17_win_64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.10+7/windows/x64/jdk/hotspot/normal/eclipse?project=jdk'
+def jdk17_linux_64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.10+7/linux/x64/jdk/hotspot/normal/eclipse?project=jdk'
+def jdk17_mac_x64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.10+7/mac/x64/jdk/hotspot/normal/eclipse?project=jdk'
+def jdk17_mac_aarch64 = 'https://api.adoptium.net/v3/binary/version/jdk-17.0.10+7/mac/aarch64/jdk/hotspot/normal/eclipse?project=jdk'
 
 // Binaries needed on Windows for export (install them using Gradle since Windows does not have a package manager)
 def nsis_url = 'https://netcologne.dl.sourceforge.net/project/nsis/NSIS%203/3.09/nsis-3.09.zip'
@@ -24,8 +24,8 @@ tasks.register('downloadJDKWin64') {
             copy { from zipTree('build/tmp/jdk17_win_64') into file('jdk/jdk17_win_64/') }
             delete 'build/tmp/jdk17_win_64'
 
-            copy { from file('jdk/jdk17_win_64/jdk-17.0.9+9') into file('jdk/jdk17_win_64/') }
-            delete 'jdk/jdk17_win_64/jdk-17.0.9+9'
+            copy { from file('jdk/jdk17_win_64/jdk-17.0.10+7') into file('jdk/jdk17_win_64/') }
+            delete 'jdk/jdk17_win_64/jdk-17.0.10+7'
         }
     }
 }
@@ -44,8 +44,8 @@ tasks.register('downloadJDKLinux64') {
             copy { from tarTree(resources.gzip('build/tmp/jdk17_linux_64')) into file('jdk/jdk17_linux_64/') }
             delete 'build/tmp/jdk17_linux_64'
 
-            copy { from file('jdk/jdk17_linux_64/jdk-17.0.9+9') into file('jdk/jdk17_linux_64/') }
-            delete 'jdk/jdk17_linux_64/jdk-17.0.9+9'
+            copy { from file('jdk/jdk17_linux_64/jdk-17.0.10+7') into file('jdk/jdk17_linux_64/') }
+            delete 'jdk/jdk17_linux_64/jdk-17.0.10+7'
         }
     }
 }
@@ -64,8 +64,8 @@ tasks.register('downloadJDKMacX64') {
             copy { from tarTree(resources.gzip('build/tmp/jdk17_mac_x64')) into file('jdk/jdk17_mac_x64/') }
             delete 'build/tmp/jdk17_mac_x64'
 
-            copy { from file('jdk/jdk17_mac_x64/jdk-17.0.9+9') into file('jdk/jdk17_mac_x64/') }
-            delete 'jdk/jdk17_mac_x64/jdk-17.0.9+9/'
+            copy { from file('jdk/jdk17_mac_x64/jdk-17.0.10+7') into file('jdk/jdk17_mac_x64/') }
+            delete 'jdk/jdk17_mac_x64/jdk-17.0.10+7/'
         }
     }
 }
@@ -84,8 +84,8 @@ tasks.register('downloadJDKMacAarch64') {
             copy { from tarTree(resources.gzip('build/tmp/jdk17_mac_aarch64/')) into file('jdk/jdk17_mac_aarch64/') }
             delete 'build/tmp/jdk17_mac_aarch64'
 
-            copy { from file('jdk/jdk17_mac_aarch64/jdk-17.0.9+9') into file('jdk/jdk17_mac_aarch64/') }
-            delete 'jdk/jdk17_mac_aarch64/jdk-17.0.9+9/'
+            copy { from file('jdk/jdk17_mac_aarch64/jdk-17.0.10+7') into file('jdk/jdk17_mac_aarch64/') }
+            delete 'jdk/jdk17_mac_aarch64/jdk-17.0.10+7/'
         }
     }
 }

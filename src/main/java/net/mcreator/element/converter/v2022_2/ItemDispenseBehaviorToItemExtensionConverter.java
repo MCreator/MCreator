@@ -76,8 +76,9 @@ public class ItemDispenseBehaviorToItemExtensionConverter implements IConverter 
 					itemExtension.dispenseResultItemstack = new Procedure(
 							item.get("dispenseResultItemstack").getAsJsonObject().get("name").getAsString());
 
-				itemExtension.getModElement()
-						.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
+				itemExtension.getModElement().setParentFolder(
+						FolderElement.findFolderByPath(input.getModElement().getWorkspace(),
+								input.getModElement().getFolderPath()));
 				workspace.getModElementManager().storeModElementPicture(itemExtension);
 				workspace.addModElement(itemExtension.getModElement());
 				workspace.getGenerator().generateElement(itemExtension);

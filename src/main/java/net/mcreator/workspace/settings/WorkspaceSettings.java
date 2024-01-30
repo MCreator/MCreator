@@ -43,7 +43,6 @@ import java.util.stream.Stream;
 	private String websiteURL;
 	private String license;
 
-	private boolean disableForgeVersionCheck = true;
 	private boolean serverSideOnly = false;
 	private String updateURL;
 
@@ -74,7 +73,6 @@ import java.util.stream.Stream;
 		this.author = other.author;
 		this.license = other.license;
 		this.websiteURL = other.websiteURL;
-		this.disableForgeVersionCheck = other.disableForgeVersionCheck;
 		this.serverSideOnly = other.serverSideOnly;
 		this.updateURL = other.updateURL;
 		this.modPicture = other.modPicture;
@@ -116,10 +114,6 @@ import java.util.stream.Stream;
 
 	public void setWebsiteURL(String websiteURL) {
 		this.websiteURL = websiteURL;
-	}
-
-	public void setDisableForgeVersionCheck(boolean disableForgeVersionCheck) {
-		this.disableForgeVersionCheck = disableForgeVersionCheck;
 	}
 
 	public void setServerSideOnly(boolean serverSideOnly) {
@@ -230,10 +224,6 @@ import java.util.stream.Stream;
 
 	public boolean isServerSideOnly() {
 		return serverSideOnly;
-	}
-
-	public boolean isDisableForgeVersionCheck() {
-		return disableForgeVersionCheck;
 	}
 
 	public String getUpdateURL() {

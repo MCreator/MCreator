@@ -24,22 +24,23 @@ import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.LafUtil;
+import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.io.File;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 /**
  * <p>This class detects and then tries to load all {@link Theme}s.</p>
  */
-public class ThemeLoader {
+public class ThemeManager {
 
 	private static final Logger LOG = LogManager.getLogger("Theme Loader");
 
@@ -50,9 +51,25 @@ public class ThemeLoader {
 	protected static Theme CURRENT_THEME;
 
 	/**
+	 * This method loads all {@link Theme}s and sets the current theme to the one selected by the user.
+	 */
+	public static void init() {
+		loadThemes();
+
+		try {
+			MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
+			UIManager.setLookAndFeel(new MetalLookAndFeel());
+			LafUtil.applyDefaultHTMLStyles();
+			LafUtil.fixMacOSActions();
+		} catch (UnsupportedLookAndFeelException e) {
+			LOG.error("Failed to set MCreator UI theme", e);
+		}
+	}
+
+	/**
 	 * <p>This method loads the {@link Theme} of all plugins loaded into the current {@link net.mcreator.plugin.PluginLoader} instance.</p>
 	 */
-	public static void initUIThemes() {
+	private static void loadThemes() {
 		LOG.debug("Loading UI themes");
 
 		// Load all themes
@@ -77,15 +94,6 @@ public class ThemeLoader {
 
 	public static LinkedHashSet<Theme> getThemes() {
 		return THEMES;
-	}
-
-	/**
-	 * <p>This method gets the ID of each loaded {@link Theme}.</p>
-	 *
-	 * @return Returns a {@link java.util.List} of all loaded theme IDs
-	 */
-	public static List<String> getThemeIDList() {
-		return THEMES.stream().map(Theme::getID).collect(Collectors.toList());
 	}
 
 	/**

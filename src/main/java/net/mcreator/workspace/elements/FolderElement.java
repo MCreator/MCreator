@@ -20,6 +20,7 @@ package net.mcreator.workspace.elements;
 
 import net.mcreator.workspace.Workspace;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -178,12 +179,9 @@ public class FolderElement implements IElement {
 		return getPath().hashCode();
 	}
 
-	public static FolderElement dummyFromPath(String path) {
-		return new FolderElement("", null) {
-			@Override public String getPath() {
-				return path;
-			}
-		};
+	@Nullable public static FolderElement findFolderByPath(Workspace workspace, String path) {
+		return workspace.getFoldersRoot().getRecursiveFolderChildren().stream()
+				.filter(folder -> folder.getPath().equals(path)).findFirst().orElse(null);
 	}
 
 }
