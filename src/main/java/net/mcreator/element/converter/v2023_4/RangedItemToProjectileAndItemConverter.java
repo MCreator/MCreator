@@ -107,8 +107,9 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 				projectile.onFlyingTick = new Procedure(
 						rangedItem.get("onBulletFlyingTick").getAsJsonObject().get("name").getAsString());
 
-			projectile.getModElement()
-					.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
+			projectile.getModElement().setParentFolder(
+					FolderElement.findFolderByPath(input.getModElement().getWorkspace(),
+							input.getModElement().getFolderPath()));
 			workspace.getModElementManager().storeModElementPicture(projectile);
 			workspace.addModElement(projectile.getModElement());
 			workspace.getGenerator().generateElement(projectile);

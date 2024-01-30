@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 public class ModElementTypeLoader {
 
@@ -65,7 +64,6 @@ public class ModElementTypeLoader {
 		ModElementType.RECIPE = register(new ModElementType<>("recipe", 'r', RecipeGUI::new, Recipe.class));
 		ModElementType.STRUCTURE = register(new ModElementType<>("structure", 's', StructureGUI::new, Structure.class));
 		ModElementType.TAB = register(new ModElementType<>("tab", 'w', TabGUI::new, Tab.class));
-		ModElementType.TAG = register(new ModElementType<>("tag", 'j', TagGUI::new, Tag.class));
 		ModElementType.TOOL = register(new ModElementType<>("tool", 't', ToolGUI::new, Tool.class));
 		ModElementType.VILLAGERPROFESSION = register(new ModElementType<>("villagerprofession", null, VillagerProfessionGUI::new, VillagerProfession.class));
 		ModElementType.VILLAGERTRADE = register(new ModElementType<>("villagertrade", null, VillagerTradeGUI::new, VillagerTrade.class));

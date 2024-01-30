@@ -32,7 +32,7 @@ public class GradleSection extends PreferencesSection {
 			(int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
 					/ 1048576) - 1024;
 
-	public BooleanEntry compileOnSave;
+	public BooleanEntry buildOnSave;
 	public BooleanEntry passLangToMinecraft;
 	public IntegerEntry xms;
 	public IntegerEntry xmx;
@@ -41,7 +41,7 @@ public class GradleSection extends PreferencesSection {
 	GradleSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
 
-		compileOnSave = addEntry(new BooleanEntry("compileOnSave", true));
+		buildOnSave = addEntry(new BooleanEntry("buildOnSave", false));
 		passLangToMinecraft = addEntry(new BooleanEntry("passLangToMinecraft", true));
 		xms = addEntry(new IntegerEntry("Xms", Math.min(1024, MAX_RAM), 128, MAX_RAM));
 		xmx = addEntry(new IntegerEntry("Xmx", Math.min(3072, MAX_RAM), 128, MAX_RAM));

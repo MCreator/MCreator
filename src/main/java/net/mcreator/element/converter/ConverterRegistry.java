@@ -23,7 +23,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.v2019_5.RecipeTypeConverter;
 import net.mcreator.element.converter.v2020_1.AchievementFixer;
 import net.mcreator.element.converter.v2020_2.GUIBindingInverter;
-import net.mcreator.element.converter.v2021_1.LegacyDimensionProcedureRemover;
 import net.mcreator.element.converter.v2020_3.OpenGUIProcedureDepFixer;
 import net.mcreator.element.converter.v2020_3.ProcedureEntityDepFixer;
 import net.mcreator.element.converter.v2020_4.BiomeSpawnListConverter;
@@ -50,6 +49,7 @@ import net.mcreator.element.converter.v2023_4.*;
 import net.mcreator.element.converter.v2024_1.AdvancementTriggerInverter;
 import net.mcreator.element.converter.v2024_1.ItemsCreativeTabsConverter;
 import net.mcreator.element.converter.v2024_1.ProcedureCustomDamageRemover;
+import net.mcreator.element.converter.v2024_1.TagModElementConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -173,7 +173,6 @@ public class ConverterRegistry {
 		put(ModElementType.ITEM, List.of(
 			new ItemDispenseBehaviorToItemExtensionConverter(),
 			new SpecialInformationConverter(),
-			new ItemDispenseBehaviorToItemExtensionConverter(),
 			new ItemHasGlowConverter(),
 			new ItemsCreativeTabsConverter()
 		));
@@ -203,6 +202,7 @@ public class ConverterRegistry {
 		put("food", new FoodToItemConverter());
 		put("fuel", new FuelToItemExtensionConverter());
 		put("rangeditem", new RangedItemToProjectileAndItemConverter());
+		put("tag", new TagModElementConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {

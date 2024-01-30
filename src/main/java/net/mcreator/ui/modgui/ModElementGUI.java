@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.Launcher;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.minecraft.MCItem;
@@ -560,8 +561,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		afterGeneratableElementGenerated();
 
 		// build if selected and needed
-		if (PreferencesManager.PREFERENCES.gradle.compileOnSave.get() && mcreator.getModElementManager()
-				.requiresElementGradleBuild(element)) {
+		if ((Launcher.version.isDevelopment() || PreferencesManager.PREFERENCES.gradle.buildOnSave.get())
+				&& mcreator.getModElementManager().requiresElementGradleBuild(element)) {
 			mcreator.actionRegistry.buildWorkspace.doAction();
 		}
 

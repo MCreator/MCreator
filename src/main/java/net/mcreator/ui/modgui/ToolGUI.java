@@ -229,13 +229,13 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.label("elementgui.common.enchantability")));
 		selp.add(enchantability);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"),
-				L10N.label("elementgui.tool.attack_speed")));
-		selp.add(attackSpeed);
-
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
 				L10N.label("elementgui.tool.damage_vs_entity")));
 		selp.add(damageVsEntity);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"),
+				L10N.label("elementgui.tool.attack_speed")));
+		selp.add(attackSpeed);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
 				L10N.label("elementgui.tool.usage_count")));
