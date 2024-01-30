@@ -89,6 +89,10 @@ base_templates:
 #    template: javamodel.java.ftl
 #    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 
+#tags:
+#  template: tags.json.ftl
+#  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
+
 language_file:
   format: json
   root_folder: "@MODASSETSROOT/lang/"
