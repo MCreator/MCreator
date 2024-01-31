@@ -1,0 +1,14 @@
+templates:
+  - template: dispensebehaviour.java.ftl
+    condition: hasDispenseBehavior
+    name: "@SRCROOT/@BASEPACKAGEPATH/item/extension/@NAMEItemExtension.java"
+
+global_templates:
+  - template: elementinits/fuels.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('itemextension')?filter(e -> e.enableFuel)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameFuels.java"
+  - template: elementinits/compostable_items.java.ftl
+    writer: java
+    condition: "${w.getGElementsOfType('itemextension')?filter(e -> e.compostLayerChance gt 0)?size != 0}"
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameCompostableItems.java"
