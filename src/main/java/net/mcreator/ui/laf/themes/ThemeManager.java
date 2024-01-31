@@ -19,7 +19,7 @@
 
 package net.mcreator.ui.laf.themes;
 
-import com.formdev.flatlaf.themes.FlatMacDarkLaf;
+import com.formdev.flatlaf.FlatDarkLaf;
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
@@ -57,7 +57,7 @@ public class ThemeManager {
 
 		try {
 			// TODO: light/dark selection from Theme JSON
-			UIManager.setLookAndFeel(new FlatMacDarkLaf() {
+			UIManager.setLookAndFeel(new FlatDarkLaf() {
 				@Override public UIDefaults getDefaults() {
 					UIDefaults table = super.getDefaults();
 					Theme.current().applyUIDefaultsOverrides(table);
