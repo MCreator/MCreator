@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -38,10 +38,10 @@ package ${package}.init;
 
 public class ${JavaModName}Enchantments {
 
-	public static final DeferredRegister<Enchantment> REGISTRY = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, ${JavaModName}.MODID);
+	public static final DeferredRegister<Enchantment> REGISTRY = DeferredRegister.create(BuiltInRegistries.ENCHANTMENT, ${JavaModName}.MODID);
 
 	<#list enchantments as enchantment>
-	public static final RegistryObject<Enchantment> ${enchantment.getModElement().getRegistryNameUpper()} =
+	public static final DeferredHolder<Enchantment, ${enchantment.getModElement().getName()}Enchantment> ${enchantment.getModElement().getRegistryNameUpper()} =
 		REGISTRY.register("${enchantment.getModElement().getRegistryName()}", () -> new ${enchantment.getModElement().getName()}Enchantment());
 	</#list>
 
