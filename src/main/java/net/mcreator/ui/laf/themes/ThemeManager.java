@@ -56,9 +56,8 @@ public class ThemeManager {
 	public static void init() {
 		loadThemes();
 
-		MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
-
 		try {
+			MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
 			LafUtil.applyDefaultHTMLStyles();
 			LafUtil.fixMacOSActions();
