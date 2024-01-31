@@ -41,7 +41,7 @@ server_run_dir: "@WORKSPACEROOT/runs/server"
 sounds_dir: "@MODASSETSROOT/sounds"
 #structures_dir: "@MODDATAROOT/structures"
 #block_textures_dir: "@MODASSETSROOT/textures/block"
-#item_textures_dir: "@MODASSETSROOT/textures/item"
+item_textures_dir: "@MODASSETSROOT/textures/item"
 #entity_textures_dir: "@MODASSETSROOT/textures/entities"
 #effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
 #particle_textures_dir: "@MODASSETSROOT/textures/particle"
@@ -89,9 +89,9 @@ base_templates:
 #    template: javamodel.java.ftl
 #    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 
-#tags:
-#  template: tags.json.ftl
-#  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
+tags:
+  template: tags.json.ftl
+  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
 
 language_file:
   format: json
