@@ -19,19 +19,18 @@
 
 package net.mcreator.ui.laf.themes;
 
+import com.formdev.flatlaf.themes.FlatMacDarkLaf;
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.LafUtil;
-import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.io.File;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -57,8 +56,14 @@ public class ThemeManager {
 		loadThemes();
 
 		try {
-			MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
-			UIManager.setLookAndFeel(new MetalLookAndFeel());
+			// TODO: light/dark selection from Theme JSON
+			UIManager.setLookAndFeel(new FlatMacDarkLaf() {
+				@Override public UIDefaults getDefaults() {
+					UIDefaults table = super.getDefaults();
+					Theme.current().applyUIDefaultsOverrides(table);
+					return table;
+				}
+			});
 			LafUtil.applyDefaultHTMLStyles();
 			LafUtil.fixMacOSActions();
 		} catch (UnsupportedLookAndFeelException e) {

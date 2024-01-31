@@ -115,6 +115,12 @@ dependencies {
     }
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.14.0' // needed by discord-rpc.jar
 
+    implementation group: 'com.formdev', name: 'flatlaf', version: '3.3'
+    win64 group: 'com.formdev', name: 'flatlaf', version: '3.3', classifier: 'windows-x86_64@dll'
+    macX64 group: 'com.formdev', name: 'flatlaf', version: '3.3', classifier: 'macos-x86_64@dylib'
+    macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.3', classifier: 'macos-arm64@dylib'
+    linux64 group: 'com.formdev', name: 'flatlaf', version: '3.3', classifier: 'linux-x86_64@so'
+
     // test dependencies
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.1'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.1'
