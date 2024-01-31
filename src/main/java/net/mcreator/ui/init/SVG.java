@@ -25,44 +25,77 @@ import com.github.weisj.jsvg.parser.SVGLoader;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BaseMultiResolutionImage;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeSet;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class SVG {
 
+	private static final ExecutorService SVG_LOADER_THREAD = Executors.newSingleThreadExecutor();
+	private static final SVGLoader SVG_LOADER = new SVGLoader();
+
+	private static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
+
+	private static final Double[] SCALES;
+
+	static {
+		Set<Double> scales = new TreeSet<>();
+		scales.add(1.0);
+
+		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		for (GraphicsDevice device : env.getScreenDevices()) {
+			GraphicsConfiguration config = device.getDefaultConfiguration();
+			AffineTransform transform = config.getDefaultTransform();
+			scales.add(transform.getScaleX());
+		}
+
+		SCALES = scales.toArray(new Double[0]);
+	}
+
 	public static Icon getBuiltIn(String identifier, int width, int height) {
-		URL url = ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + identifier + ".svg");
-		if (url == null)
-			throw new RuntimeException("SVG resource not found: " + identifier);
-		SVGLoader loader = new SVGLoader();
-		final SVGDocument doc = loader.load(url);
-		if (doc == null)
-			throw new RuntimeException("SVG resource not found: " + identifier);
-		return new Icon() {
-			@Override public void paintIcon(Component c, Graphics g, int x, int y) {
-				g.drawImage(new BaseMultiResolutionImage(instance(1.0), instance(1.5), instance(1.75), instance(2.0)),
-						x, y, width, height, null);
-			}
+		return CACHE.computeIfAbsent(computeKey(identifier, width, height, true), id -> {
+			URL url = ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + identifier + ".svg");
+			return new ImageIcon(new BaseMultiResolutionImage(getResolutionVariants(loadSVG(url), width, height)));
+		});
+	}
 
-			private BufferedImage instance(double scale) {
-				BufferedImage image = new BufferedImage((int) Math.round(width * scale),
-						(int) Math.round(height * scale), BufferedImage.TYPE_INT_ARGB);
-				Graphics2D g = image.createGraphics();
-				g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				doc.render(null, g, new ViewBox(0, 0, image.getWidth(), image.getHeight()));
-				g.dispose();
-				return image;
-			}
+	private static synchronized SVGDocument loadSVG(URL url) {
+		try {
+			SVGDocument doc = SVG_LOADER_THREAD.submit(() -> SVG_LOADER.load(url)).get();
+			if (doc == null)
+				throw new RuntimeException("SVG resource not found: " + url);
+			return doc;
+		} catch (InterruptedException | ExecutionException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-			@Override public int getIconWidth() {
-				return width;
-			}
+	private static Image[] getResolutionVariants(SVGDocument doc, int width, int height) {
+		Image[] images = new Image[SCALES.length];
+		for (int i = 0; i < SCALES.length; i++)
+			images[i] = renderSVG(doc, width * SCALES[i], height * SCALES[i]);
+		return images;
+	}
 
-			@Override public int getIconHeight() {
-				return height;
-			}
-		};
+	private static BufferedImage renderSVG(SVGDocument doc, double w, double h) {
+		BufferedImage image = new BufferedImage((int) Math.ceil(w), (int) Math.ceil(h), BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = image.createGraphics();
+		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		doc.render(null, g, new ViewBox((float) w, (float) h));
+		g.dispose();
+		return image;
+	}
+
+	private static String computeKey(String identifier, int width, int height, boolean builtin) {
+		return (builtin ? "@" : "") + identifier + "." + width + "." + height;
 	}
 
 }
