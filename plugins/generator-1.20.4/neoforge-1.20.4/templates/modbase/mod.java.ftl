@@ -31,6 +31,7 @@ import org.apache.logging.log4j.Logger;
 
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasVariables()>${JavaModName}Variables.ATTACHMENT_TYPES.register(modEventBus);</#if>
+		<#if w.hasElementsOfType("gamerule")>${JavaModName}GameRules.loadGameRules();</#if>
 	}
 
 	<#-- Networking support below -->
