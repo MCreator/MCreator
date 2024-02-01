@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -38,10 +38,10 @@ package ${package}.init;
 
 public class ${JavaModName}Paintings {
 
-	public static final DeferredRegister<PaintingVariant> REGISTRY = DeferredRegister.create(ForgeRegistries.PAINTING_VARIANTS, ${JavaModName}.MODID);
+	public static final DeferredRegister<PaintingVariant> REGISTRY = DeferredRegister.create(Registries.PAINTING_VARIANT, ${JavaModName}.MODID);
 
 	<#list paintings as painting>
-	public static final RegistryObject<PaintingVariant> ${painting.getModElement().getRegistryNameUpper()} =
+	public static final DeferredHolder<PaintingVariant, PaintingVariant> ${painting.getModElement().getRegistryNameUpper()} =
 			REGISTRY.register("${painting.getModElement().getRegistryName()}", () -> new PaintingVariant(${painting.width}, ${painting.height}));
 	</#list>
 }
