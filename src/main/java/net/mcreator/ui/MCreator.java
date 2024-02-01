@@ -39,6 +39,7 @@ import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.SVG;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
@@ -146,7 +147,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (PreferencesManager.PREFERENCES.hidden.fullScreen.get())
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-		setIconImage(UIRES.getAppIcon().getImage());
+		setIconImages(SVG.getAppIcons());
 		setLocationRelativeTo(null);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

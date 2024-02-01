@@ -89,7 +89,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		this.application = application;
 
 		setTitle("MCreator " + Launcher.version.getMajorString());
-		setIconImage(UIRES.getAppIcon().getImage());
+		setIconImages(SVG.getAppIcons());
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		if (application != null)

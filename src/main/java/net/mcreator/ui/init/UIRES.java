@@ -87,12 +87,4 @@ public class UIRES {
 				ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + finalIdentifier))));
 	}
 
-	public static ImageIcon getAppIcon() {
-		if (Launcher.version.isSnapshot()) {
-			return getBuiltIn("icon_eap");
-		} else {
-			return getBuiltIn("icon");
-		}
-	}
-
 }

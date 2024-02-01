@@ -22,6 +22,7 @@ package net.mcreator.ui.init;
 import com.github.weisj.jsvg.SVGDocument;
 import com.github.weisj.jsvg.attributes.ViewBox;
 import com.github.weisj.jsvg.parser.SVGLoader;
+import net.mcreator.Launcher;
 
 import javax.swing.*;
 import java.awt.*;
@@ -29,6 +30,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BaseMultiResolutionImage;
 import java.awt.image.BufferedImage;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -65,6 +67,19 @@ public class SVG {
 			URL url = ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + identifier + ".svg");
 			return new ImageIcon(new BaseMultiResolutionImage(getResolutionVariants(loadSVG(url), width, height)));
 		});
+	}
+
+	public static ImageIcon getAppIcon(int width, int height) {
+		if (Launcher.version.isSnapshot()) {
+			return getBuiltIn("icon_eap", width, height);
+		} else {
+			return getBuiltIn("icon", width, height);
+		}
+	}
+
+	public static List<Image> getAppIcons() {
+		return List.of(getAppIcon(16, 16).getImage(), getAppIcon(32, 32).getImage(), getAppIcon(64, 64).getImage(),
+				getAppIcon(128, 128).getImage(), getAppIcon(256, 256).getImage());
 	}
 
 	private static synchronized SVGDocument loadSVG(URL url) {
