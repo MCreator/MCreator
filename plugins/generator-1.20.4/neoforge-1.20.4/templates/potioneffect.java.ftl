@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,13 +29,12 @@
 -->
 
 <#-- @formatter:off -->
-<#include "mcitems.ftl">
 <#include "procedures.java.ftl">
 
 package ${package}.potion;
 
 <#compress>
-public class ${name}MobEffect extends MobEffect {
+public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobEffect {
 
 	public ${name}MobEffect() {
 		super(MobEffectCategory.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
@@ -44,12 +43,6 @@ public class ${name}MobEffect extends MobEffect {
 	@Override public String getDescriptionId() {
 		return "effect.${modid}.${registryname}";
 	}
-
-	<#if data.isInstant>
-		@Override public boolean isInstantenous() {
-			return true;
-		}
-	</#if>
 
 	<#if hasProcedure(data.onStarted)>
 		<#if data.isInstant>
@@ -64,7 +57,7 @@ public class ${name}MobEffect extends MobEffect {
 				}/>
 			}
 		<#else>
-			@Override public void addAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
+			@Override public void onEffectStarted(LivingEntity entity, int amplifier) {
 				<@procedureCode data.onStarted, {
 					"x": "entity.getX()",
 					"y": "entity.getY()",
@@ -78,6 +71,14 @@ public class ${name}MobEffect extends MobEffect {
 	</#if>
 
 	<#if hasProcedure(data.onActiveTick)>
+		@Override public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+			<#if hasProcedure(data.activeTickCondition)>
+				return <@procedureOBJToConditionCode data.activeTickCondition/>;
+			<#else>
+				return true;
+			</#if>
+		}
+
 		@Override public void applyEffectTick(LivingEntity entity, int amplifier) {
 			<@procedureCode data.onActiveTick, {
 				"x": "entity.getX()",
@@ -90,30 +91,8 @@ public class ${name}MobEffect extends MobEffect {
 		}
 	</#if>
 
-	<#if hasProcedure(data.onExpired)>
-		@Override public void removeAttributeModifiers(LivingEntity entity, AttributeMap attributeMap, int amplifier) {
-			super.removeAttributeModifiers(entity, attributeMap, amplifier);
-			<@procedureCode data.onExpired, {
-				"x": "entity.getX()",
-				"y": "entity.getY()",
-				"z": "entity.getZ()",
-				"world": "entity.level()",
-				"entity": "entity",
-				"amplifier": "amplifier"
-			}/>
-		}
-	</#if>
-
-	@Override public boolean isDurationEffectTick(int duration, int amplifier) {
-		<#if hasProcedure(data.activeTickCondition)>
-			return <@procedureOBJToConditionCode data.activeTickCondition/>;
-		<#else>
-			return true;
-		</#if>
-	}
-
 	<#if data.hasCustomRenderer()>
-		@Override public void initializeClient(java.util.function.Consumer<IClientMobEffectExtensions> consumer) {
+		@Override public void initializeClient(Consumer<IClientMobEffectExtensions> consumer) {
 			consumer.accept(new IClientMobEffectExtensions() {
 				<#if !data.renderStatusInInventory>
 					@Override public boolean isVisibleInInventory(MobEffectInstance effect) {
