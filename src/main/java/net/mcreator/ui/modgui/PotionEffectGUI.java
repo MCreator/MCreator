@@ -75,13 +75,13 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	@Override protected void initGUI() {
 		onStarted = new ProcedureSelector(this.withEntry("potioneffect/when_potion_applied"), mcreator,
-				L10N.t("elementgui.potioneffect.event_potion_applied"),
+				L10N.t("elementgui.potioneffect.event_potion_applied"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
 		onActiveTick = new ProcedureSelector(this.withEntry("potioneffect/when_active_tick"), mcreator,
 				L10N.t("elementgui.potioneffect.event_potion_tick"),
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
 		onExpired = new ProcedureSelector(this.withEntry("potioneffect/when_potion_expires"), mcreator,
-				L10N.t("elementgui.potioneffect.event_potion_expires"),
+				L10N.t("elementgui.potioneffect.event_potion_expires"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
 		activeTickCondition = new ProcedureSelector(this.withEntry("potioneffect/active_tick_condition"), mcreator,
 				L10N.t("elementgui.potioneffect.event_tick_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
