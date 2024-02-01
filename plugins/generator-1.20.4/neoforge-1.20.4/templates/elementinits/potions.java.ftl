@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -38,11 +38,11 @@ package ${package}.init;
 
 public class ${JavaModName}Potions {
 
-	public static final DeferredRegister<Potion> REGISTRY = DeferredRegister.create(ForgeRegistries.POTIONS, ${JavaModName}.MODID);
+	public static final DeferredRegister<Potion> REGISTRY = DeferredRegister.create(Registries.POTION, ${JavaModName}.MODID);
 
 	<#list potions as potion>
 	<#if potion.effects??><#-- #2988, seems this can become null -->
-		public static final RegistryObject<Potion> ${potion.getModElement().getRegistryNameUpper()} = REGISTRY.register("${potion.getModElement().getRegistryName()}", () -> new Potion(
+		public static final DeferredHolder<Potion, Potion> ${potion.getModElement().getRegistryNameUpper()} = REGISTRY.register("${potion.getModElement().getRegistryName()}", () -> new Potion(
 			<#list potion.effects as effect>
 			new MobEffectInstance(${effect.effect}, ${effect.duration}, ${effect.amplifier}, ${effect.ambient}, ${effect.showParticles})<#sep>,
 			</#list>));
