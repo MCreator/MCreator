@@ -60,7 +60,7 @@ public class SVG {
 		SCALES = scales.toArray(new Double[0]);
 	}
 
-	public static Icon getBuiltIn(String identifier, int width, int height) {
+	public static ImageIcon getBuiltIn(String identifier, int width, int height) {
 		return CACHE.computeIfAbsent(computeKey(identifier, width, height, true), id -> {
 			URL url = ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + identifier + ".svg");
 			return new ImageIcon(new BaseMultiResolutionImage(getResolutionVariants(loadSVG(url), width, height)));
