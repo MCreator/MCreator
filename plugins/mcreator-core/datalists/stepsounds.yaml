@@ -204,3 +204,7 @@
   texture: DECORATED_POT
 - DECORATED_POT_CRACKED:
   texture: DECORATED_POT
+- SPONGE:
+  texture: SPONGE#0
+- WET_SPONGE:
+  texture: SPONGE#1
