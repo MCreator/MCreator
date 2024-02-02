@@ -1,0 +1,1 @@
+Bu, blok kırıldığında çıkan sestir.
