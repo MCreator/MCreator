@@ -88,3 +88,13 @@
   type: logic
 - COMMAND_MODIFICATION_BLOCK_LIMIT:
   type: number
+- PROJECTILES_CAN_BREAK_BLOCKS:
+  type: logic
+- MAX_COMMAND_FORK_COUNT:
+  type: number
+- PLAYERS_NETHER_PORTAL_DEFAULT_DELAY:
+  type: number
+- PLAYERS_NETHER_PORTAL_CREATIVE_DELAY:
+  type: number
+- ENDER_PEARLS_VANISH_ON_DEATH:
+  type: logic
