@@ -48,7 +48,7 @@ public class RunServerAction extends GradleAction {
 				JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 						L10N.t("dialog.run_server_and_client.eula_intro"));
 
-				DesktopUtils.browseSafe("https://account.mojang.com/documents/minecraft_eula");
+				DesktopUtils.browseSafe("https://www.minecraft.net/en-us/eula");
 
 				Object[] options = { L10N.t("dialog.run_server_and_client.agree"),
 						L10N.t("dialog.run_server_and_client.disagree") };

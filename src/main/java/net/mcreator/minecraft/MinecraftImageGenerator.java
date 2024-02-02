@@ -1450,18 +1450,6 @@ public class MinecraftImageGenerator {
 		}
 
 		/**
-		 * This method generates tag images.
-		 *
-		 * @param type Tag type string.
-		 * @return Returns generated image of the appropriate colour.
-		 */
-		public static BufferedImage generateTagPreviewPicture(String type) {
-			return ImageUtils.toBufferedImage(
-					ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), TagType.fromLegacyName(type).getColor(),
-							false).getImage());
-		}
-
-		/**
 		 * This method generates game rule images.
 		 *
 		 * @param type Game rule type string.

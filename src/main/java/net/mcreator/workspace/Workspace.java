@@ -21,10 +21,7 @@ package net.mcreator.workspace;
 import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.Launcher;
 import net.mcreator.element.ModElementType;
-import net.mcreator.generator.Generator;
-import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.generator.IGeneratorProvider;
+import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
@@ -57,6 +54,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
+	private ConcurrentHashMap<TagElement, ArrayList<String>> tag_elements = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<>() {{
 		put("en_us", new ConcurrentHashMap<>());
 	}};
@@ -113,6 +111,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 */
 	public Collection<SoundElement> getSoundElements() {
 		return Collections.unmodifiableSet(sound_elements);
+	}
+
+	public Map<TagElement, ArrayList<String>> getTagElements() {
+		return tag_elements;
 	}
 
 	public Map<String, ConcurrentHashMap<String, String>> getLanguageMap() {
@@ -201,6 +203,15 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		}
 	}
 
+	public void addTagElement(TagElement element) {
+		if (!tag_elements.containsKey(element)) {
+			tag_elements.put(element, new ArrayList<>());
+			markDirty();
+		} else {
+			LOG.warn("Trying to add existing tag element: " + element.getName());
+		}
+	}
+
 	public void addSoundElement(SoundElement element) {
 		if (!sound_elements.contains(element)) {
 			sound_elements.add(element);
@@ -224,6 +235,17 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void removeVariableElement(VariableElement element) {
 		variable_elements.remove(element);
+		markDirty();
+	}
+
+	public void removeTagElement(TagElement element) {
+		tag_elements.remove(element);
+
+		File tagFile = TagsUtils.getTagFileFor(this, element);
+		if (tagFile != null) {
+			tagFile.delete();
+		}
+
 		markDirty();
 	}
 
@@ -511,6 +533,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
+		this.tag_elements = other.tag_elements;
 		this.language_map = other.language_map;
 		this.foldersRoot = other.foldersRoot;
 		this.mcreatorVersion = other.mcreatorVersion;

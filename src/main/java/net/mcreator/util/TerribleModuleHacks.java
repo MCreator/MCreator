@@ -30,8 +30,8 @@ public class TerribleModuleHacks {
 	private static final Logger LOG = LogManager.getLogger("Terrible module hacks");
 
 	public static void openAllFor(Module moduleToOpenFor) {
-		ModuleLayer.boot().modules().forEach(module -> module.getPackages()
-				.forEach(pn -> addOpens(module, pn, moduleToOpenFor)));
+		ModuleLayer.boot().modules()
+				.forEach(module -> module.getPackages().forEach(pn -> addOpens(module, pn, moduleToOpenFor)));
 	}
 
 	public static void openMCreatorRequirements() {

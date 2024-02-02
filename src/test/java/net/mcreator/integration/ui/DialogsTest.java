@@ -143,10 +143,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 		}
 	}
 
+	@Test public void testAddCommonTagsDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AddCommonTagsDialog.open(mcreator));
+	}
+
 	@Test public void testToolsDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> ArmorPackMakerTool.getAction(mcreator.actionRegistry).doAction());
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> InjectTagsTool.getAction(mcreator.actionRegistry).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> MaterialPackMakerTool.getAction(mcreator.actionRegistry).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
