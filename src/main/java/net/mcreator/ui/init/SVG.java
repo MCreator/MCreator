@@ -21,9 +21,16 @@ package net.mcreator.ui.init;
 
 import com.github.weisj.jsvg.SVGDocument;
 import com.github.weisj.jsvg.attributes.ViewBox;
+import com.github.weisj.jsvg.attributes.paint.AwtSVGPaint;
+import com.github.weisj.jsvg.attributes.paint.PaintParser;
+import com.github.weisj.jsvg.attributes.paint.SVGPaint;
+import com.github.weisj.jsvg.parser.AttributeNode;
+import com.github.weisj.jsvg.parser.DefaultParserProvider;
 import com.github.weisj.jsvg.parser.SVGLoader;
 import net.mcreator.Launcher;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -63,9 +70,15 @@ public class SVG {
 	}
 
 	public static ImageIcon getBuiltIn(String identifier, int width, int height) {
-		return CACHE.computeIfAbsent(computeKey(identifier, width, height, true), id -> {
-			URL url = ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + identifier + ".svg");
-			return new ImageIcon(new BaseMultiResolutionImage(getResolutionVariants(loadSVG(url), width, height)));
+		return getBuiltIn(identifier, width, height, null);
+	}
+
+	public static ImageIcon getBuiltIn(String identifier, int width, int height, @Nullable Color paint) {
+		return CACHE.computeIfAbsent(computeKey(identifier, width, height, paint, true), id -> {
+			URL url = ClassLoader.getSystemClassLoader()
+					.getResource("net/mcreator/ui/res/" + identifier.replace('.', '/') + ".svg");
+			return new ImageIcon(
+					new BaseMultiResolutionImage(getResolutionVariants(loadSVG(url, paint), width, height)));
 		});
 	}
 
@@ -82,9 +95,19 @@ public class SVG {
 				getAppIcon(128, 128).getImage(), getAppIcon(256, 256).getImage());
 	}
 
-	private static synchronized SVGDocument loadSVG(URL url) {
+	private static synchronized SVGDocument loadSVG(URL url, @Nullable Color paint) {
 		try {
-			SVGDocument doc = SVG_LOADER_THREAD.submit(() -> SVG_LOADER.load(url)).get();
+			SVGDocument doc = SVG_LOADER_THREAD.submit(() -> {
+				if (paint == null) {
+					return SVG_LOADER.load(url);
+				} else {
+					return SVG_LOADER.load(url, new DefaultParserProvider() {
+						@Override public @Nonnull PaintParser createPaintParser() {
+							return new CustomColorsPaintParser(paint, super.createPaintParser());
+						}
+					});
+				}
+			}).get();
 			if (doc == null)
 				throw new RuntimeException("SVG resource not found: " + url);
 			return doc;
@@ -104,13 +127,33 @@ public class SVG {
 		BufferedImage image = new BufferedImage((int) Math.ceil(w), (int) Math.ceil(h), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = image.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+		g.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_NORMALIZE);
 		doc.render(null, g, new ViewBox((float) w, (float) h));
 		g.dispose();
 		return image;
 	}
 
-	private static String computeKey(String identifier, int width, int height, boolean builtin) {
-		return (builtin ? "@" : "") + identifier + "." + width + "." + height;
+	private static String computeKey(String identifier, int width, int height, @Nullable Color color, boolean builtin) {
+		return (builtin ? "@" : "") + identifier + "." + width + "." + height + (color == null ?
+				"" :
+				"." + color.getRGB());
+	}
+
+	private record CustomColorsPaintParser(Color paint, PaintParser delegate) implements PaintParser {
+
+		@Override public Color parseColor(@Nonnull String value, @Nonnull AttributeNode attributeNode) {
+			return paint;
+		}
+
+		@Override public SVGPaint parsePaint(@Nullable String value, @Nonnull AttributeNode attributeNode) {
+			SVGPaint retval = delegate.parsePaint(value, attributeNode);
+			if (retval == null || retval instanceof AwtSVGPaint) {
+				return new AwtSVGPaint(paint);
+			} else {
+				return retval;
+			}
+		}
+
 	}
 
 }
