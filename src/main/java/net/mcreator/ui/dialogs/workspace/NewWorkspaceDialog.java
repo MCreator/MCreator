@@ -226,8 +226,8 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		wt.setBorder(BorderFactory.createEmptyBorder(8, 8, 3, 30));
 
 		workspaceType.add(wt);
-		workspaceType.add(forge);
 		workspaceType.add(neoforge);
+		workspaceType.add(forge);
 		workspaceType.add(fabric);
 		workspaceType.add(quilt);
 		workspaceType.add(spigot);

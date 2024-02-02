@@ -60,7 +60,7 @@ public class ElementOrderEditor {
 					GeneratableElement generatableElement = modElement.getGeneratableElement();
 					if (generatableElement instanceof ITabContainedElement element) {
 						if (element.getCreativeTab() == null || element.getCreativeTab().getUnmappedValue()
-								.equals("No creative tab entry")) {
+								.equals("No creative tab entry") || element.getCreativeTabItems().isEmpty()) {
 							return;
 						}
 

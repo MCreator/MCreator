@@ -10,7 +10,7 @@ jobs:
   crowdin-push:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: crowdin/github-action@cb33a030bb1675169b76617d5805242aeea6eaec
         name: Push sources to Crowdin
         env:
