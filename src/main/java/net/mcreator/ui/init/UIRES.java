@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.init;
 
-import net.mcreator.Launcher;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 
