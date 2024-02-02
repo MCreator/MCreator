@@ -53,9 +53,7 @@ public class ThemeManager {
 	/**
 	 * This method loads all {@link Theme}s and sets the current theme to the one selected by the user.
 	 */
-	public static void init() {
-		loadThemes();
-
+	public static void applySelectedTheme() {
 		try {
 			MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
@@ -69,7 +67,7 @@ public class ThemeManager {
 	/**
 	 * <p>This method loads the {@link Theme} of all plugins loaded into the current {@link net.mcreator.plugin.PluginLoader} instance.</p>
 	 */
-	private static void loadThemes() {
+	public static void loadThemes() {
 		LOG.debug("Loading UI themes");
 
 		// Load all themes

@@ -100,11 +100,14 @@ public final class MCreatorApplication {
 			splashScreen.setProgress(10, "Loading UI Themes");
 
 			// We load UI theme now as theme plugins are loaded at this point
-			ThemeManager.init();
+			ThemeManager.loadThemes();
 
 			splashScreen.setProgress(15, "Loading UI core");
 
 			UIRES.preloadImages();
+
+			// Now that UIRES is loaded, we can load the theme (theme can use UIRES icons)
+			ThemeManager.applySelectedTheme();
 
 			taskbarIntegration = new TaskbarIntegration();
 
@@ -150,7 +153,7 @@ public final class MCreatorApplication {
 			ModElementTypeLoader.loadModElements();
 
 			splashScreen.setProgress(60, "Preloading resources");
-			TiledImageCache.loadAndTileImages();
+			TiledImageCache.loadTileImages();
 
 			splashScreen.setProgress(70, "Loading generators");
 
