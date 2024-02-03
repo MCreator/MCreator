@@ -19,7 +19,6 @@
 package net.mcreator.ui.component;
 
 import net.mcreator.ui.init.SVG;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
@@ -39,13 +38,13 @@ public class SocialButtons extends JPanel {
 		add(new JEmptyBox(2, 2));
 		add(createButton("ig", "https://www.instagram.com/pylocompany/"));
 		add(new JEmptyBox(2, 2));
-		add(createButton("fb", "https://www.facebook.com/PyloDEV"));
-		add(new JEmptyBox(2, 2));
 		add(createButton("gh", "https://github.com/MCreator/MCreator"));
+		add(new JEmptyBox(2, 2));
+		add(createButton("fb", "https://www.facebook.com/PyloDEV"));
 	}
 
 	private JLabel createButton(String icon, String url) {
-		JLabel label = new JLabel(SVG.getBuiltIn("social." + icon, 18, 18, Theme.current().getForegroundColor()));
+		JLabel label = new JLabel(SVG.getBuiltIn("social." + icon, 18, 18));
 		label.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		label.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {

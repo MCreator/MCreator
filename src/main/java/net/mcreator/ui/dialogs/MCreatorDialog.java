@@ -19,7 +19,6 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.ui.init.SVG;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
