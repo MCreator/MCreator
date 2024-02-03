@@ -8,7 +8,7 @@
 			"z": "event.getEntity().getZ()",
 			"world": "event.getEntity().level()",
 			"entity": "event.getEntity()",
-			"advancement": "event.getAdvancement()",
+			"advancement": "event.getAdvancement().value()",
 			"event": "event"
 			}/>
 		</#compress></#assign>
