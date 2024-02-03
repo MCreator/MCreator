@@ -58,7 +58,7 @@ public class TiledImageCache {
 	public static ImageIcon spawnEggBase;
 	public static ImageIcon spawnEggDots;
 
-	public static void loadAndTileImages() {
+	public static void loadTileImages() {
 		try {
 			TiledImageUtils plantGrowthTile = new TiledImageUtils(UIRES.get("growthtile"), 128, 215);
 			TiledImageUtils modTabTile = new TiledImageUtils(UIRES.get("taboverlaytile"), 64, 64);

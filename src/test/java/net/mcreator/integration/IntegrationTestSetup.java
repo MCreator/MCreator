@@ -122,22 +122,25 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		PluginLoader.initInstance();
 
 		// We load UI theme now as theme plugins are loaded at this point
-		ThemeManager.init();
+		ThemeManager.loadThemes();
 
-		DataListLoader.preloadCache();
+		UIRES.preloadImages();
+
+		ThemeManager.applySelectedTheme();
 
 		// preload help entries cache
 		HelpLoader.preloadCache();
+
+		BlockItemIcons.init();
+		DataListLoader.preloadCache();
 
 		// load translations after plugins are loaded
 		L10N.initTranslations();
 		L10N.enterTestingMode();
 
-		// some mod element guis use icons
-		TiledImageCache.loadAndTileImages();
-
 		// may be needed to generate icons for MCItems (e.g. generation of potion icons)
 		ImageMakerTexturesCache.init();
+		ArmorMakerTexturesCache.init();
 
 		// load apis defined by plugins after plugins are loaded
 		ModAPIManager.initAPIs();
@@ -157,6 +160,9 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 
 		// register mod element types
 		ModElementTypeLoader.loadModElements();
+
+		// some mod element guis use icons
+		TiledImageCache.loadTileImages();
 
 		// load generator configurations
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
