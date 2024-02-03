@@ -36,6 +36,7 @@
 
 package ${package}.init;
 
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ${JavaModName}GameRules {
 
 	<#list gamerules as gamerule>
@@ -46,7 +47,8 @@ public class ${JavaModName}GameRules {
 		</#if>
 	</#list>
 
-	public static void loadGameRules() {
+	@SubscribeEvent
+	public static void registerGameRules(FMLCommonSetupEvent event) {
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
 		 ${gamerule.getModElement().getRegistryNameUpper()} =
