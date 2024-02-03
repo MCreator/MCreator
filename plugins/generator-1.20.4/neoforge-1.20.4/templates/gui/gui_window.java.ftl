@@ -32,6 +32,8 @@
 <#include "../procedures.java.ftl">
 package ${package}.client.gui;
 
+<#assign hasEntityModels = false>
+
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	private final static HashMap<String, Object> guistate = ${name}Menu.guistate;
@@ -41,19 +43,19 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	private final Player entity;
 
 	<#list data.getComponentsOfType("TextField") as component>
-		EditBox ${component.getName()};
+	EditBox ${component.getName()};
 	</#list>
 
 	<#list data.getComponentsOfType("Checkbox") as component>
-		Checkbox ${component.getName()};
+	Checkbox ${component.getName()};
 	</#list>
 
 	<#list data.getComponentsOfType("Button") as component>
-		Button ${component.getName()};
+	Button ${component.getName()};
 	</#list>
 
 	<#list data.getComponentsOfType("ImageButton") as component>
-		ImageButton ${component.getName()};
+	ImageButton ${component.getName()};
 	</#list>
 
 	public ${name}Screen(${name}Menu container, Inventory inventory, Component text) {
@@ -68,25 +70,26 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 	}
 
 	<#if data.doesPauseGame>
-		@Override public boolean isPauseScreen() {
-			return true;
-		}
+	@Override public boolean isPauseScreen() {
+		return true;
+	}
 	</#if>
 
 	<#if data.renderBgLayer>
-		private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/screens/${registryname}.png" );
+	private static final ResourceLocation texture = new ResourceLocation("${modid}:textures/screens/${registryname}.png");
 	</#if>
 
 	@Override public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTicks) {
-		this.renderBackground(guiGraphics);
+		this.renderBackground(guiGraphics, mouseX, mouseY, partialTicks);
 
 		super.render(guiGraphics, mouseX, mouseY, partialTicks);
 
 		<#list data.getComponentsOfType("TextField") as component>
-				${component.getName()}.render(guiGraphics, mouseX, mouseY, partialTicks);
+		${component.getName()}.render(guiGraphics, mouseX, mouseY, partialTicks);
 		</#list>
 
 		<#list data.getComponentsOfType("EntityModel") as component>
+			<#assign hasEntityModels = true>
 			<#assign followMouse = component.followMouseMovement>
 			<#assign x = component.gx(data.width)>
 			<#assign y = component.gy(data.height)>
@@ -94,7 +97,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-				InventoryScreen.renderEntityInInventoryFollowsAngle(guiGraphics, this.leftPos + ${x + 10}, this.topPos + ${y + 20}, ${component.scale},
+				this.renderEntityInInventoryFollowsAngle(guiGraphics, this.leftPos + ${x + 10}, this.topPos + ${y + 20}, ${component.scale},
 					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.leftPos + ${x + 10} - mouseX) / 40.0)</#if>,
 					<#if followMouse>(float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>,
 					livingEntity
@@ -141,20 +144,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			this.minecraft.player.closeContainer();
 			return true;
 		}
-
-		<#list data.getComponentsOfType("TextField") as component>
-				if(${component.getName()}.isFocused())
-					return ${component.getName()}.keyPressed(key, b, c);
-		</#list>
-
 		return super.keyPressed(key, b, c);
-	}
-
-	@Override public void containerTick() {
-		super.containerTick();
-		<#list data.getComponentsOfType("TextField") as component>
-				${component.getName()}.tick();
-		</#list>
 	}
 
 	@Override protected void renderLabels(GuiGraphics guiGraphics, int mouseX, int mouseY) {
@@ -188,8 +178,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 						setSuggestion(null);
 				}
 
-				@Override public void moveCursorTo(int pos) {
-					super.moveCursorTo(pos);
+				@Override public void moveCursorTo(int pos, boolean flag) {
+					super.moveCursorTo(pos, flag);
 					if (getValue().isEmpty())
 						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 					else
@@ -197,10 +187,10 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				}
 			}
 			</#if>;
+			${component.getName()}.setMaxLength(32767);
 			<#if component.placeholder?has_content>
 			${component.getName()}.setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 			</#if>
-			${component.getName()}.setMaxLength(32767);
 
 			guistate.put("text:${component.getName()}", ${component.getName()});
 			this.addWidget(this.${component.getName()});
@@ -237,12 +227,20 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			${component.getName()} = new ImageButton(
 				this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 				${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
-				0, 0, ${component.getHeight(w.getWorkspace())},
-				new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
-				${component.getWidth(w.getWorkspace())},
-				${component.getHeight(w.getWorkspace()) * 2},
+				<#if component.hoveredImage?has_content>
+				new WidgetSprites(new ResourceLocation("${modid}:textures/screens/${component.image}"), new ResourceLocation("${modid}:textures/screens/${component.hoveredImage}")),
+				<#else>
+				new WidgetSprites(new ResourceLocation("${modid}:textures/screens/${component.image}"), new ResourceLocation("${modid}:textures/screens/${component.image}")),
+				</#if>
 				<@buttonOnClick component/>
-			)<@buttonDisplayCondition component/>;
+			) {
+				@Override public void renderWidget(GuiGraphics guiGraphics, int x, int y, float partialTicks) {
+					<#if hasProcedure(component.displayCondition)>
+					if (<@procedureOBJToConditionCode component.displayCondition/>)
+					</#if>
+					guiGraphics.blit(sprites.get(isActive(), isHoveredOrFocused()), getX(), getY(), 0, 0, width, height, width, height);
+				}
+			};
 
 			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
@@ -251,14 +249,39 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>
-			${component.getName()} = new Checkbox(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
-					20, 20, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
-				<@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
+			${component.getName()} = Checkbox.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), this.font)
+				.pos(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)})
+				<#if hasProcedure(component.isCheckedProcedure)>.selected(<@procedureOBJToConditionCode component.isCheckedProcedure/>)</#if>
+				.build();
 
 			guistate.put("checkbox:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
 		</#list>
 	}
+
+	<#if hasEntityModels>
+	private void renderEntityInInventoryFollowsAngle(GuiGraphics guiGraphics, int x, int y, int scale, float angleXComponent, float angleYComponent, LivingEntity entity) {
+		Quaternionf pose = new Quaternionf().rotateZ((float)Math.PI);
+		Quaternionf cameraOrientation = new Quaternionf().rotateX(angleYComponent * 20 * ((float) Math.PI / 180F));
+		pose.mul(cameraOrientation);
+		float f2 = entity.yBodyRot;
+		float f3 = entity.getYRot();
+		float f4 = entity.getXRot();
+		float f5 = entity.yHeadRotO;
+		float f6 = entity.yHeadRot;
+		entity.yBodyRot = 180.0F + angleXComponent * 20.0F;
+		entity.setYRot(180.0F + angleXComponent * 40.0F);
+		entity.setXRot(-angleYComponent * 20.0F);
+		entity.yHeadRot = entity.getYRot();
+		entity.yHeadRotO = entity.getYRot();
+		InventoryScreen.renderEntityInInventory(guiGraphics, x, y, scale, new Vector3f(0, 0, 0), pose, cameraOrientation, entity);
+		entity.yBodyRot = f2;
+		entity.setYRot(f3);
+		entity.setXRot(f4);
+		entity.yHeadRotO = f5;
+		entity.yHeadRot = f6;
+	}
+	</#if>
 
 }
 
@@ -266,7 +289,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 e -> {
 	<#if hasProcedure(component.onClick)>
 		if (<@procedureOBJToConditionCode component.displayCondition/>) {
-			${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}ButtonMessage(${btid}, x, y, z));
+			PacketDistributor.SERVER.noArg().send(new ${name}ButtonMessage(${btid}, x, y, z));
 			${name}ButtonMessage.handleButtonAction(entity, ${btid}, x, y, z);
 		}
 	</#if>
@@ -276,9 +299,9 @@ e -> {
 <#macro buttonDisplayCondition component>
 <#if hasProcedure(component.displayCondition)>
 {
-	@Override public void render(GuiGraphics guiGraphics, int gx, int gy, float ticks) {
+	@Override public void renderWidget(GuiGraphics guiGraphics, int gx, int gy, float ticks) {
 		if (<@procedureOBJToConditionCode component.displayCondition/>)
-			super.render(guiGraphics, gx, gy, ticks);
+			super.renderWidget(guiGraphics, gx, gy, ticks);
 	}
 }
 </#if>

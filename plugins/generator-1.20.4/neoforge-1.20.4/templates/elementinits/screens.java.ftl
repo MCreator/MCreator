@@ -36,14 +36,13 @@
 
 package ${package}.init;
 
-public class ${JavaModName}Menus {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}Screens {
 
-	public static final DeferredRegister<MenuType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.MENU_TYPES, ${JavaModName}.MODID);
-
-	<#list guis as gui>
-	public static final RegistryObject<MenuType<${gui.getModElement().getName()}Menu>> ${gui.getModElement().getRegistryNameUpper()}
-		= REGISTRY.register("${gui.getModElement().getRegistryName()}", () -> IForgeMenuType.create(${gui.getModElement().getName()}Menu::new));
-	</#list>
+	@SubscribeEvent public static void clientLoad(RegisterMenuScreensEvent event) {
+		<#list guis as gui>
+		event.register(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
+		</#list>
+	}
 
 }
 
