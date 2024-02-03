@@ -28,6 +28,7 @@ import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.WorkspaceSelectorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.SplashScreen;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.JEmptyBox;
@@ -526,7 +527,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		JPanel soim;
 		if (!Launcher.version.isSnapshot()) {
-			soim = new ImagePanel(ImageUtils.darken(ImageUtils.toBufferedImage(UIRES.getBuiltIn("splash").getImage())));
+			soim = new ImagePanel(SplashScreen.getSplashImage(true));
 			((ImagePanel) soim).setFitToWidth(true);
 			((ImagePanel) soim).setOffsetY(-400);
 		} else {

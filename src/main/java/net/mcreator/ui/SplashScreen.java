@@ -23,9 +23,11 @@ import net.mcreator.ui.component.ProgressBar;
 import net.mcreator.ui.component.SplashScreenPanel;
 import net.mcreator.ui.init.SVG;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BaseMultiResolutionImage;
 
 public class SplashScreen extends JWindow {
 
@@ -39,9 +41,8 @@ public class SplashScreen extends JWindow {
 	public SplashScreen() {
 		Font splashFont = new Font("Sans-Serif", Font.PLAIN, 13);
 
-		SplashScreenPanel imagePanel = new SplashScreenPanel(UIRES.getBuiltIn("splash").getImage(), CORNER_RADIUS,
-				SHADOW_RADIUS, EXTEND_BORDER, (Launcher.version != null && Launcher.version.isSnapshot()),
-				new Color(50, 50, 50));
+		SplashScreenPanel imagePanel = new SplashScreenPanel(getSplashImage(false), CORNER_RADIUS, SHADOW_RADIUS,
+				EXTEND_BORDER, (Launcher.version != null && Launcher.version.isSnapshot()), new Color(50, 50, 50));
 		int shadowPadding = imagePanel.getBorderExtension();
 
 		imagePanel.setLayout(null);
@@ -111,6 +112,16 @@ public class SplashScreen extends JWindow {
 			initloadprogress.setCurrentValue(percentage);
 			loadstate.setText(message);
 		});
+	}
+
+	public static BaseMultiResolutionImage getSplashImage(boolean darken) {
+		Image splash2x = UIRES.getBuiltIn("splash").getImage();
+		Image splash1x = ImageUtils.resize(splash2x, splash2x.getWidth(null) / 2, splash2x.getHeight(null) / 2);
+		if (darken) {
+			splash1x = ImageUtils.darken(ImageUtils.toBufferedImage(splash1x));
+			splash2x = ImageUtils.darken(ImageUtils.toBufferedImage(splash2x));
+		}
+		return new BaseMultiResolutionImage(splash1x, splash2x);
 	}
 
 }
