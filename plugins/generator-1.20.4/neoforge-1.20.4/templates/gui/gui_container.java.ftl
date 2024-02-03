@@ -83,25 +83,30 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 					byte hand = extraData.readByte();
 					ItemStack itemstack = hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem();
 					this.boundItemMatcher = () -> itemstack == (hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem());
-					itemstack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
-						this.internal = capability;
+					IItemHandler cap = itemstack.getCapability(Capabilities.ItemHandler.ITEM);
+					if (cap != null) {
+						this.internal = cap;
 						this.bound = true;
-					});
+					}
 				} else if (extraData.readableBytes() > 1) { // bound to entity
 					extraData.readByte(); // drop padding
 					boundEntity = world.getEntity(extraData.readVarInt());
-					if(boundEntity != null)
-						boundEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
-							this.internal = capability;
+					if(boundEntity != null) {
+						IItemHandler cap = boundEntity.getCapability(Capabilities.ItemHandler.ENTITY);
+						if (cap != null) {
+							this.internal = cap;
 							this.bound = true;
-						});
+						}
+					}
 				} else { // might be bound to block
 					boundBlockEntity = this.world.getBlockEntity(pos);
-					if (boundBlockEntity != null)
-						boundBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
-							this.internal = capability;
+					if (boundBlockEntity != null) {
+						IItemHandler cap = this.world.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
+						if (cap != null) {
+							this.internal = cap;
 							this.bound = true;
-						});
+						}
+					}
 				}
 			}
 
@@ -267,7 +272,7 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 		<#if data.hasSlotEvents()>
 			private void slotChanged(int slotid, int ctype, int meta) {
 				if(this.world != null && this.world.isClientSide()) {
-					${JavaModName}.PACKET_HANDLER.sendToServer(new ${name}SlotMessage(slotid, x, y, z, ctype, meta));
+					PacketDistributor.SERVER.noArg().send(new ${name}SlotMessage(slotid, x, y, z, ctype, meta));
 					${name}SlotMessage.handleSlotAction(entity, slotid, ctype, meta, x, y, z);
 				}
 			}
