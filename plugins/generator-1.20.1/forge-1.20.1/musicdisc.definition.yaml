@@ -5,10 +5,8 @@ templates:
     writer: json
     name: "@MODASSETSROOT/models/item/@registryname.json"
 
-global_templates:
-  - template: json/musicdisctag.json.ftl
-    writer: json
-    name: "@RESROOT/data/minecraft/tags/items/music_discs.json"
+tags:
+  - tag: ITEMS:minecraft:music_discs
 
 localizationkeys:
   - key: item.@modid.@registryname

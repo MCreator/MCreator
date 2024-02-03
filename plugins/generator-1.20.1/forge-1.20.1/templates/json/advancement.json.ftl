@@ -26,7 +26,7 @@
         },
     </#if>
     "criteria": {
-      "${registryname}": ${triggercode}
+      ${triggercode?keep_before_last(",")}
     }
     <#if data.hasRewards()>,
     "rewards": {

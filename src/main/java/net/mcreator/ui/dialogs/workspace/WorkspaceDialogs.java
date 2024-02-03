@@ -152,7 +152,6 @@ public class WorkspaceDialogs {
 		JComboBox<String> modPicture = new JComboBox<>();
 		JCheckBox lockBaseModFiles = L10N.checkbox("dialog.workspace_settings.lock_base_files");
 		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
-		JCheckBox disableForgeVersionCheck = new JCheckBox();
 		JTextField updateJSON = new JTextField(24);
 		JStringListField requiredMods, dependencies, dependants;
 
@@ -350,8 +349,6 @@ public class WorkspaceDialogs {
 			author.setText(System.getProperty("user.name") + ", MCreator");
 			version.setText("1.0.0");
 
-			disableForgeVersionCheck.setSelected(true);
-
 			generator.setUI(new BasicComboBoxUI() {
 				@Override protected JButton createArrowButton() {
 					return new JButton() {
@@ -522,14 +519,6 @@ public class WorkspaceDialogs {
 				_external_apis.add(apiSettings);
 			}
 
-			JComponent forgeVersionCheckPan = PanelUtils.westAndEastElement(
-					L10N.label("dialog.workspace_settings.section.version_check"), disableForgeVersionCheck);
-			forgeVersionCheckPan.setBorder(
-					BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
-							L10N.t("dialog.workspace_settings.version_check")));
-			_advancedSettings.add(forgeVersionCheckPan);
-			_advancedSettings.add(new JEmptyBox(5, 5));
-
 			JPanel advancedSettings = new JPanel(new GridLayout(3, 2, 5, 2));
 			advancedSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 					L10N.t("dialog.workspace_settings.section.advanced")));
@@ -571,7 +560,6 @@ public class WorkspaceDialogs {
 						workspace.getWorkspaceSettings().getModPicture());
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
 				lockBaseModFiles.setSelected(workspace.getWorkspaceSettings().isLockBaseModFiles());
-				disableForgeVersionCheck.setSelected(workspace.getWorkspaceSettings().isDisableForgeVersionCheck());
 				updateJSON.setText(workspace.getWorkspaceSettings().getUpdateURL());
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
 				packageName.setText(workspace.getWorkspaceSettings().getModElementsPackage());
@@ -608,7 +596,6 @@ public class WorkspaceDialogs {
 			retVal.setModElementsPackage(packageName.getText().isEmpty() ? null : packageName.getText());
 			retVal.setServerSideOnly(serverSideOnly.isSelected());
 			retVal.setLockBaseModFiles(lockBaseModFiles.isSelected());
-			retVal.setDisableForgeVersionCheck(disableForgeVersionCheck.isSelected());
 			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());
 			retVal.setCurrentGenerator(
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());

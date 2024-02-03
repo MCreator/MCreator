@@ -38,8 +38,6 @@
 
 package ${package}.init;
 
-import net.minecraft.sounds.SoundEvent;
-
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}VillagerProfessions {
 
 	private static final Map<String, ProfessionPoiType> POI_TYPES = new HashMap<>();

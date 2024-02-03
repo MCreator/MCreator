@@ -33,20 +33,26 @@ public class ReloadGradleProjectAction extends GradleAction {
 						L10N.t("dialog.setup_workspace.progress.reloading_gradle_dependencies"));
 				progressDialog.addProgressUnit(p1);
 
-				actionRegistry.getMCreator().getGradleConsole().exec("dependencies", finished -> {
+				String task = actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("setup_task");
+				if (task == null)
+					task = "clean";
+
+				actionRegistry.getMCreator().mcreatorTabs.showTab(actionRegistry.getMCreator().consoleTab);
+
+				actionRegistry.getMCreator().getGradleConsole().exec(task + " --refresh-dependencies", finished -> {
 					p1.markStateOk();
 
-					ProgressDialog.ProgressUnit p3 = new ProgressDialog.ProgressUnit(
+					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 							L10N.t("dialog.setup_workspace.progress.reloading_gradle_project"));
-					progressDialog.addProgressUnit(p3);
+					progressDialog.addProgressUnit(p2);
 
 					new Thread(() -> {
 						try {
 							actionRegistry.getMCreator().getGenerator().reloadGradleCaches();
-							p3.markStateOk();
+							p2.markStateOk();
 							progressDialog.hideDialog();
 						} catch (Exception e) {
-							p3.markStateError();
+							p2.markStateError();
 							progressDialog.hideDialog();
 						}
 					}, "GradleProjectCacheReload").start();

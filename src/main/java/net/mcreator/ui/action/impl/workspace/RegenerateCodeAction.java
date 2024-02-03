@@ -33,6 +33,7 @@ import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.TagElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -108,6 +109,13 @@ public class RegenerateCodeAction extends GradleAction {
 						a)) // if file is not part of one of the mod elements, it can be removed
 					a.delete();
 			}
+
+			// Delete all managed tag entries
+			for (Map.Entry<TagElement, ArrayList<String>> tag : mcreator.getWorkspace().getTagElements().entrySet()) {
+				tag.getValue().removeIf(TagElement::isEntryManaged);
+			}
+			// Delete tags that have no entries
+			mcreator.getWorkspace().getTagElements().entrySet().removeIf(entry -> entry.getValue().isEmpty());
 
 			p0.markStateOk();
 

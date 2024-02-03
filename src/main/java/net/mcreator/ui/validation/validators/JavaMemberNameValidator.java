@@ -91,7 +91,7 @@ public class JavaMemberNameValidator implements Validator {
 					"Clock", "Shield", "Overworld", "Nether", "World", "Living", "Mob", "Monster", "Animal", "End",
 					"Stairs", "Slab", "Fence", "Wall", "Leaves", "TrapDoor", "Pane", "Door", "FenceGate", "Creature",
 					"Item", "Block", "BoneMeal", "Diamond", "Ore", "Gem", "Gold", "Iron", "Stack", "Emerald", "Entity",
-					"Surface", "WoodButton", "StoneButton", "Flower", "Falling", "Furnace", "Bush", "Crop",
-					"Structure"));
+					"Surface", "WoodButton", "StoneButton", "Flower", "Falling", "Furnace", "Bush", "Crop", "Structure",
+					"Blocks", "Items", "Biomes"));
 
 }

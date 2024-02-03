@@ -54,8 +54,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");

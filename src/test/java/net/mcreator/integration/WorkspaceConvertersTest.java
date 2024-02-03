@@ -72,8 +72,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 				File workspaceFile = WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(workspaceDir);
 
-				GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-						Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+				GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
+						Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 
 				assertNotNull(generatorConfiguration);
 
@@ -113,7 +113,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 						ModElementGUI<?> modElementGUI = UITestUtil.openModElementGUIFor(mcreator, ge);
 
 						// test if UI validation is error free
-						UITestUtil.testIfValidationPasses(modElementGUI);
+						UITestUtil.testIfValidationPasses(modElementGUI, false);
 					}
 				}
 			});

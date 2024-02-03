@@ -24,8 +24,8 @@ import net.mcreator.preferences.PreferencesManager;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 
@@ -36,62 +36,35 @@ public class UIRES {
 	private static final Pattern imagePattern = Pattern.compile(".*\\.(png|gif)");
 
 	public static void preloadImages() {
-		ImageIO.setUseCache(false); // we use custom image cache for this
-
-		// preload texutres of the current theme
-		PluginLoader.INSTANCE.getResources("themes." + PreferencesManager.PREFERENCES.hidden.uiTheme.get() + ".images",
-				imagePattern).parallelStream().forEach(element -> getImageFromResourceID(element.replace("/", ".")));
+		// first, preload textures of the current theme
+		preloadImagesForTheme(PreferencesManager.PREFERENCES.hidden.uiTheme.get());
 
 		// we also load default textures in non-default theme does not specify all textures
-		if (!PreferencesManager.PREFERENCES.hidden.uiTheme.get().equals("default_dark")) {
-			PluginLoader.INSTANCE.getResources("themes.default_dark.images", imagePattern).parallelStream()
-					.forEach(element -> getImageFromResourceID(element.replace("/", ".")));
-		}
+		if (!PreferencesManager.PREFERENCES.hidden.uiTheme.get().equals("default_dark"))
+			preloadImagesForTheme("default_dark");
+	}
 
+	private static void preloadImagesForTheme(String theme) {
+		ImageIO.setUseCache(false); // we use custom cache
+		String themePath = "themes." + theme + ".images";
+		PluginLoader.INSTANCE.getResources(themePath, imagePattern).parallelStream().forEach(
+				element -> CACHE.putIfAbsent(element.replace('/', '.').substring(themePath.length() + 1),
+						new ImageIcon(Objects.requireNonNull(PluginLoader.INSTANCE.getResource(element)))));
 		ImageIO.setUseCache(true);
 	}
 
 	public static ImageIcon get(String identifier) {
 		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
 			identifier += ".png";
-
-		String themedTextureIdentifier =
-				"themes." + PreferencesManager.PREFERENCES.hidden.uiTheme.get() + ".images." + identifier;
-
-		// we start by checking if the loaded pack contains the image
-		if (PluginLoader.INSTANCE.getResource(identifierToResourcePath(themedTextureIdentifier)) != null) {
-			return getImageFromResourceID(themedTextureIdentifier);
-		} else { // if the loaded pack does not have the image, we fall back to the default one
-			return getImageFromResourceID("themes.default_dark.images." + identifier);
-		}
-	}
-
-	public static ImageIcon getImageFromResourceID(String identifier) {
-		identifier = identifierToResourcePath(identifier);
-
-		if (CACHE.get(identifier) != null)
-			return CACHE.get(identifier);
-		else {
-			ImageIcon newItem = new ImageIcon(
-					Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(identifier)));
-			CACHE.put(identifier, newItem);
-			return newItem;
-		}
-	}
-
-	public static String identifierToResourcePath(String identifier) {
-		// parse identifier
-		int lastDot = identifier.lastIndexOf('.');
-		identifier = identifier.substring(0, lastDot).replace(".", "/") + identifier.substring(lastDot);
-
-		return identifier;
+		return CACHE.get(identifier);
 	}
 
 	public static ImageIcon getBuiltIn(String identifier) {
 		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
 			identifier += ".png";
-		return new ImageIcon(Toolkit.getDefaultToolkit()
-				.createImage(ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + identifier)));
+		String finalIdentifier = identifier;
+		return CACHE.computeIfAbsent("@" + identifier, key -> new ImageIcon(Objects.requireNonNull(
+				ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + finalIdentifier))));
 	}
 
 	public static ImageIcon getAppIcon() {

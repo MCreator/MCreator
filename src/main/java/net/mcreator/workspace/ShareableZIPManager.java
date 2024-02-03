@@ -31,6 +31,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ShareableZIPManager {
@@ -68,9 +70,7 @@ public class ShareableZIPManager {
 					L10N.t("dialog.workspace.regenerate_and_build.progress.loading_mod_elements"));
 			dial.addProgressUnit(p2);
 
-			try {
-				Workspace workspace = Workspace.readFromFS(retval.get(), dial);
-
+			try (Workspace workspace = Workspace.readFromFS(retval.get(), dial)) {
 				int modstoload = workspace.getModElements().size();
 
 				int i = 0;
@@ -104,8 +104,10 @@ public class ShareableZIPManager {
 
 				// make sure we store any potential changes made to the workspace
 				workspace.markDirty();
-
-				workspace.close(); // we need to close the workspace!
+			} catch (UnsupportedGeneratorException | MissingWorkspacePluginsException e) {
+				// Exception that already prompted user action resulting in us landing here happened before
+				// So we just cancel the import at this point by returning null
+				retval.set(null);
 			} catch (Exception e) {
 				LOG.error("Failed to import workspace", e);
 			}
@@ -128,15 +130,15 @@ public class ShareableZIPManager {
 			dial.addProgressUnit(p1);
 
 			try {
-				if (excludeRunDir) {
-					ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(), ".gradle/",
-							".mcreator/", "build/", "gradle/", "run/", "#build.gradle", "#gradlew", "#gradlew.bat",
-							"#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/", ".settings/");
-				} else {
-					ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(), ".gradle/",
-							".mcreator/", "build/", "gradle/", "#build.gradle", "#gradlew", "#gradlew.bat",
-							"#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/", ".settings/");
-				}
+				Set<String> excludes = new HashSet<>(
+						Set.of(".eclipse/", ".gradle/", ".mcreator/", "build/", "gradle/", "#build.gradle", "#gradlew",
+								"#gradlew.bat", "#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/",
+								".settings/"));
+				if (excludeRunDir)
+					excludes.addAll(Set.of("run/", "runs/"));
+
+				ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(),
+						excludes.toArray(new String[0]));
 			} catch (IOException e) {
 				LOG.error("Failed to export workspace", e);
 			}

@@ -54,6 +54,8 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -252,6 +254,11 @@ public class GradleConsole extends JPanel {
 		add("Center", holder);
 
 		searchen.addChangeListener(e -> searchBar.setVisible(searchen.isSelected()));
+		searchBar.addComponentListener(new ComponentAdapter() {
+			@Override public void componentHidden(ComponentEvent e) {
+				searchen.setSelected(false);
+			}
+		});
 
 		ComponentUtils.normalizeButton2(sinfo);
 		ComponentUtils.normalizeButton2(serr);
@@ -260,13 +267,11 @@ public class GradleConsole extends JPanel {
 	}
 
 	public String getConsoleText() {
-		String retval = pan.getText().replace("\n", "").replace("\r", "").replaceAll("(?i)<br[^>]* */?>", "\n")
-				.replaceAll("<.*?>", "").replace("  ", " ").replace("  ", " ").replace("  ", " ");
-		return HtmlUtils.unescapeHtml(retval).trim();
+		return HtmlUtils.html2text(pan.getText());
 	}
 
 	private void scrollToBottom() {
-		if (!slock.isSelected() && pan.isDisplayable()) // check if pan is displayable
+		if (!slock.isSelected() && pan.isDisplayable()) // check if pan is displayable,
 			// so we don't get IllegalComponentStateException: see http://www.oreilly.com/openbook/javawt/book/ch13.pdf, page 467
 			pan.setCaretPosition(pan.getDocument().getLength());
 	}
@@ -292,8 +297,6 @@ public class GradleConsole extends JPanel {
 
 		pan.clearConsole();
 		searchBar.reinstall(pan);
-
-		textAccent = null;
 
 		SimpleAttributeSet keyWord = new SimpleAttributeSet();
 		StyleConstants.setFontSize(keyWord, 4);
@@ -500,7 +503,7 @@ public class GradleConsole extends JPanel {
 						append("BUILD FAILED", new Color(0xF98771));
 					} else if (failure instanceof BuildCancelledException) {
 						append(" ");
-						append("TASK CANCELED", new Color(0xF5F984));
+						append("TASK CANCELED", new Color(0xf0c674));
 						succeed();
 						taskComplete(GradleErrorCodes.STATUS_OK);
 						return;
@@ -508,7 +511,7 @@ public class GradleConsole extends JPanel {
 							// workaround for MDK bug with gradle daemon
 							&& command.startsWith("run")) {
 						append(" ");
-						append("RUN COMPLETE", new Color(0, 255, 182));
+						append("RUN COMPLETE", new Color(187, 232, 108));
 						succeed();
 						taskComplete(GradleErrorCodes.STATUS_OK);
 						return;
@@ -608,22 +611,18 @@ public class GradleConsole extends JPanel {
 		append(text, Theme.current().getForegroundColor());
 	}
 
-	private Color textAccent = null;
-
 	private void appendAutoColor(String text) {
 		pan.beginTransaction();
 
 		if (!text.isEmpty()) {
-			Color c = Theme.current().getForegroundColor();
-
 			if (!text.endsWith("\n"))
 				text = text + "\n";
 
 			if (text.trim().startsWith("[")) {
-				textAccent = null;
-
 				String[] data = text.split("] \\[");
 				String logText = "";
+
+				Color threadColorMarker = null;
 
 				for (int i = 0; i < data.length; i++) {
 					String bracketText = data[i];
@@ -634,15 +633,15 @@ public class GradleConsole extends JPanel {
 					else
 						bracketText = "[" + bracketText + "] ";
 
-					Color c2 = c;
+					Color bracketColor = Theme.current().getForegroundColor();
 
 					// default bracket color
 					if (bracketText.contains("]") && bracketText.contains("["))
-						c2 = new Color(239, 239, 239);
+						bracketColor = new Color(176, 176, 176);
 
 					// format timestamps
 					if (bracketText.contains(":") && !bracketText.contains("]:")) {
-						c2 = new Color(0x95A0A7);
+						bracketColor = new Color(0x95A0A7);
 						bracketText = bracketText.replace("[", "").replace("]", "");
 						String[] tstmp = bracketText.split(":");
 						if (tstmp.length == 3) {
@@ -652,28 +651,32 @@ public class GradleConsole extends JPanel {
 						}
 					}
 
+					// handle log levels
+					if (threadColorMarker == null) {
+						if (bracketText.contains("/TRACE]"))
+							bracketColor = new Color(0x8abeb7);
+						else if (bracketText.contains("/DEBUG]"))
+							bracketColor = new Color(0xAABE92);
+						else if (bracketText.contains("/INFO]"))
+							bracketColor = new Color(0x94BD68);
+						else if (bracketText.contains("/WARN]"))
+							bracketColor = new Color(0xf0c674);
+						else if (bracketText.contains("/ERROR]") || bracketText.contains("STDERR]"))
+							bracketColor = new Color(0xF98771);
+						else if (bracketText.contains("/FATAL]"))
+							bracketColor = new Color(0xcc6666);
+					} else {
+						bracketColor = threadColorMarker;
+						threadColorMarker = null;
+					}
+
 					// special bracket colors
 					if (bracketText.contains("Client") || bracketText.contains("Render"))
-						c2 = new Color(0xB3A7D0);
+						threadColorMarker = new Color(0x81BE8D);
 					else if (bracketText.contains("Server"))
-						c2 = new Color(0x7CD48B);
+						threadColorMarker = new Color(0x8489A8);
 					else if (bracketText.contains("main/"))
-						c2 = new Color(0xAAB490);
-					else if (bracketText.contains("LaunchWrapper]") || bracketText.contains("FML]")
-							|| bracketText.contains("modloading-worker"))
-						c2 = new Color(0xB5D7C3);
-
-					// handle log levels
-					if (textAccent == null && bracketText.contains("/TRACE]"))
-						textAccent = new Color(0x666666);
-					else if (textAccent == null && bracketText.contains("/DEBUG]"))
-						textAccent = new Color(0xA3A3A3);
-					else if (textAccent == null && bracketText.contains("/WARN]"))
-						textAccent = new Color(0xDED6C5);
-					else if (textAccent == null && bracketText.contains("/ERROR]") || bracketText.contains("STDERR]"))
-						textAccent = new Color(0xFF9696);
-					else if (textAccent == null && bracketText.contains("/FATAL]"))
-						textAccent = new Color(0xFF5F5F);
+						threadColorMarker = new Color(0x9BB2C7);
 
 					String[] spl = bracketText.split("]:");
 
@@ -684,25 +687,19 @@ public class GradleConsole extends JPanel {
 						bracketText = spl[0];
 
 					SimpleAttributeSet keyWord = new SimpleAttributeSet();
-					StyleConstants.setFontSize(keyWord, 9);
-
+					StyleConstants.setForeground(keyWord, bracketColor);
+					StyleConstants.setBackground(keyWord, Theme.current().getSecondAltBackgroundColor());
 					if (bracketText.contains(":") && !bracketText.contains("]:"))
 						StyleConstants.setFontSize(keyWord, 6);
+					else
+						StyleConstants.setFontSize(keyWord, 9);
 
-					StyleConstants.setForeground(keyWord, c2);
-					StyleConstants.setBackground(keyWord, Theme.current().getSecondAltBackgroundColor());
-
-					if (bracketText.matches("\\[(\\w{2}\\.)+\\w+/\\w+]:")) {
-						pan.insertString(bracketText.replaceAll("(\\w{2}\\.)", ""), keyWord);
-					} else {
-						pan.insertString(bracketText, keyWord);
-					}
-
+					pan.insertString(bracketText, keyWord);
 				}
 
-				append(logText, textAccent != null ? textAccent : c);
+				append(logText, Theme.current().getForegroundColor());
 			} else {
-				append(text, textAccent != null ? textAccent : c);
+				append(text, Theme.current().getForegroundColor());
 			}
 		}
 
@@ -716,16 +713,12 @@ public class GradleConsole extends JPanel {
 	private final Pattern repattern = Pattern.compile("\\(.*\\.java:\\d+\\)");
 
 	public void append(String text, Color c) {
-		Matcher compileError = cepattern.matcher(text);
-		Matcher compileWarning = cwpattern.matcher(text);
-		Matcher runtimeError = repattern.matcher(text);
-
-		if (compileError.find()) {
+		if (cepattern.matcher(text).find()) {
 			appendErrorWithCodeLine(text);
-		} else if (runtimeError.find()) {
+		} else if (repattern.matcher(text).find()) {
 			appendErrorWithCodeLine2(text);
-		} else if (compileWarning.find()) {
-			append(text, new Color(0xF9CD85), false);
+		} else if (cwpattern.matcher(text).find()) {
+			append(text, new Color(0xf0c674), false);
 		} else {
 			append(text, c, false);
 		}
@@ -760,7 +753,7 @@ public class GradleConsole extends JPanel {
 				StyleConstants.setForeground(keyWord, Color.white);
 				StyleConstants.setBackground(keyWord, Theme.current().getSecondAltBackgroundColor());
 				pan.insertString(text.split("\\(")[0] + "(", keyWord);
-				StyleConstants.setForeground(keyWord, new Color(0xE0F3A9));
+				StyleConstants.setForeground(keyWord, Theme.current().getInterfaceAccentColor());
 				pan.insertLink(packageName + "." + crashClassName + ":" + classLine,
 						text.split("\\(")[1].split("\\)")[0], "", keyWord);
 				StyleConstants.setForeground(keyWord, Color.white);

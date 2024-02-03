@@ -46,7 +46,8 @@ public class ConverterUtils {
 						.filter(source.getWorkspace().getFolderManager()::isFileInWorkspace).forEach(File::delete);
 			source.getWorkspace().removeModElement(source);
 
-			result.getModElement().setParentFolder(FolderElement.dummyFromPath(source.getFolderPath()));
+			result.getModElement()
+					.setParentFolder(FolderElement.findFolderByPath(source.getWorkspace(), source.getFolderPath()));
 			source.getWorkspace().getModElementManager().storeModElementPicture(result);
 			source.getWorkspace().addModElement(result.getModElement());
 			source.getWorkspace().getGenerator().generateElement(result);

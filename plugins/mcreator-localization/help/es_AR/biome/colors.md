@@ -1,0 +1,1 @@
+Este parámetro activa colores custom en tu bioma.
