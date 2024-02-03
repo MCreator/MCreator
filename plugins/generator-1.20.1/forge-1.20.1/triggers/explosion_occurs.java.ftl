@@ -3,9 +3,9 @@
 	@SubscribeEvent public static void onExplode(ExplosionEvent.Detonate event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-			"x": "event.getExplosion().center().x()",
-			"y": "event.getExplosion().center().y()",
-			"z": "event.getExplosion().center().z()",
+			"x": "event.getExplosion().getPosition().x",
+			"y": "event.getExplosion().getPosition().y",
+			"z": "event.getExplosion().getPosition().z",
 			"world": "event.getLevel()",
 			"event": "event"
 			}/>
