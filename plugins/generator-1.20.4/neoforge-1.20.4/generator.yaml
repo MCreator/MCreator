@@ -26,6 +26,7 @@ import_formatter:
     Codec: com.mojang.serialization
     SoundEvent: net.minecraft.sounds
     Blocks: net.minecraft.world.level.block
+    Items: net.minecraft.world.item
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
