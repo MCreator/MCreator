@@ -32,6 +32,8 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasVariables()>${JavaModName}Variables.ATTACHMENT_TYPES.register(modEventBus);</#if>
+		<#if w.hasElementsOfType("painting")>${JavaModName}Paintings.REGISTRY.register(modEventBus);</#if>
+		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(modEventBus);</#if>
 	}
 
 	<#-- Networking support below -->
