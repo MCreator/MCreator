@@ -60,6 +60,8 @@ public class ElementOrderEditor {
 				.forEach(modElement -> {
 					GeneratableElement generatableElement = modElement.getGeneratableElement();
 					if (generatableElement instanceof ITabContainedElement element) {
+						if (element.getCreativeTabItems().isEmpty())
+							return;
 						for (TabEntry tab : element.getCreativeTabs()) {
 							if (tabEditors.get(tab.getUnmappedValue()) == null) {
 								DefaultListModel<ModElement> model = new DefaultListModel<>() {

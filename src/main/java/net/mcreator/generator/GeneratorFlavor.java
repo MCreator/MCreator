@@ -38,7 +38,7 @@ public enum GeneratorFlavor {
 	UNKNOWN(null);
 	//@formatter:on
 
-	public static final List<GeneratorFlavor> OFFICIAL_FLAVORS = List.of(FORGE, DATAPACK, ADDON);
+	public static final List<GeneratorFlavor> OFFICIAL_FLAVORS = List.of(FORGE, DATAPACK, ADDON, NEOFORGE);
 
 	private final BaseLanguage baseLanguage;
 
