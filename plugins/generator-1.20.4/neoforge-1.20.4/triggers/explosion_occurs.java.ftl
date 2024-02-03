@@ -10,5 +10,5 @@
 			"event": "event"
 			}/>
 		</#compress></#assign>
-		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode})
+		execute(event<#if dependenciesCode?has_content>,</#if>${dependenciesCode});
 	}
