@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onWorldUnload(net.neoforged.neoforge.event.level.LevelEvent.Unload event) {
+	@SubscribeEvent public static void onWorldUnload(net.minecraftforge.event.level.LevelEvent.Unload event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 			"world": "event.getLevel()",
