@@ -54,6 +54,8 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -252,6 +254,11 @@ public class GradleConsole extends JPanel {
 		add("Center", holder);
 
 		searchen.addChangeListener(e -> searchBar.setVisible(searchen.isSelected()));
+		searchBar.addComponentListener(new ComponentAdapter() {
+			@Override public void componentHidden(ComponentEvent e) {
+				searchen.setSelected(false);
+			}
+		});
 
 		ComponentUtils.normalizeButton2(sinfo);
 		ComponentUtils.normalizeButton2(serr);
