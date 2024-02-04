@@ -33,7 +33,7 @@ public class UIRES {
 
 	private static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
 
-	private static final Pattern imagePattern = Pattern.compile(".*\\.(png|gif)");
+	private static final Pattern imagePattern = Pattern.compile(".*\\.png");
 
 	public static void preloadImages() {
 		// first, preload textures of the current theme
