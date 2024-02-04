@@ -17,17 +17,15 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.init;
+package net.mcreator.util.image.svg;
 
 import com.github.weisj.jsvg.SVGDocument;
 import com.github.weisj.jsvg.attributes.ViewBox;
-import com.github.weisj.jsvg.attributes.paint.AwtSVGPaint;
 import com.github.weisj.jsvg.attributes.paint.PaintParser;
-import com.github.weisj.jsvg.attributes.paint.SVGPaint;
-import com.github.weisj.jsvg.parser.AttributeNode;
 import com.github.weisj.jsvg.parser.DefaultParserProvider;
 import com.github.weisj.jsvg.parser.SVGLoader;
-import net.mcreator.Launcher;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,65 +35,35 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BaseMultiResolutionImage;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SVG {
+public class SVGProcessor {
+
+	private static final Logger LOG = LogManager.getLogger(SVGProcessor.class);
 
 	private static final ExecutorService SVG_LOADER_THREAD = Executors.newSingleThreadExecutor();
 	private static final SVGLoader SVG_LOADER = new SVGLoader();
-
-	private static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
 
 	private static final Double[] SCALES;
 
 	static {
 		Set<Double> scales = new TreeSet<>();
 		scales.add(1.0);
-
 		GraphicsEnvironment env = GraphicsEnvironment.getLocalGraphicsEnvironment();
 		for (GraphicsDevice device : env.getScreenDevices()) {
 			GraphicsConfiguration config = device.getDefaultConfiguration();
 			AffineTransform transform = config.getDefaultTransform();
 			scales.add(transform.getScaleX());
 		}
-
+		LOG.debug("Loaded screen scales: " + scales);
 		SCALES = scales.toArray(new Double[0]);
 	}
 
-	public static ImageIcon getBuiltIn(String identifier, int width, int height) {
-		return getBuiltIn(identifier, width, height, null);
-	}
-
-	public static ImageIcon getBuiltIn(String identifier, int width, int height, @Nullable Color paint) {
-		return CACHE.computeIfAbsent(computeKey(identifier, width, height, paint, true), id -> {
-			URL url = ClassLoader.getSystemClassLoader()
-					.getResource("net/mcreator/ui/res/" + identifier.replace('.', '/') + ".svg");
-			return new ImageIcon(
-					new BaseMultiResolutionImage(getResolutionVariants(loadSVG(url, paint), width, height)));
-		});
-	}
-
-	public static ImageIcon getAppIcon(int width, int height) {
-		if (Launcher.version.isSnapshot()) {
-			return getBuiltIn("icon_eap", width, height);
-		} else {
-			return getBuiltIn("icon", width, height);
-		}
-	}
-
-	public static List<Image> getAppIcons() {
-		return List.of(getAppIcon(16, 16).getImage(), getAppIcon(32, 32).getImage(), getAppIcon(64, 64).getImage(),
-				getAppIcon(128, 128).getImage(), getAppIcon(256, 256).getImage());
-	}
-
-	private static synchronized SVGDocument loadSVG(URL url, @Nullable Color paint) {
+	public static synchronized SVGDocument loadSVG(URL url, @Nullable Color paint) {
 		try {
 			SVGDocument doc = SVG_LOADER_THREAD.submit(() -> {
 				if (paint == null) {
@@ -116,14 +84,23 @@ public class SVG {
 		}
 	}
 
-	private static Image[] getResolutionVariants(SVGDocument doc, int width, int height) {
+	public static ImageIcon getMultiResolutionIcon(SVGDocument doc, int width, int height) {
+		return new ImageIcon(new BaseMultiResolutionImage(SVGProcessor.getResolutionVariants(doc, width, height)));
+	}
+
+	public static Image[] getResolutionVariants(SVGDocument doc, int width, int height) {
+		if (width == 0)
+			width = (int) Math.ceil(doc.size().getWidth());
+		if (height == 0)
+			height = (int) Math.ceil(doc.size().getHeight());
+
 		Image[] images = new Image[SCALES.length];
 		for (int i = 0; i < SCALES.length; i++)
 			images[i] = renderSVG(doc, width * SCALES[i], height * SCALES[i]);
 		return images;
 	}
 
-	private static BufferedImage renderSVG(SVGDocument doc, double w, double h) {
+	public static BufferedImage renderSVG(SVGDocument doc, double w, double h) {
 		BufferedImage image = new BufferedImage((int) Math.ceil(w), (int) Math.ceil(h), BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = image.createGraphics();
 		g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
@@ -131,29 +108,6 @@ public class SVG {
 		doc.render(null, g, new ViewBox((float) w, (float) h));
 		g.dispose();
 		return image;
-	}
-
-	private static String computeKey(String identifier, int width, int height, @Nullable Color color, boolean builtin) {
-		return (builtin ? "@" : "") + identifier + "." + width + "." + height + (color == null ?
-				"" :
-				"." + color.getRGB());
-	}
-
-	private record CustomColorsPaintParser(Color paint, PaintParser delegate) implements PaintParser {
-
-		@Override public Color parseColor(@Nonnull String value, @Nonnull AttributeNode attributeNode) {
-			return paint;
-		}
-
-		@Override public SVGPaint parsePaint(@Nullable String value, @Nonnull AttributeNode attributeNode) {
-			SVGPaint retval = delegate.parsePaint(value, attributeNode);
-			if (retval == null || retval instanceof AwtSVGPaint) {
-				return new AwtSVGPaint(paint);
-			} else {
-				return retval;
-			}
-		}
-
 	}
 
 }

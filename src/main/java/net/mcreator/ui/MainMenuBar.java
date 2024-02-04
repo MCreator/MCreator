@@ -22,8 +22,8 @@ import net.mcreator.io.OS;
 import net.mcreator.ui.component.SocialButtons;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.ide.CodeEditorView;
+import net.mcreator.ui.init.AppIcon;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.SVG;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
@@ -54,7 +54,7 @@ public class MainMenuBar extends JMenuBar {
 		if (!macOSscreenMenuBar) {
 			JMenu logo = new JMenu("  MCreator");
 			logo.setMnemonic('M');
-			logo.setIcon(SVG.getAppIcon(16, 16));
+			logo.setIcon(AppIcon.getAppIcon(16, 16));
 			logo.add(mcreator.actionRegistry.mcreatorWebsite);
 			logo.add(mcreator.actionRegistry.mcreatorCommunity);
 			SocialButtons socialButtons = new SocialButtons();

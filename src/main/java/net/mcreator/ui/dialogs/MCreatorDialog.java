@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.dialogs;
 
-import net.mcreator.ui.init.SVG;
+import net.mcreator.ui.init.AppIcon;
 import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
@@ -47,7 +47,7 @@ public class MCreatorDialog extends JDialog {
 		super(w);
 		setModal(modal);
 		setTitle(title);
-		setIconImages(SVG.getAppIcons());
+		setIconImages(AppIcon.getAppIcons());
 
 		Action dispatchClosing = new AbstractAction() {
 			@Override public void actionPerformed(ActionEvent event) {

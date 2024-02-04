@@ -21,7 +21,6 @@ package net.mcreator.ui;
 import net.mcreator.Launcher;
 import net.mcreator.ui.component.ProgressBar;
 import net.mcreator.ui.component.SplashScreenPanel;
-import net.mcreator.ui.init.SVG;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
 
@@ -47,7 +46,7 @@ public class SplashScreen extends JWindow {
 
 		imagePanel.setLayout(null);
 
-		JLabel pylo = new JLabel(SVG.getBuiltIn("pylo", 90, 24));
+		JLabel pylo = new JLabel(UIRES.SVG.getBuiltIn("pylo", 90, 24));
 		pylo.setBounds(shadowPadding + 540 - 15 - 10, shadowPadding + 348 - 15 - 10, 90, 24);
 		imagePanel.add(pylo);
 
@@ -60,7 +59,7 @@ public class SplashScreen extends JWindow {
 		label.setBounds(shadowPadding + 30 + 10 - 4, shadowPadding + 330 - 10 - 10, 500, 45);
 		imagePanel.add(label);
 
-		JLabel logo = new JLabel(SVG.getBuiltIn("logo", 350, 63));
+		JLabel logo = new JLabel(UIRES.SVG.getBuiltIn("logo", 350, 63));
 		logo.setBounds(shadowPadding + 24 + 8 - 4, shadowPadding + 70, 350, 63);
 		imagePanel.add(logo);
 

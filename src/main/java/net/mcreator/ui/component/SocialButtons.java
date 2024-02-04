@@ -18,7 +18,7 @@
 
 package net.mcreator.ui.component;
 
-import net.mcreator.ui.init.SVG;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
@@ -44,7 +44,7 @@ public class SocialButtons extends JPanel {
 	}
 
 	private JLabel createButton(String icon, String url) {
-		JLabel label = new JLabel(SVG.getBuiltIn("social." + icon, 18, 18));
+		JLabel label = new JLabel(UIRES.SVG.getBuiltIn("social." + icon, 18, 18));
 		label.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		label.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {

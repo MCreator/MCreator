@@ -27,8 +27,9 @@ import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.AppIcon;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.SVG;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 
@@ -49,8 +50,8 @@ public class AboutAction extends BasicAction {
 				L10N.t("dialog.about.option.donate") };
 
 		JPanel logoPanel = new JPanel(new BorderLayout(24, 24));
-		logoPanel.add("North", new JLabel(SVG.getAppIcon(128, 128)));
-		logoPanel.add("Center", new JLabel(SVG.getBuiltIn("logo", 250, (int) (250 * (63 / 350.0)))));
+		logoPanel.add("North", new JLabel(AppIcon.getAppIcon(128, 128)));
+		logoPanel.add("Center", new JLabel(UIRES.SVG.getBuiltIn("logo", 250, (int) (250 * (63 / 350.0)))));
 		logoPanel.setBorder(BorderFactory.createEmptyBorder(0, 24, 0, 0));
 
 		JLabel aboutLabel = L10N.label("dialog.about.message", Launcher.version.major, Launcher.version.getFullString(),
