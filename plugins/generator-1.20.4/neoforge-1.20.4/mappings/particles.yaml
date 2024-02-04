@@ -65,6 +65,12 @@ EXPLOSION_EMITTER:
 EXPLOSION_NORMAL:
   - ParticleTypes.EXPLOSION
   - "explosion"
+GUST:
+  - ParticleTypes.GUST
+  - "gust"
+GUST_EMITTER:
+  - ParticleTypes.GUST_EMITTER
+  - "gust_emitter"
 SONIC_BOOM:
   - ParticleTypes.SONIC_BOOM
   - "sonic_boom"
@@ -137,6 +143,9 @@ RAIN:
 SMOKE_NORMAL:
   - ParticleTypes.SMOKE
   - "smoke"
+WHITE_SMOKE:
+  - ParticleTypes.WHITE_SMOKE
+  - "white_smoke"
 SNEEZE:
   - ParticleTypes.SNEEZE
   - "sneeze"
@@ -263,6 +272,15 @@ SCRAPE:
 EGG_CRACK:
   - ParticleTypes.EGG_CRACK
   - "egg_crack"
+DUST_PLUME:
+  - ParticleTypes.DUST_PLUME
+  - "dust_plume"
+GUST_DUST:
+  - ParticleTypes.GUST_DUST
+  - "gust_dust"
+TRIAL_SPAWNER_DETECTION:
+  - ParticleTypes.TRIAL_SPAWNER_DETECTION
+  - "trial_spawner_detection"
 
 #LEGACY
 DRIPPING_CHERRY_LEAVES:
