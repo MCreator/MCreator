@@ -33,7 +33,7 @@ class WorkspaceFileBrowserContextMenu extends JPopupMenu {
 	WorkspaceFileBrowserContextMenu(WorkspaceFileBrowser browser) {
 		boolean fileActionsAllowed = false;
 		JMenu createMenu = L10N.menu("common.add");
-		createMenu.setIcon(UIRES.get("16px.add.gif"));
+		createMenu.setIcon(UIRES.get("16px.add"));
 
 		FilterTreeNode selected = (FilterTreeNode) browser.tree.getLastSelectedPathComponent();
 		if (selected.getUserObject() instanceof File file) {

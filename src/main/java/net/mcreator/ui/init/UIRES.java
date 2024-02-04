@@ -54,17 +54,12 @@ public class UIRES {
 	}
 
 	public static ImageIcon get(String identifier) {
-		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
-			identifier += ".png";
-		return CACHE.get(identifier);
+		return CACHE.get(identifier + ".png");
 	}
 
 	public static ImageIcon getBuiltIn(String identifier) {
-		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
-			identifier += ".png";
-		String finalIdentifier = identifier;
-		return CACHE.computeIfAbsent("@" + identifier, key -> new ImageIcon(Objects.requireNonNull(
-				ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + finalIdentifier))));
+		return CACHE.computeIfAbsent("@" + identifier + ".png", key -> new ImageIcon(Objects.requireNonNull(
+				ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + identifier + ".png"))));
 	}
 
 	public static ImageIcon getAppIcon() {
