@@ -57,7 +57,9 @@ public class SVGProcessor {
 		for (GraphicsDevice device : env.getScreenDevices()) {
 			GraphicsConfiguration config = device.getDefaultConfiguration();
 			AffineTransform transform = config.getDefaultTransform();
-			scales.add(transform.getScaleX());
+			double scale = transform.getScaleX();
+			if (scale < 4.0)
+				scales.add(transform.getScaleX());
 		}
 		LOG.debug("Loaded screen scales: " + scales);
 		SCALES = scales.toArray(new Double[0]);
