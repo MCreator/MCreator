@@ -34,13 +34,13 @@ import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.BlockingGlassPane;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.SquareLoaderIcon;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.SVG;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
@@ -449,7 +449,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		loading.setIconTextGap(5);
 		loading.setFont(loading.getFont().deriveFont(16f));
 		loading.setForeground(Theme.current().getAltForegroundColor());
-		loading.setIcon(UIRES.get("16px.loading.gif"));
+		loading.setIcon(new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor()));
 		wrap.add(PanelUtils.totalCenterInPanel(loading));
 		return wrap;
 	}

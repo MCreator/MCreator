@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.SquareLoaderIcon;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.ThreadUtil;
@@ -28,6 +29,8 @@ import net.mcreator.ui.laf.themes.Theme;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProgressDialog extends MCreatorDialog {
 
@@ -180,6 +183,8 @@ public class ProgressDialog extends MCreatorDialog {
 		private final ImageIcon remove = UIRES.get("18px.remove");
 		private final ImageIcon warning = UIRES.get("18px.warning");
 
+		private final Map<ProgressUnit, Icon> LOADER_CACHE = new HashMap<>();
+
 		@Override
 		public Component getListCellRendererComponent(JList<? extends ProgressUnit> list, ProgressUnit ma, int index,
 				boolean isSelected, boolean cellHasFocus) {
@@ -196,25 +201,8 @@ public class ProgressDialog extends MCreatorDialog {
 			status.setText(ma.name);
 
 			if (ma.status == ProgressUnit.Status.LOADING) {
-				ImageIcon loading = UIRES.get("16px.loading.gif");
-				loading.setImageObserver((img, infoflags, x, y, width, height) -> {
-					try {
-						if ((infoflags & (FRAMEBITS | ALLBITS)) != 0) {
-							Rectangle rect = list.getCellBounds(index, index);
-							list.repaint(rect);
-						}
-						return (infoflags & (ALLBITS | ABORT)) == 0;
-					} catch (Exception e) {
-						return (infoflags & (ALLBITS | ABORT)) == 0;
-					}
-				});
-				JLabel status2 = new JLabel(loading) {
-					@Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
-						repaint();
-						return true;
-					}
-				};
-				status2.repaint();
+				JLabel status2 = new JLabel(LOADER_CACHE.computeIfAbsent(ma,
+						e -> new SquareLoaderIcon(list, 4, 1, Theme.current().getForegroundColor())));
 				stap.add("East", PanelUtils.centerInPanel(status2));
 
 				JProgressBar bar = new JProgressBar(0, 100);
