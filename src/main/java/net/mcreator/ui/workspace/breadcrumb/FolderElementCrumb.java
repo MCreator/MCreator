@@ -35,7 +35,7 @@ public class FolderElementCrumb extends JLabel {
 
 		this.element = element;
 
-		setIcon(UIRES.get("laf.directory.gif"));
+		setIcon(UIRES.get("laf.directory"));
 
 		setOpaque(false);
 		setBackground(Theme.current().getBackgroundColor());

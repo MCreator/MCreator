@@ -29,6 +29,6 @@ public class CancelGradleTaskAction extends GradleTaskAction {
 				actionRegistry.getMCreator().getGradleConsole().cancelTask();
 			}
 		});
-		setIcon(UIRES.get("16px.stop.gif"));
+		setIcon(UIRES.get("16px.stop"));
 	}
 }

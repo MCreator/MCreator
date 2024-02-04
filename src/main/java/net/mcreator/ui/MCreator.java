@@ -448,7 +448,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		loading.setIconTextGap(5);
 		loading.setFont(loading.getFont().deriveFont(16f));
 		loading.setForeground(Theme.current().getAltForegroundColor());
-		loading.setIcon(UIRES.get("16px.loading.gif"));
+		loading.setIcon(UIRES.get("16px.loading"));
 		wrap.add(PanelUtils.totalCenterInPanel(loading));
 		return wrap;
 	}

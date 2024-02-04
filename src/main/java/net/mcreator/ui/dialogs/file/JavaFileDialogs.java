@@ -79,7 +79,7 @@ class JavaFileDialogs {
 			@Override public Icon getIcon(File f) {
 				if (f.isDirectory())
 					if (!fileSystemView.isComputerNode(f) && !fileSystemView.isDrive(f))
-						return UIRES.get("laf.directory.gif");
+						return UIRES.get("laf.directory");
 
 				if (f.getName().endsWith(".mcreator"))
 					return new ImageIcon(ImageUtils.resize(UIRES.get("mod").getImage(), 16));
