@@ -37,7 +37,7 @@ public class UIRES {
 	private static final Map<String, ImageIcon> THEME_CACHE = new ConcurrentHashMap<>();
 	private static final Map<String, ImageIcon> FALLBACK_CACHE = new ConcurrentHashMap<>();
 
-	private static final Pattern rasterPattern = Pattern.compile(".*\\.(png|gif)");
+	private static final Pattern rasterPattern = Pattern.compile(".*\\.png");
 	private static final Pattern vectorPattern = Pattern.compile(".*\\.svg");
 
 	public static void preloadImages() {
@@ -64,7 +64,7 @@ public class UIRES {
 	}
 
 	private static void preloadVectorsForTheme(Map<String, ImageIcon> cache, String theme) {
-		String themePath = "themes." + theme + ".vectors";
+		String themePath = "themes." + theme + ".images";
 		PluginLoader.INSTANCE.getResources(themePath, vectorPattern).parallelStream().forEach(
 				element -> cache.putIfAbsent(element.replace('/', '.').substring(themePath.length() + 1),
 						SVGProcessor.getMultiResolutionIcon(
@@ -78,20 +78,33 @@ public class UIRES {
 	 * Image loading priority (top down, first match found):
 	 * <ol>
 	 *     <li>Current theme SVG</li>
-	 *     <li>Current theme PNG (or GIF if identifier ends with .gif)</li>
+	 *     <li>Current theme PNG</li>
 	 *     <li>Default theme SVG</li>
-	 *     <li>Default theme PNG (or GIF if identifier ends with .gif)</li>
+	 *     <li>Default theme PNG</li>
+	 *     <li>Throws NullPointerException</li>
 	 * </ol>
 	 *
 	 * @param identifier the identifier of the image
 	 * @return the image icon
 	 */
 	public static ImageIcon get(String identifier) {
-		// TODO: implement loading priority
+		ImageIcon currentThemeSvg = THEME_CACHE.get(identifier + ".svg");
+		if (currentThemeSvg != null)
+			return currentThemeSvg;
 
-		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
-			identifier += ".png";
-		return THEME_CACHE.getOrDefault(identifier, FALLBACK_CACHE.get(identifier));
+		ImageIcon currentThemePng = THEME_CACHE.get(identifier + ".png");
+		if (currentThemePng != null)
+			return currentThemePng;
+
+		ImageIcon fallbackThemeSvg = FALLBACK_CACHE.get(identifier + ".svg");
+		if (fallbackThemeSvg != null)
+			return fallbackThemeSvg;
+
+		ImageIcon fallbackThemePng = FALLBACK_CACHE.get(identifier + ".png");
+		if (fallbackThemePng != null)
+			return fallbackThemePng;
+
+		throw new NullPointerException("Image not found: " + identifier);
 	}
 
 	/**
@@ -102,11 +115,8 @@ public class UIRES {
 	 * @return the image icon
 	 */
 	public static ImageIcon getBuiltIn(String identifier) {
-		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
-			identifier += ".png";
-		String finalIdentifier = identifier;
 		return THEME_CACHE.computeIfAbsent("@" + identifier, key -> new ImageIcon(Objects.requireNonNull(
-				ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + finalIdentifier))));
+				ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + identifier + ".png"))));
 	}
 
 	public static class SVG {
