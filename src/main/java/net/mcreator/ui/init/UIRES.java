@@ -33,7 +33,7 @@ public class UIRES {
 
 	private static final Map<String, ImageIcon> CACHE = new ConcurrentHashMap<>();
 
-	private static final Pattern imagePattern = Pattern.compile(".*\\.png");
+	private static final Pattern imagePattern = Pattern.compile(".*\\.(png|gif)");
 
 	public static void preloadImages() {
 		// first, preload textures of the current theme
@@ -54,12 +54,17 @@ public class UIRES {
 	}
 
 	public static ImageIcon get(String identifier) {
-		return CACHE.get(identifier + ".png");
+		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
+			identifier += ".png";
+		return CACHE.get(identifier);
 	}
 
 	public static ImageIcon getBuiltIn(String identifier) {
-		return CACHE.computeIfAbsent("@" + identifier + ".png", key -> new ImageIcon(Objects.requireNonNull(
-				ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + identifier + ".png"))));
+		if (!(identifier.endsWith(".png") || identifier.endsWith(".gif")))
+			identifier += ".png";
+		String finalIdentifier = identifier;
+		return CACHE.computeIfAbsent("@" + identifier, key -> new ImageIcon(Objects.requireNonNull(
+				ClassLoader.getSystemClassLoader().getResource("net/mcreator/ui/res/" + finalIdentifier))));
 	}
 
 	public static ImageIcon getAppIcon() {

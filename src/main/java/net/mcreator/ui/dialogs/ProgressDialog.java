@@ -196,7 +196,7 @@ public class ProgressDialog extends MCreatorDialog {
 			status.setText(ma.name);
 
 			if (ma.status == ProgressUnit.Status.LOADING) {
-				ImageIcon loading = UIRES.get("16px.loading");
+				ImageIcon loading = UIRES.get("16px.loading.gif");
 				loading.setImageObserver((img, infoflags, x, y, width, height) -> {
 					try {
 						if ((infoflags & (FRAMEBITS | ALLBITS)) != 0) {
