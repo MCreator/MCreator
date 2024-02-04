@@ -36,14 +36,14 @@
 
 package ${package}.init;
 
-public class ${JavaModName}Enchantments {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public class ${JavaModName}Screens {
 
-	public static final DeferredRegister<Enchantment> REGISTRY = DeferredRegister.create(ForgeRegistries.ENCHANTMENTS, ${JavaModName}.MODID);
-
-	<#list enchantments as enchantment>
-	public static final RegistryObject<Enchantment> ${enchantment.getModElement().getRegistryNameUpper()} =
-		REGISTRY.register("${enchantment.getModElement().getRegistryName()}", () -> new ${enchantment.getModElement().getName()}Enchantment());
-	</#list>
+	@SubscribeEvent public static void clientLoad(RegisterMenuScreensEvent event) {
+		<#list guis as gui>
+		event.register(${JavaModName}Menus.${gui.getModElement().getRegistryNameUpper()}.get(), ${gui.getModElement().getName()}Screen::new);
+		</#list>
+	}
 
 }
+
 <#-- @formatter:on -->

@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -36,15 +36,14 @@
 
 package ${package}.init;
 
-public class ${JavaModName}Menus {
+public class ${JavaModName}Enchantments {
 
-	public static final DeferredRegister<MenuType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.MENU_TYPES, ${JavaModName}.MODID);
+	public static final DeferredRegister<Enchantment> REGISTRY = DeferredRegister.create(Registries.ENCHANTMENT, ${JavaModName}.MODID);
 
-	<#list guis as gui>
-	public static final RegistryObject<MenuType<${gui.getModElement().getName()}Menu>> ${gui.getModElement().getRegistryNameUpper()}
-		= REGISTRY.register("${gui.getModElement().getRegistryName()}", () -> IForgeMenuType.create(${gui.getModElement().getName()}Menu::new));
+	<#list enchantments as enchantment>
+	public static final DeferredHolder<Enchantment, Enchantment> ${enchantment.getModElement().getRegistryNameUpper()} =
+		REGISTRY.register("${enchantment.getModElement().getRegistryName()}", () -> new ${enchantment.getModElement().getName()}Enchantment());
 	</#list>
 
 }
-
 <#-- @formatter:on -->

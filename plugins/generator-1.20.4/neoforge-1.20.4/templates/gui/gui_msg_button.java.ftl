@@ -33,43 +33,40 @@
 
 package ${package}.network;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ButtonMessage {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public record ${name}ButtonMessage(int buttonID, int x, int y, int z) implements CustomPacketPayload {
 
-	private final int buttonID, x, y, z;
+	public static final ResourceLocation ID = new ResourceLocation(${JavaModName}.MODID, "${registryname}_buttons");
 
 	public ${name}ButtonMessage(FriendlyByteBuf buffer) {
-		this.buttonID = buffer.readInt();
-		this.x = buffer.readInt();
-		this.y = buffer.readInt();
-		this.z = buffer.readInt();
+		this(buffer.readInt(), buffer.readInt(), buffer.readInt(), buffer.readInt());
 	}
 
-	public ${name}ButtonMessage(int buttonID, int x, int y, int z) {
-		this.buttonID = buttonID;
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	@Override public void write(final FriendlyByteBuf buffer) {
+		buffer.writeInt(buttonID);
+		buffer.writeInt(x);
+		buffer.writeInt(y);
+		buffer.writeInt(z);
 	}
 
-	public static void buffer(${name}ButtonMessage message, FriendlyByteBuf buffer) {
-		buffer.writeInt(message.buttonID);
-		buffer.writeInt(message.x);
-		buffer.writeInt(message.y);
-		buffer.writeInt(message.z);
+	@Override public ResourceLocation id() {
+		return ID;
 	}
 
-	public static void handler(${name}ButtonMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
-		NetworkEvent.Context context = contextSupplier.get();
-		context.enqueueWork(() -> {
-			Player entity = context.getSender();
-			int buttonID = message.buttonID;
-			int x = message.x;
-			int y = message.y;
-			int z = message.z;
+	public static void handleData(final ${name}ButtonMessage message, final PlayPayloadContext context) {
+		if (context.flow() == PacketFlow.SERVERBOUND) {
+			context.workHandler().submitAsync(() -> {
+				Player entity = context.player().get();
+				int buttonID = message.buttonID;
+				int x = message.x;
+				int y = message.y;
+				int z = message.z;
 
-			handleButtonAction(entity, buttonID, x, y, z);
-		});
-		context.setPacketHandled(true);
+				handleButtonAction(entity, buttonID, x, y, z);
+			}).exceptionally(e -> {
+				context.packetHandler().disconnect(Component.literal(e.getMessage()));
+				return null;
+			});
+		}
 	}
 
 	public static void handleButtonAction(Player entity, int buttonID, int x, int y, int z) {
@@ -100,7 +97,7 @@ package ${package}.network;
 	}
 
 	@SubscribeEvent public static void registerMessage(FMLCommonSetupEvent event) {
-		${JavaModName}.addNetworkMessage(${name}ButtonMessage.class, ${name}ButtonMessage::buffer, ${name}ButtonMessage::new, ${name}ButtonMessage::handler);
+		${JavaModName}.addNetworkMessage(${name}ButtonMessage.ID, ${name}ButtonMessage::new, ${name}ButtonMessage::handleData);
 	}
 
 }

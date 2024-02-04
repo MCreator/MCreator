@@ -1,14 +1,14 @@
 <#-- @formatter:off -->
 <#include "../mcitems.ftl">
 {
-    "type": "minecraft:smoking",
+    "type": "minecraft:campfire_cooking",
     <#if data.group?has_content>"group": "${data.group}",</#if>
     "category": "${data.cookingBookCategory?lower_case}",
     "experience": ${data.xpReward},
-	"cookingtime": ${data.cookingTime},
+    "cookingtime": ${data.cookingTime},
     "ingredient": {
-      ${mappedMCItemToItemObjectJSON(data.smokingInputStack)}
+      ${mappedMCItemToItemObjectJSON(data.campfireCookingInputStack)}
     },
-    "result": "${mappedMCItemToRegistryName(data.smokingReturnStack)}"
+    "result": "${mappedMCItemToRegistryName(data.campfireCookingReturnStack)}"
 }
 <#-- @formatter:on -->
