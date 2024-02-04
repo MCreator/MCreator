@@ -188,7 +188,7 @@ public class AnimationMakerView extends ViewBase {
 			playanim = false;
 			timeline.repaint();
 		});
-		stop.setIcon(UIRES.get("16px.stop"));
+		stop.setIcon(UIRES.get("16px.stopanimation"));
 		controls.add(stop);
 
 		controls.addSeparator();
