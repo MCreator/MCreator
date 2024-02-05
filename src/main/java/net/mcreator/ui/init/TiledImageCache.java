@@ -41,14 +41,10 @@ public class TiledImageCache {
 	public static ImageIcon modTabBlue;
 	public static ImageIcon modTabPurple;
 
-	public static ImageIcon spawnEggBase;
-	public static ImageIcon spawnEggDots;
-
 	public static void loadTileImages() {
 		try {
 			TiledImageUtils plantGrowthTile = new TiledImageUtils(UIRES.get("growthtile"), 128, 215);
 			TiledImageUtils modTabTile = new TiledImageUtils(UIRES.get("taboverlaytile"), 64, 64);
-			TiledImageUtils spawnEggIcons = new TiledImageUtils(UIRES.get("mod_preview_bases.spawnegg"), 32, 32);
 
 			plantGrowingYes = plantGrowthTile.getIcon(1, 1);
 			plantGrowingNo = plantGrowthTile.getIcon(2, 1);
@@ -61,9 +57,6 @@ public class TiledImageCache {
 			modTabGreen = modTabTile.getIcon(2, 1);
 			modTabBlue = modTabTile.getIcon(3, 1);
 			modTabPurple = modTabTile.getIcon(4, 1);
-
-			spawnEggBase = spawnEggIcons.getIcon(1, 1);
-			spawnEggDots = spawnEggIcons.getIcon(2, 1);
 		} catch (InvalidTileSizeException e) {
 			LOG.error("Failed loading some tiles into the cache" , e);
 		}
