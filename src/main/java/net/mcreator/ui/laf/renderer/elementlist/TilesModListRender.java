@@ -83,13 +83,13 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 			} else if (element instanceof ModElement modElement) {
 				ImageIcon dva = null;
 				if (!modElement.doesCompile()) {
-					dva = TiledImageCache.modTabRed;
+					dva = UIRES.get("mod_types.overlay_err");
 				}
 				if (modElement.isCodeLocked()) {
 					if (dva != null) {
-						dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
+						dva = ImageUtils.drawOver(dva, UIRES.get("mod_types.overlay_locked"));
 					} else {
-						dva = TiledImageCache.modTabPurple;
+						dva = UIRES.get("mod_types.overlay_locked");
 					}
 				}
 

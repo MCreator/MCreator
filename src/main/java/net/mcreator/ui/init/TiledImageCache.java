@@ -36,15 +36,9 @@ public class TiledImageCache {
 	public static ImageIcon plantDoubleYes;
 	public static ImageIcon plantDoubleNo;
 
-	public static ImageIcon modTabRed;
-	public static ImageIcon modTabGreen;
-	public static ImageIcon modTabBlue;
-	public static ImageIcon modTabPurple;
-
 	public static void loadTileImages() {
 		try {
 			TiledImageUtils plantGrowthTile = new TiledImageUtils(UIRES.get("growthtile"), 128, 215);
-			TiledImageUtils modTabTile = new TiledImageUtils(UIRES.get("taboverlaytile"), 64, 64);
 
 			plantGrowingYes = plantGrowthTile.getIcon(1, 1);
 			plantGrowingNo = plantGrowthTile.getIcon(2, 1);
@@ -52,11 +46,6 @@ public class TiledImageCache {
 			plantStaticNo = plantGrowthTile.getIcon(4, 1);
 			plantDoubleYes = plantGrowthTile.getIcon(5, 1);
 			plantDoubleNo = plantGrowthTile.getIcon(6, 1);
-
-			modTabRed = modTabTile.getIcon(1, 1);
-			modTabGreen = modTabTile.getIcon(2, 1);
-			modTabBlue = modTabTile.getIcon(3, 1);
-			modTabPurple = modTabTile.getIcon(4, 1);
 		} catch (InvalidTileSizeException e) {
 			LOG.error("Failed loading some tiles into the cache" , e);
 		}

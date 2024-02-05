@@ -66,13 +66,13 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 			ImageIcon dva = null;
 			if (element instanceof ModElement ma) {
 				if (!ma.doesCompile()) {
-					dva = TiledImageCache.modTabRed;
+					dva = UIRES.get("mod_types.overlay_err");
 				}
 				if (ma.isCodeLocked()) {
 					if (dva != null) {
-						dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
+						dva = ImageUtils.drawOver(dva, UIRES.get("mod_types.overlay_locked"));
 					} else {
-						dva = TiledImageCache.modTabPurple;
+						dva = UIRES.get("mod_types.overlay_locked");
 					}
 				}
 			}
