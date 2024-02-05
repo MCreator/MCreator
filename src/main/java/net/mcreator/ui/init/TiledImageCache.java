@@ -18,8 +18,6 @@
 
 package net.mcreator.ui.init;
 
-import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.util.image.InvalidTileSizeException;
 import net.mcreator.util.image.TiledImageUtils;
 import org.apache.logging.log4j.LogManager;
@@ -43,9 +41,6 @@ public class TiledImageCache {
 	public static ImageIcon modTabBlue;
 	public static ImageIcon modTabPurple;
 
-	public static ImageIcon bucket;
-	public static ImageIcon bucketMask;
-
 	public static ImageIcon spawnEggBase;
 	public static ImageIcon spawnEggDots;
 
@@ -53,7 +48,6 @@ public class TiledImageCache {
 		try {
 			TiledImageUtils plantGrowthTile = new TiledImageUtils(UIRES.get("growthtile"), 128, 215);
 			TiledImageUtils modTabTile = new TiledImageUtils(UIRES.get("taboverlaytile"), 64, 64);
-			TiledImageUtils bucketIcons = new TiledImageUtils(UIRES.get("mod_preview_bases.fluidbucket"), 32, 32);
 			TiledImageUtils spawnEggIcons = new TiledImageUtils(UIRES.get("mod_preview_bases.spawnegg"), 32, 32);
 
 			plantGrowingYes = plantGrowthTile.getIcon(1, 1);
@@ -68,13 +62,10 @@ public class TiledImageCache {
 			modTabBlue = modTabTile.getIcon(3, 1);
 			modTabPurple = modTabTile.getIcon(4, 1);
 
-			bucket = bucketIcons.getIcon(1, 1);
-			bucketMask = bucketIcons.getIcon(2, 1);
-
 			spawnEggBase = spawnEggIcons.getIcon(1, 1);
 			spawnEggDots = spawnEggIcons.getIcon(2, 1);
 		} catch (InvalidTileSizeException e) {
-			LOG.error("Failed loading some tiles into the cache", e);
+			LOG.error("Failed loading some tiles into the cache" , e);
 		}
 	}
 

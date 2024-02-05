@@ -197,11 +197,10 @@ public class MinecraftImageGenerator {
 	}
 
 	public static ImageIcon generateFluidBucketIcon(ImageIcon fluid) {
-		ImageIcon bucket = TiledImageCache.bucket;
-		BufferedImage bucketMask = ImageUtils.toBufferedImage(TiledImageCache.bucketMask.getImage());
+		BufferedImage bucketMask = ImageUtils.toBufferedImage(UIRES.get("mod_preview_bases.bucket_mask").getImage());
 		// The fluid image is resized to avoid issues with animated textures
 		BufferedImage fluidOverlay = ImageUtils.resizeAndCrop(fluid.getImage(), 32);
-		return ImageUtils.drawOver(bucket, new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
+		return ImageUtils.drawOver(UIRES.get("mod_preview_bases.bucket_base"), new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
 	}
 
 	public static ImageIcon generateSpawnEggIcon(Color baseColor, Color dotColor) {
