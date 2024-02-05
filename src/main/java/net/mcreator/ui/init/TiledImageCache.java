@@ -43,15 +43,6 @@ public class TiledImageCache {
 	public static ImageIcon modTabBlue;
 	public static ImageIcon modTabPurple;
 
-	public static ImageIcon workspaceAdd;
-	public static ImageIcon workspaceCode;
-	public static ImageIcon workspaceDelete;
-	public static ImageIcon workspaceDeleteAll;
-	public static ImageIcon workspaceEdit;
-	public static ImageIcon workspaceDuplicate;
-	public static ImageIcon workspaceToggle;
-	public static ImageIcon workspaceModElementIDs;
-
 	public static ImageIcon bucket;
 	public static ImageIcon bucketMask;
 
@@ -62,7 +53,6 @@ public class TiledImageCache {
 		try {
 			TiledImageUtils plantGrowthTile = new TiledImageUtils(UIRES.get("growthtile"), 128, 215);
 			TiledImageUtils modTabTile = new TiledImageUtils(UIRES.get("taboverlaytile"), 64, 64);
-			TiledImageUtils workspaceIcons = new TiledImageUtils(UIRES.get("wrktile"), 45, 45);
 			TiledImageUtils bucketIcons = new TiledImageUtils(UIRES.get("mod_preview_bases.fluidbucket"), 32, 32);
 			TiledImageUtils spawnEggIcons = new TiledImageUtils(UIRES.get("mod_preview_bases.spawnegg"), 32, 32);
 
@@ -77,16 +67,6 @@ public class TiledImageCache {
 			modTabGreen = modTabTile.getIcon(2, 1);
 			modTabBlue = modTabTile.getIcon(3, 1);
 			modTabPurple = modTabTile.getIcon(4, 1);
-
-			workspaceAdd = ImageUtils.colorize(workspaceIcons.getIcon(1, 1), Theme.current().getInterfaceAccentColor(),
-					false);
-			workspaceCode = workspaceIcons.getIcon(2, 1);
-			workspaceDelete = workspaceIcons.getIcon(3, 1);
-			workspaceDeleteAll = workspaceIcons.getIcon(4, 1);
-			workspaceEdit = workspaceIcons.getIcon(5, 1);
-			workspaceDuplicate = workspaceIcons.getIcon(7, 1);
-			workspaceToggle = workspaceIcons.getIcon(8, 1);
-			workspaceModElementIDs = workspaceIcons.getIcon(6, 1);
 
 			bucket = bucketIcons.getIcon(1, 1);
 			bucketMask = bucketIcons.getIcon(2, 1);

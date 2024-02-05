@@ -106,11 +106,11 @@ import java.util.stream.Collectors;
 	private final JButton upFolder;
 	private final JButton renameFolder;
 
-	private final JLabel but2 = new JLabel(TiledImageCache.workspaceEdit);
-	private final JLabel but2a = new JLabel(TiledImageCache.workspaceDuplicate);
-	private final JLabel but3 = new JLabel(TiledImageCache.workspaceDelete);
-	private final JLabel but5 = new JLabel(TiledImageCache.workspaceCode);
-	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
+	private final JLabel but2 = new JLabel(UIRES.get("wrk_edit"));
+	private final JLabel but2a = new JLabel(UIRES.get("wrk_duplicate"));
+	private final JLabel but3 = new JLabel(UIRES.get("wrk_delete"));
+	private final JLabel but5 = new JLabel(UIRES.get("wrk_code"));
+	private final JLabel but5a = new JLabel(UIRES.get("wrk_lock"));
 
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
 	private final JMenuItem searchElement = new JMenuItem(L10N.t("common.search_usages"));
@@ -672,7 +672,7 @@ import java.util.stream.Collectors;
 		JPanel pne = new JPanel(new GridLayout(8, 1, 6, 6));
 		pne.setOpaque(false);
 
-		JLabel but1 = new JLabel(TiledImageCache.workspaceAdd);
+		JLabel but1 = new JLabel(UIRES.get("wrk_add"));
 		but1.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but1.isEnabled())
@@ -753,7 +753,7 @@ import java.util.stream.Collectors;
 
 		String[] workspaceEmptyTip = L10N.t("workspace.elements.empty.tip").split("%1");
 		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[0]), 24));
-		emptct.add(new JLabel(new ImageIcon(ImageUtils.resize(TiledImageCache.workspaceAdd.getImage(), 32))));
+		emptct.add(new JLabel(new ImageIcon(ImageUtils.resize(UIRES.get("wrk_add").getImage(), 32))));
 		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[1]), 24));
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
