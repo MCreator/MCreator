@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -29,6 +29,7 @@
 -->
 
 <#-- @formatter:off -->
+<#include "../procedures.java.ftl">
 
 /*
  *	MCreator note: This file will be REGENERATED on each build.
@@ -36,14 +37,50 @@
 
 package ${package}.init;
 
-public class ${JavaModName}MobEffects {
+<#assign effects_that_expire = potioneffects?filter(effect -> hasProcedure(effect.onExpired))>
 
-	public static final DeferredRegister<MobEffect> REGISTRY = DeferredRegister.create(ForgeRegistries.MOB_EFFECTS, ${JavaModName}.MODID);
+<#if effects_that_expire?size != 0>@Mod.EventBusSubscriber </#if>public class ${JavaModName}MobEffects {
+
+	public static final DeferredRegister<MobEffect> REGISTRY = DeferredRegister.create(Registries.MOB_EFFECT, ${JavaModName}.MODID);
 
 	<#list potioneffects as effect>
-	public static final RegistryObject<MobEffect> ${effect.getModElement().getRegistryNameUpper()} =
+	public static final DeferredHolder<MobEffect, MobEffect> ${effect.getModElement().getRegistryNameUpper()} =
 			REGISTRY.register("${effect.getModElement().getRegistryName()}", () -> new ${effect.getModElement().getName()}MobEffect());
 	</#list>
+
+	<#if effects_that_expire?size != 0>
+	@SubscribeEvent public static void onEffectRemoved(MobEffectEvent.Remove event) {
+		MobEffectInstance effectInstance = event.getEffectInstance();
+		if (effectInstance != null) {
+			expireEffects(event.getEntity(), effectInstance);
+		}
+	}
+
+	@SubscribeEvent public static void onEffectExpired(MobEffectEvent.Expired event) {
+		MobEffectInstance effectInstance = event.getEffectInstance();
+		if (effectInstance != null) {
+			expireEffects(event.getEntity(), effectInstance);
+		}
+	}
+
+	private static void expireEffects(Entity entity, MobEffectInstance effectInstance) {
+		<#compress>
+		MobEffect effect = effectInstance.getEffect();
+		<#list effects_that_expire as effect>
+		if (effect == ${effect.getModElement().getRegistryNameUpper()}.get()) {
+			<@procedureCode effect.onExpired, {
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
+				"world": "entity.level()",
+				"entity": "entity",
+				"amplifier": "effectInstance.getAmplifier()"
+			}/>
+		}<#sep>else
+		</#list>
+		</#compress>
+	}
+	</#if>
 }
 
 <#-- @formatter:on -->
