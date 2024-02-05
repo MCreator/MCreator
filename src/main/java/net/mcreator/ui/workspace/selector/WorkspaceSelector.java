@@ -172,7 +172,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 							"/flags/" + L10N.getLocale().toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
 					BufferedImage image = ImageIO.read(
 							Objects.requireNonNull(getClass().getResourceAsStream(flagpath)));
-					g.drawImage(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11)), getWidth() - 15, 5, this);
+					g.drawImage(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11)), getWidth() - 15, 4, this);
 				} catch (Exception ignored) { // flag not found, ignore
 				}
 			}

@@ -51,7 +51,7 @@ public class StatusBar extends JPanel {
 
 		this.mcreator = mcreator;
 
-		JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 1));
+		JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 2));
 		left.setOpaque(false);
 
 		left.add(new JEmptyBox(5, 5));
@@ -91,7 +91,7 @@ public class StatusBar extends JPanel {
 
 		add("West", left);
 
-		JPanel right = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 1));
+		JPanel right = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 2));
 		right.setOpaque(false);
 
 		gradleMessages.setForeground(Theme.current().getAltForegroundColor());
@@ -174,7 +174,7 @@ public class StatusBar extends JPanel {
 			if (mcreator.getGradleConsole().isGradleSetupTaskRunning())
 				g.setColor(new Color(106, 247, 244));
 
-			g.fillRect(4, 5, 8, 8);
+			g.fillRect(4, 3, 8, 8);
 		}
 	}
 
