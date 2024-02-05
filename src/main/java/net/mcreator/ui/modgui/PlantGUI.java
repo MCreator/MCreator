@@ -37,6 +37,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
@@ -339,7 +340,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel ptipe = new JPanel(new GridLayout(1, 3, 10, 10));
 		ptipe.setOpaque(false);
 
-		JPanel ptipe1 = new JPanel(new BorderLayout());
+		JPanel ptipe1 = new JPanel(new BorderLayout(5, 5));
 		ptipe1.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.type_static"), 0, 0, getFont().deriveFont(12.0f),
@@ -356,9 +357,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		ptipe1.add("Center", PanelUtils.pullElementUp(staticPlantProperties));
 		ptipe1.add("North", normalType);
+		ptipe1.add("South", PanelUtils.centerInPanel(new JLabel(UIRES.get("plant_normal"))));
 		ptipe1.setOpaque(false);
 
-		JPanel ptipe2 = new JPanel(new BorderLayout());
+		JPanel ptipe2 = new JPanel(new BorderLayout(5, 5));
 		ptipe2.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.type_growable"), 0, 0, getFont().deriveFont(12.0f),
@@ -368,14 +370,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("plant/max_height"),
 						L10N.label("elementgui.plant.max_height")), growapableMaxHeight)));
 		ptipe2.add("North", growapableType);
+		ptipe2.add("South", PanelUtils.centerInPanel(new JLabel(UIRES.get("plant_growable"))));
 		ptipe2.setOpaque(false);
 
-		JPanel ptipe3 = new JPanel(new BorderLayout());
+		JPanel ptipe3 = new JPanel(new BorderLayout(5, 5));
 		ptipe3.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.type_double"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 		ptipe3.add("North", doubleType);
+		ptipe3.add("South", PanelUtils.centerInPanel(new JLabel(UIRES.get("plant_double"))));
 		ptipe3.setOpaque(false);
 
 		ptipe.add("West", ptipe1);
