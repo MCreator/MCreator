@@ -26,6 +26,7 @@ import_formatter:
     Codec: com.mojang.serialization
     SoundEvent: net.minecraft.sounds
     Blocks: net.minecraft.world.level.block
+    Items: net.minecraft.world.item
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -39,13 +40,13 @@ server_run_dir: "@WORKSPACEROOT/runs/server"
 
 # specific resource folders
 sounds_dir: "@MODASSETSROOT/sounds"
-#structures_dir: "@MODDATAROOT/structures"
+structures_dir: "@MODDATAROOT/structures"
 #block_textures_dir: "@MODASSETSROOT/textures/block"
 #item_textures_dir: "@MODASSETSROOT/textures/item"
 #entity_textures_dir: "@MODASSETSROOT/textures/entities"
-#effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
-#particle_textures_dir: "@MODASSETSROOT/textures/particle"
-#screen_textures_dir: "@MODASSETSROOT/textures/screens"
+effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
+particle_textures_dir: "@MODASSETSROOT/textures/particle"
+screen_textures_dir: "@MODASSETSROOT/textures/screens"
 #armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
 
@@ -89,9 +90,9 @@ base_templates:
 #    template: javamodel.java.ftl
 #    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 
-#tags:
-#  template: tags.json.ftl
-#  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
+tags:
+  template: tags.json.ftl
+  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
 
 language_file:
   format: json

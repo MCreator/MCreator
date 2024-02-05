@@ -32,6 +32,6 @@ public class NewWorkspaceAction extends BasicAction {
 				actionRegistry.getMCreator().getApplication()
 						.openWorkspaceInMCreator(newWorkspaceDialog.getWorkspaceFile());
 		});
-		setIcon(UIRES.get("16px.add.gif"));
+		setIcon(UIRES.get("16px.add"));
 	}
 }

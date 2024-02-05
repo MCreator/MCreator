@@ -88,7 +88,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		bar.add(createToolBarButton("workspace.localization.add_entry", UIRES.get("16px.add.gif"), e -> {
+		bar.add(createToolBarButton("workspace.localization.add_entry", UIRES.get("16px.add"), e -> {
 			String key = JOptionPane.showInputDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.localization.key_name_message"), L10N.t("workspace.localization.key_name_title"),
 					JOptionPane.QUESTION_MESSAGE);
@@ -98,10 +98,10 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(del = createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif")));
+		bar.add(del = createToolBarButton("common.delete_selected", UIRES.get("16px.delete")));
 		bar.add(use = createToolBarButton("common.search_usages", UIRES.get("16px.search")));
-		bar.add(exp = createToolBarButton("workspace.localization.export_to_csv", UIRES.get("16px.ext.gif")));
-		bar.add(imp = createToolBarButton("workspace.localization.import_csv", UIRES.get("16px.open.gif")));
+		bar.add(exp = createToolBarButton("workspace.localization.export_to_csv", UIRES.get("16px.ext")));
+		bar.add(imp = createToolBarButton("workspace.localization.import_csv", UIRES.get("16px.open")));
 
 		add("North", bar);
 	}
@@ -212,7 +212,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 			JPanel tab = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 1));
 			tab.setOpaque(false);
-			JButton button = new JButton(UIRES.get("16px.delete.gif"));
+			JButton button = new JButton(UIRES.get("16px.delete"));
 			button.setContentAreaFilled(false);
 			button.setBorder(BorderFactory.createEmptyBorder());
 			button.setMargin(new Insets(0, 0, 0, 0));
@@ -341,7 +341,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 		int lastid = pane.getTabCount();
 		pane.addTab("", null, null);
-		pane.setTabComponentAt(lastid, new JLabel(UIRES.get("16px.add.gif")));
+		pane.setTabComponentAt(lastid, new JLabel(UIRES.get("16px.add")));
 
 		pane.removeChangeListener(changeListener);
 		changeListener = e -> {

@@ -357,13 +357,13 @@ import java.util.stream.Collectors;
 		modElementsBar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
 		JButton addFolder = new JButton(new ImageIcon(
-				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.newFolder.gif").getImage()),
+				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.newFolder").getImage()),
 						new Rectangle(1, 1, 16, 16))));
 		upFolder = new JButton(new ImageIcon(
-				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder.gif").getImage()),
+				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder").getImage()),
 						new Rectangle(1, 1, 16, 16))));
 		renameFolder = new JButton(new ImageIcon(
-				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.renameFolder.gif").getImage()),
+				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.renameFolder").getImage()),
 						new Rectangle(1, 1, 16, 16))));
 
 		addFolder.setContentAreaFilled(false);
@@ -622,12 +622,12 @@ import java.util.stream.Collectors;
 		viewPopup.add(listIcons);
 		viewPopup.add(detailsIcons);
 
-		tilesIcons.setIcon(UIRES.get("16px.tiles.gif"));
-		largeIcons.setIcon(UIRES.get("16px.large.gif"));
-		mediumIcons.setIcon(UIRES.get("16px.medium.gif"));
-		smallIcons.setIcon(UIRES.get("16px.small.gif"));
-		listIcons.setIcon(UIRES.get("16px.list.gif"));
-		detailsIcons.setIcon(UIRES.get("16px.details.gif"));
+		tilesIcons.setIcon(UIRES.get("16px.tiles"));
+		largeIcons.setIcon(UIRES.get("16px.large"));
+		mediumIcons.setIcon(UIRES.get("16px.medium"));
+		smallIcons.setIcon(UIRES.get("16px.small"));
+		listIcons.setIcon(UIRES.get("16px.list"));
+		detailsIcons.setIcon(UIRES.get("16px.details"));
 
 		view.addActionListener(e -> viewPopup.show(view, 0, 23));
 
@@ -813,10 +813,10 @@ import java.util.stream.Collectors;
 		idElement.addActionListener(e -> editIDOfCurrentlySelectedModElement());
 
 		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
-		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
+		addElementFolder.setIcon(UIRES.get("laf.newFolder"));
 		addElementFolder.addActionListener(e -> addNewFolder());
 
-		renameElementFolder.setIcon(UIRES.get("laf.renameFolder.gif"));
+		renameElementFolder.setIcon(UIRES.get("laf.renameFolder"));
 		renameElementFolder.addActionListener(e -> {
 			if (list.getSelectedValue() instanceof FolderElement) {
 				renameFolder((FolderElement) list.getSelectedValue());
@@ -930,7 +930,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(72);
 			list.setFixedCellWidth(287);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			view.setIcon(UIRES.get("16px.tiles.gif"));
+			view.setIcon(UIRES.get("16px.tiles"));
 			view.setText(L10N.t("workspace.elements.list.tiles"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -939,7 +939,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(97);
 			list.setFixedCellWidth(90);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			view.setIcon(UIRES.get("16px.large.gif"));
+			view.setIcon(UIRES.get("16px.large"));
 			view.setText(L10N.t("workspace.elements.list.large"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -948,7 +948,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(52);
 			list.setFixedCellWidth(287);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			view.setIcon(UIRES.get("16px.medium.gif"));
+			view.setIcon(UIRES.get("16px.medium"));
 			view.setText(L10N.t("workspace.elements.list.medium"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -957,7 +957,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(32);
 			list.setFixedCellWidth(200);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			view.setIcon(UIRES.get("16px.small.gif"));
+			view.setIcon(UIRES.get("16px.small"));
 			view.setText(L10N.t("workspace.elements.list.small"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -966,7 +966,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(28);
 			list.setFixedCellWidth(-1);
 			list.setLayoutOrientation(JList.VERTICAL);
-			view.setIcon(UIRES.get("16px.list.gif"));
+			view.setIcon(UIRES.get("16px.list"));
 			view.setText(L10N.t("workspace.elements.list.list"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -975,7 +975,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(24);
 			list.setFixedCellWidth(-1);
 			list.setLayoutOrientation(JList.VERTICAL);
-			view.setIcon(UIRES.get("16px.details.gif"));
+			view.setIcon(UIRES.get("16px.details"));
 			view.setText(L10N.t("workspace.elements.list.details"));
 			detailsbar.setVisible(true);
 		}
