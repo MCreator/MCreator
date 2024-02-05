@@ -120,13 +120,18 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/LinkedHashSet.html" title="class or interface in java.util" class="external-link">LinkedHashSet</a>&lt;<a href="Theme.html" title="class in net.mcreator.ui.laf.themes">Theme</a>&gt;</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getThemes()" class="member-name-link">getThemes</a>()</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#init()" class="member-name-link">init</a>()</code></div>
-<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#applySelectedTheme()" class="member-name-link">applySelectedTheme</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
 <div class="block">This method loads all <a href="Theme.html" title="class in net.mcreator.ui.laf.themes"><code>Theme</code></a>s and sets the current theme to the one selected by the user.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/LinkedHashSet.html" title="class or interface in java.util" class="external-link">LinkedHashSet</a>&lt;<a href="Theme.html" title="class in net.mcreator.ui.laf.themes">Theme</a>&gt;</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#getThemes()" class="member-name-link">getThemes</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#loadThemes()" class="member-name-link">loadThemes</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">This method loads the <a href="Theme.html" title="class in net.mcreator.ui.laf.themes"><code>Theme</code></a> of all plugins loaded into the current <a href="../../../plugin/PluginLoader.html" title="class in net.mcreator.plugin"><code>PluginLoader</code></a> instance.</div>
 </div>
 </div>
 </div>
@@ -174,10 +179,17 @@ loadScripts(document, 'script');</script>
 <h2>Method Details</h2>
 <ul class="member-list">
 <li>
-<section class="detail" id="init()">
-<h3>init</h3>
-<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">init</span>()</div>
+<section class="detail" id="applySelectedTheme()">
+<h3>applySelectedTheme</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">applySelectedTheme</span>()</div>
 <div class="block">This method loads all <a href="Theme.html" title="class in net.mcreator.ui.laf.themes"><code>Theme</code></a>s and sets the current theme to the one selected by the user.</div>
+</section>
+</li>
+<li>
+<section class="detail" id="loadThemes()">
+<h3>loadThemes</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">loadThemes</span>()</div>
+<div class="block"><p>This method loads the <a href="Theme.html" title="class in net.mcreator.ui.laf.themes"><code>Theme</code></a> of all plugins loaded into the current <a href="../../../plugin/PluginLoader.html" title="class in net.mcreator.plugin"><code>PluginLoader</code></a> instance.</p></div>
 </section>
 </li>
 <li>
