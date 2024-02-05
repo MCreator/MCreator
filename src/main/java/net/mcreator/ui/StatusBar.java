@@ -89,6 +89,7 @@ public class StatusBar extends JPanel {
 		left.add(new JEmptyBox(10, 10));
 
 		messages.setForeground(Theme.current().getAltForegroundColor());
+		messages.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		left.add(messages);
 
 		add("West", left);
@@ -97,6 +98,7 @@ public class StatusBar extends JPanel {
 		right.setOpaque(false);
 
 		gradleMessages.setForeground(Theme.current().getAltForegroundColor());
+		gradleMessages.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		right.add(gradleMessages);
 
 		ComponentUtils.deriveFont(gradleMessages, 12);
