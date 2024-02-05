@@ -51,12 +51,13 @@ public class StatusBar extends JPanel {
 
 		this.mcreator = mcreator;
 
-		JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 2));
+		JPanel left = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 1));
 		left.setOpaque(false);
 
 		left.add(new JEmptyBox(5, 5));
 
 		JLabel info = new JLabel(UIRES.get("info"));
+		info.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		info.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				mcreator.actionRegistry.aboutMCreator.doAction();
@@ -77,6 +78,7 @@ public class StatusBar extends JPanel {
 		left.add(new JEmptyBox(3, 3));
 
 		JLabel preferences = new JLabel(UIRES.get("settings"));
+		preferences.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		preferences.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				new PreferencesDialog(mcreator, null);
@@ -91,7 +93,7 @@ public class StatusBar extends JPanel {
 
 		add("West", left);
 
-		JPanel right = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 2));
+		JPanel right = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 1));
 		right.setOpaque(false);
 
 		gradleMessages.setForeground(Theme.current().getAltForegroundColor());
@@ -174,7 +176,7 @@ public class StatusBar extends JPanel {
 			if (mcreator.getGradleConsole().isGradleSetupTaskRunning())
 				g.setColor(new Color(106, 247, 244));
 
-			g.fillRect(4, 3, 8, 8);
+			g.fillRect(4, 5, 8, 8);
 		}
 	}
 
