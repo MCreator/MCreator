@@ -75,7 +75,7 @@ public class LargeIconModListRender extends JPanel implements ListCellRenderer<I
 		}
 
 		if (element instanceof FolderElement) {
-			icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 64)));
+			icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("mod_types.folder").getImage(), 64)));
 		} else if (element instanceof ModElement) {
 			ImageIcon modIcon = ((ModElement) element).getElementIcon();
 

@@ -78,7 +78,7 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 			}
 
 			if (element instanceof FolderElement) {
-				icon.setIcon(UIRES.get("folder"));
+				icon.setIcon(UIRES.get("mod_types.folder"));
 			} else if (element instanceof ModElement modElement) {
 				ImageIcon dva = null;
 				if (!modElement.doesCompile()) {

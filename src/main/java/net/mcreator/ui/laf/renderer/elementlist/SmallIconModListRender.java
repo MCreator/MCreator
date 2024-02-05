@@ -77,7 +77,7 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 			}
 
 			if (element instanceof FolderElement) {
-				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 25)));
+				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("mod_types.folder").getImage(), 25)));
 			} else if (element instanceof ModElement) {
 				ImageIcon modIcon = ((ModElement) element).getElementIcon();
 				if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0

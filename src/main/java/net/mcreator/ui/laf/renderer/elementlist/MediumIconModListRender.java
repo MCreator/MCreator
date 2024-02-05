@@ -78,7 +78,7 @@ public class MediumIconModListRender extends JPanel implements ListCellRenderer<
 			}
 
 			if (element instanceof FolderElement) {
-				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 42)));
+				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("mod_types.folder").getImage(), 42)));
 			} else if (element instanceof ModElement) {
 				ImageIcon modIcon = ((ModElement) element).getElementIcon();
 				if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0
