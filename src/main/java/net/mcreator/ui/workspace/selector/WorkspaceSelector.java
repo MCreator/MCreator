@@ -101,7 +101,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JPanel actions = new JPanel(new BorderLayout(0, 6));
 
 		JButton newWorkspace = mainWorkspaceButton(L10N.t("dialog.workspace_selector.new_workspace"),
-				UIRES.get("addwrk"), e -> {
+				UIRES.get("wrk_add"), e -> {
 					NewWorkspaceDialog newWorkspaceDialog = new NewWorkspaceDialog(this);
 					if (newWorkspaceDialog.getWorkspaceFile() != null)
 						workspaceOpenListener.workspaceOpened(newWorkspaceDialog.getWorkspaceFile());
