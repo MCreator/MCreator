@@ -44,7 +44,7 @@ package ${package}.init;
 	public static final DeferredRegister<MobEffect> REGISTRY = DeferredRegister.create(Registries.MOB_EFFECT, ${JavaModName}.MODID);
 
 	<#list potioneffects as effect>
-	public static final DeferredHolder<MobEffect, ${effect.getModElement().getName()}MobEffect> ${effect.getModElement().getRegistryNameUpper()} =
+	public static final DeferredHolder<MobEffect, MobEffect> ${effect.getModElement().getRegistryNameUpper()} =
 			REGISTRY.register("${effect.getModElement().getRegistryName()}", () -> new ${effect.getModElement().getName()}MobEffect());
 	</#list>
 
@@ -63,7 +63,7 @@ package ${package}.init;
 		}
 	}
 
-	public static void expireEffects(Entity entity, MobEffectInstance effectInstance) {
+	private static void expireEffects(Entity entity, MobEffectInstance effectInstance) {
 		<#compress>
 		MobEffect effect = effectInstance.getEffect();
 		<#list effects_that_expire as effect>
