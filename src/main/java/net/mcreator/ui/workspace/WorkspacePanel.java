@@ -40,7 +40,6 @@ import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.renderer.elementlist.*;

@@ -37,7 +37,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
@@ -78,10 +77,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private TextureHolder itemTexture;
 	private TextureHolder particleTexture;
-
-	private final JLabel stl = new JLabel(TiledImageCache.plantStaticYes);
-	private final JLabel dyn = new JLabel(TiledImageCache.plantGrowingNo);
-	private final JLabel dbl = new JLabel(TiledImageCache.plantDoubleNo);
 
 	private final JCheckBox customBoundingBox = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
@@ -315,7 +310,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.textures_and_model"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		JPanel sbbp2 = new JPanel(new BorderLayout());
+		JPanel sbbp2 = new JPanel(new BorderLayout(10, 10));
 
 		sbbp2.setOpaque(false);
 
@@ -341,7 +336,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		growapableType.addActionListener(planttypeselected);
 		doubleType.addActionListener(planttypeselected);
 
-		JPanel ptipe = new JPanel(new BorderLayout());
+		JPanel ptipe = new JPanel(new GridLayout(1, 3, 10, 10));
 		ptipe.setOpaque(false);
 
 		JPanel ptipe1 = new JPanel(new BorderLayout());
@@ -350,7 +345,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.type_static"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		JPanel staticPlantProperties = new JPanel(new GridLayout(2, 2, 0, 4));
+		JPanel staticPlantProperties = new JPanel(new GridLayout(2, 2, 0, 2));
 		staticPlantProperties.setOpaque(false);
 		staticPlantProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/suspicious_stew_effect"),
 				L10N.label("elementgui.plant.suspicious_stew_effect")));
@@ -359,7 +354,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.suspicious_stew_duration")));
 		staticPlantProperties.add(suspiciousStewDuration);
 
-		ptipe1.add("West", stl);
 		ptipe1.add("Center", PanelUtils.pullElementUp(staticPlantProperties));
 		ptipe1.add("North", normalType);
 		ptipe1.setOpaque(false);
@@ -369,17 +363,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.type_growable"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
-		ptipe2.add("West", dyn);
 
-		JPanel mlo = new JPanel(new GridLayout(1, 2));
-
-		mlo.setOpaque(false);
-
-		mlo.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/max_height"),
-				L10N.label("elementgui.plant.max_height")));
-		mlo.add(growapableMaxHeight);
-
-		ptipe2.add("Center", PanelUtils.join(mlo));
+		ptipe2.add("Center", PanelUtils.pullElementUp(PanelUtils.gridElements(1, 2, 0, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("plant/max_height"),
+						L10N.label("elementgui.plant.max_height")), growapableMaxHeight)));
 		ptipe2.add("North", growapableType);
 		ptipe2.setOpaque(false);
 
@@ -388,7 +375,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.type_double"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
-		ptipe3.add("Center", dbl);
 		ptipe3.add("North", doubleType);
 		ptipe3.setOpaque(false);
 
@@ -396,8 +382,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		ptipe.add("Center", ptipe2);
 		ptipe.add("East", ptipe3);
 
-		sbbp2.add("North", texturesAndRent);
-		sbbp2.add("Center", PanelUtils.totalCenterInPanel(ptipe));
+		sbbp2.add("North", ptipe);
+		sbbp2.add("Center", texturesAndRent);
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
@@ -734,37 +720,24 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private void updatePlantType() {
 		if (normalType.isSelected()) {
-			stl.setIcon(TiledImageCache.plantStaticYes);
 			generationType.setEnabled(true);
 			renderType.setEnabled(true);
 			suspiciousStewEffect.setEnabled(true);
 			suspiciousStewDuration.setEnabled(true);
 			growapableMaxHeight.setEnabled(false);
-		} else {
-			stl.setIcon(TiledImageCache.plantStaticNo);
-		}
-
-		if (growapableType.isSelected()) {
-			dyn.setIcon(TiledImageCache.plantGrowingYes);
+		} else if (growapableType.isSelected()) {
 			generationType.setEnabled(false);
 			renderType.setEnabled(true);
 			suspiciousStewEffect.setEnabled(false);
 			suspiciousStewDuration.setEnabled(false);
 			growapableMaxHeight.setEnabled(true);
-		} else {
-			dyn.setIcon(TiledImageCache.plantGrowingNo);
-		}
-
-		if (doubleType.isSelected()) {
+		} else if (doubleType.isSelected()) {
 			generationType.setEnabled(true);
-			dbl.setIcon(TiledImageCache.plantDoubleYes);
 			renderType.setSelectedItem(cross);
 			renderType.setEnabled(false);
 			suspiciousStewEffect.setEnabled(false);
 			suspiciousStewDuration.setEnabled(false);
 			growapableMaxHeight.setEnabled(false);
-		} else {
-			dbl.setIcon(TiledImageCache.plantDoubleNo);
 		}
 
 		texture.setVisible(false);
