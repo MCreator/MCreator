@@ -52,6 +52,7 @@ Ores:
   underground_ores/ore_redstone, 
   underground_ores/ore_redstone_lower, 
   underground_ores/ore_diamond, 
+  underground_ores/ore_diamond_medium, 
   underground_ores/ore_diamond_large, 
   underground_ores/ore_diamond_buried, 
   underground_ores/ore_lapis, 
