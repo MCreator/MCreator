@@ -34,6 +34,7 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.tools.*;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
+import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.JStateLabel;
@@ -64,8 +65,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
@@ -86,6 +87,11 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 	@Test public void testNewWorkspaceDialog() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new NewWorkspaceDialog(mcreator));
+	}
+
+	@Test public void testNewWorkspaceSettingsDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> WorkspaceDialogs.workspaceSettings(mcreator, mcreator.getWorkspace()));
 	}
 
 	@Test public void testGeneratorSelectorDialog() throws Throwable {
@@ -137,10 +143,13 @@ import static org.junit.jupiter.api.Assertions.fail;
 		}
 	}
 
+	@Test public void testAddCommonTagsDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AddCommonTagsDialog.open(mcreator));
+	}
+
 	@Test public void testToolsDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> ArmorPackMakerTool.getAction(mcreator.actionRegistry).doAction());
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> InjectTagsTool.getAction(mcreator.actionRegistry).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> MaterialPackMakerTool.getAction(mcreator.actionRegistry).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,

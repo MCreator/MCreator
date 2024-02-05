@@ -19,6 +19,7 @@
 package net.mcreator.ui.workspace;
 
 import net.mcreator.element.*;
+import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.generator.ListTemplate;
@@ -356,13 +357,13 @@ import java.util.stream.Collectors;
 		modElementsBar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
 		JButton addFolder = new JButton(new ImageIcon(
-				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.newFolder.gif").getImage()),
+				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.newFolder").getImage()),
 						new Rectangle(1, 1, 16, 16))));
 		upFolder = new JButton(new ImageIcon(
-				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder.gif").getImage()),
+				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder").getImage()),
 						new Rectangle(1, 1, 16, 16))));
 		renameFolder = new JButton(new ImageIcon(
-				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.renameFolder.gif").getImage()),
+				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.renameFolder").getImage()),
 						new Rectangle(1, 1, 16, 16))));
 
 		addFolder.setContentAreaFilled(false);
@@ -621,12 +622,12 @@ import java.util.stream.Collectors;
 		viewPopup.add(listIcons);
 		viewPopup.add(detailsIcons);
 
-		tilesIcons.setIcon(UIRES.get("16px.tiles.gif"));
-		largeIcons.setIcon(UIRES.get("16px.large.gif"));
-		mediumIcons.setIcon(UIRES.get("16px.medium.gif"));
-		smallIcons.setIcon(UIRES.get("16px.small.gif"));
-		listIcons.setIcon(UIRES.get("16px.list.gif"));
-		detailsIcons.setIcon(UIRES.get("16px.details.gif"));
+		tilesIcons.setIcon(UIRES.get("16px.tiles"));
+		largeIcons.setIcon(UIRES.get("16px.large"));
+		mediumIcons.setIcon(UIRES.get("16px.medium"));
+		smallIcons.setIcon(UIRES.get("16px.small"));
+		listIcons.setIcon(UIRES.get("16px.list"));
+		detailsIcons.setIcon(UIRES.get("16px.details"));
 
 		view.addActionListener(e -> viewPopup.show(view, 0, 23));
 
@@ -766,6 +767,7 @@ import java.util.stream.Collectors;
 		addVerticalTab("mods", L10N.t("workspace.category.mod_elements"),
 				new WorkspacePanelMods(PanelUtils.westAndCenterElement(toolp, modElementsPanel)));
 		addVerticalTab("resources", L10N.t("workspace.category.resources"), resourcesPan);
+		addVerticalTab("tags", L10N.t("workspace.category.tags"), new WorkspacePanelTags(this));
 		addVerticalTab("variables", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
 		addVerticalTab("localization", L10N.t("workspace.category.localization"),
 				new WorkspacePanelLocalizations(this));
@@ -811,10 +813,10 @@ import java.util.stream.Collectors;
 		idElement.addActionListener(e -> editIDOfCurrentlySelectedModElement());
 
 		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
-		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
+		addElementFolder.setIcon(UIRES.get("laf.newFolder"));
 		addElementFolder.addActionListener(e -> addNewFolder());
 
-		renameElementFolder.setIcon(UIRES.get("laf.renameFolder.gif"));
+		renameElementFolder.setIcon(UIRES.get("laf.renameFolder"));
 		renameElementFolder.addActionListener(e -> {
 			if (list.getSelectedValue() instanceof FolderElement) {
 				renameFolder((FolderElement) list.getSelectedValue());
@@ -928,7 +930,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(72);
 			list.setFixedCellWidth(287);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			view.setIcon(UIRES.get("16px.tiles.gif"));
+			view.setIcon(UIRES.get("16px.tiles"));
 			view.setText(L10N.t("workspace.elements.list.tiles"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -937,7 +939,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(97);
 			list.setFixedCellWidth(90);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			view.setIcon(UIRES.get("16px.large.gif"));
+			view.setIcon(UIRES.get("16px.large"));
 			view.setText(L10N.t("workspace.elements.list.large"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -946,7 +948,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(52);
 			list.setFixedCellWidth(287);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			view.setIcon(UIRES.get("16px.medium.gif"));
+			view.setIcon(UIRES.get("16px.medium"));
 			view.setText(L10N.t("workspace.elements.list.medium"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -955,7 +957,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(32);
 			list.setFixedCellWidth(200);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			view.setIcon(UIRES.get("16px.small.gif"));
+			view.setIcon(UIRES.get("16px.small"));
 			view.setText(L10N.t("workspace.elements.list.small"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -964,7 +966,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(28);
 			list.setFixedCellWidth(-1);
 			list.setLayoutOrientation(JList.VERTICAL);
-			view.setIcon(UIRES.get("16px.list.gif"));
+			view.setIcon(UIRES.get("16px.list"));
 			view.setText(L10N.t("workspace.elements.list.list"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -973,7 +975,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(24);
 			list.setFixedCellWidth(-1);
 			list.setLayoutOrientation(JList.VERTICAL);
-			view.setIcon(UIRES.get("16px.details.gif"));
+			view.setIcon(UIRES.get("16px.details"));
 			view.setText(L10N.t("workspace.elements.list.details"));
 			detailsbar.setVisible(true);
 		}
@@ -1048,7 +1050,7 @@ import java.util.stream.Collectors;
 							mcreator.getGenerator().generateElement(generatableElement);
 						}
 						i++;
-						p1.setPercent((int) (((float) i / (float) elementsThatGotUnlocked.size()) * 100.0f));
+						p1.setPercent((int) (i / (float) elementsThatGotUnlocked.size() * 100));
 					}
 					p1.markStateOk();
 
@@ -1070,28 +1072,14 @@ import java.util.stream.Collectors;
 			mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			Set<ModElement> references = new HashSet<>();
-			boolean tagsSelected = false, nonTagsSelected = false;
 			for (IElement el : list.getSelectedValuesList()) {
 				if (el instanceof ModElement mod) {
-					// We don't look for tag references since those are "weak" references also affected by other mods
-					if (mod.getType() == ModElementType.TAG) {
-						tagsSelected = true;
-					} else {
-						nonTagsSelected = true;
-						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
-					}
+					references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
 				}
 			}
 
 			mcreator.setCursor(Cursor.getDefaultCursor());
-			if (tagsSelected) {
-				JOptionPane.showMessageDialog(mcreator, L10N.t("workspace.elements.list.edit.usages.tags"),
-						L10N.t("workspace.elements.list.edit.usages.tags.title"), JOptionPane.WARNING_MESSAGE);
-			}
-			if (nonTagsSelected) {
-				SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
-						references);
-			}
+			SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"), references);
 		}
 	}
 
@@ -1099,7 +1087,7 @@ import java.util.stream.Collectors;
 		if (list.getSelectedValue() instanceof ModElement mu) {
 			GeneratableElement generatableElementOriginal = mu.getGeneratableElement();
 
-			if (generatableElementOriginal != null) {
+			if (generatableElementOriginal != null && !(generatableElementOriginal instanceof CustomElement)) {
 				String modName = VOptionPane.showInputDialog(mcreator,
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),

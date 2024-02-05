@@ -94,7 +94,6 @@ public class ActionRegistry {
 	public final BasicAction exportWorkspaceToZIPWithRunDir;
 	public final BasicAction openWorkspaceFolder;
 	public final BasicAction setCreativeTabItemOrder;
-	public final BasicAction injectDefaultTags;
 
 	// IDE actions
 	public final BasicAction openFile;
@@ -209,13 +208,13 @@ public class ActionRegistry {
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");
 		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open"),
-				e -> mcreator.getProjectBrowser().openSelectedFile(true)).setIcon(UIRES.get("16px.edit.gif"));
+				e -> mcreator.getProjectBrowser().openSelectedFile(true)).setIcon(UIRES.get("16px.edit"));
 		this.openFileInDesktop = new BasicAction(this, L10N.t("workspace_file_browser.open_desktop"),
 				e -> mcreator.getProjectBrowser().openSelectedFileInDesktop());
 		this.showFileInExplorer = new BasicAction(this, L10N.t("workspace_file_browser.show_in_explorer"),
-				e -> mcreator.getProjectBrowser().showSelectedFileInDesktop()).setIcon(UIRES.get("16px.open.gif"));
+				e -> mcreator.getProjectBrowser().showSelectedFileInDesktop()).setIcon(UIRES.get("16px.open"));
 		this.deleteFile = new BasicAction(this, L10N.t("workspace_file_browser.remove_file"),
-				e -> mcreator.getProjectBrowser().deleteSelectedFile()).setIcon(UIRES.get("16px.delete.gif"));
+				e -> mcreator.getProjectBrowser().deleteSelectedFile()).setIcon(UIRES.get("16px.delete"));
 		this.newClass = new NewClassAction(this);
 		this.newJson = new NewJsonFileAction(this);
 		this.newImage = new NewImageFileAction(this);
@@ -303,7 +302,6 @@ public class ActionRegistry {
 		this.knowledgeBase = new VisitURIAction(this, L10N.t("action.knowledge_base"),
 				MCreatorApplication.SERVER_DOMAIN + "/support/knowledgebase");
 		this.setCreativeTabItemOrder = new EditTabOrderAction(this);
-		this.injectDefaultTags = InjectTagsTool.getAction(this);
 		this.donate = new VisitURIAction(this, L10N.t("action.donate"),
 				MCreatorApplication.SERVER_DOMAIN + "/donate").setIcon(UIRES.get("donate"));
 		this.openJavaEditionFolder = new MinecraftFolderActions.OpenJavaEditionFolder(this);

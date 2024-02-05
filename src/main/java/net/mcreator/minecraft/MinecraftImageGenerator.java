@@ -1355,6 +1355,10 @@ public class MinecraftImageGenerator {
 				blockColor = Dependency.getColor("world");
 			}
 
+			// If no colors can be determined, use default mod element icon instead
+			if (startColor == null && returnColor == null && blockColor == null)
+				return null;
+
 			if (startColor != null)
 				graphics2D.drawImage(
 						ImageUtils.colorize(UIRES.get("mod_preview_bases.procedure_base"), startColor, false)
@@ -1443,18 +1447,6 @@ public class MinecraftImageGenerator {
 
 			graphics2D.dispose();
 			return icon;
-		}
-
-		/**
-		 * This method generates tag images.
-		 *
-		 * @param type Tag type string.
-		 * @return Returns generated image of the appropriate colour.
-		 */
-		public static BufferedImage generateTagPreviewPicture(String type) {
-			return ImageUtils.toBufferedImage(
-					ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), TagType.fromLegacyName(type).getColor(),
-							false).getImage());
 		}
 
 		/**

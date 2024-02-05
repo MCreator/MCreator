@@ -98,9 +98,8 @@ public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 
 			setText(value.getReadableName());
 
-			if (value instanceof DataListEntry.Custom) {
-				setIcon(MCItem.getBlockIconBasedOnName(((DataListEntry.Custom) value).getModElement().getWorkspace(),
-						value.getName()));
+			if (value instanceof DataListEntry.Custom custom) {
+				setIcon(MCItem.getBlockIconBasedOnName(custom.getModElement().getWorkspace(), value.getName()));
 			} else if (value.getTexture() == null) {
 				setIcon(new EmptyIcon(32, 32));
 			} else {

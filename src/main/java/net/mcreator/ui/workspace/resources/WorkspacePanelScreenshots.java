@@ -48,11 +48,11 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 			}
 		});
 
-		addToolBarButton("workspace.screenshots.export_selected", UIRES.get("16px.ext.gif"),
+		addToolBarButton("workspace.screenshots.export_selected", UIRES.get("16px.ext"),
 				e -> exportSelectedScreenshots());
 		addToolBarButton("workspace.screenshots.use_as_background", UIRES.get("16px.textures"),
 				e -> useSelectedAsBackgrounds());
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"), e -> {
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> {
 			deleteCurrentlySelected();
 			reloadElements();
 		});
@@ -67,8 +67,8 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 		List<File> selected = elementList.getSelectedValuesList();
 
 		filterModel.removeAllElements();
-		File[] screenshots = new File(workspacePanel.getMCreator().getWorkspaceFolder(),
-				"run/screenshots/").listFiles();
+		File[] screenshots = new File(workspacePanel.getMCreator().getFolderManager().getClientRunDir(),
+				"screenshots/").listFiles();
 
 		if (screenshots != null)
 			filterModel.addAll(List.of(screenshots));

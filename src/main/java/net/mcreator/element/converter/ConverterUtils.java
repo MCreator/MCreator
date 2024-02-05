@@ -20,6 +20,7 @@
 package net.mcreator.element.converter;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -45,7 +46,8 @@ public class ConverterUtils {
 						.filter(source.getWorkspace().getFolderManager()::isFileInWorkspace).forEach(File::delete);
 			source.getWorkspace().removeModElement(source);
 
-			result.getModElement().setParentFolder(FolderElement.dummyFromPath(source.getFolderPath()));
+			result.getModElement()
+					.setParentFolder(FolderElement.findFolderByPath(source.getWorkspace(), source.getFolderPath()));
 			source.getWorkspace().getModElementManager().storeModElementPicture(result);
 			source.getWorkspace().addModElement(result.getModElement());
 			source.getWorkspace().getGenerator().generateElement(result);
@@ -60,6 +62,15 @@ public class ConverterUtils {
 			LOG.debug("Converted mod element " + source.getName() + " (" + source.getTypeString()
 					+ ") to data format that is not a mod element using " + converter.getClass().getSimpleName());
 		}
+	}
+
+	public static String findSuitableModElementName(Workspace workspace, String desiredName) {
+		if (!workspace.containsModElement(desiredName))
+			return desiredName;
+		int i = 1;
+		while (workspace.containsModElement(desiredName + i))
+			i++;
+		return desiredName + i;
 	}
 
 }

@@ -26,6 +26,7 @@ import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 
 public class SoundElement implements IElement {
 
@@ -57,6 +58,10 @@ public class SoundElement implements IElement {
 
 	@Override public String getName() {
 		return name;
+	}
+
+	public String getJavaName() {
+		return name.toUpperCase(Locale.ENGLISH).replace(".", "_").replace("/", "_").replace(":", "_").replace("-", "_");
 	}
 
 	public List<String> getFiles() {

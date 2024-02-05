@@ -1,0 +1,1 @@
+Parametr naprawiania przedmiotów kontroluje które przedmioty mogą być użyte do naprawy zbroi wewnątrz kowadła.

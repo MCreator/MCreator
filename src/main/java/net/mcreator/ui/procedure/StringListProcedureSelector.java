@@ -69,7 +69,7 @@ public class StringListProcedureSelector extends RetvalProcedureSelector<List<St
 	}
 
 	@Override public StringListProcedure getSelectedProcedure() {
-		CBoxEntry selected = procedures.getSelectedItem();
+		ProcedureEntry selected = procedures.getSelectedItem();
 		if (selected == null || selected.string.equals(defaultName))
 			return new StringListProcedure(null, getFixedValue());
 		return new StringListProcedure(selected.string, getFixedValue());
@@ -78,7 +78,7 @@ public class StringListProcedureSelector extends RetvalProcedureSelector<List<St
 	@Override public void setSelectedProcedure(Procedure procedure) {
 		if (procedure instanceof StringListProcedure stringListProcedure) {
 			if (stringListProcedure.getName() != null)
-				procedures.setSelectedItem(new CBoxEntry(stringListProcedure.getName(), null));
+				procedures.setSelectedItem(new ProcedureEntry(stringListProcedure.getName(), null));
 
 			setFixedValue(stringListProcedure.getFixedValue());
 		}
@@ -89,7 +89,7 @@ public class StringListProcedureSelector extends RetvalProcedureSelector<List<St
 	}
 
 	@Override public void setFixedValue(List<String> value) {
-		if (fixedValue != null)
+		if (fixedValue != null && value != null)
 			fixedValue.setTextList(value);
 	}
 

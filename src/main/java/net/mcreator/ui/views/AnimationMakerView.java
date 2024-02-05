@@ -188,7 +188,7 @@ public class AnimationMakerView extends ViewBase {
 			playanim = false;
 			timeline.repaint();
 		});
-		stop.setIcon(UIRES.get("16px.stop"));
+		stop.setIcon(UIRES.get("16px.stopanimation"));
 		controls.add(stop);
 
 		controls.addSeparator();
@@ -280,7 +280,7 @@ public class AnimationMakerView extends ViewBase {
 							int finalI = i;
 							SwingUtilities.invokeLater(
 									() -> timelinevector.addElement(new AnimationFrame(frames[finalI])));
-							p2.setPercent((int) (((float) i / (float) frameCount) * 100.0f));
+							p2.setPercent((int) (i / (float) frameCount * 100));
 						}
 						p2.markStateOk();
 						dial.hideDialog();

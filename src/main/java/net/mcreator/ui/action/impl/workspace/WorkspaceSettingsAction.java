@@ -53,12 +53,13 @@ public class WorkspaceSettingsAction extends GradleAction {
 		super(actionRegistry, L10N.t("action.workspace.settings"), e -> {
 			WorkspaceSettingsChange change = WorkspaceDialogs.workspaceSettings(actionRegistry.getMCreator(),
 					actionRegistry.getMCreator().getWorkspace());
+			if (change != null) {
+				actionRegistry.getMCreator().getWorkspace().setWorkspaceSettings(change.workspaceSettings);
 
-			actionRegistry.getMCreator().getWorkspace().setWorkspaceSettings(change.workspaceSettings);
+				refactorWorkspace(actionRegistry.getMCreator(), change);
 
-			refactorWorkspace(actionRegistry.getMCreator(), change);
-
-			actionRegistry.getMCreator().mv.reloadElementsInCurrentTab();
+				actionRegistry.getMCreator().mv.reloadElementsInCurrentTab();
+			}
 		});
 	}
 

@@ -34,7 +34,7 @@ public class JSONWriter {
 
 	public static final Gson gson = new GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create();
 
-	public static void writeJSONToFileWithoutQueue(String srcjson, File file) {
+	public static void writeJSONToFile(String srcjson, File file) {
 		FileIO.writeStringToFile(formatJSON(srcjson), file);
 	}
 

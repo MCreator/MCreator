@@ -23,6 +23,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.ProjectileEntry;
@@ -54,9 +55,9 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 		try {
 			JsonObject rangedItem = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-			Projectile projectile = new Projectile(
-					new ModElement(workspace, input.getModElement().getName() + "Projectile",
-							ModElementType.PROJECTILE));
+			Projectile projectile = new Projectile(new ModElement(workspace,
+					ConverterUtils.findSuitableModElementName(workspace,
+							input.getModElement().getName() + "Projectile"), ModElementType.PROJECTILE));
 
 			if (rangedItem.get("bulletItemTexture") != null && !rangedItem.get("bulletItemTexture").getAsJsonObject()
 					.get("value").getAsString().isEmpty())
@@ -106,8 +107,9 @@ public class RangedItemToProjectileAndItemConverter implements IConverter {
 				projectile.onFlyingTick = new Procedure(
 						rangedItem.get("onBulletFlyingTick").getAsJsonObject().get("name").getAsString());
 
-			projectile.getModElement()
-					.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
+			projectile.getModElement().setParentFolder(
+					FolderElement.findFolderByPath(input.getModElement().getWorkspace(),
+							input.getModElement().getFolderPath()));
 			workspace.getModElementManager().storeModElementPicture(projectile);
 			workspace.addModElement(projectile.getModElement());
 			workspace.getGenerator().generateElement(projectile);

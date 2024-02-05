@@ -24,7 +24,10 @@ import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.integration.ui.UITestUtil;
 import net.mcreator.io.zip.ZipIO;
+import net.mcreator.ui.MCreator;
+import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.WorkspaceUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -69,16 +72,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 				File workspaceFile = WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(workspaceDir);
 
-				GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-						Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+				GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
+						Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 
 				assertNotNull(generatorConfiguration);
 
-				try (Workspace workspace = Workspace.readFromFS(workspaceFile, generatorConfiguration)) {
+				try (Workspace workspace = Workspace.readFromFSUnsafe(workspaceFile, generatorConfiguration)) {
 					// Conversions
 					for (ModElement mod : workspace.getModElements()) {
 						mod.getGeneratableElement();
 					}
+
+					MCreator mcreator = new MCreator(null, workspace);
 
 					// Check if all MEs have valid GE definition
 					for (ModElement mod : workspace.getModElements()) {
@@ -103,6 +108,12 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 						// test if GE definition is valid enough to be generated
 						assertTrue(workspace.getGenerator().generateElement(ge));
+
+						// test if the converted GE can be opened in the UI
+						ModElementGUI<?> modElementGUI = UITestUtil.openModElementGUIFor(mcreator, ge);
+
+						// test if UI validation is error free
+						UITestUtil.testIfValidationPasses(modElementGUI, false);
 					}
 				}
 			});

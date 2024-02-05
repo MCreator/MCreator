@@ -169,7 +169,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		elements.setBackground(Theme.current().getBackgroundColor());
 		elements.setSelectionBackground(Theme.current().getAltBackgroundColor());
 		elements.setForeground(Theme.current().getForegroundColor());
-		elements.setSelectionForeground(Theme.current().getBackgroundColor());
+		elements.setSelectionForeground(Theme.current().getForegroundColor());
 		elements.setBorder(BorderFactory.createEmptyBorder());
 		elements.setGridColor(Theme.current().getAltBackgroundColor());
 		elements.setRowHeight(28);
@@ -199,7 +199,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add.gif"), e -> {
+		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add"), e -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
@@ -219,7 +219,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
+		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
 				e -> deleteCurrentlySelected()));
 
 		bar.add(createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {

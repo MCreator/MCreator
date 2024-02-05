@@ -40,10 +40,10 @@ import java.util.Objects;
 
 public abstract class AbstractWorkspacePanel extends JPanel {
 
-	protected final WorkspaceDialogs.WorkspaceDialogPanel workspaceDialogPanel;
-	protected final ValidationGroup validationGroup = new ValidationGroup();
-	protected final VTextField workspaceFolder = new VTextField();
-	protected final JButton selectWorkspaceFolder = new JButton("...");
+	final WorkspaceDialogs.WorkspaceDialogPanel workspaceDialogPanel;
+	final ValidationGroup validationGroup = new ValidationGroup();
+	final VTextField workspaceFolder = new VTextField();
+	final JButton selectWorkspaceFolder = new JButton("...");
 
 	private boolean workspaceFolderAltered = false;
 

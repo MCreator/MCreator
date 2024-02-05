@@ -31,7 +31,6 @@ public class ImageEditorDeleteAction extends BasicAction {
 			JPanel pan = actionRegistry.getMCreator().mcreatorTabs.getCurrentTab().getContent();
 			if (pan instanceof ImageMakerView imageMakerView) {
 				imageMakerView.getLayerPanel().selected().deleteSelection();
-				System.out.println("Delete");
 			}
 		});
 		setTooltip(L10N.t("action.image_editor.delete.tooltip"));

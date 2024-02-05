@@ -51,7 +51,7 @@ public class NewJsonFileAction extends BasicAction {
 				}
 			}
 		});
-		setIcon(UIRES.get("16px.json.gif"));
+		setIcon(UIRES.get("16px.json"));
 	}
 
 }

@@ -44,15 +44,16 @@ import net.mcreator.element.converter.v2023_2.BiomeCustomFeaturesConverter;
 import net.mcreator.element.converter.v2023_2.BlockOreReplacementBlocksFixer;
 import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
-import net.mcreator.element.converter.v2023_3.HugeFungusFeatureConverter;
-import net.mcreator.element.converter.v2023_3.MaterialProcedureConverter;
-import net.mcreator.element.converter.v2023_3.PlantGenerationTypeConverter;
-import net.mcreator.element.converter.v2023_3.ProcedureDamageSourceFixer;
+import net.mcreator.element.converter.v2023_3.*;
 import net.mcreator.element.converter.v2023_4.*;
+import net.mcreator.element.converter.v2024_1.AdvancementTriggerInverter;
+import net.mcreator.element.converter.v2024_1.ProcedureCustomDamageRemover;
+import net.mcreator.element.converter.v2024_1.TagModElementConverter;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class ConverterRegistry {
 
@@ -60,7 +61,8 @@ public class ConverterRegistry {
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
 		put(ModElementType.ADVANCEMENT, List.of(
 			new AchievementFixer(),
-			new AdvancementTextureConverter()
+			new AdvancementTextureConverter(),
+			new AdvancementTriggerInverter()
 		));
 		put(ModElementType.ARMOR, List.of(
 			new ArmorTexturesConverter(),
@@ -138,6 +140,7 @@ public class ConverterRegistry {
 			new EffectTextureConverter()
 		));
 		put(ModElementType.PROCEDURE, List.of(
+			new LegacyDimensionProcedureRemover(),
 			new ProcedureEntityDepFixer(),
 			new OpenGUIProcedureDepFixer(),
 			new ProcedureGlobalTriggerFixer(),
@@ -153,7 +156,9 @@ public class ConverterRegistry {
 			new ExplodeProcedureConverter(),
 			new MaterialProcedureConverter(),
 			new ProcedureDamageSourceFixer(),
-			new ProcedureArrowProjectileFixer()
+			new LegacyGameModeConverter(),
+			new ProcedureArrowProjectileFixer(),
+			new ProcedureCustomDamageRemover()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()
@@ -161,7 +166,6 @@ public class ConverterRegistry {
 		put(ModElementType.ITEM, List.of(
 			new ItemDispenseBehaviorToItemExtensionConverter(),
 			new SpecialInformationConverter(),
-			new ItemDispenseBehaviorToItemExtensionConverter(),
 			new ItemHasGlowConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
@@ -188,6 +192,7 @@ public class ConverterRegistry {
 		put("food", new FoodToItemConverter());
 		put("fuel", new FuelToItemExtensionConverter());
 		put("rangeditem", new RangedItemToProjectileAndItemConverter());
+		put("tag", new TagModElementConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {
@@ -196,6 +201,10 @@ public class ConverterRegistry {
 
 	public static IConverter getConverterForModElementType(String modElementType) {
 		return converters_legacy.get(modElementType);
+	}
+
+	public static Set<String> getConvertibleModElementTypes() {
+		return converters_legacy.keySet();
 	}
 
 }

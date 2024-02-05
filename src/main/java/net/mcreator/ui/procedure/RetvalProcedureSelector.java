@@ -23,8 +23,6 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
-import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
@@ -79,7 +77,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
 		procedures.addPopupMenuListener(new ComboBoxFullWidthPopup());
 		procedures.addActionListener(e -> {
-			CBoxEntry selectedItem = procedures.getSelectedItem();
+			ProcedureEntry selectedItem = procedures.getSelectedItem();
 			if (selectedItem != null) {
 				if (!selectedItem.correctDependencies) {
 					procedures.setSelectedItem(oldItem);
@@ -198,19 +196,14 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 
 		procedures.setToolTipText(L10N.t("action.procedure.match_dependencies"));
 
-		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXXX", null));
+		procedures.setPrototypeDisplayValue(new ProcedureEntry("XXXXXXXXXX", null));
 
 		if (fixedValue != null && width != 0)
 			fixedValue.setPreferredSize(new Dimension(width, 0));
-
-		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
-				== GeneratorStats.CoverageStatus.NONE)
-			setEnabled(false);
 	}
 
-	@Override protected CBoxEntry updateDepsList(boolean smallIcons) {
-		CBoxEntry selected = super.updateDepsList(true);
+	@Override ProcedureEntry updateDepsList(boolean smallIcons) {
+		ProcedureEntry selected = super.updateDepsList(true);
 
 		edit.setEnabled(selected != null && !selected.string.equals(defaultName));
 
@@ -222,6 +215,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
+
 		if (fixedValue != null)
 			fixedValue.setEnabled(enabled);
 
@@ -230,15 +224,6 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 		} else {
 			setBackground(Theme.current().getBackgroundColor());
 		}
-
-		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
-				== GeneratorStats.CoverageStatus.NONE)
-			enabled = false;
-
-		procedures.setEnabled(enabled);
-		edit.setEnabled(enabled);
-		add.setEnabled(enabled);
 
 		updateDepsList(true);
 	}

@@ -31,6 +31,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class ShareableZIPManager {
@@ -68,9 +70,7 @@ public class ShareableZIPManager {
 					L10N.t("dialog.workspace.regenerate_and_build.progress.loading_mod_elements"));
 			dial.addProgressUnit(p2);
 
-			try {
-				Workspace workspace = Workspace.readFromFS(retval.get(), dial);
-
+			try (Workspace workspace = Workspace.readFromFS(retval.get(), dial)) {
 				int modstoload = workspace.getModElements().size();
 
 				int i = 0;
@@ -78,24 +78,36 @@ public class ShareableZIPManager {
 				// If workspace MCR version is the same, regeneration will not run and thus ME icons will be missing
 				// This is "fixed" by "preloading mod elements" here
 				for (ModElement mod : workspace.getModElements()) {
-					GeneratableElement generatableElement = mod.getGeneratableElement();
+					// During the loading of GeneratableElement, other MEs could be converted too, so we make sure
+					// that the current ME (from list that could be outdated at this point) was not converted to
+					// a different type. If this is the case, we don't preload the ME here as this will result in
+					// warnings because we are trying to load ME that is already stored in GeneratableElement cache
+					// as a different mod element type
+					ModElement check = workspace.getModElementByName(mod.getName());
+					if (check != null && check.getType() == mod.getType()) {
+						GeneratableElement generatableElement = mod.getGeneratableElement();
+						if (generatableElement != null) {
+							// save custom mod element picture if it has one
+							workspace.getModElementManager().storeModElementPicture(generatableElement);
 
-					if (generatableElement != null) {
-						// save custom mod element picture if it has one
-						workspace.getModElementManager().storeModElementPicture(generatableElement);
-
-						// we reinit the mod to load new ME icon
-						generatableElement.getModElement().reinit(workspace);
+							// we reinit the mod to load new ME icon
+							generatableElement.getModElement().reinit(workspace);
+						}
+					} else {
+						LOG.debug("Skipping preloading of mod element " + mod.getName()
+								+ " as it was converted to a different type");
 					}
 
 					i++;
-					p1.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
+					p1.setPercent((int) (i / (float) modstoload * 100));
 				}
 
 				// make sure we store any potential changes made to the workspace
 				workspace.markDirty();
-
-				workspace.close(); // we need to close the workspace!
+			} catch (UnsupportedGeneratorException | MissingWorkspacePluginsException e) {
+				// Exception that already prompted user action resulting in us landing here happened before
+				// So we just cancel the import at this point by returning null
+				retval.set(null);
 			} catch (Exception e) {
 				LOG.error("Failed to import workspace", e);
 			}
@@ -118,15 +130,15 @@ public class ShareableZIPManager {
 			dial.addProgressUnit(p1);
 
 			try {
-				if (excludeRunDir) {
-					ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(), ".gradle/",
-							".mcreator/", "build/", "gradle/", "run/", "#build.gradle", "#gradlew", "#gradlew.bat",
-							"#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/", ".settings/");
-				} else {
-					ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(), ".gradle/",
-							".mcreator/", "build/", "gradle/", "#build.gradle", "#gradlew", "#gradlew.bat",
-							"#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/", ".settings/");
-				}
+				Set<String> excludes = new HashSet<>(
+						Set.of(".eclipse/", ".gradle/", ".mcreator/", "build/", "gradle/", "#build.gradle", "#gradlew",
+								"#gradlew.bat", "#mcreator.gradle", ".git/", "#.classpath", "#.project", ".idea/",
+								".settings/"));
+				if (excludeRunDir)
+					excludes.addAll(Set.of("run/", "runs/"));
+
+				ZipIO.zipDir(mcreator.getWorkspaceFolder().getAbsolutePath(), file.getAbsolutePath(),
+						excludes.toArray(new String[0]));
 			} catch (IOException e) {
 				LOG.error("Failed to export workspace", e);
 			}

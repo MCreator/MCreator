@@ -33,6 +33,7 @@ import net.mcreator.generator.mapping.UniquelyMappedElement;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.TagElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.resources.Model;
 import org.apache.logging.log4j.LogManager;
@@ -103,28 +104,6 @@ import java.util.*;
 		return Model.getModels(workspace).parallelStream().anyMatch(model -> model.getType() == Model.Type.JAVA);
 	}
 
-	public <T extends MappableElement> Set<MappableElement> filterBrokenReferences(List<T> input) {
-		if (input == null)
-			return Collections.emptySet();
-
-		Set<MappableElement> retval = new HashSet<>();
-		for (T t : input) {
-			if (t instanceof NonMappableElement) {
-				retval.add(t);
-			} else if (t.getUnmappedValue().startsWith("CUSTOM:")) {
-				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
-					retval.add(new UniquelyMappedElement(t));
-				} else {
-					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
-							.replaceFirst("CUSTOM:", ""));
-				}
-			} else {
-				retval.add(new UniquelyMappedElement(t));
-			}
-		}
-		return retval;
-	}
-
 	public Map<String, String> getItemTextureMap() {
 		Map<String, String> textureMap = new HashMap<>();
 		for (ModElement element : workspace.getModElements()) {
@@ -154,16 +133,17 @@ import java.util.*;
 
 	public Map<String, List<MItemBlock>> getCreativeTabMap() {
 		List<GeneratableElement> elementsList = workspace.getModElements().stream()
-				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
-				.filter(Objects::nonNull).toList();
+				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement).toList();
 
 		Map<String, List<MItemBlock>> tabMap = new HashMap<>();
 
+		// Can't use parallelStream here because getCreativeTabItems
+		// call MCItem.Custom::new that calls getBlockIconBasedOnName which calls
+		// ModElement#getGeneratableElement that is not thread safe
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
 				TabEntry tabEntry = tabElement.getCreativeTab();
 				List<MCItem> tabItems = tabElement.getCreativeTabItems();
-
 				if (tabEntry != null && tabItems != null && !tabItems.isEmpty()) {
 					String tab = tabEntry.getUnmappedValue();
 					if (tab != null && !tab.equals("No creative tab entry")) {
@@ -179,6 +159,51 @@ import java.util.*;
 		}
 
 		return tabMap;
+	}
+
+	public <T extends MappableElement> Set<MappableElement> filterBrokenReferences(Collection<T> input) {
+		if (input == null)
+			return Collections.emptySet();
+
+		Set<MappableElement> retval = new LinkedHashSet<>();
+		for (T t : input) {
+			if (t instanceof NonMappableElement) {
+				retval.add(t);
+			} else if (t.getUnmappedValue().startsWith("CUSTOM:")) {
+				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
+					retval.add(new UniquelyMappedElement(t));
+				} else {
+					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
+							.replaceFirst("CUSTOM:", ""));
+				}
+			} else {
+				retval.add(new UniquelyMappedElement(t));
+			}
+		}
+		return retval;
+	}
+
+	/**
+	 * Returns a set of mappable elements that do not trigger circular dependency to tag
+	 *
+	 * @param tag          Tag name with namespace to check. A plain name without # or TAG: prefix is required.
+	 * @param mappingTable Mapping table to use for getting mapped values of the elements
+	 * @param elements     Collection of elements to normalize/filter
+	 * @param <T>          Type of elements
+	 * @return Set of elements that do not trigger circular dependency to tag
+	 */
+	public <T extends MappableElement> Set<MappableElement> normalizeTagElements(String tag, int mappingTable,
+			Collection<T> elements) {
+		tag = TagElement.normalizeTag("#" + tag);
+		Set<MappableElement> filtered = filterBrokenReferences(elements);
+
+		Set<MappableElement> retval = new LinkedHashSet<>();
+		for (MappableElement element : filtered) {
+			if (!tag.equals(TagElement.normalizeTag(element.getMappedValue(mappingTable)))) {
+				retval.add(element);
+			}
+		}
+		return retval;
 	}
 
 	public String getUUID(String offset) {
