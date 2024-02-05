@@ -79,8 +79,10 @@ public class CompileNotesPanel extends JPanel {
 	}
 
 	public void updateCompileNotes(List<BlocklyCompileNote> compileNotesArrayList) {
-		compileNotes.clear();
-		compileNotesArrayList.forEach(compileNotes::addElement);
+		synchronized (compileNotes) {
+			compileNotes.clear();
+			compileNotesArrayList.forEach(compileNotes::addElement);
+		}
 		compileNotesLabel.setText(L10N.t("blockly.compile_notes", compileNotesArrayList.size()));
 		everUpdated = true;
 	}
@@ -91,8 +93,10 @@ public class CompileNotesPanel extends JPanel {
 			retval.add(
 					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.editor_not_ready")));
 		} else {
-			for (int i = 0; i < compileNotes.size(); i++)
-				retval.add(compileNotes.get(i));
+			synchronized (compileNotes) {
+				for (int i = 0; i < compileNotes.size(); i++)
+					retval.add(compileNotes.get(i));
+			}
 		}
 		return retval;
 	}

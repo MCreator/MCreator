@@ -370,14 +370,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		JLabel lab = L10N.label("elementgui.procedure.local_variables");
 		lab.setToolTipText(L10N.t("elementgui.procedure.local_variables"));
 
-		JButton addvar = new JButton(UIRES.get("16px.add.gif"));
+		JButton addvar = new JButton(UIRES.get("16px.add"));
 		addvar.setContentAreaFilled(false);
 		addvar.setOpaque(false);
 		ComponentUtils.deriveFont(addvar, 11);
 		addvar.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 2));
 		bar.add(addvar);
 
-		JButton remvar = new JButton(UIRES.get("16px.delete.gif"));
+		JButton remvar = new JButton(UIRES.get("16px.delete"));
 		remvar.setContentAreaFilled(false);
 		remvar.setOpaque(false);
 		ComponentUtils.deriveFont(remvar, 11);
