@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -32,9 +32,9 @@
 package ${package}.world.features;
 
 <#compress>
-@Mod.EventBusSubscriber public class StructureFeature extends Feature<StructureFeatureConfiguration> {
-	public static final DeferredRegister<Feature<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.FEATURES, ${JavaModName}.MODID);
-	public static final RegistryObject<Feature<?>> STRUCTURE_FEATURE = REGISTRY.register("structure_feature", () -> new StructureFeature(StructureFeatureConfiguration.CODEC));
+public class StructureFeature extends Feature<StructureFeatureConfiguration> {
+	public static final DeferredRegister<Feature<?>> REGISTRY = DeferredRegister.create(Registries.FEATURE, ${JavaModName}.MODID);
+	public static final DeferredHolder<Feature<?>, StructureFeature> STRUCTURE_FEATURE = REGISTRY.register("structure_feature", () -> new StructureFeature(StructureFeatureConfiguration.CODEC));
 
 	public StructureFeature(Codec<StructureFeatureConfiguration> codec) {
 		super(codec);
@@ -51,7 +51,7 @@ package ${package}.world.features;
 		StructureTemplateManager structureManager = worldGenLevel.getLevel().getServer().getStructureManager();
 		StructureTemplate template = structureManager.getOrCreate(config.structure());
 		StructurePlaceSettings placeSettings = (new StructurePlaceSettings()).setRotation(rotation).setMirror(mirror).setRandom(random).setIgnoreEntities(false)
-				.addProcessor(new BlockIgnoreProcessor(config.ignoredBlocks().stream().map(Holder::get).toList()));
+				.addProcessor(new BlockIgnoreProcessor(config.ignoredBlocks().stream().map(Holder::value).toList()));
 		template.placeInWorld(worldGenLevel, placePos, placePos, placeSettings, random, 4);
 		return true;
 	}

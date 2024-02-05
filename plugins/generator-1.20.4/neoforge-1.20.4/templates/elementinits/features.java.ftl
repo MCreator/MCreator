@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -36,12 +36,12 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber public class ${JavaModName}Features {
+public class ${JavaModName}Features {
 
-	public static final DeferredRegister<Feature<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.FEATURES, ${JavaModName}.MODID);
+	public static final DeferredRegister<Feature<?>> REGISTRY = DeferredRegister.create(Registries.FEATURE, ${JavaModName}.MODID);
 
 	<#list features as feature>
-	public static final RegistryObject<Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
+	public static final DeferredHolder<Feature<?>, Feature<?>> ${feature.getModElement().getRegistryNameUpper()} =
 		REGISTRY.register("${feature.getModElement().getRegistryName()}", ${feature.getModElement().getName()}Feature::new);
 	</#list>
 

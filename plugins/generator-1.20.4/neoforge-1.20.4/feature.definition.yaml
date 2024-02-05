@@ -4,7 +4,7 @@ templates:
     condition: hasGenerationConditions()
   - template: json/feature_biome_modifier.json.ftl
     writer: json
-    name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
+    name: "@MODDATAROOT/neoforge/biome_modifier/@registryname_biome_modifier.json"
   - template: feature/configured_feature.json.ftl # loaded from datapack generator
     writer: json
     name: "@MODDATAROOT/worldgen/configured_feature/@registryname.json"
