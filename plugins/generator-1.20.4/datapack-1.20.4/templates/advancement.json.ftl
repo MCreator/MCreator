@@ -49,7 +49,7 @@
         </#if>
     }
     </#if>
-    <#if data.parent != "none" && !data.parent.toString().contains("@")>
+    <#if data.parent?has_content && data.parent != "none" && !data.parent.toString().contains("@")>
     ,"parent": "${data.parent}"
     </#if>
 }
