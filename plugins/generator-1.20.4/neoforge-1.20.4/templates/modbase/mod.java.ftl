@@ -31,6 +31,7 @@ import org.apache.logging.log4j.Logger;
 
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(modEventBus);</#if>
+		<#if w.hasItemsInTabs()>${JavaModName}Tabs.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasVariables()>${JavaModName}Variables.ATTACHMENT_TYPES.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(modEventBus);</#if>
 		<#if w.getElementsOfType("feature")?filter(e -> e.getMetadata("has_nbt_structure")??)?size != 0>StructureFeature.REGISTRY.register(modEventBus);</#if>
