@@ -45,8 +45,7 @@ class EditTemplatesPanel {
 		sectionPanel.add("North", L10N.label("dialog.preferences.change_language", name.toLowerCase(), templateExt));
 		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
 
-		JToolBar opts = new JToolBar();
-		opts.setFloatable(false);
+		JPanel opts = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		JButton add = L10N.button("dialog.preferences.add_language", name.toLowerCase());
 		add.setIcon(UIRES.get("16px.add"));

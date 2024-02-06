@@ -53,9 +53,8 @@ public class MainMenuBar extends JMenuBar {
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		if (!macOSscreenMenuBar) {
-			JMenu logo = new JMenu("  MCreator");
+			JMenu logo = new JMenu("MCreator");
 			logo.setMnemonic('M');
-			logo.setIcon(new ImageIcon(ImageUtils.resize(UIRES.getAppIcon().getImage(), 16, 16)));
 			logo.add(mcreator.actionRegistry.mcreatorWebsite);
 			logo.add(mcreator.actionRegistry.mcreatorCommunity);
 			SocialButtons socialButtons = new SocialButtons();
@@ -150,7 +149,6 @@ public class MainMenuBar extends JMenuBar {
 
 		JMenu workspace = L10N.menu("menubar.workspace");
 		workspace.setMnemonic('S');
-		workspace.addSeparator();
 		workspace.add(mcreator.actionRegistry.setCreativeTabItemOrder);
 		workspace.addSeparator();
 		workspace.add(mcreator.actionRegistry.openWorkspaceFolder);

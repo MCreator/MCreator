@@ -35,8 +35,6 @@ import net.mcreator.ui.component.util.TreeUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.laf.SlickTreeUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -113,20 +111,10 @@ public class WorkspaceFileBrowser extends JPanel {
 		tree.setOpaque(false);
 		tree.setRootVisible(false);
 		tree.setShowsRootHandles(true);
+		tree.setBackground(Theme.current().getBackgroundColor());
 
 		JScrollPane jsp = new JScrollPane(tree);
 		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Theme.current().getBackgroundColor()));
-
-		SlickTreeUI treeUI = new SlickTreeUI();
-		tree.setUI(treeUI);
-
-		treeUI.setRightChildIndent(11);
-		treeUI.setLeftChildIndent(3);
-
-		jsp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getSecondAltBackgroundColor(), jsp.getVerticalScrollBar()));
-		jsp.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
-		jsp.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 
 		JPanel cornerDummy1 = new JPanel();
 		cornerDummy1.setBackground(Theme.current().getBackgroundColor());
@@ -136,7 +124,6 @@ public class WorkspaceFileBrowser extends JPanel {
 		cornerDummy2.setBackground(Theme.current().getBackgroundColor());
 		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy2);
 
-		setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, Theme.current().getBackgroundColor()));
 
@@ -494,9 +481,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
 				boolean leaf, int row, boolean hasFocus) {
 			FilterTreeNode node = (FilterTreeNode) value;
-			setOpaque(false);
 			JLabel a = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-			a.setOpaque(true);
 			ComponentUtils.deriveFont(a, 11);
 
 			if (node.getUserObject() instanceof String tsi) {
@@ -542,9 +527,11 @@ public class WorkspaceFileBrowser extends JPanel {
 			}
 
 			if (sel) {
+				a.setOpaque(true);
 				a.setForeground(Theme.current().getBackgroundColor());
 				a.setBackground(Theme.current().getInterfaceAccentColor());
 			} else {
+				a.setOpaque(false);
 				a.setBackground(Theme.current().getBackgroundColor());
 				a.setForeground(Theme.current().getForegroundColor());
 			}

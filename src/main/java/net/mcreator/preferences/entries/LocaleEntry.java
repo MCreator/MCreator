@@ -86,7 +86,6 @@ public class LocaleEntry extends PreferencesEntry<Locale> {
 			setForeground(Color.white);
 			setBorder(new EmptyBorder(0, 1, 0, 0));
 
-			ComponentUtils.deriveFont(this, 12);
 			setText(" " + value.getDisplayName(Locale.ROOT));
 
 			uiTextsPercent = L10N.getUITextsLocaleSupport(value);

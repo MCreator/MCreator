@@ -42,7 +42,6 @@ import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.renderer.elementlist.*;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
@@ -290,10 +289,6 @@ import java.util.stream.Collectors;
 		sp.setOpaque(false);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
-
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		sp.setBorder(null);
 
 		JPanel modElementsPanel = new JPanel(new BorderLayout(0, 0));
@@ -553,15 +548,11 @@ import java.util.stream.Collectors;
 		JButton filter = L10N.button("workspace.elements.list.filter");
 		JButton sort = L10N.button("workspace.elements.list.sort");
 
-		ComponentUtils.deriveFont(filter, 11);
-		filter.setMargin(new Insets(1, 3, 1, 3));
-		filter.setBackground(Theme.current().getBackgroundColor());
-		filter.setBorderPainted(false);
+		filter.setPreferredSize(new Dimension(54, 26));
+		sort.setPreferredSize(new Dimension(54, 26));
 
-		ComponentUtils.deriveFont(sort, 11);
-		sort.setMargin(new Insets(1, 3, 1, 3));
-		sort.setBackground(Theme.current().getBackgroundColor());
-		sort.setBorderPainted(false);
+		ComponentUtils.normalizeButton4(filter);
+		ComponentUtils.normalizeButton4(sort);
 
 		leftPan.add(new JEmptyBox(2, 2));
 		leftPan.add(filter);
@@ -652,7 +643,6 @@ import java.util.stream.Collectors;
 				L10N.label("workspace.elements.details.id"), L10N.label("workspace.elements.details.type"),
 				L10N.label("workspace.elements.details.lock"), L10N.label("workspace.elements.details.compile")));
 		detailsbar.setBorder(BorderFactory.createEmptyBorder(4, 47, 4, 8));
-		detailsbar.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		modElementsPanel.add("North", PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0));
 		modElementsPanel.add("Center", mainp);

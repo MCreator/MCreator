@@ -36,7 +36,6 @@ import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.HtmlUtils;
 import net.mcreator.util.math.TimeUtils;
@@ -140,15 +139,8 @@ public class GradleConsole extends JPanel {
 
 		searchBar.reinstall(pan);
 
-		JScrollPane aae = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane aae = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-		aae.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getSecondAltBackgroundColor(),
-				Theme.current().getBackgroundColor(), aae.getVerticalScrollBar()));
-		aae.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
-		aae.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getSecondAltBackgroundColor(),
-				Theme.current().getBackgroundColor(), aae.getHorizontalScrollBar()));
-		aae.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 		aae.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 		aae.setBackground(Theme.current().getSecondAltBackgroundColor());
 
@@ -190,7 +182,6 @@ public class GradleConsole extends JPanel {
 
 		JButton buildbt = new JButton(UIRES.get("16px.build"));
 		buildbt.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ComponentUtils.normalizeButton2(buildbt);
 		buildbt.setToolTipText(L10N.t("dialog.gradle_console.start_build"));
 		buildbt.setOpaque(false);
 		buildbt.addActionListener(e -> ref.actionRegistry.buildWorkspace.doAction());
@@ -198,7 +189,6 @@ public class GradleConsole extends JPanel {
 
 		JButton rungradletask = new JButton(UIRES.get("16px.runtask"));
 		rungradletask.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ComponentUtils.normalizeButton2(rungradletask);
 		rungradletask.setToolTipText(L10N.t("dialog.gradle_console.run_specific_task"));
 		rungradletask.setOpaque(false);
 		rungradletask.addActionListener(e -> ref.actionRegistry.runGradleTask.doAction());
@@ -208,7 +198,6 @@ public class GradleConsole extends JPanel {
 
 		JButton cpc = new JButton(UIRES.get("16px.copyclipboard"));
 		cpc.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ComponentUtils.normalizeButton2(cpc);
 		cpc.setToolTipText(L10N.t("dialog.gradle_console.copy_contents_clipboard"));
 		cpc.setOpaque(false);
 		cpc.addActionListener(e -> {
@@ -220,7 +209,6 @@ public class GradleConsole extends JPanel {
 
 		JButton clr = new JButton(UIRES.get("16px.clear"));
 		clr.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ComponentUtils.normalizeButton2(clr);
 		clr.setToolTipText(L10N.t("dialog.gradle_console.clear"));
 		clr.addActionListener(e -> {
 			pan.clearConsole();
@@ -259,11 +247,6 @@ public class GradleConsole extends JPanel {
 				searchen.setSelected(false);
 			}
 		});
-
-		ComponentUtils.normalizeButton2(sinfo);
-		ComponentUtils.normalizeButton2(serr);
-		ComponentUtils.normalizeButton2(slock);
-		ComponentUtils.normalizeButton2(searchen);
 	}
 
 	public String getConsoleText() {

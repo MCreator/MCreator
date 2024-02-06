@@ -23,6 +23,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.canvas.CanvasRenderer;
 import net.mcreator.ui.views.editor.image.layer.Layer;
@@ -34,7 +35,6 @@ import net.mcreator.ui.views.editor.image.tool.tools.event.ToolActivationEvent;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -68,22 +68,21 @@ public class ToolPanel extends JSplitPane {
 		this.canvasRenderer = canvasRenderer;
 		this.versionManager = versionManager;
 
-		JPanel toolsAndColor = new JPanel(new BorderLayout());
-
 		cs = new ColorSelector(frame);
+		JComponent cswrap = PanelUtils.centerInPanel(cs);
+		cswrap.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 
-		toolGroups.setBorder(new EmptyBorder(3, 3, 3, 3));
+		toolGroups.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
 		toolGroups.setLayout(new BoxLayout(toolGroups, BoxLayout.Y_AXIS));
 
-		toolsAndColor.setOpaque(false);
-		toolProperties.setOpaque(false);
-		toolGroups.setOpaque(false);
+		JPanel toolsAndColor = new JPanel(new BorderLayout());
+		toolsAndColor.add(toolGroups, BorderLayout.CENTER);
+		toolsAndColor.add(cswrap, BorderLayout.SOUTH);
 
 		setTopComponent(toolsAndColor);
 		setBottomComponent(toolProperties);
 
-		toolsAndColor.add(toolGroups, BorderLayout.CENTER);
-		toolsAndColor.add(PanelUtils.centerInPanel(cs), BorderLayout.SOUTH);
+		setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		init();
 	}
@@ -152,9 +151,6 @@ public class ToolPanel extends JSplitPane {
 		JButton toolButton = new JButton();
 		toolButton.setIcon(icon);
 		toolButton.setToolTipText(name);
-		toolButton.setOpaque(false);
-		toolButton.setMargin(new Insets(5, 5, 5, 5));
-		toolButton.setBorder(BorderFactory.createEmptyBorder());
 		toolGroup.register(toolButton);
 		toolButton.addActionListener(actionListener);
 		return toolButton;
@@ -164,9 +160,6 @@ public class ToolPanel extends JSplitPane {
 		JToggleButton toolButton = new JToggleButton();
 		toolButton.setIcon(tool.getIcon());
 		toolButton.setToolTipText(tool.getName());
-		toolButton.setOpaque(false);
-		toolButton.setMargin(new Insets(5, 5, 5, 5));
-		toolButton.setBorder(BorderFactory.createEmptyBorder());
 		buttonGroup.add(toolButton);
 		toolGroup.register(toolButton);
 		toolProperties.add(tool.getPropertiesPanel(), tool.getName());

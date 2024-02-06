@@ -151,6 +151,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		ButtonGroup buttonGroup = new ButtonGroup();
 
 		forge.setHorizontalAlignment(SwingConstants.LEFT);
+		forge.setBackground(Theme.current().getBackgroundColor());
 		forge.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -161,6 +162,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		});
 
 		neoforge.setHorizontalAlignment(SwingConstants.LEFT);
+		neoforge.setBackground(Theme.current().getBackgroundColor());
 		neoforge.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -171,6 +173,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		});
 
 		fabric.setHorizontalAlignment(SwingConstants.LEFT);
+		fabric.setBackground(Theme.current().getBackgroundColor());
 		fabric.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -181,6 +184,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		});
 
 		quilt.setHorizontalAlignment(SwingConstants.LEFT);
+		quilt.setBackground(Theme.current().getBackgroundColor());
 		quilt.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -191,6 +195,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		});
 
 		spigot.setHorizontalAlignment(SwingConstants.LEFT);
+		spigot.setBackground(Theme.current().getBackgroundColor());
 		spigot.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -201,6 +206,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		});
 
 		datapack.setHorizontalAlignment(SwingConstants.LEFT);
+		datapack.setBackground(Theme.current().getBackgroundColor());
 		datapack.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -211,6 +217,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		});
 
 		addon.setHorizontalAlignment(SwingConstants.LEFT);
+		addon.setBackground(Theme.current().getBackgroundColor());
 		addon.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));

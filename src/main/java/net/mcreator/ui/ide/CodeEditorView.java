@@ -37,8 +37,6 @@ import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.FileIcons;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.laf.SlickTreeUI;
 import net.mcreator.ui.laf.renderer.AstTreeCellRendererCustom;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.ViewBase;
@@ -187,13 +185,6 @@ public class CodeEditorView extends ViewBase {
 		sp.setBackground(Theme.current().getBackgroundColor());
 		sp.setBorder(null);
 
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
-		sp.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), sp.getHorizontalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
-		sp.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
-
 		JPanel cornerDummy1 = new JPanel();
 		cornerDummy1.setBackground(Theme.current().getBackgroundColor());
 		sp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy1);
@@ -209,13 +200,6 @@ public class CodeEditorView extends ViewBase {
 		JPanel cornerDummy22 = new JPanel();
 		cornerDummy22.setBackground(Theme.current().getBackgroundColor());
 		treeSP.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy22);
-
-		treeSP.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), treeSP.getVerticalScrollBar()));
-		treeSP.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), treeSP.getHorizontalScrollBar()));
-		treeSP.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
-		treeSP.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 
 		treeSP.setBorder(null);
 
@@ -259,30 +243,14 @@ public class CodeEditorView extends ViewBase {
 		spne.setLeftComponent(cp);
 		spne.setContinuousLayout(true);
 
-		spne.setUI(new BasicSplitPaneUI() {
-			@Override public BasicSplitPaneDivider createDefaultDivider() {
-				return new BasicSplitPaneDivider(this) {
-					@Override public void setBorder(Border b) {
-					}
-
-					@Override public void paint(Graphics g) {
-						g.setColor(Theme.current().getBackgroundColor());
-						g.fillRect(0, 0, getSize().width, getSize().height);
-						super.paint(g);
-					}
-				};
-			}
-		});
-
 		spne.setBorder(null);
 
 		JPanel bars = new JPanel(new BorderLayout());
-
+		ComponentUtils.deriveFont(ro, 12);
 		ro.setBackground(new Color(0x3C3939));
-		ComponentUtils.deriveFont(ro, 13);
 		ro.setOpaque(true);
 		ro.setForeground(new Color(0xE0E0E0));
-		Border margin = new EmptyBorder(3, 3, 3, 3);
+		Border margin = new EmptyBorder(3, 5, 3, 3);
 		ro.setBorder(new CompoundBorder(ro.getBorder(), margin));
 		ro.setVisible(false);
 
@@ -567,7 +535,6 @@ public class CodeEditorView extends ViewBase {
 			tree.setBackground(Theme.current().getBackgroundColor());
 			tree.setForeground(Color.white);
 			tree.setRowHeight(18);
-			tree.setUI(new SlickTreeUI());
 			treeSP.setViewportView(tree);
 			treeSP.revalidate();
 			spne.setRightComponent(treeSP);

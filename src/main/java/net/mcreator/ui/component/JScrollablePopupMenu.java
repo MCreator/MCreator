@@ -19,8 +19,6 @@
 package net.mcreator.ui.component;
 
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,9 +49,6 @@ public class JScrollablePopupMenu extends JPopupMenu {
 	protected JScrollBar getScrollBar() {
 		if (popupScrollBar == null) {
 			popupScrollBar = new JScrollBar(JScrollBar.VERTICAL);
-			popupScrollBar.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-					Theme.current().getInterfaceAccentColor(), popupScrollBar));
-			popupScrollBar.setPreferredSize(new Dimension(5, 0));
 			popupScrollBar.addAdjustmentListener(e -> {
 				doLayout();
 				repaint();

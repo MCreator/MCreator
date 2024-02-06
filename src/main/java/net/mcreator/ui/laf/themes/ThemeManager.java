@@ -19,7 +19,7 @@
 
 package net.mcreator.ui.laf.themes;
 
-import com.formdev.flatlaf.FlatDarkLaf;
+import com.formdev.flatlaf.FlatLaf;
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
@@ -32,7 +32,9 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.io.File;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -54,17 +56,20 @@ public class ThemeManager {
 	 */
 	public static void applySelectedTheme() {
 		try {
-			// TODO: light/dark selection from Theme JSON
-			UIManager.setLookAndFeel(new FlatDarkLaf() {
-				@Override public UIDefaults getDefaults() {
-					UIDefaults table = super.getDefaults();
-					Theme.current().applyUIDefaultsOverrides(table);
-					return table;
-				}
-			});
+			Theme theme = Theme.current();
+
+			Map<String, String> flatLafDefaults = new HashMap<>();
+			theme.applyFlatLafOverrides(flatLafDefaults);
+			FlatLaf.setGlobalExtraDefaults(flatLafDefaults);
+
+			FlatLaf laf = (FlatLaf) Class.forName("com.formdev.flatlaf." + theme.getFlatLafTheme()).getConstructor()
+					.newInstance();
+			UIManager.setLookAndFeel(laf);
+
+			theme.applyUIDefaultsOverrides(UIManager.getDefaults());
+
 			LafUtil.applyDefaultHTMLStyles();
-			LafUtil.fixMacOSActions();
-		} catch (UnsupportedLookAndFeelException e) {
+		} catch (Exception e) {
 			LOG.error("Failed to set MCreator UI theme", e);
 		}
 	}
