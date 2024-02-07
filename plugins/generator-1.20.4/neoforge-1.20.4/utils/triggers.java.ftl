@@ -168,3 +168,37 @@
 }
 </#if>
 </#macro>
+
+<#-- Armor triggers -->
+<#macro onArmorTick procedure="">
+<#if hasProcedure(procedure)>
+<#-- ideally we would use inventoryTick for slot [36, 39], however slot number does not seem to work in NF 1.20.4 -->
+@Override public void inventoryTick(ItemStack itemstack, Level world, Entity entity, int slot, boolean selected) {
+	super.inventoryTick(itemstack, world, entity, slot, selected);
+	if (entity instanceof Player player && Iterables.contains(player.getArmorSlots(), itemstack)) {
+		<@procedureCode procedure, {
+		"x": "entity.getX()",
+		"y": "entity.getY()",
+		"z": "entity.getZ()",
+		"world": "world",
+		"entity": "entity",
+		"itemstack": "itemstack"
+		}/>
+	}
+}
+</#if>
+</#macro>
+
+<#macro piglinNeutral procedure="">
+<#if procedure?has_content || hasProcedure(procedure)>
+@Override public boolean makesPiglinsNeutral(ItemStack itemstack, LivingEntity entity) {
+	<#if hasProcedure(procedure)>
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		Level world = entity.level();
+	</#if>
+	return <@procedureOBJToConditionCode procedure procedure.getFixedValue() false/>;
+}
+</#if>
+</#macro>
