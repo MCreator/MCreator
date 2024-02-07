@@ -43,7 +43,7 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 	public InputSlotDialog(WYSIWYGEditor editor, @Nullable InputSlot slot) {
 		super(editor, slot);
 		setModal(true);
-		setSize(850, 480);
+		setSize(860, 480);
 		setLocationRelativeTo(editor.mcreator);
 
 		JPanel options = new JPanel();
