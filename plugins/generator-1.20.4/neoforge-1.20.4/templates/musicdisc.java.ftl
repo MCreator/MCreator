@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -38,7 +38,7 @@ import net.minecraft.network.chat.Component;
 public class ${name}Item extends RecordItem {
 
 	public ${name}Item() {
-		super(${data.analogOutput}, () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}" )),
+		super(${data.analogOutput}, () -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.music}" )),
 			new Item.Properties().stacksTo(1).rarity(Rarity.${data.rarity}), ${data.lengthInTicks});
 	}
 

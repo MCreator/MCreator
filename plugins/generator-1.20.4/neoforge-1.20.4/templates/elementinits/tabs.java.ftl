@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -51,17 +51,17 @@ public class ${JavaModName}Tabs {
 
 	<#list customTabs as customTab>
 		<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
-			public static final RegistryObject<CreativeModeTab> ${tab.getModElement().getRegistryNameUpper()} =
-				REGISTRY.register("${tab.getModElement().getRegistryName()}", () ->
-					CreativeModeTab.builder()
-						.title(Component.translatable("item_group.${modid}.${tab.getModElement().getRegistryName()}"))
-						.icon(() -> ${mappedMCItemToItemStackCode(tab.icon, 1)})
-						.displayItems((parameters, tabData) -> {
+			public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ${tab.getModElement().getRegistryNameUpper()} =
+			REGISTRY.register("${tab.getModElement().getRegistryName()}", () ->
+			CreativeModeTab.builder()
+			.title(Component.translatable("item_group.${modid}.${tab.getModElement().getRegistryName()}"))
+			.icon(() -> ${mappedMCItemToItemStackCode(tab.icon, 1)})
+			.displayItems((parameters, tabData) -> {
 							<#list tabMap.get("CUSTOM:" + tab.getModElement().getName()) as tabElement>
 							tabData.accept(${mappedMCItemToItem(tabElement)});
 							</#list>
-						})
-						<#if tab.showSearch>.withSearchBar()</#if>
+	})
+		<#if tab.showSearch>.withSearchBar()</#if>
 						.build()
 				);
 	</#list>
@@ -73,7 +73,7 @@ public class ${JavaModName}Tabs {
 				<#list tabMap.get(tabName) as tabElement>
 				tabData.accept(${mappedMCItemToItem(tabElement)});
 				</#list>
-			}
+		}
 		</#list>
 	}
 	</#if>

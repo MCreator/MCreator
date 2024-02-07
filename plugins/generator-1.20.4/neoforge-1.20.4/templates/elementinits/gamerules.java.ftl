@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -31,24 +31,36 @@
 <#-- @formatter:off -->
 
 /*
- *    MCreator note: This file will be REGENERATED on each build.
+ *	MCreator note: This file will be REGENERATED on each build.
  */
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}GameRules {
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+public class ${JavaModName}GameRules {
 
 	<#list gamerules as gamerule>
 		<#if gamerule.type == "Number">
-		public static final GameRules.Key<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()} =
+		public static GameRules.Key<GameRules.IntegerValue> ${gamerule.getModElement().getRegistryNameUpper()};
+		<#else>
+		public static GameRules.Key<GameRules.BooleanValue> ${gamerule.getModElement().getRegistryNameUpper()};
+		</#if>
+	</#list>
+
+	@SubscribeEvent
+	public static void registerGameRules(FMLCommonSetupEvent event) {
+	<#list gamerules as gamerule>
+		<#if gamerule.type == "Number">
+		 ${gamerule.getModElement().getRegistryNameUpper()} =
 				GameRules.register("${thelper.lowercaseFirstLetter(gamerule.getModElement().getName())}",
 				GameRules.Category.${gamerule.category}, GameRules.IntegerValue.create(${gamerule.defaultValueNumber}));
 		<#else>
-		public static final GameRules.Key<GameRules.BooleanValue> ${gamerule.getModElement().getRegistryNameUpper()} =
+		${gamerule.getModElement().getRegistryNameUpper()} =
 				GameRules.register("${thelper.lowercaseFirstLetter(gamerule.getModElement().getName())}",
 				GameRules.Category.${gamerule.category}, GameRules.BooleanValue.create(${gamerule.defaultValueLogic}));
 		</#if>
 	</#list>
+	}
 
 }
 <#-- @formatter:on -->
