@@ -78,13 +78,15 @@ public class ToolPanel extends JSplitPane {
 		JPanel toolsAndColor = new JPanel(new BorderLayout());
 		toolsAndColor.add(toolGroups, BorderLayout.CENTER);
 		toolsAndColor.add(cswrap, BorderLayout.SOUTH);
-
-		setTopComponent(toolsAndColor);
-		setBottomComponent(toolProperties);
+		toolsAndColor.setMinimumSize(new Dimension(220, 360));
 
 		setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		init();
+
+		setTopComponent(toolsAndColor);
+		setBottomComponent(toolProperties);
+		setDividerLocation(360);
 	}
 
 	public AbstractTool getCurrentTool() {
