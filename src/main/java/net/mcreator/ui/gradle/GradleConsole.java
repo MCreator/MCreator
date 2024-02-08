@@ -719,16 +719,16 @@ public class GradleConsole extends JPanel {
 				String classLine = text.split("\\.java:")[1].split("\\)")[0];
 
 				SimpleAttributeSet keyWord = new SimpleAttributeSet();
-				StyleConstants.setForeground(keyWord, Color.white);
+				StyleConstants.setForeground(keyWord, Theme.current().getForegroundColor());
 				pan.insertString(text.split("\\(")[0] + "(", keyWord);
 				StyleConstants.setForeground(keyWord, Theme.current().getInterfaceAccentColor());
 				pan.insertLink(packageName + "." + crashClassName + ":" + classLine,
 						text.split("\\(")[1].split("\\)")[0], "", keyWord);
-				StyleConstants.setForeground(keyWord, Color.white);
+				StyleConstants.setForeground(keyWord, Theme.current().getForegroundColor());
 				pan.insertString(")" + text.split("\\(")[1].split("\\)")[1], keyWord);
 			} catch (Exception ignored) {  // workspace can be null or we can fail to parse error link
 				// if we fail to print styled, fallback to plaintext
-				appendPlainText(text, Color.white);
+				appendPlainText(text, Theme.current().getForegroundColor());
 			}
 			scrollToBottom();
 		}

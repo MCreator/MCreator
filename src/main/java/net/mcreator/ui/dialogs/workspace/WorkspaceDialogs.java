@@ -203,7 +203,6 @@ public class WorkspaceDialogs {
 			if (workspace != null) {
 				JTabbedPane master = new JTabbedPane();
 				master.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-				master.setForeground(Color.white);
 				master.setUI(new BasicTabbedPaneUI() {
 					@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 					}
