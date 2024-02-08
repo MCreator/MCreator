@@ -98,7 +98,7 @@ public class CompileNotesPanel extends JPanel {
 				BlocklyCompileNote value, int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBackground(Theme.current().getBackgroundColor());
-			setForeground(Color.white);
+			setForeground(Theme.current().getForegroundColor());
 			ComponentUtils.deriveFont(this, 12);
 			if (value.type() == BlocklyCompileNote.Type.ERROR) {
 				setIcon(UIRES.get("18px.remove"));

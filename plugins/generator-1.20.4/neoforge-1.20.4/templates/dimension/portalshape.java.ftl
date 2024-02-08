@@ -43,7 +43,7 @@ public class ${name}PortalShape ${mcc.getClassBody("net.minecraft.world.level.po
         .replace("blockstate.is(Blocks.NETHER_PORTAL)", "blockstate.getBlock() == " + JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
         .replace("p_77718_.is(BlockTags.FIRE) || p_77718_.is(Blocks.NETHER_PORTAL)", "p_77718_.getBlock() == " + JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get()")
         .replace("Blocks.NETHER_PORTAL.defaultBlockState()", JavaModName + "Blocks." + registryname?upper_case + "_PORTAL.get().defaultBlockState()")
-        .replace("return p_77720_.isPortalFrame(p_77721_, p_77722_);", "return p_77720_.getBlock() ==" + mappedBlockToBlock(data.portalFrame) + ";")}
+        .replace("net.neoforged.neoforge.common.extensions.IBlockStateExtension::isPortalFrame;", "(state, level, pos) -> state.getBlock() == " + mappedBlockToBlock(data.portalFrame) + ";")}
 
 <#-- @formatter:on -->
 

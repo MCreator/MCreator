@@ -58,14 +58,14 @@ package ${package}.init;
 
 public class ${JavaModName}Blocks {
 
-	public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(ForgeRegistries.BLOCKS, ${JavaModName}.MODID);
+	public static final DeferredRegister<Block> REGISTRY = DeferredRegister.create(BuiltInRegistries.BLOCK, ${JavaModName}.MODID);
 
 	<#list blocks as block>
 		<#if block.getModElement().getTypeString() == "dimension">
-            public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL =
+            public static final DeferredHolder<Block, Block> ${block.getModElement().getRegistryNameUpper()}_PORTAL =
 				REGISTRY.register("${block.getModElement().getRegistryName()}_portal", () -> new ${block.getModElement().getName()}PortalBlock());
 		<#else>
-			public static final RegistryObject<Block> ${block.getModElement().getRegistryNameUpper()} =
+			public static final DeferredHolder<Block, Block> ${block.getModElement().getRegistryNameUpper()} =
 				REGISTRY.register("${block.getModElement().getRegistryName()}", () -> new ${block.getModElement().getName()}Block());
 		</#if>
 	</#list>

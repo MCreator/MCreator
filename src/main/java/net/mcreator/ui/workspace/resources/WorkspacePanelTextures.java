@@ -261,7 +261,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		});
 		listElement.setBorder(
 				BorderFactory.createTitledBorder(BorderFactory.createEmptyBorder(15, 0, 15, 0), title, 0, 0,
-						listElement.getFont().deriveFont(24.0f), Color.white));
+						listElement.getFont().deriveFont(24.0f), Theme.current().getForegroundColor()));
 		return new JComponentWithList<>(PanelUtils.gridElements(1, 1, listElement), listElement);
 	}
 

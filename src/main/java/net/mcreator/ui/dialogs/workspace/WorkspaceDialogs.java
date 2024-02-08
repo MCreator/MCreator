@@ -202,7 +202,6 @@ public class WorkspaceDialogs {
 			if (workspace != null) {
 				JTabbedPane master = new JTabbedPane();
 				master.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-				master.setForeground(Color.white);
 				master.addTab(L10N.t("dialog.workspace_settings.tab.general"),
 						PanelUtils.pullElementUp(_basicSettings));
 				master.addTab(L10N.t("dialog.workspace_settings.tab.apis"), PanelUtils.pullElementUp(_external_apis));

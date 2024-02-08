@@ -225,7 +225,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				super.paintComponent(g);
 				switch (gradleConsole.getStatus()) {
 				case GradleConsole.READY:
-					g.setColor(Color.white);
+					g.setColor(Theme.current().getForegroundColor());
 					break;
 				case GradleConsole.RUNNING:
 					g.setColor(new Color(158, 247, 89));
