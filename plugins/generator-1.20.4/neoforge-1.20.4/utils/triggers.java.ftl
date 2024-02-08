@@ -12,7 +12,8 @@
 				"y": "entity != null ? entity.getY() : 0.0",
 				"z": "entity != null ? entity.getZ() : 0.0",
 				"entity": "entity",
-				"world": "level instanceof Level ? (LevelAccessor) level : null"
+				"world": "level instanceof Level ? (LevelAccessor) level : null",
+				"itemstack": "itemstack"
 			}, false/>));
 		<#else>
 			<#list procedure.getFixedValue() as entry>
@@ -124,6 +125,22 @@
 			"slot": "slot"
 		}/>
 	</#if>
+}
+</#if>
+</#macro>
+
+<#macro onDroppedByPlayer procedure="">
+<#if hasProcedure(procedure)>
+@Override public boolean onDroppedByPlayer(ItemStack itemstack, Player entity) {
+	<@procedureCode procedure, {
+		"x": "entity.getX()",
+		"y": "entity.getY()",
+		"z": "entity.getZ()",
+		"world": "entity.level()",
+		"entity": "entity",
+		"itemstack": "itemstack"
+	}/>
+	return true;
 }
 </#if>
 </#macro>

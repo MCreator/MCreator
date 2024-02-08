@@ -33,49 +33,39 @@
 package ${package}.item.inventory;
 
 <#compress>
-@Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability implements ICapabilitySerializable<CompoundTag> {
+@Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability extends ItemStackHandler {
 
 	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onItemDropped(ItemTossEvent event) {
-		if(event.getEntity().getItem().getItem() == ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get()) {
+		if (event.getEntity().getItem().getItem() == ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get()) {
 			if (Minecraft.getInstance().screen instanceof ${data.guiBoundTo}Screen) {
 				Minecraft.getInstance().player.closeContainer();
 			}
 		}
 	}
 
-	private final LazyOptional<ItemStackHandler> inventory = LazyOptional.of(this::createItemHandler);
+	private final ItemStack stack;
 
-	@Override public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
-		return capability == ForgeCapabilities.ITEM_HANDLER ? this.inventory.cast() : LazyOptional.empty();
+	public ${name}InventoryCapability(ItemStack stack) {
+		super(${data.inventorySize});
+		this.stack = stack;
+		CompoundTag nbt = (CompoundTag) stack.getOrCreateTag().get("Inventory");
+		if (nbt != null)
+			deserializeNBT(nbt);
 	}
 
-	@Override public CompoundTag serializeNBT() {
-		return getItemHandler().serializeNBT();
+	@Override public int getSlotLimit(int slot) {
+		return ${data.inventoryStackSize};
 	}
 
-	@Override public void deserializeNBT(CompoundTag nbt) {
-		getItemHandler().deserializeNBT(nbt);
+	@Override public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+		return stack.getItem() != this.stack.getItem();
 	}
 
-	private ItemStackHandler createItemHandler() {
-		return new ItemStackHandler(${data.inventorySize}) {
-
-			@Override public int getSlotLimit(int slot) {
-				return ${data.inventoryStackSize};
-			}
-
-			@Override public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-				return stack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get();
-			}
-
-			@Override public void setSize(int size) {
-			}
-
-		};
+	@Override public void setSize(int size) {
 	}
 
-	private ItemStackHandler getItemHandler() {
-		return inventory.orElseThrow(RuntimeException::new);
+	@Override protected void onContentsChanged(int slot) {
+		this.stack.getOrCreateTag().put("Inventory", serializeNBT());
 	}
 
 }
