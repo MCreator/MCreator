@@ -2,11 +2,11 @@ templates:
   - template: biome/biome.json.ftl # loaded from datapack generator
     writer: json
     name: "@MODDATAROOT/worldgen/biome/@registryname.json"
-  - template: biome/configured_tree.json.ftl
+  - template: biome/configured_tree.json.ftl # loaded from datapack generator
     writer: json
     condition: hasTrees()
     name: "@MODDATAROOT/worldgen/configured_feature/@registryname_tree.json"
-  - template: biome/placed_tree.json.ftl
+  - template: biome/placed_tree.json.ftl # loaded from datapack generator
     writer: json
     condition: hasTrees()
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname_tree.json"
