@@ -38,6 +38,7 @@
 package ${package}.init;
 
 import com.mojang.datafixers.util.Pair;
+import com.google.common.base.Suppliers;
 
 <#assign spawn_overworld = biomes?filter(biome -> biome.spawnBiome)>
 <#assign spawn_overworld_caves = biomes?filter(biome -> biome.spawnInCaves)>
