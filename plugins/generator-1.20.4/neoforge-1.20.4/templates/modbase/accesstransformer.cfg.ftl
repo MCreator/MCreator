@@ -6,3 +6,7 @@ public-f net.minecraft.world.level.chunk.ChunkGenerator generationSettingsGetter
 public-f net.minecraft.world.level.levelgen.NoiseBasedChunkGenerator settings
 public net.minecraft.world.level.levelgen.SurfaceRules$SequenceRuleSource
 </#if>
+
+<#if w.hasElementsOfType("feature")>
+public net.minecraft.world.level.levelgen.feature.ScatteredOreFeature <init>(Lcom/mojang/serialization/Codec;)V #constructor
+</#if>
