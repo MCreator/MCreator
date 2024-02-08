@@ -1,7 +1,7 @@
 {
   "forge_marker": 1,
-  "parent": "forge:item/default",
-  "loader": "forge:obj",
+  "parent": "neoforge:item/default",
+  "loader": "neoforge:obj",
 <#if var_item??> <#-- used by armor where item type is specified (helmet, body, ...) -->
   "model": "${modid}:models/item/${data.getItemCustomModelNameFor(var_item)}.obj",
   "textures": {
