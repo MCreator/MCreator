@@ -47,7 +47,6 @@ public class InputSlotDialog extends AbstractWYSIWYGDialog<InputSlot> {
 		setLocationRelativeTo(editor.mcreator);
 
 		JPanel options = new JPanel();
-		add("North", new JLabel("<html>"));
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
 
 		VTextField slotID = new VTextField(20);

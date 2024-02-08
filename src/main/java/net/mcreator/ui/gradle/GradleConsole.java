@@ -112,8 +112,6 @@ public class GradleConsole extends JPanel {
 	public GradleConsole(MCreator ref) {
 		this.ref = ref;
 
-		JPanel holder = new JPanel(new BorderLayout());
-		setLayout(new BorderLayout());
 		pan.addHyperlinkListener(e -> {
 			if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 				String url = e.getURL().toString().replace("file:", "");
@@ -152,14 +150,16 @@ public class GradleConsole extends JPanel {
 
 		searchBar.reinstall(pan);
 
-		pan.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+		pan.setBorder(BorderFactory.createEmptyBorder(9, 0, 0, 0));
 
 		JScrollPane aae = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		aae.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 		aae.setBackground(Theme.current().getSecondAltBackgroundColor());
 
-		holder.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current().getSecondAltBackgroundColor()));
+		setLayout(new BorderLayout());
+
+		setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		searchBar.setVisible(false);
 
@@ -168,16 +168,9 @@ public class GradleConsole extends JPanel {
 		outerholder.add("Center", aae);
 		outerholder.setOpaque(false);
 
-		searchBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0));
+		searchBar.setBorder(BorderFactory.createEmptyBorder(6, 10, 5, 0));
 
-		holder.add("Center", outerholder);
-
-		JPanel bar = new JPanel();
-		bar.setLayout(new BoxLayout(bar, BoxLayout.LINE_AXIS));
-		bar.setBackground(Color.gray);
-
-		JButton x = L10N.button("dialog.gradle_console.clear_log");
-		x.setMargin(new Insets(1, 1, 1, 1));
+		add("Center", outerholder);
 
 		JToolBar options = new JToolBar(null, SwingConstants.VERTICAL);
 		options.setFloatable(false);
@@ -241,10 +234,8 @@ public class GradleConsole extends JPanel {
 
 		options.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
-		holder.add("West", options);
-
-		holder.setBackground(Theme.current().getSecondAltBackgroundColor());
-		add("Center", holder);
+		setBackground(Theme.current().getSecondAltBackgroundColor());
+		add("West", options);
 
 		searchen.addChangeListener(e -> searchBar.setVisible(searchen.isSelected()));
 		searchBar.addComponentListener(new ComponentAdapter() {
@@ -252,9 +243,6 @@ public class GradleConsole extends JPanel {
 				searchen.setSelected(false);
 			}
 		});
-
-		ComponentUtils.normalizeButton2(slock);
-		ComponentUtils.normalizeButton2(searchen);
 	}
 
 	public String getConsoleText() {
