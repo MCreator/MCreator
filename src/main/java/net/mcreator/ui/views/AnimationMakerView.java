@@ -305,8 +305,6 @@ public class AnimationMakerView extends ViewBase {
 		remove.setIcon(UIRES.get("18px.remove"));
 		timelinebar.add(remove);
 
-		timelinebar.addSeparator();
-
 		timelinee.add("North", timelinebar);
 
 		timeline.setLayoutOrientation(JList.HORIZONTAL_WRAP);
