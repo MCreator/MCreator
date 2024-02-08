@@ -86,6 +86,7 @@ public class Theme {
 						PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/console_font.ttf"));
 				LOG.info("Console font from default_dark will be used.");
 			}
+			consoleFont = consoleFont.deriveFont(12.0f);
 			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(consoleFont);
 		} catch (NullPointerException | FontFormatException | IOException e2) {
 			LOG.info("Failed to init MCreator Theme! Error " + e2.getMessage());
