@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -42,11 +42,11 @@ package ${package}.item.extension;
 			public ItemStack execute(BlockSource blockSource, ItemStack stack) {
 				<#assign hasSuccessCondition = hasProcedure(data.dispenseSuccessCondition)>
 				ItemStack itemstack = stack.copy();
-				Level world = blockSource.getLevel();
-				Direction direction = blockSource.getBlockState().getValue(DispenserBlock.FACING);
-				int x = blockSource.getPos().getX();
-				int y = blockSource.getPos().getY();
-				int z = blockSource.getPos().getZ();
+				Level world = blockSource.level();
+				Direction direction = blockSource.state().getValue(DispenserBlock.FACING);
+				int x = blockSource.pos().getX();
+				int y = blockSource.pos().getY();
+				int z = blockSource.pos().getZ();
 
 				<#if hasSuccessCondition>
 					this.setSuccess(<@procedureOBJToConditionCode data.dispenseSuccessCondition/>);
