@@ -54,6 +54,8 @@ import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -70,14 +72,27 @@ public class GradleConsole extends JPanel {
 
 	private static final Logger LOG = LogManager.getLogger("Gradle Console");
 
+	private static final Color COLOR_TASK_START = new Color(0xBBD9D0);
+	private static final Color COLOR_TASK_COMPLETE = new Color(0xbbe86c);
+	private static final Color COLOR_UNIMPORTANT = new Color(0x7B7B7B);
+	private static final Color COLOR_BRACKET = new Color(0xB0B0B0);
+	private static final Color COLOR_LOGLEVEL_TRACE = new Color(0x8abeb7);
+	private static final Color COLOR_LOGLEVEL_DEBUG = new Color(0xAABE92);
+	private static final Color COLOR_LOGLEVEL_INFO = new Color(0x94BD68);
+	private static final Color COLOR_LOGLEVEL_WARN = new Color(0xf0c674);
+	private static final Color COLOR_LOGLEVEL_ERROR = new Color(0xF98771);
+	private static final Color COLOR_LOGLEVEL_FATAL = new Color(0xcc6666);
+	private static final Color COLOR_MARKER_CLIENTSIDE = new Color(0x81BE8D);
+	private static final Color COLOR_MARKER_SERVERSIDE = new Color(0x8489A8);
+	private static final Color COLOR_MARKER_MAIN = new Color(0x9BB2C7);
+	private static final Color COLOR_STDERR = new Color(0x61D0AE);
+
 	ConsolePane pan = new ConsolePane();
 
 	private final List<GradleStateListener> stateListeners = new ArrayList<>();
 
 	private final MCreator ref;
 
-	private final JToggleButton sinfo = new JToggleButton(UIRES.get("16px.sinfo"));
-	private final JToggleButton serr = new JToggleButton(UIRES.get("16px.serr"));
 	private final JToggleButton slock = new JToggleButton(UIRES.get("16px.lock"));
 	private final JToggleButton searchen = new JToggleButton(UIRES.get("16px.search"));
 
@@ -137,6 +152,8 @@ public class GradleConsole extends JPanel {
 		});
 
 		searchBar.reinstall(pan);
+
+		pan.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
 
 		JScrollPane aae = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -230,16 +247,6 @@ public class GradleConsole extends JPanel {
 
 		options.add(ComponentUtils.deriveFont(new JLabel(" "), 2));
 
-		sinfo.setToolTipText(L10N.t("dialog.gradle_console.show_info_log"));
-		sinfo.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		sinfo.setSelected(true);
-		options.add(sinfo);
-
-		serr.setToolTipText(L10N.t("dialog.gradle_console.show_errors"));
-		serr.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		serr.setSelected(true);
-		options.add(serr);
-
 		slock.setToolTipText(L10N.t("dialog.gradle_console.lock_scroll"));
 		slock.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		options.add(slock);
@@ -252,9 +259,12 @@ public class GradleConsole extends JPanel {
 		add("Center", holder);
 
 		searchen.addChangeListener(e -> searchBar.setVisible(searchen.isSelected()));
+		searchBar.addComponentListener(new ComponentAdapter() {
+			@Override public void componentHidden(ComponentEvent e) {
+				searchen.setSelected(false);
+			}
+		});
 
-		ComponentUtils.normalizeButton2(sinfo);
-		ComponentUtils.normalizeButton2(serr);
 		ComponentUtils.normalizeButton2(slock);
 		ComponentUtils.normalizeButton2(searchen);
 	}
@@ -291,11 +301,7 @@ public class GradleConsole extends JPanel {
 		pan.clearConsole();
 		searchBar.reinstall(pan);
 
-		SimpleAttributeSet keyWord = new SimpleAttributeSet();
-		StyleConstants.setFontSize(keyWord, 4);
-		pan.insertString("\n", keyWord);
-
-		append("Executing Gradle task: " + command, new Color(0xBBD9D0));
+		append("Executing Gradle task: " + command, COLOR_TASK_START);
 
 		String java_home = GradleUtils.getJavaHome();
 
@@ -306,13 +312,13 @@ public class GradleConsole extends JPanel {
 					.getDeviceInfo().getOsName() + ", JVM " + ref.getApplication().getDeviceInfo().getJvmVersion()
 					+ ", JAVA_HOME: " + (java_home != null ? java_home : "Default (not set)") + ", started on: "
 					+ new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(Calendar.getInstance().getTime());
-			append(deviceInfo, new Color(120, 120, 120));
+			append(deviceInfo, COLOR_UNIMPORTANT);
 			taskOut.append(deviceInfo);
 
 			if (!ref.getWorkspaceSettings().getMCreatorDependencies().isEmpty()) {
 				String apiInfo = "Loaded APIs: " + ref.getWorkspaceSettings().getMCreatorDependencies().stream()
 						.map(e -> e.split(":")[0]).collect(Collectors.joining(", "));
-				append(apiInfo, new Color(120, 120, 120));
+				append(apiInfo, COLOR_UNIMPORTANT);
 				taskOut.append(apiInfo);
 			}
 
@@ -346,89 +352,87 @@ public class GradleConsole extends JPanel {
 
 		task.setStandardOutput(new OutputStreamEventHandler(line -> SwingUtilities.invokeLater(() -> {
 			taskOut.append(line).append("\n");
-			if (sinfo.isSelected()) {
+
+			if (line.startsWith("Note: Some input files use or ov"))
+				return;
+			if (line.startsWith("Note: Recompile with -Xlint"))
+				return;
+			if (line.startsWith("Note: Some input files use unch"))
+				return;
+			if (line.contains("Advanced terminal features are not available in this environment"))
+				return;
+			if (line.contains("Disabling terminal, you're running in an unsupported environment"))
+				return;
+			if (line.contains("uses or overrides a deprecated API"))
+				return;
+			if (line.contains("unchecked or unsafe operations"))
+				return;
+			if (line.startsWith("Deprecated Gradle features were used"))
+				return;
+			if (line.startsWith("WARNING: (c) 2020 Microsoft Corporation."))
+				return;
+			if (line.contains("to show the individual deprecation warnings and determine"))
+				return;
+			if (line.contains("#sec:command_line_warnings"))
+				return;
+
+			if (line.startsWith("WARNING: This project is configured to use the official obfuscation")) {
+				append("The code of this workspace uses official obfuscation mappings provided by Mojang. These mappings fall under their associated license you should be fully aware of.",
+						COLOR_LOGLEVEL_WARN);
+				append("(c) 2020 Microsoft Corporation. These mappings are provided \"as-is\" and you bear the risk of using them. You may copy and use the mappings for development purposes,",
+						COLOR_BRACKET);
+				append("but you may not redistribute the mappings complete and unmodified. Microsoft makes no warranties, express or implied, with respect to the mappings provided here.",
+						COLOR_BRACKET);
+				append("Use and modification of this document or the source code (in any form) of Minecraft: Java Edition is governed by the Minecraft End User License Agreement available",
+						COLOR_BRACKET);
+				append("at https://account.mojang.com/documents/minecraft_eula.", COLOR_BRACKET);
+				append(" ");
+				return;
+			}
+
+			if (line.startsWith(":") || line.startsWith(">")) {
+				if (line.contains(" UP-TO-DATE") || line.contains(" NO-SOURCE") || line.contains(" SKIPPED")
+						|| line.contains(" FROM-CACHE"))
+					appendPlainText(line, COLOR_UNIMPORTANT);
+				else
+					appendPlainText(line, Theme.current().getForegroundColor());
+			} else if (line.startsWith("BUILD SUCCESSFUL")) {
+				append(" ");
+				appendPlainText(line, COLOR_TASK_COMPLETE);
+			} else {
+				appendAutoColor(line);
+			}
+		})));
+
+		task.setStandardError(new OutputStreamEventHandler(line -> SwingUtilities.invokeLater(() -> {
+			taskErr.append(line).append("\n");
+			if (line.startsWith("[")) {
+				appendAutoColor(line);
+			} else {
 				if (line.startsWith("Note: Some input files use or ov"))
 					return;
 				if (line.startsWith("Note: Recompile with -Xlint"))
 					return;
 				if (line.startsWith("Note: Some input files use unch"))
 					return;
-				if (line.contains("Advanced terminal features are not available in this environment"))
-					return;
-				if (line.contains("Disabling terminal, you're running in an unsupported environment"))
-					return;
 				if (line.contains("uses or overrides a deprecated API"))
 					return;
 				if (line.contains("unchecked or unsafe operations"))
 					return;
-				if (line.startsWith("Deprecated Gradle features were used"))
+				if (line.startsWith("WARNING: An illegal reflective access"))
 					return;
-				if (line.startsWith("WARNING: (c) 2020 Microsoft Corporation."))
+				if (line.startsWith("WARNING: Illegal reflective access"))
 					return;
-				if (line.contains("to show the individual deprecation warnings and determine"))
+				if (line.startsWith("WARNING: Please consider reporting this"))
 					return;
-				if (line.contains("#sec:command_line_warnings"))
+				if (line.startsWith("WARNING: Use --illegal-access=warn to enable"))
+					return;
+				if (line.startsWith("WARNING: All illegal access operations will"))
+					return;
+				if (line.startsWith("SLF4J: "))
 					return;
 
-				if (line.startsWith("WARNING: This project is configured to use the official obfuscation")) {
-					append("The code of this workspace uses official obfuscation mappings provided by Mojang. These mappings fall under their associated license you should be fully aware of.",
-							new Color(232, 203, 108));
-					append("(c) 2020 Microsoft Corporation. These mappings are provided \"as-is\" and you bear the risk of using them. You may copy and use the mappings for development purposes,",
-							new Color(173, 173, 173));
-					append("but you may not redistribute the mappings complete and unmodified. Microsoft makes no warranties, express or implied, with respect to the mappings provided here.",
-							new Color(173, 173, 173));
-					append("Use and modification of this document or the source code (in any form) of Minecraft: Java Edition is governed by the Minecraft End User License Agreement available",
-							new Color(173, 173, 173));
-					append("at https://account.mojang.com/documents/minecraft_eula.", new Color(173, 173, 173));
-					append(" ");
-					return;
-				}
-
-				if (line.startsWith(":") || line.startsWith(">")) {
-					if (line.contains(" UP-TO-DATE") || line.contains(" NO-SOURCE") || line.contains(" SKIPPED"))
-						append(line, new Color(0x7B7B7B), true);
-					else
-						append(line, new Color(0xDADADA), true);
-				} else if (line.startsWith("BUILD SUCCESSFUL")) {
-					append(" ");
-					append(line, new Color(187, 232, 108), false);
-				} else {
-					appendAutoColor(line);
-				}
-			}
-		})));
-
-		task.setStandardError(new OutputStreamEventHandler(line -> SwingUtilities.invokeLater(() -> {
-			taskErr.append(line).append("\n");
-			if (serr.isSelected()) {
-				if (line.startsWith("[")) {
-					appendAutoColor(line);
-				} else {
-					if (line.startsWith("Note: Some input files use or ov"))
-						return;
-					if (line.startsWith("Note: Recompile with -Xlint"))
-						return;
-					if (line.startsWith("Note: Some input files use unch"))
-						return;
-					if (line.contains("uses or overrides a deprecated API"))
-						return;
-					if (line.contains("unchecked or unsafe operations"))
-						return;
-					if (line.startsWith("WARNING: An illegal reflective access"))
-						return;
-					if (line.startsWith("WARNING: Illegal reflective access"))
-						return;
-					if (line.startsWith("WARNING: Please consider reporting this"))
-						return;
-					if (line.startsWith("WARNING: Use --illegal-access=warn to enable"))
-						return;
-					if (line.startsWith("WARNING: All illegal access operations will"))
-						return;
-					if (line.startsWith("SLF4J: "))
-						return;
-
-					append(line, new Color(0, 255, 182));
-				}
+				append(line, COLOR_STDERR);
 			}
 		})));
 
@@ -493,10 +497,10 @@ public class GradleConsole extends JPanel {
 									CodeErrorDialog.showCodeErrorDialog(ref, taskErr.toString() + taskOut)));
 						}
 						append(" ");
-						append("BUILD FAILED", new Color(0xF98771));
+						append("BUILD FAILED", COLOR_LOGLEVEL_ERROR);
 					} else if (failure instanceof BuildCancelledException) {
 						append(" ");
-						append("TASK CANCELED", new Color(0xf0c674));
+						append("TASK CANCELED", COLOR_LOGLEVEL_WARN);
 						succeed();
 						taskComplete(GradleErrorCodes.STATUS_OK);
 						return;
@@ -504,7 +508,7 @@ public class GradleConsole extends JPanel {
 							// workaround for MDK bug with gradle daemon
 							&& command.startsWith("run")) {
 						append(" ");
-						append("RUN COMPLETE", new Color(187, 232, 108));
+						append("RUN COMPLETE", COLOR_TASK_COMPLETE);
 						succeed();
 						taskComplete(GradleErrorCodes.STATUS_OK);
 						return;
@@ -512,15 +516,13 @@ public class GradleConsole extends JPanel {
 						String exception = ExceptionUtils.getFullStackTrace(failure);
 						taskErr.append(exception);
 
-						if (serr.isSelected()) {
-							Arrays.stream(exception.split("\n")).forEach(line -> {
-								if (!line.trim().isEmpty())
-									append(line);
-							});
-						}
+						Arrays.stream(exception.split("\n")).forEach(line -> {
+							if (!line.trim().isEmpty())
+								append(line);
+						});
 
 						append(" ");
-						append("TASK EXECUTION FAILED", new Color(0xF98771));
+						append("TASK EXECUTION FAILED", COLOR_LOGLEVEL_ERROR);
 					}
 
 					fail();
@@ -559,8 +561,8 @@ public class GradleConsole extends JPanel {
 			}
 
 			private void taskComplete(int mcreatorGradleStatus) {
-				append("Task completed in " + TimeUtils.millisToLongDHMS(System.currentTimeMillis() - millis),
-						Color.gray, true);
+				appendPlainText("Task completed in " + TimeUtils.millisToLongDHMS(System.currentTimeMillis() - millis),
+						Color.gray);
 				append(" ");
 
 				if (taskSpecificListener != null)
@@ -612,8 +614,8 @@ public class GradleConsole extends JPanel {
 				text = text + "\n";
 
 			if (text.trim().startsWith("[")) {
-				String[] data = text.split("] \\[");
-				String logText = "";
+				String[] bracketsAndText = text.split("]: ", 2);
+				String[] data = (bracketsAndText[0] + "]: ").split("] \\[");
 
 				Color threadColorMarker = null;
 
@@ -630,34 +632,24 @@ public class GradleConsole extends JPanel {
 
 					// default bracket color
 					if (bracketText.contains("]") && bracketText.contains("["))
-						bracketColor = new Color(176, 176, 176);
+						bracketColor = COLOR_BRACKET;
 
-					// format timestamps
-					if (bracketText.contains(":") && !bracketText.contains("]:")) {
-						bracketColor = new Color(0x95A0A7);
-						bracketText = bracketText.replace("[", "").replace("]", "");
-						String[] tstmp = bracketText.split(":");
-						if (tstmp.length == 3) {
-							if (!tstmp[0].replaceAll("\\p{C}", "").equals(tstmp[0]) && tstmp[0].contains("m"))
-								tstmp[0] = tstmp[0].split("m")[1].replaceAll("\\p{C}", "");
-							bracketText = (tstmp[0] + ":" + tstmp[1] + "." + tstmp[2]);
-						}
-					}
-
-					// handle log levels
-					if (threadColorMarker == null) {
+					// timestamp color
+					if (bracketText.contains(":") && !bracketText.contains("]: ")) {
+						bracketColor = COLOR_UNIMPORTANT;
+					} else if (threadColorMarker == null) { // handle log levels
 						if (bracketText.contains("/TRACE]"))
-							bracketColor = new Color(0x8abeb7);
+							bracketColor = COLOR_LOGLEVEL_TRACE;
 						else if (bracketText.contains("/DEBUG]"))
-							bracketColor = new Color(0xAABE92);
+							bracketColor = COLOR_LOGLEVEL_DEBUG;
 						else if (bracketText.contains("/INFO]"))
-							bracketColor = new Color(0x94BD68);
+							bracketColor = COLOR_LOGLEVEL_INFO;
 						else if (bracketText.contains("/WARN]"))
-							bracketColor = new Color(0xf0c674);
+							bracketColor = COLOR_LOGLEVEL_WARN;
 						else if (bracketText.contains("/ERROR]") || bracketText.contains("STDERR]"))
-							bracketColor = new Color(0xF98771);
+							bracketColor = COLOR_LOGLEVEL_ERROR;
 						else if (bracketText.contains("/FATAL]"))
-							bracketColor = new Color(0xcc6666);
+							bracketColor = COLOR_LOGLEVEL_FATAL;
 					} else {
 						bracketColor = threadColorMarker;
 						threadColorMarker = null;
@@ -665,32 +657,19 @@ public class GradleConsole extends JPanel {
 
 					// special bracket colors
 					if (bracketText.contains("Client") || bracketText.contains("Render"))
-						threadColorMarker = new Color(0x81BE8D);
+						threadColorMarker = COLOR_MARKER_CLIENTSIDE;
 					else if (bracketText.contains("Server"))
-						threadColorMarker = new Color(0x8489A8);
+						threadColorMarker = COLOR_MARKER_SERVERSIDE;
 					else if (bracketText.contains("main/"))
-						threadColorMarker = new Color(0x9BB2C7);
-
-					String[] spl = bracketText.split("]:");
-
-					if (spl.length > 1) {
-						logText = Arrays.stream(spl).skip(1).collect(Collectors.joining(""));
-						bracketText = spl[0] + "]:";
-					} else
-						bracketText = spl[0];
+						threadColorMarker = COLOR_MARKER_MAIN;
 
 					SimpleAttributeSet keyWord = new SimpleAttributeSet();
 					StyleConstants.setForeground(keyWord, bracketColor);
-					StyleConstants.setBackground(keyWord, Theme.current().getSecondAltBackgroundColor());
-					if (bracketText.contains(":") && !bracketText.contains("]:"))
-						StyleConstants.setFontSize(keyWord, 6);
-					else
-						StyleConstants.setFontSize(keyWord, 9);
-
 					pan.insertString(bracketText, keyWord);
 				}
 
-				append(logText, Theme.current().getForegroundColor());
+				if (bracketsAndText.length > 1)
+					append(bracketsAndText[1], Theme.current().getForegroundColor());
 			} else {
 				append(text, Theme.current().getForegroundColor());
 			}
@@ -711,9 +690,9 @@ public class GradleConsole extends JPanel {
 		} else if (repattern.matcher(text).find()) {
 			appendErrorWithCodeLine2(text);
 		} else if (cwpattern.matcher(text).find()) {
-			append(text, new Color(0xf0c674), false);
+			appendPlainText(text, COLOR_LOGLEVEL_WARN);
 		} else {
-			append(text, c, false);
+			appendPlainText(text, c);
 		}
 	}
 
@@ -722,9 +701,7 @@ public class GradleConsole extends JPanel {
 			String err = text.replaceAll(": error:.*", "");
 			String othr = text.replaceAll(".+\\.java:\\d+", "") + "\n";
 			SimpleAttributeSet keyWord = new SimpleAttributeSet();
-			StyleConstants.setFontSize(keyWord, 9);
-			StyleConstants.setForeground(keyWord, new Color(0xF98771));
-			StyleConstants.setBackground(keyWord, Theme.current().getSecondAltBackgroundColor());
+			StyleConstants.setForeground(keyWord, COLOR_LOGLEVEL_ERROR);
 			pan.insertLink(err.trim(), err.trim(), othr, keyWord);
 		}
 		scrollToBottom();
@@ -742,9 +719,7 @@ public class GradleConsole extends JPanel {
 				String classLine = text.split("\\.java:")[1].split("\\)")[0];
 
 				SimpleAttributeSet keyWord = new SimpleAttributeSet();
-				StyleConstants.setFontSize(keyWord, 9);
 				StyleConstants.setForeground(keyWord, Color.white);
-				StyleConstants.setBackground(keyWord, Theme.current().getSecondAltBackgroundColor());
 				pan.insertString(text.split("\\(")[0] + "(", keyWord);
 				StyleConstants.setForeground(keyWord, Theme.current().getInterfaceAccentColor());
 				pan.insertLink(packageName + "." + crashClassName + ":" + classLine,
@@ -753,21 +728,18 @@ public class GradleConsole extends JPanel {
 				pan.insertString(")" + text.split("\\(")[1].split("\\)")[1], keyWord);
 			} catch (Exception ignored) {  // workspace can be null or we can fail to parse error link
 				// if we fail to print styled, fallback to plaintext
-				append(text, Color.white, false);
+				appendPlainText(text, Color.white);
 			}
 			scrollToBottom();
 		}
 	}
 
-	public void append(String text, Color c, boolean a) {
+	public void appendPlainText(String text, Color c) {
 		if (!text.isEmpty()) {
 			if (!text.endsWith("\n"))
 				text = text + "\n";
 			SimpleAttributeSet keyWord = new SimpleAttributeSet();
-			StyleConstants.setFontSize(keyWord, 9);
-			StyleConstants.setItalic(keyWord, a);
 			StyleConstants.setForeground(keyWord, c);
-			StyleConstants.setBackground(keyWord, Theme.current().getSecondAltBackgroundColor());
 			pan.insertString(text, keyWord);
 		}
 		scrollToBottom();
