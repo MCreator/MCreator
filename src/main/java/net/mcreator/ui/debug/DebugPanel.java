@@ -30,6 +30,7 @@ import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.SquareLoaderIcon;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.WrapLayout;
 import net.mcreator.ui.ide.CodeEditorView;
@@ -97,7 +98,7 @@ public class DebugPanel extends JPanel {
 		JLabel loading = L10N.label("debug.loading");
 		loading.setFont(loading.getFont().deriveFont(16f));
 		loading.setForeground(Theme.current().getAltForegroundColor());
-		loading.setIcon(UIRES.get("16px.loading.gif"));
+		loading.setIcon(new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor()));
 		waitingToConnect.add("Center", PanelUtils.totalCenterInPanel(loading));
 		add(waitingToConnect, WAITING_TO_CONNECT);
 
@@ -168,7 +169,7 @@ public class DebugPanel extends JPanel {
 		});
 		bar.add(resume);
 
-		JButton stop = new JButton(UIRES.get("16px.stop.gif"));
+		JButton stop = new JButton(UIRES.get("16px.stop"));
 		stop.setToolTipText(L10N.t("debug.stop"));
 		stop.addActionListener(e -> mcreator.getGradleConsole().cancelTask());
 		bar.add(stop);
