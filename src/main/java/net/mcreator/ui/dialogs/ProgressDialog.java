@@ -186,13 +186,11 @@ public class ProgressDialog extends MCreatorDialog {
 			removeAll();
 			setLayout(new BorderLayout());
 			setBackground(Theme.current().getBackgroundColor());
-			JLabel status = new JLabel();
-			status.setForeground(Color.white);
-			ComponentUtils.deriveFont(status, 12);
 
 			JPanel stap = new JPanel(new BorderLayout());
 			stap.setOpaque(false);
 
+			JLabel status = new JLabel();
 			status.setText(ma.name);
 
 			if (ma.status == ProgressUnit.Status.LOADING) {

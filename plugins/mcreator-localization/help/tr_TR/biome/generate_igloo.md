@@ -1,0 +1,1 @@
+Biyomunuzda İglolar olması için bu ayarı seçin.

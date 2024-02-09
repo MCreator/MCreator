@@ -173,7 +173,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recwrap.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.recipe.definition"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
-				Color.white));
+				Theme.current().getForegroundColor()));
 
 		JPanel northPanel = new JPanel(new AdaptiveGridLayout(-1, 1, 10, 2));
 		northPanel.setOpaque(false);
