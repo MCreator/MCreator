@@ -28,6 +28,7 @@ import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.WorkspaceSelectorLoadedEvent;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.SplashScreen;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.JEmptyBox;
@@ -37,6 +38,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
+import net.mcreator.ui.init.AppIcon;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
@@ -88,7 +90,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		this.application = application;
 
 		setTitle("MCreator " + Launcher.version.getMajorString());
-		setIconImage(UIRES.getAppIcon().getImage());
+		setIconImages(AppIcon.getAppIcons());
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		if (application != null)
@@ -129,8 +131,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		});
 
 		JPanel logoPanel = new JPanel(new BorderLayout(5, 5));
-		JLabel logo = new JLabel(new ImageIcon(
-				ImageUtils.resizeAA(UIRES.getBuiltIn("logo").getImage(), 250, (int) (250 * (63 / 350.0)))));
+		JLabel logo = new JLabel(UIRES.SVG.getBuiltIn("logo", 250, (int) (250 * (63 / 350.0))));
 		logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		logo.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
@@ -171,7 +172,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 							"/flags/" + L10N.getLocale().toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
 					BufferedImage image = ImageIO.read(
 							Objects.requireNonNull(getClass().getResourceAsStream(flagpath)));
-					g.drawImage(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11)), getWidth() - 15, 5, this);
+					g.drawImage(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11)), getWidth() - 15, 4, this);
 				} catch (Exception ignored) { // flag not found, ignore
 				}
 			}
@@ -526,7 +527,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		JPanel soim;
 		if (!Launcher.version.isSnapshot()) {
-			soim = new ImagePanel(ImageUtils.darken(ImageUtils.toBufferedImage(UIRES.getBuiltIn("splash").getImage())));
+			soim = new ImagePanel(SplashScreen.getSplashImage(true));
 			((ImagePanel) soim).setFitToWidth(true);
 			((ImagePanel) soim).setOffsetY(-400);
 		} else {

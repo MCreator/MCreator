@@ -1111,10 +1111,10 @@ public class MinecraftImageGenerator {
 
 			g2d.drawImage(ImageUtils.resize(ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
 							new ResourcePointer("templates/textures/texturemaker/potion_fluid_bright.png")), color, true)
-					.getImage(), 32), null, 0, 0);
+					.getImage(), 32), 0, 0, null);
 			g2d.drawImage(ImageUtils.resize(ImageMakerTexturesCache.CACHE.get(
 							new ResourcePointer("templates/textures/texturemaker/potion_bottle_overlay.png")).getImage(), 32),
-					null, 0, 0);
+					0, 0, null);
 			g2d.dispose();
 
 			return out;
@@ -1144,7 +1144,7 @@ public class MinecraftImageGenerator {
 			g2d.drawLine(3, 2, 24, 2);
 			g2d.drawLine(3, 25, 24, 25);
 
-			g2d.drawImage(ImageUtils.resize(icon, 20), null, 4, 4);
+			g2d.drawImage(ImageUtils.resize(icon, 20), 4, 4, null);
 
 			g2d.dispose();
 
@@ -1421,7 +1421,7 @@ public class MinecraftImageGenerator {
 			}
 
 			if ((maxdim > 0 & width > 0 & height > 0) & (tex != null || rantex.size() > 2)) {
-				BufferedImage tex1, tex2, tex3;
+				Image tex1, tex2, tex3;
 				int drawWidth1 = (int) ((width / maxdim) * 7), drawHeight1 = (int) ((height / maxdim) * 7);
 				if (tex != null) {
 					tex1 = ImageUtils.resizeAA(tex, drawWidth1, drawHeight1);

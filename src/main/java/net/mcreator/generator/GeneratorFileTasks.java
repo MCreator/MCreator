@@ -88,14 +88,15 @@ public class GeneratorFileTasks {
 							from).isFile()) {
 						try {
 							BufferedImage image = ImageIO.read(new File(from));
-							BufferedImage resized = ImageUtils.resize(image, w, h);
+							BufferedImage resized = ImageUtils.toBufferedImage(ImageUtils.resize(image, w, h));
 							ImageIO.write(resized, "png", new File(to));
 						} catch (IOException e) {
 							generator.getLogger().warn("Failed to read image file for resizing", e);
 						}
 					} else if (generator.getWorkspace().getFolderManager().isFileInWorkspace(new File(to))) {
 						try {
-							BufferedImage resized = ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h);
+							BufferedImage resized = ImageUtils.toBufferedImage(
+									ImageUtils.resize(UIRES.getBuiltIn("fallback").getImage(), w, h));
 							ImageIO.write(resized, "png", new File(to));
 						} catch (IOException e) {
 							generator.getLogger().warn("Failed to read image file for resizing", e);

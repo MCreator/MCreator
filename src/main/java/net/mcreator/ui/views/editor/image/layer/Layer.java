@@ -329,9 +329,9 @@ public class Layer {
 
 	public void resize(int width, int height, boolean antialiasing) {
 		if (antialiasing)
-			setRaster(ImageUtils.resizeAA(raster, width, height));
+			setRaster(ImageUtils.toBufferedImage(ImageUtils.resizeAA(raster, width, height)));
 		else
-			setRaster(ImageUtils.resize(raster, width, height));
+			setRaster(ImageUtils.toBufferedImage(ImageUtils.resize(raster, width, height)));
 	}
 
 	public void deleteSelection() {
