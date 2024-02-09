@@ -1,0 +1,1 @@
+Bu biyomun yeryüzünde yeraltında (mağaralarda) ortaya çıkmasını sağlamak için bu kutuyu işaretleyin.

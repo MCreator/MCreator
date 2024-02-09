@@ -231,7 +231,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		advancementTrigger.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.advancement.trigger_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Color.white));
+				getFont(), Theme.current().getForegroundColor()));
 
 		JComponent wrap = PanelUtils.northAndCenterElement(PanelUtils.westAndCenterElement(propertiesPanel, logicPanel),
 				advancementTrigger);
