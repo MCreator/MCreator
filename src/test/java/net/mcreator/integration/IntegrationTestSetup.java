@@ -161,9 +161,6 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		// register mod element types
 		ModElementTypeLoader.loadModElements();
 
-		// some mod element guis use icons
-		TiledImageCache.loadTileImages();
-
 		// load generator configurations
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
 		for (String generator : fileNames) {

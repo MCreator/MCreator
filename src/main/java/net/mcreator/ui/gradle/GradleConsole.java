@@ -298,6 +298,10 @@ public class GradleConsole extends JPanel {
 				taskOut.append(apiInfo);
 			}
 
+			if (PreferencesManager.PREFERENCES.gradle.offline.get()) {
+				append("Gradle is running in offline mode. Some features may not work properly!", COLOR_LOGLEVEL_WARN);
+			}
+
 			append(" ");
 		}
 

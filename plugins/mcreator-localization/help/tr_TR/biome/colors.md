@@ -1,0 +1,1 @@
+Bu parametre, biyomunuz için özel renkler sağlar.

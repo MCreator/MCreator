@@ -260,7 +260,7 @@ public class AnimationMakerView extends ViewBase {
 						ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 								L10N.t("dialog.animation_maker.gif_reading"));
 						dial.addProgressUnit(p1);
-						BufferedImage[] frames = GifUtil.readAnimatedGif(frame);
+						Image[] frames = GifUtil.readAnimatedGif(frame);
 						if (frames.length > 0)
 							p1.markStateOk();
 						else {
@@ -590,9 +590,9 @@ public class AnimationMakerView extends ViewBase {
 	}
 
 	static class AnimationFrame {
-		BufferedImage image;
+		Image image;
 
-		AnimationFrame(BufferedImage s) {
+		AnimationFrame(Image s) {
 			image = s;
 		}
 	}

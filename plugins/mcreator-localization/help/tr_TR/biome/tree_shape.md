@@ -1,0 +1,1 @@
+Bu parametre, özel ağaç özelliği şeklinin hangi ağaç türünü temel alması gerektiğini tanımlar.
