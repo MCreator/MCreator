@@ -104,14 +104,14 @@ EntityCreeper:
   - Creeper
   - EntityType.CREEPER
   - creeper
-EntityDonkey:
-  - Donkey
-  - EntityType.DONKEY
-  - donkey
 EntityDolphin:
   - Dolphin
   - EntityType.DOLPHIN
   - dolphin
+EntityDonkey:
+  - Donkey
+  - EntityType.DONKEY
+  - donkey
 EntityDragonFireball:
   - DragonFireball
   - EntityType.DRAGON_FIREBALL
@@ -388,14 +388,14 @@ EntitySniffer:
   - Sniffer
   - EntityType.SNIFFER
   - sniffer
-EntitySnowball:
-  - Snowball
-  - EntityType.SNOWBALL
-  - snowball
 EntitySnowman:
   - SnowGolem
   - EntityType.SNOW_GOLEM
   - snow_golem
+EntitySnowball:
+  - Snowball
+  - EntityType.SNOWBALL
+  - snowball
 EntityMinecartMobSpawner:
   - MinecartSpawner
   - EntityType.SPAWNER_MINECART
