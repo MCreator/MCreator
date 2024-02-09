@@ -92,13 +92,13 @@ public class ${JavaModName}Items {
 	</#list>
 
 	<#if hasBlocks>
-	private static DeferredHolder<Item, Item> block(RegistryObject<Block> block) {
+	private static DeferredHolder<Item, Item> block(DeferredHolder<Block, Block> block) {
 		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
 	}
 	</#if>
 
 	<#if hasDoubleBlocks>
-	private static DeferredHolder<Item, Item> doubleBlock(RegistryObject<Block> block) {
+	private static DeferredHolder<Item, Item> doubleBlock(DeferredHolder<Block, Block> block) {
 		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties()));
 	}
 	</#if>
