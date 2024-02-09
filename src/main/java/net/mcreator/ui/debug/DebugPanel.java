@@ -148,7 +148,7 @@ public class DebugPanel extends JPanel {
 		JToolBar bar = new JToolBar();
 		bar.setOrientation(JToolBar.VERTICAL);
 		bar.setOpaque(false);
-		bar.setBorder(BorderFactory.createEmptyBorder(8, 5, 0, 0));
+		bar.setBorder(BorderFactory.createEmptyBorder(8, 2, 0, 0));
 		bar.setFloatable(false);
 		debugging.add("West", bar);
 
