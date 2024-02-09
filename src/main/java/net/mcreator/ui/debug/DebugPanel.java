@@ -96,6 +96,7 @@ public class DebugPanel extends JPanel {
 		JPanel waitingToConnect = new JPanel(new BorderLayout());
 		waitingToConnect.setOpaque(false);
 		JLabel loading = L10N.label("debug.loading");
+		loading.setIconTextGap(5);
 		loading.setFont(loading.getFont().deriveFont(16f));
 		loading.setForeground(Theme.current().getAltForegroundColor());
 		loading.setIcon(new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor()));
