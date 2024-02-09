@@ -162,11 +162,11 @@ public class DebugFramesView extends JPanel {
 			a.setText(text);
 
 			if (text.contains("[size:")) {
-				a.setIcon(UIRES.get("rsta.template_obj.gif"));
+				a.setIcon(UIRES.get("rsta.template_obj"));
 			} else if (text.contains(" = ")) {
-				a.setIcon(UIRES.get("rsta.localvariable_obj.gif"));
+				a.setIcon(UIRES.get("rsta.localvariable_obj"));
 			} else {
-				a.setIcon(UIRES.get("rsta.methpub_obj.gif"));
+				a.setIcon(UIRES.get("rsta.methpub_obj"));
 			}
 
 			if (sel) {
