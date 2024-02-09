@@ -1,0 +1,1 @@
+Onarım öğeleri parametresi örsün içindeki zırhı onarmak için hangi öğelerin kullanılabileceğini kontrol eder.

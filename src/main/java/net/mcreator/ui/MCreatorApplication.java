@@ -100,11 +100,14 @@ public final class MCreatorApplication {
 			splashScreen.setProgress(10, "Loading UI Themes");
 
 			// We load UI theme now as theme plugins are loaded at this point
-			ThemeManager.init();
+			ThemeManager.loadThemes();
 
 			splashScreen.setProgress(15, "Loading UI core");
 
 			UIRES.preloadImages();
+
+			// Now that UIRES is loaded, we can load the theme (theme can use UIRES icons)
+			ThemeManager.applySelectedTheme();
 
 			taskbarIntegration = new TaskbarIntegration();
 
@@ -128,7 +131,7 @@ public final class MCreatorApplication {
 			ImageMakerTexturesCache.init();
 			ArmorMakerTexturesCache.init();
 
-			splashScreen.setProgress(55, "Loading plugin templates");
+			splashScreen.setProgress(55, "Loading plugin data");
 
 			// load apis defined by plugins after plugins are loaded
 			ModAPIManager.initAPIs();
@@ -140,6 +143,8 @@ public final class MCreatorApplication {
 			BlocklyJavaScriptsLoader.init();
 			BlocklyToolboxesLoader.init();
 
+			splashScreen.setProgress(60, "Processing plugin data");
+
 			// load blockly blocks after plugins are loaded
 			BlocklyLoader.init();
 
@@ -148,9 +153,6 @@ public final class MCreatorApplication {
 
 			// register mod element types
 			ModElementTypeLoader.loadModElements();
-
-			splashScreen.setProgress(60, "Preloading resources");
-			TiledImageCache.loadAndTileImages();
 
 			splashScreen.setProgress(70, "Loading generators");
 

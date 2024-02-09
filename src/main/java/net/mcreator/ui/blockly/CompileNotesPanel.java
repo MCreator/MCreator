@@ -35,6 +35,8 @@ public class CompileNotesPanel extends JPanel {
 	private final JLabel compileNotesLabel = L10N.label("blockly.compile_notes", 0);
 	private final DefaultListModel<BlocklyCompileNote> compileNotes = new DefaultListModel<>();
 
+	private boolean everUpdated = false;
+
 	public CompileNotesPanel() {
 		super(new BorderLayout());
 		setOpaque(false);
@@ -77,15 +79,25 @@ public class CompileNotesPanel extends JPanel {
 	}
 
 	public void updateCompileNotes(List<BlocklyCompileNote> compileNotesArrayList) {
-		compileNotes.clear();
-		compileNotesArrayList.forEach(compileNotes::addElement);
+		synchronized (compileNotes) {
+			compileNotes.clear();
+			compileNotesArrayList.forEach(compileNotes::addElement);
+		}
 		compileNotesLabel.setText(L10N.t("blockly.compile_notes", compileNotesArrayList.size()));
+		everUpdated = true;
 	}
 
 	public List<BlocklyCompileNote> getCompileNotes() {
 		List<BlocklyCompileNote> retval = new ArrayList<>();
-		for (int i = 0; i < compileNotes.size(); i++)
-			retval.add(compileNotes.get(i));
+		if (!everUpdated) {
+			retval.add(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.editor_not_ready")));
+		} else {
+			synchronized (compileNotes) {
+				for (int i = 0; i < compileNotes.size(); i++)
+					retval.add(compileNotes.get(i));
+			}
+		}
 		return retval;
 	}
 
@@ -95,7 +107,7 @@ public class CompileNotesPanel extends JPanel {
 				BlocklyCompileNote value, int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBackground(Theme.current().getBackgroundColor());
-			setForeground(Color.white);
+			setForeground(Theme.current().getForegroundColor());
 			ComponentUtils.deriveFont(this, 12);
 			if (value.type() == BlocklyCompileNote.Type.ERROR) {
 				setIcon(UIRES.get("18px.remove"));

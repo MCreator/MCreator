@@ -22,14 +22,21 @@ package net.mcreator.ui.laf.themes;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.data.PreferencesData;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.Set;
 
 /**
  * <p>A Theme can change images MCreator will use and redefine the colors and the style
@@ -98,6 +105,180 @@ import java.io.InputStream;
 		}
 
 		return this;
+	}
+
+	public void applyUIDefaultsOverrides(UIDefaults table) {
+		Set<Object> keySet = table.keySet();
+		for (Object key : keySet) {
+			if (key == null)
+				continue;
+			if (key.toString().toLowerCase(Locale.ENGLISH).contains("font")) {
+				table.put(key, getSecondaryFont().deriveFont((float) getFontSize()));
+			} else if (key.toString().toLowerCase(Locale.ENGLISH).contains("bordercolor")) {
+				table.put(key, getInterfaceAccentColor());
+			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".background")) {
+				table.put(key, getBackgroundColor());
+			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".foreground")) {
+				table.put(key, getForegroundColor());
+			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".inactiveforeground")) {
+				table.put(key, getAltForegroundColor());
+			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".disabledbackground")) {
+				table.put(key, getBackgroundColor());
+			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".disabledforeground")) {
+				table.put(key, getAltForegroundColor());
+			} else if (key.toString().toLowerCase(Locale.ENGLISH).endsWith(".caretforeground")) {
+				table.put(key, getForegroundColor());
+			}
+		}
+
+		table.put("TabbedPane.contentOpaque", false);
+
+		table.put("Tree.rendererFillBackground", false);
+
+		table.put("TitledBorder.titleColor", getForegroundColor());
+
+		table.put("SplitPane.dividerFocusColor", getAltBackgroundColor());
+		table.put("SplitPane.darkShadow", getAltBackgroundColor());
+		table.put("SplitPane.shadow", getAltBackgroundColor());
+		table.put("SplitPaneDivider.draggingColor", getInterfaceAccentColor());
+
+		table.put("OptionPane.messageForeground", getForegroundColor());
+
+		table.put("Label.foreground", getForegroundColor());
+		table.put("Label.disabledForeground", getForegroundColor());
+		table.put("Label.inactiveforeground", getForegroundColor());
+		table.put("Label.textForeground", getForegroundColor());
+
+		table.put("Button.toolBarBorderBackground", getForegroundColor());
+		table.put("Button.disabledToolBarBorderBackground", getAltBackgroundColor());
+		table.put("ToolBar.rolloverBorder",
+				BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(getBackgroundColor(), 1),
+						BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(getAltBackgroundColor(), 1),
+								BorderFactory.createLineBorder(getBackgroundColor(), 3))));
+
+		table.put("ScrollBarUI", SlickDarkScrollBarUI.class.getName());
+		table.put("SpinnerUI", DarkSpinnerUI.class.getName());
+		table.put("SplitPaneUI", DarkSplitPaneUI.class.getName());
+		table.put("SliderUI", DarkSliderUI.class.getName());
+		table.put("ComboBoxUI", DarkComboBoxUI.class.getName());
+
+		table.put("Menu.border", BorderFactory.createEmptyBorder(3, 4, 3, 4));
+		table.put("MenuItem.border", BorderFactory.createEmptyBorder(3, 4, 3, 4));
+
+		table.put("PopupMenu.border", BorderFactory.createLineBorder(getAltBackgroundColor()));
+
+		table.put("Separator.foreground", getAltBackgroundColor());
+		table.put("Separator.background", getBackgroundColor());
+
+		table.put("Menu.foreground", getForegroundColor());
+		table.put("MenuItem.foreground", getForegroundColor());
+
+		table.put("ComboBox.foreground", getForegroundColor());
+		table.put("ComboBox.background", getAltBackgroundColor());
+		table.put("ComboBox.disabledForeground", getAltForegroundColor());
+
+		table.put("Spinner.foreground", getForegroundColor());
+		table.put("Spinner.background", getAltBackgroundColor());
+
+		table.put("FormattedTextField.foreground", getForegroundColor());
+		table.put("FormattedTextField.inactiveForeground", getAltForegroundColor());
+		table.put("FormattedTextField.background", getAltBackgroundColor());
+		table.put("FormattedTextField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
+
+		table.put("TextField.foreground", getForegroundColor());
+		table.put("TextField.inactiveForeground", getAltForegroundColor());
+		table.put("TextField.background", getAltBackgroundColor());
+		table.put("TextField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
+
+		table.put("PasswordField.foreground", getForegroundColor());
+		table.put("PasswordField.inactiveForeground", getAltForegroundColor());
+		table.put("PasswordField.background", getAltBackgroundColor());
+		table.put("PasswordField.border", BorderFactory.createEmptyBorder(2, 5, 2, 5));
+
+		table.put("ComboBox.border", null);
+
+		java.util.List<?> buttonGradient = Arrays.asList(0f, 0f, new ColorUIResource(getForegroundColor()),
+				new ColorUIResource(getForegroundColor()), new ColorUIResource(getForegroundColor()));
+
+		table.put("Button.gradient", buttonGradient);
+		table.put("Button.rollover", true);
+
+		table.put("CheckBox.gradient", buttonGradient);
+		table.put("CheckBox.rollover", true);
+
+		table.put("RadioButton.gradient", buttonGradient);
+		table.put("RadioButtonMenuItem.gradient", buttonGradient);
+		table.put("RadioButton.rollover", true);
+		table.put("RadioButtonMenuItem.rollover", true);
+		table.put("RadioButtonMenuItem.border", BorderFactory.createEmptyBorder(3, 4, 3, 4));
+
+		table.put("ToggleButton.gradient", buttonGradient);
+		table.put("ToggleButton.rollover", true);
+
+		List<?> sliderGradient = Arrays.asList(0f, 0f, new ColorUIResource(getBackgroundColor()),
+				new ColorUIResource(getBackgroundColor()), new ColorUIResource(getBackgroundColor()));
+
+		table.put("Slider.altTrackColor", new ColorUIResource(getBackgroundColor()));
+		table.put("Slider.gradient", sliderGradient);
+		table.put("Slider.focusGradient", sliderGradient);
+
+		table.put("Spinner.border", BorderFactory.createEmptyBorder());
+
+		table.put("List.focusCellHighlightBorder", null);
+
+		table.put("List.border", null);
+		table.put("ScrollPane.border", null);
+		table.put("Tree.border", null);
+
+		table.put("Button.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
+		table.put("ToggleButton.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
+		table.put("CheckBox.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
+		table.put("TabbedPane.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
+		table.put("RadioButton.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
+		table.put("RadioButtonMenuItem.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
+		table.put("Slider.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
+		table.put("ComboBox.focus", new ColorUIResource(new Color(0, 0, 0, 0)));
+
+		table.put("CheckBox.icon", new CheckBoxIcon());
+		table.put("RadioButton.icon", new RadioButtonIcon());
+		table.put("RadioButtonMenuItem.icon", new RadioButtonIcon());
+
+		table.put("TabbedPane.contentAreaColor", getBackgroundColor());
+		table.put("TabbedPane.contentBorderInsets", new Insets(4, 2, 3, 3));
+		table.put("TabbedPane.selected", getBackgroundColor());
+		table.put("TabbedPane.tabAreaBackground", getAltBackgroundColor());
+		table.put("TabbedPane.tabAreaInsets", new Insets(2, 2, 0, 6));
+		table.put("TabbedPane.unselectedBackground", getBackgroundColor());
+
+		table.put("ToolTip.border", BorderFactory.createLineBorder(getForegroundColor()));
+		table.put("ToolTip.foreground", getForegroundColor());
+		table.put("ToolTip.background", getBackgroundColor());
+
+		table.put("ScrollBar.width", 7);
+
+		table.put("SplitPane.border", BorderFactory.createEmptyBorder());
+
+		table.put("FileChooser.homeFolderIcon", UIRES.get("laf.homeFolder"));
+		table.put("FileChooser.newFolderIcon", UIRES.get("laf.newFolder"));
+		table.put("FileChooser.upFolderIcon", UIRES.get("laf.upFolder"));
+		table.put("FileChooser.computerIcon", UIRES.get("laf.computer"));
+		table.put("FileChooser.hardDriveIcon", UIRES.get("laf.hardDrive"));
+		table.put("FileChooser.floppyDriveIcon", UIRES.get("laf.floppy"));
+		table.put("FileChooser.closedIcon", UIRES.get("laf.newFolder"));
+
+		table.put("Tree.closedIcon", UIRES.get("laf.newFolder"));
+		table.put("Tree.openIcon", UIRES.get("laf.upFolder"));
+		table.put("Tree.leafIcon", UIRES.get("laf.file"));
+
+		table.put("FileView.directoryIcon", UIRES.get("laf.directory"));
+		table.put("FileView.fileIcon", UIRES.get("laf.file"));
+
+		table.put("OptionPane.warningIcon", UIRES.get("laf.warning"));
+		table.put("OptionPane.errorIcon", UIRES.get("laf.error"));
+		table.put("OptionPane.questionIcon", UIRES.get("laf.question"));
+		table.put("OptionPane.informationIcon", UIRES.get("laf.info"));
+
+		table.put("MenuItem.acceleratorForeground", getAltForegroundColor());
 	}
 
 	/**

@@ -1,0 +1,1 @@
+Biyomunuzda gemi enkazları olması için bu ayarı seçin.

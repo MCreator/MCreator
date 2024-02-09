@@ -25,6 +25,7 @@ import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.*;
 import java.util.Random;
+import java.util.function.Function;
 
 public class ImageUtils {
 
@@ -92,19 +93,43 @@ public class ImageUtils {
 		return new ImageIcon(colorArrayToBufferedImage(car));
 	}
 
-	public static BufferedImage resize(Image image, int size) {
-		return resizeImage(toBufferedImage(image), size, size);
+	public static Image resize(Image image, int size) {
+		return resize(image, size, size);
 	}
 
-	public static BufferedImage resize(Image image, int w, int h) {
+	public static Image resizeAA(Image image, int size) {
+		return resizeAA(image, size, size);
+	}
+
+	public static Image resize(Image image, int w, int h) {
+		if (image instanceof BaseMultiResolutionImage) {
+			Image[] sourceImages = ((BaseMultiResolutionImage) image).getResolutionVariants().toArray(new Image[0]);
+			double widthMultiplier = (double) w / sourceImages[0].getWidth(null);
+			double heightMultiplier = (double) h / sourceImages[0].getHeight(null);
+
+			if (widthMultiplier == 1 && heightMultiplier == 1)
+				return image;
+
+			return applyOperationToAllResolutions((BaseMultiResolutionImage) image,
+					i -> resize(i, (int) (w * widthMultiplier), (int) (h * heightMultiplier)));
+		}
+
 		return resizeImage(toBufferedImage(image), w, h);
 	}
 
-	public static BufferedImage resizeAA(Image image, int size) {
-		return resizeImageWithAA(toBufferedImage(image), size, size);
-	}
+	public static Image resizeAA(Image image, int w, int h) {
+		if (image instanceof BaseMultiResolutionImage) {
+			Image[] sourceImages = ((BaseMultiResolutionImage) image).getResolutionVariants().toArray(new Image[0]);
+			double widthMultiplier = (double) w / sourceImages[0].getWidth(null);
+			double heightMultiplier = (double) h / sourceImages[0].getHeight(null);
 
-	public static BufferedImage resizeAA(Image image, int w, int h) {
+			if (widthMultiplier == 1 && heightMultiplier == 1)
+				return image;
+
+			return applyOperationToAllResolutions((BaseMultiResolutionImage) image,
+					i -> resizeAA(i, (int) (w * widthMultiplier), (int) (h * heightMultiplier)));
+		}
+
 		return resizeImageWithAA(toBufferedImage(image), w, h);
 	}
 
@@ -674,4 +699,11 @@ public class ImageUtils {
 
 		return data;
 	}
+
+	public static BaseMultiResolutionImage applyOperationToAllResolutions(BaseMultiResolutionImage image,
+			Function<Image, Image> operation) {
+		return new BaseMultiResolutionImage(
+				image.getResolutionVariants().stream().map(operation).toArray(Image[]::new));
+	}
+
 }

@@ -1,0 +1,46 @@
+_default:
+  - NoOpFeature
+  - NoneFeatureConfiguration
+  - "minecraft:no_op"
+feature_no_op:
+  - NoOpFeature
+  - NoneFeatureConfiguration
+  - "minecraft:no_op"
+feature_lake:
+  - LakeFeature
+  - LakeFeature.Configuration
+  - "minecraft:lake"
+feature_simple_block:
+  - SimpleBlockFeature
+  - SimpleBlockConfiguration
+  - "minecraft:simple_block"
+feature_random_patch_simple:
+  - RandomPatchFeature
+  - RandomPatchConfiguration
+  - "minecraft:random_patch"
+feature_random_patch:
+  - RandomPatchFeature
+  - RandomPatchConfiguration
+  - "minecraft:random_patch"
+feature_ore:
+  - OreFeature
+  - OreConfiguration
+  - "minecraft:ore"
+feature_scattered_ore:
+  - ScatteredOreFeature
+  - OreConfiguration
+  - "minecraft:scattered_ore"
+feature_replace_single_block:
+  - ReplaceBlockFeature
+  - ReplaceBlockConfiguration
+  - "minecraft:replace_single_block"
+feature_simple_random_selector:
+  - SimpleRandomSelectorFeature
+  - SimpleRandomFeatureConfiguration
+  - "minecraft:simple_random_selector"
+
+# Custom NBT-based feature, not present in vanilla
+feature_custom_structure:
+  - StructureFeature
+  - StructureFeatureConfiguration
+  - "@modid:structure_feature"

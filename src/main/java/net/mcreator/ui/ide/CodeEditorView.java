@@ -571,8 +571,6 @@ public class CodeEditorView extends ViewBase {
 		if (tree != null) {
 			tree.setCellRenderer(new AstTreeCellRendererCustom());
 			tree.listenTo(te);
-			tree.setBackground(Theme.current().getBackgroundColor());
-			tree.setForeground(Color.white);
 			tree.setRowHeight(18);
 			tree.setUI(new SlickTreeUI(treeSP));
 			treeSP.setViewportView(tree);

@@ -49,19 +49,19 @@ class EditTemplatesPanel {
 		opts.setFloatable(false);
 
 		JButton add = L10N.button("dialog.preferences.add_language", name.toLowerCase());
-		add.setIcon(UIRES.get("16px.add.gif"));
+		add.setIcon(UIRES.get("16px.add"));
 		opts.add(add);
 
 		opts.add(new JEmptyBox(5, 5));
 
 		JButton remove = L10N.button("dialog.preferences.remove_selected_language");
-		remove.setIcon(UIRES.get("16px.delete.gif"));
+		remove.setIcon(UIRES.get("16px.delete"));
 		opts.add(remove);
 
 		opts.add(new JEmptyBox(5, 5));
 
 		JButton openFolder = L10N.button("dialog.preferences.open_folder", name.toLowerCase());
-		openFolder.setIcon(UIRES.get("16px.open.gif"));
+		openFolder.setIcon(UIRES.get("16px.open"));
 		opts.add(openFolder);
 
 		DefaultListModel<String> tmodel = new DefaultListModel<>();

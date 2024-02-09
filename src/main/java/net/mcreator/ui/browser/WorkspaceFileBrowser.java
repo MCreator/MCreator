@@ -488,34 +488,34 @@ public class WorkspaceFileBrowser extends JPanel {
 			if (node.getUserObject() instanceof String tsi) {
 				a.setText(tsi);
 				if (tsi.equals(mcreator.getWorkspaceSettings().getModName()))
-					a.setIcon(UIRES.get("16px.package.gif"));
+					a.setIcon(UIRES.get("16px.package"));
 				else if (tsi.equals("Source (Gradle)"))
-					a.setIcon(UIRES.get("16px.mod.png"));
+					a.setIcon(UIRES.get("16px.mod"));
 				else if (tsi.equals("Textures"))
-					a.setIcon(UIRES.get("16px.textures.png"));
+					a.setIcon(UIRES.get("16px.textures"));
 				else if (tsi.equals("Resources (Gradle)"))
-					a.setIcon(UIRES.get("16px.resources.png"));
+					a.setIcon(UIRES.get("16px.resources"));
 				else if (tsi.equals("Models"))
-					a.setIcon(UIRES.get("16px.models.png"));
+					a.setIcon(UIRES.get("16px.models"));
 				else if (tsi.equals("Minecraft run folder") || tsi.equals("Bedrock Edition") || tsi.equals(
 						"MC client run folder"))
-					a.setIcon(UIRES.get("16px.minecraft.png"));
+					a.setIcon(UIRES.get("16px.minecraft"));
 				else if (tsi.equals("MC server run folder"))
-					a.setIcon(UIRES.get("16px.runserver.png"));
+					a.setIcon(UIRES.get("16px.runserver"));
 				else if (tsi.equals("Sounds"))
-					a.setIcon(UIRES.get("16px.music.png"));
+					a.setIcon(UIRES.get("16px.music"));
 				else if (tsi.equals("External libraries"))
-					a.setIcon(UIRES.get("16px.directory.gif"));
+					a.setIcon(UIRES.get("16px.directory"));
 				else if (tsi.equals("Structures"))
-					a.setIcon(UIRES.get("16px.structures.png"));
+					a.setIcon(UIRES.get("16px.structures"));
 			} else if (node.getUserObject() instanceof FileNode fileNode) {
 				a.setText(fileNode.data);
 				if (fileNode.data.endsWith(".java"))
-					a.setIcon(UIRES.get("16px.classro.gif"));
+					a.setIcon(UIRES.get("16px.classro"));
 				else if (fileNode.data.startsWith("Gradle: "))
-					a.setIcon(UIRES.get("16px.ext.gif"));
+					a.setIcon(UIRES.get("16px.ext"));
 				else if (fileNode.data.startsWith("Java "))
-					a.setIcon(UIRES.get("16px.directory.gif"));
+					a.setIcon(UIRES.get("16px.directory"));
 				else
 					a.setIcon(FileIcons.getIconForFile(fileNode.data, !fileNode.isLeaf()));
 			} else if (node.getUserObject() instanceof File fil) {

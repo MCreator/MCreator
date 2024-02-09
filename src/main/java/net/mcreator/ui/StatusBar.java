@@ -57,6 +57,7 @@ public class StatusBar extends JPanel {
 		left.add(new JEmptyBox(5, 5));
 
 		JLabel info = new JLabel(UIRES.get("info"));
+		info.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		info.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				mcreator.actionRegistry.aboutMCreator.doAction();
@@ -67,6 +68,7 @@ public class StatusBar extends JPanel {
 		left.add(new JEmptyBox(3, 3));
 
 		JLabel donate = new JLabel(UIRES.get("donate"));
+		donate.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		donate.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/donate");
@@ -77,6 +79,7 @@ public class StatusBar extends JPanel {
 		left.add(new JEmptyBox(3, 3));
 
 		JLabel preferences = new JLabel(UIRES.get("settings"));
+		preferences.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		preferences.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				new PreferencesDialog(mcreator, null);
@@ -87,6 +90,7 @@ public class StatusBar extends JPanel {
 		left.add(new JEmptyBox(10, 10));
 
 		messages.setForeground(Theme.current().getAltForegroundColor());
+		messages.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		left.add(messages);
 
 		add("West", left);
@@ -95,6 +99,7 @@ public class StatusBar extends JPanel {
 		right.setOpaque(false);
 
 		gradleMessages.setForeground(Theme.current().getAltForegroundColor());
+		gradleMessages.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		right.add(gradleMessages);
 
 		ComponentUtils.deriveFont(gradleMessages, 12);

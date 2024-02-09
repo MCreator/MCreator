@@ -26,11 +26,13 @@ import java.awt.*;
 public class SplashScreenPanel extends JPanel {
 
 	private Image img, shadow, crop;
-	private int cornerRadius;
-	private int shadowRadius;
-	private int extendBorder;
-	private boolean snapshot;
-	private Color snapshotColor;
+
+	private final int cornerRadius;
+	private final int shadowRadius;
+	private final int extendBorder;
+
+	private final boolean snapshot;
+	private final Color snapshotColor;
 
 	public SplashScreenPanel(Image img, int cornerRadius, int shadowRadius, int extendBorder, boolean snapshot,
 			Color snapshotColor) {
@@ -74,7 +76,6 @@ public class SplashScreenPanel extends JPanel {
 			crop = ImageUtils.generateSquircle(snapshotColor, 2, cornerRadius, getImageSize().width,
 					getImageSize().height, this);
 		else
-
 			crop = ImageUtils.cropSquircle(img, 2, cornerRadius, getImageSize().width, getImageSize().height, this);
 	}
 
