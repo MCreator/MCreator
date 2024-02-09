@@ -93,18 +93,6 @@ public class ${JavaModName}Items {
 		</#if>
 	</#list>
 
-	<#if hasBlocks>
-	private static DeferredHolder<Item, Item> block(DeferredHolder<Block, Block> block) {
-		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
-	}
-	</#if>
-
-	<#if hasDoubleBlocks>
-	private static DeferredHolder<Item, Item> doubleBlock(DeferredHolder<Block, Block> block) {
-		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties()));
-	}
-	</#if>
-
 	<#if itemsWithInventory?size != 0>
 		<#list itemsWithInventory as item>
 			public static final DeferredHolder<AttachmentType<?>, AttachmentType<${item.getModElement().getName()}InventoryAttachment>> ${item.getModElement().getRegistryNameUpper()}_INVENTORY =
@@ -120,6 +108,18 @@ public class ${JavaModName}Items {
 		</#list>
 	}
 	</#compress>
+	</#if>
+
+	<#if hasBlocks>
+	private static DeferredHolder<Item, Item> block(DeferredHolder<Block, Block> block) {
+		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
+	}
+	</#if>
+
+	<#if hasDoubleBlocks>
+	private static DeferredHolder<Item, Item> doubleBlock(DeferredHolder<Block, Block> block) {
+		return REGISTRY.register(block.getId().getPath(), () -> new DoubleHighBlockItem(block.get(), new Item.Properties()));
+	}
 	</#if>
 
 	<#if hasItemsWithProperties>
