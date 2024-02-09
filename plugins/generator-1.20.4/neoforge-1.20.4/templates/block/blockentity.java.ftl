@@ -35,7 +35,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 
 	private NonNullList<ItemStack> stacks = NonNullList.<ItemStack>withSize(${data.inventorySize}, ItemStack.EMPTY);
 
-	private final LazyOptional<? extends IItemHandler>[] handlers = SidedInvWrapper.create(this, Direction.values());
+	private final SidedInvWrapper handler = new SidedInvWrapper(this, null);
 
 	public ${name}BlockEntity(BlockPos position, BlockState state) {
 		super(${JavaModName}BlockEntities.${data.getModElement().getRegistryNameUpper()}.get(), position, state);
@@ -131,7 +131,7 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 		return true;
 	}
 
-	<#-- START: ISidedInventory -->
+	<#-- START: WorldlyContainer -->
 	@Override public int[] getSlotsForFace(Direction side) {
 		return IntStream.range(0, this.getContainerSize()).toArray();
 	}
@@ -147,7 +147,11 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
         </#list>
 		return true;
 	}
-	<#-- END: ISidedInventory -->
+	<#-- END: WorldlyContainer -->
+
+	public SidedInvWrapper getItemHandler() {
+		return handler;
+	}
 
 	<#if data.hasEnergyStorage>
 	private final EnergyStorage energyStorage = new EnergyStorage(${data.energyCapacity}, ${data.energyMaxReceive}, ${data.energyMaxExtract}, ${data.energyInitial}) {
@@ -169,61 +173,36 @@ public class ${name}BlockEntity extends RandomizableContainerBlockEntity impleme
 			return retval;
 		}
 	};
-    </#if>
+
+	public EnergyStorage getEnergyStorage() {
+		return energyStorage;
+	}
+	</#if>
 
 	<#if data.isFluidTank>
-        <#if data.fluidRestrictions?has_content>
-		private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}, fs -> {
-			<#list data.fluidRestrictions as fluidRestriction>
-                <#if fluidRestriction.getUnmappedValue().startsWith("CUSTOM:")>
-					if(fs.getFluid() ==
-					${JavaModName}Fluids.<#if fluidRestriction.getUnmappedValue().endsWith(":Flowing")>FLOWING_</#if>${generator.getRegistryNameForModElement(fluidRestriction.getUnmappedValue()?remove_beginning("CUSTOM:")?remove_ending(":Flowing"))?upper_case}.get()) return true;
-                <#else>
+	private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}
+		<#if data.fluidRestrictions?has_content>, fs -> {
+		<#list data.fluidRestrictions as fluidRestriction>
+            <#if fluidRestriction.getUnmappedValue().startsWith("CUSTOM:")>
+				if(fs.getFluid() == ${JavaModName}Fluids.<#if fluidRestriction.getUnmappedValue().endsWith(":Flowing")>FLOWING_</#if>${generator.getRegistryNameForModElement(fluidRestriction.getUnmappedValue()?remove_beginning("CUSTOM:")?remove_ending(":Flowing"))?upper_case}.get()) return true;
+            <#else>
 				if(fs.getFluid() == Fluids.${fluidRestriction}) return true;
-                </#if>
-            </#list>
+            </#if>
+        </#list>
+		return false;
+		}</#if>
+	) {
+		@Override protected void onContentsChanged() {
+			super.onContentsChanged();
+			setChanged();
+			level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
+		}
+	};
 
-			return false;
-		}) {
-			@Override protected void onContentsChanged() {
-				super.onContentsChanged();
-				setChanged();
-				level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-			}
-		};
-        <#else>
-		private final FluidTank fluidTank = new FluidTank(${data.fluidCapacity}) {
-			@Override protected void onContentsChanged() {
-				super.onContentsChanged();
-				setChanged();
-				level.sendBlockUpdated(worldPosition, level.getBlockState(worldPosition), level.getBlockState(worldPosition), 2);
-			}
-		};
-        </#if>
+	public FluidTank getFluidTank() {
+		return fluidTank;
+	}
     </#if>
-
-	@Override public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
-		if (!this.remove && facing != null && capability == ForgeCapabilities.ITEM_HANDLER)
-			return handlers[facing.ordinal()].cast();
-
-		<#if data.hasEnergyStorage>
-		if (!this.remove && capability == ForgeCapabilities.ENERGY)
-			return LazyOptional.of(() -> energyStorage).cast();
-        </#if>
-
-		<#if data.isFluidTank>
-		if (!this.remove && capability == ForgeCapabilities.FLUID_HANDLER)
-			return LazyOptional.of(() -> fluidTank).cast();
-        </#if>
-
-		return super.getCapability(capability, facing);
-	}
-
-	@Override public void setRemoved() {
-		super.setRemoved();
-		for(LazyOptional<? extends IItemHandler> handler : handlers)
-			handler.invalidate();
-	}
 
 }
 <#-- @formatter:on -->
