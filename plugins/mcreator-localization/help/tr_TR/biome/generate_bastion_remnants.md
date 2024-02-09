@@ -1,0 +1,1 @@
+Biyomunuzda kale kalıntıları (bastion remnants) olması için bu ayarı seçin.

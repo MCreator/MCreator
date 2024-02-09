@@ -1,0 +1,1 @@
+Bu biyomu yalnızca özel boyutlarda kullanmak istiyorsanız, bu seçeneği devre dışı bırakın.

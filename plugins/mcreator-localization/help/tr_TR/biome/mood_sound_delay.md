@@ -1,0 +1,1 @@
+Bu değer, ses çalınmadan (döngü) önceki süreyi tik cinsinden tanımlar.
