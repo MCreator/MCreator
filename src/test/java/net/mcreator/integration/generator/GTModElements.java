@@ -74,6 +74,8 @@ public class GTModElements {
 
 				workspace.getModElementManager().storeModElement(generatableElement);
 
+				workspace.getModElementManager().storeModElementPicture(generatableElement);
+
 				List<File> modElementFiles = workspace.getGenerator()
 						.getModElementGeneratorTemplatesList(generatableElement).stream()
 						.map(GeneratorTemplate::getFile).toList();

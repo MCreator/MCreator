@@ -24,7 +24,6 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -197,16 +196,15 @@ public class MinecraftImageGenerator {
 	}
 
 	public static ImageIcon generateFluidBucketIcon(ImageIcon fluid) {
-		ImageIcon bucket = TiledImageCache.bucket;
-		BufferedImage bucketMask = ImageUtils.toBufferedImage(TiledImageCache.bucketMask.getImage());
+		BufferedImage bucketMask = ImageUtils.toBufferedImage(UIRES.get("mod_preview_bases.bucket_mask").getImage());
 		// The fluid image is resized to avoid issues with animated textures
 		BufferedImage fluidOverlay = ImageUtils.resizeAndCrop(fluid.getImage(), 32);
-		return ImageUtils.drawOver(bucket, new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
+		return ImageUtils.drawOver(UIRES.get("mod_preview_bases.bucket_base"), new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
 	}
 
 	public static ImageIcon generateSpawnEggIcon(Color baseColor, Color dotColor) {
-		ImageIcon base = ImageUtils.colorize(TiledImageCache.spawnEggBase, baseColor, false);
-		ImageIcon dots = ImageUtils.colorize(TiledImageCache.spawnEggDots, dotColor, true);
+		ImageIcon base = ImageUtils.colorize(UIRES.get("mod_preview_bases.spawnegg_base"), baseColor, false);
+		ImageIcon dots = ImageUtils.colorize(UIRES.get("mod_preview_bases.spawnegg_dots"), dotColor, true);
 		return ImageUtils.drawOver(base, dots);
 	}
 
