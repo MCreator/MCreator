@@ -33,7 +33,7 @@
 package ${package}.item.inventory;
 
 <#compress>
-@Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability extends ItemStackHandler {
+@Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryAttachment extends ItemStackHandler {
 
 	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onItemDropped(ItemTossEvent event) {
 		if (event.getEntity().getItem().getItem() == ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get()) {
@@ -43,14 +43,8 @@ package ${package}.item.inventory;
 		}
 	}
 
-	private final ItemStack stack;
-
-	public ${name}InventoryCapability(ItemStack stack) {
+	public ${name}InventoryAttachment() {
 		super(${data.inventorySize});
-		this.stack = stack;
-		CompoundTag nbt = (CompoundTag) stack.getOrCreateTag().get("Inventory");
-		if (nbt != null)
-			deserializeNBT(nbt);
 	}
 
 	@Override public int getSlotLimit(int slot) {
@@ -58,14 +52,10 @@ package ${package}.item.inventory;
 	}
 
 	@Override public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
-		return stack.getItem() != this.stack.getItem();
+		return stack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get();
 	}
 
 	@Override public void setSize(int size) {
-	}
-
-	@Override protected void onContentsChanged(int slot) {
-		this.stack.getOrCreateTag().put("Inventory", serializeNBT());
 	}
 
 }

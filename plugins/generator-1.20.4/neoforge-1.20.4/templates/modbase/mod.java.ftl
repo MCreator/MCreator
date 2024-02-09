@@ -30,7 +30,10 @@ import org.apache.logging.log4j.Logger;
 		modEventBus.addListener(this::registerNetworking);
 
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
-		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.REGISTRY.register(modEventBus);</#if>
+		<#if w.hasElementsOfBaseType("item")>
+			${JavaModName}Items.REGISTRY.register(modEventBus);
+			${JavaModName}Items.ATTACHMENT_TYPES.register(modEventBus);
+		</#if>
 		<#if w.hasItemsInTabs()>${JavaModName}Tabs.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasVariables()>${JavaModName}Variables.ATTACHMENT_TYPES.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(modEventBus);</#if>

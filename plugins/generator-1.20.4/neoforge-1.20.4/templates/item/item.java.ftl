@@ -159,7 +159,7 @@ public class ${name}Item extends Item {
 		</#if>
 
 		<#if data.hasInventory()>
-		if(entity instanceof ServerPlayer serverPlayer) {
+		if (entity instanceof ServerPlayer serverPlayer) {
 			serverPlayer.openMenu(new MenuProvider() {
 				@Override public Component getDisplayName() {
 					return Component.literal("${data.name}");
