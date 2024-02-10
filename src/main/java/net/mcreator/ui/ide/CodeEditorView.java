@@ -531,6 +531,7 @@ public class CodeEditorView extends ViewBase {
 
 		if (tree != null) {
 			tree.setCellRenderer(new AstTreeCellRendererCustom());
+			tree.setOpaque(false);
 			tree.listenTo(te);
 			tree.setRowHeight(18);
 			treeSP.setViewportView(tree);
