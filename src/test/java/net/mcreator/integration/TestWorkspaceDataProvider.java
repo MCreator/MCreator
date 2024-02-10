@@ -776,12 +776,12 @@ public class TestWorkspaceDataProvider {
 			armor.creativeTab = new TabEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllTabs(modElement.getWorkspace())));
 			armor.armorTextureFile = "armorTexture";
-			armor.maxDamage = 12;
+			armor.maxDamage = 15;
 			armor.damageValueHelmet = 3;
 			armor.damageValueBody = 4;
 			armor.damageValueLeggings = 6;
 			armor.damageValueBoots = 5;
-			armor.enchantability = 7;
+			armor.enchantability = 9;
 			armor.toughness = 1.23;
 			armor.knockbackResistance = 3.148;
 			armor.repairItems = new ArrayList<>();
