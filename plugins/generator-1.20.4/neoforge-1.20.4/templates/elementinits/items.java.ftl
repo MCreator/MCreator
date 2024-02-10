@@ -101,6 +101,11 @@ public class ${JavaModName}Items {
 				() -> AttachmentType.serializable(${item.getModElement().getName()}InventoryCapability::new).build());
 		</#list>
 
+		public static void register(IEventBus bus) {
+			REGISTRY.register(bus);
+			ATTACHMENT_TYPES.register(bus);
+		}
+
 		<#compress>
 		@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 			<#list itemsWithInventory as item>
@@ -109,6 +114,10 @@ public class ${JavaModName}Items {
 			</#list>
 		}
 		</#compress>
+	<#else>
+		public static void register(IEventBus bus) {
+			REGISTRY.register(bus);
+		}
 	</#if>
 
 	<#if hasBlocks>
