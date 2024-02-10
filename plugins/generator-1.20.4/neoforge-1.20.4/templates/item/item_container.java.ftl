@@ -33,7 +33,7 @@
 package ${package}.item.inventory;
 
 <#compress>
-@Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryAttachment extends ItemStackHandler {
+@Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability extends ItemStackHandler {
 
 	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onItemDropped(ItemTossEvent event) {
 		if (event.getEntity().getItem().getItem() == ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get()) {
@@ -43,7 +43,7 @@ package ${package}.item.inventory;
 		}
 	}
 
-	public ${name}InventoryAttachment() {
+	public ${name}InventoryCapability() {
 		super(${data.inventorySize});
 	}
 

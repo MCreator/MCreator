@@ -49,7 +49,6 @@ package ${package}.init;
 public class ${JavaModName}Items {
 
 	public static final DeferredRegister<Item> REGISTRY = DeferredRegister.create(BuiltInRegistries.ITEM, ${JavaModName}.MODID);
-	public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ${JavaModName}.MODID);
 
 	<#list items as item>
 		<#if item.getModElement().getTypeString() == "armor">
@@ -94,20 +93,22 @@ public class ${JavaModName}Items {
 	</#list>
 
 	<#if itemsWithInventory?size != 0>
+	public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ${JavaModName}.MODID);
+
 		<#list itemsWithInventory as item>
-			public static final DeferredHolder<AttachmentType<?>, AttachmentType<${item.getModElement().getName()}InventoryAttachment>> ${item.getModElement().getRegistryNameUpper()}_INVENTORY =
+			public static final DeferredHolder<AttachmentType<?>, AttachmentType<${item.getModElement().getName()}InventoryCapability>> ${item.getModElement().getRegistryNameUpper()}_INVENTORY =
 				ATTACHMENT_TYPES.register("${item.getModElement().getRegistryName()}_inventory",
-				() -> AttachmentType.serializable(${item.getModElement().getName()}InventoryAttachment::new).build());
+				() -> AttachmentType.serializable(${item.getModElement().getName()}InventoryCapability::new).build());
 		</#list>
 
-	<#compress>
-	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-		<#list itemsWithInventory as item>
-			event.registerItem(Capabilities.ItemHandler.ITEM, (stack, context) -> stack.getData(${item.getModElement().getRegistryNameUpper()}_INVENTORY),
-				${item.getModElement().getRegistryNameUpper()}.get());
-		</#list>
-	}
-	</#compress>
+		<#compress>
+		@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+			<#list itemsWithInventory as item>
+				event.registerItem(Capabilities.ItemHandler.ITEM, (stack, context) -> stack.getData(${item.getModElement().getRegistryNameUpper()}_INVENTORY),
+					${item.getModElement().getRegistryNameUpper()}.get());
+			</#list>
+		}
+		</#compress>
 	</#if>
 
 	<#if hasBlocks>
