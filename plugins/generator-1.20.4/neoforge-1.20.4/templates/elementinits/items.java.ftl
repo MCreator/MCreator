@@ -93,7 +93,7 @@ public class ${JavaModName}Items {
 	</#list>
 
 	<#if itemsWithInventory?size != 0>
-	public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ${JavaModName}.MODID);
+		public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ${JavaModName}.MODID);
 
 		<#list itemsWithInventory as item>
 			public static final DeferredHolder<AttachmentType<?>, AttachmentType<${item.getModElement().getName()}InventoryCapability>> ${item.getModElement().getRegistryNameUpper()}_INVENTORY =
