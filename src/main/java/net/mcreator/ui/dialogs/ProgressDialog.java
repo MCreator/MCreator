@@ -201,6 +201,7 @@ public class ProgressDialog extends MCreatorDialog {
 			if (ma.status == ProgressUnit.Status.LOADING) {
 				JLabel status2 = new JLabel(LOADER_CACHE.computeIfAbsent(ma,
 						e -> new SquareLoaderIcon(list, 4, 1, Theme.current().getForegroundColor())));
+				status2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
 				stap.add("East", PanelUtils.centerInPanel(status2));
 
 				JProgressBar bar = new JProgressBar(0, 100);

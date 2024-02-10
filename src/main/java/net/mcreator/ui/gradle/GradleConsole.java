@@ -264,6 +264,11 @@ public class GradleConsole extends JPanel {
 	}
 
 	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener) {
+		exec(command, null, taskSpecificListener);
+	}
+
+	public void exec(String command, @Nullable ProgressListener progressListener,
+			@Nullable GradleTaskFinishedListener taskSpecificListener) {
 		status = RUNNING;
 
 		ref.consoleTab.repaint();
@@ -417,6 +422,10 @@ public class GradleConsole extends JPanel {
 		})));
 
 		task.addProgressListener((ProgressListener) event -> ref.statusBar.setGradleMessage(event.getDescription()));
+
+		if (progressListener != null) {
+			task.addProgressListener(progressListener);
+		}
 
 		task.run(new ResultHandler<>() {
 			@Override public void onComplete(Void result) {
