@@ -96,9 +96,9 @@ SocialInteractions: SocialInteractionsScreen
 TelemetryInfo: TelemetryInfoScreen
 ConfirmExperimentalFeatures: ConfirmExperimentalFeaturesScreen
 Experiments: ExperimentsScreen
-ServerReconfigScreen: ServerReconfigScreen
-NameReportScreen: NameReportScreen
-ReportPlayerScreen: ReportPlayerScreen
-SkinReportScreen: SkinReportScreen
-RecoverWorldDataScreen: RecoverWorldDataScreen
-UnsupportedGraphicsWarningScreen: UnsupportedGraphicsWarningScreen
+ServerReconfig: ServerReconfigScreen
+NameReport: NameReportScreen
+ReportPlayer: ReportPlayerScreen
+SkinReport: SkinReportScreen
+RecoverWorldData: RecoverWorldDataScreen
+UnsupportedGraphicsWarning: UnsupportedGraphicsWarningScreen
