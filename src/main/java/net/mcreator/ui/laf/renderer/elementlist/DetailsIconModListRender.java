@@ -94,7 +94,7 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 
 		ImageIcon modIcon = element instanceof ModElement ?
 				((ModElement) element).getElementIcon() :
-				UIRES.get("laf.directory.gif");
+				UIRES.get("laf.directory");
 
 		if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0 && modIcon.getIconHeight() > 0
 				&& modIcon != MCItem.DEFAULT_ICON) {

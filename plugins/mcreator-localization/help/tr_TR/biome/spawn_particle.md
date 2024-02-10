@@ -1,0 +1,1 @@
+Biyomda ortam parçacıklarının ortaya çıkmasını etkinleştirmek için bu parametreyi işaretleyin.

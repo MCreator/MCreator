@@ -19,6 +19,7 @@
 package net.mcreator.ui.component;
 
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VComboBox;
 
 import javax.swing.*;
@@ -86,7 +87,7 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 			g2.setFont(g.getFont().deriveFont(12.0f));
 			g2.setColor(new Color(50, 50, 50, 230));
 			g2.fillRect(0, 0, g.getFontMetrics().stringWidth(searchTerm) + 3, 17);
-			g2.setColor(Color.white);
+			g2.setColor(Theme.current().getForegroundColor());
 			g2.drawString(searchTerm, 1, 12);
 		}
 	}

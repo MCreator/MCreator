@@ -155,7 +155,7 @@ public class StampTool extends AbstractDrawingTool {
 
 	public Image getImage() {
 		int width = (int) Math.round(this.width.getValue()), height = (int) Math.round(this.height.getValue());
-		BufferedImage image;
+		Image image;
 
 		if (aliasing.isSelected())
 			image = ImageUtils.resizeAA(ImageMakerTexturesCache.CACHE.get(selection).getImage(), width, height);

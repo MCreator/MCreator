@@ -1,14 +1,14 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 20.4.146-beta
+buildfileversion: 20.4.154-beta
 
 import:
   - datapack-1.20.4
 
-#java_models:
-#  key: mojmap-1.20.x
-#  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x]
-#  requested_key_words: [ModelPart, ~ModelRenderer]
+java_models:
+  key: mojmap-1.20.x
+  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.19.x]
+  requested_key_words: [ModelPart, ~ModelRenderer]
 
 # gradle task definitions
 gradle:
@@ -26,6 +26,7 @@ import_formatter:
     Codec: com.mojang.serialization
     SoundEvent: net.minecraft.sounds
     Blocks: net.minecraft.world.level.block
+    Items: net.minecraft.world.item
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -40,13 +41,13 @@ server_run_dir: "@WORKSPACEROOT/runs/server"
 # specific resource folders
 sounds_dir: "@MODASSETSROOT/sounds"
 structures_dir: "@MODDATAROOT/structures"
-#block_textures_dir: "@MODASSETSROOT/textures/block"
-#item_textures_dir: "@MODASSETSROOT/textures/item"
-#entity_textures_dir: "@MODASSETSROOT/textures/entities"
-#effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
-#particle_textures_dir: "@MODASSETSROOT/textures/particle"
-#screen_textures_dir: "@MODASSETSROOT/textures/screens"
-#armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
+block_textures_dir: "@MODASSETSROOT/textures/block"
+item_textures_dir: "@MODASSETSROOT/textures/item"
+entity_textures_dir: "@MODASSETSROOT/textures/entities"
+effect_textures_dir: "@MODASSETSROOT/textures/mob_effect"
+particle_textures_dir: "@MODASSETSROOT/textures/particle"
+screen_textures_dir: "@MODASSETSROOT/textures/screens"
+armor_textures_dir: "@MODASSETSROOT/textures/models/armor"
 other_textures_dir: "@MODASSETSROOT/textures"
 
 base_templates:
@@ -69,25 +70,24 @@ base_templates:
   - template: modbase/variableslist.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/network/@JavaModNameVariables.java"
     condition: hasVariables()
-#  - template: elementinits/tabs.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
-#    condition: hasItemsInTabs()
-#  - template: modbase/accesstransformer.cfg.ftl
-#    writer: file
-#    name: "@RESROOT/META-INF/accesstransformer.cfg"
-#    condition_any:
-#      - ${w.hasElementsOfType('feature')}
-#      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
-#  - template: elementinits/javamodels.java.ftl
-#    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
-#    condition: hasJavaModels()
+  - template: elementinits/tabs.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameTabs.java"
+    condition: hasItemsInTabs()
+  - template: modbase/accesstransformer.cfg.ftl
+    writer: file
+    name: "@RESROOT/META-INF/accesstransformer.cfg"
+    condition_any:
+      - "${w.hasElementsOfType('feature')}"
+      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
+  - template: elementinits/javamodels.java.ftl
+    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
+    condition: hasJavaModels()
 
-
-#sources_setup_tasks:
-#  - task: copy_models
-#    type: JAVA_viatemplate
-#    template: javamodel.java.ftl
-#    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+sources_setup_tasks:
+  - task: copy_models
+    type: JAVA_viatemplate
+    template: javamodel.java.ftl
+    to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
 
 tags:
   template: tags.json.ftl
@@ -102,10 +102,10 @@ resources_setup_tasks:
   - task: copy_file
     from: "@MODASSETSROOT/textures/@modpicture.png"
     to: "@RESROOT/logo.png"
-#  - task: copy_models
-#    type: OBJ_inlinetextures
-#    prefix: "@modid:block/"
-#    to: "@MODASSETSROOT/models/item"
-#  - task: copy_models
-#    type: JSON_noinlinetextures
-#    to: "@MODASSETSROOT/models/custom"
+  - task: copy_models
+    type: OBJ_inlinetextures
+    prefix: "@modid:block/"
+    to: "@MODASSETSROOT/models/item"
+  - task: copy_models
+    type: JSON_noinlinetextures
+    to: "@MODASSETSROOT/models/custom"

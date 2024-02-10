@@ -245,7 +245,7 @@ public class WYSIWYGEditor extends JPanel {
 
 		for (WYSIWYGComponentRegistration<?> componentRegistration : COMPONENT_REGISTRY) {
 			if (isNotOverlayType || componentRegistration.worksInOverlay()) {
-				JButton componentButton = new JButton(UIRES.get("32px." + componentRegistration.icon()));
+				JButton componentButton = new JButton(UIRES.get("wysiwyg_editor." + componentRegistration.icon()));
 				componentButton.setToolTipText((L10N.t("elementgui.gui.add_" + componentRegistration.machineName())));
 				componentButton.setMargin(new Insets(0, 0, 0, 0));
 				componentButton.addActionListener(e -> {
