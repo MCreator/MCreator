@@ -28,6 +28,7 @@ import org.w3c.dom.NodeList;
 import javax.imageio.ImageIO;
 import javax.imageio.ImageReader;
 import javax.imageio.stream.ImageInputStream;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
@@ -39,7 +40,7 @@ public class GifUtil {
 
 	private static final Logger LOG = LogManager.getLogger("Gif Util");
 
-	public static BufferedImage[] readAnimatedGif(File file) {
+	public static Image[] readAnimatedGif(File file) {
 		try {
 			String[] imageatt = new String[] { "imageLeftPosition", "imageTopPosition", "imageWidth", "imageHeight" };
 
@@ -49,7 +50,7 @@ public class GifUtil {
 
 			int noi = reader.getNumImages(true);
 
-			List<BufferedImage> retval = new ArrayList<>();
+			List<Image> retval = new ArrayList<>();
 
 			BufferedImage master = null;
 			for (int i = 0; i < noi; i++) {
@@ -80,7 +81,7 @@ public class GifUtil {
 					retval.add(ImageUtils.resize(master, master.getWidth(), master.getHeight()));
 			}
 
-			return retval.toArray(new BufferedImage[0]);
+			return retval.toArray(new Image[0]);
 		} catch (Exception e) {
 			LOG.error(e.getMessage(), e);
 		}

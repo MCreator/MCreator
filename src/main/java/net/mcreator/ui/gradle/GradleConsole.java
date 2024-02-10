@@ -288,6 +288,11 @@ public class GradleConsole extends JPanel {
 	}
 
 	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener) {
+		exec(command, null, taskSpecificListener);
+	}
+
+	public void exec(String command, @Nullable ProgressListener progressListener,
+			@Nullable GradleTaskFinishedListener taskSpecificListener) {
 		status = RUNNING;
 
 		ref.consoleTab.repaint();
@@ -320,6 +325,10 @@ public class GradleConsole extends JPanel {
 						.map(e -> e.split(":")[0]).collect(Collectors.joining(", "));
 				append(apiInfo, COLOR_UNIMPORTANT);
 				taskOut.append(apiInfo);
+			}
+
+			if (PreferencesManager.PREFERENCES.gradle.offline.get()) {
+				append("Gradle is running in offline mode. Some features may not work properly!", COLOR_LOGLEVEL_WARN);
 			}
 
 			append(" ");
@@ -437,6 +446,10 @@ public class GradleConsole extends JPanel {
 		})));
 
 		task.addProgressListener((ProgressListener) event -> ref.statusBar.setGradleMessage(event.getDescription()));
+
+		if (progressListener != null) {
+			task.addProgressListener(progressListener);
+		}
 
 		task.run(new ResultHandler<>() {
 			@Override public void onComplete(Void result) {
