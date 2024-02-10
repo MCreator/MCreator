@@ -64,6 +64,7 @@ BlastFurnace: BlastFurnaceScreen
 BrewingStand: BrewingStandScreen
 CartographyTable: CartographyTableScreen
 Chest: ContainerScreen
+Crafter: CrafterScreen
 Crafting: CraftingScreen
 Creative: CreativeModeInventoryScreen
 Dispenser: DispenserScreen
@@ -81,7 +82,7 @@ AccessibilityOptions: AccessibilityOptionsScreen
 CreditsAndAttribution: CreditsAndAttributionScreen
 GenericWaiting: GenericWaitingScreen
 OnlineOptions: OnlineOptionsScreen
-SymlinkWarning: SymlinkWarningScreen
+SymlinkWarning: NoticeWithLinkScreen
 Win: WinScreen
 Advancements: AdvancementsScreen
 EffectRenderingInventory: EffectRenderingInventoryScreen
@@ -95,3 +96,9 @@ SocialInteractions: SocialInteractionsScreen
 TelemetryInfo: TelemetryInfoScreen
 ConfirmExperimentalFeatures: ConfirmExperimentalFeaturesScreen
 Experiments: ExperimentsScreen
+ServerReconfigScreen: ServerReconfigScreen
+NameReportScreen: NameReportScreen
+ReportPlayerScreen: ReportPlayerScreen
+SkinReportScreen: SkinReportScreen
+RecoverWorldDataScreen: RecoverWorldDataScreen
+UnsupportedGraphicsWarningScreen: UnsupportedGraphicsWarningScreen

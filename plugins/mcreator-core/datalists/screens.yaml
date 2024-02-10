@@ -63,6 +63,7 @@
 - BrewingStand
 - CartographyTable
 - Chest
+- Crafter
 - Crafting
 - Creative
 - Dispenser
@@ -94,3 +95,9 @@
 - TelemetryInfo
 - ConfirmExperimentalFeatures
 - Experiments
+- ServerReconfig
+- NameReport
+- ReportPlayer
+- SkinReport
+- RecoverWorldData
+- UnsupportedGraphicsWarning
