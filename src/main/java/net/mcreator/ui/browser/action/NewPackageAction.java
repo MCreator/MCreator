@@ -39,7 +39,7 @@ public class NewPackageAction extends BasicAction {
 				actionRegistry.getMCreator().getProjectBrowser().reloadTree();
 			}
 		});
-		setIcon(UIRES.get("16px.directory.gif"));
+		setIcon(UIRES.get("16px.directory"));
 	}
 
 }

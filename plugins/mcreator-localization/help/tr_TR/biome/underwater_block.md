@@ -1,0 +1,1 @@
+Bu parametre suyun altında oluşan bloğu kontrol eder. Çoğu vanilya biyomu bunun için toprak veya çakıl bloğu kullanır.

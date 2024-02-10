@@ -44,7 +44,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 	int[] finalDNDselection = null;
 
 	private final Cursor DRAG_FOLDER = Toolkit.getDefaultToolkit()
-			.createCustomCursor(UIRES.get("folder").getImage(), new Point(0, 0), "Drag cursor");
+			.createCustomCursor(UIRES.get("mod_types.folder").getImage(), new Point(0, 0), "Drag cursor");
 
 	private final Cursor DRAG_ELEMENTS = Toolkit.getDefaultToolkit()
 			.createCustomCursor(UIRES.get("mods").getImage(), new Point(0, 0), "Drag elements cursor");

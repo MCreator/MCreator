@@ -1,0 +1,1 @@
+Biyomunuzdaki mesa biyomlarında maden ocaklarının kullanılması için bu ayarı seçin.

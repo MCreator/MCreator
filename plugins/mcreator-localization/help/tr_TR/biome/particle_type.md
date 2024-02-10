@@ -1,0 +1,1 @@
+Bu biyomda ortaya çıkan parçacık.

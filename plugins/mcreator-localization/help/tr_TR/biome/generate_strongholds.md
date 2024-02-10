@@ -1,0 +1,1 @@
+Biyomunuzda Kaleler olması için bu ayarı seçin.
