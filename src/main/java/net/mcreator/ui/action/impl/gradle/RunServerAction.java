@@ -30,13 +30,15 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.io.*;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class RunServerAction extends GradleAction {
 
 	private static final Logger LOG = LogManager.getLogger("Run Minecraft Server");
 
 	public RunServerAction(ActionRegistry actionRegistry) {
-		super(actionRegistry, L10N.t("action.run_server_and_client"), evt -> {
+		super(actionRegistry, L10N.t("action.run_server_and_client"), null);
+		setActionListener(evt -> {
 			File eulaFile = new File(actionRegistry.getMCreator().getFolderManager().getServerRunDir(), "eula.txt");
 
 			String eula;
@@ -72,53 +74,48 @@ public class RunServerAction extends GradleAction {
 					} catch (IOException e) {
 						LOG.error(e.getMessage(), e);
 					}
-					actionRegistry.getMCreator().getGradleConsole()
-							.markRunning(); // so console gets locked while we generate code already
-					try {
-						actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
-						actionRegistry.getMCreator().getGenerator().generateBase();
-						actionRegistry.getMCreator().getGradleConsole()
-								.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
-										.getGradleTaskFor("run_server"));
 
-						if (actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client")
-								!= null)
-							actionRegistry.getMCreator().getGradleConsole()
-									.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
-											.getGradleTaskFor("run_client"));
-					} catch (Exception e) { // if something fails, we still need to free the gradle console
-						LOG.error(e.getMessage(), e);
-						actionRegistry.getMCreator().getGradleConsole().markReady();
-					}
+					runServer();
 				} else {
 					JOptionPane.showMessageDialog(actionRegistry.getMCreator(),
 							L10N.t("dialog.run_server_and_client.eula_rejected.message"));
 				}
 			} else {
-				actionRegistry.getMCreator().getGradleConsole()
-						.markRunning(); // so console gets locked while we generate code already
-				try {
-					actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
-					actionRegistry.getMCreator().getGenerator().generateBase();
-
-					if (PreferencesManager.PREFERENCES.gradle.passLangToMinecraft.get())
-						MinecraftOptionsUtils.setLangTo(actionRegistry.getMCreator().getWorkspace(),
-								L10N.getLocaleString());
-
-					actionRegistry.getMCreator().getGradleConsole()
-							.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
-									.getGradleTaskFor("run_server"));
-
-					if (actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_client") != null)
-						actionRegistry.getMCreator().getGradleConsole()
-								.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
-										.getGradleTaskFor("run_client"));
-				} catch (Exception e) { // if something fails, we still need to free the gradle console
-					LOG.error(e.getMessage(), e);
-					actionRegistry.getMCreator().getGradleConsole().markReady();
-				}
+				runServer();
 			}
 		});
+	}
+
+	private void runServer() {
+		actionRegistry.getMCreator().getGradleConsole()
+				.markRunning(); // so console gets locked while we generate code already
+		try {
+			actionRegistry.getMCreator().getGenerator().runResourceSetupTasks();
+			actionRegistry.getMCreator().getGenerator().generateBase();
+
+			if (PreferencesManager.PREFERENCES.gradle.passLangToMinecraft.get())
+				MinecraftOptionsUtils.setLangTo(actionRegistry.getMCreator().getWorkspace(), L10N.getLocaleString());
+
+			AtomicBoolean clientStarted = new AtomicBoolean(false);
+			actionRegistry.getMCreator().getGradleConsole()
+					.exec(actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("run_server"),
+							progressEvent -> {
+								if (!clientStarted.get() && progressEvent.getDescription().contains(
+										":" + actionRegistry.getMCreator().getGeneratorConfiguration()
+												.getGradleTaskFor("run_server"))) {
+									clientStarted.set(true);
+									if (actionRegistry.getMCreator().getGeneratorConfiguration()
+											.getGradleTaskFor("run_client") != null) {
+										actionRegistry.getMCreator().getGradleConsole()
+												.exec(actionRegistry.getMCreator().getGeneratorConfiguration()
+														.getGradleTaskFor("run_client"));
+									}
+								}
+							}, null);
+		} catch (Exception e) { // if something fails, we still need to free the gradle console
+			LOG.error("Failed to run server", e);
+			actionRegistry.getMCreator().getGradleConsole().markReady();
+		}
 	}
 
 	@Override public boolean isEnabled() {
