@@ -779,8 +779,8 @@ public class TestWorkspaceDataProvider {
 			armor.maxDamage = 12;
 			armor.damageValueHelmet = 3;
 			armor.damageValueBody = 4;
-			armor.damageValueLeggings = 5;
-			armor.damageValueBoots = 6;
+			armor.damageValueLeggings = 6;
+			armor.damageValueBoots = 5;
 			armor.enchantability = 7;
 			armor.toughness = 1.23;
 			armor.knockbackResistance = 3.148;
