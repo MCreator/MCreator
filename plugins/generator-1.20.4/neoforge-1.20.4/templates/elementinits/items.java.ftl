@@ -41,9 +41,10 @@ package ${package}.init;
 <#assign hasDoubleBlocks = false>
 <#assign hasItemsWithProperties = w.getGElementsOfType("item")?filter(e -> e.customProperties?has_content)?size != 0
 	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
+<#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
 
-<#if hasItemsWithProperties>
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+<#if hasItemsWithProperties || itemsWithInventory?size != 0>
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 </#if>
 public class ${JavaModName}Items {
 
@@ -91,6 +92,34 @@ public class ${JavaModName}Items {
 		</#if>
 	</#list>
 
+	<#if itemsWithInventory?size != 0>
+		public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ${JavaModName}.MODID);
+
+		<#list itemsWithInventory as item>
+			public static final DeferredHolder<AttachmentType<?>, AttachmentType<${item.getModElement().getName()}InventoryCapability>> ${item.getModElement().getRegistryNameUpper()}_INVENTORY =
+				ATTACHMENT_TYPES.register("${item.getModElement().getRegistryName()}_inventory",
+				() -> AttachmentType.serializable(${item.getModElement().getName()}InventoryCapability::new).build());
+		</#list>
+
+		public static void register(IEventBus bus) {
+			REGISTRY.register(bus);
+			ATTACHMENT_TYPES.register(bus);
+		}
+
+		<#compress>
+		@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+			<#list itemsWithInventory as item>
+				event.registerItem(Capabilities.ItemHandler.ITEM, (stack, context) -> stack.getData(${item.getModElement().getRegistryNameUpper()}_INVENTORY),
+					${item.getModElement().getRegistryNameUpper()}.get());
+			</#list>
+		}
+		</#compress>
+	<#else>
+		public static void register(IEventBus bus) {
+			REGISTRY.register(bus);
+		}
+	</#if>
+
 	<#if hasBlocks>
 	private static DeferredHolder<Item, Item> block(DeferredHolder<Block, Block> block) {
 		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));
@@ -105,7 +134,7 @@ public class ${JavaModName}Items {
 
 	<#if hasItemsWithProperties>
 	<#compress>
-	@SubscribeEvent public static void clientLoad(FMLClientSetupEvent event) {
+	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void clientLoad(FMLClientSetupEvent event) {
 		event.enqueueWork(() -> {
 		<#list items as item>
 			<#if item.getModElement().getTypeString() == "item">

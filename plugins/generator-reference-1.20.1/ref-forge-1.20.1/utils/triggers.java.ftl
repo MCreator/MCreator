@@ -22,22 +22,6 @@
 </#if>
 </#macro>
 
-<#macro onDroppedByPlayer procedure="">
-<#if hasProcedure(procedure)>
-@Override public boolean onDroppedByPlayer(ItemStack itemstack, Player entity) {
-	<@procedureCode procedure, {
-		"x": "entity.getX()",
-		"y": "entity.getY()",
-		"z": "entity.getZ()",
-		"world": "entity.level()",
-		"entity": "entity",
-		"itemstack": "itemstack"
-	}/>
-	return true;
-}
-</#if>
-</#macro>
-
 <#-- Block-related triggers -->
 <#macro onDestroyedByExplosion procedure="">
 <#if hasProcedure(procedure)>
