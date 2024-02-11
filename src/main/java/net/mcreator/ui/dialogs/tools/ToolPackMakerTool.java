@@ -233,6 +233,7 @@ public class ToolPackMakerTool {
 		shovelTool.creativeTab = new TabEntry(workspace, "TOOLS");
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, shovelTool, folder);
 		shovelTool.damageVsEntity = (double) Math.round(4.5f * factor);
+		shovelTool.attackSpeed = (double) Math.round(1.0f * factor);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool hoeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
@@ -244,7 +245,6 @@ public class ToolPackMakerTool {
 		hoeTool.creativeTab = new TabEntry(workspace, "TOOLS");
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, hoeTool, folder);
 		hoeTool.damageVsEntity = (double) Math.round(1.0f * factor);
-		hoeTool.attackSpeed = (double) Math.round(3.0f * factor);
 
 		Recipe pickaxeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "PickaxeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -304,6 +304,7 @@ public class ToolPackMakerTool {
 		tool.enchantability = (int) Math.round(14 * factor);
 		tool.damageVsEntity = (double) Math.round(4.0f * factor);
 		tool.usageCount = (int) Math.round(250 * Math.pow(factor, 1.4));
+		tool.attackSpeed = (double) Math.round(3.0f * factor);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(mcreator.getWorkspace(), folder, tool);
 	}
 
