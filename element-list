@@ -132,6 +132,7 @@ net.mcreator.ui.wysiwyg
 net.mcreator.util
 net.mcreator.util.diff
 net.mcreator.util.image
+net.mcreator.util.image.svg
 net.mcreator.util.locale
 net.mcreator.util.math
 net.mcreator.workspace
