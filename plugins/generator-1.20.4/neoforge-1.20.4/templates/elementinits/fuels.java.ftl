@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -31,6 +31,7 @@
 <#-- @formatter:off -->
 
 <#include "../mcitems.ftl">
+<#include "../procedures.java.ftl">
 
 /*
  *	MCreator note: This file will be REGENERATED on each build.
@@ -38,15 +39,23 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}CompostableItems {
+@Mod.EventBusSubscriber public class ${JavaModName}Fuels {
 
 	@SubscribeEvent
-	public static void addComposterItems(FMLCommonSetupEvent event) {
-		<#list itemextensions as extension>
-			<#if (extension.compostLayerChance > 0)>
-				ComposterBlock.COMPOSTABLES.put(${mappedMCItemToItem(extension.item)}, ${extension.compostLayerChance}f);
-			</#if>
+	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
+		<#compress>
+		ItemStack itemstack = event.getItemStack();
+		<#list itemextensions?filter(e -> e.enableFuel) as extension>
+			if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)}
+			<#if hasProcedure(extension.fuelSuccessCondition)>&& <@procedureOBJToConditionCode extension.fuelSuccessCondition/></#if>)
+				<#if hasProcedure(extension.fuelPower)>
+					event.setBurnTime((int) <@procedureOBJToNumberCode extension.fuelPower/>);
+				<#else>
+					event.setBurnTime(${extension.fuelPower.getFixedValue()});
+				</#if>
+			<#sep>else
 		</#list>
+		</#compress>
 	}
 
 }

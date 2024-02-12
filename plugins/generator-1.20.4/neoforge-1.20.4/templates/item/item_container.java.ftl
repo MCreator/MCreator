@@ -30,34 +30,35 @@
 
 <#-- @formatter:off -->
 
-<#include "../mcitems.ftl">
-<#include "../procedures.java.ftl">
+package ${package}.item.inventory;
 
-/*
- *	MCreator note: This file will be REGENERATED on each build.
- */
+<#compress>
+@Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability extends ItemStackHandler {
 
-package ${package}.init;
+	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void onItemDropped(ItemTossEvent event) {
+		if (event.getEntity().getItem().getItem() == ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get()) {
+			if (Minecraft.getInstance().screen instanceof ${data.guiBoundTo}Screen) {
+				Minecraft.getInstance().player.closeContainer();
+			}
+		}
+	}
 
-@Mod.EventBusSubscriber public class ${JavaModName}Fuels {
+	public ${name}InventoryCapability() {
+		super(${data.inventorySize});
+	}
 
-	@SubscribeEvent
-	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
-		<#compress>
-		ItemStack itemstack = event.getItemStack();
-		<#list itemextensions?filter(e -> e.enableFuel) as extension>
-			if (itemstack.getItem() == ${mappedMCItemToItem(extension.item)}
-			<#if hasProcedure(extension.fuelSuccessCondition)>&& <@procedureOBJToConditionCode extension.fuelSuccessCondition/></#if>)
-				<#if hasProcedure(extension.fuelPower)>
-					event.setBurnTime((int) <@procedureOBJToNumberCode extension.fuelPower/>);
-				<#else>
-					event.setBurnTime(${extension.fuelPower.getFixedValue()});
-				</#if>
-			<#sep>else
-		</#list>
-		</#compress>
+	@Override public int getSlotLimit(int slot) {
+		return ${data.inventoryStackSize};
+	}
+
+	@Override public boolean isItemValid(int slot, @Nonnull ItemStack stack) {
+		return stack.getItem() != ${JavaModName}Items.${data.getModElement().getRegistryNameUpper()}.get();
+	}
+
+	@Override public void setSize(int size) {
 	}
 
 }
+</#compress>
 
 <#-- @formatter:on -->

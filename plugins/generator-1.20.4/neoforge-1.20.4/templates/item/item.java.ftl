@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -159,8 +159,8 @@ public class ${name}Item extends Item {
 		</#if>
 
 		<#if data.hasInventory()>
-		if(entity instanceof ServerPlayer serverPlayer) {
-			NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
+		if (entity instanceof ServerPlayer serverPlayer) {
+			serverPlayer.openMenu(new MenuProvider() {
 				@Override public Component getDisplayName() {
 					return Component.literal("${data.name}");
 				}
@@ -235,24 +235,6 @@ public class ${name}Item extends Item {
 
 	<@onDroppedByPlayer data.onDroppedByPlayer/>
 
-	<#if data.hasInventory()>
-	@Override public ICapabilityProvider initCapabilities(ItemStack stack, @Nullable CompoundTag compound) {
-		return new ${name}InventoryCapability();
-	}
-
-	@Override public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag nbt = stack.getOrCreateTag();
-		stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
-		return nbt;
-	}
-
-	@Override public void readShareTag(ItemStack stack, @Nullable CompoundTag nbt) {
-		super.readShareTag(stack, nbt);
-		if(nbt != null)
-			stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> ((ItemStackHandler) capability).deserializeNBT((CompoundTag) nbt.get("Inventory")));
-	}
-	</#if>
-
 	<#if hasProcedure(data.onStoppedUsing) || (data.enableRanged && !data.shootConstantly)>
 		@Override public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
 			<#if hasProcedure(data.onStoppedUsing)>
@@ -321,11 +303,11 @@ public class ${name}Item extends Item {
 		<#if projectile.startsWith("CUSTOM:")>
 			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom());
 		<#elseif projectile.endsWith("Arrow")>
-			${projectileClass} projectile = new ${projectileClass}(world, entity);
+			${projectileClass} projectile = new ${projectileClass}(world, entity, stack);
 			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, 1.0F);
 			world.addFreshEntity(projectile);
-			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
-				.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
+			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
+				.get(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
 		</#if>
 
 		itemstack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(entity.getUsedItemHand()));
