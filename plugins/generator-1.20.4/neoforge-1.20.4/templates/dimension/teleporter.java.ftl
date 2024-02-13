@@ -42,7 +42,7 @@ package ${package}.world.teleporter;
 	@SubscribeEvent public static void registerPointOfInterest(RegisterEvent event) {
 		event.register(Registries.POINT_OF_INTEREST_TYPE, registerHelper -> {
 			PoiType poiType = new PoiType(ImmutableSet.copyOf(${JavaModName}Blocks.${registryname?upper_case}_PORTAL.get().getStateDefinition().getPossibleStates()), 0, 1);
-			registerHelper.register(new ResourceLocation("${registryname}_portal"), poiType);
+			registerHelper.register(new ResourceLocation("${modid}:${registryname}_portal"), poiType);
 			poi = BuiltInRegistries.POINT_OF_INTEREST_TYPE.wrapAsHolder(poiType);
 		});
 	}
