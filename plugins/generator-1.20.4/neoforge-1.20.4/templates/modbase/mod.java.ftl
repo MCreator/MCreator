@@ -66,7 +66,8 @@ import org.apache.logging.log4j.Logger;
 	private static final Collection<Tuple<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
 
 	public static void queueServerWork(int tick, Runnable action) {
-		workQueue.add(new Tuple<>(action, tick));
+		if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
+			workQueue.add(new Tuple<>(action, tick));
 	}
 
 	@SubscribeEvent public void tick(TickEvent.ServerTickEvent event) {
