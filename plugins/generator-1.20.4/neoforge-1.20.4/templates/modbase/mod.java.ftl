@@ -33,6 +33,7 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfBaseType("block")>${JavaModName}Blocks.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.register(modEventBus);</#if>
+		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasItemsInTabs()>${JavaModName}Tabs.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasVariables()>${JavaModName}Variables.ATTACHMENT_TYPES.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(modEventBus);</#if>
@@ -67,7 +68,8 @@ import org.apache.logging.log4j.Logger;
 	private static final Collection<Tuple<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
 
 	public static void queueServerWork(int tick, Runnable action) {
-		workQueue.add(new Tuple<>(action, tick));
+		if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
+			workQueue.add(new Tuple<>(action, tick));
 	}
 
 	@SubscribeEvent public void tick(TickEvent.ServerTickEvent event) {

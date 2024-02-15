@@ -36,38 +36,39 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Entities {
+<#assign hasLivingEntities = w.hasElementsOfType("livingentity")>
 
-	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(ForgeRegistries.ENTITY_TYPES, ${JavaModName}.MODID);
+<#if hasLivingEntities>
+@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+</#if>
+public class ${JavaModName}Entities {
 
-	<#assign hasLivingEntities = false>
+	public static final DeferredRegister<EntityType<?>> REGISTRY = DeferredRegister.create(Registries.ENTITY_TYPE, ${JavaModName}.MODID);
 
 	<#list entities as entity>
 		<#if entity.getModElement().getTypeString() == "projectile">
-			public static final RegistryObject<EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
+			public static final DeferredHolder<EntityType<?>, EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
 				register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
-						of(${entity.getModElement().getName()}Entity::new, MobCategory.MISC).setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
+						of(${entity.getModElement().getName()}Entity::new, MobCategory.MISC)
 						.setShouldReceiveVelocityUpdates(true).setTrackingRange(64).setUpdateInterval(1).sized(0.5f, 0.5f));
 		<#elseif entity.getModElement().getTypeString() == "livingentity">
-			<#assign hasLivingEntities = true>
-			public static final RegistryObject<EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
+			public static final DeferredHolder<EntityType<?>, EntityType<${entity.getModElement().getName()}Entity>> ${entity.getModElement().getRegistryNameUpper()} =
 				register("${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}Entity>
 						of(${entity.getModElement().getName()}Entity::new, ${generator.map(entity.mobSpawningType, "mobspawntypes")})
 							.setShouldReceiveVelocityUpdates(true).setTrackingRange(${entity.trackingRange}).setUpdateInterval(3)
-							.setCustomClientFactory(${entity.getModElement().getName()}Entity::new)
 							<#if entity.immuneToFire>.fireImmune()</#if>
 							.sized(${entity.modelWidth}f, ${entity.modelHeight}f)
 						);
 			<#if entity.hasCustomProjectile()>
-			public static final RegistryObject<EntityType<${entity.getModElement().getName()}EntityProjectile>> ${entity.getModElement().getRegistryNameUpper()}_PROJECTILE =
+			public static final DeferredHolder<EntityType<?>, EntityType<${entity.getModElement().getName()}EntityProjectile>> ${entity.getModElement().getRegistryNameUpper()}_PROJECTILE =
 				register("projectile_${entity.getModElement().getRegistryName()}", EntityType.Builder.<${entity.getModElement().getName()}EntityProjectile>
 					of(${entity.getModElement().getName()}EntityProjectile::new, MobCategory.MISC).setShouldReceiveVelocityUpdates(true).setTrackingRange(64)
-						.setUpdateInterval(1).setCustomClientFactory(${entity.getModElement().getName()}EntityProjectile::new).sized(0.5f, 0.5f));
+						.setUpdateInterval(1).sized(0.5f, 0.5f));
 			</#if>
 		</#if>
 	</#list>
 
-	private static <T extends Entity> RegistryObject<EntityType<T>> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
+	private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
 		return REGISTRY.register(registryname, () -> (EntityType<T>) entityTypeBuilder.build(registryname));
 	}
 

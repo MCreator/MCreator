@@ -40,31 +40,19 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 	public static final ItemStack PROJECTILE_ITEM = ${mappedMCItemToItemStackCode(data.projectileItem)};
 
-	public ${name}Entity(PlayMessages.SpawnEntity packet, Level world) {
-		super(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
-	}
-
 	public ${name}Entity(EntityType<? extends ${name}Entity> type, Level world) {
-		super(type, world);
+		super(type, world, PROJECTILE_ITEM);
 	}
 
 	public ${name}Entity(EntityType<? extends ${name}Entity> type, double x, double y, double z, Level world) {
-		super(type, x, y, z, world);
+		super(type, x, y, z, world, PROJECTILE_ITEM);
 	}
 
 	public ${name}Entity(EntityType<? extends ${name}Entity> type, LivingEntity entity, Level world) {
-		super(type, entity, world);
-	}
-
-	@Override public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
+		super(type, entity, world, PROJECTILE_ITEM);
 	}
 
 	@Override @OnlyIn(Dist.CLIENT) public ItemStack getItem() {
-		return PROJECTILE_ITEM;
-	}
-
-	@Override protected ItemStack getPickupItem() {
 		return PROJECTILE_ITEM;
 	}
 
@@ -152,8 +140,8 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		world.addFreshEntity(entityarrow);
 
 		<#if data.actionSound.toString()?has_content>
-		world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
-				.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
+		world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
+				.get(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (random.nextFloat() * 0.5f + 1) + (power / 2));
 		</#if>
 
 		return entityarrow;
@@ -176,8 +164,8 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		entity.level().addFreshEntity(entityarrow);
 
 		<#if data.actionSound.toString()?has_content>
-		entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
-				.getValue(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (RandomSource.create().nextFloat() * 0.5f + 1));
+		entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
+				.get(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (RandomSource.create().nextFloat() * 0.5f + 1));
 		</#if>
 
 		return entityarrow;

@@ -35,7 +35,11 @@
 package ${package}.world.dimension;
 
 <#compress>
-@Mod.EventBusSubscriber public class ${name}Dimension {
+
+<#if hasProcedure(data.onPlayerLeavesDimension) || hasProcedure(data.onPlayerEntersDimension)>
+@Mod.EventBusSubscriber
+</#if>
+public class ${name}Dimension {
 
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public static class DimensionSpecialEffectsHandler {
 

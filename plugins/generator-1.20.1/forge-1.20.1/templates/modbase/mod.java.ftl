@@ -68,7 +68,8 @@ import org.apache.logging.log4j.Logger;
 	private static final Collection<AbstractMap.SimpleEntry<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
 
 	public static void queueServerWork(int tick, Runnable action) {
-		workQueue.add(new AbstractMap.SimpleEntry<>(action, tick));
+		if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
+			workQueue.add(new AbstractMap.SimpleEntry<>(action, tick));
 	}
 
 	@SubscribeEvent public void tick(TickEvent.ServerTickEvent event) {
