@@ -27,6 +27,8 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
+import net.mcreator.plugin.MCREvent;
+import net.mcreator.plugin.events.workspace.GElementDeserializedEvent;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -137,6 +139,7 @@ public abstract class GeneratableElement {
 		public GeneratableElement deserialize(JsonElement jsonElement, Type type,
 				JsonDeserializationContext jsonDeserializationContext) throws JsonParseException {
 			ModElement lastModElement = workspace.getModElementManager().getLastElementInConversion();
+			MCREvent.event(new GElementDeserializedEvent(workspace, jsonElement, jsonDeserializationContext));
 
 			final String modElementTypeString = switch (jsonElement.getAsJsonObject().get("_type").getAsString()) {
 				case "gun" -> "rangeditem";
