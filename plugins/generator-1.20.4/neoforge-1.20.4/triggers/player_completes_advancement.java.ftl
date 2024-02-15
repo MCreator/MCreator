@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @Mod.EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onAdvancement(AdvancementEvent event) {
+	@SubscribeEvent public static void onAdvancement(AdvancementEvent.AdvancementEarnEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 			"x": "event.getEntity().getX()",
