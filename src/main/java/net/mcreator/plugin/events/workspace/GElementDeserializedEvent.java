@@ -23,7 +23,6 @@ import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonElement;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.workspace.Workspace;
-import net.mcreator.workspace.elements.ModElement;
 
 public class GElementDeserializedEvent extends MCREvent {
 
