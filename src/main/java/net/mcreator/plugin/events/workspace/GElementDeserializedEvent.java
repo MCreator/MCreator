@@ -34,7 +34,7 @@ public class GElementDeserializedEvent extends MCREvent {
 	 * <p>This event is triggered when a generatable element is deserialized.
 	 * This event can be used to create a custom mod element converter or other plugin features.</p>
 	 *
-	 * @param workspace      			<p>The {@link Workspace} where the generatable element is stored.</p>
+	 * @param workspace					<p>The {@link Workspace} where the generatable element is stored.</p>
 	 * @param jsonElement				<p>The {@link JsonElement} that is deserialized.</p>
 	 * @param deserializationContext	<p>The {@link JsonDeserializationContext} used to deserialize json parameters.</p>
 	 */
