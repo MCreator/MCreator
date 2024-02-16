@@ -42,28 +42,28 @@ package ${package}.init;
 
 	private static final Map<String, ProfessionPoiType> POI_TYPES = new HashMap<>();
 
-	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(ForgeRegistries.VILLAGER_PROFESSIONS, ${JavaModName}.MODID);
+	public static final DeferredRegister<VillagerProfession> PROFESSIONS = DeferredRegister.create(Registries.VILLAGER_PROFESSION, ${JavaModName}.MODID);
 
 	<#list villagerprofessions as villagerprofession>
-		public static final RegistryObject<VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
+		public static final DeferredHolder<VillagerProfession, VillagerProfession> ${villagerprofession.getModElement().getRegistryNameUpper()} =
 			registerProfession(
 				"${villagerprofession.getModElement().getRegistryName()}",
 				() -> ${mappedBlockToBlock(villagerprofession.pointOfInterest)},
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${villagerprofession.actionSound}"))
+				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${villagerprofession.actionSound}"))
 			);
 	</#list>
 
-	private static RegistryObject<VillagerProfession> registerProfession(String name, Supplier<Block> block, Supplier<SoundEvent> soundEvent) {
+	private static DeferredHolder<VillagerProfession, VillagerProfession> registerProfession(String name, Supplier<Block> block, Supplier<SoundEvent> soundEvent) {
 		POI_TYPES.put(name, new ProfessionPoiType(block, null));
 
 		return PROFESSIONS.register(name, () -> {
-			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.get() == POI_TYPES.get(name).poiType.get());
+			Predicate<Holder<PoiType>> poiPredicate = poiTypeHolder -> (POI_TYPES.get(name).poiType != null) && (poiTypeHolder.value() == POI_TYPES.get(name).poiType.value());
 			return new VillagerProfession(${JavaModName}.MODID + ":" + name, poiPredicate, poiPredicate, ImmutableSet.of(), ImmutableSet.of(), soundEvent.get());
 		});
 	}
 
 	@SubscribeEvent public static void registerProfessionPointsOfInterest(RegisterEvent event) {
-		event.register(ForgeRegistries.Keys.POI_TYPES, registerHelper -> {
+		event.register(Registries.POINT_OF_INTEREST_TYPE, registerHelper -> {
 			for (Map.Entry<String, ProfessionPoiType> entry : POI_TYPES.entrySet()) {
 				Block block = entry.getValue().block.get();
 				String name = entry.getKey();
@@ -75,8 +75,8 @@ package ${package}.init;
 				}
 
 				PoiType poiType = new PoiType(ImmutableSet.copyOf(block.getStateDefinition().getPossibleStates()), 1, 1);
-				registerHelper.register(name, poiType);
-				entry.getValue().poiType = ForgeRegistries.POI_TYPES.getHolder(poiType).get();
+				registerHelper.register(new ResourceLocation("${modid}", name), poiType);
+				entry.getValue().poiType = BuiltInRegistries.POINT_OF_INTEREST_TYPE.wrapAsHolder(poiType);
 			}
 		});
 	}
