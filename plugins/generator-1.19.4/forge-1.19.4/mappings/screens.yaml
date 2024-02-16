@@ -2,6 +2,9 @@ _default: Ingame
 Ingame: Ingame
 MainMenu: TitleScreen
 IngameMenu: PauseScreen
+AbstractCommandBlock: AbstractCommandBlockEditScreen
+AbstractContainer: AbstractContainerScreen
+AbstractFurnace: AbstractFurnaceScreen
 AddServer: EditServerScreen
 Alert: AlertScreen
 ChatOptions: ChatOptionsScreen
@@ -32,7 +35,6 @@ Enchantment: EnchantmentScreen
 Error: ErrorScreen
 FlatPresets: PresetFlatWorldScreen
 GamemodeSelection: GameModeSwitcherScreen
-GPUWarning: PopupScreen
 Grindstone: GrindstoneScreen
 Hopper: HopperScreen
 Jigsaw: JigsawBlockEditScreen

@@ -1,6 +1,11 @@
 - Ingame
 - MainMenu
 - IngameMenu
+- AbstractCommandBlock
+- AbstractContainer
+- AbstractEditSign
+- AbstractFurnace
+- AbstractReport
 - Anvil
 - Beacon
 - BlastFurnace
@@ -65,7 +70,6 @@
 - FlatPresets
 - GamemodeSelection
 - GenericWaiting
-- GPUWarning
 - Inventory
 - ItemCombiner
 - KeyBinds
