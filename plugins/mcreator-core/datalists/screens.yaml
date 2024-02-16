@@ -5,7 +5,6 @@
 - AbstractContainer
 - AbstractEditSign
 - AbstractFurnace
-- AbstractReport
 - Anvil
 - Beacon
 - BlastFurnace
@@ -35,6 +34,7 @@
 - SmithingTable
 - Smoker
 - Stonecutter
+- AbstractReport
 - AccessibilityOnboarding
 - AccessibilityOptions
 - AddServer

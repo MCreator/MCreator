@@ -6,7 +6,6 @@ AbstractCommandBlock: AbstractCommandBlockEditScreen
 AbstractContainer: AbstractContainerScreen
 AbstractEditSign: AbstractSignEditScreen
 AbstractFurnace: AbstractFurnaceScreen
-AbstractReport: AbstractReportScreen
 Anvil: AnvilScreen
 Beacon: BeaconScreen
 BlastFurnace: BlastFurnaceScreen
@@ -36,6 +35,7 @@ ShulkerBox: ShulkerBoxScreen
 SmithingTable: SmithingScreen
 Smoker: SmokerScreen
 Stonecutter: StonecutterScreen
+AbstractReport: AbstractReportScreen
 AccessibilityOnboarding: AccessibilityOnboardingScreen
 AccessibilityOptions: AccessibilityOptionsScreen
 AddServer: EditServerScreen
