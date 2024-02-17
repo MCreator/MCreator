@@ -1,6 +1,6 @@
 <#assign spawnBiomes = w.filterBrokenReferences(data.restrictionBiomes)>
 {
-  "type": "forge:add_features",
+  "type": "neoforge:add_features",
   <#if spawnBiomes?size == 1>
   "biomes": "${spawnBiomes?first}",
   <#elseif spawnBiomes?size gt 1>
@@ -9,7 +9,7 @@
   ],
   <#else>
   "biomes": {
-    "type": "forge:any"
+    "type": "neoforge:any"
   },
   </#if>
   "features": "${modid}:${registryname}",

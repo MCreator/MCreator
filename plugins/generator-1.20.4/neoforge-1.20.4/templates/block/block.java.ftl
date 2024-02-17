@@ -77,6 +77,18 @@ public class ${name}Block extends
 		public static final BooleanProperty WATERLOGGED = BlockStateProperties.WATERLOGGED;
 	</#if>
 
+	<#if data.hasGravity>
+	public static final MapCodec<${name}Block> CODEC = simpleCodec(${name}Block::new);
+
+	public MapCodec<${name}Block> codec() {
+		return CODEC;
+	}
+
+	public ${name}Block(BlockBehaviour.Properties ignored) {
+		this();
+	}
+	</#if>
+
 	<#macro blockProperties>
 		BlockBehaviour.Properties.of()
 		${data.material}
@@ -84,12 +96,12 @@ public class ${name}Block extends
 			.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
 		</#if>
 		<#if data.isCustomSoundType>
-			.sound(new ForgeSoundType(1.0f, 1.0f,
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.breakSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}"))
+			.sound(new DeferredSoundType(1.0f, 1.0f,
+				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.breakSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.stepSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.placeSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.hitSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.fallSound}"))
 			))
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
@@ -163,26 +175,26 @@ public class ${name}Block extends
 			super(() -> Blocks.AIR.defaultBlockState(), <@blockProperties/>);
 		<#elseif data.blockBase?has_content && data.blockBase == "PressurePlate">
 		    <#if data.material.getUnmappedValue() == "WOOD">
-		        super(Sensitivity.EVERYTHING, <@blockProperties/>, BlockSetType.OAK);
+		        super(BlockSetType.OAK, <@blockProperties/>);
 		    <#else>
-		        super(Sensitivity.MOBS, <@blockProperties/>, BlockSetType.IRON);
+		        super(BlockSetType.IRON, <@blockProperties/>);
 		    </#if>
 		<#elseif data.blockBase?has_content && data.blockBase == "Button">
 			<#if data.material.getUnmappedValue() == "WOOD">
-		        super(<@blockProperties/>, BlockSetType.OAK, 30, true);
+		        super(BlockSetType.OAK, 30, <@blockProperties/>);
 			<#else>
-		        super(<@blockProperties/>, BlockSetType.STONE, 20, false);
+		        super(BlockSetType.STONE, 20, <@blockProperties/>);
 			</#if>
 		<#elseif data.blockBase?has_content && (data.blockBase == "TrapDoor" || data.blockBase == "Door")>
 			<#if data.material.getUnmappedValue() == "IRON">
-				super(<@blockProperties/>, BlockSetType.IRON);
+				super(BlockSetType.IRON, <@blockProperties/>);
 			<#elseif data.material.getUnmappedValue() == "WOOD">
-				super(<@blockProperties/>, BlockSetType.OAK);
+				super(BlockSetType.OAK, <@blockProperties/>);
 			<#else>
-				super(<@blockProperties/>, BlockSetType.STONE);
+				super(BlockSetType.STONE, <@blockProperties/>);
 			</#if>
 		<#elseif data.blockBase?has_content && data.blockBase == "FenceGate">
-			super(<@blockProperties/>, WoodType.OAK);
+			super(WoodType.OAK, <@blockProperties/>);
 		<#else>
 			super(<@blockProperties/>);
 		</#if>
@@ -435,7 +447,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if data.creativePickItem?? && !data.creativePickItem.isEmpty()>
-	@Override public ItemStack getCloneItemStack(BlockState state, HitResult target, BlockGetter world, BlockPos pos, Player player) {
+	@Override public ItemStack getCloneItemStack(LevelReader level, BlockPos pos, BlockState state) {
 		return ${mappedMCItemToItemStackCode(data.creativePickItem, 1)};
 	}
 	</#if>
@@ -578,7 +590,7 @@ public class ${name}Block extends
 		super.use(blockstate, world, pos, entity, hand, hit);
 		<#if data.shouldOpenGUIOnRightClick()>
 		if(entity instanceof ServerPlayer player) {
-			NetworkHooks.openScreen(player, new MenuProvider() {
+			player.openMenu(new MenuProvider() {
 				@Override public Component getDisplayName() {
 					return Component.literal("${data.name}");
 				}
