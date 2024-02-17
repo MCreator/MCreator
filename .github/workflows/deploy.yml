@@ -48,9 +48,9 @@ jobs:
       - name: Setup Windows codesigning
         env:
           WIN_CERT_PEM: ${{ secrets.WIN_CERT_PEM }}
-        run: |-
+        run: |
           WIN_CERT_STOREPASS=$(gcloud auth print-access-token)
-          echo "$WIN_CERT_PEM" | base64 --decode > codesign-chain.pem
+          echo "$WIN_CERT_PEM" > codesign-chain.pem
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
         env:
