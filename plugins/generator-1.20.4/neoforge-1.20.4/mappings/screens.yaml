@@ -62,6 +62,7 @@ Death: DeathScreen
 Demo: DemoIntroScreen
 DirtMessage: GenericDirtMessageScreen
 Disconnected: DisconnectedScreen
+DisconnectedRealms: DisconnectedRealmsScreen
 DownloadTerrain: ReceivingLevelScreen
 EditGamerules: EditGameRulesScreen
 EditWorld: EditWorldScreen
@@ -71,6 +72,7 @@ Experiments: ExperimentsScreen
 FlatPresets: PresetFlatWorldScreen
 GamemodeSelection: GameModeSwitcherScreen
 GenericWaiting: GenericWaitingScreen
+GPUWarning: PopupScreen
 Inventory: InventoryScreen
 ItemCombiner: ItemCombinerScreen
 KeyBinds: KeyBindsScreen
@@ -85,6 +87,8 @@ OptimizeWorld: OptimizeWorldScreen
 Options: OptionsScreen
 OptionsSounds: SoundOptionsScreen
 Pack: PackSelectionScreen
+Realms: RealmsScreen
+Realms32bitWarning: Realms32bitWarningScreen
 RecoverWorldData: RecoverWorldDataScreen
 ReportPlayer: ReportPlayerScreen
 ReportReasonSelection: ReportReasonSelectionScreen

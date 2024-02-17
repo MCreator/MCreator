@@ -61,6 +61,7 @@
 - Demo
 - DirtMessage
 - Disconnected
+- DisconnectedRealms
 - DownloadTerrain
 - EditGamerules
 - EditWorld
@@ -70,6 +71,7 @@
 - FlatPresets
 - GamemodeSelection
 - GenericWaiting
+- GPUWarning
 - Inventory
 - ItemCombiner
 - KeyBinds
@@ -84,6 +86,8 @@
 - Options
 - OptionsSounds
 - Pack
+- Realms32bitWarning
+- Realms
 - RecoverWorldData
 - ReportPlayer
 - ReportReasonSelection

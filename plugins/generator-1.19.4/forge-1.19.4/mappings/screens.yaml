@@ -35,6 +35,7 @@ Enchantment: EnchantmentScreen
 Error: ErrorScreen
 FlatPresets: PresetFlatWorldScreen
 GamemodeSelection: GameModeSwitcherScreen
+GPUWarning: PopupScreen
 Grindstone: GrindstoneScreen
 Hopper: HopperScreen
 Jigsaw: JigsawBlockEditScreen
@@ -91,6 +92,9 @@ ItemCombiner: ItemCombinerScreen
 Warning: WarningScreen
 ChatReport: ChatReportScreen
 ChatSelection: ChatSelectionScreen
+Realms: RealmsScreen
+Realms32bitWarning: Realms32bitWarningScreen
+DisconnectedRealms: DisconnectedRealmsScreen
 ReportReasonSelection: ReportReasonSelectionScreen
 SocialInteractions: SocialInteractionsScreen
 TelemetryInfo: TelemetryInfoScreen
