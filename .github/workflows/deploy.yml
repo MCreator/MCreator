@@ -14,8 +14,8 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     permissions:
-      contents: 'read'
-      id-token: 'write'
+      contents: write
+      id-token: write
     outputs:
       mcr_version: ${{ steps.determineExportVersion.outputs.mcr_version }}
       mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
