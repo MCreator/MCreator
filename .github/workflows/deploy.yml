@@ -48,24 +48,24 @@ jobs:
           service_account: ${{ secrets.GC_SERVICE_ACCOUNT }}
       - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200
         name: Set up Google Cloud SDK
-      - name: Setup Windows codesigning
-        env:
-          WIN_CERT_PEM: ${{ secrets.WIN_CERT_PEM }}
-        run: |
-          WIN_CERT_STOREPASS=$(gcloud auth print-access-token)
-          echo "$WIN_CERT_PEM" > codesign-chain.pem
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
         env:
           WIN_CERT_KEYNAME: ${{ secrets.WIN_CERT_KEYNAME }}
           WIN_CERT_KEYSTORE: ${{ secrets.WIN_CERT_KEYSTORE }}
-        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux
+        run: |
+          WIN_CERT_STOREPASS=$(gcloud auth print-access-token)
+          echo "$WIN_CERT_PEM" > codesign-chain.pem
+          xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
         env:
           WIN_CERT_KEYNAME: ${{ secrets.WIN_CERT_KEYNAME }}
           WIN_CERT_KEYSTORE: ${{ secrets.WIN_CERT_KEYSTORE }}
-        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux -Psnapshot=true
+        run: |
+          WIN_CERT_STOREPASS=$(gcloud auth print-access-token)
+          echo "$WIN_CERT_PEM" > codesign-chain.pem
+          xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux -Psnapshot=true
       - name: Determine Export Version
         id: determineExportVersion
         run: |
