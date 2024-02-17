@@ -5,7 +5,6 @@ plugins {
     id 'edu.sc.seis.launch4j' version '3.0.5'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.7'
     id 'org.openjfx.javafxplugin' version '0.1.0'
-    id 'net.jsign' version '5.0'
 }
 
 repositories {
