@@ -38,11 +38,30 @@ jobs:
           sudo apt-get install -y mkisofs nsis nsis-pluginapi
           wget https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip
           sudo unzip LockedList.zip -d /usr/share/nsis/
+      - uses: google-github-actions/auth@35b0e87d162680511bf346c299f71c9c5c379033
+        name: Authenticate to Google Cloud
+        with:
+          workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GC_SERVICE_ACCOUNT }}
+      - uses: google-github-actions/setup-gcloud@e30db14379863a8c79331b04a9969f4c1e225e0b
+        name: Set up Google Cloud SDK
+      - name: Setup Windows codesigning
+        env:
+          WIN_CERT_PEM: ${{ secrets.WIN_CERT_PEM }}
+        run: |-
+          WIN_CERT_STOREPASS=$(gcloud auth print-access-token)
+          echo "$WIN_CERT_PEM" | base64 --decode > codesign-chain.pem
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
+        env:
+          WIN_CERT_KEYNAME: ${{ secrets.WIN_CERT_KEYNAME }}
+          WIN_CERT_KEYSTORE: ${{ secrets.WIN_CERT_KEYSTORE }}
         run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
+        env:
+          WIN_CERT_KEYNAME: ${{ secrets.WIN_CERT_KEYNAME }}
+          WIN_CERT_KEYSTORE: ${{ secrets.WIN_CERT_KEYSTORE }}
         run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux -Psnapshot=true
       - name: Determine Export Version
         id: determineExportVersion
