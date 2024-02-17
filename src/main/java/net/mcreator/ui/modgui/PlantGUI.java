@@ -37,8 +37,9 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.TiledImageCache;
+import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.ui.minecraft.boundingboxes.JBoundingBoxList;
 import net.mcreator.ui.procedure.AbstractProcedureSelector;
@@ -77,10 +78,6 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private TextureHolder itemTexture;
 	private TextureHolder particleTexture;
-
-	private final JLabel stl = new JLabel(TiledImageCache.plantStaticYes);
-	private final JLabel dyn = new JLabel(TiledImageCache.plantGrowingNo);
-	private final JLabel dbl = new JLabel(TiledImageCache.plantDoubleNo);
 
 	private final JCheckBox customBoundingBox = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox disableOffset = L10N.checkbox("elementgui.common.enable");
@@ -134,7 +131,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { cross, crop });
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
-	private final JComboBox<String> aiPathNodeType = new JComboBox<>();
+	private final SearchableComboBox<String> aiPathNodeType = new SearchableComboBox<>();
 
 	private final JComboBox<String> tintType = new JComboBox<>(
 			new String[] { "No tint", "Grass", "Foliage", "Birch foliage", "Spruce foliage", "Default foliage", "Water",
@@ -310,11 +307,11 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		texturesAndRent.add("East", PanelUtils.centerAndSouthElement(rent, specialInformation, 2, 2));
 
 		texturesAndRent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.textures_and_model"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
-		JPanel sbbp2 = new JPanel(new BorderLayout());
+		JPanel sbbp2 = new JPanel(new BorderLayout(10, 10));
 
 		sbbp2.setOpaque(false);
 
@@ -340,16 +337,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		growapableType.addActionListener(planttypeselected);
 		doubleType.addActionListener(planttypeselected);
 
-		JPanel ptipe = new JPanel(new BorderLayout());
+		JPanel ptipe = new JPanel(new GridLayout(1, 3, 10, 10));
 		ptipe.setOpaque(false);
 
-		JPanel ptipe1 = new JPanel(new BorderLayout());
+		JPanel ptipe1 = new JPanel(new BorderLayout(5, 5));
 		ptipe1.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.type_static"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
-		JPanel staticPlantProperties = new JPanel(new GridLayout(2, 2, 0, 4));
+		JPanel staticPlantProperties = new JPanel(new GridLayout(2, 2, 0, 2));
 		staticPlantProperties.setOpaque(false);
 		staticPlantProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/suspicious_stew_effect"),
 				L10N.label("elementgui.plant.suspicious_stew_effect")));
@@ -358,45 +355,39 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.suspicious_stew_duration")));
 		staticPlantProperties.add(suspiciousStewDuration);
 
-		ptipe1.add("West", stl);
 		ptipe1.add("Center", PanelUtils.pullElementUp(staticPlantProperties));
 		ptipe1.add("North", normalType);
+		ptipe1.add("South", PanelUtils.centerInPanel(new JLabel(UIRES.get("plant_normal"))));
 		ptipe1.setOpaque(false);
 
-		JPanel ptipe2 = new JPanel(new BorderLayout());
+		JPanel ptipe2 = new JPanel(new BorderLayout(5, 5));
 		ptipe2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.type_growable"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		ptipe2.add("West", dyn);
+				Theme.current().getForegroundColor()));
 
-		JPanel mlo = new JPanel(new GridLayout(1, 2));
-
-		mlo.setOpaque(false);
-
-		mlo.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/max_height"),
-				L10N.label("elementgui.plant.max_height")));
-		mlo.add(growapableMaxHeight);
-
-		ptipe2.add("Center", PanelUtils.join(mlo));
+		ptipe2.add("Center", PanelUtils.pullElementUp(PanelUtils.gridElements(1, 2, 0, 2,
+				HelpUtils.wrapWithHelpButton(this.withEntry("plant/max_height"),
+						L10N.label("elementgui.plant.max_height")), growapableMaxHeight)));
 		ptipe2.add("North", growapableType);
+		ptipe2.add("South", PanelUtils.centerInPanel(new JLabel(UIRES.get("plant_growable"))));
 		ptipe2.setOpaque(false);
 
-		JPanel ptipe3 = new JPanel(new BorderLayout());
+		JPanel ptipe3 = new JPanel(new BorderLayout(5, 5));
 		ptipe3.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.type_double"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
-		ptipe3.add("Center", dbl);
+				Theme.current().getForegroundColor()));
 		ptipe3.add("North", doubleType);
+		ptipe3.add("South", PanelUtils.centerInPanel(new JLabel(UIRES.get("plant_double"))));
 		ptipe3.setOpaque(false);
 
 		ptipe.add("West", ptipe1);
 		ptipe.add("Center", ptipe2);
 		ptipe.add("East", ptipe3);
 
-		sbbp2.add("North", texturesAndRent);
-		sbbp2.add("Center", PanelUtils.totalCenterInPanel(ptipe));
+		sbbp2.add("North", ptipe);
+		sbbp2.add("Center", texturesAndRent);
 
 		pane2.setOpaque(false);
 		pane2.add("Center", PanelUtils.totalCenterInPanel(sbbp2));
@@ -435,23 +426,23 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JPanel selp = new JPanel(new GridLayout(9, 2, 5, 2));
 		selp.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_general"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getForegroundColor()));
 		selp.setOpaque(false);
 
 		JPanel selp2 = new JPanel(new GridLayout(6, 2, 5, 2));
 		selp2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_dropping"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getForegroundColor()));
 		selp2.setOpaque(false);
 
 		JPanel soundProperties = new JPanel(new GridLayout(7, 2, 0, 2));
 		soundProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_sound"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getForegroundColor()));
 		soundProperties.setOpaque(false);
 
 		useLootTableForDrops.setOpaque(false);
@@ -582,9 +573,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		JComponent bonemealMerger = PanelUtils.northAndCenterElement(bonemealPanel, bonemealEvents, 2, 2);
 		bonemealMerger.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.properties_bonemeal"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		pane3.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.westAndEastElement(
 				PanelUtils.pullElementUp(PanelUtils.northAndCenterElement(selp, bonemealMerger)),
@@ -636,9 +627,9 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JComponent plocb = PanelUtils.northAndCenterElement(advancedProperties,
 				PanelUtils.westAndCenterElement(new JEmptyBox(5, 5), placingCondition), 2, 2);
 		plocb.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.plant.properties_advanced_plant"), TitledBorder.LEADING,
-				TitledBorder.DEFAULT_POSITION, getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				TitledBorder.DEFAULT_POSITION, getFont(), Theme.current().getForegroundColor()));
 		plocb.setOpaque(false);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(plocb));
@@ -733,37 +724,24 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private void updatePlantType() {
 		if (normalType.isSelected()) {
-			stl.setIcon(TiledImageCache.plantStaticYes);
 			generationType.setEnabled(true);
 			renderType.setEnabled(true);
 			suspiciousStewEffect.setEnabled(true);
 			suspiciousStewDuration.setEnabled(true);
 			growapableMaxHeight.setEnabled(false);
-		} else {
-			stl.setIcon(TiledImageCache.plantStaticNo);
-		}
-
-		if (growapableType.isSelected()) {
-			dyn.setIcon(TiledImageCache.plantGrowingYes);
+		} else if (growapableType.isSelected()) {
 			generationType.setEnabled(false);
 			renderType.setEnabled(true);
 			suspiciousStewEffect.setEnabled(false);
 			suspiciousStewDuration.setEnabled(false);
 			growapableMaxHeight.setEnabled(true);
-		} else {
-			dyn.setIcon(TiledImageCache.plantGrowingNo);
-		}
-
-		if (doubleType.isSelected()) {
+		} else if (doubleType.isSelected()) {
 			generationType.setEnabled(true);
-			dbl.setIcon(TiledImageCache.plantDoubleYes);
 			renderType.setSelectedItem(cross);
 			renderType.setEnabled(false);
 			suspiciousStewEffect.setEnabled(false);
 			suspiciousStewDuration.setEnabled(false);
 			growapableMaxHeight.setEnabled(false);
-		} else {
-			dbl.setIcon(TiledImageCache.plantDoubleNo);
 		}
 
 		texture.setVisible(false);
@@ -1019,7 +997,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.isReplaceable = isReplaceable.isSelected();
 		plant.colorOnMap = colorOnMap.getSelectedItem().toString();
 		plant.offsetType = (String) offsetType.getSelectedItem();
-		plant.aiPathNodeType = (String) aiPathNodeType.getSelectedItem();
+		plant.aiPathNodeType = aiPathNodeType.getSelectedItem();
 		plant.creativePickItem = creativePickItem.getBlock();
 		plant.flammability = (int) flammability.getValue();
 		plant.fireSpreadSpeed = (int) fireSpreadSpeed.getValue();

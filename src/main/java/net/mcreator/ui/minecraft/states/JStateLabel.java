@@ -25,6 +25,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.StateEditorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -44,7 +45,7 @@ public class JStateLabel extends JPanel {
 	private NumberMatchType numberMatchType = NumberMatchType.EQUAL;
 
 	private final JTextField label = new JTextField();
-	private final TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit.gif"));
+	private final TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit"));
 
 	public JStateLabel(MCreator mcreator, Supplier<List<PropertyData<?>>> properties,
 			Supplier<Stream<JStateLabel>> otherStates) {
@@ -53,7 +54,7 @@ public class JStateLabel extends JPanel {
 		this.properties = properties;
 		this.otherStates = otherStates;
 
-		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		setBackground(Theme.current().getSecondAltBackgroundColor());
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		label.setEditable(false);
@@ -74,7 +75,7 @@ public class JStateLabel extends JPanel {
 		edit.addActionListener(e -> editState());
 
 		JPanel controls = new JPanel();
-		controls.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		controls.setBackground(Theme.current().getAltBackgroundColor());
 		controls.add(edit);
 		add("East", PanelUtils.centerInPanelPadding(controls, 2, 2));
 	}

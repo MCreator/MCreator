@@ -1,0 +1,1 @@
+El nombre dentro del juego es el nombre del elemento del mod así como se muestra en los menús dentro del juego, consejos sobre elementos y otros lugares donde es posible mostrar nombres visualmente.

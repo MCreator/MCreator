@@ -32,4 +32,8 @@ public interface IBlock extends IItem {
 
 	String getRenderType();
 
+	default boolean isDoubleBlock() {
+		return false;
+	}
+
 }

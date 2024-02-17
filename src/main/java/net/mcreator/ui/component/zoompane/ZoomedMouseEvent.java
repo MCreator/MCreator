@@ -27,9 +27,8 @@ public class ZoomedMouseEvent extends MouseEvent {
 	private final Point2D viewPosition;
 	private final double zoom;
 
-	@SuppressWarnings("deprecation") public ZoomedMouseEvent(MouseEvent event, JZoomport zoomport)
-			throws NullPointerException {
-		super(zoomport.getToZoom(), event.getID(), event.getWhen(), event.getModifiers(), (int) Math.floor(
+	public ZoomedMouseEvent(MouseEvent event, JZoomport zoomport) throws NullPointerException {
+		super(zoomport.getToZoom(), event.getID(), event.getWhen(), event.getModifiersEx(), (int) Math.floor(
 						(event.getX() - zoomport.getCanvasX() + zoomport.getViewPositionX()) / zoomport.getZoom()),
 				(int) Math.floor(
 						(event.getY() - zoomport.getCanvasY() + zoomport.getViewPositionY()) / zoomport.getZoom()),
@@ -61,6 +60,24 @@ public class ZoomedMouseEvent extends MouseEvent {
 		} catch (NullPointerException e) {
 			return 0;
 		}
+	}
+
+	/**
+	 * Returns precise X coordinate of the mouse event. If floored, this should be the same as getX().
+	 *
+	 * @return precise X coordinate of the mouse event
+	 */
+	public double getPreciseX() {
+		return getRawX() / zoom;
+	}
+
+	/**
+	 * Returns precise Y coordinate of the mouse event. If floored, this should be the same as getY().
+	 *
+	 * @return precise Y coordinate of the mouse event
+	 */
+	public double getPreciseY() {
+		return getRawY() / zoom;
 	}
 
 	public Double getRawXN() {

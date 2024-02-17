@@ -26,51 +26,40 @@ import net.mcreator.java.JavaConventions;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("InstantiationOfUtilityClass") public class BaseDataModelProvider {
-
-	private final JavaConventions javaConventions;
-	private final GeneratorWrapper generatorWrapper;
-	private final ProcedureCodeOptimizer codeOptimizer;
-
-	private final Generator generator;
-
-	private final TemplateHelper templateHelper;
-
-	private final FileProvider fileProvider;
+public class BaseDataModelProvider {
 
 	private static final Logger TEMPLATE_LOG = LogManager.getLogger("Template Generator LOG");
 
-	public BaseDataModelProvider(Generator generator) {
-		this.javaConventions = new JavaConventions();
-		this.generatorWrapper = new GeneratorWrapper(generator);
-		this.fileProvider = new FileProvider(generator);
-		this.codeOptimizer = new ProcedureCodeOptimizer();
+	private final Map<String, Object> providedData = new HashMap<>();
 
-		this.templateHelper = new TemplateHelper();
+	private final Generator generator;
 
+	@SuppressWarnings("InstantiationOfUtilityClass") public BaseDataModelProvider(Generator generator) {
 		this.generator = generator;
+
+		// Static helpers
+		providedData.put("Log", TEMPLATE_LOG);
+		providedData.put("thelper", new TemplateHelper());
+		providedData.put("opt", new ProcedureCodeOptimizer());
+		providedData.put("JavaConventions", new JavaConventions());
+
+		// Data that does not change for the current generator (BaseDataModelProvider is generator specific)
+		providedData.put("generator", new GeneratorWrapper(generator));
+		providedData.put("w", generator.getWorkspace().getWorkspaceInfo());
+		providedData.put("fp", new FileProvider(generator));
+		providedData.put("mcc", generator.getMinecraftCodeProvider());
 	}
 
 	public Map<String, Object> provide() {
-		Map<String, Object> retval = new HashMap<>();
-		retval.put("generator", generatorWrapper);
-
-		retval.put("w", generator.getWorkspace().getWorkspaceInfo());
-		retval.put("modid", generator.getWorkspaceSettings().getModID());
-		retval.put("JavaModName", generator.getWorkspaceSettings().getJavaModName());
-		retval.put("package", generator.getWorkspaceSettings().getModElementsPackage());
-		retval.put("settings", generator.getWorkspaceSettings());
-		retval.put("fp", fileProvider);
-
-		retval.put("mcc", generator.getMinecraftCodeProvider());
-		retval.put("JavaConventions", javaConventions);
-		retval.put("thelper", templateHelper);
-		retval.put("Log", TEMPLATE_LOG);
-		retval.put("opt", codeOptimizer);
-		return retval;
+		providedData.put("settings", generator.getWorkspaceSettings()); // workspaceSettings is not final!
+		providedData.put("modid", generator.getWorkspaceSettings().getModID());
+		providedData.put("JavaModName", generator.getWorkspaceSettings().getJavaModName());
+		providedData.put("package", generator.getWorkspaceSettings().getModElementsPackage());
+		return Collections.unmodifiableMap(providedData);
 	}
 
 }

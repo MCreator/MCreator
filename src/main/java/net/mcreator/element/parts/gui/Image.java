@@ -23,13 +23,14 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class Image extends GUIComponent {
 
-	public String image;
+	@TextureReference(TextureType.SCREEN) public String image;
 	public boolean use1Xscale;
 
 	public Procedure displayCondition;

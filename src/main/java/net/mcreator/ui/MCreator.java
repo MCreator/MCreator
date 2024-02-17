@@ -31,13 +31,17 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
+import net.mcreator.ui.component.BlockingGlassPane;
 import net.mcreator.ui.component.ImagePanel;
+import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.SquareLoaderIcon;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
+import net.mcreator.ui.init.AppIcon;
 import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.ui.workspace.WorkspacePanel;
@@ -143,7 +147,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (PreferencesManager.PREFERENCES.hidden.fullScreen.get())
 			setExtendedState(JFrame.MAXIMIZED_BOTH);
 
-		setIconImage(UIRES.getAppIcon().getImage());
+		setIconImages(AppIcon.getAppIcons());
 		setLocationRelativeTo(null);
 
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -157,7 +161,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 		mcreatorTabs.addTabShownListener(tab -> {
 			if (tab.equals(workspaceTab))
-				mv.updateMods();
+				mv.reloadElementsInCurrentTab();
 
 			menuBar.refreshMenuBar();
 
@@ -200,7 +204,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			((ImagePanel) mpan).setKeepRatio(true);
 		} else {
 			mpan = new JPanel();
-			mpan.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			mpan.setBackground(Theme.current().getSecondAltBackgroundColor());
 		}
 
 		mpan.setLayout(new BorderLayout());
@@ -209,8 +213,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		mv = new WorkspacePanel(this);
 
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
-		pon.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
+		pon.setBackground(Theme.current().getBackgroundColor());
+		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"),
 				PanelUtils.maxMargin(mv, 5, true, true, true, true), "Workspace", true, false);
@@ -222,7 +226,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				super.paintComponent(g);
 				switch (gradleConsole.getStatus()) {
 				case GradleConsole.READY:
-					g.setColor(Color.white);
+					g.setColor(Theme.current().getForegroundColor());
 					break;
 				case GradleConsole.RUNNING:
 					g.setColor(new Color(158, 247, 89));
@@ -253,14 +257,16 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		workspace.getFileManager().setDataSavedListener(() -> statusBar.setPersistentMessage(
 				L10N.t("workspace.statusbar.autosave_message", new SimpleDateFormat("HH:mm").format(new Date()))));
 
-		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser,
-				PanelUtils.northAndCenterElement(pon, mpan));
-		splitPane.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		JComponent rightPanel = PanelUtils.northAndCenterElement(pon, mpan);
+
+		splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, workspaceFileBrowser, rightPanel);
+		splitPane.setBackground(Theme.current().getAltBackgroundColor());
 		splitPane.setOneTouchExpandable(true);
 
 		splitPane.setDividerLocation(280);
 		splitPane.setDividerLocation(PreferencesManager.PREFERENCES.hidden.projectTreeSplitPos.get());
 
+		rightPanel.setMinimumSize(new Dimension(0, 0));
 		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
 		this.notificationsRenderer = new NotificationsRenderer(splitPane);
@@ -272,17 +278,15 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		MCREvent.event(new MCreatorLoadedEvent(this));
 	}
 
-	@Override public void setVisible(boolean b) {
-		super.setVisible(b);
-		if (b) {
+	@Override public void setVisible(boolean makeVisible) {
+		super.setVisible(makeVisible);
+		if (makeVisible) {
 			setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
 			if (MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
 				workspace.setMCreatorVersion(
 						Launcher.version.versionlong); // if we open dev version, store new version number in it
 			}
-
-			new Thread(this.workspaceFileBrowser::reloadTree, "File browser preloader").start();
 
 			// backup if new version and backups are enabled
 			if (workspace.getMCreatorVersion() < Launcher.version.versionlong
@@ -308,13 +312,23 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				RegenerateCodeAction.regenerateCode(this, true, true);
 			}
 
-			// reinit (preload) MCItems so workspace is more snappy when loaded
+			// it is not safe to do user operations on workspace while it is being preloaded, so we lock the UI
+			setGlassPane(getPreloaderPane());
+			getGlassPane().setVisible(true);
+
+			// Preload workspace file browser
+			new Thread(this.workspaceFileBrowser::reloadTree, "File browser preloader").start();
+
+			// reinit (preload) MCItems (also loads GEs and performs conversions if needed)
 			new Thread(() -> {
 				workspace.getModElements().forEach(ModElement::getMCItems);
-				LOG.debug("MCItems preload for mod elements completed");
-			}, "ME preloader").start();
 
-			setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				SwingUtilities.invokeLater(() -> {
+					getGlassPane().setVisible(false);
+					setGlassPane(new JEmptyBox());
+					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+				});
+			}, "ME preloader").start();
 		}
 	}
 
@@ -427,6 +441,17 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		if (workspace != null)
 			return workspace.getFileManager().getWorkspaceFile().hashCode();
 		return Long.valueOf(windowUID).hashCode();
+	}
+
+	private JComponent getPreloaderPane() {
+		JPanel wrap = new BlockingGlassPane();
+		JLabel loading = L10N.label("workspace.loading");
+		loading.setIconTextGap(5);
+		loading.setFont(loading.getFont().deriveFont(16f));
+		loading.setForeground(Theme.current().getAltForegroundColor());
+		loading.setIcon(new SquareLoaderIcon(5, 1, Theme.current().getForegroundColor()));
+		wrap.add(PanelUtils.totalCenterInPanel(loading));
+		return wrap;
 	}
 
 	public ActionRegistry getActionRegistry() {

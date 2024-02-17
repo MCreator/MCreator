@@ -1,0 +1,1 @@
+Bu rakamlar, varlığa verilen zararın ne kadar fazla olduğunu tanımlar, belirli bir zırh parçası tarafından azaltılacaktır.

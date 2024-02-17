@@ -27,6 +27,7 @@ import net.mcreator.io.FileIO;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 
 import java.io.File;
 import java.util.List;
@@ -37,8 +38,8 @@ public class VillagerProfession extends GeneratableElement implements IPOIProvid
 	public MItemBlock pointOfInterest;
 	public Sound actionSound;
 	public String hat;
-	public String professionTextureFile;
-	public String zombifiedProfessionTextureFile;
+	@TextureReference(TextureType.ENTITY) public String professionTextureFile;
+	@TextureReference(TextureType.ENTITY) public String zombifiedProfessionTextureFile;
 
 	public VillagerProfession(ModElement element) {
 		super(element);

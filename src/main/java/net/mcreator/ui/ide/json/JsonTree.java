@@ -87,11 +87,6 @@ public class JsonTree extends AbstractSourceTree {
 		}
 	}
 
-	@Override public void updateUI() {
-		super.updateUI();
-		setCellRenderer(new AstTreeCellRendererCustom());
-	}
-
 	@Override public void expandInitialNodes() {
 		TreeUtils.expandAllNodes(this, 0, getRowCount());
 	}

@@ -23,6 +23,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -33,6 +34,8 @@ public class CompileNotesPanel extends JPanel {
 
 	private final JLabel compileNotesLabel = L10N.label("blockly.compile_notes", 0);
 	private final DefaultListModel<BlocklyCompileNote> compileNotes = new DefaultListModel<>();
+
+	private boolean everUpdated = false;
 
 	public CompileNotesPanel() {
 		super(new BorderLayout());
@@ -49,15 +52,13 @@ public class CompileNotesPanel extends JPanel {
 		scrollPaneCompileNotes.getViewport().setOpaque(false);
 		scrollPaneCompileNotes.getVerticalScrollBar().setUnitIncrement(11);
 		scrollPaneCompileNotes.getVerticalScrollBar()
-				.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"),
-						scrollPaneCompileNotes.getVerticalScrollBar()));
+				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+						Theme.current().getAltBackgroundColor(), scrollPaneCompileNotes.getVerticalScrollBar()));
 		scrollPaneCompileNotes.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneCompileNotes.getHorizontalScrollBar().setUnitIncrement(11);
 		scrollPaneCompileNotes.getHorizontalScrollBar()
-				.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"),
-						scrollPaneCompileNotes.getHorizontalScrollBar()));
+				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+						Theme.current().getAltBackgroundColor(), scrollPaneCompileNotes.getHorizontalScrollBar()));
 		scrollPaneCompileNotes.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneCompileNotes.setBorder(null);
 		add("Center", scrollPaneCompileNotes);
@@ -78,15 +79,25 @@ public class CompileNotesPanel extends JPanel {
 	}
 
 	public void updateCompileNotes(List<BlocklyCompileNote> compileNotesArrayList) {
-		compileNotes.clear();
-		compileNotesArrayList.forEach(compileNotes::addElement);
+		synchronized (compileNotes) {
+			compileNotes.clear();
+			compileNotesArrayList.forEach(compileNotes::addElement);
+		}
 		compileNotesLabel.setText(L10N.t("blockly.compile_notes", compileNotesArrayList.size()));
+		everUpdated = true;
 	}
 
 	public List<BlocklyCompileNote> getCompileNotes() {
 		List<BlocklyCompileNote> retval = new ArrayList<>();
-		for (int i = 0; i < compileNotes.size(); i++)
-			retval.add(compileNotes.get(i));
+		if (!everUpdated) {
+			retval.add(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.editor_not_ready")));
+		} else {
+			synchronized (compileNotes) {
+				for (int i = 0; i < compileNotes.size(); i++)
+					retval.add(compileNotes.get(i));
+			}
+		}
 		return retval;
 	}
 
@@ -95,8 +106,8 @@ public class CompileNotesPanel extends JPanel {
 		public Component getListCellRendererComponent(JList<? extends BlocklyCompileNote> list,
 				BlocklyCompileNote value, int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(Color.white);
+			setBackground(Theme.current().getBackgroundColor());
+			setForeground(Theme.current().getForegroundColor());
 			ComponentUtils.deriveFont(this, 12);
 			if (value.type() == BlocklyCompileNote.Type.ERROR) {
 				setIcon(UIRES.get("18px.remove"));

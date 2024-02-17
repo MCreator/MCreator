@@ -22,8 +22,10 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 
@@ -32,7 +34,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class DataListComboBox extends JComboBox<DataListEntry> {
+public class DataListComboBox extends SearchableComboBox<DataListEntry> {
 
 	public DataListComboBox(MCreator mcreator, List<DataListEntry> list) {
 		super(list.toArray(new DataListEntry[0]));
@@ -53,7 +55,7 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 
 	public void setSelectedItem(MappableElement mappableElement) {
 		if (mappableElement == null)
-			setSelectedIndex(0);
+			setSelectedIndex(getItemCount() > 0 ? 0 : -1);
 		else
 			this.setSelectedItem(new DataListEntry.Dummy(mappableElement.getUnmappedValue()));
 	}
@@ -67,7 +69,7 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 		if (superretval == null)
 			return new DataListEntry.Null();
 
-		return (DataListEntry) super.getSelectedItem();
+		return super.getSelectedItem();
 	}
 
 	public static class CustomRenderer extends JLabel implements ListCellRenderer<DataListEntry> {
@@ -96,9 +98,8 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 
 			setText(value.getReadableName());
 
-			if (value instanceof DataListEntry.Custom) {
-				setIcon(MCItem.getBlockIconBasedOnName(((DataListEntry.Custom) value).getModElement().getWorkspace(),
-						value.getName()));
+			if (value instanceof DataListEntry.Custom custom) {
+				setIcon(MCItem.getBlockIconBasedOnName(custom.getModElement().getWorkspace(), value.getName()));
 			} else if (value.getTexture() == null) {
 				setIcon(new EmptyIcon(32, 32));
 			} else {
@@ -110,7 +111,7 @@ public class DataListComboBox extends JComboBox<DataListEntry> {
 				if (imageIcon instanceof ImageIcon)
 					setIcon(ImageUtils.changeSaturation((ImageIcon) imageIcon, 0.1f));
 				setText(L10N.t("datalist_combobox.not_supported", getText()));
-				setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				setForeground(Theme.current().getAltForegroundColor());
 			}
 
 			setHorizontalTextPosition(SwingConstants.RIGHT);

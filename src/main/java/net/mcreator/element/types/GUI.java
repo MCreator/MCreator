@@ -32,6 +32,8 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +51,7 @@ import java.util.List;
 	public boolean renderBgLayer;
 	public boolean doesPauseGame;
 
-	public List<GUIComponent> components;
+	@ModElementReference @TextureReference(TextureType.SCREEN) public List<GUIComponent> components;
 
 	public Procedure onOpen;
 	public Procedure onTick;
@@ -146,7 +148,7 @@ import java.util.List;
 			}
 		}
 
-		// Create the texture atlas for image buttons that will be used by Minecraft
+		// Create the texture atlas for image buttons that will be used by Minecraft (needed for <= 1.20.1)
 		components.stream().filter(c -> c instanceof ImageButton).map(c -> (ImageButton) c).forEach(imageButton -> {
 			Image normal = imageButton.getImage(getModElement().getWorkspace());
 			Image hovered = imageButton.getHoveredImage(getModElement().getWorkspace());

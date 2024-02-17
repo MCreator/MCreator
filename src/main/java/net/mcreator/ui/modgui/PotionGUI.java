@@ -54,7 +54,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 	public PotionGUI(MCreator mcreator, @Nonnull ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
-		super.finalizeGUI(false);
+		super.finalizeGUI();
 	}
 
 	@Override protected void initGUI() {
@@ -114,7 +114,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		page1group.addValidationElement(arrowName);
 
 		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), mainEditor));
-		addPage(pane3);
+		addPage(pane3, false);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = "Potion of " + StringUtils.machineToReadableName(modElement.getName());

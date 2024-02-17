@@ -22,10 +22,9 @@ package net.mcreator.integration.ui;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.integration.TestSetup;
+import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.imageeditor.*;
-import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
@@ -34,9 +33,8 @@ import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.awt.*;
 import java.io.File;
@@ -46,25 +44,18 @@ import java.nio.file.Path;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class ImageMakerTest {
+@ExtendWith(IntegrationTestSetup.class) public class ImageMakerTest {
 
-	private static Logger LOG;
+	private static final Logger LOG = LogManager.getLogger("Image Maker Test");
 
 	private static MCreator mcreator;
 
 	@BeforeAll public static void initTest() throws IOException {
-		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
-		LOG = LogManager.getLogger("Image Maker Test");
-
-		TestSetup.setupIntegrationTestEnvironment();
-
-		ImageMakerTexturesCache.init();
-
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
@@ -77,10 +68,6 @@ public class ImageMakerTest {
 				workspaceSettings);
 
 		mcreator = new MCreator(null, workspace);
-	}
-
-	@BeforeEach void printName(TestInfo testInfo) {
-		LOG.info("Running " + testInfo.getDisplayName());
 	}
 
 	@Test public void testImageMaker() throws Throwable {

@@ -29,10 +29,14 @@ import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.blockly.BlocklyEditorType;
+import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Achievement extends GeneratableElement {
@@ -42,7 +46,7 @@ import java.util.List;
 
 	public MItemBlock achievementIcon;
 
-	public String background;
+	@TextureReference(value = TextureType.SCREEN, defaultValues = "Default") public String background;
 
 	public boolean disableDisplay;
 
@@ -50,9 +54,9 @@ import java.util.List;
 	public boolean announceToChat;
 	public boolean hideIfNotCompleted;
 
-	public List<String> rewardLoot;
-	public List<String> rewardRecipes;
-	public String rewardFunction;
+	@ModElementReference public List<String> rewardLoot;
+	@ModElementReference public List<String> rewardRecipes;
+	@ModElementReference(defaultValues = "No function") public String rewardFunction;
 	public int rewardXP;
 
 	public String achievementType;
@@ -60,8 +64,15 @@ import java.util.List;
 
 	@BlocklyXML("jsontriggers") public String triggerxml;
 
+	private Achievement() {
+		this(null);
+	}
+
 	public Achievement(ModElement element) {
 		super(element);
+
+		rewardLoot = new ArrayList<>();
+		rewardRecipes = new ArrayList<>();
 	}
 
 	public boolean hasRewards() {
@@ -91,7 +102,8 @@ import java.util.List;
 
 			String triggerCode = blocklyToJSONTrigger.getGeneratedCode();
 			if (triggerCode.isEmpty())
-				triggerCode = "{\"trigger\": \"minecraft:impossible\"}";
+				triggerCode = "\"%s\": {\"trigger\": \"minecraft:impossible\"}".formatted(
+						getModElement().getRegistryName());
 
 			additionalData.put("triggercode", triggerCode);
 			additionalData.put("triggerblocks", blocklyToJSONTrigger.getUsedBlocks());

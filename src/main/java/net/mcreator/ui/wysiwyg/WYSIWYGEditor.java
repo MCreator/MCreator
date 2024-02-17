@@ -37,6 +37,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.ArrayListListModel;
@@ -191,9 +192,9 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel comppan = new JPanel(new BorderLayout());
 		comppan.setOpaque(false);
 		comppan.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 				(L10N.t("elementgui.gui.component_list")), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		TransparentToolBar bar2 = new TransparentToolBar();
 		bar2.setBorder(null);
@@ -244,7 +245,7 @@ public class WYSIWYGEditor extends JPanel {
 
 		for (WYSIWYGComponentRegistration<?> componentRegistration : COMPONENT_REGISTRY) {
 			if (isNotOverlayType || componentRegistration.worksInOverlay()) {
-				JButton componentButton = new JButton(UIRES.get("32px." + componentRegistration.icon()));
+				JButton componentButton = new JButton(UIRES.get("wysiwyg_editor." + componentRegistration.icon()));
 				componentButton.setToolTipText((L10N.t("elementgui.gui.add_" + componentRegistration.machineName())));
 				componentButton.setMargin(new Insets(0, 0, 0, 0));
 				componentButton.addActionListener(e -> {
@@ -315,9 +316,9 @@ public class WYSIWYGEditor extends JPanel {
 		moveComponentDown.setEnabled(false);
 
 		adds.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 				(L10N.t("elementgui.gui.editor_options")), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		adds.setOpaque(false);
 
@@ -327,9 +328,9 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel adds2 = new JPanel();
 		adds2.setLayout(new BoxLayout(adds2, BoxLayout.PAGE_AXIS));
 		adds2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 				(L10N.t("elementgui.gui.gui_properties")), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		JComponent pon = PanelUtils.westAndEastElement(new JLabel((L10N.t("elementgui.gui.gui_type"))), guiType);
 
@@ -361,8 +362,7 @@ public class WYSIWYGEditor extends JPanel {
 			});
 
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, pon));
-		adds2.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.gui.width_height"), spa1, new JLabel("x"),
-				spa2));
+		adds2.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.gui.width_height"), spa1, spa2));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("elementgui.gui.inventory_offset"), invOffX, invOffY));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, renderBgLayer));
 		adds2.add(PanelUtils.join(FlowLayout.LEFT, doesPauseGame));
@@ -382,9 +382,9 @@ public class WYSIWYGEditor extends JPanel {
 			ovst2.setOpaque(false);
 
 			ovst.setBorder(BorderFactory.createTitledBorder(
-					BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+					BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 					L10N.t("elementgui.gui.overlay_properties"), 0, 0, getFont().deriveFont(12.0f),
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+					Theme.current().getForegroundColor()));
 
 			overlayBaseTexture.addActionListener(e -> editor.repaint());
 			overlayBaseTexture.setPrototypeDisplayValue("XXXXXX");
@@ -426,7 +426,7 @@ public class WYSIWYGEditor extends JPanel {
 		JPanel zoomHolder = new JPanel(new BorderLayout()) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				g2d.setColor(Theme.current().getBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.6f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();
@@ -508,11 +508,11 @@ public class WYSIWYGEditor extends JPanel {
 		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			if (isSelected) {
-				setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				setForeground(Theme.current().getBackgroundColor());
+				setBackground(Theme.current().getForegroundColor());
 				setOpaque(true);
 			} else {
-				setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				setForeground(Theme.current().getForegroundColor());
 				setOpaque(false);
 			}
 

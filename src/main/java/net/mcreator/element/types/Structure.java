@@ -20,20 +20,23 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.ResourceReference;
 
 import java.util.List;
 
 @SuppressWarnings("unused") public class Structure extends GeneratableElement {
 
-	public String structure;
+	@ResourceReference("structure") public String structure;
 	public String projection;
-	public String ignoreBlocks;
+	@ModElementReference public List<MItemBlock> ignoredBlocks;
 
 	public int spacing;
 	public int separation;
 
-	public List<BiomeEntry> restrictionBiomes;
+	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public String surfaceDetectionType;
 	public String terrainAdaptation;
 	public String generationStep;

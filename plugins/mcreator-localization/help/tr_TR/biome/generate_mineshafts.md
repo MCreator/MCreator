@@ -1,0 +1,1 @@
+Biyomunuzda maden ocakları olması (mineshafts) için bu ayarı seçin.

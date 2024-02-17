@@ -24,6 +24,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
@@ -48,79 +49,81 @@ public class BlockGenerationConditionRemover implements IConverter {
 		Block block = (Block) input;
 		try {
 			String modElementName = input.getModElement().getName();
-			if (workspace.getModElementByName(modElementName + "Feature") == null) {
-				JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
+			JsonObject definition = jsonElementInput.getAsJsonObject().getAsJsonObject("definition");
 
-				// Check if we need to convert the element
-				if (definition.has("spawnWorldTypes") && !definition.getAsJsonArray("spawnWorldTypes").isEmpty()
-						&& definition.has("generateCondition")) {
-					Feature feature = new Feature(
-							new ModElement(workspace, modElementName + "Feature", ModElementType.FEATURE));
-					feature.generationStep = "UNDERGROUND_ORES";
+			// Check if we need to convert the element
+			if (definition.has("spawnWorldTypes") && !definition.getAsJsonArray("spawnWorldTypes").isEmpty()
+					&& definition.has("generateCondition")) {
+				Feature feature = new Feature(new ModElement(workspace,
+						ConverterUtils.findSuitableModElementName(workspace, modElementName + "Feature"),
+						ModElementType.FEATURE));
+				feature.generationStep = "UNDERGROUND_ORES";
 
-					JsonArray spawnWorldTypes = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-							.get("spawnWorldTypes").getAsJsonArray();
-					if (definition.has("restrictionBiomes") && !definition.getAsJsonArray("restrictionBiomes")
-							.isEmpty()) { // Copy the restriction biomes if there are any
-						definition.getAsJsonArray("restrictionBiomes").iterator().forEachRemaining(
-								e -> feature.restrictionBiomes.add(
-										new BiomeEntry(workspace, e.getAsJsonObject().get("value").getAsString())));
-					} else if (spawnWorldTypes.size()
-							== 1) { // If there are no restriction biomes, consider restiction dimensions
-						String spawnWorldType = spawnWorldTypes.get(0).getAsString();
-						if (spawnWorldType.equals("Surface")) {
-							feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_overworld"));
-						} else if (spawnWorldType.equals("Nether")) {
-							feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_nether"));
-						} else if (spawnWorldType.equals("End")) {
-							feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_end"));
-						} else if (spawnWorldType.startsWith("CUSTOM:")) {
-							ModElement modElement = workspace.getModElementByName(
-									spawnWorldType.replaceFirst("CUSTOM:", ""));
+				JsonArray spawnWorldTypes = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
+						.get("spawnWorldTypes").getAsJsonArray();
+				if (definition.has("restrictionBiomes") && !definition.getAsJsonArray("restrictionBiomes")
+						.isEmpty()) { // Copy the restriction biomes if there are any
+					definition.getAsJsonArray("restrictionBiomes").iterator().forEachRemaining(
+							e -> feature.restrictionBiomes.add(
+									new BiomeEntry(workspace, e.getAsJsonObject().get("value").getAsString())));
+				} else if (spawnWorldTypes.size()
+						== 1) { // If there are no restriction biomes, consider restiction dimensions
+					String spawnWorldType = spawnWorldTypes.get(0).getAsString();
+					if (spawnWorldType.equals("Surface")) {
+						feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_overworld"));
+					} else if (spawnWorldType.equals("Nether")) {
+						feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_nether"));
+					} else if (spawnWorldType.equals("End")) {
+						feature.restrictionBiomes.add(new BiomeEntry(workspace, "#is_end"));
+					} else if (spawnWorldType.startsWith("CUSTOM:")) {
+						ModElement modElement = workspace.getModElementByName(
+								spawnWorldType.replaceFirst("CUSTOM:", ""));
+						if (modElement != null) {
 							GeneratableElement generatableElement = modElement.getGeneratableElement();
 							if (generatableElement instanceof Dimension dimension) {
 								feature.restrictionBiomes.addAll(dimension.biomesInDimension);
 							}
 						}
 					}
-
-					// Copy the generation condition
-					feature.generateCondition = new Procedure(
-							definition.getAsJsonObject("generateCondition").get("name").getAsString());
-
-					// Generate the feature XML
-					String placementType = block.generationShape.equals("UNIFORM") ? "uniform" : "triangular";
-
-					String oreXML = getOreXML(workspace, modElementName, block.frequencyOnChunk, block.blocksToReplace);
-					String placementXML = """
-							<block type="placement_count">
-								<value name="count"><block type="int_provider_constant"><field name="value">%d</field></block></value>
-							<next>
-							<block type="placement_in_square"><next>
-							<block type="placement_height_%s">
-								<value name="min"><block type="vertical_anchor_absolute"><field name="value">%d</field></block></value>
-								<value name="max"><block type="vertical_anchor_absolute"><field name="value">%d</field></block></value>
-							<next>
-							<block type="placement_biome_filter"></block>
-							</next></block></next></block></next></block>""".formatted(block.frequencyPerChunks,
-							placementType, block.minGenerateHeight, block.maxGenerateHeight);
-					feature.featurexml = """
-							<xml><block type="feature_container" deletable="false" x="40" y="40">
-							<value name="feature">%s</value>
-							<next>%s</next></block></xml>
-							""".formatted(oreXML, placementXML);
-
-					feature.getModElement()
-							.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
-					workspace.getModElementManager().storeModElementPicture(feature);
-					workspace.addModElement(feature.getModElement());
-					workspace.getGenerator().generateElement(feature);
-					workspace.getModElementManager().storeModElement(feature);
-
-					// Clear the restriction dimensions of the block, so that it doesn't generate anymore
-					definition.remove("spawnWorldTypes");
-					definition.add("spawnWorldTypes", new JsonArray());
 				}
+
+				// Copy the generation condition
+				feature.generateCondition = new Procedure(
+						definition.getAsJsonObject("generateCondition").get("name").getAsString());
+
+				// Generate the feature XML
+				String placementType = block.generationShape.equals("UNIFORM") ? "uniform" : "triangular";
+
+				String oreXML = getOreXML(workspace, modElementName, block.frequencyOnChunk, block.blocksToReplace);
+				String placementXML = """
+						<block type="placement_count">
+							<value name="count"><block type="int_provider_constant"><field name="value">%d</field></block></value>
+						<next>
+						<block type="placement_in_square"><next>
+						<block type="placement_height_%s">
+							<value name="min"><block type="vertical_anchor_absolute"><field name="value">%d</field></block></value>
+							<value name="max"><block type="vertical_anchor_absolute"><field name="value">%d</field></block></value>
+						<next>
+						<block type="placement_biome_filter"></block>
+						</next></block></next></block></next></block>""".formatted(block.frequencyPerChunks,
+						placementType, block.minGenerateHeight, block.maxGenerateHeight);
+				feature.featurexml = """
+						<xml><block type="feature_container" deletable="false" x="40" y="40">
+						<value name="feature">%s</value>
+						<next>%s</next></block></xml>
+						""".formatted(oreXML, placementXML);
+
+				feature.getModElement().setParentFolder(
+						FolderElement.findFolderByPath(input.getModElement().getWorkspace(),
+								input.getModElement().getFolderPath()));
+				workspace.getModElementManager().storeModElementPicture(feature);
+				workspace.addModElement(feature.getModElement());
+				workspace.getGenerator().generateElement(feature);
+				workspace.getModElementManager().storeModElement(feature);
+
+				// Clear the restriction dimensions of the block, so that it doesn't generate anymore
+				definition.remove("spawnWorldTypes");
+				definition.add("spawnWorldTypes", new JsonArray());
 			}
 		} catch (Exception e) {
 			LOG.warn("Could not remove generation condition from block: " + input.getModElement().getName());

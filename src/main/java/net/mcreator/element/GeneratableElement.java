@@ -27,7 +27,6 @@ import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.generator.template.IAdditionalTemplateDataProvider;
-import net.mcreator.ui.MCreator;
 import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -37,16 +36,13 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.lang.reflect.Type;
 import java.util.List;
-import java.util.Map;
 
 public abstract class GeneratableElement {
 
-	public static final int formatVersion = 55;
+	public static final int formatVersion = 60;
 
 	private static final Logger LOG = LogManager.getLogger("Generatable Element");
 
@@ -176,7 +172,10 @@ public abstract class GeneratableElement {
 				GeneratableElement generatableElement = gson.fromJson(jsonObject,
 						modElementType.getModElementStorageClass());
 				generatableElement.setModElement(lastModElement); // set the mod element reference
-				passWorkspace(generatableElement, workspace);
+
+				// Populate workspace-dependant fields with workspace reference
+				IWorkspaceDependent.processWorkspaceDependentObjects(generatableElement,
+						workspaceDependent -> workspaceDependent.setWorkspace(workspace));
 
 				List<IConverter> converters = ConverterRegistry.getConvertersForModElementType(modElementType);
 				if (converters != null) {
@@ -242,41 +241,6 @@ public abstract class GeneratableElement {
 			return root;
 		}
 
-		private void passWorkspace(Object object, Workspace workspace) {
-			if (object == null)
-				return;
-
-			// Pass workspace if IWorkspaceDependent
-			if (object instanceof IWorkspaceDependent iws)
-				iws.setWorkspace(workspace);
-
-			// Then check if we can pass workspace to any of the children
-			if (object instanceof Iterable<?> list) {
-				for (Object element : list)
-					passWorkspace(element, workspace);
-			} else if (object instanceof Map<?, ?> map) {
-				for (Object element : map.keySet())
-					passWorkspace(element, workspace);
-				for (Object element : map.values())
-					passWorkspace(element, workspace);
-			} else if (object.getClass().isArray()) {
-				int length = Array.getLength(object);
-				for (int i = 0; i < length; i++)
-					passWorkspace(Array.get(object, i), workspace);
-			} else if (object.getClass().getModule() == MCreator.class.getModule()) {
-				for (Field field : object.getClass().getDeclaredFields()) {
-					field.setAccessible(true);
-					if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers())) {
-						try {
-							passWorkspace(field.get(object), workspace);
-						} catch (Exception e) {
-							LOG.warn("Failed to pass workspace to field " + field.getName() + " of object "
-									+ object.getClass().getSimpleName());
-						}
-					}
-				}
-			}
-		}
 	}
 
 	public static final class Unknown extends GeneratableElement {

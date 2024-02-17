@@ -19,6 +19,7 @@
 package net.mcreator.ui.views.editor.image.layer;
 
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -30,6 +31,8 @@ public class LayerListCellRenderer extends JPanel implements ListCellRenderer<La
 	private final JLabel icon = new JLabel();
 
 	private final JLabel visible = new JLabel(UIRES.get("16px.shown"));
+
+	private final Font normal = name.getFont().deriveFont(Font.PLAIN), italic = name.getFont().deriveFont(Font.ITALIC);
 
 	public LayerListCellRenderer() {
 		FlowLayout layout = (FlowLayout) getLayout();
@@ -45,7 +48,16 @@ public class LayerListCellRenderer extends JPanel implements ListCellRenderer<La
 	@Override
 	public Component getListCellRendererComponent(JList<? extends Layer> list, Layer layer, int index,
 			boolean isSelected, boolean cellHasFocus) {
-		name.setText(layer.getName());
+
+		if (layer.isPasted()) {
+			name.setForeground(Theme.current().getAltForegroundColor().brighter());
+			name.setFont(italic);
+			name.setText(layer.getName() + " (floating)");
+		} else {
+			name.setForeground(Theme.current().getForegroundColor());
+			name.setFont(normal);
+			name.setText(layer.getName());
+		}
 
 		ImageIcon iconImage = ImageUtils.fit(layer.getRaster(), 32);
 		if (!layer.isVisible())
@@ -59,10 +71,10 @@ public class LayerListCellRenderer extends JPanel implements ListCellRenderer<La
 
 		if (isSelected) {
 			setOpaque(true);
-			setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			setBackground(Theme.current().getInterfaceAccentColor());
 		} else if (cellHasFocus) {
 			setOpaque(true);
-			setBackground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+			setBackground(Theme.current().getAltForegroundColor());
 		} else
 			setOpaque(false);
 

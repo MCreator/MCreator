@@ -19,9 +19,8 @@
 package net.mcreator.ui.laf.renderer.elementlist;
 
 import net.mcreator.minecraft.MCItem;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
@@ -33,59 +32,54 @@ import java.awt.*;
 
 public class SmallIconModListRender extends JPanel implements ListCellRenderer<IElement> {
 
-	private final boolean showText;
+	private final JLabel label = new JLabel();
+	private final JLabel icon = new JLabel();
 
 	public SmallIconModListRender(boolean showText) {
-		if (showText)
+		if (showText) {
 			setLayout(new BorderLayout(5, 0));
+			add("Center", label);
+		}
 
-		this.showText = showText;
+		add("West", icon);
+		setBorder(null);
+		setBackground(Theme.current().getForegroundColor());
+
+		label.setFont(Theme.current().getSecondaryFont().deriveFont(18.0f));
 	}
 
 	@Override
 	public Component getListCellRendererComponent(JList<? extends IElement> list, IElement element, int index,
 			boolean isSelected, boolean cellHasFocus) {
-		removeAll();
-		setBorder(null);
-
-		JLabel label = new JLabel();
-
-		JLabel icon = new JLabel();
 		if (element != null) {
 			if (isSelected) {
-				label.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				label.setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				setOpaque(true);
-				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				label.setForeground(Theme.current().getBackgroundColor());
 			} else {
-				label.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				setOpaque(false);
+				label.setForeground(Theme.current().getForegroundColor());
 			}
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 24));
-			label.setFont(MCreatorTheme.secondary_font.deriveFont(18.0f));
 
 			ImageIcon dva = null;
-
 			if (element instanceof ModElement ma) {
 				if (!ma.doesCompile()) {
-					dva = TiledImageCache.modTabRed;
+					dva = UIRES.get("mod_types.overlay_err");
 				}
-
 				if (ma.isCodeLocked()) {
 					if (dva != null) {
-						dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
+						dva = ImageUtils.drawOver(dva, UIRES.get("mod_types.overlay_locked"));
 					} else {
-						dva = TiledImageCache.modTabPurple;
+						dva = UIRES.get("mod_types.overlay_locked");
 					}
 				}
 			}
 
 			if (element instanceof FolderElement) {
-				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 25)));
+				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("mod_types.folder").getImage(), 25)));
 			} else if (element instanceof ModElement) {
 				ImageIcon modIcon = ((ModElement) element).getElementIcon();
-
 				if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0
 						&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
 					if (dva != null) {
@@ -108,10 +102,6 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 			setToolTipText(element.getName());
 		}
 
-		if (showText)
-			add("Center", label);
-
-		add("West", icon);
 		return this;
 	}
 

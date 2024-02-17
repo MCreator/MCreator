@@ -33,19 +33,19 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
 		implements ICommonType, ITabContainedElement, IMCItemProvider, IPOIProvider {
 
-	public List<BiomeEntry> biomesInDimension;
+	@ModElementReference public List<BiomeEntry> biomesInDimension;
 
 	public String worldGenType;
 
@@ -73,8 +73,8 @@ import java.util.List;
 	public String igniterName;
 	public StringListProcedure specialInformation;
 	public TabEntry igniterTab;
-	public String texture;
-	public String portalTexture;
+	@TextureReference(TextureType.ITEM) public String texture;
+	@TextureReference(TextureType.BLOCK) public String portalTexture;
 	public boolean enablePortal;
 	public Procedure portalMakeCondition;
 	public Procedure portalUseCondition;
@@ -97,6 +97,25 @@ import java.util.List;
 	public boolean hasIgniter() {
 		// igniter needs portal and igniter enabled
 		return enablePortal && enableIgniter;
+	}
+
+	public Set<String> getWorldgenBlocks() {
+		Set<String> retval = new HashSet<>();
+		retval.add(mainFillerBlock.getUnmappedValue());
+		for (BiomeEntry biomeEntry : biomesInDimension) {
+			if (biomeEntry.getUnmappedValue().startsWith("CUSTOM:")) {
+				ModElement biomeElement = getModElement().getWorkspace()
+						.getModElementByName(biomeEntry.getUnmappedValue().replace("CUSTOM:", ""));
+				if (biomeElement != null) {
+					GeneratableElement generatableElement = biomeElement.getGeneratableElement();
+					if (generatableElement instanceof Biome biome) {
+						retval.add(biome.groundBlock.getUnmappedValue());
+						retval.add(biome.undergroundBlock.getUnmappedValue());
+					}
+				}
+			}
+		}
+		return retval;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

@@ -20,10 +20,12 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.AddTagDialog;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -54,11 +56,11 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 	}
 
 	@Override protected List<MItemBlock> getTagsToAdd() {
-		String tagType = "Blocks";
+		TagType tagType = TagType.BLOCKS;
 		List<MCItem> items = supplier.provide(mcreator.getWorkspace());
 		for (MCItem item : items) {
 			if (item.getType().equals("item")) {
-				tagType = "Items";
+				tagType = TagType.ITEMS;
 				break;
 			}
 		}
@@ -75,14 +77,12 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends MItemBlock> list, MItemBlock value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setOpaque(isSelected);
+			setOpaque(true);
 
-			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getBackgroundColor());
 
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 2, 0, 2, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+					BorderFactory.createMatteBorder(0, 2, 0, 2, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(1, 1, 1, 1)));
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setVerticalAlignment(SwingConstants.CENTER);
@@ -92,6 +92,10 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 
 			setIcon(new ImageIcon(ImageUtils.resizeAA(
 					MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.getUnmappedValue()).getImage(), 25)));
+
+			if (!isSelected && value.isManaged()) {
+				setBackground(Theme.current().getAltBackgroundColor());
+			}
 
 			return this;
 		}

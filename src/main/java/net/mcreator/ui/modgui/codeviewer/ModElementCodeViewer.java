@@ -23,8 +23,13 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.generator.ListTemplate;
+import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.util.ThreadUtil;
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementChangedListener;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.util.image.ImageUtils;
@@ -57,7 +62,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		this.modElementGUI = modElementGUI;
 		this.codeChangeListener = this::reload;
 
-		setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		setBackground(Theme.current().getAltBackgroundColor());
 		setOpaque(true);
 
 		addComponentListener(new ComponentAdapter() {
@@ -68,7 +73,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		});
 
 		// we group list templates inside separate tabs to improve UX
-		ImageIcon enabledListIcon = UIRES.get("16px.list.gif");
+		ImageIcon enabledListIcon = UIRES.get("16px.list");
 		ImageIcon disabledListIcon = ImageUtils.changeSaturation(enabledListIcon, 0);
 		modElementGUI.getModElement().getGenerator().getModElementListTemplates(modElementGUI.getElementFromGUI())
 				.stream().map(GeneratorTemplatesList::groupName).forEach(listName -> {
@@ -84,7 +89,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 						}
 					});
 
-					listPane.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					listPane.setBackground(Theme.current().getAltBackgroundColor());
 					listPane.setOpaque(true);
 
 					listPane.addComponentListener(new ComponentAdapter() {
@@ -118,7 +123,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 
 					for (GeneratorFile file : files) {
 						if (cache.containsKey(file)) { // existing file
-							SwingUtilities.invokeAndWait(() -> {
+							ThreadUtil.runOnSwingThreadAndWait(() -> {
 								try {
 									if (cache.get(file).update(file)) {
 										if (file.source() instanceof ListTemplate lt) { // file from list
@@ -141,7 +146,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 								}
 							});
 						} else { // new file
-							SwingUtilities.invokeAndWait(() -> {
+							ThreadUtil.runOnSwingThreadAndWait(() -> {
 								try {
 									FileCodeViewer<T> fileCodeViewer = new FileCodeViewer<>(this, file);
 									if (file.source() instanceof ListTemplate lt) { // file from list
@@ -176,13 +181,20 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 					});
 
 					// this likely selects first file from cache if currently selected tab is disabled
-					if (!isEnabledAt(getSelectedIndex()) && !cache.isEmpty())
+					int selectedTab = getSelectedIndex();
+					if (selectedTab >= 0 && !isEnabledAt(selectedTab) && !cache.isEmpty())
 						setSelectedIndex(IntStream.range(0, getTabCount()).filter(this::isEnabledAt).min().orElse(0));
 
-					setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					setBackground(Theme.current().getAltBackgroundColor());
 				} catch (Exception ignored) {
 					setBackground(new Color(0x8D5C5C));
 				}
+
+				if (getTabCount() == 0)
+					addTab(L10N.t("mod_element_code_viewer.no_files"), PanelUtils.totalCenterInPanel(
+							ComponentUtils.setForeground(L10N.label("mod_element_code_viewer.no_files.desc"),
+									Theme.current().getAltForegroundColor())));
+
 				updateRunning = false;
 			}, "CodePreviewReloader").start();
 		}

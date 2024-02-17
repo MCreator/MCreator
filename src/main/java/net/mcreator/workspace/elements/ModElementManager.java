@@ -79,6 +79,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 	 * @param element GeneratableElement to convert to store
 	 */
 	public void storeModElement(GeneratableElement element) {
+		if (element instanceof CustomElement)
+			return; // Custom elements are not stored as they have no definition file
+
 		if (element == null) {
 			LOG.warn(
 					"Attempted to store null generatable element. Something went wrong previously for this to happen!");
@@ -122,11 +125,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 		GeneratableElement cachedGeneratableElement = cache.get(element);
 		if (cachedGeneratableElement != null) {
 			if (cachedGeneratableElement.getModElement() != element) {
-				ModElement cacheModElement = cachedGeneratableElement.getModElement();
-				LOG.error(
-						"Cache contains mod element with same name but different object. This should not happen! Cache element: "
-								+ cacheModElement.getName() + ", type: " + cacheModElement.getType()
-								+ ", queried element: " + element.getName() + ", type: " + element.getType());
+				try {
+					throw new IllegalStateException(
+							"Cache element: " + cachedGeneratableElement.getModElement().getName() + ", type: "
+									+ cachedGeneratableElement.getModElement().getType() + ", queried element: "
+									+ element.getName() + ", type: " + element.getType());
+				} catch (IllegalStateException e) {
+					LOG.error("Cache contains mod element with same name but different object. This should not happen!",
+							e);
+				}
 			}
 			return cachedGeneratableElement;
 		}
@@ -216,8 +223,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 	/**
 	 * Invalidates the generatable element cache
+	 *
+	 * @apiNote This method performs sensitive operations on host workspace. Avoid using it!
 	 */
-	public void invalidateCache() {
+	@SuppressWarnings("unused") public void invalidateCache() {
 		cache.clear();
 	}
 

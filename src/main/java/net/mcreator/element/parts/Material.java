@@ -32,9 +32,7 @@ public class Material extends MappableElement {
 	}
 
 	public Material(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "materials"), name);
 	}
 
 	public Material(@Nonnull Workspace owner, DataListEntry name) {

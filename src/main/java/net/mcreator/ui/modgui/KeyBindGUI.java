@@ -23,10 +23,12 @@ import net.mcreator.element.types.KeyBinding;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.procedure.ProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -36,8 +38,12 @@ import net.mcreator.ui.validation.validators.TextFieldValidator;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.Objects;
 
 public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
@@ -94,9 +100,9 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 		JPanel events = new JPanel(new GridLayout(1, 2, 5, 5));
 		events.setOpaque(false);
 		events.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.keybind.key_procedure_triggers"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 		events.add(onKeyPressed);
 		events.add(onKeyReleased);
 
@@ -145,12 +151,16 @@ public class KeyBindGUI extends ModElementGUI<KeyBinding> {
 
 	@Override public KeyBinding getElementFromGUI() {
 		KeyBinding keyBinding = new KeyBinding(modElement);
-		keyBinding.triggerKey = (String) triggerKey.getSelectedItem();
+		keyBinding.triggerKey = (String) Objects.requireNonNull(triggerKey.getSelectedItem());
 		keyBinding.keyBindingName = keyBindingName.getText();
 		keyBinding.onKeyPressed = onKeyPressed.getSelectedProcedure();
 		keyBinding.onKeyReleased = onKeyReleased.getSelectedProcedure();
 		keyBinding.keyBindingCategoryKey = keyBindingCategoryKey.getEditor().getItem().toString();
 		return keyBinding;
+	}
+
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-key-binding");
 	}
 
 }

@@ -22,6 +22,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorGradleCache;
 import net.mcreator.gradle.GradleCacheImportFailedException;
+import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.rsta.ac.java.JarManager;
@@ -37,7 +38,6 @@ import org.gradle.tooling.model.eclipse.EclipseProject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 public class ProjectJarManager extends JarManager {
@@ -69,7 +69,7 @@ public class ProjectJarManager extends JarManager {
 			}
 
 		for (GeneratorGradleCache.ClasspathEntry classpathEntry : classPathEntries) {
-			loadExternalDependency(classpathEntry);
+			loadExternalDependency(generator.getWorkspace(), classpathEntry);
 		}
 
 		this.classpath = classPathEntries;
@@ -80,64 +80,78 @@ public class ProjectJarManager extends JarManager {
 	}
 
 	private List<GeneratorGradleCache.ClasspathEntry> loadClassPathJARs(Generator generator) {
+		List<GeneratorGradleCache.ClasspathEntry> classPathEntries = new ArrayList<>();
+
 		ProjectConnection projectConnection = generator.getGradleProjectConnection();
 		if (projectConnection != null) {
-			List<GeneratorGradleCache.ClasspathEntry> classPathEntries = new ArrayList<>();
-
 			try {
 				EclipseProject project = projectConnection.getModel(EclipseProject.class);
 
 				for (ExternalDependency externalDependency : project.getClasspath()) {
-					if (externalDependency.getFile() != null && externalDependency.getFile().isFile()) {
-						if (externalDependency.getFile().getName().startsWith("scala-"))
+					File libFile = externalDependency.getFile();
+					if (libFile != null && libFile.isFile()) {
+						if (libFile.getName().startsWith("scala-"))
 							continue; // skip scala libraries as we do not need them in MCreator
 
-						if (externalDependency.getFile().getName().contains("-natives-"))
+						if (libFile.getName().contains("-natives-"))
 							continue; // skip native libraries as we do not need them in MCreator
 
+						File srcFile = externalDependency.getSource();
 						GeneratorGradleCache.ClasspathEntry classpathEntry = new GeneratorGradleCache.ClasspathEntry(
-								externalDependency.getFile().getAbsolutePath(), externalDependency.getSource() != null ?
-								externalDependency.getSource().getAbsolutePath() :
-								null);
+								generator.getWorkspace(), libFile.getAbsolutePath(),
+								srcFile != null ? srcFile.getAbsolutePath() : null);
 
-						classPathEntries.add(classpathEntry);
-
-						try {
-							loadExternalDependency(classpathEntry);
-						} catch (GradleCacheImportFailedException ignored) {
+						int idx = classPathEntries.indexOf(classpathEntry);
+						if (idx >= 0) { // If we already have this library in the list,
+							GeneratorGradleCache.ClasspathEntry altClasspathEntry = classPathEntries.get(idx);
+							//  replace it in case we don't have src yet but the alt entry has it
+							if (altClasspathEntry.getSrc(generator.getWorkspace()) == null && srcFile != null) {
+								classPathEntries.set(idx, classpathEntry);
+							}
+						} else {
+							classPathEntries.add(classpathEntry);
 						}
 					}
 				}
 			} catch (BuildException ignored) {
 			}
 
-			return classPathEntries;
+			// After we have collected all classpath entries, load them in the JAR manager
+			for (GeneratorGradleCache.ClasspathEntry classpathEntry : classPathEntries) {
+				try {
+					loadExternalDependency(generator.getWorkspace(), classpathEntry);
+				} catch (GradleCacheImportFailedException ignored) {
+				}
+			}
 		}
-		return Collections.emptyList();
+
+		return classPathEntries;
 	}
 
-	private void loadExternalDependency(GeneratorGradleCache.ClasspathEntry classpathEntry)
+	private void loadExternalDependency(Workspace workspace, GeneratorGradleCache.ClasspathEntry classpathEntry)
 			throws GradleCacheImportFailedException {
-		if (!new File(classpathEntry.getLib()).exists()) {
-			LOG.warn("Failed to load cached library " + classpathEntry.getLib());
-			throw new GradleCacheImportFailedException(
-					new IOException("Failed to load cached library " + classpathEntry.getLib()));
+		String libString = classpathEntry.getLib(workspace);
+		File libFile = new File(libString);
+		if (!libFile.exists()) {
+			LOG.warn("Failed to load cached library " + libString);
+			throw new GradleCacheImportFailedException(new IOException("Failed to load cached library " + libString));
 		}
 
-		JarLibraryInfo libraryInfo = new JarLibraryInfo(classpathEntry.getLib());
-		if (classpathEntry.getSrc() != null) {
-			if (new File(classpathEntry.getSrc()).isFile()) {
-				libraryInfo.setSourceLocation(new ZipSourceLocation(classpathEntry.getSrc()));
-			} else if (new File(classpathEntry.getSrc()).isDirectory()) {
-				libraryInfo.setSourceLocation(new DirSourceLocation(classpathEntry.getSrc()));
+		JarLibraryInfo libraryInfo = new JarLibraryInfo(libString);
+		String srcString = classpathEntry.getSrc(workspace);
+		if (srcString != null) {
+			File srcFile = new File(srcString);
+			if (srcFile.isFile()) {
+				libraryInfo.setSourceLocation(new ZipSourceLocation(srcString));
+			} else if (srcFile.isDirectory()) {
+				libraryInfo.setSourceLocation(new DirSourceLocation(srcString));
 			}
 		}
 		try {
 			addClassFileSource(libraryInfo);
 		} catch (IOException e) {
-			LOG.warn("Failed to load classpath file " + classpathEntry.getLib(), e);
-			throw new GradleCacheImportFailedException(
-					new IOException("Failed to load classpath file " + classpathEntry.getLib()));
+			LOG.warn("Failed to load classpath file " + libString, e);
+			throw new GradleCacheImportFailedException(new IOException("Failed to load classpath file " + libString));
 		}
 	}
 

@@ -37,20 +37,14 @@ import net.mcreator.util.image.ImageUtils;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
-public class StampTool extends AbstractModificationTool {
+public class StampTool extends AbstractDrawingTool {
 
 	private double saturation = 1;
-
-	private Point prevPoint = null;
-
-	private final JCheckBox aliasing;
-	private final JCheckBox connect;
 	private final JCheckBox colorize;
 	private final JCheckBox colorType;
 
@@ -58,8 +52,6 @@ public class StampTool extends AbstractModificationTool {
 	private final JSlidingSpinner height;
 
 	private ResourcePointer selection;
-
-	private boolean first = true;
 
 	public StampTool(Canvas canvas, ColorSelector colorSelector, LayerPanel layerPanel, VersionManager versionManager,
 			MCreator window) {
@@ -115,41 +107,9 @@ public class StampTool extends AbstractModificationTool {
 		settingsPanel.add(connect);
 	}
 
-	@Override public boolean process(ZoomedMouseEvent e) {
+	@Override protected void preProcess(ZoomedMouseEvent e) {
 		canvas.enableCustomPreview(false);
 		layer.setOverlayOpacity(colorSelector.getForegroundColor().getAlpha() / 255.0);
-		int sx = e.getX() - layer.getX(), sy = e.getY() - layer.getY();
-		Graphics2D graphics2D = layer.getOverlay().createGraphics();
-		if (aliasing.isSelected())
-			graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-		draw(graphics2D, sx, sy, e.getRawX(), e.getRawY(), e.getZoom());
-		if (((connect.isSelected() && !first) || e.isShiftDown()) && prevPoint != null) {
-			int minx = Math.min(sx, prevPoint.x);
-			int maxx = Math.max(sx, prevPoint.x);
-			int miny = Math.min(sy, prevPoint.y);
-			int maxy = Math.max(sy, prevPoint.y);
-
-			if (sx == prevPoint.getX())
-				for (int y = miny + 1; y < maxy; y++)
-					draw(graphics2D, sx, y, e.getRawX(), y * e.getZoom(), e.getZoom());
-			else if (sy == prevPoint.getY())
-				for (int x = minx + 1; x < maxx; x++)
-					draw(graphics2D, x, sy, x * e.getZoom(), e.getRawY(), e.getZoom());
-			else {
-				double part = 1;
-				double distance = Point2D.distance(prevPoint.x, prevPoint.y, sx, sy);
-				for (double t = 0; t < 1; t += 1 / (distance * part)) {
-					int x = (int) Math.round((1 - t) * prevPoint.x + t * sx);
-					int y = (int) Math.round((1 - t) * prevPoint.y + t * sy);
-					draw(graphics2D, x, y, x * e.getZoom(), y * e.getZoom(), e.getZoom());
-				}
-			}
-		}
-		first = false;
-		prevPoint = new Point(e.getX() - layer.getX(), e.getY() - layer.getY());
-		graphics2D.dispose();
-		canvas.getCanvasRenderer().repaint();
-		return true;
 	}
 
 	@Override public void mouseReleased(MouseEvent e) {
@@ -159,21 +119,12 @@ public class StampTool extends AbstractModificationTool {
 		first = true;
 	}
 
-	private void draw(Graphics2D g, int tx, int ty, double rx, double ry, double zoom) {
-		int x, y;
-		int width = (int) Math.round(this.width.getValue()), height = (int) Math.round(this.height.getValue());
+	@Override protected Dimension getShapeDimension() {
+		return new Dimension((int) Math.round(this.width.getValue()), (int) Math.round(this.height.getValue()));
+	}
 
-		if (width % 2.0 == 1)
-			x = tx - width / 2;
-		else
-			x = Math.round((int) (rx / zoom + 0.5)) - width / 2;
-
-		if (height % 2.0 == 1)
-			y = ty - height / 2;
-		else
-			y = Math.round((int) (ry / zoom + 0.5)) - height / 2;
-
-		g.drawImage(getImage(), x, y, width, height, null);
+	@Override protected void doDrawing(Graphics2D g, int x, int y, Dimension d) {
+		g.drawImage(getImage(), x, y, d.width, d.height, null);
 	}
 
 	@Override public void mouseEntered(MouseEvent e) {
@@ -204,7 +155,7 @@ public class StampTool extends AbstractModificationTool {
 
 	public Image getImage() {
 		int width = (int) Math.round(this.width.getValue()), height = (int) Math.round(this.height.getValue());
-		BufferedImage image;
+		Image image;
 
 		if (aliasing.isSelected())
 			image = ImageUtils.resizeAA(ImageMakerTexturesCache.CACHE.get(selection).getImage(), width, height);

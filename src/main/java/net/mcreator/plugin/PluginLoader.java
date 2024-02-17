@@ -36,6 +36,7 @@ import org.reflections.scanners.Scanners;
 import org.reflections.util.ConfigurationBuilder;
 
 import javax.annotation.Nullable;
+import java.beans.Introspector;
 import java.io.File;
 import java.lang.reflect.Constructor;
 import java.net.URL;
@@ -71,6 +72,8 @@ public class PluginLoader extends URLClassLoader {
 
 	private final Reflections reflections;
 
+	private final Set<Module> pluginsModules;
+
 	/**
 	 * <p>The core of the detection and loading</p>
 	 */
@@ -81,6 +84,7 @@ public class PluginLoader extends URLClassLoader {
 		this.failedPlugins = new HashSet<>();
 		this.javaPlugins = new HashSet<>();
 		this.pluginUpdates = new HashSet<>();
+		this.pluginsModules = new HashSet<>();
 
 		UserFolderManager.getFileFromUserFolder("plugins").mkdirs();
 
@@ -110,7 +114,7 @@ public class PluginLoader extends URLClassLoader {
 						+ plugin.getWeight());
 				addURL(plugin.toURL());
 
-				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get() && plugin.getJavaPlugin() != null) {
+				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get() && plugin.isJavaPlugin()) {
 					@SuppressWarnings("resource") DynamicURLClassLoader javaPluginCL = new DynamicURLClassLoader(
 							"PluginClassLoader-" + plugin.getID(), new URL[] {},
 							Thread.currentThread().getContextClassLoader()) {
@@ -118,6 +122,15 @@ public class PluginLoader extends URLClassLoader {
 							try {
 								return super.findClass(name);
 							} catch (Exception e) {
+								for (StackTraceElement element : e.getStackTrace()) {
+									if (element.getClassName().equals(Introspector.class.getName())) {
+										// If class not found was triggered due to Introspector looking for
+										// XXXBeanInfo class or XXXCustomizer class, we can ignore this and
+										// not log error or mark plugin as failed by setting loaded_failure
+										throw e;
+									}
+								}
+
 								plugin.loaded_failure =
 										"internal error: " + e.getClass().getSimpleName() + ": " + e.getMessage();
 								LOG.error("Failed to load class " + name + " for plugin " + plugin.getID(), e);
@@ -128,11 +141,13 @@ public class PluginLoader extends URLClassLoader {
 
 					javaPluginCL.addURL(plugin.toURL());
 
+					pluginsModules.add(javaPluginCL.getUnnamedModule());
+
 					Class<?> clazz = javaPluginCL.loadClass(plugin.getJavaPlugin());
 					Constructor<?> ctor = clazz.getConstructor(Plugin.class);
 					JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
 					javaPlugins.add(javaPlugin);
-				} else if (plugin.getJavaPlugin() != null) {
+				} else if (plugin.isJavaPlugin()) {
 					LOG.warn(plugin.getID() + " is Java plugin, but Java plugins are disabled in preferences");
 
 					plugin.loaded_failure = "Java plugins disabled";
@@ -200,6 +215,13 @@ public class PluginLoader extends URLClassLoader {
 		return Collections.unmodifiableCollection(pluginUpdates);
 	}
 
+	/**
+	 * @return <p>A list of all plugin modules.</p>
+	 */
+	public Collection<Module> getPluginModules() {
+		return Collections.unmodifiableCollection(pluginsModules);
+	}
+
 	synchronized private List<Plugin> listPluginsFromFolder(File folder, boolean builtin) {
 		LOG.debug("Searching for plugins in: " + folder);
 
@@ -260,16 +282,16 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	@Nullable private Plugin validatePlugin(Plugin plugin) {
+		if (!plugin.isBuiltin() && plugin.getSupportedVersions() == null) {
+			failedPlugins.add(new PluginLoadFailure(plugin, "missing supportedversions"));
+			LOG.warn("Plugin " + plugin.getID() + " does not specify supportedversions. Skipping this plugin.");
+			return null;
+		}
+
 		if (!plugin.isCompatible()) {
 			failedPlugins.add(new PluginLoadFailure(plugin, "incompatible version"));
 			LOG.warn("Plugin " + plugin.getID()
 					+ " is not compatible with this MCreator version! Skipping this plugin.");
-			return null;
-		}
-
-		if (plugin.getMinVersion() < 0) {
-			failedPlugins.add(new PluginLoadFailure(plugin, "missing minversion"));
-			LOG.warn("Plugin " + plugin.getID() + " does not specify minversion. Skipping this plugin.");
 			return null;
 		}
 

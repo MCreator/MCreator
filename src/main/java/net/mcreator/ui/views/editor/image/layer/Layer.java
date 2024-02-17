@@ -19,6 +19,9 @@
 package net.mcreator.ui.views.editor.image.layer;
 
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
+import net.mcreator.ui.views.editor.image.canvas.SelectedBorder;
+import net.mcreator.ui.views.editor.image.canvas.Selection;
+import net.mcreator.ui.views.editor.image.versioning.change.Modification;
 import net.mcreator.util.image.ImageUtils;
 
 import java.awt.*;
@@ -37,6 +40,8 @@ public class Layer {
 	private double overlayOpacity = 1;
 
 	private boolean renderingMode = false;
+
+	private boolean isPasted = false;
 
 	public Layer(int width, int height, String name) {
 		this(width, height, 0, 0, name);
@@ -64,6 +69,13 @@ public class Layer {
 
 	public Layer(int width, int height, int x, int y, String name, Image image) {
 		this(width, height, x, y, name);
+		Graphics2D g = createGraphics();
+		g.drawImage(image, 0, 0, null);
+		g.dispose();
+	}
+
+	public Layer(String name, Image image) {
+		this(image.getWidth(null), image.getHeight(null), 0, 0, name);
 		Graphics2D g = createGraphics();
 		g.drawImage(image, 0, 0, null);
 		g.dispose();
@@ -134,6 +146,14 @@ public class Layer {
 		canvas.update(this);
 	}
 
+	public boolean isPasted() {
+		return isPasted;
+	}
+
+	public void setPasted(boolean isPasted) {
+		this.isPasted = isPasted;
+	}
+
 	public boolean in(int x, int y) {
 		return (x >= getX() && x < (getX() + getWidth())) && (y >= getY() && y < (getY() + getHeight()));
 	}
@@ -177,6 +197,37 @@ public class Layer {
 		if (apply)
 			overlay = null;
 		return temp;
+	}
+
+	public void mergeOnTop(Layer topLayer) {
+		Graphics2D g2d = createGraphics();
+		g2d.drawImage(topLayer.getRaster(), topLayer.x - x, topLayer.y - y, null);
+		g2d.dispose();
+	}
+
+	public void clear() {
+		Graphics2D g2d = createGraphics();
+		Composite composite = g2d.getComposite();
+		g2d.setComposite(AlphaComposite.Clear);
+		g2d.fillRect(0, 0, getWidth(), getHeight());
+		g2d.setComposite(composite);
+		g2d.dispose();
+	}
+
+	public void clearSelection() {
+		Selection selection = canvas.getSelection();
+		if (selection.hasSurface() && selection.getEditing() != SelectedBorder.NONE) {
+			Graphics2D g2d = createGraphics();
+			Composite composite = g2d.getComposite();
+			g2d.setComposite(AlphaComposite.Clear);
+			int x = selection.getLeft() - getX();
+			int y = selection.getTop() - getY();
+			g2d.fillRect(x, y, selection.getWidth(), selection.getHeight());
+			g2d.setComposite(composite);
+			g2d.dispose();
+		} else {
+			clear();
+		}
 	}
 
 	public BufferedImage getRaster() {
@@ -278,8 +329,14 @@ public class Layer {
 
 	public void resize(int width, int height, boolean antialiasing) {
 		if (antialiasing)
-			setRaster(ImageUtils.resizeAA(raster, width, height));
+			setRaster(ImageUtils.toBufferedImage(ImageUtils.resizeAA(raster, width, height)));
 		else
-			setRaster(ImageUtils.resize(raster, width, height));
+			setRaster(ImageUtils.toBufferedImage(ImageUtils.resize(raster, width, height)));
+	}
+
+	public void deleteSelection() {
+		Layer selected = canvas.getLayerPanel().selected();
+		selected.clearSelection();
+		canvas.getVersionManager().addRevision(new Modification(canvas, selected));
 	}
 }

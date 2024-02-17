@@ -20,25 +20,27 @@
 package net.mcreator.integration;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.integration.ui.UITestUtil;
 import net.mcreator.io.zip.ZipIO;
-import net.mcreator.ui.init.ImageMakerTexturesCache;
+import net.mcreator.ui.MCreator;
+import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.WorkspaceUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.reflections.Reflections;
 import org.reflections.scanners.Scanners;
 import org.reflections.util.ConfigurationBuilder;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Objects;
@@ -49,15 +51,7 @@ import java.util.stream.Stream;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class WorkspaceConvertersTest {
-
-	@BeforeAll public static void initTest() throws IOException {
-		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
-
-		TestSetup.setupIntegrationTestEnvironment();
-
-		ImageMakerTexturesCache.init();
-	}
+@ExtendWith(IntegrationTestSetup.class) public class WorkspaceConvertersTest {
 
 	public @TestFactory Stream<DynamicTest> testWorkspaceConversions() {
 		Set<String> testWorkspaces = new Reflections(
@@ -78,22 +72,28 @@ public class WorkspaceConvertersTest {
 
 				File workspaceFile = WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(workspaceDir);
 
-				GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-						Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+				GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
+						Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 
 				assertNotNull(generatorConfiguration);
 
-				try (Workspace workspace = Workspace.readFromFS(workspaceFile, generatorConfiguration)) {
+				try (Workspace workspace = Workspace.readFromFSUnsafe(workspaceFile, generatorConfiguration)) {
 					// Conversions
 					for (ModElement mod : workspace.getModElements()) {
 						mod.getGeneratableElement();
 					}
+
+					MCreator mcreator = new MCreator(null, workspace);
 
 					// Check if all MEs have valid GE definition
 					for (ModElement mod : workspace.getModElements()) {
 						GeneratableElement ge = mod.getGeneratableElement();
 
 						assertNotNull(ge);
+
+						// Check if all workspace fields are not null
+						IWorkspaceDependent.processWorkspaceDependentObjects(ge,
+								workspaceDependent -> assertNotNull(workspaceDependent.getWorkspace()));
 
 						// test if methods below work and no exceptions are thrown
 
@@ -108,6 +108,12 @@ public class WorkspaceConvertersTest {
 
 						// test if GE definition is valid enough to be generated
 						assertTrue(workspace.getGenerator().generateElement(ge));
+
+						// test if the converted GE can be opened in the UI
+						ModElementGUI<?> modElementGUI = UITestUtil.openModElementGUIFor(mcreator, ge);
+
+						// test if UI validation is error free
+						UITestUtil.testIfValidationPasses(modElementGUI, false);
 					}
 				}
 			});

@@ -20,8 +20,6 @@ package net.mcreator.ui.procedure;
 
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
-import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
@@ -31,6 +29,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -141,8 +140,8 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			}
 		});
 
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		setBackground(Theme.current().getBackgroundColor());
+		setBorder(BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()));
 
 		if (returnType != null) {
 			setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
@@ -154,7 +153,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
 		procedures.addPopupMenuListener(new ComboBoxFullWidthPopup());
 		procedures.addActionListener(e -> {
-			CBoxEntry selectedItem = procedures.getSelectedItem();
+			ProcedureEntry selectedItem = procedures.getSelectedItem();
 			if (selectedItem != null) {
 				if (!selectedItem.correctDependencies) {
 					procedures.setSelectedItem(oldItem);
@@ -282,12 +281,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 		procedures.setToolTipText(L10N.t("action.procedure.match_dependencies"));
 
-		procedures.setPrototypeDisplayValue(new CBoxEntry("XXXXXXXXX", null));
-
-		GeneratorConfiguration gc = mcreator.getGeneratorConfiguration();
-		if (gc.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
-				== GeneratorStats.CoverageStatus.NONE)
-			setEnabled(false);
+		procedures.setPrototypeDisplayValue(new ProcedureEntry("XXXXXXXXX", null));
 	}
 
 	public ProcedureSelector setDefaultName(String defaultName) {
@@ -317,13 +311,13 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 		if (returnType != null)
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(1, 0, 1, 1, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+					BorderFactory.createMatteBorder(1, 0, 1, 1, Theme.current().getAltBackgroundColor()),
 					BorderFactory.createMatteBorder(0, 5, 0, 0, returnType.getBlocklyColor())));
 
 		return (ProcedureSelector) retval;
 	}
 
-	@Override protected CBoxEntry updateDepsList(boolean smallIcons) {
+	@Override protected ProcedureEntry updateDepsList(boolean smallIcons) {
 		return super.updateDepsList(inline);
 	}
 }

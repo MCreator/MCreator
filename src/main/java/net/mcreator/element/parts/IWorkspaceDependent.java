@@ -19,9 +19,18 @@
 
 package net.mcreator.element.parts;
 
+import net.mcreator.plugin.PluginLoader;
+import net.mcreator.ui.MCreator;
 import net.mcreator.workspace.Workspace;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Array;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.Map;
+import java.util.function.Consumer;
 
 /**
  * Mod element parameters represented by instances of classes implementing this interface gather some used data
@@ -30,6 +39,47 @@ import javax.annotation.Nullable;
  */
 public interface IWorkspaceDependent {
 
+	Logger LOG = LogManager.getLogger(IWorkspaceDependent.class);
+
 	void setWorkspace(@Nullable Workspace workspace);
+
+	@Nullable Workspace getWorkspace();
+
+	static void processWorkspaceDependentObjects(Object object, Consumer<IWorkspaceDependent> processor) {
+		if (object == null)
+			return;
+
+		// Pass workspace if IWorkspaceDependent
+		if (object instanceof IWorkspaceDependent iws)
+			processor.accept(iws);
+
+		// Then check if we can pass workspace to any of the children
+		if (object instanceof Iterable<?> list) {
+			for (Object element : list)
+				processWorkspaceDependentObjects(element, processor);
+		} else if (object instanceof Map<?, ?> map) {
+			for (Object element : map.keySet())
+				processWorkspaceDependentObjects(element, processor);
+			for (Object element : map.values())
+				processWorkspaceDependentObjects(element, processor);
+		} else if (object.getClass().isArray()) {
+			int length = Array.getLength(object);
+			for (int i = 0; i < length; i++)
+				processWorkspaceDependentObjects(Array.get(object, i), processor);
+		} else if (object.getClass().getModule() == MCreator.class.getModule()
+				|| PluginLoader.INSTANCE.getPluginModules().contains(object.getClass().getModule())) {
+			for (Field field : object.getClass().getDeclaredFields()) {
+				field.setAccessible(true);
+				if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers())) {
+					try {
+						processWorkspaceDependentObjects(field.get(object), processor);
+					} catch (Exception e) {
+						LOG.warn("Failed to pass workspace to field " + field.getName() + " of object "
+								+ object.getClass().getSimpleName());
+					}
+				}
+			}
+		}
+	}
 
 }

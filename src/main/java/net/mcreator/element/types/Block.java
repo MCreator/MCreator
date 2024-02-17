@@ -35,6 +35,8 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -49,12 +51,12 @@ import java.util.stream.Collectors;
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Block extends GeneratableElement
 		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
-	public String texture;
-	public String textureTop;
-	public String textureLeft;
-	public String textureFront;
-	public String textureRight;
-	public String textureBack;
+	@TextureReference(TextureType.BLOCK) public String texture;
+	@TextureReference(TextureType.BLOCK) public String textureTop;
+	@TextureReference(TextureType.BLOCK) public String textureLeft;
+	@TextureReference(TextureType.BLOCK) public String textureFront;
+	@TextureReference(TextureType.BLOCK) public String textureRight;
+	@TextureReference(TextureType.BLOCK) public String textureBack;
 	public int renderType;
 	@Nonnull public String customModelName;
 	public int rotationMode;
@@ -62,8 +64,8 @@ import java.util.stream.Collectors;
 	public boolean emissiveRendering;
 	public boolean displayFluidOverlay;
 
-	public String itemTexture;
-	public String particleTexture;
+	@TextureReference(TextureType.ITEM) public String itemTexture;
+	@TextureReference(TextureType.BLOCK) public String particleTexture;
 
 	public String blockBase;
 
@@ -140,7 +142,7 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public boolean hasInventory;
-	public String guiBoundTo;
+	@ModElementReference(defaultValues = "<NONE>") public String guiBoundTo;
 	public boolean openGUIOnRightClick;
 	public int inventorySize;
 	public int inventoryStackSize;
@@ -157,7 +159,7 @@ import java.util.stream.Collectors;
 
 	public boolean isFluidTank;
 	public int fluidCapacity;
-	public List<Fluid> fluidRestrictions;
+	@ModElementReference public List<Fluid> fluidRestrictions;
 
 	public Procedure onRightClicked;
 	public Procedure onBlockAdded;
@@ -175,8 +177,8 @@ import java.util.stream.Collectors;
 	public Procedure onHitByProjectile;
 
 	public boolean generateFeature;
-	public List<BiomeEntry> restrictionBiomes;
-	public List<MItemBlock> blocksToReplace;
+	@ModElementReference public List<BiomeEntry> restrictionBiomes;
+	@ModElementReference public List<MItemBlock> blocksToReplace;
 	public String generationShape;
 	public int frequencyPerChunks;
 	public int frequencyOnChunk;
@@ -201,6 +203,7 @@ import java.util.stream.Collectors;
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
+		this.destroyTool = "Not specified";
 		this.inventoryInSlotIDs = new ArrayList<>();
 		this.inventoryOutSlotIDs = new ArrayList<>();
 
@@ -224,7 +227,7 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
-	public boolean isDoubleBlock() {
+	@Override public boolean isDoubleBlock() {
 		return "Door".equals(blockBase);
 	}
 

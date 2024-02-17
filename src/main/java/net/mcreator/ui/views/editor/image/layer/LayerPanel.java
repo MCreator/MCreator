@@ -40,13 +40,7 @@ import java.awt.event.MouseEvent;
 public class LayerPanel extends JPanel {
 	private JList<Layer> layerList;
 	private final JPanel layerPanel = new JPanel(new CardLayout());
-	private final JButton add;
-	private final JButton up;
-	private final JButton down;
-	private final JButton editMeta;
-	private final JButton toggleVisibility;
-	private final JButton delete;
-	private final JButton duplicate;
+	private final JButton add, up, down, editMeta, toggleVisibility, delete, duplicate, mergeDown;
 
 	private Canvas canvas;
 	private LayerListMode mode;
@@ -73,6 +67,7 @@ public class LayerPanel extends JPanel {
 		toggleVisibility = new JButton(UIRES.get("18px.visibility"));
 		delete = new JButton(UIRES.get("18px.remove"));
 		duplicate = new JButton(UIRES.get("18px.duplicate"));
+		mergeDown = new JButton(UIRES.get("18px.merge"));
 
 		add.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_new_layer"));
 		add.setMargin(new Insets(0, 0, 0, 0));
@@ -112,11 +107,21 @@ public class LayerPanel extends JPanel {
 		duplicate.setOpaque(false);
 		duplicate.setBorder(BorderFactory.createEmptyBorder());
 
+		mergeDown.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_merge_layers_down"));
+		mergeDown.setMargin(new Insets(0, 0, 0, 0));
+		mergeDown.setOpaque(false);
+		mergeDown.setBorder(BorderFactory.createEmptyBorder());
+
 		canEdit(false);
 
 		add.addActionListener(e -> {
-			NewLayerDialog dialog = new NewLayerDialog(f, canvas);
-			dialog.setVisible(true);
+			if (isFloating()) {
+				canvas.consolidateFloating();
+				updateControls();
+			} else {
+				NewLayerDialog dialog = new NewLayerDialog(f, canvas);
+				dialog.setVisible(true);
+			}
 		});
 
 		up.addActionListener(e -> {
@@ -143,8 +148,10 @@ public class LayerPanel extends JPanel {
 					L10N.t("dialog.imageeditor.layer_panel_confirm_layer_deletion_message") + selected(),
 					L10N.t("dialog.imageeditor.layer_panel_confirm_layer_deletion_title"), JOptionPane.YES_NO_OPTION,
 					JOptionPane.QUESTION_MESSAGE);
-			if (confirmDialog == 0)
+			if (confirmDialog == 0) {
 				canvas.remove(selectedID());
+				updateControls();
+			}
 		});
 
 		duplicate.addActionListener(e -> {
@@ -152,8 +159,14 @@ public class LayerPanel extends JPanel {
 				canvas.add(selected().copy());
 		});
 
+		mergeDown.addActionListener(e -> {
+			if (selected() != null)
+				canvas.mergeDown(selectedID());
+		});
+
 		controls.add(add);
 		controls.add(duplicate);
+		controls.add(mergeDown);
 		controls.add(up);
 		controls.add(down);
 		controls.add(toggleVisibility);
@@ -164,8 +177,6 @@ public class LayerPanel extends JPanel {
 
 		layerPanel.add(PanelUtils.totalCenterInPanel(closed), LayerListMode.CLOSED.toString());
 		layerPanel.add(PanelUtils.totalCenterInPanel(empty), LayerListMode.EMPTY.toString());
-
-		//setOpaque(false);
 
 		add(layerPanel, BorderLayout.CENTER);
 		add(controls, BorderLayout.NORTH);
@@ -211,15 +222,24 @@ public class LayerPanel extends JPanel {
 		}
 	}
 
-	public void setListMode(LayerListMode mode) {
+	private void setListMode(LayerListMode mode) {
 		if (!(layerList == null && mode == LayerListMode.NORMAL))
 			this.mode = mode;
 		CardLayout cl = (CardLayout) (layerPanel.getLayout());
 		cl.show(layerPanel, mode.toString());
 	}
 
+	public void updateFloatingLayer() {
+		updateControls();
+	}
+
 	public void select(int selected) {
-		layerList.setSelectedIndex(selected);
+		if (selected < 0)
+			layerList.setSelectedIndex(0);
+		else if (selected >= canvas.size())
+			layerList.setSelectedIndex(canvas.size() - 1);
+		else
+			layerList.setSelectedIndex(selected);
 		updateSelection();
 	}
 
@@ -227,7 +247,14 @@ public class LayerPanel extends JPanel {
 		return layerList.getSelectedIndex();
 	}
 
+	public boolean isFloating() {
+		return canvas.getFloatingLayer() != null && canvas.getFloatingLayer().isPasted();
+	}
+
 	public Layer selected() {
+		if (layerList == null)
+			return null;
+
 		int selectedIndex = layerList.getSelectedIndex();
 		if (selectedIndex == -1)
 			return null;
@@ -235,22 +262,34 @@ public class LayerPanel extends JPanel {
 	}
 
 	public void updateSelection() {
-		updateControls();
 		Layer selected = selected();
 		if (selected != null)
 			toolPanel.setLayer(selected);
+		updateControls();
 	}
 
-	private void updateControls() {
+	public void updateControls() {
 		if (!canvas.isEmpty()) {
 			setListMode(LayerListMode.NORMAL);
 			if (selectedID() != -1) {
-				canEdit(true);
-				down.setEnabled(selectedID() < canvas.size() - 1);
-				up.setEnabled(selectedID() > 0);
+				boolean floating = isFloating();
+				canEdit(!floating);
+				down.setEnabled(selectedID() < canvas.size() - 1 && !floating);
+				up.setEnabled(selectedID() > 0 && !floating);
+				mergeDown.setEnabled(selectedID() < canvas.size() - 1);
+				layerList.setEnabled(!floating);
+				if (floating) {
+					add.setIcon(UIRES.get("18px.add_new"));
+					add.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_new_layer.floating"));
+					delete.setEnabled(true);
+				} else {
+					add.setIcon(UIRES.get("18px.add"));
+					add.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_new_layer"));
+				}
 			} else {
 				up.setEnabled(false);
 				down.setEnabled(false);
+				mergeDown.setEnabled(false);
 				canEdit(false);
 			}
 		} else

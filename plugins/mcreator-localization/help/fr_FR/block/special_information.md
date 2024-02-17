@@ -1,1 +1,3 @@
-Ce paramètre ajoute une info-bulle au bloc lorsque vous maintenez votre curseur sur le bloc dans votre inventaire. Si vous utilisez une info-bulle générée par une procédure et que votre bloc n'est pas détenu par une entité ou un item, la dépendance `entité` sera nulle.
+Ce paramètre ajoute une infobulle au bloc lorsque vous placez votre icône sur le bloc de votre inventaire.
+
+Si vous utilisez une infobulle générée par une procédure et que votre bloc est non détenu par une entité ou actuellement une entité d’article abandonné, la dépendance d’`entity` sera nulle.

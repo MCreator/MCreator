@@ -34,6 +34,8 @@ import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -51,7 +53,7 @@ import java.util.Map;
 
 	public int renderType;
 	public int blockingRenderType;
-	public String texture;
+	@TextureReference(TextureType.ITEM) public String texture;
 	@Nonnull public String customModelName;
 	@Nonnull public String blockingModelName;
 
@@ -64,9 +66,9 @@ import java.util.Map;
 	public int enchantability;
 	public double damageVsEntity;
 	public int usageCount;
-	public List<MItemBlock> blocksAffected;
+	@ModElementReference public List<MItemBlock> blocksAffected;
 	public LogicProcedure glowCondition;
-	public List<MItemBlock> repairItems;
+	@ModElementReference public List<MItemBlock> repairItems;
 	public boolean immuneToFire;
 
 	public boolean stayInGridWhenCrafting;

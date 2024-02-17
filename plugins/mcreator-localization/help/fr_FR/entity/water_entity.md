@@ -1,3 +1,5 @@
 Cocher de paramètre rend l'entité une entité marine.
 
-Activer de paramètre fera en sorte que l'entité aie un type de navigateur et de controlleur marin.
+L’activation de ce paramètre permettra à l’entité d’avoir un navigateur de type eau, contrôleur de mouvement de l’eau, et permettre au géniteur du monde de l’engendrer dans les fluides.
+
+Cela ne fera pas apparaître l’entité dans les fluides.

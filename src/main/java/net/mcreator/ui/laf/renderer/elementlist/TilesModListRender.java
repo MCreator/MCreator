@@ -19,10 +19,8 @@
 package net.mcreator.ui.laf.renderer.elementlist;
 
 import net.mcreator.minecraft.MCItem;
-import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
@@ -34,80 +32,67 @@ import java.awt.*;
 
 public class TilesModListRender extends JPanel implements ListCellRenderer<IElement> {
 
+	private final JLabel label = new JLabel();
+	private final JLabel label_details = new JLabel();
+	private final JLabel icon = new JLabel();
+	private final JPanel text = new JPanel(new BorderLayout(0, 0));
+
 	public TilesModListRender() {
 		super(new BorderLayout(0, 0));
+		setBorder(null);
+		setBackground(Theme.current().getForegroundColor());
+
+		label.setFont(Theme.current().getSecondaryFont().deriveFont(24.0f));
+		text.setOpaque(false);
+		text.add("Center", label);
+		text.add("South", label_details);
+		add("Center", text);
+		add("West", icon);
 	}
 
 	@Override
 	public Component getListCellRendererComponent(JList<? extends IElement> list, IElement element, int index,
 			boolean isSelected, boolean cellHasFocus) {
-		removeAll();
-		setBorder(null);
-
-		JLabel label = new JLabel();
-		JLabel label_details = new JLabel();
-
-		JLabel icon = new JLabel();
 		if (element != null) {
 			if (isSelected) {
-				label.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				label_details.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				label.setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				label_details.setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				setOpaque(true);
+				label.setForeground(Theme.current().getBackgroundColor());
+				label_details.setForeground(Theme.current().getBackgroundColor());
 			} else {
-				label.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				label_details.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
 				setOpaque(false);
+				label.setForeground(Theme.current().getForegroundColor());
+				label_details.setForeground(Theme.current().getForegroundColor());
 			}
 
 			label.setText(StringUtils.abbreviateString(element.getName(), 18));
-			label.setFont(MCreatorTheme.secondary_font.deriveFont(24.0f));
 
-			ImageIcon dva = null;
-
-			if (element instanceof ModElement ma) {
-				JPanel text = new JPanel();
-				text.setLayout(new BoxLayout(text, BoxLayout.PAGE_AXIS));
-				text.setOpaque(false);
-				text.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-
-				label_details.setText(
-						"<html><div width=210 height=42 style=\"overflow: hidden;\"><small" + (isSelected ?
-								(" color=#" + Integer.toHexString(
-										((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).getRGB()).substring(2)) :
-								"") + ">" + ma.getType().getDescription());
-
-				if (!ma.doesCompile()) {
-					dva = TiledImageCache.modTabRed;
-				}
-
-				if (ma.isCodeLocked()) {
-					if (dva != null) {
-						dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
-					} else {
-						dva = TiledImageCache.modTabPurple;
-					}
-				}
-
-				text.add(label);
-				text.add(label_details);
-
-				add("Center", text);
-				add("West", icon);
+			if (element instanceof ModElement modElement) {
+				label_details.setText("<html><div width=210 style=\"overflow: hidden;\"><small" + (isSelected ?
+						(" color=#" + Integer.toHexString((Theme.current().getBackgroundColor()).getRGB())
+								.substring(2)) :
+						"") + ">" + modElement.getType().getDescription());
+				text.setBorder(BorderFactory.createEmptyBorder(0, 5, 10, 0));
 			} else {
-				label.setBorder(BorderFactory.createEmptyBorder(10, 5, 0, 0));
-
-				add("Center", PanelUtils.join(FlowLayout.LEFT, label));
-				add("West", icon);
+				label_details.setText("");
+				text.setBorder(BorderFactory.createEmptyBorder(0, 5, 6, 0));
 			}
 
 			if (element instanceof FolderElement) {
-				icon.setIcon(UIRES.get("folder"));
-			} else if (element instanceof ModElement) {
-				ImageIcon modIcon = ((ModElement) element).getElementIcon();
+				icon.setIcon(UIRES.get("mod_types.folder"));
+			} else if (element instanceof ModElement modElement) {
+				ImageIcon dva = null;
+				if (!modElement.doesCompile()) {
+					dva = UIRES.get("mod_types.overlay_err");
+				}
+				if (modElement.isCodeLocked()) {
+					if (dva != null) {
+						dva = ImageUtils.drawOver(dva, UIRES.get("mod_types.overlay_locked"));
+					} else {
+						dva = UIRES.get("mod_types.overlay_locked");
+					}
+				}
 
+				ImageIcon modIcon = modElement.getElementIcon();
 				if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0
 						&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
 					if (dva != null) {
@@ -118,9 +103,9 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 					}
 				} else {
 					if (dva != null) {
-						icon.setIcon(ImageUtils.drawOver(((ModElement) element).getType().getIcon(), dva));
+						icon.setIcon(ImageUtils.drawOver(modElement.getType().getIcon(), dva));
 					} else {
-						icon.setIcon(((ModElement) element).getType().getIcon());
+						icon.setIcon(modElement.getType().getIcon());
 					}
 				}
 			}

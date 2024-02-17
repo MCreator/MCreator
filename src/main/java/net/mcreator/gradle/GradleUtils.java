@@ -19,8 +19,8 @@
 package net.mcreator.gradle;
 
 import net.mcreator.io.FileIO;
-import net.mcreator.minecraft.api.ModAPIImplementation;
-import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.plugin.modapis.ModAPIImplementation;
+import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.Workspace;
 import org.apache.commons.io.FilenameUtils;
@@ -66,6 +66,9 @@ public class GradleUtils {
 		if (java_home != null)
 			retval.withArguments(Arrays.asList("-Porg.gradle.java.installations.auto-detect=false",
 					"-Porg.gradle.java.installations.paths=" + java_home.replace('\\', '/')));
+
+		// some mod API toolchains need to think they are running in IDE, so we make them think we are Eclipse
+		retval.addJvmArguments("-Declipse.application=net.mcreator");
 
 		return retval;
 	}

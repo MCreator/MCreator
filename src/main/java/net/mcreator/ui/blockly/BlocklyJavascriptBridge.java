@@ -20,10 +20,10 @@
 package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
+import javafx.application.Platform;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.ModElementType;
-import net.mcreator.io.OS;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.AIConditionEditor;
@@ -31,6 +31,7 @@ import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -47,8 +48,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.util.*;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
 import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -60,6 +59,8 @@ public class BlocklyJavascriptBridge {
 	private JavaScriptEventListener listener;
 	private final Supplier<Boolean> blocklyEvent;
 	private final MCreator mcreator;
+
+	private final Object NESTED_LOOP_KEY = new Object();
 
 	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Supplier<Boolean> blocklyEvent) {
 		this.blocklyEvent = blocklyEvent;
@@ -93,33 +94,69 @@ public class BlocklyJavascriptBridge {
 	}
 
 	@SuppressWarnings("unused") public void openMCItemSelector(String type, JSObject callback) {
-		MCItem.ListProvider blocks;
-		if ("allblocks".equals(type)) {
-			blocks = ElementUtil::loadBlocks;
-		} else {
-			blocks = ElementUtil::loadBlocksAndItems;
-		}
+		SwingUtilities.invokeLater(() -> {
+			MCItem selected = MCItemSelectorDialog.openSelectorDialog(mcreator,
+					"allblocks".equals(type) ? ElementUtil::loadBlocks : ElementUtil::loadBlocksAndItems);
+			Platform.runLater(
+					() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, selected != null ? selected.getName() : null));
+		});
 
-		String retval = null;
-
-		if (SwingUtilities.isEventDispatchThread()
-				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
-			MCItem selected = MCItemSelectorDialog.openSelectorDialog(mcreator, blocks);
-			if (selected != null)
-				retval = selected.getName();
-		} else {
-			FutureTask<MCItem> query = new FutureTask<>(
-					() -> MCItemSelectorDialog.openSelectorDialog(mcreator, blocks));
-			try {
-				SwingUtilities.invokeLater(query);
-				MCItem selected = query.get();
-				if (selected != null)
-					retval = selected.getName();
-			} catch (InterruptedException | ExecutionException ignored) {
-			}
-		}
-
+		String retval = (String) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
 		callback.call("callback", retval);
+	}
+
+	@SuppressWarnings("unused") public void openAIConditionEditor(String data, JSObject callback) {
+		SwingUtilities.invokeLater(() -> {
+			List<String> retval = AIConditionEditor.open(mcreator, data.split(","));
+			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, StringUtils.join(retval, ',')));
+		});
+
+		String retval = (String) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
+		callback.call("callback", retval);
+	}
+
+	/**
+	 * Opens a data list selector window for the searchable Blockly selectors
+	 *
+	 * @param entryProvider The function that provides the entries from a given workspace
+	 * @param type          The type of the data list, used for the selector title and message
+	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
+	 */
+	private String[] openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
+		SwingUtilities.invokeLater(() -> {
+			String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
+			DataListEntry selected = DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider,
+					L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
+			if (selected != null) {
+				retval[0] = selected.getName();
+				retval[1] = selected.getReadableName();
+			}
+			Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, retval));
+		});
+
+		return (String[]) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
+	}
+
+	/**
+	 * Opens a string selector window for the searchable Blockly selectors
+	 *
+	 * @param entryProvider The function that provides the strings from a given workspace
+	 * @param type          The type of the data list, used for the selector title and message
+	 * @return A {"value", "value"} pair (strings don't have readable names!), or the default entry if no string was selected
+	 */
+	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
+		SwingUtilities.invokeLater(() -> {
+			String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
+			String selected = StringSelectorDialog.openSelectorDialog(mcreator, entryProvider,
+					L10N.t("dialog.selector.title"), L10N.t("dialog.selector." + type + ".message"));
+			if (selected != null) {
+				retval[0] = selected;
+				retval[1] = selected;
+				Platform.runLater(() -> Platform.exitNestedEventLoop(NESTED_LOOP_KEY, retval));
+			}
+		});
+
+		return (String[]) Platform.enterNestedEventLoop(NESTED_LOOP_KEY);
 	}
 
 	/**
@@ -139,7 +176,17 @@ public class BlocklyJavascriptBridge {
 			case "spawnableEntity" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllSpawnableEntities(w).stream().filter(e -> e.isSupportedInWorkspace(w))
 							.toList(), "entity");
-			case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUI(w).toArray(String[]::new), "gui");
+			case "customEntity" -> openDataListEntrySelector(ElementUtil::loadCustomEntities, "entity");
+			case "entitydata_logic" -> openStringEntrySelector(
+					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
+							PropertyData.LogicType.class).toArray(String[]::new), "entity_data");
+			case "entitydata_integer" -> openStringEntrySelector(
+					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
+							PropertyData.IntegerType.class).toArray(String[]::new), "entity_data");
+			case "entitydata_string" -> openStringEntrySelector(
+					w -> ElementUtil.loadEntityDataListFromCustomEntity(w, customEntryProviders,
+							PropertyData.StringType.class).toArray(String[]::new), "entity_data");
+			case "gui" -> openStringEntrySelector(w -> ElementUtil.loadBasicGUIs(w).toArray(String[]::new), "gui");
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"biome");
@@ -185,94 +232,6 @@ public class BlocklyJavascriptBridge {
 		callback.call("callback", retval[0], retval[1]);
 	}
 
-	/**
-	 * Opens a data list selector window for the searchable Blockly selectors
-	 *
-	 * @param entryProvider The function that provides the entries from a given workspace
-	 * @param type          The type of the data list, used for the selector title and message
-	 * @return A {"value", "readable name"} pair, or the default entry if no entry was selected
-	 */
-	private String[] openDataListEntrySelector(Function<Workspace, List<DataListEntry>> entryProvider, String type) {
-		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
-		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector." + type + ".message");
-
-		if (SwingUtilities.isEventDispatchThread()
-				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
-			DataListEntry selected = DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider, title, message);
-			if (selected != null) {
-				retval[0] = selected.getName();
-				retval[1] = selected.getReadableName();
-			}
-		} else {
-			FutureTask<DataListEntry> query = new FutureTask<>(
-					() -> DataListSelectorDialog.openSelectorDialog(mcreator, entryProvider, title, message));
-			try {
-				SwingUtilities.invokeLater(query);
-				DataListEntry selected = query.get();
-				if (selected != null) {
-					retval[0] = selected.getName();
-					retval[1] = selected.getReadableName();
-				}
-			} catch (InterruptedException | ExecutionException ignored) {
-			}
-		}
-
-		return retval;
-	}
-
-	/**
-	 * Opens a string selector window for the searchable Blockly selectors
-	 *
-	 * @param entryProvider The function that provides the strings from a given workspace
-	 * @param type          The type of the data list, used for the selector title and message
-	 * @return A {"value", "value"} pair (strings don't have readable names!), or the default entry if no string was selected
-	 */
-	private String[] openStringEntrySelector(Function<Workspace, String[]> entryProvider, String type) {
-		String[] retval = new String[] { "", L10N.t("blockly.extension.data_list_selector.no_entry") };
-		String title = L10N.t("dialog.selector.title"), message = L10N.t("dialog.selector." + type + ".message");
-
-		if (SwingUtilities.isEventDispatchThread()
-				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
-			String selected = StringSelectorDialog.openSelectorDialog(mcreator, entryProvider, title, message);
-			if (selected != null) {
-				retval[0] = selected;
-				retval[1] = selected;
-			}
-		} else {
-			FutureTask<String> query = new FutureTask<>(
-					() -> StringSelectorDialog.openSelectorDialog(mcreator, entryProvider, title, message));
-			try {
-				SwingUtilities.invokeLater(query);
-				String selected = query.get();
-				if (selected != null) {
-					retval[0] = selected;
-					retval[1] = selected;
-				}
-			} catch (InterruptedException | ExecutionException ignored) {
-			}
-		}
-
-		return retval;
-	}
-
-	@SuppressWarnings("unused") public void openAIConditionEditor(String data, JSObject callback) {
-		List<String> retval = null;
-
-		if (SwingUtilities.isEventDispatchThread()
-				|| OS.getOS() == OS.MAC) { // on macOS, EventDispatchThread is shared between JFX and SWING
-			retval = AIConditionEditor.open(mcreator, data.split(","));
-		} else {
-			FutureTask<List<String>> query = new FutureTask<>(() -> AIConditionEditor.open(mcreator, data.split(",")));
-			try {
-				SwingUtilities.invokeLater(query);
-				retval = query.get();
-			} catch (InterruptedException | ExecutionException ignored) {
-			}
-		}
-
-		callback.call("callback", StringUtils.join(retval, ','));
-	}
-
 	private final Map<String, String> ext_triggers = new LinkedHashMap<>() {{
 		put("no_ext_trigger", L10N.t("trigger.no_ext_trigger"));
 	}};
@@ -307,7 +266,7 @@ public class BlocklyJavascriptBridge {
 			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "gui":
-			retval = ElementUtil.loadBasicGUI(workspace);
+			retval = ElementUtil.loadBasicGUIs(workspace);
 			break;
 		case "achievement":
 			return ElementUtil.loadAllAchievements(workspace).stream().map(DataListEntry::getName)

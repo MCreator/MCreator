@@ -1,0 +1,1 @@
+Tekstura warstwy zbroi jest teksturą, która będzie się pokazywała na graczu, jeżeli on założy ją na siebie.

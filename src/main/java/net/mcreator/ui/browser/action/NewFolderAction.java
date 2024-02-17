@@ -61,7 +61,7 @@ public class NewFolderAction extends BasicAction {
 				}
 			}
 		});
-		setIcon(UIRES.get("16px.directory.gif"));
+		setIcon(UIRES.get("16px.directory"));
 	}
 
 }

@@ -1,0 +1,1 @@
+Marca esta casilla para esconder el logro en la pestaña de avances hasta que sea conseguido.

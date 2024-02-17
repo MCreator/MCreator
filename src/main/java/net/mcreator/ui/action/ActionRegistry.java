@@ -34,10 +34,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.views.AnimationMakerView;
 import net.mcreator.ui.views.ArmorImageMakerView;
-import net.mcreator.ui.views.editor.image.action.ImageEditorRedoAction;
-import net.mcreator.ui.views.editor.image.action.ImageEditorSaveAction;
-import net.mcreator.ui.views.editor.image.action.ImageEditorSaveAsAction;
-import net.mcreator.ui.views.editor.image.action.ImageEditorUndoAction;
+import net.mcreator.ui.views.editor.image.action.*;
 import net.mcreator.ui.views.editor.image.tool.action.*;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.DesktopUtils;
@@ -97,7 +94,6 @@ public class ActionRegistry {
 	public final BasicAction exportWorkspaceToZIPWithRunDir;
 	public final BasicAction openWorkspaceFolder;
 	public final BasicAction setCreativeTabItemOrder;
-	public final BasicAction injectDefaultTags;
 
 	// IDE actions
 	public final BasicAction openFile;
@@ -163,6 +159,11 @@ public class ActionRegistry {
 	public final BasicAction imageEditorRedo;
 	public final BasicAction imageEditorSave;
 	public final BasicAction imageEditorSaveAs;
+	public final ImageEditorCopyAction imageEditorCopy;
+	public final ImageEditorCopyAllAction imageEditorCopyAll;
+	public final ImageEditorCutAction imageEditorCut;
+	public final ImageEditorPasteAction imageEditorPaste;
+	public final ImageEditorDeleteAction imageEditorDelete;
 	public final BasicAction imageEditorPencil;
 	public final BasicAction imageEditorLine;
 	public final BasicAction imageEditorShape;
@@ -174,6 +175,8 @@ public class ActionRegistry {
 	public final BasicAction imageEditorDesaturate;
 	public final BasicAction imageEditorHSVNoise;
 	public final BasicAction imageEditorMoveLayer;
+	public final BasicAction imageEditorSelectLayer;
+	public final ImageEditorClearSelectionAction imageEditorClearSelection;
 	public final BasicAction imageEditorResizeLayer;
 	public final BasicAction imageEditorResizeCanvas;
 
@@ -205,13 +208,13 @@ public class ActionRegistry {
 		this.support = new VisitURIAction(this, L10N.t("action.support"),
 				MCreatorApplication.SERVER_DOMAIN + "/support");
 		this.openFile = new BasicAction(this, L10N.t("workspace_file_browser.open"),
-				e -> mcreator.getProjectBrowser().openSelectedFile(true)).setIcon(UIRES.get("16px.edit.gif"));
+				e -> mcreator.getProjectBrowser().openSelectedFile(true)).setIcon(UIRES.get("16px.edit"));
 		this.openFileInDesktop = new BasicAction(this, L10N.t("workspace_file_browser.open_desktop"),
 				e -> mcreator.getProjectBrowser().openSelectedFileInDesktop());
 		this.showFileInExplorer = new BasicAction(this, L10N.t("workspace_file_browser.show_in_explorer"),
-				e -> mcreator.getProjectBrowser().showSelectedFileInDesktop()).setIcon(UIRES.get("16px.open.gif"));
+				e -> mcreator.getProjectBrowser().showSelectedFileInDesktop()).setIcon(UIRES.get("16px.open"));
 		this.deleteFile = new BasicAction(this, L10N.t("workspace_file_browser.remove_file"),
-				e -> mcreator.getProjectBrowser().deleteSelectedFile()).setIcon(UIRES.get("16px.delete.gif"));
+				e -> mcreator.getProjectBrowser().deleteSelectedFile()).setIcon(UIRES.get("16px.delete"));
 		this.newClass = new NewClassAction(this);
 		this.newJson = new NewJsonFileAction(this);
 		this.newImage = new NewImageFileAction(this);
@@ -299,7 +302,6 @@ public class ActionRegistry {
 		this.knowledgeBase = new VisitURIAction(this, L10N.t("action.knowledge_base"),
 				MCreatorApplication.SERVER_DOMAIN + "/support/knowledgebase");
 		this.setCreativeTabItemOrder = new EditTabOrderAction(this);
-		this.injectDefaultTags = InjectTagsTool.getAction(this);
 		this.donate = new VisitURIAction(this, L10N.t("action.donate"),
 				MCreatorApplication.SERVER_DOMAIN + "/donate").setIcon(UIRES.get("donate"));
 		this.openJavaEditionFolder = new MinecraftFolderActions.OpenJavaEditionFolder(this);
@@ -308,6 +310,11 @@ public class ActionRegistry {
 		//Image Editor actions
 		this.imageEditorUndo = new ImageEditorUndoAction(this);
 		this.imageEditorRedo = new ImageEditorRedoAction(this);
+		this.imageEditorCopy = new ImageEditorCopyAction(this);
+		this.imageEditorCopyAll = new ImageEditorCopyAllAction(this);
+		this.imageEditorCut = new ImageEditorCutAction(this);
+		this.imageEditorPaste = new ImageEditorPasteAction(this);
+		this.imageEditorDelete = new ImageEditorDeleteAction(this);
 		this.imageEditorSave = new ImageEditorSaveAction(this);
 		this.imageEditorSaveAs = new ImageEditorSaveAsAction(this);
 		this.imageEditorPencil = new PencilToolAction(this);
@@ -321,6 +328,8 @@ public class ActionRegistry {
 		this.imageEditorDesaturate = new DesaturateToolAction(this);
 		this.imageEditorHSVNoise = new HSVNoiseToolAction(this);
 		this.imageEditorMoveLayer = new MoveToolAction(this);
+		this.imageEditorSelectLayer = new SelectionToolAction(this);
+		this.imageEditorClearSelection = new ImageEditorClearSelectionAction(this);
 		this.imageEditorResizeLayer = new ResizeToolAction(this);
 		this.imageEditorResizeCanvas = new ResizeCanvasToolAction(this);
 

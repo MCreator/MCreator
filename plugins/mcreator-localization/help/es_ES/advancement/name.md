@@ -1,0 +1,1 @@
+El nombre del avance. Si no tiene padre (avance raíz) también será el nombre de la rama.

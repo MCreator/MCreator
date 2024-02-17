@@ -1,0 +1,1 @@
+El jugador recibirá algunos ítems de la tabla de botín seleccionada en este campo cuando el avance haya sido conseguido.

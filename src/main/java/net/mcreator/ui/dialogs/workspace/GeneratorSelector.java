@@ -30,6 +30,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -94,6 +95,7 @@ public class GeneratorSelector {
 			addStatusLabel(L10N.t(covpfx + "structures"), stats.getBaseCoverageInfo().get("structures"),
 					baseCoverageInfo);
 			addStatusLabel(L10N.t(covpfx + "translations"), stats.getBaseCoverageInfo().get("i18n"), baseCoverageInfo);
+			addStatusLabel(L10N.t(covpfx + "tags"), stats.getBaseCoverageInfo().get("tags"), baseCoverageInfo);
 
 			if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
 				addStatusLabel(L10N.t(covpfx + "variables"), stats.getBaseCoverageInfo().get("variables"),
@@ -106,7 +108,8 @@ public class GeneratorSelector {
 			addStatusLabel(L10N.t(covpfx + "json_models"), stats.getBaseCoverageInfo().get("model_json"),
 					baseCoverageInfo);
 
-			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
+			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE
+					|| generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.NEOFORGE)
 				addStatusLabel(L10N.t(covpfx + "obj_models"), stats.getBaseCoverageInfo().get("model_obj"),
 						baseCoverageInfo);
 
@@ -232,11 +235,11 @@ public class GeneratorSelector {
 
 		bar.setUI(new BasicProgressBarUI() {
 			@Override protected Color getSelectionBackground() {
-				return (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
+				return Theme.current().getForegroundColor();
 			}
 
 			@Override protected Color getSelectionForeground() {
-				return (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT");
+				return Theme.current().getSecondAltBackgroundColor();
 			}
 		});
 
@@ -249,7 +252,7 @@ public class GeneratorSelector {
 		else if (bar.getValue() < 100)
 			bar.setForeground(new Color(0xF5F984));
 		else
-			bar.setForeground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			bar.setForeground(Theme.current().getInterfaceAccentColor());
 
 		supportedElements.add(new JLabel(label + ": "));
 		supportedElements.add(bar);

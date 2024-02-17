@@ -25,9 +25,9 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +38,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 			List<GeneratorTemplate> modElementGlobalFiles, List<GeneratorTemplatesList> modElementListFiles) {
 		this.mcreator = mcreator;
 		setBorder(BorderFactory.createEmptyBorder());
-		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+		setBackground((Theme.current().getAltBackgroundColor()).darker());
 
 		int entryCounter = 0;
 
@@ -70,9 +70,9 @@ class ModElementCodeDropdown extends JPopupMenu {
 		for (GeneratorTemplatesList list : modElementListFiles) {
 			if (!list.templates().isEmpty()) {
 				JMenu listMenu = new JMenu(list.groupName());
-				listMenu.setIcon(UIRES.get("16px.list.gif"));
-				listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-				listMenu.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				listMenu.setIcon(UIRES.get("16px.list"));
+				listMenu.setBackground((Theme.current().getAltBackgroundColor()).darker());
+				listMenu.setForeground(Theme.current().getForegroundColor());
 				listMenu.setIconTextGap(8);
 				listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
 
@@ -102,8 +102,8 @@ class ModElementCodeDropdown extends JPopupMenu {
 				"<html>" + template.getFile().getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
 						.getFolderManager().getPathInWorkspace(template.getFile()));
 		item.setIcon(FileIcons.getIconForFile(template.getFile()));
-		item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-		item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		item.setBackground((Theme.current().getAltBackgroundColor()).darker());
+		item.setForeground(Theme.current().getForegroundColor());
 		item.setIconTextGap(8);
 		item.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
 		item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, template.getFile()));

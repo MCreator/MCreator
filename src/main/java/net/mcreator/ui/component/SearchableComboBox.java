@@ -18,9 +18,13 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.component.VComboBox;
 
 import javax.swing.*;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import java.awt.*;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
@@ -37,29 +41,59 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 
 	private List<T> entries = new ArrayList<>();
 
+	private boolean dropDownVisible = false;
+
 	public SearchableComboBox(T[] data) {
 		super(data);
-		addKeyListener(this);
-		addFocusListener(this);
 		entries.addAll(Arrays.asList(data));
+		init();
 	}
 
 	public SearchableComboBox() {
-		addKeyListener(this);
-		addFocusListener(this);
+		init();
 	}
 
-	@Override protected void paintComponent(Graphics g) {
-		super.paintComponent(g);
-		if (searchTerm != null && !searchTerm.isEmpty()) {
+	private void init() {
+		addKeyListener(this);
+		addFocusListener(this);
+		addPopupMenuListener(new PopupMenuListener() {
+			@Override public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+				dropDownVisible = true;
+				clearSearch();
+			}
+
+			@Override public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+				dropDownVisible = false;
+				clearSearch();
+			}
+
+			@Override public void popupMenuCanceled(PopupMenuEvent e) {
+				dropDownVisible = false;
+				clearSearch();
+			}
+		});
+	}
+
+	@Override public void paint(Graphics g) {
+		super.paint(g);
+
+		if (canSearch()) {
+			g.drawImage(UIRES.get("searchsmall").getImage(), getWidth() - 12 - 22, getHeight() / 2 - 12 / 2, null);
+		}
+
+		if (!searchTerm.isEmpty()) {
 			Graphics2D g2 = (Graphics2D) g;
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g2.setFont(g.getFont().deriveFont(12.0f));
-			g2.setColor(new Color(40, 40, 40, 200));
-			g2.fillRect(0, 0, g.getFontMetrics().stringWidth(searchTerm) + 2, 15);
-			g2.setColor(Color.white);
+			g2.setColor(new Color(50, 50, 50, 230));
+			g2.fillRect(0, 0, g.getFontMetrics().stringWidth(searchTerm) + 3, 17);
+			g2.setColor(Theme.current().getForegroundColor());
 			g2.drawString(searchTerm, 1, 12);
 		}
+	}
+
+	private boolean canSearch() {
+		return dropDownVisible && entries.size() > 10;
 	}
 
 	@Override public void addItem(T item) {
@@ -78,59 +112,63 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 		super.removeAllItems();
 		entries.forEach(super::addItem);
 
-		if (searchTerm == null || searchTerm.isEmpty()) {
+		if (searchTerm.isEmpty() || !canSearch()) {
 			super.setSelectedItem(selected);
-			return;
-		}
+		} else {
+			List<T> entriesFiltered = new ArrayList<>();
+			ComboBoxModel<T> model = getModel();
+			int size = model.getSize();
+			for (int i = 0; i < size; i++) {
+				T element = model.getElementAt(i);
+				if (element.toString().toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH))) {
+					entriesFiltered.add(element);
+				}
+			}
 
-		List<T> entriesFiltered = new ArrayList<>();
-		ComboBoxModel<T> model = getModel();
-		int size = model.getSize();
-		for (int i = 0; i < size; i++) {
-			T element = model.getElementAt(i);
-			if (element.toString().toLowerCase(Locale.ENGLISH).contains(searchTerm.toLowerCase(Locale.ENGLISH))) {
-				entriesFiltered.add(element);
+			if (!entriesFiltered.isEmpty()) {
+				super.removeAllItems();
+				entriesFiltered.forEach(super::addItem);
 			}
 		}
+	}
 
-		if (!entriesFiltered.isEmpty()) {
-			super.removeAllItems();
-			entriesFiltered.forEach(super::addItem);
-		}
+	private void clearSearch() {
+		searchTerm = "";
+		comboFilter();
 	}
 
 	@Override public void focusGained(FocusEvent e) {
-		searchTerm = "";
-		comboFilter();
+		clearSearch();
 	}
 
 	@Override public void focusLost(FocusEvent e) {
-		searchTerm = "";
-		comboFilter();
+		clearSearch();
 	}
 
 	@Override public void keyTyped(KeyEvent e) {
 	}
 
 	@Override public void keyPressed(KeyEvent e) {
-		if (Character.isLetterOrDigit(e.getKeyChar()) || e.getKeyChar() == '_' || e.getKeyChar() == '-'
-				|| e.getKeyChar() == ':' || e.getKeyChar() == ' ') {
-			searchTerm += e.getKeyChar();
-			comboFilter();
-		} else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-			if (!searchTerm.isEmpty()) {
-				searchTerm = searchTerm.substring(0, searchTerm.length() - 1);
+		if (canSearch()) {
+			if (Character.isLetterOrDigit(e.getKeyChar()) || e.getKeyChar() == '_' || e.getKeyChar() == '-'
+					|| e.getKeyChar() == ':' || e.getKeyChar() == ' ') {
+				searchTerm += e.getKeyChar();
 				comboFilter();
-			} else {
+			} else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+				if (!searchTerm.isEmpty()) {
+					searchTerm = searchTerm.substring(0, searchTerm.length() - 1);
+					comboFilter();
+				} else {
+					searchTerm = "";
+					comboFilter();
+				}
+			} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
 				searchTerm = "";
 				comboFilter();
+			} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				searchTerm = "";
+				repaint();
 			}
-		} else if (e.getKeyCode() == KeyEvent.VK_ESCAPE) {
-			searchTerm = "";
-			comboFilter();
-		} else if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			searchTerm = "";
-			repaint();
 		}
 	}
 

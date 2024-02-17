@@ -76,7 +76,7 @@ public class TextureMappingDialog {
 
 		if (supportMultiple) {
 			pane.addTab(L10N.t("dialog.textures_mapping.add_new"), null);
-			pane.setTabComponentAt(0, new JLabel(UIRES.get("16px.add.gif")));
+			pane.setTabComponentAt(0, new JLabel(UIRES.get("16px.add")));
 			Set<String> finalTexturesList = texturesList;
 			pane.addChangeListener(e -> {
 				if (pane.getSelectedIndex() == 0) { // new texture mapping
@@ -172,7 +172,7 @@ public class TextureMappingDialog {
 
 		JPanel tab = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 1));
 		tab.setOpaque(false);
-		JButton button = new JButton(UIRES.get("16px.delete.gif"));
+		JButton button = new JButton(UIRES.get("16px.delete"));
 		button.setContentAreaFilled(false);
 		button.setBorder(BorderFactory.createEmptyBorder());
 		button.setMargin(new Insets(0, 0, 0, 0));
