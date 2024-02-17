@@ -48,6 +48,9 @@ jobs:
           service_account: ${{ secrets.GC_SERVICE_ACCOUNT }}
       - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200
         name: Set up Google Cloud SDK
+      - name: 'gcloud'
+        run: |-
+          gcloud projects get-iam-policy pylo-mcreator
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
         env:
