@@ -51,6 +51,7 @@ jobs:
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
         env:
+          WIN_CERT_PEM: ${{ secrets.WIN_CERT_PEM }}
           WIN_CERT_KEYNAME: ${{ secrets.WIN_CERT_KEYNAME }}
           WIN_CERT_KEYSTORE: ${{ secrets.WIN_CERT_KEYSTORE }}
         run: |
@@ -60,6 +61,7 @@ jobs:
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
         env:
+          WIN_CERT_PEM: ${{ secrets.WIN_CERT_PEM }}
           WIN_CERT_KEYNAME: ${{ secrets.WIN_CERT_KEYNAME }}
           WIN_CERT_KEYSTORE: ${{ secrets.WIN_CERT_KEYSTORE }}
         run: |
