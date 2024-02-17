@@ -9,8 +9,8 @@ on:
         default: 'snapshot'
 
 jobs:
-  exportLinux:
-    name: Build and Export for Linux
+  export1:
+    name: Build and Export (all but MacOS)
     runs-on: ubuntu-latest
     environment: production
     outputs:
@@ -18,7 +18,7 @@ jobs:
       mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
       build_date: ${{ steps.determineExportVersion.outputs.build_date }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Verify Repository
         if: github.repository != 'MCreator/MCreator' && github.repository != 'KlemenDEV/MCreator'
         run: |
@@ -29,16 +29,21 @@ jobs:
           EOF
           exit 1
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          java-version: '17.0.8+7'
-          distribution: 'adopt'
+          java-version: '17.0.10+7'
+          distribution: 'temurin'
+      - name: Install Dependencies
+        run: |
+          sudo apt-get install -y mkisofs nsis nsis-pluginapi
+          wget https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip
+          sudo unzip LockedList.zip -d /usr/share/nsis/
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
-        run: xvfb-run -a ./gradlew generateExportReport exportLinux
+        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
-        run: xvfb-run -a ./gradlew generateExportReport exportLinux -Psnapshot=true
+        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux -Psnapshot=true
       - name: Determine Export Version
         id: determineExportVersion
         run: |
@@ -71,33 +76,33 @@ jobs:
             }
             ]]-->
           overwrite: true
-  exportMacOS:
-    name: Build and Export for MacOS
-    needs: exportLinux
+  export2:
+    name: Build and Export (only MacOS)
+    needs: export1
     runs-on: macos-latest
     environment: production
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          java-version: '17.0.8+7'
-          distribution: 'adopt'
+          java-version: '17.0.10+7'
+          distribution: 'temurin'
       - name: Install Dependencies
         run: |
           brew install create-dmg
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
-        run: ./gradlew exportMac -Pbuilddate=${{ needs.exportLinux.outputs.build_date }}
+        run: ./gradlew generateExportReport exportMac -Pbuilddate=${{ needs.export1.outputs.build_date }}
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
-        run: ./gradlew exportMac -Psnapshot=true -Pbuilddate=${{ needs.exportLinux.outputs.build_date }}
+        run: ./gradlew generateExportReport exportMac -Psnapshot=true -Pbuilddate=${{ needs.export1.outputs.build_date }}
       - name: Upload Binaries and Tag Release
         uses: Pylo/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ needs.exportLinux.outputs.mcr_version }}
-          release_name: ${{ needs.exportLinux.outputs.mcr_version }}
+          tag: ${{ needs.export1.outputs.mcr_version }}
+          release_name: ${{ needs.export1.outputs.mcr_version }}
           prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
           file_glob: true
           file: build/export/*
@@ -108,45 +113,7 @@ jobs:
             
             <!--[[
             {
-            "minecraft": "${{ needs.exportLinux.outputs.mc_version }}"
-            }
-            ]]-->
-          overwrite: true
-  exportWindows:
-    name: Build and Export for Windows
-    needs: exportLinux
-    runs-on: windows-latest
-    environment: production
-    steps:
-      - uses: actions/checkout@v3
-      - name: Set up JDK 17
-        uses: actions/setup-java@v3
-        with:
-          java-version: '17.0.8+7'
-          distribution: 'adopt'
-      - name: Build and Export Release Using Gradle
-        if: github.event.inputs.release-type == 'release'
-        run: ./gradlew exportWindows -Pbuilddate=${{ needs.exportLinux.outputs.build_date }}
-      - name: Build and Export Snapshot Using Gradle
-        if: github.event.inputs.release-type == 'snapshot'
-        run: ./gradlew exportWindows -Psnapshot=true -Pbuilddate=${{ needs.exportLinux.outputs.build_date }}
-      - name: Upload Binaries and Tag Release
-        uses: Pylo/upload-release-action@v2
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          tag: ${{ needs.exportLinux.outputs.mcr_version }}
-          release_name: ${{ needs.exportLinux.outputs.mcr_version }}
-          prerelease: ${{ github.event.inputs.release-type == 'snapshot' }}
-          file_glob: true
-          file: build/export/*
-          body: >
-            ### **Download: https://mcreator.net/download**
-            
-            ### Changelog: https://mcreator.net/changelog
-            
-            <!--[[
-            {
-            "minecraft": "${{ needs.exportLinux.outputs.mc_version }}"
+            "minecraft": "${{ needs.export1.outputs.mc_version }}"
             }
             ]]-->
           overwrite: true
