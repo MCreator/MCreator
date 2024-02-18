@@ -31,6 +31,7 @@ import org.apache.logging.log4j.Logger;
 
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("block")>${JavaModName}Blocks.REGISTRY.register(modEventBus);</#if>
+		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasItemsInTabs()>${JavaModName}Tabs.REGISTRY.register(modEventBus);</#if>
@@ -43,6 +44,7 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("enchantment")>${JavaModName}Enchantments.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfType("gui")>${JavaModName}Menus.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(modEventBus);</#if>
+		<#if w.hasElementsOfType("villagerprofession")>${JavaModName}VillagerProfessions.PROFESSIONS.register(modEventBus);</#if>
 	}
 
 	<#-- Networking support below -->
