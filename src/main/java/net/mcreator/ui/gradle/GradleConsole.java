@@ -303,11 +303,16 @@ public class GradleConsole extends JPanel {
 
 	public void exec(String command, @Nullable ProgressListener progressListener,
 			@Nullable GradleTaskFinishedListener taskSpecificListener) {
-		exec(command, taskSpecificListener, null);
+		exec(command, taskSpecificListener, progressListener, null);
+	}
+
+	public void exec(String command, @Nullable ProgressListener progressListener,
+			@Nullable JVMDebugClient jvmDebugClient) {
+		exec(command, null, progressListener, jvmDebugClient);
 	}
 
 	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener,
-			@Nullable JVMDebugClient optionalDebugClient) {
+			@Nullable ProgressListener progressListener, @Nullable JVMDebugClient optionalDebugClient) {
 		status = RUNNING;
 
 		ref.consoleTab.repaint();
@@ -497,7 +502,7 @@ public class GradleConsole extends JPanel {
 								LOG.warn("Gradle task suggested re-run. Attempting re-running task: " + command);
 
 								// Re-run the same command with the same listener
-								GradleConsole.this.exec(command, taskSpecificListener, debugClient);
+								GradleConsole.this.exec(command, taskSpecificListener, progressListener, debugClient);
 
 								return;
 							}
