@@ -1,0 +1,1 @@
+Questo parametro definisce quale tipo di tabella del bottino crei.

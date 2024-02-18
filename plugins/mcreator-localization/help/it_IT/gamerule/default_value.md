@@ -1,0 +1,1 @@
+Questo è il valore predefinito della regola del gioco. La regola del gioco avrà questo valore finché qualcosa nel gioco (giocatore o comando) non la modificherà.

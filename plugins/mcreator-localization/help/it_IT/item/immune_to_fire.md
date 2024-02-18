@@ -1,0 +1,1 @@
+Questo parametro controlla se l'item è immune al fuoco, come le cose Netherite.

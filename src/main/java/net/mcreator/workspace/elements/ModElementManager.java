@@ -32,6 +32,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.NotThreadSafe;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -45,7 +46,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * ModElementManager is not thread safe
  */
-public final class ModElementManager {
+@NotThreadSafe public final class ModElementManager {
 
 	private static final Logger LOG = LogManager.getLogger("ModElementManager");
 
@@ -78,6 +79,9 @@ public final class ModElementManager {
 	 * @param element GeneratableElement to convert to store
 	 */
 	public void storeModElement(GeneratableElement element) {
+		if (element instanceof CustomElement)
+			return; // Custom elements are not stored as they have no definition file
+
 		if (element == null) {
 			LOG.warn(
 					"Attempted to store null generatable element. Something went wrong previously for this to happen!");
@@ -118,13 +122,20 @@ public final class ModElementManager {
 			return new CustomElement(element);
 		}
 
-		if (cache.containsKey(element)) {
-			if (cache.get(element).getModElement() == element) {
-				return cache.get(element);
-			} else {
-				LOG.error(
-						"GeneratableElement cache contains element with same name but different object. This should not happen!");
+		GeneratableElement cachedGeneratableElement = cache.get(element);
+		if (cachedGeneratableElement != null) {
+			if (cachedGeneratableElement.getModElement() != element) {
+				try {
+					throw new IllegalStateException(
+							"Cache element: " + cachedGeneratableElement.getModElement().getName() + ", type: "
+									+ cachedGeneratableElement.getModElement().getType() + ", queried element: "
+									+ element.getName() + ", type: " + element.getType());
+				} catch (IllegalStateException e) {
+					LOG.error("Cache contains mod element with same name but different object. This should not happen!",
+							e);
+				}
 			}
+			return cachedGeneratableElement;
 		}
 
 		File genFile = new File(workspace.getFolderManager().getModElementsDir(), element.getName() + ".mod.json");
@@ -211,7 +222,9 @@ public final class ModElementManager {
 	}
 
 	/**
-	 * Invalidates the cache of this manager. May be used by some plugins.
+	 * Invalidates the generatable element cache
+	 *
+	 * @apiNote This method performs sensitive operations on host workspace. Avoid using it!
 	 */
 	@SuppressWarnings("unused") public void invalidateCache() {
 		cache.clear();

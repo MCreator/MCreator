@@ -10,4 +10,4 @@ localizationkeys:
   - key: item.@modid:@registryname.name
     mapto: name
 
-field_inclusions: [texture, name, hasGlow, usageCount, damageVsEntity]
+field_inclusions: [texture, name, glowCondition, usageCount, damageVsEntity]

@@ -18,44 +18,28 @@
 
 package net.mcreator.element.types;
 
-import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
 import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.interfaces.ICommonType;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.ResourceReference;
 
-import java.util.Collection;
 import java.util.List;
 
-@SuppressWarnings("unused") public class Structure extends GeneratableElement implements ICommonType {
+@SuppressWarnings("unused") public class Structure extends GeneratableElement {
 
-	public String structure;
+	@ResourceReference("structure") public String structure;
+	public String projection;
+	@ModElementReference public List<MItemBlock> ignoredBlocks;
 
-	public boolean randomlyRotateStructure;
+	public int spacing;
+	public int separation;
 
+	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public String surfaceDetectionType;
-
-	public int spawnProbability;
-
-	public int minCountPerChunk;
-	public int maxCountPerChunk;
-
-	public String spawnLocation;
-	public int spawnHeightOffset;
-	public int spawnXOffset;
-	public int spawnZOffset;
-	public List<String> spawnWorldTypes;
-
-	public List<MItemBlock> restrictionBlocks;
-	public List<BiomeEntry> restrictionBiomes;
-
-	public String ignoreBlocks;
-
-	public Procedure generateCondition;
-
-	public Procedure onStructureGenerated;
+	public String terrainAdaptation;
+	public String generationStep;
 
 	private Structure() {
 		this(null);
@@ -63,20 +47,6 @@ import java.util.List;
 
 	public Structure(ModElement element) {
 		super(element);
-
-		this.randomlyRotateStructure = true;
-		this.spawnHeightOffset = 0;
-		this.spawnXOffset = 0;
-		this.spawnZOffset = 0;
-		this.surfaceDetectionType = "First motion blocking block";
-
-		this.minCountPerChunk = 1;
-		this.maxCountPerChunk = 1;
-
-		this.ignoreBlocks = "STRUCTURE_BLOCK";
 	}
 
-	@Override public Collection<BaseType> getBaseTypesProvided() {
-		return List.of(BaseType.FEATURE);
-	}
 }

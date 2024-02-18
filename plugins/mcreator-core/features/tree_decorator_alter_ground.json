@@ -1,0 +1,24 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "provider",
+      "check": "BlockStateProvider"
+    }
+  ],
+  "inputsInline": true,
+  "output": "TreeDecorator",
+  "colour": 320,
+  "extensions": [
+    "add_image_to_bsp_inputs"
+  ],
+  "mcreator": {
+    "toolbox_id": "treedecorators",
+    "toolbox_init": [
+      "<value name=\"provider\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+    ],
+    "inputs": [
+      "provider"
+    ]
+  }
+}

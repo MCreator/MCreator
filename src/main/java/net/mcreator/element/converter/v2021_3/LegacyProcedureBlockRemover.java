@@ -19,34 +19,16 @@
 
 package net.mcreator.element.converter.v2021_3;
 
-import com.google.gson.JsonElement;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.converter.ProcedureConverter;
 import net.mcreator.element.types.Procedure;
-import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-public class LegacyProcedureBlockRemover implements IConverter {
-
-	private static final Logger LOG = LogManager.getLogger("LegacyProcedureBlockRemover");
-
-	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Procedure procedure = (Procedure) input;
-		try {
-			procedure.procedurexml = fixXML(procedure.procedurexml);
-		} catch (Exception e) {
-			LOG.warn("Failed to remove legacy blocks for procedure " + input.getModElement().getName());
-		}
-		return procedure;
-	}
+public class LegacyProcedureBlockRemover extends ProcedureConverter {
 
 	@Override public int getVersionConvertingTo() {
 		return 25;
 	}
 
-	protected String fixXML(String xml) {
+	@Override protected String fixXML(Procedure procedure, String xml) {
 		return xml.replace("type=\"compare_mcitems_exact\"", "type=\"compare_mcitems\"")
 				.replace("type=\"compare_mcitems_oredictionary_exact\"", "type=\"compare_mcitems_oredictionary\"")
 				.replace("type=\"compare_mcblocks_exact\"", "type=\"compare_mcblocks\"");

@@ -20,7 +20,7 @@ package net.mcreator.ui.workspace.selector;
 
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.ImageUtils;
 
@@ -52,12 +52,10 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 
 		setOpaque(true);
 
-		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		setForeground(isSelected ?
-				(Color) UIManager.get("MCreatorLAF.MAIN_TINT") :
-				(Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		setBackground(Theme.current().getSecondAltBackgroundColor());
+		setForeground(isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getAltForegroundColor());
 
-		setFont(MCreatorTheme.secondary_font.deriveFont(16.0f));
+		setFont(Theme.current().getSecondaryFont().deriveFont(16.0f));
 
 		setToolTipText(L10N.t("dialog.workspace_selector.recent_workspace", value.getName(), path,
 				Objects.requireNonNullElse(value.getMCRVersion(), L10N.t("common.not_applicable"))));
@@ -68,18 +66,16 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 			ImageIcon icon = new ImageIcon(
 					ImageUtils.darken(ImageUtils.toBufferedImage(value.getType().getIcon().getImage())));
 
-			setIcon(isSelected ?
-					ImageUtils.colorize(icon, (Color) UIManager.get("MCreatorLAF.MAIN_TINT"), false) :
-					icon);
+			setIcon(isSelected ? ImageUtils.colorize(icon, Theme.current().getInterfaceAccentColor(), false) : icon);
 
 			setIconTextGap(8);
-			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.getName(), 18)
+			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.getName(), 17)
 					+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 30));
 		} else {
 			setIcon(null);
 
 			setIconTextGap(0);
-			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.getName(), 20)
+			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.getName(), 19)
 					+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 37));
 		}
 
@@ -92,9 +88,8 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 		if (version != null) {
 			Graphics2D g2 = (Graphics2D) g;
 
-			g2.setColor(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.MAIN_TINT") :
-					(Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+			g2.setColor(
+					isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getAltForegroundColor());
 
 			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 

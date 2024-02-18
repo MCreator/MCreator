@@ -19,18 +19,24 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.SquareLoaderIcon;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ProgressDialog extends MCreatorDialog {
 
-	private final DefaultListModel<ProgressUnit> lModel = new DefaultListModel<>();
-	private final JList<ProgressUnit> progress = new JList<>(lModel);
+	private final JLabel titleLabel;
+	private final DefaultListModel<ProgressUnit> listModel = new DefaultListModel<>();
+	private final JList<ProgressUnit> progressUnits = new JList<>(listModel);
 
 	@Nullable private MCreator mcreator = null;
 
@@ -39,36 +45,36 @@ public class ProgressDialog extends MCreatorDialog {
 
 		setLayout(new BorderLayout(0, 0));
 
-		if (w instanceof MCreator)
-			mcreator = (MCreator) w;
+		if (w instanceof MCreator mcreatorInst)
+			this.mcreator = mcreatorInst;
 
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		setBackground(Theme.current().getBackgroundColor());
 
 		setClosable(false);
 		setUndecorated(true);
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-		JLabel titleLabel = new JLabel(title);
-		titleLabel.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		titleLabel = new JLabel(title);
+		titleLabel.setBackground(Theme.current().getAltBackgroundColor());
 		titleLabel.setOpaque(true);
 		titleLabel.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(8, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
-				BorderFactory.createMatteBorder(0, 4, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"))));
+				BorderFactory.createMatteBorder(8, 5, 0, 0, Theme.current().getBackgroundColor()),
+				BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current().getAltBackgroundColor())));
 		ComponentUtils.deriveFont(titleLabel, 13);
 		add("North", titleLabel);
 
-		progress.setCellRenderer(new Render());
-		progress.setOpaque(false);
-		progress.setBorder(null);
+		progressUnits.setCellRenderer(new Render());
+		progressUnits.setOpaque(false);
+		progressUnits.setBorder(null);
 
-		JScrollPane panes = new JScrollPane(progress);
+		JScrollPane panes = new JScrollPane(progressUnits);
 		panes.getViewport().setOpaque(false);
 		panes.setPreferredSize(new Dimension(600, 280));
-		panes.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		panes.setBorder(BorderFactory.createMatteBorder(4, 8, 4, 4, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		panes.setBackground(Theme.current().getBackgroundColor());
+		panes.setBorder(BorderFactory.createMatteBorder(4, 8, 4, 4, Theme.current().getBackgroundColor()));
 
 		((JComponent) getContentPane()).setBorder(
-				BorderFactory.createMatteBorder(0, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+				BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		add("Center", panes);
 
@@ -76,8 +82,15 @@ public class ProgressDialog extends MCreatorDialog {
 		setLocationRelativeTo(w);
 	}
 
-	public void hideAll() {
-		SwingUtilities.invokeLater(() -> setVisible(false));
+	public void hideDialog() {
+		ThreadUtil.runOnSwingThread(() -> setVisible(false));
+	}
+
+	@Override public void setTitle(String title) {
+		super.setTitle(title);
+		// setTitle can be called before the titleLabel is initialized
+		if (titleLabel != null)
+			titleLabel.setText(title);
 	}
 
 	@Override public void setVisible(boolean visible) {
@@ -87,74 +100,114 @@ public class ProgressDialog extends MCreatorDialog {
 			mcreator.getApplication().getTaskbarIntegration().clearState(mcreator);
 	}
 
-	public void addProgress(final ProgressUnit unit1a) {
-		SwingUtilities.invokeLater(() -> {
+	public void addProgressUnit(final ProgressUnit progressUnit) {
+		ThreadUtil.runOnSwingThread(() -> {
 			if (mcreator != null) {
 				mcreator.getApplication().getTaskbarIntegration().clearState(mcreator);
 				mcreator.getApplication().getTaskbarIntegration().setIntermediateProgress(mcreator);
 			}
 
-			unit1a.mcreator = this.mcreator;
+			progressUnit.progressDialog = this;
 
-			lModel.addElement(unit1a);
-			progress.updateUI();
+			listModel.addElement(progressUnit);
 		});
 	}
 
-	public void refreshDisplay() {
-		SwingUtilities.invokeLater(progress::updateUI);
+	public static class ProgressUnit {
+
+		private final String name;
+
+		private Status status;
+		private int percent;
+
+		@Nullable private ProgressDialog progressDialog;
+
+		public ProgressUnit(String name) {
+			this.name = name;
+			status = Status.LOADING;
+		}
+
+		public void markStateOk() {
+			status = Status.COMPLETE;
+
+			if (progressDialog != null) {
+				ThreadUtil.runOnSwingThread(() -> progressDialog.progressUnits.repaint());
+			}
+		}
+
+		public void markStateError() {
+			status = Status.ERROR;
+
+			if (progressDialog != null) {
+				ThreadUtil.runOnSwingThread(() -> progressDialog.progressUnits.repaint());
+
+				if (progressDialog.mcreator != null)
+					progressDialog.mcreator.getApplication().getTaskbarIntegration()
+							.setErrorIndicator(progressDialog.mcreator);
+			}
+		}
+
+		public void markStateWarning() {
+			status = Status.WARNING;
+
+			if (progressDialog != null) {
+				ThreadUtil.runOnSwingThread(() -> progressDialog.progressUnits.repaint());
+
+				if (progressDialog.mcreator != null)
+					progressDialog.mcreator.getApplication().getTaskbarIntegration()
+							.setWarningIndicator(progressDialog.mcreator);
+			}
+		}
+
+		public void setPercent(int percent) {
+			this.percent = percent;
+
+			if (progressDialog != null) {
+				ThreadUtil.runOnSwingThread(() -> progressDialog.progressUnits.repaint());
+
+				if (progressDialog.mcreator != null)
+					progressDialog.mcreator.getApplication().getTaskbarIntegration()
+							.setProgressState(progressDialog.mcreator, percent);
+			}
+		}
+
+		enum Status {
+			LOADING, COMPLETE, ERROR, WARNING
+		}
+
 	}
 
-	static class Render extends JPanel implements ListCellRenderer<ProgressUnit> {
+	private static class Render extends JPanel implements ListCellRenderer<ProgressUnit> {
 
 		private final ImageIcon complete = UIRES.get("18px.ok");
 		private final ImageIcon remove = UIRES.get("18px.remove");
 		private final ImageIcon warning = UIRES.get("18px.warning");
+
+		private final Map<ProgressUnit, Icon> LOADER_CACHE = new HashMap<>();
 
 		@Override
 		public Component getListCellRendererComponent(JList<? extends ProgressUnit> list, ProgressUnit ma, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			removeAll();
 			setLayout(new BorderLayout());
-			setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			JLabel status = new JLabel();
-			status.setForeground(Color.white);
-			ComponentUtils.deriveFont(status, 12);
+			setBackground(Theme.current().getBackgroundColor());
 
 			JPanel stap = new JPanel(new BorderLayout());
 			stap.setOpaque(false);
 
+			JLabel status = new JLabel();
 			status.setText(ma.name);
 
 			if (ma.status == ProgressUnit.Status.LOADING) {
-				ImageIcon loading = UIRES.get("16px.loading.gif");
-				loading.setImageObserver((img, infoflags, x, y, width, height) -> {
-					try {
-						if ((infoflags & (FRAMEBITS | ALLBITS)) != 0) {
-							Rectangle rect = list.getCellBounds(index, index);
-							list.repaint(rect);
-						}
-						return (infoflags & (ALLBITS | ABORT)) == 0;
-					} catch (Exception e) {
-						return (infoflags & (ALLBITS | ABORT)) == 0;
-					}
-				});
-				JLabel status2 = new JLabel(loading) {
-					@Override public boolean imageUpdate(Image img, int infoflags, int x, int y, int w, int h) {
-						repaint();
-						return true;
-					}
-				};
-				status2.repaint();
+				JLabel status2 = new JLabel(LOADER_CACHE.computeIfAbsent(ma,
+						e -> new SquareLoaderIcon(list, 4, 1, Theme.current().getForegroundColor())));
+				status2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
 				stap.add("East", PanelUtils.centerInPanel(status2));
 
-				JProgressBar bar = new JProgressBar();
-				bar.setIndeterminate(ma.inf);
-				bar.setMaximum(100);
-				bar.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1));
+				JProgressBar bar = new JProgressBar(0, 100);
+				bar.setBorder(BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1));
 				bar.setOpaque(false);
-				if (!ma.inf)
-					bar.setValue(ma.percent);
+				bar.setValue(ma.percent);
 				if (bar.getValue() > 0)
 					stap.add("West", PanelUtils.centerInPanel(bar));
 			} else if (ma.status == ProgressUnit.Status.COMPLETE) {
@@ -171,53 +224,4 @@ public class ProgressDialog extends MCreatorDialog {
 		}
 	}
 
-	public static class ProgressUnit {
-		Status status;
-		String name;
-		long time;
-		private final long pv;
-		private int percent;
-		boolean inf = false;
-
-		@Nullable private MCreator mcreator;
-
-		public ProgressUnit(String name) {
-			this.name = name;
-			status = Status.LOADING;
-			pv = System.currentTimeMillis();
-		}
-
-		public void ok() {
-			status = Status.COMPLETE;
-			time = System.currentTimeMillis() - pv;
-		}
-
-		public void err() {
-			status = Status.ERROR;
-			time = System.currentTimeMillis() - pv;
-
-			if (mcreator != null)
-				mcreator.getApplication().getTaskbarIntegration().setErrorIndicator(mcreator);
-		}
-
-		public void warn() {
-			status = Status.WARNING;
-			time = System.currentTimeMillis() - pv;
-
-			if (mcreator != null)
-				mcreator.getApplication().getTaskbarIntegration().setWarningIndicator(mcreator);
-		}
-
-		public void setPercent(int percent) {
-			this.percent = percent;
-
-			if (mcreator != null)
-				mcreator.getApplication().getTaskbarIntegration().setProgressState(mcreator, percent);
-		}
-
-		enum Status {
-			LOADING, COMPLETE, ERROR, WARNING
-		}
-
-	}
 }

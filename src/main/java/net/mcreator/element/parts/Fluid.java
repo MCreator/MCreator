@@ -20,6 +20,7 @@ package net.mcreator.element.parts;
 
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.workspace.Workspace;
 
 import javax.annotation.Nonnull;
@@ -31,9 +32,11 @@ public class Fluid extends MappableElement {
 	}
 
 	public Fluid(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "fluids"), name);
+	}
+
+	public Fluid(@Nonnull Workspace owner, DataListEntry name) {
+		this(owner, name.getName());
 	}
 
 }

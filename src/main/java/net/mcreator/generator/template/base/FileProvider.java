@@ -38,34 +38,27 @@ import java.util.Map;
 
 	private final Map<String, String> CACHE = new HashMap<>();
 
-	private final Generator generator;
+	private final List<String> templateLoaderPaths = new ArrayList<>();
 
 	public FileProvider(@Nonnull Generator generator) {
-		this.generator = generator;
+		templateLoaderPaths.add(generator.getGeneratorName());
+		templateLoaderPaths.addAll(generator.getGeneratorConfiguration().getImports());
 	}
 
 	public String file(@Nonnull String file) {
-		try {
-			if (!CACHE.containsKey(file)) { // cache miss, add to cache
-				List<String> templateLoaderPaths = new ArrayList<>();
-				templateLoaderPaths.add(generator.getGeneratorName());
-				templateLoaderPaths.addAll(generator.getGeneratorConfiguration().getImports());
-
+		return CACHE.computeIfAbsent(file, key -> {
+			try {
 				for (String path : templateLoaderPaths) {
-					InputStream stream = PluginLoader.INSTANCE.getResourceAsStream(path + "/" + file);
+					InputStream stream = PluginLoader.INSTANCE.getResourceAsStream(path + "/" + key);
 					if (stream != null) {
-						String contents = IOUtils.toString(stream, StandardCharsets.UTF_8);
-						CACHE.put(file, contents);
-						break;
+						return IOUtils.toString(stream, StandardCharsets.UTF_8);
 					}
 				}
+			} catch (Exception e) {
+				LOG.error("Failed to load file provider for " + key, e);
 			}
-
-			return CACHE.get(file);
-		} catch (Exception e) {
-			LOG.error("Failed to load code provider for " + file, e);
 			return null;
-		}
+		});
 	}
 
 }

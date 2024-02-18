@@ -1,1 +1,0 @@
-When this conditional procedure is true, the entity will spawn particles based on the settings.

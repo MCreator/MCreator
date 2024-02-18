@@ -6,21 +6,25 @@ static void convertCRLF(File input, File out) {
 
 void makeDMG(File directory, File outputDMGFile, String volumeName) {
     if (Os.isFamily(Os.FAMILY_MAC)) {
-        ant.exec(executable: 'hdiutil', failonerror: true) {
-            arg(value: 'create')
-            arg(value: '-srcfolder')
-            arg(value: directory)
-            arg(value: '-volname')
-            arg(value: volumeName)
-            arg(value: '-ov') // read-only disk image
-            arg(value: '-format')
-            arg(value: 'UDZO') // UDZ0 zlib-compressed image
-            arg(value: '-imagekey')
-            arg(value: 'zlib-level=9') // maximum compression
-            arg(value: outputDMGFile)
+        exec {
+            commandLine 'create-dmg',
+                    '--volname', volumeName,
+                    '--volicon', 'platform/mac/volume.icns',
+                    '--background', 'platform/mac/diskimage.png',
+                    '--window-pos', '200', '120',
+                    '--window-size', '480', '325',
+                    '--icon-size', '100',
+                    '--icon', 'MCreator.app', '145', '121',
+                    '--hide-extension', 'MCreator.app',
+                    '--text-size', '10',
+                    '--app-drop-link', '337', '121',
+                    '--eula', 'LICENSE.txt',
+                    '--format', 'ULMO',
+                    outputDMGFile,
+                    directory
         }
     } else {
-        def mkisofs_binary = Os.isFamily(Os.FAMILY_WINDOWS) ? '/build/tools/mkisofs/Sample/mkisofs' : 'mkisofs'
+        def mkisofs_binary = Os.isFamily(Os.FAMILY_WINDOWS) ? './build/tools/mkisofs/Sample/mkisofs' : './mkisofs'
         ant.exec(executable: mkisofs_binary, failonerror: true) {
             arg(value: '-r')
             arg(value: '-D')
@@ -50,7 +54,7 @@ tasks.register('exportMacX64', Copy.class) {
     into(exportPathX64 + '/Contents/')
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
-            line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
+            line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator')).replace('%build%', project.builddate.toString())
         }
         from file('LICENSE.txt')
     }
@@ -86,7 +90,7 @@ tasks.register('exportMacX64', Copy.class) {
         }
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
-        makeDMG(new File(buildDir, 'export/mac_x64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
+        makeDMG(file('build/export/mac_x64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
 
@@ -104,7 +108,7 @@ tasks.register('exportMacAarch64', Copy.class) {
     into(exportPathAarch64 + '/Contents/')
     into('') {
         from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
-            line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator'))
+            line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator')).replace('%build%', project.builddate.toString())
         }
         from file('LICENSE.txt')
     }
@@ -140,7 +144,7 @@ tasks.register('exportMacAarch64', Copy.class) {
         }
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
-        makeDMG(new File(buildDir, 'export/mac_aarch64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
+        makeDMG(file('build/export/mac_aarch64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
     }
 }
 

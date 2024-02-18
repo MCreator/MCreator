@@ -21,9 +21,7 @@ package net.mcreator.util;
 import org.apache.commons.text.WordUtils;
 
 import javax.annotation.Nonnull;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -34,7 +32,6 @@ public class StringUtils {
 	private static final Pattern namePartsSplitter = Pattern.compile(
 			"(?<!(^|[A-Z]))(?=[A-Z])|(?<!^)(?=[A-Z][a-z])|(_)|(?=\\d)");
 	private static final Pattern underscoreReducer = Pattern.compile("(?<=\\d)_(?=\\d)");
-	private static final Pattern nonescapedCommaSplitter = Pattern.compile("(?<!\\\\),");
 
 	public static String abbreviateString(String input, int maxLength) {
 		return abbreviateString(input, maxLength, true);
@@ -89,19 +86,6 @@ public class StringUtils {
 		return WordUtils.capitalize(org.apache.commons.lang3.StringUtils.normalizeSpace(merged));
 	}
 
-	public static List<String> splitCommaSeparatedStringListWithEscapes(String specialInfoString) {
-		List<String> retval = new ArrayList<>();
-		if (!specialInfoString.equals("")) {
-			String[] info = nonescapedCommaSplitter.split(specialInfoString);
-			for (String infoelement : info) {
-				String data = infoelement.trim().replace("\\,", ",");
-				if (!data.trim().equals(""))
-					retval.add(data);
-			}
-		}
-		return retval;
-	}
-
 	public static int countRegexMatches(String where, String regex) {
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(where);
@@ -111,6 +95,46 @@ public class StringUtils {
 			count++;
 
 		return count;
+	}
+
+	public static String justifyText(String input, int lineWidth, String newLine) {
+		StringBuilder result = new StringBuilder();
+		String[] words = input.split(" ");
+		int currentLineLength = 0;
+
+		for (String word : words) {
+			if (currentLineLength + word.length() + 1 <= lineWidth) {
+				if (currentLineLength > 0) {
+					result.append(" ");
+					currentLineLength++;
+				}
+				result.append(word);
+				currentLineLength += word.length();
+			} else {
+				// Check if the word can be broken with a hyphen
+				if (word.length() <= lineWidth) {
+					result.append(newLine);
+					currentLineLength = 0;
+					result.append(word);
+					currentLineLength += word.length();
+				} else {
+					String remaining = word;
+					while (remaining.length() > lineWidth) {
+						String part = remaining.substring(0, lineWidth);
+						remaining = remaining.substring(lineWidth);
+						if (currentLineLength > 0) {
+							result.append(newLine);
+							currentLineLength = 0;
+						}
+						result.append(part).append("-");
+					}
+					result.append(remaining);
+					currentLineLength += remaining.length();
+				}
+			}
+		}
+
+		return result.toString();
 	}
 
 }

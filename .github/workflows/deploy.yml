@@ -12,12 +12,13 @@ jobs:
   export1:
     name: Build and Export (all but MacOS)
     runs-on: ubuntu-latest
+    environment: production
     outputs:
       mcr_version: ${{ steps.determineExportVersion.outputs.mcr_version }}
       mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
       build_date: ${{ steps.determineExportVersion.outputs.build_date }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Verify Repository
         if: github.repository != 'MCreator/MCreator' && github.repository != 'KlemenDEV/MCreator'
         run: |
@@ -28,10 +29,10 @@ jobs:
           EOF
           exit 1
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          java-version: '17.0.7+7'
-          distribution: 'adopt'
+          java-version: '17.0.10+7'
+          distribution: 'temurin'
       - name: Install Dependencies
         run: |
           sudo apt-get install -y mkisofs nsis nsis-pluginapi
@@ -79,16 +80,17 @@ jobs:
     name: Build and Export (only MacOS)
     needs: export1
     runs-on: macos-latest
+    environment: production
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          java-version: '17.0.7+7'
-          distribution: 'adopt'
+          java-version: '17.0.10+7'
+          distribution: 'temurin'
       - name: Install Dependencies
         run: |
-          brew install cdrtools
+          brew install create-dmg
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
         run: ./gradlew generateExportReport exportMac -Pbuilddate=${{ needs.export1.outputs.build_date }}

@@ -1,6 +1,6 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: stable
-buildfileversion: 47.1.0
+buildfileversion: 47.2.0
 
 import:
   - datapack-1.20.1
@@ -16,6 +16,15 @@ gradle:
   run_client: runClient
   run_server: runServer
   export_file: "build/libs/modid-1.0.jar"
+
+import_formatter:
+  duplicates_whitelist:
+    - java.util
+    - net.minecraft
+  priority_imports:
+    Nullable: javax.annotation
+    Codec: com.mojang.serialization
+    SoundEvent: net.minecraft.sounds
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -62,8 +71,8 @@ base_templates:
     writer: file
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
-     - ${w.hasElementsOfType('feature')}
-     - hasBiomesInVanillaDimensions()
+      - ${w.hasElementsOfType('feature')}
+      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
@@ -73,6 +82,10 @@ sources_setup_tasks:
     type: JAVA_viatemplate
     template: javamodel.java.ftl
     to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+
+tags:
+  template: tags.json.ftl
+  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
 
 language_file:
   format: json

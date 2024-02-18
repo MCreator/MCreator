@@ -1,0 +1,1 @@
+Tham số này điều khiển số lượng bụi cây khô có trong một đoạn khúc của quần xã

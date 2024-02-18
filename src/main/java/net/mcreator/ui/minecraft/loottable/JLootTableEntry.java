@@ -26,6 +26,7 @@ import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 
 import javax.swing.*;
@@ -50,15 +51,15 @@ public class JLootTableEntry extends JPanel {
 	public JLootTableEntry(MCreator mcreator, JPanel parent, List<JLootTableEntry> entryList) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
-		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+		setBackground((Theme.current().getAltBackgroundColor()).darker());
 
 		item = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 		count.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		count.setAllowEqualValues(true);
 		enchantmentsLevel.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		enchantmentsLevel.setAllowEqualValues(true);
 
@@ -94,7 +95,7 @@ public class JLootTableEntry extends JPanel {
 		explosionDecay.setOpaque(false);
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText(L10N.t("elementgui.loot_table.remove_entry"));
+		remove.setText(L10N.t("simple_list_entry.remove"));
 		remove.addActionListener(e -> {
 			entryList.remove(this);
 			parent.remove(container);
@@ -119,7 +120,7 @@ public class JLootTableEntry extends JPanel {
 	}
 
 	public LootTable.Pool.Entry getEntry() {
-		if (!item.containsItem())
+		if (!item.containsItemOrAir())
 			return null;
 
 		LootTable.Pool.Entry entry = new LootTable.Pool.Entry();

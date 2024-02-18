@@ -49,6 +49,8 @@ public class BlocklyLoader {
 		add("aiadvanced");
 		add("features");
 		add("orefeatures");
+		add("treefeatures");
+		add("treedecorators");
 		add("advancedfeatures");
 		add("intproviders");
 		add("placements");

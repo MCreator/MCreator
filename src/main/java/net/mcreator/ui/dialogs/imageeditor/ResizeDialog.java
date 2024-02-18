@@ -49,8 +49,6 @@ public class ResizeDialog extends MCreatorDialog {
 
 		JButton ok = L10N.button("action.common.resize");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		ok.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-		ok.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
 		getRootPane().setDefaultButton(ok);
 
 		GridBagConstraints layoutConstraints = new GridBagConstraints();

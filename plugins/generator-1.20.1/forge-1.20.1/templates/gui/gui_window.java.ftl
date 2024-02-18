@@ -32,9 +32,6 @@
 <#include "../procedures.java.ftl">
 package ${package}.client.gui;
 
-<#assign mx = data.W - data.width>
-<#assign my = data.H - data.height>
-
 public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 	private final static HashMap<String, Object> guistate = ${name}Menu.guistate;
@@ -91,14 +88,14 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("EntityModel") as component>
 			<#assign followMouse = component.followMouseMovement>
-			<#assign x = (component.x - mx/2)?int>
-			<#assign y = (component.y - my/2)?int>
+			<#assign x = component.gx(data.width)>
+			<#assign y = component.gy(data.height)>
 			if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity livingEntity) {
 				<#if hasProcedure(component.displayCondition)>
 					if (<@procedureOBJToConditionCode component.displayCondition/>)
 				</#if>
-				InventoryScreen.renderEntityInInventoryFollowsAngle(guiGraphics, this.leftPos + ${x + 11}, this.topPos + ${y + 21}, ${component.scale},
-					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.leftPos + ${x + 11} - mouseX) / 40.0)</#if>,
+				InventoryScreen.renderEntityInInventoryFollowsAngle(guiGraphics, this.leftPos + ${x + 10}, this.topPos + ${y + 20}, ${component.scale},
+					${component.rotationX / 20.0}f <#if followMouse> + (float) Math.atan((this.leftPos + ${x + 10} - mouseX) / 40.0)</#if>,
 					<#if followMouse>(float) Math.atan((this.topPos + ${y + 21 - 50} - mouseY) / 40.0)<#else>0</#if>,
 					livingEntity
 				);
@@ -108,8 +105,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		this.renderTooltip(guiGraphics, mouseX, mouseY);
 
 		<#list data.getComponentsOfType("Tooltip") as component>
-			<#assign x = (component.x - mx/2)?int>
-			<#assign y = (component.y - my/2)?int>
+			<#assign x = component.gx(data.width)>
+			<#assign y = component.gy(data.height)>
 			<#if hasProcedure(component.displayCondition)>
 				if (<@procedureOBJToConditionCode component.displayCondition/>)
 			</#if>
@@ -129,7 +126,8 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("Image") as component>
 			<#if hasProcedure(component.displayCondition)>if (<@procedureOBJToConditionCode component.displayCondition/>) {</#if>
-				guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.image}"), this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, 0, 0,
+				guiGraphics.blit(new ResourceLocation("${modid}:textures/screens/${component.image}"),
+					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)}, 0, 0,
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 					${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())});
 			<#if hasProcedure(component.displayCondition)>}</#if>
@@ -166,7 +164,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 			</#if>
 			guiGraphics.drawString(this.font,
 				<#if hasProcedure(component.text)><@procedureOBJToStringCode component.text/><#else>Component.translatable("gui.${modid}.${registryname}.${component.getName()}")</#if>,
-				${(component.x - mx / 2)?int}, ${(component.y - my / 2)?int}, ${component.color.getRGB()}, false);
+				${component.gx(data.width)}, ${component.gy(data.height)}, ${component.color.getRGB()}, false);
 		</#list>
 	}
 
@@ -178,17 +176,12 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		super.init();
 
 		<#list data.getComponentsOfType("TextField") as component>
-			${component.getName()} = new EditBox(this.font, this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
-			${component.width}, ${component.height}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
+			${component.getName()} = new EditBox(this.font, this.leftPos + ${component.gx(data.width) + 1}, this.topPos + ${component.gy(data.height) + 1},
+			${component.width - 2}, ${component.height - 2}, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"))
 			<#if component.placeholder?has_content>
 			{
-				{
-					setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
-				}
-
 				@Override public void insertText(String text) {
 					super.insertText(text);
-
 					if (getValue().isEmpty())
 						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 					else
@@ -197,7 +190,6 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 				@Override public void moveCursorTo(int pos) {
 					super.moveCursorTo(pos);
-
 					if (getValue().isEmpty())
 						setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
 					else
@@ -205,6 +197,9 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 				}
 			}
 			</#if>;
+			<#if component.placeholder?has_content>
+			${component.getName()}.setSuggestion(Component.translatable("gui.${modid}.${registryname}.${component.getName()}").getString());
+			</#if>
 			${component.getName()}.setMaxLength(32767);
 
 			guistate.put("text:${component.getName()}", ${component.getName()});
@@ -214,13 +209,23 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		<#assign btid = 0>
 
 		<#list data.getComponentsOfType("Button") as component>
-			${component.getName()} = Button.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <@buttonOnClick component/>)
-				.bounds(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int}, ${component.width}, ${component.height})
-				<#if hasProcedure(component.displayCondition)>
-				.build(builder -> new Button(builder)<@buttonDisplayCondition component/>);
-				<#else>
-				.build();
-				</#if>
+			<#if component.isUndecorated>
+				${component.getName()} = new PlainTextButton(
+					this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+					${component.width}, ${component.height},
+					Component.translatable("gui.${modid}.${registryname}.${component.getName()}"),
+					<@buttonOnClick component/>, this.font
+				)<@buttonDisplayCondition component/>;
+			<#else>
+				${component.getName()} = Button.builder(Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <@buttonOnClick component/>)
+					.bounds(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
+					${component.width}, ${component.height})
+					<#if hasProcedure(component.displayCondition)>
+						.build(builder -> new Button(builder)<@buttonDisplayCondition component/>);
+					<#else>
+						.build();
+					</#if>
+			</#if>
 
 			guistate.put("button:${component.getName()}", ${component.getName()});
 			this.addRenderableWidget(${component.getName()});
@@ -230,7 +235,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 
 		<#list data.getComponentsOfType("ImageButton") as component>
 			${component.getName()} = new ImageButton(
-				this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+				this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 				${component.getWidth(w.getWorkspace())}, ${component.getHeight(w.getWorkspace())},
 				0, 0, ${component.getHeight(w.getWorkspace())},
 				new ResourceLocation("${modid}:textures/screens/atlas/${component.getName()}.png"),
@@ -246,7 +251,7 @@ public class ${name}Screen extends AbstractContainerScreen<${name}Menu> {
 		</#list>
 
 		<#list data.getComponentsOfType("Checkbox") as component>
-			${component.getName()} = new Checkbox(this.leftPos + ${(component.x - mx/2)?int}, this.topPos + ${(component.y - my/2)?int},
+			${component.getName()} = new Checkbox(this.leftPos + ${component.gx(data.width)}, this.topPos + ${component.gy(data.height)},
 					20, 20, Component.translatable("gui.${modid}.${registryname}.${component.getName()}"), <#if hasProcedure(component.isCheckedProcedure)>
 				<@procedureOBJToConditionCode component.isCheckedProcedure/><#else>false</#if>);
 

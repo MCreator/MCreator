@@ -2,29 +2,29 @@
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
  # Copyright (C) 2020-2023, Pylo, opensource contributors
- # 
+ #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
  # the Free Software Foundation, either version 3 of the License, or
  # (at your option) any later version.
- # 
+ #
  # This program is distributed in the hope that it will be useful,
  # but WITHOUT ANY WARRANTY; without even the implied warranty of
  # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  # GNU General Public License for more details.
- # 
+ #
  # You should have received a copy of the GNU General Public License
  # along with this program.  If not, see <https://www.gnu.org/licenses/>.
- # 
+ #
  # Additional permission for code generator templates (*.ftl files)
- # 
- # As a special exception, you may create a larger work that contains part or 
- # all of the MCreator code generator templates (*.ftl files) and distribute 
- # that work under terms of your choice, so long as that work isn't itself a 
- # template for code generation. Alternatively, if you modify or redistribute 
- # the template itself, you may (at your option) remove this special exception, 
- # which will cause the template and the resulting code generator output files 
- # to be licensed under the GNU General Public License without this special 
+ #
+ # As a special exception, you may create a larger work that contains part or
+ # all of the MCreator code generator templates (*.ftl files) and distribute
+ # that work under terms of your choice, so long as that work isn't itself a
+ # template for code generation. Alternatively, if you modify or redistribute
+ # the template itself, you may (at your option) remove this special exception,
+ # which will cause the template and the resulting code generator output files
+ # to be licensed under the GNU General Public License without this special
  # exception.
 -->
 
@@ -39,7 +39,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 
 <#compress>
 <#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword" || data.toolType == "Spade"
-		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "MultiTool">
+		|| data.toolType == "Hoe" || data.toolType == "Shears" || data.toolType == "Shield" || data.toolType == "MultiTool">
 public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?replace("MultiTool", "Tiered")}Item {
 	public ${name}Item () {
 		super(<#if data.toolType == "Pickaxe" || data.toolType == "Axe" || data.toolType == "Sword"
@@ -54,7 +54,13 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				}
 
 				public float getAttackDamageBonus() {
+					<#if data.toolType == "Sword">
+					return ${data.damageVsEntity - 4}f;
+					<#elseif data.toolType == "Hoe">
+					return ${data.damageVsEntity - 1}f;
+					<#else>
 					return ${data.damageVsEntity - 2}f;
+					</#if>
 				}
 
 				public int getLevel() {
@@ -78,7 +84,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				<#if data.immuneToFire>
 				.fireResistant()
 				</#if>
-		<#elseif data.toolType=="Shears">
+		<#elseif data.toolType == "Shears" || data.toolType == "Shield">
 			new Item.Properties()
 				.durability(${data.usageCount})
 				<#if data.immuneToFire>
@@ -86,6 +92,12 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 				</#if>
 		</#if>);
 	}
+
+	<#if data.toolType == "Shield" && data.repairItems?has_content>
+	@Override public boolean isValidRepairItem(ItemStack itemstack, ItemStack repairitem) {
+		return ${mappedMCItemsToIngredient(data.repairItems)}.test(repairitem);
+	}
+	</#if>
 
 	<#if data.toolType=="Shears">
 		@Override public int getEnchantmentValue() {
@@ -128,7 +140,7 @@ public class ${name}Item extends ${data.toolType?replace("Spade", "Shovel")?repl
 			if (equipmentSlot == EquipmentSlot.MAINHAND) {
 				ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 				builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-				builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 2}f, AttributeModifier.Operation.ADDITION));
+				builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1}f, AttributeModifier.Operation.ADDITION));
 				builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
 				return builder.build();
 			}
@@ -171,7 +183,7 @@ public class ${name}Item extends Item {
 	<@onBlockDestroyedWith data.onBlockDestroyedWithTool, true/>
 
 	<@onEntityHitWith data.onEntityHitWith, true/>
-	
+
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
 	@Override public int getEnchantmentValue() {
@@ -182,7 +194,7 @@ public class ${name}Item extends Item {
 		if (equipmentSlot == EquipmentSlot.MAINHAND) {
 			ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 			builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-			builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 2}f, AttributeModifier.Operation.ADDITION));
+			builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Tool modifier", ${data.damageVsEntity - 1}f, AttributeModifier.Operation.ADDITION));
 			builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Tool modifier", ${data.attackSpeed - 4}, AttributeModifier.Operation.ADDITION));
 			return builder.build();
 		}
@@ -272,14 +284,7 @@ public class ${name}Item extends FishingRodItem {
 		</#if>
 	</#if>
 
-	<#if data.specialInfo?has_content>
-		@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-			super.appendHoverText(itemstack, world, list, flag);
-			<#list data.specialInfo as entry>
-			list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-			</#list>
-		}
-	</#if>
+	<@addSpecialInformation data.specialInformation/>
 
 	<@onItemUsedOnBlock data.onRightClickedOnBlock/>
 
@@ -289,8 +294,7 @@ public class ${name}Item extends FishingRodItem {
 
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
-	<#if data.hasGlow>
 	<@hasGlow data.glowCondition/>
-	</#if>
+
 </#macro>
 <#-- @formatter:on -->

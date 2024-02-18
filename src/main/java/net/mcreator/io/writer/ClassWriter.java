@@ -35,13 +35,10 @@ import java.util.stream.Collectors;
 
 public class ClassWriter {
 
-	private static CodeCleanup codeCleanup;
+	private static final CodeCleanup codeCleanup = new CodeCleanup();
 
-	public static void writeClassToFileWithoutQueue(@Nullable Workspace workspace, String code, File file,
+	public static void writeClassToFile(@Nullable Workspace workspace, String code, File file,
 			boolean formatAndOrganiseImports) {
-		if (codeCleanup == null)
-			codeCleanup = new CodeCleanup();
-
 		if (formatAndOrganiseImports) {
 			FileIO.writeStringToFile(codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code), file);
 		} else {
@@ -49,24 +46,32 @@ public class ClassWriter {
 		}
 	}
 
+	public static void batchWriteClassToFile(@Nullable Workspace workspace, @Nonnull Map<File, String> codes,
+			boolean formatAndOrganiseImports, @Nullable IntConsumer intConsumer) {
+		if (formatAndOrganiseImports) {
+			// reload mod classes by "dummy" formatting the first element
+			codes.values().stream().findFirst()
+					.ifPresent(code -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code, false));
+
+			AtomicInteger counter = new AtomicInteger();
+			Map<File, String> formattedCodes = codes.keySet().parallelStream().peek(file -> {
+				if (intConsumer != null)
+					intConsumer.accept(counter.incrementAndGet());
+			}).filter(codes::containsKey).collect(Collectors.toMap(file -> file,
+					file -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, codes.get(file), true)));
+
+			formattedCodes.forEach((file, code) -> FileIO.writeStringToFile(code, file));
+		} else {
+			codes.forEach((key, value) -> FileIO.writeStringToFile(value, key));
+		}
+	}
+
 	public static void formatAndOrganiseImportsForFiles(@Nullable Workspace workspace, @Nonnull Collection<File> files,
 			@Nullable IntConsumer intConsumer) {
-		Map<File, String> codes = files.stream()
+		Map<File, String> codes = files.parallelStream()
 				.filter(file -> FilenameUtils.isExtension(file.getName().toLowerCase(Locale.ENGLISH), "java"))
 				.collect(Collectors.toMap(file -> file, FileIO::readFileToString));
-
-		// reload mod classes by "dummy" formatting the first element
-		codes.values().stream().findFirst()
-				.ifPresent(code -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, code, false));
-
-		AtomicInteger counter = new AtomicInteger();
-		Map<File, String> formattedCodes = files.parallelStream().peek(file -> {
-			if (intConsumer != null)
-				intConsumer.accept(counter.incrementAndGet());
-		}).filter(codes::containsKey).collect(Collectors.toMap(file -> file,
-				file -> codeCleanup.reformatTheCodeAndOrganiseImports(workspace, codes.get(file), true)));
-
-		formattedCodes.forEach((file, code) -> FileIO.writeStringToFile(code, file));
+		batchWriteClassToFile(workspace, codes, true, intConsumer);
 	}
 
 }

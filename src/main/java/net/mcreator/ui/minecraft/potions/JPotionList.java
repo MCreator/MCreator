@@ -21,66 +21,29 @@ package net.mcreator.ui.minecraft.potions;
 
 import net.mcreator.element.types.Potion;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.entries.JSimpleEntriesList;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.JEntriesList;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
-public class JPotionList extends JEntriesList {
-
-	private final List<JPotionListEntry> entryList = new ArrayList<>();
-
-	private final JPanel entries = new JPanel(new GridLayout(0, 1, 5, 5));
+public class JPotionList extends JSimpleEntriesList<JPotionListEntry, Potion.CustomEffectEntry> {
 
 	public JPotionList(MCreator mcreator, IHelpContext gui) {
-		super(mcreator, new BorderLayout(), gui);
-		setOpaque(false);
-
-		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
-		topbar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		super(mcreator, gui);
 
 		add.setText(L10N.t("elementgui.potion.add_entry"));
-		topbar.add(add);
-
-		add("North", topbar);
-
-		entries.setOpaque(false);
-
-		add.addActionListener(e -> {
-			JPotionListEntry entry = new JPotionListEntry(mcreator, gui, entries, entryList);
-			registerEntryUI(entry);
-		});
-
-		add("Center", PanelUtils.pullElementUp(entries));
 
 		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.potion.effects"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 	}
 
-	@Override public void setEnabled(boolean enabled) {
-		super.setEnabled(enabled);
-
-		add.setEnabled(false);
+	@Override protected JPotionListEntry newEntry(JPanel parent, List<JPotionListEntry> entryList, boolean userAction) {
+		return new JPotionListEntry(mcreator, gui, parent, entryList);
 	}
 
-	public List<Potion.CustomEffectEntry> getEffects() {
-		return entryList.stream().map(JPotionListEntry::getEntry).filter(Objects::nonNull).collect(Collectors.toList());
-	}
-
-	public void setEffects(List<Potion.CustomEffectEntry> pool) {
-		pool.forEach(e -> {
-			JPotionListEntry entry = new JPotionListEntry(mcreator, gui, entries, entryList);
-			registerEntryUI(entry);
-			entry.setEntry(e);
-		});
-	}
 }

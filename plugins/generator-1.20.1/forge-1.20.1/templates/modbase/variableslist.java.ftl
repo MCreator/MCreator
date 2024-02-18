@@ -183,7 +183,7 @@ import net.minecraft.nbt.Tag;
 			this.setDirty();
 
 			if (world instanceof Level && !world.isClientSide())
-			${JavaModName}.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SavedDataSyncMessage(0, this));
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SavedDataSyncMessage(0, this));
 		}
 
 		static MapVariables clientSide = new MapVariables();
@@ -201,17 +201,20 @@ import net.minecraft.nbt.Tag;
 
 	public static class SavedDataSyncMessage {
 
-		public int type;
-		public SavedData data;
+		private final int type;
+		private SavedData data;
 
 		public SavedDataSyncMessage(FriendlyByteBuf buffer) {
 			this.type = buffer.readInt();
-			this.data = this.type == 0 ? new MapVariables() : new WorldVariables();
 
-			if(this.data instanceof MapVariables _mapvars)
-				_mapvars.read(buffer.readNbt());
-			else if(this.data instanceof WorldVariables _worldvars)
-				_worldvars.read(buffer.readNbt());
+			CompoundTag nbt = buffer.readNbt();
+			if (nbt != null) {
+				this.data = this.type == 0 ? new MapVariables() : new WorldVariables();
+				if(this.data instanceof MapVariables mapVariables)
+					mapVariables.read(nbt);
+				else if(this.data instanceof WorldVariables worldVariables)
+					worldVariables.read(nbt);
+			}
 		}
 
 		public SavedDataSyncMessage(int type, SavedData data) {
@@ -221,13 +224,14 @@ import net.minecraft.nbt.Tag;
 
 		public static void buffer(SavedDataSyncMessage message, FriendlyByteBuf buffer) {
 			buffer.writeInt(message.type);
-			buffer.writeNbt(message.data.save(new CompoundTag()));
+			if (message.data != null)
+				buffer.writeNbt(message.data.save(new CompoundTag()));
 		}
 
 		public static void handler(SavedDataSyncMessage message, Supplier<NetworkEvent.Context> contextSupplier) {
 			NetworkEvent.Context context = contextSupplier.get();
 			context.enqueueWork(() -> {
-				if (!context.getDirection().getReceptionSide().isServer()) {
+				if (!context.getDirection().getReceptionSide().isServer() && message.data != null) {
 					if (message.type == 0)
 						MapVariables.clientSide = (MapVariables) message.data;
 					else
@@ -295,8 +299,8 @@ import net.minecraft.nbt.Tag;
 			return nbt;
 		}
 
-		public void readNBT(Tag Tag) {
-			CompoundTag nbt = (CompoundTag) Tag;
+		public void readNBT(Tag tag) {
+			CompoundTag nbt = (CompoundTag) tag;
 			<#list variables as var>
 				<#if var.getScope().name() == "PLAYER_LIFETIME">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['read']?interpret/>
@@ -310,7 +314,7 @@ import net.minecraft.nbt.Tag;
 
 	public static class PlayerVariablesSyncMessage {
 
-		public PlayerVariables data;
+		private final PlayerVariables data;
 
 		public PlayerVariablesSyncMessage(FriendlyByteBuf buffer) {
 			this.data = new PlayerVariables();

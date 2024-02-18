@@ -1,0 +1,1 @@
+Livello minimo richiesto per il Villico per offrire lo scambio.

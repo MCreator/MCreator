@@ -9,7 +9,7 @@
     {
       "type": "field_number",
       "name": "max",
-      "value": 6,
+      "value": 16,
       "precision": 1
     }
   ],

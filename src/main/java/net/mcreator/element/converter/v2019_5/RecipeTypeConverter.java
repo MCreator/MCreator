@@ -37,7 +37,7 @@ public class RecipeTypeConverter implements IConverter {
 		try {
 			if (jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("recipeReturnStack") != null
 					&& !jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("recipeReturnStack")
-					.getAsJsonObject().get("value").getAsString().trim().equals("")) { // treat as crafting
+					.getAsJsonObject().get("value").getAsString().isBlank()) { // treat as crafting
 				recipe.recipeType = "Crafting";
 			} else { // treat as smelting
 				recipe.recipeType = "Smelting";

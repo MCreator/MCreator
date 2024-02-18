@@ -28,7 +28,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.ElementUtil;
-import net.mcreator.ui.blockly.BlocklyJavascriptBridge;
 import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -123,40 +122,9 @@ public class BlocklyTestUtil {
 						if (arg.has("name") && arg.get("name").getAsString().equals(field)) {
 							processed += appendFieldXML(workspace, random, additionalXML, arg, field);
 							break;
-						}
-					}
-				}
-			}
-
-			if (toolboxBlock.getBlocklyJSON().get("extensions") != null) {
-				JsonArray extensions = toolboxBlock.getBlocklyJSON().get("extensions").getAsJsonArray();
-				for (int i = 0; i < extensions.size(); i++) {
-					String extension = extensions.get(i).getAsString();
-					String suggestedFieldName = extension.replace("_list_provider", "");
-					String suggestedDataListName = suggestedFieldName;
-
-					if (suggestedDataListName.equals("sound_category")) {
-						suggestedDataListName = "soundcategories";
-						suggestedFieldName = "soundcategory";
-					} else if (suggestedDataListName.equals("plant_type")) {
-						suggestedDataListName = "planttype";
-						suggestedFieldName = "planttype";
-					} else if ("arg_procedure".equals(extension)) {
-						suggestedFieldName = "procedure";
-					}
-
-					if (toolboxBlock.getFields().contains(suggestedFieldName)) {
-						String[] values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
-								suggestedDataListName);
-
-						if (values.length == 0 || values[0].equals(""))
-							values = BlocklyJavascriptBridge.getListOfForWorkspace(workspace,
-									suggestedDataListName + "s");
-
-						if (values.length > 0 && !values[0].equals("")) {
-							additionalXML.append("<field name=\"").append(suggestedFieldName).append("\">")
-									.append(ListUtils.getRandomItem(random, values)).append("</field>");
+						} else if (toolboxBlock.getToolboxTestXML().contains("<field name=\"" + field + "\">")) {
 							processed++;
+							break;
 						}
 					}
 				}
@@ -185,7 +153,7 @@ public class BlocklyTestUtil {
 				}
 			}
 			if (processedFields != totalFields) {
-				LOG.warn("Skipping Blockly block with incorrectly " + "defined repeating field: "
+				LOG.warn("Skipping Blockly block with incorrectly defined repeating field: "
 						+ toolboxBlock.getMachineName());
 				return false;
 			}
@@ -224,28 +192,29 @@ public class BlocklyTestUtil {
 			additionalXML.append("<field name=\"").append(field).append("\">Blocks.STONE</field>");
 			processed++;
 		}
-		case "field_data_list_selector" -> {
+		case "field_data_list_selector", "field_data_list_dropdown" -> {
 			String type = arg.get("datalist").getAsString();
 
 			// Get the optional properties
-			JsonElement optTypeFilter = arg.get("typeFilter");
-			String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
+			JsonElement optTypeFilter = null, optCustomEntryProviders = null, optTestValue = arg.get("testValue");
+			if (arg.get("type").getAsString().equals("field_data_list_selector")) {
+				optTypeFilter = arg.get("typeFilter");
+				optCustomEntryProviders = arg.get("customEntryProviders");
+			}
 
-			JsonElement optCustomEntryProviders = arg.get("customEntryProviders");
+			String typeFilter = optTypeFilter == null ? null : optTypeFilter.getAsString();
 			String customEntryProviders =
 					optCustomEntryProviders == null ? null : optCustomEntryProviders.getAsString();
-
-			JsonElement optTestValue = arg.get("testValue");
 			String value = optTestValue == null ? null : optTestValue.getAsString();
 
 			if (value == null) {
 				String[] values = getDataListFieldValues(workspace, type, typeFilter, customEntryProviders);
-				if (values.length > 0 && !values[0].equals("")) {
+				if (values.length > 0 && !values[0].isEmpty()) {
 					value = ListUtils.getRandomItem(random, values);
 				}
 			}
 
-			if (value != null && !value.equals("")) {
+			if (value != null && !value.isEmpty()) {
 				additionalXML.append("<field name=\"").append(field).append("\">").append(value).append("</field>");
 				processed++;
 			}
@@ -267,7 +236,9 @@ public class BlocklyTestUtil {
 			return ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
 		case "gui":
-			return ElementUtil.loadBasicGUI(workspace).toArray(String[]::new);
+			return ElementUtil.loadBasicGUIs(workspace).toArray(String[]::new);
+		case "direction":
+			return ElementUtil.loadDirections();
 		case "biome":
 			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "dimension":
@@ -276,7 +247,7 @@ public class BlocklyTestUtil {
 			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
 					.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new);
 		case "fluid":
-			return ElementUtil.loadAllFluids(workspace);
+			return ElementUtil.loadAllFluids(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
 		case "gamerulesboolean":
 			return ElementUtil.getAllBooleanGameRules(workspace).stream().map(DataListEntry::getName)
 					.toArray(String[]::new);
@@ -285,6 +256,8 @@ public class BlocklyTestUtil {
 					.toArray(String[]::new);
 		case "sound":
 			return ElementUtil.getAllSounds(workspace);
+		case "structure":
+			return workspace.getFolderManager().getStructureList().toArray(String[]::new);
 		case "procedure":
 			return workspace.getModElements().stream().filter(mel -> mel.getType() == ModElementType.PROCEDURE)
 					.map(ModElement::getName).toArray(String[]::new);

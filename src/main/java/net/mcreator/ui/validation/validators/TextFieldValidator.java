@@ -38,7 +38,7 @@ public class TextFieldValidator implements Validator {
 	}
 
 	@Override public ValidationResult validate() {
-		if (!holder.getText().trim().equals(""))
+		if (!holder.getText().isBlank())
 			return Validator.ValidationResult.PASSED;
 		else
 			return new Validator.ValidationResult(answer, emptyMessage);

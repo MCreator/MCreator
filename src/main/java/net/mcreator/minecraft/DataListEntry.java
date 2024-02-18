@@ -180,7 +180,11 @@ public class DataListEntry implements Comparable<DataListEntry> {
 		private final ModElement modElement;
 
 		public Custom(ModElement modElement) {
-			super("CUSTOM:" + modElement.getName());
+			this(modElement, null);
+		}
+
+		public Custom(ModElement modElement, @Nullable String suffix) {
+			super("CUSTOM:" + modElement.getName() + (suffix != null ? suffix : ""));
 
 			this.modElement = modElement;
 

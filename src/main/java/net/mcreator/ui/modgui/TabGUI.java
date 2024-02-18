@@ -26,6 +26,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -87,9 +88,9 @@ public class TabGUI extends ModElementGUI<Tab> {
 		slpa.setMaximumSize(new Dimension(700, 110));
 
 		slpa.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.tab.add_stuff_tip"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		pane3.add(PanelUtils.totalCenterInPanel(slpa));
 		pane3.setOpaque(false);

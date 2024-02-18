@@ -27,7 +27,7 @@
   "output": "Boolean",
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
-    "toolbox_id": "itemmanagement",
+    "toolbox_id": "itemdata",
     "toolbox_init": [
       "<value name=\"item\"><block type=\"mcitem_all\"><field name=\"value\"></field></block></value>",
       "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"

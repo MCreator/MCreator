@@ -27,3 +27,5 @@ templates:
     writer: json
     name: "@RESROOT/data/@[getNamespace()]/recipes/@[getName()].json"
     condition: "recipeType %= Smithing"
+
+field_exclusions: [brewingRecipeMaker, smithingRecipeMaker.cb4]

@@ -1,0 +1,1 @@
+Questo parametro controlla il colore delle foglie (le foglie degli alberi) all'interno del bioma.

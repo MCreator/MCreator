@@ -20,13 +20,12 @@ package net.mcreator.generator.template;
 
 import freemarker.template.Template;
 import net.mcreator.generator.Generator;
+import org.apache.commons.io.output.NullWriter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import java.io.StringReader;
-import java.io.StringWriter;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -78,24 +77,22 @@ public class TemplateExpressionParser {
 	private static boolean parseCondition(@Nonnull Generator generator, @Nonnull String condition,
 			@Nonnull Object conditionDataProvider) {
 		try {
+			int indexOf;
 			if (condition.startsWith("${")) {
 				Object processed = processFTLExpression(generator, condition.substring(2, condition.length() - 1),
 						conditionDataProvider);
 				return processed instanceof Boolean check && check;
-			} else if (condition.contains("#?=")) { // check if value == one of the other values in list
-				String[] condData = condition.split("#\\?=");
-				int field = (int) getValueFrom(condData[0], conditionDataProvider);
-				return Arrays.stream(condData[1].trim().split(",")).mapToInt(Integer::parseInt)
+			} else if ((indexOf = condition.indexOf("#?=")) >= 0) { // check if value == one of the other values in list
+				int field = (int) getValueFrom(condition.substring(0, indexOf), conditionDataProvider);
+				return Arrays.stream(condition.substring(indexOf + 3).trim().split(",")).mapToInt(Integer::parseInt)
 						.anyMatch(e -> e == field);
-			} else if (condition.contains("#=")) { // check if value == other value
-				String[] condData = condition.split("#=");
-				int field = (int) getValueFrom(condData[0], conditionDataProvider);
-				int value = Integer.parseInt(condData[1].trim());
+			} else if ((indexOf = condition.indexOf("#=")) >= 0) { // check if value == other value
+				int field = (int) getValueFrom(condition.substring(0, indexOf), conditionDataProvider);
+				int value = Integer.parseInt(condition.substring(indexOf + 2).trim());
 				return value == field;
-			} else if (condition.contains("%=")) { // compare strings
-				String[] condData = condition.split("%=");
-				String field = (String) getValueFrom(condData[0], conditionDataProvider);
-				String value = condData[1].trim();
+			} else if ((indexOf = condition.indexOf("%=")) >= 0) { // compare strings
+				String field = (String) getValueFrom(condition.substring(0, indexOf), conditionDataProvider);
+				String value = condition.substring(indexOf + 2).trim();
 				return value.equals(field);
 			} else {
 				return (boolean) getValueFrom(condition, conditionDataProvider);
@@ -107,12 +104,14 @@ public class TemplateExpressionParser {
 		return false;
 	}
 
-	private static Object getValueFrom(String field, Object conditionDataProvider) throws ReflectiveOperationException {
-		if (!field.contains("()")) { // field
-			return conditionDataProvider.getClass().getField(field.trim()).get(conditionDataProvider);
-		} else { // method
-			return conditionDataProvider.getClass().getMethod(field.replace("()", "").trim())
+	private static Object getValueFrom(String memberName, Object conditionDataProvider)
+			throws ReflectiveOperationException {
+		memberName = memberName.trim();
+		if (memberName.endsWith("()")) { // method
+			return conditionDataProvider.getClass().getMethod(memberName.substring(0, memberName.length() - 2))
 					.invoke(conditionDataProvider);
+		} else { // field
+			return conditionDataProvider.getClass().getField(memberName).get(conditionDataProvider);
 		}
 	}
 
@@ -121,12 +120,12 @@ public class TemplateExpressionParser {
 			Map<String, Object> dataModel = new HashMap<>(generator.getBaseDataModelProvider().provide());
 			AtomicReference<?> retVal = new AtomicReference<>(null);
 			dataModel.put("data", dataHolder);
-			dataModel.put("_retVal", retVal);
+			dataModel.put("_", retVal);
 
-			Template t = new Template("INLINE EXPRESSION", new StringReader("${_retVal.set(" + expression + ")}"),
-					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration());
-			t.process(dataModel, new StringWriter(),
-					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getBeansWrapper());
+			Template t = InlineTemplatesHandler.getTemplate("${_.set(" + expression + ")}");
+			t.process(dataModel, NullWriter.INSTANCE,
+					generator.getGeneratorConfiguration().getTemplateGenConfigFromName("templates").getConfiguration()
+							.getObjectWrapper());
 
 			return retVal.get();
 		} catch (Exception e) {

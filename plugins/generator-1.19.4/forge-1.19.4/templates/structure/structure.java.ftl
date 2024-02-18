@@ -37,21 +37,6 @@ package ${package}.world.features;
 <#compress>
 public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 
-	private final Set<ResourceKey<Level>> generate_dimensions = Set.of(
-		<#list data.spawnWorldTypes as worldType>
-			<#if worldType == "Surface">
-				Level.OVERWORLD
-			<#elseif worldType == "Nether">
-				Level.NETHER
-			<#elseif worldType == "End">
-				Level.END
-			<#else>
-				ResourceKey.create(Registries.DIMENSION,
-					new ResourceLocation("${generator.getResourceLocationForModElement(worldType.toString().replace("CUSTOM:", ""))}"))
-			</#if><#sep>,
-		</#list>
-	);
-
 	<#if data.restrictionBlocks?has_content>
 	private final List<Block> base_blocks;
 	</#if>
@@ -71,9 +56,6 @@ public class ${name}Feature extends Feature<NoneFeatureConfiguration> {
 	}
 
 	@Override public boolean place(FeaturePlaceContext<NoneFeatureConfiguration> context) {
-		if (!generate_dimensions.contains(context.level().getLevel().dimension()))
-			return false;
-
 		if (template == null)
 			template = context.level().getLevel().getStructureManager()
 					.getOrCreate(new ResourceLocation("${modid}", "${data.structure}"));

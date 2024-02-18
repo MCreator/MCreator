@@ -25,6 +25,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.WorkspaceFolderManager;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileSystemView;
@@ -40,7 +41,7 @@ class JavaFileDialogs {
 	private static final Dimension FILEDIALOG_SIZE = new Dimension(720, 420);
 
 	protected static File[] getFileChooserDialog(Window f, FileChooserType type, boolean multiSelect,
-			FileChooser.ExtensionFilter... filters) {
+			@Nullable String suggestedFileName, FileChooser.ExtensionFilter... filters) {
 		JFileChooser fc = new JFileChooser() {
 			@Override public File getSelectedFile() {
 				File selectedFile = super.getSelectedFile();
@@ -78,7 +79,7 @@ class JavaFileDialogs {
 			@Override public Icon getIcon(File f) {
 				if (f.isDirectory())
 					if (!fileSystemView.isComputerNode(f) && !fileSystemView.isDrive(f))
-						return UIRES.get("laf.directory.gif");
+						return UIRES.get("laf.directory");
 
 				if (f.getName().endsWith(".mcreator"))
 					return new ImageIcon(ImageUtils.resize(UIRES.get("mod").getImage(), 16));
@@ -96,6 +97,9 @@ class JavaFileDialogs {
 		}
 
 		fc.setMultiSelectionEnabled(multiSelect);
+
+		if (suggestedFileName != null)
+			fc.setSelectedFile(new File(prevDir, suggestedFileName));
 
 		int returnVal;
 		if (type == FileChooserType.SAVE)

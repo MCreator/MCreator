@@ -32,6 +32,7 @@ import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.GifUtil;
 import net.mcreator.util.StringUtils;
@@ -67,7 +68,7 @@ public class AnimationMakerView extends ViewBase {
 	private int animindex = 0;
 	private boolean playanim = true;
 
-	private Thread animator;
+	private final Thread animator;
 
 	private int width = 16;
 	private boolean active;
@@ -117,7 +118,7 @@ public class AnimationMakerView extends ViewBase {
 		JPanel preview2 = new JPanel(new GridLayout()) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				g2d.setColor(Theme.current().getAltBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();
@@ -138,9 +139,9 @@ public class AnimationMakerView extends ViewBase {
 
 		JComponent stp = PanelUtils.centerInPanel(settings);
 		stp.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("dialog.animation_maker.settings"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		editor.add("Center", PanelUtils.centerAndEastElement(preview2, stp));
 
@@ -156,11 +157,12 @@ public class AnimationMakerView extends ViewBase {
 								new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
 						timeline.repaint();
 					});
-					try {
-						Thread.sleep(((Integer) bd1.getValue()) * (50));
-					} catch (InterruptedException e) {
-						LOG.error(e.getMessage(), e);
-					}
+				}
+
+				try {
+					//noinspection BusyWait
+					Thread.sleep(((Integer) bd1.getValue()) * (50));
+				} catch (InterruptedException ignored) {
 				}
 			}
 		}, "AnimationRenderer");
@@ -186,7 +188,7 @@ public class AnimationMakerView extends ViewBase {
 			playanim = false;
 			timeline.repaint();
 		});
-		stop.setIcon(UIRES.get("16px.stop"));
+		stop.setIcon(UIRES.get("16px.stopanimation"));
 		controls.add(stop);
 
 		controls.addSeparator();
@@ -216,9 +218,9 @@ public class AnimationMakerView extends ViewBase {
 		JPanel timelinee = new JPanel(new BorderLayout());
 		timelinee.setOpaque(false);
 		timelinee.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("dialog.animation_maker.animation_timeline"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		JToolBar timelinebar = new JToolBar();
 		timelinebar.setFloatable(false);
@@ -257,35 +259,33 @@ public class AnimationMakerView extends ViewBase {
 					try {
 						ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 								L10N.t("dialog.animation_maker.gif_reading"));
-						dial.addProgress(p1);
-						BufferedImage[] frames = GifUtil.readAnimatedGif(frame);
+						dial.addProgressUnit(p1);
+						Image[] frames = GifUtil.readAnimatedGif(frame);
 						if (frames.length > 0)
-							p1.ok();
+							p1.markStateOk();
 						else {
-							p1.err();
-							dial.hideAll();
+							p1.markStateError();
+							dial.hideDialog();
 
 							JOptionPane.showMessageDialog(fra, L10N.t("dialog.animation_maker.gif_format_unsupported"),
 									L10N.t("common.warning"), JOptionPane.ERROR_MESSAGE);
 
 							return;
 						}
-						dial.refreshDisplay();
 						int frameCount = frames.length;
 						ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 								L10N.t("dialog.animation_maker.gif_processing"));
-						dial.addProgress(p2);
+						dial.addProgressUnit(p2);
 						for (int i = 0; i < frameCount; i++) {
 							int finalI = i;
 							SwingUtilities.invokeLater(
 									() -> timelinevector.addElement(new AnimationFrame(frames[finalI])));
-							p2.setPercent((int) (((float) i / (float) frameCount) * 100.0f));
+							p2.setPercent((int) (i / (float) frameCount * 100));
 						}
-						p2.ok();
-						dial.refreshDisplay();
-						dial.hideAll();
+						p2.markStateOk();
+						dial.hideDialog();
 					} catch (Exception e) {
-						dial.hideAll();
+						dial.hideDialog();
 						LOG.error(e.getMessage(), e);
 					}
 
@@ -328,8 +328,8 @@ public class AnimationMakerView extends ViewBase {
 
 		JButton save = L10N.button("dialog.animation_maker.save_animated_texture");
 		save.setMargin(new Insets(1, 40, 1, 40));
-		save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-		save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		save.setBackground(Theme.current().getInterfaceAccentColor());
+		save.setForeground(Theme.current().getSecondAltBackgroundColor());
 		save.setFocusPainted(false);
 		add("North", PanelUtils.maxMargin(
 				PanelUtils.westAndEastElement(new JEmptyBox(0, 0), PanelUtils.centerInPanelPadding(save, 0, 0)), 5,
@@ -420,7 +420,7 @@ public class AnimationMakerView extends ViewBase {
 
 		types.addActionListener(al);
 		cbox.addActionListener(al);
-		colors.setColorSelectedListener(al);
+		colors.addColorSelectedListener(al);
 
 		od.add("North", lab1);
 		od.add("Center", centerPanel);
@@ -503,7 +503,7 @@ public class AnimationMakerView extends ViewBase {
 					preview.setIcon(new ImageIcon(ImageUtils.resize(tilImgUtl.get().getIcon(1, 1).getImage(), 128)));
 		};
 
-		colors.setColorSelectedListener(al);
+		colors.addColorSelectedListener(al);
 		cbox.addActionListener(al);
 		cbox2.addActionListener(al);
 
@@ -541,22 +541,18 @@ public class AnimationMakerView extends ViewBase {
 		else
 			b = bufferedImage;
 		int x = Math.min(b.getHeight(), b.getWidth());
-		TiledImageUtils tiledImageUtils = null;
 		try {
-			tiledImageUtils = new TiledImageUtils(b, x, x);
-		} catch (InvalidTileSizeException e) {
-			LOG.error(e.getMessage(), e);
-		}
-		if (tiledImageUtils != null)
-			for (int i = 1; i <= tiledImageUtils.getWidthInTiles(); i++)
+			TiledImageUtils tiledImageUtils = new TiledImageUtils(b, x, x);
+			for (int i = 1; i <= tiledImageUtils.getWidthInTiles(); i++) {
 				for (int j = 1; j <= tiledImageUtils.getHeightInTiles(); j++) {
 					BufferedImage buf;
-					if (colorize)
-						buf = ImageUtils.toBufferedImage(tiledImageUtils.getIcon(i, j).getImage());
-					else
-						buf = ImageUtils.toBufferedImage(tiledImageUtils.getIcon(i, j).getImage());
+					buf = ImageUtils.toBufferedImage(tiledImageUtils.getIcon(i, j).getImage());
 					timelinevector.addElement(new AnimationFrame(buf));
 				}
+			}
+		} catch (InvalidTileSizeException e) {
+			LOG.warn("Invalid tile size", e);
+		}
 	}
 
 	private class ComboBoxRenderer extends JPanel implements ListCellRenderer<AnimationFrame> {
@@ -596,9 +592,9 @@ public class AnimationMakerView extends ViewBase {
 	}
 
 	static class AnimationFrame {
-		BufferedImage image;
+		Image image;
 
-		AnimationFrame(BufferedImage s) {
+		AnimationFrame(Image s) {
 			image = s;
 		}
 	}
@@ -618,10 +614,7 @@ public class AnimationMakerView extends ViewBase {
 
 	@Override public ViewBase showView() {
 		MCreatorTabs.Tab tab = new MCreatorTabs.Tab(this);
-		tab.setTabClosedListener(tab1 -> {
-			this.active = false;
-			this.animator = null;
-		});
+		tab.setTabClosedListener(tab1 -> this.active = false);
 		mcreator.mcreatorTabs.addTab(tab);
 		return this;
 	}

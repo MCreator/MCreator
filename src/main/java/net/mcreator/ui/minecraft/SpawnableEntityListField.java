@@ -20,17 +20,24 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
+import net.mcreator.ui.dialogs.AddTagDialog;
 import net.mcreator.ui.dialogs.DataListSelectorDialog;
 import net.mcreator.ui.init.L10N;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SpawnableEntityListField extends JItemListField<EntityEntry> {
 
 	public SpawnableEntityListField(MCreator mcreator) {
-		super(mcreator);
+		super(mcreator, false);
+	}
+
+	public SpawnableEntityListField(MCreator mcreator, boolean allowTags) {
+		super(mcreator, false, allowTags);
 	}
 
 	@Override protected List<EntityEntry> getElementsToAdd() {
@@ -38,4 +45,16 @@ public class SpawnableEntityListField extends JItemListField<EntityEntry> {
 						L10N.t("dialog.list_field.entity_title"), L10N.t("dialog.list_field.entity_message")).stream()
 				.map(e -> new EntityEntry(mcreator.getWorkspace(), e)).toList();
 	}
+
+	@Override protected List<EntityEntry> getTagsToAdd() {
+		List<EntityEntry> tags = new ArrayList<>();
+
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.ENTITIES, "bosses", "raiders",
+				"fall_damage_immune", "powder_snow_walkable_mobs");
+		if (tag != null)
+			tags.add(new EntityEntry(mcreator.getWorkspace(), "#" + tag));
+
+		return tags;
+	}
+
 }

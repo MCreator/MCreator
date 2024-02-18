@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.Launcher;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.minecraft.MCItem;
@@ -35,6 +36,7 @@ import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.help.ModElementHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -84,11 +86,30 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	public final void addPage(JComponent component) {
-		pages.put(modElement.getType().getReadableName(), component);
+		addPage(component, true);
+	}
+
+	public final void addPage(JComponent component, boolean scroll) {
+		addPage(modElement.getType().getReadableName(), component, scroll);
 	}
 
 	public final void addPage(String name, JComponent component) {
-		pages.put(name, component);
+		addPage(name, component, true);
+	}
+
+	public final void addPage(String name, JComponent component, boolean scroll) {
+		if (scroll) {
+			JScrollPane splitScroll = new JScrollPane(component);
+			splitScroll.setOpaque(false);
+			splitScroll.getViewport().setOpaque(false);
+			splitScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+			splitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+			splitScroll.getVerticalScrollBar().setUnitIncrement(15);
+			splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
+			pages.put(name, new JLayer<>(splitScroll, new ScrollWheelPassLayer()));
+		} else {
+			pages.put(name, component);
+		}
 	}
 
 	public void setModElementCreatedListener(ModElementCreatedListener<GE> modElementCreatedListener) {
@@ -115,38 +136,38 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		this.tabIn = new MCreatorTabs.Tab(this, modElement);
 
-		// reload data lists in a background thread
-		this.tabIn.setTabShownListener(tab -> {
-			if (PreferencesManager.PREFERENCES.ui.autoReloadTabs.get()) {
-				listeningEnabled = false;
-				reloadDataLists();
-				listeningEnabled = true;
-			}
-		});
-		this.tabIn.setTabClosingListener(tab -> {
-			if (changed && PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges.get())
-				return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(mcreator,
-						L10N.label("dialog.unsaved_changes.message"), L10N.t("dialog.unsaved_changes.title"),
-						JOptionPane.YES_NO_OPTION);
-			return true;
-		});
-
+		ViewBase retval;
 		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(this.tabIn);
 		if (existing == null) {
 			mcreator.mcreatorTabs.addTab(this.tabIn);
-			return this;
+
+			this.tabIn.setTabShownListener(tab -> {
+				if (PreferencesManager.PREFERENCES.ui.autoReloadTabs.get()) {
+					listeningEnabled = false;
+					reloadDataLists();
+					listeningEnabled = true;
+				}
+			});
+
+			this.tabIn.setTabClosingListener(tab -> {
+				if (changed && PreferencesManager.PREFERENCES.ui.remindOfUnsavedChanges.get())
+					return JOptionPane.YES_OPTION == JOptionPane.showConfirmDialog(mcreator,
+							L10N.label("dialog.unsaved_changes.message"), L10N.t("dialog.unsaved_changes.title"),
+							JOptionPane.YES_NO_OPTION);
+				return true;
+			});
+
+			retval = this;
+		} else {
+			retval = (ViewBase) existing.getContent();
 		}
 
 		MCREvent.event(new ModElementGUIEvent.AfterLoading(mcreator, existing, this));
 
-		return (ViewBase) existing.getContent();
+		return retval;
 	}
 
 	protected final void finalizeGUI() {
-		finalizeGUI(true);
-	}
-
-	protected final void finalizeGUI(boolean wrapInScrollPane) {
 		JComponent centerComponent, parameters = new JPanel();
 
 		if (allowCodePreview())
@@ -208,8 +229,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				ComponentUtils.deriveFont(page, 13);
 
 				page.addChangeListener(e -> page.setForeground(page.isSelected() ?
-						((Color) UIManager.get("MCreatorLAF.MAIN_TINT")) :
-						((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"))));
+						(Theme.current().getInterfaceAccentColor()) :
+						(Theme.current().getForegroundColor())));
 				pager.add(page);
 				buttonGroup.add(page);
 
@@ -229,8 +250,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			JButton save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
-			save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-			save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			save.setBackground(Theme.current().getInterfaceAccentColor());
+			save.setForeground(Theme.current().getSecondAltBackgroundColor());
 			save.setFocusPainted(false);
 			save.addActionListener(event -> {
 				List<ValidationGroup> errors = new ArrayList<>();
@@ -256,8 +277,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
-			saveOnly.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-			saveOnly.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
+			saveOnly.setForeground(Theme.current().getForegroundColor());
 			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
 				List<ValidationGroup> errors = new ArrayList<>();
@@ -291,11 +312,11 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			if (modElementCodeViewer != null) {
 				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-				codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				codeViewer.setBackground(Theme.current().getSecondAltBackgroundColor());
+				codeViewer.setForeground(Theme.current().getAltForegroundColor());
 				codeViewer.setFocusPainted(false);
 				codeViewer.setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
 						BorderFactory.createEmptyBorder(2, 40, 2, 40)));
 				codeViewer.addActionListener(e -> {
 					if (codeViewer.isSelected()) {
@@ -316,24 +337,12 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			add("North", PanelUtils.maxMargin(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, true, false,
 					false));
 
-			if (wrapInScrollPane) {
-				JScrollPane splitScroll = new JScrollPane(split);
-				splitScroll.setOpaque(false);
-				splitScroll.getViewport().setOpaque(false);
-				splitScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-				splitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-				splitScroll.getVerticalScrollBar().setUnitIncrement(15);
-				splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
-				parameters = new JLayer<>(splitScroll, new ScrollWheelPassLayer());
-			} else {
-				parameters = PanelUtils.join(split);
-			}
-			centerComponent = PanelUtils.centerAndSouthElement(parameters, pager);
+			centerComponent = PanelUtils.centerAndSouthElement(parameters = split, pager);
 		} else {
 			JButton saveOnly = L10N.button("elementgui.save_keep_open");
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
-			saveOnly.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-			saveOnly.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
+			saveOnly.setForeground(Theme.current().getForegroundColor());
 			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
 				AggregatedValidationResult validationResult = validatePage(0);
@@ -345,8 +354,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			JButton save = L10N.button("elementgui.save_mod_element");
 			save.setMargin(new Insets(1, 40, 1, 40));
-			save.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
-			save.setForeground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			save.setBackground(Theme.current().getInterfaceAccentColor());
+			save.setForeground(Theme.current().getSecondAltBackgroundColor());
 			save.setFocusPainted(false);
 			save.addActionListener(event -> {
 				AggregatedValidationResult validationResult = validatePage(0);
@@ -366,11 +375,11 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			if (modElementCodeViewer != null) {
 				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-				codeViewer.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				codeViewer.setBackground(Theme.current().getSecondAltBackgroundColor());
+				codeViewer.setForeground(Theme.current().getAltForegroundColor());
 				codeViewer.setFocusPainted(false);
 				codeViewer.setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
 						BorderFactory.createEmptyBorder(2, 40, 2, 40)));
 				codeViewer.addActionListener(e -> {
 					if (codeViewer.isSelected()) {
@@ -392,18 +401,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					PanelUtils.maxMargin(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false, false,
 							false));
 
-			if (wrapInScrollPane) {
-				JScrollPane splitScroll = new JScrollPane(new ArrayList<>(pages.values()).get(0));
-				splitScroll.setOpaque(false);
-				splitScroll.getViewport().setOpaque(false);
-				splitScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-				splitScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-				splitScroll.getVerticalScrollBar().setUnitIncrement(15);
-				splitScroll.getHorizontalScrollBar().setUnitIncrement(15);
-				centerComponent = new JLayer<>(splitScroll, new ScrollWheelPassLayer());
-			} else {
-				centerComponent = new ArrayList<>(pages.values()).get(0);
-			}
+			centerComponent = new ArrayList<>(pages.values()).get(0);
 		}
 
 		if (modElementCodeViewer != null) {
@@ -525,8 +523,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		MCREvent.event(new ModElementGUIEvent.WhenSaving(mcreator, tabIn, this, !closeTab));
 		GE element = getElementFromGUI();
 
-		// if new element, and if we are not in the root folder, specify the folder of the mod element
-		if (!editingMode && !mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
+		// if new element, specify the folder of the mod element
+		if (!editingMode)
 			modElement.setParentFolder(mcreator.mv.currentFolder);
 
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
@@ -547,7 +545,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		// we perform any custom defined after all other operations are complete
 		afterGeneratableElementStored();
 
-		// generate mod base as it may be needed
+		// generate mod base (this is needed so imports tree generator can see base
+		// files while generating imports for the mod element Java files)
 		mcreator.getGenerator().generateBase();
 
 		// generate mod element code
@@ -561,18 +560,15 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		afterGeneratableElementGenerated();
 
-		if (editingMode) {
-			mcreator.getApplication().getAnalytics()
-					.trackEvent(AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT, modElement.getType().getRegistryName());
-		} else {
-			mcreator.getApplication().getAnalytics()
-					.trackEvent(AnalyticsConstants.EVENT_NEW_MOD_ELEMENT, modElement.getType().getRegistryName());
+		// build if selected and needed
+		if ((Launcher.version.isDevelopment() || PreferencesManager.PREFERENCES.gradle.buildOnSave.get())
+				&& mcreator.getModElementManager().requiresElementGradleBuild(element)) {
+			mcreator.actionRegistry.buildWorkspace.doAction();
 		}
 
-		// build if selected and needed
-		if (PreferencesManager.PREFERENCES.gradle.compileOnSave.get() && mcreator.getModElementManager()
-				.requiresElementGradleBuild(element))
-			mcreator.actionRegistry.buildWorkspace.doAction();
+		mcreator.getApplication().getAnalytics().trackEvent(
+				editingMode ? AnalyticsConstants.EVENT_EDIT_MOD_ELEMENT : AnalyticsConstants.EVENT_NEW_MOD_ELEMENT,
+				modElement.getType().getRegistryName());
 
 		changed = false;
 
@@ -606,8 +602,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	}
 
 	protected boolean allowCodePreview() {
-		return !modElement.getWorkspace().getGenerator().getModElementGeneratorTemplatesList(getElementFromGUI())
-				.isEmpty();
+		return true;
 	}
 
 	public void reloadDataLists() {
@@ -622,6 +617,16 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 	public final boolean isEditingMode() {
 		return editingMode;
+	}
+
+	public final AggregatedValidationResult validateAllPages() {
+		List<ValidationGroup> errors = new ArrayList<>();
+		for (int i = 0; i < pages.size(); i++) {
+			AggregatedValidationResult validationResult = validatePage(i);
+			if (!validationResult.validateIsErrorFree())
+				errors.add(validationResult);
+		}
+		return new AggregatedValidationResult(errors);
 	}
 
 	public interface ModElementCreatedListener<GE extends GeneratableElement> {

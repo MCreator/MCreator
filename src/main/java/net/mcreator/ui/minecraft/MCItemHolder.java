@@ -36,16 +36,17 @@ import java.util.List;
 
 public class MCItemHolder extends JButton implements IValidable {
 
+	private static final Color err = new Color(204, 166, 175);
+	private static final Color warn = new Color(236, 238, 207);
+	private static final Color bg = new Color(140, 140, 140);
+
 	private String block = "";
 	private final MCItemSelectorDialog bs;
 
 	private boolean showValidation = true;
-	private final List<ActionListener> listeners = new ArrayList<>();
 	private boolean removeButtonHover;
 
-	private static final Color err = new Color(204, 166, 175);
-	private static final Color warn = new Color(236, 238, 207);
-	private static final Color bg = new Color(140, 140, 140);
+	private final List<ActionListener> listeners = new ArrayList<>();
 
 	private final MCreator mcreator;
 
@@ -64,10 +65,7 @@ public class MCItemHolder extends JButton implements IValidable {
 		bs.setItemSelectedListener(e -> {
 			MCItem bsa = bs.getSelectedMCItem();
 			if (bsa != null) {
-				setIcon(new ImageIcon(ImageUtils.resize(bsa.icon.getImage(), 25)));
-				this.block = bsa.getName();
-				this.setToolTipText(bsa.getName());
-				getValidationStatus();
+				setBlock(new MItemBlock(mcreator.getWorkspace(), bsa.getName()));
 			}
 		});
 		initGUI();
@@ -89,6 +87,7 @@ public class MCItemHolder extends JButton implements IValidable {
 			block = "";
 			this.setToolTipText(null);
 		}
+		listeners.forEach(listener -> listener.actionPerformed(new ActionEvent("", 0, "")));
 		getValidationStatus();
 	}
 
@@ -100,7 +99,7 @@ public class MCItemHolder extends JButton implements IValidable {
 	 * @return true if selector has item defined (air doesn't count as an item)
 	 */
 	public boolean containsItem() {
-		return block != null && !block.equals("") && !(block.equals("Blocks.AIR") || block.equals("Blocks.VOID_AIR")
+		return block != null && !block.isEmpty() && !(block.equals("Blocks.AIR") || block.equals("Blocks.VOID_AIR")
 				|| block.equals("Blocks.CAVE_AIR"));
 	}
 
@@ -108,7 +107,7 @@ public class MCItemHolder extends JButton implements IValidable {
 	 * @return true if selector has item defined (air also counts)
 	 */
 	public boolean containsItemOrAir() {
-		return block != null && !block.equals("");
+		return block != null && !block.isEmpty();
 	}
 
 	private void initGUI() {
@@ -122,13 +121,13 @@ public class MCItemHolder extends JButton implements IValidable {
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (isEnabled()) {
-					if (e.getX() > 1 && e.getX() < 11 && e.getY() < getHeight() - 1 && e.getY() > getHeight() - 11
-							&& !block.equals("")) {
+					if ((e.getButton() == MouseEvent.BUTTON2
+							|| e.getX() > 1 && e.getX() < 11 && e.getY() < getHeight() - 1
+							&& e.getY() > getHeight() - 11) && !block.isEmpty()) {
 						setBlock(null);
 					} else {
 						bs.setVisible(true); // show block selector
 					}
-					listeners.forEach(listener -> listener.actionPerformed(new ActionEvent("", 0, "")));
 					repaint();
 				}
 			}
@@ -165,7 +164,7 @@ public class MCItemHolder extends JButton implements IValidable {
 
 		if (showValidation) {
 
-			if (!block.equals("")) {
+			if (!block.isEmpty()) {
 				ImageIcon removeIcon;
 				if (!removeButtonHover || !isEnabled()) {
 					removeIcon = ImageUtils.changeSaturation(UIRES.get("18px.remove"), 0.4f);

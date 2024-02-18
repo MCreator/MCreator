@@ -22,7 +22,7 @@
  # all of the MCreator code generator templates (*.ftl files) and distribute 
  # that work under terms of your choice, so long as that work isn't itself a 
  # template for code generation. Alternatively, if you modify or redistribute 
- # the template itself, you may (at your option) remove this special exception, 
+ # the template itself, you may (at your option) remove this special exception,
  # which will cause the template and the resulting code generator output files 
  # to be licensed under the GNU General Public License without this special 
  # exception.
@@ -32,8 +32,6 @@
 <#include "../mcitems.ftl">
 <#include "../procedures.java.ftl">
 
-<#assign mx = (data.W - data.width) / 2>
-<#assign my = (data.H - data.height) / 2>
 <#assign slotnum = 0>
 
 package ${package}.world.inventory;
@@ -51,12 +49,16 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	public final Level world;
 	public final Player entity;
 	public int x, y, z;
+	private ContainerLevelAccess access = ContainerLevelAccess.NULL;
 
 	private IItemHandler internal;
 
 	private final Map<Integer, Slot> customSlots = new HashMap<>();
 
 	private boolean bound = false;
+	private Supplier<Boolean> boundItemMatcher = null;
+	private Entity boundEntity = null;
+	private BlockEntity boundBlockEntity = null;
 
 	public ${name}Menu(int id, Inventory inv, FriendlyByteBuf extraData) {
 		super(${JavaModName}Menus.${data.getModElement().getRegistryNameUpper()}.get(), id);
@@ -72,37 +74,34 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 			this.x = pos.getX();
 			this.y = pos.getY();
 			this.z = pos.getZ();
+			access = ContainerLevelAccess.create(world, pos);
 		}
 
 		<#if data.type == 1>
 			if (pos != null) {
 				if (extraData.readableBytes() == 1) { // bound to item
 					byte hand = extraData.readByte();
-					ItemStack itemstack;
-					if(hand == 0)
-						itemstack = this.entity.getMainHandItem();
-					else
-						itemstack = this.entity.getOffhandItem();
+					ItemStack itemstack = hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem();
+					this.boundItemMatcher = () -> itemstack == (hand == 0 ? this.entity.getMainHandItem() : this.entity.getOffhandItem());
 					itemstack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
 						this.internal = capability;
 						this.bound = true;
 					});
-				} else if (extraData.readableBytes() > 1) {
+				} else if (extraData.readableBytes() > 1) { // bound to entity
 					extraData.readByte(); // drop padding
-					Entity entity = world.getEntity(extraData.readVarInt());
-					if(entity != null)
-						entity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
+					boundEntity = world.getEntity(extraData.readVarInt());
+					if(boundEntity != null)
+						boundEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
 							this.internal = capability;
 							this.bound = true;
 						});
 				} else { // might be bound to block
-					BlockEntity ent = inv.player != null ? inv.player.level().getBlockEntity(pos) : null;
-					if (ent != null) {
-						ent.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
+					boundBlockEntity = this.world.getBlockEntity(pos);
+					if (boundBlockEntity != null)
+						boundBlockEntity.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> {
 							this.internal = capability;
 							this.bound = true;
 						});
-					}
 				}
 			}
 
@@ -110,8 +109,8 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 				<#if component.getClass().getSimpleName()?ends_with("Slot")>
 					<#assign slotnum += 1>
 					this.customSlots.put(${component.id}, this.addSlot(new SlotItemHandler(internal, ${component.id},
-						${(component.x - mx)?int + 1},
-						${(component.y - my)?int + 1}) {
+						${component.gx(data.width) + 1},
+						${component.gy(data.height) + 1}) {
 						private final int slot = ${component.id};
 
 						<#if hasProcedure(component.disablePickup) || component.disablePickup.getFixedValue()>
@@ -165,12 +164,12 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 				</#if>
 			</#list>
 
-			<#assign coffx = ((data.width - 176) / 2 + data.inventoryOffsetX)?int>
-			<#assign coffy = ((data.height - 166) / 2 + data.inventoryOffsetY)?int>
+			<#assign coffx = data.getInventorySlotsX()>
+			<#assign coffy = data.getInventorySlotsY()>
 
 			for (int si = 0; si < 3; ++si)
 				for (int sj = 0; sj < 9; ++sj)
-					this.addSlot(new Slot(inv, sj + (si + 1) * 9, ${coffx} + 8 + sj * 18, ${coffy}+ 84 + si * 18));
+					this.addSlot(new Slot(inv, sj + (si + 1) * 9, ${coffx} + 8 + sj * 18, ${coffy} + 84 + si * 18));
 
 			for (int si = 0; si < 9; ++si)
 				this.addSlot(new Slot(inv, si, ${coffx} + 8 + si * 18, ${coffy} + 142));
@@ -182,6 +181,14 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 	}
 
 	@Override public boolean stillValid(Player player) {
+		if (this.bound) {
+			if (this.boundItemMatcher != null)
+				return this.boundItemMatcher.get();
+			else if (this.boundBlockEntity != null)
+				return AbstractContainerMenu.stillValid(this.access, player, this.boundBlockEntity.getBlockState().getBlock());
+			else if (this.boundEntity != null)
+				return this.boundEntity.isAlive();
+		}
 		return true;
 	}
 

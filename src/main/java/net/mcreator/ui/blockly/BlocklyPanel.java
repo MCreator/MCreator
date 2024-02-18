@@ -28,13 +28,15 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
+import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.events.ui.BlocklyPanelRegisterJSObjects;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -46,11 +48,10 @@ import org.w3c.dom.Text;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -73,9 +74,9 @@ public class BlocklyPanel extends JFXPanel {
 
 	private static final String MINIMAL_XML = "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>";
 
-	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
-		setOpaque(false);
+	private final List<ChangeListener> changeListeners = new ArrayList<>();
 
+	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
 		this.mcreator = mcreator;
 		this.type = type;
 
@@ -84,6 +85,10 @@ public class BlocklyPanel extends JFXPanel {
 
 			if (newXml.length() > MINIMAL_XML.length()) {
 				this.currentXML = newXml;
+
+				ThreadUtil.runOnSwingThread(() -> changeListeners.forEach(
+						listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this))));
+
 				return true;
 			}
 
@@ -93,12 +98,8 @@ public class BlocklyPanel extends JFXPanel {
 		ThreadUtil.runOnFxThread(() -> {
 			WebView browser = new WebView();
 			Scene scene = new Scene(browser);
-			if (OS.getOS() == OS.WINDOWS) {
-				scene.setFill(Color.TRANSPARENT);
-			} else {
-				java.awt.Color bg = (java.awt.Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT");
-				scene.setFill(Color.rgb(bg.getRed(), bg.getGreen(), bg.getBlue()));
-			}
+			java.awt.Color bg = Theme.current().getSecondAltBackgroundColor();
+			scene.setFill(Color.rgb(bg.getRed(), bg.getGreen(), bg.getBlue()));
 			setScene(scene);
 
 			browser.getChildrenUnmodifiable().addListener(
@@ -112,17 +113,19 @@ public class BlocklyPanel extends JFXPanel {
 					Element styleNode = webEngine.getDocument().createElement("style");
 					String css = FileIO.readResourceToString("/blockly/css/mcreator_blockly.css");
 
-					if (OS.getOS() != OS.WINDOWS) {
-						css += FileIO.readResourceToString("/blockly/css/mcreator_blockly_unixfix.css");
-					}
-
 					if (PluginLoader.INSTANCE.getResourceAsStream(
-							"themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css") != null) {
+							"themes/" + Theme.current().getID() + "/styles/blockly.css") != null) {
 						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
-								"/themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css");
+								"/themes/" + Theme.current().getID() + "/styles/blockly.css");
 					} else {
 						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
 								"/themes/default_dark/styles/blockly.css");
+					}
+
+					if (PreferencesManager.PREFERENCES.blockly.transparentBackground.get()
+							&& OS.getOS() == OS.WINDOWS) {
+						makeComponentsTransparent(scene);
+						css += FileIO.readResourceToString("/blockly/css/mcreator_blockly_transparent.css");
 					}
 
 					//remove font declaration if property set so
@@ -135,6 +138,16 @@ public class BlocklyPanel extends JFXPanel {
 					webEngine.getDocument().getDocumentElement().getElementsByTagName("head").item(0)
 							.appendChild(styleNode);
 
+					// register JS bridge
+					JSObject window = (JSObject) webEngine.executeScript("window");
+					window.setMember("javabridge", bridge);
+					window.setMember("editorType", type.registryName());
+
+					// allow plugins to register additional JS objects
+					Map<String, Object> domWindowMembers = new HashMap<>();
+					MCREvent.event(new BlocklyPanelRegisterJSObjects(this, domWindowMembers));
+					domWindowMembers.forEach(window::setMember);
+
 					// @formatter:off
 					webEngine.executeScript("var MCR_BLOCKLY_PREF = { "
 							+ "'comments' : " + PreferencesManager.PREFERENCES.blockly.enableComments.get() + ","
@@ -144,6 +157,8 @@ public class BlocklyPanel extends JFXPanel {
 							+ "'maxScale' : " + PreferencesManager.PREFERENCES.blockly.maxScale.get() / 100.0 + ","
 							+ "'minScale' : " + PreferencesManager.PREFERENCES.blockly.minScale.get() / 100.0 + ","
 							+ "'scaleSpeed' : " + PreferencesManager.PREFERENCES.blockly.scaleSpeed.get() / 100.0 + ","
+							+ "'saturation' :" + PreferencesManager.PREFERENCES.blockly.colorSaturation.get() / 100.0 + ","
+							+ "'value' :" + PreferencesManager.PREFERENCES.blockly.colorValue.get() / 100.0
 							+ " };");
 					// @formatter:on
 
@@ -153,7 +168,7 @@ public class BlocklyPanel extends JFXPanel {
 							FileIO.readResourceToString("/jsdist/msg/" + L10N.getBlocklyLangName() + ".js"));
 					webEngine.executeScript(FileIO.readResourceToString("/jsdist/blocks_compressed.js"));
 
-					// Blockly MCreator modifications
+					// Blockly MCreator definitions
 					webEngine.executeScript(FileIO.readResourceToString("/blockly/js/mcreator_blockly.js"));
 
 					// Load JavaScript files from plugins
@@ -163,31 +178,26 @@ public class BlocklyPanel extends JFXPanel {
 					//JS code generation for custom variables
 					webEngine.executeScript(VariableTypeLoader.INSTANCE.getVariableBlocklyJS());
 
-					// Make the webpage transparent
-					try {
-						Method method = Class.forName("com.sun.javafx.webkit.Accessor")
-								.getMethod("getPageFor", WebEngine.class);
-						Object accessor = method.invoke(null, webEngine);
-
-						method = Class.forName("com.sun.webkit.WebPage").getMethod("setBackgroundColor", int.class);
-						method.invoke(accessor, 0);
-					} catch (Exception e) {
-						LOG.warn("Failed to set Blockly panel transparency", e);
-					}
-
-					// register JS bridge
-					JSObject window = (JSObject) webEngine.executeScript("window");
-					window.setMember("javabridge", bridge);
-					window.setMember("editorType", type.registryName());
-
 					loaded = true;
 					runAfterLoaded.forEach(ThreadUtil::runOnFxThread);
-
-					// after blockly is loaded, we resize it to fit the screen
-					webEngine.executeScript("Blockly.svgResize(workspace);");
 				}
 			});
 		});
+	}
+
+	private void makeComponentsTransparent(Scene scene) {
+		setOpaque(false);
+		scene.setFill(Color.TRANSPARENT);
+
+		// Make the webpage transparent
+		try {
+			Method method = Class.forName("com.sun.javafx.webkit.Accessor").getMethod("getPageFor", WebEngine.class);
+			Object accessor = method.invoke(null, webEngine);
+			method = Class.forName("com.sun.webkit.WebPage").getMethod("setBackgroundColor", int.class);
+			method.invoke(accessor, 0);
+		} catch (Exception e) {
+			LOG.warn("Failed to set Blockly panel transparency", e);
+		}
 	}
 
 	public void addTaskToRunAfterLoaded(Runnable runnable) {
@@ -195,6 +205,10 @@ public class BlocklyPanel extends JFXPanel {
 			runAfterLoaded.add(runnable);
 		else
 			runnable.run();
+	}
+
+	public void addChangeListener(ChangeListener listener) {
+		changeListeners.add(listener);
 	}
 
 	public String getXML() {
@@ -231,6 +245,10 @@ public class BlocklyPanel extends JFXPanel {
 
 	public void clearWorkspace() {
 		executeJavaScriptSynchronously("workspace.clear()");
+	}
+
+	public void triggerEventFunction() {
+		executeJavaScriptSynchronously("blocklyEventFunction()");
 	}
 
 	public void addGlobalVariable(String name, String type) {

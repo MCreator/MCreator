@@ -1,0 +1,1 @@
+Questo parametro controlla se usare l'altezza dell'albero di vaniglia e bloccare i dati, o utilizzare i dati forniti dai campi sottostanti.

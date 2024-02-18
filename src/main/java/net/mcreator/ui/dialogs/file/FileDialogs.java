@@ -25,6 +25,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.WorkspaceFolderManager;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
@@ -37,33 +38,37 @@ public class FileDialogs {
 
 	protected static File prevDir = new File(System.getProperty("user.home"));
 
-	public static boolean DISABLE_NATIVE_DIALOGS = false;
-
 	public static File getOpenDialog(Window f, String[] exp) {
-		return getBasicFileChooserDialog(f, FileChooserType.OPEN, exp);
+		return getBasicFileChooserDialog(f, FileChooserType.OPEN, null, exp);
 	}
 
 	public static File[] getMultiOpenDialog(Window f, String[] exp) {
-		return getFileChooserDialog(f, FileChooserType.OPEN, true, getFileFiltersForStringArray(exp));
+		return getFileChooserDialog(f, FileChooserType.OPEN, true, null, getFileFiltersForStringArray(exp));
 	}
 
 	public static File getSaveDialog(Window f, String[] exp) {
-		return getBasicFileChooserDialog(f, FileChooserType.SAVE, exp);
+		return getSaveDialog(f, null, exp);
 	}
 
-	private static File getBasicFileChooserDialog(Window f, FileChooserType type, String[] filters) {
-		File[] selected = getFileChooserDialog(f, type, false, getFileFiltersForStringArray(filters));
+	public static File getSaveDialog(Window f, @Nullable String suggestedFileName, String[] exp) {
+		return getBasicFileChooserDialog(f, FileChooserType.SAVE, suggestedFileName, exp);
+	}
+
+	private static File getBasicFileChooserDialog(Window f, FileChooserType type, @Nullable String suggestedFileName,
+			String[] filters) {
+		File[] selected = getFileChooserDialog(f, type, false, suggestedFileName,
+				getFileFiltersForStringArray(filters));
 		if (selected != null && selected.length > 0)
 			return selected[0];
 		return null;
 	}
 
 	public static File[] getFileChooserDialog(Window f, FileChooserType type, boolean multiSelect,
-			FileChooser.ExtensionFilter... filters) {
+			@Nullable String suggestedFileName, FileChooser.ExtensionFilter... filters) {
 		if (useNativeFileChooser()) {
-			return NativeFileDialogs.getFileChooserDialog(type, multiSelect, filters);
+			return NativeFileDialogs.getFileChooserDialog(type, multiSelect, suggestedFileName, filters);
 		} else {
-			return JavaFileDialogs.getFileChooserDialog(f, type, multiSelect, filters);
+			return JavaFileDialogs.getFileChooserDialog(f, type, multiSelect, suggestedFileName, filters);
 		}
 	}
 
@@ -135,8 +140,7 @@ public class FileDialogs {
 	}
 
 	private static boolean useNativeFileChooser() {
-		return PreferencesManager.PREFERENCES.ui.useNativeFileChooser.get() && OS.getOS() == OS.WINDOWS
-				&& !DISABLE_NATIVE_DIALOGS;
+		return PreferencesManager.PREFERENCES.ui.useNativeFileChooser.get() && OS.getOS() == OS.WINDOWS;
 	}
 
 }

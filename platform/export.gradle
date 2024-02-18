@@ -1,5 +1,5 @@
 if (project.snapshot) {
-    project.mcreatorconf.setProperty('mcreator', "EAP " + (String) project.mcreatorconf.getProperty('mcreator') + (String) project.builddate)
+    project.mcreatorconf.setProperty('mcreator', "EAP " + (String) project.mcreatorconf.getProperty('mcreator') + "." + (String) project.builddate)
 }
 
 tasks.register('cleanupPlugins') {
@@ -46,10 +46,11 @@ tasks.register('generateExportReport') {
         def report = ""
 
         def fg = new HashSet<String>()
+        def nf = new HashSet<String>()
         def bd = new HashSet<String>()
         def dp = new HashSet<String>()
         file('plugins').traverse([maxDepth: 1, type: groovy.io.FileType.DIRECTORIES]) {
-            if(it.getPath().contains("mcreator-link"))
+            if (it.getPath().contains("mcreator-link"))
                 return // do not include mcreator-link generator folders in version checks
 
             def fn = it.getName()
@@ -59,24 +60,33 @@ tasks.register('generateExportReport') {
                 dp.add(fn.substring(fn.lastIndexOf("-") + 1))
             } else if (fn.startsWith("forge-")) {
                 fg.add(fn.substring(fn.lastIndexOf("-") + 1))
+            } else if (fn.startsWith("neoforge-")) {
+                nf.add(fn.substring(fn.lastIndexOf("-") + 1))
             }
         }
 
         fg = new ArrayList<>(fg)
+        nf = new ArrayList<>(nf)
         bd = new ArrayList<>(bd)
         dp = new ArrayList<>(dp)
-
         fg.sort { a, b -> b <=> a }
+        nf.sort { a, b -> b <=> a }
         bd.sort { a, b -> b <=> a }
         dp.sort { a, b -> b <=> a }
+
+        def generators = new ArrayList<String>()
+        if (!nf.isEmpty()) generators.add("NeoForge " + String.join("/", nf))
+        if (!fg.isEmpty()) generators.add("Minecraft Forge " + String.join("/", fg))
+        if (!dp.isEmpty()) generators.add("Data Packs " + String.join("/", dp))
+        if (!bd.isEmpty()) generators.add("and Bedrock Edition " + String.join("/", bd))
 
         report += 'mcreator=' + version.toString() + '.' + project.builddate.toString() + '\n'
         report += 'version=' + (String) project.mcreatorconf.getProperty('mcreator').toString() + '\n'
         report += 'builddate=' + project.builddate.toString() + '\n'
-        report += 'minecraft=Minecraft Forge ' + String.join("/", fg) + ', Data Packs ' + String.join("/", dp) + ', and Bedrock Edition ' + String.join("/", bd) + '\n'
+        report += 'minecraft=' + String.join(", ", generators) + '\n'
 
-        new File("build").mkdirs()
-        new File("build/reports").mkdirs()
+        file('build').mkdirs()
+        file('build/reports').mkdirs()
         file("build/reports/export.txt").write(report)
     }
 }

@@ -1,0 +1,1 @@
+Văn bản sẽ được hiển thị trong phần chú giải cho người chơi khi di chuột qua vùng được bao phủ bởi thành phần này.

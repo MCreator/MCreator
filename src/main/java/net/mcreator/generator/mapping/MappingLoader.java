@@ -18,13 +18,14 @@
 
 package net.mcreator.generator.mapping;
 
-import com.esotericsoftware.yamlbeans.YamlReader;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.util.YamlUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.snakeyaml.engine.v2.api.Load;
 
 import java.io.IOException;
 import java.net.URL;
@@ -49,6 +50,8 @@ public class MappingLoader {
 					PluginLoader.INSTANCE.getResources(templateLoaderPath + ".mappings", Pattern.compile(".*\\.yaml")));
 		}
 
+		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
+
 		for (String mappingResource : fileNames) {
 			String mappingName = mappingResource.split("mappings/")[1].replace(".yaml", "");
 
@@ -57,11 +60,9 @@ public class MappingLoader {
 				Collections.list(resources).forEach(resource -> {
 					String config = FileIO.readResourceToString(resource);
 
-					YamlReader reader = new YamlReader(config);
-
 					try {
 						Map<?, ?> mappingsFromFile = Collections.synchronizedMap(
-								new LinkedHashMap<>((Map<?, ?>) reader.read()));
+								new LinkedHashMap<>((Map<?, ?>) yamlLoad.loadFromString(config)));
 
 						boolean mergeWithExisting = true;
 						if (mappingsFromFile.containsKey("_merge_with_existing"))
@@ -78,7 +79,8 @@ public class MappingLoader {
 							mappings.put(mappingName, merged);
 						}
 					} catch (Exception e) {
-						LOG.error("[" + mappingName + "] Error: " + e.getMessage());
+						LOG.error("[" + mappingName + "] Error: " + e.getMessage() + " for mapping file "
+								+ mappingResource);
 					}
 				});
 			} catch (IOException e) {

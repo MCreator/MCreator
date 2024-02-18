@@ -1,6 +1,29 @@
 <#include "procedures.java.ftl">
 
 <#-- Item-related triggers -->
+<#macro addSpecialInformation procedure="" isBlock=false>
+	<#if procedure?has_content || hasProcedure(procedure)>
+		@Override public void appendHoverText(ItemStack itemstack, <#if isBlock>BlockGetter<#else>Level</#if> level, List<Component> list, TooltipFlag flag) {
+		super.appendHoverText(itemstack, level, list, flag);
+		<#if hasProcedure(procedure)>
+			Entity entity = itemstack.getEntityRepresentation();
+			list.add(Component.literal(<@procedureCode procedure, {
+				"x": "entity != null ? entity.getX() : 0.0",
+				"y": "entity != null ? entity.getY() : 0.0",
+				"z": "entity != null ? entity.getZ() : 0.0",
+				"entity": "entity",
+				"world": "level instanceof Level ? (LevelAccessor) level : null",
+				"itemstack": "itemstack"
+			}, false/>));
+		<#else>
+			<#list procedure.getFixedValue() as entry>
+				list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
+			</#list>
+		</#if>
+		}
+	</#if>
+</#macro>
+
 <#macro onEntitySwing procedure="">
 <#if hasProcedure(procedure)>
 @Override public boolean onEntitySwing(ItemStack itemstack, LivingEntity entity) {
@@ -29,22 +52,6 @@
 		"world": "world",
 		"entity": "entity",
 		"itemstack": "itemstack"
-	}/>
-}
-</#if>
-</#macro>
-
-<#macro onStoppedUsing procedure="">
-<#if hasProcedure(procedure) && (data.useDuration > 0)>
-@Override public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
-	<@procedureCode data.onStoppedUsing, {
-		"x": "entity.getX()",
-		"y": "entity.getY()",
-		"z": "entity.getZ()",
-		"world": "world",
-		"entity": "entity",
-		"itemstack": "itemstack",
-		"time": "time"
 	}/>
 }
 </#if>
@@ -181,24 +188,26 @@
 </#macro>
 
 <#macro hasGlow procedure="">
+<#if procedure?has_content && (hasProcedure(procedure) || procedure.getFixedValue())>
 @Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
 	<#if hasProcedure(procedure)>
-	<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
-	<#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
-	Entity entity = Minecraft.getInstance().player;
-	</#if>
-	return <@procedureCode procedure, {
-		"x": "entity.getX()",
-		"y": "entity.getY()",
-		"z": "entity.getZ()",
-		"entity": "entity",
-		"world": "entity.level",
-		"itemstack": "itemstack"
-	}/>
+		<#assign dependencies = procedure.getDependencies(generator.getWorkspace())>
+		<#if !(dependencies.isEmpty() || (dependencies.size() == 1 && dependencies.get(0).getName() == "itemstack"))>
+		Entity entity = Minecraft.getInstance().player;
+		</#if>
+		return <@procedureCode procedure, {
+			"x": "entity.getX()",
+			"y": "entity.getY()",
+			"z": "entity.getZ()",
+			"entity": "entity",
+			"world": "entity.level",
+			"itemstack": "itemstack"
+		}/>
 	<#else>
-	return true;
+		return true;
 	</#if>
 }
+</#if>
 </#macro>
 
 <#-- Armor triggers -->
@@ -213,6 +222,20 @@
 		"entity": "entity",
 		"itemstack": "itemstack"
 	}/>
+}
+</#if>
+</#macro>
+
+<#macro piglinNeutral procedure="">
+<#if procedure?has_content || hasProcedure(procedure)>
+@Override public boolean makesPiglinsNeutral(ItemStack itemstack, LivingEntity entity) {
+	<#if hasProcedure(procedure)>
+		double x = entity.getX();
+		double y = entity.getY();
+		double z = entity.getZ();
+		Level world = entity.level;
+	</#if>
+	return <@procedureOBJToConditionCode procedure procedure.getFixedValue() false/>;
 }
 </#if>
 </#macro>

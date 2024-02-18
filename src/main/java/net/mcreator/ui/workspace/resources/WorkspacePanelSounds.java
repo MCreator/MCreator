@@ -18,146 +18,46 @@
 
 package net.mcreator.ui.workspace.resources;
 
-import net.mcreator.ui.component.JSelectableList;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.SoundElementDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.workspace.IReloadableFilterable;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.WorkspacePanel;
-import net.mcreator.util.ListUtils;
-import net.mcreator.util.SoundUtils;
+import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.SoundElement;
+import net.mcreator.workspace.references.ReferencesFinder;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
+import java.util.HashSet;
 import java.util.List;
-import java.util.*;
+import java.util.Set;
 
-public class WorkspacePanelSounds extends JPanel implements IReloadableFilterable {
-
-	private final WorkspacePanel workspacePanel;
-
-	private final FilterModel listmodel = new FilterModel();
+public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 
 	WorkspacePanelSounds(WorkspacePanel workspacePanel) {
-		super(new BorderLayout());
-		setOpaque(false);
+		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, SoundElement::getName), new Render());
 
-		this.workspacePanel = workspacePanel;
+		addToolBarButton("action.workspace.resources.import_sound", UIRES.get("16px.open"),
+				e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
+		addToolBarButton("workspace.sounds.edit_selected", UIRES.get("16px.edit"),
+				e -> editSelectedSound(elementList.getSelectedValue()));
+		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
+			if (!elementList.isSelectionEmpty()) {
+				workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
-		JSelectableList<SoundElement> soundElementList = new JSelectableList<>(listmodel);
-		soundElementList.setOpaque(false);
-		soundElementList.setCellRenderer(new Render());
-		soundElementList.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
+				Set<ModElement> refs = new HashSet<>();
+				for (SoundElement sound : elementList.getSelectedValuesList())
+					refs.addAll(ReferencesFinder.searchSoundUsages(workspacePanel.getMCreator().getWorkspace(), sound));
 
-		soundElementList.addMouseListener(new MouseAdapter() {
-			@Override public void mouseClicked(MouseEvent e) {
-				if (e.getClickCount() == 2)
-					editSelectedSound(soundElementList.getSelectedValue());
+				workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+				SearchUsagesDialog.showUsagesDialog(workspacePanel.getMCreator(),
+						L10N.t("dialog.search_usages.type.resource.sound"), refs);
 			}
 		});
-
-		JScrollPane sp = new JScrollPane(soundElementList);
-		sp.setOpaque(false);
-		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUnitIncrement(11);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), sp.getVerticalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
-		sp.setBorder(null);
-
-		add("Center", sp);
-
-		TransparentToolBar bar = new TransparentToolBar();
-		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
-
-		JButton importsound = L10N.button("action.workspace.resources.import_sound");
-		importsound.setIcon(UIRES.get("16px.open.gif"));
-		importsound.setContentAreaFilled(false);
-		importsound.setOpaque(false);
-		ComponentUtils.deriveFont(importsound, 12);
-		importsound.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(importsound);
-
-		JButton edit = L10N.button("workspace.sounds.edit_selected");
-		edit.setIcon(UIRES.get("16px.edit.gif"));
-		edit.setContentAreaFilled(false);
-		edit.setOpaque(false);
-		ComponentUtils.deriveFont(edit, 12);
-		edit.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(edit);
-
-		JButton del = L10N.button("workspace.sounds.delete_selected");
-		del.setIcon(UIRES.get("16px.delete.gif"));
-		del.setOpaque(false);
-		del.setContentAreaFilled(false);
-		del.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(del);
-
-		del.addActionListener(a -> deleteSelectedSound(workspacePanel, soundElementList));
-
-		JButton play = L10N.button("workspace.sounds.play_selected");
-		play.setIcon(UIRES.get("16px.play"));
-		play.setOpaque(false);
-		play.setContentAreaFilled(false);
-		play.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
-		bar.add(play);
-		play.addMouseListener(new MouseAdapter() {
-			@Override public void mousePressed(MouseEvent e) {
-				SoundElement soundElement = soundElementList.getSelectedValue();
-				if (soundElement != null) {
-					if (!soundElement.getFiles().isEmpty()) {
-						SoundUtils.playSound(
-								new File(workspacePanel.getMCreator().getWorkspace().getFolderManager().getSoundsDir(),
-										ListUtils.getRandomItem(soundElement.getFiles()) + ".ogg"));
-						play.setEnabled(false);
-					}
-				}
-			}
-
-			@Override public void mouseReleased(MouseEvent e) {
-				SoundUtils.stopAllSounds();
-				play.setEnabled(true);
-			}
-
-		});
-
-		soundElementList.addKeyListener(new KeyAdapter() {
-			@Override public void keyPressed(KeyEvent e) {
-				switch (e.getKeyCode()) {
-				case KeyEvent.VK_DELETE -> deleteSelectedSound(workspacePanel, soundElementList);
-				case KeyEvent.VK_ENTER -> editSelectedSound(soundElementList.getSelectedValue());
-				}
-			}
-		});
-
-		edit.addActionListener(e -> editSelectedSound(soundElementList.getSelectedValue()));
-		importsound.addActionListener(e -> workspacePanel.getMCreator().actionRegistry.importSound.doAction());
-		add("North", bar);
-
-	}
-
-	private void deleteSelectedSound(WorkspacePanel workspacePanel, JSelectableList<SoundElement> soundElementList) {
-		List<SoundElement> soundElements = soundElementList.getSelectedValuesList();
-		if (!soundElements.isEmpty()) {
-			int n = JOptionPane.showConfirmDialog(workspacePanel.getMCreator(),
-					L10N.t("workspace.sounds.confirm_deletion_message"), L10N.t("common.confirmation"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (n == 0) {
-				soundElements.forEach(workspacePanel.getMCreator().getWorkspace()::removeSoundElement);
-				reloadElements();
-			}
-		}
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> deleteCurrentlySelected());
 	}
 
 	private void editSelectedSound(SoundElement selectedValue) {
@@ -168,72 +68,28 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 		}
 	}
 
+	@Override void deleteCurrentlySelected() {
+		List<SoundElement> elements = elementList.getSelectedValuesList();
+		if (!elements.isEmpty()) {
+			workspacePanel.getMCreator().setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+
+			Set<ModElement> references = new HashSet<>();
+			for (SoundElement s : elements)
+				references.addAll(ReferencesFinder.searchSoundUsages(workspacePanel.getMCreator().getWorkspace(), s));
+
+			workspacePanel.getMCreator().setCursor(Cursor.getDefaultCursor());
+
+			if (SearchUsagesDialog.showDeleteDialog(workspacePanel.getMCreator(),
+					L10N.t("dialog.search_usages.type.resource.sound"), references)) {
+				elements.forEach(workspacePanel.getMCreator().getWorkspace()::removeSoundElement);
+				reloadElements();
+			}
+		}
+	}
+
 	@Override public void reloadElements() {
-		listmodel.removeAllElements();
-		workspacePanel.getMCreator().getWorkspace().getSoundElements().forEach(listmodel::addElement);
-		refilterElements();
-	}
-
-	@Override public void refilterElements() {
-		listmodel.refilter();
-	}
-
-	private class FilterModel extends DefaultListModel<SoundElement> {
-		List<SoundElement> items;
-		List<SoundElement> filterItems;
-
-		FilterModel() {
-			super();
-			items = new ArrayList<>();
-			filterItems = new ArrayList<>();
-		}
-
-		@Override public SoundElement getElementAt(int index) {
-			if (index < filterItems.size())
-				return filterItems.get(index);
-			else
-				return null;
-		}
-
-		@Override public int getSize() {
-			return filterItems.size();
-		}
-
-		@Override public void addElement(SoundElement o) {
-			items.add(o);
-			refilter();
-		}
-
-		@Override public void removeAllElements() {
-			super.removeAllElements();
-			items.clear();
-			filterItems.clear();
-		}
-
-		@Override public boolean removeElement(Object a) {
-			if (a instanceof SoundElement) {
-				items.remove(a);
-				filterItems.remove(a);
-			}
-			return super.removeElement(a);
-		}
-
-		void refilter() {
-			filterItems.clear();
-			String term = workspacePanel.search.getText();
-			filterItems.addAll(items.stream().filter(Objects::nonNull)
-					.filter(item -> (item.getName().toLowerCase(Locale.ENGLISH)
-							.contains(term.toLowerCase(Locale.ENGLISH)))).toList());
-
-			if (workspacePanel.sortName.isSelected()) {
-				filterItems.sort(Comparator.comparing(SoundElement::getName));
-			}
-
-			if (workspacePanel.desc.isSelected())
-				Collections.reverse(filterItems);
-
-			fireContentsChanged(this, 0, getSize());
-		}
+		filterModel.removeAllElements();
+		filterModel.addAll(workspacePanel.getMCreator().getWorkspace().getSoundElements());
 	}
 
 	static class Render extends JPanel implements ListCellRenderer<SoundElement> {
@@ -251,8 +107,8 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 
 			JPanel cont = new JPanel(new BorderLayout());
 			cont.setBackground(isSelected ?
-					((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).brighter() :
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+					(Theme.current().getAltBackgroundColor()).brighter() :
+					Theme.current().getAltBackgroundColor());
 			cont.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 
 			JPanel namepan = new JPanel(new BorderLayout());
@@ -260,7 +116,7 @@ public class WorkspacePanelSounds extends JPanel implements IReloadableFilterabl
 			namepan.setOpaque(false);
 
 			JLabel name = new JLabel(ma.getName());
-			name.setFont(MCreatorTheme.secondary_font.deriveFont(20.0f));
+			name.setFont(Theme.current().getSecondaryFont().deriveFont(20.0f));
 			namepan.add("North", name);
 
 			JLabel name2 = L10N.label("workspace.sounds.files", String.join(", ", ma.getFiles()));

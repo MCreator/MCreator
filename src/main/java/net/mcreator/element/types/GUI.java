@@ -32,6 +32,8 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYG;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.swing.*;
 import java.awt.*;
@@ -49,7 +51,7 @@ import java.util.List;
 	public boolean renderBgLayer;
 	public boolean doesPauseGame;
 
-	public List<GUIComponent> components;
+	@ModElementReference @TextureReference(TextureType.SCREEN) public List<GUIComponent> components;
 
 	public Procedure onOpen;
 	public Procedure onTick;
@@ -110,30 +112,34 @@ import java.util.List;
 		return false;
 	}
 
+	public int getInventorySlotsX() {
+		return (int) Math.ceil((width - 176) / 2.0) + inventoryOffsetX;
+	}
+
+	public int getInventorySlotsY() {
+		return (int) Math.floor((height - 166) / 2.0) + inventoryOffsetY;
+	}
+
 	@Override public void finalizeModElementGeneration() {
 		if (renderBgLayer) {
 			File guiTextureFile = getModElement().getFolderManager()
 					.getTextureFile(getModElement().getRegistryName(), TextureType.SCREEN);
-
-			int mx = WYSIWYG.W - width;
-			int my = WYSIWYG.H - height;
-
 			if (type == 0) {
 				FileIO.writeImageToPNGFile(MinecraftImageGenerator.generateBackground(width, height), guiTextureFile);
 			} else if (type == 1) {
 				BufferedImage resizedImage = MinecraftImageGenerator.generateBackground(width, height);
 				Graphics2D g = resizedImage.createGraphics();
-				g.drawImage(MinecraftImageGenerator.generateInventorySlots(), (width - 176) / 2 + inventoryOffsetX,
-						(height - 166) / 2 + inventoryOffsetY, 176, 166, null);
+				g.drawImage(MinecraftImageGenerator.generateInventorySlots(), getInventorySlotsX(),
+						getInventorySlotsY(), 176, 166, null);
 				for (GUIComponent component : components) {
 					if (component instanceof Slot) {
-						int elPosX = (int) (component.getX() - mx / 2.0);
-						int elPosy = (int) (component.getY() - my / 2.0);
 						if (((Slot) component).color == null)
-							g.drawImage(MinecraftImageGenerator.generateItemSlot(), elPosX, elPosy, null);
+							g.drawImage(MinecraftImageGenerator.generateItemSlot(), component.gx(width),
+									component.gy(height), null);
 						else
 							g.drawImage(ImageUtils.colorize(new ImageIcon(MinecraftImageGenerator.generateItemSlot()),
-									((Slot) component).color, true).getImage(), elPosX, elPosy, null);
+											((Slot) component).color, true).getImage(), component.gx(width),
+									component.gy(height), null);
 					}
 				}
 				g.dispose();
@@ -142,7 +148,7 @@ import java.util.List;
 			}
 		}
 
-		// Create the texture atlas for image buttons that will be used by Minecraft
+		// Create the texture atlas for image buttons that will be used by Minecraft (needed for <= 1.20.1)
 		components.stream().filter(c -> c instanceof ImageButton).map(c -> (ImageButton) c).forEach(imageButton -> {
 			Image normal = imageButton.getImage(getModElement().getWorkspace());
 			Image hovered = imageButton.getHoveredImage(getModElement().getWorkspace());

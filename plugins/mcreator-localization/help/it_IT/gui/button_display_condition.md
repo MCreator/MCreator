@@ -1,0 +1,1 @@
+Se la condizione è specificata, il pulsante è visibile (visualizzato/mostrato) solo nel caso in cui la condizione venga superata.

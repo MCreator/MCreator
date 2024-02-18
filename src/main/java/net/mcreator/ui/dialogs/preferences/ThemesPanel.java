@@ -20,11 +20,11 @@
 package net.mcreator.ui.dialogs.preferences;
 
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.Theme;
-import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.ui.laf.themes.ThemeManager;
 
 import javax.swing.*;
 import java.awt.*;
@@ -50,7 +50,8 @@ public class ThemesPanel {
 		String themeDescription = L10N.t("preferences.themes.select_theme.description");
 		top.add("West", L10N.label("dialog.preferences.entry_description", themeName, themeDescription));
 
-		JComboBox<String> themeIDs = new JComboBox<>(ThemeLoader.getThemeIDList().toArray(new String[0]));
+		JComboBox<String> themeIDs = new JComboBox<>(
+				ThemeManager.getThemes().stream().map(Theme::getID).toArray(String[]::new));
 		themeIDs.setPreferredSize(new Dimension(250, 0));
 		themeIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.uiTheme.get());
 		themeIDs.addActionListener(e -> dialog.markChanged());
@@ -73,14 +74,14 @@ public class ThemesPanel {
 
 	private void reloadThemesList() {
 		tmodel.removeAllElements();
-		ThemeLoader.getThemes().stream().sorted(Comparator.comparing(Theme::getID)).forEach(tmodel::addElement);
+		ThemeManager.getThemes().stream().sorted(Comparator.comparing(Theme::getID)).forEach(tmodel::addElement);
 	}
 
 	static class ThemesListCellRenderer extends JLabel implements ListCellRenderer<Theme> {
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Theme> list, Theme value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setBackground(Theme.current().getForegroundColor());
 
 			setOpaque(false);
 

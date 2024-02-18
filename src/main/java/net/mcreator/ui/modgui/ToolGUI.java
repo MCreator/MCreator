@@ -25,6 +25,7 @@ import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -34,10 +35,14 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ItemTexturesComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.TextureHolder;
+import net.mcreator.ui.procedure.AbstractProcedureSelector;
+import net.mcreator.ui.procedure.LogicProcedureSelector;
 import net.mcreator.ui.procedure.ProcedureSelector;
+import net.mcreator.ui.procedure.StringListProcedureSelector;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.validation.component.VTextField;
@@ -73,7 +78,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final VTextField name = new VTextField(28);
 
 	private final JComboBox<String> toolType = new JComboBox<>(
-			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shears", "Fishing rod", "Special",
+			new String[] { "Pickaxe", "Axe", "Sword", "Spade", "Hoe", "Shield", "Shears", "Fishing rod", "Special",
 					"MultiTool" });
 
 	private final JCheckBox immuneToFire = L10N.checkbox("elementgui.common.enable");
@@ -81,12 +86,13 @@ public class ToolGUI extends ModElementGUI<Tool> {
 	private final JCheckBox damageOnCrafting = L10N.checkbox("elementgui.common.enable");
 
 	private final Model normal = new Model.BuiltInModel("Normal");
+	private final Model normalBlocking = new Model.BuiltInModel("Normal blocking");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { normal });
+	private final SearchableComboBox<Model> blockingModel = new SearchableComboBox<>(new Model[] { normalBlocking });
 
-	private final JCheckBox hasGlow = L10N.checkbox("elementgui.common.enable");
-	private ProcedureSelector glowCondition;
+	private LogicProcedureSelector glowCondition;
 
-	private final JTextField specialInfo = new JTextField(20);
+	private StringListProcedureSelector specialInformation;
 
 	private ProcedureSelector onRightClickedInAir;
 	private ProcedureSelector onCrafted;
@@ -137,9 +143,14 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onEntitySwing = new ProcedureSelector(this.withEntry("item/when_entity_swings"), mcreator,
 				L10N.t("elementgui.tool.event_swings"),
 				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
-		glowCondition = new ProcedureSelector(this.withEntry("item/condition_glow"), mcreator, "Make item glow",
-				ProcedureSelector.Side.CLIENT, true, VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
-				"x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack")).makeInline();
+		specialInformation = new StringListProcedureSelector(this.withEntry("item/special_information"), mcreator,
+				L10N.t("elementgui.common.special_information"), AbstractProcedureSelector.Side.CLIENT,
+				new JStringListField(mcreator, null), 0,
+				Dependency.fromString("x:number/y:number/z:number/entity:entity/world:world/itemstack:itemstack"));
+		glowCondition = new LogicProcedureSelector(this.withEntry("item/glowing_effect"), mcreator,
+				L10N.t("elementgui.item.glowing_effect"), ProcedureSelector.Side.CLIENT,
+				L10N.checkbox("elementgui.common.enable"), 160,
+				Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity/itemstack:itemstack"));
 
 		blocksAffected = new MCItemListField(mcreator, ElementUtil::loadBlocksAndTags, false, true);
 
@@ -151,20 +162,12 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		JPanel pane3 = new JPanel(new BorderLayout(10, 10));
 		JPanel pane4 = new JPanel(new BorderLayout(10, 10));
 
-		JPanel destal = new JPanel();
-		destal.setOpaque(false);
-
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.ITEM));
 		texture.setOpaque(false);
-
-		hasGlow.setOpaque(false);
-		hasGlow.setSelected(false);
 
 		immuneToFire.setOpaque(false);
 		stayInGridWhenCrafting.setOpaque(false);
 		damageOnCrafting.setOpaque(false);
-
-		destal.add(ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")));
 
 		JPanel rent = new JPanel();
 		rent.setLayout(new BoxLayout(rent, BoxLayout.PAGE_AXIS));
@@ -174,35 +177,24 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				HelpUtils.wrapWithHelpButton(this.withEntry("item/model"), L10N.label("elementgui.common.item_model")),
 				PanelUtils.join(renderType)));
 
-		ComponentUtils.deriveFont(specialInfo, 16);
-
 		renderType.setFont(renderType.getFont().deriveFont(16.0f));
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
 		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.tool.tool_3d_model"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
+
+		JComponent visualBottom = PanelUtils.centerAndSouthElement(glowCondition, specialInformation, 0, 5);
 
 		pane2.setOpaque(false);
-		pane2.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), PanelUtils.gridElements(1, 2,
-						HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-								L10N.label("elementgui.tool.tool_special_information")), specialInfo))));
-		JComponent glow = PanelUtils.join(FlowLayout.LEFT,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/glowing_effect"),
-						L10N.label("elementgui.tool.glowing_effect")), hasGlow, glowCondition);
+		pane2.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(
+				PanelUtils.westAndCenterElement(
+						ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.tool.texture")), rent), visualBottom,
+				0, 5)));
 
-		JComponent visualBottom = PanelUtils.centerAndSouthElement(PanelUtils.gridElements(1, 2,
-				HelpUtils.wrapWithHelpButton(this.withEntry("item/special_information"),
-						L10N.label("elementgui.tool.tooltip_tip")), specialInfo), glow, 10, 10);
-
-		pane2.setOpaque(false);
-		pane2.add("Center", PanelUtils.totalCenterInPanel(
-				PanelUtils.northAndCenterElement(PanelUtils.join(destal, rent), visualBottom)));
-
-		JPanel selp = new JPanel(new GridLayout(14, 2, 10, 2));
+		JPanel selp = new JPanel(new GridLayout(15, 2, 10, 2));
 		selp.setOpaque(false);
 
 		ComponentUtils.deriveFont(name, 16);
@@ -210,7 +202,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		harvestLevel.setOpaque(false);
 		efficiency.setOpaque(false);
 
-		hasGlow.addActionListener(e -> updateGlowElements());
+		blockingModel.setFont(blockingModel.getFont().deriveFont(16.0f));
+		blockingModel.setRenderer(new ModelComboBoxRenderer());
+		blockingModel.setEnabled(false);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.common.name_in_gui")));
@@ -235,17 +229,21 @@ public class ToolGUI extends ModElementGUI<Tool> {
 				L10N.label("elementgui.common.enchantability")));
 		selp.add(enchantability);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"),
-				L10N.label("elementgui.tool.attack_speed")));
-		selp.add(attackSpeed);
-
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/damage_vs_entity"),
 				L10N.label("elementgui.tool.damage_vs_entity")));
 		selp.add(damageVsEntity);
 
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/attack_speed"),
+				L10N.label("elementgui.tool.attack_speed")));
+		selp.add(attackSpeed);
+
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/number_of_uses"),
 				L10N.label("elementgui.tool.usage_count")));
 		selp.add(usageCount);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/shield_blocking_model"),
+				L10N.label("elementgui.tool.shield_blocking_model")));
+		selp.add(blockingModel);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("tool/repair_items"),
 				L10N.label("elementgui.common.repair_items")));
@@ -277,7 +275,7 @@ public class ToolGUI extends ModElementGUI<Tool> {
 
 		pane3.setOpaque(false);
 
-		JPanel events = new JPanel(new GridLayout(3, 3, 10, 10));
+		JPanel events = new JPanel(new GridLayout(3, 3, 5, 5));
 		events.add(onRightClickedInAir);
 		events.add(onRightClickedOnBlock);
 		events.add(onCrafted);
@@ -305,12 +303,17 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			name.setText(readableNameFromModElement);
 		}
 
-		updateGlowElements();
 		updateFields();
 	}
 
 	private void updateFields() {
 		if (toolType.getSelectedItem() != null) {
+			blockingModel.setEnabled(true);
+			if (!toolType.getSelectedItem().equals("Shield")) {
+				blockingModel.setEnabled(false);
+				blockingModel.setSelectedItem(normalBlocking);
+			}
+
 			harvestLevel.setEnabled(true);
 			efficiency.setEnabled(true);
 			damageVsEntity.setEnabled(true);
@@ -321,7 +324,8 @@ public class ToolGUI extends ModElementGUI<Tool> {
 			if (toolType.getSelectedItem().equals("Special")) {
 				harvestLevel.setEnabled(false);
 				repairItems.setEnabled(false);
-			} else if (toolType.getSelectedItem().equals("Fishing rod")) {
+			} else if (toolType.getSelectedItem().equals("Fishing rod") || toolType.getSelectedItem()
+					.equals("Shield")) {
 				harvestLevel.setEnabled(false);
 				efficiency.setEnabled(false);
 				damageVsEntity.setEnabled(false);
@@ -339,10 +343,6 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		}
 	}
 
-	private void updateGlowElements() {
-		glowCondition.setEnabled(hasGlow.isSelected());
-	}
-
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		onRightClickedInAir.refreshListKeepSelected();
@@ -354,11 +354,17 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInUseTick.refreshListKeepSelected();
 		onEntitySwing.refreshListKeepSelected();
 		glowCondition.refreshListKeepSelected();
+		specialInformation.refreshListKeepSelected();
 
 		ComboBoxUtil.updateComboBoxContents(creativeTab, ElementUtil.loadAllTabs(mcreator.getWorkspace()),
 				new DataListEntry.Dummy("TOOLS"));
 
 		ComboBoxUtil.updateComboBoxContents(renderType, ListUtils.merge(Collections.singletonList(normal),
+				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
+						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
+						.collect(Collectors.toList())));
+
+		ComboBoxUtil.updateComboBoxContents(blockingModel, ListUtils.merge(Collections.singletonList(normalBlocking),
 				Model.getModelsWithTextureMaps(mcreator.getWorkspace()).stream()
 						.filter(el -> el.getType() == Model.Type.JSON || el.getType() == Model.Type.OBJ)
 						.collect(Collectors.toList())));
@@ -391,18 +397,15 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		onItemInInventoryTick.setSelectedProcedure(tool.onItemInInventoryTick);
 		onItemInUseTick.setSelectedProcedure(tool.onItemInUseTick);
 		onEntitySwing.setSelectedProcedure(tool.onEntitySwing);
-		hasGlow.setSelected(tool.hasGlow);
 		glowCondition.setSelectedProcedure(tool.glowCondition);
+		specialInformation.setSelectedProcedure(tool.specialInformation);
 		repairItems.setListElements(tool.repairItems);
-		specialInfo.setText(
-				tool.specialInfo.stream().map(info -> info.replace(",", "\\,")).collect(Collectors.joining(",")));
 		stayInGridWhenCrafting.setSelected(tool.stayInGridWhenCrafting);
 		immuneToFire.setSelected(tool.immuneToFire);
 		damageOnCrafting.setSelected(tool.damageOnCrafting);
 
 		blocksAffected.setListElements(tool.blocksAffected);
 
-		updateGlowElements();
 		updateFields();
 
 		if (toolType.getSelectedItem() != null)
@@ -411,6 +414,10 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		Model model = tool.getItemModel();
 		if (model != null)
 			renderType.setSelectedItem(model);
+
+		Model modelBlocking = tool.getBlockingModel();
+		if (modelBlocking != null)
+			blockingModel.setSelectedItem(modelBlocking);
 	}
 
 	@Override public Tool getElementFromGUI() {
@@ -433,10 +440,9 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		tool.onItemInInventoryTick = onItemInInventoryTick.getSelectedProcedure();
 		tool.onItemInUseTick = onItemInUseTick.getSelectedProcedure();
 		tool.onEntitySwing = onEntitySwing.getSelectedProcedure();
-		tool.hasGlow = hasGlow.isSelected();
 		tool.glowCondition = glowCondition.getSelectedProcedure();
+		tool.specialInformation = specialInformation.getSelectedProcedure();
 		tool.repairItems = repairItems.getListElements();
-		tool.specialInfo = StringUtils.splitCommaSeparatedStringListWithEscapes(specialInfo.getText());
 
 		tool.stayInGridWhenCrafting = stayInGridWhenCrafting.isSelected();
 		tool.immuneToFire = immuneToFire.isSelected();
@@ -451,6 +457,14 @@ public class ToolGUI extends ModElementGUI<Tool> {
 		else if (modelType == Model.Type.OBJ)
 			tool.renderType = 2;
 		tool.customModelName = (Objects.requireNonNull(renderType.getSelectedItem())).getReadableName();
+
+		Model.Type blockingModelType = Objects.requireNonNull(blockingModel.getSelectedItem()).getType();
+		tool.blockingRenderType = 0;
+		if (blockingModelType == Model.Type.JSON)
+			tool.blockingRenderType = 1;
+		else if (blockingModelType == Model.Type.OBJ)
+			tool.blockingRenderType = 2;
+		tool.blockingModelName = Objects.requireNonNull(blockingModel.getSelectedItem()).getReadableName();
 
 		return tool;
 	}

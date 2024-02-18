@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-${mappedMCItemToIngameNameNoTags(block)}
+${mappedMCItemToRegistryName(block)}

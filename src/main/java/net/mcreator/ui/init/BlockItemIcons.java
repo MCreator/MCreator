@@ -20,6 +20,7 @@ package net.mcreator.ui.init;
 
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.util.image.ImageUtils;
 
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -27,6 +28,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -41,16 +43,22 @@ public class BlockItemIcons {
 				.parallelStream().collect(Collectors.toMap(
 						resource -> FilenameUtilsPatched.removeExtension(FilenameUtilsPatched.getName(resource)),
 						resource -> new ImageIcon(
-								Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(resource)))));
+								Objects.requireNonNull(PluginLoader.INSTANCE.getResource(resource)))));
 		ImageIO.setUseCache(true);
 		CACHE.putAll(tmp);
 	}
 
 	public static ImageIcon getIconForItem(@Nullable String itemName) {
-		if (itemName != null && CACHE.get(itemName) != null)
+		if (itemName != null && CACHE.get(itemName) != null) {
 			return CACHE.get(itemName);
-		else
+		} else if (itemName != null && itemName.matches("[0-9]+")) {
+			// If itemName is number, consider it color and store it in cache
+			ImageIcon result = ImageUtils.createColorSquare(new Color(Integer.parseInt(itemName)), 32, 32);
+			CACHE.put(itemName, result);
+			return result;
+		} else {
 			return UIRES.get("missingblockicon");
+		}
 	}
 
 	public static ImageIcon getIconFor(String itemName) {
@@ -69,6 +77,7 @@ public class BlockItemIcons {
 		put("Sword", 				"IRON_SWORD");
 		put("Spade", 				"IRON_SHOVEL");
 		put("Hoe", 					"IRON_HOE");
+		put("Shield",				"SHIELD");
 		put("Shears", 				"SHEARS");
 		put("Fishing rod",			"FISHING_ROD");
 

@@ -1,0 +1,1 @@
+Attiva una procedura quando un proiettile colpisce il blocco.

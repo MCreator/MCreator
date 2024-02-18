@@ -24,6 +24,7 @@ import net.mcreator.element.parts.Particle;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.MCItem;
@@ -32,6 +33,7 @@ import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.TextureReference;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -46,8 +48,8 @@ import java.util.List;
 	public String name;
 	public String bucketName;
 
-	public String textureStill;
-	public String textureFlowing;
+	@TextureReference(TextureType.BLOCK) public String textureStill;
+	@TextureReference(TextureType.BLOCK) public String textureFlowing;
 
 	public String tintType;
 
@@ -66,11 +68,11 @@ import java.util.List;
 	@Nonnull public String type;
 
 	public boolean generateBucket;
-	public String textureBucket;
+	@TextureReference(TextureType.ITEM) public String textureBucket;
 	public TabEntry creativeTab;
 	public Sound emptySound;
 	public String rarity;
-	public List<String> specialInfo;
+	public StringListProcedure specialInformation;
 
 	public double resistance;
 	public int luminance;
@@ -100,7 +102,6 @@ import java.util.List;
 		this.tintType = "No tint";
 
 		this.rarity = "COMMON";
-		this.specialInfo = new ArrayList<>();
 
 		this.flowRate = 5;
 		this.slopeFindDistance = 4;

@@ -46,7 +46,7 @@ public class ConditionalTextFieldValidator implements Validator {
 	}
 
 	@Override public ValidationResult validate() {
-		if (!holder.getText().trim().equals("") || conditionElement.isSelected() != validateTextWhenBooleanIs)
+		if (!holder.getText().isBlank() || conditionElement.isSelected() != validateTextWhenBooleanIs)
 			return new ValidationResult(ValidationResultType.PASSED, "");
 		else
 			return new ValidationResult(answer, emptyMessage);

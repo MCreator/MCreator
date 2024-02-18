@@ -1,1 +1,1 @@
-Если флажок установлен, раздатчик не выбросит данный предмет, а вызовет процедуры "${l10n.t("elementgui.item_extension.dispense_success_condition")}" и "${l10n.t("elementgui.item_extension.dispense_result_itemstack")}".
+Если флажок установлен, раздатчик не выбросит данный предмет (действие по умолчанию), а вызовет процедуры "${l10n.t("elementgui.item_extension.dispense_success_condition")}" и "${l10n.t("elementgui.item_extension.dispense_result_itemstack")}".

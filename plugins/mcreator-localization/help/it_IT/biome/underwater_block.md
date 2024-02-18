@@ -1,0 +1,1 @@
+Questo parametro controlla il blocco che si genera sott'acqua. La maggior parte dei biomi vanilla utilizza terra o blocchi di ghiaia per questo.

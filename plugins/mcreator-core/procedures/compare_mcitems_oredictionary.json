@@ -15,7 +15,7 @@
   "output": "Boolean",
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
-    "toolbox_id": "itemmanagement",
+    "toolbox_id": "itemdata",
     "toolbox_init": [
       "<value name=\"b\"><block type=\"text\"><field name=\"TEXT\">minecraft:logs</field></block></value>",
       "<value name=\"a\"><block type=\"itemstack_to_mcitem\"></block></value>"

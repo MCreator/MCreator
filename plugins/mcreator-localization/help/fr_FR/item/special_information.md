@@ -1,6 +1,3 @@
-Ce paramètre ajoute une info-bulle au bloc lorsque vous tenez votre icône au-dessus du bloc dans votre inventaire.
+Ce paramètre ajoute une infobulle à l’item lorsque vous placez votre icône sur l’item de votre inventaire.
 
-Astuces :
-
-* Utilisez des virgules "," pour séparer les entrées d'une nouvelle ligne.
-* Utilisez la barre oblique inverse avec une virgule après "\", pour insérer une virgule dans le texte au lieu de séparer les entrées.
+Si vous utilisez une infobulle générée par la procédure et que votre item est non détenu par une entité ou actuellement une item laché par une entité, la dépendance d’`entity` sera nulle.

@@ -14,10 +14,12 @@
       "type": "input_value",
       "name": "z",
       "check": "Number"
+    },
+    {
+      "type": "field_data_list_dropdown",
+      "name": "planttype",
+      "datalist": "planttypes"
     }
-  ],
-  "extensions": [
-    "plant_type_list_provider"
   ],
   "inputsInline": true,
   "output": "Boolean",

@@ -11,7 +11,7 @@
               </#if>
           </#if>
           "icon": {
-            ${mappedMCItemToIngameItemName(data.achievementIcon)}
+            ${mappedMCItemToItemObjectJSON(data.achievementIcon)}
           },
           "title": {
             "translate": "advancements.${registryname}.title"
@@ -26,7 +26,7 @@
         },
     </#if>
     "criteria": {
-      "${registryname}": ${triggercode}
+      ${triggercode?keep_before_last(",")}
     }
     <#if data.hasRewards()>,
     "rewards": {

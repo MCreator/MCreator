@@ -84,10 +84,13 @@ public class BlocklyToJava extends BlocklyToCode {
 			} catch (TemplateGeneratorException e) {
 				throw e;
 			} catch (Exception e) {
-				LOG.error(e.getMessage(), e);
+				LOG.error("Failed to parse Blockly XML", e);
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.exception_compiling", e.getMessage())));
 			}
+		} else {
+			addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.editor_not_ready")));
 		}
 	}
 
@@ -163,6 +166,7 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new SourceEntityDependencyBlock());
 		blockGenerators.add(new EntityIteratorDependencyBlock());
 		blockGenerators.add(new ImmediateSourceEntityDependencyBlock());
+		blockGenerators.add(new DamageSourceDependencyBlock());
 		blockGenerators.add(new DirectionDependencyBlock());
 		blockGenerators.add(new DirectionConstantBlock());
 		blockGenerators.add(new NullBlock());

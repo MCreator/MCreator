@@ -1,0 +1,1 @@
+Il colore della nebbia all'interno della dimensione. 

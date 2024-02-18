@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2022 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2022, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,14 +19,21 @@
 
 package net.mcreator.ui.validation.validators;
 
+import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.component.VComboBox;
+import net.mcreator.ui.validation.component.VTextField;
 
 import java.util.Arrays;
 
 public class NamespaceValidator<T> extends RegistryNameValidator {
 
+	public NamespaceValidator(VTextField holder) {
+		super(holder, L10N.t("common.namespace"));
+		setValidChars(Arrays.asList('_', '-'));
+	}
+
 	public NamespaceValidator(VComboBox<T> holder) {
-		super(holder, "Namespace");
+		super(holder, L10N.t("common.namespace"));
 		setValidChars(Arrays.asList('_', '-'));
 	}
 

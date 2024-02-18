@@ -1,4 +1,24 @@
+body {
+    fill: #1f252f;
+}
+
+#blockly {
+    background: #1f252f;
+}
+
+.blocklySvg {
+    background-color: #1f252f !important;
+}
+
+.blocklyMainBackground {
+    fill: #1f252f !important;
+}
+
 ::-webkit-scrollbar-track {
+    background: #1c2128;
+}
+
+::-webkit-scrollbar-corner {
     background: #1c2128;
 }
 
@@ -8,10 +28,6 @@
 
 ::-webkit-scrollbar-thumb:hover {
     background: #1f252f;
-}
-
-.blocklyMainBackground {
-    fill: rgba(26, 32, 42, 0.66) !important;
 }
 
 .blocklyToolboxDiv {
@@ -49,7 +65,7 @@
 }
 
 .whlab > .blocklyFlyoutLabelText {
-    fill: #eaeaea;
+    fill: #eaeaea !important;
 }
 
 .blocklyDropDownDiv {

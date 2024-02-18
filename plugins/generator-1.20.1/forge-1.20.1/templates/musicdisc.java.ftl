@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2023, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -38,28 +38,11 @@ import net.minecraft.network.chat.Component;
 public class ${name}Item extends RecordItem {
 
 	public ${name}Item() {
-		super(${data.analogOutput}, () ->
-			ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
-				"${(data.music?has_content && data.music.getMappedValue()?has_content)?then(data.music, "intentionally_empty")}"
-			)),
-			new Item.Properties().stacksTo(1).rarity(Rarity.RARE), ${data.lengthInTicks}
-		);
+		super(${data.analogOutput}, () -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.music}" )),
+			new Item.Properties().stacksTo(1).rarity(Rarity.${data.rarity}), ${data.lengthInTicks});
 	}
 
-	<#if data.hasGlow>
-	@Override @OnlyIn(Dist.CLIENT) public boolean isFoil(ItemStack itemstack) {
-		return true;
-	}
-	</#if>
-
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-		</#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation/>
 
 	<@onRightClickedInAir data.onRightClickedInAir/>
 
@@ -72,5 +55,8 @@ public class ${name}Item extends RecordItem {
 	<@onCrafted data.onCrafted/>
 
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
+
+	<@hasGlow data.glowCondition/>
+
 }
 <#-- @formatter:on -->

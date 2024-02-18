@@ -38,6 +38,7 @@ import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -65,14 +66,14 @@ public class ToolPackMakerTool {
 
 		dialog.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools.tool_pack_info")));
 
-		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
+		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
 		VTextField name = new VTextField(25);
 		JColor color = new JColor(mcreator, false, false);
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 		MCItemHolder base = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-		color.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
 
 		props.add(L10N.label("dialog.tools.tool_pack_base_item"));
@@ -108,9 +109,9 @@ public class ToolPackMakerTool {
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.tool_pack_create");
-		JButton canecel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		canecel.addActionListener(e -> dialog.setVisible(false));
-		dialog.add("South", PanelUtils.join(ok, canecel));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+		cancel.addActionListener(e -> dialog.setVisible(false));
+		dialog.add("South", PanelUtils.join(ok, cancel));
 
 		ok.addActionListener(e -> {
 			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR
@@ -118,14 +119,14 @@ public class ToolPackMakerTool {
 				dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 				addToolPackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(), base.getBlock(),
 						color.getColor(), (Double) power.getValue());
-				mcreator.mv.updateMods();
+				mcreator.mv.reloadElementsInCurrentTab();
 				dialog.setCursor(Cursor.getDefaultCursor());
 				dialog.setVisible(false);
 			}
 		});
 
 		dialog.getRootPane().setDefaultButton(ok);
-		dialog.setSize(600, 280);
+		dialog.setSize(600, 290);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
 	}
@@ -138,9 +139,7 @@ public class ToolPackMakerTool {
 			return;
 
 		// select folder the mod pack should be in
-		FolderElement folder = null;
-		if (!mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
-			folder = mcreator.mv.currentFolder;
+		FolderElement folder = mcreator.mv.currentFolder;
 
 		// first we generate pickaxe texture
 		ImageIcon pickaxe = ImageUtils.drawOver(ImageMakerTexturesCache.CACHE.get(
@@ -196,7 +195,9 @@ public class ToolPackMakerTool {
 		pickaxeTool.texture = pickaxeTextureName;
 		pickaxeTool.toolType = "Pickaxe";
 		pickaxeTool.repairItems = Collections.singletonList(base);
+		pickaxeTool.creativeTab = new TabEntry(workspace, "TOOLS");
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, pickaxeTool, folder);
+		pickaxeTool.attackSpeed = (double) Math.round(1.2f * factor);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool axeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
@@ -205,8 +206,10 @@ public class ToolPackMakerTool {
 		axeTool.texture = axeTextureName;
 		axeTool.toolType = "Axe";
 		axeTool.repairItems = Collections.singletonList(base);
+		axeTool.creativeTab = new TabEntry(workspace, "TOOLS");
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, axeTool, folder);
 		axeTool.damageVsEntity = (double) Math.round(9.0f * factor);
+		axeTool.attackSpeed = (double) Math.round(0.9f * factor);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool swordTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
@@ -218,6 +221,7 @@ public class ToolPackMakerTool {
 		swordTool.repairItems = Collections.singletonList(base);
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, swordTool, folder);
 		swordTool.damageVsEntity = (double) Math.round(6.0f * factor);
+		swordTool.attackSpeed = (double) Math.round(1.6f * factor);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool shovelTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
@@ -226,7 +230,10 @@ public class ToolPackMakerTool {
 		shovelTool.texture = shovelTextureName;
 		shovelTool.toolType = "Spade";
 		shovelTool.repairItems = Collections.singletonList(base);
+		shovelTool.creativeTab = new TabEntry(workspace, "TOOLS");
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, shovelTool, folder);
+		shovelTool.damageVsEntity = (double) Math.round(4.5f * factor);
+		shovelTool.attackSpeed = (double) Math.round(1.0f * factor);
 
 		// we use Tool GUI to get default values for the block element (kinda hacky!)
 		Tool hoeTool = (Tool) ModElementType.TOOL.getModElementGUI(mcreator,
@@ -235,7 +242,9 @@ public class ToolPackMakerTool {
 		hoeTool.texture = hoeTextureName;
 		hoeTool.toolType = "Hoe";
 		hoeTool.repairItems = Collections.singletonList(base);
+		hoeTool.creativeTab = new TabEntry(workspace, "TOOLS");
 		setParametersBasedOnFactorAndAddElement(mcreator, factor, hoeTool, folder);
+		hoeTool.damageVsEntity = (double) Math.round(1.0f * factor);
 
 		Recipe pickaxeRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,
 				new ModElement(workspace, name + "PickaxeRecipe", ModElementType.RECIPE), false).getElementFromGUI();
@@ -293,8 +302,9 @@ public class ToolPackMakerTool {
 		tool.harvestLevel = (int) Math.round(2 * factor);
 		tool.efficiency = (double) Math.round(6.0f * Math.pow(factor, 0.6));
 		tool.enchantability = (int) Math.round(14 * factor);
-		tool.damageVsEntity = (double) Math.round(2.0f * factor);
+		tool.damageVsEntity = (double) Math.round(4.0f * factor);
 		tool.usageCount = (int) Math.round(250 * Math.pow(factor, 1.4));
+		tool.attackSpeed = (double) Math.round(3.0f * factor);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(mcreator.getWorkspace(), folder, tool);
 	}
 

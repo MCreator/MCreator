@@ -31,23 +31,29 @@ public class ReloadGradleProjectAction extends GradleAction {
 			new Thread(() -> {
 				ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 						L10N.t("dialog.setup_workspace.progress.reloading_gradle_dependencies"));
-				progressDialog.addProgress(p1);
+				progressDialog.addProgressUnit(p1);
 
-				actionRegistry.getMCreator().getGradleConsole().exec("dependencies", finished -> {
-					p1.ok();
+				String task = actionRegistry.getMCreator().getGeneratorConfiguration().getGradleTaskFor("setup_task");
+				if (task == null)
+					task = "clean";
 
-					ProgressDialog.ProgressUnit p3 = new ProgressDialog.ProgressUnit(
+				actionRegistry.getMCreator().mcreatorTabs.showTab(actionRegistry.getMCreator().consoleTab);
+
+				actionRegistry.getMCreator().getGradleConsole().exec(task + " --refresh-dependencies", finished -> {
+					p1.markStateOk();
+
+					ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 							L10N.t("dialog.setup_workspace.progress.reloading_gradle_project"));
-					progressDialog.addProgress(p3);
+					progressDialog.addProgressUnit(p2);
 
 					new Thread(() -> {
 						try {
 							actionRegistry.getMCreator().getGenerator().reloadGradleCaches();
-							p3.ok();
-							progressDialog.hideAll();
+							p2.markStateOk();
+							progressDialog.hideDialog();
 						} catch (Exception e) {
-							p3.err();
-							progressDialog.hideAll();
+							p2.markStateError();
+							progressDialog.hideDialog();
 						}
 					}, "GradleProjectCacheReload").start();
 				});

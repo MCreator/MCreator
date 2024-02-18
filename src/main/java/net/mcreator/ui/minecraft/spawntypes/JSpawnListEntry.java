@@ -20,22 +20,24 @@ package net.mcreator.ui.minecraft.spawntypes;
 
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.element.types.Biome;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JMinMaxSpinner;
 import net.mcreator.ui.component.SearchableComboBox;
-import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.entries.JSimpleListEntry;
+import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class JSpawnListEntry extends JPanel {
+public class JSpawnListEntry extends JSimpleListEntry<Biome.SpawnEntry> {
 
 	private final JSpinner spawningProbability = new JSpinner(new SpinnerNumberModel(20, 1, 1000, 1));
 	private final JMinMaxSpinner numberOfMobsPerGroup = new JMinMaxSpinner(4, 4, 1, 1000, 1);
@@ -46,51 +48,47 @@ public class JSpawnListEntry extends JPanel {
 	private final Workspace workspace;
 
 	public JSpawnListEntry(MCreator mcreator, IHelpContext gui, JPanel parent, List<JSpawnListEntry> entryList) {
-		super(new FlowLayout(FlowLayout.LEFT));
+		super(parent, entryList);
 
 		this.workspace = mcreator.getWorkspace();
 
-		final JComponent container = PanelUtils.expandHorizontally(this);
-
-		parent.add(container);
-		entryList.add(this);
-
-		ElementUtil.loadAllSpawnableEntities(workspace).forEach(e -> entityType.addItem(e.getName()));
 		numberOfMobsPerGroup.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")),
+				BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 2, 2, 2)));
 		numberOfMobsPerGroup.setAllowEqualValues(true);
 
-		add(L10N.label("dialog.spawn_list_entry.entity"));
-		add(entityType);
+		line.add(L10N.label("dialog.spawn_list_entry.entity"));
+		line.add(entityType);
 
-		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/spawn_type"),
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/spawn_type"),
 				L10N.label("dialog.spawn_list_entry.type")));
-		add(mobSpawningType);
+		line.add(mobSpawningType);
 
-		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/spawn_weight"),
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/spawn_weight"),
 				L10N.label("dialog.spawn_list_entry.weight")));
-		add(spawningProbability);
+		line.add(spawningProbability);
 
-		add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/spawn_group_size"),
+		line.add(HelpUtils.wrapWithHelpButton(gui.withEntry("entity/spawn_group_size"),
 				L10N.label("dialog.spawn_list_entry.group_size")));
-		add(numberOfMobsPerGroup);
-
-		JButton remove = new JButton(UIRES.get("16px.clear"));
-		remove.setText(L10N.t("dialog.spawn_list_entry.remove_entry"));
-		remove.addActionListener(e -> {
-			entryList.remove(this);
-			parent.remove(container);
-			parent.revalidate();
-			parent.repaint();
-		});
-		add(remove);
-
-		parent.revalidate();
-		parent.repaint();
+		line.add(numberOfMobsPerGroup);
 	}
 
-	public Biome.SpawnEntry getEntry() {
+	@Override public void reloadDataLists() {
+		super.reloadDataLists();
+
+		ComboBoxUtil.updateComboBoxContents(entityType,
+				ElementUtil.loadAllSpawnableEntities(workspace).stream().map(DataListEntry::getName)
+						.collect(Collectors.toList()));
+	}
+
+	@Override protected void setEntryEnabled(boolean enabled) {
+		spawningProbability.setEnabled(enabled);
+		numberOfMobsPerGroup.setEnabled(enabled);
+		mobSpawningType.setEnabled(enabled);
+		entityType.setEnabled(enabled);
+	}
+
+	@Override public Biome.SpawnEntry getEntry() {
 		Biome.SpawnEntry entry = new Biome.SpawnEntry();
 		entry.entity = new EntityEntry(workspace, (String) entityType.getSelectedItem());
 		entry.spawnType = (String) mobSpawningType.getSelectedItem();
@@ -100,11 +98,12 @@ public class JSpawnListEntry extends JPanel {
 		return entry;
 	}
 
-	public void setEntry(Biome.SpawnEntry e) {
+	@Override public void setEntry(Biome.SpawnEntry e) {
 		entityType.setSelectedItem(e.entity.getUnmappedValue());
 		mobSpawningType.setSelectedItem(e.spawnType);
 		spawningProbability.setValue(e.weight);
 		numberOfMobsPerGroup.setMinValue(e.minGroup);
 		numberOfMobsPerGroup.setMaxValue(e.maxGroup);
 	}
+
 }

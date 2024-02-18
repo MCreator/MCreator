@@ -87,17 +87,11 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		ComponentUtils.deriveFont(lingeringName, 16);
 		ComponentUtils.deriveFont(arrowName, 16);
 
-		JPanel mainEditor = new JPanel(new GridLayout());
-
-		JComponent component = PanelUtils.northAndCenterElement(
+		JComponent mainEditor = PanelUtils.northAndCenterElement(
 				HelpUtils.wrapWithHelpButton(this.withEntry("potion/effects"), L10N.label("elementgui.potion.effects")),
 				effectList);
 
-		component.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-
-		mainEditor.add(component);
-
-		mainEditor.setOpaque(false);
+		mainEditor.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
 		potionName.setValidator(
 				new TextFieldValidator(potionName, L10N.t("elementgui.potion.error_potion_needs_display_name")));
@@ -120,7 +114,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		page1group.addValidationElement(arrowName);
 
 		pane3.add(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, northPanel), mainEditor));
-		addPage(pane3);
+		addPage(pane3, false);
 
 		if (!isEditingMode()) {
 			String readableNameFromModElement = "Potion of " + StringUtils.machineToReadableName(modElement.getName());
@@ -138,6 +132,12 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		}
 	}
 
+	@Override public void reloadDataLists() {
+		super.reloadDataLists();
+
+		effectList.reloadDataLists();
+	}
+
 	@Override protected AggregatedValidationResult validatePage(int page) {
 		if (page == 0)
 			return new AggregatedValidationResult(page1group);
@@ -149,7 +149,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		splashName.setText(potion.splashName);
 		lingeringName.setText(potion.lingeringName);
 		arrowName.setText(potion.arrowName);
-		effectList.setEffects(potion.effects);
+		effectList.setEntries(potion.effects);
 	}
 
 	@Override public Potion getElementFromGUI() {
@@ -158,7 +158,7 @@ public class PotionGUI extends ModElementGUI<Potion> {
 		potion.splashName = splashName.getText();
 		potion.lingeringName = lingeringName.getText();
 		potion.arrowName = arrowName.getText();
-		potion.effects = effectList.getEffects();
+		potion.effects = effectList.getEntries();
 		return potion;
 	}
 

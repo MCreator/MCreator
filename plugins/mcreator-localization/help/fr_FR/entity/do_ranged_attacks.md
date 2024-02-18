@@ -1,3 +1,4 @@
-Si coché, votre entité attaquera avec un objet à distance (similaire au Squelette).
-
-Vous pouvez selectionner votre propre item à distance depuis la liste ou utiliser celui par défaut (flèche).
+Si coché, votre entité attaquera avec un projectile (similaire au squelette). Vous pouvez sélectionner :
+* Votre propre projectile à partir de la liste (ou utiliser par défaut - flèche) ;
+* L'intervalle entre les attaques à distance (en tics) ;
+* Le rayon dans lequel l'entité ciblera toujours une autre entité après que cette entité quitte sa portée de poursuite.

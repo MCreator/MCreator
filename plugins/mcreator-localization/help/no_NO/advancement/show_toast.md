@@ -1,0 +1,1 @@
+Vis avansering øverst til høyre på skjermen når spilleren er ferdig med avanseringen.

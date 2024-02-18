@@ -1,0 +1,36 @@
+{
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "damagetype",
+      "datalist": "damagesources",
+      "customEntryProviders": "damagetype"
+    },
+    {
+      "type": "input_value",
+      "name": "cause",
+      "check": "Entity"
+    }
+  ],
+  "inputsInline": true,
+  "output": "DamageSource",
+  "colour": "320",
+  "mcreator": {
+    "toolbox_id": "damagesources",
+    "toolbox_init": [
+      "<value name=\"cause\"><block type=\"source_entity_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "cause"
+    ],
+    "fields": [
+      "damagetype"
+    ],
+    "dependencies": [
+      {
+        "name": "world",
+        "type": "world"
+      }
+    ]
+  }
+}

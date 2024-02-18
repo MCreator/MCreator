@@ -21,78 +21,52 @@ package net.mcreator.ui.minecraft.loottable;
 
 import net.mcreator.element.types.LootTable;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.entries.JSingleEntriesList;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.JEntriesList;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class JLootTablePoolsList extends JEntriesList {
-
-	private final List<JLootTablePool> poolList = new ArrayList<>();
-
-	private final JPanel pools = new JPanel();
+public class JLootTablePoolsList extends JSingleEntriesList<JLootTablePool, LootTable.Pool> {
 
 	public JLootTablePoolsList(MCreator mcreator, IHelpContext gui) {
-		super(mcreator, new BorderLayout(), gui);
+		super(mcreator, gui);
 		setOpaque(false);
 
-		pools.setLayout(new BoxLayout(pools, BoxLayout.PAGE_AXIS));
-		pools.setOpaque(false);
-
-		JToolBar bar = new JToolBar();
-		bar.setFloatable(false);
+		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 
 		add.setText(L10N.t("elementgui.loot_table.add_pool"));
 		add.addActionListener(e -> {
-			JLootTablePool pool = new JLootTablePool(mcreator, gui, pools, poolList);
+			JLootTablePool pool = new JLootTablePool(mcreator, gui, entries, entryList);
 			registerEntryUI(pool);
 			pool.addInitialEntry();
 		});
-		bar.add(add);
-		add("North", bar);
 
-		JScrollPane sp = new JScrollPane(PanelUtils.pullElementUp(pools)) {
-			@Override protected void paintComponent(Graphics g) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-				g2d.fillRect(0, 0, getWidth(), getHeight());
-				g2d.dispose();
-				super.paintComponent(g);
-			}
-		};
-		sp.setOpaque(false);
-		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUnitIncrement(11);
-		sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		add("Center", sp);
+		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 	}
 
-	public void reloadDataLists() {
-		poolList.forEach(JLootTablePool::reloadDataLists);
+	@Override public void reloadDataLists() {
+		entryList.forEach(JLootTablePool::reloadDataLists);
 	}
 
 	public void addInitialPool() {
-		JLootTablePool pool = new JLootTablePool(mcreator, gui, pools, poolList);
+		JLootTablePool pool = new JLootTablePool(mcreator, gui, entries, entryList);
 		registerEntryUI(pool);
 		pool.addInitialEntry();
 	}
 
-	public List<LootTable.Pool> getPools() {
-		return poolList.stream().map(JLootTablePool::getPool).filter(Objects::nonNull).toList();
+	@Override public List<LootTable.Pool> getEntries() {
+		return entryList.stream().map(JLootTablePool::getPool).filter(Objects::nonNull).toList();
 	}
 
-	public void setPools(List<LootTable.Pool> lootTablePools) {
+	@Override public void setEntries(List<LootTable.Pool> lootTablePools) {
 		lootTablePools.forEach(e -> {
-			JLootTablePool pool = new JLootTablePool(mcreator, gui, pools, poolList);
+			JLootTablePool pool = new JLootTablePool(mcreator, gui, entries, entryList);
 			registerEntryUI(pool);
 			pool.setPool(e);
 		});
 	}
+
 }

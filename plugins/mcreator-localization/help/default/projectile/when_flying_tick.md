@@ -1,0 +1,1 @@
+While the projectile is flying, the selected procedure will be executed each tick.

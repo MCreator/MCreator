@@ -75,13 +75,13 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 	@Override protected void initGUI() {
 		onStarted = new ProcedureSelector(this.withEntry("potioneffect/when_potion_applied"), mcreator,
-				L10N.t("elementgui.potioneffect.event_potion_applied"),
+				L10N.t("elementgui.potioneffect.event_potion_applied"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
 		onActiveTick = new ProcedureSelector(this.withEntry("potioneffect/when_active_tick"), mcreator,
 				L10N.t("elementgui.potioneffect.event_potion_tick"),
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
 		onExpired = new ProcedureSelector(this.withEntry("potioneffect/when_potion_expires"), mcreator,
-				L10N.t("elementgui.potioneffect.event_potion_expires"),
+				L10N.t("elementgui.potioneffect.event_potion_expires"), ProcedureSelector.Side.SERVER,
 				Dependency.fromString("entity:entity/x:number/y:number/z:number/world:world/amplifier:number"));
 		activeTickCondition = new ProcedureSelector(this.withEntry("potioneffect/active_tick_condition"), mcreator,
 				L10N.t("elementgui.potioneffect.event_tick_condition"), VariableTypeLoader.BuiltInTypes.LOGIC,
@@ -143,18 +143,13 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		pane3.add(PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(iconComponent, selp, 30, 30)));
 		pane3.setOpaque(false);
 
-		JPanel events = new JPanel();
-		events.setLayout(new BoxLayout(events, BoxLayout.PAGE_AXIS));
-		JPanel events2 = new JPanel(new GridLayout(2, 2, 8, 8));
-		events2.setOpaque(false);
-		events2.add(onStarted);
-		events2.add(onExpired);
-		events2.add(activeTickCondition);
-		events2.add(onActiveTick);
-		events.add(PanelUtils.join(events2));
+		JPanel events = new JPanel(new GridLayout(1, 4, 5, 5));
 		events.setOpaque(false);
+		events.add(onStarted);
+		events.add(onExpired);
+		events.add(activeTickCondition);
+		events.add(onActiveTick);
 		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
-		pane4.setOpaque(false);
 		pane4.setOpaque(false);
 
 		icon.setValidator(new TileHolderValidator(icon));
@@ -164,6 +159,11 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		page1group.addValidationElement(effectName);
 
 		page1group.addValidationElement(icon);
+
+		if (!isEditingMode()) {
+			String readableNameFromModElement = net.mcreator.util.StringUtils.machineToReadableName(modElement.getName());
+			effectName.setText(readableNameFromModElement);
+		}
 
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);

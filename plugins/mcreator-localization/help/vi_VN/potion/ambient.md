@@ -1,0 +1,1 @@
+Tham số này xác định liệu hiệu ứng nên được áp dụng dưới dạng hiệu ứng môi trường.

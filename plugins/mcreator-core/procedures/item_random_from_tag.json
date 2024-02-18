@@ -9,7 +9,7 @@
   "output": "MCItem",
   "colour": 350,
   "mcreator": {
-    "toolbox_id": "itemmanagement",
+    "toolbox_id": "itemdata",
     "toolbox_init": [
       "<value name=\"tag\"><block type=\"text\"><field name=\"TEXT\">minecraft:logs</field></block></value>"
     ],

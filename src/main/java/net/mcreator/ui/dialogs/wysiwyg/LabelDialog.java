@@ -19,6 +19,7 @@
 package net.mcreator.ui.dialogs.wysiwyg;
 
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Label;
 import net.mcreator.element.parts.procedure.StringProcedure;
 import net.mcreator.minecraft.RegistryNameFixer;
@@ -83,6 +84,13 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 		}
 
 		options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.label_text_color"), cola));
+
+		final JComboBox<GUIComponent.AnchorPoint> anchor = new JComboBox<>(GUIComponent.AnchorPoint.values());
+		anchor.setSelectedItem(GUIComponent.AnchorPoint.CENTER);
+		if (!editor.isNotOverlayType) {
+			options.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.gui.anchor"), anchor));
+		}
+
 		JButton ok = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
 		getRootPane().setDefaultButton(ok);
@@ -95,6 +103,7 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 			labelText.setSelectedProcedure(label.text);
 			cola.setColor(label.color);
 			displayCondition.setSelectedProcedure(label.displayCondition);
+			anchor.setSelectedItem(label.anchorPoint);
 		}
 
 		cancel.addActionListener(arg01 -> setVisible(false));
@@ -114,7 +123,8 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 
 				Label component = new Label(name, 0, 0, textProcedure, cola.getColor(),
 						displayCondition.getSelectedProcedure());
-
+				if (!editor.isNotOverlayType)
+					component.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 				setEditingComponent(component);
 				editor.editor.addComponent(component);
 				editor.list.setSelectedValue(component, true);
@@ -124,6 +134,8 @@ public class LabelDialog extends AbstractWYSIWYGDialog<Label> {
 				editor.components.remove(label);
 				Label labelNew = new Label(label.name, label.getX(), label.getY(), textProcedure, cola.getColor(),
 						displayCondition.getSelectedProcedure());
+				if (!editor.isNotOverlayType)
+					labelNew.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 				editor.components.add(idx, labelNew);
 				setEditingComponent(labelNew);
 			}

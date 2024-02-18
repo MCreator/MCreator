@@ -19,34 +19,16 @@
 
 package net.mcreator.element.converter.v2022_1;
 
-import com.google.gson.JsonElement;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.converter.ProcedureConverter;
 import net.mcreator.element.types.Procedure;
-import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-public class LegacyBlockPosProcedureRemover implements IConverter {
-	private static final Logger LOG = LogManager.getLogger("LegacyBlockPosProcedureRemover");
-
-	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Procedure procedure = (Procedure) input;
-		try {
-			procedure.procedurexml = fixXML(procedure.procedurexml);
-		} catch (Exception e) {
-			LOG.warn("Failed to remove legacy blockpos coordinate blocks for procedure " + input.getModElement()
-					.getName());
-		}
-		return procedure;
-	}
+public class LegacyBlockPosProcedureRemover extends ProcedureConverter {
 
 	@Override public int getVersionConvertingTo() {
 		return 26;
 	}
 
-	protected String fixXML(String xml) {
+	@Override protected String fixXML(Procedure procedure, String xml) {
 		return xml.replace("type=\"block_pos_x\"", "type=\"coord_x\"")
 				.replace("type=\"block_pos_y\"", "type=\"coord_y\"")
 				.replace("type=\"block_pos_z\"", "type=\"coord_z\"");

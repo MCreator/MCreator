@@ -1,2 +1,3 @@
-Tant que la valeur retournée est vraie, la boite de collision de l'entité sera solide.
-Cette fonctionnalité est utilisée par les bâteaux notamment.
+Si cette fonctionnalité est activée, la boîte englobante de l'entité agira comme la boîte englobante d'un bloc (collision solide).
+
+Utilisé par des bateaux et des shulkers dans Minecraft.

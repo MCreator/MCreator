@@ -1,0 +1,1 @@
+La pianta crescerà fino a raggiungere questa altezza.

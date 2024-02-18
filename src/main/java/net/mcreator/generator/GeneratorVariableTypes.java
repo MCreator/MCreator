@@ -19,14 +19,15 @@
 
 package net.mcreator.generator;
 
-import com.esotericsoftware.yamlbeans.YamlException;
-import com.esotericsoftware.yamlbeans.YamlReader;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.util.YamlUtil;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -43,19 +44,20 @@ public class GeneratorVariableTypes {
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(
 				generatorConfiguration.getGeneratorName() + ".variables", Pattern.compile(".*\\.yaml"));
 
+		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
+
 		for (String res : fileNames) {
 			String variableTypeName = res.split("variables/")[1].replace(".yaml", "");
 			if (VariableTypeLoader.INSTANCE.doesVariableTypeExist(variableTypeName)) {
 				String config = FileIO.readResourceToString(PluginLoader.INSTANCE, res);
-				YamlReader reader = new YamlReader(config);
 
 				// load generator configuration
 				try {
-					Map<?, ?> variableTypesData = (Map<?, ?>) reader.read();
+					Map<?, ?> variableTypesData = (Map<?, ?>) yamlLoad.loadFromString(config);
 					variableTypesData = new ConcurrentHashMap<>(
 							variableTypesData); // make this map concurrent, cache can be reused by multiple instances
 					variableTypesCache.put(VariableTypeLoader.INSTANCE.fromName(variableTypeName), variableTypesData);
-				} catch (YamlException e) {
+				} catch (YamlEngineException e) {
 					LOG.fatal("[" + generatorConfiguration.getGeneratorName()
 							+ "] Failed to load variable type definition: " + e.getMessage());
 				}

@@ -26,11 +26,7 @@ import java.util.List;
 public class EventMap extends HashMap<Class<? extends MCREvent>, List<MCREventListener<?>>> {
 
 	public <T extends MCREvent> void addEvent(Class<T> key, MCREventListener<T> value) {
-		if (!super.containsKey(key)) {
-			super.put(key, new ArrayList<>());
-		}
-
-		super.get(key).add(value);
+		super.computeIfAbsent(key, k -> new ArrayList<>()).add(value);
 	}
 
 	@SuppressWarnings("unchecked")

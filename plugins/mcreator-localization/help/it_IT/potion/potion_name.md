@@ -1,0 +1,1 @@
+Questo parametro controlla il nome della normale ampolla della pozione.

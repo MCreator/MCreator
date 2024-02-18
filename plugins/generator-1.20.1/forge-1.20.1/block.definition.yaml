@@ -6,21 +6,18 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
 
   # Worldgen
-  - template: block/oregen.java.ftl
-    condition: doesGenerateInWorld()
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/ores/@NAMEFeature.java"
   - template: json/block_feature_biome_modifier.json.ftl
     writer: json
-    condition: doesGenerateInWorld()
+    condition: generateFeature
     name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
     variables: "step=underground_ores"
   - template: block/configured_oregen.json.ftl
     writer: json
-    condition: doesGenerateInWorld()
+    condition: generateFeature
     name: "@MODDATAROOT/worldgen/configured_feature/@registryname.json"
   - template: block/placed_oregen.json.ftl
     writer: json
-    condition: doesGenerateInWorld()
+    condition: generateFeature
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
 
   # Block item templates
@@ -389,24 +386,22 @@ localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
 
-global_templates:
-  - template: block/mineable_tag.json.ftl
-    writer: json
-    variables: "type=pickaxe"
-    name: "@RESROOT/data/minecraft/tags/blocks/mineable/pickaxe.json"
-    condition: ${w.hasBlocksMineableWith('pickaxe')}
-  - template: block/mineable_tag.json.ftl
-    writer: json
-    variables: "type=axe"
-    name: "@RESROOT/data/minecraft/tags/blocks/mineable/axe.json"
-    condition: ${w.hasBlocksMineableWith('axe')}
-  - template: block/mineable_tag.json.ftl
-    writer: json
-    variables: "type=shovel"
-    name: "@RESROOT/data/minecraft/tags/blocks/mineable/shovel.json"
-    condition: ${w.hasBlocksMineableWith('shovel')}
-  - template: block/mineable_tag.json.ftl
-    writer: json
-    variables: "type=hoe"
-    name: "@RESROOT/data/minecraft/tags/blocks/mineable/hoe.json"
-    condition: ${w.hasBlocksMineableWith('hoe')}
+tags:
+  - tag: BLOCKS:minecraft:mineable/pickaxe
+    condition: "${data.destroyTool == 'pickaxe'}"
+  - tag: BLOCKS:minecraft:mineable/axe
+    condition: "${data.destroyTool == 'axe'}"
+  - tag: BLOCKS:minecraft:mineable/shovel
+    condition: "${data.destroyTool == 'shovel'}"
+  - tag: BLOCKS:minecraft:mineable/hoe
+    condition: "${data.destroyTool == 'hoe'}"
+  - tag: BLOCKS:minecraft:stairs
+    condition: "${data.blockBase! == 'Stairs'}"
+  - tag: BLOCKS:minecraft:slabs
+    condition: "${data.blockBase! == 'Slab'}"
+  - tag: BLOCKS:minecraft:fences
+    condition: "${data.blockBase! == 'Fence'}"
+  - tag: BLOCKS:minecraft:walls
+    condition: "${data.blockBase! == 'Wall'}"
+  - tag: BLOCKS:minecraft:leaves
+    condition: "${data.blockBase! == 'Leaves'}"

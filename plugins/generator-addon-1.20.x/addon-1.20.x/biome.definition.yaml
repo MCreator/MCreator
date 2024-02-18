@@ -3,4 +3,4 @@ templates:
     writer: json
     name: "@SRCROOT/biomes/@registryname.json"
 
-field_inclusions: [rainingPossibility, temperature, groundBlock, undergroundBlock, treesPerChunk, genErosion, spawnBiome, biomeType]
+field_inclusions: [rainingPossibility, temperature, groundBlock, undergroundBlock, treesPerChunk, genErosion, spawnBiome]

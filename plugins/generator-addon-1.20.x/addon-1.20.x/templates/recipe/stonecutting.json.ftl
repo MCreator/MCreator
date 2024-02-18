@@ -11,11 +11,11 @@
       "tags": [ "stonecutter" ],
       "ingredients": [
         {
-            ${mappedMCItemToIngameItemName(data.stoneCuttingInputStack)}
+            ${mappedMCItemToItemObjectJSON(data.stoneCuttingInputStack)}
         }
       ],
       "result": {
-        ${mappedMCItemToIngameItemName(data.stoneCuttingReturnStack)},
+        ${mappedMCItemToItemObjectJSON(data.stoneCuttingReturnStack)},
         "count": ${data.recipeRetstackSize}
       }
     }

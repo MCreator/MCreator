@@ -2,6 +2,10 @@ _default: Ingame
 Ingame: Ingame
 MainMenu: TitleScreen
 IngameMenu: PauseScreen
+AbstractCommandBlock: AbstractCommandBlockEditScreen
+AbstractContainer: AbstractContainerScreen
+AbstractEditSign: AbstractSignEditScreen
+AbstractFurnace: AbstractFurnaceScreen
 AddServer: EditServerScreen
 Alert: AlertScreen
 ChatOptions: ChatOptionsScreen
@@ -89,6 +93,9 @@ ItemCombiner: ItemCombinerScreen
 Warning: WarningScreen
 ChatReport: ChatReportScreen
 ChatSelection: ChatSelectionScreen
+Realms: RealmsScreen
+Realms32bitWarning: Realms32bitWarningScreen
+DisconnectedRealms: DisconnectedRealmsScreen
 ReportReasonSelection: ReportReasonSelectionScreen
 SocialInteractions: SocialInteractionsScreen
 TelemetryInfo: TelemetryInfoScreen

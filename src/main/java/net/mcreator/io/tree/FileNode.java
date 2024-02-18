@@ -49,7 +49,7 @@ public class FileNode {
 	}
 
 	public void addElement(String currentPath, String[] list) {
-		while (list[0] == null || list[0].equals(""))
+		while (list[0] == null || list[0].isEmpty())
 			list = Arrays.copyOfRange(list, 1, list.length);
 
 		FileNode currentChild = new FileNode(list[0], currentPath + "/" + list[0]);

@@ -36,7 +36,6 @@
 package ${package}.item;
 
 import net.minecraft.world.entity.ai.attributes.Attributes;
-import javax.annotation.Nullable;
 
 <#compress>
 public class ${name}Item extends Item {
@@ -120,7 +119,7 @@ public class ${name}Item extends Item {
 
 	<#if data.toolType != 1>
 	@Override public float getDestroySpeed(ItemStack par1ItemStack, BlockState par2Block) {
-		return ${data.toolType}F;
+		return ${data.toolType}f;
 	}
 	</#if>
 
@@ -129,7 +128,7 @@ public class ${name}Item extends Item {
 			if (equipmentSlot == EquipmentSlot.MAINHAND) {
 				ImmutableMultimap.Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
 				builder.putAll(super.getDefaultAttributeModifiers(equipmentSlot));
-				builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Item modifier", ${data.damageVsEntity - 2}d, AttributeModifier.Operation.ADDITION));
+				builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Item modifier", ${data.damageVsEntity - 1}d, AttributeModifier.Operation.ADDITION));
 				builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Item modifier", -2.4, AttributeModifier.Operation.ADDITION));
 				return builder.build();
 			}
@@ -137,9 +136,7 @@ public class ${name}Item extends Item {
 		}
 	</#if>
 
-	<#if data.hasGlow>
 	<@hasGlow data.glowCondition/>
-	</#if>
 
 	<#if data.destroyAnyBlock>
 	@Override public boolean isCorrectToolForDrops(BlockState state) {
@@ -147,24 +144,17 @@ public class ${name}Item extends Item {
 	}
 	</#if>
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, Level world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-		</#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation/>
 
-	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0))>
+	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)) || data.enableRanged>
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
+		<#if data.enableRanged>
+		InteractionResultHolder<ItemStack> ar = InteractionResultHolder.success(entity.getItemInHand(hand));
+		<#else>
 		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
-		ItemStack itemstack = ar.getObject();
-		double x = entity.getX();
-		double y = entity.getY();
-		double z = entity.getZ();
+		</#if>
 
-		<#if hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)>
+		<#if (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)) || data.enableRanged>
 		entity.startUsingItem(hand);
 		</#if>
 
@@ -188,7 +178,16 @@ public class ${name}Item extends Item {
 		}
 		</#if>
 
-		<@procedureOBJToCode data.onRightClickedInAir/>
+		<#if hasProcedure(data.onRightClickedInAir)>
+			<@procedureCode data.onRightClickedInAir, {
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
+				"world": "world",
+				"entity": "entity",
+				"itemstack": "ar.getObject()"
+			}/>
+		</#if>
 		return ar;
 	}
 	</#if>
@@ -232,8 +231,6 @@ public class ${name}Item extends Item {
 
 	<@onCrafted data.onCrafted/>
 
-	<@onStoppedUsing data.onStoppedUsing/>
-
 	<@onItemTick data.onItemInUseTick, data.onItemInInventoryTick/>
 
 	<@onDroppedByPlayer data.onDroppedByPlayer/>
@@ -244,9 +241,8 @@ public class ${name}Item extends Item {
 	}
 
 	@Override public CompoundTag getShareTag(ItemStack stack) {
-		CompoundTag nbt = super.getShareTag(stack);
-		if(nbt != null)
-			stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
+		CompoundTag nbt = stack.getOrCreateTag();
+		stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> nbt.put("Inventory", ((ItemStackHandler) capability).serializeNBT()));
 		return nbt;
 	}
 
@@ -256,6 +252,112 @@ public class ${name}Item extends Item {
 			stack.getCapability(ForgeCapabilities.ITEM_HANDLER, null).ifPresent(capability -> ((ItemStackHandler) capability).deserializeNBT((CompoundTag) nbt.get("Inventory")));
 	}
 	</#if>
+
+	<#if hasProcedure(data.onStoppedUsing) || (data.enableRanged && !data.shootConstantly)>
+		@Override public void releaseUsing(ItemStack itemstack, Level world, LivingEntity entity, int time) {
+			<#if hasProcedure(data.onStoppedUsing)>
+				<@procedureCode data.onStoppedUsing, {
+					"x": "entity.getX()",
+					"y": "entity.getY()",
+					"z": "entity.getZ()",
+					"world": "world",
+					"entity": "entity",
+					"itemstack": "itemstack",
+					"time": "time"
+				}/>
+			</#if>
+			<#if data.enableRanged && !data.shootConstantly>
+				if (!world.isClientSide() && entity instanceof ServerPlayer player) {
+					<#if hasProcedure(data.rangedUseCondition)>
+						double x = entity.getX();
+						double y = entity.getY();
+						double z = entity.getZ();
+						if (<@procedureOBJToConditionCode data.rangedUseCondition/>) {
+							<@arrowShootCode/>
+						}
+					<#else>
+						<@arrowShootCode/>
+					</#if>
+				}
+			</#if>
+		}
+	</#if>
+
+	<#if data.enableRanged && data.shootConstantly>
+		@Override public void onUseTick(Level world, LivingEntity entity, ItemStack itemstack, int count) {
+			if (!world.isClientSide() && entity instanceof ServerPlayer player) {
+				<#if hasProcedure(data.rangedUseCondition)>
+					double x = entity.getX();
+					double y = entity.getY();
+					double z = entity.getZ();
+					if (<@procedureOBJToConditionCode data.rangedUseCondition/>) {
+						<@arrowShootCode/>
+						entity.releaseUsingItem();
+					}
+				<#else>
+					<@arrowShootCode/>
+					entity.releaseUsingItem();
+				</#if>
+			}
+		}
+	</#if>
 }
+
+<#macro arrowShootCode>
+	<#assign projectile = data.projectile.getUnmappedValue()>
+	ItemStack stack = ProjectileWeaponItem.getHeldProjectile(entity, e -> e.getItem() == ${generator.map(projectile, "projectiles", 2)});
+	if(stack == ItemStack.EMPTY) {
+		for (int i = 0; i < player.getInventory().items.size(); i++) {
+			ItemStack teststack = player.getInventory().items.get(i);
+			if(teststack != null && teststack.getItem() == ${generator.map(projectile, "projectiles", 2)}) {
+				stack = teststack;
+				break;
+			}
+		}
+	}
+
+	if (player.getAbilities().instabuild || stack != ItemStack.EMPTY) {
+		<#assign projectileClass = generator.map(projectile, "projectiles", 0)>
+		<#if projectile.startsWith("CUSTOM:")>
+			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom());
+		<#elseif projectile.endsWith("Arrow")>
+			${projectileClass} projectile = new ${projectileClass}(world, entity);
+			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, 1.0F);
+			world.addFreshEntity(projectile);
+			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
+				.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
+		</#if>
+
+		itemstack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(entity.getUsedItemHand()));
+
+		if (player.getAbilities().instabuild) {
+			projectile.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
+		} else {
+			if (stack.isDamageableItem()){
+				if (stack.hurt(1, world.getRandom(), player)) {
+					stack.shrink(1);
+					stack.setDamageValue(0);
+					if (stack.isEmpty())
+						player.getInventory().removeItem(stack);
+				}
+			} else{
+				stack.shrink(1);
+				if (stack.isEmpty())
+				   player.getInventory().removeItem(stack);
+			}
+		}
+
+		<#if hasProcedure(data.onRangedItemUsed)>
+			<@procedureCode data.onRangedItemUsed, {
+				"x": "entity.getX()",
+				"y": "entity.getY()",
+				"z": "entity.getZ()",
+				"world": "world",
+				"entity": "entity",
+				"itemstack": "stack"
+			}/>
+		</#if>
+	}
+</#macro>
 </#compress>
 <#-- @formatter:on -->

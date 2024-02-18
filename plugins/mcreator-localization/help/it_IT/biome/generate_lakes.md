@@ -1,0 +1,1 @@
+Questo parametro controlla se i laghi dovrebbero essere generati in questo bioma.

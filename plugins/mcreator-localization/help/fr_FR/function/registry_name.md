@@ -2,4 +2,4 @@ Vous pouvez écrire le nom de votre fonction en un mot ou en plusieurs mots avec
 
 Exemples:
 * avancement
-* advancement_biome_reward
+* format@@0 advancement_biomome_reward

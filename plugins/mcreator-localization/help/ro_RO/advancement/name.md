@@ -1,0 +1,1 @@
+Numele avansului. Dacă nu are părinte (rădăcina progresului), atunci acesta va fi numele căii.

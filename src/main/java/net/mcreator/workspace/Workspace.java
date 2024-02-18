@@ -18,11 +18,10 @@
 
 package net.mcreator.workspace;
 
+import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.Launcher;
-import net.mcreator.generator.Generator;
-import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.generator.IGeneratorProvider;
+import net.mcreator.element.ModElementType;
+import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
@@ -42,7 +41,6 @@ import java.awt.*;
 import java.io.Closeable;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -56,6 +54,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
+	private ConcurrentHashMap<TagElement, ArrayList<String>> tag_elements = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<>() {{
 		put("en_us", new ConcurrentHashMap<>());
 	}};
@@ -67,14 +66,14 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	// transient fields
 	private transient boolean changed = false;
-	transient WorkspaceFileManager fileManager;
+	protected transient WorkspaceFileManager fileManager;
 	protected transient Generator generator;
 	private transient boolean regenerateRequired = false;
 	private transient boolean failingGradleDependencies = false;
 
 	@Nonnull private final transient WorkspaceInfo workspaceInfo;
 
-	private Workspace(WorkspaceSettings workspaceSettings) {
+	protected Workspace(WorkspaceSettings workspaceSettings) {
 		this();
 		this.workspaceSettings = workspaceSettings;
 	}
@@ -114,6 +113,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return Collections.unmodifiableSet(sound_elements);
 	}
 
+	public Map<TagElement, ArrayList<String>> getTagElements() {
+		return tag_elements;
+	}
+
 	public Map<String, ConcurrentHashMap<String, String>> getLanguageMap() {
 		return language_map;
 	}
@@ -126,23 +129,23 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return workspaceInfo;
 	}
 
+	public boolean containsModElement(String elementName) {
+		// We create "dummy" mod element for contains check since hashcode of ME is only based on its name
+		return mod_elements.contains(new ModElement(this, elementName, ModElementType.UNKNOWN));
+	}
+
 	public ModElement getModElementByName(String elementName) {
-		for (ModElement element : mod_elements)
-			if (element.getName().equals(elementName))
-				return element;
-		return null;
+		return mod_elements.parallelStream().filter(element -> element.getName().equals(elementName)).findFirst()
+				.orElse(null);
 	}
 
 	public VariableElement getVariableElementByName(String elementName) {
-		for (VariableElement element : variable_elements)
-			if (element.getName().equals(elementName))
-				return element;
-		return null;
+		return variable_elements.parallelStream().filter(element -> element.getName().equals(elementName)).findFirst()
+				.orElse(null);
 	}
 
 	public void resetModElementCompilesStatus() {
-		for (ModElement el : mod_elements)
-			el.setCompiles(true);
+		mod_elements.parallelStream().forEach(el -> el.setCompiles(true));
 		markDirty();
 	}
 
@@ -200,6 +203,15 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		}
 	}
 
+	public void addTagElement(TagElement element) {
+		if (!tag_elements.containsKey(element)) {
+			tag_elements.put(element, new ArrayList<>());
+			markDirty();
+		} else {
+			LOG.warn("Trying to add existing tag element: " + element.getName());
+		}
+	}
+
 	public void addSoundElement(SoundElement element) {
 		if (!sound_elements.contains(element)) {
 			sound_elements.add(element);
@@ -223,6 +235,17 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void removeVariableElement(VariableElement element) {
 		variable_elements.remove(element);
+		markDirty();
+	}
+
+	public void removeTagElement(TagElement element) {
+		tag_elements.remove(element);
+
+		File tagFile = TagsUtils.getTagFileFor(this, element);
+		if (tagFile != null) {
+			tagFile.delete();
+		}
+
 		markDirty();
 	}
 
@@ -281,14 +304,20 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return changed;
 	}
 
-	void reloadModElements() {
+	/**
+	 * @apiNote This method performs sensitive operations on this workspace. Avoid using it!
+	 */
+	public void reloadModElements() {
 		// While reiniting, list may change due to converters, so we need to copy it
 		for (ModElement modElement : Set.copyOf(mod_elements)) {
 			modElement.reinit(this);
 		}
 	}
 
-	void reloadFolderStructure() {
+	/**
+	 * @apiNote This method performs sensitive operations on this workspace. Avoid using it!
+	 */
+	public void reloadFolderStructure() {
 		this.foldersRoot.updateStructure();
 
 		Set<String> validPaths = foldersRoot.getRecursiveFolderChildren().stream().map(FolderElement::getPath)
@@ -339,18 +368,17 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	public static Workspace readFromFS(File workspaceFile, @Nullable Window ui)
-			throws UnsupportedGeneratorException, CorruptedWorkspaceFileException, FileNotFoundException {
+			throws UnsupportedGeneratorException, CorruptedWorkspaceFileException, FileNotFoundException,
+			MissingWorkspacePluginsException {
 		if (workspaceFile.isFile()) {
 			String workspace_string = FileIO.readFileToString(workspaceFile);
 			Workspace retval;
 			try {
 				retval = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
-			} catch (Exception jse) {
-				throw new CorruptedWorkspaceFileException(jse);
+				retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
+			} catch (Exception e) {
+				throw new CorruptedWorkspaceFileException(e);
 			}
-			if (retval == null)
-				throw new CorruptedWorkspaceFileException(new NullPointerException());
-			retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 
 			if (Generator.GENERATOR_CACHE.get(retval.getWorkspaceSettings().getCurrentGenerator()) == null) {
 				if (ui == null) {
@@ -398,8 +426,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 			retval.getWorkspaceSettings().setWorkspace(retval);
 
+			// Handle corrupted mod elements
 			List<ModElement> corruptedElements = new ArrayList<>();
-
 			for (ModElement element : retval.getModElements()) {
 				if (element.getName() == null || element.getTypeString() == null) {
 					corruptedElements.add(element);
@@ -412,6 +440,24 @@ public class Workspace implements Closeable, IGeneratorProvider {
 				LOG.warn("Detected corrupted mod element while deserializing. Element: " + corrupted);
 			}
 
+			// Detect plugin requirements
+			try {
+				WorkspaceUtils.verifyPluginRequirements(retval);
+			} catch (MissingWorkspacePluginsException e) {
+				if (ui != null) {
+					ThreadUtil.runOnSwingThreadAndWait(() -> {
+						StringBuilder problems = new StringBuilder();
+						for (Map.Entry<String, Collection<String>> entry : e.getMissingDefinitions().entrySet()) {
+							problems.append("<b>").append(entry.getKey()).append(":</b> ")
+									.append(String.join(", ", entry.getValue())).append("<br>");
+						}
+						JOptionPane.showMessageDialog(ui, L10N.t("dialog.workspace.missing_plugins_message", problems),
+								L10N.t("dialog.workspace.missing_plugins_title"), JOptionPane.ERROR_MESSAGE);
+					});
+				}
+				throw e;
+			}
+
 			retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
 			retval.reloadFolderStructure(); // assign parents to the folders
 			LOG.info("Loaded workspace file " + workspaceFile);
@@ -422,13 +468,15 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	}
 
 	/**
-	 * Unsafe version of readFromFS with many checks omitted. Only intended to be used by tests.
+	 * Unsafe version of readFromFS with supported generator type checks omitted. Only intended to be used by tests.
+	 * Instead of checking for supported generator, it will force the generator specified by generatorConfiguration.
 	 *
 	 * @param workspaceFile          File containing the output workspace definition.
 	 * @param generatorConfiguration If same as workspace, nothing is done, otherwise regenerateRequired is set to true.
 	 * @return Workspace object for the given file
 	 */
-	public static Workspace readFromFS(File workspaceFile, GeneratorConfiguration generatorConfiguration) {
+	@VisibleForTesting public static Workspace readFromFSUnsafe(File workspaceFile,
+			GeneratorConfiguration generatorConfiguration) throws MissingWorkspacePluginsException {
 		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 
@@ -450,6 +498,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		retval.getWorkspaceSettings().setWorkspace(retval);
 
+		WorkspaceUtils.verifyPluginRequirements(retval);
+
 		retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
 		retval.reloadFolderStructure(); // assign parents to the folders
 		LOG.info("Loaded workspace file " + workspaceFile);
@@ -465,7 +515,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		retval.fileManager.saveWorkspaceDirectlyAndWait();
 		retval.getWorkspaceSettings().setWorkspace(retval);
 		LOG.info("Created new workspace with workspace file " + workspaceFile + ", modid: "
-				+ workspaceSettings.getModID());
+				+ workspaceSettings.getModID() + ", generator: " + workspaceSettings.getCurrentGenerator());
 		return retval;
 	}
 
@@ -475,83 +525,20 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	// Below are methods that may still be used by some plugins
 
-	public void loadStoredDataFrom(Workspace other) {
+	/**
+	 * @param other The workspace to copy elements and settings from.
+	 * @apiNote This method performs sensitive operations on this workspace. Avoid using it!
+	 */
+	@SuppressWarnings("unused") public void loadStoredDataFrom(Workspace other) {
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
+		this.tag_elements = other.tag_elements;
 		this.language_map = other.language_map;
 		this.foldersRoot = other.foldersRoot;
 		this.mcreatorVersion = other.mcreatorVersion;
 		this.workspaceSettings = other.workspaceSettings;
 		this.workspaceSettings.setWorkspace(this);
-	}
-
-	@SuppressWarnings("unused") public void setFoldersRoot(FolderElement foldersRoot) {
-		this.foldersRoot = foldersRoot;
-		markDirty();
-	}
-
-	@SuppressWarnings("unused") public void updateModElement(ModElement element) {
-		for (ModElement el : mod_elements) {
-			if (el == element || el.getName().equals(element.getName())) {
-				el.loadDataFrom(element);
-				el.reloadElementIcon(); // update ME icon
-				el.getMCItems().forEach(mcItem -> mcItem.icon.getImage().flush()); // update MCItem icons
-
-				break; // there can be only one element with given name so no need to iterate further
-			}
-		}
-		markDirty();
-	}
-
-	@SuppressWarnings("unused")
-	public void updateSoundElement(SoundElement originalElement, SoundElement updatedElement) {
-		Set<SoundElement> tmp = new HashSet<>(sound_elements);
-		for (SoundElement el : tmp) {
-			if (el.getName().equals(originalElement.getName())) {
-				sound_elements.remove(el);
-				sound_elements.add(updatedElement);
-			}
-		}
-		markDirty();
-	}
-
-	@SuppressWarnings("unused")
-	public void updateVariableElement(VariableElement originalElement, VariableElement updatedElement) {
-		Set<VariableElement> tmp = new HashSet<>(variable_elements);
-		for (VariableElement el : tmp) {
-			if (el.getName().equals(originalElement.getName())) {
-				variable_elements.remove(el);
-				variable_elements.add(updatedElement);
-			}
-		}
-		markDirty();
-	}
-
-	@SuppressWarnings("unused") public void reloadFromFS() {
-		String workspace_string = FileIO.readFileToString(fileManager.getWorkspaceFile());
-		Workspace workspace_on_fs = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
-		loadStoredDataFrom(workspace_on_fs);
-		reloadModElements();
-		reloadFolderStructure();
-		LOG.info("Reloaded current workspace from the workspace file");
-	}
-
-	@SuppressWarnings("unused") public final static class VirtualWorkspace extends Workspace {
-
-		public VirtualWorkspace(Workspace original, String workspace_string) throws IOException {
-			super(null);
-			Workspace retval = WorkspaceFileManager.gson.fromJson(workspace_string, Workspace.class);
-			if (retval == null)
-				throw new IOException("Failed to parse workspace string");
-			this.loadStoredDataFrom(retval);
-			this.generator = new Generator(this);
-			this.generator.setGradleCache(this.generator.getGradleCache());
-			this.fileManager = original.getFileManager();
-			this.reloadModElements();
-			this.reloadFolderStructure();
-		}
-
 	}
 
 }

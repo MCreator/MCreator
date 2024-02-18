@@ -1,0 +1,1 @@
+Se questa opzione è abilitata, le fonti fluide possono creare più fonti, simili all'acqua. Ciò rende possibile avere una fonte infinita.

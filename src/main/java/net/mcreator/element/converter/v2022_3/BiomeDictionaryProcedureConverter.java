@@ -19,15 +19,10 @@
 
 package net.mcreator.element.converter.v2022_3;
 
-import com.google.gson.JsonElement;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.converter.IConverter;
+import net.mcreator.element.converter.ProcedureConverter;
 import net.mcreator.element.types.Procedure;
 import net.mcreator.util.BlocklyHelper;
 import net.mcreator.util.XMLUtil;
-import net.mcreator.workspace.Workspace;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -44,8 +39,7 @@ import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-public class BiomeDictionaryProcedureConverter implements IConverter {
-	private static final Logger LOG = LogManager.getLogger("BiomeDictionaryProcedureConverter");
+public class BiomeDictionaryProcedureConverter extends ProcedureConverter {
 
 	private static final Map<String, String> conversions = new HashMap<>() {{
 		put("FOREST", "is_forest");
@@ -84,22 +78,11 @@ public class BiomeDictionaryProcedureConverter implements IConverter {
 		put("OVERWORLD", "is_overworld");
 	}};
 
-	@Override
-	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
-		Procedure procedure = (Procedure) input;
-		try {
-			procedure.procedurexml = fixXML(procedure.procedurexml);
-		} catch (Exception e) {
-			LOG.warn("Failed to convert biome dictionary to tag for procedure " + input.getModElement().getName());
-		}
-		return procedure;
-	}
-
 	@Override public int getVersionConvertingTo() {
 		return 34;
 	}
 
-	protected String fixXML(String xml) throws Exception {
+	@Override protected String fixXML(Procedure procedure, String xml) throws Exception {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(new InputSource(new StringReader(xml)));
@@ -110,7 +93,7 @@ public class BiomeDictionaryProcedureConverter implements IConverter {
 		for (int i = 0; i < nodeList.getLength(); i++) {
 			Element element = (Element) nodeList.item(i);
 			String type = element.getAttribute("type");
-			if (type != null && type.equals("world_data_biomeat_dictionary")) {
+			if (type.equals("world_data_biomeat_dictionary")) {
 				String tagType = "minecraft:none";
 
 				Element biomedictField = XMLUtil.getFirstChildrenWithName(element, "field");

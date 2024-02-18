@@ -4,10 +4,12 @@
       "type": "input_value",
       "name": "entity",
       "check": "Entity"
+    },
+    {
+      "type": "field_data_list_dropdown",
+      "name": "gamemode",
+      "datalist": "gamemodes"
     }
-  ],
-  "extensions": [
-    "gamemode_list_provider"
   ],
   "inputsInline": true,
   "output": "Boolean",

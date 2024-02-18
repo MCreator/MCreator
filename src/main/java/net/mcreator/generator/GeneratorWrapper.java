@@ -24,7 +24,6 @@ import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
-import net.mcreator.workspace.elements.VariableElement;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -46,20 +45,12 @@ import java.util.stream.Collectors;
 		return generator.getGeneratorMinecraftVersion();
 	}
 
-	public int getStartIDFor(String baseType) {
-		return generator.getStartIDFor(baseType);
-	}
-
 	public String map(String rawName, String mappingMap) {
 		return new NameMapper(generator.getWorkspace(), mappingMap).getMapping(rawName);
 	}
 
 	public String map(String rawName, String mappingMap, int mappingTable) {
 		return new NameMapper(generator.getWorkspace(), mappingMap).getMapping(rawName, mappingTable);
-	}
-
-	public VariableElement getVariableElementByName(String elementName) {
-		return generator.getWorkspace().getVariableElementByName(elementName);
 	}
 
 	public Collection<String> sortByMappings(Collection<String> input, String mappingTable) {
@@ -97,7 +88,7 @@ import java.util.stream.Collectors;
 	 * @return The plain name of the element
 	 */
 	public static String getElementPlainName(String elementName) {
-		return StringUtils.substringBeforeLast(elementName.replace("CUSTOM:", ""), ".");
+		return StringUtils.substringBeforeLast(elementName.replace("CUSTOM:", "").replace(":Flowing", ""), ".");
 	}
 
 	public String getRegistryNameForModElement(String modElement) {
@@ -122,9 +113,9 @@ import java.util.stream.Collectors;
 	public String getResourceLocationForModElement(ModElement element) {
 		// check if we are dealing with namespaced element
 		if (NamespacedGeneratableElement.class.isAssignableFrom(element.getType().getModElementStorageClass())) {
-			GeneratableElement namespacedgeneratableemenet = element.getGeneratableElement();
-			if (namespacedgeneratableemenet instanceof NamespacedGeneratableElement) {
-				return ((NamespacedGeneratableElement) namespacedgeneratableemenet).getResourceLocation();
+			GeneratableElement generatableElement = element.getGeneratableElement();
+			if (generatableElement instanceof NamespacedGeneratableElement namespacedGeneratableElement) {
+				return namespacedGeneratableElement.getResourceLocation();
 			}
 		}
 

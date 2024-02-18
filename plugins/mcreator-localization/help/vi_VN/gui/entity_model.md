@@ -1,0 +1,1 @@
+Dùng giá trị trả về của quy trình được chọn để xác định mô hình sẽ được hiển thị. Giá trị trả về phải là một thực thể.

@@ -52,56 +52,52 @@ public class RSTAIcons {
 			return lookup_cache.get(imageIcon);
 
 		if (imageIcon.getDescription().contains("org/fife/rsta/ac/java")) {
-			return UIRES.get("rsta." + FilenameUtils.getName(imageIcon.getDescription()));
+			return UIRES.get("rsta." + FilenameUtils.getBaseName(imageIcon.getDescription()));
 		}
 
 		return imageIcon;
 	}
 
 	public static Icon rstaIconToThemeIcon(DecoratableIcon icon) {
-		if (lookup_cache.containsKey(icon))
-			return lookup_cache.get(icon);
+		return lookup_cache.computeIfAbsent(icon, key -> {
+			try {
+				Class<?> decoratableIconClass = Class.forName("org.fife.rsta.ac.java.DecoratableIcon");
 
-		try {
-			Class<?> decoratableIconClass = Class.forName("org.fife.rsta.ac.java.DecoratableIcon");
+				Field mainIconFiled = decoratableIconClass.getDeclaredField("mainIcon");
+				mainIconFiled.setAccessible(true);
+				Icon mainIcon = (Icon) mainIconFiled.get(key);
 
-			Field mainIconFiled = decoratableIconClass.getDeclaredField("mainIcon");
-			mainIconFiled.setAccessible(true);
-			Icon mainIcon = (Icon) mainIconFiled.get(icon);
+				DecoratableIcon newIcon;
+				if (mainIcon instanceof DecoratableIcon decoratableIcon) {
+					newIcon = new DecoratableIcon(rstaIconToThemeIcon(decoratableIcon));
+				} else if (mainIcon instanceof ImageIcon imageIcon) {
+					newIcon = new DecoratableIcon(rstaIconToThemeIcon(imageIcon));
+				} else {
+					newIcon = new DecoratableIcon(mainIcon);
+				}
 
-			DecoratableIcon newIcon;
-			if (mainIcon instanceof DecoratableIcon decoratableIcon) {
-				newIcon = new DecoratableIcon(rstaIconToThemeIcon(decoratableIcon));
-			} else if (mainIcon instanceof ImageIcon imageIcon) {
-				newIcon = new DecoratableIcon(rstaIconToThemeIcon(imageIcon));
-			} else {
-				newIcon = new DecoratableIcon(mainIcon);
-			}
+				Field decorationsFiled = decoratableIconClass.getDeclaredField("decorations");
+				decorationsFiled.setAccessible(true);
+				List<?> decorationsList = (List<?>) decorationsFiled.get(key);
 
-			Field decorationsFiled = decoratableIconClass.getDeclaredField("decorations");
-			decorationsFiled.setAccessible(true);
-			List<?> decorationsList = (List<?>) decorationsFiled.get(icon);
-
-			if (decorationsList != null) {
-				for (Object obj : decorationsList) {
-					if (obj instanceof DecoratableIcon decoratableIcon) {
-						newIcon.addDecorationIcon(rstaIconToThemeIcon(decoratableIcon));
-					} else if (obj instanceof ImageIcon imageIcon) {
-						newIcon.addDecorationIcon(rstaIconToThemeIcon(imageIcon));
-					} else if (obj instanceof Icon _icon) {
-						newIcon.addDecorationIcon(_icon);
+				if (decorationsList != null) {
+					for (Object obj : decorationsList) {
+						if (obj instanceof DecoratableIcon decoratableIcon) {
+							newIcon.addDecorationIcon(rstaIconToThemeIcon(decoratableIcon));
+						} else if (obj instanceof ImageIcon imageIcon) {
+							newIcon.addDecorationIcon(rstaIconToThemeIcon(imageIcon));
+						} else if (obj instanceof Icon _icon) {
+							newIcon.addDecorationIcon(_icon);
+						}
 					}
 				}
+
+				return newIcon;
+			} catch (Exception e) {
+				LOG.error("Failed to load icon: " + key, e);
+				return null;
 			}
-
-			lookup_cache.put(icon, newIcon);
-
-			return newIcon;
-		} catch (Exception e) {
-			LOG.error("Failed to load icon: " + icon, e);
-		}
-
-		return icon;
+		});
 	}
 
 }

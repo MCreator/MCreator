@@ -1,0 +1,27 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "damagesource",
+      "check": "DamageSource"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/null.png",
+      "width": 8,
+      "height": 24
+    }
+  ],
+  "inputsInline": true,
+  "output": "Entity",
+  "colour": "195",
+  "mcreator": {
+    "toolbox_id": "damagesources",
+    "toolbox_init": [
+      "<value name=\"damagesource\"><block type=\"damagesource_from_deps\"></block></value>"
+    ],
+    "inputs": [
+      "damagesource"
+    ]
+  }
+}

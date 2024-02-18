@@ -24,6 +24,7 @@ import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.imageio.ImageIO;
@@ -81,7 +82,7 @@ public class LocaleEntry extends PreferencesEntry<Locale> {
 		public Component getListCellRendererComponent(JList<? extends Locale> list, Locale value, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			setBackground(Theme.current().getInterfaceAccentColor());
 			setForeground(Color.white);
 			setBorder(new EmptyBorder(0, 1, 0, 0));
 

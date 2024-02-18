@@ -6,21 +6,18 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/block/entity/@NAMEBlockEntity.java"
 
   # Worldgen
-  - template: plant/plantgen.java.ftl
-    condition: doesGenerateInWorld()
-    name: "@SRCROOT/@BASEPACKAGEPATH/world/features/plants/@NAMEFeature.java"
   - template: json/block_feature_biome_modifier.json.ftl
     writer: json
-    condition: doesGenerateInWorld()
+    condition: generateFeature
     name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
     variables: "step=vegetal_decoration"
   - template: plant/configured_plantgen.json.ftl
     writer: json
-    condition: doesGenerateInWorld()
+    condition: generateFeature
     name: "@MODDATAROOT/worldgen/configured_feature/@registryname.json"
   - template: plant/placed_plantgen.json.ftl
     writer: json
-    condition: doesGenerateInWorld()
+    condition: generateFeature
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
 
   # Plant item template

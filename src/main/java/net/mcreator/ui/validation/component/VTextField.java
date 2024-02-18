@@ -20,6 +20,7 @@ package net.mcreator.ui.validation.component;
 
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 
@@ -108,12 +109,12 @@ public class VTextField extends JTextField implements IValidable {
 			g.setColor(new Color(67, 67, 67, 255));
 			g.fillRect(2, 2, getWidth() - 16, 11);
 			g.setFont(getFont().deriveFont(10.0f));
-			g.setColor(Color.white);
+			g.setColor(Theme.current().getForegroundColor());
 			String message = "This input field is validated";
 			if (customDefaultMessage != null)
 				message = customDefaultMessage;
 			if (currentValidationResult != null && currentValidationResult.getMessage() != null
-					&& !currentValidationResult.getMessage().equals(""))
+					&& !currentValidationResult.getMessage().isEmpty())
 				message = currentValidationResult.getMessage();
 			g.drawString(message, 3, 11);
 		}

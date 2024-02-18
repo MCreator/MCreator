@@ -9,17 +9,17 @@ jobs:
   publish:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         name: Checkout Repository
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          java-version: '17.0.7+7'
-          distribution: 'adopt'
+          java-version: '17.0.10+7'
+          distribution: 'temurin'
       - name: Generate Javadoc
         run: ./gradlew javadoc
       - name: Deploy Javadoc
-        uses: Pylo/github-pages-deploy-action@v4.4.1
+        uses: JamesIves/github-pages-deploy-action@65b5dfd4f5bcd3a7403bbc2959c144256167464e
         with:
           branch: javadoc
           clean: true

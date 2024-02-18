@@ -26,7 +26,9 @@ import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.events.WorkspaceSelectorLoadedEvent;
+import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.SplashScreen;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.JEmptyBox;
@@ -36,8 +38,11 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
+import net.mcreator.ui.init.AppIcon;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.notifications.INotificationConsumer;
 import net.mcreator.ui.notifications.NotificationsRenderer;
 import net.mcreator.util.DesktopUtils;
@@ -85,7 +90,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		this.application = application;
 
 		setTitle("MCreator " + Launcher.version.getMajorString());
-		setIconImage(UIRES.getAppIcon().getImage());
+		setIconImages(AppIcon.getAppIcons());
 		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 
 		if (application != null)
@@ -98,7 +103,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		JPanel actions = new JPanel(new BorderLayout(0, 6));
 
 		JButton newWorkspace = mainWorkspaceButton(L10N.t("dialog.workspace_selector.new_workspace"),
-				UIRES.get("addwrk"), e -> {
+				UIRES.get("wrk_add"), e -> {
 					NewWorkspaceDialog newWorkspaceDialog = new NewWorkspaceDialog(this);
 					if (newWorkspaceDialog.getWorkspaceFile() != null)
 						workspaceOpenListener.workspaceOpened(newWorkspaceDialog.getWorkspaceFile());
@@ -126,8 +131,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		});
 
 		JPanel logoPanel = new JPanel(new BorderLayout(5, 5));
-		JLabel logo = new JLabel(new ImageIcon(
-				ImageUtils.resizeAA(UIRES.getBuiltIn("logo").getImage(), 250, (int) (250 * (63 / 350.0)))));
+		JLabel logo = new JLabel(UIRES.SVG.getBuiltIn("logo", 250, (int) (250 * (63 / 350.0))));
 		logo.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		logo.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
@@ -147,7 +151,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		donate.setIcon(UIRES.get("donate"));
 		donate.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(donate, 13);
-		donate.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		donate.setForeground(Theme.current().getForegroundColor());
 		donate.setBorder(BorderFactory.createEmptyBorder());
 		donate.setHorizontalTextPosition(JLabel.LEFT);
 		donate.addMouseListener(new MouseAdapter() {
@@ -168,7 +172,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 							"/flags/" + L10N.getLocale().toString().split("_")[1].toUpperCase(Locale.ENGLISH) + ".png";
 					BufferedImage image = ImageIO.read(
 							Objects.requireNonNull(getClass().getResourceAsStream(flagpath)));
-					g.drawImage(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11)), getWidth() - 15, 5, this);
+					g.drawImage(ImageUtils.crop(image, new Rectangle(1, 2, 14, 11)), getWidth() - 15, 4, this);
 				} catch (Exception ignored) { // flag not found, ignore
 				}
 			}
@@ -180,7 +184,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		prefs.setIcon(UIRES.get("settings"));
 		prefs.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		ComponentUtils.deriveFont(prefs, 13);
-		prefs.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		prefs.setForeground(Theme.current().getForegroundColor());
 		prefs.setBorder(BorderFactory.createEmptyBorder());
 		prefs.setHorizontalTextPosition(JLabel.LEFT);
 		prefs.addMouseListener(new MouseAdapter() {
@@ -200,7 +204,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			}
 		});
 		ComponentUtils.deriveFont(version, 13);
-		version.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		version.setForeground(Theme.current().getForegroundColor());
 		version.setHorizontalTextPosition(SwingConstants.LEFT);
 		version.setIcon(UIRES.get("info"));
 		version.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -217,7 +221,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		add("Center", centerComponent);
 
-		recentPanel.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		recentPanel.setBackground(Theme.current().getSecondAltBackgroundColor());
 		recentPanel.setPreferredSize(new Dimension(225, 10));
 
 		initWebsitePanel();
@@ -329,7 +333,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			DefaultListModel<RecentWorkspaceEntry> defaultListModel = new DefaultListModel<>();
 			recentWorkspaces.getList().forEach(defaultListModel::addElement);
 			JList<RecentWorkspaceEntry> recentsList = new JList<>(defaultListModel);
-			recentsList.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			recentsList.setBackground(Theme.current().getSecondAltBackgroundColor());
 			recentsList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 			recentsList.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent mouseEvent) {
@@ -376,14 +380,17 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			recentsList.setCellRenderer(new RecentWorkspacesRenderer());
 			JScrollPane scrollPane = new JScrollPane(recentsList);
 			scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+			scrollPane.getVerticalScrollBar()
+					.setUI(new SlickDarkScrollBarUI(Theme.current().getSecondAltBackgroundColor(),
+							Theme.current().getAltBackgroundColor(), scrollPane.getVerticalScrollBar()));
 			recentPanel.add(scrollPane);
 		} else if (recentWorkspaces == null) {
 			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces_loaded");
-			norecents.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+			norecents.setForeground(Theme.current().getAltForegroundColor());
 			recentPanel.add(PanelUtils.totalCenterInPanel(norecents));
 		} else {
 			JLabel norecents = L10N.label("dialog.workspace_selector.no_workspaces");
-			norecents.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+			norecents.setForeground(Theme.current().getAltForegroundColor());
 			recentPanel.add(PanelUtils.totalCenterInPanel(norecents));
 		}
 
@@ -399,7 +406,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private JButton mainWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
 		JButton newWorkspace = new JButton(text);
 		ComponentUtils.deriveFont(newWorkspace, 15);
-		newWorkspace.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		newWorkspace.setForeground(Theme.current().getForegroundColor());
 		newWorkspace.setPreferredSize(new Dimension(240, 48));
 		newWorkspace.setMargin(new Insets(0, 0, 0, 0));
 		newWorkspace.setIcon(icon);
@@ -421,7 +428,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	public void addWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
 		JButton workspaceButton = new JButton(text);
 		ComponentUtils.deriveFont(workspaceButton, 11);
-		workspaceButton.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		workspaceButton.setForeground(Theme.current().getForegroundColor());
 		workspaceButton.setPreferredSize(new Dimension(240, 22));
 		workspaceButton.setMargin(new Insets(0, 0, 0, 0));
 		workspaceButton.setIcon(
@@ -438,18 +445,45 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	private void initWebsitePanel() {
 		CompletableFuture<String[]> newsFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getWebsiteNews(newsFuture);
-		JLabel nov = new JLabel("<html>" + L10N.t("dialog.workspace_selector.news")
-				+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + L10N.t(
+		JLabel nov = new JLabel("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
+				+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + L10N.t(
 				"dialog.workspace_selector.webdata.loading"));
 		nov.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		nov.setForeground(new Color(0xf5f5f5));
 		newsFuture.whenComplete((news, throwable) -> SwingUtilities.invokeLater(() -> {
-			if (news != null)
-				nov.setText("<html>" + L10N.t("dialog.workspace_selector.news")
-						+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
+			if (news != null) {
+				nov.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.news")
+						+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
 						news[0], 43));
-			else
+
+				if (PreferencesManager.PREFERENCES.notifications.showWebsiteNewsNotifications.get()) {
+					String id = news[4];
+
+					// Do not show notification the first time
+					if (PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().isBlank())
+						PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id);
+
+					if (!PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.get().equals(id)) {
+						String title = L10N.t("notification.news.title", news[0]);
+						String link = news[1];
+						String description = StringUtils.justifyText(StringUtils.abbreviateString(news[2], 300), 50,
+								"<br>");
+						ImageIcon newsIcon = null;
+						if (news[3] != null && !news[3].isBlank()) {
+							newsIcon = WebIO.getIconFromURL(MCreatorApplication.SERVER_DOMAIN + news[3], 3 * 60, 60,
+									null);
+						}
+						addNotification(title, newsIcon, description,
+								new NotificationsRenderer.ActionButton(L10N.t("notification.news.read_more"), e -> {
+									DesktopUtils.browseSafe(link);
+									PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id);
+								}), new NotificationsRenderer.ActionButton(L10N.t("notification.news.hide"),
+										e -> PreferencesManager.PREFERENCES.hidden.lastWebsiteNewsRead.set(id)));
+					}
+				}
+			} else {
 				nov.setText("");
+			}
 			nov.addMouseListener(new MouseAdapter() {
 				@Override public void mouseClicked(MouseEvent en) {
 					if (news != null)
@@ -460,8 +494,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		CompletableFuture<String[]> motwFuture = new CompletableFuture<>();
 		MCreatorApplication.WEB_API.getModOfTheWeekData(motwFuture);
-		JLabel lab3 = new JLabel("<html>" + L10N.t("dialog.workspace_selector.motw")
-				+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + L10N.t(
+		JLabel lab3 = new JLabel("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.motw")
+				+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + L10N.t(
 				"dialog.workspace_selector.webdata.loading"));
 		lab3.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
 		lab3.setForeground(new Color(0xf5f5f5));
@@ -476,12 +510,13 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 						DesktopUtils.browseSafe(motw[1]);
 				}
 			});
-			if (motw != null)
-				lab3.setText("<html>" + L10N.t("dialog.workspace_selector.motw")
-						+ "<br><font style=\"font-size: 14px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
+			if (motw != null) {
+				lab3.setText("<html><font style=\"font-size: 9px;\">" + L10N.t("dialog.workspace_selector.motw")
+						+ "<br></font><font style=\"font-size: 15px; color: #f5f5f5;\">" + StringUtils.abbreviateString(
 						motw[0], 33) + "&nbsp;&nbsp;&nbsp;&nbsp;");
-			else
+			} else {
 				lab3.setText("");
+			}
 			ImageIcon defaultIcon;
 			if (motw != null && (defaultIcon = WebIO.getIconFromURL(motw[4], 48, 48, null, true)) != null)
 				lab2.setIcon(defaultIcon);
@@ -489,22 +524,19 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		JComponent south = PanelUtils.westAndEastElement(nov, motwpan, 20, 20);
 		south.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 10));
-		JComponent hol = PanelUtils.gridElements(1, 1, south);
-		hol.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
 
 		JPanel soim;
 		if (!Launcher.version.isSnapshot()) {
-			soim = new ImagePanel(ImageUtils.darken(ImageUtils.toBufferedImage(UIRES.getBuiltIn("splash").getImage())));
+			soim = new ImagePanel(SplashScreen.getSplashImage(true));
 			((ImagePanel) soim).setFitToWidth(true);
-			((ImagePanel) soim).setOffsetY(-270);
+			((ImagePanel) soim).setOffsetY(-400);
 		} else {
 			soim = new JPanel();
-			soim.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+			soim.setBackground(Theme.current().getSecondAltBackgroundColor());
 		}
 
 		soim.setLayout(new BorderLayout());
-		soim.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
-
+		soim.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 		soim.add(south);
 
 		add("South", soim);

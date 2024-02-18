@@ -30,6 +30,7 @@ package net.mcreator.integration.generator;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
+import net.mcreator.element.parts.IWorkspaceDependent;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.integration.TestWorkspaceDataProvider;
@@ -42,8 +43,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GTModElements {
 
@@ -62,6 +62,10 @@ public class GTModElements {
 					+ " with " + modElementExamples.size() + " variants");
 
 			modElementExamples.forEach(generatableElement -> {
+				// Check if all workspace fields are not null (from the TestWorkspaceDataProvider)
+				IWorkspaceDependent.processWorkspaceDependentObjects(generatableElement,
+						workspaceDependent -> assertNotNull(workspaceDependent.getWorkspace()));
+
 				ModElement modElement = generatableElement.getModElement();
 
 				workspace.addModElement(modElement);
@@ -69,6 +73,8 @@ public class GTModElements {
 				assertTrue(workspace.getGenerator().generateElement(generatableElement));
 
 				workspace.getModElementManager().storeModElement(generatableElement);
+
+				workspace.getModElementManager().storeModElementPicture(generatableElement);
 
 				List<File> modElementFiles = workspace.getGenerator()
 						.getModElementGeneratorTemplatesList(generatableElement).stream()

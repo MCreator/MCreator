@@ -1,9 +1,15 @@
 {
   "args0": [
     {
-      "type": "field_data_list_selector",
+      "type": "input_value",
       "name": "damagesource",
-      "datalist": "damagesources"
+      "check": "DamageSource"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "damagetype",
+      "datalist": "damagesources",
+      "customEntryProviders": "damagetype"
     }
   ],
   "inputsInline": true,
@@ -11,14 +17,14 @@
   "colour": "%{BKY_LOGIC_HUE}",
   "mcreator": {
     "toolbox_id": "logicoperations",
-    "fields": [
+    "toolbox_init": [
+      "<value name=\"damagesource\"><block type=\"damagesource_from_deps\"></block></value>"
+    ],
+    "inputs": [
       "damagesource"
     ],
-    "dependencies": [
-      {
-        "name": "damagesource",
-        "type": "damagesource"
-      }
+    "fields": [
+      "damagetype"
     ]
   }
 }

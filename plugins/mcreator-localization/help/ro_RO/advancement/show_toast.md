@@ -1,0 +1,1 @@
+Arată progresul în dreapta sus al ecranului atunci când jucătorul finalizează progresia.

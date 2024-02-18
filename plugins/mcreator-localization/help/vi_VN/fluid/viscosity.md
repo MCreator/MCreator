@@ -1,0 +1,1 @@
+Độ nhớt là độ khó khăn khi di chuyển trong chất lỏng.

@@ -1,0 +1,48 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "customEntity",
+      "datalist": "customEntity"
+    },
+    {
+      "type": "input_dummy",
+      "name": "accessorField"
+    },
+    {
+      "type": "input_value",
+      "name": "value",
+      "check": "String"
+    }
+  ],
+  "extensions": [
+    "entity_data_string_list_provider"
+  ],
+  "inputsInline": true,
+  "colour": "%{BKY_TEXTS_HUE}",
+  "previousStatement": null,
+  "nextStatement": null,
+  "mcreator": {
+    "group": "synced_data",
+    "toolbox_id": "entitymanagement",
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
+      "<value name=\"value\"><block type=\"text\"><field name=\"TEXT\">value</field></block></value>",
+      "~<field name=\"customEntity\">CUSTOM:Examplelivingentity4</field>",
+      "~<field name=\"accessor\">String</field>"
+    ],
+    "fields": [
+      "customEntity",
+      "accessor"
+    ],
+    "inputs": [
+      "entity",
+      "value"
+    ]
+  }
+}

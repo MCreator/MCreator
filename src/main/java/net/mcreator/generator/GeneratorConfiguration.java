@@ -18,15 +18,16 @@
 
 package net.mcreator.generator;
 
-import com.esotericsoftware.yamlbeans.YamlException;
-import com.esotericsoftware.yamlbeans.YamlReader;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.mapping.MappingLoader;
 import net.mcreator.generator.template.TemplateGeneratorConfiguration;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.util.YamlUtil;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.snakeyaml.engine.v2.api.Load;
+import org.snakeyaml.engine.v2.exceptions.YamlEngineException;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -45,6 +46,13 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				.findFirst().orElse(null);
 	}
 
+	@Nullable
+	public static GeneratorConfiguration getRecommendedGeneratorForBaseLanguage(
+			Collection<GeneratorConfiguration> generatorConfigurations, GeneratorFlavor.BaseLanguage baseLanguage) {
+		return generatorConfigurations.stream().filter(gc -> gc.getGeneratorFlavor().getBaseLanguage() == baseLanguage)
+				.sorted().findFirst().orElse(null);
+	}
+
 	private Map<?, ?> generatorConfig;
 	private final String generatorName;
 
@@ -56,20 +64,25 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	private final GeneratorVariableTypes generatorVariableTypes;
 
-	private final Map<String, TemplateGeneratorConfiguration> templateGeneratorConfigs = new HashMap<>();
+	private final Map<String, TemplateGeneratorConfiguration> templateGeneratorConfigs = new ConcurrentHashMap<>();
+
+	// Cached values
+	private final List<String> compatibleJavaModelKeys = new ArrayList<>();
+	private final List<String> compatibleJavaModelRequirementKeyWords = new ArrayList<>();
+	private final List<String> importFormatterDuplicatesWhitelist = new ArrayList<>();
+	private final Map<String, String> importFormatterPriorityImports = new HashMap<>();
 
 	public GeneratorConfiguration(String generatorName) {
 		this.generatorName = generatorName;
 
 		String config = FileIO.readResourceToString(PluginLoader.INSTANCE, "/" + generatorName + "/generator.yaml");
-		YamlReader reader = new YamlReader(config);
 
 		// load generator configuration
 		try {
-			generatorConfig = (Map<?, ?>) reader.read();
+			generatorConfig = (Map<?, ?>) new Load(YamlUtil.getSimpleLoadSettings()).loadFromString(config);
 			generatorConfig = new ConcurrentHashMap<>(
-					generatorConfig); // make this map concurent, cache can be reused by multiple instances
-		} catch (YamlException e) {
+					generatorConfig); // make this map concurrent, cache can be reused by multiple instances
+		} catch (YamlEngineException e) {
 			LOG.fatal("[" + generatorName + "] Error: " + e.getMessage());
 		}
 
@@ -82,6 +95,43 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		// load global variable definitions
 		this.generatorVariableTypes = new GeneratorVariableTypes(this);
 
+		// Preprocess compatible java model keys
+		compatibleJavaModelKeys.add(getJavaModelsKey());
+		if (generatorConfig.get("java_models") != null) {
+			if (((Map<?, ?>) generatorConfig.get("java_models")).get("compatible") != null) {
+				compatibleJavaModelKeys.addAll(
+						((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("compatible")).stream()
+								.map(Object::toString).toList());
+			}
+		}
+
+		// Preprocess compatible java model requirement keywords
+		if (generatorConfig.get("java_models") != null) {
+			if (((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words") != null) {
+				compatibleJavaModelRequirementKeyWords.addAll(
+						((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words")).stream()
+								.map(Object::toString).toList());
+			}
+		}
+
+		// Preprocess import formatter duplicates whitelist
+		if (generatorConfig.get("import_formatter") != null) {
+			if (((Map<?, ?>) generatorConfig.get("import_formatter")).get("duplicates_whitelist") != null) {
+				importFormatterDuplicatesWhitelist.addAll(
+						((List<?>) ((Map<?, ?>) generatorConfig.get("import_formatter")).get(
+								"duplicates_whitelist")).stream().map(Object::toString).toList());
+			}
+		}
+
+		// Preprocess import formatter priority imports
+		if (generatorConfig.get("import_formatter") != null) {
+			if (((Map<?, ?>) generatorConfig.get("import_formatter")).get("priority_imports") != null) {
+				((Map<?, ?>) ((Map<?, ?>) generatorConfig.get("import_formatter")).get("priority_imports")).forEach(
+						(k, v) -> importFormatterPriorityImports.put("." + k, v + "." + k));
+			}
+		}
+
+		// compute generator stats
 		this.generatorStats = new GeneratorStats(this);
 	}
 
@@ -117,16 +167,14 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		return (String) generatorConfig.get("subversion");
 	}
 
-	public Map<?, ?> getStardIDMap() {
-		return generatorConfig.get("start_id_map") != null ?
-				(Map<?, ?>) generatorConfig.get("start_id_map") :
-				new HashMap<>();
-	}
-
 	public Map<?, ?> getLanguageFileSpecification() {
 		return generatorConfig.get("language_file") != null ?
 				(Map<?, ?>) generatorConfig.get("language_file") :
 				new HashMap<>();
+	}
+
+	public Map<?, ?> getTagsSpecification() {
+		return generatorConfig.get("tags") != null ? (Map<?, ?>) generatorConfig.get("tags") : new HashMap<>();
 	}
 
 	public List<?> getBaseTemplates() {
@@ -168,31 +216,19 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	}
 
 	public List<String> getCompatibleJavaModelKeys() {
-		List<String> retval = new ArrayList<>();
-		retval.add(getJavaModelsKey());
-
-		if (generatorConfig.get("java_models") != null) {
-			if (((Map<?, ?>) generatorConfig.get("java_models")).get("compatible") != null) {
-				retval.addAll(((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("compatible")).stream()
-						.map(Object::toString).toList());
-			}
-		}
-
-		return retval;
+		return compatibleJavaModelKeys;
 	}
 
 	public List<String> getJavaModelRequirementKeyWords() {
-		List<String> retval = new ArrayList<>();
+		return compatibleJavaModelRequirementKeyWords;
+	}
 
-		if (generatorConfig.get("java_models") != null) {
-			if (((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words") != null) {
-				retval.addAll(
-						((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words")).stream()
-								.map(Object::toString).toList());
-			}
-		}
+	public List<String> getImportFormatterDuplicatesWhitelist() {
+		return importFormatterDuplicatesWhitelist;
+	}
 
-		return retval;
+	public Map<String, String> getImportFormatterPriorityImports() {
+		return importFormatterPriorityImports;
 	}
 
 	public String getGeneratorName() {
@@ -230,13 +266,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	}
 
 	public TemplateGeneratorConfiguration getTemplateGenConfigFromName(String name) {
-		if (templateGeneratorConfigs.containsKey(name))
-			return templateGeneratorConfigs.get(name);
-		else {
-			TemplateGeneratorConfiguration tpl = new TemplateGeneratorConfiguration(this, name);
-			templateGeneratorConfigs.put(name, tpl);
-			return tpl;
-		}
+		return templateGeneratorConfigs.computeIfAbsent(name, key -> new TemplateGeneratorConfiguration(this, key));
 	}
 
 	public GeneratorVariableTypes getVariableTypes() {
@@ -286,4 +316,5 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 			return o.getGeneratorStats().getStatus().ordinal() - generatorStats.getStatus().ordinal();
 		}
 	}
+
 }

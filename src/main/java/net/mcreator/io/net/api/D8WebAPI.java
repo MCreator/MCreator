@@ -55,7 +55,7 @@ public class D8WebAPI implements IWebAPI {
 		CookieHandler.setDefault(null);
 
 		String appData = WebIO.readURLToString(MCreatorApplication.SERVER_DOMAIN + "/repository");
-		if (appData.equals(""))
+		if (appData.isEmpty())
 			return false;
 
 		updateInfo = new Gson().fromJson(appData, UpdateInfo.class);
@@ -76,8 +76,8 @@ public class D8WebAPI implements IWebAPI {
 		try {
 			DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 			DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-			if (!newsXML.equals("")) {
-				news = new String[2];
+			if (!newsXML.isEmpty()) {
+				news = new String[5];
 				InputSource is = new InputSource(new StringReader(newsXML));
 				Document doc = dBuilder.parse(is);
 				doc.getDocumentElement().normalize();
@@ -90,12 +90,18 @@ public class D8WebAPI implements IWebAPI {
 							.getNodeValue();
 					news[1] = ((Element) node).getElementsByTagName("link").item(1).getChildNodes().item(0)
 							.getNodeValue();
+					news[2] = ((Element) node).getElementsByTagName("description").item(1).getChildNodes().item(0)
+							.getNodeValue();
+					news[3] = ((Element) node).getElementsByTagName("dc:creator").item(0).getChildNodes().item(0)
+							.getNodeValue();
+					news[4] = ((Element) node).getElementsByTagName("guid").item(0).getChildNodes().item(0)
+							.getNodeValue();
 				}
 			}
 
 			dbFactory = DocumentBuilderFactory.newInstance();
 			dBuilder = dbFactory.newDocumentBuilder();
-			if (!motwXML.equals("")) {
+			if (!motwXML.isEmpty()) {
 				motw = new String[5];
 				InputSource is = new InputSource(new StringReader(motwXML));
 				Document doc = dBuilder.parse(is);

@@ -25,9 +25,9 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,44 +38,60 @@ class ModElementCodeDropdown extends JPopupMenu {
 			List<GeneratorTemplate> modElementGlobalFiles, List<GeneratorTemplatesList> modElementListFiles) {
 		this.mcreator = mcreator;
 		setBorder(BorderFactory.createEmptyBorder());
-		setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
+		setBackground((Theme.current().getAltBackgroundColor()).darker());
 
-		// add regular files to the dropdown
-		for (GeneratorTemplate modElementFile : modElementFiles)
-			add(modElementFileMenuItem(modElementFile));
+		int entryCounter = 0;
+
+		// add regular files to the dropdown (if any)
+		for (GeneratorTemplate modElementFile : modElementFiles) {
+			if (!modElementFile.isHidden()) {
+				add(modElementFileMenuItem(modElementFile));
+				entryCounter++;
+			}
+		}
 
 		// add global files to the dropdown (if any)
-		if (!modElementGlobalFiles.isEmpty()) {
-			if (!modElementFiles.isEmpty())
-				addSeparator();
+		boolean separatorPlaceFlag = entryCounter > 0;
+		for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles) {
+			if (!modElementGlobalFile.isHidden()) {
+				// if there were entries before, add separator on the top, then prevent this from happening again by setting hasEntriesAbove to false
+				if (separatorPlaceFlag) {
+					addSeparator();
+					separatorPlaceFlag = false;
+				}
 
-			for (GeneratorTemplate modElementGlobalFile : modElementGlobalFiles)
 				add(modElementFileMenuItem(modElementGlobalFile));
+				entryCounter++;
+			}
 		}
 
 		// add list files to the dropdown (if any)
-		if (!modElementListFiles.isEmpty()) {
-			if (modElementFiles.size() + modElementGlobalFiles.size() > 0)
-				addSeparator();
+		separatorPlaceFlag = entryCounter > 0;
+		for (GeneratorTemplatesList list : modElementListFiles) {
+			if (!list.templates().isEmpty()) {
+				JMenu listMenu = new JMenu(list.groupName());
+				listMenu.setIcon(UIRES.get("16px.list"));
+				listMenu.setBackground((Theme.current().getAltBackgroundColor()).darker());
+				listMenu.setForeground(Theme.current().getForegroundColor());
+				listMenu.setIconTextGap(8);
+				listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
 
-			for (GeneratorTemplatesList list : modElementListFiles) {
-				if (!list.templates().isEmpty()) {
-					JMenu listMenu = new JMenu(list.groupName());
-					listMenu.setIcon(UIRES.get("16px.list.gif"));
-					listMenu.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-					listMenu.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-					listMenu.setIconTextGap(8);
-					listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
+				for (int i = 0; i < list.listData().size(); i++) {
+					if (i > 0 && listMenu.getMenuComponents().length > 0 && !list.templates().get(i).isEmpty())
+						listMenu.addSeparator(); // separate files generated for different list items
 
-					for (int i = 0; i < list.listData().size(); i++) {
-						if (i > 0 && listMenu.getMenuComponents().length > 0 && !list.templates().get(i).isEmpty())
-							listMenu.addSeparator(); // separate files generated for different list items
+					list.templates().get(i).stream().filter(e -> !e.isHidden()).map(this::modElementFileMenuItem)
+							.forEach(listMenu::add);
+				}
 
-						list.templates().get(i).stream().map(this::modElementFileMenuItem).forEach(listMenu::add);
+				if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem)) {
+					// if there were entries before, add separator on the top, then prevent this from happening again by setting hasEntriesAbove to false
+					if (separatorPlaceFlag) {
+						addSeparator();
+						separatorPlaceFlag = false;
 					}
 
-					if (Arrays.stream(listMenu.getMenuComponents()).anyMatch(e -> e instanceof JMenuItem))
-						add(listMenu);
+					add(listMenu);
 				}
 			}
 		}
@@ -86,8 +102,8 @@ class ModElementCodeDropdown extends JPopupMenu {
 				"<html>" + template.getFile().getName() + "<br><small color=#666666>" + mcreator.getWorkspace()
 						.getFolderManager().getPathInWorkspace(template.getFile()));
 		item.setIcon(FileIcons.getIconForFile(template.getFile()));
-		item.setBackground(((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker());
-		item.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		item.setBackground((Theme.current().getAltBackgroundColor()).darker());
+		item.setForeground(Theme.current().getForegroundColor());
 		item.setIconTextGap(8);
 		item.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
 		item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, template.getFile()));

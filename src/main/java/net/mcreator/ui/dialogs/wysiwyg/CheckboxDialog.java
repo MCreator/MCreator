@@ -93,7 +93,7 @@ public class CheckboxDialog extends AbstractWYSIWYGDialog<Checkbox> {
 			if (nameField.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
 				setVisible(false);
 				String checkBoxName = nameField.getText();
-				if (!checkBoxName.equals("")) {
+				if (!checkBoxName.isEmpty()) {
 					if (checkbox == null) {
 						Checkbox component = new Checkbox(checkBoxName, 0, 0, checkboxText.getText(),
 								isCheckedProcedure.getSelectedProcedure());

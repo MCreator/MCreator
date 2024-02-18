@@ -1,13 +1,13 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
 status: lts
-buildfileversion: 45.1.0
+buildfileversion: 45.2.0
 
 import:
   - datapack-1.19.4
 
 java_models:
   key: mojmap-1.19.x
-  compatible: [mojmap-1.17.x, mojmap-1.18.x]
+  compatible: [mojmap-1.17.x, mojmap-1.18.x, mojmap-1.20.x]
   requested_key_words: [ModelPart, ~ModelRenderer]
 
 # gradle task definitions
@@ -16,6 +16,16 @@ gradle:
   run_client: runClient
   run_server: runServer
   export_file: "build/libs/modid-1.0.jar"
+
+import_formatter:
+  duplicates_whitelist:
+    - java.util
+    - net.minecraft
+  priority_imports:
+    Material: net.minecraft.world.level.material
+    Nullable: javax.annotation
+    Codec: com.mojang.serialization
+    SoundEvent: net.minecraft.sounds
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -63,7 +73,7 @@ base_templates:
     name: "@RESROOT/META-INF/accesstransformer.cfg"
     condition_any:
       - ${w.hasElementsOfType('feature')}
-      - hasBiomesInVanillaDimensions()
+      - "${w.getGElementsOfType('biome')?filter(e -> e.spawnBiome || e.spawnInCaves || e.spawnBiomeNether)?size != 0}"
   - template: elementinits/javamodels.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameModels.java"
     condition: hasJavaModels()
@@ -73,6 +83,10 @@ sources_setup_tasks:
     type: JAVA_viatemplate
     template: javamodel.java.ftl
     to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+
+tags:
+  template: tags.json.ftl # loaded from datapack generator
+  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
 
 language_file:
   format: json

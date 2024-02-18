@@ -19,18 +19,15 @@
 
 package net.mcreator.element;
 
+import java.util.Locale;
+
 public enum BaseType {
 
 	// @formatter:off
-	ARMOR,
-	BIOME,
 	BLOCK,
 	BLOCKENTITY,
-	DATAPACK,
-	ENTITY,
-	GUI,
 	ITEM,
-	OTHER,
+	ENTITY,
 	FEATURE;
 	// @formatter:on
 
@@ -41,7 +38,7 @@ public enum BaseType {
 		if (this == BLOCKENTITY)
 			return "blockentities";
 
-		return name() + "s";
+		return name().toLowerCase(Locale.ENGLISH) + "s";
 	}
 
 }

@@ -1,0 +1,1 @@
+Questo parametro controlla come il blocco reagisce alle esplosioni. Un valore più alto rende il blocco più resistente alle esplosioni.

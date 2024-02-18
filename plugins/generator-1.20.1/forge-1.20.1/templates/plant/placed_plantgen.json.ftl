@@ -7,7 +7,7 @@
             "count": ${data.frequencyOnChunks}
         },
         </#if>
-        <#if (data.plantType == "normal" && data.staticPlantGenerationType == "Flower") || (data.plantType == "double" && data.doublePlantGenerationType == "Flower") || data.plantType == "growapable">
+        <#if ((data.plantType == "normal" || data.plantType == "double") && data.generationType == "Flower") || data.plantType == "growapable">
         {
             "type": "minecraft:rarity_filter",
             "chance": 32
@@ -32,7 +32,7 @@
         <#else>
     	{
     	    "type": "minecraft:heightmap",
-    	    <#if (data.plantType == "normal" && data.staticPlantGenerationType == "Grass") || (data.plantType == "double" && data.doublePlantGenerationType == "Grass") || data.plantType == "growapable">
+    	    <#if ((data.plantType == "normal" || data.plantType == "double") && data.generationType == "Grass") || data.plantType == "growapable">
     	    "heightmap": "MOTION_BLOCKING"
     	    <#else>
     	    "heightmap": "WORLD_SURFACE_WG"

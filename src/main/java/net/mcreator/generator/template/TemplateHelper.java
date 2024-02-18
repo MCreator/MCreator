@@ -55,6 +55,14 @@ import java.util.Random;
 		return new Random(hash).nextLong();
 	}
 
+	public int randompositiveint(String seed) {
+		long hash = 0;
+		for (char c : seed.toCharArray()) {
+			hash = 31L * hash + c;
+		}
+		return new Random(hash).nextInt(Integer.MAX_VALUE);
+	}
+
 	public String colorToHexString(Color color) {
 		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 	}

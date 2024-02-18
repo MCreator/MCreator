@@ -1,0 +1,1 @@
+Questo parametro imposta la salute iniziale (e massima) del mob. 2 salute = 1 cuore

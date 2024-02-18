@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.Overlay;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
@@ -33,9 +34,12 @@ import net.mcreator.util.ListUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.io.File;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Collections;
 import java.util.stream.Collectors;
 
@@ -48,7 +52,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 	public OverlayGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
-		super.finalizeGUI(false);
+		super.finalizeGUI();
 	}
 
 	@Override protected void initGUI() {
@@ -71,7 +75,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		pane5.setOpaque(false);
 		pane5.add("Center", PanelUtils.maxMargin(editor, 5, true, true, true, true));
 
-		addPage(pane5);
+		addPage(pane5, false);
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -120,6 +124,10 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		overlay.gridSettings.oy = (int) editor.oy.getValue();
 		overlay.gridSettings.snapOnGrid = editor.snapOnGrid.isSelected();
 		return overlay;
+	}
+
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-overlay");
 	}
 
 }

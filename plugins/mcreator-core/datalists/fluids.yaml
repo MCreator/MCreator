@@ -1,4 +1,8 @@
-- FLOWING_WATER
-- WATER
-- FLOWING_LAVA
-- LAVA
+- FLOWING_WATER:
+  texture: FLOWING_WATER
+- WATER:
+  texture: WATER
+- FLOWING_LAVA:
+  texture: FLOWING_LAVA
+- LAVA:
+  texture: LAVA

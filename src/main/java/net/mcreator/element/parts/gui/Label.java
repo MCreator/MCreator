@@ -44,6 +44,12 @@ public class Label extends GUIComponent {
 		this.name = name;
 	}
 
+	public Label(String name, int x, int y, StringProcedure text, Color color, Procedure displayCondition,
+			AnchorPoint anchorPoint) {
+		this(name, x, y, text, color, displayCondition);
+		this.anchorPoint = anchorPoint;
+	}
+
 	@Override public String getName() {
 		return name;
 	}

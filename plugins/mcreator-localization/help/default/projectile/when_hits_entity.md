@@ -1,0 +1,1 @@
+If the projectile hits a living entity (cow, creeper, player, etc.), it will execute the selected procedure.

@@ -23,6 +23,7 @@ import net.mcreator.java.JavaConventions;
 import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -32,14 +33,13 @@ import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class NewModElementDialog {
 
 	public static void showNameDialog(MCreator mcreator, ModElementType<?> type) {
 		JLabel regName = L10N.label("dialog.new_modelement.registry_name",
 				L10N.t("dialog.new_modelement.registry_name.empty"));
-		regName.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		regName.setForeground(Theme.current().getAltForegroundColor());
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
 		String modName = VOptionPane.showInputDialog(mcreator,
@@ -49,16 +49,16 @@ public class NewModElementDialog {
 					@Override public Validator.ValidationResult validate(JComponent component) {
 						String regNameString = RegistryNameFixer.fromCamelCase(((VTextField) component).getText());
 						regName.setText(L10N.t("dialog.new_modelement.registry_name",
-								regNameString == null || regNameString.equals("") ?
+								regNameString == null || regNameString.isEmpty() ?
 										L10N.t("dialog.new_modelement.registry_name.empty") :
 										regNameString));
 						return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
 								L10N.t("common.mod_element_name")).validate();
 					}
 				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
-				UIManager.getString("OptionPane.cancelButtonText"), null, regName);
+				UIManager.getString("OptionPane.cancelButtonText"), null, null, regName);
 
-		if (modName != null && !modName.equals("")) {
+		if (modName != null && !modName.isEmpty()) {
 			modName = JavaConventions.convertToValidClassName(modName);
 
 			ModElement element = new ModElement(mcreator.getWorkspace(), modName, type);

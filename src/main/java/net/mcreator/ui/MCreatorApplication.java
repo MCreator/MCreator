@@ -31,26 +31,25 @@ import net.mcreator.io.net.analytics.GoogleAnalytics;
 import net.mcreator.io.net.api.D8WebAPI;
 import net.mcreator.io.net.api.IWebAPI;
 import net.mcreator.minecraft.DataListLoader;
-import net.mcreator.minecraft.api.ModAPIManager;
 import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.plugin.events.ApplicationLoadedEvent;
 import net.mcreator.plugin.events.PreGeneratorsLoadingEvent;
+import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.action.impl.AboutAction;
 import net.mcreator.ui.component.util.DiscordClient;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
-import net.mcreator.ui.laf.MCreatorLookAndFeel;
+import net.mcreator.ui.laf.themes.ThemeManager;
 import net.mcreator.ui.notifications.StartupNotifications;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
-import net.mcreator.util.SoundUtils;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
+import net.mcreator.workspace.MissingWorkspacePluginsException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -100,20 +99,15 @@ public final class MCreatorApplication {
 
 			splashScreen.setProgress(10, "Loading UI Themes");
 
-			// We load UI themes now as theme plugins are loaded at this point
-			ThemeLoader.initUIThemes();
+			// We load UI theme now as theme plugins are loaded at this point
+			ThemeManager.loadThemes();
 
 			splashScreen.setProgress(15, "Loading UI core");
 
 			UIRES.preloadImages();
 
-			try {
-				UIManager.setLookAndFeel(new MCreatorLookAndFeel());
-			} catch (UnsupportedLookAndFeelException e) {
-				LOG.error("Failed to set look and feel: " + e.getMessage());
-			}
-
-			SoundUtils.initSoundSystem();
+			// Now that UIRES is loaded, we can load the theme (theme can use UIRES icons)
+			ThemeManager.applySelectedTheme();
 
 			taskbarIntegration = new TaskbarIntegration();
 
@@ -137,7 +131,7 @@ public final class MCreatorApplication {
 			ImageMakerTexturesCache.init();
 			ArmorMakerTexturesCache.init();
 
-			splashScreen.setProgress(55, "Loading plugin templates");
+			splashScreen.setProgress(55, "Loading plugin data");
 
 			// load apis defined by plugins after plugins are loaded
 			ModAPIManager.initAPIs();
@@ -149,6 +143,8 @@ public final class MCreatorApplication {
 			BlocklyJavaScriptsLoader.init();
 			BlocklyToolboxesLoader.init();
 
+			splashScreen.setProgress(60, "Processing plugin data");
+
 			// load blockly blocks after plugins are loaded
 			BlocklyLoader.init();
 
@@ -157,9 +153,6 @@ public final class MCreatorApplication {
 
 			// register mod element types
 			ModElementTypeLoader.loadModElements();
-
-			splashScreen.setProgress(60, "Preloading resources");
-			TiledImageCache.loadAndTileImages();
 
 			splashScreen.setProgress(70, "Loading generators");
 
@@ -263,9 +256,8 @@ public final class MCreatorApplication {
 	 */
 	public MCreator openWorkspaceInMCreator(File workspaceFile) {
 		this.workspaceSelector.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-		Workspace workspace = null;
 		try {
-			workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
+			Workspace workspace = Workspace.readFromFS(workspaceFile, this.workspaceSelector);
 			if (workspace.getMCreatorVersion() > Launcher.version.versionlong
 					&& !MCreatorVersionNumber.isBuildNumberDevelopment(workspace.getMCreatorVersion())) {
 				ThreadUtil.runOnSwingThreadAndWait(() -> JOptionPane.showMessageDialog(workspaceSelector,
@@ -274,9 +266,8 @@ public final class MCreatorApplication {
 			} else {
 				AtomicReference<MCreator> openResult = new AtomicReference<>(null);
 
-				Workspace finalWorkspace = workspace;
 				ThreadUtil.runOnSwingThreadAndWait(() -> {
-					MCreator mcreator = new MCreator(this, finalWorkspace);
+					MCreator mcreator = new MCreator(this, workspace);
 					if (!this.openMCreators.contains(mcreator)) {
 						this.workspaceSelector.setVisible(false);
 						this.openMCreators.add(mcreator);
@@ -295,6 +286,9 @@ public final class MCreatorApplication {
 						}
 					}
 				});
+
+				this.workspaceSelector.addOrUpdateRecentWorkspace(
+						new RecentWorkspaceEntry(workspace, workspaceFile, Launcher.version.getFullString()));
 
 				return openResult.get();
 			}
@@ -326,13 +320,12 @@ public final class MCreatorApplication {
 				reportFailedWorkspaceOpen(
 						new IOException("Corrupted workspace file and no backups found", corruptedWorkspaceFile));
 			}
+		} catch (MissingWorkspacePluginsException e) {
+			LOG.error("Failed to open workspace due to missing plugins", e);
 		} catch (IOException | UnsupportedGeneratorException e) {
+			LOG.error("Failed to open workspace!", e);
 			reportFailedWorkspaceOpen(e);
 		} finally {
-			if (workspace != null) {
-				this.workspaceSelector.addOrUpdateRecentWorkspace(
-						new RecentWorkspaceEntry(workspace, workspaceFile, Launcher.version.getFullString()));
-			}
 			this.workspaceSelector.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 		}
 
@@ -368,8 +361,6 @@ public final class MCreatorApplication {
 		analytics.trackPageSync(AnalyticsConstants.PAGE_CLOSE); // track app close in sync mode
 
 		discordClient.close(); // close discord client
-
-		SoundUtils.close();
 
 		// we close all windows and exit fx platform
 		try {

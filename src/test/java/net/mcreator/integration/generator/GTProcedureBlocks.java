@@ -155,18 +155,6 @@ public class GTProcedureBlocks {
 							</value></block>
 							""".formatted(testXML, testXML));
 					break;
-				case "String":
-					procedure.procedurexml = wrapWithBaseTestXML(
-							"<block type=\"return_string\"><value name=\"return\">" + testXML + "</value></block>");
-					break;
-				case "MCItem":
-					procedure.procedurexml = wrapWithBaseTestXML(
-							"<block type=\"return_itemstack\"><value name=\"return\">" + testXML + "</value></block>");
-					break;
-				case "Entity":
-					procedure.procedurexml = wrapWithBaseTestXML(
-							"<block type=\"return_entity\"><value name=\"return\">" + testXML + "</value></block>");
-					break;
 				case "ProjectileEntity": // Projectile blocks are tested with the "Shoot from entity" procedure
 					procedure.procedurexml = wrapWithBaseTestXML("""
 							<block type="projectile_shoot_from_entity">
@@ -177,8 +165,16 @@ public class GTProcedureBlocks {
 							</block>""".formatted(testXML));
 					break;
 				default:
-					procedure.procedurexml = wrapWithBaseTestXML(
-							"<block type=\"text_print\"><value name=\"TEXT\">" + testXML + "</value></block>");
+				case "String":
+					procedure.procedurexml = wrapWithBaseTestXML("""
+							<block type="return_string"><value name="return">
+								<block type="text_join">
+									<mutation items="2"></mutation>
+									<value name="ADD0">%s</value>
+									<value name="ADD1">%s</value>
+								</block>
+							</value></block>
+							""".formatted(testXML, testXML));
 					break;
 				}
 			}

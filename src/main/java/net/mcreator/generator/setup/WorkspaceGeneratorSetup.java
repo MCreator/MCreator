@@ -23,8 +23,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorUtils;
 import net.mcreator.generator.setup.folders.AbstractFolderStructure;
-import net.mcreator.generator.template.base.BaseDataModelProvider;
-import net.mcreator.generator.template.base.DefaultFreemarkerConfiguration;
+import net.mcreator.generator.template.InlineTemplatesHandler;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -38,7 +37,6 @@ import javax.annotation.Nullable;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
 
@@ -124,9 +122,6 @@ public class WorkspaceGeneratorSetup {
 	}
 
 	public static void setupWorkspaceBase(Workspace workspace) {
-		DefaultFreemarkerConfiguration configuration = new DefaultFreemarkerConfiguration();
-		Map<String, Object> dataModel = new BaseDataModelProvider(workspace.getGenerator()).provide();
-
 		Set<String> fileNames = PluginLoader.INSTANCE.getResourcesInPackage(
 				workspace.getGenerator().getGeneratorName() + ".workspacebase");
 		for (String file : fileNames) {
@@ -137,17 +132,17 @@ public class WorkspaceGeneratorSetup {
 							file.replace(workspace.getGenerator().getGeneratorName() + "/workspacebase", ""));
 					if (file.endsWith(".gradle") || file.endsWith(".properties") || file.endsWith(".txt")) {
 						String contents = IOUtils.toString(stream, StandardCharsets.UTF_8);
-						Template freemarkerTemplate = new Template("", contents, configuration);
+						Template freemarkerTemplate = InlineTemplatesHandler.getTemplate(contents);
 						StringWriter stringWriter = new StringWriter();
-						freemarkerTemplate.process(dataModel, stringWriter, configuration.getBeansWrapper());
+						freemarkerTemplate.process(workspace.getGenerator().getBaseDataModelProvider().provide(),
+								stringWriter, InlineTemplatesHandler.getConfiguration().getObjectWrapper());
 						FileIO.writeStringToFile(stringWriter.getBuffer().toString(), outFile);
 					} else {
 						FileUtils.copyInputStreamToFile(stream, outFile);
 					}
 				}
 			} catch (Exception e) {
-				LOG.error(file);
-				LOG.error(e.getMessage(), e);
+				LOG.error(file, e);
 			}
 		}
 	}
@@ -161,7 +156,7 @@ public class WorkspaceGeneratorSetup {
 				if (generator.getFullGeneratorVersion().equals(properties.getProperty("buildFileVersion")))
 					return false;
 			} catch (IOException e) {
-				LOG.error(e.getMessage(), e);
+				LOG.error(setupFile, e);
 			}
 		}
 		return true;

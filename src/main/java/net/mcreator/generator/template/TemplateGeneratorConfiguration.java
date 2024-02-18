@@ -21,8 +21,6 @@ package net.mcreator.generator.template;
 import freemarker.cache.ClassTemplateLoader;
 import freemarker.cache.MultiTemplateLoader;
 import freemarker.cache.TemplateLoader;
-import freemarker.ext.beans.BeansWrapper;
-import freemarker.template.Configuration;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.template.base.DefaultFreemarkerConfiguration;
 import net.mcreator.plugin.PluginLoader;
@@ -55,11 +53,8 @@ public class TemplateGeneratorConfiguration {
 		configuration.setTemplateLoader(new MultiTemplateLoader(templateLoaderList.toArray(new TemplateLoader[0])));
 	}
 
-	public Configuration getConfiguration() {
+	public DefaultFreemarkerConfiguration getConfiguration() {
 		return configuration;
 	}
 
-	public BeansWrapper getBeansWrapper() {
-		return configuration.getBeansWrapper();
-	}
 }

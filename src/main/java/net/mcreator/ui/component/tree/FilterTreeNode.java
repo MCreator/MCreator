@@ -49,12 +49,12 @@ public class FilterTreeNode extends DefaultMutableTreeNode {
 			passFilterDown(filter);
 		} else {
 			passFilterDown(filter);
-			passed = filteredChildren.size() != 0;
+			passed = !filteredChildren.isEmpty();
 		}
 	}
 
 	private boolean pass(FilterTreeNode node) {
-		if (getFilter().trim().equals(""))
+		if (getFilter().isBlank())
 			return true;
 
 		return node.getUserObject().toString().toLowerCase(Locale.ENGLISH).trim()

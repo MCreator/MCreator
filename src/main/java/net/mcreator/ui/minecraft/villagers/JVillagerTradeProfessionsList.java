@@ -21,79 +21,52 @@ package net.mcreator.ui.minecraft.villagers;
 
 import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.entries.JSingleEntriesList;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.minecraft.JEntriesList;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class JVillagerTradeProfessionsList extends JEntriesList {
-
-	private final List<JVillagerTradeProfession> professionList = new ArrayList<>();
-
-	private final JPanel professions = new JPanel();
+public class JVillagerTradeProfessionsList
+		extends JSingleEntriesList<JVillagerTradeProfession, VillagerTrade.CustomTradeEntry> {
 
 	public JVillagerTradeProfessionsList(MCreator mcreator, IHelpContext gui) {
-		super(mcreator, new BorderLayout(), gui);
-		setOpaque(false);
+		super(mcreator, gui);
 
-		professions.setLayout(new BoxLayout(professions, BoxLayout.PAGE_AXIS));
-		professions.setOpaque(false);
+		entries.setLayout(new BoxLayout(entries, BoxLayout.PAGE_AXIS));
 
-		JToolBar bar = new JToolBar();
-		bar.setFloatable(false);
 		add.setText(L10N.t("elementgui.villager_trade.add_profession_trades"));
 		add.addActionListener(e -> {
-			JVillagerTradeProfession profession = new JVillagerTradeProfession(mcreator, gui, professions,
-					professionList);
+			JVillagerTradeProfession profession = new JVillagerTradeProfession(mcreator, gui, entries, entryList);
 			registerEntryUI(profession);
 			profession.addInitialEntry();
 		});
-		bar.add(add);
-		add("North", bar);
 
-		JScrollPane sp = new JScrollPane(PanelUtils.pullElementUp(professions)) {
-			@Override protected void paintComponent(Graphics g) {
-				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
-				g2d.fillRect(0, 0, getWidth(), getHeight());
-				g2d.dispose();
-				super.paintComponent(g);
-			}
-		};
-		sp.setOpaque(false);
-		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUnitIncrement(11);
-		sp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		add("Center", sp);
+		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 	}
 
-	public void reloadDataLists() {
-		professionList.forEach(JVillagerTradeProfession::reloadDataLists);
+	@Override public void reloadDataLists() {
+		entryList.forEach(JVillagerTradeProfession::reloadDataLists);
 	}
 
 	public void addInitialTrade() {
-		JVillagerTradeProfession profession = new JVillagerTradeProfession(mcreator, gui, professions, professionList);
+		JVillagerTradeProfession profession = new JVillagerTradeProfession(mcreator, gui, entries, entryList);
 		registerEntryUI(profession);
 		profession.addInitialEntry();
 	}
 
-	public List<VillagerTrade.CustomTradeEntry> getTrades() {
-		return professionList.stream().map(JVillagerTradeProfession::getTradeEntry).filter(Objects::nonNull).toList();
+	@Override public List<VillagerTrade.CustomTradeEntry> getEntries() {
+		return entryList.stream().map(JVillagerTradeProfession::getTradeEntry).filter(Objects::nonNull).toList();
 	}
 
-	public void setTrades(List<VillagerTrade.CustomTradeEntry> tradesEntries) {
+	@Override public void setEntries(List<VillagerTrade.CustomTradeEntry> tradesEntries) {
 		tradesEntries.forEach(e -> {
-			JVillagerTradeProfession profession = new JVillagerTradeProfession(mcreator, gui, professions,
-					professionList);
+			JVillagerTradeProfession profession = new JVillagerTradeProfession(mcreator, gui, entries, entryList);
 			registerEntryUI(profession);
 			profession.setTradeEntries(e);
 		});
 	}
+
 }

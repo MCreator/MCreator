@@ -54,7 +54,7 @@ public class NewImageFileAction extends BasicAction {
 				}
 			}
 		});
-		setIcon(UIRES.get("laf.image.gif"));
+		setIcon(UIRES.get("laf.image"));
 	}
 
 }

@@ -1,0 +1,5 @@
+Qui puoi elencare proprietà aggiuntive di questo articolo e specificare come cambia la sua struttura/modello a seconda della combinazione data di valori delle proprietà che formano uno stato. Una proprietà di un elemento può assumere qualsiasi numero (intero o frazionario) come valore, in modo da evitare la necessità di seguire qualsiasi granularità e per consentire di fornire valori vicini, uno stato corrisponde se i valori effettivi delle proprietà estratti dall'elemento sono _uguali a o maggiore dei_ valori previsti (specificati qui). Se sono presenti più stati con valori corrispondenti, verrà utilizzato l'ultimo di questi stati corrispondenti. Se nessuno stato corrisponde, l'item utilizzerà il suo aspetto visivo predefinito.
+
+Oltre a quelle personalizzate, puoi anche utilizzare alcune proprietà degli item integrate definite per tutti gli oggetti per conto di Minecraft.
+
+NOTA: non sono consentiti stati duplicati. Se due o più stati differiscono solo nel valore di una singola proprietà, allora si procede alla rimozione tale proprietà rimuoverà automaticamente i duplicati del primo di questi stati.

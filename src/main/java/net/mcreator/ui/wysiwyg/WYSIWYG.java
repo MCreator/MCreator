@@ -25,7 +25,7 @@ import net.mcreator.ui.component.zoompane.IZoomable;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.component.zoompane.JZoomport;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 
@@ -82,7 +82,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 	WYSIWYG(WYSIWYGEditor wysiwygEditor) {
 		if (fontMC == null)
-			fontMC = MCreatorTheme.console_font.deriveFont(8f).deriveFont(Font.BOLD);
+			fontMC = Theme.current().getConsoleFont().deriveFont(8f).deriveFont(Font.BOLD);
 
 		this.wysiwygEditor = wysiwygEditor;
 
@@ -137,7 +137,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 
 		g.drawImage(background, 0, 0, null);
 
-		g.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		g.setColor(Theme.current().getInterfaceAccentColor());
 		g.drawRect(0, 0, getWidth(), getHeight());
 
 		// draw wysiwyg
@@ -199,6 +199,18 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 				g.drawLine(ox * 2 + selected.getWidth(wysiwygEditor.mcreator.getWorkspace()) * 2, 0,
 						ox * 2 + selected.getWidth(wysiwygEditor.mcreator.getWorkspace()) * 2, getHeight());
 			}
+
+			if (!isNotOverlayType) {
+				GUIComponent.AnchorPoint anchorPoint = selected.getAnchorPoint();
+				if (anchorPoint != null) {
+					Point anchor = anchorPoint.getAnchorPoint(W, H);
+
+					g.setColor(new Color(255, 153, 250, 230));
+					g.fillRect(anchor.x * 2 - 4, anchor.y * 2 - 4, 8, 8);
+					g.drawLine(anchor.x * 2, anchor.y * 2, ox * 2, anchor.y * 2);
+					g.drawLine(anchor.x * 2, anchor.y * 2, anchor.x * 2, oy * 2);
+				}
+			}
 		}
 
 		if (showGrid)
@@ -222,21 +234,23 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		if (isNotOverlayType) {
 			if (wysiwygEditor.renderBgLayer.isSelected()) {
 				if (wysiwygEditor.getGUITypeSelector().getSelectedIndex() == 0) {
-					g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), W / 2 - gw / 2, H / 2 - gh / 2, gw,
-							gh, this);
+					g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), (int) Math.ceil(W / 2.0 - gw / 2.0),
+							(int) Math.ceil(H / 2.0 - gh / 2.0), gw, gh, this);
 				} else if (wysiwygEditor.getGUITypeSelector().getSelectedIndex() == 1) {
-					g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), W / 2 - gw / 2, H / 2 - gh / 2, gw,
-							gh, this);
-					g.drawImage(inventorySlots, W / 2 - 176 / 2 + (int) wysiwygEditor.invOffX.getValue(),
-							H / 2 - 166 / 2 + (int) wysiwygEditor.invOffY.getValue(), 176, 166, this);
+					g.drawImage(MinecraftImageGenerator.generateBackground(gw, gh), (int) Math.ceil(W / 2.0 - gw / 2.0),
+							(int) Math.ceil(H / 2.0 - gh / 2.0), gw, gh, this);
+					g.drawImage(inventorySlots,
+							(int) Math.ceil(W / 2.0 - 176 / 2.0) + (int) wysiwygEditor.invOffX.getValue(),
+							(int) Math.ceil(H / 2.0 - 166 / 2.0) + (int) wysiwygEditor.invOffY.getValue(), 176, 166,
+							this);
 				}
 			} else {
 				g.setColor(Color.white);
-				g.drawRect(W / 2 - gw / 2, H / 2 - gh / 2, gw, gh);
+				g.drawRect((int) Math.ceil(W / 2.0 - gw / 2.0), (int) Math.ceil(H / 2.0 - gh / 2.0), gw, gh);
 			}
 		} else {
 			if (wysiwygEditor.overlayBaseTexture.getSelectedItem() != null
-					&& !wysiwygEditor.overlayBaseTexture.getSelectedItem().equals("")) {
+					&& !wysiwygEditor.overlayBaseTexture.getSelectedItem().isEmpty()) {
 				g.drawImage(new ImageIcon(wysiwygEditor.mcreator.getFolderManager().getTextureFile(
 						FilenameUtilsPatched.removeExtension(wysiwygEditor.overlayBaseTexture.getSelectedItem()),
 						TextureType.SCREEN).getAbsolutePath()).getImage(), 0, 0, W, H, this);
@@ -309,7 +323,7 @@ public class WYSIWYG extends JComponent implements MouseMotionListener, MouseLis
 		if (positioningModeSettingWidth) {
 			ow = Math.abs(ox - ex);
 			if (positioningModeSettingHeight)
-				ow = Math.abs(ox - ex);
+				oh = Math.abs(oy - ey);
 		} else if (componentMoveMode) {
 			ox = ex;
 			oy = ey;

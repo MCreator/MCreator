@@ -76,10 +76,12 @@ public class GoogleAnalytics {
 
 		// Thanks to https://www.thyngster.com/ga4-measurement-protocol-cheatsheet/
 		payload.put("tid", "G-V6EPB4SPL8");
+		payload.put("_z", "ccd.ABC");
 		payload.put("_p", currentPageHash); // page hash
 		payload.put("cid", clientUUID);
 		payload.put("ul", L10N.getLocaleString().toLowerCase(Locale.ENGLISH).replace("_", "-"));
 		payload.put("sr", deviceInfo.getScreenWidth() + "x" + deviceInfo.getScreenHeight());
+		payload.put("uaw", deviceInfo.getScreenWidth());
 		payload.put("dh", DH);
 		payload.put("sid", sessionID);
 		payload.put("_nsi", newSession ? 1 : 0); // new session ID
@@ -91,6 +93,7 @@ public class GoogleAnalytics {
 		payload.put("uafvl", Launcher.version.getFullString()); // user agent full version list
 		payload.put("uam", Launcher.version.getMajorString()); // user agent model
 		payload.put("uap", System.getProperty("os.name")); // user agent platform
+		payload.put("uaa", System.getProperty("os.arch")); // user agent architecture
 
 		for (Map.Entry<String, Object> entry : payload.entrySet()) {
 			if (entry.getValue() != null)
@@ -149,7 +152,9 @@ public class GoogleAnalytics {
 			conn.setInstanceFollowRedirects(true);
 			conn.setUseCaches(false);
 			conn.setDefaultUseCaches(false);
-			conn.setRequestProperty("User-Agent", "MCreator " + Launcher.version.getFullString());
+			conn.setRequestProperty("User-Agent",
+					"MCreator/" + Launcher.version.getFullString() + " (" + System.getProperty("os.name") + "; "
+							+ System.getProperty("os.arch") + ")");
 
 			conn.setRequestMethod("POST");
 			conn.setDoOutput(true);

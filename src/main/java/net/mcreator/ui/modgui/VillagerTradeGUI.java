@@ -21,13 +21,17 @@ package net.mcreator.ui.modgui;
 
 import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.minecraft.villagers.JVillagerTradeProfessionsList;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 
@@ -48,7 +52,7 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 		pane.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
 		pane.add(villagerTradeProfessions);
-		addPage(pane);
+		addPage(pane, false);
 
 		// Add first pool
 		if (!isEditingMode()) {
@@ -66,12 +70,17 @@ public class VillagerTradeGUI extends ModElementGUI<VillagerTrade> {
 	}
 
 	@Override public void openInEditingMode(VillagerTrade villagerTrade) {
-		villagerTradeProfessions.setTrades(villagerTrade.tradeEntries);
+		villagerTradeProfessions.setEntries(villagerTrade.tradeEntries);
 	}
 
 	@Override public VillagerTrade getElementFromGUI() {
 		VillagerTrade villagerTrade = new VillagerTrade(modElement);
-		villagerTrade.tradeEntries = villagerTradeProfessions.getTrades();
+		villagerTrade.tradeEntries = villagerTradeProfessions.getEntries();
 		return villagerTrade;
 	}
+
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-villager-trades");
+	}
+
 }

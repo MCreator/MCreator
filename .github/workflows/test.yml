@@ -18,14 +18,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          java-version: '17.0.7+7'
-          distribution: 'adopt'
+          java-version: '17.0.10+7'
+          distribution: 'temurin'
       - name: Cache Gradle Packages
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.gradle/caches
@@ -40,7 +40,7 @@ jobs:
       - name: Test Javadoc Generation
         run: ./gradlew javadoc
       - name: Publish Test Report
-        uses: Pylo/action-junit-report@v3
+        uses: mikepenz/action-junit-report@b1b7f659602565970688b2e2588738b9398e895d
         if: always() # always run even if the previous step fails
         with:
           include_passed: true

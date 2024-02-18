@@ -1,5 +1,6 @@
 <#-- @formatter:off -->
 <#macro procedureDependenciesCode requiredDependencies dependencies={}>
+<#compress>
     <#assign deps_filtered = [] />
     <#list requiredDependencies as dependency>
         <#list dependencies as name, value>
@@ -10,6 +11,7 @@
     </#list>
 
     <#list deps_filtered as value>${value}<#if value?has_next>,</#if></#list>
+</#compress>
 </#macro>
 
 <#macro procedureCode object dependencies={} semicolon=true>

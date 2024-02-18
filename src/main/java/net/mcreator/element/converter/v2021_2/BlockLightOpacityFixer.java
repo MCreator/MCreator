@@ -30,7 +30,7 @@ public class BlockLightOpacityFixer implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		Block block = (Block) input;
-		if (block.blockBase == null || block.blockBase.equals("")) {
+		if (block.blockBase == null || block.blockBase.isEmpty()) {
 			block.lightOpacity /= 16;
 		} else if (block.blockBase.equals("Leaves")) {
 			block.lightOpacity = 1;

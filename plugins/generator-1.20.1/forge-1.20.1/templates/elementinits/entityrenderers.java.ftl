@@ -40,7 +40,7 @@ package ${package}.init;
 
 	@SubscribeEvent public static void registerEntityRenderers(EntityRenderersEvent.RegisterRenderers event) {
 		<#list entities as entity>
-			<#if entity.getModElement().getTypeString() == "rangeditem">
+			<#if entity.getModElement().getTypeString() == "projectile">
 				<#if entity.isCustomModel()>
 				event.registerEntityRenderer(${JavaModName}Entities.${entity.getModElement().getRegistryNameUpper()}.get(), ${entity.getModElement().getName()}Renderer::new);
 				<#else>

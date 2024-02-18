@@ -26,12 +26,13 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.TechnicalButton;
+import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.minecraft.JEntriesList;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.states.JStateLabel;
 import net.mcreator.ui.minecraft.states.PropertyData;
 import net.mcreator.ui.minecraft.states.StateMap;
@@ -57,8 +58,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private final JPanel propertyEntries = new JPanel(), stateEntries = new JPanel();
 
-	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add.gif"));
-	private final TechnicalButton addState = new TechnicalButton(UIRES.get("16px.add.gif"));
+	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add"));
+	private final TechnicalButton addState = new TechnicalButton(UIRES.get("16px.add"));
 
 	public JItemPropertiesStatesList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new GridLayout(), gui);
@@ -105,7 +106,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		JScrollPane scrollProperties = new JScrollPane(PanelUtils.pullElementUp(propertyEntries)) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				g2d.setColor(Theme.current().getAltBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();
@@ -116,9 +117,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		scrollProperties.setOpaque(false);
 		scrollProperties.getViewport().setOpaque(false);
 		scrollProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.item.custom_properties.title"), 0, 0, scrollProperties.getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 		JPanel left = new JPanel(new BorderLayout());
 		left.setOpaque(false);
 		left.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addProperty, new JEmptyBox(5, 5),
@@ -129,7 +130,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		JScrollPane scrollStates = new JScrollPane(PanelUtils.pullElementUp(stateEntries)) {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g.create();
-				g2d.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				g2d.setColor(Theme.current().getAltBackgroundColor());
 				g2d.setComposite(AlphaComposite.SrcOver.derive(0.45f));
 				g2d.fillRect(0, 0, getWidth(), getHeight());
 				g2d.dispose();
@@ -140,9 +141,9 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		scrollStates.setOpaque(false);
 		scrollStates.getViewport().setOpaque(false);
 		scrollStates.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.item.custom_states.title"), 0, 0, scrollStates.getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 		JPanel right = new JPanel(new BorderLayout());
 		right.setOpaque(false);
 		right.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 5, addState, new JEmptyBox(5, 5),
@@ -164,7 +165,7 @@ public class JItemPropertiesStatesList extends JEntriesList {
 		stateEntries.setEnabled(enabled);
 	}
 
-	public void reloadDataLists() {
+	@Override public void reloadDataLists() {
 		propertiesList.forEach(JItemPropertiesListEntry::reloadDataLists);
 		statesList.forEach(JItemStatesListEntry::reloadDataLists);
 	}

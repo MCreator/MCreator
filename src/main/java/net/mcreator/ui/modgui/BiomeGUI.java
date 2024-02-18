@@ -33,6 +33,7 @@ import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.DefaultFeaturesListField;
 import net.mcreator.ui.minecraft.MCItemHolder;
@@ -353,9 +354,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		JPanel sbbp3 = new JPanel(new GridLayout(1, 2, 0, 0));
 		sbbp3.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.biome.vanilla_features"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		sbbp3.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/default_features"),
 				L10N.label("elementgui.biome.default_features")));
@@ -367,9 +368,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 
 		JPanel sbbp5 = new JPanel(new GridLayout(8, 2, 0, 2));
 		sbbp5.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.biome.custom_tree_properties"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 		sbbp5.setOpaque(false);
 
 		sbbp5.add(HelpUtils.wrapWithHelpButton(this.withEntry("biome/trees_per_chunk"),
@@ -489,9 +490,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		sounds.add(moodSoundDelay);
 
 		sounds.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.biome.sounds"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		sounds.setOpaque(false);
 
@@ -512,9 +513,9 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		particles.setOpaque(false);
 
 		particles.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.biome.particles"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		spawnParticle.setOpaque(false);
 		spawnParticle.addActionListener(event -> updateParticleParameters());
@@ -539,7 +540,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		addPage(L10N.t("elementgui.biome.biome_generation"), pane5);
 		addPage(L10N.t("elementgui.biome.features"), pane3);
 		addPage(L10N.t("elementgui.biome.structures"), pane2);
-		addPage(L10N.t("elementgui.biome.entity_spawning"), pane1);
+		addPage(L10N.t("elementgui.biome.entity_spawning"), pane1, false);
 		addPage(L10N.t("elementgui.biome.effects"), effectsPane);
 
 		updateBiomeTreesForm();
@@ -584,6 +585,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 		ComboBoxUtil.updateComboBoxContents(particleToSpawn, ElementUtil.loadAllParticles(mcreator.getWorkspace()));
+		spawnEntries.reloadDataLists();
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
@@ -708,7 +710,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		temperature.setValue(biome.temperature);
 		defaultFeatures.setListElements(biome.defaultFeatures);
 		vanillaTreeType.setSelectedItem(biome.vanillaTreeType);
-		spawnEntries.setSpawns(biome.spawnEntries);
+		spawnEntries.setEntries(biome.spawnEntries);
 
 		genTemperature.setMinValue(biome.genTemperature.min);
 		genTemperature.setMaxValue(biome.genTemperature.max);
@@ -757,7 +759,7 @@ public class BiomeGUI extends ModElementGUI<Biome> {
 		biome.temperature = (double) temperature.getValue();
 		biome.defaultFeatures = defaultFeatures.getListElements();
 		biome.vanillaTreeType = (String) vanillaTreeType.getSelectedItem();
-		biome.spawnEntries = spawnEntries.getSpawns();
+		biome.spawnEntries = spawnEntries.getEntries();
 		biome.minHeight = (int) minHeight.getValue();
 		biome.treeVines = treeVines.getBlock();
 		biome.treeStem = treeStem.getBlock();

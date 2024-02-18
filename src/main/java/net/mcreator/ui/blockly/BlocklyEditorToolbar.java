@@ -21,6 +21,7 @@ package net.mcreator.ui.blockly;
 
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
+import net.mcreator.blockly.data.ToolboxCategory;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.io.ResourcePointer;
@@ -33,6 +34,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ProcedureGUI;
 import net.mcreator.workspace.elements.VariableElement;
 import org.apache.logging.log4j.LogManager;
@@ -42,10 +44,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Set;
+import java.util.*;
 
 public class BlocklyEditorToolbar extends TransparentToolBar {
 
@@ -101,8 +101,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 					super.paintComponent(g);
 					g.setColor(new Color(0.4f, 0.4f, 0.4f, 0.3f));
 					g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-					g.setColor(Color.white);
-					if (getText().equals("")) {
+					if (getText().isEmpty()) {
 						g.setFont(g.getFont().deriveFont(11f));
 						g.setColor(new Color(120, 120, 120));
 						g.drawString(L10N.t("blockly.search_procedure_blocks"), 5, 18);
@@ -121,7 +120,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			search.addKeyListener(new KeyAdapter() {
 				@Override public void keyReleased(KeyEvent e) {
 					super.keyReleased(e);
-					if (!search.getText().equals("")) {
+					if (!search.getText().isEmpty()) {
 						String[] keyWords = search.getText().replaceAll("[^ a-zA-Z0-9/._-]+", "").split(" ");
 
 						Set<ToolboxBlock> filtered = new LinkedHashSet<>();
@@ -159,13 +158,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 							results.setMaximumVisibleRows(20);
 
 							for (ToolboxBlock block : filtered) {
-								JMenuItem menuItem = new JMenuItem("<html>" + (block.getToolboxCategory() != null ?
-										"<span style='background: #" + Integer.toHexString(
-												block.getToolboxCategory().getColor().getRGB()).substring(2)
-												+ ";'>&nbsp;" + block.getToolboxCategory().getName()
-												+ "&nbsp;</span>&nbsp;&nbsp;" :
-										"") + block.getName().replaceAll("%\\d+?",
-										"&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
+								JMenuItem menuItem = new JMenuItem(getHTMLForBlock(block));
 								menuItem.addActionListener(ev -> {
 									if (block.getToolboxXML() != null) {
 										blocklyPanel.addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>");
@@ -218,7 +211,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			}
 		});
 		ComponentUtils.normalizeButton4(export);
-		export.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		export.setForeground(Theme.current().getAltForegroundColor());
 
 		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".import");
 		import_.setIcon(UIRES.get("18px.import"));
@@ -253,11 +246,39 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			}
 		});
 		ComponentUtils.normalizeButton4(import_);
-		import_.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		import_.setForeground(Theme.current().getAltForegroundColor());
 	}
 
 	public void setTemplateLibButtonWidth(int w) {
 		templateLib.setPreferredSize(new Dimension(w, 16));
+	}
+
+	private String getHTMLForBlock(ToolboxBlock block) {
+		List<ToolboxCategory> categories = new ArrayList<>();
+		traverseCategories(categories, block.getToolboxCategory());
+
+		StringBuilder builder = new StringBuilder("<html>");
+		for (int i = categories.size() - 1; i >= 0; i--) {
+			ToolboxCategory category = categories.get(i);
+			builder.append("<span style='background: #")
+					.append(Integer.toHexString(category.getColor().getRGB()).substring(2)).append(";'>&nbsp;")
+					.append(category.getName()).append("&nbsp;</span>");
+			if (i != 0)
+				builder.append("<span style='background: #444444;'>&nbsp;&#x25B8;&nbsp;</span>");
+		}
+		builder.append("&nbsp;&nbsp;");
+		builder.append(block.getName()
+				.replaceAll("%\\d+?", "&nbsp;<span style='background: #444444'>&nbsp;&nbsp;&nbsp;&nbsp;</span>&nbsp;"));
+
+		return builder.toString();
+	}
+
+	private void traverseCategories(List<ToolboxCategory> categories, ToolboxCategory category) {
+		if (category != null) {
+			categories.add(category);
+			if (category.getParent() != null)
+				traverseCategories(categories, category.getParent());
+		}
 	}
 
 }

@@ -21,28 +21,22 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.data.*;
 import net.mcreator.blockly.java.BlocklyToProcedure;
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.parts.gui.GUIComponent;
-import net.mcreator.element.parts.procedure.Procedure;
-import net.mcreator.element.types.Command;
-import net.mcreator.element.types.GUI;
-import net.mcreator.element.types.Item;
+import net.mcreator.element.ModElementType;
 import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.OutputBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.blockly.BlocklyEditorToolbar;
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.MCreatorApplication;
+import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.NewVariableDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -52,16 +46,23 @@ import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
+import net.mcreator.workspace.references.ReferencesFinder;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure> implements IBlocklyPanelHolder {
+
+	private static final Logger LOG = LogManager.getLogger(ProcedureGUI.class);
 
 	private final JPanel pane5 = new JPanel(new BorderLayout(0, 0));
 
@@ -70,7 +71,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	public final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
 	private final JList<VariableElement> localVarsList = new JList<>(localVars);
 
-	private boolean hasErrors = false;
 	private boolean hasDependencyErrors = false;
 
 	private List<Dependency> dependenciesArrayList = new ArrayList<>();
@@ -98,10 +98,16 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 
+	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
+
 	public ProcedureGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
-		super.finalizeGUI(false);
+		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	private synchronized void regenerateProcedure() {
@@ -251,16 +257,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			dependenciesArrayList.forEach(dependencies::addElement);
 
-			hasErrors = false;
-			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.type() == BlocklyCompileNote.Type.ERROR) {
-					hasErrors = true;
-					break;
-				}
-			}
-
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
 		});
 	}
 
@@ -271,8 +270,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			setOpaque(isSelected);
 			setBorder(null);
 			Color col = value.getColor();
-			setBackground(isSelected ? col : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : col.brighter());
+			setBackground(isSelected ? col : Theme.current().getBackgroundColor());
+			setForeground(isSelected ? Theme.current().getForegroundColor() : col.brighter());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			setToolTipText(value.toString());
@@ -286,10 +285,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				int index, boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
 			setBorder(null);
-			setBackground(
-					isSelected ? value.getType().getBlocklyColor() : (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-			setForeground(
-					isSelected ? (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") : value.getType().getBlocklyColor());
+			setBackground(isSelected ? value.getType().getBlocklyColor() : Theme.current().getBackgroundColor());
+			setForeground(isSelected ? Theme.current().getForegroundColor() : value.getType().getBlocklyColor());
 			ComponentUtils.deriveFont(this, 14);
 			setText(value.getName());
 			return this;
@@ -322,7 +319,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		returnType.add("Center", returnTypeLabel);
 
 		returnTypeLabel.setOpaque(true);
-		returnTypeLabel.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		returnTypeLabel.setBackground(Theme.current().getBackgroundColor());
 		returnTypeLabel.setBorder(BorderFactory.createEmptyBorder(0, 7, 9, 0));
 		ComponentUtils.deriveFont(returnType, 13);
 
@@ -334,14 +331,13 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		JPanel rettypeHeader = new JPanel(new GridLayout());
 		rettypeHeader.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		rettypeHeader.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		rettypeHeader.setBackground(Theme.current().getBackgroundColor());
 		rettypeHeader.add(bar4);
 		returnType.add("North", rettypeHeader);
 		returnType.setOpaque(false);
 		returnType.setPreferredSize(new Dimension(150, 46));
 
-		returnType.setBorder(
-				BorderFactory.createMatteBorder(1, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		returnType.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		triggerInfoPanel.setOpaque(false);
 		triggerInfoPanel.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 0));
@@ -353,17 +349,15 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		localVarsPan.setOpaque(false);
 
 		JScrollPane scrollPane = new JScrollPane(localVarsList);
-		scrollPane.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		scrollPane.setBackground(Theme.current().getBackgroundColor());
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPane.getVerticalScrollBar()
-				.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), scrollPane.getVerticalScrollBar()));
+		scrollPane.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), scrollPane.getVerticalScrollBar()));
 		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPane.getHorizontalScrollBar()
-				.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), scrollPane.getHorizontalScrollBar()));
+		scrollPane.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), scrollPane.getHorizontalScrollBar()));
 		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		localVarsPan.add("Center", scrollPane);
@@ -376,14 +370,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		JLabel lab = L10N.label("elementgui.procedure.local_variables");
 		lab.setToolTipText(L10N.t("elementgui.procedure.local_variables"));
 
-		JButton addvar = new JButton(UIRES.get("16px.add.gif"));
+		JButton addvar = new JButton(UIRES.get("16px.add"));
 		addvar.setContentAreaFilled(false);
 		addvar.setOpaque(false);
 		ComponentUtils.deriveFont(addvar, 11);
 		addvar.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 2));
 		bar.add(addvar);
 
-		JButton remvar = new JButton(UIRES.get("16px.delete.gif"));
+		JButton remvar = new JButton(UIRES.get("16px.delete"));
 		remvar.setContentAreaFilled(false);
 		remvar.setOpaque(false);
 		ComponentUtils.deriveFont(remvar, 11);
@@ -472,7 +466,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		JPanel varHeader = new JPanel(new GridLayout());
 		varHeader.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		varHeader.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		varHeader.setBackground(Theme.current().getBackgroundColor());
 		varHeader.add(PanelUtils.northAndCenterElement(ComponentUtils.deriveFont(lab, 13), bar));
 		localVarsPan.add("North", varHeader);
 		localVarsPan.setOpaque(false);
@@ -489,27 +483,24 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		JPanel depsHeader = new JPanel(new BorderLayout());
 		depsHeader.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		depsHeader.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		depsHeader.setBackground(Theme.current().getBackgroundColor());
 		depsHeader.add("North", bar2);
 		depsHeader.add("South", ComponentUtils.deriveFont(depsWarningLabel, 11));
 
 		depsPan.add("North", depsHeader);
 		depsPan.setOpaque(false);
-		depsPan.setBorder(
-				BorderFactory.createMatteBorder(1, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		depsPan.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		JScrollPane scrollPaneDeps = new JScrollPane(dependenciesList);
-		scrollPaneDeps.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		scrollPaneDeps.setBackground(Theme.current().getBackgroundColor());
 		scrollPaneDeps.getViewport().setOpaque(false);
 		scrollPaneDeps.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPaneDeps.getVerticalScrollBar()
-				.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), scrollPaneDeps.getVerticalScrollBar()));
+		scrollPaneDeps.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), scrollPaneDeps.getVerticalScrollBar()));
 		scrollPaneDeps.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneDeps.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPaneDeps.getHorizontalScrollBar()
-				.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), scrollPaneDeps.getHorizontalScrollBar()));
+		scrollPaneDeps.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), scrollPaneDeps.getHorizontalScrollBar()));
 		scrollPaneDeps.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		depsPan.add("Center", scrollPaneDeps);
@@ -523,26 +514,23 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		JPanel extdepsHeader = new JPanel(new BorderLayout());
 		extdepsHeader.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
-		extdepsHeader.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		extdepsHeader.setBackground(Theme.current().getBackgroundColor());
 		extdepsHeader.add("North", bar3);
 
 		triggerDepsPan.add("North", extdepsHeader);
-		triggerDepsPan.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		triggerDepsPan.setBorder(
-				BorderFactory.createMatteBorder(1, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		triggerDepsPan.setBackground(Theme.current().getBackgroundColor());
+		triggerDepsPan.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Theme.current().getAltBackgroundColor()));
 
 		JScrollPane scrollPaneExtDeps = new JScrollPane(dependenciesExtTrigList);
-		scrollPaneExtDeps.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		scrollPaneExtDeps.setBackground(Theme.current().getBackgroundColor());
 		scrollPaneExtDeps.getViewport().setOpaque(false);
 		scrollPaneExtDeps.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPaneExtDeps.getVerticalScrollBar()
-				.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), scrollPaneExtDeps.getVerticalScrollBar()));
+		scrollPaneExtDeps.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), scrollPaneExtDeps.getVerticalScrollBar()));
 		scrollPaneExtDeps.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneExtDeps.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPaneExtDeps.getHorizontalScrollBar()
-				.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-						(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), scrollPaneExtDeps.getHorizontalScrollBar()));
+		scrollPaneExtDeps.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getAltBackgroundColor(), scrollPaneExtDeps.getHorizontalScrollBar()));
 		scrollPaneExtDeps.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneExtDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
@@ -555,9 +543,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		JPanel eastPan = new JPanel();
 		eastPan.setLayout(new BoxLayout(eastPan, BoxLayout.PAGE_AXIS));
-		eastPan.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		eastPan.setBorder(
-				BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		eastPan.setBackground(Theme.current().getBackgroundColor());
+		eastPan.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getBackgroundColor()));
 
 		eastPan.add(localVarsPan);
 		eastPan.add(depsPan);
@@ -596,19 +583,15 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		blocklyEditorToolbar.setTemplateLibButtonWidth(168);
 		pane5.add("North", blocklyEditorToolbar);
 
-		addPage(PanelUtils.gridElements(1, 1, pane5));
+		addPage(PanelUtils.gridElements(1, 1, pane5), false);
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (!hasErrors && !hasDependencyErrors)
-			return new AggregatedValidationResult.PASS();
-		else if (hasErrors)
-			return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-					.filter(note -> note.type() == BlocklyCompileNote.Type.ERROR).map(BlocklyCompileNote::message)
-					.collect(Collectors.toList()));
-		else
+		if (hasDependencyErrors)
 			return new AggregatedValidationResult.FAIL(
 					L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
+		else
+			return new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes());
 	}
 
 	@Override protected void afterGeneratableElementGenerated() {
@@ -619,54 +602,27 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				new HashSet<>(dependenciesArrayList));
 
 		// this procedure could be in use and new dependencies were added
-		if (isEditingMode() && dependenciesChanged) {
-			for (ModElement element : mcreator.getWorkspace().getModElements()) {
-				// if this mod element is not locked and has procedures, we try to update dependencies
-				// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
-				if (!element.isCodeLocked()) {
-					GeneratableElement generatableElement = element.getGeneratableElement();
-					if (generatableElement instanceof GUI gui) {
-						boolean procedureUsedByGUI = false;
-						for (GUIComponent component : gui.components) {
-							if (Procedure.isElementUsingProcedure(component, modElement.getName())) {
-								procedureUsedByGUI = true;
-								break;
-							}
-						}
-						if (procedureUsedByGUI || Procedure.isElementUsingProcedure(generatableElement,
-								modElement.getName()))
-							mcreator.getGenerator().generateElement(generatableElement);
-					} else if (generatableElement instanceof Item item) {
-						boolean procedureUsedByItem = false;
-						for (Procedure procedure : item.customProperties.values()) {
-							if (modElement.getName().equals(procedure.getName())) {
-								procedureUsedByItem = true;
-								break;
-							}
-						}
-						if (procedureUsedByItem || Procedure.isElementUsingProcedure(generatableElement,
-								modElement.getName()))
-							mcreator.getGenerator().generateElement(generatableElement);
-					} else if (generatableElement != null && element.getType().hasProcedureTriggers()) {
-						if (Procedure.isElementUsingProcedure(generatableElement, modElement.getName())) {
-							mcreator.getGenerator().generateElement(generatableElement);
-						}
-					} else if (generatableElement instanceof Command command) {
-						if (command.argsxml != null && command.argsxml.contains(
-								"<field name=\"procedure\">" + modElement.getName() + "</field>")) {
-							mcreator.getGenerator().generateElement(generatableElement);
-						}
-					} else if (generatableElement instanceof net.mcreator.element.types.Procedure procedure) {
-						if (procedure.procedurexml != null && procedure.procedurexml.contains(
-								"<field name=\"procedure\">" + modElement.getName() + "</field>")) {
-							mcreator.getGenerator().generateElement(generatableElement);
-						}
-					}
+		if (isEditingMode() && dependenciesChanged)
+			regenerateProcedureCallers(modElement, modElement);
+
+		dependenciesBeforeEdit = dependenciesArrayList;
+	}
+
+	private void regenerateProcedureCallers(ModElement procedure, ModElement recursionLock) {
+		for (ModElement element : ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), procedure)) {
+			// if this mod element is not locked and has procedures, we try to update dependencies
+			// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
+			if (!element.isCodeLocked() && element.getGeneratableElement() != null) {
+				LOG.info("Regenerating " + element.getName() + " (" + element.getType()
+						+ ") because it triggers procedure " + procedure.getName());
+				mcreator.getGenerator().generateElement(element.getGeneratableElement());
+
+				// Procedure may call other procedures that also need updating
+				if (element.getType() == ModElementType.PROCEDURE && !element.equals(recursionLock)) {
+					regenerateProcedureCallers(element, recursionLock);
 				}
 			}
 		}
-
-		dependenciesBeforeEdit = dependenciesArrayList;
 	}
 
 	@Override public void openInEditingMode(net.mcreator.element.types.Procedure procedure) {
@@ -676,7 +632,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			blocklyPanel.setXML(procedure.procedurexml);
 			localVars.removeAllElements();
 			blocklyPanel.getLocalVariablesList().forEach(localVars::addElement);
-			regenerateProcedure();
+			blocklyPanel.triggerEventFunction();
 		});
 	}
 
@@ -686,8 +642,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		return procedure;
 	}
 
-	@Override public List<BlocklyPanel> getBlocklyPanels() {
-		return List.of(blocklyPanel);
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
+	}
+
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/section/procedure-system");
 	}
 
 }

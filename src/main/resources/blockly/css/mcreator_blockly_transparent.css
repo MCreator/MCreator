@@ -1,0 +1,15 @@
+body {
+    background: transparent !important;
+}
+
+#blockly {
+    background: transparent !important;
+}
+
+.blocklySvg {
+    background-color: transparent !important;
+}
+
+.blocklyMainBackground {
+    fill: rgba(85, 85, 85, 0.66) !important;
+}

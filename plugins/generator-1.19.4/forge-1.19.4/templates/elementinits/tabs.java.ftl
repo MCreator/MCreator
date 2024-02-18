@@ -32,6 +32,10 @@
 
 <#include "../mcitems.ftl">
 
+<#assign tabMap = w.getCreativeTabMap()>
+<#assign vanillaTabs = tabMap.keySet()?filter(e -> !e?starts_with('CUSTOM:'))>
+<#assign customTabs = tabMap.keySet()?filter(e -> e?starts_with('CUSTOM:'))>
+
 /*
  *    MCreator note: This file will be REGENERATED on each build.
  */
@@ -40,41 +44,32 @@ package ${package}.init;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Tabs {
 
-	<#assign tabMap = w.getCreativeTabMap()>
-
-	<#if w.hasItemsInVanillaTabs(tabMap)>
-	@SubscribeEvent public static void buildTabContentsVanilla(CreativeModeTabEvent.BuildContents tabData) {
-		<#assign first = true>
-		<#list tabMap.keySet() as tabName>
-			<#if !tabName.startsWith("CUSTOM:")>
-				<#if !first>else <#assign first = false></#if>
-				if (tabData.getTab() == ${generator.map(tabName, "tabs")}) {
-					<#list tabMap.get(tabName) as tabElement>
-					tabData.accept(${mappedMCItemToItem(tabElement)});
-					</#list>
-				}
-			</#if>
+	<#if customTabs?has_content>
+	@SubscribeEvent public static void buildTabContentsModded(CreativeModeTabEvent.Register event) {
+		<#list customTabs as customTab>
+			<#assign tab = w.getWorkspace().getModElementByName(customTab.replace("CUSTOM:", "")).getGeneratableElement()>
+			event.registerCreativeModeTab(new ResourceLocation("${modid}", "${tab.getModElement().getRegistryName()}"), builder -> builder
+				.title(Component.translatable("item_group.${modid}.${tab.getModElement().getRegistryName()}"))
+				.icon(() -> ${mappedMCItemToItemStackCode(tab.icon, 1)})
+					.displayItems((parameters, tabData) -> {
+						<#list tabMap.get("CUSTOM:" + tab.getModElement().getName()) as tabElement>
+						tabData.accept(${mappedMCItemToItem(tabElement)});
+						</#list>
+					})
+				<#if tab.showSearch>.withSearchBar()</#if>
+			);
 		</#list>
 	}
 	</#if>
 
-	<#if w.hasItemsInCustomTabs(tabMap)>
-	@SubscribeEvent public static void buildTabContentsModded(CreativeModeTabEvent.Register event) {
-		<#list w.getElementsOfType("tab") as tabME>
-			<#if tabMap.containsKey("CUSTOM:" + tabME.getName())>
-				<#assign tab = tabME.getGeneratableElement()>
-				<#assign tabContents = tabMap.get("CUSTOM:" + tabME.getName())>
-				event.registerCreativeModeTab(new ResourceLocation("${modid}", "${tabME.getRegistryName()}"), builder -> builder
-					.title(Component.translatable("item_group.${modid}.${tabME.getRegistryName()}"))
-					.icon(() -> ${mappedMCItemToItemStackCode(tab.icon, 1)})
-						.displayItems((parameters, tabData) -> {
-							<#list tabContents as tabElement>
-							tabData.accept(${mappedMCItemToItem(tabElement)});
-							</#list>
-						})
-					<#if tab.showSearch>.withSearchBar()</#if>
-				);
-			</#if>
+	<#if vanillaTabs?has_content>
+	@SubscribeEvent public static void buildTabContentsVanilla(CreativeModeTabEvent.BuildContents tabData) {
+		<#list vanillaTabs as tabName>
+			<#if !tabName?is_first>else </#if>if (tabData.getTab() == ${generator.map(tabName, "tabs")}) {
+				<#list tabMap.get(tabName) as tabElement>
+				tabData.accept(${mappedMCItemToItem(tabElement)});
+				</#list>
+		}
 		</#list>
 	}
 	</#if>

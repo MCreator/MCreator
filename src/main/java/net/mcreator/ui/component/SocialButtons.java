@@ -22,38 +22,36 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class SocialButtons extends JLabel {
+public class SocialButtons extends JPanel {
 
 	public SocialButtons() {
-		setIcon(UIRES.get("social"));
-		setCursor(new Cursor(Cursor.HAND_CURSOR));
-		addMouseListener(new MouseAdapter() {
+		setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+		add(createButton("yt", "https://www.youtube.com/subscription_center?add_user=PyloGroup"));
+		add(new JEmptyBox(2, 2));
+		add(createButton("tw", "https://twitter.com/PyloDEV"));
+		add(new JEmptyBox(2, 2));
+		add(createButton("rd", "https://www.reddit.com/r/MCreator/"));
+		add(new JEmptyBox(2, 2));
+		add(createButton("ig", "https://www.instagram.com/pylocompany/"));
+		add(new JEmptyBox(2, 2));
+		add(createButton("gh", "https://github.com/MCreator/MCreator"));
+		add(new JEmptyBox(2, 2));
+		add(createButton("fb", "https://www.facebook.com/PyloDEV"));
+	}
+
+	private JLabel createButton(String icon, String url) {
+		JLabel label = new JLabel(UIRES.SVG.getBuiltIn("social." + icon, 18, 18));
+		label.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		label.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
-				int offset = 0;
-				if (getBorder() instanceof EmptyBorder border) {
-					offset = border.getBorderInsets().left;
-				}
-				int x = mouseEvent.getX() - offset;
-				if (x >= 0 && x <= 16) {
-					DesktopUtils.browseSafe("https://www.youtube.com/subscription_center?add_user=PyloGroup");
-				} else if (x >= 20 && x <= 36) {
-					DesktopUtils.browseSafe("https://twitter.com/PyloDEV");
-				} else if (x >= 40 && x <= 56) {
-					DesktopUtils.browseSafe("https://www.reddit.com/r/MCreator/");
-				} else if (x >= 60 && x <= 76) {
-					DesktopUtils.browseSafe("https://www.instagram.com/pylocompany/");
-				} else if (x >= 80 && x <= 96) {
-					DesktopUtils.browseSafe("https://www.facebook.com/PyloDEV/");
-				} else if (x >= 100 && x <= 116) {
-					DesktopUtils.browseSafe("https://github.com/MCreator/MCreator");
-				}
+				DesktopUtils.browseSafe(url);
 			}
 		});
+		return label;
 	}
 
 }

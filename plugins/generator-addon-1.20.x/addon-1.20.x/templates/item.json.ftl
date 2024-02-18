@@ -9,7 +9,7 @@
     },
 
     "components": {
-      <#if data.hasGlow>"minecraft:foil": true,</#if>
+      <#if data.glowCondition?? && data.glowCondition.getFixedValue()>"minecraft:foil": true,</#if>
       "minecraft:max_stack_size": ${data.stackSize},
       "minecraft:max_damage": ${data.damageCount},
       <#if data.isFood>

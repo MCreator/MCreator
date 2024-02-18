@@ -25,19 +25,24 @@ import net.mcreator.minecraft.DataListLoader;
 import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Potion extends GeneratableElement {
+@SuppressWarnings("unused") public class Potion extends GeneratableElement {
 
 	public String potionName;
 	public String splashName;
 	public String lingeringName;
 	public String arrowName;
-	public List<CustomEffectEntry> effects;
+	@ModElementReference public List<CustomEffectEntry> effects;
+
+	private Potion() {
+		this(null);
+	}
 
 	public Potion(ModElement element) {
 		super(element);

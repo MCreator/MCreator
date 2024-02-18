@@ -1,1 +1,0 @@
-When this conditional procedure is true, the block at x, y, and z will spawn particles based on the settings.

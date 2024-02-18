@@ -23,7 +23,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.integration.TestSetup;
+import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -34,6 +34,7 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.tools.*;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
+import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.JStateLabel;
@@ -44,43 +45,28 @@ import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class DialogsTest {
-
-	private static Logger LOG;
+@ExtendWith(IntegrationTestSetup.class) public class DialogsTest {
 
 	private static MCreator mcreator;
 
 	@BeforeAll public static void initTest() throws IOException {
-		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
-		LOG = LogManager.getLogger("Dialogs Test");
-
-		// disable native file choosers for tests due to threading issues
-		FileDialogs.DISABLE_NATIVE_DIALOGS = true;
-
-		TestSetup.setupIntegrationTestEnvironment();
-
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
@@ -95,10 +81,6 @@ public class DialogsTest {
 		mcreator = new MCreator(null, workspace);
 	}
 
-	@BeforeEach void printName(TestInfo testInfo) {
-		LOG.info("Running " + testInfo.getDisplayName());
-	}
-
 	@Test public void testWorkspaceSelector() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new WorkspaceSelector(null, f -> {}));
 	}
@@ -107,10 +89,28 @@ public class DialogsTest {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new NewWorkspaceDialog(mcreator));
 	}
 
+	@Test public void testNewWorkspaceSettingsDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> WorkspaceDialogs.workspaceSettings(mcreator, mcreator.getWorkspace()));
+	}
+
 	@Test public void testGeneratorSelectorDialog() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> GeneratorSelector.getGeneratorSelector(mcreator, mcreator.getGeneratorConfiguration(),
 						GeneratorFlavor.FORGE, true));
+	}
+
+	@Test public void testProgressDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> {
+			ProgressDialog dialog = new ProgressDialog(null, "Test progress dialog");
+			ProgressDialog.ProgressUnit unit = new ProgressDialog.ProgressUnit("Test progress unit");
+			dialog.addProgressUnit(unit);
+			unit.setPercent(50);
+			unit.markStateError();
+			unit.markStateWarning();
+			unit.markStateOk();
+			dialog.setVisible(true);
+		});
 	}
 
 	@Test public void testAboutDialog() throws Throwable {
@@ -143,10 +143,13 @@ public class DialogsTest {
 		}
 	}
 
+	@Test public void testAddCommonTagsDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AddCommonTagsDialog.open(mcreator));
+	}
+
 	@Test public void testToolsDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> ArmorPackMakerTool.getAction(mcreator.actionRegistry).doAction());
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> InjectTagsTool.getAction(mcreator.actionRegistry).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> MaterialPackMakerTool.getAction(mcreator.actionRegistry).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
@@ -182,7 +185,8 @@ public class DialogsTest {
 		testProps.add(new PropertyData.IntegerType("integer2", -100, 100));
 		testProps.add(new PropertyData.NumberType("number"));
 		testProps.add(new PropertyData.NumberType("number2", -0.0001, 1000000));
-		testProps.add(new PropertyData.StringType("text", ElementUtil.loadDirections()));
+		testProps.add(new PropertyData.StringType("text"));
+		testProps.add(new PropertyData.StringType("text2", ElementUtil.loadDirections()));
 		Random rng = new Random();
 		StateMap testState = new StateMap();
 		if (rng.nextBoolean())
@@ -197,8 +201,23 @@ public class DialogsTest {
 			testState.put(testProps.get(4), rng.nextDouble());
 		if (rng.nextBoolean())
 			testState.put(testProps.get(5), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
+		if (rng.nextBoolean())
+			testState.put(testProps.get(6), TestWorkspaceDataProvider.getRandomItem(rng, ElementUtil.loadDirections()));
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> StateEditorDialog.open(mcreator, testProps, testState, JStateLabel.NumberMatchType.EQUAL));
+	}
+
+	@Test public void testListEditor() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> ListEditorDialog.open(mcreator,
+				Collections.enumeration(Arrays.asList("info 1", "info 2", "test \\, is this", "another one")), null,
+				false));
+	}
+
+	@Test public void testUsagesSearchDialogs() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.showUsagesDialog(mcreator, "", Collections.emptyList()));
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> SearchUsagesDialog.showDeleteDialog(mcreator, "", Collections.emptyList(), "test sufix"));
 	}
 
 	@Test public void testFileDialogs() throws Throwable {

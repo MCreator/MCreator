@@ -36,8 +36,6 @@
 
 package ${package}.block;
 
-import net.minecraft.world.level.material.Material;
-import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 <#compress>
@@ -64,21 +62,11 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		</#if>
 		<#if data.isCustomSoundType>
 			.sound(new ForgeSoundType(1.0f, 1.0f,
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
-					"${(data.breakSound?has_content && data.breakSound.getMappedValue()?has_content)?then(data.breakSound, "intentionally_empty")}"
-				)),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
-					"${(data.stepSound?has_content && data.stepSound.getMappedValue()?has_content)?then(data.stepSound, "intentionally_empty")}"
-				)),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
-					"${(data.placeSound?has_content && data.placeSound.getMappedValue()?has_content)?then(data.placeSound, "intentionally_empty")}"
-				)),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
-					"${(data.hitSound?has_content && data.hitSound.getMappedValue()?has_content)?then(data.hitSound, "intentionally_empty")}"
-				)),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation(
-					"${(data.fallSound?has_content && data.fallSound.getMappedValue()?has_content)?then(data.fallSound, "intentionally_empty")}"
-				))
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.breakSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")),
+				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}"))
 			))
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
@@ -154,14 +142,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 	}
 	</#if>
 
-	<#if data.specialInfo?has_content>
-	@Override public void appendHoverText(ItemStack itemstack, BlockGetter world, List<Component> list, TooltipFlag flag) {
-		super.appendHoverText(itemstack, world, list, flag);
-		<#list data.specialInfo as entry>
-		list.add(Component.literal("${JavaConventions.escapeStringForJava(entry)}"));
-		</#list>
-	}
-	</#if>
+	<@addSpecialInformation data.specialInformation, true/>
 
 	<#if data.fireSpreadSpeed != 0>
 	@Override public int getFireSpreadSpeed(BlockState state, BlockGetter world, BlockPos pos, Direction face) {

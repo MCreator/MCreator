@@ -45,45 +45,42 @@ public class WorkspaceGeneratorSetupDialog {
 		Thread t = new Thread(() -> {
 			ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.setup_workspace.step.gradle_files"));
-			dial.addProgress(p1);
+			dial.addProgressUnit(p1);
 
 			// setup workspacebase files
 			WorkspaceGeneratorSetup.setupWorkspaceBase(m.getWorkspace());
 
-			p1.ok();
-			dial.refreshDisplay();
+			p1.markStateOk();
 
 			if (m.getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
 				m.getGradleConsole().setGradleSetupTaskRunningFlag(true);
 
 				ProgressDialog.ProgressUnit p20 = new ProgressDialog.ProgressUnit(
 						L10N.t("dialog.setup_workspace.step.gradle_daemons"));
-				dial.addProgress(p20);
+				dial.addProgressUnit(p20);
 
 				try {
 					GradleDaemonUtils.stopAllDaemons(m.getWorkspace());
-					p20.ok();
+					p20.markStateOk();
 				} catch (IOException | InterruptedException e) {
 					LOG.warn("Failed to stop Gradle daemons", e);
-					p20.warn();
+					p20.markStateWarning();
 				}
-				dial.refreshDisplay();
 
 				ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 						L10N.t("dialog.setup_workspace.step.gradle_project"));
-				dial.addProgress(p2);
+				dial.addProgressUnit(p2);
 
 				m.mcreatorTabs.showTab(m.consoleTab);
 
 				m.getGradleConsole().exec(m.getGeneratorConfiguration().getGradleTaskFor("setup_task"), taskResult -> {
 					m.getGradleConsole().setGradleSetupTaskRunningFlag(false);
 					if (taskResult.statusByMCreator() == GradleErrorCodes.STATUS_OK) {
-						p2.ok();
-						dial.refreshDisplay();
+						p2.markStateOk();
 
 						finalizeTheSetup(m, dial);
 					} else {
-						p2.err();
+						p2.markStateError();
 						showSetupFailedMessage(dial, m, null);
 					}
 
@@ -103,26 +100,31 @@ public class WorkspaceGeneratorSetupDialog {
 	private static void finalizeTheSetup(MCreator m, ProgressDialog dial) {
 		ProgressDialog.ProgressUnit p3 = new ProgressDialog.ProgressUnit(
 				L10N.t("dialog.setup_workspace.step.importing_gradle"));
-		dial.addProgress(p3);
+		dial.addProgressUnit(p3);
 		new Thread(() -> {
 			try {
 				m.getGenerator().reloadGradleCaches();
-				p3.ok();
+				p3.markStateOk();
 
 				ProgressDialog.ProgressUnit p4 = new ProgressDialog.ProgressUnit(
 						L10N.t("dialog.setup_workspace.step.generating_base"));
-				dial.addProgress(p4);
-				m.getGenerator().generateBase();
-				p4.ok();
+				dial.addProgressUnit(p4);
+				try {
+					m.getGenerator().generateBase();
+				} catch (Exception e) {
+					// We catch any potential exceptions here to make sure generator setup does not fail due to base generation failure
+					LOG.error("Failed to generate base", e);
+				}
+				p4.markStateOk();
 
 				WorkspaceGeneratorSetup.completeSetup(m.getGenerator());
 
-				dial.hideAll();
+				dial.hideDialog();
 
 				m.mcreatorTabs.showTab(m.workspaceTab);
 			} catch (Exception e) {
 				LOG.error(L10N.t("dialog.setup_workspace.step.failed_gradle_caches"), e);
-				p3.err();
+				p3.markStateError();
 				showSetupFailedMessage(dial, m,
 						L10N.t("dialog.setup_workspace.step.failed_build_caches") + e.getMessage());
 			}
@@ -130,7 +132,7 @@ public class WorkspaceGeneratorSetupDialog {
 	}
 
 	private static void showSetupFailedMessage(ProgressDialog dial, MCreator m, String s) {
-		dial.hideAll();
+		dial.hideDialog();
 
 		Object[] options = { L10N.t("dialog.setup_workspace.step.workspace_setup_rerun"),
 				L10N.t("dialog.setup_workspace.step.workspace_setup_openpref"),

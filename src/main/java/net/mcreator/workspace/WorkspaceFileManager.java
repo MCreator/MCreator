@@ -27,6 +27,7 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.ModElementManager;
 import net.mcreator.workspace.elements.SoundElement;
+import net.mcreator.workspace.elements.TagElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -49,6 +50,7 @@ public class WorkspaceFileManager implements Closeable {
 
 	public static final Gson gson = new GsonBuilder().setLenient().setPrettyPrinting()
 			.registerTypeAdapter(SoundElement.class, new SoundElement.SoundElementDeserializer())
+			.registerTypeAdapter(TagElement.class, new TagElement.TagElementDeserializer())
 			.registerTypeAdapter(ModElement.class, new ModElement.ModElementDeserializer()).create();
 
 	private DataSavedListener dataSavedListener;
@@ -113,7 +115,7 @@ public class WorkspaceFileManager implements Closeable {
 			return;
 
 		String workspacestring = gson.toJson(workspace);
-		if (workspacestring != null && !workspacestring.equals("")) {
+		if (workspacestring != null && !workspacestring.isEmpty()) {
 			MCREvent.event(new WorkspaceSavedEvent.BeforeSaving(workspace));
 
 			// first we backup workspace file

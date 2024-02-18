@@ -1,0 +1,1 @@
+Questa impostazione ti consente di generare portali in rovina all'interno del tuo bioma.

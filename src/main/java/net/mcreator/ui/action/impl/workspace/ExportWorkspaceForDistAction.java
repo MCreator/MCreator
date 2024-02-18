@@ -77,6 +77,7 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 		actionRegistry.getMCreator().getGradleConsole().exec(task, taskResult -> {
 			String exportFile = actionRegistry.getMCreator().getGeneratorConfiguration()
 					.getGradleTaskFor("export_file");
+			String exportExtension = FilenameUtilsPatched.getExtension(exportFile);
 
 			if (new File(actionRegistry.getMCreator().getWorkspaceFolder(), exportFile).isFile()) {
 				Object[] options2 = { L10N.t("dialog.workspace.export.option.just_export"),
@@ -92,8 +93,13 @@ public class ExportWorkspaceForDistAction extends GradleAction {
 					DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/donate");
 				}
 
-				File loc = FileDialogs.getSaveDialog(actionRegistry.getMCreator(),
-						new String[] { "." + FilenameUtilsPatched.getExtension(exportFile) });
+				String suggestedFileName = actionRegistry.getMCreator().getWorkspaceSettings().getModID() + "-"
+						+ actionRegistry.getMCreator().getWorkspaceSettings().getVersion() + "-"
+						+ actionRegistry.getMCreator().getWorkspaceSettings().getCurrentGenerator() + "."
+						+ exportExtension;
+
+				File loc = FileDialogs.getSaveDialog(actionRegistry.getMCreator(), suggestedFileName,
+						new String[] { "." + exportExtension });
 				if (loc != null) {
 					actionRegistry.getMCreator().getApplication().getAnalytics()
 							.trackEvent(AnalyticsConstants.EVENT_EXPORT_FOR_DIST, task);

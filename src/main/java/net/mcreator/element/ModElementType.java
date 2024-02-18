@@ -19,7 +19,6 @@
 
 package net.mcreator.element;
 
-import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
@@ -28,13 +27,11 @@ import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
-import java.lang.reflect.Field;
 import java.util.Locale;
 
 public class ModElementType<GE extends GeneratableElement> {
 
 	private final String registryName;
-	private final BaseType baseType;
 
 	private final ModElementGUIProvider<GE> modElementGUIProvider;
 	private final Class<? extends GE> modElementStorageClass;
@@ -44,11 +41,8 @@ public class ModElementType<GE extends GeneratableElement> {
 	private final Character shortcut;
 	private GeneratorStats.CoverageStatus status = GeneratorStats.CoverageStatus.FULL;
 
-	private boolean hasProcedureTriggers;
-
-	public ModElementType(String registryName, Character shortcut, BaseType baseType,
-			ModElementGUIProvider<GE> modElementGUIProvider, Class<? extends GE> modElementStorageClass) {
-		this.baseType = baseType;
+	public ModElementType(String registryName, Character shortcut, ModElementGUIProvider<GE> modElementGUIProvider,
+			Class<? extends GE> modElementStorageClass) {
 		this.registryName = registryName;
 		this.shortcut = shortcut;
 
@@ -57,12 +51,6 @@ public class ModElementType<GE extends GeneratableElement> {
 
 		this.readableName = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH));
 		this.description = L10N.t("modelement." + registryName.toLowerCase(Locale.ENGLISH) + ".description");
-
-		for (Field field : modElementStorageClass.getFields())
-			if (field.getType().isAssignableFrom(Procedure.class)) {
-				hasProcedureTriggers = true;
-				break;
-			}
 	}
 
 	public String getRegistryName() {
@@ -71,10 +59,6 @@ public class ModElementType<GE extends GeneratableElement> {
 
 	public Character getShortcut() {
 		return shortcut;
-	}
-
-	public BaseType getBaseType() {
-		return baseType;
 	}
 
 	public String getReadableName() {
@@ -105,10 +89,6 @@ public class ModElementType<GE extends GeneratableElement> {
 		this.status = status;
 	}
 
-	public boolean hasProcedureTriggers() {
-		return hasProcedureTriggers;
-	}
-
 	@Override public String toString() {
 		return this.registryName;
 	}
@@ -131,6 +111,7 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> BIOME;
 	public static ModElementType<?> BLOCK;
 	public static ModElementType<?> COMMAND;
+	public static ModElementType<?> DAMAGETYPE;
 	public static ModElementType<?> DIMENSION;
 	public static ModElementType<?> CODE;
 	public static ModElementType<?> ENCHANTMENT;
@@ -152,11 +133,10 @@ public class ModElementType<GE extends GeneratableElement> {
 	public static ModElementType<?> POTION;
 	public static ModElementType<?> POTIONEFFECT;
 	public static ModElementType<?> PROCEDURE;
-	public static ModElementType<?> RANGEDITEM;
+	public static ModElementType<?> PROJECTILE;
 	public static ModElementType<?> RECIPE;
 	public static ModElementType<?> STRUCTURE;
 	public static ModElementType<?> TAB;
-	public static ModElementType<?> TAG;
 	public static ModElementType<?> TOOL;
 	public static ModElementType<?> VILLAGERPROFESSION;
 	public static ModElementType<?> VILLAGERTRADE;

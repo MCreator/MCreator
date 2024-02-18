@@ -40,7 +40,7 @@ public class TextFieldValidatorJSON implements Validator {
 	}
 
 	@Override public ValidationResult validate() {
-		if ((!holder.getText().trim().equals("") || canBeEmpty) && !holder.getText().contains("\""))
+		if ((!holder.getText().isBlank() || canBeEmpty) && !holder.getText().contains("\""))
 			return new ValidationResult(ValidationResultType.PASSED, "");
 		else
 			return new ValidationResult(answer, warning);

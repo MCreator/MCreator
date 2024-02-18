@@ -5,6 +5,14 @@
     <category name="${t:blockly.category.orefeatures}" colour="80">
         <custom-orefeatures/>
     </category>
+    <category name="${t:blockly.category.treefeatures}" colour="110">
+        <category name="${t:blockly.category.trees}" colour="110">
+            <custom-treefeatures/>
+        </category>
+        <category name="${t:blockly.category.treedecorators}" colour="110">
+            <custom-treedecorators/>
+        </category>
+    </category>
     <category name="${t:blockly.category.advancedfeatures}" colour="340">
         <custom-advancedfeatures/>
     </category>

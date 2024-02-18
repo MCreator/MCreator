@@ -29,9 +29,9 @@ import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 public class TemplateGenerator {
@@ -41,6 +41,8 @@ public class TemplateGenerator {
 	private final TemplateGeneratorConfiguration templateGeneratorConfiguration;
 	private final Generator generator;
 	private final BaseDataModelProvider baseDataModelProvider;
+
+	private final Map<String, Template> inline_template_cache = new ConcurrentHashMap<>();
 
 	public TemplateGenerator(TemplateGeneratorConfiguration templateGeneratorConfiguration, Generator generator) {
 		this.generator = generator;
@@ -123,7 +125,8 @@ public class TemplateGenerator {
 		try {
 			Template freemarkerTemplate = templateGeneratorConfiguration.getConfiguration().getTemplate(templateName);
 			StringWriter stringWriter = new StringWriter();
-			freemarkerTemplate.process(dataModel, stringWriter, templateGeneratorConfiguration.getBeansWrapper());
+			freemarkerTemplate.process(dataModel, stringWriter,
+					templateGeneratorConfiguration.getConfiguration().getObjectWrapper());
 			return stringWriter.getBuffer().toString();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template: " + templateName, e);
@@ -134,10 +137,16 @@ public class TemplateGenerator {
 	private String generateTemplateFromString(String template, Map<String, Object> dataModel)
 			throws TemplateGeneratorException {
 		try {
-			Template freemarkerTemplate = new Template("DIRECT", new StringReader(template),
-					templateGeneratorConfiguration.getConfiguration());
+			Template freemarkerTemplate = inline_template_cache.get(template);
+			if (freemarkerTemplate == null) {
+				freemarkerTemplate = new Template("INLINE_TEMPLATE", template,
+						templateGeneratorConfiguration.getConfiguration());
+				inline_template_cache.put(template, freemarkerTemplate);
+			}
+
 			StringWriter stringWriter = new StringWriter();
-			freemarkerTemplate.process(dataModel, stringWriter, templateGeneratorConfiguration.getBeansWrapper());
+			freemarkerTemplate.process(dataModel, stringWriter,
+					templateGeneratorConfiguration.getConfiguration().getObjectWrapper());
 			return stringWriter.getBuffer().toString();
 		} catch (IOException | TemplateException e) {
 			LOG.error("Failed to generate template from string", e);
@@ -156,10 +165,11 @@ public class TemplateGenerator {
 			try {
 				String[] vars = variables.split(";");
 				for (String var : vars) {
-					String[] data = var.split("(?<!/)=");
-					dataModel.put("var_" + data[0].trim().replace("/=", "="), data[1].trim().replace("/=", "="));
+					String[] data = var.split("=");
+					dataModel.put("var_" + data[0].trim(), data[1].trim());
 				}
-			} catch (Exception ignored) {
+			} catch (Exception e) {
+				LOG.warn("Failed to parse hardcoded variables", e);
 			}
 		}
 	}

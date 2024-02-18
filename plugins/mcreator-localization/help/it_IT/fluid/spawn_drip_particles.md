@@ -1,0 +1,1 @@
+Se questa opzione è abilitata, il fluido genererà particelle quando si trova sopra un blocco solido e c'è aria sotto di esso.

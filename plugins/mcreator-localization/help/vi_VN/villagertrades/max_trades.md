@@ -1,0 +1,1 @@
+Số lượng tối đa của trao đổi này mà Dân làng có thể thực hiện mà không phải tự nạp lại.

@@ -19,8 +19,14 @@
 
 package net.mcreator.ui.workspace;
 
+import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.init.L10N;
+
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseListener;
 
 /**
  * This class represents a section of a workspace where certain workspace elements/files can be managed.
@@ -57,4 +63,32 @@ public abstract class AbstractWorkspacePanel extends JPanel implements IReloadab
 	public boolean canSwitchToSection() {
 		return true;
 	}
+
+	public static JButton createToolBarButton(String translationKey, ImageIcon icon) {
+		return createToolBarButton(translationKey, icon, null, null);
+	}
+
+	public static JButton createToolBarButton(String translationKey, ImageIcon icon, ActionListener actionListener) {
+		return createToolBarButton(translationKey, icon, actionListener, null);
+	}
+
+	public static JButton createToolBarButton(String translationKey, ImageIcon icon, MouseListener mouseListener) {
+		return createToolBarButton(translationKey, icon, null, mouseListener);
+	}
+
+	public static JButton createToolBarButton(String translationKey, ImageIcon icon,
+			@Nullable ActionListener actionListener, @Nullable MouseListener mouseListener) {
+		JButton button = L10N.button(translationKey);
+		button.setIcon(icon);
+		button.setContentAreaFilled(false);
+		button.setOpaque(false);
+		ComponentUtils.deriveFont(button, 12);
+		button.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 8));
+		if (actionListener != null)
+			button.addActionListener(actionListener);
+		if (mouseListener != null)
+			button.addMouseListener(mouseListener);
+		return button;
+	}
+
 }

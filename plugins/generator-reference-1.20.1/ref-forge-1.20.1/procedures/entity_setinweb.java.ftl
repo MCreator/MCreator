@@ -1,0 +1,1 @@
+${input$entity}.makeStuckInBlock(Blocks.AIR.defaultBlockState(), new Vec3(0.25, 0.05, 0.25));

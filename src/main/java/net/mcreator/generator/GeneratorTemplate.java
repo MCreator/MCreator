@@ -53,13 +53,6 @@ public class GeneratorTemplate {
 	}
 
 	/**
-	 * @return Map defining the template properties that generator uses
-	 */
-	public Map<?, ?> getTemplateDefinition() {
-		return templateDefinition;
-	}
-
-	/**
 	 * Used to determine what template belongs to what file. Same GeneratorTemplate file of different MEs
 	 * can belong to the same template entry in element definition that was used to generate said file.
 	 * <p>
@@ -69,6 +62,20 @@ public class GeneratorTemplate {
 	 */
 	public String getTemplateIdentifier() {
 		return templateIdentifier;
+	}
+
+	/**
+	 * @return true if this template can have its code locked
+	 */
+	public boolean canBeLocked() {
+		return templateDefinition.get("canLock") != null && templateDefinition.get("canLock").equals("true");
+	}
+
+	/**
+	 * @return true if this template should be visually hidden in the UI
+	 */
+	public boolean isHidden() {
+		return templateDefinition.get("hidden") != null && templateDefinition.get("hidden").equals("true");
 	}
 
 	/**
@@ -85,12 +92,20 @@ public class GeneratorTemplate {
 	// Helper functions below
 
 	public GeneratorFile toGeneratorFile(String code) {
-		return new GeneratorFile(this, (String) templateDefinition.get("writer"), code);
+		return new GeneratorFile(this, GeneratorFile.Writer.fromString((String) templateDefinition.get("writer")),
+				code);
 	}
 
 	public boolean shouldBeSkippedBasedOnCondition(Generator generator, Object conditionData) {
 		return TemplateExpressionParser.shouldSkipTemplateBasedOnCondition(generator, templateDefinition,
 				conditionData);
+	}
+
+	/**
+	 * @return Map defining the template properties that generator uses
+	 */
+	public Map<?, ?> getTemplateDefinition() {
+		return templateDefinition;
 	}
 
 	@Override public boolean equals(Object o) {

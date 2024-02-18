@@ -19,9 +19,7 @@
 package net.mcreator.ui.dialogs.tools;
 
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.MItemBlock;
-import net.mcreator.element.parts.Material;
-import net.mcreator.element.parts.StepSound;
+import net.mcreator.element.parts.*;
 import net.mcreator.element.types.Block;
 import net.mcreator.element.types.Item;
 import net.mcreator.element.types.Recipe;
@@ -39,6 +37,7 @@ import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
@@ -52,7 +51,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -67,14 +66,14 @@ public class OrePackMakerTool {
 
 		dialog.add("North", PanelUtils.centerInPanel(L10N.label("dialog.tools.ore_pack_info")));
 
-		JPanel props = new JPanel(new GridLayout(4, 2, 5, 5));
+		JPanel props = new JPanel(new GridLayout(4, 2, 5, 2));
 
 		VTextField name = new VTextField(25);
 		JColor color = new JColor(mcreator, false, false);
 		JSpinner power = new JSpinner(new SpinnerNumberModel(1, 0.1, 10, 0.1));
 		JComboBox<String> type = new JComboBox<>(new String[] { "Gem based", "Dust based", "Ingot based" });
 
-		color.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+		color.setColor(Theme.current().getInterfaceAccentColor());
 		name.enableRealtimeValidation();
 
 		props.add(L10N.label("dialog.tools.ore_pack_name"));
@@ -94,9 +93,9 @@ public class OrePackMakerTool {
 
 		dialog.add("Center", PanelUtils.centerInPanel(props));
 		JButton ok = L10N.button("dialog.tools.ore_pack_create");
-		JButton canecel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
-		canecel.addActionListener(e -> dialog.setVisible(false));
-		dialog.add("South", PanelUtils.join(ok, canecel));
+		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
+		cancel.addActionListener(e -> dialog.setVisible(false));
+		dialog.add("South", PanelUtils.join(ok, cancel));
 
 		ok.addActionListener(e -> {
 			if (name.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
@@ -104,14 +103,14 @@ public class OrePackMakerTool {
 				addOrePackToWorkspace(mcreator, mcreator.getWorkspace(), name.getText(),
 						(String) Objects.requireNonNull(type.getSelectedItem()), color.getColor(),
 						(Double) power.getValue());
-				mcreator.mv.updateMods();
+				mcreator.mv.reloadElementsInCurrentTab();
 				dialog.setCursor(Cursor.getDefaultCursor());
 				dialog.setVisible(false);
 			}
 		});
 
 		dialog.getRootPane().setDefaultButton(ok);
-		dialog.setSize(600, 260);
+		dialog.setSize(600, 280);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
 	}
@@ -132,9 +131,7 @@ public class OrePackMakerTool {
 			return null;
 
 		// select folder the mod pack should be in
-		FolderElement folder = null;
-		if (!mcreator.mv.currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
-			folder = mcreator.mv.currentFolder;
+		FolderElement folder = mcreator.mv.currentFolder;
 
 		// first we generate ore texture
 		ImageIcon ore = ImageUtils.drawOver(
@@ -181,6 +178,7 @@ public class OrePackMakerTool {
 				new ModElement(workspace, oreItemName, ModElementType.ITEM), false).getElementFromGUI();
 		oreItem.name = name;
 		oreItem.texture = gemTextureName;
+		oreItem.creativeTab = new TabEntry(workspace, "MATERIALS");
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreItem);
 
 		// we use Block GUI to get default values for the block element (kinda hacky!)
@@ -197,11 +195,13 @@ public class OrePackMakerTool {
 		oreBlock.destroyTool = "pickaxe";
 		oreBlock.breakHarvestLevel = (int) Math.round(2 * factor);
 		oreBlock.requiresCorrectTool = true;
-		oreBlock.spawnWorldTypes = Collections.singletonList("Surface");
+		oreBlock.generateFeature = true;
+		oreBlock.restrictionBiomes = List.of(new BiomeEntry(mcreator.getWorkspace(), "#is_overworld"));
 		oreBlock.minGenerateHeight = 1;
 		oreBlock.maxGenerateHeight = (int) (63 / Math.pow(factor, 0.9));
 		oreBlock.frequencyPerChunks = (int) (11 / Math.pow(factor, 0.9));
 		oreBlock.frequencyOnChunk = (int) (7 / Math.pow(factor, 0.9));
+		oreBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
 		if (type.equals("Dust based")) {
 			oreBlock.dropAmount = 3;
 		}
@@ -222,6 +222,7 @@ public class OrePackMakerTool {
 		oreBlockBlock.breakHarvestLevel = (int) Math.round(2 * factor);
 		oreBlockBlock.requiresCorrectTool = true;
 		oreBlockBlock.renderType = 11; // single texture
+		oreBlockBlock.creativeTab = new TabEntry(workspace, "BUILDING_BLOCKS");
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, oreBlockBlock);
 
 		Recipe itemToBlockRecipe = (Recipe) ModElementType.RECIPE.getModElementGUI(mcreator,

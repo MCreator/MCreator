@@ -132,7 +132,7 @@ public class UniqueNameValidator implements Validator {
 
 	@Override public ValidationResult validate() {
 		String uniqueName = uniqueNameGetter.get();
-		if (uniqueName == null || uniqueName.equals(""))
+		if (uniqueName == null || uniqueName.isEmpty())
 			return new ValidationResult(ValidationResultType.ERROR, L10N.t("validators.unique_name.empty", name));
 		if (otherNames.get().filter(textCheck(uniqueName)).count() > (isPresentOnList.get() ? 1 : 0)
 				|| forbiddenNames.contains(uniqueName))

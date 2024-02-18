@@ -15,7 +15,7 @@
     <#return (extension?has_content)?then("_" + extension, "")>
 </#function>
 
-<#function mappedMCItemToIngameItemName mappedBlock skipDefaultMetadata=false>
+<#function mappedMCItemToItemObjectJSON mappedBlock skipDefaultMetadata=false>
     <#if mappedBlock.toString().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>
@@ -40,7 +40,7 @@
 </#function>
 
 
-<#function mappedMCItemToIngameNameNoTags mappedBlock>
+<#function mappedMCItemToRegistryNameNoTags mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>
         <#assign customelement = generator.getRegistryNameFromFullName(mappedBlock.getUnmappedValue())!""/>
         <#if customelement?has_content>

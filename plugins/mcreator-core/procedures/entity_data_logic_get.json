@@ -1,0 +1,40 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "entity",
+      "check": "Entity"
+    },
+    {
+      "type": "field_data_list_selector",
+      "name": "customEntity",
+      "datalist": "customEntity"
+    },
+    {
+      "type": "input_dummy",
+      "name": "accessorField"
+    }
+  ],
+  "extensions": [
+    "entity_data_logic_list_provider"
+  ],
+  "inputsInline": true,
+  "colour": "%{BKY_LOGIC_HUE}",
+  "output": "Boolean",
+  "mcreator": {
+    "group": "synced_data",
+    "toolbox_id": "entitydata",
+    "toolbox_init": [
+      "<value name=\"entity\"><block type=\"entity_from_deps\"></block></value>",
+      "~<field name=\"customEntity\">CUSTOM:Examplelivingentity4</field>",
+      "~<field name=\"accessor\">Logic</field>"
+    ],
+    "fields": [
+      "customEntity",
+      "accessor"
+    ],
+    "inputs": [
+      "entity"
+    ]
+  }
+}

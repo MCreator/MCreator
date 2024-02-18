@@ -39,11 +39,19 @@ import java.util.stream.Collectors;
 public class WorkspaceFolderBreadcrumb extends JPanel {
 
 	private final MCreator mcreator;
+	private final int maxDepth;
+	private final boolean canExpandTrailHead;
 
-	public WorkspaceFolderBreadcrumb(MCreator mcreator) {
+	private SelectionListener selectionListener;
+
+	private FolderElement currentFolder;
+
+	public WorkspaceFolderBreadcrumb(MCreator mcreator, int maxDepth, boolean canExpandTrailHead) {
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
-
 		this.mcreator = mcreator;
+		this.maxDepth = maxDepth;
+		this.canExpandTrailHead = canExpandTrailHead;
+
 		setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 0));
 		setOpaque(false);
 	}
@@ -56,6 +64,8 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 	@SuppressWarnings("EqualsBetweenInconvertibleTypes")
 	public void reloadPath(FolderElement file, Class<? extends IElement> childElement) {
+		this.currentFolder = file;
+
 		removeAll();
 
 		List<FolderElement> path = new ArrayList<>();
@@ -68,7 +78,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 			file = file.getParent();
 
 			depth++;
-			if (depth > 9)
+			if (depth > maxDepth - 1)
 				break;
 		}
 		Collections.reverse(path);
@@ -84,11 +94,12 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 			add(entry);
 
-			if (idx < path.size() - 1) {
+			if (idx < path.size() - 1 || canExpandTrailHead) {
 				adapter = new MouseAdapter() {
 					@Override public void mouseClicked(MouseEvent mouseEvent) {
 						if (mouseEvent.getClickCount() == 2) {
-							mcreator.mv.switchFolder(filePathPart);
+							if (selectionListener != null)
+								selectionListener.elementSelected(filePathPart, entry, mouseEvent);
 							return;
 						}
 
@@ -110,15 +121,11 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 								menuItem.setIcon(new ImageIcon(ImageUtils.resizeAA(
 										ModElementManager.getModElementIcon((ModElement) file).getImage(), 16)));
 							else if (file instanceof FolderElement)
-								menuItem.setIcon(UIRES.get("laf.directory.gif"));
+								menuItem.setIcon(UIRES.get("laf.directory"));
 
 							menuItem.addActionListener(e -> {
-								if (file instanceof ModElement) {
-									mcreator.mv.editCurrentlySelectedModElement((ModElement) file, entry,
-											mouseEvent.getX(), mouseEvent.getY());
-								} else if (file instanceof FolderElement) {
-									mcreator.mv.switchFolder((FolderElement) file);
-								}
+								if (selectionListener != null)
+									selectionListener.elementSelected(file, entry, mouseEvent);
 							});
 							popupMenu.add(menuItem);
 						}
@@ -130,8 +137,10 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 					}
 				};
 				entry.addMouseListener(adapter);
-				add(new JLabel(UIRES.get("16px.subpath")));
 			}
+
+			if (idx < path.size() - 1)
+				add(new JLabel(UIRES.get("16px.subpath")));
 
 			idx++;
 		}
@@ -144,6 +153,18 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 			if (finalAdapter != null)
 				finalAdapter.mouseReleased(new MouseEvent(this, 0, 0, 0, 0, 0, 0, false, 0));
 		});
+	}
+
+	public FolderElement getCurrentFolder() {
+		return currentFolder;
+	}
+
+	public void setSelectionListener(SelectionListener selectionListener) {
+		this.selectionListener = selectionListener;
+	}
+
+	public interface SelectionListener {
+		void elementSelected(IElement element, JComponent component, MouseEvent event);
 	}
 
 }

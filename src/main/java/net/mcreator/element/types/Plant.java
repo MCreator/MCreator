@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2023, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -22,14 +23,18 @@ import net.mcreator.element.BaseType;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.*;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IBlock;
 import net.mcreator.element.types.interfaces.IBlockWithBoundingBox;
 import net.mcreator.element.types.interfaces.IItemWithModel;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -42,33 +47,30 @@ import java.util.stream.Collectors;
 		implements IBlock, IItemWithModel, ITabContainedElement, IBlockWithBoundingBox {
 
 	public int renderType;
-	public String texture;
-	public String textureBottom;
+	@TextureReference(TextureType.BLOCK) public String texture;
+	@TextureReference(TextureType.BLOCK) public String textureBottom;
 	@Nonnull public String customModelName;
 
-	public String itemTexture;
-	public String particleTexture;
+	@TextureReference(TextureType.ITEM) public String itemTexture;
+	@TextureReference(TextureType.BLOCK) public String particleTexture;
 
 	public String tintType;
 	public boolean isItemTinted;
 
 	public String plantType;
 
-	public String staticPlantGenerationType;
-	public String suspiciousStewEffect;
+	@ModElementReference public String suspiciousStewEffect;
 	public int suspiciousStewDuration;
 
 	public String growapableSpawnType;
 	public int growapableMaxHeight;
-
-	public String doublePlantGenerationType;
 
 	public boolean customBoundingBox;
 	public boolean disableOffset;
 	public List<BoxEntry> boundingBoxes;
 
 	public String name;
-	public List<String> specialInfo;
+	public StringListProcedure specialInformation;
 	public TabEntry creativeTab;
 	public double hardness;
 	public double resistance;
@@ -103,7 +105,7 @@ import java.util.stream.Collectors;
 	public double jumpFactor;
 	public double speedFactor;
 
-	public List<MItemBlock> canBePlacedOn;
+	@ModElementReference public List<MItemBlock> canBePlacedOn;
 	public Procedure placingCondition;
 
 	public boolean isBonemealable;
@@ -112,9 +114,9 @@ import java.util.stream.Collectors;
 	public Procedure onBonemealSuccess;
 
 	public int frequencyOnChunks;
-	public List<String> spawnWorldTypes;
-	public List<BiomeEntry> restrictionBiomes;
-	public Procedure generateCondition;
+	public boolean generateFeature;
+	@ModElementReference public List<BiomeEntry> restrictionBiomes;
+	public String generationType;
 	public int patchSize;
 	public boolean generateAtAnyHeight;
 
@@ -139,8 +141,6 @@ import java.util.stream.Collectors;
 		super(element);
 
 		this.canBePlacedOn = new ArrayList<>();
-		this.spawnWorldTypes = new ArrayList<>();
-		this.spawnWorldTypes.add("Surface");
 		this.restrictionBiomes = new ArrayList<>();
 		this.growapableSpawnType = "Plains";
 		this.renderType = 12;
@@ -156,11 +156,9 @@ import java.util.stream.Collectors;
 		this.suspiciousStewEffect = "SATURATION";
 		this.suspiciousStewDuration = 0;
 
-		this.staticPlantGenerationType = "Flower";
-		this.doublePlantGenerationType = "Flower";
+		this.generationType = "Flower";
 		this.patchSize = 64;
 
-		this.specialInfo = new ArrayList<>();
 		this.boundingBoxes = new ArrayList<>();
 	}
 
@@ -193,16 +191,12 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
-	public boolean isDoubleBlock() {
+	@Override public boolean isDoubleBlock() {
 		return "double".equals(plantType);
 	}
 
 	@Override public @Nonnull List<BoxEntry> getValidBoundingBoxes() {
 		return boundingBoxes.stream().filter(BoxEntry::isNotEmpty).collect(Collectors.toList());
-	}
-
-	public boolean doesGenerateInWorld() {
-		return !spawnWorldTypes.isEmpty();
 	}
 
 	@Override public String getRenderType() {
@@ -212,7 +206,8 @@ import java.util.stream.Collectors;
 	@Override public Collection<BaseType> getBaseTypesProvided() {
 		List<BaseType> baseTypes = new ArrayList<>(List.of(BaseType.BLOCK, BaseType.ITEM));
 
-		if (doesGenerateInWorld())
+		if (generateFeature && getModElement().getGenerator().getGeneratorConfiguration().getGeneratorFlavor()
+				== GeneratorFlavor.FABRIC) // Fabric needs Java code to register feature generation
 			baseTypes.add(BaseType.FEATURE);
 
 		if (hasTileEntity)

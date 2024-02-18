@@ -30,6 +30,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -38,11 +39,15 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
+import java.util.List;
 import java.util.Map;
 
 public class GeneratorSelector {
 
-	private static final String covpfx = "dialog.generator_selector.coverage.";
+	public static final String covpfx = "dialog.generator_selector.coverage.";
+
+	private static final List<GeneratorFlavor> compatible1 = List.of(GeneratorFlavor.FORGE, GeneratorFlavor.FABRIC,
+			GeneratorFlavor.NEOFORGE, GeneratorFlavor.QUILT);
 
 	/**
 	 * <p>Open a dialog window to select a {@link Generator} from the loaded generators. </p>
@@ -69,10 +74,8 @@ public class GeneratorSelector {
 
 			if (currentFlavor == null || currentFlavor.equals(generatorConfiguration.getGeneratorFlavor())) {
 				generator.addItem(generatorConfiguration);
-			} else if ((currentFlavor == GeneratorFlavor.FORGE
-					&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FABRIC
-					|| currentFlavor == GeneratorFlavor.FABRIC
-					&& generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE) && !newWorkspace) {
+			} else if (compatible1.contains(currentFlavor) && compatible1.contains(
+					generatorConfiguration.getGeneratorFlavor()) && !newWorkspace) {
 				generator.addItem(generatorConfiguration);
 			}
 
@@ -92,6 +95,7 @@ public class GeneratorSelector {
 			addStatusLabel(L10N.t(covpfx + "structures"), stats.getBaseCoverageInfo().get("structures"),
 					baseCoverageInfo);
 			addStatusLabel(L10N.t(covpfx + "translations"), stats.getBaseCoverageInfo().get("i18n"), baseCoverageInfo);
+			addStatusLabel(L10N.t(covpfx + "tags"), stats.getBaseCoverageInfo().get("tags"), baseCoverageInfo);
 
 			if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
 				addStatusLabel(L10N.t(covpfx + "variables"), stats.getBaseCoverageInfo().get("variables"),
@@ -104,7 +108,8 @@ public class GeneratorSelector {
 			addStatusLabel(L10N.t(covpfx + "json_models"), stats.getBaseCoverageInfo().get("model_json"),
 					baseCoverageInfo);
 
-			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
+			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE
+					|| generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.NEOFORGE)
 				addStatusLabel(L10N.t(covpfx + "obj_models"), stats.getBaseCoverageInfo().get("model_obj"),
 						baseCoverageInfo);
 
@@ -127,7 +132,11 @@ public class GeneratorSelector {
 
 			JPanel supportedElements = new JPanel(new GridLayout(-1, 6, 7, 3));
 			DataListLoader.getCache().entrySet().stream().filter(e -> !e.getValue().isEmpty()).map(Map.Entry::getKey)
-					.sorted().forEach(e -> addStatsBar(L10N.t(covpfx + e), e, supportedElements, stats));
+					.sorted().forEach(e -> {
+						String name = L10N.t(covpfx + e);
+						if (name != null)
+							addStatsBar(name, e, supportedElements, stats);
+					});
 
 			genStats.add(PanelUtils.northAndCenterElement(L10N.label("dialog.generator_selector.element_coverage"),
 					supportedElements, 10, 10));
@@ -136,8 +145,11 @@ public class GeneratorSelector {
 
 			JPanel supportedProcedures = new JPanel(new GridLayout(-1, 4, 7, 3));
 
-			stats.getGeneratorBlocklyBlocks()
-					.forEach((key, value) -> addStatsBar(L10N.t(covpfx + key), key, supportedProcedures, stats));
+			stats.getGeneratorBlocklyBlocks().forEach((key, value) -> {
+				String name = L10N.t(covpfx + key);
+				if (name != null)
+					addStatsBar(name, key, supportedProcedures, stats);
+			});
 
 			addStatsBar(L10N.t(covpfx + "triggers"), "triggers", supportedProcedures, stats);
 
@@ -223,11 +235,11 @@ public class GeneratorSelector {
 
 		bar.setUI(new BasicProgressBarUI() {
 			@Override protected Color getSelectionBackground() {
-				return (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
+				return Theme.current().getForegroundColor();
 			}
 
 			@Override protected Color getSelectionForeground() {
-				return (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT");
+				return Theme.current().getSecondAltBackgroundColor();
 			}
 		});
 
@@ -240,7 +252,7 @@ public class GeneratorSelector {
 		else if (bar.getValue() < 100)
 			bar.setForeground(new Color(0xF5F984));
 		else
-			bar.setForeground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			bar.setForeground(Theme.current().getInterfaceAccentColor());
 
 		supportedElements.add(new JLabel(label + ": "));
 		supportedElements.add(bar);

@@ -12,7 +12,7 @@
           "places_block": "${modid}:${registryname}",
           "may_replace": [
             <#list data.blocksToReplace as block>
-            "${mappedMCItemToIngameNameNoTags(block)}"<#if block?has_next>,</#if>
+            "${mappedMCItemToRegistryNameNoTags(block)}"<#if block?has_next>,</#if>
             </#list>
           ]
         }

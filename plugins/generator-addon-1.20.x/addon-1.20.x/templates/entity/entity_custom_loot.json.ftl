@@ -7,7 +7,7 @@
         "entries": [
           {
             "type": "item",
-            "name": "${mappedMCItemToIngameNameNoTags(data.mobDrop)}",
+            "name": "${mappedMCItemToRegistryNameNoTags(data.mobDrop)}",
             "weight": 1,
             "functions": [
               <#if hasMetadata(data.mobDrop)>

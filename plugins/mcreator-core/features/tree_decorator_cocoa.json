@@ -1,0 +1,20 @@
+{
+  "args0": [
+    {
+      "type": "field_number",
+      "name": "probability",
+      "value": 0.2,
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "inputsInline": true,
+  "output": "TreeDecorator",
+  "colour": 320,
+  "mcreator": {
+    "toolbox_id": "treedecorators",
+    "fields": [
+      "probability"
+    ]
+  }
+}

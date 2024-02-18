@@ -1,1 +1,0 @@
-That parameter controls where your structure will be generated in the world.

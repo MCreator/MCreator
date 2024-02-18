@@ -179,6 +179,10 @@ public class BlocklyJavascriptTemplates {
 	}
 
 	public static String returnBlock(VariableType variableType) {
+		// The previous "Return" text is used as fallback if the specific key is missing
+		String blockText = L10N.t("blockly.block.return_" + variableType.getName()) != null ?
+				L10N.t("blockly.block.return_" + variableType.getName()) :
+				L10N.t("blockly.block.return");
 		return """
 				Blockly.defineBlocksWithJsonArray([{
 					"type": "return_%s",
@@ -192,7 +196,7 @@ public class BlocklyJavascriptTemplates {
 					],
 					"previousStatement": null,
 					"colour": "%s"
-				}]);""".formatted(variableType.getName(), L10N.t("blockly.block.return"),
-				variableType.getBlocklyVariableType(), variableType.getColor());
+				}]);""".formatted(variableType.getName(), blockText, variableType.getBlocklyVariableType(),
+				variableType.getColor());
 	}
 }

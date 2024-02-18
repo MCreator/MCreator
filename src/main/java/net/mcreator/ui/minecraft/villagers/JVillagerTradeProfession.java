@@ -23,13 +23,14 @@ import net.mcreator.element.parts.ProfessionEntry;
 import net.mcreator.element.types.VillagerTrade;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
-import net.mcreator.ui.minecraft.JEntriesList;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -65,7 +66,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 		parent.add(container);
 		professionList.add(this);
 
-		setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
+		setBackground((Theme.current().getBackgroundColor()).brighter());
 
 		JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 		topbar.setOpaque(false);
@@ -75,7 +76,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 		topbar.add(Box.createHorizontalGlue());
 
-		JButton add = new JButton(UIRES.get("16px.add.gif"));
+		JButton add = new JButton(UIRES.get("16px.add"));
 		add.setText(L10N.t("elementgui.villager_trade.add_entry"));
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));
@@ -89,7 +90,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 		JComponent component = PanelUtils.centerAndEastElement(topbar, PanelUtils.join(FlowLayout.RIGHT, add, remove));
 		component.setOpaque(true);
-		component.setBackground(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter());
+		component.setBackground((Theme.current().getBackgroundColor()).brighter());
 
 		add("North", component);
 		entries.setOpaque(false);
@@ -101,15 +102,15 @@ public class JVillagerTradeProfession extends JEntriesList {
 		add("Center", entries);
 
 		setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.villager_trade.profession_trades"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 
 		parent.revalidate();
 		parent.repaint();
 	}
 
-	public void reloadDataLists() {
+	@Override public void reloadDataLists() {
 		ComboBoxUtil.updateComboBoxContents(villagerProfession, ElementUtil.loadAllVillagerProfessions(workspace));
 	}
 

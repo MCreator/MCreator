@@ -21,6 +21,7 @@ package net.mcreator.element.types;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 
 import java.util.List;
 
@@ -35,10 +36,10 @@ import java.util.List;
 
 	public int damageModifier;
 
-	public List<net.mcreator.element.parts.Enchantment> compatibleEnchantments;
+	@ModElementReference public List<net.mcreator.element.parts.Enchantment> compatibleEnchantments;
 	public boolean excludeEnchantments;
 
-	public List<MItemBlock> compatibleItems;
+	@ModElementReference public List<MItemBlock> compatibleItems;
 	public boolean excludeItems;
 
 	public boolean isTreasureEnchantment;

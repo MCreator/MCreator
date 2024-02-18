@@ -8,7 +8,7 @@
     },
 
     "components": {
-      <#if data.hasGlow>"minecraft:foil": true,</#if>
+      <#if data.glowCondition?? && data.glowCondition.getFixedValue()>"minecraft:foil": true,</#if>
       "minecraft:max_stack_size": 1,
       "minecraft:max_damage": ${data.usageCount},
       "minecraft:stacked_by_data": true,

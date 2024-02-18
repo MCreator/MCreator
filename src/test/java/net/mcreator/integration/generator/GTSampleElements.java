@@ -29,7 +29,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Random;
@@ -47,11 +46,9 @@ public class GTSampleElements {
 				if (i == 1) {
 					me.putMetadata("dependencies", Arrays.asList(
 							Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")));
-				} else if (i < 13) {
+				} else {
 					me.putMetadata("dependencies",
 							Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world")));
-				} else {
-					me.putMetadata("dependencies", Collections.emptyList());
 				}
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
@@ -63,7 +60,9 @@ public class GTSampleElements {
 
 			for (int i = 1; i <= 4; i++) {
 				ModElement me = new ModElement(workspace, "condition" + i, ModElementType.PROCEDURE).putMetadata(
-						"dependencies", new ArrayList<String>()).putMetadata("return_type", "LOGIC");
+						"return_type", "LOGIC");
+				me.putMetadata("dependencies",
+						Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world")));
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
@@ -76,9 +75,16 @@ public class GTSampleElements {
 
 			for (int i = 1; i <= 3; i++) {
 				ModElement me = new ModElement(workspace, "number" + i, ModElementType.PROCEDURE).putMetadata(
-						"dependencies", new ArrayList<String>()).putMetadata("return_type", "NUMBER");
+						"return_type", "NUMBER");
+				if (i == 3) {
+					me.putMetadata("dependencies", Collections.emptyList());
+				} else {
+					me.putMetadata("dependencies",
+							Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world")));
+				}
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.skipDependencyRegeneration();
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_number\"><value name=\"return\">"
 								+ "<block type=\"math_number\"><field name=\"NUM\">100</field></block>"
@@ -87,11 +93,14 @@ public class GTSampleElements {
 				addGeneratableElementAndAssert(workspace, procedure);
 			}
 
-			for (int i = 1; i <= 2; i++) {
+			for (int i = 1; i <= 4; i++) {
 				ModElement me = new ModElement(workspace, "string" + i, ModElementType.PROCEDURE).putMetadata(
-						"dependencies", new ArrayList<String>()).putMetadata("return_type", "STRING");
+						"return_type", "STRING");
+				me.putMetadata("dependencies",
+						Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world")));
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.skipDependencyRegeneration();
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_string\"><value name=\"return\">"
 								+ "<block type=\"text\"><field name=\"TEXT\">demo text</field></block>"
@@ -102,9 +111,12 @@ public class GTSampleElements {
 
 			for (int i = 1; i <= 2; i++) {
 				ModElement me = new ModElement(workspace, "itemstack" + i, ModElementType.PROCEDURE).putMetadata(
-						"dependencies", new ArrayList<String>()).putMetadata("return_type", "ITEMSTACK");
+						"return_type", "ITEMSTACK");
+				me.putMetadata("dependencies",
+						Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world")));
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.skipDependencyRegeneration();
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_itemstack\"><value name=\"return\">"
 								+ "<block type=\"empty_itemstack\"></block></value></block>");
@@ -114,9 +126,12 @@ public class GTSampleElements {
 
 			for (int i = 1; i <= 1; i++) {
 				ModElement me = new ModElement(workspace, "actionresulttype" + i, ModElementType.PROCEDURE).putMetadata(
-						"dependencies", new ArrayList<String>()).putMetadata("return_type", "ACTIONRESULTTYPE");
+						"return_type", "ACTIONRESULTTYPE");
+				me.putMetadata("dependencies",
+						Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world")));
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.skipDependencyRegeneration();
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_actionresulttype\"><value name=\"return\">"
 								+ "<block type=\"action_result_type\"><field name=\"type\">SUCCESS</field></block>"
@@ -127,9 +142,12 @@ public class GTSampleElements {
 
 			for (int i = 1; i <= 1; i++) {
 				ModElement me = new ModElement(workspace, "entity" + i, ModElementType.PROCEDURE).putMetadata(
-						"dependencies", new ArrayList<String>()).putMetadata("return_type", "ENTITY");
+						"return_type", "ENTITY");
+				me.putMetadata("dependencies",
+						Arrays.asList(Dependency.fromString("x:number/y:number/z:number/world:world/entity:entity")));
 
 				net.mcreator.element.types.Procedure procedure = new net.mcreator.element.types.Procedure(me);
+				procedure.skipDependencyRegeneration();
 				procedure.procedurexml = GTProcedureBlocks.wrapWithBaseTestXML(
 						"<block type=\"return_entity\"><value name=\"return\">"
 								+ "<block type=\"entity_from_deps\"></block></value></block>");

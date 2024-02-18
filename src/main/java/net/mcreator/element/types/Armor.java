@@ -22,7 +22,9 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.Sound;
 import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.parts.procedure.LogicProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
+import net.mcreator.element.parts.procedure.StringListProcedure;
 import net.mcreator.element.types.interfaces.IItem;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.io.FileIO;
@@ -31,6 +33,8 @@ import net.mcreator.minecraft.MinecraftImageGenerator;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
+import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
@@ -42,13 +46,13 @@ import java.util.*;
 @SuppressWarnings("unused") public class Armor extends GeneratableElement implements IItem, ITabContainedElement {
 
 	public boolean enableHelmet;
-	public String textureHelmet;
+	@TextureReference(TextureType.ITEM) public String textureHelmet;
 	public boolean enableBody;
-	public String textureBody;
+	@TextureReference(TextureType.ITEM) public String textureBody;
 	public boolean enableLeggings;
-	public String textureLeggings;
+	@TextureReference(TextureType.ITEM) public String textureLeggings;
 	public boolean enableBoots;
-	public String textureBoots;
+	@TextureReference(TextureType.ITEM) public String textureBoots;
 
 	public Procedure onHelmetTick;
 	public Procedure onBodyTick;
@@ -56,37 +60,37 @@ import java.util.*;
 	public Procedure onBootsTick;
 
 	public TabEntry creativeTab;
-	public String armorTextureFile;
+	@TextureReference(value = TextureType.ARMOR, files = { "%s_layer_1", "%s_layer_2" }) public String armorTextureFile;
 
 	public String helmetName;
 	public String bodyName;
 	public String leggingsName;
 	public String bootsName;
 
-	public List<String> helmetSpecialInfo;
-	public List<String> bodySpecialInfo;
-	public List<String> leggingsSpecialInfo;
-	public List<String> bootsSpecialInfo;
+	public StringListProcedure helmetSpecialInformation;
+	public StringListProcedure bodySpecialInformation;
+	public StringListProcedure leggingsSpecialInformation;
+	public StringListProcedure bootsSpecialInformation;
 
 	public String helmetModelName;
 	public String helmetModelPart;
-	public String helmetModelTexture;
+	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String helmetModelTexture;
 
 	public String bodyModelName;
 	public String bodyModelPart;
 	public String armsModelPartL;
 	public String armsModelPartR;
-	public String bodyModelTexture;
+	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String bodyModelTexture;
 
 	public String leggingsModelName;
 	public String leggingsModelPartL;
 	public String leggingsModelPartR;
-	public String leggingsModelTexture;
+	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String leggingsModelTexture;
 
 	public String bootsModelName;
 	public String bootsModelPartL;
 	public String bootsModelPartR;
-	public String bootsModelTexture;
+	@TextureReference(value = TextureType.ENTITY, defaultValues = "From armor") public String bootsModelTexture;
 
 	public int helmetItemRenderType;
 	public String helmetItemCustomModelName;
@@ -102,6 +106,11 @@ import java.util.*;
 	public boolean leggingsImmuneToFire;
 	public boolean bootsImmuneToFire;
 
+	public LogicProcedure helmetPiglinNeutral;
+	public LogicProcedure bodyPiglinNeutral;
+	public LogicProcedure leggingsPiglinNeutral;
+	public LogicProcedure bootsPiglinNeutral;
+
 	public int maxDamage;
 	public int damageValueHelmet;
 	public int damageValueBody;
@@ -111,7 +120,7 @@ import java.util.*;
 	public double toughness;
 	public double knockbackResistance;
 	public Sound equipSound;
-	public List<MItemBlock> repairItems;
+	@ModElementReference public List<MItemBlock> repairItems;
 
 	private Armor() {
 		this(null);
@@ -133,11 +142,6 @@ import java.util.*;
 		this.leggingsItemCustomModelName = "Normal";
 		this.bootsItemRenderType = 0;
 		this.bootsItemCustomModelName = "Normal";
-
-		this.helmetSpecialInfo = new ArrayList<>();
-		this.bodySpecialInfo = new ArrayList<>();
-		this.leggingsSpecialInfo = new ArrayList<>();
-		this.bootsSpecialInfo = new ArrayList<>();
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

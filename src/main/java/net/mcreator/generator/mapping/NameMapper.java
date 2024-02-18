@@ -35,8 +35,8 @@ public class NameMapper {
 
 	public static final String UNKNOWN_ELEMENT = "deleted_mod_element";
 
-	String mappingSource;
-	public Workspace workspace;
+	private final String mappingSource;
+	private Workspace workspace;
 
 	public NameMapper(Workspace workspace, String mappingSource) {
 		this.mappingSource = mappingSource;
@@ -47,12 +47,20 @@ public class NameMapper {
 		this.workspace = workspace;
 	}
 
+	public Workspace getWorkspace() {
+		return workspace;
+	}
+
+	public String getMappingSource() {
+		return mappingSource;
+	}
+
 	public String getMapping(String origName) {
 		return this.getMapping(origName, 0);
 	}
 
 	public String getMapping(String origName, int mappingTable) {
-		if (origName == null || origName.equals(""))
+		if (origName == null || origName.isEmpty())
 			return origName;
 
 		Map<?, ?> mapping = workspace.getGenerator().getMappings().getMapping(mappingSource);

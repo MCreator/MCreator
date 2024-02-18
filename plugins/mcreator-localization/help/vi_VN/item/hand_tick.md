@@ -1,0 +1,1 @@
+Quy trình này sẽ được thực thi mỗi tick khi vật phẩm được cầm trên tay một người chơi.

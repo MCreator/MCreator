@@ -1,0 +1,1 @@
+Questa procedura viene eseguita prima che il fluido sostituisca un blocco diverso dall'aria (ad esempio erba alta).

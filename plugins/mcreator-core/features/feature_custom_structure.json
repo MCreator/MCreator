@@ -1,0 +1,77 @@
+{
+  "args0": [
+    {
+      "type": "field_data_list_selector",
+      "name": "structure",
+      "datalist": "structure"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "x",
+      "value": 0,
+      "precision": 1,
+      "min": -47,
+      "max": 47
+    },
+    {
+      "type": "field_number",
+      "name": "y",
+      "value": 0,
+      "precision": 1,
+      "min": -47,
+      "max": 47
+    },
+    {
+      "type": "field_number",
+      "name": "z",
+      "value": 0,
+      "precision": 1,
+      "min": -47,
+      "max": 47
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "random_rotation"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "random_mirror"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "ignored_blocks",
+      "check": "BlockHolderSet"
+    }
+  ],
+  "output": "Feature",
+  "colour": 0,
+  "mcreator": {
+    "toolbox_id": "advancedfeatures",
+    "toolbox_init": [
+      "<value name=\"ignored_blocks\"><block type=\"block_holderset_list\"><mutation inputs=\"1\"></mutation><field name=\"block0\">Blocks.AIR</field></block></value>"
+    ],
+    "inputs": [
+      "ignored_blocks"
+    ],
+    "fields": [
+      "structure",
+      "random_rotation",
+      "random_mirror",
+      "x",
+      "y",
+      "z"
+    ]
+  }
+}

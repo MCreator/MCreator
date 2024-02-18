@@ -97,7 +97,7 @@ public class BlocklyBlockCodeGenerator {
 				boolean found = false;
 				for (Element element : elements) {
 					if (element.getNodeName().equals("field") && element.getAttribute("name").equals(fieldName)
-							&& !element.getTextContent().equals("")) {
+							&& !element.getTextContent().isEmpty()) {
 						found = true;
 						dataModel.put("field$" + fieldName, element.getTextContent());
 						break; // found, no need to look other elements
@@ -225,7 +225,7 @@ public class BlocklyBlockCodeGenerator {
 						!matchingElements.isEmpty(); i++) {
 					if (matchingElements.containsKey(fieldName + i)) {
 						String fieldValue = matchingElements.remove(fieldName + i).getTextContent();
-						if (fieldValue != null && !fieldValue.equals("")) {
+						if (fieldValue != null && !fieldValue.isEmpty()) {
 							processedElements.put(i, fieldValue);
 							continue;
 						}
@@ -432,13 +432,9 @@ public class BlocklyBlockCodeGenerator {
 	private final Map<IBlockGenerator.BlockType, String[]> blocks_machine_names = new HashMap<>();
 
 	public String[] getSupportedBlocks(IBlockGenerator.BlockType blockType) {
-		if (blocks_machine_names.containsKey(blockType)) {
-			return blocks_machine_names.get(blockType);
-		} else {
-			String[] retval = blocks.values().stream().filter(block -> block.getType() == blockType)
-					.map(ToolboxBlock::getMachineName).toArray(String[]::new);
-			blocks_machine_names.put(blockType, retval);
-			return retval;
-		}
+		return blocks_machine_names.computeIfAbsent(blockType,
+				key -> blocks.values().stream().filter(block -> block.getType() == key)
+						.map(ToolboxBlock::getMachineName).toArray(String[]::new));
 	}
+
 }

@@ -7,8 +7,8 @@
     "experience": ${data.xpReward},
 	"cookingtime": ${data.cookingTime},
     "ingredient": {
-      ${mappedMCItemToIngameItemName(data.smeltingInputStack)}
+      ${mappedMCItemToItemObjectJSON(data.smeltingInputStack)}
     },
-    "result": "${mappedMCItemToIngameNameNoTags(data.smeltingReturnStack)}"
+    "result": "${mappedMCItemToRegistryName(data.smeltingReturnStack)}"
 }
 <#-- @formatter:on -->

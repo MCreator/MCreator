@@ -32,11 +32,22 @@ public class JMinMaxSpinner extends JPanel {
 	private final JSpinner max;
 	private boolean allowEqualValues = false;
 
+	private boolean directValueSet = false;
+
 	public JMinMaxSpinner(double minVal, double maxVal, double smin, double smax, double step) {
+		this(minVal, maxVal, smin, smax, step, L10N.t("minmaxspinner.min"), L10N.t("minmaxspinner.max"));
+	}
+
+	public JMinMaxSpinner(int minVal, int maxVal, int smin, int smax, int step) {
+		this(minVal, maxVal, smin, smax, step, L10N.t("minmaxspinner.min"), L10N.t("minmaxspinner.max"));
+	}
+
+	public JMinMaxSpinner(double minVal, double maxVal, double smin, double smax, double step, String stringMin,
+			String stringMax) {
 		min = new JSpinner(new SpinnerNumberModel(minVal, smin, smax, step));
 		max = new JSpinner(new SpinnerNumberModel(maxVal, smin, smax, step));
 
-		init();
+		init(stringMin, stringMax);
 
 		// increase visible fraction part if needed
 		if (step < 0.00001) {
@@ -51,42 +62,42 @@ public class JMinMaxSpinner extends JPanel {
 		}
 	}
 
-	public JMinMaxSpinner(int minVal, int maxVal, int smin, int smax, int step) {
+	public JMinMaxSpinner(int minVal, int maxVal, int smin, int smax, int step, String stringMin, String stringMax) {
 		min = new JSpinner(new SpinnerNumberModel(minVal, smin, smax, step));
 		max = new JSpinner(new SpinnerNumberModel(maxVal, smin, smax, step));
 
-		init();
+		init(stringMin, stringMax);
 	}
 
-	private void init() {
+	private void init(String stringMin, String stringMax) {
 		setLayout(new GridLayout(1, 2, 5, 0));
 		setOpaque(false);
 
 		min.addChangeListener(e -> {
+			if (directValueSet)
+				return;
+
 			Number minVal = getMinNumber(), maxVal = getMaxNumber();
-			if (minVal.doubleValue() >= maxVal.doubleValue()) {
+			if (minVal.doubleValue() > maxVal.doubleValue()) {
 				max.setValue(minVal); // update maximum to not be lower than minimum
-				if (!allowEqualValues) {
-					max.setValue(max.getNextValue()); // update maximum to be higher than minimum
-					if (getMaxNumber().doubleValue() == maxVal.doubleValue())
-						min.setValue(min.getPreviousValue()); // if fails, cancel minimum value update
-				}
+			} else if (!allowEqualValues && (minVal.doubleValue() == maxVal.doubleValue())) {
+				min.setValue(min.getPreviousValue()); // if fails, cancel minimum value update
 			}
 		});
 		max.addChangeListener(e -> {
+			if (directValueSet)
+				return;
+
 			Number minVal = getMinNumber(), maxVal = getMaxNumber();
-			if (maxVal.doubleValue() <= minVal.doubleValue()) {
+			if (maxVal.doubleValue() < minVal.doubleValue()) {
 				min.setValue(maxVal); // update minimum to not be higher than maximum
-				if (!allowEqualValues) {
-					min.setValue(min.getPreviousValue()); // update minimum to be lower than maximum
-					if (getMinNumber().doubleValue() == minVal.doubleValue())
-						max.setValue(max.getNextValue()); // if fails, cancel maximum value update
-				}
+			} else if (!allowEqualValues && (maxVal.doubleValue() == minVal.doubleValue())) {
+				max.setValue(max.getNextValue()); // if fails, cancel maximum value update
 			}
 		});
 
-		add(PanelUtils.westAndCenterElement(L10N.label("minmaxspinner.min"), min, 5, 0));
-		add(PanelUtils.westAndCenterElement(L10N.label("minmaxspinner.max"), max, 5, 0));
+		add(PanelUtils.westAndCenterElement(new JLabel(stringMin), min, 5, 0));
+		add(PanelUtils.westAndCenterElement(new JLabel(stringMax), max, 5, 0));
 	}
 
 	@Override public void setEnabled(boolean enabled) {
@@ -124,14 +135,19 @@ public class JMinMaxSpinner extends JPanel {
 	}
 
 	public void setMinValue(Number val) {
+		directValueSet = true;
 		min.setValue(val);
+		directValueSet = false;
 	}
 
 	public void setMaxValue(Number val) {
+		directValueSet = true;
 		max.setValue(val);
+		directValueSet = false;
 	}
 
 	public void setAllowEqualValues(boolean allowEqualValues) {
 		this.allowEqualValues = allowEqualValues;
 	}
+
 }

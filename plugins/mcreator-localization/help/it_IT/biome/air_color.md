@@ -1,0 +1,1 @@
+Questo parametro controlla il colore del cielo all'interno del bioma.

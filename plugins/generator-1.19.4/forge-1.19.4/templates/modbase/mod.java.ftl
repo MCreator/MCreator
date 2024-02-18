@@ -40,6 +40,7 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("potion")>${JavaModName}Potions.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("gui")>${JavaModName}Menus.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfBaseType("feature")>${JavaModName}Features.REGISTRY.register(bus);</#if>
+		<#if w.getElementsOfType("feature")?filter(e -> e.getMetadata("has_nbt_structure")??)?size != 0>StructureFeature.REGISTRY.register(bus);</#if>
 		<#if w.hasElementsOfType("villagerprofession")>${JavaModName}VillagerProfessions.PROFESSIONS.register(bus);</#if>
 		<#if w.hasElementsOfType("fluid")>
 			${JavaModName}Fluids.REGISTRY.register(bus);
@@ -48,8 +49,12 @@ import org.apache.logging.log4j.Logger;
 	}
 
 	private static final String PROTOCOL_VERSION = "1";
-	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(new ResourceLocation(MODID, MODID),
-		() -> PROTOCOL_VERSION, PROTOCOL_VERSION::equals, PROTOCOL_VERSION::equals);
+	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
+			new ResourceLocation(MODID, MODID),
+			() -> PROTOCOL_VERSION,
+			PROTOCOL_VERSION::equals,
+			<#if settings.isServerSideOnly()>clientVersion -> true<#else>PROTOCOL_VERSION::equals</#if>
+	);
 
 	private static int messageID = 0;
 
@@ -62,7 +67,8 @@ import org.apache.logging.log4j.Logger;
 	private static final Collection<AbstractMap.SimpleEntry<Runnable, Integer>> workQueue = new ConcurrentLinkedQueue<>();
 
 	public static void queueServerWork(int tick, Runnable action) {
-		workQueue.add(new AbstractMap.SimpleEntry(action, tick));
+		if (Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER)
+			workQueue.add(new AbstractMap.SimpleEntry<>(action, tick));
 	}
 
 	@SubscribeEvent public void tick(TickEvent.ServerTickEvent event) {

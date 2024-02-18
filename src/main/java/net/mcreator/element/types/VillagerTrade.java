@@ -23,13 +23,14 @@ import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.element.parts.ProfessionEntry;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.references.ModElementReference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class VillagerTrade extends GeneratableElement {
 
-	public List<CustomTradeEntry> tradeEntries;
+	@ModElementReference public List<CustomTradeEntry> tradeEntries;
 
 	private VillagerTrade() {
 		this(null);
@@ -43,7 +44,7 @@ import java.util.List;
 	public static class CustomTradeEntry {
 
 		public ProfessionEntry villagerProfession;
-		public List<Entry> entries;
+		@ModElementReference public List<Entry> entries;
 
 		public static class Entry {
 

@@ -19,10 +19,14 @@
 
 package net.mcreator.ui.modgui;
 
-import javafx.embed.swing.JFXPanel;
+import net.mcreator.ui.blockly.BlocklyPanel;
+import net.mcreator.ui.component.ITechnicalComponent;
+import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.minecraft.JEntriesList;
+import net.mcreator.ui.component.JStringListField;
+import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
+import net.mcreator.ui.minecraft.SoundSelector;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -51,42 +55,46 @@ public interface ModElementChangedListener
 	/**
 	 * <p>Registers the given UI component to trigger this listener when a change is detected on it</p>
 	 *
-	 * @param container The UI element to register
+	 * @param component The UI element to register
 	 */
-	default void registerUI(JComponent container) {
-		for (Component component : container.getComponents()) {
-			if ("TechnicalComponent".equals(component.getName()))
-				continue; // don't add listeners if component triggers actions not affecting mod element directly
+	default void registerUI(JComponent component) {
+		if (component instanceof ITechnicalComponent)
+			return; // don't add listeners if component triggers actions not affecting mod element directly
 
-			if (component instanceof MCItemHolder itemHolder) {
-				itemHolder.addBlockSelectedListener(this);
-			} else if (component instanceof JItemListField<?> listField) {
-				listField.addChangeListener(this);
-			} else if (component instanceof JEntriesList entriesList) {
-				registerUI(entriesList);
-				entriesList.addEntryRegisterListener(c -> {
-					registerUI(c);
-					modElementChanged();
-				});
-				component.addMouseListener(this);
-			} else if (component instanceof AbstractButton button) {
-				button.addActionListener(this);
-			} else if (component instanceof JSpinner spinner) {
-				spinner.addChangeListener(this);
-			} else if (component instanceof JComboBox<?> comboBox) {
-				comboBox.addActionListener(this);
-			} else if (component instanceof JTextComponent textComponent) {
-				textComponent.getDocument().addDocumentListener(this);
-			} else if (component instanceof JFXPanel) {
+		if (component instanceof MCItemHolder itemHolder) {
+			itemHolder.addBlockSelectedListener(this);
+		} else if (component instanceof JColor jcolor) {
+			jcolor.addColorSelectedListener(this);
+		} else if (component instanceof SoundSelector soundSelector) {
+			soundSelector.addSoundSelectedListener(this);
+		} else if (component instanceof JItemListField<?> listField) {
+			listField.addChangeListener(this);
+		} else if (component instanceof JStringListField stringList) {
+			stringList.addChangeListener(this);
+		} else if (component instanceof JEntriesList entriesList) {
+			entriesList.addEntryRegisterListener(c -> {
+				registerUI(c);
+				modElementChanged();
+			});
+		} else if (component instanceof AbstractButton button) {
+			button.addActionListener(this);
+		} else if (component instanceof JSpinner spinner) {
+			spinner.addChangeListener(this);
+		} else if (component instanceof JComboBox<?> comboBox) {
+			comboBox.addActionListener(this);
+		} else if (component instanceof JTextComponent textComponent) {
+			textComponent.getDocument().addDocumentListener(this);
+		} else if (component instanceof BlocklyPanel blocklyPanel) {
+			blocklyPanel.addChangeListener(this);
+		} else {
+			if (!isGenericComponent(component)) {
 				component.addMouseListener(this);
 				component.addKeyListener(this);
-			} else if (component instanceof JComponent jcomponent) {
-				registerUI(jcomponent);
+			}
 
-				if (!isGenericComponent(component)) {
-					component.addMouseListener(this);
-					component.addKeyListener(this);
-				}
+			for (Component subComponent : component.getComponents()) {
+				if (subComponent instanceof JComponent jcomponent)
+					registerUI(jcomponent);
 			}
 		}
 	}

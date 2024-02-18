@@ -19,6 +19,10 @@ templates:
     writer: json
     condition: "renderType #= 2"
     name: "@MODASSETSROOT/models/item/@registryname.json"
+  - template: json/item_model_blocking.json.ftl
+    writer: json
+    condition: "toolType %= Shield"
+    name: "@MODASSETSROOT/models/item/@registryname_0.json"
 
 localizationkeys:
   - key: item.@modid.@registryname
