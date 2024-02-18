@@ -160,6 +160,11 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		page1group.addValidationElement(icon);
 
+		if (!isEditingMode()) {
+			String readableNameFromModElement = net.mcreator.util.StringUtils.machineToReadableName(modElement.getName());
+			effectName.setText(readableNameFromModElement);
+		}
+
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);
 	}
