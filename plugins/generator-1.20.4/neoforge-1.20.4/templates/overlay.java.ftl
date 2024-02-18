@@ -102,7 +102,7 @@ package ${package}.client.screens;
 			    	<#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-					${name}Overlay.renderEntityInInventoryFollowsAngle(event.getGuiGraphics(), <@calculatePosition component=component x_offset=10 y_offset=20/>,
+					renderEntityInInventoryFollowsAngle(event.getGuiGraphics(), <@calculatePosition component=component x_offset=10 y_offset=20/>,
                         ${component.scale}, ${component.rotationX / 20.0}f, 0, livingEntity);
 			    }
 			</#list>
@@ -145,8 +145,6 @@ package ${package}.client.screens;
 	</#if>
 
 }
-
-
 
 <#macro calculatePosition component x_offset=0 y_offset=0>
 	<#if component.anchorPoint.name() == "TOP_LEFT">
