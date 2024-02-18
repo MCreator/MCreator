@@ -106,6 +106,11 @@ public class BlocklyPanel extends JFXPanel {
 					(ListChangeListener<Node>) change -> browser.lookupAll(".scroll-bar")
 							.forEach(bar -> bar.setVisible(false)));
 			webEngine = browser.getEngine();
+
+			// Needed to disable fix (JavaFX user agent detection) for https://github.com/google/blockly/issues/7444
+			// as this "fix" introduced a new issue: https://github.com/google/blockly/issues/7556
+			webEngine.setUserAgent("MCreator");
+
 			webEngine.load(BlocklyPanel.this.getClass().getResource("/blockly/blockly.html").toExternalForm());
 			webEngine.getLoadWorker().stateProperty().addListener((ov, oldState, newState) -> {
 				if (!loaded && newState == Worker.State.SUCCEEDED && webEngine.getDocument() != null) {
@@ -294,8 +299,7 @@ public class BlocklyPanel extends JFXPanel {
 			ThreadUtil.runOnFxThread(query);
 			return query.get();
 		} catch (InterruptedException | ExecutionException e) {
-			LOG.error(javaScript);
-			LOG.error(e.getMessage(), e);
+			LOG.error("Failed to execute: " + javaScript, e);
 		}
 		return null;
 	}
