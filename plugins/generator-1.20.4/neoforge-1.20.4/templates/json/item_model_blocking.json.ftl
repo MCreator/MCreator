@@ -28,8 +28,8 @@
     }
 <#elseif data.blockingRenderType == 2>
     "forge_marker": 1,
-    "parent": "forge:item/default",
-    "loader": "forge:obj",
+    "parent": "neoforge:item/default",
+    "loader": "neoforge:obj",
     "model": "${modid}:models/item/${data.blockingModelName.split(":")[0]}.obj",
     "textures": {
         <@textures data.getBlockingTextureMap()/>
