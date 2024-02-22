@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -36,25 +36,14 @@
 
 package ${package}.init;
 
-public class ${JavaModName}Fluids {
+public class ${JavaModName}FluidTypes {
 
-	public static final DeferredRegister<Fluid> REGISTRY = DeferredRegister.create(ForgeRegistries.FLUIDS, ${JavaModName}.MODID);
+	public static final DeferredRegister<FluidType> REGISTRY = DeferredRegister.create(NeoForgeRegistries.FLUID_TYPES, ${JavaModName}.MODID);
 
 	<#list fluids as fluid>
-	public static final RegistryObject<FlowingFluid> ${fluid.getModElement().getRegistryNameUpper()} =
-		REGISTRY.register("${fluid.getModElement().getRegistryName()}", () -> new ${fluid.getModElement().getName()}Fluid.Source());
-	public static final RegistryObject<FlowingFluid> FLOWING_${fluid.getModElement().getRegistryNameUpper()} =
-		REGISTRY.register("flowing_${fluid.getModElement().getRegistryName()}", () -> new ${fluid.getModElement().getName()}Fluid.Flowing());
+	public static final DeferredHolder<FluidType, FluidType> ${fluid.getModElement().getRegistryNameUpper()}_TYPE =
+		REGISTRY.register("${fluid.getModElement().getRegistryName()}", () -> new ${fluid.getModElement().getName()}FluidType());
 	</#list>
-
-	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
-		@SubscribeEvent public static void clientSetup(FMLClientSetupEvent event) {
-			<#list fluids as fluid>
-			ItemBlockRenderTypes.setRenderLayer(${fluid.getModElement().getRegistryNameUpper()}.get(), RenderType.translucent());
-			ItemBlockRenderTypes.setRenderLayer(FLOWING_${fluid.getModElement().getRegistryNameUpper()}.get(), RenderType.translucent());
-			</#list>
-		}
-	}
 }
 
 <#-- @formatter:on -->
