@@ -7,8 +7,8 @@
 }
 <#else>
 {
-  "parent": "forge:item/bucket_drip",
-  "loader": "forge:fluid_container",
+  "parent": "neoforge:item/bucket_drip",
+  "loader": "neoforge:fluid_container",
   "fluid": "${modid}:${registryname}"
 }
 </#if>
