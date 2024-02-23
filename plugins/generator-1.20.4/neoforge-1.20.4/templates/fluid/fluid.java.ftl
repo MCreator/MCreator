@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -34,9 +34,9 @@
 package ${package}.fluid;
 
 <#compress>
-public abstract class ${name}Fluid extends ForgeFlowingFluid {
+public abstract class ${name}Fluid extends BaseFlowingFluid {
 
-	public static final ForgeFlowingFluid.Properties PROPERTIES = new ForgeFlowingFluid.Properties(
+	public static final BaseFlowingFluid.Properties PROPERTIES = new BaseFlowingFluid.Properties(
 		() -> ${JavaModName}FluidTypes.${data.getModElement().getRegistryNameUpper()}_TYPE.get(),
 		() -> ${JavaModName}Fluids.${data.getModElement().getRegistryNameUpper()}.get(),
 		() -> ${JavaModName}Fluids.FLOWING_${data.getModElement().getRegistryNameUpper()}.get())

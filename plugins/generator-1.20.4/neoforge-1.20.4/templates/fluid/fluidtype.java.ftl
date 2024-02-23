@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -56,7 +56,7 @@ public class ${name}FluidType extends FluidType {
 			<#if data.rarity != "COMMON">.rarity(Rarity.${data.rarity})</#if>
 			.sound(SoundActions.BUCKET_FILL, SoundEvents.BUCKET_FILL)
 			<#if data.emptySound?has_content && data.emptySound.getMappedValue()?has_content>
-			.sound(SoundActions.BUCKET_EMPTY, ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.emptySound}")))
+			.sound(SoundActions.BUCKET_EMPTY, BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.emptySound}")))
 			<#else>
 			.sound(SoundActions.BUCKET_EMPTY, SoundEvents.BUCKET_EMPTY)
 			</#if>
