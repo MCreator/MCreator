@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: dev
-buildfileversion: 20.4.157-beta
+buildfileversion: 20.4.171
 
 import:
   - datapack-1.20.4
