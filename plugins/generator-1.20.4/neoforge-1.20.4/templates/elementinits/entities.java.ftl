@@ -70,30 +70,13 @@ public class ${JavaModName}Entities {
 	</#list>
 
 	<#if entitiesWithInventory?size != 0>
-		public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ${JavaModName}.MODID);
-
-		<#list entitiesWithInventory as entity>
-			public static final DeferredHolder<AttachmentType<?>, AttachmentType<ItemStackHandler>> ${entity.getModElement().getRegistryNameUpper()}_INVENTORY =
-				ATTACHMENT_TYPES.register("${entity.getModElement().getRegistryName()}_inventory",
-				() -> AttachmentType.serializable(holder -> ((${entity.getModElement().getName()}Entity) holder).getInventory()).build());
-		</#list>
-
-		public static void register(IEventBus bus) {
-			REGISTRY.register(bus);
-			ATTACHMENT_TYPES.register(bus);
-		}
-
 		<#compress>
 		@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 			<#list entitiesWithInventory as entity>
-				event.registerEntity(Capabilities.ItemHandler.ENTITY, ${entity.getModElement().getRegistryNameUpper()}.get(), (living, context) -> living.getFullInventory());
+				event.registerEntity(Capabilities.ItemHandler.ENTITY, ${entity.getModElement().getRegistryNameUpper()}.get(), (living, context) -> living.getInventory());
 			</#list>
 		}
 		</#compress>
-	<#else>
-		public static void register(IEventBus bus) {
-			REGISTRY.register(bus);
-		}
 	</#if>
 
 	private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {

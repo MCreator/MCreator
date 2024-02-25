@@ -406,11 +406,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	private final CombinedInvWrapper combined = new CombinedInvWrapper(inventory, new EntityHandsInvWrapper(this), new EntityArmorInvWrapper(this));
 
-	public ItemStackHandler getInventory() {
-		return inventory;
-	}
-
-   	public CombinedInvWrapper getFullInventory() {
+	public CombinedInvWrapper getInventory() {
 		return combined;
 	}
 
@@ -437,6 +433,9 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			compound.putString("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
 			</#if>
 		</#list>
+		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+		compound.put("InventoryCustom", inventory.serializeNBT());
+		</#if>
 	}
 
 	@Override public void readAdditionalSaveData(CompoundTag compound) {
@@ -451,6 +450,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.entityData.set(DATA_${entry.property().getName()}, compound.getString("Data${entry.property().getName()}"));
 				</#if>
 		</#list>
+		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
+		if (compound.get("InventoryCustom") instanceof CompoundTag inventoryTag)
+			inventory.deserializeNBT(inventoryTag);
+		</#if>
 	}
 	</#if>
 
@@ -514,7 +517,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					}
 				} else if (this.isFood(itemstack)) {
 					this.usePlayerItem(sourceentity, hand, itemstack);
-					if (this.random.nextInt(3) == 0 && !net.neoforged.neoforge.event.EventHooks.onAnimalTame(this, sourceentity)) {
+					if (this.random.nextInt(3) == 0 && !EventHooks.onAnimalTame(this, sourceentity)) {
 						this.tame(sourceentity);
 						this.level().broadcastEntityEvent(this, (byte) 7);
 					} else {
