@@ -150,7 +150,6 @@ public class WorkspaceDialogs {
 		VTextField websiteURL = new VTextField(24);
 
 		JComboBox<String> modPicture = new JComboBox<>();
-		JCheckBox lockBaseModFiles = L10N.checkbox("dialog.workspace_settings.lock_base_files");
 		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
 		JTextField updateJSON = new JTextField(24);
 		JStringListField requiredMods, dependencies, dependants;
@@ -518,14 +517,12 @@ public class WorkspaceDialogs {
 				_external_apis.add(apiSettings);
 			}
 
-			JPanel advancedSettings = new JPanel(new GridLayout(3, 2, 5, 2));
+			JPanel advancedSettings = new JPanel(new GridLayout(2, 2, 5, 2));
 			advancedSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 					L10N.t("dialog.workspace_settings.section.advanced")));
 			_advancedSettings.add(advancedSettings);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.server_side_only"));
 			advancedSettings.add(serverSideOnly);
-			advancedSettings.add(L10N.label("dialog.workspace_settings.lock_base_files_label"));
-			advancedSettings.add(lockBaseModFiles);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.update_url"));
 			advancedSettings.add(updateJSON);
 
@@ -558,7 +555,6 @@ public class WorkspaceDialogs {
 						L10N.t("dialog.workspace.settings.workspace_nopic_default") :
 						workspace.getWorkspaceSettings().getModPicture());
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
-				lockBaseModFiles.setSelected(workspace.getWorkspaceSettings().isLockBaseModFiles());
 				updateJSON.setText(workspace.getWorkspaceSettings().getUpdateURL());
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
 				packageName.setText(workspace.getWorkspaceSettings().getModElementsPackage());
@@ -594,7 +590,6 @@ public class WorkspaceDialogs {
 					(String) modPicture.getSelectedItem());
 			retVal.setModElementsPackage(packageName.getText().isEmpty() ? null : packageName.getText());
 			retVal.setServerSideOnly(serverSideOnly.isSelected());
-			retVal.setLockBaseModFiles(lockBaseModFiles.isSelected());
 			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());
 			retVal.setCurrentGenerator(
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());

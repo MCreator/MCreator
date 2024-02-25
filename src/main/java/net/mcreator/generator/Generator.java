@@ -143,10 +143,6 @@ public class Generator implements IGenerator, Closeable {
 		TemplateGenerator templateGenerator = getTemplateGeneratorFromName("templates");
 
 		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).stream().map(generatorTemplate -> {
-			if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
-				if (generatorTemplate.canBeLocked()) // can this file be locked
-					return null; // if yes, we skip this file
-
 			try {
 				String code = templateGenerator.generateBaseFromTemplate(
 						(String) generatorTemplate.getTemplateDefinition().get("template"),
