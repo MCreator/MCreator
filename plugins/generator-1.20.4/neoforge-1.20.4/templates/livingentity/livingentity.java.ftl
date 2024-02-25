@@ -208,18 +208,18 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if data.mobModelName == "Biped">
-	@Override public float getMyRidingOffset(Entity entity) {
+	@Override protected float ridingOffset(Entity entity) {
 		return -0.35F;
 	}
 	<#elseif data.mobModelName == "Silverfish">
-	@Override public float getMyRidingOffset(Entity entity) {
+	@Override protected float ridingOffset(Entity entity) {
 		return 0.1F;
 	}
 	</#if>
 
 	<#if data.mountedYOffset != 0>
-	@Override public double getPassengersRidingOffset() {
-		return super.getPassengersRidingOffset() + ${data.mountedYOffset};
+	@Override public Vec3 getPassengerRidingPosition(Entity entity) {
+		return super.getPassengerRidingPosition(entity).add(0, ${data.mountedYOffset}, 0);
 	}
 	</#if>
 
@@ -641,13 +641,13 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	</#if>
 
 	<#if data.breatheUnderwater?? && (hasProcedure(data.breatheUnderwater) || data.breatheUnderwater.getFixedValue())>
-	@Override public boolean canBreatheUnderwater() {
+	@Override public boolean canDrownInFluidType(FluidType type) {
 		double x = this.getX();
 		double y = this.getY();
 		double z = this.getZ();
 		Level world = this.level();
 		Entity entity = this;
-		return <@procedureOBJToConditionCode data.breatheUnderwater true false/>;
+		return <@procedureOBJToConditionCode data.breatheUnderwater false true/>;
 	}
 	</#if>
 
