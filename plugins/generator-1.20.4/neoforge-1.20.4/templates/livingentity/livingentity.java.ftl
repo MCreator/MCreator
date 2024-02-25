@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -67,10 +67,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	private final ServerBossEvent bossInfo = new ServerBossEvent(this.getDisplayName(),
 		ServerBossEvent.BossBarColor.${data.bossBarColor}, ServerBossEvent.BossBarOverlay.${data.bossBarType});
 	</#if>
-
-	public ${name}Entity(PlayMessages.SpawnEntity packet, Level world) {
-    	this(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), world);
-    }
 
 	public ${name}Entity(EntityType<${name}Entity> type, Level world) {
     	super(type, world);
@@ -154,10 +150,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#if>
 	}
 
-	@Override public Packet<ClientGamePacketListener> getAddEntityPacket() {
-		return NetworkHooks.getEntitySpawningPacket(this);
-	}
-
 	<#if data.entityDataEntries?has_content>
 	@Override protected void defineSynchedData() {
 		super.defineSynchedData();
@@ -216,12 +208,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
     </#if>
 
 	<#if data.mobModelName == "Biped">
-	@Override public double getMyRidingOffset() {
-		return -0.35D;
+	@Override public float getMyRidingOffset(Entity entity) {
+		return -0.35F;
 	}
 	<#elseif data.mobModelName == "Silverfish">
-	@Override public double getMyRidingOffset() {
-		return 0.1D;
+	@Override public float getMyRidingOffset(Entity entity) {
+		return 0.1F;
 	}
 	</#if>
 
@@ -240,25 +232,25 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
    	<#if data.livingSound?has_content && data.livingSound.getMappedValue()?has_content>
 	@Override public SoundEvent getAmbientSound() {
-		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.livingSound}"));
+		return BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.livingSound}"));
 	}
 	</#if>
 
    	<#if data.stepSound?has_content && data.stepSound.getMappedValue()?has_content>
 	@Override public void playStepSound(BlockPos pos, BlockState blockIn) {
-		this.playSound(ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")), 0.15f, 1);
+		this.playSound(BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.stepSound}")), 0.15f, 1);
 	}
 	</#if>
 
 	<#if data.hurtSound?has_content && data.hurtSound.getMappedValue()?has_content>
 	@Override public SoundEvent getHurtSound(DamageSource ds) {
-		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hurtSound}"));
+		return BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.hurtSound}"));
 	}
 	</#if>
 
 	<#if data.deathSound?has_content && data.deathSound.getMappedValue()?has_content>
 	@Override public SoundEvent getDeathSound() {
-		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.deathSound}"));
+		return BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.deathSound}"));
 	}
 	</#if>
 
@@ -414,25 +406,26 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	private final CombinedInvWrapper combined = new CombinedInvWrapper(inventory, new EntityHandsInvWrapper(this), new EntityArmorInvWrapper(this));
 
-	@Override public <T> LazyOptional<T> getCapability(@Nonnull Capability<T> capability, @Nullable Direction side) {
-		if (this.isAlive() && capability == ForgeCapabilities.ITEM_HANDLER && side == null)
-			return LazyOptional.of(() -> combined).cast();
+	public ItemStackHandler getInventory() {
+		return inventory;
+	}
 
-		return super.getCapability(capability, side);
+   	public CombinedInvWrapper getFullInventory() {
+		return combined;
 	}
 
    	@Override protected void dropEquipment() {
 		super.dropEquipment();
-		for(int i = 0; i < inventory.getSlots(); ++i) {
+		for (int i = 0; i < inventory.getSlots(); ++i) {
 			ItemStack itemstack = inventory.getStackInSlot(i);
 			if (!itemstack.isEmpty() && !EnchantmentHelper.hasVanishingCurse(itemstack)) {
 				this.spawnAtLocation(itemstack);
 			}
 		}
 	}
-    </#if>
+	</#if>
 
-	<#if data.entityDataEntries?has_content || (data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>")>
+	<#if data.entityDataEntries?has_content>
 	@Override public void addAdditionalSaveData(CompoundTag compound) {
 		super.addAdditionalSaveData(compound);
 		<#list data.entityDataEntries as entry>
@@ -444,9 +437,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 			compound.putString("Data${entry.property().getName()}", this.entityData.get(DATA_${entry.property().getName()}));
 			</#if>
 		</#list>
-		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
-		compound.put("InventoryCustom", inventory.serializeNBT());
-		</#if>
 	}
 
 	@Override public void readAdditionalSaveData(CompoundTag compound) {
@@ -461,10 +451,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				this.entityData.set(DATA_${entry.property().getName()}, compound.getString("Data${entry.property().getName()}"));
 				</#if>
 		</#list>
-		<#if data.guiBoundTo?has_content && data.guiBoundTo != "<NONE>">
-		if (compound.get("InventoryCustom") instanceof CompoundTag inventoryTag)
-			inventory.deserializeNBT(inventoryTag);
-		</#if>
 	}
 	</#if>
 
@@ -478,7 +464,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				if (sourceentity.isSecondaryUseActive()) {
 			</#if>
 				if (sourceentity instanceof ServerPlayer serverPlayer) {
-					NetworkHooks.openScreen(serverPlayer, new MenuProvider() {
+					serverPlayer.openMenu(new MenuProvider() {
 
 						@Override public Component getDisplayName() {
 							return Component.literal("${data.mobName}");
@@ -528,7 +514,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 					}
 				} else if (this.isFood(itemstack)) {
 					this.usePlayerItem(sourceentity, hand, itemstack);
-					if (this.random.nextInt(3) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, sourceentity)) {
+					if (this.random.nextInt(3) == 0 && !net.neoforged.neoforge.event.EventHooks.onAnimalTame(this, sourceentity)) {
 						this.tame(sourceentity);
 						this.level().broadcastEntityEvent(this, (byte) 7);
 					} else {
@@ -623,7 +609,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				<#if !data.rangedAttackItem.isEmpty()>
 				${name}EntityProjectile entityarrow = new ${name}EntityProjectile(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}_PROJECTILE.get(), this, this.level());
 				<#else>
-				Arrow entityarrow = new Arrow(this.level(), this);
+				Arrow entityarrow = new Arrow(this.level(), this, new ItemStack(Items.ARROW));
 				</#if>
 				double d0 = target.getY() + target.getEyeHeight() - 1.1;
 				double d1 = target.getX() - this.getX();
@@ -912,7 +898,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#if>
 
 		<#if data.waterMob>
-		builder = builder.add(ForgeMod.SWIM_SPEED.get(), ${data.movementSpeed});
+		builder = builder.add(NeoForgeMod.SWIM_SPEED.value(), ${data.movementSpeed});
 		</#if>
 
 		<#if data.aiBase == "Zombie">
