@@ -1,7 +1,7 @@
 {
     "feature": "${modid}:${registryname}",
     "placement": [
-    	<#if data.frequencyOnChunks != 1>
+        <#if data.frequencyOnChunks != 1>
         {
             "type": "minecraft:count",
             "count": ${data.frequencyOnChunks}
@@ -30,14 +30,14 @@
             }
         },
         <#else>
-    	{
-    	    "type": "minecraft:heightmap",
-    	    <#if ((data.plantType == "normal" || data.plantType == "double") && data.generationType == "Grass") || data.plantType == "growapable">
-    	    "heightmap": "MOTION_BLOCKING"
-    	    <#else>
-    	    "heightmap": "WORLD_SURFACE_WG"
-    	    </#if>
-    	},
+        {
+            "type": "minecraft:heightmap",
+            <#if ((data.plantType == "normal" || data.plantType == "double") && data.generationType == "Grass") || data.plantType == "growapable">
+            "heightmap": "MOTION_BLOCKING"
+            <#else>
+            "heightmap": "WORLD_SURFACE_WG"
+            </#if>
+        },
         </#if>
         {
             "type": "minecraft:biome"
