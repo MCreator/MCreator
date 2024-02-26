@@ -189,6 +189,18 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				new ArrayList<>();
 	}
 
+	/**
+	 *<p>This is a list of folders that need to be omitted/excluded from the import generator logic.
+	 * For example, to exclude a folder, the string needs to be like this `generator`.`folder`</p>
+	 *
+	 * @return A list of the folders to exclude when importing a generator
+	 */
+	public List<String> getImportExclusions() {
+		return (generatorConfig.get("import_exclusions") != null) ?
+				((List<?>) generatorConfig.get("import_exclusions")).stream().map(Object::toString).toList() :
+				new ArrayList<>();
+	}
+
 	public GeneratorFlavor getGeneratorFlavor() {
 		return generatorFlavor;
 	}

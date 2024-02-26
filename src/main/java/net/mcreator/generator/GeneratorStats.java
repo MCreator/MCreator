@@ -164,12 +164,12 @@ public class GeneratorStats {
 		templateLoaderPaths.add(genConfig.getGeneratorName());
 		templateLoaderPaths.addAll(genConfig.getImports());
 
-		Set<String> blocks = new HashSet<>();
-		for (String path : templateLoaderPaths) {
-			blocks.addAll(PluginLoader.INSTANCE.getResources(path + "." + type.registryName(), ftlFile).stream()
-					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-					.filter(e -> !e.startsWith("_")).collect(Collectors.toSet()));
-		}
+		Set<String> blocks = templateLoaderPaths.stream()
+				.filter(path -> !genConfig.getImportExclusions().contains(path + "." + type.registryName())).flatMap(
+						path -> PluginLoader.INSTANCE.getResources(path + "." + type.registryName(), ftlFile).stream()
+								.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
+								.filter(e -> !e.startsWith("_")).collect(Collectors.toSet()).stream())
+				.collect(Collectors.toSet());
 
 		coverageInfo.put(type.registryName(), Math.min(
 				(((double) blocks.size()) / BlocklyLoader.INSTANCE.getBlockLoader(type).getDefinedBlocks().size())
@@ -183,11 +183,10 @@ public class GeneratorStats {
 		templateLoaderPaths.add(genConfig.getGeneratorName());
 		templateLoaderPaths.addAll(genConfig.getImports());
 
-		for (String path : templateLoaderPaths) {
-			procedureTriggers.addAll(PluginLoader.INSTANCE.getResources(path + ".triggers", ftlFile).stream()
-					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
-					.collect(Collectors.toSet()));
-		}
+		templateLoaderPaths.stream().filter(path -> !genConfig.getImportExclusions().contains(path + ".triggers"))
+				.map(path -> PluginLoader.INSTANCE.getResources(path + ".triggers", ftlFile).stream()
+						.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
+						.collect(Collectors.toSet())).forEach(procedureTriggers::addAll);
 
 		coverageInfo.put("triggers", Math.min(
 				(((double) procedureTriggers.size()) / BlocklyLoader.INSTANCE.getExternalTriggerLoader()

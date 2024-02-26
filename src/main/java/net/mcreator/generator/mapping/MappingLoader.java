@@ -32,6 +32,7 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class MappingLoader {
 
@@ -46,8 +47,10 @@ public class MappingLoader {
 
 		Set<String> fileNames = new LinkedHashSet<>();
 		for (String templateLoaderPath : templateLoaderPaths) {
-			fileNames.addAll(
-					PluginLoader.INSTANCE.getResources(templateLoaderPath + ".mappings", Pattern.compile(".*\\.yaml")));
+			if (!generatorConfiguration.getImportExclusions().contains(templateLoaderPath + ".mappings")) {
+				fileNames.addAll(PluginLoader.INSTANCE.getResources(templateLoaderPath + ".mappings",
+						Pattern.compile(".*\\.yaml")));
+			}
 		}
 
 		Load yamlLoad = new Load(YamlUtil.getSimpleLoadSettings());
