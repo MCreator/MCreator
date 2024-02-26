@@ -27,6 +27,7 @@ import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
+import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.WorkspaceInfo;
@@ -369,7 +370,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public static Workspace readFromFS(File workspaceFile, @Nullable Window ui)
 			throws UnsupportedGeneratorException, CorruptedWorkspaceFileException, FileNotFoundException,
-			MissingWorkspacePluginsException {
+			MissingGeneratorFeaturesException {
 		if (workspaceFile.isFile()) {
 			String workspace_string = FileIO.readFileToString(workspaceFile);
 			Workspace retval;
@@ -397,13 +398,18 @@ public class Workspace implements Closeable, IGeneratorProvider {
 								GeneratorConfiguration.getRecommendedGeneratorForFlavor(
 										Generator.GENERATOR_CACHE.values(), currentFlavor), currentFlavor, false));
 					});
-					if (generatorConfiguration.get() != null) {
+					GeneratorConfiguration selectedGenerator = generatorConfiguration.get();
+					if (selectedGenerator != null) {
+						// Check if the workspace is compatible with the selected generator
+						// and if not, exception will be thrown at this point
+						WorkspaceDialogs.verifyWorkspaceForCompatibilityWithGeneratorAndPlugins(ui, retval,
+								selectedGenerator);
+
 						// Call generator cleanup for switch before new generator is set for the workspace
 						WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(retval,
-								Generator.GENERATOR_CACHE.get(generatorConfiguration.get().getGeneratorName()));
+								Generator.GENERATOR_CACHE.get(selectedGenerator.getGeneratorName()));
 
-						retval.getWorkspaceSettings()
-								.setCurrentGenerator(generatorConfiguration.get().getGeneratorName());
+						retval.getWorkspaceSettings().setCurrentGenerator(selectedGenerator.getGeneratorName());
 
 						retval.generator = new Generator(retval);
 						retval.regenerateRequired = true;
@@ -441,22 +447,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			}
 
 			// Detect plugin requirements
-			try {
-				WorkspaceUtils.verifyPluginRequirements(retval);
-			} catch (MissingWorkspacePluginsException e) {
-				if (ui != null) {
-					ThreadUtil.runOnSwingThreadAndWait(() -> {
-						StringBuilder problems = new StringBuilder();
-						for (Map.Entry<String, Collection<String>> entry : e.getMissingDefinitions().entrySet()) {
-							problems.append("<b>").append(entry.getKey()).append(":</b> ")
-									.append(String.join(", ", entry.getValue())).append("<br>");
-						}
-						JOptionPane.showMessageDialog(ui, L10N.t("dialog.workspace.missing_plugins_message", problems),
-								L10N.t("dialog.workspace.missing_plugins_title"), JOptionPane.ERROR_MESSAGE);
-					});
-				}
-				throw e;
-			}
+			WorkspaceDialogs.verifyWorkspaceForCompatibilityWithGeneratorAndPlugins(ui, retval,
+					retval.getGeneratorConfiguration());
 
 			retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
 			retval.reloadFolderStructure(); // assign parents to the folders
@@ -476,7 +468,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 * @return Workspace object for the given file
 	 */
 	@VisibleForTesting public static Workspace readFromFSUnsafe(File workspaceFile,
-			GeneratorConfiguration generatorConfiguration) throws MissingWorkspacePluginsException {
+			GeneratorConfiguration generatorConfiguration) throws MissingGeneratorFeaturesException {
 		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 
@@ -498,7 +490,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		retval.getWorkspaceSettings().setWorkspace(retval);
 
-		WorkspaceUtils.verifyPluginRequirements(retval);
+		WorkspaceUtils.verifyPluginRequirements(retval, retval.getGeneratorConfiguration());
 
 		retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
 		retval.reloadFolderStructure(); // assign parents to the folders
