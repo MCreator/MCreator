@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2023, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  # 
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -51,7 +51,10 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		implements ${interfaces?join(",")}
 	</#if>{
 	public ${name}Block() {
-		super(<#if data.plantType == "normal">() -> ${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration},</#if>
+		super(
+		<#if data.plantType == "normal">
+			List.of(new SuspiciousEffectHolder.EffectEntry(${generator.map(data.suspiciousStewEffect, "effects")}, ${data.suspiciousStewDuration})),
+		</#if>
 		BlockBehaviour.Properties.of()
 		<#if generator.map(data.colorOnMap, "mapcolors") != "DEFAULT">
 		.mapColor(MapColor.${generator.map(data.colorOnMap, "mapcolors")})
@@ -62,12 +65,12 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 		.randomTicks()
 		</#if>
 		<#if data.isCustomSoundType>
-			.sound(new ForgeSoundType(1.0f, 1.0f,
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.breakSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.stepSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.placeSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.hitSound}")),
-				() -> ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.fallSound}"))
+			.sound(new DeferredSoundType(1.0f, 1.0f,
+				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.breakSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.stepSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.placeSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.hitSound}")),
+				() -> BuiltInRegistries.SOUND_EVENT.get(new ResourceLocation("${data.fallSound}"))
 			))
 		<#else>
 			.sound(SoundType.${data.soundOnStep})
@@ -117,12 +120,6 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			<#if !data.disableOffset> Vec3 offset = state.getOffset(world, pos); </#if>
 			<@boundingBoxWithRotation data.positiveBoundingBoxes() data.negativeBoundingBoxes() data.disableOffset 0/>
 		</#if>
-	}
-	</#if>
-
-	<#if (data.plantType == "normal") && (data.suspiciousStewDuration > 0)>
-	@Override public int getEffectDuration() {
-		return ${data.suspiciousStewDuration};
 	}
 	</#if>
 
@@ -264,7 +261,7 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 			for(;world.getBlockState(blockpos.below(i)).is(this); ++i);
 			if (i < ${data.growapableMaxHeight}) {
 				int j = blockstate.getValue(AGE);
-				if (ForgeHooks.onCropsGrowPre(world, blockpos, blockstate, true)) {
+				if (CommonHooks.onCropsGrowPre(world, blockpos, blockstate, true)) {
 					if (j == 15) {
 						world.setBlockAndUpdate(blockpos.above(), defaultBlockState());
 						world.setBlock(blockpos, blockstate.setValue(AGE, 0), 4);
