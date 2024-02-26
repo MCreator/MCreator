@@ -49,7 +49,13 @@ import org.apache.logging.log4j.Logger;
 			${JavaModName}Fluids.REGISTRY.register(modEventBus);
 			${JavaModName}FluidTypes.REGISTRY.register(modEventBus);
 		</#if>
+
+		// Start of user code block mod init
+		// End of user code block mod init
 	}
+
+	// Start of user code block mod methods
+	// End of user code block mod methods
 
 	<#-- Networking support below -->
 	private static boolean networkingRegistered = false;
