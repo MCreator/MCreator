@@ -218,8 +218,8 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	</#if>
 
 	<#if data.mountedYOffset != 0>
-	@Override public Vec3 getPassengerRidingPosition(Entity entity) {
-		return super.getPassengerRidingPosition(entity).add(0, ${data.mountedYOffset}, 0);
+	@Override protected Vector3f getPassengerAttachmentPoint(Entity entity, EntityDimensions dimensions, float f) {
+		return super.getPassengerAttachmentPoint(entity, dimensions, f).add(0, ${data.mountedYOffset}, 0);
 	}
 	</#if>
 
