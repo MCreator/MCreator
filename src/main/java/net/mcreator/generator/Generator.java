@@ -30,6 +30,7 @@ import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.generator.template.base.BaseDataModelProvider;
+import net.mcreator.generator.usercode.UserCodeProcessor;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
@@ -580,7 +581,8 @@ public class Generator implements IGenerator, Closeable {
 				if (formatAndOrganiseImports && !generatorFile.getFile().isFile())
 					FileIO.touchFile(generatorFile.getFile());
 
-				javaFiles.put(generatorFile.getFile(), generatorFile.contents());
+				javaFiles.put(generatorFile.getFile(),
+						UserCodeProcessor.processUserCode(generatorFile.getFile(), generatorFile.contents(), "//"));
 			} else if (generatorFile.writer() == GeneratorFile.Writer.JSON) {
 				JSONWriter.writeJSONToFile(generatorFile.contents(), generatorFile.getFile());
 			} else if (generatorFile.writer() == GeneratorFile.Writer.FILE) {

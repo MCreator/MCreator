@@ -32,7 +32,13 @@ import org.apache.logging.log4j.Logger;
 			${JavaModName}Fluids.REGISTRY.register(bus);
 			${JavaModName}FluidTypes.REGISTRY.register(bus);
 		</#if>
+
+		// Start of user code block mod init
+		// End of user code block mod init
 	}
+
+	// Start of user code block mod methods
+	// End of user code block mod methods
 
 	private static final String PROTOCOL_VERSION = "1";
 	public static final SimpleChannel PACKET_HANDLER = NetworkRegistry.newSimpleChannel(
