@@ -33,6 +33,8 @@
 
 package ${package}.client.screens;
 
+<#assign hasEntityModels = false>
+
 @Mod.EventBusSubscriber({Dist.CLIENT}) public class ${name}Overlay {
 
 	@SubscribeEvent(priority = EventPriority.${data.priority})
@@ -95,11 +97,12 @@ package ${package}.client.screens;
             </#list>
 
 			<#list data.getComponentsOfType("EntityModel") as component>
+				<#assign hasEntityModels = true>
 			    if (<@procedureOBJToConditionCode component.entityModel/> instanceof LivingEntity livingEntity) {
 			    	<#if hasProcedure(component.displayCondition)>
                         if (<@procedureOBJToConditionCode component.displayCondition/>)
                     </#if>
-					InventoryScreen.renderEntityInInventoryFollowsAngle(event.getGuiGraphics(), <@calculatePosition component=component x_offset=10 y_offset=20/>,
+					renderEntityInInventoryFollowsAngle(event.getGuiGraphics(), <@calculatePosition component=component x_offset=10 y_offset=20/>,
                         ${component.scale}, ${component.rotationX / 20.0}f, 0, livingEntity);
 			    }
 			</#list>
@@ -116,6 +119,30 @@ package ${package}.client.screens;
         }
     </#if>
 	}
+
+	<#if hasEntityModels>
+	private static void renderEntityInInventoryFollowsAngle(GuiGraphics guiGraphics, int x, int y, int scale, float angleXComponent, float angleYComponent, LivingEntity entity) {
+		Quaternionf pose = new Quaternionf().rotateZ((float)Math.PI);
+		Quaternionf cameraOrientation = new Quaternionf().rotateX(angleYComponent * 20 * ((float) Math.PI / 180F));
+		pose.mul(cameraOrientation);
+		float f2 = entity.yBodyRot;
+		float f3 = entity.getYRot();
+		float f4 = entity.getXRot();
+		float f5 = entity.yHeadRotO;
+		float f6 = entity.yHeadRot;
+		entity.yBodyRot = 180.0F + angleXComponent * 20.0F;
+		entity.setYRot(180.0F + angleXComponent * 40.0F);
+		entity.setXRot(-angleYComponent * 20.0F);
+		entity.yHeadRot = entity.getYRot();
+		entity.yHeadRotO = entity.getYRot();
+		InventoryScreen.renderEntityInInventory(guiGraphics, x, y, scale, new Vector3f(0, 0, 0), pose, cameraOrientation, entity);
+		entity.yBodyRot = f2;
+		entity.setYRot(f3);
+		entity.setXRot(f4);
+		entity.yHeadRotO = f5;
+		entity.yHeadRot = f6;
+	}
+	</#if>
 
 }
 
