@@ -39,7 +39,7 @@ package ${package}.init;
 <#assign hasLivingEntities = w.hasElementsOfType("livingentity")>
 <#assign entitiesWithInventory = w.getGElementsOfType("livingentity")?filter(e -> e.guiBoundTo?has_content && e.guiBoundTo != "<NONE>")>
 
-<#if hasLivingEntities>
+<#if hasLivingEntities || entitiesWithInventory?size != 0>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 </#if>
 public class ${JavaModName}Entities {
