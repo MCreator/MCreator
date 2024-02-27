@@ -913,4 +913,4 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 
 }
-<#-- @formatter:on -->
+<#-- @formatter:off -->

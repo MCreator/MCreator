@@ -69,19 +69,19 @@ public class ${JavaModName}Entities {
 		</#if>
 	</#list>
 
-	<#if entitiesWithInventory?size != 0>
-		<#compress>
-		@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
-			<#list entitiesWithInventory as entity>
-				event.registerEntity(Capabilities.ItemHandler.ENTITY, ${entity.getModElement().getRegistryNameUpper()}.get(), (living, context) -> living.getInventory());
-			</#list>
-		}
-		</#compress>
-	</#if>
-
 	private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
 		return REGISTRY.register(registryname, () -> (EntityType<T>) entityTypeBuilder.build(registryname));
 	}
+
+	<#if entitiesWithInventory?size != 0>
+	<#compress>
+	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+		<#list entitiesWithInventory as entity>
+			event.registerEntity(Capabilities.ItemHandler.ENTITY, ${entity.getModElement().getRegistryNameUpper()}.get(), (living, context) -> living.getInventory());
+		</#list>
+	}
+	</#compress>
+	</#if>
 
 	<#if hasLivingEntities>
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
