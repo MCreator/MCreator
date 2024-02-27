@@ -509,6 +509,7 @@
 		"world": "world",
 		"blockstate": "blockstate"
 	}/>
+	<#else>
 	return true;
 	</#if>
 }
