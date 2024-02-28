@@ -65,13 +65,6 @@ public class GeneratorTemplate {
 	}
 
 	/**
-	 * @return true if this template can have its code locked
-	 */
-	public boolean canBeLocked() {
-		return templateDefinition.get("canLock") != null && templateDefinition.get("canLock").equals("true");
-	}
-
-	/**
 	 * @return true if this template should be visually hidden in the UI
 	 */
 	public boolean isHidden() {
