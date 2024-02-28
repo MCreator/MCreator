@@ -1,5 +1,5 @@
 <#include "../mcitems.ftl">
-<#assign defaultSlabDrops = data.blockBase?has_content && data.blockBase == "Slab" && !(data.customDrop?? && !data.customDrop.isEmpty())/>
+<#assign defaultSlabDrops = data.getModElement().getTypeString() == "block" && data.blockBase?has_content && data.blockBase == "Slab" && !(data.customDrop?? && !data.customDrop.isEmpty())/>
 {
   "type": "minecraft:block"
   <#if data.dropAmount != 0>,
@@ -17,7 +17,7 @@
         {
           "type": "minecraft:item",
           "name": <#if data.customDrop?? && !data.customDrop.isEmpty()>"${mappedMCItemToRegistryName(data.customDrop)}"<#else>"${modid}:${registryname}"</#if>
-          <#if data.blockBase?has_content && data.blockBase == "Door">,
+          <#if data.isDoubleBlock()>,
           "conditions": [
             {
               "block": "${modid}:${registryname}",
