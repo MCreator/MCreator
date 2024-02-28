@@ -20,6 +20,7 @@ package net.mcreator.ui.component.zoompane;
 
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -42,8 +43,8 @@ public class JZoomPane extends JPanel {
 		if (zoomable instanceof IZoomable)
 			((IZoomable) zoomable).setZoomPane(this);
 
-		popup.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		popup.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+		popup.setBackground(Theme.current().getAltBackgroundColor());
+		popup.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
 		JMenuItem recenter = new JMenuItem("Center view");
 		popup.add(recenter);
 		JMenuItem fit = new JMenuItem("Zoom to fit");
@@ -84,8 +85,8 @@ public class JZoomPane extends JPanel {
 		horizontalScrollBar.setOpaque(false);
 		verticalScrollBar.setOpaque(false);
 
-		quickActions.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-		quickActions.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		quickActions.setBackground(Theme.current().getAltBackgroundColor());
+		quickActions.setForeground(Theme.current().getForegroundColor());
 		quickActions.setMargin(new Insets(0, 0, 0, 0));
 		ComponentUtils.deriveFont(quickActions, 8);
 

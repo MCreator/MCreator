@@ -20,6 +20,7 @@ package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.parts.EntityEntry;
 import net.mcreator.minecraft.ElementUtil;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.AddTagDialog;
@@ -48,7 +49,7 @@ public class SpawnableEntityListField extends JItemListField<EntityEntry> {
 	@Override protected List<EntityEntry> getTagsToAdd() {
 		List<EntityEntry> tags = new ArrayList<>();
 
-		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, "Entities", "bosses", "raiders",
+		String tag = AddTagDialog.openAddTagDialog(mcreator, mcreator, TagType.ENTITIES, "bosses", "raiders",
 				"fall_damage_immune", "powder_snow_walkable_mobs");
 		if (tag != null)
 			tags.add(new EntityEntry(mcreator.getWorkspace(), "#" + tag));

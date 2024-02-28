@@ -21,6 +21,7 @@ package net.mcreator.ui.modgui;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.types.GUI;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.CollapsiblePanel;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
@@ -29,8 +30,11 @@ import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.ModElement;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 public class CustomGUIGUI extends ModElementGUI<GUI> {
 
@@ -133,6 +137,10 @@ public class CustomGUIGUI extends ModElementGUI<GUI> {
 		gui.gridSettings.oy = (int) editor.oy.getValue();
 		gui.gridSettings.snapOnGrid = editor.snapOnGrid.isSelected();
 		return gui;
+	}
+
+	@Override public @Nullable URI contextURL() throws URISyntaxException {
+		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/gui-editor");
 	}
 
 }

@@ -26,26 +26,29 @@ import java.io.File;
 public class FileIcons {
 
 	public static ImageIcon getIconForFile(File file) {
-		return getIconForFile(file.getName());
+		return getIconForFile(file.getName(), file.isDirectory());
 	}
 
-	public static ImageIcon getIconForFile(String file) {
+	public static ImageIcon getIconForFile(String file, boolean folder) {
+		if (folder)
+			return UIRES.get("laf.directory");
+
 		if (file.endsWith(".java"))
-			return UIRES.get("16px.class.gif");
+			return UIRES.get("16px.class");
 		if (file.endsWith(".ogg"))
 			return UIRES.get("16px.sound");
 		if (file.equals("mcmod.info") || file.endsWith(".json") || file.endsWith(".mcmeta"))
-			return UIRES.get("16px.json.gif");
+			return UIRES.get("16px.json");
 		if (file.endsWith(".yaml") || file.endsWith(".yml"))
-			return UIRES.get("16px.yaml.gif");
+			return UIRES.get("16px.yaml");
 		if (file.endsWith(".gradle"))
-			return UIRES.get("16px.gradle.gif");
+			return UIRES.get("16px.gradle");
 		if (file.endsWith(".txt"))
-			return UIRES.get("laf.text.gif");
-		if (file.endsWith(".png") || file.endsWith(".gif"))
-			return UIRES.get("laf.image.gif");
+			return UIRES.get("laf.text");
+		if (file.endsWith(".png") || file.endsWith(""))
+			return UIRES.get("laf.image");
 
-		return UIRES.get("laf.file.gif");
+		return UIRES.get("laf.file");
 	}
 
 }

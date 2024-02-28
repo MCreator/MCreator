@@ -19,6 +19,7 @@
 package net.mcreator.ui.minecraft;
 
 import net.mcreator.element.ModElementType;
+import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.StringSelectorDialog;
@@ -28,7 +29,7 @@ import net.mcreator.workspace.elements.ModElement;
 import java.util.List;
 import java.util.Locale;
 
-public class ModElementListField extends JItemListField<String> {
+public class ModElementListField extends JItemListField<NonMappableElement> {
 
 	private final ModElementType<?> type;
 
@@ -37,10 +38,12 @@ public class ModElementListField extends JItemListField<String> {
 		this.type = type;
 	}
 
-	@Override protected List<String> getElementsToAdd() {
+	@Override protected List<NonMappableElement> getElementsToAdd() {
 		return StringSelectorDialog.openMultiSelectorDialog(mcreator,
-				w -> w.getModElements().stream().filter(e -> e.getType() == this.type).map(ModElement::getName)
-						.toArray(String[]::new), L10N.t("dialog.list_field.mod_element_title"),
-				L10N.t("dialog.list_field.mod_element_message", type.getReadableName().toLowerCase(Locale.ENGLISH)));
+						w -> w.getModElements().stream().filter(e -> e.getType() == this.type).map(ModElement::getName)
+								.toArray(String[]::new), L10N.t("dialog.list_field.mod_element_title"),
+						L10N.t("dialog.list_field.mod_element_message", type.getReadableName().toLowerCase(Locale.ENGLISH)))
+				.stream().map(NonMappableElement::new).toList();
 	}
+
 }

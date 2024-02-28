@@ -23,6 +23,7 @@ import net.java.balloontip.styles.EdgedBalloonStyle;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 
 import javax.annotation.Nullable;
@@ -94,8 +95,8 @@ public class HelpUtils {
 					scrollPane.setPreferredSize(new Dimension(335, 190));
 
 					balloonTip = new BalloonTip(lab, scrollPane,
-							new EdgedBalloonStyle((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-									(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")), BalloonTip.Orientation.LEFT_BELOW,
+							new EdgedBalloonStyle(Theme.current().getBackgroundColor(),
+									Theme.current().getAltForegroundColor()), BalloonTip.Orientation.LEFT_BELOW,
 							BalloonTip.AttachLocation.ALIGNED, 10, 10, false);
 
 					balloonTip.setFocusable(true);

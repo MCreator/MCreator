@@ -20,6 +20,7 @@
 package net.mcreator.ui.component;
 
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,10 +35,21 @@ public class UnsupportedComponent extends JPanel {
 	 */
 	public static void markUnsupported(Component comp) {
 		Container parent = comp.getParent();
-		if (parent != null) {
+		if (parent != null && !(parent instanceof UnsupportedComponent)) {
+			LayoutManager parentLayout = parent.getLayout();
 			int index = Arrays.asList(parent.getComponents()).indexOf(comp);
-			parent.remove(index);
-			parent.add(new UnsupportedComponent(comp), index);
+			if (parentLayout instanceof BorderLayout borderLayout) {
+				Object constraints = borderLayout.getConstraints(comp);
+				parent.remove(index);
+				parent.add(new UnsupportedComponent(comp), constraints, index);
+			} else if (parentLayout instanceof GridBagLayout gridBagLayout) {
+				Object constraints = gridBagLayout.getConstraints(comp);
+				parent.remove(index);
+				parent.add(new UnsupportedComponent(comp), constraints, index);
+			} else {
+				parent.remove(index);
+				parent.add(new UnsupportedComponent(comp), index);
+			}
 		}
 	}
 
@@ -48,13 +60,18 @@ public class UnsupportedComponent extends JPanel {
 	 *
 	 * @param origin The component to be marked.
 	 */
-	public UnsupportedComponent(Component origin) {
+	UnsupportedComponent(Component origin) {
 		setLayout(new GridLayout());
 		setOpaque(false);
 
+		setBounds(origin.getBounds());
+
 		// disable origin component and prevent any mouse clicks/key presses from being handled by it
 		origin.setEnabled(false);
+
 		Arrays.stream(origin.getMouseListeners()).forEach(origin::removeMouseListener);
+		Arrays.stream(origin.getMouseMotionListeners()).forEach(origin::removeMouseMotionListener);
+		Arrays.stream(origin.getMouseWheelListeners()).forEach(origin::removeMouseWheelListener);
 		Arrays.stream(origin.getKeyListeners()).forEach(origin::removeKeyListener);
 
 		add(origin);
@@ -72,10 +89,11 @@ public class UnsupportedComponent extends JPanel {
 		if (getWidth() > 100) {
 			g.setFont(g.getFont().deriveFont(12f));
 			g.drawImage(warning, x - g.getFontMetrics().stringWidth("Not supported") / 2, y, null);
-			g.setColor((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			g.setColor(Theme.current().getForegroundColor());
 			g.drawString("Not supported", x - g.getFontMetrics().stringWidth("Not supported") / 2 + 18 + 4, y + 13);
 		} else {
 			g.drawImage(warning, x, y, null);
 		}
 	}
+
 }

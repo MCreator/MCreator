@@ -25,6 +25,7 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.elementlist.special.CompactModElementListCellRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
@@ -34,6 +35,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -59,15 +61,18 @@ public class CodeErrorDialog {
 		});
 
 		Set<ModElement> problematicMods = new HashSet<>();
+
+		List<File> moddefinitionfiles = mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).stream()
+				.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 		boolean moddefinitionfileerrors = false;
+
 		for (File problematicFile : problematicFiles) {
 			ModElement modElementWithError = mcreator.getGenerator().getModElementThisFileBelongsTo(problematicFile);
 			if (modElementWithError != null) {
 				problematicMods.add(modElementWithError);
 				modElementWithError.setCompiles(false);
 				mcreator.getWorkspace().markDirty();
-			} else if (FileIO.isFileOnFileList(mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).stream()
-					.map(GeneratorTemplate::getFile).collect(Collectors.toList()), problematicFile)) {
+			} else if (FileIO.isFileOnFileList(moddefinitionfiles, problematicFile)) {
 				moddefinitionfileerrors = true;
 			} else {
 				LOG.warn("[ForgeGradleUtil] Error from non MCreator generated class!");
@@ -106,8 +111,8 @@ public class CodeErrorDialog {
 
 		JScrollPane sp = new JScrollPane(problematicModsList);
 		sp.setPreferredSize(new Dimension(150, 140));
-		sp.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		problematicModsList.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		sp.setBackground(Theme.current().getSecondAltBackgroundColor());
+		problematicModsList.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		JPanel wrapper = new JPanel(new BorderLayout());
 		wrapper.add("North", L10N.label("dialog.code_error.compilation_list"));

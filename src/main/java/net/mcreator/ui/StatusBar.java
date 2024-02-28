@@ -24,6 +24,7 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.StringUtils;
 
@@ -56,6 +57,7 @@ public class StatusBar extends JPanel {
 		left.add(new JEmptyBox(5, 5));
 
 		JLabel info = new JLabel(UIRES.get("info"));
+		info.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		info.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				mcreator.actionRegistry.aboutMCreator.doAction();
@@ -66,6 +68,7 @@ public class StatusBar extends JPanel {
 		left.add(new JEmptyBox(3, 3));
 
 		JLabel donate = new JLabel(UIRES.get("donate"));
+		donate.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		donate.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
 				DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/donate");
@@ -76,6 +79,7 @@ public class StatusBar extends JPanel {
 		left.add(new JEmptyBox(3, 3));
 
 		JLabel preferences = new JLabel(UIRES.get("settings"));
+		preferences.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		preferences.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				new PreferencesDialog(mcreator, null);
@@ -85,7 +89,8 @@ public class StatusBar extends JPanel {
 		left.add(preferences);
 		left.add(new JEmptyBox(10, 10));
 
-		messages.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		messages.setForeground(Theme.current().getAltForegroundColor());
+		messages.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		left.add(messages);
 
 		add("West", left);
@@ -93,7 +98,8 @@ public class StatusBar extends JPanel {
 		JPanel right = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 1));
 		right.setOpaque(false);
 
-		gradleMessages.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+		gradleMessages.setForeground(Theme.current().getAltForegroundColor());
+		gradleMessages.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 		right.add(gradleMessages);
 
 		ComponentUtils.deriveFont(gradleMessages, 12);
@@ -107,10 +113,9 @@ public class StatusBar extends JPanel {
 
 		add("East", right);
 
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		setBackground(Theme.current().getBackgroundColor());
 		setPreferredSize(new Dimension(22, 22));
-		setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0,
-				((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")).darker()));
+		setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, (Theme.current().getAltBackgroundColor()).darker()));
 
 		addToolTipReader();
 	}
@@ -162,7 +167,7 @@ public class StatusBar extends JPanel {
 			super.paintComponent(g);
 			switch (mcreator.getGradleConsole().getStatus()) {
 			case GradleConsole.READY:
-				g.setColor((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+				g.setColor(Theme.current().getAltForegroundColor());
 				break;
 			case GradleConsole.RUNNING:
 				g.setColor(new Color(158, 247, 89));

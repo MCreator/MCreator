@@ -37,6 +37,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.FileIcons;
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.SlickTreeUI;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
 import org.fife.rsta.ac.java.buildpath.LibraryInfo;
@@ -73,7 +74,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
 			if (getSelectionCount() > 0) {
-				g.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+				g.setColor(Theme.current().getInterfaceAccentColor());
 				for (int i : Objects.requireNonNull(getSelectionRows())) {
 					Rectangle r = getRowBounds(i);
 					g.fillRect(0, r.y, getWidth(), r.height);
@@ -114,7 +115,7 @@ public class WorkspaceFileBrowser extends JPanel {
 		tree.setShowsRootHandles(true);
 
 		JScrollPane jsp = new JScrollPane(tree);
-		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		jsp.setBorder(BorderFactory.createMatteBorder(5, 0, 0, 0, Theme.current().getBackgroundColor()));
 
 		SlickTreeUI treeUI = new SlickTreeUI();
 		tree.setUI(treeUI);
@@ -122,26 +123,26 @@ public class WorkspaceFileBrowser extends JPanel {
 		treeUI.setRightChildIndent(11);
 		treeUI.setLeftChildIndent(3);
 
-		jsp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"), jsp.getVerticalScrollBar()));
+		jsp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+				Theme.current().getSecondAltBackgroundColor(), jsp.getVerticalScrollBar()));
 		jsp.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 		jsp.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 
 		JPanel cornerDummy1 = new JPanel();
-		cornerDummy1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cornerDummy1.setBackground(Theme.current().getBackgroundColor());
 		jsp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy1);
 
 		JPanel cornerDummy2 = new JPanel();
-		cornerDummy2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		cornerDummy2.setBackground(Theme.current().getBackgroundColor());
 		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy2);
 
-		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		setBackground(Theme.current().getSecondAltBackgroundColor());
 
-		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, Theme.current().getBackgroundColor()));
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
-		jtf1.setBorder(BorderFactory.createLineBorder(((Color) UIManager.get("MCreatorLAF.DARK_ACCENT")).brighter()));
-		jtf1.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		jtf1.setBorder(BorderFactory.createLineBorder((Theme.current().getBackgroundColor()).brighter()));
+		jtf1.setBackground(Theme.current().getBackgroundColor());
 		jtf1.setForeground(new Color(0xCBCBCB));
 		jtf1.setOpaque(true);
 		ComponentUtils.deriveFont(jtf1, 12);
@@ -167,25 +168,25 @@ public class WorkspaceFileBrowser extends JPanel {
 		});
 
 		JPanel bar = new JPanel(new BorderLayout());
-		bar.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		bar.setBackground(Theme.current().getBackgroundColor());
 		bar.add(jtf1);
-		bar.setBorder(BorderFactory.createMatteBorder(3, 5, 3, 0, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
+		bar.setBorder(BorderFactory.createMatteBorder(3, 5, 3, 0, Theme.current().getBackgroundColor()));
 
 		JPanel topBar = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-		topBar.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		topBar.setBackground(Theme.current().getAltBackgroundColor());
 		topBar.add(
 				ComponentUtils.setForeground(ComponentUtils.deriveFont(L10N.label("workspace_file_browser.title"), 10f),
-						(Color) UIManager.get("MCreatorLAF.GRAY_COLOR")));
+						Theme.current().getAltForegroundColor()));
 
 		topBar.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(0, 0, 0, 1, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+				BorderFactory.createMatteBorder(0, 0, 0, 1, Theme.current().getBackgroundColor()),
 				BorderFactory.createEmptyBorder(2, 5, 2, 0)));
 
 		JLabel sil = new JLabel(UIRES.get("16px.search"));
 		sil.setPreferredSize(new Dimension(sil.getIcon().getIconWidth(), sil.getIcon().getIconHeight()));
 
 		JComponent search = PanelUtils.westAndCenterElement(sil, bar);
-		search.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		search.setBackground(Theme.current().getBackgroundColor());
 		search.setOpaque(true);
 		search.setBorder(BorderFactory.createEmptyBorder(3, 4, 0, 3));
 
@@ -260,9 +261,9 @@ public class WorkspaceFileBrowser extends JPanel {
 				node.add(models);
 			}
 
-			if (new File(mcreator.getWorkspaceFolder(), "run/debug").isDirectory()) {
+			if (new File(mcreator.getFolderManager().getClientRunDir(), "debug").isDirectory()) {
 				FilterTreeNode debugFolder = new FilterTreeNode("Debug profiler results");
-				addNodes(debugFolder, new File(mcreator.getWorkspaceFolder(), "run/debug"), true);
+				addNodes(debugFolder, new File(mcreator.getFolderManager().getClientRunDir(), "debug"), true);
 				node.add(debugFolder);
 			}
 
@@ -275,10 +276,25 @@ public class WorkspaceFileBrowser extends JPanel {
 
 			root.add(node);
 
-			if (new File(mcreator.getWorkspaceFolder(), "run/").isDirectory()) {
-				FilterTreeNode minecraft = new FilterTreeNode("Minecraft run folder");
-				addNodes(minecraft, new File(mcreator.getWorkspaceFolder(), "run/"), true);
-				root.add(minecraft);
+			File clientRunDir = mcreator.getFolderManager().getClientRunDir();
+			File serverRunDir = mcreator.getFolderManager().getServerRunDir();
+			if (clientRunDir.equals(serverRunDir)) {
+				if (clientRunDir.isDirectory()) {
+					FilterTreeNode minecraft = new FilterTreeNode("Minecraft run folder");
+					addNodes(minecraft, clientRunDir, true);
+					root.add(minecraft);
+				}
+			} else {
+				if (clientRunDir.isDirectory()) {
+					FilterTreeNode minecraft = new FilterTreeNode("MC client run folder");
+					addNodes(minecraft, clientRunDir, true);
+					root.add(minecraft);
+				}
+				if (serverRunDir.isDirectory()) {
+					FilterTreeNode minecraft = new FilterTreeNode("MC server run folder");
+					addNodes(minecraft, serverRunDir, true);
+					root.add(minecraft);
+				}
 			}
 
 			if (mcreator.getGeneratorConfiguration().getGeneratorFlavor().getBaseLanguage()
@@ -396,21 +412,25 @@ public class WorkspaceFileBrowser extends JPanel {
 				File libraryFile = new File(libraryInfo.getLocationAsString());
 				if (libraryFile.isFile() && (ZipIO.checkIfZip(libraryFile) || ZipIO.checkIfJMod(libraryFile))) {
 					String libName = FilenameUtilsPatched.removeExtension(libraryFile.getName());
-
 					if (libName.equals("rt") || libName.equals("java.base"))
 						libName = "Java " + System.getProperty("java.version") + " SDK";
 					else
 						libName = "Gradle: " + libName;
+
 					if (libraryInfo.getSourceLocation() != null) {
 						File sourceFile = new File(libraryInfo.getSourceLocation().getLocationAsString());
-						FileTree libsrc = new FileTree(new FileNode(libName, sourceFile.getAbsolutePath() + ":%:"));
-						ZipIO.iterateZip(sourceFile, entry -> libsrc.addElement(entry.getName()), true);
-						addFileNodeToFilterTreeNode(extDeps, libsrc.root);
-					} else {
-						FileTree lib = new FileTree(new FileNode(libName, libraryFile.getAbsolutePath() + ":%:"));
-						ZipIO.iterateZip(libraryFile, entry -> lib.addElement(entry.getName()), true);
-						addFileNodeToFilterTreeNode(extDeps, lib.root);
+						if (sourceFile.isFile() && (ZipIO.checkIfZip(sourceFile) || ZipIO.checkIfJMod(sourceFile))) {
+							FileTree libsrc = new FileTree(new FileNode(libName, sourceFile.getAbsolutePath() + ":%:"));
+							ZipIO.iterateZip(sourceFile, entry -> libsrc.addElement(entry.getName()), true);
+							addFileNodeToFilterTreeNode(extDeps, libsrc.root);
+							continue;
+						}
 					}
+
+					// If source file is not found, add the library file itself
+					FileTree lib = new FileTree(new FileNode(libName, libraryFile.getAbsolutePath() + ":%:"));
+					ZipIO.iterateZip(libraryFile, entry -> lib.addElement(entry.getName()), true);
+					addFileNodeToFilterTreeNode(extDeps, lib.root);
 				}
 			}
 		}
@@ -482,39 +502,39 @@ public class WorkspaceFileBrowser extends JPanel {
 			if (node.getUserObject() instanceof String tsi) {
 				a.setText(tsi);
 				if (tsi.equals(mcreator.getWorkspaceSettings().getModName()))
-					a.setIcon(UIRES.get("16px.package.gif"));
+					a.setIcon(UIRES.get("16px.package"));
 				else if (tsi.equals("Source (Gradle)"))
-					a.setIcon(UIRES.get("16px.mod.png"));
+					a.setIcon(UIRES.get("16px.mod"));
 				else if (tsi.equals("Textures"))
-					a.setIcon(UIRES.get("16px.textures.png"));
+					a.setIcon(UIRES.get("16px.textures"));
 				else if (tsi.equals("Resources (Gradle)"))
-					a.setIcon(UIRES.get("16px.resources.png"));
+					a.setIcon(UIRES.get("16px.resources"));
 				else if (tsi.equals("Models"))
-					a.setIcon(UIRES.get("16px.models.png"));
-				else if (tsi.equals("Minecraft run folder") || tsi.equals("Bedrock Edition"))
-					a.setIcon(UIRES.get("16px.minecraft.png"));
+					a.setIcon(UIRES.get("16px.models"));
+				else if (tsi.equals("Minecraft run folder") || tsi.equals("Bedrock Edition") || tsi.equals(
+						"MC client run folder"))
+					a.setIcon(UIRES.get("16px.minecraft"));
+				else if (tsi.equals("MC server run folder"))
+					a.setIcon(UIRES.get("16px.runserver"));
 				else if (tsi.equals("Sounds"))
-					a.setIcon(UIRES.get("16px.music.png"));
+					a.setIcon(UIRES.get("16px.music"));
 				else if (tsi.equals("External libraries"))
-					a.setIcon(UIRES.get("16px.directory.gif"));
+					a.setIcon(UIRES.get("16px.directory"));
 				else if (tsi.equals("Structures"))
-					a.setIcon(UIRES.get("16px.structures.png"));
+					a.setIcon(UIRES.get("16px.structures"));
 			} else if (node.getUserObject() instanceof FileNode fileNode) {
 				a.setText(fileNode.data);
 				if (fileNode.data.endsWith(".java"))
-					a.setIcon(UIRES.get("16px.classro.gif"));
+					a.setIcon(UIRES.get("16px.classro"));
 				else if (fileNode.data.startsWith("Gradle: "))
-					a.setIcon(UIRES.get("16px.ext.gif"));
+					a.setIcon(UIRES.get("16px.ext"));
 				else if (fileNode.data.startsWith("Java "))
-					a.setIcon(UIRES.get("16px.directory.gif"));
+					a.setIcon(UIRES.get("16px.directory"));
 				else
-					a.setIcon(FileIcons.getIconForFile(fileNode.data));
+					a.setIcon(FileIcons.getIconForFile(fileNode.data, !fileNode.isLeaf()));
 			} else if (node.getUserObject() instanceof File fil) {
 				a.setText(fil.getName());
-				if (!fil.isDirectory())
-					a.setIcon(FileIcons.getIconForFile(fil));
-				else
-					a.setIcon(UIRES.get("laf.directory.gif"));
+				a.setIcon(FileIcons.getIconForFile(fil));
 			}
 
 			if (node.getFilter() != null && !node.getFilter().isEmpty()) {
@@ -522,11 +542,11 @@ public class WorkspaceFileBrowser extends JPanel {
 			}
 
 			if (sel) {
-				a.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				a.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+				a.setForeground(Theme.current().getBackgroundColor());
+				a.setBackground(Theme.current().getInterfaceAccentColor());
 			} else {
-				a.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				a.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				a.setBackground(Theme.current().getBackgroundColor());
+				a.setForeground(Theme.current().getForegroundColor());
 			}
 			return a;
 		}

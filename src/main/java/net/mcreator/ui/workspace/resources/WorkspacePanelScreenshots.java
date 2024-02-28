@@ -25,15 +25,14 @@ import net.mcreator.ui.component.util.ListUtil;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.WorkspacePanel;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
@@ -49,11 +48,11 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 			}
 		});
 
-		addToolBarButton("workspace.screenshots.export_selected", UIRES.get("16px.ext.gif"),
+		addToolBarButton("workspace.screenshots.export_selected", UIRES.get("16px.ext"),
 				e -> exportSelectedScreenshots());
 		addToolBarButton("workspace.screenshots.use_as_background", UIRES.get("16px.textures"),
 				e -> useSelectedAsBackgrounds());
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"), e -> {
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> {
 			deleteCurrentlySelected();
 			reloadElements();
 		});
@@ -68,14 +67,13 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 		List<File> selected = elementList.getSelectedValuesList();
 
 		filterModel.removeAllElements();
-		File[] screenshots = new File(workspacePanel.getMCreator().getWorkspaceFolder(),
-				"run/screenshots/").listFiles();
+		File[] screenshots = new File(workspacePanel.getMCreator().getFolderManager().getClientRunDir(),
+				"screenshots/").listFiles();
+
 		if (screenshots != null)
-			Arrays.stream(screenshots).forEach(filterModel::addElement);
+			filterModel.addAll(List.of(screenshots));
 
 		ListUtil.setSelectedValues(elementList, selected);
-
-		refilterElements();
 	}
 
 	private void useSelectedAsBackgrounds() {
@@ -100,12 +98,10 @@ class WorkspacePanelScreenshots extends AbstractResourcePanel<File> {
 		public JLabel getListCellRendererComponent(JList<? extends File> list, File ma, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") :
-					(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			setBackground(isSelected ? Theme.current().getAltBackgroundColor() : Theme.current().getBackgroundColor());
 			setText(ma.getName());
 			ComponentUtils.deriveFont(this, 11);
-			setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setForeground(Theme.current().getForegroundColor());
 			setVerticalTextPosition(BOTTOM);
 			setHorizontalTextPosition(CENTER);
 			setHorizontalAlignment(CENTER);

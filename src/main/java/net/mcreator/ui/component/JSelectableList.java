@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.ui.laf.themes.Theme;
+
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
@@ -78,7 +80,7 @@ public class JSelectableList<E> extends JList<E> {
 		if (rubberBand.getBounds().getWidth() > 0 && rubberBand.getBounds().getHeight() > 0) {
 			Graphics2D g2 = (Graphics2D) g;
 			Stroke defaultStroke = g2.getStroke();
-			g2.setColor((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+			g2.setColor(Theme.current().getInterfaceAccentColor());
 			g2.setStroke(dashed);
 			g2.draw(rubberBand);
 			g2.setColor(new Color(g2.getColor().getRed(), g2.getColor().getGreen(), g2.getColor().getBlue(), 50));

@@ -19,10 +19,10 @@
 package net.mcreator.ui.workspace.breadcrumb;
 
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.elements.FolderElement;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -35,15 +35,15 @@ public class FolderElementCrumb extends JLabel {
 
 		this.element = element;
 
-		setIcon(UIRES.get("laf.directory.gif"));
+		setIcon(UIRES.get("laf.directory"));
 
 		setOpaque(false);
-		setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		setBackground(Theme.current().getBackgroundColor());
 
 		addMouseListener(new MouseAdapter() {
 			@Override public void mouseExited(MouseEvent e) {
 				setOpaque(false);
-				setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				setBackground(Theme.current().getBackgroundColor());
 			}
 		});
 	}

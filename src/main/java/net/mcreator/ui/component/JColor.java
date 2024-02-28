@@ -20,12 +20,17 @@ package net.mcreator.ui.component;
 
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import javax.swing.colorchooser.AbstractColorChooserPanel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JColor extends JPanel {
 
@@ -33,95 +38,115 @@ public class JColor extends JPanel {
 
 	private Color currentColor = Color.white;
 
-	private final JTextField fl1 = new JTextField(10);
-	private ActionListener al = null;
-	private final JButton bt1 = new JButton("...");
+	private final JTextField colorText;
+	private final List<ActionListener> listeners = new ArrayList<>();
+
+	private final TechnicalButton edit = new TechnicalButton(UIRES.get("18px.edit"));
+	private final TechnicalButton remove = new TechnicalButton(UIRES.get("18px.remove"));
+
+	private JDialog dialog = null;
 
 	private final boolean allowNullColor;
 	private final boolean allowTransparency;
 
-	private JDialog dialog = null;
-
 	public JColor(Window window, boolean allowNullColor, boolean allowTransparency) {
-		setLayout(new BorderLayout(2, 0));
-		fl1.setText("255,255,255");
-		fl1.setBackground(Color.white);
-		bt1.setOpaque(false);
-
-		fl1.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")));
-		fl1.setHorizontalAlignment(JTextField.CENTER);
-
-		add("Center", fl1);
-
-		fl1.setEditable(false);
-		bt1.addActionListener(aea4 -> {
-			colorChooser.setColor(getColor());
-			dialog = JColorChooser.createDialog(window, "Select color: ", true, colorChooser, e -> {
-				Color c = colorChooser.getColor();
-				if (c != null)
-					setColor(c);
-				dialog.setVisible(false);
-			}, e -> dialog.setVisible(false));
-			dialog.setVisible(true);
-		});
+		setLayout(new BorderLayout(0, 0));
+		setBackground(Theme.current().getBackgroundColor());
+		setBorder(BorderFactory.createMatteBorder(0, 0, 0, 3, getBackground()));
 
 		this.allowNullColor = allowNullColor;
 		this.allowTransparency = allowTransparency;
 
-		if (allowNullColor) {
-			setColor(null);
-			JButton bt2 = new JButton(UIRES.get("16px.delete.gif"));
-			bt2.setMargin(new Insets(0, 0, 0, 0));
-			bt2.setOpaque(false);
-			bt2.addActionListener(e -> setColor(null));
-			add("East", PanelUtils.gridElements(1, 2, 2, 0, bt1, bt2));
-		} else {
-			add("East", bt1);
-		}
+		colorText = new JTextField(9);
+		colorText.setEditable(false);
+		colorText.setPreferredSize(new Dimension(0, 38));
+		colorText.setBorder(
+				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 3, getBackground()),
+						BorderFactory.createMatteBorder(1, 1, 1, 0, getBackground())));
+		colorText.setHorizontalAlignment(JTextField.CENTER);
+		colorText.addMouseListener(new MouseAdapter() {
+			@Override public void mouseClicked(MouseEvent e) {
+				if (e.getClickCount() == 2)
+					edit.doClick();
+			}
+		});
+
+		edit.setOpaque(false);
+		edit.setMargin(new Insets(0, 0, 0, 0));
+		edit.setBorder(BorderFactory.createEmptyBorder());
+		edit.setContentAreaFilled(false);
+
+		remove.setOpaque(false);
+		remove.setMargin(new Insets(0, 0, 0, 0));
+		remove.setBorder(BorderFactory.createEmptyBorder());
+		remove.setContentAreaFilled(false);
+
+		edit.addActionListener(e -> {
+			colorChooser.setColor(getColor());
+			dialog = JColorChooser.createDialog(window, "Select color: ", true, colorChooser, e2 -> {
+				Color color = colorChooser.getColor();
+				if (color != null)
+					setColor(color);
+				dialog.setVisible(false);
+			}, e2 -> dialog.setVisible(false));
+			dialog.setVisible(true);
+		});
+		remove.addActionListener(e -> setColor(null));
+
+		JPanel controls = PanelUtils.totalCenterInPanel(
+				allowNullColor ? PanelUtils.gridElements(1, 2, 2, 0, edit, remove) : edit);
+		controls.setOpaque(true);
+		controls.setBackground(getBackground());
 
 		for (AbstractColorChooserPanel panel : colorChooser.getChooserPanels())
 			panel.setColorTransparencySelectionEnabled(allowTransparency);
 
-		setOpaque(false);
+		add("Center", colorText);
+		add("East", controls);
+
+		if (allowNullColor) {
+			setColor(null);
+		} else {
+			setColor(Color.white);
+		}
 	}
 
 	@Override public void setEnabled(boolean enabled) {
 		super.setEnabled(enabled);
-		fl1.setEnabled(enabled);
-		bt1.setEnabled(enabled);
+		colorText.setEnabled(enabled);
+		edit.setEnabled(enabled);
+		remove.setEnabled(enabled);
 	}
 
-	public void setColorSelectedListener(ActionListener a) {
-		this.al = a;
+	public void addColorSelectedListener(ActionListener a) {
+		listeners.add(a);
 	}
 
-	public void setColor(Color c) {
-		if (c == null && !allowNullColor)
-			c = Color.white;
+	public void setColor(Color color) {
+		if (color == null && !allowNullColor)
+			color = Color.white;
 
-		currentColor = allowTransparency || c == null ? c : new Color(c.getRGB(), false);
+		currentColor = allowTransparency || color == null ? color : new Color(color.getRGB(), false);
 
 		if (currentColor == null) {
-			fl1.setOpaque(false);
-			fl1.setText("DEFAULT");
-			fl1.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			colorText.setOpaque(false);
+			colorText.setText("DEFAULT");
+			colorText.setForeground(Theme.current().getForegroundColor());
 		} else {
-			String color = c.getRed() + "," + c.getGreen() + "," + c.getBlue();
-			fl1.setText(color);
-			fl1.setOpaque(true);
-			fl1.setBackground(c);
-			fl1.setForeground(getColorLuminance(c) > 128 ? Color.black : Color.white);
+			colorText.setText(String.format("#%06X", 0xFFFFFF & color.getRGB()));
+			colorText.setOpaque(true);
+			colorText.setBackground(color);
+			colorText.setForeground(getColorLuminance(color) > 128 ? Color.black : Color.white);
 		}
 
-		if (al != null)
-			al.actionPerformed(new ActionEvent("", 0, ""));
+		listeners.forEach(l -> l.actionPerformed(new ActionEvent("", 0, "")));
 	}
 
 	public Color getColor() {
 		return currentColor;
 	}
 
-	public static double getColorLuminance(Color color) {
+	private static double getColorLuminance(Color color) {
 		int r = color.getRed();
 		int g = color.getGreen();
 		int b = color.getBlue();

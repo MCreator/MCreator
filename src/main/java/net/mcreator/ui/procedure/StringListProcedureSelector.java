@@ -26,11 +26,11 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import java.awt.*;
 import java.util.List;
 
 public class StringListProcedureSelector extends RetvalProcedureSelector<List<String>, StringListProcedure> {
@@ -63,13 +63,13 @@ public class StringListProcedureSelector extends RetvalProcedureSelector<List<St
 		this.fixedValue = fixedValue;
 
 		if (fixedValue != null) {
-			fixedValue.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+			fixedValue.setBackground(Theme.current().getBackgroundColor());
 			fixedValue.setBorder(BorderFactory.createMatteBorder(1, 5, 1, allowInlineEditor ? 5 : 0, getBackground()));
 		}
 	}
 
 	@Override public StringListProcedure getSelectedProcedure() {
-		CBoxEntry selected = procedures.getSelectedItem();
+		ProcedureEntry selected = procedures.getSelectedItem();
 		if (selected == null || selected.string.equals(defaultName))
 			return new StringListProcedure(null, getFixedValue());
 		return new StringListProcedure(selected.string, getFixedValue());
@@ -78,7 +78,7 @@ public class StringListProcedureSelector extends RetvalProcedureSelector<List<St
 	@Override public void setSelectedProcedure(Procedure procedure) {
 		if (procedure instanceof StringListProcedure stringListProcedure) {
 			if (stringListProcedure.getName() != null)
-				procedures.setSelectedItem(new CBoxEntry(stringListProcedure.getName(), null));
+				procedures.setSelectedItem(new ProcedureEntry(stringListProcedure.getName(), null));
 
 			setFixedValue(stringListProcedure.getFixedValue());
 		}
@@ -89,7 +89,7 @@ public class StringListProcedureSelector extends RetvalProcedureSelector<List<St
 	}
 
 	@Override public void setFixedValue(List<String> value) {
-		if (fixedValue != null)
+		if (fixedValue != null && value != null)
 			fixedValue.setTextList(value);
 	}
 

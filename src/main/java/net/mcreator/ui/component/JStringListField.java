@@ -22,14 +22,18 @@ package net.mcreator.ui.component;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ListEditorDialog;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -44,6 +48,8 @@ public class JStringListField extends JPanel {
 
 	private final TechnicalButton edit = new TechnicalButton(UIRES.get("18px.edit"));
 	private final TechnicalButton clear = new TechnicalButton(UIRES.get("18px.removeall"));
+
+	private final List<ChangeListener> changeListeners = new ArrayList<>();
 
 	private boolean uniqueEntries = false;
 
@@ -98,12 +104,15 @@ public class JStringListField extends JPanel {
 		clear.setMargin(new Insets(0, 0, 0, 0));
 		clear.setBorder(BorderFactory.createEmptyBorder());
 		clear.setContentAreaFilled(false);
-		clear.addActionListener(e -> entriesModel.clear());
+		clear.addActionListener(e -> {
+			entriesModel.clear();
+			changeListeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
+		});
 
 		JPanel controls = PanelUtils.totalCenterInPanel(PanelUtils.join(edit, clear));
-		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, (Color) UIManager.get("MCreatorLAF.MAIN_TINT")));
+		controls.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getInterfaceAccentColor()));
 		controls.setOpaque(true);
-		controls.setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
+		controls.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		add("Center", pane);
 		add("East", controls);
@@ -113,6 +122,13 @@ public class JStringListField extends JPanel {
 		super.setEnabled(b);
 		edit.setEnabled(b);
 		clear.setEnabled(b);
+	}
+
+	/**
+	 * @param listener Listener object to be registered for listening to value changes of this component.
+	 */
+	public void addChangeListener(ChangeListener listener) {
+		changeListeners.add(listener);
 	}
 
 	/**
@@ -137,6 +153,7 @@ public class JStringListField extends JPanel {
 	public void setTextList(Collection<String> newTextList) {
 		entriesModel.clear();
 		entriesModel.addAll(newTextList);
+		changeListeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
 	}
 
 	private static class CustomListCellRenderer extends JLabel implements ListCellRenderer<String> {
@@ -145,14 +162,11 @@ public class JStringListField extends JPanel {
 		public Component getListCellRendererComponent(JList<? extends String> list, String value, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(true);
-			setBackground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR") :
-					(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
-			setForeground(isSelected ?
-					(Color) UIManager.get("MCreatorLAF.BLACK_ACCENT") :
-					(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getAltBackgroundColor());
+			setForeground(
+					isSelected ? Theme.current().getSecondAltBackgroundColor() : Theme.current().getForegroundColor());
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 5, 0, 5, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT")),
+					BorderFactory.createMatteBorder(0, 5, 0, 5, Theme.current().getBackgroundColor()),
 					BorderFactory.createEmptyBorder(2, 5, 2, 5)));
 			setHorizontalAlignment(JLabel.CENTER);
 			setVerticalAlignment(JLabel.CENTER);

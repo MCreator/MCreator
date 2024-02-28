@@ -32,9 +32,7 @@ public class StepSound extends MappableElement {
 	}
 
 	public StepSound(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "stepsounds"), name);
 	}
 
 	public StepSound(@Nonnull Workspace owner, DataListEntry name) {

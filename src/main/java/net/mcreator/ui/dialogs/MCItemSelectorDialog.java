@@ -19,10 +19,12 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -52,7 +54,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		jtf.setEnabled(false);
-		jtf.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		jtf.setBorder(BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()));
 
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent evt) {
@@ -80,11 +82,11 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 			JButton useTags = L10N.button("dialog.item_selector.use_tag");
 			buttons.add(useTags);
 			useTags.addActionListener(e -> {
-				String tagType = "Blocks";
+				TagType tagType = TagType.BLOCKS;
 				List<MCItem> items = supplier.provide(mcreator.getWorkspace());
 				for (MCItem item : items) {
 					if (item.getType().equals("item")) {
-						tagType = "Items";
+						tagType = TagType.ITEMS;
 						break;
 					}
 				}
@@ -187,7 +189,7 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 			if (isSelected) {
 				setOpaque(true);
-				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+				setBackground(Theme.current().getForegroundColor());
 			} else {
 				setOpaque(false);
 			}

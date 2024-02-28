@@ -32,9 +32,7 @@ public class Particle extends MappableElement {
 	}
 
 	public Particle(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "particles"), name);
 	}
 
 	public Particle(@Nonnull Workspace owner, DataListEntry name) {

@@ -40,6 +40,8 @@ public class L10N {
 
 	public static final Locale DEFAULT_LOCALE = new Locale("en", "US");
 
+	public static final List<String> SYSTEM_FONT_LANGUAGES = Arrays.asList("zh", "ja", "ko", "th", "hi", "he", "iw");
+
 	private static ResourceBundle rb;
 	private static ResourceBundle rb_en;
 

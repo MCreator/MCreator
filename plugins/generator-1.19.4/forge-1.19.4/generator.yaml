@@ -17,6 +17,16 @@ gradle:
   run_server: runServer
   export_file: "build/libs/modid-1.0.jar"
 
+import_formatter:
+  duplicates_whitelist:
+    - java.util
+    - net.minecraft
+  priority_imports:
+    Material: net.minecraft.world.level.material
+    Nullable: javax.annotation
+    Codec: com.mojang.serialization
+    SoundEvent: net.minecraft.sounds
+
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
 res_root: "@WORKSPACEROOT/src/main/resources"
@@ -73,6 +83,10 @@ sources_setup_tasks:
     type: JAVA_viatemplate
     template: javamodel.java.ftl
     to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+
+tags:
+  template: tags.json.ftl # loaded from datapack generator
+  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
 
 language_file:
   format: json

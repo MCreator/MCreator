@@ -18,7 +18,8 @@
 
 package net.mcreator.ui.component;
 
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.HtmlUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -46,11 +47,11 @@ public class ConsolePane extends JTextPane {
 		setEditable(false);
 
 		putClientProperty(JEditorPane.HONOR_DISPLAY_PROPERTIES, true);
-		setFont(MCreatorTheme.console_font);
+		setFont(Theme.current().getConsoleFont());
 
-		setBackground((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		setSelectedTextColor((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT"));
-		setSelectionColor((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		setBackground(Theme.current().getSecondAltBackgroundColor());
+		setSelectedTextColor(Theme.current().getSecondAltBackgroundColor());
+		setSelectionColor(Theme.current().getForegroundColor());
 		setCursor(new Cursor(Cursor.TEXT_CURSOR));
 		setBorder(null);
 
@@ -62,9 +63,6 @@ public class ConsolePane extends JTextPane {
 	}
 
 	public void insertString(String s, SimpleAttributeSet set) {
-		if (DEBUG_CONTENTS_TO_LOG && !s.trim().isEmpty())
-			LOG.info(s.trim());
-
 		insertHTML("<span " + parseSimpleAttributeSetToCSS(set) + ">" + s.replace("<", "&lt;").replace(">", "&gt;")
 				.replace("\n", "<br>") + "</span>");
 	}
@@ -85,17 +83,6 @@ public class ConsolePane extends JTextPane {
 		insertHTML(linkHTML.toString());
 	}
 
-	private String parseSimpleAttributeSetToCSS(SimpleAttributeSet set) {
-		Color fgund = StyleConstants.getForeground(set);
-		Color bgund = StyleConstants.getBackground(set);
-		int fsize = StyleConstants.getFontSize(set);
-		String fg = "color:rgb(" + fgund.getRed() + "," + fgund.getGreen() + "," + fgund.getBlue() + ");";
-		String bg = "background-color:rgb(" + bgund.getRed() + "," + bgund.getGreen() + "," + bgund.getBlue() + ");";
-		return "style=\"" + (StyleConstants.isUnderline(set) ? "text-decoration:underline;" : "") + "font-size:" + fsize
-				+ "px;" + fg + bg + "cursor:text;white-space:nowrap;font-family:'" + getFont().getFamily() + "';"
-				+ "\"";
-	}
-
 	private void insertHTML(String htmlContent) {
 		if (transaction) {
 			transactionBuffer.append(htmlContent);
@@ -103,10 +90,17 @@ public class ConsolePane extends JTextPane {
 		}
 
 		try {
-			kit.read(new StringReader(htmlContent.replace(" ", "&#32;").replace("\t", "&#32;&#32;&#32;")),
-					getDocument(), getDocument().getLength());
+			htmlContent = htmlContent.replace("  ", "&#32;&#32;").replace("&#32; ", "&#32;&#32;")
+					.replace("\t", "&#32;&#32;&#32;&#32;");
+			kit.read(new StringReader(htmlContent), getDocument(), getDocument().getLength());
+
+			if (DEBUG_CONTENTS_TO_LOG) {
+				String text = HtmlUtils.html2text(htmlContent);
+				if (!text.isEmpty())
+					LOG.info(text);
+			}
 		} catch (BadLocationException | IOException e) {
-			LOG.error(e.getMessage(), e);
+			LOG.error("Failed to write HTML to the console pane", e);
 		}
 	}
 
@@ -127,4 +121,12 @@ public class ConsolePane extends JTextPane {
 		if (!transaction)
 			super.setCaretPosition(position);
 	}
+
+	private String parseSimpleAttributeSetToCSS(SimpleAttributeSet set) {
+		Color fgund = StyleConstants.getForeground(set);
+		String fg = "color:rgb(" + fgund.getRed() + "," + fgund.getGreen() + "," + fgund.getBlue() + ");";
+		return "style=\"" + (StyleConstants.isUnderline(set) ? "text-decoration:underline;" : "") + fg
+				+ "cursor:text;white-space:nowrap;font-size:9px;\"";
+	}
+
 }

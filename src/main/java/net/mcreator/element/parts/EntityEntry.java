@@ -32,9 +32,7 @@ public class EntityEntry extends MappableElement {
 	}
 
 	public EntityEntry(@Nonnull Workspace owner, String name) {
-		this();
-		mapper.setWorkspace(owner);
-		setValue(name);
+		super(new NameMapper(owner, "entities"), name);
 	}
 
 	public EntityEntry(@Nonnull Workspace owner, DataListEntry name) {

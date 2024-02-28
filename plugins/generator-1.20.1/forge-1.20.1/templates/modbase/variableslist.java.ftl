@@ -3,7 +3,7 @@ package ${package}.network;
 
 import ${package}.${JavaModName};
 
-import net.minecraft.nbt.Tag;import javax.annotation.Nullable;
+import net.minecraft.nbt.Tag;
 
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${JavaModName}Variables {
 
@@ -183,7 +183,7 @@ import net.minecraft.nbt.Tag;import javax.annotation.Nullable;
 			this.setDirty();
 
 			if (world instanceof Level && !world.isClientSide())
-			${JavaModName}.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SavedDataSyncMessage(0, this));
+				${JavaModName}.PACKET_HANDLER.send(PacketDistributor.ALL.noArg(), new SavedDataSyncMessage(0, this));
 		}
 
 		static MapVariables clientSide = new MapVariables();
@@ -299,8 +299,8 @@ import net.minecraft.nbt.Tag;import javax.annotation.Nullable;
 			return nbt;
 		}
 
-		public void readNBT(Tag Tag) {
-			CompoundTag nbt = (CompoundTag) Tag;
+		public void readNBT(Tag tag) {
+			CompoundTag nbt = (CompoundTag) tag;
 			<#list variables as var>
 				<#if var.getScope().name() == "PLAYER_LIFETIME">
 					<@var.getType().getScopeDefinition(generator.getWorkspace(), "PLAYER_LIFETIME")['read']?interpret/>

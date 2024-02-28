@@ -21,9 +21,8 @@ package net.mcreator.ui.laf.renderer.elementlist;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -34,115 +33,77 @@ import java.awt.*;
 
 public class DetailsIconModListRender extends JPanel implements ListCellRenderer<IElement> {
 
+	private final JLabel label = new JLabel();
+	private final JLabel label2 = new JLabel();
+	private final JLabel label3 = new JLabel();
+	private final JLabel label4 = new JLabel();
+	private final JLabel label5 = new JLabel();
+	private final JLabel icon = new JLabel();
+
 	public DetailsIconModListRender() {
 		setLayout(new BorderLayout(15, 0));
+		setBorder(null);
+		setBackground(Theme.current().getForegroundColor());
+
+		label.setFont(Theme.current().getSecondaryFont().deriveFont(14.0f));
+		label2.setFont(Theme.current().getSecondaryFont().deriveFont(14.0f));
+		label3.setFont(Theme.current().getSecondaryFont().deriveFont(12.0f));
+		label4.setFont(Theme.current().getSecondaryFont().deriveFont(12.0f));
+		label5.setFont(Theme.current().getSecondaryFont().deriveFont(12.0f));
+		icon.setBorder(BorderFactory.createEmptyBorder(0, 9, 0, 0));
+
+		add("Center", PanelUtils.gridElements(1, 6, label, label2, label3, label4, label5));
+		add("West", icon);
 	}
 
 	@Override
 	public Component getListCellRendererComponent(JList<? extends IElement> list, IElement element, int index,
 			boolean isSelected, boolean cellHasFocus) {
-		removeAll();
-		setBorder(null);
-
-		JLabel label = new JLabel();
-		JLabel label2 = new JLabel();
-		JLabel label3 = new JLabel();
-		JLabel label4 = new JLabel();
-		JLabel label5 = new JLabel();
-
-		JLabel icon = new JLabel();
-		if (element != null) {
-			if (isSelected) {
-				label.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				label.setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				label2.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				label2.setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				label3.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				label3.setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				label4.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				label4.setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				label5.setForeground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-				label5.setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				setOpaque(true);
-				setBackground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-			} else {
-				label.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				label2.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				label3.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				label4.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				label5.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-				setOpaque(false);
-			}
-
-			label.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
-			label2.setFont(MCreatorTheme.secondary_font.deriveFont(14.0f));
-			label3.setFont(MCreatorTheme.secondary_font.deriveFont(12.0f));
-			label4.setFont(MCreatorTheme.secondary_font.deriveFont(12.0f));
-			label5.setFont(MCreatorTheme.secondary_font.deriveFont(12.0f));
-
-			ImageIcon dva = null;
-
-			label.setText(element.getName());
-			label.setText(StringUtils.abbreviate(label.getText(), 24));
-
-			if (element instanceof ModElement ma) {
-				label2.setText(ma.getRegistryName());
-				label2.setText(StringUtils.abbreviate(label2.getText(), 24));
-				label3.setText(ma.getType().getReadableName());
-				label4.setText(ma.isCodeLocked() ?
-						L10N.t("workspace.elements.list.locked") :
-						L10N.t("workspace.elements.list.notlocked"));
-				label5.setText(ma.doesCompile() ?
-						L10N.t("workspace.elements.list.compiles") :
-						L10N.t("workspace.elements.list.compile_errors"));
-
-				if (!ma.doesCompile()) {
-					dva = TiledImageCache.modTabRed;
-				}
-
-				if (ma.isCodeLocked()) {
-					if (dva != null) {
-						dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
-					} else {
-						dva = TiledImageCache.modTabPurple;
-					}
-				}
-			} else {
-				label2.setText("-");
-				label3.setText(L10N.t("workspace.elements.list.folder"));
-				label4.setText("-");
-				label5.setText("-");
-			}
-
-			ImageIcon modIcon = element instanceof ModElement ?
-					((ModElement) element).getElementIcon() :
-					UIRES.get("laf.directory.gif");
-
-			if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0
-					&& modIcon.getIconHeight() > 0 && modIcon != MCItem.DEFAULT_ICON) {
-				if (dva != null) {
-					ImageIcon iconbig = ImageUtils.drawOver(modIcon, dva);
-					icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 16)));
-				} else {
-					icon.setIcon(new ImageIcon(ImageUtils.resize(modIcon.getImage(), 16)));
-				}
-			} else if (element instanceof ModElement) {
-				if (dva != null) {
-					ImageIcon iconbig = ImageUtils.drawOver(((ModElement) element).getType().getIcon(), dva);
-					icon.setIcon(new ImageIcon(ImageUtils.resize(iconbig.getImage(), 16)));
-				} else {
-					icon.setIcon(new ImageIcon(
-							ImageUtils.resize(((ModElement) element).getType().getIcon().getImage(), 16)));
-				}
-			}
-
-			setToolTipText(element.getName());
+		if (isSelected) {
+			setOpaque(true);
+			label.setForeground(Theme.current().getBackgroundColor());
+			label2.setForeground(Theme.current().getBackgroundColor());
+			label3.setForeground(Theme.current().getBackgroundColor());
+			label4.setForeground(Theme.current().getBackgroundColor());
+			label5.setForeground(Theme.current().getBackgroundColor());
+		} else {
+			setOpaque(false);
+			label.setForeground(Theme.current().getForegroundColor());
+			label2.setForeground(Theme.current().getForegroundColor());
+			label3.setForeground(Theme.current().getForegroundColor());
+			label4.setForeground(Theme.current().getForegroundColor());
+			label5.setForeground(Theme.current().getForegroundColor());
 		}
 
-		icon.setBorder(BorderFactory.createEmptyBorder(0, 9, 0, 0));
+		label.setText(StringUtils.abbreviate(element.getName(), 24));
+		if (element instanceof ModElement ma) {
+			label2.setText(StringUtils.abbreviate(ma.getRegistryName(), 24));
+			label3.setText(ma.getType().getReadableName());
+			label4.setText(ma.isCodeLocked() ?
+					L10N.t("workspace.elements.list.locked") :
+					L10N.t("workspace.elements.list.notlocked"));
+			label5.setText(ma.doesCompile() ?
+					L10N.t("workspace.elements.list.compiles") :
+					L10N.t("workspace.elements.list.compile_errors"));
+		} else {
+			label2.setText("-");
+			label3.setText(L10N.t("workspace.elements.list.folder"));
+			label4.setText("-");
+			label5.setText("-");
+		}
 
-		add("Center", PanelUtils.gridElements(1, 6, label, label2, label3, label4, label5));
-		add("West", icon);
+		ImageIcon modIcon = element instanceof ModElement ?
+				((ModElement) element).getElementIcon() :
+				UIRES.get("laf.directory");
+
+		if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0 && modIcon.getIconHeight() > 0
+				&& modIcon != MCItem.DEFAULT_ICON) {
+			icon.setIcon(new ImageIcon(ImageUtils.resize(modIcon.getImage(), 16)));
+		} else if (element instanceof ModElement) {
+			icon.setIcon(new ImageIcon(ImageUtils.resize(((ModElement) element).getType().getIcon().getImage(), 16)));
+		}
+		setToolTipText(element.getName());
+
 		return this;
 	}
 

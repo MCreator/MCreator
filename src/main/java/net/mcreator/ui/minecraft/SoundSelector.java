@@ -27,22 +27,20 @@ import net.mcreator.ui.dialogs.StringSelectorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.validation.component.VTextField;
-import net.mcreator.util.ListUtils;
-import net.mcreator.util.SoundUtils;
-import net.mcreator.workspace.elements.SoundElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.io.File;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SoundSelector extends JPanel {
 
 	private final VTextField tfe = new VTextField(14);
 	private final JButton bt = new JButton("...");
 	private final JButton rm = new JButton(UIRES.get("18px.remove"));
-	private final JButton play = new JButton(UIRES.get("16px.play"));
+	private final List<ActionListener> listeners = new ArrayList<>();
 
 	private final MCreator mcreator;
 
@@ -63,38 +61,10 @@ public class SoundSelector extends JPanel {
 
 		rm.setOpaque(false);
 		rm.setMargin(new Insets(0, 3, 0, 3));
-
-		play.setOpaque(false);
-		play.setMargin(new Insets(0, 0, 0, 0));
-		play.setContentAreaFilled(false);
-
-		play.setVisible(false);
 		rm.setEnabled(false);
-
-		play.addMouseListener(new MouseAdapter() {
-			@Override public void mousePressed(MouseEvent me) {
-				SoundElement soundElement = frame.getWorkspace().getSoundElements().stream()
-						.filter(e -> e.getName().equals(getSound().getUnmappedValue().replaceFirst("CUSTOM:", "")))
-						.findFirst().orElse(null);
-				if (soundElement != null) {
-					if (!soundElement.getFiles().isEmpty()) {
-						SoundUtils.playSound(new File(frame.getWorkspace().getFolderManager().getSoundsDir(),
-								ListUtils.getRandomItem(soundElement.getFiles()) + ".ogg"));
-						play.setEnabled(false);
-					}
-				}
-			}
-
-			@Override public void mouseReleased(MouseEvent e) {
-				SoundUtils.stopAllSounds();
-				play.setEnabled(true);
-			}
-
-		});
 
 		setLayout(new BorderLayout(0, 0));
 
-		add("West", play);
 		add("Center", tfe);
 		add("East", PanelUtils.gridElements(1, 2, 0, 0, bt, rm));
 	}
@@ -113,6 +83,10 @@ public class SoundSelector extends JPanel {
 		return new Sound(mcreator.getWorkspace(), tfe.getText());
 	}
 
+	public void addSoundSelectedListener(ActionListener a) {
+		listeners.add(a);
+	}
+
 	public void setSound(Sound sound) {
 		if (sound != null)
 			this.setSound(sound.getUnmappedValue());
@@ -124,13 +98,9 @@ public class SoundSelector extends JPanel {
 		tfe.setText(sound);
 		tfe.getValidationStatus();
 
-		if (sound != null && !sound.isEmpty()) {
-			play.setVisible(sound.startsWith("CUSTOM:"));
-			rm.setEnabled(true);
-		} else {
-			play.setVisible(false);
-			rm.setEnabled(false);
-		}
+		rm.setEnabled(sound != null && !sound.isEmpty());
+
+		listeners.forEach(l -> l.actionPerformed(new ActionEvent("", 0, "")));
 	}
 
 	public void setText(String text) {

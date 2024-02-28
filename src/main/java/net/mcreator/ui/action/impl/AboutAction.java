@@ -26,15 +26,15 @@ import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.BasicAction;
 import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.init.AppIcon;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.MCreatorTheme;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
-import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
@@ -48,14 +48,24 @@ public class AboutAction extends BasicAction {
 		Object[] options = { L10N.t("dialog.about.option.website"), L10N.t("dialog.about.option.support"),
 				L10N.t("dialog.about.option.eula"), L10N.t("dialog.about.option.third_party_licenses"),
 				L10N.t("dialog.about.option.donate") };
-		int n = JOptionPane.showOptionDialog(parent,
-				L10N.t("dialog.about.message", Launcher.version.major, Launcher.version.getFullString(), (
-								MCreatorApplication.isInternet ?
-										MCreatorApplication.WEB_API.getUpdateInfo().getLatestMajor() :
-										L10N.t("common.not_applicable")), GeneratableElement.formatVersion, OS.getSystemBits(),
-						OS.getArchitecture(), OS.getBundledJVMBits()), L10N.t("dialog.about.title"),
-				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE,
-				new ImageIcon(generateMCreatorLogoForAboutDialog()), options, options[0]);
+
+		JPanel logoPanel = new JPanel(new BorderLayout(24, 24));
+		logoPanel.add("North", new JLabel(AppIcon.getAppIcon(128, 128)));
+		logoPanel.add("Center", new JLabel(UIRES.SVG.getBuiltIn("logo", 250, (int) (250 * (63 / 350.0)))));
+		logoPanel.setBorder(BorderFactory.createEmptyBorder(0, 24, 0, 0));
+
+		JLabel aboutLabel = L10N.label("dialog.about.message", Launcher.version.major, Launcher.version.getFullString(),
+				(MCreatorApplication.isInternet ?
+						MCreatorApplication.WEB_API.getUpdateInfo().getLatestMajor() :
+						L10N.t("common.not_applicable")), GeneratableElement.formatVersion, OS.getSystemBits(),
+				OS.getArchitecture(), OS.getBundledJVMBits());
+
+		JComponent dialogPanel = PanelUtils.westAndCenterElement(
+				PanelUtils.pullElementUp(PanelUtils.centerInPanel(logoPanel)), aboutLabel, 48, 48);
+		dialogPanel.setBorder(BorderFactory.createEmptyBorder(16, 0, 0, 32));
+
+		int n = JOptionPane.showOptionDialog(parent, dialogPanel, L10N.t("dialog.about.title"),
+				JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
 		if (n == 0) {
 			DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/");
 		} else if (n == 1) {
@@ -74,21 +84,12 @@ public class AboutAction extends BasicAction {
 		}
 	}
 
-	private static Image generateMCreatorLogoForAboutDialog() {
-		BufferedImage image = new BufferedImage(250, 250, BufferedImage.TYPE_INT_ARGB);
-		Graphics2D g = (Graphics2D) image.getGraphics();
-		g.drawImage(UIRES.getAppIcon().getImage(), 54, 24, 128, 128, null);
-		g.drawImage(ImageUtils.colorize(UIRES.getBuiltIn("logo"), new Color(0x2F2F2F), true).getImage(), 22, 170, 200,
-				36, null);
-		return image;
-	}
-
 	public static void showLicenseWindow(Window parent) {
 		JTextArea licenseText = new JTextArea();
 		JScrollPane gradlesp = new JScrollPane(licenseText);
 		licenseText.setEditable(false);
 		licenseText.setLineWrap(true);
-		licenseText.setFont(MCreatorTheme.console_font);
+		licenseText.setFont(Theme.current().getConsoleFont());
 		ComponentUtils.deriveFont(licenseText, 12);
 		licenseText.setWrapStyleWord(true);
 		licenseText.setText(FileIO.readFileToString(new File("./LICENSE.txt")));

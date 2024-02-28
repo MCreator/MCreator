@@ -15,6 +15,7 @@ templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/item/@NAMEItem.java"
 
   - template: dimension/dimension_type.json.ftl # loaded from datapack generator
+    variables: "customeffects=true"
     writer: json
     name: "@MODDATAROOT/dimension_type/@registryname.json"
   - template: dimension/dimension_overworld.json.ftl # loaded from datapack generator
@@ -47,10 +48,9 @@ templates:
     name: "@MODASSETSROOT/models/item/@registryname.json"
     condition: hasIgniter()
 
-global_templates:
-  - template: json/carvertag.json.ftl
-    writer: json
-    name: "@RESROOT/data/minecraft/tags/blocks/overworld_carver_replaceables.json"
+tags:
+  - tag: BLOCKS:minecraft:overworld_carver_replaceables
+    entryprovider: data.getWorldgenBlocks()
 
 localizationkeys:
   - key: item.@modid.@registryname

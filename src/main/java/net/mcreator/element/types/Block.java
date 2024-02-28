@@ -203,6 +203,7 @@ import java.util.stream.Collectors;
 		this.aiPathNodeType = "DEFAULT";
 		this.offsetType = "NONE";
 		this.generationShape = "UNIFORM";
+		this.destroyTool = "Not specified";
 		this.inventoryInSlotIDs = new ArrayList<>();
 		this.inventoryOutSlotIDs = new ArrayList<>();
 
@@ -226,7 +227,7 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
-	public boolean isDoubleBlock() {
+	@Override public boolean isDoubleBlock() {
 		return "Door".equals(blockBase);
 	}
 

@@ -20,6 +20,7 @@ package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.BiomeEntry;
+import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.references.ModElementReference;
 import net.mcreator.workspace.references.ResourceReference;
@@ -30,7 +31,7 @@ import java.util.List;
 
 	@ResourceReference("structure") public String structure;
 	public String projection;
-	public String ignoreBlocks;
+	@ModElementReference public List<MItemBlock> ignoredBlocks;
 
 	public int spacing;
 	public int separation;

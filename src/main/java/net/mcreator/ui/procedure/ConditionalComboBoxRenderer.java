@@ -20,23 +20,24 @@
 package net.mcreator.ui.procedure;
 
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import java.awt.*;
 
-class ConditionalComboBoxRenderer implements ListCellRenderer<CBoxEntry> {
+class ConditionalComboBoxRenderer implements ListCellRenderer<ProcedureEntry> {
 
 	private final BasicComboBoxRenderer renderer = new BasicComboBoxRenderer();
 
 	@Override
-	public Component getListCellRendererComponent(JList list, CBoxEntry value, int index, boolean isSelected,
+	public Component getListCellRendererComponent(JList list, ProcedureEntry value, int index, boolean isSelected,
 			boolean cellHasFocus) {
 		JLabel component = (JLabel) renderer.getListCellRendererComponent(list, value.string, index, isSelected,
 				cellHasFocus);
 
 		if (!value.correctDependencies) {
-			component.setForeground((Color) UIManager.get("MCreatorLAF.GRAY_COLOR"));
+			component.setForeground(Theme.current().getAltForegroundColor());
 			component.setText("<html>" + component.getText() + L10N.t("action.procedure.missing_dependencies"));
 		}
 

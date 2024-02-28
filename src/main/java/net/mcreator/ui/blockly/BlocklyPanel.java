@@ -28,13 +28,15 @@ import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
+import net.mcreator.plugin.MCREvent;
 import net.mcreator.plugin.PluginLoader;
+import net.mcreator.plugin.events.ui.BlocklyPanelRegisterJSObjects;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ThemeLoader;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.BlocklyJavaScriptsLoader;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.workspace.elements.VariableElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -46,11 +48,10 @@ import org.w3c.dom.Text;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
@@ -73,6 +74,8 @@ public class BlocklyPanel extends JFXPanel {
 
 	private static final String MINIMAL_XML = "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>";
 
+	private final List<ChangeListener> changeListeners = new ArrayList<>();
+
 	public BlocklyPanel(MCreator mcreator, @Nonnull BlocklyEditorType type) {
 		this.mcreator = mcreator;
 		this.type = type;
@@ -82,6 +85,10 @@ public class BlocklyPanel extends JFXPanel {
 
 			if (newXml.length() > MINIMAL_XML.length()) {
 				this.currentXML = newXml;
+
+				ThreadUtil.runOnSwingThread(() -> changeListeners.forEach(
+						listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this))));
+
 				return true;
 			}
 
@@ -91,7 +98,7 @@ public class BlocklyPanel extends JFXPanel {
 		ThreadUtil.runOnFxThread(() -> {
 			WebView browser = new WebView();
 			Scene scene = new Scene(browser);
-			java.awt.Color bg = (java.awt.Color) UIManager.get("MCreatorLAF.BLACK_ACCENT");
+			java.awt.Color bg = Theme.current().getSecondAltBackgroundColor();
 			scene.setFill(Color.rgb(bg.getRed(), bg.getGreen(), bg.getBlue()));
 			setScene(scene);
 
@@ -107,9 +114,9 @@ public class BlocklyPanel extends JFXPanel {
 					String css = FileIO.readResourceToString("/blockly/css/mcreator_blockly.css");
 
 					if (PluginLoader.INSTANCE.getResourceAsStream(
-							"themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css") != null) {
+							"themes/" + Theme.current().getID() + "/styles/blockly.css") != null) {
 						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
-								"/themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/blockly.css");
+								"/themes/" + Theme.current().getID() + "/styles/blockly.css");
 					} else {
 						css += FileIO.readResourceToString(PluginLoader.INSTANCE,
 								"/themes/default_dark/styles/blockly.css");
@@ -135,6 +142,11 @@ public class BlocklyPanel extends JFXPanel {
 					JSObject window = (JSObject) webEngine.executeScript("window");
 					window.setMember("javabridge", bridge);
 					window.setMember("editorType", type.registryName());
+
+					// allow plugins to register additional JS objects
+					Map<String, Object> domWindowMembers = new HashMap<>();
+					MCREvent.event(new BlocklyPanelRegisterJSObjects(this, domWindowMembers));
+					domWindowMembers.forEach(window::setMember);
 
 					// @formatter:off
 					webEngine.executeScript("var MCR_BLOCKLY_PREF = { "
@@ -195,6 +207,10 @@ public class BlocklyPanel extends JFXPanel {
 			runnable.run();
 	}
 
+	public void addChangeListener(ChangeListener listener) {
+		changeListeners.add(listener);
+	}
+
 	public String getXML() {
 		return this.currentXML;
 	}
@@ -229,6 +245,10 @@ public class BlocklyPanel extends JFXPanel {
 
 	public void clearWorkspace() {
 		executeJavaScriptSynchronously("workspace.clear()");
+	}
+
+	public void triggerEventFunction() {
+		executeJavaScriptSynchronously("blocklyEventFunction()");
 	}
 
 	public void addGlobalVariable(String name, String type) {

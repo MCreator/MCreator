@@ -21,8 +21,6 @@ package net.mcreator.ui.ide;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.themes.ThemeLoader;
-import net.mcreator.ui.laf.MCreatorTheme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
@@ -30,8 +28,6 @@ import org.fife.ui.rsyntaxtextarea.SyntaxScheme;
 import org.fife.ui.rsyntaxtextarea.Theme;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
-import javax.swing.*;
-import java.awt.*;
 import java.awt.event.InputEvent;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -47,17 +43,18 @@ public class RSyntaxTextAreaStyler {
 			Theme theme;
 
 			if (PluginLoader.INSTANCE.getResourceAsStream(
-					"themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml") != null) {
+					"themes/" + net.mcreator.ui.laf.themes.Theme.current().getID() + "/styles/code_editor.xml")
+					!= null) {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
-						"themes/" + ThemeLoader.CURRENT_THEME.getID() + "/styles/code_editor.xml");
-				themeXML = themeXML.replace("${mainTint}",
-						Integer.toHexString(((Color) UIManager.get("MCreatorLAF.MAIN_TINT")).getRGB()).substring(2));
+						"themes/" + net.mcreator.ui.laf.themes.Theme.current().getID() + "/styles/code_editor.xml");
+				themeXML = themeXML.replace("${mainTint}", Integer.toHexString(
+						(net.mcreator.ui.laf.themes.Theme.current().getInterfaceAccentColor()).getRGB()).substring(2));
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			} else {
 				String themeXML = FileIO.readResourceToString(PluginLoader.INSTANCE,
 						"themes/default_dark/styles/code_editor.xml");
-				themeXML = themeXML.replace("${mainTint}",
-						Integer.toHexString(((Color) UIManager.get("MCreatorLAF.MAIN_TINT")).getRGB()).substring(2));
+				themeXML = themeXML.replace("${mainTint}", Integer.toHexString(
+						(net.mcreator.ui.laf.themes.Theme.current().getInterfaceAccentColor()).getRGB()).substring(2));
 				theme = Theme.load(new ByteArrayInputStream(themeXML.getBytes(StandardCharsets.UTF_8)));
 			}
 
@@ -67,8 +64,8 @@ public class RSyntaxTextAreaStyler {
 								.toLowerCase(Locale.ENGLISH) + ".xml"));
 			}
 
-			theme.matchedBracketBG = (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT");
-			theme.matchedBracketFG = (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR");
+			theme.matchedBracketBG = net.mcreator.ui.laf.themes.Theme.current().getAltBackgroundColor();
+			theme.matchedBracketFG = net.mcreator.ui.laf.themes.Theme.current().getForegroundColor();
 
 			theme.apply(te);
 		} catch (IOException ioe) {
@@ -78,8 +75,9 @@ public class RSyntaxTextAreaStyler {
 		SyntaxScheme ss = te.getSyntaxScheme();
 		for (int i = 0; i < ss.getStyleCount(); i++)
 			if (ss.getStyle(i) != null)
-				ss.getStyle(i).font = MCreatorTheme.console_font.deriveFont((float) initialFontSize);
-		te.setFont(MCreatorTheme.console_font.deriveFont((float) initialFontSize));
+				ss.getStyle(i).font = net.mcreator.ui.laf.themes.Theme.current().getConsoleFont()
+						.deriveFont((float) initialFontSize);
+		te.setFont(net.mcreator.ui.laf.themes.Theme.current().getConsoleFont().deriveFont((float) initialFontSize));
 		te.revalidate();
 
 		sp.addMouseWheelListener(mouseWheelEvent -> {

@@ -25,7 +25,7 @@ import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.gradle.GradleTaskFinishedListener;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.writer.ClassWriter;
-import net.mcreator.minecraft.api.ModAPIManager;
+import net.mcreator.plugin.modapis.ModAPIManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.gradle.GradleAction;
@@ -33,16 +33,14 @@ import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.TagElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class RegenerateCodeAction extends GradleAction {
@@ -70,7 +68,13 @@ public class RegenerateCodeAction extends GradleAction {
 			List<File> toBePreserved = new ArrayList<>();
 
 			// remove all sources of mod elements that are not locked
-			for (ModElement mod : mcreator.getWorkspace().getModElements()) {
+			Collection<ModElement> modElementsOld = mcreator.getWorkspace().getModElements();
+			int modstoload = modElementsOld.size();
+			int i = 0;
+			for (ModElement mod : modElementsOld) {
+				p0.setPercent((int) (i / (float) modstoload * 100));
+				i++;
+
 				if (mod.getType() == ModElementType.UNKNOWN)
 					continue; // skip unknown MEs as we don't know what we can remove from them
 
@@ -106,17 +110,24 @@ public class RegenerateCodeAction extends GradleAction {
 					a.delete();
 			}
 
+			// Delete all managed tag entries
+			for (Map.Entry<TagElement, ArrayList<String>> tag : mcreator.getWorkspace().getTagElements().entrySet()) {
+				tag.getValue().removeIf(TagElement::isEntryManaged);
+			}
+			// Delete tags that have no entries
+			mcreator.getWorkspace().getTagElements().entrySet().removeIf(entry -> entry.getValue().isEmpty());
+
 			p0.markStateOk();
 
 			ProgressDialog.ProgressUnit p10 = new ProgressDialog.ProgressUnit(
 					L10N.t("dialog.workspace.regenerate_and_build.progress.loading_mod_elements"));
 			dial.addProgressUnit(p10);
-			List<ModElement> modElementsOld = new ArrayList<>(mcreator.getWorkspace().getModElements());
-			int modstoload = modElementsOld.size();
-			int i = 0;
+			modElementsOld = mcreator.getWorkspace().getModElements();
+			modstoload = modElementsOld.size();
+			i = 0;
 			for (ModElement mod : modElementsOld) {
 				mod.getGeneratableElement();
-				p10.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
+				p10.setPercent((int) (i / (float) modstoload * 100));
 				i++;
 			}
 			p10.markStateOk();
@@ -136,6 +147,9 @@ public class RegenerateCodeAction extends GradleAction {
 			modstoload = mcreator.getWorkspace().getModElements().size();
 			i = 0;
 			for (ModElement mod : mcreator.getWorkspace().getModElements()) {
+				p1.setPercent((int) (i / (float) modstoload * 100));
+				i++;
+
 				if (mod.isCodeLocked()) {
 					hasLockedElements = true;
 				}
@@ -185,9 +199,6 @@ public class RegenerateCodeAction extends GradleAction {
 				} catch (Exception e) {
 					LOG.error("Failed to regenerate: " + mod.getName(), e);
 				}
-
-				p1.setPercent((int) (((float) i / (float) modstoload) * 100.0f));
-				i++;
 			}
 
 			// save all updated generatable mod elements
@@ -222,7 +233,7 @@ public class RegenerateCodeAction extends GradleAction {
 			mcreator.getGenerator().runResourceSetupTasks();
 			// generate base files without organizing imports as we first need all files generated so we can properly organize imports
 			mcreator.getGenerator().generateBase(false);
-			mcreator.mv.updateMods();
+			mcreator.mv.reloadElementsInCurrentTab();
 
 			// remove custom API libraries so they get re-downloaded
 			ModAPIManager.deleteAPIs(mcreator.getWorkspace(), mcreator.getWorkspaceSettings());

@@ -191,7 +191,7 @@ import java.util.stream.Collectors;
 		return !"No tint".equals(tintType);
 	}
 
-	public boolean isDoubleBlock() {
+	@Override public boolean isDoubleBlock() {
 		return "double".equals(plantType);
 	}
 

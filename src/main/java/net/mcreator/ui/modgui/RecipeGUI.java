@@ -31,6 +31,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.recipemakers.*;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.component.VComboBox;
@@ -170,9 +171,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 
 		JComponent recwrap = PanelUtils.maxMargin(recipesPanel, 10, true, true, true, true);
 		recwrap.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.recipe.definition"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
-				Color.white));
+				Theme.current().getForegroundColor()));
 
 		JPanel northPanel = new JPanel(new AdaptiveGridLayout(-1, 1, 10, 2));
 		northPanel.setOpaque(false);
@@ -373,6 +374,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		case "Smithing" -> {
 			smithingRecipeMaker.cb1.setBlock(recipe.smithingInputStack);
 			smithingRecipeMaker.cb2.setBlock(recipe.smithingInputAdditionStack);
+			smithingRecipeMaker.cb4.setBlock(recipe.smithingInputTemplateStack);
 			smithingRecipeMaker.cb3.setBlock(recipe.smithingReturnStack);
 		}
 		case "Brewing" -> {
@@ -436,6 +438,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		case "Smithing" -> {
 			recipe.smithingInputStack = smithingRecipeMaker.cb1.getBlock();
 			recipe.smithingInputAdditionStack = smithingRecipeMaker.cb2.getBlock();
+			recipe.smithingInputTemplateStack = smithingRecipeMaker.cb4.getBlock();
 			recipe.smithingReturnStack = smithingRecipeMaker.cb3.getBlock();
 		}
 		case "Brewing" -> {

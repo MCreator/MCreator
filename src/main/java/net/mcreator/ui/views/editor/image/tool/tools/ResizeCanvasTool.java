@@ -28,6 +28,7 @@ import net.mcreator.ui.views.editor.image.tool.component.ColorSelector;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.MouseEvent;
 
 public class ResizeCanvasTool extends AbstractTool {
@@ -50,5 +51,9 @@ public class ResizeCanvasTool extends AbstractTool {
 	}
 
 	@Override public void mouseDragged(MouseEvent e) {
+	}
+
+	@Override public Cursor getCursor() {
+		return Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR);
 	}
 }

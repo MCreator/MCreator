@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.converter.ConverterUtils;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.EffectEntry;
 import net.mcreator.element.types.Potion;
@@ -48,67 +49,67 @@ public class PotionToEffectConverter implements IConverter {
 
 		String originalName = input.getModElement().getName();
 
-		if (workspace.getModElementByName(originalName + "PotionEffect") == null) {
-			try {
-				String displayName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
+		try {
+			String displayName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("name")
+					.getAsString();
+
+			if (displayName.isEmpty())
+				displayName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject().get("effectName")
 						.getAsString();
 
-				if (displayName.isEmpty())
-					displayName = jsonElementInput.getAsJsonObject().get("definition").getAsJsonObject()
-							.get("effectName").getAsString();
+			if (displayName.isEmpty())
+				displayName = originalName;
 
-				if (displayName.isEmpty())
-					displayName = originalName;
+			potion.potionName = displayName;
+			potion.splashName = "Splash " + displayName;
+			potion.lingeringName = "Lingering " + displayName;
+			potion.arrowName = "Arrow of " + displayName;
 
-				potion.potionName = displayName;
-				potion.splashName = "Splash " + displayName;
-				potion.lingeringName = "Lingering " + displayName;
-				potion.arrowName = "Arrow of " + displayName;
+			potion.effects = new ArrayList<>();
+			Potion.CustomEffectEntry effectEntry = new Potion.CustomEffectEntry();
+			effectEntry.effect = new EffectEntry(workspace, "CUSTOM:" + potion.getModElement().getName());
+			effectEntry.amplifier = 0;
+			effectEntry.duration = 3600;
+			effectEntry.ambient = false;
+			effectEntry.showParticles = true;
+			potion.effects.add(effectEntry);
 
-				potion.effects = new ArrayList<>();
-				Potion.CustomEffectEntry effectEntry = new Potion.CustomEffectEntry();
-				effectEntry.effect = new EffectEntry(workspace, "CUSTOM:" + potion.getModElement().getName());
-				effectEntry.amplifier = 0;
-				effectEntry.duration = 3600;
-				effectEntry.ambient = false;
-				effectEntry.showParticles = true;
-				potion.effects.add(effectEntry);
+			workspace.getModElementManager().storeModElementPicture(potion);
+			workspace.getGenerator().generateElement(potion);
+			workspace.getModElementManager().storeModElement(potion);
 
-				workspace.getModElementManager().storeModElementPicture(potion);
-				workspace.getGenerator().generateElement(potion);
-				workspace.getModElementManager().storeModElement(potion);
+			PotionEffect potionEffect = new Gson().fromJson(jsonElementInput.getAsJsonObject().get("definition"),
+					PotionEffect.class);
 
-				PotionEffect potionEffect = new Gson().fromJson(jsonElementInput.getAsJsonObject().get("definition"),
-						PotionEffect.class);
-
-				// Pre-update for FV31 - new texture types
-				try {
-					FileIO.copyFile(workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon), TextureType.OTHER),
-							workspace.getFolderManager()
-									.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon),
-											TextureType.EFFECT));
-				} catch (Exception e) {
-					LOG.warn("Failed to copy image for potion effect " + potionEffect.getModElement().getType() + ": "
-							+ e.getMessage());
-				}
-
-				potionEffect.setModElement(
-						new ModElement(workspace, originalName + "PotionEffect", ModElementType.POTIONEFFECT));
-
-				potionEffect.getModElement()
-						.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
-
-				// for backwards game saves compatibility
-				potionEffect.getModElement().setRegistryName(input.getModElement().getRegistryName());
-
-				workspace.getModElementManager().storeModElementPicture(potionEffect);
-				workspace.addModElement(potionEffect.getModElement());
-				workspace.getGenerator().generateElement(potionEffect);
-				workspace.getModElementManager().storeModElement(potionEffect);
+			// Pre-update for FV31 - new texture types
+			try {
+				FileIO.copyFile(workspace.getFolderManager()
+								.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon), TextureType.OTHER),
+						workspace.getFolderManager()
+								.getTextureFile(FilenameUtilsPatched.removeExtension(potionEffect.icon),
+										TextureType.EFFECT));
 			} catch (Exception e) {
-				LOG.warn("Failed to update potion to new format", e);
+				LOG.warn("Failed to copy image for potion effect " + potionEffect.getModElement().getType() + ": "
+						+ e.getMessage());
 			}
+
+			potionEffect.setModElement(new ModElement(workspace,
+					ConverterUtils.findSuitableModElementName(workspace, originalName + "PotionEffect"),
+					ModElementType.POTIONEFFECT));
+
+			potionEffect.getModElement().setParentFolder(
+					FolderElement.findFolderByPath(input.getModElement().getWorkspace(),
+							input.getModElement().getFolderPath()));
+
+			// for backwards game saves compatibility
+			potionEffect.getModElement().setRegistryName(input.getModElement().getRegistryName());
+
+			workspace.getModElementManager().storeModElementPicture(potionEffect);
+			workspace.addModElement(potionEffect.getModElement());
+			workspace.getGenerator().generateElement(potionEffect);
+			workspace.getModElementManager().storeModElement(potionEffect);
+		} catch (Exception e) {
+			LOG.warn("Failed to update potion to new format", e);
 		}
 
 		return potion;

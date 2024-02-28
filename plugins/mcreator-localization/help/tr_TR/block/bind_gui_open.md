@@ -1,0 +1,1 @@
+Bu parametre işaretlenirse, bu blok sağ tıklandığında bağlı GUI'yi açacaktır.

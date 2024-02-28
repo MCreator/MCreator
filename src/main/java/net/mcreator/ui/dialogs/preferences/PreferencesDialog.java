@@ -28,6 +28,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
@@ -64,8 +65,16 @@ public class PreferencesDialog extends MCreatorDialog {
 		setTitle(L10N.t("dialog.preferences.title_mcreator"));
 
 		sections.setBackground(getBackground());
-		sections.setFixedCellHeight(26);
-		sections.setBorder(new EmptyBorder(5, 10, 5, 0));
+		sections.setCellRenderer(new DefaultListCellRenderer() {
+			@Override
+			public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+					boolean cellHasFocus) {
+				JLabel retval = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected,
+						cellHasFocus);
+				retval.setBorder(new EmptyBorder(4, 10, 4, 10));
+				return retval;
+			}
+		});
 
 		preferences.setLayout(preferencesLayout);
 
@@ -80,7 +89,7 @@ public class PreferencesDialog extends MCreatorDialog {
 					}
 
 					@Override public void paint(Graphics g) {
-						g.setColor((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+						g.setColor(Theme.current().getAltBackgroundColor());
 						g.fillRect(0, 0, getSize().width, getSize().height);
 						super.paint(g);
 					}
@@ -88,12 +97,12 @@ public class PreferencesDialog extends MCreatorDialog {
 			}
 		});
 		spne.setContinuousLayout(true);
-		spne.setDividerLocation(0.3);
+		spne.setDividerLocation(150);
 		spne.setDividerSize(2);
-		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT")));
+		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Theme.current().getAltBackgroundColor()));
 		add("Center", spne);
 
-		sections.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+		sections.setBackground(Theme.current().getBackgroundColor());
 		ComponentUtils.deriveFont(sections, 13);
 
 		JButton ok = L10N.button("dialog.preferences.save");

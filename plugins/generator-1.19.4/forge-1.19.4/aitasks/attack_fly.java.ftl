@@ -17,6 +17,7 @@ this.goalSelector.addGoal(${cbi+1}, new Goal() {
 			double y = ${name}Entity.this.getY();
 			double z = ${name}Entity.this.getZ();
 			Entity entity = ${name}Entity.this;
+			Level world = ${name}Entity.this.level;
 			</#if>
 			return <#if hasProcedure(conditions[0])><@procedureOBJToConditionCode conditions[0]/><#else>true</#if>;
 		} else {
@@ -30,6 +31,7 @@ this.goalSelector.addGoal(${cbi+1}, new Goal() {
 		double y = ${name}Entity.this.getY();
 		double z = ${name}Entity.this.getZ();
 		Entity entity = ${name}Entity.this;
+		Level world = ${name}Entity.this.level;
 		</#if>
 		return <#if hasProcedure(conditions[1])><@procedureOBJToConditionCode conditions[1]/> &&</#if>
 			${name}Entity.this.getMoveControl().hasWanted() && ${name}Entity.this.getTarget() != null && ${name}Entity.this.getTarget().isAlive();

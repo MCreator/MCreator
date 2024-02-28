@@ -1,0 +1,1 @@
+Vink deze parameter aan om de vooruitgang in het Vooruitgang tabblad te verbergen totdat deze is voltooid.

@@ -37,6 +37,7 @@ import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
 import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.TextureHolder;
@@ -198,7 +199,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		guiBoundTo.addActionListener(e -> {
 			if (!isEditingMode()) {
-				String selected = (String) guiBoundTo.getSelectedItem();
+				String selected = guiBoundTo.getSelectedItem();
 				if (selected != null) {
 					ModElement element = mcreator.getWorkspace().getModElementByName(selected);
 					if (element != null) {
@@ -243,9 +244,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
 		rent.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.item.item_3d_model"), 0, 0, getFont().deriveFont(12.0f),
-				(Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				Theme.current().getForegroundColor()));
 		destal2.add("North", PanelUtils.totalCenterInPanel(PanelUtils.westAndCenterElement(
 				ComponentUtils.squareAndBorder(texture, L10N.t("elementgui.item.texture")), rent)));
 
@@ -404,9 +405,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		JPanel inventoryProperties = new JPanel(new GridLayout(3, 2, 35, 2));
 		inventoryProperties.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.common.page_inventory"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getForegroundColor()));
 		inventoryProperties.setOpaque(false);
 
 		inventoryProperties.add(
@@ -449,9 +450,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 		rangedPanel.setOpaque(false);
 		rangedPanel.add("Center", PanelUtils.centerAndSouthElement(rangedProperties, rangedTriggers));
 		rangedPanel.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), 1),
+				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.item.ranged_properties"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR")));
+				getFont(), Theme.current().getForegroundColor()));
 
 		advancedProperties.add("Center", PanelUtils.totalCenterInPanel(
 				PanelUtils.centerAndEastElement(PanelUtils.pullElementUp(inventoryProperties), rangedPanel, 10, 10)));
@@ -464,7 +465,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		name.enableRealtimeValidation();
 
 		addPage(L10N.t("elementgui.common.page_visual"), pane2);
-		addPage(L10N.t("elementgui.item.page_item_states"), cipp);
+		addPage(L10N.t("elementgui.item.page_item_states"), cipp, false);
 		addPage(L10N.t("elementgui.common.page_properties"), pane3);
 		addPage(L10N.t("elementgui.item.food_properties"), foodProperties);
 		addPage(L10N.t("elementgui.common.page_advanced_properties"), advancedProperties);
@@ -653,7 +654,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.enableMeleeDamage = enableMeleeDamage.isSelected();
 		item.inventorySize = (int) inventorySize.getValue();
 		item.inventoryStackSize = (int) inventoryStackSize.getValue();
-		item.guiBoundTo = (String) guiBoundTo.getSelectedItem();
+		item.guiBoundTo = guiBoundTo.getSelectedItem();
 		item.isFood = isFood.isSelected();
 		item.nutritionalValue = (int) nutritionalValue.getValue();
 		item.saturation = (double) saturation.getValue();

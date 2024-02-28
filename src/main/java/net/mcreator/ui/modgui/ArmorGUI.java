@@ -48,6 +48,7 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.ModelComboBoxRenderer;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.DataListComboBox;
 import net.mcreator.ui.minecraft.MCItemListField;
 import net.mcreator.ui.minecraft.SoundSelector;
@@ -166,7 +167,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private final SoundSelector equipSound = new SoundSelector(mcreator);
 
-	private final JSpinner maxDamage = new JSpinner(new SpinnerNumberModel(25, 0, 1024, 1));
+	private final JSpinner maxDamage = new JSpinner(new SpinnerNumberModel(15, 0, 1024, 1));
 	private final JSpinner damageValueBoots = new JSpinner(new SpinnerNumberModel(2, 0, 1024, 1));
 	private final JSpinner damageValueLeggings = new JSpinner(new SpinnerNumberModel(5, 0, 1024, 1));
 	private final JSpinner damageValueBody = new JSpinner(new SpinnerNumberModel(6, 0, 1024, 1));
@@ -371,7 +372,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JComponent helText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureHelmet, 0, 0),
 				enableHelmet);
 		helText.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
+				BorderFactory.createLineBorder(Theme.current().getAltForegroundColor()),
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		helText.setPreferredSize(new Dimension(145, 110));
 
@@ -384,7 +385,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JComponent bodText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureBody, 0, 0),
 				enableBody);
 		bodText.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
+				BorderFactory.createLineBorder(Theme.current().getAltForegroundColor()),
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		bodText.setPreferredSize(new Dimension(145, 110));
 
@@ -423,7 +424,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JComponent legText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureLeggings, 0, 0),
 				enableLeggings);
 		legText.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
+				BorderFactory.createLineBorder(Theme.current().getAltForegroundColor()),
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		legText.setPreferredSize(new Dimension(145, 110));
 
@@ -463,7 +464,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		JComponent bootText = PanelUtils.centerAndSouthElement(PanelUtils.centerInPanelPadding(textureBoots, 0, 0),
 				enableBoots);
 		bootText.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.GRAY_COLOR")),
+				BorderFactory.createLineBorder(Theme.current().getAltForegroundColor()),
 				BorderFactory.createEmptyBorder(10, 0, 0, 0)));
 		bootText.setPreferredSize(new Dimension(145, 110));
 

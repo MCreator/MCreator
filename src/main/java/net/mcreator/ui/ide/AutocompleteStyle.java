@@ -20,6 +20,7 @@ package net.mcreator.ui.ide;
 
 import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.renderer.MinecraftCompletionCellRenderer;
+import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.fife.ui.autocomplete.AutoCompletion;
@@ -51,7 +52,7 @@ class AutocompleteStyle {
 				JList<?> list = (JList<?>) field2.get(autoCompletePopupWindowRaw);
 				list.setForeground(new Color(0xD9D9D9));
 				list.setSelectionForeground(Color.white);
-				list.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				list.setBackground(Theme.current().getBackgroundColor());
 
 				JWindow autoCompletePopupWindow = (JWindow) field.get(ac);
 				autoCompletePopupWindow.setOpacity(0.93f);
@@ -61,21 +62,18 @@ class AutocompleteStyle {
 					if (com instanceof JComponent)
 						((JComponent) com).setBorder(null);
 					if (com instanceof JScrollPane pane) {
-						pane.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-						pane.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0,
-								(Color) UIManager.get("MCreatorLAF.DARK_ACCENT")));
-						pane.getVerticalScrollBar()
-								.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-										(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"),
-										pane.getVerticalScrollBar()));
+						pane.setBackground(Theme.current().getBackgroundColor());
+						pane.setBorder(
+								BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getBackgroundColor()));
+						pane.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+								Theme.current().getAltBackgroundColor(), pane.getVerticalScrollBar()));
 						pane.getHorizontalScrollBar()
-								.setUI(new SlickDarkScrollBarUI((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-										(Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"),
-										pane.getHorizontalScrollBar()));
+								.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
+										Theme.current().getAltBackgroundColor(), pane.getHorizontalScrollBar()));
 						pane.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 						pane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 						JPanel dummyCorner = new JPanel();
-						dummyCorner.setBackground((Color) UIManager.get("MCreatorLAF.MAIN_TINT"));
+						dummyCorner.setBackground(Theme.current().getInterfaceAccentColor());
 						pane.setCorner(JScrollPane.LOWER_RIGHT_CORNER, dummyCorner);
 					}
 				}
@@ -93,7 +91,7 @@ class AutocompleteStyle {
 				descWindow.setOpacity(0.85f);
 				descWindow.setSize(390, 220);
 				((JPanel) descWindow.getContentPane()).setBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
+						BorderFactory.createLineBorder(Theme.current().getSecondAltBackgroundColor()));
 
 			} catch (ClassNotFoundException | SecurityException | IllegalArgumentException | IllegalAccessException |
 					 NoSuchFieldException e1) {

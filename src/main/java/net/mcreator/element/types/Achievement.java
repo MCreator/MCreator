@@ -36,6 +36,7 @@ import net.mcreator.workspace.references.TextureReference;
 
 import javax.annotation.Nullable;
 import java.awt.image.BufferedImage;
+import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("unused") public class Achievement extends GeneratableElement {
@@ -63,8 +64,15 @@ import java.util.List;
 
 	@BlocklyXML("jsontriggers") public String triggerxml;
 
+	private Achievement() {
+		this(null);
+	}
+
 	public Achievement(ModElement element) {
 		super(element);
+
+		rewardLoot = new ArrayList<>();
+		rewardRecipes = new ArrayList<>();
 	}
 
 	public boolean hasRewards() {
@@ -94,7 +102,8 @@ import java.util.List;
 
 			String triggerCode = blocklyToJSONTrigger.getGeneratedCode();
 			if (triggerCode.isEmpty())
-				triggerCode = "{\"trigger\": \"minecraft:impossible\"}";
+				triggerCode = "\"%s\": {\"trigger\": \"minecraft:impossible\"}".formatted(
+						getModElement().getRegistryName());
 
 			additionalData.put("triggercode", triggerCode);
 			additionalData.put("triggerblocks", blocklyToJSONTrigger.getUsedBlocks());

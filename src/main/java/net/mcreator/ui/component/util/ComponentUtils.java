@@ -19,6 +19,7 @@
 package net.mcreator.ui.component.util;
 
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
@@ -43,38 +44,36 @@ public class ComponentUtils {
 	public static void normalizeButton2(JButton button) {
 		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 1),
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
 						BorderFactory.createLineBorder(new Color(30, 30, 30), 4))));
-		button.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+		button.setBackground(Theme.current().getAltBackgroundColor());
 	}
 
 	public static void normalizeButton2(JToggleButton button) {
 		Border off = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 1),
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
 						BorderFactory.createLineBorder(new Color(30, 30, 30), 4)));
 		Border on = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 1),
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1),
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 4)));
+						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
+						BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 4)));
 		button.setBorder(button.isSelected() ? on : off);
-		button.setBackground(
-				button.isSelected() ? (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") : new Color(30, 30, 30));
+		button.setBackground(button.isSelected() ? Theme.current().getAltBackgroundColor() : new Color(30, 30, 30));
 		button.addChangeListener(e -> {
 			button.setBorder(button.isSelected() ? on : off);
-			button.setBackground(
-					button.isSelected() ? (Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT") : new Color(30, 30, 30));
+			button.setBackground(button.isSelected() ? Theme.current().getAltBackgroundColor() : new Color(30, 30, 30));
 		});
 	}
 
 	public static void normalizeButton4(AbstractButton button) {
 		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0, 0, 0, 0), 1),
 				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"), 1),
+						BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
 						BorderFactory.createMatteBorder(1, 3, 1, 3, new Color(0, 0, 0, 0)))));
 		button.setBackground(new Color(0, 0, 0, 0));
 		button.setOpaque(false);
-		button.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
+		button.setForeground(Theme.current().getForegroundColor());
 		deriveFont(button, 11);
 	}
 
@@ -115,7 +114,7 @@ public class ComponentUtils {
 	}
 
 	public static JPanel squareAndBorder(Component gor, String text) {
-		return squareAndBorder(gor, (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"), text);
+		return squareAndBorder(gor, Theme.current().getForegroundColor(), text);
 	}
 
 }

@@ -23,7 +23,7 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.integration.TestSetup;
+import net.mcreator.integration.IntegrationTestSetup;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
@@ -34,6 +34,7 @@ import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.dialogs.tools.*;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.NewWorkspaceDialog;
+import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.dialogs.wysiwyg.*;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.minecraft.states.JStateLabel;
@@ -44,12 +45,9 @@ import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.settings.WorkspaceSettings;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInfo;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,26 +57,16 @@ import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.fail;
 
-public class DialogsTest {
-
-	private static Logger LOG;
+@ExtendWith(IntegrationTestSetup.class) public class DialogsTest {
 
 	private static MCreator mcreator;
 
 	@BeforeAll public static void initTest() throws IOException {
-		System.setProperty("log_directory", System.getProperty("java.io.tmpdir"));
-		LOG = LogManager.getLogger("Dialogs Test");
-
-		// disable native file choosers for tests due to threading issues
-		FileDialogs.DISABLE_NATIVE_DIALOGS = true;
-
-		TestSetup.setupIntegrationTestEnvironment();
-
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
@@ -93,16 +81,17 @@ public class DialogsTest {
 		mcreator = new MCreator(null, workspace);
 	}
 
-	@BeforeEach void printName(TestInfo testInfo) {
-		LOG.info("Running " + testInfo.getDisplayName());
-	}
-
 	@Test public void testWorkspaceSelector() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new WorkspaceSelector(null, f -> {}));
 	}
 
 	@Test public void testNewWorkspaceDialog() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> new NewWorkspaceDialog(mcreator));
+	}
+
+	@Test public void testNewWorkspaceSettingsDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator,
+				() -> WorkspaceDialogs.workspaceSettings(mcreator, mcreator.getWorkspace()));
 	}
 
 	@Test public void testGeneratorSelectorDialog() throws Throwable {
@@ -154,10 +143,13 @@ public class DialogsTest {
 		}
 	}
 
+	@Test public void testAddCommonTagsDialog() throws Throwable {
+		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> AddCommonTagsDialog.open(mcreator));
+	}
+
 	@Test public void testToolsDialogs() throws Throwable {
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> ArmorPackMakerTool.getAction(mcreator.actionRegistry).doAction());
-		UITestUtil.waitUntilWindowIsOpen(mcreator, () -> InjectTagsTool.getAction(mcreator.actionRegistry).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,
 				() -> MaterialPackMakerTool.getAction(mcreator.actionRegistry).doAction());
 		UITestUtil.waitUntilWindowIsOpen(mcreator,

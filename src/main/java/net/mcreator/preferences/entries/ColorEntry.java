@@ -46,7 +46,7 @@ public class ColorEntry extends PreferencesEntry<Color> {
 	@Override public JComponent getComponent(Window parent, Consumer<EventObject> fct) {
 		JColor box = new JColor(parent, allowNullColor, allowTransparency);
 		box.setColor(value);
-		box.setColorSelectedListener(fct::accept);
+		box.addColorSelectedListener(fct::accept);
 		return box;
 	}
 

@@ -19,6 +19,7 @@
 package net.mcreator.ui;
 
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -31,7 +32,7 @@ public class MainToolBar extends JToolBar {
 	private final JToolBar pluginToolbarRight = new JToolBar();
 
 	MainToolBar(MCreator mcreator) {
-		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, (Color) UIManager.get("MCreatorLAF.BLACK_ACCENT")));
+		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getSecondAltBackgroundColor()));
 		setFloatable(false);
 
 		pluginToolbarLeft.setBorder(BorderFactory.createEmptyBorder());
@@ -76,7 +77,6 @@ public class MainToolBar extends JToolBar {
 
 		addSeparator(new Dimension(10, 4));
 		add(mcreator.actionRegistry.setCreativeTabItemOrder);
-		add(mcreator.actionRegistry.injectDefaultTags);
 
 		addSeparator(new Dimension(10, 4));
 
@@ -129,12 +129,12 @@ public class MainToolBar extends JToolBar {
 		button.addMouseListener(new MouseAdapter() {
 			@Override public void mouseEntered(MouseEvent mouseEvent) {
 				super.mouseEntered(mouseEvent);
-				button.setBackground((Color) UIManager.get("MCreatorLAF.LIGHT_ACCENT"));
+				button.setBackground(Theme.current().getAltBackgroundColor());
 			}
 
 			@Override public void mouseExited(MouseEvent mouseEvent) {
 				super.mouseExited(mouseEvent);
-				button.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
+				button.setBackground(Theme.current().getBackgroundColor());
 			}
 		});
 		return button;

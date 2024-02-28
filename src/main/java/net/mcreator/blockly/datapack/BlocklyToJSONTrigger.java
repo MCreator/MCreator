@@ -34,23 +34,19 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathConstants;
-import javax.xml.xpath.XPathFactory;
 import java.io.StringReader;
-import java.util.Collections;
+import java.text.ParseException;
 import java.util.List;
 
 public class BlocklyToJSONTrigger extends BlocklyToCode {
 
 	private static final Logger LOG = LogManager.getLogger("Blockly2JSONTrigger");
 
-	private boolean hasTrigger;
+	private boolean hasTrigger = false;
 
 	public BlocklyToJSONTrigger(Workspace workspace, ModElement parent, String sourceXML,
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
@@ -67,39 +63,25 @@ public class BlocklyToJSONTrigger extends BlocklyToCode {
 				Document doc = dBuilder.parse(new InputSource(new StringReader(sourceXML)));
 				doc.getDocumentElement().normalize();
 
-				XPathFactory xpathFactory = XPathFactory.newInstance();
-				XPath xpath = xpathFactory.newXPath();
+				Element start_block = BlocklyBlockUtil.getStartBlock(doc, editorType.startBlockName());
 
-				NodeList blocks = (NodeList) xpath.evaluate("block", doc.getDocumentElement(), XPathConstants.NODESET);
+				// if there is no start block, we return empty string
+				if (start_block == null)
+					throw new ParseException("Could not find start block!", -1);
 
-				hasTrigger = false;
-
-				Element start_block = null;
-				for (int i = 0; i < blocks.getLength(); i++) {
-					Element start_block_candidate = (Element) blocks.item(i);
-
-					List<Element> children = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block_candidate);
-					if (children.size() == 1) {
-						if (children.get(0).getAttribute("type").equals(editorType.startBlockName())) {
-							start_block = start_block_candidate;
-						}
-					}
-				}
-
-				if (start_block != null) {
-					String type = start_block.getAttribute("type");
-					if (!type.equals(editorType.startBlockName())) {
-						hasTrigger = true;
-						processBlockProcedure(Collections.singletonList(start_block));
-					}
-				}
+				List<Element> base_blocks = BlocklyBlockUtil.getBlockProcedureStartingWithNext(start_block);
+				hasTrigger = !base_blocks.isEmpty();
+				processBlockProcedure(base_blocks);
 			} catch (TemplateGeneratorException e) {
 				throw e;
 			} catch (Exception e) {
-				LOG.error(e.getMessage(), e);
+				LOG.error("Failed to parse Blockly XML", e);
 				addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 						L10N.t("blockly.errors.exception_compiling", e.getMessage())));
 			}
+		} else {
+			addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR, L10N.t("blockly.errors.editor_not_ready")));
 		}
 	}
 

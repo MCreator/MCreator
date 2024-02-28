@@ -18,6 +18,8 @@
 
 package net.mcreator.ui.laf;
 
+import net.mcreator.ui.laf.themes.Theme;
+
 import javax.swing.*;
 import javax.swing.plaf.ComponentUI;
 import javax.swing.plaf.basic.BasicArrowButton;
@@ -45,12 +47,12 @@ public class DarkSpinnerUI extends BasicSpinnerUI {
 	}
 
 	private Component createArrowButton(int var1) {
-		BasicArrowButton var2 = new BasicArrowButton(var1, (Color) UIManager.get("MCreatorLAF.DARK_ACCENT"),
-				(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), (Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"),
-				(Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		var2.setBackground((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"));
-		var2.setForeground((Color) UIManager.get("MCreatorLAF.BRIGHT_COLOR"));
-		var2.setBorder(BorderFactory.createLineBorder((Color) UIManager.get("MCreatorLAF.DARK_ACCENT"), 1));
+		BasicArrowButton var2 = new BasicArrowButton(var1, Theme.current().getBackgroundColor(),
+				Theme.current().getBackgroundColor(), Theme.current().getForegroundColor(),
+				Theme.current().getBackgroundColor());
+		var2.setBackground(Theme.current().getBackgroundColor());
+		var2.setForeground(Theme.current().getForegroundColor());
+		var2.setBorder(BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1));
 		var2.setInheritsPopupMenu(true);
 		return var2;
 	}
