@@ -1,9 +1,6 @@
-When enabled, block will not define drops in code (drops defined in block mod element), instead, block drops need to be
-defined with a loot table.
+When enabled, the block will not generate a loot table automatically.
+Instead, the user will have to define block drops manually.
 
 Create loot table mod element with registry name `blocks/${registryname}`, namespace _mod_, and type _Block_.
 
-If this parameter is not checked, loot tables will still override block drops, but block drop defined in block mod
-element will be used when loot table will not return any entry.
-
-When this parameter is check, drops of this block are entirelly controlled by the loot tables.
+Loot tables can still override block drops, even if this option is not enabled.
