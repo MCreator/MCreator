@@ -48,6 +48,7 @@ base_templates:
   - template: modbase/mod.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
   - template: modbase/mods.toml.ftl
+    usercodeComment: "#"
     writer: file
     name: "@RESROOT/META-INF/mods.toml"
   - template: pack.mcmeta.ftl # loaded from datapack generator

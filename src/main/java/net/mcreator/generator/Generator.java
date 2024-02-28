@@ -586,7 +586,13 @@ public class Generator implements IGenerator, Closeable {
 			} else if (generatorFile.writer() == GeneratorFile.Writer.JSON) {
 				JSONWriter.writeJSONToFile(generatorFile.contents(), generatorFile.getFile());
 			} else if (generatorFile.writer() == GeneratorFile.Writer.FILE) {
-				FileIO.writeStringToFile(generatorFile.contents(), generatorFile.getFile());
+				String usercodeComment = generatorFile.source().getUsercodeComment();
+				if (usercodeComment != null)
+					FileIO.writeStringToFile(
+							UserCodeProcessor.processUserCode(generatorFile.getFile(), generatorFile.contents(),
+									usercodeComment), generatorFile.getFile());
+				else
+					FileIO.writeStringToFile(generatorFile.contents(), generatorFile.getFile());
 			}
 		}
 
