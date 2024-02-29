@@ -1,0 +1,1 @@
+Biyomunuzda Yağmacı Karakolları olması için bu ayarı seçin.

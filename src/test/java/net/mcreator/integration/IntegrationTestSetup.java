@@ -37,10 +37,7 @@ import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
-import net.mcreator.ui.laf.LafUtil;
-import net.mcreator.ui.laf.MCreatorTheme;
-import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.laf.themes.ThemeLoader;
+import net.mcreator.ui.laf.themes.ThemeManager;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.util.TerribleModuleHacks;
 import net.mcreator.util.UTF8Forcer;
@@ -50,8 +47,6 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
 
-import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.util.Properties;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -126,28 +121,26 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		// We begin by loading plugins, so every image can be changed
 		PluginLoader.initInstance();
 
-		// We load UI themes now as theme plugins are loaded at this point
-		ThemeLoader.initUIThemes();
-		MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
+		// We load UI theme now as theme plugins are loaded at this point
+		ThemeManager.loadThemes();
 
-		UIManager.setLookAndFeel(new MetalLookAndFeel());
-		LafUtil.applyDefaultHTMLStyles();
-		LafUtil.fixMacOSActions();
+		UIRES.preloadImages();
 
-		DataListLoader.preloadCache();
+		ThemeManager.applySelectedTheme();
 
 		// preload help entries cache
 		HelpLoader.preloadCache();
+
+		BlockItemIcons.init();
+		DataListLoader.preloadCache();
 
 		// load translations after plugins are loaded
 		L10N.initTranslations();
 		L10N.enterTestingMode();
 
-		// some mod element guis use icons
-		TiledImageCache.loadAndTileImages();
-
 		// may be needed to generate icons for MCItems (e.g. generation of potion icons)
 		ImageMakerTexturesCache.init();
+		ArmorMakerTexturesCache.init();
 
 		// load apis defined by plugins after plugins are loaded
 		ModAPIManager.initAPIs();

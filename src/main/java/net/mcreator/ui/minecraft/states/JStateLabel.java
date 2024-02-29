@@ -45,7 +45,7 @@ public class JStateLabel extends JPanel {
 	private NumberMatchType numberMatchType = NumberMatchType.EQUAL;
 
 	private final JTextField label = new JTextField();
-	private final TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit.gif"));
+	private final TechnicalButton edit = new TechnicalButton(UIRES.get("16px.edit"));
 
 	public JStateLabel(MCreator mcreator, Supplier<List<PropertyData<?>>> properties,
 			Supplier<Stream<JStateLabel>> otherStates) {

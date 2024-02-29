@@ -37,7 +37,7 @@ public abstract class JEntriesList extends JPanel {
 
 	private final List<Consumer<JComponent>> entryListeners = new ArrayList<>();
 
-	protected final TechnicalButton add = new TechnicalButton(UIRES.get("16px.add.gif"));
+	protected final TechnicalButton add = new TechnicalButton(UIRES.get("16px.add"));
 
 	public JEntriesList(MCreator mcreator, LayoutManager layout, IHelpContext gui) {
 		super(layout);

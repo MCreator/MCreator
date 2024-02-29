@@ -121,7 +121,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 								menuItem.setIcon(new ImageIcon(ImageUtils.resizeAA(
 										ModElementManager.getModElementIcon((ModElement) file).getImage(), 16)));
 							else if (file instanceof FolderElement)
-								menuItem.setIcon(UIRES.get("laf.directory.gif"));
+								menuItem.setIcon(UIRES.get("laf.directory"));
 
 							menuItem.addActionListener(e -> {
 								if (selectionListener != null)

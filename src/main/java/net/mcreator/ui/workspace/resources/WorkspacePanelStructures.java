@@ -38,9 +38,9 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 	WorkspacePanelStructures(WorkspacePanel workspacePanel) {
 		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, String::toString), new Render());
 
-		addToolBarButton("action.workspace.resources.import_structure", UIRES.get("16px.open.gif"),
+		addToolBarButton("action.workspace.resources.import_structure", UIRES.get("16px.open"),
 				e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());
-		addToolBarButton("action.workspace.resources.import_structure_from_minecraft", UIRES.get("16px.open.gif"),
+		addToolBarButton("action.workspace.resources.import_structure_from_minecraft", UIRES.get("16px.open"),
 				e -> workspacePanel.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
 		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			if (!elementList.isSelectionEmpty()) {
@@ -57,7 +57,7 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 						L10N.t("dialog.search_usages.type.resource.structure"), refs);
 			}
 		});
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"), e -> deleteCurrentlySelected());
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> deleteCurrentlySelected());
 	}
 
 	@Override void deleteCurrentlySelected() {
@@ -101,7 +101,7 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 					isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getBackgroundColor());
 			setText(" " + ma);
 			ComponentUtils.deriveFont(this, 17);
-			setIcon(UIRES.get("16px.ext.gif"));
+			setIcon(UIRES.get("16px.ext"));
 			setBorder(BorderFactory.createEmptyBorder(5, 13, 5, 0));
 			return this;
 		}

@@ -28,6 +28,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -42,7 +43,7 @@ public class BlockItemIcons {
 				.parallelStream().collect(Collectors.toMap(
 						resource -> FilenameUtilsPatched.removeExtension(FilenameUtilsPatched.getName(resource)),
 						resource -> new ImageIcon(
-								Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(resource)))));
+								Objects.requireNonNull(PluginLoader.INSTANCE.getResource(resource)))));
 		ImageIO.setUseCache(true);
 		CACHE.putAll(tmp);
 	}

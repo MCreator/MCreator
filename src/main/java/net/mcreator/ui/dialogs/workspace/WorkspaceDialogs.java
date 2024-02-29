@@ -152,12 +152,11 @@ public class WorkspaceDialogs {
 		JComboBox<String> modPicture = new JComboBox<>();
 		JCheckBox lockBaseModFiles = L10N.checkbox("dialog.workspace_settings.lock_base_files");
 		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
-		JCheckBox disableForgeVersionCheck = new JCheckBox();
 		JTextField updateJSON = new JTextField(24);
 		JStringListField requiredMods, dependencies, dependants;
 
 		JComboBox<String> license = new JComboBox<>(
-				new String[] { "Academic Free License v3.0", "Ace3 Style BSD", "All Rights Reserved",
+				new String[] { "Not specified", "Academic Free License v3.0", "Ace3 Style BSD", "All Rights Reserved",
 						"Apache License version 2.0", "Apple Public Source License version 2.0 (APSL)",
 						"BSD License Common Development and Distribution License (CDDL)",
 						"Creative Commons Attribution-NonCommercial 3.0",
@@ -204,7 +203,6 @@ public class WorkspaceDialogs {
 			if (workspace != null) {
 				JTabbedPane master = new JTabbedPane();
 				master.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-				master.setForeground(Color.white);
 				master.setUI(new BasicTabbedPaneUI() {
 					@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
 					}
@@ -349,8 +347,6 @@ public class WorkspaceDialogs {
 			websiteURL.setText(MCreatorApplication.SERVER_DOMAIN);
 			author.setText(System.getProperty("user.name") + ", MCreator");
 			version.setText("1.0.0");
-
-			disableForgeVersionCheck.setSelected(true);
 
 			generator.setUI(new BasicComboBoxUI() {
 				@Override protected JButton createArrowButton() {
@@ -522,14 +518,6 @@ public class WorkspaceDialogs {
 				_external_apis.add(apiSettings);
 			}
 
-			JComponent forgeVersionCheckPan = PanelUtils.westAndEastElement(
-					L10N.label("dialog.workspace_settings.section.version_check"), disableForgeVersionCheck);
-			forgeVersionCheckPan.setBorder(
-					BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
-							L10N.t("dialog.workspace_settings.version_check")));
-			_advancedSettings.add(forgeVersionCheckPan);
-			_advancedSettings.add(new JEmptyBox(5, 5));
-
 			JPanel advancedSettings = new JPanel(new GridLayout(3, 2, 5, 2));
 			advancedSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 					L10N.t("dialog.workspace_settings.section.advanced")));
@@ -571,7 +559,6 @@ public class WorkspaceDialogs {
 						workspace.getWorkspaceSettings().getModPicture());
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
 				lockBaseModFiles.setSelected(workspace.getWorkspaceSettings().isLockBaseModFiles());
-				disableForgeVersionCheck.setSelected(workspace.getWorkspaceSettings().isDisableForgeVersionCheck());
 				updateJSON.setText(workspace.getWorkspaceSettings().getUpdateURL());
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
 				packageName.setText(workspace.getWorkspaceSettings().getModElementsPackage());
@@ -597,7 +584,7 @@ public class WorkspaceDialogs {
 			retVal.setDescription(description.getText().isEmpty() ? null : description.getText());
 			retVal.setAuthor(author.getText().isEmpty() ? null : author.getText());
 			retVal.setLicense(license.getEditor().getItem().toString().isEmpty() ?
-					"Not specified" :
+					null :
 					license.getEditor().getItem().toString());
 			retVal.setWebsiteURL(websiteURL.getText().isEmpty() ? null : websiteURL.getText());
 			retVal.setCredits(credits.getText().isEmpty() ? null : credits.getText());
@@ -608,7 +595,6 @@ public class WorkspaceDialogs {
 			retVal.setModElementsPackage(packageName.getText().isEmpty() ? null : packageName.getText());
 			retVal.setServerSideOnly(serverSideOnly.isSelected());
 			retVal.setLockBaseModFiles(lockBaseModFiles.isSelected());
-			retVal.setDisableForgeVersionCheck(disableForgeVersionCheck.isSelected());
 			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());
 			retVal.setCurrentGenerator(
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());

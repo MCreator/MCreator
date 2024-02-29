@@ -22,6 +22,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import net.mcreator.Launcher;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
@@ -254,9 +255,9 @@ public class PluginLoader extends URLClassLoader {
 					plugin.file = pluginFile;
 					return validatePlugin(plugin);
 				} catch (Exception e) {
+					LOG.error("Failed to load plugin from " + pluginFile, e);
 					failedPlugins.add(new PluginLoadFailure(FilenameUtils.getBaseName(pluginFile.getName()), pluginFile,
 							"IO error: " + e.getMessage()));
-					LOG.error("Failed to load plugin from " + pluginFile, e);
 				}
 			} else if (!builtin) { // we don't load builtin plugins recursively
 				File[] pluginFiles = pluginFile.listFiles();
@@ -273,9 +274,9 @@ public class PluginLoader extends URLClassLoader {
 				plugin.file = pluginFile;
 				return validatePlugin(plugin);
 			} catch (Exception e) {
+				LOG.error("Failed to load plugin from " + pluginFile, e);
 				failedPlugins.add(new PluginLoadFailure(FilenameUtils.getBaseName(pluginFile.getName()), pluginFile,
 						"IO error: " + e.getMessage()));
-				LOG.error("Failed to load plugin from " + pluginFile, e);
 			}
 		}
 		return null;
@@ -283,16 +284,17 @@ public class PluginLoader extends URLClassLoader {
 
 	@Nullable private Plugin validatePlugin(Plugin plugin) {
 		if (!plugin.isBuiltin() && plugin.getSupportedVersions() == null) {
+			LOG.warn("Plugin " + plugin.getID() + " does not specify supportedversions.");
 			failedPlugins.add(new PluginLoadFailure(plugin, "missing supportedversions"));
-			LOG.warn("Plugin " + plugin.getID() + " does not specify supportedversions. Skipping this plugin.");
 			return null;
 		}
 
 		if (!plugin.isCompatible()) {
-			failedPlugins.add(new PluginLoadFailure(plugin, "incompatible version"));
-			LOG.warn("Plugin " + plugin.getID()
-					+ " is not compatible with this MCreator version! Skipping this plugin.");
-			return null;
+			LOG.warn("Plugin " + plugin.getID() + " is not compatible with this MCreator version!");
+			if (!Launcher.version.isDevelopment()) { // We allow loading of incompatible plugins in dev
+				failedPlugins.add(new PluginLoadFailure(plugin, "incompatible version"));
+				return null;
+			}
 		}
 
 		return plugin;

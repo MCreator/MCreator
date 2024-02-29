@@ -43,10 +43,7 @@ import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.preferences.PreferencesDialog;
 import net.mcreator.ui.help.HelpLoader;
 import net.mcreator.ui.init.*;
-import net.mcreator.ui.laf.LafUtil;
-import net.mcreator.ui.laf.MCreatorTheme;
-import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.laf.themes.ThemeLoader;
+import net.mcreator.ui.laf.themes.ThemeManager;
 import net.mcreator.ui.notifications.StartupNotifications;
 import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
@@ -60,7 +57,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -103,21 +99,15 @@ public final class MCreatorApplication {
 
 			splashScreen.setProgress(10, "Loading UI Themes");
 
-			// We load UI themes now as theme plugins are loaded at this point
-			ThemeLoader.initUIThemes();
-			MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
-
-			try {
-				UIManager.setLookAndFeel(new MetalLookAndFeel());
-				LafUtil.applyDefaultHTMLStyles();
-				LafUtil.fixMacOSActions();
-			} catch (UnsupportedLookAndFeelException e) {
-				LOG.error("Failed to set look and feel: " + e.getMessage());
-			}
+			// We load UI theme now as theme plugins are loaded at this point
+			ThemeManager.loadThemes();
 
 			splashScreen.setProgress(15, "Loading UI core");
 
 			UIRES.preloadImages();
+
+			// Now that UIRES is loaded, we can load the theme (theme can use UIRES icons)
+			ThemeManager.applySelectedTheme();
 
 			taskbarIntegration = new TaskbarIntegration();
 
@@ -141,7 +131,7 @@ public final class MCreatorApplication {
 			ImageMakerTexturesCache.init();
 			ArmorMakerTexturesCache.init();
 
-			splashScreen.setProgress(55, "Loading plugin templates");
+			splashScreen.setProgress(55, "Loading plugin data");
 
 			// load apis defined by plugins after plugins are loaded
 			ModAPIManager.initAPIs();
@@ -153,6 +143,8 @@ public final class MCreatorApplication {
 			BlocklyJavaScriptsLoader.init();
 			BlocklyToolboxesLoader.init();
 
+			splashScreen.setProgress(60, "Processing plugin data");
+
 			// load blockly blocks after plugins are loaded
 			BlocklyLoader.init();
 
@@ -161,9 +153,6 @@ public final class MCreatorApplication {
 
 			// register mod element types
 			ModElementTypeLoader.loadModElements();
-
-			splashScreen.setProgress(60, "Preloading resources");
-			TiledImageCache.loadAndTileImages();
 
 			splashScreen.setProgress(70, "Loading generators");
 

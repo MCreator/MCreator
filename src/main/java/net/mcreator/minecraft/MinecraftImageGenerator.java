@@ -24,7 +24,6 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.MItemBlock;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
@@ -197,16 +196,15 @@ public class MinecraftImageGenerator {
 	}
 
 	public static ImageIcon generateFluidBucketIcon(ImageIcon fluid) {
-		ImageIcon bucket = TiledImageCache.bucket;
-		BufferedImage bucketMask = ImageUtils.toBufferedImage(TiledImageCache.bucketMask.getImage());
+		BufferedImage bucketMask = ImageUtils.toBufferedImage(UIRES.get("mod_preview_bases.bucket_mask").getImage());
 		// The fluid image is resized to avoid issues with animated textures
 		BufferedImage fluidOverlay = ImageUtils.resizeAndCrop(fluid.getImage(), 32);
-		return ImageUtils.drawOver(bucket, new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
+		return ImageUtils.drawOver(UIRES.get("mod_preview_bases.bucket_base"), new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
 	}
 
 	public static ImageIcon generateSpawnEggIcon(Color baseColor, Color dotColor) {
-		ImageIcon base = ImageUtils.colorize(TiledImageCache.spawnEggBase, baseColor, false);
-		ImageIcon dots = ImageUtils.colorize(TiledImageCache.spawnEggDots, dotColor, true);
+		ImageIcon base = ImageUtils.colorize(UIRES.get("mod_preview_bases.spawnegg_base"), baseColor, false);
+		ImageIcon dots = ImageUtils.colorize(UIRES.get("mod_preview_bases.spawnegg_dots"), dotColor, true);
 		return ImageUtils.drawOver(base, dots);
 	}
 
@@ -1111,10 +1109,10 @@ public class MinecraftImageGenerator {
 
 			g2d.drawImage(ImageUtils.resize(ImageUtils.colorize(ImageMakerTexturesCache.CACHE.get(
 							new ResourcePointer("templates/textures/texturemaker/potion_fluid_bright.png")), color, true)
-					.getImage(), 32), null, 0, 0);
+					.getImage(), 32), 0, 0, null);
 			g2d.drawImage(ImageUtils.resize(ImageMakerTexturesCache.CACHE.get(
 							new ResourcePointer("templates/textures/texturemaker/potion_bottle_overlay.png")).getImage(), 32),
-					null, 0, 0);
+					0, 0, null);
 			g2d.dispose();
 
 			return out;
@@ -1144,7 +1142,7 @@ public class MinecraftImageGenerator {
 			g2d.drawLine(3, 2, 24, 2);
 			g2d.drawLine(3, 25, 24, 25);
 
-			g2d.drawImage(ImageUtils.resize(icon, 20), null, 4, 4);
+			g2d.drawImage(ImageUtils.resize(icon, 20), 4, 4, null);
 
 			g2d.dispose();
 
@@ -1421,7 +1419,7 @@ public class MinecraftImageGenerator {
 			}
 
 			if ((maxdim > 0 & width > 0 & height > 0) & (tex != null || rantex.size() > 2)) {
-				BufferedImage tex1, tex2, tex3;
+				Image tex1, tex2, tex3;
 				int drawWidth1 = (int) ((width / maxdim) * 7), drawHeight1 = (int) ((height / maxdim) * 7);
 				if (tex != null) {
 					tex1 = ImageUtils.resizeAA(tex, drawWidth1, drawHeight1);
@@ -1447,18 +1445,6 @@ public class MinecraftImageGenerator {
 
 			graphics2D.dispose();
 			return icon;
-		}
-
-		/**
-		 * This method generates tag images.
-		 *
-		 * @param type Tag type string.
-		 * @return Returns generated image of the appropriate colour.
-		 */
-		public static BufferedImage generateTagPreviewPicture(String type) {
-			return ImageUtils.toBufferedImage(
-					ImageUtils.colorize(UIRES.get("mod_preview_bases.tag"), TagType.fromLegacyName(type).getColor(),
-							false).getImage());
 		}
 
 		/**
