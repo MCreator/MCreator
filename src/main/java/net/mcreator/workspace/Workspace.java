@@ -103,8 +103,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 * @return UNMODIFIABLE! collection of variable elements
 	 */
 	public Collection<VariableElement> getVariableElements() {
-		// make sure that variable types are supported (a fix for #2052)
-		return variable_elements.stream().filter(e -> e.getType() != null).toList();
+		return Collections.unmodifiableSet(variable_elements);
 	}
 
 	/**
