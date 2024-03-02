@@ -1,0 +1,1 @@
+A hang, amelyet akkor játszódik le, amikor az entitás megsérül.

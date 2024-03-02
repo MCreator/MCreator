@@ -18,15 +18,25 @@
 
 package net.mcreator.blockly.java.blocks;
 
+import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.generator.mapping.NameMapper;
+import net.mcreator.ui.init.L10N;
+import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
 public class DirectionConstantBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) {
-		master.append(new NameMapper(master.getWorkspace(), "directions").getMapping(block.getTextContent()));
+		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
+		if (element != null) {
+			master.append(new NameMapper(master.getWorkspace(), "directions").getMapping(element.getTextContent()));
+		} else {
+			master.append(new NameMapper(master.getWorkspace(), "directions").getMapping("DOWN"));
+			master.addCompileNote(
+					new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING, L10N.t("blockly.warnings.direction")));
+		}
 	}
 
 	@Override public String[] getSupportedBlocks() {

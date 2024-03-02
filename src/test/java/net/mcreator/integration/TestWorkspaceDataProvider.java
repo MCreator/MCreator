@@ -132,12 +132,12 @@ public class TestWorkspaceDataProvider {
 			TagElement tag = new TagElement(TagType.ITEMS, "minecraft:test");
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:stone");
-			workspace.getTagElements().get(tag).add("~minecraft:grass");
+			workspace.getTagElements().get(tag).add("~minecraft:dirt");
 
 			tag = new TagElement(TagType.BLOCKS, "minecraft:test");
 			workspace.addTagElement(tag);
 			workspace.getTagElements().get(tag).add("minecraft:stone");
-			workspace.getTagElements().get(tag).add("~minecraft:grass");
+			workspace.getTagElements().get(tag).add("~minecraft:dirt");
 
 			tag = new TagElement(TagType.ENTITIES, "minecraft:test");
 			workspace.addTagElement(tag);
@@ -1584,16 +1584,16 @@ public class TestWorkspaceDataProvider {
 		livingEntity.immuneToFire = _true;
 		livingEntity.immuneToArrows = !_true;
 		livingEntity.immuneToFallDamage = !_true;
-		livingEntity.immuneToCactus = !_true;
+		livingEntity.immuneToCactus = _true;
 		livingEntity.immuneToDrowning = !_true;
 		livingEntity.immuneToLightning = !_true;
 		livingEntity.immuneToPotions = !_true;
 		livingEntity.immuneToPlayer = !_true;
-		livingEntity.immuneToExplosion = !_true;
+		livingEntity.immuneToExplosion = _true;
 		livingEntity.immuneToTrident = !_true;
 		livingEntity.immuneToAnvil = !_true;
 		livingEntity.immuneToDragonBreath = !_true;
-		livingEntity.immuneToWither = !_true;
+		livingEntity.immuneToWither = _true;
 		livingEntity.hasSpawnEgg = !_true;
 		livingEntity.xpAmount = 8;
 		livingEntity.ridable = _true;
