@@ -23,7 +23,7 @@ templates:
   # Loot table
   - template: json/block_loot_table.json.ftl
     writer: json
-    condition: "generateLootTable()"
+    condition: generateLootTable()
     name: "@MODDATAROOT/loot_tables/blocks/@registryname.json"
 
   # Plant item template
