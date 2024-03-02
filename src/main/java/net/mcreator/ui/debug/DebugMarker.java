@@ -61,8 +61,8 @@ public class DebugMarker extends JPanel {
 
 		String[] markerNameParts = markerName.split(":", 2);
 		JLabel title = new JLabel();
-		title.setText("<html>" + StringUtils.abbreviateString(markerNameParts[0], 20, true) + "<br><small>"
-				+ StringUtils.abbreviateString(markerNameParts[1], 30) + "</html>");
+		title.setText("<html>" + StringUtils.abbreviateString(markerNameParts[0], 30, true) + "<br><small>"
+				+ StringUtils.abbreviateString(markerNameParts[1], 40) + "</html>");
 		title.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		ModElement modElement = debugPanel.getMCreator().getWorkspace().getModElementByName(markerNameParts[0]);

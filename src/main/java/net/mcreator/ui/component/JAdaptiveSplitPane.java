@@ -83,7 +83,7 @@ public class JAdaptiveSplitPane extends JPanel {
 			splitPane.setLeftComponent(leftComponent);
 			splitPane.setRightComponent(rightComponent);
 			add(splitPane, BorderLayout.CENTER);
-			splitPane.setDividerLocation(dividerLocation);
+			SwingUtilities.invokeLater(() -> splitPane.setDividerLocation(dividerLocation));
 		}
 	}
 
