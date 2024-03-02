@@ -235,19 +235,23 @@ public class DebugPanel extends JPanel {
 			if (!resumed) {
 				for (Event event : eventSet) {
 					if (event instanceof BreakpointEvent breakpointEvent) {
-						try {
-							debugFramesView.showFrames(breakpointEvent.thread().frames());
-						} catch (IncompatibleThreadStateException ignored) {
-						}
+						SwingUtilities.invokeLater(() -> {
+							try {
+								debugFramesView.showFrames(breakpointEvent.thread().frames());
+							} catch (IncompatibleThreadStateException ignored) {
+							}
+						});
 						lastBreakpointEvent = breakpointEvent;
 						break;
 					} else if (event instanceof StepEvent stepEvent) {
 						stepEvent.request().disable();
 
-						try {
-							debugFramesView.showFrames(stepEvent.thread().frames());
-						} catch (IncompatibleThreadStateException ignored) {
-						}
+						SwingUtilities.invokeLater(() -> {
+							try {
+								debugFramesView.showFrames(stepEvent.thread().frames());
+							} catch (IncompatibleThreadStateException ignored) {
+							}
+						});
 
 						try {
 							DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(
@@ -270,7 +274,7 @@ public class DebugPanel extends JPanel {
 					}
 				}
 				lastSuspendedEventSet = eventSet;
-				markVMSuspended();
+				SwingUtilities.invokeLater(this::markVMSuspended);
 			}
 
 			for (Event event : eventSet) {
@@ -285,7 +289,7 @@ public class DebugPanel extends JPanel {
 				try {
 					VirtualMachine vm = this.debugClient.getVirtualMachine();
 					if (vm != null) {
-						debugThreadView.updateThreadList(vm.allThreads());
+						SwingUtilities.invokeLater(() -> debugThreadView.updateThreadList(vm.allThreads()));
 					}
 
 					//noinspection BusyWait
@@ -318,18 +322,20 @@ public class DebugPanel extends JPanel {
 	}
 
 	private void initiateDebugSession() {
-		markVMResumed();
-
 		new Thread(() -> DebugMarkersHandler.handleDebugMarkers(this), "DebugMarkerLoader").start();
 
-		cardLayout.show(this, DEBUGGING);
+		SwingUtilities.invokeLater(() -> {
+			markVMResumed();
 
-		mcreator.mcreatorTabs.getTabs().forEach(tab -> {
-			if (tab.getContent() instanceof CodeEditorView cev) {
-				if (cev.getBreakpointHandler() != null) {
-					cev.getBreakpointHandler().newDebugClient(debugClient);
+			cardLayout.show(this, DEBUGGING);
+
+			mcreator.mcreatorTabs.getTabs().forEach(tab -> {
+				if (tab.getContent() instanceof CodeEditorView cev) {
+					if (cev.getBreakpointHandler() != null) {
+						cev.getBreakpointHandler().newDebugClient(debugClient);
+					}
 				}
-			}
+			});
 		});
 	}
 

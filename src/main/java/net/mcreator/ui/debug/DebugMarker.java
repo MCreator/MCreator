@@ -31,6 +31,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
@@ -113,11 +114,10 @@ public class DebugMarker extends JPanel {
 		active = true;
 		new Thread(() -> {
 			while (active) {
-				updateDisplay();
-
 				try {
+					SwingUtilities.invokeAndWait(this::updateDisplay);
 					Thread.sleep(100);
-				} catch (InterruptedException ignored) {
+				} catch (InterruptedException | InvocationTargetException ignored) {
 				}
 			}
 		}, "DebugMarkerUpdater").start();
