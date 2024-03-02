@@ -28,7 +28,6 @@ import org.apache.logging.log4j.Logger;
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.*;
 import java.util.regex.Pattern;
@@ -43,8 +42,12 @@ public class BackgroundLoader {
 			List<Image> images = new ArrayList<>();
 			Arrays.stream(bgfiles).forEach(f -> {
 				try {
-					images.add(ImageIO.read(f));
-				} catch (IOException e) {
+					Image result = ImageIO.read(f);
+					if (result != null)
+						images.add(result);
+					else
+						throw new NullPointerException("ImageIO.read returned null");
+				} catch (Exception e) {
 					LOG.error("Can not load user background: " + f.getName(), e);
 				}
 			});

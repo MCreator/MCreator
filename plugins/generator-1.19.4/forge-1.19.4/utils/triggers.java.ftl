@@ -12,7 +12,8 @@
 				"y": "entity != null ? entity.getY() : 0.0",
 				"z": "entity != null ? entity.getZ() : 0.0",
 				"entity": "entity",
-				"world": "level instanceof Level ? (LevelAccessor) level : null"
+				"world": "level instanceof Level ? (LevelAccessor) level : null",
+				"itemstack": "itemstack"
 			}, false/>));
 		<#else>
 			<#list procedure.getFixedValue() as entry>
@@ -400,7 +401,7 @@
 
 <#macro onAnimateTick procedure="">
 <#if hasProcedure(procedure)>
-@Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, RandomSource random) {
+@Override @OnlyIn(Dist.CLIENT) public void animateTick(BlockState blockstate, Level world, BlockPos pos, RandomSource random) {
 	super.animateTick(blockstate, world, pos, random);
 	<@procedureCode procedure, {
 	"x": "pos.getX()",

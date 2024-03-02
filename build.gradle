@@ -100,15 +100,16 @@ dependencies {
     implementation group: 'com.google.guava', name: 'guava', version: '33.0.0-jre'
     implementation group: 'de.javagl', name: 'obj', version: '0.4.0'
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
-    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.22.1'
+    implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.23.0'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.11.0'
-    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.11'
-    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.5'
+    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.12'
+    implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.6'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
+    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.4.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
-    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.3.4'
+    implementation group: 'com.fifesoft', name: 'rsyntaxtextarea', version: '3.4.0'
     implementation group: 'com.fifesoft', name: 'autocomplete', version: '3.3.1'
     implementation(group: 'com.fifesoft', name: 'languagesupport', version: '3.3.0') {
         dep -> dep.exclude group: 'org.mozilla', module: 'rhino'
@@ -116,8 +117,8 @@ dependencies {
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.14.0' // needed by discord-rpc.jar
 
     // test dependencies
-    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.1'
-    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.1'
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.2'
+    testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.2'
 }
 
 javafx {

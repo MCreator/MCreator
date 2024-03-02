@@ -258,20 +258,20 @@ import java.util.Set;
 
 		table.put("SplitPane.border", BorderFactory.createEmptyBorder());
 
-		table.put("FileChooser.homeFolderIcon", UIRES.get("laf.homeFolder.gif"));
-		table.put("FileChooser.newFolderIcon", UIRES.get("laf.newFolder.gif"));
-		table.put("FileChooser.upFolderIcon", UIRES.get("laf.upFolder.gif"));
-		table.put("FileChooser.computerIcon", UIRES.get("laf.computer.gif"));
-		table.put("FileChooser.hardDriveIcon", UIRES.get("laf.hardDrive.gif"));
-		table.put("FileChooser.floppyDriveIcon", UIRES.get("laf.floppy.gif"));
-		table.put("FileChooser.closedIcon", UIRES.get("laf.newFolder.gif"));
+		table.put("FileChooser.homeFolderIcon", UIRES.get("laf.homeFolder"));
+		table.put("FileChooser.newFolderIcon", UIRES.get("laf.newFolder"));
+		table.put("FileChooser.upFolderIcon", UIRES.get("laf.upFolder"));
+		table.put("FileChooser.computerIcon", UIRES.get("laf.computer"));
+		table.put("FileChooser.hardDriveIcon", UIRES.get("laf.hardDrive"));
+		table.put("FileChooser.floppyDriveIcon", UIRES.get("laf.floppy"));
+		table.put("FileChooser.closedIcon", UIRES.get("laf.newFolder"));
 
-		table.put("Tree.closedIcon", UIRES.get("laf.newFolder.gif"));
-		table.put("Tree.openIcon", UIRES.get("laf.upFolder.gif"));
-		table.put("Tree.leafIcon", UIRES.get("laf.file.gif"));
+		table.put("Tree.closedIcon", UIRES.get("laf.newFolder"));
+		table.put("Tree.openIcon", UIRES.get("laf.upFolder"));
+		table.put("Tree.leafIcon", UIRES.get("laf.file"));
 
-		table.put("FileView.directoryIcon", UIRES.get("laf.directory.gif"));
-		table.put("FileView.fileIcon", UIRES.get("laf.file.gif"));
+		table.put("FileView.directoryIcon", UIRES.get("laf.directory"));
+		table.put("FileView.fileIcon", UIRES.get("laf.file"));
 
 		table.put("OptionPane.warningIcon", UIRES.get("laf.warning"));
 		table.put("OptionPane.errorIcon", UIRES.get("laf.error"));

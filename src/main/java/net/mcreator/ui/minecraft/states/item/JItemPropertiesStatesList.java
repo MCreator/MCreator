@@ -58,8 +58,8 @@ public class JItemPropertiesStatesList extends JEntriesList {
 
 	private final JPanel propertyEntries = new JPanel(), stateEntries = new JPanel();
 
-	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add.gif"));
-	private final TechnicalButton addState = new TechnicalButton(UIRES.get("16px.add.gif"));
+	private final TechnicalButton addProperty = new TechnicalButton(UIRES.get("16px.add"));
+	private final TechnicalButton addState = new TechnicalButton(UIRES.get("16px.add"));
 
 	public JItemPropertiesStatesList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new GridLayout(), gui);

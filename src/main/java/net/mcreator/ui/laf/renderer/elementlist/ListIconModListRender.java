@@ -19,7 +19,6 @@
 package net.mcreator.ui.laf.renderer.elementlist;
 
 import net.mcreator.minecraft.MCItem;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
@@ -64,19 +63,19 @@ public class ListIconModListRender extends JPanel implements ListCellRenderer<IE
 		ImageIcon dva = null;
 		if (element instanceof ModElement ma) {
 			if (!ma.doesCompile()) {
-				dva = TiledImageCache.modTabRed;
+				dva = UIRES.get("mod_types.overlay_err");
 			}
 			if (ma.isCodeLocked()) {
 				if (dva != null) {
-					dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
+					dva = ImageUtils.drawOver(dva, UIRES.get("mod_types.overlay_locked"));
 				} else {
-					dva = TiledImageCache.modTabPurple;
+					dva = UIRES.get("mod_types.overlay_locked");
 				}
 			}
 		}
 
 		if (element instanceof FolderElement) {
-			icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 22)));
+			icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("mod_types.folder").getImage(), 22)));
 		} else if (element instanceof ModElement) {
 			ImageIcon modIcon = ((ModElement) element).getElementIcon();
 

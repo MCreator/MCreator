@@ -216,7 +216,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		bar.add(createToolBarButton("workspace.tags.add_new", UIRES.get("16px.add.gif"), e -> {
+		bar.add(createToolBarButton("workspace.tags.add_new", UIRES.get("16px.add"), e -> {
 			TagElement tag = NewTagDialog.showNewTagDialog(workspacePanel.getMCreator());
 			if (tag != null) {
 				workspacePanel.getMCreator().getWorkspace().addTagElement(tag);
@@ -229,7 +229,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			reloadElements();
 		}));
 
-		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
+		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
 				e -> deleteCurrentlySelected()));
 
 		add("North", bar);
@@ -303,7 +303,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		for (Map.Entry<TagElement, ArrayList<String>> tag : workspacePanel.getMCreator().getWorkspace().getTagElements()
 				.entrySet()) {
-			model.addRow(new Object[] { tag.getKey().type(), tag.getKey().getNamespace(), tag.getKey().getName(),
+			model.addRow(new Object[] { tag.getKey().type(), tag.getKey().getMCreatorNamespace(), tag.getKey().getName(),
 					tag.getValue() });
 		}
 		refilterElements();

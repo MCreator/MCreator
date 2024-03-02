@@ -58,10 +58,10 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 		}
 
 		if (value instanceof JsonTree.JsonObjectNode) {
-			setIcon(UIRES.get("16px.jsonobj.gif"));
+			setIcon(UIRES.get("16px.jsonobj"));
 			setText(value.toString());
 		} else if (value instanceof JsonTree.JsonArrayNode) {
-			setIcon(UIRES.get("16px.jsonarray.gif"));
+			setIcon(UIRES.get("16px.jsonarray"));
 			setText(value.toString());
 		} else if (value instanceof JsonTree.JsonNode node) {
 			JsonElement element = node.getElement();
@@ -77,7 +77,7 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 					type = "number";
 			}
 			setText("<html>" + value + (type == null ? "" : ("&nbsp;&nbsp;<small color=gray>[" + type + "]")));
-			setIcon(UIRES.get("16px.jsonel.gif"));
+			setIcon(UIRES.get("16px.jsonel"));
 		} else {
 			try {
 				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.java.tree.JavaTreeNode");
