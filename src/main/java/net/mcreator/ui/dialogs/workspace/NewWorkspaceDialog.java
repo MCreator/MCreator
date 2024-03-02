@@ -18,9 +18,12 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.util.SystemInfo;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.io.OS;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -69,7 +72,14 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			UIRES.get("16px.bedrock"));
 
 	public NewWorkspaceDialog(Window w) {
-		super(w, L10N.t("dialog.new_workspace.title"), true);
+		super(w, null, true);
+
+		if (OS.getOS() == OS.WINDOWS) {
+			getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
+		} else if (OS.getOS() == OS.MAC && SystemInfo.isMacFullWindowContentSupported) {
+			getRootPane().putClientProperty("apple.awt.fullWindowContent", true);
+			getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
+		}
 
 		AbstractWorkspacePanel forgeWorkspacePanel = new ForgeWorkspacePanel(this);
 		AbstractWorkspacePanel neoforgeWorkspacePanel = new NeoForgeWorkspacePanel(this);

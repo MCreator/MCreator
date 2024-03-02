@@ -18,10 +18,13 @@
 
 package net.mcreator.ui.workspace.selector;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.util.SystemInfo;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.mcreator.Launcher;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.OS;
 import net.mcreator.io.UserFolderManager;
 import net.mcreator.io.net.WebIO;
 import net.mcreator.plugin.MCREvent;
@@ -81,6 +84,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 	@Nullable private final MCreatorApplication application;
 
+	private final JButton newWorkspace;
+
 	private final JPanel subactions = new JPanel(new GridLayout(-1, 1, 0, 2));
 
 	private final NotificationsRenderer notificationsRenderer;
@@ -105,8 +110,8 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 
 		JPanel actions = new JPanel(new BorderLayout(0, 6));
 
-		JButton newWorkspace = mainWorkspaceButton(L10N.t("dialog.workspace_selector.new_workspace"),
-				UIRES.get("wrk_add"), e -> {
+		newWorkspace = mainWorkspaceButton(L10N.t("dialog.workspace_selector.new_workspace"), UIRES.get("wrk_add"),
+				e -> {
 					NewWorkspaceDialog newWorkspaceDialog = new NewWorkspaceDialog(this);
 					if (newWorkspaceDialog.getWorkspaceFile() != null)
 						workspaceOpenListener.workspaceOpened(newWorkspaceDialog.getWorkspaceFile());
@@ -293,6 +298,15 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		setSize(795, 460);
 		setResizable(false);
 		setLocationRelativeTo(null);
+
+		if (OS.getOS() == OS.WINDOWS) {
+			getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
+			centerComponent.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
+		} else if (OS.getOS() == OS.MAC && SystemInfo.isMacFullWindowContentSupported) {
+			getRootPane().putClientProperty("apple.awt.fullWindowContent", true);
+			getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
+			centerComponent.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
+		}
 	}
 
 	@Override public void dragEnter(DropTargetDragEvent dtde) {
@@ -401,12 +415,16 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 	@Override public void setVisible(boolean b) {
 		if (b)
 			reloadRecents();
+
 		super.setVisible(b);
+
+		if (b)
+			newWorkspace.requestFocusInWindow();
 	}
 
 	private JButton mainWorkspaceButton(String text, ImageIcon icon, ActionListener event) {
 		JButton newWorkspace = new JButton(text);
-		ComponentUtils.deriveFont(newWorkspace, 15);
+		ComponentUtils.deriveFont(newWorkspace, 13);
 		newWorkspace.setBackground(Theme.current().getBackgroundColor());
 		newWorkspace.setPreferredSize(new Dimension(240, 48));
 		newWorkspace.setMargin(new Insets(0, 0, 0, 0));
