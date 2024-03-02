@@ -41,10 +41,6 @@ public class ${name}MobEffect extends MobEffect {
 		super(MobEffectCategory.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
 	}
 
-	@Override public String getDescriptionId() {
-		return "effect.${modid}.${registryname}";
-	}
-
 	<#if data.isInstant>
 		@Override public boolean isInstantenous() {
 			return true;

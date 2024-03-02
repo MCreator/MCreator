@@ -22,11 +22,11 @@ package net.mcreator.workspace;
 import java.util.Collection;
 import java.util.Map;
 
-public class MissingWorkspacePluginsException extends Exception {
+public class MissingGeneratorFeaturesException extends Exception {
 
 	private final Map<String, Collection<String>> missingDefinitions;
 
-	public MissingWorkspacePluginsException(Map<String, Collection<String>> missingDefinitions) {
+	public MissingGeneratorFeaturesException(Map<String, Collection<String>> missingDefinitions) {
 		this.missingDefinitions = missingDefinitions;
 	}
 
@@ -35,7 +35,7 @@ public class MissingWorkspacePluginsException extends Exception {
 	}
 
 	@Override public String getMessage() {
-		return "Missing definitions that should be supplied by plugins: " + missingDefinitions;
+		return "Missing generator/plugin features: " + missingDefinitions;
 	}
 
 }
