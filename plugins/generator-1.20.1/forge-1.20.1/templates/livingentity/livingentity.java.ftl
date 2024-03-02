@@ -911,6 +911,10 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#if>
 	}
 
+	<#if data.mobBehaviourType == "Raider">
+   	@Override public void applyRaidBuffs(int num, boolean logic) {}
+   	</#if>
+
 	public static AttributeSupplier.Builder createAttributes() {
 		AttributeSupplier.Builder builder = Mob.createMobAttributes();
 		builder = builder.add(Attributes.MOVEMENT_SPEED, ${data.movementSpeed});
@@ -941,10 +945,6 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 		return builder;
 	}
-
-		<#if data.mobBehaviourType == "Raider">
-	   	@Override public void applyRaidBuffs(int num, boolean logic) {}
-	   	</#if>
 
 }
 <#-- @formatter:on -->
