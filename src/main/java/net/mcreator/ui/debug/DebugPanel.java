@@ -286,12 +286,16 @@ public class DebugPanel extends JPanel {
 
 		new Thread(() -> {
 			while (this.debugClient != null) {
+				VirtualMachine vm = this.debugClient.getVirtualMachine();
+				if (vm != null) {
+					SwingUtilities.invokeLater(() -> {
+						try {
+							debugThreadView.updateThreadList(vm.allThreads());
+						} catch (Exception ignored) {
+						}
+					});
+				}
 				try {
-					VirtualMachine vm = this.debugClient.getVirtualMachine();
-					if (vm != null) {
-						SwingUtilities.invokeLater(() -> debugThreadView.updateThreadList(vm.allThreads()));
-					}
-
 					//noinspection BusyWait
 					Thread.sleep(1000);
 				} catch (Exception ignored) {
