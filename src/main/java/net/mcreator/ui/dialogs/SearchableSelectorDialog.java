@@ -63,7 +63,6 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 				model.refilter();
 			}
 		});
-		ComponentUtils.deriveFont(filterField, 15);
 	}
 
 	class FilterModel extends DefaultListModel<T> {
