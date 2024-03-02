@@ -156,7 +156,7 @@ public class WorkspaceDialogs {
 		JStringListField requiredMods, dependencies, dependants;
 
 		JComboBox<String> license = new JComboBox<>(
-				new String[] { "Academic Free License v3.0", "Ace3 Style BSD", "All Rights Reserved",
+				new String[] { "Not specified", "Academic Free License v3.0", "Ace3 Style BSD", "All Rights Reserved",
 						"Apache License version 2.0", "Apple Public Source License version 2.0 (APSL)",
 						"BSD License Common Development and Distribution License (CDDL)",
 						"Creative Commons Attribution-NonCommercial 3.0",
@@ -584,7 +584,7 @@ public class WorkspaceDialogs {
 			retVal.setDescription(description.getText().isEmpty() ? null : description.getText());
 			retVal.setAuthor(author.getText().isEmpty() ? null : author.getText());
 			retVal.setLicense(license.getEditor().getItem().toString().isEmpty() ?
-					"Not specified" :
+					null :
 					license.getEditor().getItem().toString());
 			retVal.setWebsiteURL(websiteURL.getText().isEmpty() ? null : websiteURL.getText());
 			retVal.setCredits(credits.getText().isEmpty() ? null : credits.getText());

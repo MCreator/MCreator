@@ -45,6 +45,10 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("gui")>${JavaModName}Menus.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfType("villagerprofession")>${JavaModName}VillagerProfessions.PROFESSIONS.register(modEventBus);</#if>
+		<#if w.hasElementsOfType("fluid")>
+			${JavaModName}Fluids.REGISTRY.register(modEventBus);
+			${JavaModName}FluidTypes.REGISTRY.register(modEventBus);
+		</#if>
 	}
 
 	<#-- Networking support below -->
