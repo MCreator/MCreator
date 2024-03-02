@@ -275,7 +275,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		rightPanel.setMinimumSize(new Dimension(0, 0));
 		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
-		JAdaptiveSplitPane mainContent = new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, debugPanel);
+		JAdaptiveSplitPane mainContent = new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, debugPanel, 0.65);
 
 		this.notificationsRenderer = new NotificationsRenderer(mainContent);
 
