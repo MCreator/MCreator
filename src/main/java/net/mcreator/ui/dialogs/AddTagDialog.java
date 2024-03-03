@@ -40,7 +40,7 @@ public class AddTagDialog {
 		VComboBox<String> tagName = new VComboBox<>();
 
 		wrap.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, tagType.getColor()));
-		tagName.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), tagName, true));
+		tagName.setValidator(new ResourceLocationValidator<>(L10N.t("workspace.tags.tag"), tagName, true));
 
 		for (TagElement tagElement : mcreator.getWorkspace().getTagElements().keySet()) {
 			if (tagElement.type() == tagType) {
