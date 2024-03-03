@@ -39,10 +39,11 @@ public class ThemesPanel {
 		JList<Theme> themes = new JList<>(tmodel);
 		themes.setCellRenderer(new ThemesListCellRenderer());
 
-		JPanel sectionPanel = new JPanel(new BorderLayout(15, 15));
+		JPanel sectionPanel = new JPanel(new BorderLayout(0, 0));
 
-		sectionPanel.add("North", L10N.label("dialog.preferences.themes"));
-		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
+		JComponent titlebar = L10N.label("dialog.preferences.themes");
+		titlebar.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 10));
+		sectionPanel.add("North", titlebar);
 
 		JPanel top = new JPanel(new BorderLayout());
 

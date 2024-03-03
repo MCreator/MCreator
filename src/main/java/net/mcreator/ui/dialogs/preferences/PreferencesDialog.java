@@ -85,7 +85,7 @@ public class PreferencesDialog extends MCreatorDialog {
 		spne.setContinuousLayout(true);
 		spne.setDividerLocation(150);
 		spne.setDividerSize(2);
-		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Theme.current().getAltBackgroundColor()));
+		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()));
 		add("Center", spne);
 
 		sections.setBackground(Theme.current().getBackgroundColor());
@@ -192,11 +192,11 @@ public class PreferencesDialog extends MCreatorDialog {
 		sectionPanel.setOpaque(false);
 
 		JComponent titlebar = L10N.label("dialog.preferences.description", name, description);
-		titlebar.setBorder(BorderFactory.createEmptyBorder(3, 10, 5, 10));
+		titlebar.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 10));
 
 		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(sectionPanel));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
-		preferences.add(PanelUtils.northAndCenterElement(titlebar, scrollPane), name);
+		preferences.add(PanelUtils.northAndCenterElement(titlebar, scrollPane, 0, 0), name);
 
 		sectionPanels.put(section, sectionPanel);
 	}
