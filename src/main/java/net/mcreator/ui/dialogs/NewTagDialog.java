@@ -38,7 +38,7 @@ public class NewTagDialog {
 		JPanel panel = new JPanel(new GridLayout(3, 2, 10, 2));
 
 		JComboBox<TagType> type = new JComboBox<>(TagType.values());
-		VComboBox<String> namespace = new VComboBox<>(new String[] { "minecraft", "mod", "forge", "c" });
+		VComboBox<String> namespace = new VComboBox<>(new String[] { "minecraft", "mod", "forge", "neoforge", "c" });
 		VComboBox<String> name = new VComboBox<>();
 
 		type.setPreferredSize(new Dimension(250, 38));

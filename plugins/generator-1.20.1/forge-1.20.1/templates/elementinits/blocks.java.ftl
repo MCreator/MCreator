@@ -70,6 +70,9 @@ public class ${JavaModName}Blocks {
 		</#if>
 	</#list>
 
+	// Start of user code block custom blocks
+	// End of user code block custom blocks
+
 	<#if hasTintedBlocks || hasTintedBlockItems>
 	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
 		<#if hasTintedBlocks>
