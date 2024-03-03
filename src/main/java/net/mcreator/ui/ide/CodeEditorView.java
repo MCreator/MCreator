@@ -67,8 +67,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.*;
@@ -245,11 +243,9 @@ public class CodeEditorView extends ViewBase {
 
 		spne.setBorder(null);
 
-		JPanel bars = new JPanel(new BorderLayout());
+		JPanel bars = new JPanel(new BorderLayout(2, 2));
 		ComponentUtils.deriveFont(ro, 12);
-		ro.setBackground(new Color(0x3C3939));
 		ro.setOpaque(true);
-		ro.setForeground(new Color(0xE0E0E0));
 		Border margin = new EmptyBorder(3, 5, 3, 3);
 		ro.setBorder(new CompoundBorder(ro.getBorder(), margin));
 		ro.setVisible(false);
@@ -503,9 +499,8 @@ public class CodeEditorView extends ViewBase {
 		SwingUtilities.invokeLater(this::loadSourceTree);
 	}
 
-	private void setCustomNotice(String notice, Color color) {
+	private void setCustomNotice(String notice) {
 		ro.setText(notice);
-		ro.setBackground(color);
 		ro.setVisible(true);
 	}
 
@@ -611,7 +606,7 @@ public class CodeEditorView extends ViewBase {
 		this.fileOwner = fileOwner;
 		boolean codeLocked = this.fileOwner.isCodeLocked();
 		if (!codeLocked) {
-			setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()), new Color(0x31332F));
+			setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()));
 		}
 	}
 
@@ -629,8 +624,7 @@ public class CodeEditorView extends ViewBase {
 					mcreator.getWorkspace().markDirty();
 					ro.setVisible(false);
 				} else {
-					setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()),
-							new Color(0x31332F));
+					setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()));
 				}
 			}
 		}

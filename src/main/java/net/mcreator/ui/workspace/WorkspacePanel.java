@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.workspace;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.element.*;
 import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.GeneratorTemplate;
@@ -297,15 +298,11 @@ import java.util.stream.Collectors;
 
 		JPanel se = new JPanel(new BorderLayout());
 
-		search = new JTextField(28) {
+		search = new JTextField(34) {
 			@Override public void paintComponent(Graphics g) {
+				super.paintComponent(g);
 				Graphics2D g2 = (Graphics2D) g;
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
-				g.fillRect(0, 0, getWidth(), getHeight());
-				super.paintComponent(g);
-				g.setColor(new Color(0.4f, 0.4f, 0.4f, 0.3f));
-				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 				if (getText().isEmpty()) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
@@ -326,11 +323,8 @@ import java.util.stream.Collectors;
 
 		search.setToolTipText(L10N.t("workspace.elements.list.search.tooltip"));
 
-		search.setForeground(new Color(230, 230, 230));
 		ComponentUtils.deriveFont(search, 14);
-		search.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
 		search.setOpaque(false);
-		search.setBackground(Theme.current().getAltBackgroundColor());
 
 		search.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -543,19 +537,31 @@ import java.util.stream.Collectors;
 		leftPan.setOpaque(false);
 		leftPan.add(search);
 
+		JPanel filterSort = new JPanel(new GridLayout(1, 2, 0, 0));
+		filterSort.setOpaque(false);
+
+		search.setBackground(new Color(search.getBackground().getRed(), search.getBackground().getGreen(),
+				search.getBackground().getBlue(), 150));
+		search.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, filterSort);
+		search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
+
 		JButton filter = L10N.button("workspace.elements.list.filter");
 		JButton sort = L10N.button("workspace.elements.list.sort");
 
-		filter.setPreferredSize(new Dimension(54, 26));
-		sort.setPreferredSize(new Dimension(54, 26));
+		filter.putClientProperty(FlatClientProperties.BUTTON_TYPE, "toolBarButton");
+		sort.putClientProperty(FlatClientProperties.BUTTON_TYPE, "toolBarButton");
 
-		ComponentUtils.normalizeButton4(filter);
-		ComponentUtils.normalizeButton4(sort);
+		filter.setPreferredSize(new Dimension(54, 0));
+		sort.setPreferredSize(new Dimension(54, 0));
 
-		leftPan.add(new JEmptyBox(2, 2));
-		leftPan.add(filter);
-		leftPan.add(new JEmptyBox(2, 2));
-		leftPan.add(sort);
+		filter.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		sort.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+		filter.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UIManager.getColor("Component.borderColor")));
+		sort.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UIManager.getColor("Component.borderColor")));
+
+		filterSort.add(filter);
+		filterSort.add(sort);
 
 		se.add("West", leftPan);
 

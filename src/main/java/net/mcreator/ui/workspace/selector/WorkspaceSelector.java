@@ -427,7 +427,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		ComponentUtils.deriveFont(newWorkspace, 13);
 		newWorkspace.setBackground(Theme.current().getBackgroundColor());
 		newWorkspace.setPreferredSize(new Dimension(240, 48));
-		newWorkspace.setMargin(new Insets(0, 0, 0, 0));
 		newWorkspace.setIcon(icon);
 		newWorkspace.addActionListener(event);
 		newWorkspace.setVerticalTextPosition(SwingConstants.CENTER);
@@ -449,7 +448,6 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		ComponentUtils.deriveFont(workspaceButton, 11);
 		workspaceButton.setBackground(Theme.current().getBackgroundColor());
 		workspaceButton.setPreferredSize(new Dimension(240, 22));
-		workspaceButton.setMargin(new Insets(0, 0, 0, 0));
 		workspaceButton.setIcon(
 				ImageUtils.drawOver(new EmptyIcon.ImageIcon(45, 16), icon, 45 / 2 - 16 / 2 + 2, 0, 16, 16));
 		workspaceButton.addActionListener(event);

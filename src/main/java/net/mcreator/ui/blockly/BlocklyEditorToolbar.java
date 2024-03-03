@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.blockly;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.blockly.data.ToolboxCategory;
@@ -41,6 +42,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.File;
@@ -53,6 +56,10 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 
 	private JScrollablePopupMenu results = new JScrollablePopupMenu();
 	private final JButton templateLib;
+
+	private final BlocklyPanel blocklyPanel;
+
+	private final JTextField search;
 
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel) {
 		this(mcreator, blocklyEditorType, blocklyPanel, null);
@@ -69,6 +76,8 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 	 */
 	public BlocklyEditorToolbar(MCreator mcreator, BlocklyEditorType blocklyEditorType, BlocklyPanel blocklyPanel,
 			ProcedureGUI procedureGUI) {
+		this.blocklyPanel = blocklyPanel;
+
 		setBorder(null);
 
 		List<ResourcePointer> templates = TemplatesLoader.loadTemplates(blocklyEditorType.extension(),
@@ -91,23 +100,25 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		});
 		ComponentUtils.normalizeButton5(templateLib);
 
-		if (procedureGUI != null) {
-			JTextField search = new JTextField() {
-				@Override public void paintComponent(Graphics g) {
-					Graphics2D g2 = (Graphics2D) g;
-					g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-					g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
-					g.fillRect(0, 0, getWidth(), getHeight());
-					super.paintComponent(g);
-					g.setColor(new Color(0.4f, 0.4f, 0.4f, 0.3f));
-					g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-					if (getText().isEmpty()) {
-						g.setFont(g.getFont().deriveFont(11f));
-						g.setColor(new Color(120, 120, 120));
-						g.drawString(L10N.t("blockly.search_procedure_blocks"), 5, 18);
-					}
+		search = new JTextField() {
+			@Override public void paintComponent(Graphics g) {
+				Graphics2D g2 = (Graphics2D) g;
+				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
+				g.fillRect(0, 0, getWidth(), getHeight());
+				super.paintComponent(g);
+				g.setColor(new Color(0.4f, 0.4f, 0.4f, 0.3f));
+				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
+				if (getText().isEmpty()) {
+					g.setFont(g.getFont().deriveFont(11f));
+					g.setColor(new Color(120, 120, 120));
+					g.drawString(L10N.t("blockly.search_procedure_blocks"), 8, 18);
 				}
-			};
+			}
+		};
+
+		if (procedureGUI != null) {
+			search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 			search.addFocusListener(new FocusAdapter() {
 				@Override public void focusLost(FocusEvent e) {
 					super.focusLost(e);
@@ -117,75 +128,22 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			});
 			search.setPreferredSize(new Dimension(340, 22));
 
-			search.addKeyListener(new KeyAdapter() {
-				@Override public void keyReleased(KeyEvent e) {
-					super.keyReleased(e);
-					if (!search.getText().isEmpty()) {
-						String[] keyWords = search.getText().replaceAll("[^ a-zA-Z0-9/._-]+", "").split(" ");
+			search.getDocument().addDocumentListener(new DocumentListener() {
+				@Override public void insertUpdate(DocumentEvent e) {
+					updateSearch();
+				}
 
-						Set<ToolboxBlock> filtered = new LinkedHashSet<>();
+				@Override public void removeUpdate(DocumentEvent e) {
+					updateSearch();
+				}
 
-						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
-								.getDefinedBlocks().values()) {
-							if (block.getName().toLowerCase(Locale.ENGLISH)
-									.contains(search.getText().toLowerCase(Locale.ENGLISH))) {
-								filtered.add(block);
-							}
-						}
-
-						for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
-								.getDefinedBlocks().values()) {
-							for (String keyWord : keyWords) {
-								if (block.getName().toLowerCase(Locale.ENGLISH)
-										.contains(keyWord.toLowerCase(Locale.ENGLISH)) && (
-										block.getToolboxCategory() != null && block.getToolboxCategory().getName()
-												.toLowerCase(Locale.ENGLISH)
-												.contains(keyWord.toLowerCase(Locale.ENGLISH)))) {
-									filtered.add(block);
-									break;
-								} else if (block.getName().toLowerCase(Locale.ENGLISH)
-										.contains(keyWord.toLowerCase(Locale.ENGLISH))) {
-									filtered.add(block);
-									break;
-								}
-							}
-						}
-
-						if (!filtered.isEmpty()) {
-							results.setVisible(false);
-
-							results = new JScrollablePopupMenu();
-							results.setMaximumVisibleRows(20);
-
-							for (ToolboxBlock block : filtered) {
-								JMenuItem menuItem = new JMenuItem(getHTMLForBlock(block));
-								menuItem.addActionListener(ev -> {
-									if (block.getToolboxXML() != null) {
-										blocklyPanel.addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>");
-									} else {
-										blocklyPanel.addBlocksFromXML(
-												"<xml><block type=\"" + block.getMachineName() + "\"></block></xml>");
-									}
-									blocklyPanel.requestFocus();
-									results.setVisible(false);
-								});
-
-								results.add(menuItem);
-							}
-
-							results.setFocusable(false);
-							results.show(search, 0, 23);
-						} else {
-							results.setVisible(false);
-						}
-					} else {
-						results.setVisible(false);
-					}
+				@Override public void changedUpdate(DocumentEvent e) {
+					updateSearch();
 				}
 			});
 
 			JComponent component = PanelUtils.join(FlowLayout.LEFT, 0, 0, search);
-			component.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 0));
+			component.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 			add(component);
 
 		}
@@ -247,6 +205,70 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		});
 		ComponentUtils.normalizeButton4(import_);
 		import_.setForeground(Theme.current().getAltForegroundColor());
+	}
+
+	private void updateSearch() {
+		if (!search.getText().isEmpty()) {
+			String[] keyWords = search.getText().replaceAll("[^ a-zA-Z0-9/._-]+", "").split(" ");
+
+			Set<ToolboxBlock> filtered = new LinkedHashSet<>();
+
+			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
+					.getDefinedBlocks().values()) {
+				if (block.getName().toLowerCase(Locale.ENGLISH)
+						.contains(search.getText().toLowerCase(Locale.ENGLISH))) {
+					filtered.add(block);
+				}
+			}
+
+			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
+					.getDefinedBlocks().values()) {
+				for (String keyWord : keyWords) {
+					if (block.getName().toLowerCase(Locale.ENGLISH)
+							.contains(keyWord.toLowerCase(Locale.ENGLISH)) && (
+							block.getToolboxCategory() != null && block.getToolboxCategory().getName()
+									.toLowerCase(Locale.ENGLISH)
+									.contains(keyWord.toLowerCase(Locale.ENGLISH)))) {
+						filtered.add(block);
+						break;
+					} else if (block.getName().toLowerCase(Locale.ENGLISH)
+							.contains(keyWord.toLowerCase(Locale.ENGLISH))) {
+						filtered.add(block);
+						break;
+					}
+				}
+			}
+
+			if (!filtered.isEmpty()) {
+				results.setVisible(false);
+
+				results = new JScrollablePopupMenu();
+				results.setMaximumVisibleRows(20);
+
+				for (ToolboxBlock block : filtered) {
+					JMenuItem menuItem = new JMenuItem(getHTMLForBlock(block));
+					menuItem.addActionListener(ev -> {
+						if (block.getToolboxXML() != null) {
+							blocklyPanel.addBlocksFromXML("<xml>" + block.getToolboxXML() + "</xml>");
+						} else {
+							blocklyPanel.addBlocksFromXML(
+									"<xml><block type=\"" + block.getMachineName() + "\"></block></xml>");
+						}
+						blocklyPanel.requestFocus();
+						results.setVisible(false);
+					});
+
+					results.add(menuItem);
+				}
+
+				results.setFocusable(false);
+				results.show(search, 0, 23);
+			} else {
+				results.setVisible(false);
+			}
+		} else {
+			results.setVisible(false);
+		}
 	}
 
 	public void setTemplateLibButtonWidth(int w) {

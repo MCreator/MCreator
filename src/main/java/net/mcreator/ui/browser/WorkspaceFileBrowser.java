@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.browser;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.generator.GeneratorStats;
 import net.mcreator.io.FileIO;
@@ -153,6 +154,8 @@ public class WorkspaceFileBrowser extends JPanel {
 				}
 			}
 		});
+
+		jtf1.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 
 		JPanel bar = new JPanel(new BorderLayout());
 		bar.setBackground(Theme.current().getBackgroundColor());
