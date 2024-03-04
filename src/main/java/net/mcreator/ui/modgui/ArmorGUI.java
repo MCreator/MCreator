@@ -172,7 +172,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 	private final SoundSelector equipSound = new SoundSelector(mcreator);
 
-	private final JSpinner maxDamage = new JSpinner(new SpinnerNumberModel(25, 0, 1024, 1));
+	private final JSpinner maxDamage = new JSpinner(new SpinnerNumberModel(15, 0, 1024, 1));
 	private final JSpinner damageValueBoots = new JSpinner(new SpinnerNumberModel(2, 0, 1024, 1));
 	private final JSpinner damageValueLeggings = new JSpinner(new SpinnerNumberModel(5, 0, 1024, 1));
 	private final JSpinner damageValueBody = new JSpinner(new SpinnerNumberModel(6, 0, 1024, 1));

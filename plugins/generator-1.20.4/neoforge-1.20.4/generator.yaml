@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
-status: dev
-buildfileversion: 20.4.154-beta
+status: stable
+buildfileversion: 20.4.190
 
 import:
   - datapack-1.20.4
@@ -53,8 +53,8 @@ other_textures_dir: "@MODASSETSROOT/textures"
 base_templates:
   - template: modbase/mod.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
-    canLock: true
   - template: modbase/mods.toml.ftl
+    usercodeComment: "#"
     writer: file
     name: "@RESROOT/META-INF/mods.toml"
   - template: pack.mcmeta.ftl # loaded from datapack generator
