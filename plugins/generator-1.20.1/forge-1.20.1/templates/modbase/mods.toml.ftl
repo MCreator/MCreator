@@ -28,6 +28,9 @@ description="${settings.getDescription()}"
 displayTest="IGNORE_SERVER_VERSION"
 </#if>
 
+# Start of user code block mod configuration
+# End of user code block mod configuration
+
 [[dependencies.${settings.getModID()}]]
     modId="minecraft"
     mandatory=true

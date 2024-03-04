@@ -92,16 +92,6 @@ public class RegenerateCodeAction extends GradleAction {
 					modElementFiles.forEach(File::delete);
 			}
 
-			// keep base mod files that can be locked if selected so in the workspace settings
-			if (mcreator.getWorkspaceSettings().isLockBaseModFiles()) {
-				mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).forEach(generatorTemplate -> {
-					if (generatorTemplate.canBeLocked()) // can this file be locked
-						// are mod base file locked
-						toBePreserved.add(
-								generatorTemplate.getFile()); // we add locked base mod files on the to be preserved list
-				});
-			}
-
 			// delete all non mod element related files from code base package
 			File[] files = FileIO.listFilesRecursively(mcreator.getGenerator().getGeneratorPackageRoot());
 			for (File a : files) {
