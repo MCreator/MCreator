@@ -656,13 +656,13 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
                             throws <span class="exceptions"><a href="UnsupportedGeneratorException.html" title="class in net.mcreator.workspace">UnsupportedGeneratorException</a>,
 <a href="CorruptedWorkspaceFileException.html" title="class in net.mcreator.workspace">CorruptedWorkspaceFileException</a>,
 <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileNotFoundException.html" title="class or interface in java.io" class="external-link">FileNotFoundException</a>,
-<a href="MissingWorkspacePluginsException.html" title="class in net.mcreator.workspace">MissingWorkspacePluginsException</a></span></div>
+<a href="MissingGeneratorFeaturesException.html" title="class in net.mcreator.workspace">MissingGeneratorFeaturesException</a></span></div>
 <dl class="notes">
 <dt>Throws:</dt>
 <dd><code><a href="UnsupportedGeneratorException.html" title="class in net.mcreator.workspace">UnsupportedGeneratorException</a></code></dd>
 <dd><code><a href="CorruptedWorkspaceFileException.html" title="class in net.mcreator.workspace">CorruptedWorkspaceFileException</a></code></dd>
 <dd><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/FileNotFoundException.html" title="class or interface in java.io" class="external-link">FileNotFoundException</a></code></dd>
-<dd><code><a href="MissingWorkspacePluginsException.html" title="class in net.mcreator.workspace">MissingWorkspacePluginsException</a></code></dd>
+<dd><code><a href="MissingGeneratorFeaturesException.html" title="class in net.mcreator.workspace">MissingGeneratorFeaturesException</a></code></dd>
 </dl>
 </section>
 </li>
@@ -671,7 +671,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <h3>readFromFSUnsafe</h3>
 <div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="Workspace.html" title="class in net.mcreator.workspace">Workspace</a></span>&nbsp;<span class="element-name">readFromFSUnsafe</span><wbr><span class="parameters">(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/File.html" title="class or interface in java.io" class="external-link">File</a>&nbsp;workspaceFile,
  <a href="../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</span>
-                                  throws <span class="exceptions"><a href="MissingWorkspacePluginsException.html" title="class in net.mcreator.workspace">MissingWorkspacePluginsException</a></span></div>
+                                  throws <span class="exceptions"><a href="MissingGeneratorFeaturesException.html" title="class in net.mcreator.workspace">MissingGeneratorFeaturesException</a></span></div>
 <div class="block">Unsafe version of readFromFS with supported generator type checks omitted. Only intended to be used by tests.
  Instead of checking for supported generator, it will force the generator specified by generatorConfiguration.</div>
 <dl class="notes">
@@ -681,7 +681,7 @@ implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base
 <dt>Returns:</dt>
 <dd>Workspace object for the given file</dd>
 <dt>Throws:</dt>
-<dd><code><a href="MissingWorkspacePluginsException.html" title="class in net.mcreator.workspace">MissingWorkspacePluginsException</a></code></dd>
+<dd><code><a href="MissingGeneratorFeaturesException.html" title="class in net.mcreator.workspace">MissingGeneratorFeaturesException</a></code></dd>
 </dl>
 </section>
 </li>

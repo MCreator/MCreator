@@ -104,10 +104,17 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../../workspace/settings/WorkspaceSettingsChange.html" title="class in net.mcreator.workspace.settings">WorkspaceSettingsChange</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#workspaceSettings(net.mcreator.ui.MCreator,net.mcreator.workspace.Workspace)" class="member-name-link">workspaceSettings</a><wbr>(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
+<div class="col-first even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static void</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#verifyWorkspaceForCompatibilityWithGeneratorAndPlugins(java.awt.Window,net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)" class="member-name-link">verifyWorkspaceForCompatibilityWithGeneratorAndPlugins</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;parent,
+ <a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="../../../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">
+<div class="block">Verifies workspace for compatibility with the suggested generator and plugins.</div>
+</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code>static <a href="../../../workspace/settings/WorkspaceSettingsChange.html" title="class in net.mcreator.workspace.settings">WorkspaceSettingsChange</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4"><code><a href="#workspaceSettings(net.mcreator.ui.MCreator,net.mcreator.workspace.Workspace)" class="member-name-link">workspaceSettings</a><wbr>(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
  <a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;in)</code></div>
-<div class="col-last even-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab1 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
@@ -145,6 +152,25 @@ loadScripts(document, 'script');</script>
 <div class="member-signature"><span class="annotations">@Nullable
 </span><span class="modifiers">public static</span>&nbsp;<span class="return-type"><a href="../../../workspace/settings/WorkspaceSettingsChange.html" title="class in net.mcreator.workspace.settings">WorkspaceSettingsChange</a></span>&nbsp;<span class="element-name">workspaceSettings</span><wbr><span class="parameters">(<a href="../../MCreator.html" title="class in net.mcreator.ui">MCreator</a>&nbsp;mcreator,
  <a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;in)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="verifyWorkspaceForCompatibilityWithGeneratorAndPlugins(java.awt.Window,net.mcreator.workspace.Workspace,net.mcreator.generator.GeneratorConfiguration)">
+<h3>verifyWorkspaceForCompatibilityWithGeneratorAndPlugins</h3>
+<div class="member-signature"><span class="modifiers">public static</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">verifyWorkspaceForCompatibilityWithGeneratorAndPlugins</span><wbr><span class="parameters">(@Nullable
+ <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Window.html" title="class or interface in java.awt" class="external-link">Window</a>&nbsp;parent,
+ <a href="../../../workspace/Workspace.html" title="class in net.mcreator.workspace">Workspace</a>&nbsp;workspace,
+ <a href="../../../generator/GeneratorConfiguration.html" title="class in net.mcreator.generator">GeneratorConfiguration</a>&nbsp;generatorConfiguration)</span>
+                                                                   throws <span class="exceptions"><a href="../../../workspace/MissingGeneratorFeaturesException.html" title="class in net.mcreator.workspace">MissingGeneratorFeaturesException</a></span></div>
+<div class="block">Verifies workspace for compatibility with the suggested generator and plugins.</div>
+<dl class="notes">
+<dt>Parameters:</dt>
+<dd><code>parent</code> - the parent, null if no UI message should be shown</dd>
+<dd><code>workspace</code> - the workspace to verify</dd>
+<dd><code>generatorConfiguration</code> - the generator configuration to verify against</dd>
+<dt>Throws:</dt>
+<dd><code><a href="../../../workspace/MissingGeneratorFeaturesException.html" title="class in net.mcreator.workspace">MissingGeneratorFeaturesException</a></code> - the missing workspace plugins exception</dd>
+</dl>
 </section>
 </li>
 </ul>

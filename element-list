@@ -37,6 +37,7 @@ net.mcreator.generator.setup
 net.mcreator.generator.setup.folders
 net.mcreator.generator.template
 net.mcreator.generator.template.base
+net.mcreator.generator.usercode
 net.mcreator.gradle
 net.mcreator.io
 net.mcreator.io.net
