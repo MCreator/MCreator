@@ -610,8 +610,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private void regenerateProcedureCallers(ModElement procedure, Stack<ModElement> recursionLock) {
 		if (recursionLock.contains(procedure))
-			return;
-		recursionLock.push(procedure);
+			return; // skip the procedure if it was handled earlier
+		recursionLock.push(procedure); // otherwise, add it to the list of checked elements
 		for (ModElement element : ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), procedure)) {
 			// if this mod element is not locked and has procedures, we try to update dependencies
 			// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
@@ -626,7 +626,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				}
 			}
 		}
-		recursionLock.pop();
+		recursionLock.pop(); // remove the element after checking all referencing procedures
 	}
 
 	@Override public void openInEditingMode(net.mcreator.element.types.Procedure procedure) {
