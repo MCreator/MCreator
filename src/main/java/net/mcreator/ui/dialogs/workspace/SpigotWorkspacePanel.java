@@ -56,8 +56,7 @@ public class SpigotWorkspacePanel extends AbstractWorkspacePanel {
 
 		add(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.spigot.folder"),
-				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 2, 2)));
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.spigot.folder"), PanelUtils.join(workspaceFolder)));
 
 		add(new JEmptyBox(30, 170));
 

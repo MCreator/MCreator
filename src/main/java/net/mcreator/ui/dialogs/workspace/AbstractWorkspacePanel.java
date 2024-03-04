@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.AggregatedValidationResult;
@@ -43,7 +44,6 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 	final WorkspaceDialogs.WorkspaceDialogPanel workspaceDialogPanel;
 	final ValidationGroup validationGroup = new ValidationGroup();
 	final VTextField workspaceFolder = new VTextField();
-	final JButton selectWorkspaceFolder = new JButton("...");
 
 	private boolean workspaceFolderAltered = false;
 
@@ -86,6 +86,7 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 				WorkspaceFolderManager.getSuggestedWorkspaceFoldersRoot().getAbsolutePath() + File.separator
 						+ workspaceDialogPanel.modID.getText());
 
+		JButton selectWorkspaceFolder = new JButton("<html>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;");
 		selectWorkspaceFolder.addActionListener(actionEvent -> {
 			File file = FileDialogs.getWorkspaceDirectorySelectDialog(parent, new File(workspaceFolder.getText()));
 			if (file != null) {
@@ -94,6 +95,11 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 				workspaceFolderAltered = true;
 			}
 		});
+
+		workspaceFolder.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, selectWorkspaceFolder);
+		selectWorkspaceFolder.setMargin(new Insets(0, 50, 0, 50));
+		selectWorkspaceFolder.setBorder(
+				BorderFactory.createMatteBorder(0, 1, 0, 0, UIManager.getColor("Component.borderColor")));
 
 		workspaceDialogPanel.modName.setPreferredSize(new Dimension(300, 32));
 		workspaceDialogPanel.modID.setPreferredSize(new Dimension(300, 32));
