@@ -14,7 +14,7 @@ templates:
   - template: livingentity/entity_spawn_biome_modifier.json.ftl
     writer: json
     condition: spawnThisMob
-    name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
+    name: "@MODDATAROOT/neoforge/biome_modifier/@registryname_biome_modifier.json"
 
 unmodifiable_ai_bases: [ Bat, MagmaCube, Slime ]
 
