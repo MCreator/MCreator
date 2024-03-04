@@ -609,6 +609,10 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	}
 
 	private void regenerateProcedureCallers(ModElement procedure, Stack<ModElement> recursionLock) {
+		// if there are at least two more procedures referencing each other, with one of them and the current one
+		// calling each other as well, regenerating current procedure would result into circular regeneration
+		// of the other two procedures because neither of them triggered the action
+		// we avoid that by stacking all the elements checked before so that current procedure doesn't regenerate twice
 		if (recursionLock.contains(procedure))
 			return; // skip the procedure if it was handled earlier
 		recursionLock.push(procedure); // otherwise, add it to the list of checked elements
