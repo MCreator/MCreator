@@ -64,6 +64,8 @@ public class Theme {
 	 * One can add additional parameters from the theme JSON by defining them in the "flatLafOverrides" map.
 	 */
 	private Map<String, String> flatLafOverrides = new HashMap<>();
+
+	private boolean disableMCreatorOverrides = false;
 	// Theme public model end
 
 	protected transient String id;
@@ -109,28 +111,30 @@ public class Theme {
 			overrides.put("@selectionInactiveForeground", "@selectionForeground");
 		}
 
-		overrides.put("Button.arc", "0");
-		overrides.put("Component.arc", "0");
-		overrides.put("CheckBox.arc", "0");
-		overrides.put("Spinner.arc", "0");
-		overrides.put("ProgressBar.arc", "0");
+		if (!disableMCreatorOverrides) {
+			overrides.put("Button.arc", "0");
+			overrides.put("Component.arc", "0");
+			overrides.put("CheckBox.arc", "0");
+			overrides.put("Spinner.arc", "0");
+			overrides.put("ProgressBar.arc", "0");
 
-		overrides.put("Component.focusWidth", "0");
-		overrides.put("Component.innerFocusWidth", "0");
+			overrides.put("Component.focusWidth", "0");
+			overrides.put("Component.innerFocusWidth", "0");
 
-		overrides.put("ScrollBar.width", "7");
+			overrides.put("ScrollBar.width", "7");
 
-		overrides.put("Table.showHorizontalLines", "true");
-		overrides.put("Table.showVerticalLines", "true");
+			overrides.put("Table.showHorizontalLines", "true");
+			overrides.put("Table.showVerticalLines", "true");
 
-		overrides.put("TabbedPane.contentOpaque", "false");
-		overrides.put("Tree.rendererFillBackground", "false");
+			overrides.put("TabbedPane.contentOpaque", "false");
+			overrides.put("Tree.rendererFillBackground", "false");
 
-		overrides.put("List.focusCellHighlightBorder", "0,0,0,0");
-		overrides.put("List.border", "0,0,0,0");
-		overrides.put("ScrollPane.border", "0,0,0,0");
-		overrides.put("Tree.border", "0,0,0,0");
-		overrides.put("SplitPane.border", "0,0,0,0");
+			overrides.put("List.focusCellHighlightBorder", "0,0,0,0");
+			overrides.put("List.border", "0,0,0,0");
+			overrides.put("ScrollPane.border", "0,0,0,0");
+			overrides.put("Tree.border", "0,0,0,0");
+			overrides.put("SplitPane.border", "0,0,0,0");
+		}
 
 		overrides.putAll(flatLafOverrides);
 	}
@@ -264,7 +268,7 @@ public class Theme {
 		if (colorScheme != null) {
 			return colorScheme.getSecondAltBackgroundColor();
 		} else {
-			return UIManager.getColor("Panel.background").darker();
+			return UIManager.getColor("Panel.background").darker().darker();
 		}
 	}
 
