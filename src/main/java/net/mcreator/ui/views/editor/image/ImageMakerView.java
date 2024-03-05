@@ -39,6 +39,8 @@ import net.mcreator.ui.views.editor.image.canvas.SelectedBorder;
 import net.mcreator.ui.views.editor.image.clipboard.ClipboardManager;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
+import net.mcreator.ui.views.editor.image.metadata.MetadataManager;
+import net.mcreator.ui.views.editor.image.metadata.MetadataOutdatedException;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
 import net.mcreator.ui.views.editor.image.versioning.VersionManager;
 import net.mcreator.ui.workspace.resources.TextureType;
@@ -54,6 +56,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -194,38 +197,67 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	public void openInEditMode(File image) {
 		try {
 			this.image = image;
-			Layer layer = Layer.toLayer(ImageIO.read(image), image.getName());
-			canvas = new Canvas(layer.getWidth(), layer.getHeight(), layerPanel, versionManager);
-			canvasRenderer.setCanvas(canvas);
-			toolPanel.setCanvas(canvas);
-			canvas.add(layer);
+			try {
+				loadCanvasFromObject(MetadataManager.loadCanvasForFile(mcreator.getWorkspace(), image));
+			} catch (NullPointerException e) {
+				loadCanvasFromBufferedImage(ImageIO.read(image));
+			} catch (MetadataOutdatedException e) {
+				Canvas old = e.getCanvas();
+				if (old != null) {
+					String[] options = { L10N.t("dialog.image_maker.load_old_version"),
+							L10N.t("dialog.image_maker.load_new_version") };
+					int option = JOptionPane.showOptionDialog(mcreator, L10N.t("dialog.image_maker.metadata_outdated"),
+							L10N.t("dialog.image_maker.metadata_outdated.title"), JOptionPane.YES_NO_OPTION,
+							JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+					if (option == 1) {
+						loadCanvasFromObject(old);
+					} else {
+						loadCanvasFromBufferedImage(ImageIO.read(image));
+					}
+				} else {
+					loadCanvasFromBufferedImage(ImageIO.read(image));
+				}
+			}
 			name = image.getName();
 			toolPanel.initTools();
 			updateInfoBar(0, 0);
 		} catch (IOException e) {
-			LOG.error(e.getMessage(), e);
+			LOG.warn("Failed to open image", e);
 		}
 	}
 
-	public void openInReadOnlyMode(FileNode image) {
-		String[] path = image.splitPath();
-		name = FilenameUtilsPatched.getName(path[1]);
-		canEdit = false;
-		Layer layer = Layer.toLayer(
-				Objects.requireNonNull(ZipIO.readFileInZip(new File(path[0]), path[1], (file, entry) -> {
-					try {
-						return ImageIO.read(file.getInputStream(entry));
-					} catch (IOException e) {
-						LOG.error(e.getMessage(), e);
-						return null;
-					}
-				}), "Could not read source image asset!"), name);
-		canvas = new Canvas(layer.getWidth(), layer.getHeight(), layerPanel, versionManager);
+	private void loadCanvasFromObject(Canvas canvas) {
 		canvasRenderer.setCanvas(canvas);
 		toolPanel.setCanvas(canvas);
+	}
+
+	private void loadCanvasFromBufferedImage(BufferedImage bufferedImage) throws IOException {
+		Layer layer = Layer.toLayer(bufferedImage, image.getName());
+		canvas = new Canvas(layer.getWidth(), layer.getHeight(), layerPanel, versionManager);
+		loadCanvasFromObject(canvas);
 		canvas.add(layer);
-		toolPanel.initTools();
-		updateInfoBar(0, 0);
+	}
+
+	public void openInReadOnlyMode(FileNode image) {
+		try {
+			String[] path = image.splitPath();
+			canEdit = false;
+
+			loadCanvasFromBufferedImage(
+					Objects.requireNonNull(ZipIO.readFileInZip(new File(path[0]), path[1], (file, entry) -> {
+						try {
+							return ImageIO.read(file.getInputStream(entry));
+						} catch (IOException e) {
+							LOG.error(e.getMessage(), e);
+							return null;
+						}
+					}), "Could not read source image asset!"));
+			name = FilenameUtilsPatched.getName(path[1]);
+			toolPanel.initTools();
+			updateInfoBar(0, 0);
+		} catch (IOException e) {
+			LOG.warn("Failed to open image", e);
+		}
 	}
 
 	public void setSaveLocation(File location) {
@@ -238,6 +270,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		try {
 			if (image != null) {
 				ImageIO.write(canvasRenderer.render(), FilenameUtilsPatched.getExtension(image.toString()), image);
+				MetadataManager.saveCanvas(mcreator.getWorkspace(), image, canvas);
+
 				this.name = image.getName();
 
 				//reload image in java cache
@@ -291,6 +325,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 							L10N.t("dialog.image_maker.resource_error"), JOptionPane.ERROR_MESSAGE);
 				} else {
 					FileIO.writeImageToPNGFile(ImageUtils.toBufferedImage(image), exportFile);
+					MetadataManager.saveCanvas(mcreator.getWorkspace(), exportFile, canvas);
 
 					// load image in java cache
 					new ImageIcon(exportFile.getAbsolutePath()).getImage().flush();
