@@ -32,9 +32,8 @@ import java.awt.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
+import java.util.Objects;
 
 /**
  * <p>A Theme can change images MCreator will use and redefine the colors and the style
@@ -82,8 +81,8 @@ public class Theme {
 				consoleFont = Font.createFont(Font.TRUETYPE_FONT, consoleFontStream);
 			} else {
 				// Default main front (from the default_dark theme)
-				consoleFont = Font.createFont(Font.TRUETYPE_FONT,
-						PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/console_font.ttf"));
+				consoleFont = Font.createFont(Font.TRUETYPE_FONT, Objects.requireNonNull(
+						PluginLoader.INSTANCE.getResourceAsStream("themes/default_dark/fonts/console_font.ttf")));
 				LOG.info("Console font from default_dark will be used.");
 			}
 			consoleFont = consoleFont.deriveFont(12.0f);
@@ -100,14 +99,15 @@ public class Theme {
 	}
 
 	public void applyFlatLafOverrides(Map<String, String> overrides) {
-		overrides.put("@accentColor", formatColor(Theme.current().getInterfaceAccentColor()));
-
-		overrides.put("@background", formatColor(Theme.current().getBackgroundColor()));
-		overrides.put("@foreground", formatColor(Theme.current().getForegroundColor()));
-		overrides.put("@disabledBackground", formatColor(Theme.current().getBackgroundColor()));
-		overrides.put("@disabledForeground", formatColor(Theme.current().getAltForegroundColor()));
-		overrides.put("@selectionInactiveBackground", "@accentSelectionBackground");
-		overrides.put("@selectionInactiveForeground", "@selectionForeground");
+		if (colorScheme != null) {
+			overrides.put("@accentColor", formatColor(Theme.current().getInterfaceAccentColor()));
+			overrides.put("@background", formatColor(Theme.current().getBackgroundColor()));
+			overrides.put("@foreground", formatColor(Theme.current().getForegroundColor()));
+			overrides.put("@disabledBackground", formatColor(Theme.current().getBackgroundColor()));
+			overrides.put("@disabledForeground", formatColor(Theme.current().getAltForegroundColor()));
+			overrides.put("@selectionInactiveBackground", "@accentSelectionBackground");
+			overrides.put("@selectionInactiveForeground", "@selectionForeground");
+		}
 
 		overrides.put("Button.arc", "0");
 		overrides.put("Component.arc", "0");
@@ -212,18 +212,6 @@ public class Theme {
 	}
 
 	/**
-	 * <p>This methods gets the {@link ColorScheme} to use with the theme</p>
-	 *
-	 * @return Returns the {@link ColorScheme} of the Theme if one is defined. If the Theme does not create a new {@link ColorScheme}, the Dark's theme {@link ColorScheme} will be used.
-	 */
-	public ColorScheme getColorScheme() {
-		if (colorScheme != null)
-			return colorScheme;
-		else
-			return ThemeManager.getTheme("default_dark").getColorScheme();
-	}
-
-	/**
 	 * This icon is only with {@link net.mcreator.ui.dialogs.preferences.ThemesPanel}.
 	 *
 	 * @return <p>An {@link ImageIcon} representing the plugin.</p>
@@ -251,42 +239,66 @@ public class Theme {
 	 * @return Background of UI panels
 	 */
 	public Color getBackgroundColor() {
-		return getColorScheme().getBackgroundColor();
+		if (colorScheme != null) {
+			return colorScheme.getBackgroundColor();
+		} else {
+			return UIManager.getColor("Panel.background");
+		}
 	}
 
 	/**
 	 * @return Background of components (e.g. text fields, checkboxes and sound selectors)
 	 */
 	public Color getAltBackgroundColor() {
-		return getColorScheme().getAltBackgroundColor();
+		if (colorScheme != null) {
+			return colorScheme.getAltBackgroundColor();
+		} else {
+			return UIManager.getColor("Panel.background").brighter();
+		}
 	}
 
 	/**
 	 * @return Second background color used (e.g. workspace background)
 	 */
 	public Color getSecondAltBackgroundColor() {
-		return getColorScheme().getSecondAltBackgroundColor();
-	}
-
-	/**
-	 * @return <p>Secondary text color </p>
-	 */
-	public Color getAltForegroundColor() {
-		return getColorScheme().getAltForegroundColor();
+		if (colorScheme != null) {
+			return colorScheme.getSecondAltBackgroundColor();
+		} else {
+			return UIManager.getColor("Panel.background").darker();
+		}
 	}
 
 	/**
 	 * @return <p>Color used for most of texts </p>
 	 */
 	public Color getForegroundColor() {
-		return getColorScheme().getForegroundColor();
+		if (colorScheme != null) {
+			return colorScheme.getForegroundColor();
+		} else {
+			return UIManager.getColor("Panel.foreground");
+		}
+	}
+
+	/**
+	 * @return <p>Secondary text color </p>
+	 */
+	public Color getAltForegroundColor() {
+		if (colorScheme != null) {
+			return colorScheme.getAltForegroundColor();
+		} else {
+			return UIManager.getColor("Panel.foreground").darker();
+		}
 	}
 
 	/**
 	 * @return <p>Returns the interfaceAccentColor if defined by theme, otherwise the one defined by the user in {@link PreferencesData}</p>
 	 */
 	public Color getInterfaceAccentColor() {
-		return getColorScheme().getInterfaceAccentColor();
+		if (colorScheme != null) {
+			return colorScheme.getInterfaceAccentColor();
+		} else {
+			return UIManager.getColor("Component.accentColor").darker();
+		}
 	}
 
 	private static String formatColor(Color color) {

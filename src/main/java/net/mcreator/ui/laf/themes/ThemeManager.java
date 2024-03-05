@@ -20,6 +20,7 @@
 package net.mcreator.ui.laf.themes;
 
 import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.IntelliJTheme;
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
@@ -32,10 +33,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import java.io.File;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -62,8 +60,15 @@ public class ThemeManager {
 			theme.applyFlatLafOverrides(flatLafDefaults);
 			FlatLaf.setGlobalExtraDefaults(flatLafDefaults);
 
-			FlatLaf laf = (FlatLaf) Class.forName("com.formdev.flatlaf." + theme.getFlatLafTheme()).getConstructor()
-					.newInstance();
+			FlatLaf laf;
+			String themeName = theme.getFlatLafTheme();
+			if (themeName.endsWith(".json")) {
+				laf = IntelliJTheme.createLaf(Objects.requireNonNull(
+						PluginLoader.INSTANCE.getResourceAsStream("themes/" + theme.getID() + "/" + themeName)));
+			} else {
+				laf = (FlatLaf) Class.forName("com.formdev.flatlaf." + themeName).getConstructor().newInstance();
+			}
+
 			UIManager.setLookAndFeel(laf);
 
 			theme.applyUIDefaultsOverrides(UIManager.getDefaults());
