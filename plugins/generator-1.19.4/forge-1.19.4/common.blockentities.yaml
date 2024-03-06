@@ -1,3 +1,0 @@
-global_templates:
-  - template: elementinits/blockentities.java.ftl
-    name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBlockEntities.java"
