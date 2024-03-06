@@ -8,11 +8,3 @@ templates:
   - template: structure/template_pool.json.ftl
     writer: json
     name: "@MODDATAROOT/worldgen/template_pool/@registryname.json"
-
-list_templates:
-  - name: "Jigsaw pools"
-    listData: data.jigsawPools
-    forEach:
-      - template: structure/template_pool.json.ftl
-        writer: json
-        name: "@MODDATAROOT/worldgen/template_pool/@registryname_@[item.poolName].json"
