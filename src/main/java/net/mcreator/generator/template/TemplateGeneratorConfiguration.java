@@ -35,19 +35,16 @@ public class TemplateGeneratorConfiguration {
 	public TemplateGeneratorConfiguration(GeneratorConfiguration generatorConfiguration, String generatorSubfolder) {
 		configuration = new DefaultFreemarkerConfiguration();
 
-		List<String> templateLoaderPaths = new ArrayList<>();
-		templateLoaderPaths.add(generatorConfiguration.getGeneratorName());
-		templateLoaderPaths.addAll(generatorConfiguration.getImports());
-
 		List<TemplateLoader> templateLoaderList = new ArrayList<>();
-		for (String templateLoaderPath : templateLoaderPaths) {
-			ClassTemplateLoader baseLoader = new ClassTemplateLoader(PluginLoader.INSTANCE,
-					"/" + templateLoaderPath + "/" + generatorSubfolder + "/");
-			ClassTemplateLoader utilLoader = new ClassTemplateLoader(PluginLoader.INSTANCE,
-					"/" + templateLoaderPath + "/utils/");
 
-			templateLoaderList.add(baseLoader);
-			templateLoaderList.add(utilLoader);
+		// Load templates from the generator subfolder
+		for (String path : generatorConfiguration.getGeneratorPaths(generatorSubfolder)) {
+			templateLoaderList.add(new ClassTemplateLoader(PluginLoader.INSTANCE, "/" + path));
+		}
+
+		// Load templates from the utils subfolder
+		for (String path : generatorConfiguration.getGeneratorPaths("utils")) {
+			templateLoaderList.add(new ClassTemplateLoader(PluginLoader.INSTANCE, "/" + path));
 		}
 
 		configuration.setTemplateLoader(new MultiTemplateLoader(templateLoaderList.toArray(new TemplateLoader[0])));
