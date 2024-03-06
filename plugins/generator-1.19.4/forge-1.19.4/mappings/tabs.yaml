@@ -1,5 +1,6 @@
 _default: CreativeModeTabs.BUILDING_BLOCKS
 _mcreator_prefix: "CUSTOM:"
+No creative tab entry: null
 BUILDING_BLOCKS: CreativeModeTabs.BUILDING_BLOCKS
 DECORATIONS: CreativeModeTabs.NATURAL_BLOCKS
 REDSTONE: CreativeModeTabs.REDSTONE_BLOCKS
