@@ -59,8 +59,6 @@ import java.util.stream.Stream;
 	protected String credits;
 	protected String modElementsPackage;
 
-	private boolean lockBaseModFiles = false;
-
 	private transient Workspace workspace; // we should never serialize this!!
 
 	private static final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
@@ -83,7 +81,6 @@ import java.util.stream.Stream;
 		this.currentGenerator = other.currentGenerator;
 		this.credits = other.credits;
 		this.modElementsPackage = other.modElementsPackage;
-		this.lockBaseModFiles = other.lockBaseModFiles;
 
 		this.workspace = other.workspace;
 	}
@@ -242,14 +239,6 @@ import java.util.stream.Stream;
 		if (!currentGenerator.contains("-")) // pre 2020.3 compatibility
 			return "forge-" + currentGenerator;
 		return currentGenerator;
-	}
-
-	public boolean isLockBaseModFiles() {
-		return lockBaseModFiles;
-	}
-
-	public void setLockBaseModFiles(boolean lockBaseModFiles) {
-		this.lockBaseModFiles = lockBaseModFiles;
 	}
 
 	public String getModElementsPackage() {
