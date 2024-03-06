@@ -49,7 +49,7 @@ import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
-import net.mcreator.workspace.MissingWorkspacePluginsException;
+import net.mcreator.workspace.MissingGeneratorFeaturesException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -131,7 +131,7 @@ public final class MCreatorApplication {
 			ImageMakerTexturesCache.init();
 			ArmorMakerTexturesCache.init();
 
-			splashScreen.setProgress(55, "Loading plugin templates");
+			splashScreen.setProgress(55, "Loading plugin data");
 
 			// load apis defined by plugins after plugins are loaded
 			ModAPIManager.initAPIs();
@@ -143,6 +143,8 @@ public final class MCreatorApplication {
 			BlocklyJavaScriptsLoader.init();
 			BlocklyToolboxesLoader.init();
 
+			splashScreen.setProgress(60, "Processing plugin data");
+
 			// load blockly blocks after plugins are loaded
 			BlocklyLoader.init();
 
@@ -151,9 +153,6 @@ public final class MCreatorApplication {
 
 			// register mod element types
 			ModElementTypeLoader.loadModElements();
-
-			splashScreen.setProgress(60, "Preloading resources");
-			TiledImageCache.loadTileImages();
 
 			splashScreen.setProgress(70, "Loading generators");
 
@@ -321,7 +320,7 @@ public final class MCreatorApplication {
 				reportFailedWorkspaceOpen(
 						new IOException("Corrupted workspace file and no backups found", corruptedWorkspaceFile));
 			}
-		} catch (MissingWorkspacePluginsException e) {
+		} catch (MissingGeneratorFeaturesException e) {
 			LOG.error("Failed to open workspace due to missing plugins", e);
 		} catch (IOException | UnsupportedGeneratorException e) {
 			LOG.error("Failed to open workspace!", e);

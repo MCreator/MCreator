@@ -78,9 +78,9 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 			addToolBarButton("action.workspace.resources.import_obj_mtl_model", UIRES.get("16px.importobjmodel"),
 					e -> workspacePanel.getMCreator().actionRegistry.importOBJModel.doAction());
 
-		addToolBarButton("workspace.3dmodels.edit_texture_mappings", UIRES.get("16px.edit.gif"),
+		addToolBarButton("workspace.3dmodels.edit_texture_mappings", UIRES.get("16px.edit"),
 				e -> editSelectedModelTextureMappings());
-		addToolBarButton("workspace.3dmodels.redefine_animations", UIRES.get("16px.edit.gif"),
+		addToolBarButton("workspace.3dmodels.redefine_animations", UIRES.get("16px.edit"),
 				e -> editSelectedModelAnimations());
 		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			if (!elementList.isSelectionEmpty()) {
@@ -95,7 +95,7 @@ public class WorkspacePanelModels extends AbstractResourcePanel<Model> {
 						L10N.t("dialog.search_usages.type.resource.model"), refs);
 			}
 		});
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"), e -> deleteCurrentlySelected());
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> deleteCurrentlySelected());
 	}
 
 	@Override void deleteCurrentlySelected() {

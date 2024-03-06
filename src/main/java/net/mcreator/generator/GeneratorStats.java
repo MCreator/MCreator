@@ -160,13 +160,9 @@ public class GeneratorStats {
 	 * @param type      The {@link BlocklyEditorType} we want to add a folder for
 	 */
 	public void addBlocklyFolder(GeneratorConfiguration genConfig, BlocklyEditorType type) {
-		List<String> templateLoaderPaths = new ArrayList<>();
-		templateLoaderPaths.add(genConfig.getGeneratorName());
-		templateLoaderPaths.addAll(genConfig.getImports());
-
 		Set<String> blocks = new HashSet<>();
-		for (String path : templateLoaderPaths) {
-			blocks.addAll(PluginLoader.INSTANCE.getResources(path + "." + type.registryName(), ftlFile).stream()
+		for (String path : genConfig.getGeneratorPaths(type.registryName())) {
+			blocks.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
 					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
 					.filter(e -> !e.startsWith("_")).collect(Collectors.toSet()));
 		}
@@ -179,12 +175,8 @@ public class GeneratorStats {
 	}
 
 	public void addGlobalTriggerFolder(GeneratorConfiguration genConfig) {
-		List<String> templateLoaderPaths = new ArrayList<>();
-		templateLoaderPaths.add(genConfig.getGeneratorName());
-		templateLoaderPaths.addAll(genConfig.getImports());
-
-		for (String path : templateLoaderPaths) {
-			procedureTriggers.addAll(PluginLoader.INSTANCE.getResources(path + ".triggers", ftlFile).stream()
+		for (String path : genConfig.getGeneratorPaths("triggers")) {
+			procedureTriggers.addAll(PluginLoader.INSTANCE.getResources(path.replace('/', '.'), ftlFile).stream()
 					.map(FilenameUtilsPatched::getBaseName).map(FilenameUtilsPatched::getBaseName)
 					.collect(Collectors.toSet()));
 		}

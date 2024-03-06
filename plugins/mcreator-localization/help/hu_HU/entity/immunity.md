@@ -1,0 +1,1 @@
+Az itt kiválasztott támadástípusok nem befolyásolják a mobot.

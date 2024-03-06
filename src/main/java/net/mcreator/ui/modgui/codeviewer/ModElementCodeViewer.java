@@ -73,7 +73,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		});
 
 		// we group list templates inside separate tabs to improve UX
-		ImageIcon enabledListIcon = UIRES.get("16px.list.gif");
+		ImageIcon enabledListIcon = UIRES.get("16px.list");
 		ImageIcon disabledListIcon = ImageUtils.changeSaturation(enabledListIcon, 0);
 		modElementGUI.getModElement().getGenerator().getModElementListTemplates(modElementGUI.getElementFromGUI())
 				.stream().map(GeneratorTemplatesList::groupName).forEach(listName -> {

@@ -70,7 +70,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 		for (GeneratorTemplatesList list : modElementListFiles) {
 			if (!list.templates().isEmpty()) {
 				JMenu listMenu = new JMenu(list.groupName());
-				listMenu.setIcon(UIRES.get("16px.list.gif"));
+				listMenu.setIcon(UIRES.get("16px.list"));
 				listMenu.setBackground((Theme.current().getAltBackgroundColor()).darker());
 				listMenu.setForeground(Theme.current().getForegroundColor());
 				listMenu.setIconTextGap(8);

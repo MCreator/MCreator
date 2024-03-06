@@ -1,0 +1,1 @@
+Bu koşul, zırh parçasının altın zırh gibi yakındaki piglinleri nötr hale getirip getirmediğini kontrol eder.

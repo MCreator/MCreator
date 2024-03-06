@@ -124,13 +124,9 @@ public class ConsolePane extends JTextPane {
 
 	private String parseSimpleAttributeSetToCSS(SimpleAttributeSet set) {
 		Color fgund = StyleConstants.getForeground(set);
-		Color bgund = StyleConstants.getBackground(set);
-		int fsize = StyleConstants.getFontSize(set);
 		String fg = "color:rgb(" + fgund.getRed() + "," + fgund.getGreen() + "," + fgund.getBlue() + ");";
-		String bg = "background-color:rgb(" + bgund.getRed() + "," + bgund.getGreen() + "," + bgund.getBlue() + ");";
-		return "style=\"" + (StyleConstants.isUnderline(set) ? "text-decoration:underline;" : "") + "font-size:" + fsize
-				+ "px;" + fg + bg + "cursor:text;white-space:nowrap;font-family:'" + getFont().getFamily() + "';"
-				+ "\"";
+		return "style=\"" + (StyleConstants.isUnderline(set) ? "text-decoration:underline;" : "") + fg
+				+ "cursor:text;white-space:nowrap;font-size:9px;\"";
 	}
 
 }

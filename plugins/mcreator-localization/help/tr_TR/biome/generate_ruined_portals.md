@@ -1,0 +1,1 @@
+Bu ayar, biyomunuzun içinde yıkık portallar oluşturmanıza olanak tanır.

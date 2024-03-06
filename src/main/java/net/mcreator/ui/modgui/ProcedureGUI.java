@@ -370,14 +370,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		JLabel lab = L10N.label("elementgui.procedure.local_variables");
 		lab.setToolTipText(L10N.t("elementgui.procedure.local_variables"));
 
-		JButton addvar = new JButton(UIRES.get("16px.add.gif"));
+		JButton addvar = new JButton(UIRES.get("16px.add"));
 		addvar.setContentAreaFilled(false);
 		addvar.setOpaque(false);
 		ComponentUtils.deriveFont(addvar, 11);
 		addvar.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 2));
 		bar.add(addvar);
 
-		JButton remvar = new JButton(UIRES.get("16px.delete.gif"));
+		JButton remvar = new JButton(UIRES.get("16px.delete"));
 		remvar.setContentAreaFilled(false);
 		remvar.setOpaque(false);
 		ComponentUtils.deriveFont(remvar, 11);
@@ -603,12 +603,19 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		// this procedure could be in use and new dependencies were added
 		if (isEditingMode() && dependenciesChanged)
-			regenerateProcedureCallers(modElement, modElement);
+			regenerateProcedureCallers(modElement, new Stack<>());
 
 		dependenciesBeforeEdit = dependenciesArrayList;
 	}
 
-	private void regenerateProcedureCallers(ModElement procedure, ModElement recursionLock) {
+	private void regenerateProcedureCallers(ModElement procedure, Stack<ModElement> recursionLock) {
+		// if there are at least two more procedures referencing each other, with one of them and the current one
+		// calling each other as well, regenerating current procedure would result into circular regeneration
+		// of the other two procedures because neither of them triggered the action
+		// we avoid that by stacking all the elements checked before so that current procedure doesn't regenerate twice
+		if (recursionLock.contains(procedure))
+			return; // skip the procedure if it was handled earlier
+		recursionLock.push(procedure); // otherwise, add it to the list of checked elements
 		for (ModElement element : ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), procedure)) {
 			// if this mod element is not locked and has procedures, we try to update dependencies
 			// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
@@ -618,11 +625,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				mcreator.getGenerator().generateElement(element.getGeneratableElement());
 
 				// Procedure may call other procedures that also need updating
-				if (element.getType() == ModElementType.PROCEDURE && !element.equals(recursionLock)) {
+				if (element.getType() == ModElementType.PROCEDURE) {
 					regenerateProcedureCallers(element, recursionLock);
 				}
 			}
 		}
+		recursionLock.pop(); // remove the element after checking all referencing procedures
 	}
 
 	@Override public void openInEditingMode(net.mcreator.element.types.Procedure procedure) {
