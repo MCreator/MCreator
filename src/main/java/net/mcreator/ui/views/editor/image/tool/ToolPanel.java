@@ -78,7 +78,7 @@ public class ToolPanel extends JSplitPane {
 		JPanel toolsAndColor = new JPanel(new BorderLayout());
 		toolsAndColor.add(toolGroups, BorderLayout.CENTER);
 		toolsAndColor.add(cswrap, BorderLayout.SOUTH);
-		toolsAndColor.setMinimumSize(new Dimension(220, 360));
+		toolsAndColor.setMinimumSize(new Dimension(230, 360));
 
 		setBackground(Theme.current().getSecondAltBackgroundColor());
 
