@@ -125,7 +125,6 @@ public class WorkspaceFileBrowser extends JPanel {
 		cornerDummy2.setBackground(Theme.current().getBackgroundColor());
 		jsp.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy2);
 
-
 		jsp.setBorder(BorderFactory.createMatteBorder(5, 5, 0, 0, Theme.current().getBackgroundColor()));
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
