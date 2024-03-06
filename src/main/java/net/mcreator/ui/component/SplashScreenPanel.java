@@ -22,15 +22,18 @@ import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BaseMultiResolutionImage;
 
 public class SplashScreenPanel extends JPanel {
 
 	private Image img, shadow, crop;
-	private int cornerRadius;
-	private int shadowRadius;
-	private int extendBorder;
-	private boolean snapshot;
-	private Color snapshotColor;
+
+	private final int cornerRadius;
+	private final int shadowRadius;
+	private final int extendBorder;
+
+	private final boolean snapshot;
+	private final Color snapshotColor;
 
 	public SplashScreenPanel(Image img, int cornerRadius, int shadowRadius, int extendBorder, boolean snapshot,
 			Color snapshotColor) {
@@ -68,14 +71,19 @@ public class SplashScreenPanel extends JPanel {
 	}
 
 	private void regenerateEffects() {
-		shadow = ImageUtils.generateShadow(cornerRadius, shadowRadius, extendBorder, getImageSize().width,
-				getImageSize().height);
-		if (snapshot)
-			crop = ImageUtils.generateSquircle(snapshotColor, 2, cornerRadius, getImageSize().width,
-					getImageSize().height, this);
-		else
+		int width = getImageSize().width;
+		int height = getImageSize().height;
 
-			crop = ImageUtils.cropSquircle(img, 2, cornerRadius, getImageSize().width, getImageSize().height, this);
+		shadow = new BaseMultiResolutionImage(
+				ImageUtils.generateShadow(cornerRadius, shadowRadius, extendBorder, width, height),
+				ImageUtils.generateShadow(cornerRadius * 2, shadowRadius * 2, extendBorder * 2, width * 2, height * 2));
+		if (snapshot)
+			crop = new BaseMultiResolutionImage(
+					ImageUtils.generateSquircle(snapshotColor, 2, cornerRadius, width, height, this),
+					ImageUtils.generateSquircle(snapshotColor, 2, cornerRadius * 2, width * 2, height * 2, this));
+		else
+			crop = new BaseMultiResolutionImage(ImageUtils.cropSquircle(img, 2, cornerRadius, width, height, this),
+					ImageUtils.cropSquircle(img, 2, cornerRadius * 2, width * 2, height * 2, this));
 	}
 
 	@Override public void paintComponent(Graphics g) {

@@ -199,7 +199,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add.gif"), e -> {
+		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add"), e -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
@@ -219,7 +219,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
+		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
 				e -> deleteCurrentlySelected()));
 
 		bar.add(createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {

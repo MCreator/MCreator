@@ -157,8 +157,8 @@ public class ArmorPackMakerTool {
 		armor.toughness = 0;
 		armor.knockbackResistance = 0;
 		armor.damageValueHelmet = (int) Math.round(2 * factor);
-		armor.damageValueBody = (int) Math.round(5 * factor);
-		armor.damageValueLeggings = (int) Math.round(6 * factor);
+		armor.damageValueBody = (int) Math.round(6 * factor);
+		armor.damageValueLeggings = (int) Math.round(5 * factor);
 		armor.damageValueBoots = (int) Math.round(2 * factor);
 		armor.repairItems = Collections.singletonList(base);
 		PackMakerToolUtils.addGeneratableElementToWorkspace(workspace, folder, armor);

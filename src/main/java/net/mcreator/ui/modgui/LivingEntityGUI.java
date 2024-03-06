@@ -777,7 +777,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		bpb.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.living_entity.ai_tasks"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
-				getFont(), Color.white));
+				getFont(), Theme.current().getForegroundColor()));
 		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.AI_TASK,
 				blocklyPanel);
 		blocklyEditorToolbar.setTemplateLibButtonWidth(156);

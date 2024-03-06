@@ -64,7 +64,7 @@ public class ListEditorDialog {
 		if (entryList.isEmpty())
 			new ListEntry(entryList, entries, "", validator, uniqueEntries);
 
-		JButton add = new JButton(UIRES.get("16px.add.gif"));
+		JButton add = new JButton(UIRES.get("16px.add"));
 		add.setText(L10N.t("dialog.list_editor.add"));
 		add.addActionListener(e -> new ListEntry(entryList, entries, "", validator, uniqueEntries));
 
