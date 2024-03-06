@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2024, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,32 +17,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.component;
+package net.mcreator.util;
 
-import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.util.ColorUtils;
-
-import javax.swing.*;
 import java.awt.*;
 
-public class TransparentToolBar extends JToolBar {
+public class ColorUtils {
 
-	private final Color c;
-
-	public TransparentToolBar() {
-		this(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
+	public static String formatColor(Color color) {
+		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 	}
 
-	public TransparentToolBar(Color c) {
-		this.c = c;
-		setFloatable(false);
-		setOpaque(false);
-	}
-
-	@Override public void paintComponent(Graphics g) {
-		g.setColor(c);
-		g.fillRect(0, 0, getWidth(), getHeight());
-		super.paintComponent(g);
+	public static Color applyAlpha(Color color, int alpha) {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
 	}
 
 }

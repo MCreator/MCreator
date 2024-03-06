@@ -53,6 +53,7 @@ import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
+import net.mcreator.util.ColorUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
@@ -540,8 +541,7 @@ import java.util.stream.Collectors;
 		JPanel filterSort = new JPanel(new GridLayout(1, 2, 0, 0));
 		filterSort.setOpaque(false);
 
-		search.setBackground(new Color(search.getBackground().getRed(), search.getBackground().getGreen(),
-				search.getBackground().getBlue(), 150));
+		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 150));
 		search.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, filterSort);
 		search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 
@@ -732,7 +732,7 @@ import java.util.stream.Collectors;
 
 		JPanel toolp = new JPanel(new BorderLayout(0, 0)) {
 			@Override public void paintComponent(Graphics g) {
-				g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
+				g.setColor(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
 				g.fillRect(0, 0, getWidth(), getHeight());
 				super.paintComponent(g);
 			}

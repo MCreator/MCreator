@@ -259,8 +259,6 @@ public class MainMenuBar extends JMenuBar {
 	private void addHelpSearch(JMenu help) {
 		JTextField searchField = new JTextField(20) {
 			@Override public void paintComponent(Graphics g) {
-				g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
-				g.fillRect(0, 0, getWidth(), getHeight());
 				super.paintComponent(g);
 				g.setColor(new Color(0x9C9C9C));
 				g.setFont(getFont().deriveFont(11.0f));
@@ -268,7 +266,6 @@ public class MainMenuBar extends JMenuBar {
 					g.drawString(L10N.t("menubar.help.search.tooltip"), 28, 14);
 			}
 		};
-		searchField.setOpaque(true);
 		ComponentUtils.deriveFont(searchField, 13);
 		searchField.setBorder(BorderFactory.createEmptyBorder(1, 28, 1, 0));
 		searchField.addKeyListener(new KeyAdapter() {

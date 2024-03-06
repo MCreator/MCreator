@@ -23,6 +23,7 @@ import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.data.PreferencesData;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.util.ColorUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -102,11 +103,11 @@ public class Theme {
 
 	public void applyFlatLafOverrides(Map<String, String> overrides) {
 		if (colorScheme != null) {
-			overrides.put("@accentColor", formatColor(Theme.current().getInterfaceAccentColor()));
-			overrides.put("@background", formatColor(Theme.current().getBackgroundColor()));
-			overrides.put("@foreground", formatColor(Theme.current().getForegroundColor()));
-			overrides.put("@disabledBackground", formatColor(Theme.current().getBackgroundColor()));
-			overrides.put("@disabledForeground", formatColor(Theme.current().getAltForegroundColor()));
+			overrides.put("@accentColor", ColorUtils.formatColor(Theme.current().getInterfaceAccentColor()));
+			overrides.put("@background", ColorUtils.formatColor(Theme.current().getBackgroundColor()));
+			overrides.put("@foreground", ColorUtils.formatColor(Theme.current().getForegroundColor()));
+			overrides.put("@disabledBackground", ColorUtils.formatColor(Theme.current().getBackgroundColor()));
+			overrides.put("@disabledForeground", ColorUtils.formatColor(Theme.current().getAltForegroundColor()));
 			overrides.put("@selectionInactiveBackground", "@accentSelectionBackground");
 			overrides.put("@selectionInactiveForeground", "@selectionForeground");
 		}
@@ -303,10 +304,6 @@ public class Theme {
 		} else {
 			return UIManager.getColor("Component.accentColor").darker();
 		}
-	}
-
-	private static String formatColor(Color color) {
-		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 	}
 
 }

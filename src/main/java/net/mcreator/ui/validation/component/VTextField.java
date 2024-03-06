@@ -23,6 +23,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.util.ColorUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -100,7 +101,7 @@ public class VTextField extends JTextField implements IValidable {
 			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
 					|| currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
 				Color old = g.getColor();
-				g.setColor(new Color(old.getRed(), old.getGreen(), old.getBlue(), 40));
+				g.setColor(ColorUtils.applyAlpha(old, 40));
 				g.fillRect(1, 1, getWidth() - 2, getHeight() - 2);
 			}
 		}

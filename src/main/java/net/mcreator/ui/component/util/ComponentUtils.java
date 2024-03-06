@@ -23,7 +23,6 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -55,8 +54,9 @@ public class ComponentUtils {
 		deriveFont(button, 11);
 	}
 
-	public static void normalizeButton5(AbstractButton button) {
-		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x5B6452), 1),
+	public static void normalizeButton5(AbstractButton button, boolean rightBorder) {
+		button.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(1, 1, 1, rightBorder ? 1 : 0, new Color(0x5B6452)),
 				BorderFactory.createMatteBorder(1, 3, 1, 3, new Color(0, 0, 0, 0))));
 		button.setBackground(new Color(0, 0, 0, 0));
 		button.setOpaque(false);

@@ -23,6 +23,7 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.ColorUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -64,7 +65,7 @@ public class CompileNotesPanel extends JPanel {
 	}
 
 	@Override public void paintComponent(Graphics g) {
-		g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.65f));
+		g.setColor(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 160));
 		g.fillRect(0, 0, getWidth(), getHeight());
 		super.paintComponent(g);
 	}

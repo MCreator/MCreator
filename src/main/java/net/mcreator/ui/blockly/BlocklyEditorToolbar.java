@@ -37,6 +37,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ProcedureGUI;
+import net.mcreator.util.ColorUtils;
 import net.mcreator.workspace.elements.VariableElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -98,17 +99,10 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				templateDropdown.show(e.getComponent(), e.getComponent().getWidth(), 0);
 			}
 		});
-		ComponentUtils.normalizeButton5(templateLib);
 
 		search = new JTextField() {
 			@Override public void paintComponent(Graphics g) {
-				Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
-				g.fillRect(0, 0, getWidth(), getHeight());
 				super.paintComponent(g);
-				g.setColor(new Color(0.4f, 0.4f, 0.4f, 0.3f));
-				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
 				if (getText().isEmpty()) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
@@ -116,6 +110,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				}
 			}
 		};
+		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 100));
 
 		if (procedureGUI != null) {
 			search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
@@ -146,6 +141,9 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			component.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
 			add(component);
 
+			ComponentUtils.normalizeButton5(templateLib, false);
+		} else {
+			ComponentUtils.normalizeButton5(templateLib, true);
 		}
 
 		add(Box.createHorizontalGlue());
