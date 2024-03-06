@@ -183,10 +183,18 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				new ArrayList<>();
 	}
 
-	public List<String> getImports() {
+	private List<String> getImports() {
 		return (generatorConfig.get("import") != null) ?
 				((List<?>) generatorConfig.get("import")).stream().map(Object::toString).toList() :
 				new ArrayList<>();
+	}
+
+	public Collection<String> getGeneratorPaths(String subpath) {
+		List<String> paths = new ArrayList<>();
+		// load generator first as the current generator has the highest priority
+		paths.add(generatorName + "/" + subpath);
+		paths.addAll(getImports().stream().map(s -> s + "/" + subpath).collect(Collectors.toSet()));
+		return paths;
 	}
 
 	public GeneratorFlavor getGeneratorFlavor() {
