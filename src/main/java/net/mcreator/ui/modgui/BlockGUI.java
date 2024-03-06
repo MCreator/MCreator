@@ -402,6 +402,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 				hasGravity.setSelected(false);
 				rotationMode.setSelectedIndex(0);
+				isWaterloggable.setSelected(false);
 
 				if (!isEditingMode()) {
 					lightOpacity.setValue(0);

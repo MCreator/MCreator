@@ -41,12 +41,12 @@ public class StringCompletitionProvider extends DefaultCompletionProvider {
 					+ ".<br><br>EN text for this entry: " + enLangMap.get(localKeyTest);
 			addCompletion(new BasicCompletion(this, langKey, "Localization text short key", summary) {
 				@Override public Icon getIcon() {
-					return UIRES.get("16px.large.gif");
+					return UIRES.get("16px.large");
 				}
 			});
 			addCompletion(new BasicCompletion(this, localKeyTest, "Localization text key", summary) {
 				@Override public Icon getIcon() {
-					return UIRES.get("16px.large.gif");
+					return UIRES.get("16px.large");
 				}
 			});
 		}

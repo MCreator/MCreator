@@ -1,1 +1,0 @@
-(StringArgumentType.getString(arguments, "${field$param}"))

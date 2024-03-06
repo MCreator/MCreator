@@ -32,13 +32,17 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Potion extends GeneratableElement {
+@SuppressWarnings("unused") public class Potion extends GeneratableElement {
 
 	public String potionName;
 	public String splashName;
 	public String lingeringName;
 	public String arrowName;
 	@ModElementReference public List<CustomEffectEntry> effects;
+
+	private Potion() {
+		this(null);
+	}
 
 	public Potion(ModElement element) {
 		super(element);

@@ -57,7 +57,7 @@ class PluginsPanel {
 		JPanel opts = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		JButton add = L10N.button("dialog.preferences.load_plugins");
-		add.setIcon(UIRES.get("16px.add.gif"));
+		add.setIcon(UIRES.get("16px.add"));
 		opts.add(add);
 		opts.add(new JEmptyBox(5, 5));
 
@@ -82,7 +82,7 @@ class PluginsPanel {
 
 		JButton openPluginFolder = L10N.button("dialog.preferences.open_folder",
 				L10N.t("dialog.preferences.plugins").toLowerCase());
-		openPluginFolder.setIcon(UIRES.get("16px.open.gif"));
+		openPluginFolder.setIcon(UIRES.get("16px.open"));
 		opts.add(openPluginFolder);
 		opts.add(new JEmptyBox(5, 5));
 

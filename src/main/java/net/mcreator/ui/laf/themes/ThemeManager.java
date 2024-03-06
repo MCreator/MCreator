@@ -23,7 +23,6 @@ import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.LafUtil;
 import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.image.ImageUtils;
@@ -33,6 +32,7 @@ import org.apache.logging.log4j.Logger;
 import javax.swing.*;
 import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.io.File;
+import java.net.URL;
 import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -53,9 +53,7 @@ public class ThemeManager {
 	/**
 	 * This method loads all {@link Theme}s and sets the current theme to the one selected by the user.
 	 */
-	public static void init() {
-		loadThemes();
-
+	public static void applySelectedTheme() {
 		try {
 			MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
 			UIManager.setLookAndFeel(new MetalLookAndFeel());
@@ -69,7 +67,7 @@ public class ThemeManager {
 	/**
 	 * <p>This method loads the {@link Theme} of all plugins loaded into the current {@link net.mcreator.plugin.PluginLoader} instance.</p>
 	 */
-	private static void loadThemes() {
+	public static void loadThemes() {
 		LOG.debug("Loading UI themes");
 
 		// Load all themes
@@ -80,10 +78,9 @@ public class ThemeManager {
 			// Initialize the theme and ID - the ID will be used to get images from this theme if the user select it.
 			theme.id = new File(file).getParentFile().getName();
 
-			// Load the custom icon if provided, otherwise load the default one
-			if (PluginLoader.INSTANCE.getResource("themes/" + theme.getID() + "/icon.png") != null)
-				theme.setIcon(new ImageIcon(ImageUtils.resize(
-						UIRES.getImageFromResourceID("themes/" + theme.getID() + "/icon.png").getImage(), 64)));
+			URL url = PluginLoader.INSTANCE.getResource("themes/" + theme.getID() + "/icon.png");
+			if (url != null)
+				theme.setIcon(new ImageIcon(ImageUtils.resize(new ImageIcon(url).getImage(), 64)));
 
 			THEMES.add(theme);
 		}

@@ -101,7 +101,6 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 					super.paintComponent(g);
 					g.setColor(new Color(0.4f, 0.4f, 0.4f, 0.3f));
 					g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-					g.setColor(Color.white);
 					if (getText().isEmpty()) {
 						g.setFont(g.getFont().deriveFont(11f));
 						g.setColor(new Color(120, 120, 120));
