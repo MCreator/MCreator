@@ -173,32 +173,18 @@ public class CodeEditorView extends ViewBase {
 
 		sp.setFoldIndicatorEnabled(true);
 
-		sp.getGutter().setFoldBackground(Theme.current().getBackgroundColor());
-		sp.getGutter().setBorderColor(Theme.current().getBackgroundColor());
-		sp.getGutter().setBackground(Theme.current().getBackgroundColor());
+		sp.getGutter().setFoldBackground(getBackground());
+		sp.getGutter().setBorderColor(getBackground());
 
 		sp.getGutter().setBookmarkingEnabled(true);
 		sp.setIconRowHeaderEnabled(false);
 
-		sp.setBackground(Theme.current().getBackgroundColor());
+		sp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
+		sp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 		sp.setBorder(null);
 
-		JPanel cornerDummy1 = new JPanel();
-		cornerDummy1.setBackground(Theme.current().getBackgroundColor());
-		sp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy1);
-
-		JPanel cornerDummy2 = new JPanel();
-		cornerDummy2.setBackground(Theme.current().getBackgroundColor());
-		sp.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy2);
-
-		JPanel cornerDummy12 = new JPanel();
-		cornerDummy12.setBackground(Theme.current().getBackgroundColor());
-		treeSP.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy12);
-
-		JPanel cornerDummy22 = new JPanel();
-		cornerDummy22.setBackground(Theme.current().getBackgroundColor());
-		treeSP.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy22);
-
+		treeSP.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
+		treeSP.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 		treeSP.setBorder(null);
 
 		te.getDocument().addDocumentListener(new DocumentListener() {

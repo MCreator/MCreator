@@ -213,7 +213,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		mv = new WorkspacePanel(this);
 
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
-		pon.setBackground(Theme.current().getBackgroundColor());
 		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"),
