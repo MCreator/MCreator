@@ -74,13 +74,6 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 	public NewWorkspaceDialog(Window w) {
 		super(w, null, true);
 
-		if (OS.getOS() == OS.WINDOWS) {
-			getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
-		} else if (OS.getOS() == OS.MAC && SystemInfo.isMacFullWindowContentSupported) {
-			getRootPane().putClientProperty("apple.awt.fullWindowContent", true);
-			getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
-		}
-
 		AbstractWorkspacePanel forgeWorkspacePanel = new ForgeWorkspacePanel(this);
 		AbstractWorkspacePanel neoforgeWorkspacePanel = new NeoForgeWorkspacePanel(this);
 		AbstractWorkspacePanel fabricWorkspacePanel = new FabricWorkspacePanel(this);
@@ -289,6 +282,16 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		JComponent wrapPan = PanelUtils.northAndCenterElement(workspaceType, new JEmptyBox());
 		wrapPan.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 1, Theme.current().getAltBackgroundColor()));
 		add("West", wrapPan);
+
+		if (OS.getOS() == OS.WINDOWS) {
+			getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
+		} else if (OS.getOS() == OS.MAC && SystemInfo.isMacFullWindowContentSupported) {
+			getRootPane().putClientProperty("apple.awt.fullWindowContent", true);
+			getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
+			getRootPane().putClientProperty("apple.awt.windowTitleVisible", false);
+			label.setHorizontalAlignment(SwingConstants.RIGHT);
+			label.setHorizontalTextPosition(SwingConstants.LEFT);
+		}
 
 		getRootPane().setDefaultButton(ok);
 		pack();

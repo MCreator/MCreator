@@ -305,7 +305,9 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 		} else if (OS.getOS() == OS.MAC && SystemInfo.isMacFullWindowContentSupported) {
 			getRootPane().putClientProperty("apple.awt.fullWindowContent", true);
 			getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
-			centerComponent.setBorder(BorderFactory.createEmptyBorder(30, 0, 0, 0));
+			getRootPane().putClientProperty("apple.awt.windowTitleVisible", false);
+			getRootPane().setBorder(BorderFactory.createEmptyBorder(16, 0, 0, 0));
+			centerComponent.setBorder(BorderFactory.createEmptyBorder(16, 0, 0, 0));
 		}
 	}
 
