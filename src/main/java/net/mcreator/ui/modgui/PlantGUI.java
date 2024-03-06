@@ -190,6 +190,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		generateFeature.setOpaque(false);
 
+		suspiciousStewEffect.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXX");
+
 		onBlockAdded = new ProcedureSelector(this.withEntry("block/when_added"), mcreator,
 				L10N.t("elementgui.plant.event_on_added"), Dependency.fromString(
 				"x:number/y:number/z:number/world:world/blockstate:blockstate/oldState:blockstate/moving:logic"));
@@ -297,7 +299,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		renderType.setPreferredSize(new Dimension(350, 42));
 		renderType.setRenderer(new ModelComboBoxRenderer());
 
-		JPanel texturesAndRent = new JPanel(new BorderLayout(50, 0));
+		JPanel texturesAndRent = new JPanel(new BorderLayout(0, 0));
 		texturesAndRent.setOpaque(false);
 
 		texturesAndRent.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 1,
