@@ -91,7 +91,7 @@ public class WorkspaceFileBrowser extends JPanel {
 			g.setColor(new Color(111, 111, 111));
 			g.setFont(getFont().deriveFont(10f));
 			if (getText().isBlank())
-				g.drawString(L10N.t("workspace_file_browser.search"), 2, 17);
+				g.drawString(L10N.t("workspace_file_browser.search"), 2, 15);
 		}
 	};
 
