@@ -289,7 +289,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			getRootPane().putClientProperty("apple.awt.fullWindowContent", true);
 			getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
 			getRootPane().putClientProperty("apple.awt.windowTitleVisible", false);
-			getRootPane().setBorder(BorderFactory.createEmptyBorder(24, 0, 0, 0));
+			getRootPane().setBorder(BorderFactory.createEmptyBorder(22, 0, 0, 0));
 		}
 
 		getRootPane().setDefaultButton(ok);
