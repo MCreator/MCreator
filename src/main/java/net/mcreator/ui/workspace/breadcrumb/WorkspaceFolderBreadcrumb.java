@@ -21,6 +21,7 @@ package net.mcreator.ui.workspace.breadcrumb;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.ColorUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
@@ -54,7 +55,7 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 		this.canExpandTrailHead = canExpandTrailHead;
 
 		setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 0));
-		setBackground(ColorUtils.applyAlpha(getBackground(), 100));
+		setBackground(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
 	}
 
 	@SuppressWarnings("EqualsBetweenInconvertibleTypes")
