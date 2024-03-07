@@ -18,6 +18,7 @@
 
 package net.mcreator;
 
+import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import net.mcreator.io.LoggingSystem;
 import net.mcreator.io.OS;
@@ -81,6 +82,7 @@ public class Launcher {
 
 		// Init JFX Toolkit
 		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
+		Platform.setImplicitExit(false);
 
 		WebConsoleListener.registerLogger(LOG);
 
