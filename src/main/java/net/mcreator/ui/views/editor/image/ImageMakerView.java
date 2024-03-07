@@ -37,6 +37,7 @@ import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.canvas.CanvasRenderer;
 import net.mcreator.ui.views.editor.image.canvas.SelectedBorder;
 import net.mcreator.ui.views.editor.image.clipboard.ClipboardManager;
+import net.mcreator.ui.views.editor.image.color.PalettePanel;
 import net.mcreator.ui.views.editor.image.layer.Layer;
 import net.mcreator.ui.views.editor.image.layer.LayerPanel;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
@@ -71,7 +72,9 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 	private final JZoomPane zoomPane;
 	private final JSplitPane leftSplitPane;
 	private final JSplitPane rightSplitPane;
+	private final JSplitPane paletteLayerSplitPane;
 	private final ToolPanel toolPanel;
+	private final PalettePanel palettePanel;
 	private final LayerPanel layerPanel;
 	private final VersionManager versionManager;
 	private final ClipboardManager clipboardManager;
@@ -137,10 +140,13 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 				super.paintComponent(g);
 			}
 		};
+		paletteLayerSplitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
 
 		canvasRenderer = new CanvasRenderer(this);
 		zoomPane = new JZoomPane(canvasRenderer);
 		toolPanel = new ToolPanel(f, canvas, zoomPane, canvasRenderer, versionManager);
+
+		palettePanel = new PalettePanel(f, toolPanel);
 		layerPanel = new LayerPanel(f, toolPanel, versionManager);
 
 		toolPanel.setLayerPanel(layerPanel);
@@ -148,15 +154,20 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 		leftSplitPane.setOpaque(false);
 		rightSplitPane.setOpaque(false);
+		paletteLayerSplitPane.setOpaque(false);
 
 		leftSplitPane.setLeftComponent(toolPanel);
 		leftSplitPane.setRightComponent(rightSplitPane);
 		leftSplitPane.setOneTouchExpandable(true);
 
 		rightSplitPane.setLeftComponent(PanelUtils.northAndCenterElement(imageInfo, zoomPane));
-		rightSplitPane.setRightComponent(layerPanel);
+		rightSplitPane.setRightComponent(paletteLayerSplitPane);
 		rightSplitPane.setResizeWeight(1);
 		rightSplitPane.setOneTouchExpandable(true);
+
+		paletteLayerSplitPane.setTopComponent(palettePanel);
+		paletteLayerSplitPane.setBottomComponent(layerPanel);
+		paletteLayerSplitPane.setOneTouchExpandable(true);
 
 		leftControls.add(template);
 		rightControls.add(saveNew);
@@ -356,6 +367,7 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			mcreator.mcreatorTabs.addTab(this.tab);
 			leftSplitPane.setDividerLocation(1.2 / 8);
 			rightSplitPane.setDividerLocation(5.7 / 7);
+			paletteLayerSplitPane.setDividerLocation(0.5);
 			toolPanel.setDividerLocation(1.2 / 3.1);
 			zoomPane.getZoomport().fitZoom();
 			refreshTab();
