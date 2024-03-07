@@ -9,16 +9,16 @@ on:
         default: 'snapshot'
 
 jobs:
-#  export1:
-#    name: Build and Export (all but MacOS)
-#    runs-on: ubuntu-latest
-#    environment: production
-#    outputs:
-#      mcr_version: ${{ steps.determineExportVersion.outputs.mcr_version }}
-#      mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
-#      build_date: ${{ steps.determineExportVersion.outputs.build_date }}
-#    steps:
-#      - uses: actions/checkout@v4
+  export1:
+    name: Build and Export (all but MacOS)
+    runs-on: ubuntu-latest
+    environment: production
+    outputs:
+      mcr_version: ${{ steps.determineExportVersion.outputs.mcr_version }}
+      mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
+      build_date: ${{ steps.determineExportVersion.outputs.build_date }}
+    steps:
+      - uses: actions/checkout@v4
 #      - name: Verify Repository
 #        if: github.repository != 'MCreator/MCreator' && github.repository != 'KlemenDEV/MCreator'
 #        run: |
@@ -44,18 +44,21 @@ jobs:
 #      - name: Build and Export Snapshot Using Gradle
 #        if: github.event.inputs.release-type == 'snapshot'
 #        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux -Psnapshot=true
-#      - name: Determine Export Version
-#        id: determineExportVersion
-#        run: |
+      - name: Determine Export Version
+        id: determineExportVersion
+        run: |
+          MCR_VERSION=2222.2
+          MC_VERSION=1.18.1
+          BUILD_DATE=12345
 #          MCR_VERSION=$(cat build/reports/export.txt | grep "mcreator=" | cut -d'=' -f2)
 #          MC_VERSION=$(cat build/reports/export.txt | grep "minecraft=" | cut -d'=' -f2)
 #          BUILD_DATE=$(cat build/reports/export.txt | grep "builddate=" | cut -d'=' -f2)
-#          echo "MCR_VERSION=$MCR_VERSION" >> $GITHUB_ENV
-#          echo "MC_VERSION=$MC_VERSION" >> $GITHUB_ENV
-#          echo "BUILD_DATE=$BUILD_DATE" >> $GITHUB_ENV
-#          echo "mcr_version=$MCR_VERSION" >> $GITHUB_OUTPUT
-#          echo "mc_version=$MC_VERSION" >> $GITHUB_OUTPUT
-#          echo "build_date=$BUILD_DATE" >> $GITHUB_OUTPUT
+          echo "MCR_VERSION=$MCR_VERSION" >> $GITHUB_ENV
+          echo "MC_VERSION=$MC_VERSION" >> $GITHUB_ENV
+          echo "BUILD_DATE=$BUILD_DATE" >> $GITHUB_ENV
+          echo "mcr_version=$MCR_VERSION" >> $GITHUB_OUTPUT
+          echo "mc_version=$MC_VERSION" >> $GITHUB_OUTPUT
+          echo "build_date=$BUILD_DATE" >> $GITHUB_OUTPUT
 #      - name: Upload Binaries and Tag Release
 #        uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd
 #        with:
