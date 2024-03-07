@@ -23,7 +23,6 @@ import net.mcreator.element.ModElementType;
 import net.mcreator.element.converter.v2019_5.RecipeTypeConverter;
 import net.mcreator.element.converter.v2020_1.AchievementFixer;
 import net.mcreator.element.converter.v2020_2.GUIBindingInverter;
-import net.mcreator.element.converter.v2021_1.LegacyDimensionProcedureRemover;
 import net.mcreator.element.converter.v2020_3.OpenGUIProcedureDepFixer;
 import net.mcreator.element.converter.v2020_3.ProcedureEntityDepFixer;
 import net.mcreator.element.converter.v2020_4.BiomeSpawnListConverter;
@@ -47,7 +46,9 @@ import net.mcreator.element.converter.v2023_2.ExplodeProcedureConverter;
 import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
 import net.mcreator.element.converter.v2023_3.*;
 import net.mcreator.element.converter.v2023_4.*;
+import net.mcreator.element.converter.v2024_1.AdvancementTriggerInverter;
 import net.mcreator.element.converter.v2024_1.ProcedureCustomDamageRemover;
+import net.mcreator.element.converter.v2024_1.TagModElementConverter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +61,8 @@ public class ConverterRegistry {
 	private static final Map<ModElementType<?>, List<IConverter>> converters = new HashMap<>() {{
 		put(ModElementType.ADVANCEMENT, List.of(
 			new AchievementFixer(),
-			new AdvancementTextureConverter()
+			new AdvancementTextureConverter(),
+			new AdvancementTriggerInverter()
 		));
 		put(ModElementType.ARMOR, List.of(
 			new ArmorTexturesConverter(),
@@ -164,7 +166,6 @@ public class ConverterRegistry {
 		put(ModElementType.ITEM, List.of(
 			new ItemDispenseBehaviorToItemExtensionConverter(),
 			new SpecialInformationConverter(),
-			new ItemDispenseBehaviorToItemExtensionConverter(),
 			new ItemHasGlowConverter()
 		));
 		put(ModElementType.FEATURE, List.of(
@@ -191,6 +192,7 @@ public class ConverterRegistry {
 		put("food", new FoodToItemConverter());
 		put("fuel", new FuelToItemExtensionConverter());
 		put("rangeditem", new RangedItemToProjectileAndItemConverter());
+		put("tag", new TagModElementConverter());
 	}};
 
 	public static List<IConverter> getConvertersForModElementType(ModElementType<?> modElementType) {

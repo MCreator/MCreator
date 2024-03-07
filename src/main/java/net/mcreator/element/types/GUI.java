@@ -148,7 +148,7 @@ import java.util.List;
 			}
 		}
 
-		// Create the texture atlas for image buttons that will be used by Minecraft
+		// Create the texture atlas for image buttons that will be used by Minecraft (needed for <= 1.20.1)
 		components.stream().filter(c -> c instanceof ImageButton).map(c -> (ImageButton) c).forEach(imageButton -> {
 			Image normal = imageButton.getImage(getModElement().getWorkspace());
 			Image hovered = imageButton.getHoveredImage(getModElement().getWorkspace());

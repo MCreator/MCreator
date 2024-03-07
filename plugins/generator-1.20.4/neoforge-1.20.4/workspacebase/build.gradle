@@ -1,0 +1,35 @@
+plugins {
+    id 'java-library'
+    id 'eclipse'
+    id 'net.neoforged.gradle.userdev' version '7.0.96'
+}
+
+version = '1.0'
+group = 'com.yourname.modid'
+base.archivesName = "modid"
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+def at_file = rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+if (at_file.exists()) minecraft.accessTransformers.file at_file
+
+runs {
+    configureEach {
+        systemProperty 'forge.logging.markers', 'REGISTRIES'
+        systemProperty 'forge.logging.console.level', 'debug'
+        modSource project.sourceSets.main
+    }
+
+    client {}
+    server {}
+}
+
+dependencies {
+    implementation 'net.neoforged:neoforge:${generator.getGeneratorBuildFileVersion()}'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+apply from: 'mcreator.gradle'

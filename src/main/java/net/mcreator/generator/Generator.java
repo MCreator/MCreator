@@ -30,6 +30,7 @@ import net.mcreator.generator.template.TemplateExpressionParser;
 import net.mcreator.generator.template.TemplateGenerator;
 import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.generator.template.base.BaseDataModelProvider;
+import net.mcreator.generator.usercode.UserCodeProcessor;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.UserFolderManager;
@@ -143,10 +144,6 @@ public class Generator implements IGenerator, Closeable {
 		TemplateGenerator templateGenerator = getTemplateGeneratorFromName("templates");
 
 		List<GeneratorFile> generatorFiles = getModBaseGeneratorTemplatesList(true).stream().map(generatorTemplate -> {
-			if (this.workspace.getWorkspaceSettings().isLockBaseModFiles()) // are mod base file locked
-				if (generatorTemplate.canBeLocked()) // can this file be locked
-					return null; // if yes, we skip this file
-
 			try {
 				String code = templateGenerator.generateBaseFromTemplate(
 						(String) generatorTemplate.getTemplateDefinition().get("template"),
@@ -166,6 +163,9 @@ public class Generator implements IGenerator, Closeable {
 
 		// generate lang files
 		LocalizationUtils.generateLanguageFiles(this, workspace, generatorConfiguration.getLanguageFileSpecification());
+
+		// generate tags files
+		TagsUtils.generateTagsFiles(this, workspace, generatorConfiguration.getTagsSpecification());
 
 		return success.get();
 	}
@@ -256,7 +256,11 @@ public class Generator implements IGenerator, Closeable {
 			element.getModElement().putMetadata("files", generatorFiles.stream().map(GeneratorFile::getFile)
 					.map(e -> getFolderManager().getPathInWorkspace(e).replace(File.separator, "/")).toList());
 
+			// add lang keys to the workspace
 			LocalizationUtils.generateLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
+
+			// add tag elements to the workspace
+			TagsUtils.processDefinitionToTags(this, element, (List<?>) map.get("tags"), false);
 
 			// do additional tasks if mod element has them
 			element.finalizeModElementGeneration();
@@ -296,8 +300,11 @@ public class Generator implements IGenerator, Closeable {
 				template.getFile().delete();
 		}
 
-		// delete localization keys associated with the mod element
+		// delete localization keys associated with the mod element from the workspace
 		LocalizationUtils.deleteLocalizationKeys(this, generatableElement, (List<?>) map.get("localizationkeys"));
+
+		// delete tag elements associated with the mod element from the workspace
+		TagsUtils.processDefinitionToTags(this, generatableElement, (List<?>) map.get("tags"), true);
 	}
 
 	@Nonnull public List<GeneratorTemplate> getModBaseGeneratorTemplatesList(boolean performFSTasks) {
@@ -574,11 +581,18 @@ public class Generator implements IGenerator, Closeable {
 				if (formatAndOrganiseImports && !generatorFile.getFile().isFile())
 					FileIO.touchFile(generatorFile.getFile());
 
-				javaFiles.put(generatorFile.getFile(), generatorFile.contents());
+				javaFiles.put(generatorFile.getFile(),
+						UserCodeProcessor.processUserCode(generatorFile.getFile(), generatorFile.contents(), "//"));
 			} else if (generatorFile.writer() == GeneratorFile.Writer.JSON) {
 				JSONWriter.writeJSONToFile(generatorFile.contents(), generatorFile.getFile());
 			} else if (generatorFile.writer() == GeneratorFile.Writer.FILE) {
-				FileIO.writeStringToFile(generatorFile.contents(), generatorFile.getFile());
+				String usercodeComment = generatorFile.source().getUsercodeComment();
+				if (usercodeComment != null)
+					FileIO.writeStringToFile(
+							UserCodeProcessor.processUserCode(generatorFile.getFile(), generatorFile.contents(),
+									usercodeComment), generatorFile.getFile());
+				else
+					FileIO.writeStringToFile(generatorFile.contents(), generatorFile.getFile());
 			}
 		}
 

@@ -28,6 +28,10 @@ import java.util.List;
 public interface IMCItemProvider {
 	/**
 	 * This method determines what MCItems are provided by this generatable element
+	 * <p>
+	 * WARNING: Calls to this method are generally not thread safe.
+	 * Implementations can call MCItem.Custom::new that calls getBlockIconBasedOnName
+	 * which calls ModElement#getGeneratableElement that is not thread safe
 	 *
 	 * @return A list of MCItems provided by this generatable element
 	 */

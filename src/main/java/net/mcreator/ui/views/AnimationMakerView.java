@@ -188,7 +188,7 @@ public class AnimationMakerView extends ViewBase {
 			playanim = false;
 			timeline.repaint();
 		});
-		stop.setIcon(UIRES.get("16px.stop"));
+		stop.setIcon(UIRES.get("16px.stopanimation"));
 		controls.add(stop);
 
 		controls.addSeparator();
@@ -260,7 +260,7 @@ public class AnimationMakerView extends ViewBase {
 						ProgressDialog.ProgressUnit p1 = new ProgressDialog.ProgressUnit(
 								L10N.t("dialog.animation_maker.gif_reading"));
 						dial.addProgressUnit(p1);
-						BufferedImage[] frames = GifUtil.readAnimatedGif(frame);
+						Image[] frames = GifUtil.readAnimatedGif(frame);
 						if (frames.length > 0)
 							p1.markStateOk();
 						else {
@@ -272,15 +272,14 @@ public class AnimationMakerView extends ViewBase {
 
 							return;
 						}
-						int frameCount = frames.length;
 						ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 								L10N.t("dialog.animation_maker.gif_processing"));
 						dial.addProgressUnit(p2);
-						for (int i = 0; i < frameCount; i++) {
+						for (int i = 0; i < frames.length; i++) {
 							int finalI = i;
 							SwingUtilities.invokeLater(
 									() -> timelinevector.addElement(new AnimationFrame(frames[finalI])));
-							p2.setPercent((int) (i / (float) frameCount * 100));
+							p2.setPercent((int) (i / (float) frames.length * 100));
 						}
 						p2.markStateOk();
 						dial.hideDialog();
@@ -592,9 +591,9 @@ public class AnimationMakerView extends ViewBase {
 	}
 
 	static class AnimationFrame {
-		BufferedImage image;
+		Image image;
 
-		AnimationFrame(BufferedImage s) {
+		AnimationFrame(Image s) {
 			image = s;
 		}
 	}

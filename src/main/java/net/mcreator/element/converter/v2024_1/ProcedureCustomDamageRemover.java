@@ -54,13 +54,14 @@ public class ProcedureCustomDamageRemover extends ProcedureConverter {
 				// Rename "damage_number" value to "amount" and remove "localization_text" value
 				for (Element value : XMLUtil.getChildrenWithName(element, "value")) {
 					switch (value.getAttribute("name")) {
-						case "damage_number" -> value.setAttribute("name", "amount");
-						case "localization_text" -> element.removeChild(value);
+					case "damage_number" -> value.setAttribute("name", "amount");
+					case "localization_text" -> element.removeChild(value);
 					}
 				}
 
 				// Add a damage source of type GENERIC, as there's no reliable way to fix the procedure with damage type ME
-				Element damageSource = bh.createBlock("damagesource_from_type", bh.createField("damagetype", "GENERIC"));
+				Element damageSource = bh.createBlock("damagesource_from_type",
+						bh.createField("damagetype", "GENERIC"));
 				element.appendChild(bh.createValue("damagesource", damageSource));
 
 				// Finally, replace the block with the standard "Deal damage" procedure

@@ -1,0 +1,1 @@
+Zırh Katmanı Dokusu, Zırh oyuncunun üzerindeyken gözüken dokudur.

@@ -52,7 +52,7 @@ public class RSTAIcons {
 			return lookup_cache.get(imageIcon);
 
 		if (imageIcon.getDescription().contains("org/fife/rsta/ac/java")) {
-			return UIRES.get("rsta." + FilenameUtils.getName(imageIcon.getDescription()));
+			return UIRES.get("rsta." + FilenameUtils.getBaseName(imageIcon.getDescription()));
 		}
 
 		return imageIcon;

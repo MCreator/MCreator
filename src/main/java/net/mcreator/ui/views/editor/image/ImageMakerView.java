@@ -294,10 +294,11 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 					// load image in java cache
 					new ImageIcon(exportFile.getAbsolutePath()).getImage().flush();
+
+					this.image = exportFile;
+					this.name = this.image.getName();
+					refreshTab();
 				}
-				this.image = exportFile;
-				this.name = this.image.getName();
-				refreshTab();
 			}
 		});
 		JButton cancel = L10N.button("common.cancel");

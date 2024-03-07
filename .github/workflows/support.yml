@@ -11,7 +11,7 @@ jobs:
   action:
     runs-on: ubuntu-latest
     steps:
-      - uses: Pylo/support-requests@v3.0.0
+      - uses: dessant/support-requests@47d5ea12f6c9e4a081637de9626b7319b415a3bf
         with:
           github-token: ${{ github.token }}
           support-label: 'invalid: support request'

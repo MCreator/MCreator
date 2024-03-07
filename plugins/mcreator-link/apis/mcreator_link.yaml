@@ -1,13 +1,13 @@
 name: MCreator Link
 
-forge-1.19.4:
+neoforge-1.20.4:
   required_when_enabled: true
   update_files:
     - lib/mcreator_link.jar
   gradle: |
-    task mcreatorLink(type: DefaultTask) {
+    tasks.register('mcreatorLink') {
       ant.mkdir(dir: 'lib/');
-      ant.get(src: 'https://mcreator.net/link/download/dev_1.19.4', dest: 'lib/mcreator_link.jar', skipexisting: 'true');
+      ant.get(src: 'https://mcreator.net/link/download/1.20.4', dest: 'lib/mcreator_link.jar', skipexisting: 'true');
     }
 
     compileJava.dependsOn mcreatorLink

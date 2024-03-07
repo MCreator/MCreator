@@ -96,7 +96,7 @@ public class NewClassAction extends BasicAction {
 				}
 			}
 		});
-		setIcon(UIRES.get("16px.class.gif"));
+		setIcon(UIRES.get("16px.class"));
 	}
 
 }

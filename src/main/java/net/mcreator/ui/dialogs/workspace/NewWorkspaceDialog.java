@@ -139,7 +139,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 
 		add("Center", center);
 
-		JLabel label = new JLabel(UIRES.get("addwrk"));
+		JLabel label = new JLabel(UIRES.get("wrk_add"));
 		label.setText(L10N.t("dialog.new_workspace.main_title_html"));
 		label.setHorizontalAlignment(SwingConstants.LEFT);
 		label.setBorder(BorderFactory.createEmptyBorder(10, 5, 10, 5));
@@ -226,8 +226,8 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		wt.setBorder(BorderFactory.createEmptyBorder(8, 8, 3, 30));
 
 		workspaceType.add(wt);
-		workspaceType.add(forge);
 		workspaceType.add(neoforge);
+		workspaceType.add(forge);
 		workspaceType.add(fabric);
 		workspaceType.add(quilt);
 		workspaceType.add(spigot);

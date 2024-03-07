@@ -18,7 +18,7 @@ jobs:
 #      mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
 #      build_date: ${{ steps.determineExportVersion.outputs.build_date }}
 #    steps:
-#      - uses: actions/checkout@v3
+#      - uses: actions/checkout@v4
 #      - name: Verify Repository
 #        if: github.repository != 'MCreator/MCreator' && github.repository != 'KlemenDEV/MCreator'
 #        run: |
@@ -29,9 +29,9 @@ jobs:
 #          EOF
 #          exit 1
 #      - name: Set up JDK 17
-#        uses: actions/setup-java@v3
+#        uses: actions/setup-java@v4
 #        with:
-#          java-version: '17.0.9+9'
+#          java-version: '17.0.10+7'
 #          distribution: 'temurin'
 #      - name: Install Dependencies
 #        run: |
@@ -57,7 +57,7 @@ jobs:
 #          echo "mc_version=$MC_VERSION" >> $GITHUB_OUTPUT
 #          echo "build_date=$BUILD_DATE" >> $GITHUB_OUTPUT
 #      - name: Upload Binaries and Tag Release
-#        uses: Pylo/upload-release-action@v2
+#        uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd
 #        with:
 #          repo_token: ${{ secrets.GITHUB_TOKEN }}
 #          tag: ${{ env.MCR_VERSION }}
@@ -82,11 +82,11 @@ jobs:
     runs-on: macos-latest
     environment: production
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v4
         with:
-          java-version: '17.0.9+9'
+          java-version: '17.0.10+7'
           distribution: 'temurin'
       - name: Install Dependencies
         run: |
@@ -118,7 +118,7 @@ jobs:
           MACOS_CERTIFICATE_NAME: ${{ secrets.PROD_MACOS_CERTIFICATE_NAME }}
         run: ./gradlew generateExportReport exportMac -Psnapshot=true -Pbuilddate=${{ needs.export1.outputs.build_date }}
       - name: Upload Binaries and Tag Release
-        uses: Pylo/upload-release-action@v2
+        uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           tag: ${{ needs.export1.outputs.mcr_version }}

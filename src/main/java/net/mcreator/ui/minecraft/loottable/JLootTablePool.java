@@ -80,7 +80,7 @@ public class JLootTablePool extends JEntriesList {
 
 		topbar.add(Box.createHorizontalGlue());
 
-		JButton add = new JButton(UIRES.get("16px.add.gif"));
+		JButton add = new JButton(UIRES.get("16px.add"));
 		add.setText(L10N.t("elementgui.loot_table.add_pool_entry"));
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));

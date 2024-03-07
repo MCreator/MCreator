@@ -21,15 +21,13 @@ package net.mcreator.workspace;
 import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.Launcher;
 import net.mcreator.element.ModElementType;
-import net.mcreator.generator.Generator;
-import net.mcreator.generator.GeneratorConfiguration;
-import net.mcreator.generator.GeneratorFlavor;
-import net.mcreator.generator.IGeneratorProvider;
+import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
 import net.mcreator.io.FileIO;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
+import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.*;
 import net.mcreator.workspace.misc.WorkspaceInfo;
@@ -57,6 +55,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
+	private ConcurrentHashMap<TagElement, ArrayList<String>> tag_elements = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<>() {{
 		put("en_us", new ConcurrentHashMap<>());
 	}};
@@ -104,8 +103,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 * @return UNMODIFIABLE! collection of variable elements
 	 */
 	public Collection<VariableElement> getVariableElements() {
-		// make sure that variable types are supported (a fix for #2052)
-		return variable_elements.stream().filter(e -> e.getType() != null).toList();
+		return Collections.unmodifiableSet(variable_elements);
 	}
 
 	/**
@@ -113,6 +111,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 */
 	public Collection<SoundElement> getSoundElements() {
 		return Collections.unmodifiableSet(sound_elements);
+	}
+
+	public Map<TagElement, ArrayList<String>> getTagElements() {
+		return tag_elements;
 	}
 
 	public Map<String, ConcurrentHashMap<String, String>> getLanguageMap() {
@@ -201,6 +203,15 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		}
 	}
 
+	public void addTagElement(TagElement element) {
+		if (!tag_elements.containsKey(element)) {
+			tag_elements.put(element, new ArrayList<>());
+			markDirty();
+		} else {
+			LOG.warn("Trying to add existing tag element: " + element.getName());
+		}
+	}
+
 	public void addSoundElement(SoundElement element) {
 		if (!sound_elements.contains(element)) {
 			sound_elements.add(element);
@@ -224,6 +235,17 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void removeVariableElement(VariableElement element) {
 		variable_elements.remove(element);
+		markDirty();
+	}
+
+	public void removeTagElement(TagElement element) {
+		tag_elements.remove(element);
+
+		File tagFile = TagsUtils.getTagFileFor(this, element);
+		if (tagFile != null) {
+			tagFile.delete();
+		}
+
 		markDirty();
 	}
 
@@ -347,7 +369,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public static Workspace readFromFS(File workspaceFile, @Nullable Window ui)
 			throws UnsupportedGeneratorException, CorruptedWorkspaceFileException, FileNotFoundException,
-			MissingWorkspacePluginsException {
+			MissingGeneratorFeaturesException {
 		if (workspaceFile.isFile()) {
 			String workspace_string = FileIO.readFileToString(workspaceFile);
 			Workspace retval;
@@ -375,13 +397,18 @@ public class Workspace implements Closeable, IGeneratorProvider {
 								GeneratorConfiguration.getRecommendedGeneratorForFlavor(
 										Generator.GENERATOR_CACHE.values(), currentFlavor), currentFlavor, false));
 					});
-					if (generatorConfiguration.get() != null) {
+					GeneratorConfiguration selectedGenerator = generatorConfiguration.get();
+					if (selectedGenerator != null) {
+						// Check if the workspace is compatible with the selected generator
+						// and if not, exception will be thrown at this point
+						WorkspaceDialogs.verifyWorkspaceForCompatibilityWithGeneratorAndPlugins(ui, retval,
+								selectedGenerator);
+
 						// Call generator cleanup for switch before new generator is set for the workspace
 						WorkspaceGeneratorSetup.cleanupGeneratorForSwitchTo(retval,
-								Generator.GENERATOR_CACHE.get(generatorConfiguration.get().getGeneratorName()));
+								Generator.GENERATOR_CACHE.get(selectedGenerator.getGeneratorName()));
 
-						retval.getWorkspaceSettings()
-								.setCurrentGenerator(generatorConfiguration.get().getGeneratorName());
+						retval.getWorkspaceSettings().setCurrentGenerator(selectedGenerator.getGeneratorName());
 
 						retval.generator = new Generator(retval);
 						retval.regenerateRequired = true;
@@ -419,22 +446,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			}
 
 			// Detect plugin requirements
-			try {
-				WorkspaceUtils.verifyPluginRequirements(retval);
-			} catch (MissingWorkspacePluginsException e) {
-				if (ui != null) {
-					ThreadUtil.runOnSwingThreadAndWait(() -> {
-						StringBuilder problems = new StringBuilder();
-						for (Map.Entry<String, Collection<String>> entry : e.getMissingDefinitions().entrySet()) {
-							problems.append("<b>").append(entry.getKey()).append(":</b> ")
-									.append(String.join(", ", entry.getValue())).append("<br>");
-						}
-						JOptionPane.showMessageDialog(ui, L10N.t("dialog.workspace.missing_plugins_message", problems),
-								L10N.t("dialog.workspace.missing_plugins_title"), JOptionPane.ERROR_MESSAGE);
-					});
-				}
-				throw e;
-			}
+			WorkspaceDialogs.verifyWorkspaceForCompatibilityWithGeneratorAndPlugins(ui, retval,
+					retval.getGeneratorConfiguration());
 
 			retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
 			retval.reloadFolderStructure(); // assign parents to the folders
@@ -454,7 +467,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	 * @return Workspace object for the given file
 	 */
 	@VisibleForTesting public static Workspace readFromFSUnsafe(File workspaceFile,
-			GeneratorConfiguration generatorConfiguration) throws MissingWorkspacePluginsException {
+			GeneratorConfiguration generatorConfiguration) throws MissingGeneratorFeaturesException {
 		Workspace retval = WorkspaceFileManager.gson.fromJson(FileIO.readFileToString(workspaceFile), Workspace.class);
 		retval.fileManager = new WorkspaceFileManager(workspaceFile, retval);
 
@@ -476,7 +489,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		retval.getWorkspaceSettings().setWorkspace(retval);
 
-		WorkspaceUtils.verifyPluginRequirements(retval);
+		WorkspaceUtils.verifyPluginRequirements(retval, retval.getGeneratorConfiguration());
 
 		retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
 		retval.reloadFolderStructure(); // assign parents to the folders
@@ -511,6 +524,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
+		this.tag_elements = other.tag_elements;
 		this.language_map = other.language_map;
 		this.foldersRoot = other.foldersRoot;
 		this.mcreatorVersion = other.mcreatorVersion;
