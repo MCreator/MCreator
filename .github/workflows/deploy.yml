@@ -101,14 +101,11 @@ jobs:
           PROD_MACOS_NOTARIZATION_PWD: ${{ secrets.PROD_MACOS_NOTARIZATION_PWD }}
         run: |
           echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
-          security create-keychain -p "$MACOS_CI_KEYCHAIN_PWD" build.keychain 
-          security default-keychain -s build.keychain
+          security create-keychain -p "$MACOS_CI_KEYCHAIN_PWD" build.keychain
           security unlock-keychain -p "$MACOS_CI_KEYCHAIN_PWD" build.keychain
-          security import certificate.p12 -P "$MACOS_CERTIFICATE_PWD" -A -f pkcs12 -T /usr/bin/codesign -k build.keychain
+          security import certificate.p12 -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign -k build.keychain
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$MACOS_CI_KEYCHAIN_PWD" build.keychain
           xcrun notarytool store-credentials "notarytool-profile" --apple-id "$PROD_MACOS_NOTARIZATION_APPLE_ID" --team-id "$PROD_MACOS_NOTARIZATION_TEAM_ID" --password "$PROD_MACOS_NOTARIZATION_PWD"
-          security find-identity -p codesigning build.keychain
-          security list-keychain -d user -s build.keychain
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
         env:
