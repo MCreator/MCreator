@@ -120,7 +120,7 @@ tasks.register('exportMacX64', Copy.class) {
             exec { commandLine('chmod', '+x', exportPathX64 + '/Contents/MacOS/mcreator') }
         }
 
-        signAPP(file(exportPathX64));
+        signAPP(file(exportPathX64))
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
         makeDMG(file('build/export/mac_x64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
@@ -171,7 +171,7 @@ tasks.register('exportMacAarch64', Copy.class) {
             exec { commandLine('chmod', '+x', exportPathAarch64 + '/Contents/MacOS/mcreator') }
         }
 
-        signAPP(file(exportPathAarch64));
+        signAPP(file(exportPathAarch64))
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
         makeDMG(file('build/export/mac_aarch64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
