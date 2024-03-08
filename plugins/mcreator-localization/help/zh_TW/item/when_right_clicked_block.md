@@ -4,4 +4,4 @@
 
 如果函式沒有返回任何值，結果操作類型將是 PASS。
 
-如果你想要 ${l10n.t("elementgui.common.event_right_clicked_air")}" 函式僅在實體在空中對此物品右鍵點擊時被呼叫，此函式應總是返回 SUCCESS/CONSUME。
+如果您想要 ${l10n.t("elementgui.common.event_right_clicked_air")}" 函式僅在實體在空中對此物品右鍵點擊時被呼叫，此函式應總是返回 SUCCESS/CONSUME。

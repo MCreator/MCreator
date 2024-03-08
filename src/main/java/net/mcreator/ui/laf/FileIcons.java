@@ -45,7 +45,7 @@ public class FileIcons {
 			return UIRES.get("16px.gradle");
 		if (file.endsWith(".txt"))
 			return UIRES.get("laf.text");
-		if (file.endsWith(".png") || file.endsWith(""))
+		if (file.endsWith(".png"))
 			return UIRES.get("laf.image");
 
 		return UIRES.get("laf.file");
