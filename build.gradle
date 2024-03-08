@@ -129,12 +129,11 @@ dependencies {
     }
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.14.0' // needed by discord-rpc.jar
 
+    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.4.0'
     implementation group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'no-natives'
     implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.4') {
         dep -> exclude group: 'com.formdev', module: 'flatlaf'
     }
-    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.4.0'
-
     win64 group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'windows-x86_64', ext: 'dll'
     macX64 group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'macos-x86_64', ext: 'dylib'
     macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'macos-arm64', ext: 'dylib'
