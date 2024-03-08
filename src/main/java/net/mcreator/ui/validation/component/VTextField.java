@@ -24,6 +24,7 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.ColorUtils;
+import net.mcreator.util.image.IconUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -75,6 +76,11 @@ public class VTextField extends JTextField implements IValidable {
 
 	}
 
+	private static final ImageIcon INFO_ICON = IconUtils.resize(UIRES.get("16px.info"), 13, 13);
+	private static final ImageIcon WARNING_ICON = IconUtils.resize(UIRES.get("18px.warning"), 13, 13);
+	private static final ImageIcon ERROR_ICON = IconUtils.resize(UIRES.get("18px.remove"), 13, 13);
+	private static final ImageIcon OK_ICON = IconUtils.resize(UIRES.get("18px.ok"), 13, 13);
+
 	@Override public void paintComponent(Graphics g) {
 
 		super.paintComponent(g);
@@ -82,20 +88,19 @@ public class VTextField extends JTextField implements IValidable {
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		g.drawImage(UIRES.get("16px.info").getImage(), getWidth() - 14, 1, 13, 13, null);
+		INFO_ICON.paintIcon(this, g, getWidth() - 14, 1);
 
 		if (currentValidationResult != null) {
-
 			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
 				g.setColor(new Color(238, 229, 113));
-				g.drawImage(UIRES.get("18px.warning").getImage(), getWidth() - 14, 13, 13, 13, null);
+				WARNING_ICON.paintIcon(this, g, getWidth() - 14, 13);
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
 				g.setColor(new Color(204, 108, 108));
-				g.drawImage(UIRES.get("18px.remove").getImage(), getWidth() - 14, 13, 13, 13, null);
+				ERROR_ICON.paintIcon(this, g, getWidth() - 14, 13);
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.PASSED
 					&& showPassed) {
 				g.setColor(new Color(79, 192, 121));
-				g.drawImage(UIRES.get("18px.ok").getImage(), getWidth() - 14, 13, 13, 13, null);
+				OK_ICON.paintIcon(this, g, getWidth() - 14, 13);
 			}
 
 			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
