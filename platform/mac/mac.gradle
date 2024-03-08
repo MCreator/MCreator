@@ -9,7 +9,7 @@ void signAPP(File appDirectory) {
         if (System.getenv('MACOS_CERTIFICATE_NAME') != null) {
             // Sign the app folder
             exec {
-                commandLine('/usr/bin/codesign', '-v', '--force', '--deep', '--options', 'runtime', '--sign', "\"${System.getenv('MACOS_CERTIFICATE_NAME')}\"", appDirectory)
+                commandLine('codesign', '--force', '--deep', '--options', 'runtime', '--sign', "\"${System.getenv('MACOS_CERTIFICATE_NAME')}\"", appDirectory)
             }
 
             // Zip app folder for notarization
@@ -34,7 +34,7 @@ void signAPP(File appDirectory) {
         } else {
             // Ad-hoc sign
             exec {
-                commandLine('/usr/bin/codesign', '--force', '--deep', '--sign', '-', appDirectory)
+                commandLine('codesign', '--force', '--deep', '--sign', '-', appDirectory)
             }
         }
     }

@@ -108,16 +108,9 @@ jobs:
           security set-keychain-settings -t 3600 -u build.keychain
 
           security import certificate.p12 -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign -k ~/Library/Keychains/build.keychain
-
           security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$MACOS_CI_KEYCHAIN_PWD" build.keychain
 
           xcrun notarytool store-credentials "notarytool-profile" --apple-id "$PROD_MACOS_NOTARIZATION_APPLE_ID" --team-id "$PROD_MACOS_NOTARIZATION_TEAM_ID" --password "$PROD_MACOS_NOTARIZATION_PWD"
-
-          echo "AAA"
-          security find-identity -v
-          
-          echo "BBB"
-          certtool y | grep Developer\ ID
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
         env:
