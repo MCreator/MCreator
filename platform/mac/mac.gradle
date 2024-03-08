@@ -9,7 +9,7 @@ void signAPP(File appDirectory) {
         if (System.getenv('MACOS_CERTIFICATE_NAME') != null) {
             // Sign the app folder
             exec {
-                commandLine('codesign', '--force', '--deep', '--options', 'runtime', '--sign', System.getenv('MACOS_CERTIFICATE_NAME'), appDirectory)
+                commandLine('codesign', '--timestamp', '--force', '--deep', '--options', 'runtime', '--sign', System.getenv('MACOS_CERTIFICATE_NAME'), appDirectory)
             }
 
             /*
@@ -36,7 +36,7 @@ void signAPP(File appDirectory) {
         } else {
             // Ad-hoc sign
             exec {
-                commandLine('codesign', '--force', '--deep', '--sign', '-', appDirectory)
+                commandLine('codesign', '--timestamp', '--force', '--deep', '--sign', '-', appDirectory)
             }
         }
     }
