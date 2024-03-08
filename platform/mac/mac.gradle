@@ -19,7 +19,6 @@ void signAPP(File appDirectory) {
                         appDirectory)
             }
 
-            /*
             // Zip app folder for notarization
             var notarizationFile = file(appDirectory.getParent() + "/notarization.zip")
             ant.zip(destfile: notarizationFile) {
@@ -39,7 +38,6 @@ void signAPP(File appDirectory) {
 
             // Delete the app folder zip
             delete(notarizationFile)
-             */
         } else {
             // Ad-hoc sign
             exec {
