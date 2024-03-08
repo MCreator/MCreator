@@ -13,7 +13,7 @@ void signAPP(File appDirectory) {
             }
 
             // Zip app folder for notarization
-            notarizationFile = file(appDirectory.getParent() + "/notarization.zip")
+            var notarizationFile = file(appDirectory.getParent() + "/notarization.zip")
             ant.zip(destfile: notarizationFile) {
                 fileset(dir: appDirectory.getParent())
                 include(name: appDirectory.getName())
