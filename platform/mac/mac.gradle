@@ -7,10 +7,13 @@ static void convertCRLF(File input, File out) {
 void signAPP(File appDirectory) {
     if (Os.isFamily(Os.FAMILY_MAC)) {
         if (System.getenv('MACOS_CERTIFICATE_NAME') != null) {
+            var entitlementsFile = file('platform/mac/entitlements.plist')
+            convertCRLF(entitlementsFile, entitlementsFile)
+
             // Sign the app folder
             exec {
                 commandLine('codesign', '--timestamp', '--force', '--deep',
-                        '--entitlements', file('platform/mac/entitlements.plist'),
+                        '--entitlements', entitlementsFile,
                         '--options', 'runtime',
                         '--sign', System.getenv('MACOS_CERTIFICATE_NAME'),
                         appDirectory)
