@@ -119,7 +119,6 @@ dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.12'
     implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.6'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
-    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.4.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
@@ -131,6 +130,11 @@ dependencies {
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.14.0' // needed by discord-rpc.jar
 
     implementation group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'no-natives'
+    implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.4') {
+        dep -> exclude group: 'com.formdev', module: 'flatlaf'
+    }
+    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.4.0'
+
     win64 group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'windows-x86_64', ext: 'dll'
     macX64 group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'macos-x86_64', ext: 'dylib'
     macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'macos-arm64', ext: 'dylib'
