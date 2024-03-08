@@ -9,7 +9,11 @@ void signAPP(File appDirectory) {
         if (System.getenv('MACOS_CERTIFICATE_NAME') != null) {
             // Sign the app folder
             exec {
-                commandLine('codesign', '--timestamp', '--force', '--deep', '--options', 'runtime', '--sign', System.getenv('MACOS_CERTIFICATE_NAME'), appDirectory)
+                commandLine('codesign', '--timestamp', '--force', '--deep',
+                        '--entitlements', file('platform/mac/entitlements.plist'),
+                        '--options', 'runtime',
+                        '--sign', System.getenv('MACOS_CERTIFICATE_NAME'),
+                        appDirectory)
             }
 
             /*
@@ -91,8 +95,7 @@ tasks.register('exportMacX64', Copy.class) {
 
     into(exportPathX64 + '/Contents/')
     into('') {
-        from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
-            line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator')).replace('%build%', project.builddate.toString())
+        from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line -> line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator')).replace('%build%', project.builddate.toString())
         }
         from file('LICENSE.txt')
     }
@@ -142,8 +145,7 @@ tasks.register('exportMacAarch64', Copy.class) {
 
     into(exportPathAarch64 + '/Contents/')
     into('') {
-        from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line ->
-            line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator')).replace('%build%', project.builddate.toString())
+        from file('platform/mac/Info.plist') rename('Info.plist', 'Info.plistdos') filter { line -> line.replace('%mcreator%', (String) project.mcreatorconf.getProperty('mcreator')).replace('%build%', project.builddate.toString())
         }
         from file('LICENSE.txt')
     }
