@@ -55,6 +55,7 @@ import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.util.ColorUtils;
 import net.mcreator.util.image.EmptyIcon;
+import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
@@ -344,32 +345,26 @@ import java.util.stream.Collectors;
 
 		modElementsBar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton addFolder = new JButton(new ImageIcon(
-				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.newFolder").getImage()),
-						new Rectangle(1, 1, 16, 16))));
-		upFolder = new JButton(new ImageIcon(
-				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder").getImage()),
-						new Rectangle(1, 1, 16, 16))));
-		renameFolder = new JButton(new ImageIcon(
-				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.renameFolder").getImage()),
-						new Rectangle(1, 1, 16, 16))));
+		JButton addFolder = new JButton(UIRES.get("laf.newFolder"));
+		upFolder = new JButton(UIRES.get("laf.upFolder"));
+		renameFolder = new JButton(UIRES.get("laf.renameFolder"));
 
 		addFolder.setContentAreaFilled(false);
 		addFolder.setBorderPainted(false);
-		addFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		addFolder.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
 		addFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		addFolder.setToolTipText(L10N.t("workspace.elements.folders.add_tooltip"));
 
 		upFolder.setContentAreaFilled(false);
 		upFolder.setBorderPainted(false);
-		upFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		upFolder.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
 		upFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		upFolder.setToolTipText(L10N.t("workspace.elements.folders.up_tooltip"));
 		upFolder.setEnabled(false);
 
 		renameFolder.setContentAreaFilled(false);
 		renameFolder.setBorderPainted(false);
-		renameFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		renameFolder.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
 		renameFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		renameFolder.setToolTipText(L10N.t("workspace.elements.folders.rename_tooltip"));
 		renameFolder.setEnabled(false);
@@ -576,8 +571,9 @@ import java.util.stream.Collectors;
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(), e -> toggleFilter(
 					"f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))).setIcon(
-					new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
+					IconUtils.resize(type.getIcon(), 16, 16)));
 		}
+
 		filter.addActionListener(e -> filterPopup.show(filter, 0, 26));
 
 		JPopupMenu sortPopup = new JPopupMenu();
@@ -747,7 +743,7 @@ import java.util.stream.Collectors;
 
 		String[] workspaceEmptyTip = L10N.t("workspace.elements.empty.tip").split("%1");
 		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[0]), 24));
-		emptct.add(new JLabel(new ImageIcon(ImageUtils.resize(UIRES.get("wrk_add").getImage(), 32))));
+		emptct.add(new JLabel(IconUtils.resize(UIRES.get("wrk_add"), 32, 32)));
 		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[1]), 24));
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());

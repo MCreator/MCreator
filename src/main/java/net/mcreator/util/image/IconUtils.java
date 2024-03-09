@@ -29,7 +29,7 @@ public class IconUtils {
 		if (input instanceof FlatSVGIcon svgIcon) {
 			return svgIcon.derive(width, height);
 		} else {
-			return new ImageIcon(ImageUtils.resize(input.getImage(), width, height));
+			return new ImageIcon(ImageUtils.resizeAA(input.getImage(), width, height));
 		}
 	}
 
