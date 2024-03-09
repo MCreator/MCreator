@@ -4,7 +4,7 @@ static void convertCRLF(File input, File out) {
     out << input.text.replaceAll('\r\n', '\n')
 }
 
-void signAPP(File appDirectory) {
+void signAndNotarizeAPP(File appDirectory) {
     if (Os.isFamily(Os.FAMILY_MAC)) {
         if (System.getenv('MACOS_CERTIFICATE_NAME') != null) {
             var entitlementsFile = file('platform/mac/entitlements.plistfixed')
@@ -20,15 +20,13 @@ void signAPP(File appDirectory) {
             }
 
             // Zip app folder for notarization
-            var notarizationFile = file(appDirectory.getParent() + "/notarization.zip")
-            ant.zip(destfile: notarizationFile) {
-                fileset(dir: appDirectory.getParent())
-                include(name: appDirectory.getName())
+            exec {
+                commandLine 'ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', appDirectory, 'notarization.zip'
             }
 
             // Send notarization request
             exec {
-                commandLine 'xcrun', 'notarytool', 'submit', notarizationFile, '--keychain-profile', 'notarytool-profile', '--wait'
+                commandLine 'xcrun', 'notarytool', 'submit', 'notarization.zip', '--keychain-profile', 'notarytool-profile', '--wait'
             }
 
             // Attach the notarization stable to the app
@@ -126,7 +124,7 @@ tasks.register('exportMacX64', Copy.class) {
             exec { commandLine('chmod', '+x', exportPathX64 + '/Contents/MacOS/mcreator') }
         }
 
-        signAPP(file(exportPathX64))
+        signAndNotarizeAPP(file(exportPathX64))
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
         makeDMG(file('build/export/mac_x64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
@@ -176,7 +174,7 @@ tasks.register('exportMacAarch64', Copy.class) {
             exec { commandLine('chmod', '+x', exportPathAarch64 + '/Contents/MacOS/mcreator') }
         }
 
-        signAPP(file(exportPathAarch64))
+        signAndNotarizeAPP(file(exportPathAarch64))
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
         makeDMG(file('build/export/mac_aarch64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
