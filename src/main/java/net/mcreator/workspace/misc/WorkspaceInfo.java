@@ -141,17 +141,17 @@ import java.util.*;
 		// ModElement#getGeneratableElement that is not thread safe
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
-				List<MCItem> tabItems = tabElement.getCreativeTabItems();
-				if (tabItems != null && !tabItems.isEmpty()) {
+				List<MItemBlock> tabItems = tabElement.getCreativeTabItems().stream()
+						.map(e -> new MItemBlock(workspace, e.getName())).toList();
+				if (!tabItems.isEmpty()) {
 					for (TabEntry tabEntry : tabElement.getCreativeTabs()) {
 						String tab = tabEntry.getUnmappedValue();
-						if (tab != null) {
+						{
 							if (!tabMap.containsKey(tab)) {
 								tabMap.put(tab, new ArrayList<>());
 							}
 
-							tabMap.get(tab).addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
-									.toList());
+							tabMap.get(tab).addAll(tabItems);
 						}
 					}
 				}
