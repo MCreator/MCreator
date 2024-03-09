@@ -157,8 +157,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 			}
 		});
 
-		setJMenuBar(menuBar);
-
 		mcreatorTabs.addTabShownListener(tab -> {
 			if (tab.equals(workspaceTab))
 				mv.reloadElementsInCurrentTab();
@@ -325,6 +323,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				SwingUtilities.invokeLater(() -> {
 					getGlassPane().setVisible(false);
 					setGlassPane(new JEmptyBox());
+					setJMenuBar(menuBar);
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				});
 			}, "ME preloader").start();
