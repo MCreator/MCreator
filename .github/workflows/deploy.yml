@@ -91,11 +91,35 @@ jobs:
       - name: Install Dependencies
         run: |
           brew install create-dmg
+      - name: Prepare Keychain
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_CI_KEYCHAIN_PWD: ${{ secrets.MACOS_CI_KEYCHAIN_PWD }}
+          MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.MACOS_NOTARIZATION_APPLE_ID }}
+          MACOS_NOTARIZATION_TEAM_ID: ${{ secrets.MACOS_NOTARIZATION_TEAM_ID }}
+          MACOS_NOTARIZATION_PWD: ${{ secrets.MACOS_NOTARIZATION_PWD }}
+        run: |
+          echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
+
+          security create-keychain -p "$MACOS_CI_KEYCHAIN_PWD" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "$MACOS_CI_KEYCHAIN_PWD" build.keychain
+          security set-keychain-settings -t 3600 -u build.keychain
+
+          security import certificate.p12 -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign -k ~/Library/Keychains/build.keychain
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$MACOS_CI_KEYCHAIN_PWD" build.keychain
+
+          xcrun notarytool store-credentials "notarytool-profile" --apple-id "$MACOS_NOTARIZATION_APPLE_ID" --team-id "$MACOS_NOTARIZATION_TEAM_ID" --password "$MACOS_NOTARIZATION_PWD"
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
+        env:
+          MACOS_CERTIFICATE_NAME: ${{ secrets.MACOS_CERTIFICATE_NAME }}
         run: ./gradlew generateExportReport exportMac -Pbuilddate=${{ needs.export1.outputs.build_date }}
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
+        env:
+          MACOS_CERTIFICATE_NAME: ${{ secrets.MACOS_CERTIFICATE_NAME }}
         run: ./gradlew generateExportReport exportMac -Psnapshot=true -Pbuilddate=${{ needs.export1.outputs.build_date }}
       - name: Upload Binaries and Tag Release
         uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd

@@ -1,7 +1,7 @@
 <#--
  # MCreator (https://mcreator.net/)
  # Copyright (C) 2012-2020, Pylo
- # Copyright (C) 2020-2022, Pylo, opensource contributors
+ # Copyright (C) 2020-2024, Pylo, opensource contributors
  #
  # This program is free software: you can redistribute it and/or modify
  # it under the terms of the GNU General Public License as published by
@@ -37,8 +37,9 @@
 package ${package}.init;
 
 <#assign hasLivingEntities = w.hasElementsOfType("livingentity")>
+<#assign entitiesWithInventory = w.getGElementsOfType("livingentity")?filter(e -> e.guiBoundTo?has_content && e.guiBoundTo != "<NONE>")>
 
-<#if hasLivingEntities>
+<#if hasLivingEntities || entitiesWithInventory?size != 0>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 </#if>
 public class ${JavaModName}Entities {
@@ -71,6 +72,16 @@ public class ${JavaModName}Entities {
 	private static <T extends Entity> DeferredHolder<EntityType<?>, EntityType<T>> register(String registryname, EntityType.Builder<T> entityTypeBuilder) {
 		return REGISTRY.register(registryname, () -> (EntityType<T>) entityTypeBuilder.build(registryname));
 	}
+
+	<#if entitiesWithInventory?size != 0>
+	<#compress>
+	@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
+		<#list entitiesWithInventory as entity>
+			event.registerEntity(Capabilities.ItemHandler.ENTITY, ${entity.getModElement().getRegistryNameUpper()}.get(), (living, context) -> living.getInventory());
+		</#list>
+	}
+	</#compress>
+	</#if>
 
 	<#if hasLivingEntities>
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {

@@ -303,7 +303,7 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		for (Map.Entry<TagElement, ArrayList<String>> tag : workspacePanel.getMCreator().getWorkspace().getTagElements()
 				.entrySet()) {
-			model.addRow(new Object[] { tag.getKey().type(), tag.getKey().getNamespace(), tag.getKey().getName(),
+			model.addRow(new Object[] { tag.getKey().type(), tag.getKey().getMCreatorNamespace(), tag.getKey().getName(),
 					tag.getValue() });
 		}
 		refilterElements();
