@@ -51,7 +51,7 @@ public class ItemTexturesComboBoxRenderer extends JLabel implements ListCellRend
 		if (value.equals("Special") || value.equals("MultiTool")) {
 			setIcon(IconUtils.resize(UIRES.get("mod"), 30, 30));
 		} else {
-			setIcon(new ImageIcon(ImageUtils.resize(BlockItemIcons.getIconFor(value).getImage(), 30)));
+			setIcon(IconUtils.resize(BlockItemIcons.getIconFor(value), 30, 30));
 		}
 
 		setHorizontalTextPosition(SwingConstants.RIGHT);

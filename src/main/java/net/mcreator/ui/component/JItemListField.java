@@ -436,7 +436,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 								MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), unmappedValue).getImage(),
 								18)));
 					else if (unmappedValue.startsWith("#"))
-						setIcon(new ImageIcon(ImageUtils.resizeAA(MCItem.TAG_ICON.getImage(), 18)));
+						setIcon(IconUtils.resize(MCItem.TAG_ICON, 18, 18));
 				}
 
 				if (!(mappableElement).canProperlyMap())
