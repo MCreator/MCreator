@@ -33,9 +33,6 @@ void signAndNotarizeAPP(File appDirectory) {
             exec {
                 commandLine 'xcrun', 'stapler', 'staple', appDirectory
             }
-
-            // Delete the app folder zip
-            delete(notarizationFile)
         } else {
             // Ad-hoc sign
             exec {
