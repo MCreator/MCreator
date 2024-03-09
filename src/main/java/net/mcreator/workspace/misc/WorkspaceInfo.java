@@ -30,7 +30,6 @@ import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.mapping.UniquelyMappedElement;
-import net.mcreator.minecraft.MCItem;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.TagElement;
@@ -146,13 +145,7 @@ import java.util.*;
 				if (!tabItems.isEmpty()) {
 					for (TabEntry tabEntry : tabElement.getCreativeTabs()) {
 						String tab = tabEntry.getUnmappedValue();
-						{
-							if (!tabMap.containsKey(tab)) {
-								tabMap.put(tab, new ArrayList<>());
-							}
-
-							tabMap.get(tab).addAll(tabItems);
-						}
+						tabMap.computeIfAbsent(tab, e -> new ArrayList<>()).addAll(tabItems);
 					}
 				}
 			}
