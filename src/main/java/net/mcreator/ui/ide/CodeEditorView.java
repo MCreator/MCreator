@@ -118,8 +118,6 @@ public class CodeEditorView extends ViewBase {
 
 	@Nullable private ModElement fileOwner = null;
 
-	private final JPanel rightDummy = new JPanel();
-
 	public CodeEditorView(MCreator fa, File fs) {
 		this(fa, FileIO.readFileToString(fs), fs.getName(), fs, false);
 	}
@@ -211,7 +209,7 @@ public class CodeEditorView extends ViewBase {
 
 		sp.setOpaque(false);
 
-		spne.setRightComponent(rightDummy);
+		spne.setRightComponent(new JPanel());
 
 		JPanel cp = new JPanel(new BorderLayout());
 		cp.setBackground(Theme.current().getBackgroundColor());
@@ -520,7 +518,7 @@ public class CodeEditorView extends ViewBase {
 			spne.setRightComponent(treeSP);
 			spne.setDividerLocation(0.8);
 		} else {
-			spne.setRightComponent(rightDummy);
+			spne.setRightComponent(new JPanel());
 		}
 	}
 

@@ -64,9 +64,7 @@ class AutocompleteStyle {
 						pane.setBackground(Theme.current().getBackgroundColor());
 						pane.setBorder(
 								BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getBackgroundColor()));
-						JPanel dummyCorner = new JPanel();
-						dummyCorner.setBackground(Theme.current().getInterfaceAccentColor());
-						pane.setCorner(JScrollPane.LOWER_RIGHT_CORNER, dummyCorner);
+						pane.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
 					}
 				}
 

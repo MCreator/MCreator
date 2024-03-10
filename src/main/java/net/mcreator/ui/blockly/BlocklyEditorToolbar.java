@@ -46,7 +46,10 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.List;
 import java.util.*;
@@ -89,7 +92,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		templateLib = L10N.button("blockly.templates." + blocklyEditorType.registryName());
 		templateLib.setPreferredSize(new Dimension(155, 16));
 		templateLib.setIcon(UIRES.get("18px.templatelib"));
-		templateLib.setOpaque(false);
+		templatesButtonStyle(templateLib);
 
 		if (!templates.isEmpty())
 			add(templateLib);
@@ -138,19 +141,14 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			});
 
 			JComponent component = PanelUtils.join(FlowLayout.LEFT, 0, 0, search);
-			component.setBorder(BorderFactory.createEmptyBorder(1, 0, 0, 0));
+			component.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 0));
 			add(component);
-
-			ComponentUtils.normalizeButton5(templateLib, false);
-		} else {
-			ComponentUtils.normalizeButton5(templateLib, true);
 		}
 
 		add(Box.createHorizontalGlue());
 
 		JButton export = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".export");
 		export.setIcon(UIRES.get("18px.export"));
-		export.setOpaque(false);
 		add(export);
 		export.addActionListener(event -> {
 			File exp = FileDialogs.getSaveDialog(mcreator, new String[] { "." + blocklyEditorType.extension() });
@@ -166,12 +164,11 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				}
 			}
 		});
-		ComponentUtils.normalizeButton4(export);
+		normalizeButton4(export);
 		export.setForeground(Theme.current().getAltForegroundColor());
 
 		JButton import_ = L10N.button("blockly.templates." + blocklyEditorType.registryName() + ".import");
 		import_.setIcon(UIRES.get("18px.import"));
-		import_.setOpaque(false);
 		add(import_);
 		import_.addActionListener(event -> {
 			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { blocklyEditorType.extension() });
@@ -201,7 +198,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				}
 			}
 		});
-		ComponentUtils.normalizeButton4(import_);
+		normalizeButton4(import_);
 		import_.setForeground(Theme.current().getAltForegroundColor());
 	}
 
@@ -222,11 +219,9 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			for (ToolboxBlock block : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
 					.getDefinedBlocks().values()) {
 				for (String keyWord : keyWords) {
-					if (block.getName().toLowerCase(Locale.ENGLISH)
-							.contains(keyWord.toLowerCase(Locale.ENGLISH)) && (
+					if (block.getName().toLowerCase(Locale.ENGLISH).contains(keyWord.toLowerCase(Locale.ENGLISH)) && (
 							block.getToolboxCategory() != null && block.getToolboxCategory().getName()
-									.toLowerCase(Locale.ENGLISH)
-									.contains(keyWord.toLowerCase(Locale.ENGLISH)))) {
+									.toLowerCase(Locale.ENGLISH).contains(keyWord.toLowerCase(Locale.ENGLISH)))) {
 						filtered.add(block);
 						break;
 					} else if (block.getName().toLowerCase(Locale.ENGLISH)
@@ -299,6 +294,22 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 			if (category.getParent() != null)
 				traverseCategories(categories, category.getParent());
 		}
+	}
+
+	private static void normalizeButton4(AbstractButton button) {
+		button.setBorder(
+				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(1, 1, 1, 0, new Color(0, 0, 0, 0)),
+						BorderFactory.createCompoundBorder(
+								BorderFactory.createLineBorder(UIManager.getColor("Component.borderColor"), 1),
+								BorderFactory.createMatteBorder(1, 3, 1, 3, new Color(0, 0, 0, 0)))));
+		ComponentUtils.deriveFont(button, 11);
+	}
+
+	private static void templatesButtonStyle(AbstractButton button) {
+		button.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(1, 1, 1, 1, UIManager.getColor("Component.borderColor")),
+				BorderFactory.createEmptyBorder(1, 0, 1, 0)));
+		ComponentUtils.deriveFont(button, 11);
 	}
 
 }

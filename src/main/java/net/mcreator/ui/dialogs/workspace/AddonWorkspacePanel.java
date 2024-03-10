@@ -51,7 +51,8 @@ public class AddonWorkspacePanel extends AbstractWorkspacePanel {
 
 		add(new JEmptyBox(30, 30));
 
-		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.folder"), PanelUtils.join(workspaceFolder)));
+		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.addon.folder"),
+				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 0, 0)));
 
 		add(new JEmptyBox(30, 204));
 

@@ -43,27 +43,6 @@ public class ComponentUtils {
 		return component;
 	}
 
-	public static void normalizeButton4(AbstractButton button) {
-		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0, 0, 0, 0), 1),
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
-						BorderFactory.createMatteBorder(1, 3, 1, 3, new Color(0, 0, 0, 0)))));
-		button.setBackground(new Color(0, 0, 0, 0));
-		button.setOpaque(false);
-		button.setForeground(Theme.current().getForegroundColor());
-		deriveFont(button, 11);
-	}
-
-	public static void normalizeButton5(AbstractButton button, boolean rightBorder) {
-		button.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(1, 1, 1, rightBorder ? 1 : 0, new Color(0x5B6452)),
-				BorderFactory.createMatteBorder(1, 3, 1, 3, new Color(0, 0, 0, 0))));
-		button.setBackground(new Color(0, 0, 0, 0));
-		button.setOpaque(false);
-		button.setForeground(new Color(0x9CB482));
-		deriveFont(button, 11);
-	}
-
 	public static Component wrapWithInfoButton(Component ca, String url) {
 		JPanel pan = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		pan.setOpaque(false);
