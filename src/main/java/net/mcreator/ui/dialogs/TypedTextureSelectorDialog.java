@@ -24,6 +24,7 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.imageeditor.NewImageDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
+import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.image.ImageUtils;
@@ -118,7 +119,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 		pno2.add(L10N.label("dialog.textures_selector.search"));
 		pno2.add(filterField);
 
-		JPanel pno = new JPanel();
+		JPanel pno = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 4));
 
 		JButton createTx2 = L10N.button("dialog.textures_selector.create_from_scratch");
 		createTx2.setFont(select.getFont());
@@ -156,14 +157,16 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 	}
 
 	@Override public void setVisible(boolean b) {
-		List<File> block = mcreator.getFolderManager().getTexturesList(type);
-		model.removeAllElements();
-		block.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
-		list.setSelectedIndex(0);
-		if (block.isEmpty()) {
-			layout.show(center, "help");
-		} else {
-			layout.show(center, "list");
+		if (b) {
+			List<File> block = mcreator.getFolderManager().getTexturesList(type);
+			model.removeAllElements();
+			block.stream().filter(element -> element.getName().endsWith(".png")).forEach(model::addElement);
+			list.setSelectedIndex(0);
+			if (block.isEmpty()) {
+				layout.show(center, "help");
+			} else {
+				layout.show(center, "list");
+			}
 		}
 
 		super.setVisible(b);
@@ -183,7 +186,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(false);
 			if (isSelected) {
-				setBorder(BorderFactory.createLineBorder(Color.red, 1));
+				setBorder(BorderFactory.createLineBorder(Theme.current().getInterfaceAccentColor(), 1));
 			} else {
 				setBorder(BorderFactory.createEmptyBorder(1, 1, 1, 1));
 			}

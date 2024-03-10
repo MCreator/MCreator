@@ -58,7 +58,7 @@ public class NeoForgeWorkspacePanel extends AbstractWorkspacePanel {
 		add(new JEmptyBox(30, 30));
 
 		add(PanelUtils.westAndEastElement(L10N.label("dialog.new_workspace.neoforge.folder"),
-				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 5, 5)));
+				PanelUtils.centerAndEastElement(workspaceFolder, selectWorkspaceFolder, 0, 0)));
 
 		add(new JEmptyBox(30, 170));
 

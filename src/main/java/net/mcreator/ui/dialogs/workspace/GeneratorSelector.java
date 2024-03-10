@@ -233,16 +233,6 @@ public class GeneratorSelector {
 			bar.setString(new DecimalFormat("#.##").format(stats.getCoverageInfo().get(registry)) + " %");
 		}
 
-		bar.setUI(new BasicProgressBarUI() {
-			@Override protected Color getSelectionBackground() {
-				return Theme.current().getForegroundColor();
-			}
-
-			@Override protected Color getSelectionForeground() {
-				return Theme.current().getSecondAltBackgroundColor();
-			}
-		});
-
 		bar.setStringPainted(true);
 
 		ComponentUtils.deriveFont(bar, 10);

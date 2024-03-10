@@ -20,7 +20,6 @@ package net.mcreator.ui.views;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.laf.SlickTreeUI;
 import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -55,7 +54,6 @@ public class NBTEditorView extends ViewBase {
 		tree.setRowHeight(18);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 		tree.setOpaque(false);
-		tree.setUI(new SlickTreeUI());
 
 		JScrollPane scrollPane = new JScrollPane(tree);
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));

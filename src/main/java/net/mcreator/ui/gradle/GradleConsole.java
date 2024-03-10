@@ -36,7 +36,6 @@ import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.HtmlUtils;
 import net.mcreator.util.math.TimeUtils;
@@ -113,8 +112,6 @@ public class GradleConsole extends JPanel {
 	public GradleConsole(MCreator ref) {
 		this.ref = ref;
 
-		JPanel holder = new JPanel(new BorderLayout());
-		setLayout(new BorderLayout());
 		pan.addHyperlinkListener(e -> {
 			if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
 				String url = e.getURL().toString().replace("file:", "");
@@ -153,21 +150,16 @@ public class GradleConsole extends JPanel {
 
 		searchBar.reinstall(pan);
 
-		pan.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
+		pan.setBorder(BorderFactory.createEmptyBorder(9, 0, 0, 0));
 
-		JScrollPane aae = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+		JScrollPane aae = new JScrollPane(pan, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED,
 				ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-
-		aae.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getSecondAltBackgroundColor(),
-				Theme.current().getBackgroundColor(), aae.getVerticalScrollBar()));
-		aae.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
-		aae.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getSecondAltBackgroundColor(),
-				Theme.current().getBackgroundColor(), aae.getHorizontalScrollBar()));
-		aae.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 		aae.setBorder(BorderFactory.createMatteBorder(0, 10, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 		aae.setBackground(Theme.current().getSecondAltBackgroundColor());
 
-		holder.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current().getSecondAltBackgroundColor()));
+		setLayout(new BorderLayout());
+
+		setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		searchBar.setVisible(false);
 
@@ -176,16 +168,9 @@ public class GradleConsole extends JPanel {
 		outerholder.add("Center", aae);
 		outerholder.setOpaque(false);
 
-		searchBar.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 0));
+		searchBar.setBorder(BorderFactory.createEmptyBorder(6, 10, 5, 0));
 
-		holder.add("Center", outerholder);
-
-		JPanel bar = new JPanel();
-		bar.setLayout(new BoxLayout(bar, BoxLayout.LINE_AXIS));
-		bar.setBackground(Color.gray);
-
-		JButton x = L10N.button("dialog.gradle_console.clear_log");
-		x.setMargin(new Insets(1, 1, 1, 1));
+		add("Center", outerholder);
 
 		JToolBar options = new JToolBar(null, SwingConstants.VERTICAL);
 		options.setFloatable(false);
@@ -205,7 +190,6 @@ public class GradleConsole extends JPanel {
 
 		JButton buildbt = new JButton(UIRES.get("16px.build"));
 		buildbt.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ComponentUtils.normalizeButton2(buildbt);
 		buildbt.setToolTipText(L10N.t("dialog.gradle_console.start_build"));
 		buildbt.setOpaque(false);
 		buildbt.addActionListener(e -> ref.actionRegistry.buildWorkspace.doAction());
@@ -213,7 +197,6 @@ public class GradleConsole extends JPanel {
 
 		JButton rungradletask = new JButton(UIRES.get("16px.runtask"));
 		rungradletask.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ComponentUtils.normalizeButton2(rungradletask);
 		rungradletask.setToolTipText(L10N.t("dialog.gradle_console.run_specific_task"));
 		rungradletask.setOpaque(false);
 		rungradletask.addActionListener(e -> ref.actionRegistry.runGradleTask.doAction());
@@ -223,7 +206,6 @@ public class GradleConsole extends JPanel {
 
 		JButton cpc = new JButton(UIRES.get("16px.copyclipboard"));
 		cpc.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ComponentUtils.normalizeButton2(cpc);
 		cpc.setToolTipText(L10N.t("dialog.gradle_console.copy_contents_clipboard"));
 		cpc.setOpaque(false);
 		cpc.addActionListener(e -> {
@@ -235,7 +217,6 @@ public class GradleConsole extends JPanel {
 
 		JButton clr = new JButton(UIRES.get("16px.clear"));
 		clr.setCursor(new Cursor(Cursor.HAND_CURSOR));
-		ComponentUtils.normalizeButton2(clr);
 		clr.setToolTipText(L10N.t("dialog.gradle_console.clear"));
 		clr.addActionListener(e -> {
 			pan.clearConsole();
@@ -253,10 +234,8 @@ public class GradleConsole extends JPanel {
 
 		options.setBorder(BorderFactory.createEmptyBorder(5, 0, 0, 0));
 
-		holder.add("West", options);
-
-		holder.setBackground(Theme.current().getSecondAltBackgroundColor());
-		add("Center", holder);
+		setBackground(Theme.current().getSecondAltBackgroundColor());
+		add("West", options);
 
 		searchen.addChangeListener(e -> searchBar.setVisible(searchen.isSelected()));
 		searchBar.addComponentListener(new ComponentAdapter() {
@@ -264,9 +243,6 @@ public class GradleConsole extends JPanel {
 				searchen.setSelected(false);
 			}
 		});
-
-		ComponentUtils.normalizeButton2(slock);
-		ComponentUtils.normalizeButton2(searchen);
 	}
 
 	public String getConsoleText() {

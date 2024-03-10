@@ -102,34 +102,10 @@ public class ImageUtils {
 	}
 
 	public static Image resize(Image image, int w, int h) {
-		if (image instanceof BaseMultiResolutionImage) {
-			Image[] sourceImages = ((BaseMultiResolutionImage) image).getResolutionVariants().toArray(new Image[0]);
-			double widthMultiplier = (double) w / sourceImages[0].getWidth(null);
-			double heightMultiplier = (double) h / sourceImages[0].getHeight(null);
-
-			if (widthMultiplier == 1 && heightMultiplier == 1)
-				return image;
-
-			return applyOperationToAllResolutions((BaseMultiResolutionImage) image,
-					i -> resize(i, (int) (w * widthMultiplier), (int) (h * heightMultiplier)));
-		}
-
 		return resizeImage(toBufferedImage(image), w, h);
 	}
 
 	public static Image resizeAA(Image image, int w, int h) {
-		if (image instanceof BaseMultiResolutionImage) {
-			Image[] sourceImages = ((BaseMultiResolutionImage) image).getResolutionVariants().toArray(new Image[0]);
-			double widthMultiplier = (double) w / sourceImages[0].getWidth(null);
-			double heightMultiplier = (double) h / sourceImages[0].getHeight(null);
-
-			if (widthMultiplier == 1 && heightMultiplier == 1)
-				return image;
-
-			return applyOperationToAllResolutions((BaseMultiResolutionImage) image,
-					i -> resizeAA(i, (int) (w * widthMultiplier), (int) (h * heightMultiplier)));
-		}
-
 		return resizeImageWithAA(toBufferedImage(image), w, h);
 	}
 
@@ -698,12 +674,6 @@ public class ImageUtils {
 			data[i] /= total;
 
 		return data;
-	}
-
-	public static BaseMultiResolutionImage applyOperationToAllResolutions(BaseMultiResolutionImage image,
-			Function<Image, Image> operation) {
-		return new BaseMultiResolutionImage(
-				image.getResolutionVariants().stream().map(operation).toArray(Image[]::new));
 	}
 
 }

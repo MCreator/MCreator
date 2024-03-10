@@ -29,7 +29,6 @@ public class VerticalTabButton extends JButton {
 	public VerticalTabButton(String text) {
 		super(text);
 
-		ComponentUtils.deriveFont(this, 12);
 		int width = getFontMetrics(getFont()).stringWidth(text);
 
 		setPreferredSize(new Dimension(22, width + 30));

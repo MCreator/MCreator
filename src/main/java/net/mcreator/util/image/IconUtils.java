@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2024, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,32 +17,20 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.component;
+package net.mcreator.util.image;
 
-import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.util.ColorUtils;
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 
 import javax.swing.*;
-import java.awt.*;
 
-public class TransparentToolBar extends JToolBar {
+public class IconUtils {
 
-	private final Color c;
-
-	public TransparentToolBar() {
-		this(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
-	}
-
-	public TransparentToolBar(Color c) {
-		this.c = c;
-		setFloatable(false);
-		setOpaque(false);
-	}
-
-	@Override public void paintComponent(Graphics g) {
-		g.setColor(c);
-		g.fillRect(0, 0, getWidth(), getHeight());
-		super.paintComponent(g);
+	public static ImageIcon resize(ImageIcon input, int width, int height) {
+		if (input instanceof FlatSVGIcon svgIcon) {
+			return svgIcon.derive(width, height);
+		} else {
+			return new ImageIcon(ImageUtils.resizeAA(input.getImage(), width, height));
+		}
 	}
 
 }
