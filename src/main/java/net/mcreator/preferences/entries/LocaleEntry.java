@@ -22,7 +22,6 @@ package net.mcreator.preferences.entries;
 import com.google.gson.JsonElement;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;

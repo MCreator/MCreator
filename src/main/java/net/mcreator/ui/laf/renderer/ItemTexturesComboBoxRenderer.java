@@ -21,7 +21,6 @@ package net.mcreator.ui.laf.renderer;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.IconUtils;
-import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
 import java.awt.*;

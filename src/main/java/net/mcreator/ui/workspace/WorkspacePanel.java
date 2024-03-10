@@ -56,7 +56,6 @@ import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
 import net.mcreator.util.ColorUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.util.image.IconUtils;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;

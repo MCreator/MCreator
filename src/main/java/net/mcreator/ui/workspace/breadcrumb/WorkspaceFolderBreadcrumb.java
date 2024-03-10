@@ -21,8 +21,6 @@ package net.mcreator.ui.workspace.breadcrumb;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.util.ColorUtils;
 import net.mcreator.util.image.IconUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;

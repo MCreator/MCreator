@@ -108,8 +108,7 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createArmorTexture);
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createAnimatedTexture);
 
-		JButton create = AbstractWorkspacePanel.createToolBarButton("workspace.textures.new",
-				UIRES.get("16px.add"));
+		JButton create = AbstractWorkspacePanel.createToolBarButton("workspace.textures.new", UIRES.get("16px.add"));
 		create.addActionListener(e -> createMenu.show(create, 5, create.getHeight() + 5));
 		bar.add(create);
 
@@ -128,8 +127,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		importt.addActionListener(e -> importMenu.show(importt, 5, importt.getHeight() + 5));
 		bar.add(importt);
 
-		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.edit_selected",
-				UIRES.get("16px.edit"), e -> editSelectedFile()));
+		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.edit_selected", UIRES.get("16px.edit"),
+				e -> editSelectedFile()));
 
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.duplicate_selected",
 				UIRES.get("16px.duplicate"), e -> duplicateSelectedFile()));
@@ -159,8 +158,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(AbstractWorkspacePanel.createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
 				e -> deleteCurrentlySelected()));
 
-		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.export_selected",
-				UIRES.get("16px.ext"), e -> exportSelectedImages()));
+		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.export_selected", UIRES.get("16px.ext"),
+				e -> exportSelectedImages()));
 
 		add("North", bar);
 	}

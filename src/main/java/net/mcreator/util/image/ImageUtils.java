@@ -25,7 +25,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.RoundRectangle2D;
 import java.awt.image.*;
 import java.util.Random;
-import java.util.function.Function;
 
 public class ImageUtils {
 

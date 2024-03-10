@@ -65,7 +65,8 @@ class RecentWorkspacesRenderer extends JPanel implements ListCellRenderer<Recent
 
 		String path = value.getPath().getParentFile().getAbsolutePath().replace("\\", "/");
 
-		nameLabel.setForeground(isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getAltForegroundColor());
+		nameLabel.setForeground(
+				isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getAltForegroundColor());
 		pathLabel.setForeground(nameLabel.getForeground());
 
 		setToolTipText(L10N.t("dialog.workspace_selector.recent_workspace", value.getName(), path,

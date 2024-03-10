@@ -34,7 +34,6 @@ import net.mcreator.ui.laf.themes.Theme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -32,10 +32,7 @@ import net.mcreator.ui.laf.themes.Theme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;

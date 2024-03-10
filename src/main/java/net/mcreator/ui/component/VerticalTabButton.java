@@ -18,8 +18,6 @@
 
 package net.mcreator.ui.component;
 
-import net.mcreator.ui.component.util.ComponentUtils;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
