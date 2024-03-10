@@ -55,7 +55,13 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 		this.canExpandTrailHead = canExpandTrailHead;
 
 		setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 0));
-		setBackground(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
+		setOpaque(false);
+	}
+
+	@Override public void paintComponent(Graphics g) {
+		g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
+		g.fillRect(0, 0, getWidth(), getHeight());
+		super.paintComponent(g);
 	}
 
 	@SuppressWarnings("EqualsBetweenInconvertibleTypes")
