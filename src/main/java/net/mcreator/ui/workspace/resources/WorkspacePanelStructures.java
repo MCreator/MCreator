@@ -90,7 +90,7 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 
 		Render() {
 			setLayout(new GridLayout());
-			ComponentUtils.deriveFont(this, 14);
+			ComponentUtils.deriveFont(this, 15);
 			setBorder(BorderFactory.createEmptyBorder(5, 13, 5, 0));
 		}
 
