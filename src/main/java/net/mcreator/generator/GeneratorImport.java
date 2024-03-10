@@ -27,13 +27,12 @@ public class GeneratorImport {
 	private final String path;
 	private final List<String> excludes;
 
-	public GeneratorImport(Object yaml) {
+	@SuppressWarnings("unchecked") public GeneratorImport(Object yaml) {
 		if (yaml instanceof String yamlAsPath) {
 			this.path = yamlAsPath;
 			this.excludes = List.of();
 		} else if (yaml instanceof Map<?, ?> yamlAsMap) {
 			this.path = yamlAsMap.keySet().toArray()[0].toString();
-			//noinspection unchecked
 			this.excludes = yamlAsMap.containsKey("exclude") ? (List<String>) yamlAsMap.get("exclude") : List.of();
 		} else {
 			throw new IllegalArgumentException("Invalid import definition: " + yaml);
