@@ -140,7 +140,7 @@ public class FileDialogs {
 	}
 
 	private static boolean useNativeFileChooser() {
-		return PreferencesManager.PREFERENCES.ui.useNativeFileChooser.get() && OS.getOS() == OS.WINDOWS;
+		return PreferencesManager.PREFERENCES.ui.useNativeFileChooser.get() && OS.getOS() != OS.LINUX;
 	}
 
 }
