@@ -1,7 +1,7 @@
 plugins {
     id 'java-library'
     id 'eclipse'
-    id 'net.neoforged.gradle.userdev' version '7.0.96'
+    id 'net.neoforged.gradle.userdev' version '7.0.97'
 }
 
 version = '1.0'
