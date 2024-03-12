@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.ide;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -44,9 +45,12 @@ public class ReplaceBar extends JPanel {
 	private final RTextArea ra;
 
 	ReplaceBar(RTextArea ra) {
-		super(new BorderLayout(1, 1));
+		super(new BorderLayout(0, 1));
 
 		this.ra = ra;
+
+		jtf1.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
+		jtf2.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 
 		final JLabel matches = new JLabel();
 		matches.setForeground(Theme.current().getAltForegroundColor());
@@ -151,12 +155,7 @@ public class ReplaceBar extends JPanel {
 		cb5.setForeground(new Color(0xE2E2E2));
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
-		jtf1.setBackground(Theme.current().getAltBackgroundColor());
-		jtf1.setOpaque(true);
-
 		jtf2.setMaximumSize(jtf1.getPreferredSize());
-		jtf2.setBackground(Theme.current().getAltBackgroundColor());
-		jtf2.setOpaque(true);
 
 		JButton close = new JButton(UIRES.get("close_small"));
 		close.setContentAreaFilled(false);
@@ -169,7 +168,7 @@ public class ReplaceBar extends JPanel {
 		add("North", top);
 		add("South", bottom);
 
-		setBorder(BorderFactory.createEmptyBorder());
+		setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 	}
 
 	@Override public void setVisible(boolean is) {

@@ -24,7 +24,7 @@ import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.NewModElementDialog;
-import net.mcreator.util.image.ImageUtils;
+import net.mcreator.util.image.IconUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -69,7 +69,7 @@ public class ModTypeDropdown extends JPopupMenu {
 			if (type.getShortcut() != null)
 				modTypeButton.setAccelerator(javax.swing.KeyStroke.getKeyStroke(type.getShortcut()));
 
-			modTypeButton.setIcon(new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 32, 32)));
+			modTypeButton.setIcon(IconUtils.resize(type.getIcon(), 32, 32));
 
 			add(modTypeButton);
 		});

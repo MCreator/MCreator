@@ -90,19 +90,17 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 
 		Render() {
 			setLayout(new GridLayout());
-			setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
+			ComponentUtils.deriveFont(this, 15);
+			setBorder(BorderFactory.createEmptyBorder(5, 13, 5, 0));
 		}
 
 		@Override
 		public JLabel getListCellRendererComponent(JList<? extends String> list, String ma, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground(
-					isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getBackgroundColor());
+			setBackground(isSelected ? Theme.current().getAltBackgroundColor() : Theme.current().getBackgroundColor());
 			setText(" " + ma);
-			ComponentUtils.deriveFont(this, 17);
-			setIcon(UIRES.get("16px.ext"));
-			setBorder(BorderFactory.createEmptyBorder(5, 13, 5, 0));
+			setIcon(UIRES.get("16px.structures"));
 			return this;
 		}
 

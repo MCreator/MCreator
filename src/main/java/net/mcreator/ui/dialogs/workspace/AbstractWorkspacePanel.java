@@ -43,9 +43,10 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 	final WorkspaceDialogs.WorkspaceDialogPanel workspaceDialogPanel;
 	final ValidationGroup validationGroup = new ValidationGroup();
 	final VTextField workspaceFolder = new VTextField();
-	final JButton selectWorkspaceFolder = new JButton("...");
 
 	private boolean workspaceFolderAltered = false;
+
+	protected JButton selectWorkspaceFolder = new JButton("<html>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;");
 
 	public AbstractWorkspacePanel(Window parent) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -94,6 +95,10 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 				workspaceFolderAltered = true;
 			}
 		});
+
+		selectWorkspaceFolder.setMargin(new Insets(0, 50, 0, 50));
+		selectWorkspaceFolder.setBorder(
+				BorderFactory.createMatteBorder(1, 0, 1, 1, UIManager.getColor("Component.borderColor")));
 
 		workspaceDialogPanel.modName.setPreferredSize(new Dimension(300, 32));
 		workspaceDialogPanel.modID.setPreferredSize(new Dimension(300, 32));

@@ -356,7 +356,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 			mcreator.mcreatorTabs.addTab(this.tab);
 			leftSplitPane.setDividerLocation(1.2 / 8);
 			rightSplitPane.setDividerLocation(5.7 / 7);
-			toolPanel.setDividerLocation(1.2 / 3.1);
 			zoomPane.getZoomport().fitZoom();
 			refreshTab();
 			return this;

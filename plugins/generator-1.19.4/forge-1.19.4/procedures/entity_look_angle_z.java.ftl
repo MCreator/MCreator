@@ -1,1 +1,0 @@
-(${input$entity}.getLookAngle().z)

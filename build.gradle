@@ -1,7 +1,9 @@
+import org.apache.tools.ant.taskdefs.condition.Os
+
 plugins {
     id "java"
     id "idea"
-    id "de.undercouch.download" version "5.5.0"
+    id "de.undercouch.download" version "5.6.0"
     id 'edu.sc.seis.launch4j' version '3.0.5'
     id 'org.jetbrains.gradle.plugin.idea-ext' version '1.1.7'
     id 'org.openjfx.javafxplugin' version '0.1.0'
@@ -58,6 +60,18 @@ configurations {
     macX64
     macAarch64
     linux64
+
+    if (Os.isFamily(Os.FAMILY_WINDOWS)) {
+        runtimeOnly.extendsFrom win64
+    } else if (Os.isFamily(Os.FAMILY_MAC)) {
+        if (System.getProperty("os.arch").contains("aarch64")) {
+            runtimeOnly.extendsFrom macAarch64
+        } else {
+            runtimeOnly.extendsFrom macX64
+        }
+    } else if (Os.isFamily(Os.FAMILY_UNIX)) {
+        runtimeOnly.extendsFrom linux64
+    }
 }
 
 configurations.win64.attributes {
@@ -105,7 +119,6 @@ dependencies {
     implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.12'
     implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.6'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
-    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.4.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-autolink', version: '0.17.0'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark-ext-gfm-tables', version: '0.17.0'
@@ -116,6 +129,16 @@ dependencies {
     }
     implementation group: 'net.java.dev.jna', name: 'jna', version: '5.14.0' // needed by discord-rpc.jar
 
+    implementation group: 'com.github.weisj', name: 'jsvg', version: '1.4.0'
+    implementation group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'no-natives'
+    implementation(group: 'com.formdev', name: 'flatlaf-extras', version: '3.4') {
+        dep -> exclude group: 'com.formdev', module: 'flatlaf'
+    }
+    win64 group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'windows-x86_64', ext: 'dll'
+    macX64 group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'macos-x86_64', ext: 'dylib'
+    macAarch64 group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'macos-arm64', ext: 'dylib'
+    linux64 group: 'com.formdev', name: 'flatlaf', version: '3.4', classifier: 'linux-x86_64', ext: 'so'
+
     // test dependencies
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.10.2'
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: '5.10.2'
@@ -124,7 +147,8 @@ dependencies {
 javafx {
     version = '21.0.2'
     modules = ['javafx.web', 'javafx.swing']
-    configurations = ['provided', 'win64', 'macX64', 'macAarch64', 'linux64'] // we provide natives during deployment or with SDK
+    configurations = ['provided', 'win64', 'macX64', 'macAarch64', 'linux64']
+    // we provide natives during deployment or with SDK
 }
 
 test {
