@@ -10,10 +10,14 @@ echo.
 echo.
 echo   -------------------------------------
 echo            MCreator Launcher
-echo    ------------------------------------
+echo   -------------------------------------
+
 echo.
 echo.
+
+echo  Launching MCreator...
 :: set the classpath
+ECHO.
 set CLASSPATH=./lib/mcreator.jar;./lib/*
 echo.
 echo.
