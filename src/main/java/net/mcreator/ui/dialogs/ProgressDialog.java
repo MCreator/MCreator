@@ -205,11 +205,9 @@ public class ProgressDialog extends MCreatorDialog {
 				stap.add("East", PanelUtils.centerInPanel(status2));
 
 				JProgressBar bar = new JProgressBar(0, 100);
-				bar.setBorder(BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1));
-				bar.setOpaque(false);
 				bar.setValue(ma.percent);
 				if (bar.getValue() > 0)
-					stap.add("West", PanelUtils.centerInPanel(bar));
+					stap.add("West", PanelUtils.totalCenterInPanel(bar));
 			} else if (ma.status == ProgressUnit.Status.COMPLETE) {
 				stap.add("East", PanelUtils.centerInPanel(new JLabel(complete)));
 			} else if (ma.status == ProgressUnit.Status.ERROR) {

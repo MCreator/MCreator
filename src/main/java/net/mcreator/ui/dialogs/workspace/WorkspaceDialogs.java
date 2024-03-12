@@ -54,7 +54,6 @@ import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -99,7 +98,7 @@ public class WorkspaceDialogs {
 
 		workspaceDialog.getRootPane().setDefaultButton(ok);
 		workspaceDialog.pack();
-		workspaceDialog.setSize(workspaceDialog.getBounds().width, 620);
+		workspaceDialog.setSize(680, 620);
 		workspaceDialog.setLocationRelativeTo(mcreator);
 
 		workspaceDialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -160,7 +159,6 @@ public class WorkspaceDialogs {
 		VTextField websiteURL = new VTextField(24);
 
 		JComboBox<String> modPicture = new JComboBox<>();
-		JCheckBox lockBaseModFiles = L10N.checkbox("dialog.workspace_settings.lock_base_files");
 		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
 		JTextField updateJSON = new JTextField(24);
 		JStringListField requiredMods, dependencies, dependants;
@@ -202,21 +200,19 @@ public class WorkspaceDialogs {
 			Generator.GENERATOR_CACHE.values().forEach(generator::addItem);
 
 			JPanel _basicSettings = new JPanel();
+			_basicSettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			_basicSettings.setLayout(new BoxLayout(_basicSettings, BoxLayout.PAGE_AXIS));
 
 			JPanel _advancedSettings = new JPanel();
+			_advancedSettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			_advancedSettings.setLayout(new BoxLayout(_advancedSettings, BoxLayout.PAGE_AXIS));
 
 			JPanel _external_apis = new JPanel();
+			_external_apis.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			_external_apis.setLayout(new BoxLayout(_external_apis, BoxLayout.PAGE_AXIS));
 
 			if (workspace != null) {
 				JTabbedPane master = new JTabbedPane();
-				master.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-				master.setUI(new BasicTabbedPaneUI() {
-					@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
-					}
-				});
 				master.addTab(L10N.t("dialog.workspace_settings.tab.general"),
 						PanelUtils.pullElementUp(_basicSettings));
 				master.addTab(L10N.t("dialog.workspace_settings.tab.apis"), PanelUtils.pullElementUp(_external_apis));
@@ -528,14 +524,12 @@ public class WorkspaceDialogs {
 				_external_apis.add(apiSettings);
 			}
 
-			JPanel advancedSettings = new JPanel(new GridLayout(3, 2, 5, 2));
+			JPanel advancedSettings = new JPanel(new GridLayout(2, 2, 5, 2));
 			advancedSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 					L10N.t("dialog.workspace_settings.section.advanced")));
 			_advancedSettings.add(advancedSettings);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.server_side_only"));
 			advancedSettings.add(serverSideOnly);
-			advancedSettings.add(L10N.label("dialog.workspace_settings.lock_base_files_label"));
-			advancedSettings.add(lockBaseModFiles);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.update_url"));
 			advancedSettings.add(updateJSON);
 
@@ -568,7 +562,6 @@ public class WorkspaceDialogs {
 						L10N.t("dialog.workspace.settings.workspace_nopic_default") :
 						workspace.getWorkspaceSettings().getModPicture());
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
-				lockBaseModFiles.setSelected(workspace.getWorkspaceSettings().isLockBaseModFiles());
 				updateJSON.setText(workspace.getWorkspaceSettings().getUpdateURL());
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
 				packageName.setText(workspace.getWorkspaceSettings().getModElementsPackage());
@@ -604,7 +597,6 @@ public class WorkspaceDialogs {
 					(String) modPicture.getSelectedItem());
 			retVal.setModElementsPackage(packageName.getText().isEmpty() ? null : packageName.getText());
 			retVal.setServerSideOnly(serverSideOnly.isSelected());
-			retVal.setLockBaseModFiles(lockBaseModFiles.isSelected());
 			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());
 			retVal.setCurrentGenerator(
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());

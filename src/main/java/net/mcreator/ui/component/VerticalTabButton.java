@@ -18,8 +18,6 @@
 
 package net.mcreator.ui.component;
 
-import net.mcreator.ui.component.util.ComponentUtils;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
@@ -29,7 +27,6 @@ public class VerticalTabButton extends JButton {
 	public VerticalTabButton(String text) {
 		super(text);
 
-		ComponentUtils.deriveFont(this, 12);
 		int width = getFontMetrics(getFont()).stringWidth(text);
 
 		setPreferredSize(new Dimension(22, width + 30));

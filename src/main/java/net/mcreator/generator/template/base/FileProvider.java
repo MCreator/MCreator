@@ -19,6 +19,7 @@
 package net.mcreator.generator.template.base;
 
 import net.mcreator.generator.Generator;
+import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.plugin.PluginLoader;
 import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
@@ -27,9 +28,7 @@ import org.apache.logging.log4j.Logger;
 import javax.annotation.Nonnull;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused") public class FileProvider {
@@ -38,18 +37,17 @@ import java.util.Map;
 
 	private final Map<String, String> CACHE = new HashMap<>();
 
-	private final List<String> templateLoaderPaths = new ArrayList<>();
+	private final GeneratorConfiguration generatorConfiguration;
 
 	public FileProvider(@Nonnull Generator generator) {
-		templateLoaderPaths.add(generator.getGeneratorName());
-		templateLoaderPaths.addAll(generator.getGeneratorConfiguration().getImports());
+		this.generatorConfiguration = generator.getGeneratorConfiguration();
 	}
 
 	public String file(@Nonnull String file) {
 		return CACHE.computeIfAbsent(file, key -> {
 			try {
-				for (String path : templateLoaderPaths) {
-					InputStream stream = PluginLoader.INSTANCE.getResourceAsStream(path + "/" + key);
+				for (String path : generatorConfiguration.getGeneratorPaths(key)) {
+					InputStream stream = PluginLoader.INSTANCE.getResourceAsStream(path);
 					if (stream != null) {
 						return IOUtils.toString(stream, StandardCharsets.UTF_8);
 					}

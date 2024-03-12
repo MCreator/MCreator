@@ -9,7 +9,7 @@ templates:
   - template: json/block_feature_biome_modifier.json.ftl
     writer: json
     condition: generateFeature
-    name: "@MODDATAROOT/forge/biome_modifier/@registryname_biome_modifier.json"
+    name: "@MODDATAROOT/neoforge/biome_modifier/@registryname_biome_modifier.json"
     variables: "step=vegetal_decoration"
   - template: plant/configured_plantgen.json.ftl
     writer: json
@@ -19,6 +19,12 @@ templates:
     writer: json
     condition: generateFeature
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
+
+  # Loot table
+  - template: json/block_loot_table.json.ftl
+    writer: json
+    condition: generateLootTable()
+    name: "@MODDATAROOT/loot_tables/blocks/@registryname.json"
 
   # Plant item template
   - template: json/plant_item.json.ftl

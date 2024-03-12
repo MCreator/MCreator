@@ -22,7 +22,6 @@ import net.mcreator.io.OS;
 import net.mcreator.ui.component.SocialButtons;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.ide.CodeEditorView;
-import net.mcreator.ui.init.AppIcon;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
@@ -52,9 +51,8 @@ public class MainMenuBar extends JMenuBar {
 		setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		if (!macOSscreenMenuBar) {
-			JMenu logo = new JMenu("  MCreator");
+			JMenu logo = new JMenu("MCreator");
 			logo.setMnemonic('M');
-			logo.setIcon(AppIcon.getAppIcon(16, 16));
 			logo.add(mcreator.actionRegistry.mcreatorWebsite);
 			logo.add(mcreator.actionRegistry.mcreatorCommunity);
 			SocialButtons socialButtons = new SocialButtons();
@@ -149,7 +147,6 @@ public class MainMenuBar extends JMenuBar {
 
 		JMenu workspace = L10N.menu("menubar.workspace");
 		workspace.setMnemonic('S');
-		workspace.addSeparator();
 		workspace.add(mcreator.actionRegistry.setCreativeTabItemOrder);
 		workspace.addSeparator();
 		workspace.add(mcreator.actionRegistry.openWorkspaceFolder);
@@ -263,8 +260,6 @@ public class MainMenuBar extends JMenuBar {
 	private void addHelpSearch(JMenu help) {
 		JTextField searchField = new JTextField(20) {
 			@Override public void paintComponent(Graphics g) {
-				g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
-				g.fillRect(0, 0, getWidth(), getHeight());
 				super.paintComponent(g);
 				g.setColor(new Color(0x9C9C9C));
 				g.setFont(getFont().deriveFont(11.0f));
@@ -272,7 +267,6 @@ public class MainMenuBar extends JMenuBar {
 					g.drawString(L10N.t("menubar.help.search.tooltip"), 28, 14);
 			}
 		};
-		searchField.setOpaque(true);
 		ComponentUtils.deriveFont(searchField, 13);
 		searchField.setBorder(BorderFactory.createEmptyBorder(1, 28, 1, 0));
 		searchField.addKeyListener(new KeyAdapter() {

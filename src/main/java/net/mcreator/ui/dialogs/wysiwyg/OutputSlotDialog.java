@@ -41,7 +41,7 @@ public class OutputSlotDialog extends AbstractWYSIWYGDialog<OutputSlot> {
 	public OutputSlotDialog(WYSIWYGEditor editor, @Nullable OutputSlot slot) {
 		super(editor, slot);
 		setModal(true);
-		setSize(850, 360);
+		setSize(860, 360);
 		setLocationRelativeTo(editor.mcreator);
 
 		JPanel options = new JPanel();

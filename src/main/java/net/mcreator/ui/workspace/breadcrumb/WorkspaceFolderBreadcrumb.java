@@ -21,7 +21,7 @@ package net.mcreator.ui.workspace.breadcrumb;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JScrollablePopupMenu;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.util.image.ImageUtils;
+import net.mcreator.util.image.IconUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -118,8 +118,9 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 						for (IElement file : files) {
 							JMenuItem menuItem = new JMenuItem("<html>&nbsp;" + file.getName());
 							if (file instanceof ModElement)
-								menuItem.setIcon(new ImageIcon(ImageUtils.resizeAA(
-										ModElementManager.getModElementIcon((ModElement) file).getImage(), 16)));
+								menuItem.setIcon(
+										IconUtils.resize(ModElementManager.getModElementIcon((ModElement) file), 16,
+												16));
 							else if (file instanceof FolderElement)
 								menuItem.setIcon(UIRES.get("laf.directory"));
 

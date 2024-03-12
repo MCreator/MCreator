@@ -38,8 +38,6 @@ import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.FileIcons;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.laf.SlickTreeUI;
 import net.mcreator.ui.laf.renderer.AstTreeCellRendererCustom;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.ViewBase;
@@ -123,8 +121,6 @@ public class CodeEditorView extends ViewBase {
 
 	@Nullable private ModElement fileOwner = null;
 
-	private final JPanel rightDummy = new JPanel();
-
 	@Nullable private JavaParser parser = null;
 
 	@Nullable private BreakpointHandler breakpointHandler = null;
@@ -182,13 +178,13 @@ public class CodeEditorView extends ViewBase {
 
 		sp.setFoldIndicatorEnabled(true);
 
-		sp.getGutter().setFoldBackground(Theme.current().getBackgroundColor());
-		sp.getGutter().setBorderColor(Theme.current().getBackgroundColor());
-		sp.getGutter().setBackground(Theme.current().getBackgroundColor());
+		sp.getGutter().setFoldBackground(getBackground());
+		sp.getGutter().setBorderColor(getBackground());
 
 		sp.setIconRowHeaderEnabled(true);
 
-		sp.setBackground(Theme.current().getBackgroundColor());
+		sp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
+		sp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 		sp.setBorder(null);
 
 		sp.getGutter().setShowCollapsedRegionToolTips(true);
@@ -223,6 +219,8 @@ public class CodeEditorView extends ViewBase {
 		treeSP.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
 		treeSP.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
 
+		treeSP.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
+		treeSP.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 		treeSP.setBorder(null);
 
 		te.getDocument().addDocumentListener(new DocumentListener() {
@@ -249,7 +247,7 @@ public class CodeEditorView extends ViewBase {
 
 		sp.setOpaque(false);
 
-		spne.setRightComponent(rightDummy);
+		spne.setRightComponent(new JPanel());
 
 		JPanel cp = new JPanel(new BorderLayout());
 		cp.setBackground(Theme.current().getBackgroundColor());
@@ -264,18 +262,12 @@ public class CodeEditorView extends ViewBase {
 
 		spne.setLeftComponent(cp);
 		spne.setContinuousLayout(true);
-
-		spne.setDividerSize(2);
-
 		spne.setBorder(null);
 
-		JPanel bars = new JPanel(new BorderLayout());
-
-		ro.setBackground(new Color(0x3C3939));
-		ComponentUtils.deriveFont(ro, 13);
+		JPanel bars = new JPanel(new BorderLayout(2, 2));
+		ComponentUtils.deriveFont(ro, 12);
 		ro.setOpaque(true);
-		ro.setForeground(new Color(0xE0E0E0));
-		Border margin = new EmptyBorder(3, 3, 3, 3);
+		Border margin = new EmptyBorder(3, 5, 3, 3);
 		ro.setBorder(new CompoundBorder(ro.getBorder(), margin));
 		ro.setVisible(false);
 
@@ -542,9 +534,8 @@ public class CodeEditorView extends ViewBase {
 		SwingUtilities.invokeLater(this::loadSourceTree);
 	}
 
-	private void setCustomNotice(String notice, Color color) {
+	private void setCustomNotice(String notice) {
 		ro.setText(notice);
-		ro.setBackground(color);
 		ro.setVisible(true);
 	}
 
@@ -570,15 +561,15 @@ public class CodeEditorView extends ViewBase {
 
 		if (tree != null) {
 			tree.setCellRenderer(new AstTreeCellRendererCustom());
+			tree.setOpaque(false);
 			tree.listenTo(te);
 			tree.setRowHeight(18);
-			tree.setUI(new SlickTreeUI(treeSP));
 			treeSP.setViewportView(tree);
 			treeSP.revalidate();
 			spne.setRightComponent(treeSP);
 			spne.setDividerLocation(0.8);
 		} else {
-			spne.setRightComponent(rightDummy);
+			spne.setRightComponent(new JPanel());
 		}
 	}
 
@@ -650,7 +641,7 @@ public class CodeEditorView extends ViewBase {
 		this.fileOwner = fileOwner;
 		boolean codeLocked = this.fileOwner.isCodeLocked();
 		if (!codeLocked) {
-			setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()), new Color(0x31332F));
+			setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()));
 		}
 	}
 
@@ -668,8 +659,7 @@ public class CodeEditorView extends ViewBase {
 					mcreator.getWorkspace().markDirty();
 					ro.setVisible(false);
 				} else {
-					setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()),
-							new Color(0x31332F));
+					setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()));
 				}
 			}
 		}

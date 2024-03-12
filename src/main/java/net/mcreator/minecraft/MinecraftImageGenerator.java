@@ -199,7 +199,8 @@ public class MinecraftImageGenerator {
 		BufferedImage bucketMask = ImageUtils.toBufferedImage(UIRES.get("mod_preview_bases.bucket_mask").getImage());
 		// The fluid image is resized to avoid issues with animated textures
 		BufferedImage fluidOverlay = ImageUtils.resizeAndCrop(fluid.getImage(), 32);
-		return ImageUtils.drawOver(UIRES.get("mod_preview_bases.bucket_base"), new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
+		return ImageUtils.drawOver(UIRES.get("mod_preview_bases.bucket_base"),
+				new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
 	}
 
 	public static ImageIcon generateSpawnEggIcon(Color baseColor, Color dotColor) {

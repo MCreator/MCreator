@@ -26,7 +26,6 @@ import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.dialogs.TextureSelectorDialog;
 import net.mcreator.ui.init.ImageMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.ui.views.editor.image.layer.Layer;
@@ -97,7 +96,7 @@ public class FromTemplateDialog extends MCreatorDialog {
 		JPanel settings = new JPanel(new BorderLayout());
 		JPanel controls = new JPanel(new BorderLayout());
 
-		JPanel templates = new JPanel(new GridLayout(2, 2, 5, 5));
+		JPanel templates = new JPanel(new GridLayout(2, 2, 5, 2));
 		templates.setBorder(new EmptyBorder(5, 2, 10, 2));
 
 		JComboBox<String> templateSelector = new JComboBox<>(templateList);
@@ -125,27 +124,10 @@ public class FromTemplateDialog extends MCreatorDialog {
 
 		editp.add("Center", PanelUtils.totalCenterInPanel(prev));
 
-		JButton bt = new JButton(UIRES.get("18px.open"));
-		JButton bt2 = new JButton(UIRES.get("18px.open"));
-		JButton bt3 = new JButton(UIRES.get("18px.open"));
-		JButton bt4 = new JButton(UIRES.get("18px.open"));
-		bt.setText(L10N.t("dialog.imageeditor.template_select_texture"));
-		bt2.setText(L10N.t("dialog.imageeditor.template_select_texture"));
-		bt3.setText(L10N.t("dialog.imageeditor.template_select_texture"));
-		bt4.setText(L10N.t("dialog.imageeditor.template_select_texture"));
-		bt.setMargin(new Insets(2, 2, 2, 2));
-		bt2.setMargin(new Insets(2, 2, 2, 2));
-		bt3.setMargin(new Insets(2, 2, 2, 2));
-		bt4.setMargin(new Insets(2, 2, 2, 2));
-
-		bt.setOpaque(false);
-		bt2.setOpaque(false);
-		bt3.setOpaque(false);
-		bt4.setOpaque(false);
-
-		ang1.setOpaque(false);
-		ang2.setOpaque(false);
-		ang3.setOpaque(false);
+		JButton bt = new JButton("...");
+		JButton bt2 = new JButton("...");
+		JButton bt3 = new JButton("...");
+		JButton bt4 = new JButton("...");
 
 		ang1.addChangeListener(event -> refreshIcon());
 		ang2.addChangeListener(event -> refreshIcon());
@@ -175,46 +157,33 @@ public class FromTemplateDialog extends MCreatorDialog {
 			cbs4.setSelectedItem(is4.list.getSelectedValue());
 		});
 
-		type1.setOpaque(false);
-		type2.setOpaque(false);
-		type3.setOpaque(false);
-
 		type1.addActionListener(event -> refreshIcon());
-
 		type2.addActionListener(event -> refreshIcon());
-
 		type3.addActionListener(event -> refreshIcon());
 
-		JPanel as = new JPanel();
-		as.setOpaque(false);
-
-		JPanel pas = new JPanel();
-		pas.setLayout(new BoxLayout(pas, BoxLayout.PAGE_AXIS));
-
-		pas.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_one"), cbs, bt, as));
-		pas.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_two"), cbs2, bt2, col1,
-				type1, L10N.label("dialog.imageeditor.template_rotation"), ang1));
-		pas.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_three"), cbs3, bt3, col2,
-				type2, L10N.label("dialog.imageeditor.template_rotation"), ang2));
-		pas.add(PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.imageeditor.template_layer_four"), cbs4, bt4, col4,
-				type3, L10N.label("dialog.imageeditor.template_rotation"), ang3));
+		JPanel pas = new JPanel(new GridLayout(4, 1, 5, 2));
+		pas.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, L10N.label("dialog.imageeditor.template_layer_one"),
+				PanelUtils.centerAndEastElement(cbs, bt, 2, 0)));
+		pas.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, L10N.label("dialog.imageeditor.template_layer_two"),
+				PanelUtils.centerAndEastElement(cbs2, bt2, 2, 0), col1, type1,
+				L10N.label("dialog.imageeditor.template_rotation"), ang1));
+		pas.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, L10N.label("dialog.imageeditor.template_layer_three"),
+				PanelUtils.centerAndEastElement(cbs3, bt3, 2, 0), col2, type2,
+				L10N.label("dialog.imageeditor.template_rotation"), ang2));
+		pas.add(PanelUtils.join(FlowLayout.LEFT, 5, 0, L10N.label("dialog.imageeditor.template_layer_four"),
+				PanelUtils.centerAndEastElement(cbs4, bt4, 2, 0), col4, type3,
+				L10N.label("dialog.imageeditor.template_rotation"), ang3));
 
 		col1.addColorSelectedListener(event -> refreshIcon());
 		col2.addColorSelectedListener(event -> refreshIcon());
 		col4.addColorSelectedListener(event -> refreshIcon());
+
 		cbs.addActionListener(event -> refreshIcon());
 		cbs2.addActionListener(event -> refreshIcon());
 		cbs3.addActionListener(event -> refreshIcon());
 		cbs4.addActionListener(event -> refreshIcon());
 
-		col1.setOpaque(false);
-		col2.setOpaque(false);
-		col4.setOpaque(false);
-
-		pas.setOpaque(false);
-
 		editp.add("South", PanelUtils.centerInPanel(pas));
-		editp.setOpaque(false);
 
 		JButton randomize = L10N.button("dialog.imageeditor.template_randomize");
 		randomize.setMargin(new Insets(1, 40, 1, 40));

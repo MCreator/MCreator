@@ -92,6 +92,9 @@ public class ${JavaModName}Items {
 		</#if>
 	</#list>
 
+	// Start of user code block custom items
+	// End of user code block custom items
+
 	<#if itemsWithInventory?size != 0>
 		public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ${JavaModName}.MODID);
 

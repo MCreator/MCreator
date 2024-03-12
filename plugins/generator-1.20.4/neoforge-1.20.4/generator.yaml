@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: stable
-buildfileversion: 20.4.190
+buildfileversion: 20.4.198
 
 import:
   - datapack-1.20.4
@@ -27,6 +27,9 @@ import_formatter:
     SoundEvent: net.minecraft.sounds
     Blocks: net.minecraft.world.level.block
     Items: net.minecraft.world.item
+    Multimap: com.google.common.collect
+    ImmutableSet: com.google.common.collect
+    Iterables: com.google.common.collect
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -53,8 +56,8 @@ other_textures_dir: "@MODASSETSROOT/textures"
 base_templates:
   - template: modbase/mod.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
-    canLock: true
   - template: modbase/mods.toml.ftl
+    usercodeComment: "#"
     writer: file
     name: "@RESROOT/META-INF/mods.toml"
   - template: pack.mcmeta.ftl # loaded from datapack generator

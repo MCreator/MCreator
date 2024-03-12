@@ -94,32 +94,20 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 
 	static class Render extends JPanel implements ListCellRenderer<SoundElement> {
 
+		private final JLabel name = new JLabel();
+		private final JLabel name2 = new JLabel();
+
 		Render() {
-			setLayout(new GridLayout());
-			setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
-		}
-
-		@Override
-		public JPanel getListCellRendererComponent(JList<? extends SoundElement> list, SoundElement ma, int index,
-				boolean isSelected, boolean cellHasFocus) {
-
-			removeAll();
-
-			JPanel cont = new JPanel(new BorderLayout());
-			cont.setBackground(isSelected ?
-					(Theme.current().getAltBackgroundColor()).brighter() :
-					Theme.current().getAltBackgroundColor());
-			cont.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 10));
+			setLayout(new BorderLayout(0, 0));
+			setBorder(BorderFactory.createEmptyBorder(4, 5, 3, 0));
 
 			JPanel namepan = new JPanel(new BorderLayout());
-			namepan.setBorder(BorderFactory.createEmptyBorder(0, 8, 5, 0));
+			namepan.setBorder(BorderFactory.createEmptyBorder(0, 8, 0, 0));
 			namepan.setOpaque(false);
 
-			JLabel name = new JLabel(ma.getName());
-			name.setFont(Theme.current().getSecondaryFont().deriveFont(20.0f));
+			name.setFont(name.getFont().deriveFont(15.0f));
 			namepan.add("North", name);
 
-			JLabel name2 = L10N.label("workspace.sounds.files", String.join(", ", ma.getFiles()));
 			ComponentUtils.deriveFont(name2, 11);
 			namepan.add("South", name2);
 
@@ -129,22 +117,24 @@ public class WorkspacePanelSounds extends AbstractResourcePanel<SoundElement> {
 			iconpn.add("West", new JLabel(UIRES.get("note")));
 			iconpn.add("Center", namepan);
 
-			String rightText;
+			add("West", iconpn);
+		}
+
+		@Override
+		public JPanel getListCellRendererComponent(JList<? extends SoundElement> list, SoundElement ma, int index,
+				boolean isSelected, boolean cellHasFocus) {
+			setBackground(isSelected ? Theme.current().getAltBackgroundColor() : Theme.current().getBackgroundColor());
+
+			name.setText(ma.getName());
 
 			if (ma.getSubtitle() != null && !ma.getSubtitle().isEmpty()) {
-				rightText = L10N.t("workspace.sounds.subtitle_and_category", ma.getSubtitle(), ma.getCategory());
+				name2.setText(
+						L10N.t("workspace.sounds.files_and_category_and_subtitle", String.join(", ", ma.getFiles()),
+								ma.getCategory(), ma.getSubtitle()));
 			} else {
-				rightText = L10N.t("workspace.sounds.category", ma.getCategory());
+				name2.setText(L10N.t("workspace.sounds.files_and_category", String.join(", ", ma.getFiles()),
+						ma.getCategory()));
 			}
-
-			JLabel rightTextLabel = new JLabel(rightText);
-			ComponentUtils.deriveFont(rightTextLabel, 17);
-			cont.add("East", rightTextLabel);
-
-			cont.add("West", iconpn);
-
-			add(cont);
-			setOpaque(false);
 
 			return this;
 		}
