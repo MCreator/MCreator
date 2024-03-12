@@ -6,6 +6,7 @@ static void convertCRLF(File input, File out) {
 
 void signFile(File fileToSign) {
     if (Os.isFamily(Os.FAMILY_MAC)) {
+        print('Signing ' + fileToSign)
         if (System.getenv('MACOS_CERTIFICATE_NAME') != null) {
             def entitlementsFile = file('platform/mac/entitlements.plistfixed')
             convertCRLF(file('platform/mac/entitlements.plist'), entitlementsFile)
@@ -29,7 +30,7 @@ void signFile(File fileToSign) {
 
 void signAndNotarizeAPP(File appDirectory) {
     // Sign the libraries
-    def libraries = new File(appDirectory, "").listFiles().findAll { it.isFile() && it.name.endsWith('.dylib') }
+    def libraries = new File(appDirectory, "Contents/lib").listFiles().findAll { it.isFile() && it.name.endsWith('.dylib') }
     libraries.each { signFile(it) }
 
     // Sign the app
