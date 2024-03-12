@@ -242,11 +242,6 @@ public class GradleConsole extends JPanel {
 		setBackground(Theme.current().getSecondAltBackgroundColor());
 		add("West", options);
 
-		// To prevent from placing the debug panel here
-		add("West", new JEmptyBox(0, 0));
-		add("East", new JEmptyBox(0, 0));
-		add("South", new JEmptyBox(0, 0));
-
 		searchen.addChangeListener(e -> searchBar.setVisible(searchen.isSelected()));
 		searchBar.addComponentListener(new ComponentAdapter() {
 			@Override public void componentHidden(ComponentEvent e) {
