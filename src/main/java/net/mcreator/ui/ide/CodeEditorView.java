@@ -187,38 +187,6 @@ public class CodeEditorView extends ViewBase {
 		sp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 		sp.setBorder(null);
 
-		sp.getGutter().setShowCollapsedRegionToolTips(true);
-
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
-		sp.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), sp.getHorizontalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
-		sp.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
-
-		JPanel cornerDummy1 = new JPanel();
-		cornerDummy1.setBackground(Theme.current().getBackgroundColor());
-		sp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy1);
-
-		JPanel cornerDummy2 = new JPanel();
-		cornerDummy2.setBackground(Theme.current().getBackgroundColor());
-		sp.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy2);
-
-		JPanel cornerDummy12 = new JPanel();
-		cornerDummy12.setBackground(Theme.current().getBackgroundColor());
-		treeSP.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy12);
-
-		JPanel cornerDummy22 = new JPanel();
-		cornerDummy22.setBackground(Theme.current().getBackgroundColor());
-		treeSP.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy22);
-
-		treeSP.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), treeSP.getVerticalScrollBar()));
-		treeSP.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), treeSP.getHorizontalScrollBar()));
-		treeSP.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
-		treeSP.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
-
 		treeSP.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
 		treeSP.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 		treeSP.setBorder(null);

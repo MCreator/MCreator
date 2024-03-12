@@ -24,7 +24,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.TreeUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickTreeUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
 
@@ -64,7 +63,6 @@ public class DebugFramesView extends JPanel {
 		framesScroll.setBorder(null);
 		framesScroll.getViewport().setOpaque(false);
 		framesScroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		frames.setUI(new SlickTreeUI(framesScroll));
 
 		add(PanelUtils.totalCenterInPanel(noframes), "empty");
 		add(framesScroll, "frames");
