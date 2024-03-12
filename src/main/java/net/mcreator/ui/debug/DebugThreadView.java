@@ -20,6 +20,7 @@
 package net.mcreator.ui.debug;
 
 import com.sun.jdi.ThreadReference;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 
@@ -51,30 +52,43 @@ public class DebugThreadView extends JList<ThreadReference> {
 		setModel(model);
 	}
 
-	private static class ThreadRenderer extends JLabel implements ListCellRenderer<ThreadReference> {
+	private static class ThreadRenderer extends JPanel implements ListCellRenderer<ThreadReference> {
+
+		private final JLabel name = new JLabel();
+		private final JLabel status = new JLabel();
+
+		ThreadRenderer() {
+			setLayout(new BorderLayout());
+			add(name, BorderLayout.NORTH);
+			add(status, BorderLayout.SOUTH);
+			ComponentUtils.deriveFont(status, 10);
+		}
 
 		@Override
 		public Component getListCellRendererComponent(JList<? extends ThreadReference> list, ThreadReference thread,
 				int index, boolean isSelected, boolean cellHasFocus) {
 			try {
-				setText("<html>" + thread.name() + "<br><small>" + L10N.t("debug.threads.status",
-						thread.threadGroup().name(), convertThreadStatus(thread.status()).toLowerCase(Locale.ENGLISH))
-						+ "</small></html>");
+				name.setText(thread.name());
+				status.setText(L10N.t("debug.threads.status", thread.threadGroup().name(),
+						convertThreadStatus(thread.status()).toLowerCase(Locale.ENGLISH)));
 
 				setBorder(BorderFactory.createEmptyBorder(2, 0, 2, 0));
 
 				if (thread.isAtBreakpoint()) {
 					setBackground(DEBUG_COLOR);
-					setForeground(new Color(42, 42, 42));
+					name.setForeground(new Color(42, 42, 42));
+					status.setForeground(new Color(42, 42, 42));
 				} else {
 					setBackground(list.getBackground());
 
-					switch (thread.status()) {
-					case ThreadReference.THREAD_STATUS_RUNNING -> setForeground(Theme.current().getForegroundColor());
-					case ThreadReference.THREAD_STATUS_WAIT -> setForeground(new Color(168, 168, 168));
-					case ThreadReference.THREAD_STATUS_SLEEPING -> setForeground(new Color(108, 108, 108));
-					default -> setForeground(Theme.current().getAltForegroundColor());
-					}
+					Color foreground = switch (thread.status()) {
+						case ThreadReference.THREAD_STATUS_RUNNING -> Theme.current().getForegroundColor();
+						case ThreadReference.THREAD_STATUS_WAIT -> new Color(168, 168, 168);
+						case ThreadReference.THREAD_STATUS_SLEEPING -> new Color(108, 108, 108);
+						default -> Theme.current().getAltForegroundColor();
+					};
+					name.setForeground(foreground);
+					status.setForeground(foreground);
 				}
 
 				setOpaque(false);

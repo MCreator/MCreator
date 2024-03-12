@@ -55,7 +55,7 @@ public class DebugFramesView extends JPanel {
 		frames.setShowsRootHandles(true);
 
 		JLabel noframes = L10N.label("debug.frames.no_frames");
-		noframes.setFont(noframes.getFont().deriveFont(14f));
+		noframes.setFont(noframes.getFont().deriveFont(13f));
 		noframes.setForeground(Theme.current().getAltForegroundColor());
 
 		JScrollPane framesScroll = new JScrollPane(frames);

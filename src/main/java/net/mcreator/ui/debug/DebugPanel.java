@@ -118,7 +118,7 @@ public class DebugPanel extends JPanel {
 		debugging.add("Center", PanelUtils.westAndCenterElement(threadsScroll, debugFramesView));
 
 		JLabel nomarkers = L10N.label("debug.no_markers");
-		nomarkers.setFont(loading.getFont().deriveFont(14f));
+		nomarkers.setFont(loading.getFont().deriveFont(13f));
 		nomarkers.setForeground(Theme.current().getAltForegroundColor());
 		JComponent nomarkerwrap = PanelUtils.totalCenterInPanel(nomarkers);
 		nomarkerwrap.setPreferredSize(new Dimension(475, 0));

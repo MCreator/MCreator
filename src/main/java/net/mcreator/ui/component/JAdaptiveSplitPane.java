@@ -31,7 +31,7 @@ public class JAdaptiveSplitPane extends JPanel {
 
 	private final JSplitPane splitPane;
 
-	private double dividerLocation;
+	private final double dividerLocation;
 
 	public JAdaptiveSplitPane(int orientation, Component leftComponent, Component rightComponent, double dividerLocation) {
 		setLayout(new BorderLayout(0, 0));
@@ -39,7 +39,6 @@ public class JAdaptiveSplitPane extends JPanel {
 		setBorder(null);
 
 		splitPane = new JSplitPane(orientation);
-		splitPane.setDividerSize(2);
 
 		this.leftComponent = leftComponent;
 		this.rightComponent = rightComponent;
@@ -85,6 +84,9 @@ public class JAdaptiveSplitPane extends JPanel {
 			add(splitPane, BorderLayout.CENTER);
 			SwingUtilities.invokeLater(() -> splitPane.setDividerLocation(dividerLocation));
 		}
+
+		revalidate();
+		repaint();
 	}
 
 }
