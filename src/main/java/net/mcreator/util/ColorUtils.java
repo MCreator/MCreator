@@ -1,6 +1,7 @@
 /*
  * MCreator (https://mcreator.net/)
- * Copyright (C) 2020 Pylo and contributors
+ * Copyright (C) 2012-2020, Pylo
+ * Copyright (C) 2020-2024, Pylo, opensource contributors
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,25 +17,18 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.ui.laf;
+package net.mcreator.util;
 
-import net.mcreator.ui.laf.themes.Theme;
+import java.awt.*;
 
-import javax.swing.*;
-import javax.swing.plaf.ComponentUI;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.metal.MetalSplitPaneUI;
+public class ColorUtils {
 
-public class DarkSplitPaneUI extends MetalSplitPaneUI {
-
-	public static ComponentUI createUI(JComponent var0) {
-		return new DarkSplitPaneUI();
+	public static String formatColor(Color color) {
+		return String.format("#%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
 	}
 
-	@Override public BasicSplitPaneDivider createDefaultDivider() {
-		BasicSplitPaneDivider divider = super.createDefaultDivider();
-		divider.setBackground(Theme.current().getAltBackgroundColor());
-		return divider;
+	public static Color applyAlpha(Color color, int alpha) {
+		return new Color(color.getRed(), color.getGreen(), color.getBlue(), alpha);
 	}
 
 }

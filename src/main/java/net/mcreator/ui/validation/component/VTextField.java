@@ -23,6 +23,8 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
+import net.mcreator.util.ColorUtils;
+import net.mcreator.util.image.IconUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -74,40 +76,20 @@ public class VTextField extends JTextField implements IValidable {
 
 	}
 
-	@Override public void paintComponent(Graphics g) {
+	private static final ImageIcon INFO_ICON = IconUtils.resize(UIRES.get("18px.info"), 13, 13);
+	private static final ImageIcon WARNING_ICON = IconUtils.resize(UIRES.get("18px.warning"), 13, 13);
+	private static final ImageIcon ERROR_ICON = IconUtils.resize(UIRES.get("18px.remove"), 13, 13);
+	private static final ImageIcon OK_ICON = IconUtils.resize(UIRES.get("18px.ok"), 13, 13);
 
+	@Override public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 
 		Graphics2D g2 = (Graphics2D) g;
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-		g.drawImage(UIRES.get("16px.info").getImage(), getWidth() - 14, 1, 13, 13, null);
-
-		if (currentValidationResult != null) {
-
-			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
-				g.setColor(new Color(238, 229, 113));
-				g.drawImage(UIRES.get("18px.warning").getImage(), getWidth() - 14, 13, 13, 13, null);
-			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
-				g.setColor(new Color(204, 108, 108));
-				g.drawImage(UIRES.get("18px.remove").getImage(), getWidth() - 14, 13, 13, 13, null);
-			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.PASSED
-					&& showPassed) {
-				g.setColor(new Color(79, 192, 121));
-				g.drawImage(UIRES.get("18px.ok").getImage(), getWidth() - 14, 13, 13, 13, null);
-			}
-
-			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
-					|| currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
-				Color old = g.getColor();
-				g.setColor(new Color(old.getRed(), old.getGreen(), old.getBlue(), 40));
-				g.fillRect(1, 1, getWidth() - 2, getHeight() - 2);
-			}
-		}
-
 		if (mouseInInfoZone) {
 			g.setColor(new Color(67, 67, 67, 255));
-			g.fillRect(2, 2, getWidth() - 16, 11);
+			g.fillRect(2, 2, getWidth() - 2, 11);
 			g.setFont(getFont().deriveFont(10.0f));
 			g.setColor(Theme.current().getForegroundColor());
 			String message = "This input field is validated";
@@ -119,6 +101,28 @@ public class VTextField extends JTextField implements IValidable {
 			g.drawString(message, 3, 11);
 		}
 
+		INFO_ICON.paintIcon(this, g, getWidth() - 14, 1);
+
+		if (currentValidationResult != null) {
+			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+				g.setColor(new Color(238, 229, 113));
+				WARNING_ICON.paintIcon(this, g, getWidth() - 14, 13);
+			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
+				g.setColor(new Color(204, 108, 108));
+				ERROR_ICON.paintIcon(this, g, getWidth() - 14, 13);
+			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.PASSED
+					&& showPassed) {
+				g.setColor(new Color(79, 192, 121));
+				OK_ICON.paintIcon(this, g, getWidth() - 14, 13);
+			}
+
+			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
+					|| currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
+				Color old = g.getColor();
+				g.setColor(ColorUtils.applyAlpha(old, 40));
+				g.fillRect(1, 1, getWidth() - 2, getHeight() - 2);
+			}
+		}
 	}
 
 	public void enableRealtimeValidation() {
