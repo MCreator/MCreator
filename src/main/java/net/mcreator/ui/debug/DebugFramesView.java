@@ -35,6 +35,7 @@ import javax.swing.tree.TreeSelectionModel;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static net.mcreator.ui.debug.DebugPanel.DEBUG_COLOR;
 
@@ -53,6 +54,8 @@ public class DebugFramesView extends JPanel {
 		frames.setBackground(Theme.current().getSecondAltBackgroundColor());
 		frames.setRootVisible(false);
 		frames.setShowsRootHandles(true);
+		frames.putClientProperty("FlatLaf.style",
+				Map.of("selectionBackground", DEBUG_COLOR, "selectionInactiveBackground", DEBUG_COLOR));
 
 		JLabel noframes = L10N.label("debug.frames.no_frames");
 		noframes.setFont(noframes.getFont().deriveFont(13f));
@@ -151,13 +154,11 @@ public class DebugFramesView extends JPanel {
 		@Override
 		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
 				boolean leaf, int row, boolean hasFocus) {
-			String text = value.toString();
-
-			setOpaque(false);
-
 			JLabel a = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-			a.setOpaque(true);
+
+			String text = value.toString();
 			a.setText(text);
+			a.setForeground(Theme.current().getForegroundColor());
 
 			if (text.contains("[size:")) {
 				a.setIcon(UIRES.get("rsta.template_obj"));
@@ -167,13 +168,6 @@ public class DebugFramesView extends JPanel {
 				a.setIcon(UIRES.get("rsta.methpub_obj"));
 			}
 
-			if (sel) {
-				a.setBackground(DEBUG_COLOR);
-				a.setForeground(Theme.current().getForegroundColor());
-			} else {
-				a.setBackground(Theme.current().getSecondAltBackgroundColor());
-				a.setForeground(Theme.current().getForegroundColor());
-			}
 			return a;
 		}
 
