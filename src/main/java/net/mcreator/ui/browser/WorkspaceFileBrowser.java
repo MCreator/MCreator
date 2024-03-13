@@ -452,18 +452,13 @@ public class WorkspaceFileBrowser extends JPanel {
 
 	private class ProjectBrowserCellRenderer extends DefaultTreeCellRenderer {
 
-		ProjectBrowserCellRenderer() {
-			setBorderSelectionColor(null);
-			setBackgroundSelectionColor(null);
-		}
-
 		@Override
 		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
 				boolean leaf, int row, boolean hasFocus) {
-			FilterTreeNode node = (FilterTreeNode) value;
 			JLabel a = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 			ComponentUtils.deriveFont(a, 11);
 
+			FilterTreeNode node = (FilterTreeNode) value;
 			if (node.getUserObject() instanceof String tsi) {
 				a.setText(tsi);
 				if (tsi.equals(mcreator.getWorkspaceSettings().getModName()))
@@ -506,15 +501,6 @@ public class WorkspaceFileBrowser extends JPanel {
 				a.setText("<html>" + getText().replace(node.getFilter(), "<b>" + node.getFilter() + "</b>"));
 			}
 
-			if (sel) {
-				a.setOpaque(true);
-				a.setForeground(Theme.current().getBackgroundColor());
-				a.setBackground(Theme.current().getInterfaceAccentColor());
-			} else {
-				a.setOpaque(false);
-				a.setBackground(Theme.current().getBackgroundColor());
-				a.setForeground(Theme.current().getForegroundColor());
-			}
 			return a;
 		}
 	}
