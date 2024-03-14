@@ -134,7 +134,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	@Override public ViewBase showView() {
 		MCREvent.event(new ModElementGUIEvent.BeforeLoading(mcreator, this.tabIn, this));
 
-		this.tabIn = new MCreatorTabs.Tab(this, modElement, false);
+		this.tabIn = new MCreatorTabs.Tab(this, modElement);
 
 		ViewBase retval;
 		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(this.tabIn);
