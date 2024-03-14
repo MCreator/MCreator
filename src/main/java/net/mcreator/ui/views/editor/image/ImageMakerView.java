@@ -338,11 +338,6 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		updateInfoBar(0, 0);
 	}
 
-	public static boolean isFileSupported(String fileName) {
-		return Arrays.asList("bmp", "gif", "jpeg", "jpg", "png", "tiff", "tif", "wbmp")
-				.contains(FilenameUtilsPatched.getExtension(fileName));
-	}
-
 	@Override public ViewBase showView() {
 		if (image != null)
 			this.tab = new MCreatorTabs.Tab(this, image);
@@ -354,8 +349,8 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(this.tab);
 		if (existing == null) {
 			mcreator.mcreatorTabs.addTab(this.tab);
-			leftSplitPane.setDividerLocation(1.2 / 8);
-			rightSplitPane.setDividerLocation(5.7 / 7);
+			leftSplitPane.setDividerLocation(0.16);
+			rightSplitPane.setDividerLocation(0.79);
 			zoomPane.getZoomport().fitZoom();
 			refreshTab();
 			return this;
@@ -463,6 +458,11 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 
 	public File getImageFile() {
 		return image;
+	}
+
+	public static boolean isFileSupported(String fileName) {
+		return Arrays.asList("bmp", "gif", "jpeg", "jpg", "png", "tiff", "tif", "wbmp")
+				.contains(FilenameUtilsPatched.getExtension(fileName));
 	}
 
 }

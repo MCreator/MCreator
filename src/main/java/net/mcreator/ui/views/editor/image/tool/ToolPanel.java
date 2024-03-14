@@ -39,7 +39,7 @@ import java.awt.*;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
-public class ToolPanel extends JSplitPane {
+public class ToolPanel extends JPanel {
 	private final MCreator frame;
 	private final Canvas canvas;
 	private final JZoomPane zoomPane;
@@ -61,7 +61,8 @@ public class ToolPanel extends JSplitPane {
 
 	public ToolPanel(MCreator frame, Canvas canvas, JZoomPane zoomPane, CanvasRenderer canvasRenderer,
 			VersionManager versionManager) {
-		super(JSplitPane.VERTICAL_SPLIT);
+		super(new BorderLayout());
+
 		this.frame = frame;
 		this.canvas = canvas;
 		this.zoomPane = zoomPane;
@@ -69,24 +70,21 @@ public class ToolPanel extends JSplitPane {
 		this.versionManager = versionManager;
 
 		cs = new ColorSelector(frame);
-		JComponent cswrap = PanelUtils.centerInPanel(cs);
-		cswrap.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+		JComponent csWrap = PanelUtils.totalCenterInPanel(cs);
+		csWrap.setBorder(BorderFactory.createEmptyBorder(15, 0, 25, 0));
 
-		toolGroups.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
+		toolGroups.setBorder(BorderFactory.createEmptyBorder(0, 3, 3, 3));
 		toolGroups.setLayout(new BoxLayout(toolGroups, BoxLayout.Y_AXIS));
-
-		JPanel toolsAndColor = new JPanel(new BorderLayout());
-		toolsAndColor.add(toolGroups, BorderLayout.CENTER);
-		toolsAndColor.add(cswrap, BorderLayout.SOUTH);
-		toolsAndColor.setMinimumSize(new Dimension(230, 360));
-
-		setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		init();
 
-		setTopComponent(toolsAndColor);
-		setBottomComponent(toolProperties);
-		setDividerLocation(360);
+		JPanel toolsAndColor = new JPanel(new BorderLayout());
+		toolsAndColor.add("North", PanelUtils.join(FlowLayout.LEFT, toolGroups));
+		toolsAndColor.add("South", csWrap);
+		toolsAndColor.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()));
+
+		add("North", toolsAndColor);
+		add("Center", toolProperties);
 	}
 
 	public AbstractTool getCurrentTool() {
