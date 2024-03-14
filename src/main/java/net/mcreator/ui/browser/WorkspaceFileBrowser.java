@@ -68,20 +68,7 @@ public class WorkspaceFileBrowser extends JPanel {
 	FilterTreeNode sourceCode = null;
 	FilterTreeNode currRes = null;
 
-	public final JTree tree = new JTree(mods) {
-		@Override public void paintComponent(Graphics g) {
-			g.setColor(getBackground());
-			g.fillRect(0, 0, getWidth(), getHeight());
-			if (getSelectionCount() > 0) {
-				g.setColor(Theme.current().getInterfaceAccentColor());
-				for (int i : Objects.requireNonNull(getSelectionRows())) {
-					Rectangle r = getRowBounds(i);
-					g.fillRect(0, r.y, getWidth(), r.height);
-				}
-			}
-			super.paintComponent(g);
-		}
-	};
+	public final JTree tree = new JTree(mods);
 	private final JTextField jtf1 = new JTextField() {
 		@Override public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
