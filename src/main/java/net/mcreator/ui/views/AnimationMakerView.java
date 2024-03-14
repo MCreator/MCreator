@@ -195,22 +195,26 @@ public class AnimationMakerView extends ViewBase {
 
 		JButton next = L10N.button("dialog.animation_maker.next_frame");
 		next.addActionListener(event -> {
-			animindex++;
-			if (animindex >= timelinevector.getSize())
-				animindex--;
-			prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
-			timeline.repaint();
+			if (!timelinevector.isEmpty()) {
+				animindex++;
+				if (animindex >= timelinevector.getSize())
+					animindex--;
+				prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
+				timeline.repaint();
+			}
 		});
 		next.setIcon(UIRES.get("16px.fwd"));
 		controls.add(next);
 
 		JButton prev = L10N.button("dialog.animation_maker.previous_frame");
 		prev.addActionListener(event -> {
-			animindex--;
-			if (animindex < 0)
-				animindex = 0;
-			prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
-			timeline.repaint();
+			if (!timelinevector.isEmpty()) {
+				animindex--;
+				if (animindex < 0)
+					animindex = 0;
+				prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
+				timeline.repaint();
+			}
 		});
 		prev.setIcon(UIRES.get("16px.rwd"));
 		controls.add(prev);
