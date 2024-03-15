@@ -267,7 +267,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 				}
 			});
 
-			componentB = PanelUtils.centerAndEastElement(procwrap, PanelUtils.westAndEastElement(add, edit));
+			componentB = PanelUtils.centerAndEastElement(procwrap, PanelUtils.westAndEastElement(add, edit), 3, 0);
 			componentB.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 4));
 		} else {
 			procwrap.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 4));

@@ -74,7 +74,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 				listMenu.setBackground((Theme.current().getAltBackgroundColor()).darker());
 				listMenu.setForeground(Theme.current().getForegroundColor());
 				listMenu.setIconTextGap(8);
-				listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
+				listMenu.setBorder(BorderFactory.createEmptyBorder(10, 8, 11, 0));
 
 				for (int i = 0; i < list.listData().size(); i++) {
 					if (i > 0 && listMenu.getMenuComponents().length > 0 && !list.templates().get(i).isEmpty())
@@ -105,7 +105,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 		item.setBackground((Theme.current().getAltBackgroundColor()).darker());
 		item.setForeground(Theme.current().getForegroundColor());
 		item.setIconTextGap(8);
-		item.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
+		item.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 0));
 		item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, template.getFile()));
 		return item;
 	}

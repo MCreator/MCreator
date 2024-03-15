@@ -21,6 +21,7 @@ package net.mcreator.ui.component;
 
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.ColorUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -80,7 +81,7 @@ public class UnsupportedComponent extends JPanel {
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 
-		g.setColor(new Color(0.3f, 0.3f, 0, 0.4f));
+		g.setColor(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
 		g.fillRect(0, 0, getWidth(), getHeight());
 
 		int x = (this.getWidth() - warning.getWidth(null)) / 2;

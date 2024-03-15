@@ -1,18 +1,4 @@
 <#-- @formatter:off -->
-/*
- *    MCreator note:
- *
- *    If you lock base mod element files, you can edit this file and it won't get overwritten.
- *    If you change your modid or package, you need to apply these changes to this file MANUALLY.
- *
- *    Settings in @Mod annotation WON'T be changed in case of the base mod element
- *    files lock too, so you need to set them manually here in such case.
- *
- *    If you do not lock base mod element files in Workspace settings, this file
- *    will be REGENERATED on each build.
- *
- */
-
 package ${package};
 
 import org.apache.logging.log4j.LogManager;
@@ -31,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 
 		<#if w.hasSounds()>${JavaModName}Sounds.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("block")>${JavaModName}Blocks.REGISTRY.register(modEventBus);</#if>
+		<#if w.hasElementsOfBaseType("blockentity")>${JavaModName}BlockEntities.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("item")>${JavaModName}Items.register(modEventBus);</#if>
 		<#if w.hasElementsOfBaseType("entity")>${JavaModName}Entities.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasItemsInTabs()>${JavaModName}Tabs.REGISTRY.register(modEventBus);</#if>
@@ -44,7 +31,17 @@ import org.apache.logging.log4j.Logger;
 		<#if w.hasElementsOfType("gui")>${JavaModName}Menus.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfType("particle")>${JavaModName}ParticleTypes.REGISTRY.register(modEventBus);</#if>
 		<#if w.hasElementsOfType("villagerprofession")>${JavaModName}VillagerProfessions.PROFESSIONS.register(modEventBus);</#if>
+		<#if w.hasElementsOfType("fluid")>
+			${JavaModName}Fluids.REGISTRY.register(modEventBus);
+			${JavaModName}FluidTypes.REGISTRY.register(modEventBus);
+		</#if>
+
+		// Start of user code block mod init
+		// End of user code block mod init
 	}
+
+	// Start of user code block mod methods
+	// End of user code block mod methods
 
 	<#-- Networking support below -->
 	private static boolean networkingRegistered = false;

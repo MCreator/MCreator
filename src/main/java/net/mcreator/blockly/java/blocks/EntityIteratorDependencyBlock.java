@@ -22,6 +22,7 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.blockly.BlocklyToCode;
 import net.mcreator.blockly.IBlockGenerator;
 import net.mcreator.blockly.data.Dependency;
+import net.mcreator.ui.init.L10N;
 import org.w3c.dom.Element;
 
 public class EntityIteratorDependencyBlock implements IBlockGenerator {
@@ -32,7 +33,7 @@ public class EntityIteratorDependencyBlock implements IBlockGenerator {
 			master.addDependency(new Dependency("entityiterator", "entity"));
 		} else {
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-					"Entity iterator procedure block outside foreach statement"));
+					L10N.t("blockly.errors.entity_iterator_outside_foreach")));
 		}
 	}
 

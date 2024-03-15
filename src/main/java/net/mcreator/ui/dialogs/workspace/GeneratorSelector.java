@@ -34,7 +34,6 @@ import net.mcreator.ui.laf.themes.Theme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -232,16 +231,6 @@ public class GeneratorSelector {
 			bar.setValue(stats.getCoverageInfo().get(registry).intValue());
 			bar.setString(new DecimalFormat("#.##").format(stats.getCoverageInfo().get(registry)) + " %");
 		}
-
-		bar.setUI(new BasicProgressBarUI() {
-			@Override protected Color getSelectionBackground() {
-				return Theme.current().getForegroundColor();
-			}
-
-			@Override protected Color getSelectionForeground() {
-				return Theme.current().getSecondAltBackgroundColor();
-			}
-		});
 
 		bar.setStringPainted(true);
 

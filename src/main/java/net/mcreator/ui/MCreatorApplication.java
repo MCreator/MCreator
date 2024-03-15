@@ -49,7 +49,7 @@ import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
-import net.mcreator.workspace.MissingWorkspacePluginsException;
+import net.mcreator.workspace.MissingGeneratorFeaturesException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -320,7 +320,7 @@ public final class MCreatorApplication {
 				reportFailedWorkspaceOpen(
 						new IOException("Corrupted workspace file and no backups found", corruptedWorkspaceFile));
 			}
-		} catch (MissingWorkspacePluginsException e) {
+		} catch (MissingGeneratorFeaturesException e) {
 			LOG.error("Failed to open workspace due to missing plugins", e);
 		} catch (IOException | UnsupportedGeneratorException e) {
 			LOG.error("Failed to open workspace!", e);

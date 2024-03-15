@@ -59,7 +59,7 @@ public class JColor extends JPanel {
 
 		colorText = new JTextField(9);
 		colorText.setEditable(false);
-		colorText.setPreferredSize(new Dimension(0, 38));
+		colorText.setPreferredSize(new Dimension(0, 24));
 		colorText.setBorder(
 				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 3, getBackground()),
 						BorderFactory.createMatteBorder(1, 1, 1, 0, getBackground())));

@@ -195,22 +195,26 @@ public class AnimationMakerView extends ViewBase {
 
 		JButton next = L10N.button("dialog.animation_maker.next_frame");
 		next.addActionListener(event -> {
-			animindex++;
-			if (animindex >= timelinevector.getSize())
-				animindex--;
-			prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
-			timeline.repaint();
+			if (!timelinevector.isEmpty()) {
+				animindex++;
+				if (animindex >= timelinevector.getSize())
+					animindex--;
+				prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
+				timeline.repaint();
+			}
 		});
 		next.setIcon(UIRES.get("16px.fwd"));
 		controls.add(next);
 
 		JButton prev = L10N.button("dialog.animation_maker.previous_frame");
 		prev.addActionListener(event -> {
-			animindex--;
-			if (animindex < 0)
-				animindex = 0;
-			prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
-			timeline.repaint();
+			if (!timelinevector.isEmpty()) {
+				animindex--;
+				if (animindex < 0)
+					animindex = 0;
+				prv.setIcon(new ImageIcon(ImageUtils.resize(timelinevector.getElementAt(animindex).image, zoom)));
+				timeline.repaint();
+			}
 		});
 		prev.setIcon(UIRES.get("16px.rwd"));
 		controls.add(prev);
@@ -272,15 +276,14 @@ public class AnimationMakerView extends ViewBase {
 
 							return;
 						}
-						int frameCount = frames.length;
 						ProgressDialog.ProgressUnit p2 = new ProgressDialog.ProgressUnit(
 								L10N.t("dialog.animation_maker.gif_processing"));
 						dial.addProgressUnit(p2);
-						for (int i = 0; i < frameCount; i++) {
+						for (int i = 0; i < frames.length; i++) {
 							int finalI = i;
 							SwingUtilities.invokeLater(
 									() -> timelinevector.addElement(new AnimationFrame(frames[finalI])));
-							p2.setPercent((int) (i / (float) frameCount * 100));
+							p2.setPercent((int) (i / (float) frames.length * 100));
 						}
 						p2.markStateOk();
 						dial.hideDialog();
@@ -304,8 +307,6 @@ public class AnimationMakerView extends ViewBase {
 		});
 		remove.setIcon(UIRES.get("18px.remove"));
 		timelinebar.add(remove);
-
-		timelinebar.addSeparator();
 
 		timelinee.add("North", timelinebar);
 
