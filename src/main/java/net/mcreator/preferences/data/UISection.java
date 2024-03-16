@@ -58,7 +58,7 @@ public class UISection extends PreferencesSection {
 				new StringEntry("textAntialiasingType", "on", "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb",
 						"lcd_vbgr"));
 		usemacOSMenuBar = addEntry(new BooleanEntry("useMacOSMenuBar", true));
-		nativeFileChooser = addEntry(new BooleanEntry("nativeFileChooser", OS.getOS() != OS.LINUX));
+		nativeFileChooser = addEntry(new BooleanEntry("nativeFileChooser", true));
 		expandSectionsByDefault = addEntry(new BooleanEntry("expandSectionsByDefault", false));
 		use2DAcceleration = addEntry(new BooleanEntry("use2DAcceleration", false));
 		autoReloadTabs = addEntry(new BooleanEntry("autoReloadTabs", true));
