@@ -5,6 +5,6 @@
 * **Cross** - 植物使用的模型
 * **Crop** - 農作物使用的模型
 * **Grass Block** - 草方塊使用的模型（其頂部和側面紋理將被著色）
-* Custom - 你也可以定義自訂 JSON 和 OBJ 模型
+* Custom - 您也可以定義自訂 JSON 和 OBJ 模型
 
 在創建自訂模型時，建議使用 JSON，因為 JSON 支援原版模型類型。

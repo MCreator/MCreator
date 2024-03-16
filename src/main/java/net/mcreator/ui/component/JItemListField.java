@@ -33,6 +33,7 @@ import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
+import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -342,18 +343,22 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		include.setSelected(!isExcluded);
 	}
 
+	private static final ImageIcon WARNING_ICON = IconUtils.resize(UIRES.get("18px.warning"), 13, 13);
+	private static final ImageIcon ERROR_ICON = IconUtils.resize(UIRES.get("18px.remove"), 13, 13);
+	private static final ImageIcon OK_ICON = IconUtils.resize(UIRES.get("18px.ok"), 13, 13);
+
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 
 		if (currentValidationResult != null) {
 			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
-				g.drawImage(UIRES.get("18px.warning").getImage(), 0, 0, 13, 13, null);
+				WARNING_ICON.paintIcon(this, g, 0, 0);
 				g.setColor(new Color(238, 229, 113));
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
-				g.drawImage(UIRES.get("18px.remove").getImage(), 0, 0, 13, 13, null);
+				ERROR_ICON.paintIcon(this, g, 0, 0);
 				g.setColor(new Color(204, 108, 108));
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.PASSED) {
-				g.drawImage(UIRES.get("18px.ok").getImage(), 0, 0, 13, 13, null);
+				OK_ICON.paintIcon(this, g, 0, 0);
 				g.setColor(new Color(79, 192, 121));
 			}
 
@@ -431,7 +436,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 								MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), unmappedValue).getImage(),
 								18)));
 					else if (unmappedValue.startsWith("#"))
-						setIcon(new ImageIcon(ImageUtils.resizeAA(MCItem.TAG_ICON.getImage(), 18)));
+						setIcon(IconUtils.resize(MCItem.TAG_ICON, 18, 18));
 				}
 
 				if (!(mappableElement).canProperlyMap())

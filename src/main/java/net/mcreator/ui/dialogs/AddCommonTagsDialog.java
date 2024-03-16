@@ -119,7 +119,8 @@ public class AddCommonTagsDialog {
 		callables.add(addTag(mcreator, damageTypeTags, "bypasses_armor", "minecraft", TagType.DAMAGE_TYPES, false));
 		callables.add(addTag(mcreator, damageTypeTags, "bypasses_cooldown", "minecraft", TagType.DAMAGE_TYPES, false));
 		callables.add(addTag(mcreator, damageTypeTags, "bypasses_effects", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(addTag(mcreator, damageTypeTags, "bypasses_enchantments", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(
+				addTag(mcreator, damageTypeTags, "bypasses_enchantments", "minecraft", TagType.DAMAGE_TYPES, false));
 		callables.add(addTag(mcreator, damageTypeTags, "bypasses_shield", "minecraft", TagType.DAMAGE_TYPES, false));
 
 		ok.addActionListener(e -> {

@@ -20,6 +20,12 @@ templates:
     condition: generateFeature
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
 
+  # Loot table
+  - template: json/block_loot_table.json.ftl
+    writer: json
+    condition: generateLootTable()
+    name: "@MODDATAROOT/loot_tables/blocks/@registryname.json"
+
   # Block item templates
   - template: json/block_item.json.ftl
     condition: "renderType() #?= 10,11,12,14,110,120,2"

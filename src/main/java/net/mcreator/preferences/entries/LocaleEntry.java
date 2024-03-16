@@ -22,7 +22,6 @@ package net.mcreator.preferences.entries;
 import com.google.gson.JsonElement;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
@@ -86,7 +85,6 @@ public class LocaleEntry extends PreferencesEntry<Locale> {
 			setForeground(Color.white);
 			setBorder(new EmptyBorder(0, 1, 0, 0));
 
-			ComponentUtils.deriveFont(this, 12);
 			setText(" " + value.getDisplayName(Locale.ROOT));
 
 			uiTextsPercent = L10N.getUITextsLocaleSupport(value);

@@ -20,6 +20,12 @@ templates:
     condition: generateFeature
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
 
+  # Loot table
+  - template: json/block_loot_table.json.ftl
+    writer: json
+    condition: generateLootTable()
+    name: "@MODDATAROOT/loot_tables/blocks/@registryname.json"
+
   # Plant item template
   - template: json/plant_item.json.ftl
     writer: json
