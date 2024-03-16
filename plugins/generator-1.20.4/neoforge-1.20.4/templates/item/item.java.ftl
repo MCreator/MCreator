@@ -257,7 +257,7 @@ public class ${name}Item extends Item {
 						if (<@procedureOBJToConditionCode data.rangedUseCondition/>) {
 							<#if data.rangedItemChargesPower>
 								float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
-								if (!((double) pullingPower < 0.1)) {
+								if (pullingPower >= 0.1) {
 							</#if>
 							<@arrowShootCode/>
 							<#if data.rangedItemChargesPower>
@@ -267,7 +267,7 @@ public class ${name}Item extends Item {
 					<#else>
 						<#if data.rangedItemChargesPower>
 							float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
-							if (!((double) pullingPower < 0.1)) {
+							if (pullingPower >= 0.1) {
 						</#if>
 						<@arrowShootCode/>
 						<#if data.rangedItemChargesPower>
