@@ -61,6 +61,7 @@ import java.util.Set;
 
 public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelHolder {
 
+	private final JCheckBox skipPlacement = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector generateCondition;
 	private BiomeListField restrictionBiomes;
 	private final JComboBox<String> generationStep = new JComboBox<>(
@@ -87,6 +88,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
+		skipPlacement.setOpaque(false);
+
 		if (!isEditingMode())
 			generationStep.setSelectedItem("SURFACE_STRUCTURES");
 
@@ -95,7 +98,11 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
 
 		JPanel page1 = new JPanel(new BorderLayout(10, 10));
-		JPanel properties = new JPanel(new GridLayout(2, 2, 4, 2));
+		JPanel properties = new JPanel(new GridLayout(3, 2, 4, 2));
+
+		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("feature/skip_placement"),
+				L10N.label("elementgui.feature.skip_placement")));
+		properties.add(skipPlacement);
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("feature/generation_stage"),
 				L10N.label("elementgui.feature.generation_stage")));
@@ -106,6 +113,9 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		properties.add(restrictionBiomes);
 
 		properties.setOpaque(false);
+
+		skipPlacement.addActionListener(e -> refreshPlacementSettings());
+		refreshPlacementSettings();
 
 		JComponent propertiesAndCondition = PanelUtils.northAndCenterElement(properties,
 				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition), 0, 2);
@@ -177,10 +187,17 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		generateCondition.refreshListKeepSelected();
 	}
 
+	private void refreshPlacementSettings() {
+		generationStep.setEnabled(!skipPlacement.isSelected());
+		restrictionBiomes.setEnabled(!skipPlacement.isSelected());
+	}
+
 	@Override protected void openInEditingMode(Feature feature) {
+		skipPlacement.setSelected(feature.skipPlacement);
 		generationStep.setSelectedItem(feature.generationStep);
 		restrictionBiomes.setListElements(feature.restrictionBiomes);
 		generateCondition.setSelectedProcedure(feature.generateCondition);
+		refreshPlacementSettings();
 
 		blocklyPanel.setXMLDataOnly(feature.featurexml);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
@@ -192,6 +209,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 	@Override public Feature getElementFromGUI() {
 		Feature feature = new Feature(modElement);
+		feature.skipPlacement = skipPlacement.isSelected();
 		feature.generationStep = (String) generationStep.getSelectedItem();
 		feature.restrictionBiomes = restrictionBiomes.getListElements();
 		feature.generateCondition = generateCondition.getSelectedProcedure();
