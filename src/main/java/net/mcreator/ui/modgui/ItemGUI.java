@@ -96,6 +96,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private final JCheckBox enableRanged = L10N.checkbox("elementgui.common.enable");
 
 	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox chargesPower = L10N.checkbox("elementgui.common.enable");
 
 	private ProcedureSelector onRangedItemUsed;
 	private ProcedureSelector rangedUseCondition;
@@ -424,7 +425,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateRangedPanel();
 
-		JPanel rangedProperties = new JPanel(new GridLayout(3, 2, 2, 2));
+		JPanel rangedProperties = new JPanel(new GridLayout(4, 2, 2, 2));
 		rangedProperties.setOpaque(false);
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),
@@ -441,6 +442,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.shoot_constantly")));
 		shootConstantly.setOpaque(false);
 		rangedProperties.add(shootConstantly);
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/charges_power"),
+				L10N.label("elementgui.item.charges_power")));
+		chargesPower.setOpaque(false);
+		rangedProperties.add(chargesPower);
 
 		JPanel rangedTriggers = new JPanel(new GridLayout(2, 1, 2, 2));
 		rangedTriggers.setOpaque(false);
@@ -498,6 +503,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private void updateRangedPanel() {
 		if (enableRanged.isSelected()) {
 			shootConstantly.setEnabled(true);
+			chargesPower.setEnabled(true);
 			projectile.setEnabled(true);
 			onRangedItemUsed.setEnabled(true);
 			rangedUseCondition.setEnabled(true);
@@ -511,6 +517,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			}
 		} else {
 			shootConstantly.setEnabled(false);
+			chargesPower.setEnabled(false);
 			projectile.setEnabled(false);
 			onRangedItemUsed.setEnabled(false);
 			rangedUseCondition.setEnabled(false);
@@ -608,6 +615,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		eatResultItem.setBlock(item.eatResultItem);
 		enableRanged.setSelected(item.enableRanged);
 		shootConstantly.setSelected(item.shootConstantly);
+		chargesPower.setSelected(item.chargesPower);
 		projectile.setSelectedItem(item.projectile);
 		rangedUseCondition.setSelectedProcedure(item.rangedUseCondition);
 		onRangedItemUsed.setSelectedProcedure(item.onRangedItemUsed);
@@ -665,6 +673,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.eatResultItem = eatResultItem.getBlock();
 		item.enableRanged = enableRanged.isSelected();
 		item.shootConstantly = shootConstantly.isSelected();
+		item.chargesPower = chargesPower.isSelected();
 		item.projectile = new ProjectileEntry(mcreator.getWorkspace(), projectile.getSelectedItem());
 		item.onRangedItemUsed = onRangedItemUsed.getSelectedProcedure();
 		item.rangedUseCondition = rangedUseCondition.getSelectedProcedure();

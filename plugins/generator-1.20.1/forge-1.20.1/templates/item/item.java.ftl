@@ -273,10 +273,24 @@ public class ${name}Item extends Item {
 						double y = entity.getY();
 						double z = entity.getZ();
 						if (<@procedureOBJToConditionCode data.rangedUseCondition/>) {
+							<#if data.chargesPower>
+                        		float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
+                        		if (!((double) pullingPower < 0.1)) {
+                        	</#if>
 							<@arrowShootCode/>
+							<#if data.chargesPower>
+                        		}
+                        	</#if>
 						}
 					<#else>
+						<#if data.chargesPower>
+                        	float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
+                        	if (!((double) pullingPower < 0.1)) {
+                        </#if>
 						<@arrowShootCode/>
+						<#if data.chargesPower>
+							}
+						</#if>
 					</#if>
 				}
 			</#if>
@@ -285,6 +299,9 @@ public class ${name}Item extends Item {
 
 	<#if data.enableRanged && data.shootConstantly>
 		@Override public void onUseTick(Level world, LivingEntity entity, ItemStack itemstack, int count) {
+			<#if data.chargesPower>
+				float pullingPower = 1;
+			</#if>
 			if (!world.isClientSide() && entity instanceof ServerPlayer player) {
 				<#if hasProcedure(data.rangedUseCondition)>
 					double x = entity.getX();
@@ -319,10 +336,19 @@ public class ${name}Item extends Item {
 	if (player.getAbilities().instabuild || stack != ItemStack.EMPTY) {
 		<#assign projectileClass = generator.map(projectile, "projectiles", 0)>
 		<#if projectile.startsWith("CUSTOM:")>
-			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom());
+			<#if !data.chargesPower>
+				${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom());
+			<#else>
+				<#assign projectileElement = w.getWorkspace().getModElementByName(projectile?replace("CUSTOM:", "")).getGeneratableElement()>
+				${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom(), pullingPower * ${projectileElement.power}, ${projectileElement.damage}, ${projectileElement.knockback});
+			</#if>
 		<#elseif projectile.endsWith("Arrow")>
-			${projectileClass} projectile = new ${projectileClass}(world, entity);
-			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, 1.0F);
+			${projectileClass} projectile = new ${projectileClass}(world, entity, stack);
+			<#if !data.chargesPower>
+				projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, 1.0F);
+			<#else>
+				projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, pullingPower * 3.0f, 1.0F);
+			</#if>
 			world.addFreshEntity(projectile);
 			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
 				.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
