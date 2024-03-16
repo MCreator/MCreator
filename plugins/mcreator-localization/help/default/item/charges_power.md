@@ -1,0 +1,1 @@
+If checked, the ranged item's projectile power will differ based on how much the ranged item has been charged.
