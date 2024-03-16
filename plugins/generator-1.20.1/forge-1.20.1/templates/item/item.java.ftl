@@ -344,11 +344,7 @@ public class ${name}Item extends Item {
 			</#if>
 		<#elseif projectile.endsWith("Arrow")>
 			${projectileClass} projectile = new ${projectileClass}(world, entity, stack);
-			<#if !data.chargesPower>
-				projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, 1.0F);
-			<#else>
-				projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, pullingPower * 3.0f, 1.0F);
-			</#if>
+			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, <#if data.chargesPower>pullingPower * </#if>3.15f, 1.0F);
 			world.addFreshEntity(projectile);
 			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
 				.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
