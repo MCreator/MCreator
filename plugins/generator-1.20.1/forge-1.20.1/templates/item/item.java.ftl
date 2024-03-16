@@ -274,19 +274,19 @@ public class ${name}Item extends Item {
 						double z = entity.getZ();
 						if (<@procedureOBJToConditionCode data.rangedUseCondition/>) {
 							<#if data.chargesPower>
-                        		float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
-                        		if (!((double) pullingPower < 0.1)) {
-                        	</#if>
+								float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
+								if (!((double) pullingPower < 0.1)) {
+							</#if>
 							<@arrowShootCode/>
 							<#if data.chargesPower>
-                        		}
-                        	</#if>
+								}
+							</#if>
 						}
 					<#else>
 						<#if data.chargesPower>
-                        	float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
-                        	if (!((double) pullingPower < 0.1)) {
-                        </#if>
+							float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
+							if (!((double) pullingPower < 0.1)) {
+						</#if>
 						<@arrowShootCode/>
 						<#if data.chargesPower>
 							}
