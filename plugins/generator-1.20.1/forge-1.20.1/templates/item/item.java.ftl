@@ -336,12 +336,7 @@ public class ${name}Item extends Item {
 	if (player.getAbilities().instabuild || stack != ItemStack.EMPTY) {
 		<#assign projectileClass = generator.map(projectile, "projectiles", 0)>
 		<#if projectile.startsWith("CUSTOM:")>
-			<#if !data.chargesPower>
-				${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom());
-			<#else>
-				<#assign projectileElement = w.getWorkspace().getModElementByName(projectile?replace("CUSTOM:", "")).getGeneratableElement()>
-				${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom(), pullingPower * ${projectileElement.power}, ${projectileElement.damage}, ${projectileElement.knockback});
-			</#if>
+			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom()<#if data.chargesPower>, pullingPower</#if>);
 		<#elseif projectile.endsWith("Arrow")>
 			${projectileClass} projectile = new ${projectileClass}(world, entity, stack);
 			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, <#if data.chargesPower>pullingPower * </#if>3.15f, 1.0F);
