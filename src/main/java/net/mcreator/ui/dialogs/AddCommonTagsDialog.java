@@ -96,6 +96,7 @@ public class AddCommonTagsDialog {
 		callables.add(addTag(mcreator, entityTags, "beehive_inhabitors", "minecraft", TagType.ENTITIES, false));
 		callables.add(addTag(mcreator, entityTags, "raiders", "minecraft", TagType.ENTITIES, false));
 		callables.add(addTag(mcreator, entityTags, "skeletons", "minecraft", TagType.ENTITIES, false));
+		callables.add(addTag(mcreator, entityTags, "powder_snow_walkable_mobs", "minecraft", TagType.ENTITIES, false));
 
 		callables.add(addTag(mcreator, biomeTags, "is_overworld", "minecraft", TagType.BIOMES, true));
 		callables.add(addTag(mcreator, biomeTags, "is_nether", "minecraft", TagType.BIOMES, false));
