@@ -18,10 +18,6 @@
 
 package net.mcreator.ui.component;
 
-import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.laf.themes.Theme;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseWheelEvent;
@@ -29,8 +25,6 @@ import java.awt.event.MouseWheelEvent;
 public class JScrollablePopupMenu extends JPopupMenu {
 
 	private int maximumVisibleRows = 18;
-
-	private boolean showArrows = false;
 
 	public JScrollablePopupMenu() {
 		setLayout(new ScrollPopupMenuLayout());
@@ -51,9 +45,6 @@ public class JScrollablePopupMenu extends JPopupMenu {
 	protected JScrollBar getScrollBar() {
 		if (popupScrollBar == null) {
 			popupScrollBar = new JScrollBar(JScrollBar.VERTICAL);
-			popupScrollBar.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-					Theme.current().getInterfaceAccentColor(), popupScrollBar));
-			popupScrollBar.setPreferredSize(new Dimension(5, 0));
 			popupScrollBar.addAdjustmentListener(e -> {
 				doLayout();
 				repaint();
@@ -65,22 +56,6 @@ public class JScrollablePopupMenu extends JPopupMenu {
 
 	public int getMaximumVisibleRows() {
 		return maximumVisibleRows;
-	}
-
-	public void setShowArrows(boolean showArrows) {
-		this.showArrows = showArrows;
-	}
-
-	@Override public void paint(Graphics g) {
-		super.paint(g);
-
-		if (showArrows && popupScrollBar.isVisible()) {
-			if (popupScrollBar.getValue() < popupScrollBar.getMaximum() - popupScrollBar.getModel().getExtent())
-				g.drawImage(UIRES.get("more").getImage(), getWidth() / 2 - 7, getHeight() - 18, this);
-
-			if (popupScrollBar.getValue() > popupScrollBar.getMinimum())
-				g.drawImage(UIRES.get("less").getImage(), getWidth() / 2 - 7, 4, this);
-		}
 	}
 
 	public void setMaximumVisibleRows(int maximumVisibleRows) {

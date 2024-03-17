@@ -1,0 +1,1 @@
+Liczby te definiują, jak duże są obrażenia obiektu zostaną one zmniejszone o określoną część pancerza (ilość pancerza).

@@ -24,11 +24,13 @@ import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.ui.laf.themes.ThemeLoader;
+import net.mcreator.ui.laf.themes.ThemeManager;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 public class ThemesPanel {
 
@@ -39,10 +41,11 @@ public class ThemesPanel {
 		JList<Theme> themes = new JList<>(tmodel);
 		themes.setCellRenderer(new ThemesListCellRenderer());
 
-		JPanel sectionPanel = new JPanel(new BorderLayout(15, 15));
+		JPanel sectionPanel = new JPanel(new BorderLayout(0, 0));
 
-		sectionPanel.add("North", L10N.label("dialog.preferences.themes"));
-		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
+		JComponent titlebar = L10N.label("dialog.preferences.themes");
+		titlebar.setBorder(BorderFactory.createEmptyBorder(0, 10, 15, 10));
+		sectionPanel.add("North", titlebar);
 
 		JPanel top = new JPanel(new BorderLayout());
 
@@ -50,7 +53,8 @@ public class ThemesPanel {
 		String themeDescription = L10N.t("preferences.themes.select_theme.description");
 		top.add("West", L10N.label("dialog.preferences.entry_description", themeName, themeDescription));
 
-		JComboBox<String> themeIDs = new JComboBox<>(ThemeLoader.getThemeIDList().toArray(new String[0]));
+		JComboBox<String> themeIDs = new JComboBox<>(
+				ThemeManager.getThemes().stream().map(Theme::getID).toArray(String[]::new));
 		themeIDs.setPreferredSize(new Dimension(250, 0));
 		themeIDs.setSelectedItem(PreferencesManager.PREFERENCES.hidden.uiTheme.get());
 		themeIDs.addActionListener(e -> dialog.markChanged());
@@ -64,41 +68,59 @@ public class ThemesPanel {
 
 		reloadThemesList();
 
-		sectionPanel.add("Center", PanelUtils.northAndCenterElement(top,
+		JComponent main = PanelUtils.northAndCenterElement(top,
 				PanelUtils.northAndCenterElement(L10N.label("dialog.preferences.themes.list"), new JScrollPane(themes)),
-				5, 5));
+				5, 5);
+		main.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+
+		sectionPanel.add("Center", main);
 
 		dialog.preferences.add(sectionPanel, L10N.t("dialog.preferences.page_themes"));
 	}
 
 	private void reloadThemesList() {
 		tmodel.removeAllElements();
-		ThemeLoader.getThemes().stream().sorted(Comparator.comparing(Theme::getID)).forEach(tmodel::addElement);
+		ThemeManager.getThemes().stream().sorted(Comparator.comparing(Theme::getID)).forEach(tmodel::addElement);
 	}
 
-	static class ThemesListCellRenderer extends JLabel implements ListCellRenderer<Theme> {
+	static class ThemesListCellRenderer extends JPanel implements ListCellRenderer<Theme> {
+
+		private final JLabel name = new JLabel();
+		private final JLabel description = new JLabel();
+		private final JLabel icon = new JLabel();
+
+		public ThemesListCellRenderer() {
+			setLayout(new BorderLayout(8, 0));
+
+			add("West", icon);
+
+			JComponent text = PanelUtils.northAndCenterElement(name, description, 0, 2);
+			text.setBorder(BorderFactory.createEmptyBorder(12, 0, 12, 0));
+			add("Center", text);
+
+			ComponentUtils.deriveFont(name, 14);
+			ComponentUtils.deriveFont(description, 11);
+
+			setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
+			setOpaque(false);
+		}
+
 		@Override
 		public Component getListCellRendererComponent(JList<? extends Theme> list, Theme value, int index,
 				boolean isSelected, boolean cellHasFocus) {
-			setBackground(Theme.current().getForegroundColor());
+			name.setText(value.getName());
 
-			setOpaque(false);
-
-			ComponentUtils.deriveFont(this, 12);
-
-			String text = "<html>" + value.getName();
-			if (!value.getDescription().isEmpty())
-				text += "<br><small>" + value.getDescription();
-			text += "<br>Theme ID: " + value.getID();
+			List<String> descriptors = new ArrayList<>();
+			if (value.getDescription() != null)
+				descriptors.add(value.getDescription());
 			if (value.getVersion() != null)
-				text += ", version: " + value.getVersion();
+				descriptors.add("Version: " + value.getVersion());
 			if (value.getCredits() != null)
-				text += ", credits: " + value.getCredits();
+				descriptors.add("Credits: " + value.getCredits());
 
-			setText(text);
-			setIcon(value.getIcon());
+			description.setText(String.join(", ", descriptors));
 
-			setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+			icon.setIcon(value.getIcon());
 
 			return this;
 		}

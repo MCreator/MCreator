@@ -91,6 +91,9 @@ public class ${JavaModName}Items {
 		</#if>
 	</#list>
 
+	// Start of user code block custom items
+	// End of user code block custom items
+
 	<#if hasBlocks>
 	private static RegistryObject<Item> block(RegistryObject<Block> block) {
 		return REGISTRY.register(block.getId().getPath(), () -> new BlockItem(block.get(), new Item.Properties()));

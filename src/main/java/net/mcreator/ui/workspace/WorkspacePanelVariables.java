@@ -30,7 +30,6 @@ import net.mcreator.ui.dialogs.NewVariableDialog;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VTextField;
@@ -169,7 +168,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		elements.setBackground(Theme.current().getBackgroundColor());
 		elements.setSelectionBackground(Theme.current().getAltBackgroundColor());
 		elements.setForeground(Theme.current().getForegroundColor());
-		elements.setSelectionForeground(Theme.current().getBackgroundColor());
+		elements.setSelectionForeground(Theme.current().getForegroundColor());
 		elements.setBorder(BorderFactory.createEmptyBorder());
 		elements.setGridColor(Theme.current().getAltBackgroundColor());
 		elements.setRowHeight(28);
@@ -183,9 +182,6 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		JScrollPane sp = new JScrollPane(elements);
 		sp.setBackground(Theme.current().getBackgroundColor());
 		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 
 		sp.setColumnHeaderView(null);
 
@@ -199,7 +195,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add.gif"), e -> {
+		bar.add(createToolBarButton("workspace.variables.add_new", UIRES.get("16px.add"), e -> {
 			VariableElement element = NewVariableDialog.showNewVariableDialog(workspacePanel.getMCreator(), true,
 					new OptionPaneValidatior() {
 						@Override public ValidationResult validate(JComponent component) {
@@ -219,7 +215,7 @@ class WorkspacePanelVariables extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"),
+		bar.add(createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
 				e -> deleteCurrentlySelected()));
 
 		bar.add(createToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {

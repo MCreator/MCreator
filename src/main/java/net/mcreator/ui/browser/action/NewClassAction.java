@@ -87,7 +87,7 @@ public class NewClassAction extends BasicAction {
 
 							code += "public class " + classname + " {\n\n\n}";
 
-							ClassWriter.writeClassToFileWithoutQueue(actionRegistry.getMCreator().getWorkspace(), code,
+							ClassWriter.writeClassToFile(actionRegistry.getMCreator().getWorkspace(), code,
 									new File(path), true);
 
 							actionRegistry.getMCreator().getProjectBrowser().reloadTree();
@@ -96,7 +96,7 @@ public class NewClassAction extends BasicAction {
 				}
 			}
 		});
-		setIcon(UIRES.get("16px.class.gif"));
+		setIcon(UIRES.get("16px.class"));
 	}
 
 }

@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import net.mcreator.Launcher;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.minecraft.MCItem;
@@ -257,7 +258,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground(Theme.current().getInterfaceAccentColor());
 			save.setForeground(Theme.current().getSecondAltBackgroundColor());
-			save.setFocusPainted(false);
 			save.addActionListener(event -> {
 				List<ValidationGroup> errors = new ArrayList<>();
 
@@ -284,7 +284,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
 			saveOnly.setForeground(Theme.current().getForegroundColor());
-			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
 				List<ValidationGroup> errors = new ArrayList<>();
 
@@ -317,12 +316,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			if (modElementCodeViewer != null) {
 				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setBackground(Theme.current().getSecondAltBackgroundColor());
-				codeViewer.setForeground(Theme.current().getAltForegroundColor());
-				codeViewer.setFocusPainted(false);
-				codeViewer.setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
-						BorderFactory.createEmptyBorder(2, 40, 2, 40)));
+				codeViewer.setMargin(new Insets(1, 40, 1, 40));
 				codeViewer.addActionListener(e -> {
 					if (codeViewer.isSelected()) {
 						modElementCodeViewer.setVisible(true);
@@ -348,7 +342,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
 			saveOnly.setForeground(Theme.current().getForegroundColor());
-			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
 				AggregatedValidationResult validationResult = validatePage(0);
 				if (validationResult.validateIsErrorFree())
@@ -361,7 +354,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground(Theme.current().getInterfaceAccentColor());
 			save.setForeground(Theme.current().getSecondAltBackgroundColor());
-			save.setFocusPainted(false);
 			save.addActionListener(event -> {
 				AggregatedValidationResult validationResult = validatePage(0);
 				if (validationResult.validateIsErrorFree())
@@ -380,12 +372,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			if (modElementCodeViewer != null) {
 				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setBackground(Theme.current().getSecondAltBackgroundColor());
-				codeViewer.setForeground(Theme.current().getAltForegroundColor());
-				codeViewer.setFocusPainted(false);
-				codeViewer.setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
-						BorderFactory.createEmptyBorder(2, 40, 2, 40)));
+				codeViewer.setMargin(new Insets(1, 40, 1, 40));
 				codeViewer.addActionListener(e -> {
 					if (codeViewer.isSelected()) {
 						modElementCodeViewer.setVisible(true);
@@ -566,8 +553,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		afterGeneratableElementGenerated();
 
 		// build if selected and needed
-		if (PreferencesManager.PREFERENCES.gradle.compileOnSave.get() && mcreator.getModElementManager()
-				.requiresElementGradleBuild(element)) {
+		if ((Launcher.version.isDevelopment() || PreferencesManager.PREFERENCES.gradle.buildOnSave.get())
+				&& mcreator.getModElementManager().requiresElementGradleBuild(element)) {
 			mcreator.actionRegistry.buildWorkspace.doAction();
 		}
 

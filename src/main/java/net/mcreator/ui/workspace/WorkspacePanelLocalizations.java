@@ -30,7 +30,6 @@ import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -40,7 +39,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -72,10 +70,6 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 		pane = new JTabbedPane();
 		pane.setOpaque(false);
-		pane.setUI(new BasicTabbedPaneUI() {
-			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
-			}
-		});
 		pane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
 		changeListener = e -> {
@@ -88,7 +82,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 		TransparentToolBar bar = new TransparentToolBar();
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		bar.add(createToolBarButton("workspace.localization.add_entry", UIRES.get("16px.add.gif"), e -> {
+		bar.add(createToolBarButton("workspace.localization.add_entry", UIRES.get("16px.add"), e -> {
 			String key = JOptionPane.showInputDialog(workspacePanel.getMCreator(),
 					L10N.t("workspace.localization.key_name_message"), L10N.t("workspace.localization.key_name_title"),
 					JOptionPane.QUESTION_MESSAGE);
@@ -98,10 +92,10 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			}
 		}));
 
-		bar.add(del = createToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif")));
+		bar.add(del = createToolBarButton("common.delete_selected", UIRES.get("16px.delete")));
 		bar.add(use = createToolBarButton("common.search_usages", UIRES.get("16px.search")));
-		bar.add(exp = createToolBarButton("workspace.localization.export_to_csv", UIRES.get("16px.ext.gif")));
-		bar.add(imp = createToolBarButton("workspace.localization.import_csv", UIRES.get("16px.open.gif")));
+		bar.add(exp = createToolBarButton("workspace.localization.export_to_csv", UIRES.get("16px.ext")));
+		bar.add(imp = createToolBarButton("workspace.localization.import_csv", UIRES.get("16px.open")));
 
 		add("North", bar);
 	}
@@ -201,9 +195,6 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			JScrollPane sp = new JScrollPane(elements);
 			sp.setOpaque(false);
 			sp.getViewport().setOpaque(false);
-			sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-					Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
-			sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 
 			sp.setColumnHeaderView(null);
 
@@ -212,7 +203,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 			JPanel tab = new JPanel(new FlowLayout(FlowLayout.LEFT, 1, 1));
 			tab.setOpaque(false);
-			JButton button = new JButton(UIRES.get("16px.delete.gif"));
+			JButton button = new JButton(UIRES.get("16px.delete"));
 			button.setContentAreaFilled(false);
 			button.setBorder(BorderFactory.createEmptyBorder());
 			button.setMargin(new Insets(0, 0, 0, 0));
@@ -341,7 +332,7 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 		int lastid = pane.getTabCount();
 		pane.addTab("", null, null);
-		pane.setTabComponentAt(lastid, new JLabel(UIRES.get("16px.add.gif")));
+		pane.setTabComponentAt(lastid, new JLabel(UIRES.get("16px.add")));
 
 		pane.removeChangeListener(changeListener);
 		changeListener = e -> {

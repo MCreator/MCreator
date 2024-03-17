@@ -19,9 +19,6 @@
 
 package net.mcreator.ui.dialogs;
 
-import net.mcreator.element.GeneratableElement;
-import net.mcreator.element.ModElementType;
-import net.mcreator.element.types.Tag;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.util.ComponentUtils;
@@ -30,7 +27,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.validation.validators.ResourceLocationValidator;
-import net.mcreator.workspace.elements.ModElement;
+import net.mcreator.workspace.elements.TagElement;
 
 import javax.swing.*;
 import java.awt.*;
@@ -43,15 +40,11 @@ public class AddTagDialog {
 		VComboBox<String> tagName = new VComboBox<>();
 
 		wrap.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, tagType.getColor()));
-		tagName.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), tagName, true));
+		tagName.setValidator(new ResourceLocationValidator<>(L10N.t("workspace.tags.tag"), tagName, true));
 
-		for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-			if (modElement.getType() == ModElementType.TAG) {
-				GeneratableElement ge = modElement.getGeneratableElement();
-				if (ge instanceof Tag tag) {
-					if (TagType.fromLegacyName(tag.type).equals(tagType))
-						tagName.addItem(tag.getResourceLocation());
-				}
+		for (TagElement tagElement : mcreator.getWorkspace().getTagElements().keySet()) {
+			if (tagElement.type() == tagType) {
+				tagName.addItem(tagElement.resourcePath());
 			}
 		}
 
@@ -68,9 +61,13 @@ public class AddTagDialog {
 		int result = JOptionPane.showConfirmDialog(parent, PanelUtils.northAndCenterElement(
 				L10N.label("dialog.item_selector.enter_tag_name." + tagType.name().toLowerCase(Locale.ENGLISH)), wrap,
 				5, 5), L10N.t("dialog.item_selector.use_tag"), JOptionPane.OK_CANCEL_OPTION);
-		if (result == JOptionPane.OK_OPTION) {
+		if (result == JOptionPane.OK_OPTION && tagName.getSelectedItem() != null) {
 			if (tagName.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				return tagName.getSelectedItem();
+				if (!tagName.getSelectedItem().contains(":")) {
+					return "minecraft:" + tagName.getSelectedItem();
+				} else {
+					return tagName.getSelectedItem();
+				}
 			} else {
 				JOptionPane.showMessageDialog(parent, tagName.getValidationStatus().getMessage(),
 						L10N.t("dialog.item_selector.error_invalid_tag_name_title"), JOptionPane.ERROR_MESSAGE);

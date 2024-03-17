@@ -19,10 +19,10 @@
 package net.mcreator.ui.laf.renderer.elementlist;
 
 import net.mcreator.minecraft.MCItem;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
+import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
@@ -42,7 +42,7 @@ public class ListIconModListRender extends JPanel implements ListCellRenderer<IE
 		setBackground(Theme.current().getForegroundColor());
 
 		icon.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-		label.setFont(Theme.current().getSecondaryFont().deriveFont(14.0f));
+		label.setFont(label.getFont().deriveFont(14.0f));
 
 		add("Center", label);
 		add("West", icon);
@@ -64,19 +64,19 @@ public class ListIconModListRender extends JPanel implements ListCellRenderer<IE
 		ImageIcon dva = null;
 		if (element instanceof ModElement ma) {
 			if (!ma.doesCompile()) {
-				dva = TiledImageCache.modTabRed;
+				dva = UIRES.get("mod_types.overlay_err");
 			}
 			if (ma.isCodeLocked()) {
 				if (dva != null) {
-					dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
+					dva = ImageUtils.drawOver(dva, UIRES.get("mod_types.overlay_locked"));
 				} else {
-					dva = TiledImageCache.modTabPurple;
+					dva = UIRES.get("mod_types.overlay_locked");
 				}
 			}
 		}
 
 		if (element instanceof FolderElement) {
-			icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("folder").getImage(), 22)));
+			icon.setIcon(IconUtils.resize(UIRES.get("mod_types.folder"), 22, 22));
 		} else if (element instanceof ModElement) {
 			ImageIcon modIcon = ((ModElement) element).getElementIcon();
 

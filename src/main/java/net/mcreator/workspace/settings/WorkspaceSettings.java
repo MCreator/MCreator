@@ -43,7 +43,6 @@ import java.util.stream.Stream;
 	private String websiteURL;
 	private String license;
 
-	private boolean disableForgeVersionCheck = true;
 	private boolean serverSideOnly = false;
 	private String updateURL;
 
@@ -60,8 +59,6 @@ import java.util.stream.Stream;
 	protected String credits;
 	protected String modElementsPackage;
 
-	private boolean lockBaseModFiles = false;
-
 	private transient Workspace workspace; // we should never serialize this!!
 
 	private static final Pattern cleanVersionPattern = Pattern.compile("[^0-9.]+");
@@ -74,7 +71,6 @@ import java.util.stream.Stream;
 		this.author = other.author;
 		this.license = other.license;
 		this.websiteURL = other.websiteURL;
-		this.disableForgeVersionCheck = other.disableForgeVersionCheck;
 		this.serverSideOnly = other.serverSideOnly;
 		this.updateURL = other.updateURL;
 		this.modPicture = other.modPicture;
@@ -85,7 +81,6 @@ import java.util.stream.Stream;
 		this.currentGenerator = other.currentGenerator;
 		this.credits = other.credits;
 		this.modElementsPackage = other.modElementsPackage;
-		this.lockBaseModFiles = other.lockBaseModFiles;
 
 		this.workspace = other.workspace;
 	}
@@ -116,10 +111,6 @@ import java.util.stream.Stream;
 
 	public void setWebsiteURL(String websiteURL) {
 		this.websiteURL = websiteURL;
-	}
-
-	public void setDisableForgeVersionCheck(boolean disableForgeVersionCheck) {
-		this.disableForgeVersionCheck = disableForgeVersionCheck;
 	}
 
 	public void setServerSideOnly(boolean serverSideOnly) {
@@ -232,10 +223,6 @@ import java.util.stream.Stream;
 		return serverSideOnly;
 	}
 
-	public boolean isDisableForgeVersionCheck() {
-		return disableForgeVersionCheck;
-	}
-
 	public String getUpdateURL() {
 		return updateURL;
 	}
@@ -252,14 +239,6 @@ import java.util.stream.Stream;
 		if (!currentGenerator.contains("-")) // pre 2020.3 compatibility
 			return "forge-" + currentGenerator;
 		return currentGenerator;
-	}
-
-	public boolean isLockBaseModFiles() {
-		return lockBaseModFiles;
-	}
-
-	public void setLockBaseModFiles(boolean lockBaseModFiles) {
-		this.lockBaseModFiles = lockBaseModFiles;
 	}
 
 	public String getModElementsPackage() {

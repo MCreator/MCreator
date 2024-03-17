@@ -21,7 +21,7 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.minecraft.TagType;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.util.ComponentUtils;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
@@ -54,7 +54,6 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
 		jtf.setEnabled(false);
-		jtf.setBorder(BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()));
 
 		list.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent evt) {
@@ -122,8 +121,6 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 			setVisible(false);
 		});
 
-		ComponentUtils.deriveFont(jtf, 15);
-
 		JComponent top;
 		JButton all = L10N.button("dialog.item_selector.all");
 		all.addActionListener(event -> filterField.setText(""));
@@ -137,13 +134,13 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 		if (hasPotions) {
 			JButton potions = L10N.button("dialog.item_selector.potions");
 			potions.addActionListener(event -> filterField.setText("potion:"));
-			top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,
-					L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""), all, blocks, items,
-					potions, mods);
+			top = PanelUtils.join(FlowLayout.LEFT, 2, 2, L10N.label("dialog.item_selector.name"), jtf,
+					new JEmptyBox(2, 2), L10N.label("dialog.item_selector.display_filter"), filterField,
+					new JEmptyBox(2, 2), all, blocks, items, potions, mods);
 		} else {
-			top = PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.item_selector.name"), jtf,
-					L10N.label("dialog.item_selector.display_filter"), filterField, new JLabel(""), all, blocks, items,
-					mods);
+			top = PanelUtils.join(FlowLayout.LEFT, 2, 2, L10N.label("dialog.item_selector.name"), jtf,
+					new JEmptyBox(2, 2), L10N.label("dialog.item_selector.display_filter"), filterField,
+					new JEmptyBox(2, 2), all, blocks, items, mods);
 		}
 
 		top.setBorder(BorderFactory.createEmptyBorder(0, 0, 7, 0));

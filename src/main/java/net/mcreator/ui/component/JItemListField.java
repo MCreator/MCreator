@@ -33,6 +33,7 @@ import net.mcreator.ui.validation.IValidable;
 import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
+import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
@@ -46,6 +47,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseWheelEvent;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -68,6 +70,12 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 	protected final MCreator mcreator;
 
 	private final List<ChangeListener> listeners = new ArrayList<>();
+
+	private final JScrollPane pane;
+
+	private final JComponent buttons;
+
+	private boolean warnOnRemoveAll = false;
 
 	protected JItemListField(MCreator mcreator) {
 		this(mcreator, false);
@@ -119,17 +127,22 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		remove.addActionListener(e -> {
 			List<T> elements = elementsList.getSelectedValuesList();
-			for (var element : elements) {
-				if (element != null) {
-					elementsListModel.removeElement(element);
-					this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
-				}
-			}
+			deleteElements(elements);
 		});
 
 		removeall.addActionListener(e -> {
-			elementsListModel.removeAllElements();
-			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource())));
+			List<T> elements = Collections.list(elementsListModel.elements());
+
+			if (warnOnRemoveAll && !elements.isEmpty()) {
+				int result = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.itemlistfield.deleteall"),
+						L10N.t("dialog.itemlistfield.deleteall.title"), JOptionPane.YES_NO_OPTION,
+						JOptionPane.WARNING_MESSAGE);
+				if (result != JOptionPane.YES_OPTION) {
+					return; // if user does not agree to deletion, abort the action
+				}
+			}
+
+			deleteElements(elements);
 		});
 
 		addtag.addActionListener(e -> {
@@ -145,8 +158,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				if (e.getButton() == MouseEvent.BUTTON2) {
 					int index = elementsList.locationToIndex(e.getPoint());
 					if (index >= 0)
-						elementsList.setSelectedIndex(index);
-					remove.doClick();
+						deleteElements(Collections.singletonList(elementsListModel.get(index)));
 				} else if (e.getClickCount() == 2) {
 					int index = elementsList.locationToIndex(e.getPoint());
 					if (index >= 0) {
@@ -173,7 +185,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		include.addActionListener(e -> this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource()))));
 		exclude.addActionListener(e -> this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(e.getSource()))));
 
-		JScrollPane pane = new JScrollPane(PanelUtils.totalCenterInPanel(elementsList));
+		pane = new JScrollPane(PanelUtils.totalCenterInPanel(elementsList));
 		pane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		pane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_NEVER);
 		pane.setWheelScrollingEnabled(false);
@@ -208,7 +220,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		buttonsPanel.add(remove);
 		buttonsPanel.add(removeall);
 
-		JComponent buttons = PanelUtils.totalCenterInPanel(buttonsPanel);
+		buttons = PanelUtils.totalCenterInPanel(buttonsPanel);
 		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getInterfaceAccentColor()));
 		buttons.setOpaque(true);
 		buttons.setBackground(Theme.current().getSecondAltBackgroundColor());
@@ -230,6 +242,56 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		add(pane, BorderLayout.CENTER);
 		add(buttons, BorderLayout.EAST);
+	}
+
+	public void setWarnOnRemoveAll(boolean warnOnDeleteAll) {
+		this.warnOnRemoveAll = warnOnDeleteAll;
+	}
+
+	private void deleteElements(List<T> elements) {
+		boolean anyRemoved = false;
+
+		boolean deleteManaged = false;
+		boolean containsManaged = elements.stream()
+				.anyMatch(e -> e instanceof MappableElement mappableElement && mappableElement.isManaged());
+
+		if (containsManaged) {
+			int result = JOptionPane.showConfirmDialog(mcreator, L10N.t("dialog.itemlistfield.deletemanaged"),
+					L10N.t("dialog.itemlistfield.deletemanaged.title"), JOptionPane.YES_NO_OPTION,
+					JOptionPane.WARNING_MESSAGE);
+			if (result == JOptionPane.YES_OPTION) {
+				deleteManaged = true;
+			} else if (result != JOptionPane.NO_OPTION) {
+				return; // if action is not yes or no, cancel deletion
+			}
+		}
+
+		for (var element : elements) {
+			if (element != null) {
+				if (!deleteManaged && element instanceof MappableElement mappableElement && mappableElement.isManaged())
+					continue; // Managed elements are only delete if deleteManaged is true
+
+				elementsListModel.removeElement(element);
+				anyRemoved = true;
+			}
+		}
+
+		if (anyRemoved) {
+			this.listeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));
+		}
+	}
+
+	public void hideButtons() {
+		buttons.setVisible(false);
+	}
+
+	public void disableItemCentering() {
+		Box verticalBox = Box.createVerticalBox();
+		verticalBox.add(Box.createVerticalGlue());
+		verticalBox.add(elementsList);
+		verticalBox.add(Box.createVerticalGlue());
+		elementsList.setAlignmentX(JComponent.LEFT_ALIGNMENT);
+		pane.setViewportView(verticalBox);
 	}
 
 	protected abstract List<T> getElementsToAdd();
@@ -281,18 +343,22 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		include.setSelected(!isExcluded);
 	}
 
+	private static final ImageIcon WARNING_ICON = IconUtils.resize(UIRES.get("18px.warning"), 13, 13);
+	private static final ImageIcon ERROR_ICON = IconUtils.resize(UIRES.get("18px.remove"), 13, 13);
+	private static final ImageIcon OK_ICON = IconUtils.resize(UIRES.get("18px.ok"), 13, 13);
+
 	@Override public void paint(Graphics g) {
 		super.paint(g);
 
 		if (currentValidationResult != null) {
 			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
-				g.drawImage(UIRES.get("18px.warning").getImage(), 0, 0, 13, 13, null);
+				WARNING_ICON.paintIcon(this, g, 0, 0);
 				g.setColor(new Color(238, 229, 113));
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
-				g.drawImage(UIRES.get("18px.remove").getImage(), 0, 0, 13, 13, null);
+				ERROR_ICON.paintIcon(this, g, 0, 0);
 				g.setColor(new Color(204, 108, 108));
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.PASSED) {
-				g.drawImage(UIRES.get("18px.ok").getImage(), 0, 0, 13, 13, null);
+				OK_ICON.paintIcon(this, g, 0, 0);
 				g.setColor(new Color(79, 192, 121));
 			}
 
@@ -328,18 +394,30 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		public Component getListCellRendererComponent(JList<? extends T> list, T value, int index, boolean isSelected,
 				boolean cellHasFocus) {
 			setOpaque(true);
-			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getAltBackgroundColor());
+			setBackground(isSelected ? Theme.current().getForegroundColor() : Theme.current().getBackgroundColor());
 			setForeground(
 					isSelected ? Theme.current().getSecondAltBackgroundColor() : Theme.current().getForegroundColor());
-			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current().getBackgroundColor()),
-					BorderFactory.createEmptyBorder(2, 5, 2, 5)));
+			if (isSelected) {
+				setBorder(BorderFactory.createCompoundBorder(
+						BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current().getBackgroundColor()),
+						BorderFactory.createEmptyBorder(2, 5, 2, 5)));
+			} else {
+				setBorder(BorderFactory.createCompoundBorder(
+						BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current().getBackgroundColor()),
+						BorderFactory.createCompoundBorder(
+								BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
+								BorderFactory.createEmptyBorder(1, 4, 1, 4))));
+			}
 			setHorizontalAlignment(SwingConstants.CENTER);
 			setVerticalAlignment(SwingConstants.CENTER);
 
 			setIcon(null);
 
 			if (value instanceof MappableElement mappableElement) {
+				if (!isSelected && mappableElement.isManaged()) {
+					setBackground(Theme.current().getAltBackgroundColor());
+				}
+
 				Optional<DataListEntry> dataListEntryOpt = mappableElement.getDataListEntry();
 				if (dataListEntryOpt.isPresent()) {
 					DataListEntry dataListEntry = dataListEntryOpt.get();
@@ -358,7 +436,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 								MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), unmappedValue).getImage(),
 								18)));
 					else if (unmappedValue.startsWith("#"))
-						setIcon(new ImageIcon(ImageUtils.resizeAA(MCItem.TAG_ICON.getImage(), 18)));
+						setIcon(IconUtils.resize(MCItem.TAG_ICON, 18, 18));
 				}
 
 				if (!(mappableElement).canProperlyMap())

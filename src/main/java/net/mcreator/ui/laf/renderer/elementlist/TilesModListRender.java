@@ -19,7 +19,6 @@
 package net.mcreator.ui.laf.renderer.elementlist;
 
 import net.mcreator.minecraft.MCItem;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
@@ -43,7 +42,8 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 		setBorder(null);
 		setBackground(Theme.current().getForegroundColor());
 
-		label.setFont(Theme.current().getSecondaryFont().deriveFont(24.0f));
+		label.setFont(label.getFont().deriveFont(24.0f));
+		label_details.setFont(label.getFont().deriveFont(15.0f));
 		text.setOpaque(false);
 		text.add("Center", label);
 		text.add("South", label_details);
@@ -79,17 +79,17 @@ public class TilesModListRender extends JPanel implements ListCellRenderer<IElem
 			}
 
 			if (element instanceof FolderElement) {
-				icon.setIcon(UIRES.get("folder"));
+				icon.setIcon(UIRES.get("mod_types.folder"));
 			} else if (element instanceof ModElement modElement) {
 				ImageIcon dva = null;
 				if (!modElement.doesCompile()) {
-					dva = TiledImageCache.modTabRed;
+					dva = UIRES.get("mod_types.overlay_err");
 				}
 				if (modElement.isCodeLocked()) {
 					if (dva != null) {
-						dva = ImageUtils.drawOver(dva, TiledImageCache.modTabPurple);
+						dva = ImageUtils.drawOver(dva, UIRES.get("mod_types.overlay_locked"));
 					} else {
-						dva = TiledImageCache.modTabPurple;
+						dva = UIRES.get("mod_types.overlay_locked");
 					}
 				}
 

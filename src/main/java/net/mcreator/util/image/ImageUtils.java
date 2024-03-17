@@ -92,19 +92,19 @@ public class ImageUtils {
 		return new ImageIcon(colorArrayToBufferedImage(car));
 	}
 
-	public static BufferedImage resize(Image image, int size) {
-		return resizeImage(toBufferedImage(image), size, size);
+	public static Image resize(Image image, int size) {
+		return resize(image, size, size);
 	}
 
-	public static BufferedImage resize(Image image, int w, int h) {
+	public static Image resizeAA(Image image, int size) {
+		return resizeAA(image, size, size);
+	}
+
+	public static Image resize(Image image, int w, int h) {
 		return resizeImage(toBufferedImage(image), w, h);
 	}
 
-	public static BufferedImage resizeAA(Image image, int size) {
-		return resizeImageWithAA(toBufferedImage(image), size, size);
-	}
-
-	public static BufferedImage resizeAA(Image image, int w, int h) {
+	public static Image resizeAA(Image image, int w, int h) {
 		return resizeImageWithAA(toBufferedImage(image), w, h);
 	}
 
@@ -674,4 +674,5 @@ public class ImageUtils {
 
 		return data;
 	}
+
 }

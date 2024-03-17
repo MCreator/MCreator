@@ -34,7 +34,6 @@ import net.mcreator.ui.laf.themes.Theme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -95,6 +94,7 @@ public class GeneratorSelector {
 			addStatusLabel(L10N.t(covpfx + "structures"), stats.getBaseCoverageInfo().get("structures"),
 					baseCoverageInfo);
 			addStatusLabel(L10N.t(covpfx + "translations"), stats.getBaseCoverageInfo().get("i18n"), baseCoverageInfo);
+			addStatusLabel(L10N.t(covpfx + "tags"), stats.getBaseCoverageInfo().get("tags"), baseCoverageInfo);
 
 			if (generatorConfiguration.getGeneratorFlavor().getBaseLanguage() == GeneratorFlavor.BaseLanguage.JAVA)
 				addStatusLabel(L10N.t(covpfx + "variables"), stats.getBaseCoverageInfo().get("variables"),
@@ -107,7 +107,8 @@ public class GeneratorSelector {
 			addStatusLabel(L10N.t(covpfx + "json_models"), stats.getBaseCoverageInfo().get("model_json"),
 					baseCoverageInfo);
 
-			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE)
+			if (generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.FORGE
+					|| generatorConfiguration.getGeneratorFlavor() == GeneratorFlavor.NEOFORGE)
 				addStatusLabel(L10N.t(covpfx + "obj_models"), stats.getBaseCoverageInfo().get("model_obj"),
 						baseCoverageInfo);
 
@@ -230,16 +231,6 @@ public class GeneratorSelector {
 			bar.setValue(stats.getCoverageInfo().get(registry).intValue());
 			bar.setString(new DecimalFormat("#.##").format(stats.getCoverageInfo().get(registry)) + " %");
 		}
-
-		bar.setUI(new BasicProgressBarUI() {
-			@Override protected Color getSelectionBackground() {
-				return Theme.current().getForegroundColor();
-			}
-
-			@Override protected Color getSelectionForeground() {
-				return Theme.current().getSecondAltBackgroundColor();
-			}
-		});
 
 		bar.setStringPainted(true);
 

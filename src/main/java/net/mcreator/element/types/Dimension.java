@@ -39,10 +39,8 @@ import net.mcreator.workspace.references.TextureReference;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
+import java.util.*;
 
 @SuppressWarnings("unused") public class Dimension extends GeneratableElement
 		implements ICommonType, ITabContainedElement, IMCItemProvider, IPOIProvider {
@@ -73,6 +71,7 @@ import java.util.List;
 	public Sound portalSound;
 	public boolean enableIgniter;
 	public String igniterName;
+	public String igniterRarity;
 	public StringListProcedure specialInformation;
 	public TabEntry igniterTab;
 	@TextureReference(TextureType.ITEM) public String texture;
@@ -93,12 +92,32 @@ import java.util.List;
 		// DEFAULT VALUES
 		this.enablePortal = true;
 		this.enableIgniter = true;
+		this.igniterRarity = "COMMON";
 		this.sleepResult = "ALLOW";
 	}
 
 	public boolean hasIgniter() {
 		// igniter needs portal and igniter enabled
 		return enablePortal && enableIgniter;
+	}
+
+	public Set<String> getWorldgenBlocks() {
+		Set<String> retval = new HashSet<>();
+		retval.add(mainFillerBlock.getUnmappedValue());
+		for (BiomeEntry biomeEntry : biomesInDimension) {
+			if (biomeEntry.getUnmappedValue().startsWith("CUSTOM:")) {
+				ModElement biomeElement = getModElement().getWorkspace()
+						.getModElementByName(biomeEntry.getUnmappedValue().replace("CUSTOM:", ""));
+				if (biomeElement != null) {
+					GeneratableElement generatableElement = biomeElement.getGeneratableElement();
+					if (generatableElement instanceof Biome biome) {
+						retval.add(biome.groundBlock.getUnmappedValue());
+						retval.add(biome.undergroundBlock.getUnmappedValue());
+					}
+				}
+			}
+		}
+		return retval;
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

@@ -46,6 +46,13 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				.findFirst().orElse(null);
 	}
 
+	@Nullable
+	public static GeneratorConfiguration getRecommendedGeneratorForBaseLanguage(
+			Collection<GeneratorConfiguration> generatorConfigurations, GeneratorFlavor.BaseLanguage baseLanguage) {
+		return generatorConfigurations.stream().filter(gc -> gc.getGeneratorFlavor().getBaseLanguage() == baseLanguage)
+				.sorted().findFirst().orElse(null);
+	}
+
 	private Map<?, ?> generatorConfig;
 	private final String generatorName;
 
@@ -58,6 +65,13 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	private final GeneratorVariableTypes generatorVariableTypes;
 
 	private final Map<String, TemplateGeneratorConfiguration> templateGeneratorConfigs = new ConcurrentHashMap<>();
+
+	// Cached values
+	private final List<String> compatibleJavaModelKeys = new ArrayList<>();
+	private final List<String> compatibleJavaModelRequirementKeyWords = new ArrayList<>();
+	private final List<String> importFormatterDuplicatesWhitelist = new ArrayList<>();
+	private final Map<String, String> importFormatterPriorityImports = new HashMap<>();
+	private final List<GeneratorImport> generatorImports = new ArrayList<>();
 
 	public GeneratorConfiguration(String generatorName) {
 		this.generatorName = generatorName;
@@ -75,6 +89,12 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 		this.generatorFlavor = GeneratorFlavor.valueOf(this.generatorName.split("-")[0].toUpperCase(Locale.ENGLISH));
 
+		// First, preprocess generator imports as we will need them in the next steps
+		if (generatorConfig.get("import") != null) {
+			((List<?>) generatorConfig.get("import")).forEach(
+					importConfig -> generatorImports.add(new GeneratorImport(importConfig)));
+		}
+
 		// load mappings
 		this.mappingLoader = new MappingLoader(this);
 		this.definitionsProvider = new DefinitionsProvider(generatorName);
@@ -82,6 +102,43 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		// load global variable definitions
 		this.generatorVariableTypes = new GeneratorVariableTypes(this);
 
+		// Preprocess compatible java model keys
+		compatibleJavaModelKeys.add(getJavaModelsKey());
+		if (generatorConfig.get("java_models") != null) {
+			if (((Map<?, ?>) generatorConfig.get("java_models")).get("compatible") != null) {
+				compatibleJavaModelKeys.addAll(
+						((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("compatible")).stream()
+								.map(Object::toString).toList());
+			}
+		}
+
+		// Preprocess compatible java model requirement keywords
+		if (generatorConfig.get("java_models") != null) {
+			if (((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words") != null) {
+				compatibleJavaModelRequirementKeyWords.addAll(
+						((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words")).stream()
+								.map(Object::toString).toList());
+			}
+		}
+
+		// Preprocess import formatter duplicates whitelist
+		if (generatorConfig.get("import_formatter") != null) {
+			if (((Map<?, ?>) generatorConfig.get("import_formatter")).get("duplicates_whitelist") != null) {
+				importFormatterDuplicatesWhitelist.addAll(
+						((List<?>) ((Map<?, ?>) generatorConfig.get("import_formatter")).get(
+								"duplicates_whitelist")).stream().map(Object::toString).toList());
+			}
+		}
+
+		// Preprocess import formatter priority imports
+		if (generatorConfig.get("import_formatter") != null) {
+			if (((Map<?, ?>) generatorConfig.get("import_formatter")).get("priority_imports") != null) {
+				((Map<?, ?>) ((Map<?, ?>) generatorConfig.get("import_formatter")).get("priority_imports")).forEach(
+						(k, v) -> importFormatterPriorityImports.put("." + k, v + "." + k));
+			}
+		}
+
+		// compute generator stats
 		this.generatorStats = new GeneratorStats(this);
 	}
 
@@ -123,16 +180,25 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				new HashMap<>();
 	}
 
+	public Map<?, ?> getTagsSpecification() {
+		return generatorConfig.get("tags") != null ? (Map<?, ?>) generatorConfig.get("tags") : new HashMap<>();
+	}
+
 	public List<?> getBaseTemplates() {
 		return (generatorConfig.get("base_templates") != null) ?
 				(List<?>) generatorConfig.get("base_templates") :
 				new ArrayList<>();
 	}
 
-	public List<String> getImports() {
-		return (generatorConfig.get("import") != null) ?
-				((List<?>) generatorConfig.get("import")).stream().map(Object::toString).toList() :
-				new ArrayList<>();
+	public Collection<String> getGeneratorPaths(String subpath) {
+		List<String> paths = new ArrayList<>();
+		// load generator first as the current generator has the highest priority
+		paths.add(generatorName + "/" + subpath);
+		for (GeneratorImport generatorImport : generatorImports) {
+			if (!generatorImport.isExcluded(subpath))
+				paths.add(generatorImport.getPath() + "/" + subpath);
+		}
+		return paths;
 	}
 
 	public GeneratorFlavor getGeneratorFlavor() {
@@ -162,31 +228,19 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	}
 
 	public List<String> getCompatibleJavaModelKeys() {
-		List<String> retval = new ArrayList<>();
-		retval.add(getJavaModelsKey());
-
-		if (generatorConfig.get("java_models") != null) {
-			if (((Map<?, ?>) generatorConfig.get("java_models")).get("compatible") != null) {
-				retval.addAll(((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("compatible")).stream()
-						.map(Object::toString).toList());
-			}
-		}
-
-		return retval;
+		return compatibleJavaModelKeys;
 	}
 
 	public List<String> getJavaModelRequirementKeyWords() {
-		List<String> retval = new ArrayList<>();
+		return compatibleJavaModelRequirementKeyWords;
+	}
 
-		if (generatorConfig.get("java_models") != null) {
-			if (((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words") != null) {
-				retval.addAll(
-						((List<?>) ((Map<?, ?>) generatorConfig.get("java_models")).get("requested_key_words")).stream()
-								.map(Object::toString).toList());
-			}
-		}
+	public List<String> getImportFormatterDuplicatesWhitelist() {
+		return importFormatterDuplicatesWhitelist;
+	}
 
-		return retval;
+	public Map<String, String> getImportFormatterPriorityImports() {
+		return importFormatterPriorityImports;
 	}
 
 	public String getGeneratorName() {
@@ -274,4 +328,5 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 			return o.getGeneratorStats().getStatus().ordinal() - generatorStats.getStatus().ordinal();
 		}
 	}
+
 }

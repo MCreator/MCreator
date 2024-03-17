@@ -76,7 +76,7 @@ public class JVillagerTradeProfession extends JEntriesList {
 
 		topbar.add(Box.createHorizontalGlue());
 
-		JButton add = new JButton(UIRES.get("16px.add.gif"));
+		JButton add = new JButton(UIRES.get("16px.add"));
 		add.setText(L10N.t("elementgui.villager_trade.add_entry"));
 
 		JButton remove = new JButton(UIRES.get("16px.clear"));

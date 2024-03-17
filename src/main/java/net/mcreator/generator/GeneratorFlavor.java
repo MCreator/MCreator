@@ -22,6 +22,7 @@ import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.image.EmptyIcon;
 
 import javax.swing.*;
+import java.util.List;
 import java.util.Locale;
 
 public enum GeneratorFlavor {
@@ -36,6 +37,8 @@ public enum GeneratorFlavor {
 	ADDON(BaseLanguage.JSON),
 	UNKNOWN(null);
 	//@formatter:on
+
+	public static final List<GeneratorFlavor> OFFICIAL_FLAVORS = List.of(FORGE, DATAPACK, ADDON, NEOFORGE);
 
 	private final BaseLanguage baseLanguage;
 

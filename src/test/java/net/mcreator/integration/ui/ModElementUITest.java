@@ -63,8 +63,8 @@ import static org.junit.jupiter.api.Assertions.*;
 		// create temporary directory
 		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
-		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
+				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 
 		if (generatorConfiguration == null)
 			fail("Failed to load any Forge flavored generator for this unit test");
@@ -148,7 +148,7 @@ import static org.junit.jupiter.api.Assertions.*;
 				ModElementGUI<?> modElementGUI = UITestUtil.openModElementGUIFor(mcreator, generatableElement);
 
 				// test if UI validation is error free
-				UITestUtil.testIfValidationPasses(modElementGUI);
+				UITestUtil.testIfValidationPasses(modElementGUI, true);
 
 				// test if data remains the same after reloading the data lists
 				modElementGUI.reloadDataLists();

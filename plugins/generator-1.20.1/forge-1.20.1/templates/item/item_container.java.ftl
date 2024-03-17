@@ -32,8 +32,6 @@
 
 package ${package}.item.inventory;
 
-import javax.annotation.Nullable;
-
 <#compress>
 @Mod.EventBusSubscriber(Dist.CLIENT) public class ${name}InventoryCapability implements ICapabilitySerializable<CompoundTag> {
 

@@ -38,9 +38,9 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 	WorkspacePanelStructures(WorkspacePanel workspacePanel) {
 		super(workspacePanel, new ResourceFilterModel<>(workspacePanel, String::toString), new Render());
 
-		addToolBarButton("action.workspace.resources.import_structure", UIRES.get("16px.open.gif"),
+		addToolBarButton("action.workspace.resources.import_structure", UIRES.get("16px.open"),
 				e -> workspacePanel.getMCreator().actionRegistry.importStructure.doAction());
-		addToolBarButton("action.workspace.resources.import_structure_from_minecraft", UIRES.get("16px.open.gif"),
+		addToolBarButton("action.workspace.resources.import_structure_from_minecraft", UIRES.get("16px.open"),
 				e -> workspacePanel.getMCreator().actionRegistry.importStructureFromMinecraft.doAction());
 		addToolBarButton("common.search_usages", UIRES.get("16px.search"), e -> {
 			if (!elementList.isSelectionEmpty()) {
@@ -57,7 +57,7 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 						L10N.t("dialog.search_usages.type.resource.structure"), refs);
 			}
 		});
-		addToolBarButton("common.delete_selected", UIRES.get("16px.delete.gif"), e -> deleteCurrentlySelected());
+		addToolBarButton("common.delete_selected", UIRES.get("16px.delete"), e -> deleteCurrentlySelected());
 	}
 
 	@Override void deleteCurrentlySelected() {
@@ -90,19 +90,17 @@ public class WorkspacePanelStructures extends AbstractResourcePanel<String> {
 
 		Render() {
 			setLayout(new GridLayout());
-			setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 0));
+			ComponentUtils.deriveFont(this, 15);
+			setBorder(BorderFactory.createEmptyBorder(5, 13, 5, 0));
 		}
 
 		@Override
 		public JLabel getListCellRendererComponent(JList<? extends String> list, String ma, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			setOpaque(isSelected);
-			setBackground(
-					isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getBackgroundColor());
+			setBackground(isSelected ? Theme.current().getAltBackgroundColor() : Theme.current().getBackgroundColor());
 			setText(" " + ma);
-			ComponentUtils.deriveFont(this, 17);
-			setIcon(UIRES.get("16px.ext.gif"));
-			setBorder(BorderFactory.createEmptyBorder(5, 13, 5, 0));
+			setIcon(UIRES.get("16px.structures"));
 			return this;
 		}
 

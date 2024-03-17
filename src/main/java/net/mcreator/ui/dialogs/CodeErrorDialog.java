@@ -35,6 +35,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.io.File;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -60,15 +61,18 @@ public class CodeErrorDialog {
 		});
 
 		Set<ModElement> problematicMods = new HashSet<>();
+
+		List<File> moddefinitionfiles = mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).stream()
+				.map(GeneratorTemplate::getFile).collect(Collectors.toList());
 		boolean moddefinitionfileerrors = false;
+
 		for (File problematicFile : problematicFiles) {
 			ModElement modElementWithError = mcreator.getGenerator().getModElementThisFileBelongsTo(problematicFile);
 			if (modElementWithError != null) {
 				problematicMods.add(modElementWithError);
 				modElementWithError.setCompiles(false);
 				mcreator.getWorkspace().markDirty();
-			} else if (FileIO.isFileOnFileList(mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).stream()
-					.map(GeneratorTemplate::getFile).collect(Collectors.toList()), problematicFile)) {
+			} else if (FileIO.isFileOnFileList(moddefinitionfiles, problematicFile)) {
 				moddefinitionfileerrors = true;
 			} else {
 				LOG.warn("[ForgeGradleUtil] Error from non MCreator generated class!");

@@ -40,28 +40,28 @@ class EditTemplatesPanel {
 	EditTemplatesPanel(PreferencesDialog preferencesDialog, String name, String templatesFolder, String templateExt) {
 		preferencesDialog.model.addElement(name);
 
-		JPanel sectionPanel = new JPanel(new BorderLayout(15, 15));
+		JPanel sectionPanel = new JPanel(new BorderLayout(0, 0));
 
-		sectionPanel.add("North", L10N.label("dialog.preferences.change_language", name.toLowerCase(), templateExt));
-		sectionPanel.setBorder(BorderFactory.createEmptyBorder(5, 10, 15, 10));
+		JComponent titlebar = L10N.label("dialog.preferences.change_language", name.toLowerCase(), templateExt);
+		titlebar.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 10));
+		sectionPanel.add("North", titlebar);
 
-		JToolBar opts = new JToolBar();
-		opts.setFloatable(false);
+		JPanel opts = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
 
 		JButton add = L10N.button("dialog.preferences.add_language", name.toLowerCase());
-		add.setIcon(UIRES.get("16px.add.gif"));
+		add.setIcon(UIRES.get("16px.add"));
 		opts.add(add);
 
 		opts.add(new JEmptyBox(5, 5));
 
 		JButton remove = L10N.button("dialog.preferences.remove_selected_language");
-		remove.setIcon(UIRES.get("16px.delete.gif"));
+		remove.setIcon(UIRES.get("16px.delete"));
 		opts.add(remove);
 
 		opts.add(new JEmptyBox(5, 5));
 
 		JButton openFolder = L10N.button("dialog.preferences.open_folder", name.toLowerCase());
-		openFolder.setIcon(UIRES.get("16px.open.gif"));
+		openFolder.setIcon(UIRES.get("16px.open"));
 		opts.add(openFolder);
 
 		DefaultListModel<String> tmodel = new DefaultListModel<>();

@@ -1,5 +1,5 @@
 name: Minecraft Forge for @minecraft (@buildfileversion)
-status: stable
+status: lts
 buildfileversion: 47.2.0
 
 import:
@@ -16,6 +16,15 @@ gradle:
   run_client: runClient
   run_server: runServer
   export_file: "build/libs/modid-1.0.jar"
+
+import_formatter:
+  duplicates_whitelist:
+    - java.util
+    - net.minecraft
+  priority_imports:
+    Nullable: javax.annotation
+    Codec: com.mojang.serialization
+    SoundEvent: net.minecraft.sounds
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"
@@ -38,8 +47,8 @@ other_textures_dir: "@MODASSETSROOT/textures"
 base_templates:
   - template: modbase/mod.java.ftl
     name: "@SRCROOT/@BASEPACKAGEPATH/@JavaModName.java"
-    canLock: true
   - template: modbase/mods.toml.ftl
+    usercodeComment: "#"
     writer: file
     name: "@RESROOT/META-INF/mods.toml"
   - template: pack.mcmeta.ftl # loaded from datapack generator
@@ -73,6 +82,10 @@ sources_setup_tasks:
     type: JAVA_viatemplate
     template: javamodel.java.ftl
     to: "@SRCROOT/@BASEPACKAGEPATH/client/model"
+
+tags:
+  template: tags.json.ftl
+  name: "@RESROOT/data/@namespace/tags/@folder/@name.json"
 
 language_file:
   format: json

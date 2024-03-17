@@ -45,11 +45,12 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 		setBorder(null);
 		setBackground(Theme.current().getForegroundColor());
 
-		label.setFont(Theme.current().getSecondaryFont().deriveFont(14.0f));
-		label2.setFont(Theme.current().getSecondaryFont().deriveFont(14.0f));
-		label3.setFont(Theme.current().getSecondaryFont().deriveFont(12.0f));
-		label4.setFont(Theme.current().getSecondaryFont().deriveFont(12.0f));
-		label5.setFont(Theme.current().getSecondaryFont().deriveFont(12.0f));
+		label.setFont(label.getFont().deriveFont(14.0f));
+		label2.setFont(label.getFont());
+		label3.setFont(label.getFont());
+		label4.setFont(label.getFont());
+		label5.setFont(label.getFont());
+
 		icon.setBorder(BorderFactory.createEmptyBorder(0, 9, 0, 0));
 
 		add("Center", PanelUtils.gridElements(1, 6, label, label2, label3, label4, label5));
@@ -94,7 +95,7 @@ public class DetailsIconModListRender extends JPanel implements ListCellRenderer
 
 		ImageIcon modIcon = element instanceof ModElement ?
 				((ModElement) element).getElementIcon() :
-				UIRES.get("laf.directory.gif");
+				UIRES.get("laf.directory");
 
 		if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0 && modIcon.getIconHeight() > 0
 				&& modIcon != MCItem.DEFAULT_ICON) {

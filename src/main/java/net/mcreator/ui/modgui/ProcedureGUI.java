@@ -29,16 +29,12 @@ import net.mcreator.generator.template.TemplateGeneratorException;
 import net.mcreator.io.Transliteration;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
-import net.mcreator.ui.blockly.BlocklyEditorToolbar;
-import net.mcreator.ui.blockly.BlocklyEditorType;
-import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.blockly.CompileNotesPanel;
+import net.mcreator.ui.blockly.*;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.NewVariableDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
@@ -62,7 +58,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Procedure> implements IBlocklyPanelHolder {
 
@@ -75,7 +70,6 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	public final DefaultListModel<VariableElement> localVars = new DefaultListModel<>();
 	private final JList<VariableElement> localVarsList = new JList<>(localVars);
 
-	private boolean hasErrors = false;
 	private boolean hasDependencyErrors = false;
 
 	private List<Dependency> dependenciesArrayList = new ArrayList<>();
@@ -103,10 +97,16 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 	private final CompileNotesPanel compileNotesPanel = new CompileNotesPanel();
 
+	private final List<BlocklyChangedListener> blocklyChangedListeners = new ArrayList<>();
+
 	public ProcedureGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
 		this.initGUI();
 		super.finalizeGUI();
+	}
+
+	@Override public void addBlocklyChangedListener(BlocklyChangedListener listener) {
+		blocklyChangedListeners.add(listener);
 	}
 
 	private synchronized void regenerateProcedure() {
@@ -256,16 +256,9 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 			dependenciesArrayList.forEach(dependencies::addElement);
 
-			hasErrors = false;
-			for (BlocklyCompileNote note : compileNotesArrayList) {
-				if (note.type() == BlocklyCompileNote.Type.ERROR) {
-					hasErrors = true;
-					break;
-				}
-			}
-
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 
+			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
 		});
 	}
 
@@ -358,13 +351,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		scrollPane.setBackground(Theme.current().getBackgroundColor());
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPane.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), scrollPane.getVerticalScrollBar()));
-		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPane.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), scrollPane.getHorizontalScrollBar()));
-		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		localVarsPan.add("Center", scrollPane);
 
@@ -376,14 +363,14 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		JLabel lab = L10N.label("elementgui.procedure.local_variables");
 		lab.setToolTipText(L10N.t("elementgui.procedure.local_variables"));
 
-		JButton addvar = new JButton(UIRES.get("16px.add.gif"));
+		JButton addvar = new JButton(UIRES.get("16px.add"));
 		addvar.setContentAreaFilled(false);
 		addvar.setOpaque(false);
 		ComponentUtils.deriveFont(addvar, 11);
 		addvar.setBorder(BorderFactory.createEmptyBorder(1, 1, 0, 2));
 		bar.add(addvar);
 
-		JButton remvar = new JButton(UIRES.get("16px.delete.gif"));
+		JButton remvar = new JButton(UIRES.get("16px.delete"));
 		remvar.setContentAreaFilled(false);
 		remvar.setOpaque(false);
 		ComponentUtils.deriveFont(remvar, 11);
@@ -501,13 +488,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		scrollPaneDeps.setBackground(Theme.current().getBackgroundColor());
 		scrollPaneDeps.getViewport().setOpaque(false);
 		scrollPaneDeps.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPaneDeps.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), scrollPaneDeps.getVerticalScrollBar()));
-		scrollPaneDeps.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneDeps.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPaneDeps.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), scrollPaneDeps.getHorizontalScrollBar()));
-		scrollPaneDeps.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		depsPan.add("Center", scrollPaneDeps);
 		depsPan.setPreferredSize(new Dimension(150, 0));
@@ -531,13 +512,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		scrollPaneExtDeps.setBackground(Theme.current().getBackgroundColor());
 		scrollPaneExtDeps.getViewport().setOpaque(false);
 		scrollPaneExtDeps.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPaneExtDeps.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), scrollPaneExtDeps.getVerticalScrollBar()));
-		scrollPaneExtDeps.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneExtDeps.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPaneExtDeps.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), scrollPaneExtDeps.getHorizontalScrollBar()));
-		scrollPaneExtDeps.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneExtDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
 		triggerDepsPan.add("Center", PanelUtils.northAndCenterElement(triggerInfoPanel,
@@ -593,15 +568,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
-		if (!hasErrors && !hasDependencyErrors)
-			return new AggregatedValidationResult.PASS();
-		else if (hasErrors)
-			return new AggregatedValidationResult.MULTIFAIL(compileNotesPanel.getCompileNotes().stream()
-					.filter(note -> note.type() == BlocklyCompileNote.Type.ERROR).map(BlocklyCompileNote::message)
-					.collect(Collectors.toList()));
-		else
+		if (hasDependencyErrors)
 			return new AggregatedValidationResult.FAIL(
 					L10N.t("elementgui.procedure.external_trigger_does_not_provide_all_dependencies"));
+		else
+			return new BlocklyAggregatedValidationResult(compileNotesPanel.getCompileNotes());
 	}
 
 	@Override protected void afterGeneratableElementGenerated() {
@@ -613,12 +584,19 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 
 		// this procedure could be in use and new dependencies were added
 		if (isEditingMode() && dependenciesChanged)
-			regenerateProcedureCallers(modElement, modElement);
+			regenerateProcedureCallers(modElement, new Stack<>());
 
 		dependenciesBeforeEdit = dependenciesArrayList;
 	}
 
-	private void regenerateProcedureCallers(ModElement procedure, ModElement recursionLock) {
+	private void regenerateProcedureCallers(ModElement procedure, Stack<ModElement> recursionLock) {
+		// if there are at least two more procedures referencing each other, with one of them and the current one
+		// calling each other as well, regenerating current procedure would result into circular regeneration
+		// of the other two procedures because neither of them triggered the action
+		// we avoid that by stacking all the elements checked before so that current procedure doesn't regenerate twice
+		if (recursionLock.contains(procedure))
+			return; // skip the procedure if it was handled earlier
+		recursionLock.push(procedure); // otherwise, add it to the list of checked elements
 		for (ModElement element : ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), procedure)) {
 			// if this mod element is not locked and has procedures, we try to update dependencies
 			// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
@@ -628,11 +606,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 				mcreator.getGenerator().generateElement(element.getGeneratableElement());
 
 				// Procedure may call other procedures that also need updating
-				if (element.getType() == ModElementType.PROCEDURE && !element.equals(recursionLock)) {
+				if (element.getType() == ModElementType.PROCEDURE) {
 					regenerateProcedureCallers(element, recursionLock);
 				}
 			}
 		}
+		recursionLock.pop(); // remove the element after checking all referencing procedures
 	}
 
 	@Override public void openInEditingMode(net.mcreator.element.types.Procedure procedure) {
@@ -642,7 +621,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			blocklyPanel.setXML(procedure.procedurexml);
 			localVars.removeAllElements();
 			blocklyPanel.getLocalVariablesList().forEach(localVars::addElement);
-			regenerateProcedure();
+			blocklyPanel.triggerEventFunction();
 		});
 	}
 
@@ -652,8 +631,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		return procedure;
 	}
 
-	@Override public List<BlocklyPanel> getBlocklyPanels() {
-		return List.of(blocklyPanel);
+	@Override public Set<BlocklyPanel> getBlocklyPanels() {
+		return Set.of(blocklyPanel);
 	}
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {

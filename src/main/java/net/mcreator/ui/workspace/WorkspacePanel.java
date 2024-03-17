@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.workspace;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.element.*;
 import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.GeneratorTemplate;
@@ -40,9 +41,7 @@ import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.init.TiledImageCache;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.renderer.elementlist.*;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
@@ -54,8 +53,9 @@ import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.ui.workspace.resources.WorkspacePanelResources;
+import net.mcreator.util.ColorUtils;
 import net.mcreator.util.image.EmptyIcon;
-import net.mcreator.util.image.ImageUtils;
+import net.mcreator.util.image.IconUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
 import net.mcreator.workspace.elements.ModElement;
@@ -106,11 +106,11 @@ import java.util.stream.Collectors;
 	private final JButton upFolder;
 	private final JButton renameFolder;
 
-	private final JLabel but2 = new JLabel(TiledImageCache.workspaceEdit);
-	private final JLabel but2a = new JLabel(TiledImageCache.workspaceDuplicate);
-	private final JLabel but3 = new JLabel(TiledImageCache.workspaceDelete);
-	private final JLabel but5 = new JLabel(TiledImageCache.workspaceCode);
-	private final JLabel but5a = new JLabel(TiledImageCache.workspaceToggle);
+	private final JLabel but2 = new JLabel(UIRES.get("wrk_edit"));
+	private final JLabel but2a = new JLabel(UIRES.get("wrk_duplicate"));
+	private final JLabel but3 = new JLabel(UIRES.get("wrk_delete"));
+	private final JLabel but5 = new JLabel(UIRES.get("wrk_code"));
+	private final JLabel but5a = new JLabel(UIRES.get("wrk_lock"));
 
 	private final JMenuItem deleteElement = new JMenuItem(L10N.t("workspace.elements.list.edit.delete"));
 	private final JMenuItem searchElement = new JMenuItem(L10N.t("common.search_usages"));
@@ -290,10 +290,6 @@ import java.util.stream.Collectors;
 		sp.setOpaque(false);
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
-
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		sp.setBorder(null);
 
 		JPanel modElementsPanel = new JPanel(new BorderLayout(0, 0));
@@ -303,23 +299,18 @@ import java.util.stream.Collectors;
 
 		JPanel se = new JPanel(new BorderLayout());
 
-		search = new JTextField(28) {
+		search = new JTextField(34) {
 			@Override public void paintComponent(Graphics g) {
+				super.paintComponent(g);
 				Graphics2D g2 = (Graphics2D) g;
 				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
-				g.fillRect(0, 0, getWidth(), getHeight());
-				super.paintComponent(g);
-				g.setColor(new Color(0.4f, 0.4f, 0.4f, 0.3f));
-				g.drawRect(0, 0, getWidth() - 1, getHeight() - 1);
-				g.setColor(Color.white);
 				if (getText().isEmpty()) {
 					g.setFont(g.getFont().deriveFont(11f));
 					g.setColor(new Color(120, 120, 120));
 					if (!currentTab.equals("mods")) {
-						g.drawString(L10N.t("workspace.elements.list.search_list"), 8, 18);
+						g.drawString(L10N.t("workspace.elements.list.search_list"), 8, 19);
 					} else {
-						g.drawString(L10N.t("workspace.elements.list.search_folder"), 8, 18);
+						g.drawString(L10N.t("workspace.elements.list.search_folder"), 8, 19);
 					}
 				}
 			}
@@ -333,11 +324,8 @@ import java.util.stream.Collectors;
 
 		search.setToolTipText(L10N.t("workspace.elements.list.search.tooltip"));
 
-		search.setForeground(new Color(230, 230, 230));
 		ComponentUtils.deriveFont(search, 14);
-		search.setBorder(BorderFactory.createEmptyBorder(2, 5, 2, 2));
 		search.setOpaque(false);
-		search.setBackground(Theme.current().getAltBackgroundColor());
 
 		search.getDocument().addDocumentListener(new DocumentListener() {
 
@@ -356,32 +344,26 @@ import java.util.stream.Collectors;
 
 		modElementsBar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
-		JButton addFolder = new JButton(new ImageIcon(
-				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.newFolder.gif").getImage()),
-						new Rectangle(1, 1, 16, 16))));
-		upFolder = new JButton(new ImageIcon(
-				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.upFolder.gif").getImage()),
-						new Rectangle(1, 1, 16, 16))));
-		renameFolder = new JButton(new ImageIcon(
-				ImageUtils.crop(ImageUtils.toBufferedImage(UIRES.get("laf.renameFolder.gif").getImage()),
-						new Rectangle(1, 1, 16, 16))));
+		JButton addFolder = new JButton(UIRES.get("laf.newFolder"));
+		upFolder = new JButton(UIRES.get("laf.upFolder"));
+		renameFolder = new JButton(UIRES.get("laf.renameFolder"));
 
 		addFolder.setContentAreaFilled(false);
 		addFolder.setBorderPainted(false);
-		addFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		addFolder.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
 		addFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		addFolder.setToolTipText(L10N.t("workspace.elements.folders.add_tooltip"));
 
 		upFolder.setContentAreaFilled(false);
 		upFolder.setBorderPainted(false);
-		upFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		upFolder.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
 		upFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		upFolder.setToolTipText(L10N.t("workspace.elements.folders.up_tooltip"));
 		upFolder.setEnabled(false);
 
 		renameFolder.setContentAreaFilled(false);
 		renameFolder.setBorderPainted(false);
-		renameFolder.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+		renameFolder.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 3));
 		renameFolder.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		renameFolder.setToolTipText(L10N.t("workspace.elements.folders.rename_tooltip"));
 		renameFolder.setEnabled(false);
@@ -550,23 +532,30 @@ import java.util.stream.Collectors;
 		leftPan.setOpaque(false);
 		leftPan.add(search);
 
+		JPanel filterSort = new JPanel(new GridLayout(1, 2, 0, 0));
+		filterSort.setOpaque(false);
+
+		search.setBackground(ColorUtils.applyAlpha(search.getBackground(), 150));
+		search.putClientProperty(FlatClientProperties.TEXT_FIELD_TRAILING_COMPONENT, filterSort);
+		search.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
+
 		JButton filter = L10N.button("workspace.elements.list.filter");
 		JButton sort = L10N.button("workspace.elements.list.sort");
 
-		ComponentUtils.deriveFont(filter, 11);
-		filter.setMargin(new Insets(1, 3, 1, 3));
-		filter.setBackground(Theme.current().getBackgroundColor());
-		filter.setBorderPainted(false);
+		filter.putClientProperty(FlatClientProperties.BUTTON_TYPE, "toolBarButton");
+		sort.putClientProperty(FlatClientProperties.BUTTON_TYPE, "toolBarButton");
 
-		ComponentUtils.deriveFont(sort, 11);
-		sort.setMargin(new Insets(1, 3, 1, 3));
-		sort.setBackground(Theme.current().getBackgroundColor());
-		sort.setBorderPainted(false);
+		filter.setPreferredSize(new Dimension(54, 0));
+		sort.setPreferredSize(new Dimension(54, 0));
 
-		leftPan.add(new JEmptyBox(2, 2));
-		leftPan.add(filter);
-		leftPan.add(new JEmptyBox(2, 2));
-		leftPan.add(sort);
+		filter.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		sort.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+		filter.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UIManager.getColor("Component.borderColor")));
+		sort.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, UIManager.getColor("Component.borderColor")));
+
+		filterSort.add(filter);
+		filterSort.add(sort);
 
 		se.add("West", leftPan);
 
@@ -581,8 +570,9 @@ import java.util.stream.Collectors;
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {
 			filterPopup.add(new UnregisteredAction(type.getReadableName(), e -> toggleFilter(
 					"f:" + type.getReadableName().replace(" ", "").toLowerCase(Locale.ENGLISH))).setIcon(
-					new ImageIcon(ImageUtils.resizeAA(type.getIcon().getImage(), 16))));
+					IconUtils.resize(type.getIcon(), 16, 16)));
 		}
+
 		filter.addActionListener(e -> filterPopup.show(filter, 0, 26));
 
 		JPopupMenu sortPopup = new JPopupMenu();
@@ -622,12 +612,12 @@ import java.util.stream.Collectors;
 		viewPopup.add(listIcons);
 		viewPopup.add(detailsIcons);
 
-		tilesIcons.setIcon(UIRES.get("16px.tiles.gif"));
-		largeIcons.setIcon(UIRES.get("16px.large.gif"));
-		mediumIcons.setIcon(UIRES.get("16px.medium.gif"));
-		smallIcons.setIcon(UIRES.get("16px.small.gif"));
-		listIcons.setIcon(UIRES.get("16px.list.gif"));
-		detailsIcons.setIcon(UIRES.get("16px.details.gif"));
+		tilesIcons.setIcon(UIRES.get("16px.tiles"));
+		largeIcons.setIcon(UIRES.get("16px.large"));
+		mediumIcons.setIcon(UIRES.get("16px.medium"));
+		smallIcons.setIcon(UIRES.get("16px.small"));
+		listIcons.setIcon(UIRES.get("16px.list"));
+		detailsIcons.setIcon(UIRES.get("16px.details"));
 
 		view.addActionListener(e -> viewPopup.show(view, 0, 23));
 
@@ -652,7 +642,6 @@ import java.util.stream.Collectors;
 				L10N.label("workspace.elements.details.id"), L10N.label("workspace.elements.details.type"),
 				L10N.label("workspace.elements.details.lock"), L10N.label("workspace.elements.details.compile")));
 		detailsbar.setBorder(BorderFactory.createEmptyBorder(4, 47, 4, 8));
-		detailsbar.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		modElementsPanel.add("North", PanelUtils.northAndCenterElement(elementsBreadcrumb, detailsbar, 0, 0));
 		modElementsPanel.add("Center", mainp);
@@ -672,7 +661,7 @@ import java.util.stream.Collectors;
 		JPanel pne = new JPanel(new GridLayout(8, 1, 6, 6));
 		pne.setOpaque(false);
 
-		JLabel but1 = new JLabel(TiledImageCache.workspaceAdd);
+		JLabel but1 = new JLabel(UIRES.get("wrk_add"));
 		but1.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
 				if (but1.isEnabled())
@@ -738,7 +727,7 @@ import java.util.stream.Collectors;
 
 		JPanel toolp = new JPanel(new BorderLayout(0, 0)) {
 			@Override public void paintComponent(Graphics g) {
-				g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.4f));
+				g.setColor(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
 				g.fillRect(0, 0, getWidth(), getHeight());
 				super.paintComponent(g);
 			}
@@ -753,7 +742,7 @@ import java.util.stream.Collectors;
 
 		String[] workspaceEmptyTip = L10N.t("workspace.elements.empty.tip").split("%1");
 		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[0]), 24));
-		emptct.add(new JLabel(new ImageIcon(ImageUtils.resize(TiledImageCache.workspaceAdd.getImage(), 32))));
+		emptct.add(new JLabel(IconUtils.resize(UIRES.get("wrk_add"), 32, 32)));
 		emptct.add(ComponentUtils.deriveFont(new JLabel(workspaceEmptyTip[1]), 24));
 
 		JPanel emptbtpd = new JPanel(new BorderLayout());
@@ -767,6 +756,7 @@ import java.util.stream.Collectors;
 		addVerticalTab("mods", L10N.t("workspace.category.mod_elements"),
 				new WorkspacePanelMods(PanelUtils.westAndCenterElement(toolp, modElementsPanel)));
 		addVerticalTab("resources", L10N.t("workspace.category.resources"), resourcesPan);
+		addVerticalTab("tags", L10N.t("workspace.category.tags"), new WorkspacePanelTags(this));
 		addVerticalTab("variables", L10N.t("workspace.category.variables"), new WorkspacePanelVariables(this));
 		addVerticalTab("localization", L10N.t("workspace.category.localization"),
 				new WorkspacePanelLocalizations(this));
@@ -812,10 +802,10 @@ import java.util.stream.Collectors;
 		idElement.addActionListener(e -> editIDOfCurrentlySelectedModElement());
 
 		JMenuItem addElementFolder = new JMenuItem(L10N.t("workspace.elements.list.edit.add.folder"));
-		addElementFolder.setIcon(UIRES.get("laf.newFolder.gif"));
+		addElementFolder.setIcon(UIRES.get("laf.newFolder"));
 		addElementFolder.addActionListener(e -> addNewFolder());
 
-		renameElementFolder.setIcon(UIRES.get("laf.renameFolder.gif"));
+		renameElementFolder.setIcon(UIRES.get("laf.renameFolder"));
 		renameElementFolder.addActionListener(e -> {
 			if (list.getSelectedValue() instanceof FolderElement) {
 				renameFolder((FolderElement) list.getSelectedValue());
@@ -929,7 +919,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(72);
 			list.setFixedCellWidth(287);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			view.setIcon(UIRES.get("16px.tiles.gif"));
+			view.setIcon(UIRES.get("16px.tiles"));
 			view.setText(L10N.t("workspace.elements.list.tiles"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -938,7 +928,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(97);
 			list.setFixedCellWidth(90);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			view.setIcon(UIRES.get("16px.large.gif"));
+			view.setIcon(UIRES.get("16px.large"));
 			view.setText(L10N.t("workspace.elements.list.large"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -947,7 +937,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(52);
 			list.setFixedCellWidth(287);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			view.setIcon(UIRES.get("16px.medium.gif"));
+			view.setIcon(UIRES.get("16px.medium"));
 			view.setText(L10N.t("workspace.elements.list.medium"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -956,7 +946,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(32);
 			list.setFixedCellWidth(200);
 			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			view.setIcon(UIRES.get("16px.small.gif"));
+			view.setIcon(UIRES.get("16px.small"));
 			view.setText(L10N.t("workspace.elements.list.small"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -965,7 +955,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(28);
 			list.setFixedCellWidth(-1);
 			list.setLayoutOrientation(JList.VERTICAL);
-			view.setIcon(UIRES.get("16px.list.gif"));
+			view.setIcon(UIRES.get("16px.list"));
 			view.setText(L10N.t("workspace.elements.list.list"));
 			detailsbar.setVisible(false);
 		} else if (PreferencesManager.PREFERENCES.hidden.workspaceModElementIconSize.get()
@@ -974,7 +964,7 @@ import java.util.stream.Collectors;
 			list.setFixedCellHeight(24);
 			list.setFixedCellWidth(-1);
 			list.setLayoutOrientation(JList.VERTICAL);
-			view.setIcon(UIRES.get("16px.details.gif"));
+			view.setIcon(UIRES.get("16px.details"));
 			view.setText(L10N.t("workspace.elements.list.details"));
 			detailsbar.setVisible(true);
 		}
@@ -1071,28 +1061,14 @@ import java.util.stream.Collectors;
 			mcreator.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
 
 			Set<ModElement> references = new HashSet<>();
-			boolean tagsSelected = false, nonTagsSelected = false;
 			for (IElement el : list.getSelectedValuesList()) {
 				if (el instanceof ModElement mod) {
-					// We don't look for tag references since those are "weak" references also affected by other mods
-					if (mod.getType() == ModElementType.TAG) {
-						tagsSelected = true;
-					} else {
-						nonTagsSelected = true;
-						references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
-					}
+					references.addAll(ReferencesFinder.searchModElementUsages(mcreator.getWorkspace(), mod));
 				}
 			}
 
 			mcreator.setCursor(Cursor.getDefaultCursor());
-			if (tagsSelected) {
-				JOptionPane.showMessageDialog(mcreator, L10N.t("workspace.elements.list.edit.usages.tags"),
-						L10N.t("workspace.elements.list.edit.usages.tags.title"), JOptionPane.WARNING_MESSAGE);
-			}
-			if (nonTagsSelected) {
-				SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"),
-						references);
-			}
+			SearchUsagesDialog.showUsagesDialog(mcreator, L10N.t("dialog.search_usages.type.mod_element"), references);
 		}
 	}
 

@@ -113,8 +113,9 @@ public class BlockGenerationConditionRemover implements IConverter {
 						<next>%s</next></block></xml>
 						""".formatted(oreXML, placementXML);
 
-				feature.getModElement()
-						.setParentFolder(FolderElement.dummyFromPath(input.getModElement().getFolderPath()));
+				feature.getModElement().setParentFolder(
+						FolderElement.findFolderByPath(input.getModElement().getWorkspace(),
+								input.getModElement().getFolderPath()));
 				workspace.getModElementManager().storeModElementPicture(feature);
 				workspace.addModElement(feature.getModElement());
 				workspace.getGenerator().generateElement(feature);

@@ -3,7 +3,7 @@ import org.apache.tools.ant.taskdefs.condition.Os
 launch4j {
     outfile = 'mcreator.exe'
     mainClassName = 'net.mcreator.Launcher'
-    dontWrapJar = true
+    dontWrapJar = false
     copyConfigurable = []
     classpath = ["./lib/*"]
     jvmOptions = ["--add-opens=java.base/java.lang=ALL-UNNAMED"]
@@ -17,9 +17,14 @@ launch4j {
     errTitle = 'MCreator'
     supportUrl = 'https://mcreator.net/support'
 
-    fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
-    version = (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
-    textVersion = (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
+    if (project.snapshot) {
+        fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator')
+        textVersion = (String) project.mcreatorconf.getProperty('mcreator')
+    } else {
+        fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
+        textVersion = (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
+    }
+
     productName = "MCreator"
     companyName = "Pylo"
     copyright = "Pylo"
@@ -36,17 +41,20 @@ tasks.register('exportWin64', Copy.class) {
     into 'build/export/win64'
     into('') {
         from file('LICENSE.txt')
-        from file('platform/windows/mcreator.bat')
         from file('build/launch4j/mcreator.exe')
     }
     into('lib') {
         from 'build/libs'
-        from configurations.export
+        from configurations.export exclude('mcreator.jar')
         from configurations.win64
     }
     into('plugins') { from 'build/plugins/' }
     into('license') { from 'license' }
     into('jdk') { from 'jdk/jdk17_win_64' }
+
+    doLast {
+        signFile(file('build/export/win64/mcreator.exe'))
+    }
 }
 
 tasks.register('exportWindowsZip', Zip.class) {
@@ -80,7 +88,10 @@ tasks.register('buildInstallerWin64', Exec.class) {
     }
     commandLine nsis_binary, 'build/export/install64.nsi'
 
-    doLast { delete 'build/export/install64.nsi' }
+    doLast {
+        delete 'build/export/install64.nsi'
+        signFile(file('build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Windows 64bit.exe'))
+    }
 }
 
 tasks.register('exportWindows') {
@@ -95,5 +106,23 @@ tasks.register('exportWindows') {
 
     doLast {
         delete 'build/export/win64'
+    }
+}
+
+void signFile(File fileToSign) {
+    if (System.getenv('WIN_CERT_KEYSTORE') != null) {
+        exec {
+            commandLine 'java', '-jar', file('platform/windows/lib/jsign-6.0.jar'),
+                    '--storetype', 'GOOGLECLOUD',
+                    '--storepass', System.getenv('WIN_CERT_STOREPASS'),
+                    '--keystore', System.getenv('WIN_CERT_KEYSTORE'),
+                    '--alias', System.getenv('WIN_CERT_KEYNAME'),
+                    '--certfile', 'codesign-chain.pem',
+                    '--tsmode', 'RFC3161',
+                    '--tsaurl', 'http://timestamp.globalsign.com/tsa/r6advanced1',
+                    '--name', 'MCreator',
+                    '--url', 'https://mcreator.net/',
+                    fileToSign
+        }
     }
 }

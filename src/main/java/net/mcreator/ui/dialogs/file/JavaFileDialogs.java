@@ -22,7 +22,7 @@ package net.mcreator.ui.dialogs.file;
 import javafx.stage.FileChooser;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.util.image.ImageUtils;
+import net.mcreator.util.image.IconUtils;
 import net.mcreator.workspace.WorkspaceFolderManager;
 
 import javax.annotation.Nullable;
@@ -79,10 +79,10 @@ class JavaFileDialogs {
 			@Override public Icon getIcon(File f) {
 				if (f.isDirectory())
 					if (!fileSystemView.isComputerNode(f) && !fileSystemView.isDrive(f))
-						return UIRES.get("laf.directory.gif");
+						return UIRES.get("laf.directory");
 
 				if (f.getName().endsWith(".mcreator"))
-					return new ImageIcon(ImageUtils.resize(UIRES.get("mod").getImage(), 16));
+					return IconUtils.resize(UIRES.get("mod"), 16, 16);
 
 				return fileSystemView.getSystemIcon(f);
 			}

@@ -19,16 +19,12 @@
 
 package net.mcreator.ui.laf;
 
-import net.mcreator.io.OS;
 import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.swing.*;
-import javax.swing.text.DefaultEditorKit;
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.StyleSheet;
-import java.awt.event.KeyEvent;
 import java.lang.reflect.Field;
 
 public class LafUtil {
@@ -57,40 +53,6 @@ public class LafUtil {
 		} catch (Throwable throwable) {
 			LOG.warn("Failed to apply custom CSS style sheets", throwable);
 		}
-	}
-
-	public static void fixMacOSActions() {
-		if (OS.getOS() == OS.MAC) {
-			applyMacOSActionsFor("TextField.focusInputMap");
-			applyMacOSActionsFor("TextArea.focusInputMap");
-			applyMacOSActionsFor("TextPane.focusInputMap");
-		}
-	}
-
-	private static void applyMacOSActionsFor(String key) {
-		InputMap im = (InputMap) UIManager.get(key);
-
-		// Copy/paste/select actions
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_C, KeyEvent.META_DOWN_MASK), DefaultEditorKit.copyAction);
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.META_DOWN_MASK), DefaultEditorKit.pasteAction);
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_X, KeyEvent.META_DOWN_MASK), DefaultEditorKit.cutAction);
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.META_DOWN_MASK), DefaultEditorKit.selectAllAction);
-
-		// Navigation actions
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.META_DOWN_MASK), DefaultEditorKit.beginLineAction);
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.META_DOWN_MASK), DefaultEditorKit.endLineAction);
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.ALT_DOWN_MASK), DefaultEditorKit.previousWordAction);
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.ALT_DOWN_MASK), DefaultEditorKit.nextWordAction);
-
-		// Navigation selection actions
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.META_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK),
-				DefaultEditorKit.selectionBeginLineAction);
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.META_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK),
-				DefaultEditorKit.selectionEndLineAction);
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_LEFT, KeyEvent.ALT_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK),
-				DefaultEditorKit.selectionPreviousWordAction);
-		im.put(KeyStroke.getKeyStroke(KeyEvent.VK_RIGHT, KeyEvent.ALT_DOWN_MASK | KeyEvent.SHIFT_DOWN_MASK),
-				DefaultEditorKit.selectionNextWordAction);
 	}
 
 }
