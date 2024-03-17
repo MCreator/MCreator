@@ -13,6 +13,9 @@
     "toolbox_id": "targettasks",
     "fields": [
       "condition"
+    ],
+    "warnings": [
+      "powder_snow_walkable_mobs_tag_required"
     ]
   }
 }

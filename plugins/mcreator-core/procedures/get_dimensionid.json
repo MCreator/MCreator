@@ -3,7 +3,8 @@
     {
       "type": "field_data_list_selector",
       "name": "dimension",
-      "datalist": "dimension"
+      "datalist": "dimensions",
+      "customEntryProviders": "dimension"
     }
   ],
   "inputsInline": true,

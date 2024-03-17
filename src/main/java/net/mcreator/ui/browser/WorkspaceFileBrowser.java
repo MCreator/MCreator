@@ -68,20 +68,7 @@ public class WorkspaceFileBrowser extends JPanel {
 	FilterTreeNode sourceCode = null;
 	FilterTreeNode currRes = null;
 
-	public final JTree tree = new JTree(mods) {
-		@Override public void paintComponent(Graphics g) {
-			g.setColor(getBackground());
-			g.fillRect(0, 0, getWidth(), getHeight());
-			if (getSelectionCount() > 0) {
-				g.setColor(Theme.current().getInterfaceAccentColor());
-				for (int i : Objects.requireNonNull(getSelectionRows())) {
-					Rectangle r = getRowBounds(i);
-					g.fillRect(0, r.y, getWidth(), r.height);
-				}
-			}
-			super.paintComponent(g);
-		}
-	};
+	public final JTree tree = new JTree(mods);
 	private final JTextField jtf1 = new JTextField() {
 		@Override public void paintComponent(Graphics g) {
 			Graphics2D g2 = (Graphics2D) g;
@@ -466,18 +453,13 @@ public class WorkspaceFileBrowser extends JPanel {
 
 	private class ProjectBrowserCellRenderer extends DefaultTreeCellRenderer {
 
-		ProjectBrowserCellRenderer() {
-			setBorderSelectionColor(null);
-			setBackgroundSelectionColor(null);
-		}
-
 		@Override
 		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
 				boolean leaf, int row, boolean hasFocus) {
-			FilterTreeNode node = (FilterTreeNode) value;
 			JLabel a = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
 			ComponentUtils.deriveFont(a, 11);
 
+			FilterTreeNode node = (FilterTreeNode) value;
 			if (node.getUserObject() instanceof String tsi) {
 				a.setText(tsi);
 				if (tsi.equals(mcreator.getWorkspaceSettings().getModName()))
@@ -520,15 +502,6 @@ public class WorkspaceFileBrowser extends JPanel {
 				a.setText("<html>" + getText().replace(node.getFilter(), "<b>" + node.getFilter() + "</b>"));
 			}
 
-			if (sel) {
-				a.setOpaque(true);
-				a.setForeground(Theme.current().getBackgroundColor());
-				a.setBackground(Theme.current().getInterfaceAccentColor());
-			} else {
-				a.setOpaque(false);
-				a.setBackground(Theme.current().getBackgroundColor());
-				a.setForeground(Theme.current().getForegroundColor());
-			}
 			return a;
 		}
 	}

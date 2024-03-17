@@ -173,29 +173,35 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 		import_.addActionListener(event -> {
 			File imp = FileDialogs.getOpenDialog(mcreator, new String[] { blocklyEditorType.extension() });
 			if (imp != null) {
-				try {
-					String procedureXml = ProcedureTemplateIO.importBlocklyXML(imp);
-					if (procedureGUI != null) {
-						Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
-						List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
+				// Run import in a separate thread to avoid blocking the UI and to avoid deadlocks on macOS
+				new Thread(() -> {
+					try {
+						String procedureXml = ProcedureTemplateIO.importBlocklyXML(imp);
+						if (procedureGUI != null) {
+							Set<VariableElement> localVariables = BlocklyVariables.tryToExtractVariables(procedureXml);
+							List<VariableElement> existingLocalVariables = blocklyPanel.getLocalVariablesList();
 
-						for (VariableElement localVariable : localVariables) {
-							if (existingLocalVariables.contains(localVariable))
-								continue; // skip if variable with this name already exists
+							for (VariableElement localVariable : localVariables) {
+								if (existingLocalVariables.contains(localVariable))
+									continue; // skip if variable with this name already exists
 
-							blocklyPanel.addLocalVariable(localVariable.getName(),
-									localVariable.getType().getBlocklyVariableType());
-							procedureGUI.localVars.addElement(localVariable);
+								blocklyPanel.addLocalVariable(localVariable.getName(),
+										localVariable.getType().getBlocklyVariableType());
+								procedureGUI.localVars.addElement(localVariable);
+							}
 						}
+						blocklyPanel.addBlocksFromXML(procedureXml);
+					} catch (Exception e) {
+						LOG.error("Failed to import Blockly template", e);
+						SwingUtilities.invokeLater(() -> {
+							JOptionPane.showMessageDialog(mcreator,
+									L10N.t("blockly.templates." + blocklyEditorType.registryName()
+											+ ".import_failed.message"),
+									L10N.t("blockly.templates." + blocklyEditorType.registryName()
+											+ ".import_failed.title"), JOptionPane.WARNING_MESSAGE);
+						});
 					}
-					blocklyPanel.addBlocksFromXML(procedureXml);
-				} catch (Exception e) {
-					LOG.error(e.getMessage(), e);
-					JOptionPane.showMessageDialog(mcreator,
-							L10N.t("blockly.templates." + blocklyEditorType.registryName() + ".import_failed.message"),
-							L10N.t("blockly.templates." + blocklyEditorType.registryName() + ".import_failed.title"),
-							JOptionPane.WARNING_MESSAGE);
-				}
+				}, "Blockly-Template-Import").start();
 			}
 		});
 		normalizeButton4(import_);
