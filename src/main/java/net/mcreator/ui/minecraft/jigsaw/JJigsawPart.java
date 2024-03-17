@@ -26,7 +26,6 @@ import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.ComboBoxUtil;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
-import net.mcreator.ui.component.util.WrapLayout;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -66,7 +65,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 		ComponentUtils.deriveFont(structureSelector, 16);
 		reloadDataLists();
 
-		JPanel line = new JPanel(new WrapLayout(FlowLayout.LEFT, 10, 0));
+		JPanel line = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 0));
 		line.setOpaque(false);
 
 		line.add(L10N.label("elementgui.structuregen.jigsaw_entry_weight"));
