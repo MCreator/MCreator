@@ -65,7 +65,7 @@ public class FileDialogs {
 
 	public static File[] getFileChooserDialog(Window f, FileChooserType type, boolean multiSelect,
 			@Nullable String suggestedFileName, FileChooser.ExtensionFilter... filters) {
-		if (useNativeFileChooser()) {
+		if (nativeFileChooser()) {
 			return NativeFileDialogs.getFileChooserDialog(type, multiSelect, suggestedFileName, filters);
 		} else {
 			return JavaFileDialogs.getFileChooserDialog(f, type, multiSelect, suggestedFileName, filters);
@@ -73,7 +73,7 @@ public class FileDialogs {
 	}
 
 	public static File getWorkspaceDirectorySelectDialog(Window f, File file) {
-		if (useNativeFileChooser()) {
+		if (nativeFileChooser()) {
 			return NativeFileDialogs.getWorkspaceDirectorySelectDialog(f, file);
 		} else {
 			return JavaFileDialogs.getWorkspaceDirectorySelectDialog(f, file);
@@ -139,8 +139,8 @@ public class FileDialogs {
 		return fileFilters;
 	}
 
-	private static boolean useNativeFileChooser() {
-		return PreferencesManager.PREFERENCES.ui.useNativeFileChooser.get() && OS.getOS() == OS.WINDOWS;
+	private static boolean nativeFileChooser() {
+		return PreferencesManager.PREFERENCES.ui.nativeFileChooser.get() && OS.getOS() != OS.LINUX;
 	}
 
 }
