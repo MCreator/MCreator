@@ -128,7 +128,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyAndToolbarPanel.setOpaque(false);
 		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.FEATURE,
 				blocklyPanel);
-		blocklyEditorToolbar.setTemplateLibButtonWidth(174);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(175);
 		blocklyAndToolbarPanel.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 
 		JPanel featureProcedure = (JPanel) PanelUtils.centerAndSouthElement(blocklyAndToolbarPanel, compileNotesPanel);

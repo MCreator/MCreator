@@ -22,8 +22,8 @@ import net.mcreator.blockly.BlocklyCompileNote;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.ColorUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -51,15 +51,7 @@ public class CompileNotesPanel extends JPanel {
 		scrollPaneCompileNotes.setOpaque(false);
 		scrollPaneCompileNotes.getViewport().setOpaque(false);
 		scrollPaneCompileNotes.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPaneCompileNotes.getVerticalScrollBar()
-				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-						Theme.current().getAltBackgroundColor(), scrollPaneCompileNotes.getVerticalScrollBar()));
-		scrollPaneCompileNotes.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneCompileNotes.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPaneCompileNotes.getHorizontalScrollBar()
-				.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-						Theme.current().getAltBackgroundColor(), scrollPaneCompileNotes.getHorizontalScrollBar()));
-		scrollPaneCompileNotes.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneCompileNotes.setBorder(null);
 		add("Center", scrollPaneCompileNotes);
 		JPanel varHeader2 = new JPanel(new GridLayout(1, 1));
@@ -73,7 +65,7 @@ public class CompileNotesPanel extends JPanel {
 	}
 
 	@Override public void paintComponent(Graphics g) {
-		g.setColor(new Color(0.3f, 0.3f, 0.3f, 0.65f));
+		g.setColor(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 160));
 		g.fillRect(0, 0, getWidth(), getHeight());
 		super.paintComponent(g);
 	}

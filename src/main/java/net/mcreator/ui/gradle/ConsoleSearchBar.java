@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.gradle;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.ui.component.ConsolePane;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
@@ -54,8 +55,7 @@ public class ConsoleSearchBar extends JToolBar {
 		add(results);
 
 		jtf1.setMaximumSize(jtf1.getPreferredSize());
-		jtf1.setBackground(Theme.current().getAltBackgroundColor());
-		jtf1.setOpaque(true);
+		jtf1.putClientProperty(FlatClientProperties.TEXT_FIELD_SHOW_CLEAR_BUTTON, true);
 
 		results.setForeground(Theme.current().getAltForegroundColor());
 	}
