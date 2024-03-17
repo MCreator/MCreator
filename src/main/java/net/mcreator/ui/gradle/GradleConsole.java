@@ -24,10 +24,12 @@ import net.mcreator.io.OutputStreamEventHandler;
 import net.mcreator.java.ClassFinder;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.ProjectJarManager;
+import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
 import net.mcreator.ui.component.ConsolePane;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
@@ -86,7 +88,7 @@ public class GradleConsole extends JPanel {
 	private static final Color COLOR_MARKER_MAIN = new Color(0x9BB2C7);
 	private static final Color COLOR_STDERR = new Color(0x61D0AE);
 
-	ConsolePane pan = new ConsolePane();
+	private final ConsolePane pan = new ConsolePane();
 
 	private final List<GradleStateListener> stateListeners = new ArrayList<>();
 
@@ -108,6 +110,9 @@ public class GradleConsole extends JPanel {
 
 	// a flag to prevent infinite re-runs in case when re-run does not solve the build problem
 	public boolean rerunFlag = false;
+
+	// Gradle console may be associated with a debug client
+	@Nullable private JVMDebugClient debugClient = null;
 
 	public GradleConsole(MCreator ref) {
 		this.ref = ref;
@@ -269,6 +274,16 @@ public class GradleConsole extends JPanel {
 
 	public void exec(String command, @Nullable ProgressListener progressListener,
 			@Nullable GradleTaskFinishedListener taskSpecificListener) {
+		exec(command, taskSpecificListener, progressListener, null);
+	}
+
+	public void exec(String command, @Nullable ProgressListener progressListener,
+			@Nullable JVMDebugClient jvmDebugClient) {
+		exec(command, null, progressListener, jvmDebugClient);
+	}
+
+	public void exec(String command, @Nullable GradleTaskFinishedListener taskSpecificListener,
+			@Nullable ProgressListener progressListener, @Nullable JVMDebugClient optionalDebugClient) {
 		status = RUNNING;
 
 		ref.consoleTab.repaint();
@@ -327,6 +342,12 @@ public class GradleConsole extends JPanel {
 				.collect(Collectors.toList());
 
 		BuildLauncher task = GradleUtils.getGradleTaskLauncher(ref.getWorkspace(), commands);
+
+		if (optionalDebugClient != null) {
+			this.debugClient = optionalDebugClient;
+			this.debugClient.init(task, cancellationSource.token());
+			ref.getDebugPanel().startDebug(this.debugClient);
+		}
 
 		if (PreferencesManager.PREFERENCES.gradle.offline.get())
 			arguments.add("--offline");
@@ -452,7 +473,7 @@ public class GradleConsole extends JPanel {
 								LOG.warn("Gradle task suggested re-run. Attempting re-running task: " + command);
 
 								// Re-run the same command with the same listener
-								GradleConsole.this.exec(command, taskSpecificListener);
+								GradleConsole.this.exec(command, taskSpecificListener, progressListener, debugClient);
 
 								return;
 							}
@@ -553,6 +574,12 @@ public class GradleConsole extends JPanel {
 				appendPlainText("Task completed in " + TimeUtils.millisToLongDHMS(System.currentTimeMillis() - millis),
 						Color.gray);
 				append(" ");
+
+				if (debugClient != null) {
+					ref.getDebugPanel().stopDebug();
+					debugClient.stop();
+					debugClient = null;
+				}
 
 				if (taskSpecificListener != null)
 					taskSpecificListener.onTaskFinished(new GradleTaskResult("", mcreatorGradleStatus));
@@ -732,6 +759,10 @@ public class GradleConsole extends JPanel {
 			pan.insertString(text, keyWord);
 		}
 		scrollToBottom();
+	}
+
+	@Nullable public JVMDebugClient getDebugClient() {
+		return debugClient;
 	}
 
 }
