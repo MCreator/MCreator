@@ -44,7 +44,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 	private static final Gson gson = new GsonBuilder().setLenient().create();
 
-	protected final SearchableComboBox<ProcedureEntry> procedures = new SearchableComboBox<>();
+	final SearchableComboBox<ProcedureEntry> procedures = new SearchableComboBox<>();
 
 	protected final Dependency[] providedDependencies;
 	protected final Map<String, List<Dependency>> depsMap = new HashMap<>();
@@ -162,7 +162,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 			}
 
 			deps.append("<span style='background: #").append(bg).append("; ").append(optcss).append("'>&nbsp;")
-					.append(dependency.getName()).append("&nbsp;</span>&#32;");
+					.append(dependency.getName()).append("&nbsp;</span><font size=1>&#32;</font>");
 
 			idx++;
 		}

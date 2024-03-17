@@ -37,7 +37,7 @@ package ${package}.item;
 public class ${name}Item extends Item {
 
 	public ${name}Item() {
-		super(new Item.Properties().durability(64));
+		super(new Item.Properties().rarity(Rarity.${data.igniterRarity}).durability(64));
 	}
 
 	<@addSpecialInformation data.specialInformation/>

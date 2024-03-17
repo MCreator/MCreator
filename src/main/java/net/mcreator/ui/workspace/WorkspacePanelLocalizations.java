@@ -30,7 +30,6 @@ import net.mcreator.ui.dialogs.SearchUsagesDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
@@ -40,7 +39,6 @@ import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.TableModelEvent;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
@@ -72,10 +70,6 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 
 		pane = new JTabbedPane();
 		pane.setOpaque(false);
-		pane.setUI(new BasicTabbedPaneUI() {
-			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
-			}
-		});
 		pane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
 		changeListener = e -> {
@@ -201,9 +195,6 @@ class WorkspacePanelLocalizations extends AbstractWorkspacePanel {
 			JScrollPane sp = new JScrollPane(elements);
 			sp.setOpaque(false);
 			sp.getViewport().setOpaque(false);
-			sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-					Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
-			sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 
 			sp.setColumnHeaderView(null);
 

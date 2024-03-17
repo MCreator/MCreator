@@ -164,6 +164,10 @@ import java.util.stream.Collectors;
 		this.boundingBoxes = new ArrayList<>();
 	}
 
+	public boolean generateLootTable() {
+		return !useLootTableForDrops;
+	}
+
 	@Override public Model getItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (renderType == 2)

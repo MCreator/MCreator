@@ -54,7 +54,6 @@ import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -99,7 +98,7 @@ public class WorkspaceDialogs {
 
 		workspaceDialog.getRootPane().setDefaultButton(ok);
 		workspaceDialog.pack();
-		workspaceDialog.setSize(workspaceDialog.getBounds().width, 620);
+		workspaceDialog.setSize(680, 620);
 		workspaceDialog.setLocationRelativeTo(mcreator);
 
 		workspaceDialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -201,21 +200,19 @@ public class WorkspaceDialogs {
 			Generator.GENERATOR_CACHE.values().forEach(generator::addItem);
 
 			JPanel _basicSettings = new JPanel();
+			_basicSettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			_basicSettings.setLayout(new BoxLayout(_basicSettings, BoxLayout.PAGE_AXIS));
 
 			JPanel _advancedSettings = new JPanel();
+			_advancedSettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			_advancedSettings.setLayout(new BoxLayout(_advancedSettings, BoxLayout.PAGE_AXIS));
 
 			JPanel _external_apis = new JPanel();
+			_external_apis.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			_external_apis.setLayout(new BoxLayout(_external_apis, BoxLayout.PAGE_AXIS));
 
 			if (workspace != null) {
 				JTabbedPane master = new JTabbedPane();
-				master.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-				master.setUI(new BasicTabbedPaneUI() {
-					@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
-					}
-				});
 				master.addTab(L10N.t("dialog.workspace_settings.tab.general"),
 						PanelUtils.pullElementUp(_basicSettings));
 				master.addTab(L10N.t("dialog.workspace_settings.tab.apis"), PanelUtils.pullElementUp(_external_apis));

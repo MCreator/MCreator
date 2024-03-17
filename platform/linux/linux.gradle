@@ -1,7 +1,3 @@
-static void convertCRLF(File input, File out) {
-    out << input.text.replaceAll('\r\n', '\n')
-}
-
 tasks.register('exportLinux64', Copy.class) {
     dependsOn downloadJDKLinux64
     dependsOn jar
@@ -50,4 +46,8 @@ tasks.register('exportLinux') {
     doLast {
         delete 'build/export/linux64'
     }
+}
+
+static void convertCRLF(File input, File out) {
+    out << input.text.replaceAll('\r\n', '\n')
 }
