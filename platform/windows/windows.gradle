@@ -17,8 +17,14 @@ launch4j {
     errTitle = 'MCreator'
     supportUrl = 'https://mcreator.net/support'
 
-    fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator')
-    textVersion = (String) project.mcreatorconf.getProperty('mcreator')
+    if (project.snapshot) {
+        fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator')
+        textVersion = (String) project.mcreatorconf.getProperty('mcreator')
+    } else {
+        fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
+        textVersion = (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
+    }
+
     productName = "MCreator"
     companyName = "Pylo"
     copyright = "Pylo"
