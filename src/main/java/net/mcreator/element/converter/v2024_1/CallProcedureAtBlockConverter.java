@@ -40,7 +40,7 @@ import java.io.StringWriter;
 public class CallProcedureAtBlockConverter extends ProcedureConverter {
 
 	@Override public int getVersionConvertingTo() {
-		return 60;
+		return 61;
 	}
 
 	@Override protected String fixXML(Procedure procedure, String xml) throws Exception {
