@@ -17,8 +17,8 @@ launch4j {
     errTitle = 'MCreator'
     supportUrl = 'https://mcreator.net/support'
 
-    fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
-    textVersion = (String) project.mcreatorconf.getProperty('mcreator') + "." + project.builddate
+    fileDescription = "MCreator " + (String) project.mcreatorconf.getProperty('mcreator')
+    textVersion = (String) project.mcreatorconf.getProperty('mcreator')
     productName = "MCreator"
     companyName = "Pylo"
     copyright = "Pylo"
