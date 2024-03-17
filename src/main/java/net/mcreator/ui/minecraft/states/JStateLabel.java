@@ -49,12 +49,11 @@ public class JStateLabel extends JPanel {
 
 	public JStateLabel(MCreator mcreator, Supplier<List<PropertyData<?>>> properties,
 			Supplier<Stream<JStateLabel>> otherStates) {
-		super(new BorderLayout(5, 0));
+		super(new BorderLayout());
 		this.mcreator = mcreator;
 		this.properties = properties;
 		this.otherStates = otherStates;
 
-		setBackground(Theme.current().getSecondAltBackgroundColor());
 		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
 		label.setEditable(false);
