@@ -1077,6 +1077,16 @@ import java.util.stream.Collectors;
 			GeneratableElement generatableElementOriginal = mu.getGeneratableElement();
 
 			if (generatableElementOriginal != null && !(generatableElementOriginal instanceof CustomElement)) {
+				WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 3, true);
+				breadcrumb.reloadPath(mcreator.mv.currentFolder, FolderElement.class);
+				breadcrumb.setSelectionListener((element, component, event) -> {
+					if (element instanceof FolderElement fe)
+						breadcrumb.reloadPath(fe, FolderElement.class);
+				});
+				JScrollPane targetFile = new JScrollPane(breadcrumb, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+						JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+				targetFile.getHorizontalScrollBar().setPreferredSize(new Dimension());
+
 				String modName = VOptionPane.showInputDialog(mcreator,
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
@@ -1085,11 +1095,14 @@ import java.util.stream.Collectors;
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
 										L10N.t("common.mod_element_name")).validate();
 							}
-						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));
+						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"),
+						null, targetFile, null);
 				if (modName != null && !modName.isEmpty()) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
 					ModElement duplicateModElement = new ModElement(mcreator.getWorkspace(), mu, modName);
+					duplicateModElement.setParentFolder(Objects.requireNonNullElse(breadcrumb.getCurrentFolder(),
+							mcreator.mv.currentFolder));
 
 					GeneratableElement generatableElementDuplicate = mcreator.getModElementManager()
 							.fromJSONtoGeneratableElement(mcreator.getModElementManager()
