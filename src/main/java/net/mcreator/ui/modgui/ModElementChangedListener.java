@@ -20,10 +20,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.component.ITechnicalComponent;
-import net.mcreator.ui.component.JColor;
-import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.component.JStringListField;
+import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
@@ -115,9 +112,13 @@ public interface ModElementChangedListener
 	}
 
 	@Override default void actionPerformed(ActionEvent e) {
-		if (e.getSource() instanceof JComboBox) {
-			if (e.getModifiers() != 0)
+		if (e.getSource() instanceof JComboBox box) {
+			if (box instanceof SearchableComboBox<?> scb) {
+				if (e.getModifiers() != 0 && !scb.isSelectingOrFiltering())
+					modElementChanged();
+			} else if (e.getModifiers() != 0) {
 				modElementChanged();
+			}
 		} else {
 			modElementChanged();
 		}

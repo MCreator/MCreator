@@ -41,7 +41,7 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 
 	private List<T> entries = new ArrayList<>();
 
-	private boolean dropDownVisible = false;
+	private boolean dropDownVisible = false, filtering = false;
 
 	public SearchableComboBox(T[] data) {
 		super(data);
@@ -108,11 +108,13 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 
 	private void comboFilter() {
 		Object selected = super.getSelectedItem();
+		filtering = true;
 
 		super.removeAllItems();
 		entries.forEach(super::addItem);
 
 		if (searchTerm.isEmpty() || !canSearch()) {
+			filtering = false;
 			super.setSelectedItem(selected);
 		} else {
 			List<T> entriesFiltered = new ArrayList<>();
@@ -129,12 +131,18 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 				super.removeAllItems();
 				entriesFiltered.forEach(super::addItem);
 			}
+
+			filtering = false;
 		}
 	}
 
 	private void clearSearch() {
 		searchTerm = "";
 		comboFilter();
+	}
+
+	public boolean isSelectingOrFiltering() {
+		return dropDownVisible || filtering;
 	}
 
 	@Override public void focusGained(FocusEvent e) {
