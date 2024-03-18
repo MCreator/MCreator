@@ -35,7 +35,9 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.util.StringUtils;
+import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -227,6 +229,16 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 							procedureNameBuilder.toString().replace("When", ""));
 				}
 
+				WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 3, true);
+				breadcrumb.reloadPath(mcreator.mv.currentFolder, FolderElement.class);
+				breadcrumb.setSelectionListener((element, component, event) -> {
+					if (element instanceof FolderElement fe)
+						breadcrumb.reloadPath(fe, FolderElement.class);
+				});
+				JScrollPane targetFile = new JScrollPane(breadcrumb, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+						JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+				targetFile.getHorizontalScrollBar().setPreferredSize(new Dimension());
+
 				procedureNameString = VOptionPane.showInputDialog(mcreator,
 						L10N.t("action.procedure.enter_procedure_name"),
 						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidatior() {
@@ -235,13 +247,14 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("action.procedure.create_procedure"),
-						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString);
+						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString, targetFile, null);
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
 							ModElementType.PROCEDURE);
 					ModElementGUI<?> newGUI = ModElementType.PROCEDURE.getModElementGUI(mcreator, element, false);
 					if (newGUI != null) {
+						newGUI.setTargetFolder(breadcrumb.getCurrentFolder());
 						newGUI.showView();
 						newGUI.setModElementCreatedListener(generatableElement -> {
 							String modName = JavaConventions.convertToValidClassName(
