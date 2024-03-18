@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.modgui.codeviewer;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.generator.GeneratorFile;
 import net.mcreator.generator.GeneratorTemplatesList;
@@ -77,7 +78,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		ImageIcon disabledListIcon = ImageUtils.changeSaturation(enabledListIcon, 0);
 		modElementGUI.getModElement().getGenerator().getModElementListTemplates(modElementGUI.getElementFromGUI())
 				.stream().map(GeneratorTemplatesList::groupName).forEach(listName -> {
-					JTabbedPane listPane = new JTabbedPane(JTabbedPane.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
+					JTabbedPane listPane = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
+					listPane.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION, FlatClientProperties.TABBED_PANE_TAB_ROTATION_LEFT);
 					listPane.setBackground(Theme.current().getAltBackgroundColor());
 					listPane.setOpaque(true);
 					listPane.addComponentListener(new ComponentAdapter() {

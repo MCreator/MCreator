@@ -21,11 +21,9 @@ package net.mcreator.ui.minecraft.states;
 
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.TechnicalButton;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.StateEditorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
 
 import javax.swing.*;
 import java.awt.*;
@@ -54,11 +52,12 @@ public class JStateLabel extends JPanel {
 		this.properties = properties;
 		this.otherStates = otherStates;
 
-		setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-
-		label.setEditable(false);
+		label.setDisabledTextColor(label.getForeground());
+		label.setBorder(BorderFactory.createCompoundBorder(
+				BorderFactory.createMatteBorder(1, 1, 1, 0, UIManager.getColor("Component.borderColor")),
+				BorderFactory.createEmptyBorder(0, 5, 0, 5)));
+		label.setEnabled(false);
 		label.setOpaque(false);
-		refreshState();
 
 		JScrollPane statePane = new JScrollPane(label);
 		statePane.setOpaque(false);
@@ -66,17 +65,13 @@ public class JStateLabel extends JPanel {
 		statePane.setPreferredSize(new Dimension(300, 30));
 		add("Center", statePane);
 
-		edit.setOpaque(false);
-		edit.setMargin(new Insets(0, 0, 0, 0));
-		edit.setBorder(BorderFactory.createEmptyBorder());
-		edit.setContentAreaFilled(false);
+		edit.setMargin(new Insets(0, 4, 0, 4));
 		edit.setToolTipText(L10N.t("components.state_label.edit"));
 		edit.addActionListener(e -> editState());
 
-		JPanel controls = new JPanel();
-		controls.setBackground(Theme.current().getAltBackgroundColor());
-		controls.add(edit);
-		add("East", PanelUtils.centerInPanelPadding(controls, 2, 2));
+		add("East", edit);
+
+		refreshState();
 	}
 
 	@Override public void setEnabled(boolean enabled) {
