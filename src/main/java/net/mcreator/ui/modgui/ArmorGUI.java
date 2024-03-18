@@ -556,7 +556,7 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/damage_values"),
 				L10N.label("elementgui.armor.damage_values")));
-		enderpanel.add(PanelUtils.gridElements(1, 4, damageValueHelmet, damageValueBody, damageValueLeggings,
+		enderpanel.add(PanelUtils.gridElements(1, 4, 2, 2, damageValueHelmet, damageValueBody, damageValueLeggings,
 				damageValueBoots));
 
 		enderpanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("armor/enchantability"),

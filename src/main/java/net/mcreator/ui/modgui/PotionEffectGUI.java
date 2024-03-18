@@ -161,7 +161,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		page1group.addValidationElement(icon);
 
 		if (!isEditingMode()) {
-			String readableNameFromModElement = net.mcreator.util.StringUtils.machineToReadableName(modElement.getName());
+			String readableNameFromModElement = net.mcreator.util.StringUtils.machineToReadableName(
+					modElement.getName());
 			effectName.setText(readableNameFromModElement);
 		}
 

@@ -63,17 +63,17 @@ public abstract class ListSelectorDialog<T> extends SearchableSelectorDialog<T> 
 			dispose();
 		});
 
-		message.setBorder(BorderFactory.createEmptyBorder(7, 2, 2, 0));
+		message.setBorder(BorderFactory.createEmptyBorder(4, 4, 2, 0));
 
 		var top = PanelUtils.northAndCenterElement(message,
 				PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.list_selector.filter"), filterField), 5, 5);
 
-		top.setBorder(BorderFactory.createEmptyBorder(4, 6, 7, 0));
+		top.setBorder(BorderFactory.createEmptyBorder(2, 6, 7, 0));
 
 		JPanel mainComponent = new JPanel(new BorderLayout());
 		mainComponent.add("North", top);
 		var scrollPane = new JScrollPane(list);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 12, 0, 0));
+		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 0, 2, 0));
 		mainComponent.add("Center", scrollPane);
 
 		add("Center", mainComponent);

@@ -18,9 +18,9 @@
 
 package net.mcreator.ui.init;
 
+import com.formdev.flatlaf.extras.FlatSVGIcon;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
-import net.mcreator.util.image.svg.SVGProcessor;
 
 import javax.annotation.Nullable;
 import javax.imageio.ImageIO;
@@ -67,9 +67,7 @@ public class UIRES {
 		String themePath = "themes." + theme + ".images";
 		PluginLoader.INSTANCE.getResources(themePath, vectorPattern).parallelStream().forEach(
 				element -> cache.putIfAbsent(element.replace('/', '.').substring(themePath.length() + 1),
-						SVGProcessor.getMultiResolutionIcon(
-								SVGProcessor.loadSVG(Objects.requireNonNull(PluginLoader.INSTANCE.getResource(element)),
-										null), 0, 0)));
+						new FlatSVGIcon(Objects.requireNonNull(PluginLoader.INSTANCE.getResource(element)))));
 	}
 
 	/**
@@ -131,7 +129,7 @@ public class UIRES {
 			return CACHE.computeIfAbsent(computeKey("@" + identifier, width, height, paint), id -> {
 				URL url = ClassLoader.getSystemClassLoader()
 						.getResource("net/mcreator/ui/res/" + identifier.replace('.', '/') + ".svg");
-				return SVGProcessor.getMultiResolutionIcon(SVGProcessor.loadSVG(url, paint), width, height);
+				return new FlatSVGIcon(url).derive(width, height);
 			});
 		}
 

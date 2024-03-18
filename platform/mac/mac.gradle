@@ -1,45 +1,5 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
-static void convertCRLF(File input, File out) {
-    out << input.text.replaceAll('\r\n', '\n')
-}
-
-void makeDMG(File directory, File outputDMGFile, String volumeName) {
-    if (Os.isFamily(Os.FAMILY_MAC)) {
-        exec {
-            commandLine 'create-dmg',
-                    '--volname', volumeName,
-                    '--volicon', 'platform/mac/volume.icns',
-                    '--background', 'platform/mac/diskimage.png',
-                    '--window-pos', '200', '120',
-                    '--window-size', '480', '325',
-                    '--icon-size', '100',
-                    '--icon', 'MCreator.app', '145', '121',
-                    '--hide-extension', 'MCreator.app',
-                    '--text-size', '10',
-                    '--app-drop-link', '337', '121',
-                    '--eula', 'LICENSE.txt',
-                    '--format', 'ULMO',
-                    outputDMGFile,
-                    directory
-        }
-    } else {
-        def mkisofs_binary = Os.isFamily(Os.FAMILY_WINDOWS) ? './build/tools/mkisofs/Sample/mkisofs' : './mkisofs'
-        ant.exec(executable: mkisofs_binary, failonerror: true) {
-            arg(value: '-r')
-            arg(value: '-D')
-            arg(value: '-o')
-            arg(value: outputDMGFile)
-            arg(value: '-mac-name')
-            arg(value: '-V')
-            arg(value: volumeName)
-            arg(value: '-apple')
-            arg(value: '-v')
-            arg(value: directory)
-        }
-    }
-}
-
 tasks.register('exportMacX64', Copy.class) {
     dependsOn downloadJDKMacX64
     dependsOn downloadMKISOFS
@@ -84,10 +44,7 @@ tasks.register('exportMacX64', Copy.class) {
             exec { commandLine('chmod', '+x', exportPathX64 + '/Contents/MacOS/mcreator') }
         }
 
-        // If we are on MacOS, we can also ad-hoc sign the executable
-        if (Os.isFamily(Os.FAMILY_MAC)) {
-            exec { commandLine('codesign', '--force', '--deep', '--sign', '-', exportPathX64) }
-        }
+        signAndNotarizeAPP(file(exportPathX64))
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac 64bit.dmg'
         makeDMG(file('build/export/mac_x64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
@@ -138,10 +95,7 @@ tasks.register('exportMacAarch64', Copy.class) {
             exec { commandLine('chmod', '+x', exportPathAarch64 + '/Contents/MacOS/mcreator') }
         }
 
-        // If we are on MacOS, we can also ad-hoc sign the executable
-        if (Os.isFamily(Os.FAMILY_MAC)) {
-            exec { commandLine('codesign', '--force', '--deep', '--sign', '-', exportPathAarch64) }
-        }
+        signAndNotarizeAPP(file(exportPathAarch64))
 
         def dmgFile = 'build/export/MCreator ' + (String) project.mcreatorconf.getProperty('mcreator') + ' Mac aarch64.dmg'
         makeDMG(file('build/export/mac_aarch64'), file(dmgFile), 'MCreator ' + (String) project.mcreatorconf.getProperty('mcreator'))
@@ -157,5 +111,96 @@ tasks.register('exportMac') {
     doLast {
         delete 'build/export/mac_x64'
         delete 'build/export/mac_aarch64'
+    }
+}
+
+static void convertCRLF(File input, File out) {
+    out << input.text.replaceAll('\r\n', '\n')
+}
+
+void signFile(File fileToSign) {
+    if (Os.isFamily(Os.FAMILY_MAC)) {
+        if (System.getenv('MACOS_CERTIFICATE_NAME') != null) {
+            print('Signing ' + fileToSign)
+
+            def entitlementsFile = file('platform/mac/entitlements.plistfixed')
+            convertCRLF(file('platform/mac/entitlements.plist'), entitlementsFile)
+
+            exec { // Sign the app folder
+                commandLine 'codesign', '--timestamp', '--force', '--deep', '--verbose',
+                        '--entitlements', entitlementsFile,
+                        '--options', 'runtime',
+                        '--sign', System.getenv('MACOS_CERTIFICATE_NAME'),
+                        fileToSign
+            }
+        } else {
+            print('Ad-hoc signing ' + fileToSign)
+
+            exec { // Ad-hoc sign
+                commandLine 'codesign', '--timestamp', '--force', '--deep', '--verbose',
+                        '--sign', '-',
+                        fileToSign
+            }
+        }
+    }
+}
+
+void signAndNotarizeAPP(File appDirectory) {
+    // Sign the libraries
+    def libraries = new File(appDirectory, "Contents/lib").listFiles().findAll { it.isFile() && it.name.endsWith('.dylib') }
+    libraries.each { signFile(it) }
+
+    // Sign the app
+    signFile(appDirectory)
+
+    // Notarize provided app
+    if (Os.isFamily(Os.FAMILY_MAC) && System.getenv('MACOS_CERTIFICATE_NAME') != null) {
+        exec { // Zip app folder for notarization
+            commandLine 'ditto', '-c', '-k', '--sequesterRsrc', '--keepParent', appDirectory, 'notarization.zip'
+        }
+
+        exec { // Send notarization request
+            commandLine 'xcrun', 'notarytool', 'submit', 'notarization.zip', '--keychain-profile', 'notarytool-profile', '--wait'
+        }
+
+        exec { // Attach the notarization stable to the app
+            commandLine 'xcrun', 'stapler', 'staple', appDirectory
+        }
+    }
+}
+
+void makeDMG(File directory, File outputDMGFile, String volumeName) {
+    if (Os.isFamily(Os.FAMILY_MAC)) {
+        exec {
+            commandLine 'create-dmg',
+                    '--volname', volumeName,
+                    '--volicon', 'platform/mac/volume.icns',
+                    '--background', 'platform/mac/diskimage.png',
+                    '--window-pos', '200', '120',
+                    '--window-size', '480', '325',
+                    '--icon-size', '100',
+                    '--icon', 'MCreator.app', '145', '121',
+                    '--hide-extension', 'MCreator.app',
+                    '--text-size', '10',
+                    '--app-drop-link', '337', '121',
+                    '--eula', 'LICENSE.txt',
+                    '--format', 'ULMO',
+                    outputDMGFile,
+                    directory
+        }
+    } else {
+        def mkisofs_binary = Os.isFamily(Os.FAMILY_WINDOWS) ? './build/tools/mkisofs/Sample/mkisofs' : './mkisofs'
+        ant.exec(executable: mkisofs_binary, failonerror: true) {
+            arg(value: '-r')
+            arg(value: '-D')
+            arg(value: '-o')
+            arg(value: outputDMGFile)
+            arg(value: '-mac-name')
+            arg(value: '-V')
+            arg(value: volumeName)
+            arg(value: '-apple')
+            arg(value: '-v')
+            arg(value: directory)
+        }
     }
 }

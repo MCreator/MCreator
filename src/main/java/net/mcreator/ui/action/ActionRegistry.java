@@ -78,6 +78,7 @@ public class ActionRegistry {
 	// Gradle related actions
 	public final BasicAction buildWorkspace;
 	public final BasicAction runClient;
+	public final BasicAction debugClient;
 	public final BasicAction runServer;
 	public final BasicAction runGradleTask;
 	public final BasicAction buildGradleOnly;
@@ -186,6 +187,7 @@ public class ActionRegistry {
 		// Gradle tasks are initialized here as they need mcreator reference
 		this.buildWorkspace = new BuildWorkspaceAction(this).setIcon(UIRES.get("16px.build"));
 		this.runClient = new RunClientAction(this).setIcon(UIRES.get("16px.runclient"));
+		this.debugClient = new DebugClientAction(this).setIcon(UIRES.get("16px.debugclient"));
 		this.runServer = new RunServerAction(this).setIcon(UIRES.get("16px.runserver"));
 		this.runGradleTask = new RunGradleTaskAction(this);
 		this.exportToJAR = new ExportWorkspaceForDistAction(this).setIcon(UIRES.get("16px.exporttojar"));
