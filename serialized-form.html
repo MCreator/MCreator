@@ -165,6 +165,10 @@ loadScripts(document, 'script');</script>
 <pre><a href="net/mcreator/ui/MCreatorTabs.Tab.html" title="class in net.mcreator.ui">MCreatorTabs.Tab</a> consoleTab</pre>
 </li>
 <li class="block-list">
+<h5>debugPanel</h5>
+<pre><a href="net/mcreator/ui/debug/DebugPanel.html" title="class in net.mcreator.ui.debug">DebugPanel</a> debugPanel</pre>
+</li>
+<li class="block-list">
 <h5>gradleConsole</h5>
 <pre><a href="net/mcreator/ui/gradle/GradleConsole.html" title="class in net.mcreator.ui.gradle">GradleConsole</a> gradleConsole</pre>
 </li>
@@ -528,6 +532,12 @@ loadScripts(document, 'script');</script>
 <section class="serialized-class-details" id="net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction">
 <h3>Class&nbsp;<a href="net/mcreator/ui/action/impl/gradle/ClearAllGradleCachesAction.html" title="class in net.mcreator.ui.action.impl.gradle">net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction</a></h3>
 <div class="type-signature">class ClearAllGradleCachesAction extends <a href="net/mcreator/ui/action/impl/gradle/GradleAction.html" title="class in net.mcreator.ui.action.impl.gradle">GradleAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.action.impl.gradle.DebugClientAction">
+<h3>Class&nbsp;<a href="net/mcreator/ui/action/impl/gradle/DebugClientAction.html" title="class in net.mcreator.ui.action.impl.gradle">net.mcreator.ui.action.impl.gradle.DebugClientAction</a></h3>
+<div class="type-signature">class DebugClientAction extends <a href="net/mcreator/ui/action/impl/gradle/GradleAction.html" title="class in net.mcreator.ui.action.impl.gradle">GradleAction</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 </section>
 </li>
 <li>
@@ -1024,6 +1034,37 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>original</h5>
 <pre>boolean original</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.component.JAdaptiveSplitPane">
+<h3>Class&nbsp;<a href="net/mcreator/ui/component/JAdaptiveSplitPane.html" title="class in net.mcreator.ui.component">net.mcreator.ui.component.JAdaptiveSplitPane</a></h3>
+<div class="type-signature">class JAdaptiveSplitPane extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>dividerLocation</h5>
+<pre>double dividerLocation</pre>
+</li>
+<li class="block-list">
+<h5>leftComponent</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Component.html" title="class or interface in java.awt" class="external-link">Component</a> leftComponent</pre>
+</li>
+<li class="block-list">
+<h5>rightComponent</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/Component.html" title="class or interface in java.awt" class="external-link">Component</a> rightComponent</pre>
+</li>
+<li class="block-list">
+<h5>splitPane</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSplitPane.html" title="class or interface in javax.swing" class="external-link">JSplitPane</a> splitPane</pre>
 </li>
 </ul>
 </section>
@@ -1718,12 +1759,6 @@ loadScripts(document, 'script');</script>
 </ul>
 </section>
 </li>
-<li>
-<section class="serialized-class-details" id="net.mcreator.ui.component.util.WrapLayout">
-<h3>Class&nbsp;<a href="net/mcreator/ui/component/util/WrapLayout.html" title="class in net.mcreator.ui.component.util">net.mcreator.ui.component.util.WrapLayout</a></h3>
-<div class="type-signature">class WrapLayout extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/FlowLayout.html" title="class or interface in java.awt" class="external-link">FlowLayout</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
-</section>
-</li>
 </ul>
 </section>
 </li>
@@ -1929,6 +1964,172 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 </ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-package-container">
+<h2 title="Package">Package&nbsp;<a href="net/mcreator/ui/debug/package-summary.html">net.mcreator.ui.debug</a></h2>
+<ul class="block-list">
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.debug.DebugFramesView">
+<h3>Class&nbsp;<a href="net/mcreator/ui/debug/DebugFramesView.html" title="class in net.mcreator.ui.debug">net.mcreator.ui.debug.DebugFramesView</a></h3>
+<div class="type-signature">class DebugFramesView extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>frames</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JTree.html" title="class or interface in javax.swing" class="external-link">JTree</a> frames</pre>
+</li>
+<li class="block-list">
+<h5>layout</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/CardLayout.html" title="class or interface in java.awt" class="external-link">CardLayout</a> layout</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.debug.DebugMarker">
+<h3>Class&nbsp;<a href="net/mcreator/ui/debug/DebugMarker.html" title="class in net.mcreator.ui.debug">net.mcreator.ui.debug.DebugMarker</a></h3>
+<div class="type-signature">class DebugMarker extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>active</h5>
+<pre>boolean active</pre>
+</li>
+<li class="block-list">
+<h5>ACTIVE</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/border/Border.html" title="class or interface in javax.swing.border" class="external-link">Border</a> ACTIVE</pre>
+</li>
+<li class="block-list">
+<h5>hitCountClient</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicInteger</a> hitCountClient</pre>
+</li>
+<li class="block-list">
+<h5>hitCountClientLabel</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JLabel.html" title="class or interface in javax.swing" class="external-link">JLabel</a> hitCountClientLabel</pre>
+</li>
+<li class="block-list">
+<h5>hitCountOther</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicInteger</a> hitCountOther</pre>
+</li>
+<li class="block-list">
+<h5>hitCountOtherLabel</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JLabel.html" title="class or interface in javax.swing" class="external-link">JLabel</a> hitCountOtherLabel</pre>
+</li>
+<li class="block-list">
+<h5>hitCountServer</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicInteger.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicInteger</a> hitCountServer</pre>
+</li>
+<li class="block-list">
+<h5>hitCountServerLabel</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JLabel.html" title="class or interface in javax.swing" class="external-link">JLabel</a> hitCountServerLabel</pre>
+</li>
+<li class="block-list">
+<h5>IDLE</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/border/Border.html" title="class or interface in javax.swing.border" class="external-link">Border</a> IDLE</pre>
+</li>
+<li class="block-list">
+<h5>lastHit</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/concurrent/atomic/AtomicLong.html" title="class or interface in java.util.concurrent.atomic" class="external-link">AtomicLong</a> lastHit</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.debug.DebugPanel">
+<h3>Class&nbsp;<a href="net/mcreator/ui/debug/DebugPanel.html" title="class in net.mcreator.ui.debug">net.mcreator.ui.debug.DebugPanel</a></h3>
+<div class="type-signature">class DebugPanel extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<ul class="block-list">
+<li>
+<section class="detail">
+<h4>Serialized Fields</h4>
+<ul class="block-list">
+<li class="block-list">
+<h5>cardLayout</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/CardLayout.html" title="class or interface in java.awt" class="external-link">CardLayout</a> cardLayout</pre>
+</li>
+<li class="block-list">
+<h5>debugClient</h5>
+<pre><a href="net/mcreator/java/debug/JVMDebugClient.html" title="class in net.mcreator.java.debug">JVMDebugClient</a> debugClient</pre>
+</li>
+<li class="block-list">
+<h5>debugFramesView</h5>
+<pre><a href="net/mcreator/ui/debug/DebugFramesView.html" title="class in net.mcreator.ui.debug">DebugFramesView</a> debugFramesView</pre>
+</li>
+<li class="block-list">
+<h5>debugMarkers</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html" title="class or interface in java.util" class="external-link">List</a>&lt;<a href="net/mcreator/ui/debug/DebugMarker.html" title="class in net.mcreator.ui.debug">DebugMarker</a>&gt; debugMarkers</pre>
+</li>
+<li class="block-list">
+<h5>debugThreadView</h5>
+<pre><a href="net/mcreator/ui/debug/DebugThreadView.html" title="class in net.mcreator.ui.debug">DebugThreadView</a> debugThreadView</pre>
+</li>
+<li class="block-list">
+<h5>lastBreakpointEvent</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/jdk.jdi/com/sun/jdi/event/BreakpointEvent.html" title="class or interface in com.sun.jdi.event" class="external-link">BreakpointEvent</a> lastBreakpointEvent</pre>
+</li>
+<li class="block-list">
+<h5>lastSuspendedEventSet</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/jdk.jdi/com/sun/jdi/event/EventSet.html" title="class or interface in com.sun.jdi.event" class="external-link">EventSet</a> lastSuspendedEventSet</pre>
+</li>
+<li class="block-list">
+<h5>markers</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> markers</pre>
+</li>
+<li class="block-list">
+<h5>markersLayout</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/CardLayout.html" title="class or interface in java.awt" class="external-link">CardLayout</a> markersLayout</pre>
+</li>
+<li class="block-list">
+<h5>markersParent</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> markersParent</pre>
+</li>
+<li class="block-list">
+<h5>mcreator</h5>
+<pre><a href="net/mcreator/ui/MCreator.html" title="class in net.mcreator.ui">MCreator</a> mcreator</pre>
+</li>
+<li class="block-list">
+<h5>resume</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> resume</pre>
+</li>
+<li class="block-list">
+<h5>stepInto</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> stepInto</pre>
+</li>
+<li class="block-list">
+<h5>stepOut</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> stepOut</pre>
+</li>
+<li class="block-list">
+<h5>stepOver</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JButton.html" title="class or interface in javax.swing" class="external-link">JButton</a> stepOver</pre>
+</li>
+</ul>
+</section>
+</li>
+</ul>
+</section>
+</li>
+<li>
+<section class="serialized-class-details" id="net.mcreator.ui.debug.DebugThreadView">
+<h3>Class&nbsp;<a href="net/mcreator/ui/debug/DebugThreadView.html" title="class in net.mcreator.ui.debug">net.mcreator.ui.debug.DebugThreadView</a></h3>
+<div class="type-signature">class DebugThreadView extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JList.html" title="class or interface in javax.swing" class="external-link">JList</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/jdk.jdi/com/sun/jdi/ThreadReference.html" title="class or interface in com.sun.jdi" class="external-link">ThreadReference</a>&gt; implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 </section>
 </li>
 </ul>
@@ -2696,6 +2897,10 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/regex/Pattern.html" title="class or interface in java.util.regex" class="external-link">Pattern</a> cwpattern</pre>
 </li>
 <li class="block-list">
+<h5>debugClient</h5>
+<pre><a href="net/mcreator/java/debug/JVMDebugClient.html" title="class in net.mcreator.java.debug">JVMDebugClient</a> debugClient</pre>
+</li>
+<li class="block-list">
 <h5>gradleSetupTaskRunning</h5>
 <pre>boolean gradleSetupTaskRunning</pre>
 </li>
@@ -2766,6 +2971,10 @@ loadScripts(document, 'script');</script>
 <pre>org.fife.ui.autocomplete.AutoCompletion ac</pre>
 </li>
 <li class="block-list">
+<h5>breakpointHandler</h5>
+<pre><a href="net/mcreator/ui/ide/debug/BreakpointHandler.html" title="class in net.mcreator.ui.ide.debug">BreakpointHandler</a> breakpointHandler</pre>
+</li>
+<li class="block-list">
 <h5>changed</h5>
 <pre>boolean changed</pre>
 </li>
@@ -2798,6 +3007,10 @@ loadScripts(document, 'script');</script>
 <pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/event/MouseEvent.html" title="class or interface in java.awt.event" class="external-link">MouseEvent</a> mouseEvent</pre>
 </li>
 <li class="block-list">
+<h5>parser</h5>
+<pre>org.fife.rsta.ac.java.JavaParser parser</pre>
+</li>
+<li class="block-list">
 <h5>readOnly</h5>
 <pre>boolean readOnly</pre>
 </li>
@@ -2812,6 +3025,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>sed</h5>
 <pre><a href="net/mcreator/ui/ide/SearchBar.html" title="class in net.mcreator.ui.ide">SearchBar</a> sed</pre>
+</li>
+<li class="block-list">
+<h5>sp</h5>
+<pre>org.fife.ui.rtextarea.RTextScrollPane sp</pre>
 </li>
 <li class="block-list">
 <h5>spne</h5>
@@ -5767,6 +5984,10 @@ loadScripts(document, 'script');</script>
 <li class="block-list">
 <h5>igniterName</h5>
 <pre><a href="net/mcreator/ui/validation/component/VTextField.html" title="class in net.mcreator.ui.validation.component">VTextField</a> igniterName</pre>
+</li>
+<li class="block-list">
+<h5>igniterRarity</h5>
+<pre><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JComboBox.html" title="class or interface in javax.swing" class="external-link">JComboBox</a>&lt;<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&gt; igniterRarity</pre>
 </li>
 <li class="block-list">
 <h5>igniterTab</h5>
@@ -9186,7 +9407,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="serialized-class-details" id="net.mcreator.ui.views.editor.image.tool.ToolPanel">
 <h3>Class&nbsp;<a href="net/mcreator/ui/views/editor/image/tool/ToolPanel.html" title="class in net.mcreator.ui.views.editor.image.tool">net.mcreator.ui.views.editor.image.tool.ToolPanel</a></h3>
-<div class="type-signature">class ToolPanel extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JSplitPane.html" title="class or interface in javax.swing" class="external-link">JSplitPane</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
+<div class="type-signature">class ToolPanel extends <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a> implements <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/io/Serializable.html" title="class or interface in java.io" class="external-link">Serializable</a></div>
 <ul class="block-list">
 <li>
 <section class="detail">

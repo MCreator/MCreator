@@ -48,6 +48,7 @@ net.mcreator.io.tree
 net.mcreator.io.writer
 net.mcreator.io.zip
 net.mcreator.java
+net.mcreator.java.debug
 net.mcreator.minecraft
 net.mcreator.plugin
 net.mcreator.plugin.events
@@ -72,6 +73,7 @@ net.mcreator.ui.component.filebrowser
 net.mcreator.ui.component.tree
 net.mcreator.ui.component.util
 net.mcreator.ui.component.zoompane
+net.mcreator.ui.debug
 net.mcreator.ui.dialogs
 net.mcreator.ui.dialogs.file
 net.mcreator.ui.dialogs.imageeditor
@@ -84,6 +86,7 @@ net.mcreator.ui.help
 net.mcreator.ui.ide
 net.mcreator.ui.ide.action
 net.mcreator.ui.ide.autocomplete
+net.mcreator.ui.ide.debug
 net.mcreator.ui.ide.json
 net.mcreator.ui.ide.mcfunction
 net.mcreator.ui.init

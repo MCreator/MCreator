@@ -150,7 +150,7 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color"><code><a href="SearchBar.html" title="class in net.mcreator.ui.ide">SearchBar</a></code></div>
 <div class="col-second even-row-color"><code><a href="#sed" class="member-name-link">sed</a></code></div>
 <div class="col-last even-row-color">&nbsp;</div>
-<div class="col-first odd-row-color"><code>org.fife.ui.rsyntaxtextarea.RSyntaxTextArea</code></div>
+<div class="col-first odd-row-color"><code>final org.fife.ui.rsyntaxtextarea.RSyntaxTextArea</code></div>
 <div class="col-second odd-row-color"><code><a href="#te" class="member-name-link">te</a></code></div>
 <div class="col-last odd-row-color">&nbsp;</div>
 </div>
@@ -205,8 +205,14 @@ loadScripts(document, 'script');</script>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#disableJumpToMode()" class="member-name-link">disableJumpToMode</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../java/CodeCleanup.html" title="class in net.mcreator.java">CodeCleanup</a></code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCodeCleanup()" class="member-name-link">getCodeCleanup</a>()</code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="debug/BreakpointHandler.html" title="class in net.mcreator.ui.ide.debug">BreakpointHandler</a></code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getBreakpointHandler()" class="member-name-link">getBreakpointHandler</a>()</code></div>
+<div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../java/CodeCleanup.html" title="class in net.mcreator.java">CodeCleanup</a></code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getCodeCleanup()" class="member-name-link">getCodeCleanup</a>()</code></div>
+<div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>org.fife.rsta.ac.java.JavaParser</code></div>
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getParser()" class="member-name-link">getParser</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/ImageIcon.html" title="class or interface in javax.swing" class="external-link">ImageIcon</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getViewIcon()" class="member-name-link">getViewIcon</a>()</code></div>
@@ -291,7 +297,7 @@ loadScripts(document, 'script');</script>
 <li>
 <section class="detail" id="te">
 <h3>te</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">org.fife.ui.rsyntaxtextarea.RSyntaxTextArea</span>&nbsp;<span class="element-name">te</span></div>
+<div class="member-signature"><span class="modifiers">public final</span>&nbsp;<span class="return-type">org.fife.ui.rsyntaxtextarea.RSyntaxTextArea</span>&nbsp;<span class="element-name">te</span></div>
 </section>
 </li>
 <li>
@@ -439,6 +445,20 @@ loadScripts(document, 'script');</script>
 <section class="detail" id="jumpToLine(int)">
 <h3>jumpToLine</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">jumpToLine</span><wbr><span class="parameters">(int&nbsp;linenum)</span></div>
+</section>
+</li>
+<li>
+<section class="detail" id="getParser()">
+<h3>getParser</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type">org.fife.rsta.ac.java.JavaParser</span>&nbsp;<span class="element-name">getParser</span>()</div>
+</section>
+</li>
+<li>
+<section class="detail" id="getBreakpointHandler()">
+<h3>getBreakpointHandler</h3>
+<div class="member-signature"><span class="annotations">@Nullable
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="debug/BreakpointHandler.html" title="class in net.mcreator.ui.ide.debug">BreakpointHandler</a></span>&nbsp;<span class="element-name">getBreakpointHandler</span>()</div>
 </section>
 </li>
 </ul>
