@@ -43,6 +43,18 @@ public class GradleUtils {
 		return workspace.getGenerator().getGradleProjectConnection();
 	}
 
+	public static Map<String, String> getEnvironment(String java_home) {
+		Map<String, String> environment = new HashMap<>(System.getenv());
+
+		// avoid global overrides
+		cleanupEnvironment(environment);
+
+		if (java_home != null)
+			environment.put("JAVA_HOME", java_home);
+
+		return environment;
+	}
+
 	public static BuildLauncher getGradleTaskLauncher(Workspace workspace, String... tasks) {
 		BuildLauncher retval = getGradleProjectConnection(workspace).newBuild().forTasks(tasks)
 				.setJvmArguments("-Xms" + PreferencesManager.PREFERENCES.gradle.xms.get() + "m",
@@ -52,16 +64,8 @@ public class GradleUtils {
 		if (java_home != null) // make sure detected JAVA_HOME is not null
 			retval = retval.setJavaHome(new File(java_home));
 
-		Map<String, String> environment = new HashMap<>(System.getenv());
-
-		// avoid global overrides
-		cleanupEnvironment(environment);
-
-		if (java_home != null)
-			environment.put("JAVA_HOME", java_home);
-
 		// use custom set of environment variables to prevent system overrides
-		retval.setEnvironmentVariables(environment);
+		retval.setEnvironmentVariables(getEnvironment(java_home));
 
 		if (java_home != null)
 			retval.withArguments(Arrays.asList("-Porg.gradle.java.installations.auto-detect=false",

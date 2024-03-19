@@ -157,7 +157,7 @@ public class GeneratorSelector {
 
 			JPanel genStatsW = new JPanel();
 			genStatsW.setBorder(BorderFactory.createTitledBorder(L10N.t("dialog.generator_selector.generator_info")));
-			genStatsW.add(PanelUtils.maxMargin(genStats, 5, true, true, true, false));
+			genStatsW.add(ComponentUtils.applyPadding(genStats, 5, true, true, true, false));
 			statsPan.add(genStatsW, generatorConfiguration.getGeneratorName());
 		}
 

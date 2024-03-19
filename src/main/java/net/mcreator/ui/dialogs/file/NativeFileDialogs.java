@@ -35,7 +35,7 @@ import java.util.List;
 import static net.mcreator.ui.dialogs.file.FileDialogs.prevDir;
 
 /**
- * Should only be used on Windows OS at the time of writing due to Threading issues on *nix systems
+ * Should only be used on Windows or macOS at the time of writing due to Threading issues
  */
 class NativeFileDialogs {
 

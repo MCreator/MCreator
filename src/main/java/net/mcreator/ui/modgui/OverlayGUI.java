@@ -23,7 +23,7 @@ import net.mcreator.element.types.Overlay;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComboBoxUtil;
-import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
 import net.mcreator.ui.procedure.ProcedureSelector;
@@ -73,7 +73,7 @@ public class OverlayGUI extends ModElementGUI<Overlay> {
 		editor.setPreferredSize(new Dimension(5, 550));
 
 		pane5.setOpaque(false);
-		pane5.add("Center", PanelUtils.maxMargin(editor, 5, true, true, true, true));
+		pane5.add("Center", ComponentUtils.applyPadding(editor, 5, true, true, true, true));
 
 		addPage(pane5, false);
 	}
