@@ -141,8 +141,8 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 		comboFilter();
 	}
 
-	public boolean isSelectingOrFiltering() {
-		return dropDownVisible || filtering;
+	public boolean isFiltering() {
+		return filtering;
 	}
 
 	@Override public void focusGained(FocusEvent e) {
