@@ -130,7 +130,7 @@ public class CraftingRecipeMaker extends JPanel {
 		cb.setBounds(205, 53, 40, 40);
 
 		sp = new JSpinner(new SpinnerNumberModel(1, 1, 64, 1));
-		sp.setBounds(212, 109, 38, 17);
+		sp.setBounds(210, 109, 42, 17);
 		ip.add(sp);
 
 		JLabel drop = new JLabel("1");

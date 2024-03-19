@@ -4,4 +4,4 @@
 
 如果流程没有返回任何值，结果操作类型将是 PASS。
 
-如果您想要 ${l10n.t（"elementgui.common.event_right_clicked_air"）} 流程只在实体在空中用该物品右击时被调用，该流程应该总是返回 SUCCESS/CONSUME。
+如果您想要"${l10n.t("elementgui.common.event_right_clicked_air")}"流程仅在实体在空中右击此物品时被调用，该流程应总是返回SUCCESS/CONSUME。

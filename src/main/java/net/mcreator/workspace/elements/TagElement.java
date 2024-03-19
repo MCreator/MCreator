@@ -37,12 +37,19 @@ public record TagElement(TagType type, String resourcePath) implements IElement 
 		}
 	}
 
-	public String getNamespace() {
+	public String getMCreatorNamespace() {
 		if (resourcePath.contains(":")) {
 			return resourcePath.split(":")[0];
 		} else {
 			return "minecraft";
 		}
+	}
+
+	public String getMinecraftNamespace(Workspace workspace) {
+		String mcreatorNamespace = getMCreatorNamespace();
+		if (mcreatorNamespace.equals("mod"))
+			return workspace.getWorkspaceSettings().getModID();
+		return mcreatorNamespace;
 	}
 
 	public int hashCode() {

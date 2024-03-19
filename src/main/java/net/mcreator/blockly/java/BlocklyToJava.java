@@ -159,6 +159,7 @@ public class BlocklyToJava extends BlocklyToCode {
 		blockGenerators.add(new TimeMonthBlock());
 		blockGenerators.add(new TimeYearBlock());
 		blockGenerators.add(new TimeWeekOfYearBlock());
+		blockGenerators.add(new DebugMarkerBlock());
 
 		// add Minecraft related blocks
 		blockGenerators.add(new CoordinateBlock());

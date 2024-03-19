@@ -22,6 +22,7 @@ import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
+import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.IElement;
@@ -45,7 +46,7 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 		setBorder(null);
 		setBackground(Theme.current().getForegroundColor());
 
-		label.setFont(Theme.current().getSecondaryFont().deriveFont(18.0f));
+		label.setFont(label.getFont().deriveFont(18.0f));
 	}
 
 	@Override
@@ -77,7 +78,7 @@ public class SmallIconModListRender extends JPanel implements ListCellRenderer<I
 			}
 
 			if (element instanceof FolderElement) {
-				icon.setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("mod_types.folder").getImage(), 25)));
+				icon.setIcon(IconUtils.resize(UIRES.get("mod_types.folder"), 25, 25));
 			} else if (element instanceof ModElement) {
 				ImageIcon modIcon = ((ModElement) element).getElementIcon();
 				if (modIcon != null && modIcon.getImage() != null && modIcon.getIconWidth() > 0

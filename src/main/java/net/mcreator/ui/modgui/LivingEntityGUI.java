@@ -783,14 +783,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				getFont(), Theme.current().getForegroundColor()));
 		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.AI_TASK,
 				blocklyPanel);
-		blocklyEditorToolbar.setTemplateLibButtonWidth(156);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(157);
 		bpb.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 		aipan.add("Center", bpb);
 		aipan.add("South", compileNotesPanel);
 
 		blocklyPanel.setPreferredSize(new Dimension(150, 150));
 
-		pane3.add("Center", PanelUtils.maxMargin(aipan, 10, true, true, true, true));
+		pane3.add("Center", ComponentUtils.applyPadding(aipan, 10, true, true, true, true));
 
 		breedable.setOpaque(false);
 		tameable.setOpaque(false);

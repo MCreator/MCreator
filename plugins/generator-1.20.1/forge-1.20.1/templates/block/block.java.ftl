@@ -140,9 +140,6 @@ public class ${name}Block extends
 				|| (data.blockBase?has_content && !data.isFullCube())>
 			.dynamicShape()
 		</#if>
-		<#if !data.useLootTableForDrops && (data.dropAmount == 0)>
-			.noLootTable()
-		</#if>
 		<#if data.offsetType != "NONE">
 			.offsetType(Block.OffsetType.${data.offsetType})
 		</#if>
@@ -479,53 +476,6 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if !(data.useLootTableForDrops || (data.dropAmount == 0))>
-		<#if data.dropAmount != 1 && !(data.customDrop?? && !data.customDrop.isEmpty())>
-		@Override public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-			<#if data.blockBase?has_content && data.blockBase == "Door">
-			if(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
-				return Collections.emptyList();
-			</#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, ${data.dropAmount}));
-		}
-		<#elseif data.customDrop?? && !data.customDrop.isEmpty()>
-		@Override public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-			<#if data.blockBase?has_content && data.blockBase == "Door">
-			if(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
-				return Collections.emptyList();
-			</#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(${mappedMCItemToItemStackCode(data.customDrop, data.dropAmount)});
-		}
-		<#elseif data.blockBase?has_content && data.blockBase == "Slab">
-		@Override public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, state.getValue(TYPE) == SlabType.DOUBLE ? 2 : 1));
-		}
-		<#else>
-		@Override public List<ItemStack> getDrops(BlockState state, LootParams.Builder builder) {
-			<#if data.blockBase?has_content && data.blockBase == "Door">
-			if(state.getValue(BlockStateProperties.DOUBLE_BLOCK_HALF) != DoubleBlockHalf.LOWER)
-				return Collections.emptyList();
-			</#if>
-
-			List<ItemStack> dropsOriginal = super.getDrops(state, builder);
-			if(!dropsOriginal.isEmpty())
-				return dropsOriginal;
-			return Collections.singletonList(new ItemStack(this, 1));
-		}
-		</#if>
-	</#if>
-
 	<@onBlockAdded data.onBlockAdded, hasProcedure(data.onTickUpdate) && data.shouldScheduleTick(), data.tickRate/>
 
 	<@onRedstoneOrNeighborChanged data.onRedstoneOn, data.onRedstoneOff, data.onNeighbourBlockChanges/>
@@ -547,8 +497,7 @@ public class ${name}Block extends
 	</#if>
 
 	<#if hasProcedure(data.onRandomUpdateEvent)>
-	@OnlyIn(Dist.CLIENT) @Override
-	public void animateTick(BlockState blockstate, Level world, BlockPos pos, RandomSource random) {
+	@OnlyIn(Dist.CLIENT) @Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, RandomSource random) {
 		super.animateTick(blockstate, world, pos, random);
 		Player entity = Minecraft.getInstance().player;
 		int x = pos.getX();

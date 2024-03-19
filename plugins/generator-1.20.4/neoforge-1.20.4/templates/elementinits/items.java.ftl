@@ -43,7 +43,7 @@ package ${package}.init;
 	|| w.getGElementsOfType("tool")?filter(e -> e.toolType == "Shield")?size != 0>
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
 
-<#if hasItemsWithProperties || itemsWithInventory?size != 0>
+<#if itemsWithInventory?size != 0>
 @Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
 </#if>
 public class ${JavaModName}Items {
@@ -92,6 +92,9 @@ public class ${JavaModName}Items {
 		</#if>
 	</#list>
 
+	// Start of user code block custom items
+	// End of user code block custom items
+
 	<#if itemsWithInventory?size != 0>
 		public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ${JavaModName}.MODID);
 
@@ -133,35 +136,37 @@ public class ${JavaModName}Items {
 	</#if>
 
 	<#if hasItemsWithProperties>
-	<#compress>
-	@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void clientLoad(FMLClientSetupEvent event) {
-		event.enqueueWork(() -> {
-		<#list items as item>
-			<#if item.getModElement().getTypeString() == "item">
-				<#list item.customProperties.entrySet() as property>
-				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(),
-					new ResourceLocation("${modid}:${item.getModElement().getRegistryName()}_${property.getKey()}"),
-					(itemStackToRender, clientWorld, entity, itemEntityId) ->
-						<#if hasProcedure(property.getValue())>
-							(float) <@procedureCode property.getValue(), {
-								"x": "entity != null ? entity.getX() : 0",
-								"y": "entity != null ? entity.getY() : 0",
-								"z": "entity != null ? entity.getZ() : 0",
-								"world": "entity != null ? entity.level() : clientWorld",
-								"entity": "entity",
-								"itemstack": "itemStackToRender"
-							}, false/>
-						<#else>0</#if>
-				);
-				</#list>
-			<#elseif item.getModElement().getTypeString() == "tool" && item.toolType == "Shield">
-				ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("blocking"),
-					ItemProperties.getProperty(Items.SHIELD, new ResourceLocation("blocking")));
-			</#if>
-		</#list>
-		});
+	@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD, value = Dist.CLIENT) public static class ClientSideHandler {
+		@SubscribeEvent @OnlyIn(Dist.CLIENT) public static void clientLoad(FMLClientSetupEvent event) {
+			event.enqueueWork(() -> {
+			<#compress>
+			<#list items as item>
+				<#if item.getModElement().getTypeString() == "item">
+					<#list item.customProperties.entrySet() as property>
+					ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(),
+						new ResourceLocation("${modid}:${item.getModElement().getRegistryName()}_${property.getKey()}"),
+						(itemStackToRender, clientWorld, entity, itemEntityId) ->
+							<#if hasProcedure(property.getValue())>
+								(float) <@procedureCode property.getValue(), {
+									"x": "entity != null ? entity.getX() : 0",
+									"y": "entity != null ? entity.getY() : 0",
+									"z": "entity != null ? entity.getZ() : 0",
+									"world": "entity != null ? entity.level() : clientWorld",
+									"entity": "entity",
+									"itemstack": "itemStackToRender"
+								}, false/>
+							<#else>0</#if>
+					);
+					</#list>
+				<#elseif item.getModElement().getTypeString() == "tool" && item.toolType == "Shield">
+					ItemProperties.register(${item.getModElement().getRegistryNameUpper()}.get(), new ResourceLocation("blocking"),
+						ItemProperties.getProperty(Items.SHIELD, new ResourceLocation("blocking")));
+				</#if>
+			</#list>
+			</#compress>
+			});
+		}
 	}
-	</#compress>
 	</#if>
 
 }

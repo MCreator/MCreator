@@ -104,7 +104,7 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		PreferencesManager.PREFERENCES.gradle.xmx.set(3072); // 3G
 
 		// Disable native file choosers for tests due to threading issues
-		PreferencesManager.PREFERENCES.ui.useNativeFileChooser.set(false);
+		PreferencesManager.PREFERENCES.ui.nativeFileChooser.set(false);
 
 		// Do not track unit tests
 		GoogleAnalytics.ANALYTICS_ENABLED = false;

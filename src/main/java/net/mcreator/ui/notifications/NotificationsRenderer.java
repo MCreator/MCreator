@@ -20,7 +20,7 @@
 package net.mcreator.ui.notifications;
 
 import net.java.balloontip.BalloonTip;
-import net.java.balloontip.styles.EdgedBalloonStyle;
+import net.java.balloontip.styles.MinimalBalloonStyle;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
@@ -48,6 +48,7 @@ public class NotificationsRenderer {
 		JButton closeButton = new JButton();
 
 		JPanel tipContents = new JPanel(new BorderLayout());
+		tipContents.setOpaque(false);
 
 		if (title != null) {
 			JLabel titleLabel = new JLabel("<html><b>" + title);
@@ -57,6 +58,7 @@ public class NotificationsRenderer {
 
 		if (actionButtons.length > 0) {
 			JPanel actionButtonsPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+			actionButtonsPanel.setOpaque(false);
 			actionButtonsPanel.setBorder(BorderFactory.createEmptyBorder(12, 0, 0, 0));
 
 			boolean first = true;
@@ -87,8 +89,8 @@ public class NotificationsRenderer {
 		}
 
 		BalloonTip balloonTip = new BalloonTip(this.anchor, tipContents,
-				new EdgedBalloonStyle(Theme.current().getBackgroundColor(), Theme.current().getAltForegroundColor()),
-				BalloonTip.Orientation.RIGHT_BELOW, BalloonTip.AttachLocation.SOUTHEAST, -10, 10, false);
+				new MinimalBalloonStyle(Theme.current().getAltBackgroundColor(), 5), BalloonTip.Orientation.RIGHT_BELOW,
+				BalloonTip.AttachLocation.SOUTHEAST, -10, 10, false);
 
 		closeButton.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		closeButton.setContentAreaFilled(false);

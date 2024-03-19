@@ -32,10 +32,7 @@ import net.mcreator.ui.laf.themes.Theme;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
@@ -82,24 +79,9 @@ public class PreferencesDialog extends MCreatorDialog {
 		spne.setRightComponent(preferences);
 		spne.setLeftComponent(new JScrollPane(sections));
 		spne.setContinuousLayout(true);
-		spne.setUI(new BasicSplitPaneUI() {
-			@Override public BasicSplitPaneDivider createDefaultDivider() {
-				return new BasicSplitPaneDivider(this) {
-					@Override public void setBorder(Border b) {
-					}
-
-					@Override public void paint(Graphics g) {
-						g.setColor(Theme.current().getAltBackgroundColor());
-						g.fillRect(0, 0, getSize().width, getSize().height);
-						super.paint(g);
-					}
-				};
-			}
-		});
 		spne.setContinuousLayout(true);
 		spne.setDividerLocation(150);
-		spne.setDividerSize(2);
-		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 2, 0, Theme.current().getAltBackgroundColor()));
+		spne.setBorder(BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()));
 		add("Center", spne);
 
 		sections.setBackground(Theme.current().getBackgroundColor());
@@ -206,11 +188,11 @@ public class PreferencesDialog extends MCreatorDialog {
 		sectionPanel.setOpaque(false);
 
 		JComponent titlebar = L10N.label("dialog.preferences.description", name, description);
-		titlebar.setBorder(BorderFactory.createEmptyBorder(3, 10, 5, 10));
+		titlebar.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 10));
 
 		JScrollPane scrollPane = new JScrollPane(PanelUtils.pullElementUp(sectionPanel));
 		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
-		preferences.add(PanelUtils.northAndCenterElement(titlebar, scrollPane), name);
+		preferences.add(PanelUtils.northAndCenterElement(titlebar, scrollPane, 0, 0), name);
 
 		sectionPanels.put(section, sectionPanel);
 	}
