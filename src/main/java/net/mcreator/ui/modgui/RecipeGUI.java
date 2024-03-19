@@ -169,7 +169,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipesPanel.add(PanelUtils.totalCenterInPanel(smithingRecipeMaker), "smithing");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(brewingRecipeMaker), "brewing");
 
-		JComponent recwrap = PanelUtils.maxMargin(recipesPanel, 10, true, true, true, true);
+		JComponent recwrap = ComponentUtils.applyPadding(recipesPanel, 10, true, true, true, true);
 		recwrap.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.recipe.definition"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
