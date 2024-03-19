@@ -26,10 +26,7 @@ import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import java.awt.*;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -104,6 +101,11 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 	@Override public void removeAllItems() {
 		super.removeAllItems();
 		this.entries = new ArrayList<>();
+	}
+
+	@Override protected void fireItemStateChanged(ItemEvent e) {
+		if (!updating)
+			super.fireItemStateChanged(e);
 	}
 
 	private void comboFilter() {

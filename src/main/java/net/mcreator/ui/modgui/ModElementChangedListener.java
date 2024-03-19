@@ -42,7 +42,7 @@ import java.awt.event.*;
  * regenerates the code preview upon UI changes.</p>
  */
 public interface ModElementChangedListener
-		extends MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
+		extends MouseListener, KeyListener, ActionListener, ItemListener, ChangeListener, DocumentListener {
 
 	/**
 	 * <p>The main listener method, triggered when an event occurs on a registered container</p>
@@ -78,7 +78,7 @@ public interface ModElementChangedListener
 		} else if (component instanceof JSpinner spinner) {
 			spinner.addChangeListener(this);
 		} else if (component instanceof JComboBox<?> comboBox) {
-			comboBox.addActionListener(this);
+			comboBox.addItemListener(this);
 		} else if (component instanceof JTextComponent textComponent) {
 			textComponent.getDocument().addDocumentListener(this);
 		} else if (component instanceof BlocklyPanel blocklyPanel) {
@@ -112,18 +112,16 @@ public interface ModElementChangedListener
 	}
 
 	@Override default void actionPerformed(ActionEvent e) {
-		if (e.getSource() instanceof JComboBox<?> box) {
-			if (e.getModifiers() != 0) { // we check if the change comes from user interaction with UI
-				if (box instanceof SearchableComboBox<?> scb) {
-					if (!scb.isUpdating())
-						modElementChanged();
-				} else {
-					modElementChanged();
-				}
-			}
-		} else {
+		/*if (e.getSource() instanceof JComboBox<?>) {
+			if (e.getModifiers() != 0) // we check if the change comes from user interaction with UI
+				modElementChanged();
+		} else*/ {
 			modElementChanged();
 		}
+	}
+
+	@Override default void itemStateChanged(ItemEvent e) {
+		modElementChanged();
 	}
 
 	@Override default void stateChanged(ChangeEvent e) {
