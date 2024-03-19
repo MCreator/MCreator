@@ -37,7 +37,6 @@ import net.mcreator.util.image.ImageUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalTabbedPaneUI;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
@@ -54,8 +53,10 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	private final Map<GeneratorFile, FileCodeViewer<T>> cache = new HashMap<>();
 	private final Map<String, JTabbedPane> listPager = new HashMap<>();
 
-	private boolean updateRunning = false;
 	private final ModElementChangedListener codeChangeListener;
+
+	private boolean updateRunning = false;
+	private boolean updateMisfired = false;
 
 	public ModElementCodeViewer(ModElementGUI<T> modElementGUI) {
 		super(JTabbedPane.BOTTOM, JTabbedPane.SCROLL_TAB_LAYOUT);
@@ -79,7 +80,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		modElementGUI.getModElement().getGenerator().getModElementListTemplates(modElementGUI.getElementFromGUI())
 				.stream().map(GeneratorTemplatesList::groupName).forEach(listName -> {
 					JTabbedPane listPane = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
-					listPane.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION, FlatClientProperties.TABBED_PANE_TAB_ROTATION_LEFT);
+					listPane.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
+							FlatClientProperties.TABBED_PANE_TAB_ROTATION_LEFT);
 					listPane.setBackground(Theme.current().getAltBackgroundColor());
 					listPane.setOpaque(true);
 					listPane.addComponentListener(new ComponentAdapter() {
@@ -101,7 +103,10 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	}
 
 	private synchronized void reload() {
-		if (isVisible() && !updateRunning) {
+		if (!isVisible())
+			return;
+
+		if (!updateRunning) {
 			updateRunning = true;
 			new Thread(() -> {
 				try {
@@ -186,7 +191,15 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 									Theme.current().getAltForegroundColor())));
 
 				updateRunning = false;
+
+				// if update was misfired (requested during refresh), we need to reload again
+				if (updateMisfired) {
+					updateMisfired = false;
+					reload();
+				}
 			}, "CodePreviewReloader").start();
+		} else {
+			updateMisfired = true;
 		}
 	}
 
