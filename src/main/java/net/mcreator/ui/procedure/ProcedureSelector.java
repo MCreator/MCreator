@@ -228,7 +228,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 							procedureNameBuilder.toString().replace("When", ""));
 				}
 
-				WorkspaceFolderBreadcrumb breadcrumb = WorkspaceFolderBreadcrumb.createDialogBreadcrumb(mcreator);
+				WorkspaceFolderBreadcrumb.Small breadcrumb = new WorkspaceFolderBreadcrumb.Small(mcreator);
 
 				procedureNameString = VOptionPane.showInputDialog(mcreator,
 						L10N.t("action.procedure.enter_procedure_name"),
@@ -239,7 +239,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 							}
 						}, L10N.t("action.procedure.create_procedure"),
 						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString,
-						WorkspaceFolderBreadcrumb.getInScrollPane(breadcrumb), null);
+						breadcrumb.getInScrollPane(), null);
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,

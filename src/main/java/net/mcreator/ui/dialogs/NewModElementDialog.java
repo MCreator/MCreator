@@ -43,7 +43,7 @@ public class NewModElementDialog {
 		regName.setForeground(Theme.current().getAltForegroundColor());
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
-		WorkspaceFolderBreadcrumb breadcrumb = WorkspaceFolderBreadcrumb.createDialogBreadcrumb(mcreator);
+		WorkspaceFolderBreadcrumb.Small breadcrumb = new WorkspaceFolderBreadcrumb.Small(mcreator);
 
 		String modName = VOptionPane.showInputDialog(mcreator,
 				L10N.t("dialog.new_modelement.desc", type.getReadableName()),
@@ -59,8 +59,7 @@ public class NewModElementDialog {
 								L10N.t("common.mod_element_name")).validate();
 					}
 				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
-				UIManager.getString("OptionPane.cancelButtonText"), null,
-				WorkspaceFolderBreadcrumb.getInScrollPane(breadcrumb), regName);
+				UIManager.getString("OptionPane.cancelButtonText"), null, breadcrumb.getInScrollPane(), regName);
 
 		if (modName != null && !modName.isEmpty()) {
 			modName = JavaConventions.convertToValidClassName(modName);

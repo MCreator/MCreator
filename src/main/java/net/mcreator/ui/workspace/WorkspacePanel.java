@@ -1077,7 +1077,7 @@ import java.util.stream.Collectors;
 			GeneratableElement generatableElementOriginal = mu.getGeneratableElement();
 
 			if (generatableElementOriginal != null && !(generatableElementOriginal instanceof CustomElement)) {
-				WorkspaceFolderBreadcrumb breadcrumb = WorkspaceFolderBreadcrumb.createDialogBreadcrumb(mcreator);
+				WorkspaceFolderBreadcrumb.Small breadcrumb = new WorkspaceFolderBreadcrumb.Small(mcreator);
 
 				String modName = VOptionPane.showInputDialog(mcreator,
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
@@ -1088,7 +1088,7 @@ import java.util.stream.Collectors;
 										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"),
-						null, WorkspaceFolderBreadcrumb.getInScrollPane(breadcrumb), null);
+						null, breadcrumb.getInScrollPane(), null);
 				if (modName != null && !modName.isEmpty()) {
 					modName = JavaConventions.convertToValidClassName(modName);
 

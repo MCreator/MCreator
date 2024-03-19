@@ -46,23 +46,6 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 	private FolderElement currentFolder;
 
-	public static WorkspaceFolderBreadcrumb createDialogBreadcrumb(MCreator mcreator) {
-		WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 3, true);
-		breadcrumb.reloadPath(mcreator.mv.currentFolder, FolderElement.class);
-		breadcrumb.setSelectionListener((element, component, event) -> {
-			if (element instanceof FolderElement fe)
-				breadcrumb.reloadPath(fe, FolderElement.class);
-		});
-		return breadcrumb;
-	}
-
-	public static JScrollPane getInScrollPane(WorkspaceFolderBreadcrumb breadcrumb) {
-		JScrollPane scrollPane = new JScrollPane(breadcrumb, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension());
-		return scrollPane;
-	}
-
 	public WorkspaceFolderBreadcrumb(MCreator mcreator, int maxDepth, boolean canExpandTrailHead) {
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		this.mcreator = mcreator;
@@ -183,6 +166,26 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 	public interface SelectionListener {
 		void elementSelected(IElement element, JComponent component, MouseEvent event);
+	}
+
+	public static class Small extends WorkspaceFolderBreadcrumb {
+
+		public Small(MCreator mcreator) {
+			super(mcreator, 3, true);
+			reloadPath(mcreator.mv.currentFolder, FolderElement.class);
+			setSelectionListener((element, component, event) -> {
+				if (element instanceof FolderElement fe)
+					reloadPath(fe, FolderElement.class);
+			});
+		}
+
+		public JScrollPane getInScrollPane() {
+			JScrollPane scrollPane = new JScrollPane(this, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension());
+			return scrollPane;
+		}
+
 	}
 
 }
