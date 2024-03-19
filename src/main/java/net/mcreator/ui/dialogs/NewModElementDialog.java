@@ -30,6 +30,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
@@ -41,6 +42,8 @@ public class NewModElementDialog {
 				L10N.t("dialog.new_modelement.registry_name.empty"));
 		regName.setForeground(Theme.current().getAltForegroundColor());
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
+
+		WorkspaceFolderBreadcrumb.Small breadcrumb = new WorkspaceFolderBreadcrumb.Small(mcreator);
 
 		String modName = VOptionPane.showInputDialog(mcreator,
 				L10N.t("dialog.new_modelement.desc", type.getReadableName()),
@@ -56,7 +59,7 @@ public class NewModElementDialog {
 								L10N.t("common.mod_element_name")).validate();
 					}
 				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
-				UIManager.getString("OptionPane.cancelButtonText"), null, null, regName);
+				UIManager.getString("OptionPane.cancelButtonText"), null, breadcrumb.getInScrollPane(), regName);
 
 		if (modName != null && !modName.isEmpty()) {
 			modName = JavaConventions.convertToValidClassName(modName);
@@ -65,6 +68,7 @@ public class NewModElementDialog {
 
 			ModElementGUI<?> newGUI = type.getModElementGUI(mcreator, element, false);
 			if (newGUI != null) {
+				newGUI.setTargetFolder(breadcrumb.getCurrentFolder());
 				newGUI.showView();
 			}
 		}
