@@ -1077,15 +1077,7 @@ import java.util.stream.Collectors;
 			GeneratableElement generatableElementOriginal = mu.getGeneratableElement();
 
 			if (generatableElementOriginal != null && !(generatableElementOriginal instanceof CustomElement)) {
-				WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 3, true);
-				breadcrumb.reloadPath(currentFolder, FolderElement.class);
-				breadcrumb.setSelectionListener((element, component, event) -> {
-					if (element instanceof FolderElement fe)
-						breadcrumb.reloadPath(fe, FolderElement.class);
-				});
-				JScrollPane targetFile = new JScrollPane(breadcrumb, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-						JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-				targetFile.getHorizontalScrollBar().setPreferredSize(new Dimension());
+				WorkspaceFolderBreadcrumb breadcrumb = WorkspaceFolderBreadcrumb.createDialogBreadcrumb(mcreator);
 
 				String modName = VOptionPane.showInputDialog(mcreator,
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
@@ -1096,7 +1088,7 @@ import java.util.stream.Collectors;
 										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"),
-						null, targetFile, null);
+						null, WorkspaceFolderBreadcrumb.getInScrollPane(breadcrumb), null);
 				if (modName != null && !modName.isEmpty()) {
 					modName = JavaConventions.convertToValidClassName(modName);
 

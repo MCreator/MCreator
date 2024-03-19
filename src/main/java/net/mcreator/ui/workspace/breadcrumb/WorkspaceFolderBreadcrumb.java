@@ -46,6 +46,23 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 
 	private FolderElement currentFolder;
 
+	public static WorkspaceFolderBreadcrumb createDialogBreadcrumb(MCreator mcreator) {
+		WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 3, true);
+		breadcrumb.reloadPath(mcreator.mv.currentFolder, FolderElement.class);
+		breadcrumb.setSelectionListener((element, component, event) -> {
+			if (element instanceof FolderElement fe)
+				breadcrumb.reloadPath(fe, FolderElement.class);
+		});
+		return breadcrumb;
+	}
+
+	public static JScrollPane getInScrollPane(WorkspaceFolderBreadcrumb breadcrumb) {
+		JScrollPane scrollPane = new JScrollPane(breadcrumb, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension());
+		return scrollPane;
+	}
+
 	public WorkspaceFolderBreadcrumb(MCreator mcreator, int maxDepth, boolean canExpandTrailHead) {
 		super(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		this.mcreator = mcreator;

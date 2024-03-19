@@ -31,11 +31,9 @@ import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
-import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
-import java.awt.*;
 
 public class NewModElementDialog {
 
@@ -45,15 +43,7 @@ public class NewModElementDialog {
 		regName.setForeground(Theme.current().getAltForegroundColor());
 		regName.setBorder(BorderFactory.createEmptyBorder(5, 0, 5, 0));
 
-		WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 3, true);
-		breadcrumb.reloadPath(mcreator.mv.currentFolder, FolderElement.class);
-		breadcrumb.setSelectionListener((element, component, event) -> {
-			if (element instanceof FolderElement fe)
-				breadcrumb.reloadPath(fe, FolderElement.class);
-		});
-		JScrollPane targetFile = new JScrollPane(breadcrumb, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-				JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-		targetFile.getHorizontalScrollBar().setPreferredSize(new Dimension());
+		WorkspaceFolderBreadcrumb breadcrumb = WorkspaceFolderBreadcrumb.createDialogBreadcrumb(mcreator);
 
 		String modName = VOptionPane.showInputDialog(mcreator,
 				L10N.t("dialog.new_modelement.desc", type.getReadableName()),
@@ -69,7 +59,8 @@ public class NewModElementDialog {
 								L10N.t("common.mod_element_name")).validate();
 					}
 				}, L10N.t("dialog.new_modelement.create_new", type.getReadableName()),
-				UIManager.getString("OptionPane.cancelButtonText"), null, targetFile, regName);
+				UIManager.getString("OptionPane.cancelButtonText"), null,
+				WorkspaceFolderBreadcrumb.getInScrollPane(breadcrumb), regName);
 
 		if (modName != null && !modName.isEmpty()) {
 			modName = JavaConventions.convertToValidClassName(modName);

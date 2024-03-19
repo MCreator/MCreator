@@ -41,7 +41,6 @@ import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
 import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.util.StringUtils;
-import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableType;
 
@@ -146,15 +145,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 							procedureName.toString().replace("When", ""));
 				}
 
-				WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 3, true);
-				breadcrumb.reloadPath(mcreator.mv.currentFolder, FolderElement.class);
-				breadcrumb.setSelectionListener((element, component, event) -> {
-					if (element instanceof FolderElement fe)
-						breadcrumb.reloadPath(fe, FolderElement.class);
-				});
-				JScrollPane targetFile = new JScrollPane(breadcrumb, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
-						JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-				targetFile.getHorizontalScrollBar().setPreferredSize(new Dimension());
+				WorkspaceFolderBreadcrumb breadcrumb = WorkspaceFolderBreadcrumb.createDialogBreadcrumb(mcreator);
 
 				procedureNameString = VOptionPane.showInputDialog(mcreator,
 						L10N.t("action.procedure.enter_procedure_name"),
@@ -164,7 +155,8 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("action.procedure.create_procedure"),
-						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString, targetFile, null);
+						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString,
+						WorkspaceFolderBreadcrumb.getInScrollPane(breadcrumb), null);
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
