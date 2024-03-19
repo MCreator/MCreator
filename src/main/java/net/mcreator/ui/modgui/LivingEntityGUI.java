@@ -240,13 +240,13 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JCheckBox spawnThisMob = new JCheckBox();
 	private final JCheckBox doesDespawnWhenIdle = new JCheckBox();
 
-	private final JSpinner spawnPercentageRaidOne = new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1));
-	private final JSpinner spawnPercentageRaidTwo = new JSpinner(new SpinnerNumberModel(3, 0, 1000, 1));
-	private final JSpinner spawnPercentageRaidThree = new JSpinner(new SpinnerNumberModel(3, 0, 1000, 1));
-	private final JSpinner spawnPercentageRaidFour = new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1));
-	private final JSpinner spawnPercentageRaidFive = new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1));
-	private final JSpinner spawnPercentageRaidSix = new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1));
-	private final JSpinner spawnPercentageRaidSeven = new JSpinner(new SpinnerNumberModel(2, 0, 1000, 1));
+	private final JSpinner[] spawnPercentageRaid = new JSpinner[] {new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1)),
+			new JSpinner(new SpinnerNumberModel(3, 0, 1000, 1)),
+			new JSpinner(new SpinnerNumberModel(3, 0, 1000, 1)),
+			new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1)),
+			new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1)),
+			new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1)),
+			new JSpinner(new SpinnerNumberModel(2, 0, 1000, 1))};
 
 	private BiomeListField restrictionBiomes;
 
@@ -865,9 +865,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/raid_spawn_percentage"),
 				L10N.label("elementgui.living_entity.raid_spawn_percentage")));
-		selp.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, spawnPercentageRaidOne, new JEmptyBox(2, 2), spawnPercentageRaidTwo,
-				new JEmptyBox(2, 2), spawnPercentageRaidThree, new JEmptyBox(2, 2), spawnPercentageRaidFour, new JEmptyBox(2, 2),
-				spawnPercentageRaidFive, new JEmptyBox(2,2), spawnPercentageRaidSix, new JEmptyBox(2,2), spawnPercentageRaidSeven));
+		selp.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, spawnPercentageRaid[0], new JEmptyBox(2, 2), spawnPercentageRaid[1],
+				new JEmptyBox(2, 2), spawnPercentageRaid[2], new JEmptyBox(2, 2), spawnPercentageRaid[3], new JEmptyBox(2, 2),
+				spawnPercentageRaid[4], new JEmptyBox(2,2), spawnPercentageRaid[5], new JEmptyBox(2,2), spawnPercentageRaid[6]));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_group_size"),
 				L10N.label("elementgui.living_entity.spawn_group_size")));
@@ -883,13 +883,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		selp.setOpaque(false);
 
-		spawnPercentageRaidOne.setPreferredSize(new Dimension(60, 40));
-		spawnPercentageRaidTwo.setPreferredSize(new Dimension(60, 40));
-		spawnPercentageRaidThree.setPreferredSize(new Dimension(60, 40));
-		spawnPercentageRaidFour.setPreferredSize(new Dimension(60, 40));
-		spawnPercentageRaidFive.setPreferredSize(new Dimension(60, 40));
-		spawnPercentageRaidSix.setPreferredSize(new Dimension(60, 40));
-		spawnPercentageRaidSeven.setPreferredSize(new Dimension(60, 40));
+		for(byte i = 0; i < 7; i++)
+			spawnPercentageRaid[i].setPreferredSize(new Dimension(60, 40));
 
 		JComponent selpcont = PanelUtils.northAndCenterElement(selp,
 				PanelUtils.gridElements(1, 2, 5, 5, L10N.label("elementgui.living_entity.spawn_general_condition"),
@@ -1031,17 +1026,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
 
-		celebrationSound.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-		breedable.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
-		tameable.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
-		breedTriggerItems.setEnabled(mobBehaviourType.getSelectedItem() != "Raider");
-		spawnPercentageRaidOne.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-		spawnPercentageRaidTwo.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-		spawnPercentageRaidThree.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-		spawnPercentageRaidFour.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-		spawnPercentageRaidFive.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-		spawnPercentageRaidSix.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
-		spawnPercentageRaidSeven.setEnabled(mobBehaviourType.getSelectedItem() == "Raider");
+		celebrationSound.setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
+		breedable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
+		tameable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
+		breedTriggerItems.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
+		for(byte i = 0; i < 7; i++)
+			spawnPercentageRaid[i].setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
@@ -1142,13 +1132,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
-		spawnPercentageRaidOne.setValue(livingEntity.spawnPercentageRaid[0]);
-		spawnPercentageRaidTwo.setValue(livingEntity.spawnPercentageRaid[1]);
-		spawnPercentageRaidThree.setValue(livingEntity.spawnPercentageRaid[2]);
-		spawnPercentageRaidFour.setValue(livingEntity.spawnPercentageRaid[3]);
-		spawnPercentageRaidFive.setValue(livingEntity.spawnPercentageRaid[4]);
-		spawnPercentageRaidSix.setValue(livingEntity.spawnPercentageRaid[5]);
-		spawnPercentageRaidSeven.setValue(livingEntity.spawnPercentageRaid[6]);
+		for(byte i = 0; i < 7; i++)
+			spawnPercentageRaid[i].setValue(livingEntity.spawnPercentageRaid[i]);
 		modelLayers.setEntries(livingEntity.modelLayers);
 
 		entityDataList.setEntries(livingEntity.entityDataEntries);
@@ -1273,13 +1258,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.guiBoundTo = guiBoundTo.getSelectedItem();
 		livingEntity.entityDataEntries = entityDataList.getEntries();
-		livingEntity.spawnPercentageRaid[0] = (int) spawnPercentageRaidOne.getValue();
-		livingEntity.spawnPercentageRaid[1] = (int) spawnPercentageRaidTwo.getValue();
-		livingEntity.spawnPercentageRaid[2] = (int) spawnPercentageRaidThree.getValue();
-		livingEntity.spawnPercentageRaid[3] = (int) spawnPercentageRaidFour.getValue();
-		livingEntity.spawnPercentageRaid[4] = (int) spawnPercentageRaidFive.getValue();
-		livingEntity.spawnPercentageRaid[5] = (int) spawnPercentageRaidSix.getValue();
-		livingEntity.spawnPercentageRaid[6] = (int) spawnPercentageRaidSeven.getValue();
+		for(byte i = 0; i < 7; i++)
+			livingEntity.spawnPercentageRaid[i] = (int) spawnPercentageRaid[i].getValue();
 		livingEntity.modelLayers = modelLayers.getEntries();
 		return livingEntity;
 	}
