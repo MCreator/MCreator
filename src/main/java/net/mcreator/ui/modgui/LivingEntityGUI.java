@@ -240,7 +240,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JCheckBox spawnThisMob = new JCheckBox();
 	private final JCheckBox doesDespawnWhenIdle = new JCheckBox();
 
-	private final JSpinner[] spawnPercentageRaid = new JSpinner[] {new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1)),
+	private final JSpinner[] spawnPercentageRaid = new JSpinner[] {
+			new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1)),
 			new JSpinner(new SpinnerNumberModel(3, 0, 1000, 1)),
 			new JSpinner(new SpinnerNumberModel(3, 0, 1000, 1)),
 			new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1)),
@@ -883,7 +884,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		selp.setOpaque(false);
 
-		for(byte i = 0; i < 7; i++)
+		for(int i = 0; i < 7; i++)
 			spawnPercentageRaid[i].setPreferredSize(new Dimension(60, 40));
 
 		JComponent selpcont = PanelUtils.northAndCenterElement(selp,
@@ -1030,7 +1031,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		breedable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
 		tameable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
 		breedTriggerItems.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
-		for(byte i = 0; i < 7; i++)
+		for(int i = 0; i < 7; i++)
 			spawnPercentageRaid[i].setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
 	}
 
@@ -1132,7 +1133,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
-		for(byte i = 0; i < 7; i++)
+		for(int i = 0; i < 7; i++)
 			spawnPercentageRaid[i].setValue(livingEntity.spawnPercentageRaid[i]);
 		modelLayers.setEntries(livingEntity.modelLayers);
 
@@ -1258,7 +1259,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.guiBoundTo = guiBoundTo.getSelectedItem();
 		livingEntity.entityDataEntries = entityDataList.getEntries();
-		for(byte i = 0; i < 7; i++)
+		for(int i = 0; i < 7; i++)
 			livingEntity.spawnPercentageRaid[i] = (int) spawnPercentageRaid[i].getValue();
 		livingEntity.modelLayers = modelLayers.getEntries();
 		return livingEntity;
