@@ -1,4 +1,0 @@
-templates:
-  - template: function.mcfunction.ftl # loaded from datapack generator
-    writer: file
-    name: "@RESROOT/data/@[getNamespace()]/functions/@[getName()].mcfunction"

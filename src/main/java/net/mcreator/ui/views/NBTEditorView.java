@@ -19,9 +19,6 @@
 package net.mcreator.ui.views;
 
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.laf.SlickTreeUI;
-import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jnbt.CompoundTag;
@@ -54,11 +51,11 @@ public class NBTEditorView extends ViewBase {
 		tree.setCellRenderer(new NBTCellRenderer());
 		tree.setRowHeight(18);
 		tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-		tree.setOpaque(false);
-		tree.setUI(new SlickTreeUI());
 
 		JScrollPane scrollPane = new JScrollPane(tree);
-		scrollPane.setBorder(BorderFactory.createEmptyBorder(5, 20, 5, 20));
+		scrollPane.setOpaque(false);
+		scrollPane.getViewport().setOpaque(false);
+		scrollPane.setBorder(BorderFactory.createMatteBorder(10, 10, 10, 10, tree.getBackground()));
 
 		add("Center", scrollPane);
 
@@ -121,23 +118,8 @@ public class NBTEditorView extends ViewBase {
 		@Override
 		public Component getTreeCellRendererComponent(JTree tree, Object value, boolean sel, boolean expanded,
 				boolean leaf, int row, boolean hasFocus) {
-			DefaultMutableTreeNode node = (DefaultMutableTreeNode) value;
-			setOpaque(false);
-
 			JLabel a = (JLabel) super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
-			a.setOpaque(true);
-			ComponentUtils.deriveFont(a, 11);
-
-			if (node instanceof NBTTagNode nbtTagNode)
-				setText(nbtTagNode.toString());
-
-			if (sel) {
-				a.setForeground(Theme.current().getBackgroundColor());
-				a.setBackground(Theme.current().getInterfaceAccentColor());
-			} else {
-				a.setBackground(Theme.current().getBackgroundColor());
-				a.setForeground(Theme.current().getForegroundColor());
-			}
+			setText(value.toString().isBlank() ? "(blank)" : value.toString());
 			return a;
 		}
 

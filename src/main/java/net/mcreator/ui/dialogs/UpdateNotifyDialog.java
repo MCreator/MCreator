@@ -23,7 +23,6 @@ import net.mcreator.io.net.api.update.Release;
 import net.mcreator.io.net.api.update.UpdateInfo;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.util.ComponentUtils;
-import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
@@ -58,7 +57,7 @@ public class UpdateNotifyDialog {
 				ar.setContentType("text/html");
 				JScrollPane pane = new JScrollPane(ar);
 				pan.add(new JLabel("   "));
-				pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
+				pan.add("Center", ComponentUtils.applyPadding(pane, 15, true, false, false, false));
 				pan.setPreferredSize(new Dimension(585, 290));
 				ar.setBackground(Theme.current().getSecondAltBackgroundColor());
 
@@ -87,7 +86,7 @@ public class UpdateNotifyDialog {
 				ar.setContentType("text/html");
 				JScrollPane pane = new JScrollPane(ar);
 				pan.add(new JLabel("   "));
-				pan.add("Center", PanelUtils.maxMargin(pane, 15, true, false, false, false));
+				pan.add("Center", ComponentUtils.applyPadding(pane, 15, true, false, false, false));
 				pan.setPreferredSize(new Dimension(585, 290));
 				ar.setBackground(Theme.current().getSecondAltBackgroundColor());
 

@@ -57,13 +57,6 @@ public class LogicProcedureSelector extends RetvalProcedureSelector<Boolean, Log
 				fixedValue, width, providedDependencies);
 
 		this.fixedValue = fixedValue;
-
-		if (fixedValue != null) {
-			fixedValue.setBorderPainted(true);
-			fixedValue.setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(1, 5, 1, allowInlineEditor ? 5 : 0, this.getBackground()),
-					BorderFactory.createMatteBorder(0, 5, 0, 5, fixedValue.getBackground())));
-		}
 	}
 
 	@Override public LogicProcedure getSelectedProcedure() {

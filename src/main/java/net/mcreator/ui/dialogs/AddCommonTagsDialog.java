@@ -42,12 +42,23 @@ public class AddCommonTagsDialog {
 
 		dialog.add("North", PanelUtils.join(FlowLayout.LEFT, L10N.label("dialog.tools.inject_tags.text_top")));
 
-		JPanel props = new JPanel(new GridLayout(0, 1, 2, 2));
+		JPanel blockTags = new JPanel(new GridLayout(0, 1, 2, 2));
+		JPanel itemTags = new JPanel(new GridLayout(0, 1, 2, 2));
+		JPanel entityTags = new JPanel(new GridLayout(0, 1, 2, 2));
+		JPanel biomeTags = new JPanel(new GridLayout(0, 1, 2, 2));
+		JPanel functionTags = new JPanel(new GridLayout(0, 1, 2, 2));
+		JPanel damageTypeTags = new JPanel(new GridLayout(0, 1, 2, 2));
 
-		JScrollPane scrollPane = new JScrollPane(props);
-		scrollPane.getVerticalScrollBar().setUnitIncrement(10);
+		JTabbedPane tabPanel = new JTabbedPane();
 
-		dialog.add("Center", scrollPane);
+		tabPanel.add(L10N.t("tag.type.blocks"), makePage(blockTags));
+		tabPanel.add(L10N.t("tag.type.items"), makePage(itemTags));
+		tabPanel.add(L10N.t("tag.type.entities"), makePage(entityTags));
+		tabPanel.add(L10N.t("tag.type.biomes"), makePage(biomeTags));
+		tabPanel.add(L10N.t("tag.type.functions"), makePage(functionTags));
+		tabPanel.add(L10N.t("tag.type.damage_types"), makePage(damageTypeTags));
+
+		dialog.add("Center", tabPanel);
 
 		JButton ok = L10N.button("dialog.tools.inject_tags.confirm");
 		JButton cancel = new JButton(UIManager.getString("OptionPane.cancelButtonText"));
@@ -56,60 +67,62 @@ public class AddCommonTagsDialog {
 
 		List<Consumer<Boolean>> callables = new ArrayList<>();
 
-		callables.add(addTag(mcreator, props, "dirt", "minecraft", TagType.BLOCKS, true));
-		callables.add(addTag(mcreator, props, "logs", "minecraft", TagType.BLOCKS, true));
-		callables.add(addTag(mcreator, props, "fences", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "wooden_fences", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "walls", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "small_flowers", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "tall_flowers", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "bee_growables", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "valid_spawn", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "impermeable", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "beacon_base_blocks", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "leaves", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "climbable", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "fire", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "dragon_immune", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "wither_immune", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "animals_spawnable_on", "minecraft", TagType.BLOCKS, false));
-		callables.add(addTag(mcreator, props, "prevent_mob_spawning_inside", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "dirt", "minecraft", TagType.BLOCKS, true));
+		callables.add(addTag(mcreator, blockTags, "logs", "minecraft", TagType.BLOCKS, true));
+		callables.add(addTag(mcreator, blockTags, "fences", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "wooden_fences", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "walls", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "small_flowers", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "tall_flowers", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "bee_growables", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "valid_spawn", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "impermeable", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "beacon_base_blocks", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "leaves", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "climbable", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "fire", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "dragon_immune", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "wither_immune", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "animals_spawnable_on", "minecraft", TagType.BLOCKS, false));
+		callables.add(addTag(mcreator, blockTags, "prevent_mob_spawning_inside", "minecraft", TagType.BLOCKS, false));
 
-		callables.add(addTag(mcreator, props, "arrows", "minecraft", TagType.ITEMS, false));
-		callables.add(addTag(mcreator, props, "planks", "minecraft", TagType.ITEMS, false));
-		callables.add(addTag(mcreator, props, "flowers", "minecraft", TagType.ITEMS, false));
-		callables.add(addTag(mcreator, props, "small_flowers", "minecraft", TagType.ITEMS, false));
+		callables.add(addTag(mcreator, itemTags, "arrows", "minecraft", TagType.ITEMS, false));
+		callables.add(addTag(mcreator, itemTags, "planks", "minecraft", TagType.ITEMS, false));
+		callables.add(addTag(mcreator, itemTags, "flowers", "minecraft", TagType.ITEMS, false));
+		callables.add(addTag(mcreator, itemTags, "small_flowers", "minecraft", TagType.ITEMS, false));
 
-		callables.add(addTag(mcreator, props, "arrows", "minecraft", TagType.ENTITIES, false));
-		callables.add(addTag(mcreator, props, "impact_projectiles", "minecraft", TagType.ENTITIES, false));
-		callables.add(addTag(mcreator, props, "beehive_inhabitors", "minecraft", TagType.ENTITIES, false));
-		callables.add(addTag(mcreator, props, "raiders", "minecraft", TagType.ENTITIES, false));
-		callables.add(addTag(mcreator, props, "skeletons", "minecraft", TagType.ENTITIES, false));
+		callables.add(addTag(mcreator, entityTags, "arrows", "minecraft", TagType.ENTITIES, false));
+		callables.add(addTag(mcreator, entityTags, "impact_projectiles", "minecraft", TagType.ENTITIES, false));
+		callables.add(addTag(mcreator, entityTags, "beehive_inhabitors", "minecraft", TagType.ENTITIES, false));
+		callables.add(addTag(mcreator, entityTags, "raiders", "minecraft", TagType.ENTITIES, false));
+		callables.add(addTag(mcreator, entityTags, "skeletons", "minecraft", TagType.ENTITIES, false));
+		callables.add(addTag(mcreator, entityTags, "powder_snow_walkable_mobs", "minecraft", TagType.ENTITIES, false));
 
-		callables.add(addTag(mcreator, props, "is_overworld", "minecraft", TagType.BIOMES, true));
-		callables.add(addTag(mcreator, props, "is_nether", "minecraft", TagType.BIOMES, false));
-		callables.add(addTag(mcreator, props, "is_end", "minecraft", TagType.BIOMES, false));
-		callables.add(addTag(mcreator, props, "is_ocean", "minecraft", TagType.BIOMES, false));
-		callables.add(addTag(mcreator, props, "is_mountain", "minecraft", TagType.BIOMES, false));
-		callables.add(addTag(mcreator, props, "is_river", "minecraft", TagType.BIOMES, false));
-		callables.add(addTag(mcreator, props, "is_hill", "minecraft", TagType.BIOMES, false));
-		callables.add(addTag(mcreator, props, "is_forest", "minecraft", TagType.BIOMES, false));
-		callables.add(addTag(mcreator, props, "is_savanna", "minecraft", TagType.BIOMES, false));
+		callables.add(addTag(mcreator, biomeTags, "is_overworld", "minecraft", TagType.BIOMES, true));
+		callables.add(addTag(mcreator, biomeTags, "is_nether", "minecraft", TagType.BIOMES, false));
+		callables.add(addTag(mcreator, biomeTags, "is_end", "minecraft", TagType.BIOMES, false));
+		callables.add(addTag(mcreator, biomeTags, "is_ocean", "minecraft", TagType.BIOMES, false));
+		callables.add(addTag(mcreator, biomeTags, "is_mountain", "minecraft", TagType.BIOMES, false));
+		callables.add(addTag(mcreator, biomeTags, "is_river", "minecraft", TagType.BIOMES, false));
+		callables.add(addTag(mcreator, biomeTags, "is_hill", "minecraft", TagType.BIOMES, false));
+		callables.add(addTag(mcreator, biomeTags, "is_forest", "minecraft", TagType.BIOMES, false));
+		callables.add(addTag(mcreator, biomeTags, "is_savanna", "minecraft", TagType.BIOMES, false));
 
-		callables.add(addTag(mcreator, props, "tick", "minecraft", TagType.FUNCTIONS, false));
-		callables.add(addTag(mcreator, props, "load", "minecraft", TagType.FUNCTIONS, false));
+		callables.add(addTag(mcreator, functionTags, "tick", "minecraft", TagType.FUNCTIONS, false));
+		callables.add(addTag(mcreator, functionTags, "load", "minecraft", TagType.FUNCTIONS, false));
 
-		callables.add(addTag(mcreator, props, "is_drowning", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(addTag(mcreator, props, "is_explosion", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(addTag(mcreator, props, "is_fall", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(addTag(mcreator, props, "is_fire", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(addTag(mcreator, props, "is_freezing", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(addTag(mcreator, props, "is_projectile", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(addTag(mcreator, props, "bypasses_armor", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(addTag(mcreator, props, "bypasses_cooldown", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(addTag(mcreator, props, "bypasses_effects", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(addTag(mcreator, props, "bypasses_enchantments", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(addTag(mcreator, props, "bypasses_shield", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(addTag(mcreator, damageTypeTags, "is_drowning", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(addTag(mcreator, damageTypeTags, "is_explosion", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(addTag(mcreator, damageTypeTags, "is_fall", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(addTag(mcreator, damageTypeTags, "is_fire", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(addTag(mcreator, damageTypeTags, "is_freezing", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(addTag(mcreator, damageTypeTags, "is_projectile", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(addTag(mcreator, damageTypeTags, "bypasses_armor", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(addTag(mcreator, damageTypeTags, "bypasses_cooldown", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(addTag(mcreator, damageTypeTags, "bypasses_effects", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(
+				addTag(mcreator, damageTypeTags, "bypasses_enchantments", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(addTag(mcreator, damageTypeTags, "bypasses_shield", "minecraft", TagType.DAMAGE_TYPES, false));
 
 		ok.addActionListener(e -> {
 			dialog.setCursor(new Cursor(Cursor.WAIT_CURSOR));
@@ -123,6 +136,12 @@ public class AddCommonTagsDialog {
 		dialog.setSize(740, 420);
 		dialog.setLocationRelativeTo(mcreator);
 		dialog.setVisible(true);
+	}
+
+	private static JScrollPane makePage(JPanel panel) {
+		JScrollPane page = new JScrollPane(PanelUtils.pullElementUp(panel));
+		page.getVerticalScrollBar().setUnitIncrement(10);
+		return page;
 	}
 
 	private static Consumer<Boolean> addTag(MCreator mcreator, JPanel panel, String name, String namespace,

@@ -38,7 +38,6 @@ import net.mcreator.ui.dialogs.AddCommonTagsDialog;
 import net.mcreator.ui.dialogs.NewTagDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.minecraft.*;
 import net.mcreator.workspace.elements.TagElement;
@@ -96,6 +95,12 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		listFieldFunctions.setEnabled(false);
 		listFieldDamageTypes.setEnabled(false);
 
+		listFieldBlocksItems.setOpaque(false);
+		listFieldEntities.setOpaque(false);
+		listFieldBiomes.setOpaque(false);
+		listFieldFunctions.setOpaque(false);
+		listFieldDamageTypes.setOpaque(false);
+
 		elements = new JTable(new DefaultTableModel(
 				new Object[] { L10N.t("workspace.tags.tag_type"), L10N.t("workspace.tags.tag_namespace"),
 						L10N.t("workspace.tags.tag_name"), L10N.t("workspace.tags.tag_elements") }, 0) {
@@ -118,47 +123,56 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 			}
 
 			@Override public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+				JComponent retval = (JComponent) super.prepareRenderer(renderer, row, column);
+
 				if (column == 3) {
 					// Calculate how many elements can fit in the cell (assuming 31px per element which is true for ITEMS and BLOCKS)
 					int visibleCount = (int) Math.ceil(elements.getColumnModel().getColumn(3).getWidth() / 31.0);
 					TagElement tagElement = tagElementForRow(row);
 					Stream<String> entries = workspacePanel.getMCreator().getWorkspace().getTagElements()
 							.get(tagElement).stream().limit(visibleCount);
-					switch (tagElement.type()) {
-					case ITEMS, BLOCKS -> {
-						listFieldBlocksItems.setListElements(entries.map(
-								e -> (MItemBlock) TagElement.entryToMappableElement(
-										workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
-						return listFieldBlocksItems;
-					}
-					case ENTITIES -> {
-						listFieldEntities.setListElements(entries.map(
-								e -> (EntityEntry) TagElement.entryToMappableElement(
-										workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
-						return listFieldEntities;
-					}
-					case BIOMES -> {
-						listFieldBiomes.setListElements(entries.map(e -> (BiomeEntry) TagElement.entryToMappableElement(
-								workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
-						return listFieldBiomes;
-					}
-					case FUNCTIONS -> {
-						listFieldFunctions.setListElements(entries.map(
-								e -> (NonMappableElement) TagElement.entryToMappableElement(
-										workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
-						return listFieldFunctions;
-					}
-					case DAMAGE_TYPES -> {
-						listFieldDamageTypes.setListElements(entries.map(
-								e -> (DamageTypeEntry) TagElement.entryToMappableElement(
-										workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e)).toList());
-						return listFieldDamageTypes;
-					}
-					}
+					JItemListField<?> listField = switch (tagElement.type()) {
+						case ITEMS, BLOCKS -> {
+							listFieldBlocksItems.setListElements(entries.map(
+											e -> (MItemBlock) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldBlocksItems;
+						}
+						case ENTITIES -> {
+							listFieldEntities.setListElements(entries.map(
+											e -> (EntityEntry) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldEntities;
+						}
+						case BIOMES -> {
+							listFieldBiomes.setListElements(entries.map(
+											e -> (BiomeEntry) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldBiomes;
+						}
+						case FUNCTIONS -> {
+							listFieldFunctions.setListElements(entries.map(
+											e -> (NonMappableElement) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldFunctions;
+						}
+						case DAMAGE_TYPES -> {
+							listFieldDamageTypes.setListElements(entries.map(
+											e -> (DamageTypeEntry) TagElement.entryToMappableElement(
+													workspacePanel.getMCreator().getWorkspace(), tagElement.type(), e))
+									.toList());
+							yield listFieldDamageTypes;
+						}
+					};
+					listField.setBorder(retval.getBorder());
+					return listField;
 				}
 
 				try {
-					Component retval = super.prepareRenderer(renderer, row, column);
 					if (column == 0) {
 						TagType tagType = (TagType) elements.getValueAt(row, 0);
 						retval.setForeground(tagType.getColor().brighter());
@@ -200,9 +214,6 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 		JScrollPane sp = new JScrollPane(elements);
 		sp.setBackground(Theme.current().getBackgroundColor());
 		sp.getViewport().setOpaque(false);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 
 		sp.setColumnHeaderView(null);
 
@@ -303,8 +314,9 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 
 		for (Map.Entry<TagElement, ArrayList<String>> tag : workspacePanel.getMCreator().getWorkspace().getTagElements()
 				.entrySet()) {
-			model.addRow(new Object[] { tag.getKey().type(), tag.getKey().getNamespace(), tag.getKey().getName(),
-					tag.getValue() });
+			model.addRow(
+					new Object[] { tag.getKey().type(), tag.getKey().getMCreatorNamespace(), tag.getKey().getName(),
+							tag.getValue() });
 		}
 		refilterElements();
 
@@ -337,6 +349,8 @@ public class WorkspacePanelTags extends AbstractWorkspacePanel {
 				this.listField.disableItemCentering();
 				this.listField.setWarnOnRemoveAll(true);
 				this.listField.setEnabled(false);
+				this.listField.setOpaque(false);
+				this.listField.setBorder(UIManager.getBorder("Table.focusSelectedCellHighlightBorder"));
 				// Slight delay before enabling so initial click on the row doesn't trigger button actions
 				timer = new Timer(250, e -> listField.setEnabled(true));
 				timer.start();

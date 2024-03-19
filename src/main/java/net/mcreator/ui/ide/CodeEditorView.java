@@ -33,12 +33,11 @@ import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
 import net.mcreator.ui.ide.autocomplete.StringCompletitionProvider;
+import net.mcreator.ui.ide.debug.BreakpointHandler;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.FileIcons;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
-import net.mcreator.ui.laf.SlickTreeUI;
 import net.mcreator.ui.laf.renderer.AstTreeCellRendererCustom;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.ViewBase;
@@ -69,8 +68,6 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
-import javax.swing.plaf.basic.BasicSplitPaneDivider;
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import javax.swing.text.BadLocationException;
 import java.awt.*;
 import java.awt.event.*;
@@ -94,7 +91,9 @@ public class CodeEditorView extends ViewBase {
 	private AbstractSourceTree tree;
 	public ChangeListener cl;
 
-	public RSyntaxTextArea te = new RSyntaxTextArea() {
+	private final RTextScrollPane sp;
+
+	public final RSyntaxTextArea te = new RSyntaxTextArea() {
 		@Override public void setCursor(Cursor c) {
 			if (jumpToMode)
 				return;
@@ -122,7 +121,9 @@ public class CodeEditorView extends ViewBase {
 
 	@Nullable private ModElement fileOwner = null;
 
-	private final JPanel rightDummy = new JPanel();
+	@Nullable private JavaParser parser = null;
+
+	@Nullable private BreakpointHandler breakpointHandler = null;
 
 	public CodeEditorView(MCreator fa, File fs) {
 		this(fa, FileIO.readFileToString(fs), fs.getName(), fs, false);
@@ -171,52 +172,23 @@ public class CodeEditorView extends ViewBase {
 
 		ToolTipManager.sharedInstance().registerComponent(te);
 
-		RTextScrollPane sp = new RTextScrollPane(te, PreferencesManager.PREFERENCES.ide.lineNumbers.get());
+		sp = new RTextScrollPane(te, PreferencesManager.PREFERENCES.ide.lineNumbers.get());
 
 		RSyntaxTextAreaStyler.style(te, sp, PreferencesManager.PREFERENCES.ide.fontSize.get());
 
 		sp.setFoldIndicatorEnabled(true);
 
-		sp.getGutter().setFoldBackground(Theme.current().getBackgroundColor());
-		sp.getGutter().setBorderColor(Theme.current().getBackgroundColor());
-		sp.getGutter().setBackground(Theme.current().getBackgroundColor());
+		sp.getGutter().setFoldBackground(getBackground());
+		sp.getGutter().setBorderColor(getBackground());
 
-		sp.getGutter().setBookmarkingEnabled(true);
-		sp.setIconRowHeaderEnabled(false);
+		sp.setIconRowHeaderEnabled(true);
 
-		sp.setBackground(Theme.current().getBackgroundColor());
+		sp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
+		sp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 		sp.setBorder(null);
 
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
-		sp.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), sp.getHorizontalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
-		sp.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
-
-		JPanel cornerDummy1 = new JPanel();
-		cornerDummy1.setBackground(Theme.current().getBackgroundColor());
-		sp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy1);
-
-		JPanel cornerDummy2 = new JPanel();
-		cornerDummy2.setBackground(Theme.current().getBackgroundColor());
-		sp.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy2);
-
-		JPanel cornerDummy12 = new JPanel();
-		cornerDummy12.setBackground(Theme.current().getBackgroundColor());
-		treeSP.setCorner(JScrollPane.LOWER_RIGHT_CORNER, cornerDummy12);
-
-		JPanel cornerDummy22 = new JPanel();
-		cornerDummy22.setBackground(Theme.current().getBackgroundColor());
-		treeSP.setCorner(JScrollPane.LOWER_LEFT_CORNER, cornerDummy22);
-
-		treeSP.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), treeSP.getVerticalScrollBar()));
-		treeSP.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), treeSP.getHorizontalScrollBar()));
-		treeSP.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
-		treeSP.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
-
+		treeSP.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
+		treeSP.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
 		treeSP.setBorder(null);
 
 		te.getDocument().addDocumentListener(new DocumentListener() {
@@ -243,7 +215,7 @@ public class CodeEditorView extends ViewBase {
 
 		sp.setOpaque(false);
 
-		spne.setRightComponent(rightDummy);
+		spne.setRightComponent(new JPanel());
 
 		JPanel cp = new JPanel(new BorderLayout());
 		cp.setBackground(Theme.current().getBackgroundColor());
@@ -258,31 +230,12 @@ public class CodeEditorView extends ViewBase {
 
 		spne.setLeftComponent(cp);
 		spne.setContinuousLayout(true);
-
-		spne.setUI(new BasicSplitPaneUI() {
-			@Override public BasicSplitPaneDivider createDefaultDivider() {
-				return new BasicSplitPaneDivider(this) {
-					@Override public void setBorder(Border b) {
-					}
-
-					@Override public void paint(Graphics g) {
-						g.setColor(Theme.current().getBackgroundColor());
-						g.fillRect(0, 0, getSize().width, getSize().height);
-						super.paint(g);
-					}
-				};
-			}
-		});
-
 		spne.setBorder(null);
 
-		JPanel bars = new JPanel(new BorderLayout());
-
-		ro.setBackground(new Color(0x3C3939));
-		ComponentUtils.deriveFont(ro, 13);
+		JPanel bars = new JPanel(new BorderLayout(2, 2));
+		ComponentUtils.deriveFont(ro, 12);
 		ro.setOpaque(true);
-		ro.setForeground(new Color(0xE0E0E0));
-		Border margin = new EmptyBorder(3, 3, 3, 3);
+		Border margin = new EmptyBorder(3, 5, 3, 3);
 		ro.setBorder(new CompoundBorder(ro.getBorder(), margin));
 		ro.setVisible(false);
 
@@ -317,7 +270,7 @@ public class CodeEditorView extends ViewBase {
 		add("Center", spne);
 		setBorder(null);
 
-		if (!readOnly)
+		if (!readOnly) {
 			KeyStrokes.registerKeyStroke(
 					KeyStroke.getKeyStroke(KeyEvent.VK_B, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), te,
 					new AbstractAction() {
@@ -331,7 +284,6 @@ public class CodeEditorView extends ViewBase {
 						}
 					});
 
-		if (!readOnly)
 			KeyStrokes.registerKeyStroke(
 					KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), te,
 					new AbstractAction() {
@@ -344,7 +296,6 @@ public class CodeEditorView extends ViewBase {
 						}
 					});
 
-		if (!readOnly)
 			KeyStrokes.registerKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_M,
 							Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, false), te,
 					new AbstractAction() {
@@ -357,6 +308,20 @@ public class CodeEditorView extends ViewBase {
 										L10N.t("ide.tips.save_and_launch"));
 						}
 					});
+
+			KeyStrokes.registerKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_D,
+							Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, false), te,
+					new AbstractAction() {
+						@Override public void actionPerformed(ActionEvent actionEvent) {
+							disableJumpToMode();
+							saveCode();
+							fa.actionRegistry.debugClient.doAction();
+							if (CodeEditorView.this.mouseEvent != null)
+								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
+										L10N.t("ide.tips.save_and_debug"));
+						}
+					});
+		}
 
 		spne.setResizeWeight(1);
 
@@ -419,7 +384,9 @@ public class CodeEditorView extends ViewBase {
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
 
-			JavaParser parser = jls.getParser(te);
+			this.parser = jls.getParser(te);
+
+			this.breakpointHandler = new BreakpointHandler(this, sp, parser);
 
 			te.addKeyListener(new KeyAdapter() {
 
@@ -535,9 +502,8 @@ public class CodeEditorView extends ViewBase {
 		SwingUtilities.invokeLater(this::loadSourceTree);
 	}
 
-	private void setCustomNotice(String notice, Color color) {
+	private void setCustomNotice(String notice) {
 		ro.setText(notice);
-		ro.setBackground(color);
 		ro.setVisible(true);
 	}
 
@@ -563,15 +529,15 @@ public class CodeEditorView extends ViewBase {
 
 		if (tree != null) {
 			tree.setCellRenderer(new AstTreeCellRendererCustom());
+			tree.setOpaque(false);
 			tree.listenTo(te);
 			tree.setRowHeight(18);
-			tree.setUI(new SlickTreeUI());
 			treeSP.setViewportView(tree);
 			treeSP.revalidate();
 			spne.setRightComponent(treeSP);
 			spne.setDividerLocation(0.8);
 		} else {
-			spne.setRightComponent(rightDummy);
+			spne.setRightComponent(new JPanel());
 		}
 	}
 
@@ -643,7 +609,7 @@ public class CodeEditorView extends ViewBase {
 		this.fileOwner = fileOwner;
 		boolean codeLocked = this.fileOwner.isCodeLocked();
 		if (!codeLocked) {
-			setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()), new Color(0x31332F));
+			setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()));
 		}
 	}
 
@@ -661,8 +627,7 @@ public class CodeEditorView extends ViewBase {
 					mcreator.getWorkspace().markDirty();
 					ro.setVisible(false);
 				} else {
-					setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()),
-							new Color(0x31332F));
+					setCustomNotice(L10N.t("ide.warnings.created_from_ui", this.fileOwner.getName()));
 				}
 			}
 		}
@@ -728,7 +693,7 @@ public class CodeEditorView extends ViewBase {
 
 	public void jumpToLine(int linenum) {
 		new Thread(() -> {
-			SwingUtilities.invokeLater(() -> te.requestFocus());
+			SwingUtilities.invokeLater(te::requestFocus);
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException ignored) {
@@ -741,6 +706,14 @@ public class CodeEditorView extends ViewBase {
 				}
 			});
 		}, "JumpToLine").start();
+	}
+
+	@Nullable public JavaParser getParser() {
+		return parser;
+	}
+
+	@Nullable public BreakpointHandler getBreakpointHandler() {
+		return breakpointHandler;
 	}
 
 }

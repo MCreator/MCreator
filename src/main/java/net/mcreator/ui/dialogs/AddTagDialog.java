@@ -40,7 +40,7 @@ public class AddTagDialog {
 		VComboBox<String> tagName = new VComboBox<>();
 
 		wrap.setBorder(BorderFactory.createMatteBorder(0, 5, 0, 0, tagType.getColor()));
-		tagName.setValidator(new ResourceLocationValidator<>(L10N.t("modelement.tag"), tagName, true));
+		tagName.setValidator(new ResourceLocationValidator<>(L10N.t("workspace.tags.tag"), tagName, true));
 
 		for (TagElement tagElement : mcreator.getWorkspace().getTagElements().keySet()) {
 			if (tagElement.type() == tagType) {
@@ -61,9 +61,13 @@ public class AddTagDialog {
 		int result = JOptionPane.showConfirmDialog(parent, PanelUtils.northAndCenterElement(
 				L10N.label("dialog.item_selector.enter_tag_name." + tagType.name().toLowerCase(Locale.ENGLISH)), wrap,
 				5, 5), L10N.t("dialog.item_selector.use_tag"), JOptionPane.OK_CANCEL_OPTION);
-		if (result == JOptionPane.OK_OPTION) {
+		if (result == JOptionPane.OK_OPTION && tagName.getSelectedItem() != null) {
 			if (tagName.getValidationStatus().getValidationResultType() != Validator.ValidationResultType.ERROR) {
-				return tagName.getSelectedItem();
+				if (!tagName.getSelectedItem().contains(":")) {
+					return "minecraft:" + tagName.getSelectedItem();
+				} else {
+					return tagName.getSelectedItem();
+				}
 			} else {
 				JOptionPane.showMessageDialog(parent, tagName.getValidationStatus().getMessage(),
 						L10N.t("dialog.item_selector.error_invalid_tag_name_title"), JOptionPane.ERROR_MESSAGE);

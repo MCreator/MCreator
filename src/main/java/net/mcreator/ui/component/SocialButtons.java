@@ -41,6 +41,7 @@ public class SocialButtons extends JPanel {
 		add(createButton("gh", "https://github.com/MCreator/MCreator"));
 		add(new JEmptyBox(2, 2));
 		add(createButton("fb", "https://www.facebook.com/PyloDEV"));
+		setOpaque(false);
 	}
 
 	private JLabel createButton(String icon, String url) {

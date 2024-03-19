@@ -40,10 +40,6 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 		super(MobEffectCategory.<#if data.isBad>HARMFUL<#elseif data.isBenefitical>BENEFICIAL<#else>NEUTRAL</#if>, ${data.color.getRGB()});
 	}
 
-	@Override public String getDescriptionId() {
-		return "effect.${modid}.${registryname}";
-	}
-
 	<#if hasProcedure(data.onStarted)>
 		<#if data.isInstant>
 			@Override public void applyInstantenousEffect(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {

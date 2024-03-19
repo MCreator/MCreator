@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.imageeditor;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.dialogs.TextureSelectorDialog;
@@ -42,7 +43,6 @@ public class NewImageDialog extends MCreatorDialog {
 			L10N.t("dialog.imageeditor.no_layer") };
 
 	private ResourcePointer selection;
-	private final List<ResourcePointer> templatesSorted;
 
 	public NewImageDialog(MCreator window) {
 		this(window, new ImageMakerView(window));
@@ -51,7 +51,7 @@ public class NewImageDialog extends MCreatorDialog {
 	public NewImageDialog(MCreator window, ImageMakerView imageMakerView) {
 		super(window, L10N.t("dialog.imageeditor.new_image_title"), true);
 
-		templatesSorted = new ArrayList<>(ImageMakerTexturesCache.CACHE.keySet());
+		List<ResourcePointer> templatesSorted = new ArrayList<>(ImageMakerTexturesCache.CACHE.keySet());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
 		selection = templatesSorted.get(0);
 		TextureSelectorDialog templateChooser = new TextureSelectorDialog(templatesSorted, window);
@@ -59,20 +59,20 @@ public class NewImageDialog extends MCreatorDialog {
 		JPanel settings = new JPanel(new GridBagLayout());
 		JPanel controls = new JPanel(new BorderLayout());
 
-		JPanel properties = new JPanel(new GridLayout(1, 2, 5, 5));
+		JPanel properties = new JPanel(new GridLayout(1, 2, 5, 2));
 		JPanel specialSettings = new JPanel(new CardLayout());
-		JPanel constraints = new JPanel(new GridLayout(2, 2, 5, 5));
+		JPanel constraints = new JPanel(new GridLayout(2, 2, 5, 2));
 
 		//Basic settings
 		JComboBox<String> layerType = new JComboBox<>(layerTypes);
 
 		//Filler settings
-		JPanel colorSettings = new JPanel(new GridLayout(1, 2, 5, 5));
+		JPanel colorSettings = new JPanel(new GridLayout(1, 2, 5, 2));
 		JColor colorChoser = new JColor(window, false, true);
 		colorSettings.add(L10N.label("dialog.imageeditor.base_color"));
 		colorSettings.add(colorChoser);
 
-		JPanel templateSettings = new JPanel(new GridLayout(1, 2, 5, 5));
+		JPanel templateSettings = new JPanel(new GridLayout(1, 2, 5, 2));
 		JButton templateChooserButton = new JButton(
 				new ImageIcon(ImageUtils.resize(ImageMakerTexturesCache.CACHE.get(selection).getImage(), 32)));
 		templateChooserButton.setMargin(new Insets(0, 0, 0, 0));
@@ -165,8 +165,8 @@ public class NewImageDialog extends MCreatorDialog {
 
 		controls.add(cancel, BorderLayout.WEST);
 		controls.add(ok, BorderLayout.EAST);
-		add(PanelUtils.maxMargin(settings, 5, true, true, true, true), BorderLayout.CENTER);
-		add(PanelUtils.maxMargin(controls, 5, true, true, true, true), BorderLayout.SOUTH);
+		add(ComponentUtils.applyPadding(settings, 5, true, true, true, true), BorderLayout.CENTER);
+		add(ComponentUtils.applyPadding(controls, 5, true, true, true, true), BorderLayout.SOUTH);
 		setSize(500, 200);
 		setResizable(false);
 		setLocationRelativeTo(window);
