@@ -36,6 +36,7 @@ import net.mcreator.ui.component.ImagePanel;
 import net.mcreator.ui.component.JAdaptiveSplitPane;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SquareLoaderIcon;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
@@ -220,7 +221,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"),
-				PanelUtils.maxMargin(mv, 5, true, true, true, true), "Workspace", true, false);
+				ComponentUtils.applyPadding(mv, 5, true, true, true, true), "Workspace", true, false);
 		mcreatorTabs.addTab(workspaceTab);
 		pon.add("West", workspaceTab);
 

@@ -124,7 +124,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		page1group.addValidationElement(commandName);
 
 		addPage(PanelUtils.northAndCenterElement(PanelUtils.join(FlowLayout.LEFT, enderpanel),
-				PanelUtils.maxMargin(args, 10, true, true, true, true)));
+				ComponentUtils.applyPadding(args, 10, true, true, true, true)));
 
 		if (!isEditingMode()) {
 			commandName.setText(modElement.getName().toLowerCase(Locale.ENGLISH));
