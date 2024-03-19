@@ -23,6 +23,7 @@ import net.mcreator.minecraft.RegistryNameFixer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.ArmorMakerTexturesCache;
 import net.mcreator.ui.init.L10N;
@@ -109,7 +110,7 @@ public class ArmorImageMakerView extends ViewBase {
 		save.setBackground(Theme.current().getInterfaceAccentColor());
 		save.setForeground(Theme.current().getSecondAltBackgroundColor());
 		save.setFocusPainted(false);
-		add("North", PanelUtils.maxMargin(
+		add("North", ComponentUtils.applyPadding(
 				PanelUtils.westAndEastElement(new JEmptyBox(0, 0), PanelUtils.centerInPanelPadding(save, 0, 0)), 5,
 				true, true, false, true));
 		save.addActionListener(event -> {
