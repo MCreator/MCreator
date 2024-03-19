@@ -1101,8 +1101,6 @@ import java.util.stream.Collectors;
 					modName = JavaConventions.convertToValidClassName(modName);
 
 					ModElement duplicateModElement = new ModElement(mcreator.getWorkspace(), mu, modName);
-					duplicateModElement.setParentFolder(
-							Objects.requireNonNullElse(breadcrumb.getCurrentFolder(), currentFolder));
 
 					GeneratableElement generatableElementDuplicate = mcreator.getModElementManager()
 							.fromJSONtoGeneratableElement(mcreator.getModElementManager()
@@ -1140,6 +1138,10 @@ import java.util.stream.Collectors;
 
 						duplicateModElement.setCodeLock(true);
 					}
+
+					// specify the folder of the mod element
+					duplicateModElement.setParentFolder(
+							Objects.requireNonNullElse(breadcrumb.getCurrentFolder(), currentFolder));
 
 					mcreator.getWorkspace().addModElement(duplicateModElement);
 
