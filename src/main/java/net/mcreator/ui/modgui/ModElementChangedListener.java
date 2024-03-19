@@ -112,13 +112,14 @@ public interface ModElementChangedListener
 	}
 
 	@Override default void actionPerformed(ActionEvent e) {
-		// if this is a JComboBox, we check if any modifier keys or mouse buttons are currently used
-		if (e.getSource() instanceof JComboBox box && e.getModifiers() != 0) {
-			if (box instanceof SearchableComboBox<?> scb) {
-				if (!scb.isFiltering())
+		if (e.getSource() instanceof JComboBox<?> box) {
+			if (e.getModifiers() != 0) { // we check if the change comes from user interaction with UI
+				if (box instanceof SearchableComboBox<?> scb) {
+					if (!scb.isUpdating())
+						modElementChanged();
+				} else {
 					modElementChanged();
-			} else {
-				modElementChanged();
+				}
 			}
 		} else {
 			modElementChanged();

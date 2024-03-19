@@ -83,6 +83,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 
 	public final void refreshList() {
 		depsMap.clear();
+		procedures.setUpdating(true);
 		procedures.removeAllItems();
 
 		procedures.addItem(new ProcedureEntry(defaultName, null));
@@ -120,6 +121,7 @@ public abstract class AbstractProcedureSelector extends JPanel implements IValid
 					procedures.addItem(new ProcedureEntry(mod.getName(), returnTypeCurrent, !missing));
 			}
 		}
+		procedures.setUpdating(false);
 	}
 
 	public void refreshListKeepSelected() {
