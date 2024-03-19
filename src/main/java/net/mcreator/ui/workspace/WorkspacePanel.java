@@ -1078,7 +1078,7 @@ import java.util.stream.Collectors;
 
 			if (generatableElementOriginal != null && !(generatableElementOriginal instanceof CustomElement)) {
 				WorkspaceFolderBreadcrumb breadcrumb = new WorkspaceFolderBreadcrumb(mcreator, 3, true);
-				breadcrumb.reloadPath(mcreator.mv.currentFolder, FolderElement.class);
+				breadcrumb.reloadPath(currentFolder, FolderElement.class);
 				breadcrumb.setSelectionListener((element, component, event) -> {
 					if (element instanceof FolderElement fe)
 						breadcrumb.reloadPath(fe, FolderElement.class);
@@ -1101,8 +1101,8 @@ import java.util.stream.Collectors;
 					modName = JavaConventions.convertToValidClassName(modName);
 
 					ModElement duplicateModElement = new ModElement(mcreator.getWorkspace(), mu, modName);
-					duplicateModElement.setParentFolder(Objects.requireNonNullElse(breadcrumb.getCurrentFolder(),
-							mcreator.mv.currentFolder));
+					duplicateModElement.setParentFolder(
+							Objects.requireNonNullElse(breadcrumb.getCurrentFolder(), currentFolder));
 
 					GeneratableElement generatableElementDuplicate = mcreator.getModElementManager()
 							.fromJSONtoGeneratableElement(mcreator.getModElementManager()
@@ -1140,10 +1140,6 @@ import java.util.stream.Collectors;
 
 						duplicateModElement.setCodeLock(true);
 					}
-
-					// if we are not in the root folder, specify the folder of the mod element
-					if (!currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
-						duplicateModElement.setParentFolder(currentFolder);
 
 					mcreator.getWorkspace().addModElement(duplicateModElement);
 
