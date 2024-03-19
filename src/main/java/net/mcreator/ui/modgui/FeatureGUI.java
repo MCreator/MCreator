@@ -114,8 +114,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		properties.setOpaque(false);
 
-		skipPlacement.addActionListener(e -> refreshPlacementSettings());
-		refreshPlacementSettings();
+		skipPlacement.addActionListener(e -> refreshPlacementSettings(true));
+		refreshPlacementSettings(false);
 
 		JComponent propertiesAndCondition = PanelUtils.northAndCenterElement(properties,
 				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition), 0, 2);
@@ -172,6 +172,11 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToFeature.getCompileNotes();
 
 		SwingUtilities.invokeLater(() -> {
+			if (!skipPlacement.isSelected() && blocklyToFeature.isPlacementEmpty()) {
+				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("blockly.warnings.features.missing_placement")));
+			}
+
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
 		});
@@ -187,9 +192,11 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		generateCondition.refreshListKeepSelected();
 	}
 
-	private void refreshPlacementSettings() {
+	private void refreshPlacementSettings(boolean updateCompileNotes) {
 		generationStep.setEnabled(!skipPlacement.isSelected());
 		restrictionBiomes.setEnabled(!skipPlacement.isSelected());
+		if (updateCompileNotes)
+			regenerateFeature();
 	}
 
 	@Override protected void openInEditingMode(Feature feature) {
@@ -197,7 +204,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		generationStep.setSelectedItem(feature.generationStep);
 		restrictionBiomes.setListElements(feature.restrictionBiomes);
 		generateCondition.setSelectedProcedure(feature.generateCondition);
-		refreshPlacementSettings();
+		refreshPlacementSettings(false);
 
 		blocklyPanel.setXMLDataOnly(feature.featurexml);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
