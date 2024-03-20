@@ -37,6 +37,7 @@ import net.mcreator.util.image.ImageUtils;
 import org.apache.commons.io.FilenameUtils;
 
 import javax.swing.*;
+import javax.swing.plaf.metal.MetalTabbedPaneUI;
 import java.awt.*;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;

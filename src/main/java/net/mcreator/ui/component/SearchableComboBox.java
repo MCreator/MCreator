@@ -26,7 +26,10 @@ import javax.swing.*;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +41,7 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 
 	private List<T> entries = new ArrayList<>();
 
-	private boolean dropDownVisible = false, updating = false;
+	private boolean dropDownVisible = false;
 
 	public SearchableComboBox(T[] data) {
 		super(data);
@@ -103,20 +106,13 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 		this.entries = new ArrayList<>();
 	}
 
-	@Override protected void fireItemStateChanged(ItemEvent e) {
-		if (!updating)
-			super.fireItemStateChanged(e);
-	}
-
 	private void comboFilter() {
 		Object selected = super.getSelectedItem();
-		updating = true;
 
 		super.removeAllItems();
 		entries.forEach(super::addItem);
 
 		if (searchTerm.isEmpty() || !canSearch()) {
-			updating = false;
 			super.setSelectedItem(selected);
 		} else {
 			List<T> entriesFiltered = new ArrayList<>();
@@ -133,22 +129,12 @@ public class SearchableComboBox<T> extends VComboBox<T> implements KeyListener, 
 				super.removeAllItems();
 				entriesFiltered.forEach(super::addItem);
 			}
-
-			updating = false;
 		}
 	}
 
 	private void clearSearch() {
 		searchTerm = "";
 		comboFilter();
-	}
-
-	public boolean isUpdating() {
-		return updating;
-	}
-
-	public void setUpdating(boolean updating) {
-		this.updating = updating;
 	}
 
 	@Override public void focusGained(FocusEvent e) {
