@@ -63,22 +63,6 @@ public class PanelUtils {
 		return p;
 	}
 
-	public static JPanel maxMargin(Component what, int margin, boolean top, boolean left, boolean bottom,
-			boolean right) {
-		JPanel cont = new JPanel(new BorderLayout(margin, margin));
-		cont.setOpaque(false);
-		cont.add("Center", what);
-		if (left)
-			cont.add("West", new JLabel());
-		if (right)
-			cont.add("East", new JLabel());
-		if (top)
-			cont.add("North", new JLabel());
-		if (bottom)
-			cont.add("South", new JLabel());
-		return cont;
-	}
-
 	public static JComponent northAndCenterElement(Component top, Component center) {
 		JPanel p = new JPanel(new BorderLayout());
 		p.setOpaque(false);

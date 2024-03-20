@@ -9,7 +9,6 @@
   "has_ceiling": ${data.worldGenType == "Nether like gen"},
   "coordinate_scale": 1,
   "ambient_light": <#if data.isDark>0<#else>0.5</#if>,
-  "logical_height": 256,
   "infiniburn": "#minecraft:infiniburn_overworld",
   <#if data.worldGenType == "Normal world gen">
   "min_y": -64,

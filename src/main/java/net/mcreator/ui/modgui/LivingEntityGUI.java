@@ -790,7 +790,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		blocklyPanel.setPreferredSize(new Dimension(150, 150));
 
-		pane3.add("Center", PanelUtils.maxMargin(aipan, 10, true, true, true, true));
+		pane3.add("Center", ComponentUtils.applyPadding(aipan, 10, true, true, true, true));
 
 		breedable.setOpaque(false);
 		tameable.setOpaque(false);
