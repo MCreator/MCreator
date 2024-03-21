@@ -27,6 +27,7 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorTabs;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.component.JEmptyBox;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ProgressDialog;
 import net.mcreator.ui.dialogs.file.FileDialogs;
@@ -88,7 +89,7 @@ public class AnimationMakerView extends ViewBase {
 		JPanel prvmg = new JPanel(new BorderLayout());
 		prvmg.setOpaque(false);
 
-		JScrollPane sp = new JScrollPane(PanelUtils.maxMargin(prv, 0, false, false, false, false));
+		JScrollPane sp = new JScrollPane(ComponentUtils.applyPadding(prv, 0, false, false, false, false));
 		sp.setCursor(new Cursor(Cursor.CROSSHAIR_CURSOR));
 		sp.getViewport().setOpaque(false);
 		sp.setOpaque(false);
@@ -332,7 +333,7 @@ public class AnimationMakerView extends ViewBase {
 		save.setBackground(Theme.current().getInterfaceAccentColor());
 		save.setForeground(Theme.current().getSecondAltBackgroundColor());
 		save.setFocusPainted(false);
-		add("North", PanelUtils.maxMargin(
+		add("North", ComponentUtils.applyPadding(
 				PanelUtils.westAndEastElement(new JEmptyBox(0, 0), PanelUtils.centerInPanelPadding(save, 0, 0)), 5,
 				true, true, false, true));
 		save.addActionListener(event -> use());
