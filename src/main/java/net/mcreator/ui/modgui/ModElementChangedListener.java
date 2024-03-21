@@ -112,12 +112,7 @@ public interface ModElementChangedListener
 	}
 
 	@Override default void actionPerformed(ActionEvent e) {
-		if (e.getSource() instanceof JComboBox) {
-			if (e.getModifiers() != 0)
-				modElementChanged();
-		} else {
-			modElementChanged();
-		}
+		modElementChanged();
 	}
 
 	@Override default void itemStateChanged(ItemEvent e) {

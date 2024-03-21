@@ -30,12 +30,19 @@ import java.awt.event.MouseEvent;
 
 public class ComponentUtils {
 
-	public static JComponent setForeground(JComponent component, Color color) {
+	public static <T extends JComponent> T applyPadding(T what, int margin, boolean top, boolean left, boolean bottom,
+			boolean right) {
+		what.setBorder(BorderFactory.createEmptyBorder(top ? margin : 0, left ? margin : 0, bottom ? margin : 0,
+				right ? margin : 0));
+		return what;
+	}
+
+	public static <T extends JComponent> T setForeground(T component, Color color) {
 		component.setForeground(color);
 		return component;
 	}
 
-	public static JComponent deriveFont(JComponent component, float param) {
+	public static <T extends JComponent> T deriveFont(T component, float param) {
 		Font font = component.getFont();
 		if (font == null)
 			font = Theme.current().getFont();
