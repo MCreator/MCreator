@@ -499,7 +499,7 @@ public class TestWorkspaceDataProvider {
 			fluid.generateBucket = !_true;
 			fluid.bucketName = modElement.getName() + " Bucket";
 			fluid.textureBucket = emptyLists ? "" : "itest";
-			fluid.creativeTabs = tabs;
+			fluid.creativeTabs = emptyLists ? List.of() : tabs;
 			fluid.emptySound = !emptyLists ?
 					new Sound(modElement.getWorkspace(), "") :
 					new Sound(modElement.getWorkspace(),
@@ -656,7 +656,7 @@ public class TestWorkspaceDataProvider {
 			dimension.enableIgniter = true; // we always want it as it can be referenced in other tests
 			dimension.portalParticles = new Particle(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadAllParticles(modElement.getWorkspace())));
-			dimension.creativeTabs = tabs;
+			dimension.creativeTabs = emptyLists ? List.of() : tabs;
 			dimension.portalSound = new Sound(modElement.getWorkspace(),
 					getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 			dimension.biomesInDimension = new ArrayList<>();
@@ -774,7 +774,7 @@ public class TestWorkspaceDataProvider {
 			armor.bodyName = modElement.getName() + " appendix2";
 			armor.bootsName = modElement.getName() + " appendix3";
 			armor.leggingsName = modElement.getName() + " appendix4";
-			armor.creativeTabs = tabs;
+			armor.creativeTabs = emptyLists ? List.of() : tabs;
 			armor.armorTextureFile = "armorTexture";
 			armor.maxDamage = 12;
 			armor.damageValueHelmet = 3;
@@ -797,7 +797,7 @@ public class TestWorkspaceDataProvider {
 			Plant plant = new Plant(modElement);
 			plant.name = modElement.getName();
 			plant.plantType = new String[] { "normal", "growapable", "double", "normal" }[valueIndex];
-			plant.creativeTabs = tabs;
+			plant.creativeTabs = emptyLists ? List.of() : tabs;
 			plant.texture = "test";
 			plant.textureBottom = "test2";
 			plant.itemTexture = emptyLists ? "" : "itest";
@@ -920,7 +920,7 @@ public class TestWorkspaceDataProvider {
 			Item item = new Item(modElement);
 			item.name = modElement.getName();
 			item.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
-			item.creativeTabs = tabs;
+			item.creativeTabs = emptyLists ? List.of() : tabs;
 			item.stackSize = 52;
 			item.enchantability = 3;
 			item.useDuration = 8;
@@ -1105,7 +1105,7 @@ public class TestWorkspaceDataProvider {
 			block.hasGravity = _true;
 			block.useLootTableForDrops = !_true;
 			block.requiresCorrectTool = _true;
-			block.creativeTabs = tabs;
+			block.creativeTabs = emptyLists ? List.of() : tabs;
 			block.destroyTool = getRandomItem(random,
 					new String[] { "Not specified", "pickaxe", "axe", "shovel", "hoe" });
 			block.customDrop = new MItemBlock(modElement.getWorkspace(),
@@ -1312,7 +1312,7 @@ public class TestWorkspaceDataProvider {
 			musicDisc.name = modElement.getName();
 			musicDisc.rarity = getRandomString(random, Arrays.asList("COMMON", "UNCOMMON", "RARE", "EPIC"));
 			musicDisc.description = modElement.getName();
-			musicDisc.creativeTabs = tabs;
+			musicDisc.creativeTabs = emptyLists ? List.of() : tabs;
 			musicDisc.glowCondition = new LogicProcedure(emptyLists ? "condition1" : null, _true);
 			musicDisc.onRightClickedInAir = new Procedure("procedure1");
 			musicDisc.onRightClickedOnBlock = emptyLists ?
@@ -1539,7 +1539,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.spawnEggBaseColor = Color.red;
 		livingEntity.spawnEggDotColor = Color.green;
 		livingEntity.isBoss = _true;
-		livingEntity.creativeTabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
+		livingEntity.creativeTabs = emptyLists ? List.of() : ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		livingEntity.bossBarColor = getRandomItem(random,
 				new String[] { "PINK", "BLUE", "RED", "GREEN", "YELLOW", "PURPLE", "WHITE" });
@@ -1697,7 +1697,7 @@ public class TestWorkspaceDataProvider {
 			boolean _true, boolean emptyLists) {
 		Tool tool = new Tool(modElement);
 		tool.name = modElement.getName();
-		tool.creativeTabs = ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
+		tool.creativeTabs = emptyLists ? List.of() : ElementUtil.loadAllTabs(modElement.getWorkspace()).stream()
 				.map(e -> new TabEntry(modElement.getWorkspace(), e)).toList();
 		tool.toolType = toolType;
 		tool.harvestLevel = 3;
