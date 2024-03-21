@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.action.impl.gradle;
 
+import net.mcreator.gradle.GradleTaskFinishedListener;
 import net.mcreator.io.FileIO;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
@@ -107,7 +108,7 @@ public class RunServerAction extends GradleAction {
 														.getGradleTaskFor("run_client"));
 									}
 								}
-							}, null);
+							}, (GradleTaskFinishedListener) null);
 		} catch (Exception e) { // if something fails, we still need to free the gradle console
 			LOG.error("Failed to run server", e);
 			actionRegistry.getMCreator().getGradleConsole().markReady();

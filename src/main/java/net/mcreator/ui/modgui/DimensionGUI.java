@@ -65,6 +65,7 @@ import java.util.List;
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final VTextField igniterName = new VTextField(22);
+	private final JComboBox<String> igniterRarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 
 	private StringListProcedureSelector specialInformation;
 
@@ -233,7 +234,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel proper = new JPanel(new GridLayout(4, 2, 5, 2));
 		proper.setOpaque(false);
 
-		JPanel proper22 = new JPanel(new GridLayout(2, 2, 5, 2));
+		JPanel proper22 = new JPanel(new GridLayout(3, 2, 5, 2));
 		proper22.setOpaque(false);
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_particles"),
@@ -255,6 +256,9 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/gui_name"),
 				L10N.label("elementgui.dimension.portal_igniter_name")));
 		proper22.add(igniterName);
+
+		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		proper22.add(igniterRarity);
 
 		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
 				L10N.label("elementgui.dimension.portal_igniter_tabs")));
@@ -414,6 +418,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalSound.setSound(dimension.portalSound);
 		enableIgniter.setSelected(dimension.enableIgniter);
 		igniterName.setText(dimension.igniterName);
+		igniterRarity.setSelectedItem(dimension.igniterRarity);
 		specialInformation.setSelectedProcedure(dimension.specialInformation);
 		portalTexture.setTextureFromTextureName(dimension.portalTexture);
 		texture.setTextureFromTextureName(dimension.texture);
@@ -459,6 +464,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.portalFrame = portalFrame.getBlock();
 		dimension.enableIgniter = enableIgniter.isSelected();
 		dimension.igniterName = igniterName.getText();
+		dimension.igniterRarity = (String) igniterRarity.getSelectedItem();
 		dimension.specialInformation = specialInformation.getSelectedProcedure();
 		dimension.worldGenType = (String) worldGenType.getSelectedItem();
 		dimension.sleepResult = (String) sleepResult.getSelectedItem();

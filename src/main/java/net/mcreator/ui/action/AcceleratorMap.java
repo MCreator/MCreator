@@ -54,6 +54,9 @@ public class AcceleratorMap {
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.ALT_DOWN_MASK));
 		actionKeyStrokeMap.put(actionRegistry.runClient, KeyStroke.getKeyStroke(KeyEvent.VK_C,
 				Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.ALT_DOWN_MASK));
+		actionKeyStrokeMap.put(actionRegistry.debugClient, KeyStroke.getKeyStroke(KeyEvent.VK_C,
+				Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | KeyEvent.ALT_DOWN_MASK
+						| KeyEvent.SHIFT_DOWN_MASK));
 
 		actionKeyStrokeMap.put(actionRegistry.showConsoleTab, KeyStroke.getKeyStroke(KeyEvent.VK_C,
 				KeyEvent.SHIFT_DOWN_MASK | Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()));
