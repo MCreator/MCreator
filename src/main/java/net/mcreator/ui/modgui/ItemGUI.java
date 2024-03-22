@@ -510,8 +510,6 @@ public class ItemGUI extends ModElementGUI<Item> {
 		if (enableRanged.isSelected()) {
 			shootConstantly.setEnabled(true);
 			rangedItemChargesPower.setEnabled(!shootConstantly.isSelected());
-			if (shootConstantly.isSelected())
-				rangedItemChargesPower.setSelected(false);
 			projectile.setEnabled(true);
 			onRangedItemUsed.setEnabled(true);
 			rangedUseCondition.setEnabled(true);
