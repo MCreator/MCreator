@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a részecske forgásának gyorsulását.

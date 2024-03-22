@@ -1,0 +1,1 @@
+Jelöld be, hogy ezt a részecskét képes legyen ütközni a blokkokkal (például folyadékcsepegtetések vagy blokktörés részecskéi).
