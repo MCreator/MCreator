@@ -250,29 +250,20 @@ public class ${name}Item extends Item {
 			</#if>
 			<#if data.enableRanged && !data.shootConstantly>
 				if (!world.isClientSide() && entity instanceof ServerPlayer player) {
+					<#if data.rangedItemChargesPower>
+						float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
+						if (pullingPower < 0.1)
+							return;
+					</#if>
 					<#if hasProcedure(data.rangedUseCondition)>
 						double x = entity.getX();
 						double y = entity.getY();
 						double z = entity.getZ();
 						if (<@procedureOBJToConditionCode data.rangedUseCondition/>) {
-							<#if data.rangedItemChargesPower>
-								float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
-								if (pullingPower >= 0.1) {
-							</#if>
 							<@arrowShootCode/>
-							<#if data.rangedItemChargesPower>
-								}
-							</#if>
 						}
 					<#else>
-						<#if data.rangedItemChargesPower>
-							float pullingPower = BowItem.getPowerForTime(this.getUseDuration(itemstack) - time);
-							if (pullingPower >= 0.1) {
-						</#if>
 						<@arrowShootCode/>
-						<#if data.rangedItemChargesPower>
-							}
-						</#if>
 					</#if>
 				}
 			</#if>
