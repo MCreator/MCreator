@@ -20,6 +20,7 @@
 package net.mcreator.element.converter.v2024_1;
 
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.converter.IConverter;
 import net.mcreator.element.parts.TabEntry;
@@ -38,13 +39,12 @@ public class ItemsCreativeTabsConverter implements IConverter {
 	@Override
 	public GeneratableElement convert(Workspace workspace, GeneratableElement input, JsonElement jsonElementInput) {
 		try {
-			JsonElement tab = jsonElementInput.getAsJsonObject().getAsJsonObject("definition")
-					.get(input instanceof Dimension ? "igniterTab" : "creativeTab");
-			if (tab != null && !tab.getAsJsonObject().get("value").getAsString().equals("No creative tab entry")) {
+			JsonObject tab = jsonElementInput.getAsJsonObject().getAsJsonObject("definition")
+					.getAsJsonObject(input instanceof Dimension ? "igniterTab" : "creativeTab");
+			if (tab != null && !tab.get("value").getAsString().equals("No creative tab entry")) {
 				Field specialInformationField = input.getClass().getDeclaredField("creativeTabs");
 				specialInformationField.setAccessible(true);
-				specialInformationField.set(input, List.of(new TabEntry(workspace,
-						tab.getAsJsonObject().get("value").getAsString())));
+				specialInformationField.set(input, List.of(new TabEntry(workspace, tab.get("value").getAsString())));
 			}
 		} catch (Exception e) {
 			LOG.warn("Failed to convert creative tabs for " + input.getModElement().getName(), e);
