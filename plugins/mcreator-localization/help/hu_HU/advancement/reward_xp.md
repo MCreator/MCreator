@@ -1,0 +1,1 @@
+Ennyi tapasztalati pontot kap a játékos miután eléri az eredményt.
