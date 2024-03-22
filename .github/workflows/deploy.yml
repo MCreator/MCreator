@@ -13,6 +13,9 @@ jobs:
     name: Build and Export (all but MacOS)
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      contents: write
+      id-token: write
     outputs:
       mcr_version: ${{ steps.determineExportVersion.outputs.mcr_version }}
       mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
@@ -38,12 +41,33 @@ jobs:
           sudo apt-get install -y mkisofs nsis nsis-pluginapi
           wget https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip
           sudo unzip LockedList.zip -d /usr/share/nsis/
+      - uses: google-github-actions/auth@a6e2e39c0a0331da29f7fd2c2a20a427e8d3ad1f
+        name: Authenticate to Google Cloud
+        with:
+          workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ secrets.GC_PROJECT_ID }}
+      - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200
+        name: Set up Google Cloud SDK
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
-        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux
+        env:
+          WIN_CERT_PEM: ${{ secrets.WIN_CERT_PEM }}
+          WIN_CERT_KEYNAME: ${{ secrets.WIN_CERT_KEYNAME }}
+          WIN_CERT_KEYSTORE: ${{ secrets.WIN_CERT_KEYSTORE }}
+        run: |
+          export WIN_CERT_STOREPASS="$(gcloud auth print-access-token)"
+          echo "$WIN_CERT_PEM" > codesign-chain.pem
+          xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
-        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux -Psnapshot=true
+        env:
+          WIN_CERT_PEM: ${{ secrets.WIN_CERT_PEM }}
+          WIN_CERT_KEYNAME: ${{ secrets.WIN_CERT_KEYNAME }}
+          WIN_CERT_KEYSTORE: ${{ secrets.WIN_CERT_KEYSTORE }}
+        run: |
+          export WIN_CERT_STOREPASS="$(gcloud auth print-access-token)"
+          echo "$WIN_CERT_PEM" > codesign-chain.pem
+          xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux -Psnapshot=true
       - name: Determine Export Version
         id: determineExportVersion
         run: |

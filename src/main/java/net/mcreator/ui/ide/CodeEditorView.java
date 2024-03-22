@@ -33,6 +33,7 @@ import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.ide.autocomplete.CustomJSCCache;
 import net.mcreator.ui.ide.autocomplete.StringCompletitionProvider;
+import net.mcreator.ui.ide.debug.BreakpointHandler;
 import net.mcreator.ui.ide.json.JsonTree;
 import net.mcreator.ui.ide.mcfunction.MinecraftCommandsTokenMaker;
 import net.mcreator.ui.init.L10N;
@@ -90,7 +91,9 @@ public class CodeEditorView extends ViewBase {
 	private AbstractSourceTree tree;
 	public ChangeListener cl;
 
-	public RSyntaxTextArea te = new RSyntaxTextArea() {
+	private final RTextScrollPane sp;
+
+	public final RSyntaxTextArea te = new RSyntaxTextArea() {
 		@Override public void setCursor(Cursor c) {
 			if (jumpToMode)
 				return;
@@ -117,6 +120,10 @@ public class CodeEditorView extends ViewBase {
 	private final JFileBreadCrumb fileBreadCrumb;
 
 	@Nullable private ModElement fileOwner = null;
+
+	@Nullable private JavaParser parser = null;
+
+	@Nullable private BreakpointHandler breakpointHandler = null;
 
 	public CodeEditorView(MCreator fa, File fs) {
 		this(fa, FileIO.readFileToString(fs), fs.getName(), fs, false);
@@ -165,7 +172,7 @@ public class CodeEditorView extends ViewBase {
 
 		ToolTipManager.sharedInstance().registerComponent(te);
 
-		RTextScrollPane sp = new RTextScrollPane(te, PreferencesManager.PREFERENCES.ide.lineNumbers.get());
+		sp = new RTextScrollPane(te, PreferencesManager.PREFERENCES.ide.lineNumbers.get());
 
 		RSyntaxTextAreaStyler.style(te, sp, PreferencesManager.PREFERENCES.ide.fontSize.get());
 
@@ -174,8 +181,7 @@ public class CodeEditorView extends ViewBase {
 		sp.getGutter().setFoldBackground(getBackground());
 		sp.getGutter().setBorderColor(getBackground());
 
-		sp.getGutter().setBookmarkingEnabled(true);
-		sp.setIconRowHeaderEnabled(false);
+		sp.setIconRowHeaderEnabled(true);
 
 		sp.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
 		sp.setCorner(JScrollPane.LOWER_LEFT_CORNER, new JPanel());
@@ -224,7 +230,6 @@ public class CodeEditorView extends ViewBase {
 
 		spne.setLeftComponent(cp);
 		spne.setContinuousLayout(true);
-
 		spne.setBorder(null);
 
 		JPanel bars = new JPanel(new BorderLayout(2, 2));
@@ -265,7 +270,7 @@ public class CodeEditorView extends ViewBase {
 		add("Center", spne);
 		setBorder(null);
 
-		if (!readOnly)
+		if (!readOnly) {
 			KeyStrokes.registerKeyStroke(
 					KeyStroke.getKeyStroke(KeyEvent.VK_B, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), te,
 					new AbstractAction() {
@@ -279,7 +284,6 @@ public class CodeEditorView extends ViewBase {
 						}
 					});
 
-		if (!readOnly)
 			KeyStrokes.registerKeyStroke(
 					KeyStroke.getKeyStroke(KeyEvent.VK_W, Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx()), te,
 					new AbstractAction() {
@@ -292,7 +296,6 @@ public class CodeEditorView extends ViewBase {
 						}
 					});
 
-		if (!readOnly)
 			KeyStrokes.registerKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_M,
 							Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, false), te,
 					new AbstractAction() {
@@ -305,6 +308,20 @@ public class CodeEditorView extends ViewBase {
 										L10N.t("ide.tips.save_and_launch"));
 						}
 					});
+
+			KeyStrokes.registerKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_D,
+							Toolkit.getDefaultToolkit().getMenuShortcutKeyMaskEx() | InputEvent.SHIFT_DOWN_MASK, false), te,
+					new AbstractAction() {
+						@Override public void actionPerformed(ActionEvent actionEvent) {
+							disableJumpToMode();
+							saveCode();
+							fa.actionRegistry.debugClient.doAction();
+							if (CodeEditorView.this.mouseEvent != null)
+								new FocusableTip(te, null).toolTipRequested(CodeEditorView.this.mouseEvent,
+										L10N.t("ide.tips.save_and_debug"));
+						}
+					});
+		}
 
 		spne.setResizeWeight(1);
 
@@ -367,7 +384,9 @@ public class CodeEditorView extends ViewBase {
 			if (ac != null)
 				AutocompleteStyle.installStyle(ac, te);
 
-			JavaParser parser = jls.getParser(te);
+			this.parser = jls.getParser(te);
+
+			this.breakpointHandler = new BreakpointHandler(this, sp, parser);
 
 			te.addKeyListener(new KeyAdapter() {
 
@@ -674,7 +693,7 @@ public class CodeEditorView extends ViewBase {
 
 	public void jumpToLine(int linenum) {
 		new Thread(() -> {
-			SwingUtilities.invokeLater(() -> te.requestFocus());
+			SwingUtilities.invokeLater(te::requestFocus);
 			try {
 				Thread.sleep(250);
 			} catch (InterruptedException ignored) {
@@ -687,6 +706,14 @@ public class CodeEditorView extends ViewBase {
 				}
 			});
 		}, "JumpToLine").start();
+	}
+
+	@Nullable public JavaParser getParser() {
+		return parser;
+	}
+
+	@Nullable public BreakpointHandler getBreakpointHandler() {
+		return breakpointHandler;
 	}
 
 }

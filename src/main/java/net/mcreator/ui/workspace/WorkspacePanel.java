@@ -1077,6 +1077,8 @@ import java.util.stream.Collectors;
 			GeneratableElement generatableElementOriginal = mu.getGeneratableElement();
 
 			if (generatableElementOriginal != null && !(generatableElementOriginal instanceof CustomElement)) {
+				WorkspaceFolderBreadcrumb.Small breadcrumb = new WorkspaceFolderBreadcrumb.Small(mcreator);
+
 				String modName = VOptionPane.showInputDialog(mcreator,
 						L10N.t("workspace.elements.duplicate_message", mu.getName()),
 						L10N.t("workspace.elements.duplicate_element", mu.getName()), mu.getElementIcon(),
@@ -1085,7 +1087,8 @@ import java.util.stream.Collectors;
 								return new ModElementNameValidator(mcreator.getWorkspace(), (VTextField) component,
 										L10N.t("common.mod_element_name")).validate();
 							}
-						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"));
+						}, L10N.t("workspace.elements.duplicate"), UIManager.getString("OptionPane.cancelButtonText"),
+						null, breadcrumb.getInScrollPane(), null);
 				if (modName != null && !modName.isEmpty()) {
 					modName = JavaConventions.convertToValidClassName(modName);
 
@@ -1128,9 +1131,9 @@ import java.util.stream.Collectors;
 						duplicateModElement.setCodeLock(true);
 					}
 
-					// if we are not in the root folder, specify the folder of the mod element
-					if (!currentFolder.equals(mcreator.getWorkspace().getFoldersRoot()))
-						duplicateModElement.setParentFolder(currentFolder);
+					// specify the folder of the mod element
+					duplicateModElement.setParentFolder(
+							Objects.requireNonNullElse(breadcrumb.getCurrentFolder(), currentFolder));
 
 					mcreator.getWorkspace().addModElement(duplicateModElement);
 
