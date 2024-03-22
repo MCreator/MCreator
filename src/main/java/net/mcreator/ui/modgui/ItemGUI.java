@@ -447,6 +447,12 @@ public class ItemGUI extends ModElementGUI<Item> {
 		rangedItemChargesPower.setOpaque(false);
 		rangedProperties.add(rangedItemChargesPower);
 
+		shootConstantly.addActionListener((e) -> {
+			rangedItemChargesPower.setEnabled(!shootConstantly.isSelected());
+			if (shootConstantly.isSelected())
+				rangedItemChargesPower.setSelected(false);
+		});
+
 		JPanel rangedTriggers = new JPanel(new GridLayout(2, 1, 2, 2));
 		rangedTriggers.setOpaque(false);
 		rangedTriggers.add(rangedUseCondition);
@@ -503,7 +509,9 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private void updateRangedPanel() {
 		if (enableRanged.isSelected()) {
 			shootConstantly.setEnabled(true);
-			rangedItemChargesPower.setEnabled(true);
+			rangedItemChargesPower.setEnabled(!shootConstantly.isSelected());
+			if (shootConstantly.isSelected())
+				rangedItemChargesPower.setSelected(false);
 			projectile.setEnabled(true);
 			onRangedItemUsed.setEnabled(true);
 			rangedUseCondition.setEnabled(true);

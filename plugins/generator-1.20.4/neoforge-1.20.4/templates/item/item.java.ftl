@@ -272,7 +272,6 @@ public class ${name}Item extends Item {
 
 	<#if data.enableRanged && data.shootConstantly>
 		@Override public void onUseTick(Level world, LivingEntity entity, ItemStack itemstack, int count) {
-			<#if data.rangedItemChargesPower>float pullingPower = 1;</#if>
 			if (!world.isClientSide() && entity instanceof ServerPlayer player) {
 				<#if hasProcedure(data.rangedUseCondition)>
 					double x = entity.getX();
