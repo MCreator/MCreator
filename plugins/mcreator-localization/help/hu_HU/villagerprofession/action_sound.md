@@ -1,0 +1,1 @@
+Falusi hangja amikor a szakmája blockját használja.
