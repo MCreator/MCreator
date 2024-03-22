@@ -1,0 +1,1 @@
+Egy üzenetet ír a chatablakba ha a játékos elér egy teljesítményt.

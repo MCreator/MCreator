@@ -1,0 +1,1 @@
+Az eredmény neve. Ha nem egy parent (root eredmény) akkor ez lesz az elérési út neve.

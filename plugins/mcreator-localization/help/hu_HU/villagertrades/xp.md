@@ -1,0 +1,1 @@
+A tapasztalati pont mennyisége amit a falusi kap.
