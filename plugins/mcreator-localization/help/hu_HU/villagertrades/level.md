@@ -1,0 +1,1 @@
+Minimális szint ami ahhoz szükséges hogy a falusi kereskedelmi ajánlatot adjon.

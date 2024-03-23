@@ -3,5 +3,5 @@ Ce message est affiché dans le chat quand un joueur est tué par une entité qu
 Vous pouvez utiliser les jetons suivants dans le message :
 
 - `<player>` : le nom du joueur tué
-- `<attacker>` : le nom de l'entité qui a fait le dégât
-- `<item>`: le nom de l'item tenue par l'attaquant
+- `<attacker>` : le nom de l'entité qui a infligé le dégât
+- `<item>` : le nom de l'item tenu par l'attaquant

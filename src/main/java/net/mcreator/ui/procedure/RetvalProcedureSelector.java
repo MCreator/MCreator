@@ -39,6 +39,7 @@ import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -144,6 +145,8 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 							procedureName.toString().replace("When", ""));
 				}
 
+				WorkspaceFolderBreadcrumb.Small breadcrumb = new WorkspaceFolderBreadcrumb.Small(mcreator);
+
 				procedureNameString = VOptionPane.showInputDialog(mcreator,
 						L10N.t("action.procedure.enter_procedure_name"),
 						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidatior() {
@@ -152,13 +155,15 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("action.procedure.create_procedure"),
-						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString);
+						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString,
+						breadcrumb.getInScrollPane(), null);
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
 							ModElementType.PROCEDURE);
 					ModElementGUI<?> newGUI = ModElementType.PROCEDURE.getModElementGUI(mcreator, element, false);
 					if (newGUI != null) {
+						newGUI.setTargetFolder(breadcrumb.getCurrentFolder());
 						newGUI.showView();
 						newGUI.setModElementCreatedListener(generatableElement -> {
 							String modName = JavaConventions.convertToValidClassName(
