@@ -139,6 +139,10 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		return shoot(world, entity, source, ${data.power}f, ${data.damage}, ${data.knockback});
 	}
 
+	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource source, float pullingPower) {
+		return shoot(world, entity, source, pullingPower * ${data.power}f, ${data.damage}, ${data.knockback});
+	}
+
 	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource random, float power, double damage, int knockback) {
 		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, world);
 		entityarrow.shoot(entity.getViewVector(1).x, entity.getViewVector(1).y, entity.getViewVector(1).z, power * 2, 0);
