@@ -40,7 +40,7 @@ package ${package}.world.features.treedecorators;
 
     public static TreeDecoratorType<?> DECORATOR_TYPE = new TreeDecoratorType<>(CODEC);
 
-    @SubscribeEvent public static void registerPointOfInterest(RegisterEvent event) {
+    @SubscribeEvent public static void registerTreeDecorator(RegisterEvent event) {
         event.register(Registries.TREE_DECORATOR_TYPE, new ResourceLocation("${modid}:${registryname}_tree_fruit_decorator"), () -> DECORATOR_TYPE);
     }
 
@@ -52,9 +52,9 @@ package ${package}.world.features.treedecorators;
         return DECORATOR_TYPE;
     }
 
-    ${mcc.getMethod("net.minecraft.world.level.levelgen.feature.treedecorators.CocoaDecorator", "place", "TreeDecorator.Context")
+    @Override ${mcc.getMethod("net.minecraft.world.level.levelgen.feature.treedecorators.CocoaDecorator", "place", "TreeDecorator.Context")
         .replace("this.probability", "0.2F")
-        .replace("Blocks.COCOA.defaultBlockState().setValue(CocoaBlock.AGE,Integer.valueOf(randomsource.nextInt(3))).setValue(CocoaBlock.FACING,direction)",mappedBlockToBlockStateCode(data.treeFruits))
+        .replace("Blocks.COCOA.defaultBlockState().setValue(CocoaBlock.AGE,Integer.valueOf(randomsource.nextInt(3))).setValue(CocoaBlock.FACING,direction)", mappedBlockToBlockStateCode(data.treeFruits))
         .replace("p_226028_", "context")}
 
 }

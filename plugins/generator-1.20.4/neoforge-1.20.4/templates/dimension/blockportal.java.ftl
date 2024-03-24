@@ -66,7 +66,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		}
 	}
 
-	${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "updateShape", "BlockState", "Direction", "BlockState", "LevelAccessor", "BlockPos", "BlockPos")
+	@Override ${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "updateShape", "BlockState", "Direction", "BlockState", "LevelAccessor", "BlockPos", "BlockPos")
 				   .replace("new PortalShape(", "new "+name+"PortalShape(")}
 
 	@OnlyIn(Dist.CLIENT) @Override public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {

@@ -1,0 +1,1 @@
+Wybierz to ustawienie, aby generować miasto endu w swoim biomie.

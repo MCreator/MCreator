@@ -168,4 +168,24 @@ public class WorkspaceFolderBreadcrumb extends JPanel {
 		void elementSelected(IElement element, JComponent component, MouseEvent event);
 	}
 
+	public static class Small extends WorkspaceFolderBreadcrumb {
+
+		public Small(MCreator mcreator) {
+			super(mcreator, 3, true);
+			reloadPath(mcreator.mv.currentFolder, FolderElement.class);
+			setSelectionListener((element, component, event) -> {
+				if (element instanceof FolderElement fe)
+					reloadPath(fe, FolderElement.class);
+			});
+		}
+
+		public JScrollPane getInScrollPane() {
+			JScrollPane scrollPane = new JScrollPane(this, JScrollPane.VERTICAL_SCROLLBAR_NEVER,
+					JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+			scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension());
+			return scrollPane;
+		}
+
+	}
+
 }

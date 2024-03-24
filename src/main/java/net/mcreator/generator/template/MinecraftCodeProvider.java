@@ -39,6 +39,7 @@ import org.fife.rsta.ac.java.rjc.lexer.Scanner;
 import org.fife.rsta.ac.java.rjc.parser.ASTFactory;
 import org.jboss.forge.roaster.Roaster;
 import org.jboss.forge.roaster.model.source.JavaClassSource;
+import org.jboss.forge.roaster.model.source.MethodSource;
 
 import javax.annotation.Nonnull;
 import java.io.File;
@@ -96,7 +97,9 @@ import java.util.Map;
 		String code = readCode(template);
 		if (code != null) {
 			JavaClassSource classJavaSource = (JavaClassSource) Roaster.parse(code);
-			return classJavaSource.getMethod(method, params).toString();
+			MethodSource<?> methodSource = classJavaSource.getMethod(method, params);
+			methodSource.removeAllAnnotations();
+			return methodSource.toString();
 		} else {
 			return "/* failed to load code for " + template + " */";
 		}

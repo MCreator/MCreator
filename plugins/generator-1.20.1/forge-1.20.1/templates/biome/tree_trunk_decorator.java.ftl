@@ -40,7 +40,7 @@ package ${package}.world.features.treedecorators;
 
     public static TreeDecoratorType<?> DECORATOR_TYPE = new TreeDecoratorType<>(CODEC);
 
-	@SubscribeEvent public static void registerPointOfInterest(RegisterEvent event) {
+	@SubscribeEvent public static void registerTreeDecorator(RegisterEvent event) {
 		event.register(ForgeRegistries.Keys.TREE_DECORATOR_TYPES, registerHelper -> registerHelper.register("${registryname}_tree_trunk_decorator", DECORATOR_TYPE));
 	}
 
@@ -79,7 +79,6 @@ package ${package}.world.features.treedecorators;
 					context.setBlock(pos, ${mappedBlockToBlockStateCode(data.treeVines)});
 				}
 			}
-
         });
     }
 
