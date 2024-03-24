@@ -50,6 +50,9 @@
         "name": "world",
         "type": "world"
       }
+    ],
+    "warnings": [
+      "place_feature_ghost_blocks"
     ]
   }
 }
