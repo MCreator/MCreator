@@ -56,6 +56,7 @@ public class Particle extends GeneratableElement {
 
 	public boolean canCollide;
 	public boolean alwaysShow;
+	
 	public String renderType;
 
 	public Procedure additionalExpiryCondition;
