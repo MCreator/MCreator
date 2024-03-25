@@ -1425,7 +1425,6 @@ public class TestWorkspaceDataProvider {
 			particle.width = 2.3;
 			particle.frameDuration = 2;
 			particle.height = 1.38;
-			particle.scale = 1.38;
 			particle.gravity = 12.3;
 			particle.speedFactor = 1.3;
 			particle.canCollide = _true;
@@ -1437,6 +1436,7 @@ public class TestWorkspaceDataProvider {
 			particle.maxAgeDiff = emptyLists ? 0 : 15;
 			particle.renderType = new String[] { "OPAQUE", "OPAQUE", "TRANSLUCENT", "LIT" }[valueIndex];
 			particle.additionalExpiryCondition = new Procedure("condition1");
+			particle.scale = new NumberProcedure(emptyLists ? null : "number1", 1.38);
 			return particle;
 		} else if (ModElementType.GAMERULE.equals(modElement.getType())) {
 			GameRule gamerule = new GameRule(modElement);

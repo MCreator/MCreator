@@ -19,6 +19,7 @@
 package net.mcreator.element.types;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.procedure.NumberProcedure;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.io.FileIO;
 import net.mcreator.minecraft.MinecraftImageGenerator;
@@ -45,7 +46,6 @@ public class Particle extends GeneratableElement {
 
 	public double width;
 	public double height;
-	public double scale;
 	public double speedFactor;
 	public double gravity;
 	public int maxAge;
@@ -55,10 +55,10 @@ public class Particle extends GeneratableElement {
 
 	public boolean canCollide;
 	public boolean alwaysShow;
-
 	public String renderType;
 
 	public Procedure additionalExpiryCondition;
+	public NumberProcedure scale;
 
 	public Particle(ModElement element) {
 		super(element);
