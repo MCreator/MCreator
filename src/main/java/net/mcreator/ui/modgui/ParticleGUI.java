@@ -79,7 +79,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		scale = new NumberProcedureSelector(this.withEntry("particle/scale"), mcreator,
 				L10N.t("elementgui.particle.visual_scale"), AbstractProcedureSelector.Side.CLIENT,
 				new JSpinner(new SpinnerNumberModel(1, 0.1, 4096, 0.1)), 0,
-				Dependency.fromString("world:world/z:number/y:number/x:number/age:number/scale:number"));
+				Dependency.fromString("x:number/y:number/z:number/world:world/age:number/scale:number"));
 		additionalExpiryCondition = new ProcedureSelector(this.withEntry("particle/additional_expiry_condition"),
 				mcreator, L10N.t("elementgui.particle.expiry_condition"), ProcedureSelector.Side.CLIENT, true,
 				VariableTypeLoader.BuiltInTypes.LOGIC, Dependency.fromString(
@@ -94,7 +94,6 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		canCollide.setOpaque(false);
 		alwaysShow.setOpaque(false);
 		animate.setOpaque(false);
-		scale.setOpaque(false);
 
 		texture = new TextureHolder(new TypedTextureSelectorDialog(mcreator, TextureType.PARTICLE));
 		texture.setOpaque(false);
