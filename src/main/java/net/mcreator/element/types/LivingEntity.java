@@ -173,7 +173,7 @@ import java.util.*;
 	public int spawningProbability;
 	public String mobSpawningType;
 	public int minNumberOfMobsPerGroup;
-	public  int[] spawnPercentageRaid = {0, 0, 0, 0, 0, 0, 0};
+	public int[] spawnPercentageRaid;
 	public int maxNumberOfMobsPerGroup;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
@@ -199,6 +199,7 @@ import java.util.*;
 
 		this.entityDataEntries = new ArrayList<>();
 		this.modelLayers = new ArrayList<>();
+		this.spawnPercentageRaid = new int[] {0, 0, 0, 0, 0, 0, 0};
 	}
 
 	@Override public Model getEntityModel() {

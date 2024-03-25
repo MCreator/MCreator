@@ -1712,7 +1712,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
 		for(int i = 0; i < 7; i++)
-			livingEntity.spawnPercentageRaid[i] = 5;
+			livingEntity.spawnPercentageRaid[i] = (4 + i);
 		livingEntity.modelLayers = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.LogicType("Logic"), _true));

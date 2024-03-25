@@ -712,10 +712,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.sound")));
 		spo6.add(livingSound);
 
-		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/celebration_sound"),
-				L10N.label("elementgui.living_entity.celebration_sound")));
-		spo6.add(celebrationSound);
-
 		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/step_sound"),
 				L10N.label("elementgui.living_entity.step_sound")));
 		spo6.add(stepSound);
@@ -727,6 +723,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/death_sound"),
 				L10N.label("elementgui.living_entity.death_sound")));
 		spo6.add(deathSound);
+
+		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/celebration_sound"),
+				L10N.label("elementgui.living_entity.celebration_sound")));
+		spo6.add(celebrationSound);
 
 		pane6.setOpaque(false);
 		pane6.add("Center", PanelUtils.totalCenterInPanel(spo6));
@@ -864,12 +864,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.spawn_type")));
 		selp.add(mobSpawningType);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/raid_spawn_percentage"),
-				L10N.label("elementgui.living_entity.raid_spawn_percentage")));
-		selp.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, spawnPercentageRaid[0], new JEmptyBox(2, 2), spawnPercentageRaid[1],
-				new JEmptyBox(2, 2), spawnPercentageRaid[2], new JEmptyBox(2, 2), spawnPercentageRaid[3], new JEmptyBox(2, 2),
-				spawnPercentageRaid[4], new JEmptyBox(2,2), spawnPercentageRaid[5], new JEmptyBox(2,2), spawnPercentageRaid[6]));
-
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_group_size"),
 				L10N.label("elementgui.living_entity.spawn_group_size")));
 		selp.add(numberOfMobsPerGroup);
@@ -881,6 +875,12 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/spawn_in_dungeons"),
 				L10N.label("elementgui.living_entity.does_spawn_in_dungeons")));
 		selp.add(spawnInDungeons);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/raid_spawn_percentage"),
+				L10N.label("elementgui.living_entity.raid_spawn_percentage")));
+		selp.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, spawnPercentageRaid[0], new JEmptyBox(2, 2), spawnPercentageRaid[1],
+				new JEmptyBox(2, 2), spawnPercentageRaid[2], new JEmptyBox(2, 2), spawnPercentageRaid[3], new JEmptyBox(2, 2),
+				spawnPercentageRaid[4], new JEmptyBox(2,2), spawnPercentageRaid[5], new JEmptyBox(2,2), spawnPercentageRaid[6]));
 
 		selp.setOpaque(false);
 
