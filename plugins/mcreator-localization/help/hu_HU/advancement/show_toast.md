@@ -1,0 +1,1 @@
+Megmutatja az eredményt a jobb felső sarokban amikor a játékos eléri az eredményt.

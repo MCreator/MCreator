@@ -41,8 +41,9 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	@Nullable
 	public static GeneratorConfiguration getRecommendedGeneratorForFlavor(
-			Collection<GeneratorConfiguration> generatorConfigurations, GeneratorFlavor generatorFlavor) {
-		return generatorConfigurations.stream().filter(gc -> gc.getGeneratorFlavor() == generatorFlavor).sorted()
+			Collection<GeneratorConfiguration> generatorConfigurations, GeneratorFlavor... generatorFlavors) {
+		List<GeneratorFlavor> flavors = Arrays.asList(generatorFlavors);
+		return generatorConfigurations.stream().filter(gc -> flavors.contains(gc.getGeneratorFlavor())).sorted()
 				.findFirst().orElse(null);
 	}
 

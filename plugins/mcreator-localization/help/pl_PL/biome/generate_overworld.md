@@ -1,0 +1,1 @@
+Jeżeli chcesz, aby ten biom był generowany tylko w niestandardowym wymiarze, wtedy wyłącz tę opcję.

@@ -89,7 +89,7 @@ public class JItemStatesListEntry extends JPanel implements IValidable {
 			parent.repaint();
 		});
 
-		add("North", PanelUtils.maxMargin(stateLabel, 5, true, false, true, false));
+		add("North", ComponentUtils.applyPadding(stateLabel, 5, true, false, true, false));
 		add("West", PanelUtils.westAndCenterElement(ito, imo, 10, 0));
 		add("East", PanelUtils.pullElementUp(remove));
 
