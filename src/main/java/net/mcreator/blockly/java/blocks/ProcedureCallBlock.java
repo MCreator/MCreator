@@ -30,6 +30,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
+import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -39,8 +40,8 @@ public class ProcedureCallBlock implements IBlockGenerator {
 		Element procedureField = XMLUtil.getFirstChildrenWithName(block, "field");
 		String type = block.getAttribute("type");
 
-		if (procedureField != null && procedureField.getTextContent() != null && !"".equals(
-				procedureField.getTextContent())) {
+		if (procedureField != null && procedureField.getTextContent() != null && !procedureField.getTextContent()
+				.isEmpty()) {
 			Procedure procedure = new Procedure(procedureField.getTextContent());
 			List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
 
@@ -51,48 +52,9 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				return;
 			}
 
-			// The procedure dependencies, in a flattened {"name": "type"} map
-			Map<String, String> flattenedDeps = dependencies.stream()
-					.collect(Collectors.toMap(Dependency::getName, Dependency::getRawType));
-			List<DependencyInput> depInputs = new ArrayList<>();
 			List<String> skippedDepsNames = new ArrayList<>(), processedDepsNames = new ArrayList<>();
-
-			Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
-			if (mutation != null && mutation.hasAttribute("inputs") && !mutation.getAttribute("inputs")
-					.equals("undefined")) {
-				int depCount = Integer.parseInt(mutation.getAttribute("inputs"));
-				Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
-						.filter(e -> e.getAttribute("name").matches("name\\d+"))
-						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
-				Map<String, Element> inputs = XMLUtil.getChildrenWithName(block, "value").stream()
-						.filter(e -> e.getAttribute("name").matches("arg\\d+"))
-						.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
-
-				for (int i = 0; i < depCount; i++) {
-					String currentName = fields.get("name" + i).getTextContent();
-					String currentArg;
-					if (inputs.containsKey("arg" + i)) {
-						// If the procedure actually has this dependency, also generate the code
-						if (flattenedDeps.containsKey(currentName)) {
-							currentArg = master.directProcessOutputBlockWithoutParentheses(inputs.get("arg" + i));
-						} else {
-							// We don't need to do any further processing, skip this dependency
-							skippedDepsNames.add(currentName);
-							continue;
-						}
-					} else {
-						// Keep processing to look for other missing inputs
-						currentArg = "";
-						master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
-								L10N.t("blockly.errors.call_procedure.missing_inputs", currentName)));
-					}
-					depInputs.add(new DependencyInput(currentName, flattenedDeps.get(currentName), currentArg));
-					processedDepsNames.add(currentName);
-				}
-			}
-
-			// Add to master all the dependencies that weren't processed
-			dependencies.stream().filter(e -> !processedDepsNames.contains(e.getName())).forEach(master::addDependency);
+			List<DependencyInput> depInputs = mapDependencies(master, block, dependencies, skippedDepsNames,
+					processedDepsNames);
 
 			// Add a warning for the passed dependencies that aren't used by the selected procedure
 			if (!skippedDepsNames.isEmpty()) {
@@ -153,6 +115,54 @@ public class ProcedureCallBlock implements IBlockGenerator {
 		}
 	}
 
+	@Nonnull
+	static List<DependencyInput> mapDependencies(BlocklyToCode master, Element block, List<Dependency> dependencies,
+			List<String> skippedDepsNames, List<String> processedDepsNames) throws TemplateGeneratorException {
+		// The procedure dependencies, in a flattened {"name": "type"} map
+		Map<String, String> flattenedDeps = dependencies.stream()
+				.collect(Collectors.toMap(Dependency::getName, Dependency::getRawType));
+		List<DependencyInput> depInputs = new ArrayList<>();
+
+		Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
+		if (mutation != null && mutation.hasAttribute("inputs") && !mutation.getAttribute("inputs")
+				.equals("undefined")) {
+			int depCount = Integer.parseInt(mutation.getAttribute("inputs"));
+			Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
+					.filter(e -> e.getAttribute("name").matches("name\\d+"))
+					.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+			Map<String, Element> inputs = XMLUtil.getChildrenWithName(block, "value").stream()
+					.filter(e -> e.getAttribute("name").matches("arg\\d+"))
+					.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+
+			for (int i = 0; i < depCount; i++) {
+				String currentName = fields.get("name" + i).getTextContent();
+				String currentArg;
+				if (inputs.containsKey("arg" + i)) {
+					// If the procedure actually has this dependency, also generate the code
+					if (flattenedDeps.containsKey(currentName)) {
+						currentArg = master.directProcessOutputBlockWithoutParentheses(inputs.get("arg" + i));
+					} else {
+						// We don't need to do any further processing, skip this dependency
+						skippedDepsNames.add(currentName);
+						continue;
+					}
+				} else {
+					// Keep processing to look for other missing inputs
+					currentArg = "";
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.call_procedure.missing_inputs", currentName)));
+				}
+				depInputs.add(new DependencyInput(currentName, flattenedDeps.get(currentName), currentArg));
+				processedDepsNames.add(currentName);
+			}
+		}
+
+		// Add to master all the dependencies that weren't processed
+		dependencies.stream().filter(e -> !processedDepsNames.contains(e.getName())).forEach(master::addDependency);
+
+		return depInputs;
+	}
+
 	@Override public String[] getSupportedBlocks() {
 		return new String[] { "call_procedure", "old_command" };
 	}
@@ -163,4 +173,5 @@ public class ProcedureCallBlock implements IBlockGenerator {
 
 	// The record holds info about a single dependency row in the block (name, type, input code)
 	public record DependencyInput(String name, String type, String arg) {}
+
 }
