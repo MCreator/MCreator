@@ -18,7 +18,8 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
             // Trigger the change only if a block is changed, moved, deleted or created
             if ((changeEvent.type !== Blockly.Events.BLOCK_CHANGE ||
                 changeEvent.element !== 'field') &&
-                changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
+                changeEvent.type !== Blockly.Events.BLOCK_CREATE &&
+                changeEvent.type !== Blockly.Events.BLOCK_MOVE) {
                 return;
             }
             const group = Blockly.Events.getGroup();
@@ -33,8 +34,8 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
                     this.getFieldValue('procedure'), this.getFieldValue('name' + i)));
                 const newType = this.getInput('arg' + i).connection.getCheck();
                 // Disable the block if procedure is defined and invalid used dependencies are present
-                if (javabridge.hasDependency(procedure, this.getFieldValue('name' + i)) &&
-                    (!procedure || procedure !== '') && !newType && this.getInputTargetBlock('arg' + i) &&
+                if (procedure !== '' && javabridge.hasDependency(procedure, this.getFieldValue('name' + i)) &&
+                    !newType && this.getInputTargetBlock('arg' + i) &&
                     this.getInputTargetBlock('arg' + i).outputConnection.getCheck()) {
                     valid = false;
                 }
