@@ -51,6 +51,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	private final JSpinner width = new JSpinner(new SpinnerNumberModel(0.2, 0, 4096, 0.1));
 	private final JSpinner height = new JSpinner(new SpinnerNumberModel(0.2, 0, 4096, 0.1));
+	private NumberProcedureSelector scale;
 	private final JSpinner gravity = new JSpinner(new SpinnerNumberModel(0, -100, 100, 0.1));
 	private final JSpinner speedFactor = new JSpinner(new SpinnerNumberModel(1, -100, 100, 0.1));
 	private final JSpinner maxAge = new JSpinner(new SpinnerNumberModel(7, 0, 100000, 1));
@@ -66,8 +67,6 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 	private final JComboBox<String> renderType = new JComboBox<>(new String[] { "OPAQUE", "TRANSLUCENT", "LIT" });
 
 	private ProcedureSelector additionalExpiryCondition;
-
-	private NumberProcedureSelector scale;
 
 	public ParticleGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
 		super(mcreator, modElement, editingMode);
@@ -181,6 +180,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 				StringUtils.removeEnd(particle.texture, ".png")); // legacy, old workspaces stored name with extension
 		width.setValue(particle.width);
 		height.setValue(particle.height);
+		scale.setSelectedProcedure(particle.scale);
 		gravity.setValue(particle.gravity);
 		speedFactor.setValue(particle.speedFactor);
 		frameDuration.setValue(particle.frameDuration);
@@ -193,7 +193,6 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		animate.setSelected(particle.animate);
 		renderType.setSelectedItem(particle.renderType);
 		additionalExpiryCondition.setSelectedProcedure(particle.additionalExpiryCondition);
-		scale.setSelectedProcedure(particle.scale);
 	}
 
 	@Override public Particle getElementFromGUI() {
@@ -201,6 +200,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		particle.texture = texture.getID() + ".png"; // legacy, old workspaces stored name with extension
 		particle.width = (double) width.getValue();
 		particle.height = (double) height.getValue();
+		particle.scale = scale.getSelectedProcedure();
 		particle.gravity = (double) gravity.getValue();
 		particle.speedFactor = (double) speedFactor.getValue();
 		particle.maxAge = (int) maxAge.getValue();
@@ -213,7 +213,6 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 		particle.alwaysShow = alwaysShow.isSelected();
 		particle.renderType = (String) renderType.getSelectedItem();
 		particle.additionalExpiryCondition = additionalExpiryCondition.getSelectedProcedure();
-		particle.scale = scale.getSelectedProcedure();
 		return particle;
 	}
 

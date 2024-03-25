@@ -46,6 +46,7 @@ public class Particle extends GeneratableElement {
 
 	public double width;
 	public double height;
+	public NumberProcedure scale;
 	public double speedFactor;
 	public double gravity;
 	public int maxAge;
@@ -58,7 +59,6 @@ public class Particle extends GeneratableElement {
 	public String renderType;
 
 	public Procedure additionalExpiryCondition;
-	public NumberProcedure scale;
 
 	public Particle(ModElement element) {
 		super(element);
