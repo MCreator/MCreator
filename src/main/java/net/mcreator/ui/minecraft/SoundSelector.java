@@ -94,7 +94,7 @@ public class SoundSelector extends JPanel {
 	@Override public void setEnabled(boolean enabled) {
 		tfe.setEnabled(enabled);
 		bt.setEnabled(enabled);
-		rm.setEnabled(enabled);
+		rm.setEnabled(enabled && !tfe.getText().isBlank());
 	}
 
 	public VTextField getVTextField() {
