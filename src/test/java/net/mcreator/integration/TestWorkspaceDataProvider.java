@@ -1720,6 +1720,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
 			modelLayer.texture = "entityTx2.png";
+			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = true;
 			modelLayer.condition = null;
 			livingEntity.modelLayers.add(modelLayer);
@@ -1727,6 +1728,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
 			modelLayer.texture = "test.png";
+			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = false;
 			modelLayer.condition = new Procedure("condition1");
 			livingEntity.modelLayers.add(modelLayer);
@@ -1734,6 +1736,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
 			modelLayer.texture = "entityTx2.png";
+			modelLayer.disableHurtOverlay = true;
 			modelLayer.glow = true;
 			modelLayer.condition = null;
 			livingEntity.modelLayers.add(modelLayer);
