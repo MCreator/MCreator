@@ -173,23 +173,6 @@ public class GeneratorSelector {
 
 		generator.setSelectedItem(current);
 
-		generator.addActionListener(new ActionListener() {
-			GeneratorConfiguration oldItem = current;
-
-			@Override public void actionPerformed(ActionEvent e) {
-				if (generator.getSelectedItem() instanceof GeneratorConfiguration generatorConfiguration) {
-					if (!Launcher.version.isDevelopment() && !newWorkspace && generatorConfiguration != current
-							&& generatorConfiguration.getGeneratorStats().getStatus() == GeneratorStats.Status.DEV) {
-						generator.setSelectedItem(oldItem);
-						JOptionPane.showMessageDialog(parent, L10N.t("dialog.generator_selector.dev_gen_message"),
-								L10N.t("dialog.generator_selector.dev_gen_title"), JOptionPane.WARNING_MESSAGE);
-					} else {
-						oldItem = generatorConfiguration;
-					}
-				}
-			}
-		});
-
 		mainPanel.addHierarchyListener(e -> {
 			if (SwingUtilities.getWindowAncestor(mainPanel) instanceof Dialog dialog) {
 				if (dialog.getHeight() > dialog.getGraphicsConfiguration().getBounds().height - 32) {

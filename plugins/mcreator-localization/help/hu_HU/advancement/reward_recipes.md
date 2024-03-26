@@ -1,0 +1,1 @@
+Receptek amik akkor oldódnak fel ha a játékos elér egy eredményt.

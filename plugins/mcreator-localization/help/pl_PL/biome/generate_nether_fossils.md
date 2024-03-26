@@ -1,0 +1,1 @@
+Wybierz to ustawienie, aby generować kościane pozostałości w swoim biomie.

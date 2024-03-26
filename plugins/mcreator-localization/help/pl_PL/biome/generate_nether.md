@@ -1,0 +1,1 @@
+Zaznacz to, jeżeli ten biom ma występować w piekle.

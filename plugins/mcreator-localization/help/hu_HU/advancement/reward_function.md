@@ -1,0 +1,1 @@
+Ezzel kiválaszthatsz egy funkciót amit akkor hajt végre ha a játékos elér egy eredményt.

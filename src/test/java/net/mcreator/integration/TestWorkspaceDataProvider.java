@@ -302,6 +302,9 @@ public class TestWorkspaceDataProvider {
 
 		if (workspace.getFolderManager().getStructuresDir() != null) {
 			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
+			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test1.nbt"));
+			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
+			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
 		}
 	}
 
@@ -725,6 +728,46 @@ public class TestWorkspaceDataProvider {
 			}
 			structure.generationStep = TestWorkspaceDataProvider.getRandomItem(random,
 					ElementUtil.getDataListAsStringArray("generationsteps"));
+			structure.size = 4;
+			structure.maxDistanceFromCenter = 96;
+			structure.jigsawPools = new ArrayList<>();
+			if (!emptyLists) {
+				Structure.JigsawPool pool = new Structure.JigsawPool();
+				pool.poolName = "pool1";
+				pool.fallbackPool = "test_mod:" + modElement.getRegistryName() + "_pool2";
+				pool.poolParts = new ArrayList<>();
+				Structure.JigsawPool.JigsawPart part = new Structure.JigsawPool.JigsawPart();
+				part.weight = 3;
+				part.structure = "test1";
+				part.projection = "rigid";
+				part.ignoredBlocks = blocks.stream().skip(_true ? 0 : ((long) (blocks.size() / 4) * valueIndex))
+						.limit(blocks.size() / 4).map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
+						.toList();
+				pool.poolParts.add(part);
+				part = new Structure.JigsawPool.JigsawPart();
+				part.weight = 7;
+				part.structure = "test2";
+				part.projection = "terrain_matching";
+				part.ignoredBlocks = blocks.stream().skip(_true ? 0 : ((long) (blocks.size() / 4) * valueIndex))
+						.limit(blocks.size() / 4).map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
+						.toList();
+				pool.poolParts.add(part);
+				structure.jigsawPools.add(pool);
+
+				pool = new Structure.JigsawPool();
+				pool.poolName = "pool2";
+				pool.fallbackPool = "";
+				pool.poolParts = new ArrayList<>();
+				part = new Structure.JigsawPool.JigsawPart();
+				part.weight = 1;
+				part.structure = "test3";
+				part.projection = "rigid";
+				part.ignoredBlocks = blocks.stream().skip(_true ? 0 : ((long) (blocks.size() / 4) * valueIndex))
+						.limit(blocks.size() / 4).map(e -> new MItemBlock(modElement.getWorkspace(), e.getName()))
+						.toList();
+				pool.poolParts.add(part);
+				structure.jigsawPools.add(pool);
+			}
 			return structure;
 		} else if (ModElementType.ARMOR.equals(modElement.getType())) {
 			Armor armor = new Armor(modElement);

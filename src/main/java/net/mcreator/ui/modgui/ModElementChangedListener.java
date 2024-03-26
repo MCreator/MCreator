@@ -20,10 +20,7 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.component.ITechnicalComponent;
-import net.mcreator.ui.component.JColor;
-import net.mcreator.ui.component.JItemListField;
-import net.mcreator.ui.component.JStringListField;
+import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;
@@ -45,7 +42,7 @@ import java.awt.event.*;
  * regenerates the code preview upon UI changes.</p>
  */
 public interface ModElementChangedListener
-		extends MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
+		extends MouseListener, KeyListener, ActionListener, ItemListener, ChangeListener, DocumentListener {
 
 	/**
 	 * <p>The main listener method, triggered when an event occurs on a registered container</p>
@@ -81,7 +78,7 @@ public interface ModElementChangedListener
 		} else if (component instanceof JSpinner spinner) {
 			spinner.addChangeListener(this);
 		} else if (component instanceof JComboBox<?> comboBox) {
-			comboBox.addActionListener(this);
+			comboBox.addItemListener(this);
 		} else if (component instanceof JTextComponent textComponent) {
 			textComponent.getDocument().addDocumentListener(this);
 		} else if (component instanceof BlocklyPanel blocklyPanel) {
@@ -115,6 +112,10 @@ public interface ModElementChangedListener
 	}
 
 	@Override default void actionPerformed(ActionEvent e) {
+		modElementChanged();
+	}
+
+	@Override default void itemStateChanged(ItemEvent e) {
 		modElementChanged();
 	}
 
