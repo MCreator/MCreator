@@ -23,12 +23,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.VariableType;
 
 public class BlocklyJavascriptTemplates {
-	private static String getBlockText(String key, VariableType variableType) {
-		// If the specific key is missing, fall back to the generic variant
-		return L10N.t("blockly.block." + key + "_" + variableType.getName()) != null ?
-				L10N.t("blockly.block." + key + "_" + variableType.getName()) :
-				L10N.t("blockly.block." + key);
-	}
 
 	public static String variableListExtension(VariableType variableType) {
 		return """
@@ -201,4 +195,12 @@ public class BlocklyJavascriptTemplates {
 				}]);""".formatted(variableType.getName(), getBlockText("return", variableType),
 				variableType.getBlocklyVariableType(), variableType.getColor());
 	}
+
+	private static String getBlockText(String key, VariableType variableType) {
+		// If the specific key is missing, fall back to the generic variant
+		return L10N.t("blockly.block." + key + "_" + variableType.getName()) != null ?
+				L10N.t("blockly.block." + key + "_" + variableType.getName()) :
+				L10N.t("blockly.block." + key);
+	}
+
 }
