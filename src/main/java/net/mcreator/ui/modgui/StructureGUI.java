@@ -36,6 +36,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.minecraft.BiomeListField;
 import net.mcreator.ui.minecraft.MCItemListField;
+import net.mcreator.ui.minecraft.jigsaw.JJigsawPoolsList;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.CompoundValidator;
 import net.mcreator.ui.validation.ValidationGroup;
@@ -77,6 +78,10 @@ public class StructureGUI extends ModElementGUI<Structure> {
 	private final JComboBox<String> generationStep = new JComboBox<>(
 			ElementUtil.getDataListAsStringArray("generationsteps"));
 
+	private final JSpinner size = new JSpinner(new SpinnerNumberModel(1, 0, 7, 1));
+	private final JSpinner maxDistanceFromCenter = new JSpinner(new SpinnerNumberModel(64, 1, 128, 1));
+	private JJigsawPoolsList jigsaw;
+
 	private final ValidationGroup page1group = new ValidationGroup();
 
 	public StructureGUI(MCreator mcreator, ModElement modElement, boolean editingMode) {
@@ -90,10 +95,18 @@ public class StructureGUI extends ModElementGUI<Structure> {
 				mcreator.getFolderManager().getStructureList().toArray(String[]::new));
 		restrictionBiomes = new BiomeListField(mcreator, true);
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
+		jigsaw = new JJigsawPoolsList(mcreator, this, modElement);
 
 		separation_spacing.setAllowEqualValues(false);
+		terrainAdaptation.addActionListener(e -> {
+			int max = "none".equals(terrainAdaptation.getSelectedItem()) ? 128 : 116;
+			SpinnerNumberModel spinnerModel = (SpinnerNumberModel) maxDistanceFromCenter.getModel();
+			spinnerModel.setMaximum(max);
+			spinnerModel.setValue(Math.min((int) spinnerModel.getValue(), max));
+		});
 
 		JPanel pane5 = new JPanel(new BorderLayout(3, 3));
+		JPanel pane7 = new JPanel(new BorderLayout(2, 2));
 
 		ComponentUtils.deriveFont(structureSelector, 16);
 
@@ -156,6 +169,30 @@ public class StructureGUI extends ModElementGUI<Structure> {
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(params));
 
+		JPanel jigsawSize = new JPanel(new GridLayout(2, 2, 10, 2));
+		jigsawSize.setOpaque(false);
+
+		jigsawSize.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/jigsaw_size"),
+				L10N.label("elementgui.structuregen.jigsaw_size")));
+		jigsawSize.add(size);
+
+		jigsawSize.add(HelpUtils.wrapWithHelpButton(this.withEntry("structure/jigsaw_max_distance_from_center"),
+				L10N.label("elementgui.structuregen.jigsaw_max_distance_from_center")));
+		jigsawSize.add(maxDistanceFromCenter);
+
+		jigsawSize.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 0));
+
+		pane7.setOpaque(false);
+
+		pane7.add("North", PanelUtils.join(FlowLayout.LEFT, 0, 0, jigsawSize));
+
+		JComponent jigsawPoolsListComp = PanelUtils.northAndCenterElement(
+				HelpUtils.wrapWithHelpButton(this.withEntry("structure/jigsaw_pools"),
+						L10N.label("elementgui.structuregen.jigsaw_pools")), jigsaw);
+		jigsawPoolsListComp.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+		pane7.add("Center", jigsawPoolsListComp);
+
 		restrictionBiomes.setValidator(new CompoundValidator(
 				new ItemListFieldValidator(restrictionBiomes, L10N.t("elementgui.structuregen.error_select_biomes")),
 				new ItemListFieldSingleTagValidator(restrictionBiomes)));
@@ -169,16 +206,21 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		});
 		page1group.addValidationElement(structureSelector);
 
-		addPage(pane5);
+		addPage(L10N.t("elementgui.common.page_properties"), pane5);
+		addPage(L10N.t("elementgui.structuregen.page_jigsaw"), pane7, false);
 	}
 
 	@Override public void reloadDataLists() {
 		super.reloadDataLists();
 
 		ComboBoxUtil.updateComboBoxContents(structureSelector, mcreator.getFolderManager().getStructureList());
+
+		jigsaw.reloadDataLists();
 	}
 
 	@Override protected AggregatedValidationResult validatePage(int page) {
+		if (page == 1)
+			return jigsaw.getValidationResult();
 		return new AggregatedValidationResult(page1group);
 	}
 
@@ -192,6 +234,9 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		separation_spacing.setMinValue(structure.separation);
 		separation_spacing.setMaxValue(structure.spacing);
 		generationStep.setSelectedItem(structure.generationStep);
+		size.setValue(structure.size);
+		maxDistanceFromCenter.setValue(structure.maxDistanceFromCenter);
+		jigsaw.setEntries(structure.jigsawPools);
 	}
 
 	@Override public Structure getElementFromGUI() {
@@ -205,6 +250,9 @@ public class StructureGUI extends ModElementGUI<Structure> {
 		structure.separation = separation_spacing.getIntMinValue();
 		structure.spacing = separation_spacing.getIntMaxValue();
 		structure.generationStep = (String) generationStep.getSelectedItem();
+		structure.size = (int) size.getValue();
+		structure.maxDistanceFromCenter = (int) maxDistanceFromCenter.getValue();
+		structure.jigsawPools = jigsaw.getEntries();
 		return structure;
 	}
 

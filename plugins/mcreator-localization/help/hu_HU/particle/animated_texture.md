@@ -1,0 +1,1 @@
+Jelöld be ezt a négyzetet, ha részecskéd textúrájának animálva kell lennie.

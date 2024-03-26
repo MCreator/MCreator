@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza a blockokat amiket a levelekhez használunk abban az esetben ha az egyedi fák paraméter kiválasztásra kerül

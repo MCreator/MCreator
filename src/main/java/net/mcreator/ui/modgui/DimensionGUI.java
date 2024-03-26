@@ -386,6 +386,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		specialInformation.setEnabled(enabled);
 		texture.setEnabled(enabled);
 		portalMakeCondition.setEnabled(enabled);
+		igniterRarity.setEnabled(enabled);
 	}
 
 	@Override public void reloadDataLists() {

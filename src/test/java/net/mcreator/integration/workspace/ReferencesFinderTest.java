@@ -38,11 +38,9 @@ import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -55,13 +53,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 	private static Workspace workspace;
 
-	@BeforeAll public static void initTest() throws IOException {
+	@BeforeAll public static void initTest(@TempDir File tempDir) {
 		long rgenseed = System.currentTimeMillis();
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
-
-		// create temporary directory
-		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
 
 		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
 				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
@@ -73,8 +68,7 @@ import static org.junit.jupiter.api.Assertions.*;
 		WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
 		workspaceSettings.setModName("Test mod");
 		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
-		workspace = Workspace.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"),
-				workspaceSettings);
+		workspace = Workspace.createWorkspace(new File(tempDir, "test_mod.mcreator"), workspaceSettings);
 
 		LOG.info("Generating sample elements");
 		TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
@@ -203,6 +197,10 @@ import static org.junit.jupiter.api.Assertions.*;
 
 	@Test void testStructureUsagesSearch() {
 		String structure = "test";
+		assertTrue(ReferencesFinder.searchStructureUsages(workspace, structure).stream().map(ModElement::getName)
+				.anyMatch(e -> e.contains("Examplestructure")));
+
+		structure = "test2";
 		assertTrue(ReferencesFinder.searchStructureUsages(workspace, structure).stream().map(ModElement::getName)
 				.anyMatch(e -> e.contains("Examplestructure")));
 	}

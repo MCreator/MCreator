@@ -307,6 +307,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		addtag.setEnabled(enabled);
 		include.setEnabled(enabled);
 		exclude.setEnabled(enabled);
+		elementsList.setEnabled(enabled);
 	}
 
 	public void addChangeListener(ChangeListener changeListener) {
