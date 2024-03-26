@@ -29,7 +29,7 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
             for (var i = 0; this.getField('name' + i); i++) {
                 const prevType = this.getInput('arg' + i).connection.getCheck();
                 let depType = javabridge.getDependencyType(procedure, this.getFieldValue('name' + i));
-                if (!depType && procedure !== '')
+                if (depType == '')
                     depType = [];
                 // Set input checks from dependency type
                 this.getInput('arg' + i).setCheck(depType);
