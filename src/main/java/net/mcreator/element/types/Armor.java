@@ -106,6 +106,11 @@ import java.util.*;
 	public boolean leggingsImmuneToFire;
 	public boolean bootsImmuneToFire;
 
+	public LogicProcedure helmetGlowCondition;
+	public LogicProcedure bodyGlowCondition;
+	public LogicProcedure leggingsGlowCondition;
+	public LogicProcedure bootsGlowCondition;
+
 	public LogicProcedure helmetPiglinNeutral;
 	public LogicProcedure bodyPiglinNeutral;
 	public LogicProcedure leggingsPiglinNeutral;
