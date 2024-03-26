@@ -25,20 +25,15 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
             const group = Blockly.Events.getGroup();
             // Makes it so the block change and the unplug event get undone together.
             Blockly.Events.setGroup(changeEvent.group);
-            let valid = true;
             const procedure = this.getFieldValue('procedure');
             for (var i = 0; this.getField('name' + i); i++) {
                 const prevType = this.getInput('arg' + i).connection.getCheck();
+                let depType = javabridge.getDependencyType(procedure, this.getFieldValue('name' + i));
+                if (!depType && procedure !== '')
+                    depType = [];
                 // Set input checks from dependency type
-                this.getInput('arg' + i).setCheck(javabridge.getDependencyType(
-                    this.getFieldValue('procedure'), this.getFieldValue('name' + i)));
+                this.getInput('arg' + i).setCheck(depType);
                 const newType = this.getInput('arg' + i).connection.getCheck();
-                // Disable the block if procedure is defined and invalid used dependencies are present
-                if (procedure !== '' && javabridge.hasDependency(procedure, this.getFieldValue('name' + i)) &&
-                    !newType && this.getInputTargetBlock('arg' + i) &&
-                    this.getInputTargetBlock('arg' + i).outputConnection.getCheck()) {
-                    valid = false;
-                }
                 // Fire change event if block existed earlier and previous input type was different
                 if (changeEvent.type === Blockly.Events.BLOCK_CHANGE &&
                     JSON.stringify(prevType) !== JSON.stringify(newType)) {
@@ -51,9 +46,6 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
                     Blockly.Events.fire(inputCheckChange);
                 }
             }
-            // Fire change event if block existed earlier and previous input type was different
-            this.setWarningText(valid ? null : javabridge.t('blockly.extension.procedure_dep_onchange.invalid_dep_type'));
-            this.setEnabled(valid);
             Blockly.Events.setGroup(group);
         });
     });
