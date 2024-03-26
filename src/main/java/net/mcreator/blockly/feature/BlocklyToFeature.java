@@ -42,6 +42,7 @@ public class BlocklyToFeature extends BlocklyToJava {
 
 	private StringBuilder featureConfigurationCode;
 	private String featureType;
+	private boolean isPlacementEmpty;
 
 	public BlocklyToFeature(Workspace workspace, ModElement parent, String sourceXML,
 			TemplateGenerator templateGenerator, IBlockGenerator... externalGenerators)
@@ -70,9 +71,7 @@ public class BlocklyToFeature extends BlocklyToJava {
 	}
 
 	@Override protected void postBlocksPlacement(Document doc, Element startBlock, List<Element> baseBlocks) {
-		if (baseBlocks.isEmpty())
-			addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-					L10N.t("blockly.warnings.features.missing_placement")));
+		isPlacementEmpty = baseBlocks.isEmpty();
 	}
 
 	public final String getFeatureConfigurationCode() {
@@ -81,5 +80,9 @@ public class BlocklyToFeature extends BlocklyToJava {
 
 	public String getFeatureType() {
 		return featureType;
+	}
+
+	public boolean isPlacementEmpty() {
+		return isPlacementEmpty;
 	}
 }

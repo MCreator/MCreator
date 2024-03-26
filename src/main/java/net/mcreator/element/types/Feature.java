@@ -46,6 +46,7 @@ import java.util.List;
 
 	public static final String XML_BASE = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"feature_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
 
+	public boolean skipPlacement;
 	public String generationStep;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public Procedure generateCondition;
@@ -85,6 +86,10 @@ import java.util.List;
 
 	public boolean hasGenerationConditions() {
 		return generateCondition != null;
+	}
+
+	public boolean hasPlacedFeature() {
+		return !skipPlacement;
 	}
 
 	@Override public Collection<BaseType> getBaseTypesProvided() {
