@@ -193,6 +193,7 @@ public class MainMenuBar extends JMenuBar {
 		build.add(mcreator.actionRegistry.runGradleTask);
 		build.addSeparator();
 		build.add(mcreator.actionRegistry.runClient);
+		build.add(mcreator.actionRegistry.debugClient);
 		build.add(mcreator.actionRegistry.runServer);
 		add(build);
 

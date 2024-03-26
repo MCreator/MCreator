@@ -84,7 +84,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 				LOG.info("TESTING GENERATOR " + generator);
 
 				// create temporary directory
-				Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
+				File workspaceDir = Files.createTempDirectory("mcreator_test_workspace").toFile();
 
 				// we create a new workspace
 				WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
@@ -97,8 +97,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 				workspaceSettings.setModPicture("example");
 				workspaceSettings.setModName("Test mod");
 				workspaceSettings.setCurrentGenerator(generator);
-				Workspace workspace = Workspace.createWorkspace(
-						new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"), workspaceSettings);
+				Workspace workspace = Workspace.createWorkspace(new File(workspaceDir, "test_mod.mcreator"),
+						workspaceSettings);
 
 				LOG.info("[" + generator + "] ----- Test workspace folder: " + workspace.getFolderManager()
 						.getWorkspaceFolder());
@@ -172,6 +172,8 @@ import static org.junit.jupiter.api.Assertions.fail;
 				GradleDaemonUtils.stopAllDaemons(workspace);
 
 				workspace.close();
+
+				FileIO.deleteDir(workspaceDir);
 			});
 		});
 	}

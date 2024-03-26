@@ -233,6 +233,17 @@ Blockly.Blocks['direction_unspecified'] = {
     }
 };
 
+Blockly.Blocks['debug_marker'] = {
+    init: function () {
+        this.appendDummyInput()
+            .appendField(javabridge.t("blockly.block.debug_marker"))
+            .appendField(new FieldJavaName("marker1"), 'NAME');
+        this.setPreviousStatement(true);
+        this.setNextStatement(true);
+        this.setColour("#ef323d");
+    }
+};
+
 Blockly.Blocks['java_code'] = {
     init: function () {
         this.appendDummyInput()

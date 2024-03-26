@@ -1,0 +1,1 @@
+Wybierz to ustawienie, aby generować pozostałości bastionu w swoim biomie.

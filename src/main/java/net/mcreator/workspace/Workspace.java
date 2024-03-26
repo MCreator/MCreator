@@ -393,9 +393,16 @@ public class Workspace implements Closeable, IGeneratorProvider {
 						JOptionPane.showMessageDialog(ui,
 								L10N.t("dialog.workspace.unknown_generator_message", currentGenerator),
 								L10N.t("dialog.workspace.unknown_generator_title"), JOptionPane.WARNING_MESSAGE);
-						generatorConfiguration.set(GeneratorSelector.getGeneratorSelector(ui,
-								GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-										Generator.GENERATOR_CACHE.values(), currentFlavor), currentFlavor, false));
+
+						// If the current generator is forge, we can offer NeoForge as well
+						GeneratorFlavor[] options = new GeneratorFlavor[] { currentFlavor };
+						if (currentFlavor == GeneratorFlavor.FORGE)
+							options = new GeneratorFlavor[] { currentFlavor, GeneratorFlavor.NEOFORGE };
+
+						GeneratorConfiguration recommendedGenerator = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
+								Generator.GENERATOR_CACHE.values(), options);
+						generatorConfiguration.set(
+								GeneratorSelector.getGeneratorSelector(ui, recommendedGenerator, currentFlavor, false));
 					});
 					GeneratorConfiguration selectedGenerator = generatorConfiguration.get();
 					if (selectedGenerator != null) {

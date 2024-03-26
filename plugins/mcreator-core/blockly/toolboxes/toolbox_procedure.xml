@@ -111,9 +111,10 @@
                 <block type="coord_z"/>
             </value>
         </block>
-        <block type="entity_none"/>
         <block type="java_code"/>
         <block type="java_code_get"/>
+        <block type="debug_marker"/>
+        <block type="entity_none"/>
         <custom-advanced/>
     </category>
 </xml>

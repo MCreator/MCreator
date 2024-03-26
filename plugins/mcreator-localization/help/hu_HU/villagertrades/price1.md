@@ -1,0 +1,1 @@
+Az első tárgy ami a cseréhez kell.

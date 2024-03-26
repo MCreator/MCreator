@@ -23,40 +23,34 @@ import net.mcreator.ui.ide.CodeEditorView;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 
-import java.io.IOException;
-
 public class WindowTitleHelper {
 
 	public static String getWindowTitle(MCreator mcreator) {
-		String appendix = "";
+		StringBuilder title = new StringBuilder(mcreator.getWorkspaceSettings().getModName());
+
 		if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
 				.getContent() instanceof ModElementGUI<?> modElementGUI) {
-			appendix = " - " + modElementGUI.getModElement().getName() + " (" + modElementGUI.getModElement().getType()
-					.getReadableName() + ")";
+			title.append(" - ").append(modElementGUI.getModElement().getName()).append(" (")
+					.append(modElementGUI.getModElement().getType().getReadableName()).append(")");
 		} else if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
 				.getContent() instanceof CodeEditorView codeEditorView) {
 			try {
-				appendix = " - " + mcreator.getFolderManager().getPathInWorkspace(codeEditorView.fileWorkingOn);
+				title.append(" - ")
+						.append(mcreator.getFolderManager().getPathInWorkspace(codeEditorView.fileWorkingOn));
 			} catch (Exception e) {
-				appendix = " - " + codeEditorView.fileWorkingOn.toPath();
+				title.append(" - ").append(codeEditorView.fileWorkingOn.toPath());
 			}
 		} else if (mcreator.mcreatorTabs.getCurrentTab() != null && mcreator.mcreatorTabs.getCurrentTab()
 				.getContent() instanceof ImageMakerView imageMakerView && imageMakerView.getImageFile() != null) {
 			try {
-				appendix = " - " + mcreator.getFolderManager().getPathInWorkspace(imageMakerView.getImageFile());
+				title.append(" - ")
+						.append(mcreator.getFolderManager().getPathInWorkspace(imageMakerView.getImageFile()));
 			} catch (Exception e) {
-				appendix = " - " + imageMakerView.getImageFile().toPath();
+				title.append(" - ").append(imageMakerView.getImageFile().toPath());
 			}
 		}
 
-		String workspaceBaseName = mcreator.getWorkspaceSettings().getModName();
-		try {
-			return workspaceBaseName + " [" + mcreator.getWorkspaceFolder().getCanonicalPath() + "]" + appendix
-					+ " - MCreator " + Launcher.version.getMajorString();
-		} catch (IOException e) {
-			return workspaceBaseName + " [" + mcreator.getWorkspaceFolder().getAbsolutePath() + "]" + appendix
-					+ " - MCreator " + Launcher.version.getMajorString();
-		}
+		return title.append(" - MCreator ").append(Launcher.version.getMajorString()).toString();
 	}
 
 }

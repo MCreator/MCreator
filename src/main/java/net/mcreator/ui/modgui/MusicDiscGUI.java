@@ -189,7 +189,7 @@ public class MusicDiscGUI extends ModElementGUI<MusicDisc> {
 		events.add(onItemInInventoryTick);
 		events.add(onItemInUseTick);
 		events.add(onEntitySwing);
-		pane4.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
+		pane4.add("Center", PanelUtils.totalCenterInPanel(events));
 		pane4.setOpaque(false);
 
 		texture.setValidator(new TileHolderValidator(texture));
