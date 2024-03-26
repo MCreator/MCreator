@@ -33,12 +33,15 @@ import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
 import net.mcreator.ui.component.BlockingGlassPane;
 import net.mcreator.ui.component.ImagePanel;
+import net.mcreator.ui.component.JAdaptiveSplitPane;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SquareLoaderIcon;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.AppIcon;
+import net.mcreator.ui.debug.DebugPanel;
 import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
@@ -97,6 +100,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	private final NotificationsRenderer notificationsRenderer;
 
+	private final DebugPanel debugPanel;
+
 	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
 		LOG.info("Opening MCreator workspace: " + workspace.getWorkspaceSettings().getModID());
 
@@ -114,6 +119,8 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				mv.enableRemoving();
 			}
 		});
+
+		this.debugPanel = new DebugPanel(this);
 
 		this.mcreatorTabs = new MCreatorTabs();
 
@@ -156,8 +163,6 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				closeThisMCreator(false);
 			}
 		});
-
-		setJMenuBar(menuBar);
 
 		mcreatorTabs.addTabShownListener(tab -> {
 			if (tab.equals(workspaceTab))
@@ -213,11 +218,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		mv = new WorkspacePanel(this);
 
 		JPanel pon = new JPanel(new BorderLayout(0, 0));
-		pon.setBackground(Theme.current().getBackgroundColor());
 		pon.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getSecondAltBackgroundColor()));
 
 		workspaceTab = new MCreatorTabs.Tab(L10N.t("tab.workspace"),
-				PanelUtils.maxMargin(mv, 5, true, true, true, true), "Workspace", true, false);
+				ComponentUtils.applyPadding(mv, 5, true, true, true, true), "Workspace", true, false);
 		mcreatorTabs.addTab(workspaceTab);
 		pon.add("West", workspaceTab);
 
@@ -269,11 +273,13 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 		rightPanel.setMinimumSize(new Dimension(0, 0));
 		workspaceFileBrowser.setMinimumSize(new Dimension(0, 0));
 
-		this.notificationsRenderer = new NotificationsRenderer(splitPane);
+		JAdaptiveSplitPane mainContent = new JAdaptiveSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane, debugPanel, 0.65);
+
+		this.notificationsRenderer = new NotificationsRenderer(mainContent);
 
 		add("South", statusBar);
 		add("North", toolBar);
-		add("Center", splitPane);
+		add("Center", mainContent);
 
 		MCREvent.event(new MCreatorLoadedEvent(this));
 	}
@@ -326,6 +332,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 				SwingUtilities.invokeLater(() -> {
 					getGlassPane().setVisible(false);
 					setGlassPane(new JEmptyBox());
+					setJMenuBar(menuBar);
 					setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 				});
 			}, "ME preloader").start();
@@ -468,6 +475,10 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 
 	public MainToolBar getToolBar() {
 		return toolBar;
+	}
+
+	public DebugPanel getDebugPanel() {
+		return debugPanel;
 	}
 
 }

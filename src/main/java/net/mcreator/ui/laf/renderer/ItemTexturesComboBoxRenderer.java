@@ -20,7 +20,7 @@ package net.mcreator.ui.laf.renderer;
 
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.util.image.ImageUtils;
+import net.mcreator.util.image.IconUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -48,9 +48,9 @@ public class ItemTexturesComboBoxRenderer extends JLabel implements ListCellRend
 		setText(value);
 
 		if (value.equals("Special") || value.equals("MultiTool")) {
-			setIcon(new ImageIcon(ImageUtils.resize(UIRES.get("mod").getImage(), 30)));
+			setIcon(IconUtils.resize(UIRES.get("mod"), 30, 30));
 		} else {
-			setIcon(new ImageIcon(ImageUtils.resize(BlockItemIcons.getIconFor(value).getImage(), 30)));
+			setIcon(IconUtils.resize(BlockItemIcons.getIconFor(value), 30, 30));
 		}
 
 		setHorizontalTextPosition(SwingConstants.RIGHT);

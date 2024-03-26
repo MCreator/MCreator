@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, mennyire veszik figyelembe a külső sebességparamétert a részecske létrehozásakor. Ha 0-ra van állítva, a részecske nem mozog, csak lezuhan, ha a részecske gravitációja nagyobb, mint 0.

@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.ide;
 
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.renderer.MinecraftCompletionCellRenderer;
 import net.mcreator.ui.laf.themes.Theme;
 import org.apache.logging.log4j.LogManager;
@@ -65,16 +64,7 @@ class AutocompleteStyle {
 						pane.setBackground(Theme.current().getBackgroundColor());
 						pane.setBorder(
 								BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getBackgroundColor()));
-						pane.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-								Theme.current().getAltBackgroundColor(), pane.getVerticalScrollBar()));
-						pane.getHorizontalScrollBar()
-								.setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-										Theme.current().getAltBackgroundColor(), pane.getHorizontalScrollBar()));
-						pane.getVerticalScrollBar().setPreferredSize(new Dimension(7, 0));
-						pane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 7));
-						JPanel dummyCorner = new JPanel();
-						dummyCorner.setBackground(Theme.current().getInterfaceAccentColor());
-						pane.setCorner(JScrollPane.LOWER_RIGHT_CORNER, dummyCorner);
+						pane.setCorner(JScrollPane.LOWER_RIGHT_CORNER, new JPanel());
 					}
 				}
 

@@ -19,6 +19,7 @@
 package net.mcreator.ui.workspace.selector;
 
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.StringUtils;
@@ -29,17 +30,31 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.util.Objects;
 
-class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<RecentWorkspaceEntry> {
+class RecentWorkspacesRenderer extends JPanel implements ListCellRenderer<RecentWorkspaceEntry> {
 
 	private String version = null;
 	private boolean isSelected = false;
 
 	private final Font rotatedFont;
 
+	private final JLabel nameLabel = new JLabel();
+	private final JLabel pathLabel = new JLabel();
+	private final JLabel iconLabel = new JLabel();
+
 	RecentWorkspacesRenderer() {
+		super(new BorderLayout(7, 0));
+
 		AffineTransform affineTransform = new AffineTransform();
 		affineTransform.rotate(Math.toRadians(-90), 0, 0);
 		rotatedFont = getFont().deriveFont(11.0f).deriveFont(affineTransform);
+
+		setBackground(Theme.current().getSecondAltBackgroundColor());
+
+		nameLabel.setFont(getFont().deriveFont(20.0f));
+		pathLabel.setFont(getFont().deriveFont(11.0f));
+
+		add("West", iconLabel);
+		add("Center", PanelUtils.northAndCenterElement(nameLabel, pathLabel));
 	}
 
 	@Override
@@ -50,33 +65,26 @@ class RecentWorkspacesRenderer extends JLabel implements ListCellRenderer<Recent
 
 		String path = value.getPath().getParentFile().getAbsolutePath().replace("\\", "/");
 
-		setOpaque(true);
-
-		setBackground(Theme.current().getSecondAltBackgroundColor());
-		setForeground(isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getAltForegroundColor());
-
-		setFont(Theme.current().getSecondaryFont().deriveFont(16.0f));
+		nameLabel.setForeground(
+				isSelected ? Theme.current().getInterfaceAccentColor() : Theme.current().getAltForegroundColor());
+		pathLabel.setForeground(nameLabel.getForeground());
 
 		setToolTipText(L10N.t("dialog.workspace_selector.recent_workspace", value.getName(), path,
 				Objects.requireNonNullElse(value.getMCRVersion(), L10N.t("common.not_applicable"))));
-
 		setBorder(BorderFactory.createEmptyBorder(2, version != null ? 23 : 5, 3, 0));
 
 		if (value.getType() != GeneratorFlavor.UNKNOWN) {
 			ImageIcon icon = new ImageIcon(
 					ImageUtils.darken(ImageUtils.toBufferedImage(value.getType().getIcon().getImage())));
 
-			setIcon(isSelected ? ImageUtils.colorize(icon, Theme.current().getInterfaceAccentColor(), false) : icon);
-
-			setIconTextGap(8);
-			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.getName(), 17)
-					+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 30));
+			iconLabel.setIcon(
+					isSelected ? ImageUtils.colorize(icon, Theme.current().getInterfaceAccentColor(), false) : icon);
+			nameLabel.setText(StringUtils.abbreviateString(value.getName(), 17));
+			pathLabel.setText(StringUtils.abbreviateStringInverse(path, 26));
 		} else {
-			setIcon(null);
-
-			setIconTextGap(0);
-			setText("<html><font style=\"font-size: 15px;\">" + StringUtils.abbreviateString(value.getName(), 19)
-					+ "</font><small><br>" + StringUtils.abbreviateStringInverse(path, 37));
+			iconLabel.setIcon(null);
+			nameLabel.setText(StringUtils.abbreviateString(value.getName(), 19));
+			pathLabel.setText(StringUtils.abbreviateStringInverse(path, 34));
 		}
 
 		return this;

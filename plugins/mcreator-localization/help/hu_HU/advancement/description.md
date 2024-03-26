@@ -1,0 +1,1 @@
+Ez az ahová az információt kell írni arról, hogy hogyan lehet teljesíteni a feladatot.

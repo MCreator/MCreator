@@ -18,6 +18,9 @@
 
 package net.mcreator.ui.component;
 
+import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.ColorUtils;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -26,7 +29,7 @@ public class TransparentToolBar extends JToolBar {
 	private final Color c;
 
 	public TransparentToolBar() {
-		this(new Color(0.3f, 0.3f, 0.3f, 0.4f));
+		this(ColorUtils.applyAlpha(Theme.current().getAltBackgroundColor(), 100));
 	}
 
 	public TransparentToolBar(Color c) {

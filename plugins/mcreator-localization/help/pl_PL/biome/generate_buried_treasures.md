@@ -1,0 +1,1 @@
+Wybierz to ustawienie, aby generować zakopany skarb w swoim biomie.

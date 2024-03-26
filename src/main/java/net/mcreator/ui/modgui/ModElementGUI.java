@@ -41,6 +41,7 @@ import net.mcreator.ui.modgui.codeviewer.ModElementCodeViewer;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.ValidationGroup;
 import net.mcreator.ui.views.ViewBase;
+import net.mcreator.workspace.elements.FolderElement;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -65,6 +66,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private final ModElementChangedListener elementUpdateListener;
 
 	@Nonnull protected ModElement modElement;
+	@Nullable private FolderElement targetFolder;
 
 	private ModElementCreatedListener<GE> modElementCreatedListener;
 
@@ -110,6 +112,10 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 		} else {
 			pages.put(name, component);
 		}
+	}
+
+	public void setTargetFolder(@Nullable FolderElement targetFolder) {
+		this.targetFolder = targetFolder;
 	}
 
 	public void setModElementCreatedListener(ModElementCreatedListener<GE> modElementCreatedListener) {
@@ -252,7 +258,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground(Theme.current().getInterfaceAccentColor());
 			save.setForeground(Theme.current().getSecondAltBackgroundColor());
-			save.setFocusPainted(false);
 			save.addActionListener(event -> {
 				List<ValidationGroup> errors = new ArrayList<>();
 
@@ -279,7 +284,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
 			saveOnly.setForeground(Theme.current().getForegroundColor());
-			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
 				List<ValidationGroup> errors = new ArrayList<>();
 
@@ -312,12 +316,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			if (modElementCodeViewer != null) {
 				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setBackground(Theme.current().getSecondAltBackgroundColor());
-				codeViewer.setForeground(Theme.current().getAltForegroundColor());
-				codeViewer.setFocusPainted(false);
-				codeViewer.setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
-						BorderFactory.createEmptyBorder(2, 40, 2, 40)));
+				codeViewer.setMargin(new Insets(1, 40, 1, 40));
 				codeViewer.addActionListener(e -> {
 					if (codeViewer.isSelected()) {
 						modElementCodeViewer.setVisible(true);
@@ -334,7 +333,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				toolBarLeft.add(codeViewer);
 			}
 
-			add("North", PanelUtils.maxMargin(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, true, false,
+			add("North", ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false, true,
 					false));
 
 			centerComponent = PanelUtils.centerAndSouthElement(parameters = split, pager);
@@ -343,7 +342,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			saveOnly.setMargin(new Insets(1, 40, 1, 40));
 			saveOnly.setBackground(Theme.current().getAltBackgroundColor());
 			saveOnly.setForeground(Theme.current().getForegroundColor());
-			saveOnly.setFocusPainted(false);
 			saveOnly.addActionListener(event -> {
 				AggregatedValidationResult validationResult = validatePage(0);
 				if (validationResult.validateIsErrorFree())
@@ -356,7 +354,6 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			save.setMargin(new Insets(1, 40, 1, 40));
 			save.setBackground(Theme.current().getInterfaceAccentColor());
 			save.setForeground(Theme.current().getSecondAltBackgroundColor());
-			save.setFocusPainted(false);
 			save.addActionListener(event -> {
 				AggregatedValidationResult validationResult = validatePage(0);
 				if (validationResult.validateIsErrorFree())
@@ -375,12 +372,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 			if (modElementCodeViewer != null) {
 				JToggleButton codeViewer = L10N.togglebutton("elementgui.code_viewer");
-				codeViewer.setBackground(Theme.current().getSecondAltBackgroundColor());
-				codeViewer.setForeground(Theme.current().getAltForegroundColor());
-				codeViewer.setFocusPainted(false);
-				codeViewer.setBorder(BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
-						BorderFactory.createEmptyBorder(2, 40, 2, 40)));
+				codeViewer.setMargin(new Insets(1, 40, 1, 40));
 				codeViewer.addActionListener(e -> {
 					if (codeViewer.isSelected()) {
 						modElementCodeViewer.setVisible(true);
@@ -398,7 +390,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			}
 
 			add("North",
-					PanelUtils.maxMargin(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false, false,
+					ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false, true,
 							false));
 
 			centerComponent = new ArrayList<>(pages.values()).get(0);
@@ -525,7 +517,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 
 		// if new element, specify the folder of the mod element
 		if (!editingMode)
-			modElement.setParentFolder(mcreator.mv.currentFolder);
+			modElement.setParentFolder(Objects.requireNonNullElse(targetFolder, mcreator.mv.currentFolder));
 
 		// add mod element to the list, it will be only added for the first time, otherwise refreshed
 		// add it before generating so all references are loaded

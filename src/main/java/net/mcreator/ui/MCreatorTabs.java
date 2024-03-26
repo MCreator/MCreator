@@ -30,6 +30,7 @@ import net.mcreator.ui.views.ViewBase;
 import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
+import net.mcreator.util.image.IconUtils;
 import net.mcreator.util.image.ImageUtils;
 
 import javax.swing.*;
@@ -406,7 +407,7 @@ public class MCreatorTabs {
 
 		public void setIcon(ImageIcon icon) {
 			if (icon.getIconWidth() > 24 || icon.getIconHeight() > 24)
-				icon = new ImageIcon(ImageUtils.resizeAA(icon.getImage(), 24, 24));
+				icon = IconUtils.resize(icon, 24, 24);
 			else if (icon.getIconWidth() < 24 || icon.getIconHeight() < 24) {
 				icon = ImageUtils.drawOver(new EmptyIcon.ImageIcon(24, 24), icon, 12 - icon.getIconWidth() / 2,
 						12 - icon.getIconHeight() / 2, icon.getIconWidth(), icon.getIconHeight());

@@ -783,14 +783,14 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				getFont(), Theme.current().getForegroundColor()));
 		BlocklyEditorToolbar blocklyEditorToolbar = new BlocklyEditorToolbar(mcreator, BlocklyEditorType.AI_TASK,
 				blocklyPanel);
-		blocklyEditorToolbar.setTemplateLibButtonWidth(156);
+		blocklyEditorToolbar.setTemplateLibButtonWidth(157);
 		bpb.add(PanelUtils.northAndCenterElement(blocklyEditorToolbar, blocklyPanel));
 		aipan.add("Center", bpb);
 		aipan.add("South", compileNotesPanel);
 
 		blocklyPanel.setPreferredSize(new Dimension(150, 150));
 
-		pane3.add("Center", PanelUtils.maxMargin(aipan, 10, true, true, true, true));
+		pane3.add("Center", ComponentUtils.applyPadding(aipan, 10, true, true, true, true));
 
 		breedable.setOpaque(false);
 		tameable.setOpaque(false);
@@ -904,8 +904,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2);
 		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false);
-		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
+		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);

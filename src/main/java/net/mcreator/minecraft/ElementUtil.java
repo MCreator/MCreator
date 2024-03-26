@@ -348,19 +348,6 @@ public class ElementUtil {
 		return retval;
 	}
 
-	public static String[] loadAllDimensions(Workspace workspace) {
-		ArrayList<String> dimensions = new ArrayList<>();
-		dimensions.add("Surface");
-		dimensions.add("Nether");
-		dimensions.add("End");
-
-		for (ModElement mu : workspace.getModElements())
-			if (mu.getType() == ModElementType.DIMENSION)
-				dimensions.add("CUSTOM:" + mu.getName());
-
-		return dimensions.toArray(new String[0]);
-	}
-
 	public static String[] loadDirections() {
 		return new String[] { "DOWN", "UP", "NORTH", "SOUTH", "WEST", "EAST" };
 	}

@@ -223,6 +223,10 @@ import java.util.stream.Collectors;
 		return !customDrop.isEmpty();
 	}
 
+	public boolean generateLootTable() {
+		return !useLootTableForDrops;
+	}
+
 	public boolean isBlockTinted() {
 		return !"No tint".equals(tintType);
 	}

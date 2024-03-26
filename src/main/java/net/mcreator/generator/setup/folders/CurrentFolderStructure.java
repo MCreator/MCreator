@@ -42,9 +42,9 @@ class CurrentFolderStructure extends AbstractFolderStructure {
 		super(workspace);
 
 		if (workspace.getGenerator()
-				== null) // unknown generator, we need to guess based on the latest supported Forge generator
+				== null) // unknown generator, we need to guess based on the latest supported (Neo)Forge generator
 			generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForFlavor(
-					Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE);
+					Generator.GENERATOR_CACHE.values(), GeneratorFlavor.FORGE, GeneratorFlavor.NEOFORGE);
 	}
 
 	@Nullable @Override public File getStructuresDir() {

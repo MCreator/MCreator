@@ -30,7 +30,6 @@ import net.mcreator.ui.dialogs.TextureImportDialogs;
 import net.mcreator.ui.dialogs.file.FileDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.views.editor.image.ImageMakerView;
 import net.mcreator.ui.workspace.AbstractWorkspacePanel;
@@ -97,9 +96,6 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		sp.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		sp.getViewport().setOpaque(false);
 		sp.getVerticalScrollBar().setUnitIncrement(20);
-		sp.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), sp.getVerticalScrollBar()));
-		sp.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		sp.setBorder(null);
 
 		add("Center", sp);
@@ -108,20 +104,15 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.setBorder(BorderFactory.createEmptyBorder(3, 5, 3, 0));
 
 		JPopupMenu createMenu = new JPopupMenu();
-		createMenu.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
-		createMenu.setBackground(Theme.current().getAltBackgroundColor());
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createMCItemTexture);
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createArmorTexture);
 		createMenu.add(workspacePanel.getMCreator().actionRegistry.createAnimatedTexture);
 
-		JButton create = AbstractWorkspacePanel.createToolBarButton("workspace.textures.new",
-				UIRES.get("16px.add"));
+		JButton create = AbstractWorkspacePanel.createToolBarButton("workspace.textures.new", UIRES.get("16px.add"));
 		create.addActionListener(e -> createMenu.show(create, 5, create.getHeight() + 5));
 		bar.add(create);
 
 		JPopupMenu importMenu = new JPopupMenu();
-		importMenu.setBorder(BorderFactory.createMatteBorder(0, 3, 0, 0, Theme.current().getInterfaceAccentColor()));
-		importMenu.setBackground(Theme.current().getAltBackgroundColor());
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importBlockTexture);
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importItemTexture);
 		importMenu.add(workspacePanel.getMCreator().actionRegistry.importEntityTexture);
@@ -136,8 +127,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		importt.addActionListener(e -> importMenu.show(importt, 5, importt.getHeight() + 5));
 		bar.add(importt);
 
-		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.edit_selected",
-				UIRES.get("16px.edit"), e -> editSelectedFile()));
+		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.edit_selected", UIRES.get("16px.edit"),
+				e -> editSelectedFile()));
 
 		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.duplicate_selected",
 				UIRES.get("16px.duplicate"), e -> duplicateSelectedFile()));
@@ -167,8 +158,8 @@ public class WorkspacePanelTextures extends JPanel implements IReloadableFiltera
 		bar.add(AbstractWorkspacePanel.createToolBarButton("common.delete_selected", UIRES.get("16px.delete"),
 				e -> deleteCurrentlySelected()));
 
-		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.export_selected",
-				UIRES.get("16px.ext"), e -> exportSelectedImages()));
+		bar.add(AbstractWorkspacePanel.createToolBarButton("workspace.textures.export_selected", UIRES.get("16px.ext"),
+				e -> exportSelectedImages()));
 
 		add("North", bar);
 	}
