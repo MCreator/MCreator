@@ -1,0 +1,100 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "root_provider",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "can_grow_through",
+      "check": "BlockHolderSet"
+    },
+    {
+      "type": "input_value",
+      "name": "muddy_roots_provider",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "muddy_roots_in",
+      "check": "BlockHolderSet"
+    },
+    {
+      "type": "input_value",
+      "name": "above_root_provider",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "above_root_placement_chance",
+      "value": 0.5,
+      "min": 0,
+      "max": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "input_value",
+      "name": "trunk_offset_y",
+      "check": "IntProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "max_root_length",
+      "value": 15,
+      "min": 1,
+      "max": 64,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "max_root_width",
+      "value": 8,
+      "min": 1,
+      "max": 12,
+      "precision": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "random_skew_chance",
+      "value": 0.2,
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "output": "RootPlacer",
+  "colour": 90,
+  "extensions": [
+    "add_image_to_bsp_inputs"
+  ],
+  "mcreator": {
+    "toolbox_id": "treedecorators",
+    "toolbox_init": [
+      "<value name=\"root_provider\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"can_grow_through\"><block type=\"block_holderset_tag\"><field name=\"tag\">mangrove_roots_can_grow_through</field></block></value>",
+      "<value name=\"muddy_roots_provider\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"muddy_roots_in\"><block type=\"block_holderset_tag\"><field name=\"tag\">dirt</field></block></value>",
+      "<value name=\"above_root_provider\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"trunk_offset_y\"><block type=\"int_provider_uniform\"><field name=\"min\">1</field><field name=\"max\">3</field></block></value>"
+    ],
+    "inputs": [
+      "root_provider",
+      "can_grow_through",
+      "muddy_roots_provider",
+      "muddy_roots_in",
+      "above_root_provider",
+      "trunk_offset_y"
+    ],
+    "fields": [
+      "above_root_placement_chance",
+      "max_root_length",
+      "max_root_width",
+      "random_skew_chance"
+    ]
+  }
+}
