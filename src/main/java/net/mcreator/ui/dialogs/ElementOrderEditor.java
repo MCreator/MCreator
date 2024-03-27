@@ -56,68 +56,64 @@ public class ElementOrderEditor {
 		tabs.setBorder(BorderFactory.createEmptyBorder());
 
 		for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
-			{
-				{
-					GeneratableElement generatableElement = modElement.getGeneratableElement();
-					if (generatableElement instanceof ITabContainedElement element) {
-						TabEntry tab = element.getCreativeTab();
+			GeneratableElement generatableElement = modElement.getGeneratableElement();
+			if (generatableElement instanceof ITabContainedElement element) {
+				TabEntry tab = element.getCreativeTab();
 
-						if (tab == null || tab.getUnmappedValue().equals("No creative tab entry")
-								|| element.getCreativeTabItems().isEmpty()) {
-							continue;
-						}
-
-						if (tabEditors.get(tab.getUnmappedValue()) == null) {
-							DefaultListModel<ModElement> model = new DefaultListModel<>() {
-								@Override public void add(int idx, ModElement element) {
-									super.add(idx, element);
-									element.reinit(mcreator.getWorkspace());
-								}
-							};
-							model.addListDataListener(new ListDataListener() {
-								@Override public void intervalAdded(ListDataEvent e) {
-									editedTabs.add(tab.getUnmappedValue());
-								}
-
-								@Override public void intervalRemoved(ListDataEvent e) {
-									editedTabs.add(tab.getUnmappedValue());
-								}
-
-								@Override public void contentsChanged(ListDataEvent e) {
-									editedTabs.add(tab.getUnmappedValue());
-								}
-							});
-							JList<ModElement> list = new JList<>(model);
-							list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-							list.setVisibleRowCount(-1);
-							list.setTransferHandler(new ReordarableListTransferHandler());
-							list.setDropMode(DropMode.INSERT);
-							list.setDragEnabled(true);
-							list.setBackground(Theme.current().getAltBackgroundColor());
-
-							list.setCellRenderer(new SmallIconModListRender(false));
-
-							Optional<DataListEntry> tabEntry = tab.getDataListEntry();
-							if (tabEntry.isPresent()) {
-								tabs.addTab(tabEntry.get().getReadableName(), new ImageIcon(ImageUtils.resizeAA(
-												BlockItemIcons.getIconForItem(tabEntry.get().getTexture()).getImage(), 24)),
-										new JScrollPane(list));
-							} else {
-								Icon tabIcon = null;
-								if (tab.getUnmappedValue().startsWith("CUSTOM:"))
-									tabIcon = new ImageIcon(ImageUtils.resizeAA(
-											MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
-													tab.getUnmappedValue()).getImage(), 24));
-								tabs.addTab(tab.getUnmappedValue(), tabIcon, new JScrollPane(list));
-							}
-
-							tabEditors.put(tab.getUnmappedValue(), model);
-						}
-
-						if (mcreator.getWorkspace().getElementOrderInTab(tab.getUnmappedValue()) == null)
-							tabEditors.get(tab.getUnmappedValue()).addElement(modElement);
-					}
+				if (tab == null || tab.getUnmappedValue().equals("No creative tab entry")
+						|| element.getCreativeTabItems().isEmpty()) {
+					continue;
 				}
+
+				if (tabEditors.get(tab.getUnmappedValue()) == null) {
+					DefaultListModel<ModElement> model = new DefaultListModel<>() {
+						@Override public void add(int idx, ModElement element) {
+							super.add(idx, element);
+							element.reinit(mcreator.getWorkspace());
+						}
+					};
+					model.addListDataListener(new ListDataListener() {
+						@Override public void intervalAdded(ListDataEvent e) {
+							editedTabs.add(tab.getUnmappedValue());
+						}
+
+						@Override public void intervalRemoved(ListDataEvent e) {
+							editedTabs.add(tab.getUnmappedValue());
+						}
+
+						@Override public void contentsChanged(ListDataEvent e) {
+							editedTabs.add(tab.getUnmappedValue());
+						}
+					});
+					JList<ModElement> list = new JList<>(model);
+					list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+					list.setVisibleRowCount(-1);
+					list.setTransferHandler(new ReordarableListTransferHandler());
+					list.setDropMode(DropMode.INSERT);
+					list.setDragEnabled(true);
+					list.setBackground(Theme.current().getAltBackgroundColor());
+
+					list.setCellRenderer(new SmallIconModListRender(false));
+
+					Optional<DataListEntry> tabEntry = tab.getDataListEntry();
+					if (tabEntry.isPresent()) {
+						tabs.addTab(tabEntry.get().getReadableName(), new ImageIcon(ImageUtils.resizeAA(
+										BlockItemIcons.getIconForItem(tabEntry.get().getTexture()).getImage(), 24)),
+								new JScrollPane(list));
+					} else {
+						Icon tabIcon = null;
+						if (tab.getUnmappedValue().startsWith("CUSTOM:"))
+							tabIcon = new ImageIcon(ImageUtils.resizeAA(
+									MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
+											tab.getUnmappedValue()).getImage(), 24));
+						tabs.addTab(tab.getUnmappedValue(), tabIcon, new JScrollPane(list));
+					}
+
+					tabEditors.put(tab.getUnmappedValue(), model);
+				}
+
+				if (mcreator.getWorkspace().getElementOrderInTab(tab.getUnmappedValue()) == null)
+					tabEditors.get(tab.getUnmappedValue()).addElement(modElement);
 			}
 		}
 
