@@ -76,19 +76,19 @@ public class ElementOrderEditor {
 
 								list.setCellRenderer(new SmallIconModListRender(false));
 
-							Optional<DataListEntry> tabEntry = tab.getDataListEntry();
-							if (tabEntry.isPresent()) {
-								tabs.addTab(tabEntry.get().getReadableName(), new ImageIcon(ImageUtils.resizeAA(
-												BlockItemIcons.getIconForItem(tabEntry.get().getTexture()).getImage(), 24)),
-										new JScrollPane(list));
-							} else {
-								Icon tabIcon = null;
-								if (tab.getUnmappedValue().startsWith("CUSTOM:"))
-									tabIcon = new ImageIcon(ImageUtils.resizeAA(
-											MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
-													tab.getUnmappedValue()).getImage(), 24));
-								tabs.addTab(tab.getUnmappedValue(), tabIcon, new JScrollPane(list));
-							}
+								Optional<DataListEntry> tabEntry = tab.getDataListEntry();
+								if (tabEntry.isPresent()) {
+									tabs.addTab(tabEntry.get().getReadableName(), new ImageIcon(ImageUtils.resizeAA(
+													BlockItemIcons.getIconForItem(tabEntry.get().getTexture()).getImage(), 24)),
+											new JScrollPane(list));
+								} else {
+									Icon tabIcon = null;
+									if (tab.getUnmappedValue().startsWith("CUSTOM:"))
+										tabIcon = new ImageIcon(ImageUtils.resizeAA(
+												MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
+														tab.getUnmappedValue()).getImage(), 24));
+									tabs.addTab(tab.getUnmappedValue(), tabIcon, new JScrollPane(list));
+								}
 
 								tabEditors.put(tab.getUnmappedValue(), model);
 							}
