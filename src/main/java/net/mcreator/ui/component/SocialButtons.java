@@ -45,7 +45,7 @@ public class SocialButtons extends JPanel {
 	}
 
 	private JLabel createButton(String icon, String url) {
-		JLabel label = new JLabel(UIRES.SVG.getBuiltIn("social." + icon, 18, 18));
+		JLabel label = new JLabel(UIRES.SVG.getBuiltIn("social." + icon, 16, 18));
 		label.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		label.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {
