@@ -21,6 +21,8 @@ package net.mcreator.workspace;
 import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.Launcher;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
@@ -208,10 +210,34 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!mod_elements.contains(element)) { // only add this mod element if it is not already added
 			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
+
+			if (element.getGeneratableElement() instanceof ITabContainedElement tabElement) {
+				TabEntry tabEntry = tabElement.getCreativeTab();
+				if (tabEntry != null && !tabEntry.getUnmappedValue().equals("No creative tab entry"))
+					tab_element_order.get(tabEntry.getUnmappedValue()).add(element.getName());
+			}
+
 			markDirty();
 		} else {
 			LOG.warn(
 					"Trying to add existing mod element: " + element.getName() + " of type " + element.getTypeString());
+		}
+	}
+
+	public void updateModElementTab(ModElement element) {
+		if (element.getGeneratableElement() instanceof ITabContainedElement tabElement) {
+			TabEntry tabEntry = tabElement.getCreativeTab();
+			if (tabEntry == null || tabEntry.getUnmappedValue().equals("No creative tab entry"))
+				return;
+
+			if (!tab_element_order.get(tabEntry.getUnmappedValue()).contains(element.getName())) {
+				for (Map.Entry<String, ArrayList<String>> entry : tab_element_order.entrySet()) {
+					if (!entry.getKey().equals(tabEntry.getUnmappedValue()))
+						entry.getValue().remove(element.getName());
+				}
+
+				tab_element_order.get(tabEntry.getUnmappedValue()).add(element.getName());
+			}
 		}
 	}
 
@@ -250,6 +276,11 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		// finally remove element form the list
 		mod_elements.remove(element);
+
+		if (element.getGeneratableElement() instanceof ITabContainedElement) {
+			for (ArrayList<String> tabContents : tab_element_order.values())
+				tabContents.remove(element.getName());
+		}
 
 		markDirty();
 	}
