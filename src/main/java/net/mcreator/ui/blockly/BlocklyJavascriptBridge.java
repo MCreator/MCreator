@@ -252,10 +252,10 @@ public class BlocklyJavascriptBridge {
 		if (me != null && me.getGeneratableElement() instanceof Procedure procedure) {
 			Optional<Dependency> dependency = procedure.getDependencies().stream()
 					.filter(e -> e.getName().equals(dependencyName)).findFirst();
-			if (dependency.isEmpty())
-				return null;
-			VariableType varType = VariableTypeLoader.INSTANCE.fromName(dependency.get().getRawType());
-			return varType != null ? varType.getBlocklyVariableType() : "";
+			if (dependency.isPresent()) {
+				VariableType varType = VariableTypeLoader.INSTANCE.fromName(dependency.get().getRawType());
+				return varType != null ? varType.getBlocklyVariableType() : "";
+			}
 		}
 		return null;
 	}
