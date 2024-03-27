@@ -21,6 +21,8 @@ package net.mcreator.workspace;
 import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.Launcher;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.parts.TabEntry;
+import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
@@ -55,6 +57,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
+	private ConcurrentHashMap<String, ArrayList<String>> tab_element_order = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<TagElement, ArrayList<String>> tag_elements = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<>() {{
 		put("en_us", new ConcurrentHashMap<>());
@@ -113,6 +116,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return Collections.unmodifiableSet(sound_elements);
 	}
 
+	public Map<String, ArrayList<String>> getTabElementOrderMap() {
+		return tab_element_order;
+	}
+
 	public Map<TagElement, ArrayList<String>> getTagElements() {
 		return tag_elements;
 	}
@@ -146,6 +153,22 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void resetModElementCompilesStatus() {
 		mod_elements.parallelStream().forEach(el -> el.setCompiles(true));
+		markDirty();
+	}
+
+	public List<String> getElementOrderInTab(String tab) {
+		return tab_element_order.get(tab);
+	}
+
+	public void setElementOrderInTab(String tab, List<ModElement> elements) {
+		if (tab_element_order.containsKey(tab))
+			tab_element_order.get(tab).clear();
+		else
+			tab_element_order.put(tab, new ArrayList<>());
+
+		for (ModElement element : elements)
+			tab_element_order.get(tab).add(element.getName());
+
 		markDirty();
 	}
 
@@ -187,10 +210,37 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!mod_elements.contains(element)) { // only add this mod element if it is not already added
 			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
+
+			if (element.getGeneratableElement() instanceof ITabContainedElement tabElement) {
+				TabEntry tabEntry = tabElement.getCreativeTab();
+				if (tabEntry != null && !(tabEntry.getUnmappedValue()).equals("No creative tab entry")
+						&& tab_element_order.containsKey(tabEntry.getUnmappedValue()))
+					tab_element_order.get(tabEntry.getUnmappedValue()).add(element.getName());
+			}
+
 			markDirty();
 		} else {
 			LOG.warn(
 					"Trying to add existing mod element: " + element.getName() + " of type " + element.getTypeString());
+		}
+	}
+
+	public void updateModElementTab(ModElement element) {
+		if (element.getGeneratableElement() instanceof ITabContainedElement tabElement) {
+			TabEntry tabEntry = tabElement.getCreativeTab();
+			if (tabEntry == null || tabEntry.getUnmappedValue().equals("No creative tab entry"))
+				return;
+
+			// if order in new tab is overridden, add the element explicitly
+			if (tab_element_order.containsKey(tabEntry.getUnmappedValue()) && !tab_element_order.get(
+					tabEntry.getUnmappedValue()).contains(element.getName())) {
+				for (Map.Entry<String, ArrayList<String>> entry : tab_element_order.entrySet()) {
+					if (!entry.getKey().equals(tabEntry.getUnmappedValue())) // remove element from its prior tab
+						entry.getValue().remove(element.getName());
+				}
+
+				tab_element_order.get(tabEntry.getUnmappedValue()).add(element.getName());
+			}
 		}
 	}
 
@@ -229,6 +279,11 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		// finally remove element form the list
 		mod_elements.remove(element);
+
+		if (element.getGeneratableElement() instanceof ITabContainedElement) {
+			for (ArrayList<String> tabContents : tab_element_order.values())
+				tabContents.remove(element.getName());
+		}
 
 		markDirty();
 	}
@@ -531,6 +586,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
+		this.tab_element_order = other.tab_element_order;
 		this.tag_elements = other.tag_elements;
 		this.language_map = other.language_map;
 		this.foldersRoot = other.foldersRoot;

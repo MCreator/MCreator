@@ -43,8 +43,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	private final String name;
 	private final String type;
 
-	private Integer sortid = null;
-
 	private boolean compiles = true;
 	private boolean locked_code = false;
 
@@ -140,10 +138,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.workspace = workspace;
 	}
 
-	public void setSortID(Integer sortid) {
-		this.sortid = sortid;
-	}
-
 	public ImageIcon getElementIcon() {
 		if (elementIcon != null && elementIcon.getImage() != null)
 			return elementIcon;
@@ -217,16 +211,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 		this.locked_code = codeLock;
 	}
 
-	@Nonnull public Integer getSortID() {
-		if (sortid == null) {
-			this.sortid =
-					workspace.getModElements().stream().filter(e -> e.sortid != null).mapToInt(e -> e.sortid).max()
-							.orElse(0) + 1;
-		}
-
-		return sortid;
-	}
-
 	/**
 	 * Warning: this method relies on getGeneratableElement that is not thread safe, so this method is also not thread safe
 	 */
@@ -291,7 +275,6 @@ public class ModElement implements Serializable, IWorkspaceProvider, IGeneratorP
 	@SuppressWarnings("unused") public void loadDataFrom(ModElement other) {
 		this.compiles = other.compiles;
 		this.locked_code = other.locked_code;
-		this.sortid = other.sortid;
 		this.registry_name = other.registry_name;
 		this.metadata = other.metadata;
 		this.mcItems = other.mcItems;

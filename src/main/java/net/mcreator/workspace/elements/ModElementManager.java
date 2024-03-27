@@ -89,6 +89,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 		}
 
 		cache.put(element.getModElement(), element);
+		workspace.updateModElementTab(element.getModElement());
 
 		FileIO.writeStringToFile(generatableElementToJSON(element),
 				new File(workspace.getFolderManager().getModElementsDir(),
