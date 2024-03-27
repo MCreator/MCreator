@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.minecraft.DataListEntry;
@@ -34,7 +35,6 @@ import net.mcreator.ui.validation.Validator;
 import net.mcreator.util.FilenameUtilsPatched;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.IconUtils;
-import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.annotation.Nullable;
@@ -95,25 +95,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		elementsList.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		elementsList.setCellRenderer(new CustomListCellRenderer());
 
-		add.setOpaque(false);
-		add.setMargin(new Insets(0, 0, 0, 0));
-		add.setBorder(BorderFactory.createEmptyBorder());
-		add.setContentAreaFilled(false);
-
-		remove.setOpaque(false);
-		remove.setMargin(new Insets(0, 0, 0, 0));
-		remove.setBorder(BorderFactory.createEmptyBorder());
-		remove.setContentAreaFilled(false);
-
-		removeall.setOpaque(false);
-		removeall.setMargin(new Insets(0, 0, 0, 0));
-		removeall.setBorder(BorderFactory.createEmptyBorder());
-		removeall.setContentAreaFilled(false);
-
-		addtag.setOpaque(false);
-		addtag.setMargin(new Insets(0, 0, 0, 0));
-		addtag.setBorder(BorderFactory.createEmptyBorder());
-		addtag.setContentAreaFilled(false);
+		add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+		remove.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+		removeall.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+		addtag.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 
 		add.addActionListener(e -> {
 			List<T> list = getElementsToAdd();
@@ -424,8 +409,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 					DataListEntry dataListEntry = dataListEntryOpt.get();
 					setText(dataListEntry.getReadableName());
 					if (dataListEntry.getTexture() != null) {
-						setIcon(new ImageIcon(ImageUtils.resizeAA(
-								BlockItemIcons.getIconForItem(dataListEntry.getTexture()).getImage(), 18)));
+						setIcon(IconUtils.resize(BlockItemIcons.getIconForItem(dataListEntry.getTexture()), 18));
 					}
 				} else {
 					String unmappedValue = mappableElement.getUnmappedValue();
@@ -433,11 +417,10 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 							.replace("#", ""));
 
 					if (unmappedValue.startsWith("CUSTOM:"))
-						setIcon(new ImageIcon(ImageUtils.resizeAA(
-								MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), unmappedValue).getImage(),
-								18)));
+						setIcon(IconUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), unmappedValue),
+								18));
 					else if (unmappedValue.startsWith("#"))
-						setIcon(IconUtils.resize(MCItem.TAG_ICON, 18, 18));
+						setIcon(IconUtils.resize(MCItem.TAG_ICON, 18));
 				}
 
 				if (!(mappableElement).canProperlyMap())
@@ -448,8 +431,8 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 				setText(StringUtils.machineToReadableName(value.toString().replace("CUSTOM:", "")));
 
 				if (value.toString().contains("CUSTOM:"))
-					setIcon(new ImageIcon(ImageUtils.resizeAA(
-							MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()).getImage(), 18)));
+					setIcon(IconUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.toString()),
+							18));
 			}
 
 			return this;

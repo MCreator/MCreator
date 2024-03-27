@@ -26,7 +26,7 @@ import net.mcreator.ui.component.JItemListField;
 import net.mcreator.ui.dialogs.AddTagDialog;
 import net.mcreator.ui.dialogs.MCItemSelectorDialog;
 import net.mcreator.ui.laf.themes.Theme;
-import net.mcreator.util.image.ImageUtils;
+import net.mcreator.util.image.IconUtils;
 
 import javax.swing.*;
 import java.awt.*;
@@ -90,8 +90,8 @@ public class MCItemListField extends JItemListField<MItemBlock> {
 			setToolTipText(
 					value.getUnmappedValue().replace("CUSTOM:", "").replace("Blocks.", "").replace("Items.", ""));
 
-			setIcon(new ImageIcon(ImageUtils.resizeAA(
-					MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.getUnmappedValue()).getImage(), 25)));
+			setIcon(IconUtils.resize(MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), value.getUnmappedValue()),
+					25));
 
 			if (!isSelected && value.isManaged()) {
 				setBackground(Theme.current().getAltBackgroundColor());

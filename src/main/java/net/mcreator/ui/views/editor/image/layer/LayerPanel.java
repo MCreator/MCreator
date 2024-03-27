@@ -70,47 +70,31 @@ public class LayerPanel extends JPanel {
 		mergeDown = new JButton(UIRES.get("18px.merge"));
 
 		add.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_new_layer"));
-		add.setMargin(new Insets(0, 0, 0, 0));
-		add.setOpaque(false);
-		add.setBorder(BorderFactory.createEmptyBorder());
+		add.setMargin(new Insets(1, 1, 1, 1));
 		add.setEnabled(false);
 
 		up.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_move_up"));
-		up.setMargin(new Insets(0, 0, 0, 0));
-		up.setOpaque(false);
-		up.setBorder(BorderFactory.createEmptyBorder());
+		up.setMargin(new Insets(1, 1, 1, 1));
 		up.setEnabled(false);
 
 		down.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_move_down"));
-		down.setMargin(new Insets(0, 0, 0, 0));
-		down.setOpaque(false);
-		down.setBorder(BorderFactory.createEmptyBorder());
+		down.setMargin(new Insets(1, 1, 1, 1));
 		down.setEnabled(false);
 
 		editMeta.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_rename_layer"));
-		editMeta.setMargin(new Insets(0, 0, 0, 0));
-		editMeta.setOpaque(false);
-		editMeta.setBorder(BorderFactory.createEmptyBorder());
+		editMeta.setMargin(new Insets(1, 1, 1, 1));
 
 		toggleVisibility.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_toggle_visibility"));
-		toggleVisibility.setMargin(new Insets(0, 0, 0, 0));
-		toggleVisibility.setOpaque(false);
-		toggleVisibility.setBorder(BorderFactory.createEmptyBorder());
+		toggleVisibility.setMargin(new Insets(1, 1, 1, 1));
 
 		delete.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_delete_layer"));
-		delete.setMargin(new Insets(0, 0, 0, 0));
-		delete.setOpaque(false);
-		delete.setBorder(BorderFactory.createEmptyBorder());
+		delete.setMargin(new Insets(1, 1, 1, 1));
 
 		duplicate.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_duplicate_layer"));
-		duplicate.setMargin(new Insets(0, 0, 0, 0));
-		duplicate.setOpaque(false);
-		duplicate.setBorder(BorderFactory.createEmptyBorder());
+		duplicate.setMargin(new Insets(1, 1, 1, 1));
 
 		mergeDown.setToolTipText(L10N.t("dialog.imageeditor.layer_panel_merge_layers_down"));
-		mergeDown.setMargin(new Insets(0, 0, 0, 0));
-		mergeDown.setOpaque(false);
-		mergeDown.setBorder(BorderFactory.createEmptyBorder());
+		mergeDown.setMargin(new Insets(1, 1, 1, 1));
 
 		canEdit(false);
 

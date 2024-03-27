@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -71,15 +72,8 @@ public class JColor extends JPanel {
 			}
 		});
 
-		edit.setOpaque(false);
-		edit.setMargin(new Insets(0, 0, 0, 0));
-		edit.setBorder(BorderFactory.createEmptyBorder());
-		edit.setContentAreaFilled(false);
-
-		remove.setOpaque(false);
-		remove.setMargin(new Insets(0, 0, 0, 0));
-		remove.setBorder(BorderFactory.createEmptyBorder());
-		remove.setContentAreaFilled(false);
+		edit.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+		remove.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 
 		edit.addActionListener(e -> {
 			colorChooser.setColor(getColor());

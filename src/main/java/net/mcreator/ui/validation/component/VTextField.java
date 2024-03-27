@@ -88,8 +88,8 @@ public class VTextField extends JTextField implements IValidable {
 		g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
 		if (mouseInInfoZone) {
-			g.setColor(new Color(67, 67, 67, 255));
-			g.fillRect(2, 2, getWidth() - 2, 11);
+			g.setColor(Theme.current().getAltBackgroundColor());
+			g.fillRect(1, 1, getWidth() - 1, 13);
 			g.setFont(getFont().deriveFont(10.0f));
 			g.setColor(Theme.current().getForegroundColor());
 			String message = "This input field is validated";
@@ -98,22 +98,25 @@ public class VTextField extends JTextField implements IValidable {
 			if (currentValidationResult != null && currentValidationResult.getMessage() != null
 					&& !currentValidationResult.getMessage().isEmpty())
 				message = currentValidationResult.getMessage();
-			g.drawString(message, 3, 11);
+			g.drawString(message, 4, 11);
 		}
+
+		g.setColor(Theme.current().getAltBackgroundColor());
+		g.fillRect(getWidth() - 14, 1, 13, 13);
 
 		INFO_ICON.paintIcon(this, g, getWidth() - 14, 1);
 
 		if (currentValidationResult != null) {
 			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.WARNING) {
 				g.setColor(new Color(238, 229, 113));
-				WARNING_ICON.paintIcon(this, g, getWidth() - 14, 13);
+				WARNING_ICON.paintIcon(this, g, getWidth() - 14, 14);
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR) {
 				g.setColor(new Color(204, 108, 108));
-				ERROR_ICON.paintIcon(this, g, getWidth() - 14, 13);
+				ERROR_ICON.paintIcon(this, g, getWidth() - 14, 14);
 			} else if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.PASSED
 					&& showPassed) {
 				g.setColor(new Color(79, 192, 121));
-				OK_ICON.paintIcon(this, g, getWidth() - 14, 13);
+				OK_ICON.paintIcon(this, g, getWidth() - 14, 14);
 			}
 
 			if (currentValidationResult.getValidationResultType() == Validator.ValidationResultType.ERROR
