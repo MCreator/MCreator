@@ -34,6 +34,8 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.util.*;
 
@@ -49,19 +51,21 @@ public class ElementOrderEditor {
 		mainPanel.add("North", top);
 
 		LinkedHashMap<String, DefaultListModel<ModElement>> tabEditors = new LinkedHashMap<>();
+		Set<String> editedTabs = new HashSet<>();
 		JTabbedPane tabs = new JTabbedPane();
 		tabs.setBorder(BorderFactory.createEmptyBorder());
 
-		mcreator.getWorkspace().getModElements().stream().sorted(Comparator.comparingInt(ModElement::getSortID))
-				.forEach(modElement -> {
+		for (ModElement modElement : mcreator.getWorkspace().getModElements()) {
+			{
+				{
 					GeneratableElement generatableElement = modElement.getGeneratableElement();
 					if (generatableElement instanceof ITabContainedElement element) {
-						if (element.getCreativeTab() == null || element.getCreativeTab().getUnmappedValue()
-								.equals("No creative tab entry") || element.getCreativeTabItems().isEmpty()) {
-							return;
-						}
-
 						TabEntry tab = element.getCreativeTab();
+
+						if (tab == null || tab.getUnmappedValue().equals("No creative tab entry")
+								|| element.getCreativeTabItems().isEmpty()) {
+							continue;
+						}
 
 						if (tabEditors.get(tab.getUnmappedValue()) == null) {
 							DefaultListModel<ModElement> model = new DefaultListModel<>() {
@@ -70,6 +74,19 @@ public class ElementOrderEditor {
 									element.reinit(mcreator.getWorkspace());
 								}
 							};
+							model.addListDataListener(new ListDataListener() {
+								@Override public void intervalAdded(ListDataEvent e) {
+									editedTabs.add(tab.getUnmappedValue());
+								}
+
+								@Override public void intervalRemoved(ListDataEvent e) {
+									editedTabs.add(tab.getUnmappedValue());
+								}
+
+								@Override public void contentsChanged(ListDataEvent e) {
+									editedTabs.add(tab.getUnmappedValue());
+								}
+							});
 							JList<ModElement> list = new JList<>(model);
 							list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 							list.setVisibleRowCount(-1);
@@ -96,9 +113,23 @@ public class ElementOrderEditor {
 
 							tabEditors.put(tab.getUnmappedValue(), model);
 						}
-						tabEditors.get(tab.getUnmappedValue()).addElement(modElement);
+
+						if (mcreator.getWorkspace().getElementOrderInTab(tab.getUnmappedValue()) == null)
+							tabEditors.get(tab.getUnmappedValue()).addElement(modElement);
 					}
-				});
+				}
+			}
+		}
+
+		for (String tab : tabEditors.keySet()) {
+			if (mcreator.getWorkspace().getElementOrderInTab(tab) != null) {
+				for (String element : mcreator.getWorkspace().getElementOrderInTab(tab)) {
+					ModElement me = mcreator.getWorkspace().getModElementByName(element);
+					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement)
+						tabEditors.get(tab).addElement(me);
+				}
+			}
+		}
 
 		mainPanel.add("Center", tabs);
 		mainPanel.setPreferredSize(new Dimension(748, 320));
@@ -108,22 +139,11 @@ public class ElementOrderEditor {
 				"");
 
 		if (resultval == 0) {
-			int currid = 1;
-
-			Map<ModElement, Integer> idmap = new HashMap<>();
 			for (Map.Entry<String, DefaultListModel<ModElement>> entry : tabEditors.entrySet()) {
-				for (int i = 0; i < entry.getValue().size(); i++) {
-					ModElement element = entry.getValue().getElementAt(i);
-					idmap.put(element, currid);
-					currid++;
+				if (editedTabs.contains(entry.getKey())) {
+					mcreator.getWorkspace()
+							.setElementOrderInTab(entry.getKey(), Collections.list(entry.getValue().elements()));
 				}
-			}
-
-			for (ModElement element : mcreator.getWorkspace().getModElements()) {
-				if (idmap.get(element) != null)
-					element.setSortID(idmap.get(element));
-				else
-					element.setSortID(currid++);
 			}
 
 			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.element_order.change_message"),
