@@ -230,7 +230,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			if (tabEntry == null || tabEntry.getUnmappedValue().equals("No creative tab entry"))
 				return;
 
-			if (!tab_element_order.get(tabEntry.getUnmappedValue()).contains(element.getName())) {
+			if (tab_element_order.containsKey(tabEntry.getUnmappedValue()) && !tab_element_order.get(
+					tabEntry.getUnmappedValue()).contains(element.getName())) {
 				for (Map.Entry<String, ArrayList<String>> entry : tab_element_order.entrySet()) {
 					if (!entry.getKey().equals(tabEntry.getUnmappedValue()))
 						entry.getValue().remove(element.getName());
