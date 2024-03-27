@@ -213,7 +213,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 			if (element.getGeneratableElement() instanceof ITabContainedElement tabElement) {
 				TabEntry tabEntry = tabElement.getCreativeTab();
-				if (tabEntry != null && !tabEntry.getUnmappedValue().equals("No creative tab entry"))
+				if (tabEntry != null && !(tabEntry.getUnmappedValue()).equals("No creative tab entry")
+						&& tab_element_order.containsKey(tabEntry.getUnmappedValue()))
 					tab_element_order.get(tabEntry.getUnmappedValue()).add(element.getName());
 			}
 
@@ -230,10 +231,11 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			if (tabEntry == null || tabEntry.getUnmappedValue().equals("No creative tab entry"))
 				return;
 
+			// if order in new tab is overridden, add the element explicitly
 			if (tab_element_order.containsKey(tabEntry.getUnmappedValue()) && !tab_element_order.get(
 					tabEntry.getUnmappedValue()).contains(element.getName())) {
 				for (Map.Entry<String, ArrayList<String>> entry : tab_element_order.entrySet()) {
-					if (!entry.getKey().equals(tabEntry.getUnmappedValue()))
+					if (!entry.getKey().equals(tabEntry.getUnmappedValue())) // remove element from its prior tab
 						entry.getValue().remove(element.getName());
 				}
 

@@ -117,6 +117,7 @@ public class ElementOrderEditor {
 			}
 		}
 
+		// add contents of tabs with overridden elements order
 		for (String tab : tabEditors.keySet()) {
 			if (mcreator.getWorkspace().getElementOrderInTab(tab) != null) {
 				for (String element : mcreator.getWorkspace().getElementOrderInTab(tab)) {
