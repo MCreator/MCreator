@@ -139,8 +139,6 @@ import java.util.stream.Collectors;
 			L10N.t("workspace.elements.list.sort_date"));
 	public JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name"));
 	private final JRadioButtonMenuItem sortType = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_type"));
-	private final JRadioButtonMenuItem sortLoadingOrder = new JRadioButtonMenuItem(
-			L10N.t("workspace.elements.list.sort_loading_order"));
 
 	private final OptionPaneValidatior folderNameValidator = new OptionPaneValidatior() {
 		@Override public ValidationResult validate(JComponent component) {
@@ -599,9 +597,6 @@ import java.util.stream.Collectors;
 		sortTwo.add(sortType);
 		sortPopup.add(sortType);
 
-		sortTwo.add(sortLoadingOrder);
-		sortPopup.add(sortLoadingOrder);
-
 		sort.addActionListener(e -> sortPopup.show(sort, 0, 26));
 
 		JPopupMenu viewPopup = new JPopupMenu();
@@ -621,12 +616,10 @@ import java.util.stream.Collectors;
 
 		view.addActionListener(e -> viewPopup.show(view, 0, 23));
 
-		if (PreferencesManager.PREFERENCES.hidden.workspaceSortType.get() == HiddenSection.SortType.NAME) {
+		if (PreferencesManager.PREFERENCES.hidden.workspaceSortOrder.get() == HiddenSection.SortType.NAME) {
 			sortName.setSelected(true);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceSortType.get() == HiddenSection.SortType.TYPE) {
+		} else if (PreferencesManager.PREFERENCES.hidden.workspaceSortOrder.get() == HiddenSection.SortType.TYPE) {
 			sortType.setSelected(true);
-		} else if (PreferencesManager.PREFERENCES.hidden.workspaceSortType.get() == HiddenSection.SortType.LOADORDER) {
-			sortLoadingOrder.setSelected(true);
 		} else {
 			sortDateCreated.setSelected(true);
 		}
@@ -899,13 +892,11 @@ import java.util.stream.Collectors;
 
 	private void resort() {
 		if (sortName.isSelected()) {
-			PreferencesManager.PREFERENCES.hidden.workspaceSortType.set(HiddenSection.SortType.NAME);
+			PreferencesManager.PREFERENCES.hidden.workspaceSortOrder.set(HiddenSection.SortType.NAME);
 		} else if (sortType.isSelected()) {
-			PreferencesManager.PREFERENCES.hidden.workspaceSortType.set(HiddenSection.SortType.TYPE);
-		} else if (sortLoadingOrder.isSelected()) {
-			PreferencesManager.PREFERENCES.hidden.workspaceSortType.set(HiddenSection.SortType.LOADORDER);
+			PreferencesManager.PREFERENCES.hidden.workspaceSortOrder.set(HiddenSection.SortType.TYPE);
 		} else {
-			PreferencesManager.PREFERENCES.hidden.workspaceSortType.set(HiddenSection.SortType.CREATED);
+			PreferencesManager.PREFERENCES.hidden.workspaceSortOrder.set(HiddenSection.SortType.CREATED);
 		}
 
 		PreferencesManager.PREFERENCES.hidden.workspaceSortAscending.set(!desc.isSelected());
@@ -1417,8 +1408,6 @@ import java.util.stream.Collectors;
 				modElements.sort((a, b) -> {
 					if (sortType.isSelected()) {
 						return a.getType().getReadableName().compareTo(b.getType().getReadableName());
-					} else if (sortLoadingOrder.isSelected()) {
-						return a.getSortID() - b.getSortID();
 					} else {
 						return a.getName().compareTo(b.getName());
 					}

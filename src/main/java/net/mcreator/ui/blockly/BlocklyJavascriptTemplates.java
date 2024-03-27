@@ -53,7 +53,7 @@ public class BlocklyJavascriptTemplates {
 					"output": "%s",
 					"colour": "%s",
 					"mutator": "variable_entity_input"
-				}]);""".formatted(variableType.getName(), L10N.t("blockly.block.get_var"), variableType.getName(),
+				}]);""".formatted(variableType.getName(), getBlockText("get_var", variableType), variableType.getName(),
 				variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 
@@ -82,7 +82,7 @@ public class BlocklyJavascriptTemplates {
 					"output": "%s",
 					"colour": "%s",
 					"mutator": "variable_entity_input"
-				}]);""".formatted(variableType.getName(), L10N.t("blockly.block.get_var"), variableType.getName(),
+				}]);""".formatted(variableType.getName(), getBlockText("get_var", variableType), variableType.getName(),
 				variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 
@@ -110,7 +110,7 @@ public class BlocklyJavascriptTemplates {
 					"nextStatement": null,
 					"colour": "%s",
 					"mutator": "variable_entity_input"
-				}]);""".formatted(variableType.getName(), L10N.t("blockly.block.set_var"),
+				}]);""".formatted(variableType.getName(), getBlockText("set_var", variableType),
 				L10N.t("blockly.block.set_to"), variableType.getBlocklyVariableType(), variableType.getName(),
 				variableType.getColor());
 	}
@@ -119,7 +119,7 @@ public class BlocklyJavascriptTemplates {
 		return """
 				Blockly.defineBlocksWithJsonArray([{
 					"type": "custom_dependency_%s",
-					"message0": "%%1",
+					"message0": "%s %%1",
 					"args0": [
 						{
 							"type": "field_javaname",
@@ -129,8 +129,8 @@ public class BlocklyJavascriptTemplates {
 					],
 					"output": "%s",
 					"colour": "%s"
-				}]);""".formatted(variableType.getName(), variableType.getBlocklyVariableType(),
-				variableType.getColor());
+				}]);""".formatted(variableType.getName(), getBlockText("custom_dependency", variableType),
+				variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 
 	public static String procedureReturnValueBlock(VariableType variableType) {
@@ -148,7 +148,7 @@ public class BlocklyJavascriptTemplates {
 					"output": "%s",
 					"inputsInline": true,
 					"colour": "%s"
-				}]);""".formatted(variableType.getName(), L10N.t("blockly.block.procedure_retval"),
+				}]);""".formatted(variableType.getName(), getBlockText("procedure_retval", variableType),
 				variableType.getName(), variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 
@@ -174,15 +174,11 @@ public class BlocklyJavascriptTemplates {
 					"output": "%s",
 					"inputsInline": true,
 					"colour": "%s"
-				}]);""".formatted(variableType.getName(), L10N.t("blockly.block.procedure_retval"),
+				}]);""".formatted(variableType.getName(), getBlockText("procedure_retval", variableType),
 				variableType.getName(), variableType.getBlocklyVariableType(), variableType.getColor());
 	}
 
 	public static String returnBlock(VariableType variableType) {
-		// The previous "Return" text is used as fallback if the specific key is missing
-		String blockText = L10N.t("blockly.block.return_" + variableType.getName()) != null ?
-				L10N.t("blockly.block.return_" + variableType.getName()) :
-				L10N.t("blockly.block.return");
 		return """
 				Blockly.defineBlocksWithJsonArray([{
 					"type": "return_%s",
@@ -196,7 +192,15 @@ public class BlocklyJavascriptTemplates {
 					],
 					"previousStatement": null,
 					"colour": "%s"
-				}]);""".formatted(variableType.getName(), blockText, variableType.getBlocklyVariableType(),
-				variableType.getColor());
+				}]);""".formatted(variableType.getName(), getBlockText("return", variableType),
+				variableType.getBlocklyVariableType(), variableType.getColor());
 	}
+
+	private static String getBlockText(String key, VariableType variableType) {
+		// If the specific key is missing, fall back to the generic variant
+		return L10N.t("blockly.block." + key + "_" + variableType.getName()) != null ?
+				L10N.t("blockly.block." + key + "_" + variableType.getName()) :
+				L10N.t("blockly.block." + key);
+	}
+
 }
