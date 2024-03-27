@@ -1653,6 +1653,8 @@ public class TestWorkspaceDataProvider {
 				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		livingEntity.stepSound = new Sound(modElement.getWorkspace(),
 				emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+		livingEntity.celebrationSound = new Sound(modElement.getWorkspace(),
+				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		livingEntity.rangedItemType = "Default item";
 		if (!emptyLists) {
 			livingEntity.spawningCondition = new Procedure("condition3");
@@ -1709,6 +1711,8 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelHeight = 1.3;
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
+		for(int i = 0; i < 7; i++)
+			livingEntity.spawnPercentageRaid[i] = (4 + i);
 		livingEntity.modelLayers = new ArrayList<>();
 		if (!emptyLists) {
 			livingEntity.entityDataEntries.add(new PropertyDataWithValue<>(new PropertyData.LogicType("Logic"), _true));

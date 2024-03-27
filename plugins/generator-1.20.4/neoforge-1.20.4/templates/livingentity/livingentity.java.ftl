@@ -254,6 +254,12 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	}
 	</#if>
 
+	<#if data.mobBehaviourType == "Raider">
+	@Override public SoundEvent getCelebrateSound() {
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.celebrationSound}"));
+	}
+	</#if>
+
 	<#if hasProcedure(data.onStruckByLightning)>
 	@Override public void thunderHit(ServerLevel serverWorld, LightningBolt lightningBolt) {
 		super.thunderHit(serverWorld, lightningBolt);
@@ -889,7 +895,15 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		<#if data.spawnInDungeons>
 			DungeonHooks.addDungeonMob(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), 180);
 		</#if>
+
+		<#if data.mobBehaviourType == "Raider">
+		Raid.RaiderType.create("${registryname}", ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), new int[]{0, ${data.spawnPercentageRaid[0]}, ${data.spawnPercentageRaid[1]}, ${data.spawnPercentageRaid[2]}, ${data.spawnPercentageRaid[3]}, ${data.spawnPercentageRaid[4]}, ${data.spawnPercentageRaid[5]}, ${data.spawnPercentageRaid[6]}});
+		</#if>
 	}
+
+	<#if data.mobBehaviourType == "Raider">
+	@Override public void applyRaidBuffs(int num, boolean logic) {}
+	</#if>
 
 	public static AttributeSupplier.Builder createAttributes() {
 		AttributeSupplier.Builder builder = Mob.createMobAttributes();
