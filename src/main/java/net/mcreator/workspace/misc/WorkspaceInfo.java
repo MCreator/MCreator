@@ -133,7 +133,7 @@ import java.util.*;
 
 	public Map<String, List<MItemBlock>> getCreativeTabMap() {
 		List<GeneratableElement> elementsList = workspace.getModElements().stream()
-				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement).toList();
+				.map(ModElement::getGeneratableElement).toList();
 
 		Map<String, List<MItemBlock>> tabMap = new HashMap<>();
 
@@ -151,8 +151,25 @@ import java.util.*;
 							tabMap.put(tab, new ArrayList<>());
 						}
 
-						tabMap.get(tab)
-								.addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName())).toList());
+						if (workspace.getElementOrderInTab(tab) == null) {
+							tabMap.get(tab).addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
+									.toList());
+						}
+					}
+				}
+			}
+		}
+
+		for (String tab : tabMap.keySet()) {
+			if (workspace.getElementOrderInTab(tab) != null) {
+				for (String element : workspace.getElementOrderInTab(tab)) {
+					ModElement me = workspace.getModElementByName(element);
+					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement) {
+						List<MCItem> tabItems = tabElement.getCreativeTabItems();
+						if (tabItems != null && !tabItems.isEmpty()) {
+							tabMap.get(tab).addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
+									.toList());
+						}
 					}
 				}
 			}

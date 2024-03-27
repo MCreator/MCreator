@@ -55,6 +55,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
+	private ConcurrentHashMap<String, ArrayList<String>> tab_element_order = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<TagElement, ArrayList<String>> tag_elements = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<>() {{
 		put("en_us", new ConcurrentHashMap<>());
@@ -113,6 +114,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return Collections.unmodifiableSet(sound_elements);
 	}
 
+	public Map<String, ArrayList<String>> getTabElementOrderMap() {
+		return tab_element_order;
+	}
+
 	public Map<TagElement, ArrayList<String>> getTagElements() {
 		return tag_elements;
 	}
@@ -146,6 +151,22 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void resetModElementCompilesStatus() {
 		mod_elements.parallelStream().forEach(el -> el.setCompiles(true));
+		markDirty();
+	}
+
+	public List<String> getElementOrderInTab(String tab) {
+		return tab_element_order.get(tab);
+	}
+
+	public void setElementOrderInTab(String tab, List<ModElement> elements) {
+		if (tab_element_order.containsKey(tab))
+			tab_element_order.get(tab).clear();
+		else
+			tab_element_order.put(tab, new ArrayList<>());
+
+		for (ModElement element : elements)
+			tab_element_order.get(tab).add(element.getName());
+
 		markDirty();
 	}
 
@@ -531,6 +552,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		this.mod_elements = other.mod_elements;
 		this.variable_elements = other.variable_elements;
 		this.sound_elements = other.sound_elements;
+		this.tab_element_order = other.tab_element_order;
 		this.tag_elements = other.tag_elements;
 		this.language_map = other.language_map;
 		this.foldersRoot = other.foldersRoot;
