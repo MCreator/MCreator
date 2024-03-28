@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.component;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.ListEditorDialog;
 import net.mcreator.ui.init.UIRES;
@@ -90,20 +91,14 @@ public class JStringListField extends JPanel {
 			}
 		});
 
-		edit.setOpaque(false);
-		edit.setMargin(new Insets(0, 0, 0, 0));
-		edit.setBorder(BorderFactory.createEmptyBorder());
-		edit.setContentAreaFilled(false);
+		edit.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		edit.addActionListener(e -> {
 			List<String> newTextList = ListEditorDialog.open(parent, entriesModel.elements(), validator, uniqueEntries);
 			if (newTextList != null)
 				setTextList(newTextList);
 		});
 
-		clear.setOpaque(false);
-		clear.setMargin(new Insets(0, 0, 0, 0));
-		clear.setBorder(BorderFactory.createEmptyBorder());
-		clear.setContentAreaFilled(false);
+		clear.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 		clear.addActionListener(e -> {
 			entriesModel.clear();
 			changeListeners.forEach(l -> l.stateChanged(new ChangeEvent(this)));

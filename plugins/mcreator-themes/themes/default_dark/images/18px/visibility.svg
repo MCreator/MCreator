@@ -1,0 +1,20 @@
+<!--
+  - MCreator (https://mcreator.net/)
+  - Copyright (C) 2012-2020, Pylo
+  - Copyright (C) 2020-2024, Pylo, opensource contributors
+  -
+  - This program is free software: you can redistribute it and/or modify
+  - it under the terms of the GNU General Public License as published by
+  - the Free Software Foundation, either version 3 of the License, or
+  - (at your option) any later version.
+  -
+  - This program is distributed in the hope that it will be useful,
+  - but WITHOUT ANY WARRANTY; without even the implied warranty of
+  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  - GNU General Public License for more details.
+  -
+  - You should have received a copy of the GNU General Public License
+  - along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<svg width="18" height="18" version="1.1" viewBox="0 0 4.7625 4.7625" xml:space="preserve" xmlns="http://www.w3.org/2000/svg"><path d="m2.3812 1.7653c-0.72383 0-1.2786 0.43312-1.7198 0.92604 0.44118 0.49292 0.99596 0.92604 1.7198 0.92604 0.72383 0 1.2786-0.43312 1.7198-0.92604-0.44118-0.49292-0.99596-0.92604-1.7198-0.92604zm0 0.52047c0.24426 0 0.40534 0.20273 0.40534 0.40557s-0.16522 0.40537-0.40534 0.40537-0.40534-0.16733-0.40534-0.40537 0.16108-0.40557 0.40534-0.40557z" fill="#fff"/><path transform="translate(0 .045601)" d="m0.95934 1.6782-0.29373-0.35321m3.1376 0.35321 0.29373-0.35321" fill="none" stroke="#fff" stroke-linecap="round" stroke-width=".26458"/><path transform="translate(0 .045601)" d="m1.9103 1.2887-0.10905-0.43983m1.0509 0.43983 0.10905-0.43983" fill="none" stroke="#fff" stroke-linecap="round" stroke-width=".26458"/></svg>
