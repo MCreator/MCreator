@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.procedure;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -128,9 +129,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 		if (allowInlineEditor) {
 			setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
 
-			add.setContentAreaFilled(false);
-			add.setOpaque(false);
-			add.setMargin(new Insets(0, 0, 0, 0));
+			add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 			add.addActionListener(e -> {
 				String procedureNameString = "";
 				if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI) {
@@ -175,9 +174,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 				}
 			});
 
-			edit.setMargin(new Insets(0, 0, 0, 0));
-			edit.setOpaque(false);
-			edit.setContentAreaFilled(false);
+			edit.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 			edit.addActionListener(e -> {
 				if (getSelectedProcedure() != null) {
 					ModElement selectedProcedureAsModElement = mcreator.getWorkspace()
@@ -190,7 +187,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			});
 
 			add("Center", PanelUtils.centerAndEastElement(procwrap,
-					PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, add, edit))));
+					PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, add, edit)), 2, 0));
 		} else {
 			setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 1));
 
