@@ -101,12 +101,10 @@ package ${package}.client.particle;
 		return ParticleRenderType.PARTICLE_SHEET_${data.renderType};
 	}
 
-
 	<#if hasProcedure(data.scale)>
 	@Override public float getQuadSize(float scale) {
-		super.getQuadSize(scale);
 		Level world = this.level;
-		return this.quadSize * (float) <@procedureOBJToConditionCode data.scale/>;
+		return super.getQuadSize(scale) * (float) <@procedureOBJToConditionCode data.scale/>;
 	}
 	</#if>
 
