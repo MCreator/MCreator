@@ -240,7 +240,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JCheckBox spawnThisMob = new JCheckBox();
 	private final JCheckBox doesDespawnWhenIdle = new JCheckBox();
 
-	private final JSpinner[] spawnPercentageRaid = new JSpinner[] {
+	private final JSpinner[] raidSpawnsCount = new JSpinner[] {
 			new JSpinner(new SpinnerNumberModel(4, 0, 1000, 1)),
 			new JSpinner(new SpinnerNumberModel(3, 0, 1000, 1)),
 			new JSpinner(new SpinnerNumberModel(3, 0, 1000, 1)),
@@ -724,8 +724,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.death_sound")));
 		spo6.add(deathSound);
 
-		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/celebration_sound"),
-				L10N.label("elementgui.living_entity.celebration_sound")));
+		spo6.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/raid_celebration_sound"),
+				L10N.label("elementgui.living_entity.raid_celebration_sound")));
 		spo6.add(celebrationSound);
 
 		pane6.setOpaque(false);
@@ -876,16 +876,16 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.does_spawn_in_dungeons")));
 		selp.add(spawnInDungeons);
 
-		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/raid_spawn_percentage"),
-				L10N.label("elementgui.living_entity.raid_spawn_percentage")));
-		selp.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, spawnPercentageRaid[0], new JEmptyBox(2, 2), spawnPercentageRaid[1],
-				new JEmptyBox(2, 2), spawnPercentageRaid[2], new JEmptyBox(2, 2), spawnPercentageRaid[3], new JEmptyBox(2, 2),
-				spawnPercentageRaid[4], new JEmptyBox(2,2), spawnPercentageRaid[5], new JEmptyBox(2,2), spawnPercentageRaid[6]));
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("entity/raid_spawns_counts"),
+				L10N.label("elementgui.living_entity.raid_spawns_counts")));
+		selp.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, raidSpawnsCount[0], new JEmptyBox(2, 2), raidSpawnsCount[1],
+				new JEmptyBox(2, 2), raidSpawnsCount[2], new JEmptyBox(2, 2), raidSpawnsCount[3], new JEmptyBox(2, 2),
+				raidSpawnsCount[4], new JEmptyBox(2,2), raidSpawnsCount[5], new JEmptyBox(2,2), raidSpawnsCount[6]));
 
 		selp.setOpaque(false);
 
 		for(int i = 0; i < 7; i++)
-			spawnPercentageRaid[i].setPreferredSize(new Dimension(60, 40));
+			raidSpawnsCount[i].setPreferredSize(new Dimension(60, 40));
 
 		JComponent selpcont = PanelUtils.northAndCenterElement(selp,
 				PanelUtils.gridElements(1, 2, 5, 5, L10N.label("elementgui.living_entity.spawn_general_condition"),
@@ -1032,7 +1032,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		tameable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
 		breedTriggerItems.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
 		for(int i = 0; i < 7; i++)
-			spawnPercentageRaid[i].setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
+			raidSpawnsCount[i].setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
@@ -1094,7 +1094,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		hurtSound.setSound(livingEntity.hurtSound);
 		deathSound.setSound(livingEntity.deathSound);
 		stepSound.setSound(livingEntity.stepSound);
-		celebrationSound.setSound(livingEntity.celebrationSound);
+		celebrationSound.setSound(livingEntity.raidCelebrationSound);
 		hasAI.setSelected(livingEntity.hasAI);
 		isBoss.setSelected(livingEntity.isBoss);
 		hasSpawnEgg.setSelected(livingEntity.hasSpawnEgg);
@@ -1134,7 +1134,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
 		for(int i = 0; i < 7; i++)
-			spawnPercentageRaid[i].setValue(livingEntity.spawnPercentageRaid[i]);
+			raidSpawnsCount[i].setValue(livingEntity.raidSpawnsCount[i]);
 		modelLayers.setEntries(livingEntity.modelLayers);
 
 		entityDataList.setEntries(livingEntity.entityDataEntries);
@@ -1214,7 +1214,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.hurtSound = hurtSound.getSound();
 		livingEntity.deathSound = deathSound.getSound();
 		livingEntity.stepSound = stepSound.getSound();
-		livingEntity.celebrationSound = celebrationSound.getSound();
+		livingEntity.raidCelebrationSound = celebrationSound.getSound();
 		livingEntity.spawningCondition = spawningCondition.getSelectedProcedure();
 		livingEntity.onStruckByLightning = onStruckByLightning.getSelectedProcedure();
 		livingEntity.whenMobFalls = whenMobFalls.getSelectedProcedure();
@@ -1260,7 +1260,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.guiBoundTo = guiBoundTo.getSelectedItem();
 		livingEntity.entityDataEntries = entityDataList.getEntries();
 		for(int i = 0; i < 7; i++)
-			livingEntity.spawnPercentageRaid[i] = (int) spawnPercentageRaid[i].getValue();
+			livingEntity.raidSpawnsCount[i] = (int) raidSpawnsCount[i].getValue();
 		livingEntity.modelLayers = modelLayers.getEntries();
 		return livingEntity;
 	}

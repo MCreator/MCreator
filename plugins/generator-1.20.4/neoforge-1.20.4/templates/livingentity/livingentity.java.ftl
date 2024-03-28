@@ -256,7 +256,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	<#if data.mobBehaviourType == "Raider">
 	@Override public SoundEvent getCelebrateSound() {
-		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.celebrationSound}"));
+		return ForgeRegistries.SOUND_EVENTS.getValue(new ResourceLocation("${data.raidCelebrationSound}"));
 	}
 	</#if>
 
@@ -897,7 +897,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 		</#if>
 
 		<#if data.mobBehaviourType == "Raider">
-		Raid.RaiderType.create("${registryname}", ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), new int[]{0, ${data.spawnPercentageRaid[0]}, ${data.spawnPercentageRaid[1]}, ${data.spawnPercentageRaid[2]}, ${data.spawnPercentageRaid[3]}, ${data.spawnPercentageRaid[4]}, ${data.spawnPercentageRaid[5]}, ${data.spawnPercentageRaid[6]}});
+		Raid.RaiderType.create("${registryname}", ${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), new int[]{0, ${data.raidSpawnsCount[0]}, ${data.raidSpawnsCount[1]}, ${data.raidSpawnsCount[2]}, ${data.raidSpawnsCount[3]}, ${data.raidSpawnsCount[4]}, ${data.raidSpawnsCount[5]}, ${data.raidSpawnsCount[6]}});
 		</#if>
 	}
 
