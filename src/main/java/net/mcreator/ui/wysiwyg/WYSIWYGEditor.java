@@ -196,8 +196,8 @@ public class WYSIWYGEditor extends JPanel {
 				(L10N.t("elementgui.gui.component_list")), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		TransparentToolBar bar2 = new TransparentToolBar();
-		bar2.setBorder(BorderFactory.createEmptyBorder());
+		JToolBar bar2 = new JToolBar();
+		bar2.setOpaque(false);
 		bar2.setFloatable(false);
 
 		moveComponent.setToolTipText((L10N.t("elementgui.gui.move_component")));
@@ -429,7 +429,6 @@ public class WYSIWYGEditor extends JPanel {
 		zoomHolder.add("West", add);
 
 		sidebar.setPreferredSize(new Dimension(250, 10));
-		sidebar.setOpaque(false);
 
 		add("East", sidebar);
 		add("Center", zoomHolder);

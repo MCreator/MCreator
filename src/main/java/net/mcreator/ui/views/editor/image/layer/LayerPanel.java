@@ -55,7 +55,7 @@ public class LayerPanel extends JPanel {
 		this.f = f;
 		this.toolPanel = toolPanel;
 		this.versionManager = versionManager;
-		TransparentToolBar controls = new TransparentToolBar();
+		JToolBar controls = new JToolBar();
 
 		JLabel closed = L10N.label("dialog.imageeditor.layer_panel_no_image");
 		JLabel empty = L10N.label("dialog.imageeditor.layer_panel_no_layers");
