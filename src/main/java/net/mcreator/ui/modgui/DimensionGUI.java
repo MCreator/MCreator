@@ -63,7 +63,8 @@ import java.net.URISyntaxException;
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final VTextField igniterName = new VTextField(14);
-	private final JComboBox<String> igniterRarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
+	private final JComboBox<String> igniterRarity = new JComboBox<>(
+			new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 
 	private StringListProcedureSelector specialInformation;
 
@@ -255,7 +256,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.portal_igniter_name")));
 		proper22.add(igniterName);
 
-		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		proper22.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
 		proper22.add(igniterRarity);
 
 		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
