@@ -43,7 +43,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 	private final JButton remove = new JButton(UIRES.get("16px.clear"));
 
 	private final JSpinner weight = new JSpinner(new SpinnerNumberModel(1, 1, 150, 1));
-	private final SearchableComboBox<String> structureSelector = new SearchableComboBox<>();
+	private final SearchableComboBox<String> structureSelector;
 	private final JComboBox<String> projection = new JComboBox<>(new String[] { "rigid", "terrain_matching" });
 	private final MCItemListField ignoreBlocks;
 
@@ -56,6 +56,8 @@ public class JJigsawPart extends JPanel implements IValidable {
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
 		ignoreBlocks.setPreferredSize(new Dimension(200, 30));
 
+		structureSelector = new SearchableComboBox<>(
+				mcreator.getFolderManager().getStructureList().toArray(String[]::new));
 		structureSelector.setValidator(() -> {
 			if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().isEmpty())
 				return new Validator.ValidationResult(Validator.ValidationResultType.ERROR,
