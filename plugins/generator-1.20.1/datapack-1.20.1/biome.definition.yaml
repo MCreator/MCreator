@@ -12,6 +12,10 @@ templates:
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname_tree.json"
 
 tags:
+  - tag: BIOMES:minecraft:is_overworld
+    condition: spawnBiome
+  - tag: BIOMES:minecraft:is_nether
+    condition: spawnBiomeNether
   - tag: BIOMES:minecraft:has_structure/mineshaft
     condition: spawnMineshaft
   - tag: BIOMES:minecraft:has_structure/igloo

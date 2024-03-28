@@ -27,6 +27,10 @@ global_templates:
     name: "@SRCROOT/@BASEPACKAGEPATH/init/@JavaModNameBiomes.java"
 
 tags:
+  - tag: BIOMES:minecraft:is_overworld
+    condition: spawnBiome
+  - tag: BIOMES:minecraft:is_nether
+    condition: spawnBiomeNether
   - tag: BIOMES:minecraft:has_structure/mineshaft
     condition: spawnMineshaft
   - tag: BIOMES:minecraft:has_structure/igloo
