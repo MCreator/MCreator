@@ -50,6 +50,7 @@ import net.mcreator.workspace.elements.ModElement;
 import javax.swing.*;
 import java.awt.*;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 
 public class ArmorPackMakerTool {
@@ -150,7 +151,7 @@ public class ArmorPackMakerTool {
 		armor.textureLeggings = name.toLowerCase(Locale.ENGLISH) + "_leggings";
 		armor.textureBoots = name.toLowerCase(Locale.ENGLISH) + "_boots";
 		armor.armorTextureFile = name.toLowerCase(Locale.ENGLISH);
-		armor.creativeTab = new TabEntry(workspace, "COMBAT");
+		armor.creativeTabs = List.of(new TabEntry(workspace, "COMBAT"));
 		armor.maxDamage = (int) Math.round(15 * factor);
 		armor.enchantability = (int) Math.round(9 * factor);
 		armor.toughness = 0;

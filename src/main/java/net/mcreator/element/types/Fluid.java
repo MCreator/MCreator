@@ -69,7 +69,7 @@ import java.util.List;
 
 	public boolean generateBucket;
 	@TextureReference(TextureType.ITEM) public String textureBucket;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	public Sound emptySound;
 	public String rarity;
 	public StringListProcedure specialInformation;
@@ -99,6 +99,8 @@ import java.util.List;
 	public Fluid(ModElement element) {
 		super(element);
 
+		this.creativeTabs = new ArrayList<>();
+
 		this.tintType = "No tint";
 
 		this.rarity = "COMMON";
@@ -122,8 +124,8 @@ import java.util.List;
 				getModElement().getFolderManager().getTextureImageIcon(textureStill, TextureType.BLOCK).getImage(), 32);
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	public boolean isFluidTinted() {

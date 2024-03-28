@@ -30,7 +30,6 @@ import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.mapping.UniquelyMappedElement;
-import net.mcreator.minecraft.MCItem;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.TagElement;
@@ -120,8 +119,7 @@ import java.util.*;
 
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
-				TabEntry tab = tabElement.getCreativeTab();
-				if (tab != null && !tab.getUnmappedValue().equals("No creative tab entry")) {
+				if (!tabElement.getCreativeTabs().isEmpty()) {
 					if (!tabElement.getCreativeTabItems().isEmpty())
 						return true;
 				}
@@ -142,17 +140,12 @@ import java.util.*;
 		// ModElement#getGeneratableElement that is not thread safe
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
-				TabEntry tabEntry = tabElement.getCreativeTab();
-				List<MCItem> tabItems = tabElement.getCreativeTabItems();
-				if (tabEntry != null && tabItems != null && !tabItems.isEmpty()) {
-					String tab = tabEntry.getUnmappedValue();
-					if (tab != null && !tab.equals("No creative tab entry")) {
-						if (!tabMap.containsKey(tab)) {
-							tabMap.put(tab, new ArrayList<>());
-						}
-
-						tabMap.get(tab)
-								.addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName())).toList());
+				List<MItemBlock> tabItems = tabElement.getCreativeTabItems().stream()
+						.map(e -> new MItemBlock(workspace, e.getName())).toList();
+				if (!tabItems.isEmpty()) {
+					for (TabEntry tabEntry : tabElement.getCreativeTabs()) {
+						String tab = tabEntry.getUnmappedValue();
+						tabMap.computeIfAbsent(tab, e -> new ArrayList<>()).addAll(tabItems);
 					}
 				}
 			}

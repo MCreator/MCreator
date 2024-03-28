@@ -41,10 +41,7 @@ import net.mcreator.workspace.resources.TexturedModel;
 
 import javax.annotation.Nonnull;
 import java.awt.image.BufferedImage;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings({ "unused", "NotNullFieldNotInitialized" }) public class Tool extends GeneratableElement
 		implements IItem, IItemWithModel, ITabContainedElement, IItemWithTexture {
@@ -59,7 +56,7 @@ import java.util.Map;
 
 	public String name;
 	public StringListProcedure specialInformation;
-	public TabEntry creativeTab;
+	public List<TabEntry> creativeTabs;
 	public int harvestLevel;
 	public double efficiency;
 	public double attackSpeed;
@@ -89,6 +86,8 @@ import java.util.Map;
 
 	public Tool(ModElement element) {
 		super(element);
+
+		this.creativeTabs = new ArrayList<>();
 
 		this.attackSpeed = 2.8;
 
@@ -149,8 +148,8 @@ import java.util.Map;
 		}
 	}
 
-	@Override public TabEntry getCreativeTab() {
-		return creativeTab;
+	@Override public List<TabEntry> getCreativeTabs() {
+		return creativeTabs;
 	}
 
 	@Override public String getTexture() {
