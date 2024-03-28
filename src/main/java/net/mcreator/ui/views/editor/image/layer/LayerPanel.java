@@ -19,7 +19,6 @@
 package net.mcreator.ui.views.editor.image.layer;
 
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.imageeditor.NewLayerDialog;
 import net.mcreator.ui.init.L10N;
