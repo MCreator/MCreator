@@ -190,10 +190,8 @@ public class ProgressDialog extends MCreatorDialog {
 				boolean isSelected, boolean cellHasFocus) {
 			removeAll();
 			setLayout(new BorderLayout());
-			setBackground(Theme.current().getBackgroundColor());
 
-			JPanel stap = new JPanel(new BorderLayout());
-			stap.setOpaque(false);
+			JPanel stap = new JPanel(new BorderLayout(2, 0));
 
 			JLabel status = new JLabel();
 			status.setText(ma.name);
