@@ -218,3 +218,13 @@ Blockly.Extensions.registerMutator('tree_decorator_mutator', simpleRepeatingInpu
                 .appendField(javabridge.t('blockly.block.feature_tree.decorator_input'));
         }),
     undefined, ['tree_decorator_mutator_input']);
+
+// Mutator for direction list in the "attached to leaves" tree decorator
+Blockly.Extensions.registerMutator('direction_list_mutator', simpleRepeatingInputMixin(
+        'direction_list_mutator_container', 'direction_list_mutator_input', 'direction',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
+                .appendField(new FieldDataListDropdown('direction'), 'direction' + index);
+        }, false, ['direction'], true),
+    undefined, ['direction_list_mutator_input']);
