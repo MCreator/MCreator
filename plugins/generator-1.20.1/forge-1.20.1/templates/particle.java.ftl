@@ -105,7 +105,7 @@ package ${package}.client.particle;
 	<#if hasProcedure(data.scale)>
 	@Override public float getQuadSize(float scale) {
 		Level world = this.level;
-		return (float) <@procedureOBJToConditionCode data.scale/>;
+		return this.quadSize * (float) <@procedureOBJToConditionCode data.scale/>;
 	}
 	</#if>
 
