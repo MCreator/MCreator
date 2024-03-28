@@ -145,9 +145,13 @@ public class BlocklyJavascriptTemplates {
 							"datalist": "procedure_retval_%s"
 						}
 					],
+					"extensions": [
+						"procedure_dependencies_tooltip",
+						"procedure_dependencies_onchange_mixin"
+					],
 					"output": "%s",
-					"inputsInline": true,
-					"colour": "%s"
+					"colour": "%s",
+					"mutator": "procedure_dependencies_mutator"
 				}]);""".formatted(variableType.getName(), getBlockText("procedure_retval", variableType),
 				variableType.getName(), variableType.getBlocklyVariableType(), variableType.getColor());
 	}
@@ -171,9 +175,13 @@ public class BlocklyJavascriptTemplates {
 							"datalist": "procedure_retval_%s"
 						}
 					],
+					"extensions": [
+						"procedure_dependencies_tooltip",
+						"procedure_dependencies_onchange_mixin"
+					],
 					"output": "%s",
-					"inputsInline": true,
-					"colour": "%s"
+					"colour": "%s",
+					"mutator": "procedure_dependencies_mutator"
 				}]);""".formatted(variableType.getName(), getBlockText("procedure_retval", variableType),
 				variableType.getName(), variableType.getBlocklyVariableType(), variableType.getColor());
 	}

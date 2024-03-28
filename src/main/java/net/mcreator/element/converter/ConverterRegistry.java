@@ -47,6 +47,7 @@ import net.mcreator.element.converter.v2023_2.PaintingFieldsFixer;
 import net.mcreator.element.converter.v2023_3.*;
 import net.mcreator.element.converter.v2023_4.*;
 import net.mcreator.element.converter.v2024_1.AdvancementTriggerInverter;
+import net.mcreator.element.converter.v2024_1.CallProcedureAtBlockConverter;
 import net.mcreator.element.converter.v2024_1.ProcedureCustomDamageRemover;
 import net.mcreator.element.converter.v2024_1.TagModElementConverter;
 
@@ -158,7 +159,8 @@ public class ConverterRegistry {
 			new ProcedureDamageSourceFixer(),
 			new LegacyGameModeConverter(),
 			new ProcedureArrowProjectileFixer(),
-			new ProcedureCustomDamageRemover()
+			new ProcedureCustomDamageRemover(),
+			new CallProcedureAtBlockConverter()
 		));
 		put(ModElementType.RECIPE, List.of(
 			new RecipeTypeConverter()

@@ -21,9 +21,11 @@ package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
 import javafx.application.Platform;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Procedure;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.AIConditionEditor;
@@ -237,6 +239,32 @@ public class BlocklyJavascriptBridge {
 
 	public void addExternalTrigger(ExternalTrigger external_trigger) {
 		ext_triggers.put(external_trigger.getID(), external_trigger.getName());
+	}
+
+	@SuppressWarnings("unused") public boolean hasDependency(String procedureName, String dependencyName) {
+		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
+		return me != null && me.getGeneratableElement() instanceof Procedure procedure && procedure.getDependencies()
+				.stream().anyMatch(e -> e.getName().equals(dependencyName));
+	}
+
+	@SuppressWarnings("unused") public String getDependencyType(String procedureName, String dependencyName) {
+		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
+		if (me != null && me.getGeneratableElement() instanceof Procedure procedure) {
+			Optional<Dependency> dependency = procedure.getDependencies().stream()
+					.filter(e -> e.getName().equals(dependencyName)).findFirst();
+			if (dependency.isPresent()) {
+				VariableType varType = VariableTypeLoader.INSTANCE.fromName(dependency.get().getRawType());
+				return varType != null ? varType.getBlocklyVariableType() : "";
+			}
+		}
+		return null;
+	}
+
+	@SuppressWarnings("unused") public String[] getAllDependencies(String procedureName) {
+		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
+		return me != null && me.getGeneratableElement() instanceof Procedure procedure ?
+				procedure.getDependencies().stream().map(Object::toString).toArray(String[]::new) :
+				new String[0];
 	}
 
 	@SuppressWarnings("unused") public String t(String key) {
