@@ -64,7 +64,10 @@ package ${package}.client.particle;
 		this.spriteSet = spriteSet;
 
 		this.setSize(${data.width}f, ${data.height}f);
-		<#if data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)>this.quadSize *= ${data.scale.getFixedValue()}f;</#if>
+
+		<#if data.scale.getFixedValue() != 1 && !hasProcedure(data.scale)>
+		this.quadSize *= ${data.scale.getFixedValue()}f;
+		</#if>
 
 		<#if (data.maxAgeDiff > 0)>
 		this.lifetime = (int) Math.max(1, ${data.maxAge} + (this.random.nextInt(${data.maxAgeDiff * 2}) - ${data.maxAgeDiff}));
