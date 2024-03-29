@@ -228,3 +228,15 @@ Blockly.Extensions.registerMutator('direction_list_mutator', simpleRepeatingInpu
                 .appendField(new FieldDataListDropdown('direction'), 'direction' + index);
         }, false, ['direction'], true),
     undefined, ['direction_list_mutator_input']);
+
+// Mutator for feature blockstate selector
+Blockly.Extensions.registerMutator('blockstate_selector_mutator', simpleRepeatingInputMixin(
+        'blockstate_selector_mutator_container', 'blockstate_selector_mutator_input', 'state',
+        function(thisBlock, inputName, index) {
+            thisBlock.appendDummyInput(inputName + index)
+                    .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.with_property'))
+                    .appendField(new Blockly.FieldTextInput('property'), 'property' + index)
+                    .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.set_to'))
+                    .appendField(new Blockly.FieldTextInput('value'), 'value' + index);
+        }, false, ['property', 'value'], false),
+    undefined, ['blockstate_selector_mutator_input']);

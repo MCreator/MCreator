@@ -1,0 +1,46 @@
+{
+  "args0": [
+    {
+      "type": "field_mcitem_selector",
+      "name": "block",
+      "supported_mcitems": "allblocks"
+    },
+    {
+      "type": "field_image",
+      "src": "./res/b.png",
+      "width": 8,
+      "height": 36
+    }
+  ],
+  "mutator": "blockstate_selector_mutator",
+  "output": [
+    "MCItemBlock",
+    "BlockStateProvider"
+  ],
+  "colour": "60",
+  "mcreator": {
+    "toolbox_id": "blocks",
+    "toolbox_init": [
+      "<mutation inputs=\"1\"></mutation>"
+    ],
+    "fields": [
+      "block"
+    ],
+    "repeating_fields": [
+      {
+        "name": "property",
+        "field_definition": {
+          "testCount": 1,
+          "type": "field_input"
+        }
+      },
+      {
+        "name": "value",
+        "field_definition": {
+          "testCount": 1,
+          "type": "field_input"
+        }
+      }
+    ]
+  }
+}

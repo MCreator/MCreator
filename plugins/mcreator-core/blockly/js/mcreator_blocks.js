@@ -576,6 +576,12 @@ registerSimpleMutatorContainer(
         'direction_list_mutator_container', 'blockly.block.direction_list_mutator.container', 30);
 registerSimpleMutatorInput('direction_list_mutator_input', 'blockly.block.direction_list_mutator.input', 30, true);
 
+// Mutator blocks for "Blockstate selector" mixin
+registerSimpleMutatorContainer(
+        'blockstate_selector_mutator_container', 'blockly.block.blockstate_selector_mutator.container', 60);
+registerSimpleMutatorInput(
+        'blockstate_selector_mutator_input', 'blockly.block.blockstate_selector_mutator.input', 60, true);
+
 Blockly.defineBlocksWithJsonArray([
     {
         "type": "logic_binary_ops",
