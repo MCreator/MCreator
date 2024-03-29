@@ -151,8 +151,8 @@ public class GTFeatureBlocks {
 							<value name="target0">%s</value>
 						</block></value></block></xml>
 						""".formatted(testXML);
-				// Blockstate providers are tested with the simple block feature
-				case "BlockStateProvider" -> feature.featurexml = """
+				// Blockstate providers and blockstate selector are tested with the simple block feature
+				case "BlockStateProvider", "MCItemBlock" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature"><block type="feature_simple_block">
