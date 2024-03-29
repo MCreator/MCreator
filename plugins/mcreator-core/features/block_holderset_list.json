@@ -3,6 +3,7 @@
   "output": "BlockHolderSet",
   "colour": "45",
   "mcreator": {
+    "group": "holderSets",
     "toolbox_id": "blocks",
     "toolbox_init": [
       "<mutation inputs=\"2\"></mutation>"

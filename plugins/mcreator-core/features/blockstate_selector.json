@@ -19,6 +19,7 @@
   ],
   "colour": "60",
   "mcreator": {
+    "group": "blockstates",
     "toolbox_id": "blocks",
     "toolbox_init": [
       "<mutation inputs=\"1\"></mutation>"
