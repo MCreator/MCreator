@@ -61,6 +61,10 @@ tags:
     condition: spawnBastionRemnant
   - tag: BIOMES:minecraft:has_structure/end_city
     condition: spawnEndCity
+  - tag: BIOMES:minecraft:has_structure/ancient_city
+    condition: spawnAncientCity
+  - tag: BIOMES:minecraft:has_structure/trail_ruins
+    condition: spawnTrailRuin
   - tag: BIOMES:minecraft:has_structure/village_desert
     condition: "${data.villageType == 'desert'}"
   - tag: BIOMES:minecraft:has_structure/village_plains

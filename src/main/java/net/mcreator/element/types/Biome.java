@@ -103,6 +103,9 @@ import java.util.List;
 	public boolean spawnBastionRemnant;
 	public boolean spawnEndCity;
 	public String spawnRuinedPortal;
+	public boolean spawnAncientCity;
+	public boolean spawnTrailRuin;
+	public boolean spawnTrialChamber;
 
 	@ModElementReference public List<SpawnEntry> spawnEntries;
 

@@ -406,6 +406,9 @@ public class TestWorkspaceDataProvider {
 			biome.spawnNetherFossil = !_true;
 			biome.spawnBastionRemnant = !_true;
 			biome.spawnEndCity = !_true;
+			biome.spawnAncientCity = !_true;
+			biome.spawnTrailRuin = !_true;
+			biome.spawnTrialChamber = !_true;
 			biome.spawnRuinedPortal = getRandomItem(random,
 					new String[] { "NONE", "STANDARD", "DESERT", "JUNGLE", "SWAMP", "MOUNTAIN", "OCEAN", "NETHER" });
 			biome.villageType = getRandomItem(random,
