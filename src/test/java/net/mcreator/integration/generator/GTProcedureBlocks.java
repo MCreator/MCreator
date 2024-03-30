@@ -131,7 +131,7 @@ public class GTProcedureBlocks {
 			if (procedureBlock.getType() == IBlockGenerator.BlockType.PROCEDURAL) {
 				procedure.procedurexml = wrapWithBaseTestXML(testXML);
 			} else { // output block type
-				String rettype = procedureBlock.getOutputType();
+				String rettype = procedureBlock.getOutputTypeForTests();
 				switch (rettype) {
 				case "Number":
 					procedure.procedurexml = wrapWithBaseTestXML("""

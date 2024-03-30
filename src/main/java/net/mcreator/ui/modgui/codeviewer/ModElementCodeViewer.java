@@ -79,7 +79,8 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 		modElementGUI.getModElement().getGenerator().getModElementListTemplates(modElementGUI.getElementFromGUI())
 				.stream().map(GeneratorTemplatesList::groupName).forEach(listName -> {
 					JTabbedPane listPane = new JTabbedPane(JTabbedPane.LEFT, JTabbedPane.SCROLL_TAB_LAYOUT);
-					listPane.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION, FlatClientProperties.TABBED_PANE_TAB_ROTATION_LEFT);
+					listPane.putClientProperty(FlatClientProperties.TABBED_PANE_TAB_ROTATION,
+							FlatClientProperties.TABBED_PANE_TAB_ROTATION_LEFT);
 					listPane.setBackground(Theme.current().getAltBackgroundColor());
 
 					addTab(listName, enabledListIcon, listPane);
@@ -94,7 +95,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	}
 
 	private synchronized void reload() {
-		if (!isDisplayable())
+		if (!isShowing())
 			return;
 
 		if (!updateRunning) {

@@ -28,7 +28,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
@@ -196,8 +195,8 @@ public class WYSIWYGEditor extends JPanel {
 				(L10N.t("elementgui.gui.component_list")), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		TransparentToolBar bar2 = new TransparentToolBar();
-		bar2.setBorder(null);
+		JToolBar bar2 = new JToolBar();
+		bar2.setOpaque(false);
 		bar2.setFloatable(false);
 
 		moveComponent.setToolTipText((L10N.t("elementgui.gui.move_component")));
@@ -206,23 +205,11 @@ public class WYSIWYGEditor extends JPanel {
 		moveComponentUp.setToolTipText((L10N.t("elementgui.gui.move_component_up")));
 		moveComponentDown.setToolTipText((L10N.t("elementgui.gui.move_component_down")));
 
-		moveComponent.setMargin(new Insets(0, 0, 0, 0));
-		removeComponent.setMargin(new Insets(0, 0, 0, 0));
-		editComponent.setMargin(new Insets(0, 0, 0, 0));
-		moveComponentUp.setMargin(new Insets(0, 0, 0, 0));
-		moveComponentDown.setMargin(new Insets(0, 0, 0, 0));
-
-		moveComponent.setOpaque(false);
-		removeComponent.setOpaque(false);
-		editComponent.setOpaque(false);
-		moveComponentUp.setOpaque(false);
-		moveComponentDown.setOpaque(false);
-
-		moveComponent.setBorder(BorderFactory.createEmptyBorder());
-		removeComponent.setBorder(BorderFactory.createEmptyBorder());
-		editComponent.setBorder(BorderFactory.createEmptyBorder());
-		moveComponentUp.setBorder(BorderFactory.createEmptyBorder());
-		moveComponentDown.setBorder(BorderFactory.createEmptyBorder());
+		moveComponent.setMargin(new Insets(1, 1, 1, 1));
+		removeComponent.setMargin(new Insets(1, 1, 1, 1));
+		editComponent.setMargin(new Insets(1, 1, 1, 1));
+		moveComponentUp.setMargin(new Insets(1, 1, 1, 1));
+		moveComponentDown.setMargin(new Insets(1, 1, 1, 1));
 
 		bar2.add(moveComponent);
 		bar2.add(moveComponentUp);
@@ -441,7 +428,6 @@ public class WYSIWYGEditor extends JPanel {
 		zoomHolder.add("West", add);
 
 		sidebar.setPreferredSize(new Dimension(250, 10));
-		sidebar.setOpaque(false);
 
 		add("East", sidebar);
 		add("Center", zoomHolder);

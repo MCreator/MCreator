@@ -154,39 +154,37 @@ public class BreakpointHandler {
 
 		try {
 			Breakpoint breakpoint = new Breakpoint(ClassFinder.getCurrentFQDN(parser),
-					gutterBreakpointInfo.getCurrentLine(cev.te) + 1,
-					new Breakpoint.BreakpointListener() {
-						@Override public void breakpointLoaded(Breakpoint breakpoint) {
-							replaceGutterIcon(sp, gutterBreakpointInfo, UIRES.get("16px.breakpoint"));
-						}
+					gutterBreakpointInfo.getCurrentLine(cev.te) + 1, new Breakpoint.BreakpointListener() {
+				@Override public void breakpointLoaded(Breakpoint breakpoint) {
+					replaceGutterIcon(sp, gutterBreakpointInfo, UIRES.get("16px.breakpoint"));
+				}
 
-						@Override public boolean breakpointHit(Breakpoint breakpoint, BreakpointEvent breakpointEvent) {
-							MCreatorTabs.Tab existing = cev.getMCreator().mcreatorTabs.showTabOrGetExisting(
-									cev.fileWorkingOn);
-							if (existing != null) {
-								SwingUtilities.invokeLater(() -> {
-									CodeEditorView bpCev = (CodeEditorView) existing.getContent();
-									if (bpCev == cev) {
-										bpCev.getMCreator().mcreatorTabs.showTab(existing);
-										try {
-											int breakpointLine = gutterBreakpointInfo.getCurrentLine(cev.te);
-											int startOffset = bpCev.te.getLineStartOffset(breakpointLine);
-											bpCev.te.setCaretPosition(startOffset);
-											bpCev.te.setActiveLineRange(breakpointLine, breakpointLine + 1);
-										} catch (BadLocationException ignored) {
-										}
-										bpCev.te.requestFocusInWindow();
-										bpCev.getMCreator().toFront();
-										bpCev.getMCreator().requestFocus();
-									}
-								});
-
-								return false;
-							} else {
-								return true;
+				@Override public boolean breakpointHit(Breakpoint breakpoint, BreakpointEvent breakpointEvent) {
+					MCreatorTabs.Tab existing = cev.getMCreator().mcreatorTabs.showTabOrGetExisting(cev.fileWorkingOn);
+					if (existing != null) {
+						SwingUtilities.invokeLater(() -> {
+							CodeEditorView bpCev = (CodeEditorView) existing.getContent();
+							if (bpCev == cev) {
+								bpCev.getMCreator().mcreatorTabs.showTab(existing);
+								try {
+									int breakpointLine = gutterBreakpointInfo.getCurrentLine(cev.te);
+									int startOffset = bpCev.te.getLineStartOffset(breakpointLine);
+									bpCev.te.setCaretPosition(startOffset);
+									bpCev.te.setActiveLineRange(breakpointLine, breakpointLine + 1);
+								} catch (BadLocationException ignored) {
+								}
+								bpCev.te.requestFocusInWindow();
+								bpCev.getMCreator().toFront();
+								bpCev.getMCreator().requestFocus();
 							}
-						}
-					});
+						});
+
+						return false;
+					} else {
+						return true;
+					}
+				}
+			});
 			debugClient.addBreakpoint(breakpoint);
 			gutterBreakpointInfo.setBreakpoint(breakpoint);
 		} catch (Exception ex) {

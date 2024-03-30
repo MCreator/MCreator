@@ -333,8 +333,9 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 				toolBarLeft.add(codeViewer);
 			}
 
-			add("North", ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false, true,
-					false));
+			add("North",
+					ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false,
+							true, false));
 
 			centerComponent = PanelUtils.centerAndSouthElement(parameters = split, pager);
 		} else {
@@ -390,8 +391,8 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 			}
 
 			add("North",
-					ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false, true,
-							false));
+					ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false,
+							true, false));
 
 			centerComponent = new ArrayList<>(pages.values()).get(0);
 		}

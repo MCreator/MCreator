@@ -833,6 +833,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane4.setOpaque(false);
 
 		JPanel selp = new JPanel(new GridLayout(8, 2, 30, 2));
+		selp.setOpaque(false);
 
 		ComponentUtils.deriveFont(mobName, 16);
 
@@ -882,9 +883,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		selp.setOpaque(false);
 
-		JComponent selpcont = PanelUtils.northAndCenterElement(selp,
-				PanelUtils.gridElements(1, 2, 5, 5, L10N.label("elementgui.living_entity.spawn_general_condition"),
-						PanelUtils.westAndCenterElement(new JEmptyBox(12, 5), spawningCondition)), 5, 5);
+		JComponent selpcont = PanelUtils.northAndCenterElement(selp, PanelUtils.gridElements(1, 2, 30, 2,
+				PanelUtils.join(FlowLayout.LEFT, 5, 0, L10N.label("elementgui.living_entity.spawn_general_condition")),
+				spawningCondition), 5, 5);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(selpcont));
 

@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.procedure;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.java.JavaConventions;
@@ -211,9 +212,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 		}
 
 		if (allowInlineEditor) {
-			add.setContentAreaFilled(false);
-			add.setOpaque(false);
-			add.setMargin(new Insets(0, 0, 0, 0));
+			add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 			add.addActionListener(e -> {
 				String procedureNameString = "";
 				if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI) {
@@ -258,9 +257,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 				}
 			});
 
-			edit.setMargin(new Insets(0, 0, 0, 0));
-			edit.setOpaque(false);
-			edit.setContentAreaFilled(false);
+			edit.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 			edit.addActionListener(e -> {
 				if (getSelectedProcedure() != null) {
 					ModElement selectedProcedureAsModElement = mcreator.getWorkspace()
@@ -273,13 +270,13 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			});
 
 			componentB = PanelUtils.centerAndEastElement(procwrap, PanelUtils.westAndEastElement(add, edit), 3, 0);
-			componentB.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 4));
+			componentB.setBorder(BorderFactory.createEmptyBorder(0, 0, 3, 3));
 		} else {
-			procwrap.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 4));
+			procwrap.setBorder(BorderFactory.createEmptyBorder(0, 0, 3, 3));
 			componentB = procwrap;
 		}
 
-		componentA = PanelUtils.join(FlowLayout.LEFT, 4, 4, top);
+		componentA = PanelUtils.join(FlowLayout.LEFT, 3, 3, top);
 
 		add("North", componentA);
 		add("South", componentB);
