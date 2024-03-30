@@ -173,10 +173,10 @@ import java.util.*;
 	public int spawningProbability;
 	public String mobSpawningType;
 	public int minNumberOfMobsPerGroup;
-	public int[] raidSpawnsCount;
 	public int maxNumberOfMobsPerGroup;
 	@ModElementReference public List<BiomeEntry> restrictionBiomes;
 	public boolean spawnInDungeons;
+	public int[] raidSpawnsCount;
 
 	private LivingEntity() {
 		this(null);
@@ -199,6 +199,7 @@ import java.util.*;
 
 		this.entityDataEntries = new ArrayList<>();
 		this.modelLayers = new ArrayList<>();
+
 		this.raidSpawnsCount = new int[] {4, 3, 3, 4, 4, 4, 2};
 	}
 
