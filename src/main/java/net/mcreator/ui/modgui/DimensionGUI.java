@@ -424,7 +424,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		texture.setTextureFromTextureName(dimension.texture);
 		worldGenType.setSelectedItem(dimension.worldGenType);
 		sleepResult.setSelectedItem(dimension.sleepResult);
-		igniterTab.setSelectedItem(dimension.igniterTab.getUnmappedValue());
+		igniterTab.setSelectedItem(dimension.igniterTab);
 		portalParticles.setSelectedItem(dimension.portalParticles);
 		biomesInDimension.setListElements(dimension.biomesInDimension);
 		airColor.setColor(dimension.airColor);
