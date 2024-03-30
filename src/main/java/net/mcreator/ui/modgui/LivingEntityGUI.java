@@ -877,8 +877,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		selp.add(PanelUtils.gridElements(1, -1, 2, 2, raidSpawnsCount[0], raidSpawnsCount[1], raidSpawnsCount[2],
 				raidSpawnsCount[3], raidSpawnsCount[4], raidSpawnsCount[5], raidSpawnsCount[6]));
 
-		for(int i = 0; i < 7; i++)
-			raidSpawnsCount[i].setPreferredSize(new Dimension(40, 0));
+		for (JSpinner spinner : raidSpawnsCount)
+			spinner.setPreferredSize(new Dimension(40, 0));
 
 		selp.setOpaque(false);
 
@@ -1026,8 +1026,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		breedable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
 		tameable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
 		breedTriggerItems.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
-		for (int i = 0; i < 7; i++)
-			raidSpawnsCount[i].setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
+		for (JSpinner spinner : raidSpawnsCount)
+			spinner.setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
@@ -1128,7 +1128,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		guiBoundTo.setSelectedItem(livingEntity.guiBoundTo);
 		inventorySize.setValue(livingEntity.inventorySize);
 		inventoryStackSize.setValue(livingEntity.inventoryStackSize);
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
 			raidSpawnsCount[i].setValue(livingEntity.raidSpawnsCount[i]);
 		modelLayers.setEntries(livingEntity.modelLayers);
 
@@ -1254,7 +1254,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.inventoryStackSize = (int) inventoryStackSize.getValue();
 		livingEntity.guiBoundTo = guiBoundTo.getSelectedItem();
 		livingEntity.entityDataEntries = entityDataList.getEntries();
-		for (int i = 0; i < 7; i++)
+		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
 			livingEntity.raidSpawnsCount[i] = (int) raidSpawnsCount[i].getValue();
 		livingEntity.modelLayers = modelLayers.getEntries();
 		return livingEntity;

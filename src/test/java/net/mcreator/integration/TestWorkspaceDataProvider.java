@@ -302,9 +302,12 @@ public class TestWorkspaceDataProvider {
 
 		if (workspace.getFolderManager().getStructuresDir() != null) {
 			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
-			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test1.nbt"));
-			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
-			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
+			FileIO.writeBytesToFile(new byte[0],
+					new File(workspace.getFolderManager().getStructuresDir(), "test1.nbt"));
+			FileIO.writeBytesToFile(new byte[0],
+					new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
+			FileIO.writeBytesToFile(new byte[0],
+					new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
 		}
 	}
 
@@ -1711,7 +1714,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.modelHeight = 1.3;
 		livingEntity.mountedYOffset = -3.1;
 		livingEntity.modelShadowSize = 1.8;
-		for(int i = 0; i < 7; i++)
+		for (int i = 0; i < livingEntity.raidSpawnsCount.length; i++)
 			livingEntity.raidSpawnsCount[i] = (4 + i);
 		livingEntity.modelLayers = new ArrayList<>();
 		if (!emptyLists) {
