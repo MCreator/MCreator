@@ -95,7 +95,7 @@ public class ModElementCodeViewer<T extends GeneratableElement> extends JTabbedP
 	}
 
 	private synchronized void reload() {
-		if (!isDisplayable())
+		if (!isShowing())
 			return;
 
 		if (!updateRunning) {
