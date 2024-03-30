@@ -169,9 +169,14 @@ import java.util.Objects;
 		return blocklyJSON.getAsJsonObject().get("message0").getAsString();
 	}
 
-	public String getOutputType() {
+	public String getOutputTypeForTests() {
 		if (type == IBlockGenerator.BlockType.OUTPUT) {
-			return blocklyJSON.getAsJsonObject().get("output").getAsString();
+			JsonElement output = blocklyJSON.getAsJsonObject().get("output");
+			if (output.isJsonArray()) {
+				return output.getAsJsonArray().get(0).getAsString();
+			} else {
+				return output.getAsString();
+			}
 		} else {
 			return null;
 		}
