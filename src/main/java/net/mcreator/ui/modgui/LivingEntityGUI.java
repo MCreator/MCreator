@@ -1023,12 +1023,17 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
 
-		raidCelebrationSound.setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
-		breedable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
-		tameable.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
-		breedTriggerItems.setEnabled(!mobBehaviourType.getSelectedItem().equals("Raider"));
+		boolean isRaider = "Raider".equals(mobBehaviourType.getSelectedItem());
+		if (isRaider) {
+			breedable.setSelected(false);
+			tameable.setSelected(false);
+		}
+		raidCelebrationSound.setEnabled(isRaider);
+		breedable.setEnabled(!isRaider);
+		tameable.setEnabled(!isRaider);
+		breedTriggerItems.setEnabled(!isRaider);
 		for (JSpinner spinner : raidSpawnsCount)
-			spinner.setEnabled(mobBehaviourType.getSelectedItem().equals("Raider"));
+			spinner.setEnabled(isRaider);
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
