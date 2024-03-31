@@ -881,8 +881,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		for (JSpinner spinner : raidSpawnsCount)
 			spinner.setPreferredSize(new Dimension(40, 0));
 
-		selp.setOpaque(false);
-
 		JComponent selpcont = PanelUtils.northAndCenterElement(selp, PanelUtils.gridElements(1, 2, 30, 2,
 				PanelUtils.join(FlowLayout.LEFT, 5, 0, L10N.label("elementgui.living_entity.spawn_general_condition")),
 				spawningCondition), 5, 5);
