@@ -517,7 +517,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingSound.setText("");
 		hurtSound.setText("entity.generic.hurt");
 		deathSound.setText("entity.generic.death");
-		raidCelebrationSound.setText("entity.pillager.celebrate");
 
 		JPanel subpanel2 = new JPanel(new GridLayout(1, 2, 0, 2));
 		subpanel2.setOpaque(false);
@@ -1027,11 +1026,11 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			tameable.setSelected(false);
 		}
 		raidCelebrationSound.setEnabled(isRaider);
+		for (JSpinner spinner : raidSpawnsCount)
+			spinner.setEnabled(isRaider);
 		breedable.setEnabled(!isRaider);
 		tameable.setEnabled(!isRaider);
 		breedTriggerItems.setEnabled(!isRaider);
-		for (JSpinner spinner : raidSpawnsCount)
-			spinner.setEnabled(isRaider);
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {
