@@ -79,7 +79,7 @@ public class ProgressDialog extends MCreatorDialog {
 		JScrollPane panes = new JScrollPane(progressUnits);
 		panes.setOpaque(false);
 		panes.getViewport().setOpaque(false);
-		panes.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 5));
+		panes.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 3));
 
 		add("Center", panes);
 
