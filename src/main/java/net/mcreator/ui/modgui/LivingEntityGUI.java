@@ -1004,6 +1004,16 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	}
 
 	private void enableOrDisableFields() {
+		boolean isRaider = "Raider".equals(mobBehaviourType.getSelectedItem());
+		if (isRaider) {
+			breedable.setSelected(false);
+		}
+		raidCelebrationSound.setEnabled(isRaider);
+		for (JSpinner spinner : raidSpawnsCount)
+			spinner.setEnabled(isRaider);
+		breedable.setEnabled(!isRaider);
+		tameable.setEnabled(!isRaider);
+
 		if (breedable.isSelected()) {
 			hasAI.setSelected(true);
 			hasAI.setEnabled(false);
@@ -1019,18 +1029,6 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		bossBarType.setEnabled(isBoss.isSelected());
 
 		rangedAttackItem.setEnabled("Default item".equals(rangedItemType.getSelectedItem()));
-
-		boolean isRaider = "Raider".equals(mobBehaviourType.getSelectedItem());
-		if (isRaider) {
-			breedable.setSelected(false);
-			tameable.setSelected(false);
-		}
-		raidCelebrationSound.setEnabled(isRaider);
-		for (JSpinner spinner : raidSpawnsCount)
-			spinner.setEnabled(isRaider);
-		breedable.setEnabled(!isRaider);
-		tameable.setEnabled(!isRaider);
-		breedTriggerItems.setEnabled(!isRaider);
 	}
 
 	@Override public void openInEditingMode(LivingEntity livingEntity) {

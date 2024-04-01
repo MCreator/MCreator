@@ -1674,7 +1674,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.hasAI = _true;
 		livingEntity.aiBase = "(none)";
 		livingEntity.aixml = "<xml xmlns=\"https://developers.google.com/blockly/xml\"><block type=\"aitasks_container\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
-		livingEntity.breedable = _true;
+		livingEntity.breedable = _true && !livingEntity.mobBehaviourType.equals("Raider");
 		livingEntity.tameable = _true;
 		livingEntity.breedTriggerItems = new ArrayList<>();
 		if (!emptyLists) {
