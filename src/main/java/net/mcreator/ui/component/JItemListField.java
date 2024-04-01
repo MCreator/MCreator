@@ -197,7 +197,7 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 
 		pane.setPreferredSize(getPreferredSize());
 
-		JPanel buttonsPanel = new JPanel();
+		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 5, 0));
 		buttonsPanel.setOpaque(false);
 		buttonsPanel.add(add);
 		if (allowTags)
@@ -206,9 +206,8 @@ public abstract class JItemListField<T> extends JPanel implements IValidable {
 		buttonsPanel.add(removeall);
 
 		buttons = PanelUtils.totalCenterInPanel(buttonsPanel);
-		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getInterfaceAccentColor()));
+		buttons.setBorder(BorderFactory.createMatteBorder(0, 1, 0, 0, Theme.current().getAltBackgroundColor()));
 		buttons.setOpaque(true);
-		buttons.setBackground(Theme.current().getSecondAltBackgroundColor());
 
 		if (excludeButton) {
 			include.setSelected(true);
