@@ -25,6 +25,10 @@ import javax.swing.*;
 
 public class IconUtils {
 
+	public static ImageIcon resize(ImageIcon input, int dimension) {
+		return resize(input, dimension, dimension);
+	}
+
 	public static ImageIcon resize(ImageIcon input, int width, int height) {
 		if (input instanceof FlatSVGIcon svgIcon) {
 			return svgIcon.derive(width, height);
