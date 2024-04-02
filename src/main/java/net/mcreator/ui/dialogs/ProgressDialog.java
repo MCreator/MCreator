@@ -21,7 +21,6 @@ package net.mcreator.ui.dialogs;
 import com.formdev.flatlaf.ui.FlatLineBorder;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SquareLoaderIcon;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.UIRES;
@@ -54,7 +53,7 @@ public class ProgressDialog extends MCreatorDialog {
 		JPanel contentPane = new JPanel() {
 			@Override protected void paintComponent(Graphics g) {
 				Graphics2D g2d = (Graphics2D) g;
-				g2d.setColor(UIManager.getColor("PopupMenu.background"));
+				g2d.setColor(Theme.current().getBackgroundColor());
 				g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
 				super.paintComponent(g);
 			}
@@ -68,8 +67,8 @@ public class ProgressDialog extends MCreatorDialog {
 		setBackground(new Color(0, 0, 0, 0));
 
 		titleLabel = new JLabel(title);
-		titleLabel.setBorder(BorderFactory.createEmptyBorder(15, 10, 5, 10));
-		ComponentUtils.deriveFont(titleLabel, 14);
+		titleLabel.setBorder(BorderFactory.createEmptyBorder(7, 10, 2, 10));
+		titleLabel.setForeground(Theme.current().getAltForegroundColor());
 		add("North", titleLabel);
 
 		progressUnits.setCellRenderer(new Render());
