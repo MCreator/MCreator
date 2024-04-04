@@ -20,6 +20,7 @@ package net.mcreator.workspace;
 
 import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.Launcher;
+import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
@@ -225,21 +226,22 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		}
 	}
 
-	public void updateModElementTab(ModElement element) {
-		if (element.getGeneratableElement() instanceof ITabContainedElement tabElement) {
+	public void updateModElementTab(GeneratableElement element) {
+		if (element instanceof ITabContainedElement tabElement) {
 			TabEntry tabEntry = tabElement.getCreativeTab();
 			if (tabEntry == null || tabEntry.getUnmappedValue().equals("No creative tab entry"))
 				return;
 
 			// if order in new tab is overridden, add the element explicitly
+			String meName = element.getModElement().getName();
 			if (tab_element_order.containsKey(tabEntry.getUnmappedValue()) && !tab_element_order.get(
-					tabEntry.getUnmappedValue()).contains(element.getName())) {
+					tabEntry.getUnmappedValue()).contains(meName)) {
 				for (Map.Entry<String, ArrayList<String>> entry : tab_element_order.entrySet()) {
 					if (!entry.getKey().equals(tabEntry.getUnmappedValue())) // remove element from its prior tab
-						entry.getValue().remove(element.getName());
+						entry.getValue().remove(meName);
 				}
 
-				tab_element_order.get(tabEntry.getUnmappedValue()).add(element.getName());
+				tab_element_order.get(tabEntry.getUnmappedValue()).add(meName);
 			}
 		}
 	}
