@@ -20,10 +20,7 @@ package net.mcreator.workspace;
 
 import com.google.common.annotations.VisibleForTesting;
 import net.mcreator.Launcher;
-import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.ModElementType;
-import net.mcreator.element.parts.TabEntry;
-import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.generator.*;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleCacheImportFailedException;
@@ -157,22 +154,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		markDirty();
 	}
 
-	public List<String> getElementOrderInTab(String tab) {
-		return tab_element_order.get(tab);
-	}
-
-	public void setElementOrderInTab(String tab, List<ModElement> elements) {
-		if (tab_element_order.containsKey(tab))
-			tab_element_order.get(tab).clear();
-		else
-			tab_element_order.put(tab, new ArrayList<>());
-
-		for (ModElement element : elements)
-			tab_element_order.get(tab).add(element.getName());
-
-		markDirty();
-	}
-
 	public void addLanguage(String language, ConcurrentHashMap<String, String> data) {
 		language_map.putIfAbsent(language, data);
 		markDirty();
@@ -211,38 +192,12 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!mod_elements.contains(element)) { // only add this mod element if it is not already added
 			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
-
-			if (element.getGeneratableElement() instanceof ITabContainedElement tabElement) {
-				TabEntry tabEntry = tabElement.getCreativeTab();
-				if (tabEntry != null && !(tabEntry.getUnmappedValue()).equals("No creative tab entry")
-						&& tab_element_order.containsKey(tabEntry.getUnmappedValue()))
-					tab_element_order.get(tabEntry.getUnmappedValue()).add(element.getName());
-			}
+			TabUtils.addModElementToTabs(this, element);
 
 			markDirty();
 		} else {
 			LOG.warn(
 					"Trying to add existing mod element: " + element.getName() + " of type " + element.getTypeString());
-		}
-	}
-
-	public void updateModElementTab(GeneratableElement element) {
-		if (element instanceof ITabContainedElement tabElement) {
-			TabEntry tabEntry = tabElement.getCreativeTab();
-			if (tabEntry == null || tabEntry.getUnmappedValue().equals("No creative tab entry"))
-				return;
-
-			// if order in new tab is overridden, add the element explicitly
-			String meName = element.getModElement().getName();
-			if (tab_element_order.containsKey(tabEntry.getUnmappedValue()) && !tab_element_order.get(
-					tabEntry.getUnmappedValue()).contains(meName)) {
-				for (Map.Entry<String, ArrayList<String>> entry : tab_element_order.entrySet()) {
-					if (!entry.getKey().equals(tabEntry.getUnmappedValue())) // remove element from its prior tab
-						entry.getValue().remove(meName);
-				}
-
-				tab_element_order.get(tabEntry.getUnmappedValue()).add(meName);
-			}
 		}
 	}
 
@@ -281,11 +236,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		// finally remove element form the list
 		mod_elements.remove(element);
-
-		if (element.getGeneratableElement() instanceof ITabContainedElement) {
-			for (ArrayList<String> tabContents : tab_element_order.values())
-				tabContents.remove(element.getName());
-		}
+		TabUtils.removeModElementFromTabs(this, element);
 
 		markDirty();
 	}

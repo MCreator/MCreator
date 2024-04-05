@@ -46,7 +46,7 @@ public class TabUtils {
 		workspace.markDirty();
 	}
 
-	public void addModElementToTab(Workspace workspace, ModElement element) {
+	public static void addModElementToTabs(Workspace workspace, ModElement element) {
 		if (element.getGeneratableElement() instanceof ITabContainedElement tabElement) {
 			TabEntry tabEntry = tabElement.getCreativeTab();
 			if (tabEntry != null && !(tabEntry.getUnmappedValue()).equals("No creative tab entry")
@@ -55,7 +55,7 @@ public class TabUtils {
 		}
 	}
 
-	public void updateModElementTab(Workspace workspace, GeneratableElement element) {
+	public static void updateModElementTabs(Workspace workspace, GeneratableElement element) {
 		if (element instanceof ITabContainedElement tabElement) {
 			TabEntry tabEntry = tabElement.getCreativeTab();
 			if (tabEntry == null || tabEntry.getUnmappedValue().equals("No creative tab entry"))
@@ -75,7 +75,7 @@ public class TabUtils {
 		}
 	}
 
-	public void removeModElement(Workspace workspace, ModElement element) {
+	public static void removeModElementFromTabs(Workspace workspace, ModElement element) {
 		if (element.getGeneratableElement() instanceof ITabContainedElement) {
 			for (ArrayList<String> tabContents : workspace.getTabElementOrderMap().values())
 				tabContents.remove(element.getName());

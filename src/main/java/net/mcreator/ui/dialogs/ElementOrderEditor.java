@@ -31,6 +31,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.elementlist.SmallIconModListRender;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
+import net.mcreator.workspace.TabUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
@@ -112,15 +113,15 @@ public class ElementOrderEditor {
 					tabEditors.put(tab.getUnmappedValue(), model);
 				}
 
-				if (mcreator.getWorkspace().getElementOrderInTab(tab.getUnmappedValue()) == null)
+				if (TabUtils.getElementOrderInTab(mcreator.getWorkspace(), tab.getUnmappedValue()) == null)
 					tabEditors.get(tab.getUnmappedValue()).addElement(modElement);
 			}
 		}
 
 		// add contents of tabs with overridden elements order
 		for (String tab : tabEditors.keySet()) {
-			if (mcreator.getWorkspace().getElementOrderInTab(tab) != null) {
-				for (String element : mcreator.getWorkspace().getElementOrderInTab(tab)) {
+			if (TabUtils.getElementOrderInTab(mcreator.getWorkspace(), tab) != null) {
+				for (String element : TabUtils.getElementOrderInTab(mcreator.getWorkspace(), tab)) {
 					ModElement me = mcreator.getWorkspace().getModElementByName(element);
 					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement)
 						tabEditors.get(tab).addElement(me);
@@ -138,8 +139,8 @@ public class ElementOrderEditor {
 		if (resultval == 0) {
 			for (Map.Entry<String, DefaultListModel<ModElement>> entry : tabEditors.entrySet()) {
 				if (editedTabs.contains(entry.getKey())) {
-					mcreator.getWorkspace()
-							.setElementOrderInTab(entry.getKey(), Collections.list(entry.getValue().elements()));
+					TabUtils.setElementOrderInTab(mcreator.getWorkspace(), entry.getKey(),
+							Collections.list(entry.getValue().elements()));
 				}
 			}
 

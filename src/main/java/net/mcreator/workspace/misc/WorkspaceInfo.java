@@ -31,6 +31,7 @@ import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.mapping.UniquelyMappedElement;
 import net.mcreator.minecraft.MCItem;
+import net.mcreator.workspace.TabUtils;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.TagElement;
@@ -151,7 +152,7 @@ import java.util.*;
 							tabMap.put(tab, new ArrayList<>());
 						}
 
-						if (workspace.getElementOrderInTab(tab) == null) {
+						if (TabUtils.getElementOrderInTab(workspace, tab) == null) {
 							tabMap.get(tab).addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
 									.toList());
 						}
@@ -161,8 +162,8 @@ import java.util.*;
 		}
 
 		for (String tab : tabMap.keySet()) {
-			if (workspace.getElementOrderInTab(tab) != null) {
-				for (String element : workspace.getElementOrderInTab(tab)) {
+			if (TabUtils.getElementOrderInTab(workspace, tab) != null) {
+				for (String element : TabUtils.getElementOrderInTab(workspace, tab)) {
 					ModElement me = workspace.getModElementByName(element);
 					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement) {
 						List<MCItem> tabItems = tabElement.getCreativeTabItems();

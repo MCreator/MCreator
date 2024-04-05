@@ -27,6 +27,7 @@ import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
+import net.mcreator.workspace.TabUtils;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -89,7 +90,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 		}
 
 		cache.put(element.getModElement(), element);
-		workspace.updateModElementTab(element);
+		TabUtils.updateModElementTabs(workspace, element);
 
 		FileIO.writeStringToFile(generatableElementToJSON(element),
 				new File(workspace.getFolderManager().getModElementsDir(),
