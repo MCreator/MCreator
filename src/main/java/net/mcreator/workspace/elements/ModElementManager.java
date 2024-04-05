@@ -27,7 +27,7 @@ import net.mcreator.element.parts.procedure.RetvalProcedure;
 import net.mcreator.element.types.CustomElement;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.io.FileIO;
-import net.mcreator.workspace.TabUtils;
+import net.mcreator.workspace.misc.TabUtils;
 import net.mcreator.workspace.Workspace;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

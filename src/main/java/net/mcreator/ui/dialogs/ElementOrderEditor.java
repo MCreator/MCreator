@@ -31,7 +31,7 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.elementlist.SmallIconModListRender;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.image.ImageUtils;
-import net.mcreator.workspace.TabUtils;
+import net.mcreator.workspace.misc.TabUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;

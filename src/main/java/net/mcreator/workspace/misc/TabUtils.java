@@ -17,11 +17,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package net.mcreator.workspace;
+package net.mcreator.workspace.misc;
 
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.util.ArrayList;
