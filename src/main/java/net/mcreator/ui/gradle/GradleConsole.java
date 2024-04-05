@@ -29,7 +29,6 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
 import net.mcreator.ui.component.ConsolePane;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;

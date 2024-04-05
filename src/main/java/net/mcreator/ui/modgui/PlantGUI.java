@@ -843,7 +843,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		name.setText(plant.name);
 		hardness.setValue(plant.hardness);
 		resistance.setValue(plant.resistance);
-		soundOnStep.setSelectedItem(plant.soundOnStep.getUnmappedValue());
+		soundOnStep.setSelectedItem(plant.soundOnStep);
 		breakSound.setSound(plant.breakSound);
 		stepSound.setSound(plant.stepSound);
 		placeSound.setSound(plant.placeSound);

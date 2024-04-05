@@ -354,7 +354,7 @@ public class ${name}Item extends Item {
 				"z": "entity.getZ()",
 				"world": "world",
 				"entity": "entity",
-				"itemstack": "stack"
+				"itemstack": "itemstack"
 			}/>
 		</#if>
 	}

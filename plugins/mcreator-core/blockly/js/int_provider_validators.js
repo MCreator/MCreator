@@ -110,3 +110,7 @@ Blockly.Extensions.register('state_provider_int_property_validator', validateInt
 Blockly.Extensions.register('pine_tree_feature_validator', validateIntProviderInputs(['foliage_height', 0, 24]));
 
 Blockly.Extensions.register('spruce_tree_feature_validator', validateIntProviderInputs(['radius', 0, 16], ['trunk_height', 0, 24]));
+
+Blockly.Extensions.register('azalea_tree_feature_validator', validateIntProviderInputs(['bend_length', 1, 64]));
+
+Blockly.Extensions.register('cherry_tree_feature_validator', validateIntProviderInputs(['branch_count', 1, 3], ['branch_length', 2, 16]));
