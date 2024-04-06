@@ -197,10 +197,10 @@ Blockly.Extensions.registerMixin('controls_flow_in_loop_check_exclude_wait',
             if (!this.workspace.isDragging || this.workspace.isDragging() || e.type !== Blockly.Events.BLOCK_MOVE) {
                 return;
             }
-            const isWithinLoop = !!(checkIfWithin(this, function(type) {
+            const isWithinLoop = !!(checkIfWithin(this, function (type) {
                 return Blockly.libraryBlocks.loops.loopTypes.has(type);
             }));
-            const isWithinWaitBlock = !!(checkIfWithin(this, function(type) {
+            const isWithinWaitBlock = !!(checkIfWithin(this, function (type) {
                 return type === 'wait';
             }));
             if (!isWithinLoop) {
