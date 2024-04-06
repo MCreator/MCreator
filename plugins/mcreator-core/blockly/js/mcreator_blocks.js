@@ -1,5 +1,5 @@
 // Helper function to register "container" blocks that appear inside simple input mutators
-function registerSimpleMutatorContainer(blockId, localizationKey, colour) {
+function registerSimpleMutatorContainer (blockId, localizationKey, colour) {
     Blockly.Blocks[blockId] = {
         init: function () {
             this.appendDummyInput().appendField(javabridge.t(localizationKey));
@@ -11,7 +11,7 @@ function registerSimpleMutatorContainer(blockId, localizationKey, colour) {
 }
 
 // Helper function to register "input" blocks that appear inside simple input mutators
-function registerSimpleMutatorInput(blockId, localizationKey, colour, hasFields) {
+function registerSimpleMutatorInput (blockId, localizationKey, colour, hasFields) {
     Blockly.Blocks[blockId] = {
         init: function () {
             this.appendDummyInput().appendField(javabridge.t(localizationKey));
@@ -539,9 +539,9 @@ Blockly.Blocks['time_week_of_year'] = {
 
 // Mutator blocks for "Any/All of" block predicates
 registerSimpleMutatorContainer(
-    'block_predicate_mutator_container', 'blockly.block.block_predicate_mutator.container', '%{BKY_LOGIC_HUE}');
+        'block_predicate_mutator_container', 'blockly.block.block_predicate_mutator.container', '%{BKY_LOGIC_HUE}');
 registerSimpleMutatorInput(
-    'block_predicate_mutator_input', 'blockly.block.block_predicate_mutator.input', '%{BKY_LOGIC_HUE}');
+        'block_predicate_mutator_input', 'blockly.block.block_predicate_mutator.input', '%{BKY_LOGIC_HUE}');
 
 // Mutator blocks for "Block list" mixin
 registerSimpleMutatorContainer('block_list_mutator_container', 'blockly.block.block_list_mutator.container', 45);
@@ -557,23 +557,23 @@ registerSimpleMutatorInput('ore_mutator_input', 'blockly.block.ore_mutator.input
 
 // Mutator blocks for "Weighted list" mixins
 registerSimpleMutatorContainer(
-    'weighted_list_mutator_container', 'blockly.block.weighted_list_mutator.container', '#888888');
+        'weighted_list_mutator_container', 'blockly.block.weighted_list_mutator.container', '#888888');
 registerSimpleMutatorInput('weighted_list_mutator_input', 'blockly.block.weighted_list_mutator.input', '#888888', true);
 
 // Mutator blocks for "Simple random feature selector" feature mixin
 registerSimpleMutatorContainer(
-    'feature_simple_random_mutator_container', 'blockly.block.feature_simple_random_mutator.container', 340);
+        'feature_simple_random_mutator_container', 'blockly.block.feature_simple_random_mutator.container', 340);
 registerSimpleMutatorInput(
-    'feature_simple_random_mutator_input', 'blockly.block.feature_simple_random_mutator.input', 340);
+        'feature_simple_random_mutator_input', 'blockly.block.feature_simple_random_mutator.input', 340);
 
 // Mutator blocks for tree decorator mixin
 registerSimpleMutatorContainer(
-    'tree_decorator_mutator_container', 'blockly.block.tree_decorator_mutator.container', 320);
+        'tree_decorator_mutator_container', 'blockly.block.tree_decorator_mutator.container', 320);
 registerSimpleMutatorInput('tree_decorator_mutator_input', 'blockly.block.tree_decorator_mutator.input', 320);
 
 // Mutator blocks for "Direction list" mixin
 registerSimpleMutatorContainer(
-    'direction_list_mutator_container', 'blockly.block.direction_list_mutator.container', 30);
+        'direction_list_mutator_container', 'blockly.block.direction_list_mutator.container', 30);
 registerSimpleMutatorInput('direction_list_mutator_input', 'blockly.block.direction_list_mutator.input', 30, true);
 
 // Unregister blocks that we will register again below
@@ -804,5 +804,5 @@ Blockly.defineBlocksWithJsonArray([
         'helpUrl': '%{BKY_CONTROLS_FLOW_STATEMENTS_HELPURL}',
         'suppressPrefixSuffix': true,
         'extensions': ['controls_flow_tooltip', 'controls_flow_in_loop_check_exclude_wait'],
-    },
+    }
 ]);
