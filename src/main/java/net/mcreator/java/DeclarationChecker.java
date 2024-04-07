@@ -38,7 +38,7 @@ class DeclarationChecker {
 			if (startPos != -1) {
 				DeclarationFinder.InClassPosition position = new DeclarationFinder.InClassPosition();
 				position.classFileNode = null;
-				position.carret = startPos + 6;
+				position.caret = startPos + 6;
 				return position;
 			}
 
@@ -57,7 +57,7 @@ class DeclarationChecker {
 			if (position != null) {
 				String codeFromParent = FileIO.readFileToString(position.classFileNode);
 				int startPos = codeFromParent.indexOf("class " + superClassName.getName(false, false));
-				position.carret = startPos + 6;
+				position.caret = startPos + 6;
 				return position;
 			}
 		}
@@ -72,7 +72,7 @@ class DeclarationChecker {
 			DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(workspace,
 					clickedWord, compilationUnit.getPackageName(), jarManager);
 			if (position != null)
-				return inClassPositionCarretFix(position, clickedWord);
+				return inClassPositionCaretFix(position, clickedWord);
 		}
 
 		// first we check if the word could be found in imports, to get the fqdn
@@ -83,7 +83,7 @@ class DeclarationChecker {
 				if (last.equals(clickedWord)) {
 					DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(workspace,
 							singleImport.getName(), compilationUnit.getPackageName(), jarManager);
-					return inClassPositionCarretFix(position, clickedWord);
+					return inClassPositionCaretFix(position, clickedWord);
 				}
 			}
 		}
@@ -91,16 +91,16 @@ class DeclarationChecker {
 		// if it is not in the imports, it could be from the same package
 		DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(workspace, clickedWord,
 				compilationUnit.getPackageName(), jarManager);
-		return inClassPositionCarretFix(position, clickedWord);
+		return inClassPositionCaretFix(position, clickedWord);
 	}
 
-	private static DeclarationFinder.InClassPosition inClassPositionCarretFix(
+	private static DeclarationFinder.InClassPosition inClassPositionCaretFix(
 			DeclarationFinder.InClassPosition original, String className) {
 		if (original == null)
 			return null;
 		String codeFromParent = FileIO.readFileToString(original.classFileNode);
 		int startPos = codeFromParent.indexOf("class " + className);
-		original.carret = startPos + 6;
+		original.caret = startPos + 6;
 		return original;
 	}
 

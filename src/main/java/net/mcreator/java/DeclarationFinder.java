@@ -138,7 +138,7 @@ public class DeclarationFinder {
 	}
 
 	public static class InClassPosition {
-		public int carret;
+		public int caret;
 		public boolean openInReadOnly = true;
 		public File virtualFile;
 		public File classFileNode; //null if current class
