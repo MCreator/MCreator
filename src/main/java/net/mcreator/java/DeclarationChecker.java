@@ -68,6 +68,13 @@ class DeclarationChecker {
 			CompilationUnit compilationUnit, JarManager jarManager) {
 		List<ImportDeclaration> imports = compilationUnit.getImports();
 
+		if (clickedWord.contains(".")) {
+			DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(workspace,
+					clickedWord, compilationUnit.getPackageName(), jarManager);
+			if (position != null)
+				return inClassPositionCarretFix(position, clickedWord);
+		}
+
 		// first we check if the word could be found in imports, to get the fqdn
 		for (ImportDeclaration singleImport : imports) {
 			String[] path = singleImport.getName().split("\\.");
