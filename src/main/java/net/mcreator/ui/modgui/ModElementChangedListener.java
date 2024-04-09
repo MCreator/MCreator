@@ -20,7 +20,10 @@
 package net.mcreator.ui.modgui;
 
 import net.mcreator.ui.blockly.BlocklyPanel;
-import net.mcreator.ui.component.*;
+import net.mcreator.ui.component.ITechnicalComponent;
+import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.JItemListField;
+import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.entries.JEntriesList;
 import net.mcreator.ui.minecraft.MCItemHolder;
 import net.mcreator.ui.minecraft.SoundSelector;

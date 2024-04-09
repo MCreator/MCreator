@@ -358,24 +358,6 @@
 </#if>
 </#macro>
 
-<#macro onBlockTick procedure="" scheduleTick=false tickRate=0>
-<#if hasProcedure(procedure)>
-@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
-	super.tick(blockstate, world, pos, random);
-	<@procedureCode procedure, {
-		"x": "pos.getX()",
-		"y": "pos.getY()",
-		"z": "pos.getZ()",
-		"world": "world",
-		"blockstate": "blockstate"
-	}/>
-	<#if scheduleTick>
-	world.scheduleTick(pos, this, ${tickRate});
-	</#if>
-}
-</#if>
-</#macro>
-
 <#macro onDestroyedByPlayer procedure="">
 <#if hasProcedure(procedure)>
 @Override public boolean onDestroyedByPlayer(BlockState blockstate, Level world, BlockPos pos, Player entity, boolean willHarvest, FluidState fluid) {

@@ -206,6 +206,8 @@ public final class MCreatorApplication {
 			SwingUtilities.invokeLater(() -> {
 				workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
 
+				splashScreen.setVisible(false);
+
 				boolean directLaunch = false;
 				if (!launchArguments.isEmpty()) {
 					String lastArg = launchArguments.get(launchArguments.size() - 1);
@@ -223,8 +225,6 @@ public final class MCreatorApplication {
 
 				if (!directLaunch)
 					showWorkspaceSelector();
-
-				splashScreen.setVisible(false);
 			});
 
 			LOG.debug("Application loader finished");
