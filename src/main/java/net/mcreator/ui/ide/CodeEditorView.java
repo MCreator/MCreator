@@ -444,11 +444,11 @@ public class CodeEditorView extends ViewBase {
 								mcreator.getWorkspace(), parser, te, jls.getJarManager());
 						if (position != null) {
 							if (position.classFileNode == null) {
-								te.setCaretPosition(position.carret);
+								te.setCaretPosition(position.caret);
 								SwingUtilities.invokeLater(() -> centerLineInScrollPane());
 							} else {
 								ProjectFileOpener.openFileSpecific(mcreator, position.classFileNode,
-										position.openInReadOnly, position.carret, position.virtualFile);
+										position.openInReadOnly, position.caret, position.virtualFile);
 							}
 							disableJumpToMode();
 						} else {
