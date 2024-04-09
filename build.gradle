@@ -103,7 +103,7 @@ dependencies {
     implementation fileTree(dir: 'lib', include: ['*.jar'])
 
     // from maven
-    implementation group: 'commons-io', name: 'commons-io', version: '2.16.0'
+    implementation group: 'commons-io', name: 'commons-io', version: '2.16.1'
     implementation group: 'org.freemarker', name: 'freemarker', version: '2.3.32'
     implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
     implementation group: 'com.github.sps.junidecode', name: 'junidecode', version: '0.3'

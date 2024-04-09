@@ -259,7 +259,7 @@ public class DebugPanel extends JPanel {
 							if (position != null) {
 								SwingUtilities.invokeLater(() -> {
 									CodeEditorView codeEditorView = ProjectFileOpener.openFileSpecific(mcreator,
-											position.classFileNode, position.openInReadOnly, position.carret,
+											position.classFileNode, position.openInReadOnly, position.caret,
 											position.virtualFile);
 									if (codeEditorView != null)
 										codeEditorView.jumpToLine(stepEvent.location().lineNumber());
