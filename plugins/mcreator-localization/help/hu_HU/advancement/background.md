@@ -1,0 +1,1 @@
+Ha az eredményed az első elérési útvonal, választhatsz neki egy eredmény lap hátteret ezzel az opcióval.

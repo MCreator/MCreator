@@ -821,6 +821,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		pane4.setOpaque(false);
 
 		JPanel selp = new JPanel(new GridLayout(7, 2, 30, 2));
+		selp.setOpaque(false);
 
 		ComponentUtils.deriveFont(mobName, 16);
 
@@ -860,11 +861,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 				L10N.label("elementgui.living_entity.does_spawn_in_dungeons")));
 		selp.add(spawnInDungeons);
 
-		selp.setOpaque(false);
-
-		JComponent selpcont = PanelUtils.northAndCenterElement(selp,
-				PanelUtils.gridElements(1, 2, 5, 5, L10N.label("elementgui.living_entity.spawn_general_condition"),
-						PanelUtils.westAndCenterElement(new JEmptyBox(12, 5), spawningCondition)), 5, 5);
+		JComponent selpcont = PanelUtils.northAndCenterElement(selp, PanelUtils.gridElements(1, 2, 30, 2,
+				PanelUtils.join(FlowLayout.LEFT, 5, 0, L10N.label("elementgui.living_entity.spawn_general_condition")),
+				spawningCondition), 5, 5);
 
 		pane5.add("Center", PanelUtils.totalCenterInPanel(selpcont));
 
@@ -904,8 +903,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 		addPage(L10N.t("elementgui.living_entity.page_visual"), pane2);
 		addPage(L10N.t("elementgui.living_entity.page_model_layers"), pane8, false);
-		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_behaviour"), pane1);
+		addPage(L10N.t("elementgui.living_entity.page_sound"), pane6);
 		addPage(L10N.t("elementgui.living_entity.page_entity_data"), entityDataListPanel, false);
 		addPage(L10N.t("elementgui.common.page_inventory"), pane7);
 		addPage(L10N.t("elementgui.common.page_triggers"), pane4);

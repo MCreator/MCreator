@@ -36,7 +36,7 @@ public class HiddenSection extends PreferencesSection {
 	public BooleanEntry fullScreen;
 	public IntegerEntry projectTreeSplitPos;
 	public BooleanEntry workspaceSortAscending;
-	public PreferencesEntry<SortType> workspaceSortType;
+	public PreferencesEntry<SortType> workspaceSortOrder;
 	public PreferencesEntry<File> java_home;
 	public StringEntry uiTheme;
 	public BooleanEntry enableJavaPlugins;
@@ -57,7 +57,7 @@ public class HiddenSection extends PreferencesSection {
 		fullScreen = addEntry(new BooleanEntry("fullScreen", false));
 		projectTreeSplitPos = addEntry(new IntegerEntry("projectTreeSplitPos", 0));
 		workspaceSortAscending = addEntry(new BooleanEntry("workspaceSortAscending", true));
-		workspaceSortType = addEntry(new HiddenEntry<>("workspaceSortType", SortType.CREATED) {
+		workspaceSortOrder = addEntry(new HiddenEntry<>("workspaceSortOrder", SortType.CREATED) {
 			@Override public void setValueFromJsonElement(JsonElement object) {
 				this.value = SortType.valueOf(object.getAsString());
 			}
@@ -89,7 +89,7 @@ public class HiddenSection extends PreferencesSection {
 	}
 
 	public enum SortType {
-		NAME, CREATED, TYPE, LOADORDER
+		NAME, CREATED, TYPE
 	}
 
 	public enum IconSize {

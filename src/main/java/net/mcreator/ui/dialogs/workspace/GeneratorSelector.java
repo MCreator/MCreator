@@ -18,7 +18,6 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
-import net.mcreator.Launcher;
 import net.mcreator.element.ModElementType;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
@@ -35,8 +34,6 @@ import net.mcreator.ui.laf.themes.Theme;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Map;
@@ -172,23 +169,6 @@ public class GeneratorSelector {
 		});
 
 		generator.setSelectedItem(current);
-
-		generator.addActionListener(new ActionListener() {
-			GeneratorConfiguration oldItem = current;
-
-			@Override public void actionPerformed(ActionEvent e) {
-				if (generator.getSelectedItem() instanceof GeneratorConfiguration generatorConfiguration) {
-					if (!Launcher.version.isDevelopment() && !newWorkspace && generatorConfiguration != current
-							&& generatorConfiguration.getGeneratorStats().getStatus() == GeneratorStats.Status.DEV) {
-						generator.setSelectedItem(oldItem);
-						JOptionPane.showMessageDialog(parent, L10N.t("dialog.generator_selector.dev_gen_message"),
-								L10N.t("dialog.generator_selector.dev_gen_title"), JOptionPane.WARNING_MESSAGE);
-					} else {
-						oldItem = generatorConfiguration;
-					}
-				}
-			}
-		});
 
 		mainPanel.addHierarchyListener(e -> {
 			if (SwingUtilities.getWindowAncestor(mainPanel) instanceof Dialog dialog) {

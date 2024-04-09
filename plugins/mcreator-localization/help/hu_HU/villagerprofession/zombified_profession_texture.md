@@ -1,0 +1,1 @@
+A zombi falusi textúrája ezzel a szakmával.
