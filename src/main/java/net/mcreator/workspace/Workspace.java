@@ -30,7 +30,7 @@ import net.mcreator.ui.dialogs.workspace.GeneratorSelector;
 import net.mcreator.ui.dialogs.workspace.WorkspaceDialogs;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.elements.*;
-import net.mcreator.workspace.misc.TabUtils;
+import net.mcreator.workspace.misc.CreativeTabsOrder;
 import net.mcreator.workspace.misc.WorkspaceInfo;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.logging.log4j.LogManager;
@@ -56,7 +56,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
-	private ConcurrentHashMap<String, ArrayList<String>> tab_element_order = new ConcurrentHashMap<>();
+	private CreativeTabsOrder tab_element_order = new CreativeTabsOrder();
 	private ConcurrentHashMap<TagElement, ArrayList<String>> tag_elements = new ConcurrentHashMap<>();
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<>() {{
 		put("en_us", new ConcurrentHashMap<>());
@@ -115,7 +115,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		return Collections.unmodifiableSet(sound_elements);
 	}
 
-	public Map<String, ArrayList<String>> getTabElementOrderMap() {
+	public CreativeTabsOrder getCreativeTabsOrder() {
 		return tab_element_order;
 	}
 
@@ -152,6 +152,11 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 	public void resetModElementCompilesStatus() {
 		mod_elements.parallelStream().forEach(el -> el.setCompiles(true));
+		markDirty();
+	}
+
+	public void setElementOrderInTab(String tab, List<ModElement> elements) {
+		tab_element_order.setElementOrderInTab(tab, elements);
 		markDirty();
 	}
 
@@ -193,7 +198,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!mod_elements.contains(element)) { // only add this mod element if it is not already added
 			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
-			TabUtils.addModElementToTabs(this, element);
+			tab_element_order.addModElementToTabs(element);
 
 			markDirty();
 		} else {
@@ -237,7 +242,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		// finally remove element form the list
 		mod_elements.remove(element);
-		TabUtils.removeModElementFromTabs(this, element);
+		tab_element_order.removeModElementFromTabs(element);
 
 		markDirty();
 	}
