@@ -139,7 +139,7 @@ public class GradleConsole extends JPanel {
 
 							if (position != null) {
 								CodeEditorView codeEditorView = ProjectFileOpener.openFileSpecific(ref,
-										position.classFileNode, position.openInReadOnly, position.carret,
+										position.classFileNode, position.openInReadOnly, position.caret,
 										position.virtualFile);
 								if (codeEditorView != null)
 									codeEditorView.jumpToLine(linenum);
