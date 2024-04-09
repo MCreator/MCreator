@@ -57,13 +57,13 @@ public class ProjectFileOpener {
 		}
 	}
 
-	public static CodeEditorView openFileSpecific(MCreator mcreator, File file, boolean readOnly, int carret,
+	public static CodeEditorView openFileSpecific(MCreator mcreator, File file, boolean readOnly, int caret,
 			File virtualFile) {
 		if (file.isFile()) {
 			String code = FileIO.readFileToString(file);
 			CodeEditorView cev = new CodeEditorView(mcreator, code, virtualFile.getName(), virtualFile, readOnly);
 			cev = (CodeEditorView) cev.showView();
-			cev.te.setCaretPosition(carret);
+			cev.te.setCaretPosition(caret);
 			cev.te.requestFocus();
 			SwingUtilities.invokeLater(cev::centerLineInScrollPane);
 			return cev;
