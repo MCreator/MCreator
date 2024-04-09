@@ -314,10 +314,9 @@ public class Generator implements IGenerator, Closeable {
 				processTemplateDefinitionsToGeneratorTemplates(generatorConfiguration.getBaseTemplates(),
 						performFSTasks, templateID));
 
-		// Pre-precess GEs and sort them by sortID
+		// Pre-precess GEs
 		List<GeneratableElement> generatableElements = workspace.getModElements().stream()
-				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement)
-				.filter(Objects::nonNull).toList();
+				.map(ModElement::getGeneratableElement).filter(Objects::nonNull).toList();
 
 		// Add mod element type specific global files (eg. registries for mod elements)
 		for (ModElementType<?> type : ModElementTypeLoader.REGISTRY) {

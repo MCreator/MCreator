@@ -411,3 +411,5 @@ tags:
     condition: "${data.blockBase! == 'Wall'}"
   - tag: BLOCKS:minecraft:leaves
     condition: "${data.blockBase! == 'Leaves'}"
+  - tag: BLOCKS:minecraft:replaceable
+    condition: isReplaceable

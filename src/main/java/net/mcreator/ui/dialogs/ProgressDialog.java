@@ -18,9 +18,9 @@
 
 package net.mcreator.ui.dialogs;
 
+import com.formdev.flatlaf.ui.FlatLineBorder;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.SquareLoaderIcon;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.init.UIRES;
@@ -43,24 +43,32 @@ public class ProgressDialog extends MCreatorDialog {
 	public ProgressDialog(Window w, String title) {
 		super(w, title, true);
 
-		setLayout(new BorderLayout(0, 0));
-
 		if (w instanceof MCreator mcreatorInst)
 			this.mcreator = mcreatorInst;
-
-		setBackground(Theme.current().getBackgroundColor());
 
 		setClosable(false);
 		setUndecorated(true);
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
+		JPanel contentPane = new JPanel() {
+			@Override protected void paintComponent(Graphics g) {
+				Graphics2D g2d = (Graphics2D) g;
+				g2d.setColor(Theme.current().getBackgroundColor());
+				g2d.fillRoundRect(0, 0, getWidth(), getHeight(), 15, 15);
+				super.paintComponent(g);
+			}
+		};
+		contentPane.setBorder(
+				new FlatLineBorder(new Insets(0, 0, 0, 0), UIManager.getColor("PopupMenu.borderColor"), 1, 15));
+		contentPane.setLayout(new BorderLayout(0, 0));
+		contentPane.setOpaque(false);
+		setContentPane(contentPane);
+
+		setBackground(new Color(0, 0, 0, 0));
+
 		titleLabel = new JLabel(title);
-		titleLabel.setBackground(Theme.current().getAltBackgroundColor());
-		titleLabel.setOpaque(true);
-		titleLabel.setBorder(BorderFactory.createCompoundBorder(
-				BorderFactory.createMatteBorder(8, 5, 0, 0, Theme.current().getBackgroundColor()),
-				BorderFactory.createMatteBorder(0, 4, 0, 0, Theme.current().getAltBackgroundColor())));
-		ComponentUtils.deriveFont(titleLabel, 13);
+		titleLabel.setBorder(BorderFactory.createEmptyBorder(7, 10, 2, 10));
+		titleLabel.setForeground(Theme.current().getAltForegroundColor());
 		add("North", titleLabel);
 
 		progressUnits.setCellRenderer(new Render());
@@ -68,13 +76,9 @@ public class ProgressDialog extends MCreatorDialog {
 		progressUnits.setBorder(null);
 
 		JScrollPane panes = new JScrollPane(progressUnits);
+		panes.setOpaque(false);
 		panes.getViewport().setOpaque(false);
-		panes.setPreferredSize(new Dimension(600, 280));
-		panes.setBackground(Theme.current().getBackgroundColor());
-		panes.setBorder(BorderFactory.createMatteBorder(4, 8, 4, 4, Theme.current().getBackgroundColor()));
-
-		((JComponent) getContentPane()).setBorder(
-				BorderFactory.createMatteBorder(0, 5, 0, 0, Theme.current().getAltBackgroundColor()));
+		panes.setBorder(BorderFactory.createEmptyBorder(5, 10, 5, 3));
 
 		add("Center", panes);
 
@@ -189,10 +193,10 @@ public class ProgressDialog extends MCreatorDialog {
 		public Component getListCellRendererComponent(JList<? extends ProgressUnit> list, ProgressUnit ma, int index,
 				boolean isSelected, boolean cellHasFocus) {
 			removeAll();
+			setOpaque(false);
 			setLayout(new BorderLayout());
-			setBackground(Theme.current().getBackgroundColor());
 
-			JPanel stap = new JPanel(new BorderLayout());
+			JPanel stap = new JPanel(new BorderLayout(2, 0));
 			stap.setOpaque(false);
 
 			JLabel status = new JLabel();

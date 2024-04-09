@@ -1,2 +1,2 @@
 <#include "mcitems.ftl">
-/*@int*/(CommonHooks.getBurnTime(${mappedMCItemToItemStackCode(input$item, 1)}, null))
+/*@int*/(${mappedMCItemToItemStackCode(input$item, 1)}.getBurnTime(null))

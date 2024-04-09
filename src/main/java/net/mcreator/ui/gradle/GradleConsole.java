@@ -29,7 +29,6 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.gradle.ClearAllGradleCachesAction;
 import net.mcreator.ui.component.ConsolePane;
-import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.KeyStrokes;
 import net.mcreator.ui.component.util.ThreadUtil;
@@ -140,7 +139,7 @@ public class GradleConsole extends JPanel {
 
 							if (position != null) {
 								CodeEditorView codeEditorView = ProjectFileOpener.openFileSpecific(ref,
-										position.classFileNode, position.openInReadOnly, position.carret,
+										position.classFileNode, position.openInReadOnly, position.caret,
 										position.virtualFile);
 								if (codeEditorView != null)
 									codeEditorView.jumpToLine(linenum);

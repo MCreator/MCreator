@@ -23,6 +23,7 @@ import com.formdev.flatlaf.FlatLaf;
 import com.formdev.flatlaf.IntelliJTheme;
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.OS;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.laf.LafUtil;
@@ -54,6 +55,12 @@ public class ThemeManager {
 	 */
 	public static void applySelectedTheme() {
 		try {
+			if (OS.getOS() == OS.LINUX) {
+				// We need to call this to enable the window decorations on Linux
+				JFrame.setDefaultLookAndFeelDecorated(true);
+				JDialog.setDefaultLookAndFeelDecorated(true);
+			}
+
 			Theme theme = Theme.current();
 
 			Map<String, String> flatLafDefaults = new HashMap<>();

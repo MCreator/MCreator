@@ -291,7 +291,8 @@ public class PluginLoader extends URLClassLoader {
 
 		if (!plugin.isCompatible()) {
 			LOG.warn("Plugin " + plugin.getID() + " is not compatible with this MCreator version!");
-			if (!Launcher.version.isDevelopment() && System.getenv("MCREATOR_PLUGINS_DEV") == null) { // We allow loading of incompatible plugins in dev
+			if (!Launcher.version.isDevelopment() && System.getenv("MCREATOR_PLUGINS_DEV")
+					== null) { // We allow loading of incompatible plugins in dev
 				failedPlugins.add(new PluginLoadFailure(plugin, "incompatible version"));
 				return null;
 			}
