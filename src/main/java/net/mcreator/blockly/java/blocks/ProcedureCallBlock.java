@@ -171,7 +171,9 @@ public class ProcedureCallBlock implements IBlockGenerator {
 		return BlockType.PROCEDURAL;
 	}
 
-	// The record holds info about a single dependency row in the block (name, type, input code)
-	public record DependencyInput(String name, String type, String arg) {}
+	/**
+	 * The record holds info about a single dependency row in the block (name, type, input code)
+	 */
+	public record DependencyInput(String name, String type, String value) {}
 
 }
