@@ -79,7 +79,21 @@ public class ${name}Block extends LiquidBlock {
 
 	<@onRedstoneOrNeighborChanged "", "", data.onNeighbourChanges/>
 
-	<@onBlockTick data.onTickUpdate, data.tickRate gt 0, data.tickRate/>
+	<#if hasProcedure(data.onTickUpdate)>
+	@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
+		super.tick(blockstate, world, pos, random);
+		<@procedureCode data.onTickUpdate, {
+			"x": "pos.getX()",
+			"y": "pos.getY()",
+			"z": "pos.getZ()",
+			"world": "world",
+			"blockstate": "blockstate"
+		}/>
+		<#if (data.tickRate > 0)>
+		world.scheduleTick(pos, this, ${data.tickRate});
+		</#if>
+	}
+	</#if>
 
 	<@onEntityCollides data.onEntityCollides/>
 

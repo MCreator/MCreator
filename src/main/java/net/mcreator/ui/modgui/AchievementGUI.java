@@ -296,7 +296,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		achievementDescription.setText(achievement.achievementDescription);
 		achievementIcon.setBlock(achievement.achievementIcon);
 		achievementType.setSelectedItem(achievement.achievementType);
-		parentAchievement.setSelectedItem(achievement.parent.getUnmappedValue());
+		parentAchievement.setSelectedItem(achievement.parent);
 		disableDisplay.setSelected(achievement.disableDisplay);
 		showPopup.setSelected(achievement.showPopup);
 		announceToChat.setSelected(achievement.announceToChat);

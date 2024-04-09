@@ -54,7 +54,7 @@ public class JJigsawPart extends JPanel implements IValidable {
 		setBackground(Theme.current().getAltBackgroundColor().darker());
 
 		ignoreBlocks = new MCItemListField(mcreator, ElementUtil::loadBlocks);
-		ignoreBlocks.setPreferredSize(new Dimension(200, 30));
+		ignoreBlocks.setPreferredSize(new Dimension(260, 30));
 
 		structureSelector.setValidator(() -> {
 			if (structureSelector.getSelectedItem() == null || structureSelector.getSelectedItem().isEmpty())

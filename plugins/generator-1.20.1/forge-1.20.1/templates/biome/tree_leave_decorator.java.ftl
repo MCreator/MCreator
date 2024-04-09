@@ -40,7 +40,7 @@ package ${package}.world.features.treedecorators;
 
     public static TreeDecoratorType<?> DECORATOR_TYPE = new TreeDecoratorType<>(CODEC);
 
-	@SubscribeEvent public static void registerPointOfInterest(RegisterEvent event) {
+	@SubscribeEvent public static void registerTreeDecorator(RegisterEvent event) {
 		event.register(ForgeRegistries.Keys.TREE_DECORATOR_TYPES, registerHelper -> registerHelper.register("${registryname}_tree_leave_decorator", DECORATOR_TYPE));
 	}
 
@@ -59,42 +59,50 @@ package ${package}.world.features.treedecorators;
             if (context.random().nextFloat() <  0.25f) {
                 BlockPos pos = blockpos.west();
                 if (context.isAir(pos)) {
-                    addVine(pos, context);
+                    addVine(pos, Direction.WEST, context);
                 }
             }
 
 			if (context.random().nextFloat() <  0.25f) {
 				BlockPos pos = blockpos.east();
 				if (context.isAir(pos)) {
-					addVine(pos, context);
+					addVine(pos, Direction.EAST, context);
 				}
 			}
 
 			if (context.random().nextFloat() <  0.25f) {
 				BlockPos pos = blockpos.north();
 				if (context.isAir(pos)) {
-					addVine(pos, context);
+					addVine(pos, Direction.NORTH, context);
 				}
 			}
 
 			if (context.random().nextFloat() <  0.25f) {
 				BlockPos pos = blockpos.south();
 				if (context.isAir(pos)) {
-					addVine(pos, context);
+					addVine(pos, Direction.SOUTH, context);
 				}
 			}
         });
     }
 
-    private static void addVine(BlockPos pos, TreeDecorator.Context context) {
+    private static void addVine(BlockPos pos, Direction direction, TreeDecorator.Context context) {
 		context.setBlock(pos, ${mappedBlockToBlockStateCode(data.treeVines)});
         int i = 4;
         for(BlockPos blockpos = pos.below(); context.isAir(blockpos) && i > 0; --i) {
-			context.setBlock(blockpos, ${mappedBlockToBlockStateCode(data.treeVines)});
+			context.setBlock(blockpos, oriented(${mappedBlockToBlockStateCode(data.treeVines)}, direction));
             blockpos = blockpos.below();
         }
-
     }
+
+	private static BlockState oriented(BlockState blockstate, Direction direction) {
+		return switch (direction) {
+			case SOUTH -> blockstate.getBlock().rotate(blockstate, Rotation.CLOCKWISE_180);
+			case EAST -> blockstate.getBlock().rotate(blockstate, Rotation.CLOCKWISE_90);
+			case WEST -> blockstate.getBlock().rotate(blockstate, Rotation.COUNTERCLOCKWISE_90);
+			default -> blockstate;
+		};
+	}
 
 }
 <#-- @formatter:on -->

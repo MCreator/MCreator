@@ -1,0 +1,167 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "dirt",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "trunk",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "foliage_height",
+      "value": 5,
+      "min": 4,
+      "max": 16,
+      "precision": 1
+    },
+    {
+      "type": "input_value",
+      "name": "foliage",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "root_placer",
+      "check": "RootPlacer"
+    },
+    {
+      "type": "input_value",
+      "name": "branch_count",
+      "check": "IntProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "branch_length",
+      "check": "IntProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "base_height",
+      "value": 7,
+      "min": 0,
+      "max": 32,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "height_variation_a",
+      "value": 1,
+      "min": 0,
+      "max": 24,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "height_variation_b",
+      "value": 0,
+      "min": 0,
+      "max": 24,
+      "precision": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "hanging_leaves_chance",
+      "value": 0.166,
+      "min": 0,
+      "max": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "hanging_leaves_extension_chance",
+      "value": 0.333,
+      "min": 0,
+      "max": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "corner_hole_chance",
+      "value": 0.25,
+      "min": 0,
+      "max": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "bottom_hole_chance",
+      "value": 0.25,
+      "min": 0,
+      "max": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "force_dirt"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "ignore_vines",
+      "checked": true
+    },
+    {
+      "type": "input_dummy"
+    }
+  ],
+  "mutator": "tree_decorator_mutator",
+  "output": "Feature",
+  "colour": 0,
+  "extensions": [
+    "add_image_to_bsp_inputs",
+    "cherry_tree_feature_validator"
+  ],
+  "mcreator": {
+    "toolbox_id": "treefeatures",
+    "toolbox_init": [
+      "<mutation inputs=\"0\"></mutation>",
+      "<value name=\"dirt\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"trunk\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"foliage\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"branch_count\"><block type=\"int_provider_uniform\"><field name=\"min\">1</field><field name=\"max\">3</field></block></value>",
+      "<value name=\"branch_length\"><block type=\"int_provider_uniform\"><field name=\"min\">2</field><field name=\"max\">4</field></block></value>",
+      "<value name=\"root_placer\"><block type=\"root_placer_none\"></block></value>",
+      "~<value name=\"decorator0\"><block type=\"tree_decorator_trunk_vine\"></block></value>"
+    ],
+    "inputs": [
+      "dirt",
+      "trunk",
+      "foliage",
+      "root_placer",
+      "branch_count",
+      "branch_length"
+    ],
+    "fields": [
+      "foliage_height",
+      "base_height",
+      "height_variation_a",
+      "height_variation_b",
+      "hanging_leaves_chance",
+      "hanging_leaves_extension_chance",
+      "corner_hole_chance",
+      "bottom_hole_chance",
+      "force_dirt",
+      "ignore_vines"
+    ],
+    "repeating_inputs": [
+      "decorator"
+    ]
+  }
+}
