@@ -241,12 +241,6 @@ public class BlocklyJavascriptBridge {
 		ext_triggers.put(external_trigger.getID(), external_trigger.getName());
 	}
 
-	@SuppressWarnings("unused") public boolean hasDependency(String procedureName, String dependencyName) {
-		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
-		return me != null && me.getGeneratableElement() instanceof Procedure procedure && procedure.getDependencies()
-				.stream().anyMatch(e -> e.getName().equals(dependencyName));
-	}
-
 	@SuppressWarnings("unused") public String getDependencyType(String procedureName, String dependencyName) {
 		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
 		if (me != null && me.getGeneratableElement() instanceof Procedure procedure) {
