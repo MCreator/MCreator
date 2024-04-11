@@ -151,7 +151,7 @@ import java.util.*;
 							tabMap.put(tab, new ArrayList<>());
 						}
 
-						if (TabUtils.getElementOrderInTab(workspace, tab) == null) {
+						if (workspace.getCreativeTabsOrder().get(tab) == null) {
 							tabMap.get(tab).addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
 									.toList());
 						}
@@ -161,8 +161,8 @@ import java.util.*;
 		}
 
 		for (String tab : tabMap.keySet()) {
-			if (TabUtils.getElementOrderInTab(workspace, tab) != null) {
-				for (String element : TabUtils.getElementOrderInTab(workspace, tab)) {
+			if (workspace.getCreativeTabsOrder().get(tab) != null) {
+				for (String element : workspace.getCreativeTabsOrder().get(tab)) {
 					ModElement me = workspace.getModElementByName(element);
 					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement) {
 						List<MCItem> tabItems = tabElement.getCreativeTabItems();

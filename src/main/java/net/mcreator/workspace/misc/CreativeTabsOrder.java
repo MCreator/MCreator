@@ -22,41 +22,35 @@ package net.mcreator.workspace.misc;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
-import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
-public class TabUtils {
+public class CreativeTabsOrder extends ConcurrentHashMap<String, ArrayList<String>> {
 
-	public static List<String> getElementOrderInTab(Workspace workspace, String tab) {
-		return workspace.getTabElementOrderMap().get(tab);
-	}
-
-	public static void setElementOrderInTab(Workspace workspace, String tab, List<ModElement> elements) {
-		if (workspace.getTabElementOrderMap().containsKey(tab))
-			workspace.getTabElementOrderMap().get(tab).clear();
+	public void setElementOrderInTab(String tab, List<ModElement> elements) {
+		if (containsKey(tab))
+			get(tab).clear();
 		else
-			workspace.getTabElementOrderMap().put(tab, new ArrayList<>());
+			put(tab, new ArrayList<>());
 
 		for (ModElement element : elements)
-			workspace.getTabElementOrderMap().get(tab).add(element.getName());
-
-		workspace.markDirty();
+			get(tab).add(element.getName());
 	}
 
-	public static void addModElementToTabs(Workspace workspace, ModElement element) {
+	public void addModElementToTabs(ModElement element) {
 		if (element.getGeneratableElement() instanceof ITabContainedElement tabElement) {
 			TabEntry tabEntry = tabElement.getCreativeTab();
-			if (tabEntry != null && !(tabEntry.getUnmappedValue()).equals("No creative tab entry")
-					&& workspace.getTabElementOrderMap().containsKey(tabEntry.getUnmappedValue()))
-				workspace.getTabElementOrderMap().get(tabEntry.getUnmappedValue()).add(element.getName());
+			if (tabEntry != null && !(tabEntry.getUnmappedValue()).equals("No creative tab entry") && containsKey(
+					tabEntry.getUnmappedValue()))
+				get(tabEntry.getUnmappedValue()).add(element.getName());
 		}
 	}
 
-	public static void updateModElementTabs(Workspace workspace, GeneratableElement element) {
+	public void updateModElementTabs(GeneratableElement element) {
 		if (element instanceof ITabContainedElement tabElement) {
 			TabEntry tabEntry = tabElement.getCreativeTab();
 			if (tabEntry == null || tabEntry.getUnmappedValue().equals("No creative tab entry"))
@@ -64,21 +58,20 @@ public class TabUtils {
 
 			// if order in new tab is overridden, add the element explicitly
 			String meName = element.getModElement().getName();
-			if (workspace.getTabElementOrderMap().containsKey(tabEntry.getUnmappedValue())
-					&& !workspace.getTabElementOrderMap().get(tabEntry.getUnmappedValue()).contains(meName)) {
-				for (Map.Entry<String, ArrayList<String>> entry : workspace.getTabElementOrderMap().entrySet()) {
+			if (containsKey(tabEntry.getUnmappedValue()) && !get(tabEntry.getUnmappedValue()).contains(meName)) {
+				for (Map.Entry<String, ArrayList<String>> entry : entrySet()) {
 					if (!entry.getKey().equals(tabEntry.getUnmappedValue())) // remove element from its prior tab
 						entry.getValue().remove(meName);
 				}
 
-				workspace.getTabElementOrderMap().get(tabEntry.getUnmappedValue()).add(meName);
+				get(tabEntry.getUnmappedValue()).add(meName);
 			}
 		}
 	}
 
-	public static void removeModElementFromTabs(Workspace workspace, ModElement element) {
+	public void removeModElementFromTabs(ModElement element) {
 		if (element.getGeneratableElement() instanceof ITabContainedElement) {
-			for (ArrayList<String> tabContents : workspace.getTabElementOrderMap().values())
+			for (ArrayList<String> tabContents : values())
 				tabContents.remove(element.getName());
 		}
 	}
