@@ -115,7 +115,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
 	private final JComboBox<String> plantType = new JComboBox<>(
-			new String[] { "normal", "growapable", "double" });
+			new String[] { "normal", "double", "growapable" });
 	private final CardLayout plantTypesLayout = new CardLayout();
 	private final JPanel plantTypesCardPanel = new JPanel(plantTypesLayout);
 
