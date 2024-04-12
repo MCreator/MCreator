@@ -1,5 +1,7 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
+import java.text.SimpleDateFormat
+
 plugins {
     id "java"
     id "idea"
@@ -19,7 +21,7 @@ file('src/main/resources/mcreator.conf').withInputStream { project.mcreatorconf.
 
 group = 'net.mcreator'
 version = project.mcreatorconf.getProperty('mcreator')
-project.ext.builddate = project.hasProperty('builddate') ? project.getProperty('builddate') : new Date().format('wwuHH')
+project.ext.builddate = project.hasProperty('builddate') ? project.getProperty('builddate') : new SimpleDateFormat("wwuHH", Locale.GERMANY).format(new Date())
 project.ext.snapshot = project.hasProperty('snapshot') ? Boolean.parseBoolean((String) project.getProperty('snapshot')) : false
 
 javadoc.source = sourceSets.main.allJava
