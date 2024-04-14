@@ -50,6 +50,7 @@ public class ProgressDialog extends MCreatorDialog {
 		setClosable(false);
 		setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
+		// If we use undecorated Dialog on Linux, the dialog contents flicker (#4757)
 		boolean customDecoration = OS.getOS() != OS.LINUX;
 		if (customDecoration) {
 			setUndecorated(true);
