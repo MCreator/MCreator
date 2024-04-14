@@ -70,8 +70,9 @@ public class GTFeatureBlocks {
 			String testXML = featureBlock.getToolboxTestXML();
 
 			// Set block selectors to some value
-			testXML = testXML.replace("<block type=\"mcitem_allblocks\"><field name=\"value\"></field></block>",
-					"<block type=\"mcitem_allblocks\"><field name=\"value\">"
+			testXML = testXML.replace(
+					"<block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block>",
+					"<block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\">"
 							+ TestWorkspaceDataProvider.getRandomMCItem(random,
 							ElementUtil.loadBlocks(modElement.getWorkspace())).getName() + "</field></block>");
 
@@ -85,14 +86,12 @@ public class GTFeatureBlocks {
 			feature.generateCondition = random.nextBoolean() ? new Procedure("condition1") : null;
 
 			if (featureBlock.getType()
-					== IBlockGenerator.BlockType.PROCEDURAL) { // It's a placement, we test with the lake feature
+					== IBlockGenerator.BlockType.PROCEDURAL) { // It's a placement, we test with the empty feature
 				feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">
-						<value name="feature"><block type="feature_lake">
-							<value name="fluid"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
-							<value name="border"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
-						</block></value><next>%s</next></block></xml>""".formatted(testXML);
+						<value name="feature"><block type="feature_no_op"></block></value>
+						<next>%s</next></block></xml>""".formatted(testXML);
 			} else {
 				switch (featureBlock.getOutputTypeForTests()) {
 				case "Feature" -> feature.featurexml = """
@@ -113,9 +112,8 @@ public class GTFeatureBlocks {
 				case "VerticalAnchor" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">
-						<value name="feature"><block type="feature_simple_block">
-							<value name="block"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
-						</block></value><next><block type="placement_height_range">
+						<value name="feature"><block type="feature_no_op"></block></value>
+						<next><block type="placement_height_range">
 							<value name="height"><block type="height_provider_constant">
 								<value name="value">%s</value></block></value></block></next></block></xml>
 						""".formatted(testXML);
@@ -123,9 +121,8 @@ public class GTFeatureBlocks {
 				case "BlockHolderSet" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">
-						<value name="feature"><block type="feature_simple_block">
-							<value name="block"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
-						</block></value><next><block type="placement_block_predicate_filter">
+						<value name="feature"><block type="feature_no_op"></block></value>
+						<next><block type="placement_block_predicate_filter">
 							<value name="condition"><block type="block_predicate_matching_blocks">
 								<field name="x">0</field><field name="y">0</field><field name="z">0</field>
 								<value name="blockSet">%s</value></block></value></block></next></block></xml>
@@ -138,7 +135,7 @@ public class GTFeatureBlocks {
 							<mutation inputs="1"></mutation>
 							<value name="target0"><block type="ore_target">
 								<value name="target">%s</value>
-								<value name="state"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+								<value name="state"><block type="blockstate_selector"><mutation inputs="0"/><field name="block">Blocks.STONE</field></block></value>
 							</block></value>
 						</block></value></block></xml>
 						""".formatted(testXML);
@@ -166,9 +163,9 @@ public class GTFeatureBlocks {
 						<value name="feature"><block type="feature_tree_simple">
 							<mutation inputs="1"></mutation>
 							<value name="decorator0">%s</value>
-							<value name="dirt"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
-							<value name="trunk"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
-							<value name="foliage"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+							<value name="dirt"><block type="blockstate_selector"><mutation inputs="0"/><field name="block">Blocks.STONE</field></block></value>
+							<value name="trunk"><block type="blockstate_selector"><mutation inputs="0"/><field name="block">Blocks.STONE</field></block></value>
+							<value name="foliage"><block type="blockstate_selector"><mutation inputs="0"/><field name="block">Blocks.STONE</field></block></value>
 							<value name="root_placer"><block type="root_placer_none"></block></value>
 							<field name="type">oak</field>
 							<field name="base_height">0</field>
@@ -182,9 +179,9 @@ public class GTFeatureBlocks {
 						<block type="feature_container" deletable="false" x="40" y="40">
 						<value name="feature"><block type="feature_tree_simple">
 							<mutation inputs="0"></mutation>
-							<value name="dirt"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
-							<value name="trunk"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
-							<value name="foliage"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
+							<value name="dirt"><block type="blockstate_selector"><mutation inputs="0"/><field name="block">Blocks.STONE</field></block></value>
+							<value name="trunk"><block type="blockstate_selector"><mutation inputs="0"/><field name="block">Blocks.STONE</field></block></value>
+							<value name="foliage"><block type="blockstate_selector"><mutation inputs="0"/><field name="block">Blocks.STONE</field></block></value>
 							<value name="root_placer">%s</value>
 							<field name="type">oak</field>
 							<field name="base_height">0</field>
@@ -218,7 +215,7 @@ public class GTFeatureBlocks {
 
 	/**
 	 * This method returns an XML string to test feature blocks that are neither placements nor features.
-	 * The test is performed using the simple block feature and a placement that accepts the block being tested.
+	 * The test is performed using the empty feature and a placement that accepts the block being tested.
 	 *
 	 * @param placementType The name of the placement used to test the block
 	 * @param valueName     The name of the input accepting to which the block is attached
@@ -229,9 +226,8 @@ public class GTFeatureBlocks {
 		return """
 				<xml xmlns="https://developers.google.com/blockly/xml">
 				<block type="feature_container" deletable="false" x="40" y="40">
-				<value name="feature"><block type="feature_simple_block">
-					<value name="block"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
-				</block></value><next><block type="%s">
+				<value name="feature"><block type="feature_no_op"></block></value>
+				<next><block type="%s">
 					<value name="%s">%s</value></block></next></block></xml>
 				""".formatted(placementType, valueName, testXML);
 	}
