@@ -114,10 +114,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
-	private final JComboBox<String> plantType = new JComboBox<>(
-			new String[] { "normal", "double", "growapable" });
+	private final JComboBox<String> plantType = new JComboBox<>(new String[] { "normal", "double", "growapable" });
 	private final CardLayout plantTypesLayout = new CardLayout();
 	private final JPanel plantTypesCardPanel = new JPanel(plantTypesLayout);
+	private final JLabel plantTypeIndicator = new JLabel();
 
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
@@ -302,10 +302,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel texturesAndRent = new JPanel(new BorderLayout(0, 0));
 		texturesAndRent.setOpaque(false);
 
-		texturesAndRent.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 1,
+		JComponent texturesPan = PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 1,
 				ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
 						L10N.t("elementgui.plant.texture_place_top_main")),
-				ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom")))));
+				ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom"))));
+		texturesPan.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
+		texturesAndRent.add("Center", texturesPan);
+
 		texturesAndRent.add("East", PanelUtils.centerAndSouthElement(rent, specialInformation, 2, 2));
 
 		texturesAndRent.setBorder(BorderFactory.createTitledBorder(
@@ -331,7 +334,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.t("elementgui.plant.plant_types"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		JPanel plantTypePanel = new JPanel(new GridLayout(1, 2, 0, 2));
+		JPanel plantTypePanel = new JPanel(new GridLayout(1, 2, 15, 2));
 		plantTypePanel.setOpaque(false);
 		plantTypePanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/plant_type"),
 				L10N.label("elementgui.plant.plant_type")));
@@ -339,14 +342,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		plantType.setRenderer(new PlantTypeListRenderer());
 
-		plantTypeSelector.add("North", plantTypePanel);
-		plantTypeSelector.add("Center", plantTypesCardPanel);
+		plantTypeIndicator.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+
+		plantTypeSelector.add("Center", PanelUtils.northAndCenterElement(plantTypePanel, plantTypesCardPanel, 2, 2));
+		plantTypeSelector.add("East", plantTypeIndicator);
 		plantTypeSelector.setOpaque(false);
 
 		// Panel for static plants
-		JPanel staticPlantCard = new JPanel(new BorderLayout(5, 5));
+		JPanel staticPlantCard = new JPanel(new BorderLayout(15, 5));
 
-		JPanel staticPlantProperties = new JPanel(new GridLayout(2, 2, 0, 2));
+		JPanel staticPlantProperties = new JPanel(new GridLayout(2, 2, 15, 2));
 		staticPlantProperties.setOpaque(false);
 		staticPlantProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/suspicious_stew_effect"),
 				L10N.label("elementgui.plant.suspicious_stew_effect")));
@@ -356,20 +361,17 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		staticPlantProperties.add(suspiciousStewDuration);
 
 		staticPlantCard.add("Center", PanelUtils.pullElementUp(staticPlantProperties));
-		staticPlantCard.add("South", PanelUtils.centerInPanel(new JLabel(UIRES.get("plant_normal"))));
 		staticPlantCard.setOpaque(false);
 
 		// Panel for sugar cane-like plants
-		JPanel growablePlantCard = new JPanel(new BorderLayout(5, 5));
-		growablePlantCard.add("Center", PanelUtils.pullElementUp(PanelUtils.gridElements(1, 2, 0, 2,
+		JPanel growablePlantCard = new JPanel(new BorderLayout(15, 5));
+		growablePlantCard.add("Center", PanelUtils.pullElementUp(PanelUtils.gridElements(1, 2, 15, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("plant/max_height"),
 						L10N.label("elementgui.plant.max_height")), growapableMaxHeight)));
-		growablePlantCard.add("South", PanelUtils.centerInPanel(new JLabel(UIRES.get("plant_growable"))));
 		growablePlantCard.setOpaque(false);
 
 		// Panel for double plants
-		JPanel doublePlantCard = new JPanel(new BorderLayout(5, 5));
-		doublePlantCard.add("South", PanelUtils.centerInPanel(new JLabel(UIRES.get("plant_double"))));
+		JPanel doublePlantCard = new JPanel(new BorderLayout(15, 5));
 		doublePlantCard.setOpaque(false);
 
 		plantTypesCardPanel.add(staticPlantCard, "normal");
@@ -729,6 +731,8 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		}
 
 		plantTypesLayout.show(plantTypesCardPanel, (String) plantType.getSelectedItem());
+		plantTypeIndicator.setIcon(
+				UIRES.get("plant_" + plantType.getSelectedItem().toString().replace("growapable", "growable")));
 	}
 
 	private void updateSoundType() {
