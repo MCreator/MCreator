@@ -26,7 +26,6 @@ import net.mcreator.workspace.elements.ModElement;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class CreativeTabsOrder extends ConcurrentHashMap<String, ArrayList<String>> {
@@ -50,18 +49,20 @@ public class CreativeTabsOrder extends ConcurrentHashMap<String, ArrayList<Strin
 	public void updateModElementTabs(GeneratableElement element) {
 		if (element instanceof ITabContainedElement tabElement) {
 			TabEntry tabEntry = tabElement.getCreativeTab();
-			if (tabEntry == null || tabEntry.getUnmappedValue().equals("No creative tab entry"))
-				return;
-
-			// if order in new tab is overridden, add the element explicitly
 			String meName = element.getModElement().getName();
-			if (containsKey(tabEntry.getUnmappedValue()) && !this.get(tabEntry.getUnmappedValue()).contains(meName)) {
-				for (Map.Entry<String, ArrayList<String>> entry : this.entrySet()) {
-					if (!entry.getKey().equals(tabEntry.getUnmappedValue())) // remove element from its prior tab
-						entry.getValue().remove(meName);
-				}
 
-				this.get(tabEntry.getUnmappedValue()).add(meName);
+			// remove element from its prior tab
+			for (Entry<String, ArrayList<String>> entry : this.entrySet()) {
+				if (tabEntry == null || !entry.getKey().equals(tabEntry.getUnmappedValue()))
+					entry.getValue().remove(meName);
+			}
+
+			if (tabEntry != null && !tabEntry.getUnmappedValue().equals("No creative tab entry")) {
+				ArrayList<String> tabContents = this.get(tabEntry.getUnmappedValue());
+
+				// if order in new tab is overridden, add the element explicitly
+				if (tabContents != null && !tabContents.contains(meName))
+					tabContents.add(meName);
 			}
 		}
 	}
