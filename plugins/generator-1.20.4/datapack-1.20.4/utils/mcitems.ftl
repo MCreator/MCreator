@@ -22,7 +22,7 @@
             <#return "\"item\": \"minecraft:air\"">
         </#if>
     <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
-        <#return "\"tag\": \"" + mappedBlock.getUnmappedValue().replace("TAG:", "")?lower_case + "\"">
+        <#return "\"tag\": \"" + mappedBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")?lower_case + "\"">
     <#else>
         <#assign mapped = mappedBlock.getMappedValue(1) />
         <#if mapped.startsWith("#")>
@@ -45,7 +45,7 @@
         </#if>
     <#elseif mappedBlock.getUnmappedValue().startsWith("TAG:")>
         <#if acceptTags>
-            <#return "#" + mappedBlock.getUnmappedValue().replace("TAG:", "")?lower_case>
+            <#return "#" + mappedBlock.getUnmappedValue().replace("TAG:", "").replace("mod:", modid + ":")?lower_case>
         <#else>
             <#return "minecraft:air">
         </#if>
