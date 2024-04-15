@@ -72,19 +72,6 @@ public class ElementOrderEditor {
 							element.reinit(mcreator.getWorkspace());
 						}
 					};
-					model.addListDataListener(new ListDataListener() {
-						@Override public void intervalAdded(ListDataEvent e) {
-							editedTabs.add(tab.getUnmappedValue());
-						}
-
-						@Override public void intervalRemoved(ListDataEvent e) {
-							editedTabs.add(tab.getUnmappedValue());
-						}
-
-						@Override public void contentsChanged(ListDataEvent e) {
-							editedTabs.add(tab.getUnmappedValue());
-						}
-					});
 					JList<ModElement> list = new JList<>(model);
 					list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 					list.setVisibleRowCount(-1);
@@ -126,6 +113,22 @@ public class ElementOrderEditor {
 						tabEditors.get(tab).addElement(me);
 				}
 			}
+		}
+
+		for (Map.Entry<String, DefaultListModel<ModElement>> entry : tabEditors.entrySet()) {
+			entry.getValue().addListDataListener(new ListDataListener() {
+				@Override public void intervalAdded(ListDataEvent e) {
+					editedTabs.add(entry.getKey());
+				}
+
+				@Override public void intervalRemoved(ListDataEvent e) {
+					editedTabs.add(entry.getKey());
+				}
+
+				@Override public void contentsChanged(ListDataEvent e) {
+					editedTabs.add(entry.getKey());
+				}
+			});
 		}
 
 		mainPanel.add("Center", tabs);
