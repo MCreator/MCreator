@@ -1657,7 +1657,7 @@ public class TestWorkspaceDataProvider {
 		livingEntity.stepSound = new Sound(modElement.getWorkspace(),
 				emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		livingEntity.raidCelebrationSound = new Sound(modElement.getWorkspace(),
-				getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
+				emptyLists ? "" : getRandomItem(random, ElementUtil.getAllSounds(modElement.getWorkspace())));
 		livingEntity.rangedItemType = "Default item";
 		if (!emptyLists) {
 			livingEntity.spawningCondition = new Procedure("condition3");
