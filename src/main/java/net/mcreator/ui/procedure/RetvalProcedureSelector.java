@@ -20,6 +20,7 @@
 package net.mcreator.ui.procedure;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.ui.FlatLineBorder;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.Procedure;
@@ -47,6 +48,7 @@ import net.mcreator.workspace.elements.VariableType;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -73,8 +75,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 		});
 
 		setOpaque(true);
-		procedures.setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
-		setBackground(Theme.current().getAltBackgroundColor());
+		setBackground(UIManager.getColor("TextField.background"));
 
 		procedures.setRenderer(new ConditionalComboBoxRenderer());
 		procedures.addPopupMenuListener(new ComboBoxFullWidthPopup());
@@ -126,8 +127,10 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 		JComponent procwrap = PanelUtils.westAndCenterElement(PanelUtils.totalCenterInPanel(procedures),
 				Objects.requireNonNullElse(fixedValue, new JEmptyBox(1, 1)), 3, 3);
 
+		Border outerBorder = new FlatLineBorder(new Insets(0, 0, 0, 0), UIManager.getColor("Component.borderColor"));
+
 		if (allowInlineEditor) {
-			setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 2));
+			setBorder(BorderFactory.createCompoundBorder(outerBorder, BorderFactory.createEmptyBorder(0, 2, 0, 4)));
 
 			add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 			add.addActionListener(e -> {
@@ -189,7 +192,7 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			add("Center", PanelUtils.centerAndEastElement(procwrap,
 					PanelUtils.totalCenterInPanel(PanelUtils.gridElements(1, 2, add, edit)), 2, 0));
 		} else {
-			setBorder(BorderFactory.createEmptyBorder(0, 2, 0, 1));
+			setBorder(BorderFactory.createCompoundBorder(outerBorder, BorderFactory.createEmptyBorder(0, 2, 0, 1)));
 
 			add("Center", procwrap);
 		}
@@ -222,9 +225,9 @@ public abstract class RetvalProcedureSelector<E, T extends RetvalProcedure<E>> e
 			fixedValue.setEnabled(enabled);
 
 		if (enabled) {
-			setBackground(Theme.current().getAltBackgroundColor());
+			setBackground(UIManager.getColor("TextField.background"));
 		} else {
-			setBackground(Theme.current().getBackgroundColor());
+			setBackground(UIManager.getColor("TextField.disabledBackground"));
 		}
 
 		updateDepsList(true);
