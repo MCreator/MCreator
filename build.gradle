@@ -1,5 +1,7 @@
 import org.apache.tools.ant.taskdefs.condition.Os
 
+import java.text.SimpleDateFormat
+
 plugins {
     id "java"
     id "idea"
@@ -19,7 +21,7 @@ file('src/main/resources/mcreator.conf').withInputStream { project.mcreatorconf.
 
 group = 'net.mcreator'
 version = project.mcreatorconf.getProperty('mcreator')
-project.ext.builddate = project.hasProperty('builddate') ? project.getProperty('builddate') : new Date().format('wwuHH')
+project.ext.builddate = project.hasProperty('builddate') ? project.getProperty('builddate') : new SimpleDateFormat("wwuHH", Locale.GERMANY).format(new Date())
 project.ext.snapshot = project.hasProperty('snapshot') ? Boolean.parseBoolean((String) project.getProperty('snapshot')) : false
 
 javadoc.source = sourceSets.main.allJava
@@ -116,7 +118,7 @@ dependencies {
     implementation group: 'com.univocity', name: 'univocity-parsers', version: '2.9.1'
     implementation group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.23.1'
     implementation group: 'org.apache.commons', name: 'commons-text', version: '1.11.0'
-    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.12'
+    implementation group: 'org.slf4j', name: 'slf4j-nop', version: '2.0.13'
     implementation group: 'org.gradle', name: 'gradle-tooling-api', version: '8.7'
     implementation group: 'net.java.balloontip', name: 'balloontip', version: '1.2.4.1'
     implementation group: 'com.atlassian.commonmark', name: 'commonmark', version: '0.17.0'
