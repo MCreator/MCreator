@@ -57,7 +57,7 @@ public class CreativeTabsOrder extends ConcurrentHashMap<String, ArrayList<Strin
 					entry.getValue().remove(meName);
 			}
 
-			if (tabEntry != null && !tabEntry.getUnmappedValue().equals("No creative tab entry")) {
+			if (!tabEntry.getUnmappedValue().equals("No creative tab entry")) {
 				ArrayList<String> tabContents = this.get(tabEntry.getUnmappedValue());
 
 				// if order in new tab is overridden, add the element explicitly
