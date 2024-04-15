@@ -31,22 +31,19 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class CreativeTabsOrder extends ConcurrentHashMap<String, ArrayList<String>> {
 
-	public void setElementOrderInTab(String tab, List<ModElement> elements) {
-		if (containsKey(tab))
-			get(tab).clear();
-		else
-			put(tab, new ArrayList<>());
-
-		for (ModElement element : elements)
-			get(tab).add(element.getName());
-	}
-
 	public void addModElementToTabs(ModElement element) {
 		if (element.getGeneratableElement() instanceof ITabContainedElement tabElement) {
 			TabEntry tabEntry = tabElement.getCreativeTab();
 			if (tabEntry != null && !(tabEntry.getUnmappedValue()).equals("No creative tab entry") && containsKey(
 					tabEntry.getUnmappedValue()))
 				get(tabEntry.getUnmappedValue()).add(element.getName());
+		}
+	}
+
+	public void removeModElementFromTabs(ModElement element) {
+		if (element.getGeneratableElement() instanceof ITabContainedElement) {
+			for (ArrayList<String> tabContents : values())
+				tabContents.remove(element.getName());
 		}
 	}
 
@@ -69,11 +66,14 @@ public class CreativeTabsOrder extends ConcurrentHashMap<String, ArrayList<Strin
 		}
 	}
 
-	public void removeModElementFromTabs(ModElement element) {
-		if (element.getGeneratableElement() instanceof ITabContainedElement) {
-			for (ArrayList<String> tabContents : values())
-				tabContents.remove(element.getName());
-		}
+	public void setElementOrderInTab(String tab, List<ModElement> elements) {
+		if (containsKey(tab))
+			get(tab).clear();
+		else
+			put(tab, new ArrayList<>());
+
+		for (ModElement element : elements)
+			get(tab).add(element.getName());
 	}
 
 }

@@ -155,11 +155,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		markDirty();
 	}
 
-	public void setElementOrderInTab(String tab, List<ModElement> elements) {
-		tab_element_order.setElementOrderInTab(tab, elements);
-		markDirty();
-	}
-
 	public void addLanguage(String language, ConcurrentHashMap<String, String> data) {
 		language_map.putIfAbsent(language, data);
 		markDirty();
@@ -198,6 +193,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!mod_elements.contains(element)) { // only add this mod element if it is not already added
 			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
+
 			tab_element_order.addModElementToTabs(element);
 
 			markDirty();
@@ -240,9 +236,10 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		fileManager.getModElementManager().removeModElement(element);
 
+		tab_element_order.removeModElementFromTabs(element);
+
 		// finally remove element form the list
 		mod_elements.remove(element);
-		tab_element_order.removeModElementFromTabs(element);
 
 		markDirty();
 	}

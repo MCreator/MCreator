@@ -138,10 +138,11 @@ public class ElementOrderEditor {
 		if (resultval == 0) {
 			for (Map.Entry<String, DefaultListModel<ModElement>> entry : tabEditors.entrySet()) {
 				if (editedTabs.contains(entry.getKey())) {
-					mcreator.getWorkspace()
+					mcreator.getWorkspace().getCreativeTabsOrder()
 							.setElementOrderInTab(entry.getKey(), Collections.list(entry.getValue().elements()));
 				}
 			}
+			mcreator.getWorkspace().markDirty();
 
 			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.element_order.change_message"),
 					L10N.t("dialog.element_order.change_title"), JOptionPane.INFORMATION_MESSAGE);
