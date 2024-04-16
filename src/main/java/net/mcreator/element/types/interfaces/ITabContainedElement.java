@@ -22,11 +22,12 @@ package net.mcreator.element.types.interfaces;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.minecraft.MCItem;
 
+import javax.annotation.Nullable;
 import java.util.List;
 
 public interface ITabContainedElement {
 
-	TabEntry getCreativeTab();
+	@Nullable TabEntry getCreativeTab();
 
 	/**
 	 * WARNING: Calls to this method are generally not thread safe.

@@ -60,7 +60,7 @@ public class ElementOrderEditor {
 			if (generatableElement instanceof ITabContainedElement element) {
 				TabEntry tab = element.getCreativeTab();
 
-				if (tab.getUnmappedValue().equals("No creative tab entry") || element.getCreativeTabItems().isEmpty()) {
+				if (tab == null || tab.getUnmappedValue().equals("No creative tab entry") || element.getCreativeTabItems().isEmpty()) {
 					continue;
 				}
 
