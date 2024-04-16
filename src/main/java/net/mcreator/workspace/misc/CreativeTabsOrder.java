@@ -53,7 +53,7 @@ public class CreativeTabsOrder extends ConcurrentHashMap<String, ArrayList<Strin
 
 			// remove element from its prior tab
 			for (Entry<String, ArrayList<String>> entry : this.entrySet()) {
-				if (!entry.getKey().equals(tabEntry.getUnmappedValue()))
+				if (tabEntry == null || !entry.getKey().equals(tabEntry.getUnmappedValue()))
 					entry.getValue().remove(meName);
 			}
 
