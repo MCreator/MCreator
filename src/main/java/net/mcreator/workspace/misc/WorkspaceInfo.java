@@ -120,8 +120,8 @@ import java.util.*;
 
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
-				TabEntry tab = tabElement.getCreativeTab();
-				if (!tab.getUnmappedValue().equals("No creative tab entry")) {
+				TabEntry tabEntry = tabElement.getCreativeTab();
+				if (!tabEntry.getUnmappedValue().equals("No creative tab entry")) {
 					if (!tabElement.getCreativeTabItems().isEmpty())
 						return true;
 				}
@@ -143,10 +143,10 @@ import java.util.*;
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
 				TabEntry tabEntry = tabElement.getCreativeTab();
-				List<MCItem> tabItems = tabElement.getCreativeTabItems();
-				if (tabEntry != null && tabItems != null && !tabItems.isEmpty()) {
-					String tab = tabEntry.getUnmappedValue();
-					if (!tab.equals("No creative tab entry")) {
+				String tab = tabEntry.getUnmappedValue();
+				if (!tab.equals("No creative tab entry")) {
+					List<MCItem> tabItems = tabElement.getCreativeTabItems();
+					if (tabItems != null && !tabItems.isEmpty()) {
 						if (!tabMap.containsKey(tab)) {
 							tabMap.put(tab, new ArrayList<>());
 						}
