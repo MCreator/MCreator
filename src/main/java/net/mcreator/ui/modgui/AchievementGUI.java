@@ -199,7 +199,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		propertiesPanel.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.advancement.display_paramters"), 0, 0, propertiesPanel.getFont().deriveFont(12.0f),
+				L10N.t("elementgui.advancement.display_parameters"), 0, 0, propertiesPanel.getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
 		propertiesPanel.setOpaque(false);
