@@ -291,7 +291,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 	<#if hasProcedure(data.whenMobIsHurt) || data.immuneToFire || data.immuneToArrows || data.immuneToFallDamage
 		|| data.immuneToCactus || data.immuneToDrowning || data.immuneToLightning || data.immuneToPotions
 		|| data.immuneToPlayer || data.immuneToExplosion || data.immuneToTrident || data.immuneToAnvil
-		|| data.immuneToDragonBreath || data.immuneToWither>
+		|| data.immuneToDragonBreath || data.immuneToWither || data.invulnerable >
 	@Override public boolean hurt(DamageSource damagesource, float amount) {
 		<#if hasProcedure(data.whenMobIsHurt)>
 			double x = this.getX();
@@ -308,60 +308,64 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 				<@procedureOBJToCode data.whenMobIsHurt/>
 			</#if>
 		</#if>
-		<#if data.immuneToFire>
-			if (damagesource.is(DamageTypes.IN_FIRE))
-				return false;
+		<#if data.invulnerable>
+			return false;
+		<#else>
+			<#if data.immuneToFire>
+				if (damagesource.is(DamageTypes.IN_FIRE))
+					return false;
+			</#if>
+			<#if data.immuneToArrows>
+				if (damagesource.getDirectEntity() instanceof AbstractArrow)
+					return false;
+			</#if>
+			<#if data.immuneToPlayer>
+				if (damagesource.getDirectEntity() instanceof Player)
+					return false;
+			</#if>
+			<#if data.immuneToPotions>
+				if (damagesource.getDirectEntity() instanceof ThrownPotion || damagesource.getDirectEntity() instanceof AreaEffectCloud
+						|| damagesource.typeHolder().is(NeoForgeMod.POISON_DAMAGE))
+					return false;
+			</#if>
+			<#if data.immuneToFallDamage>
+				if (damagesource.is(DamageTypes.FALL))
+					return false;
+			</#if>
+			<#if data.immuneToCactus>
+				if (damagesource.is(DamageTypes.CACTUS))
+					return false;
+			</#if>
+			<#if data.immuneToDrowning>
+				if (damagesource.is(DamageTypes.DROWN))
+					return false;
+			</#if>
+			<#if data.immuneToLightning>
+				if (damagesource.is(DamageTypes.LIGHTNING_BOLT))
+					return false;
+			</#if>
+			<#if data.immuneToExplosion>
+				if (damagesource.is(DamageTypes.EXPLOSION) || damagesource.is(DamageTypes.PLAYER_EXPLOSION))
+					return false;
+			</#if>
+			<#if data.immuneToTrident>
+				if (damagesource.is(DamageTypes.TRIDENT))
+					return false;
+			</#if>
+			<#if data.immuneToAnvil>
+				if (damagesource.is(DamageTypes.FALLING_ANVIL))
+					return false;
+			</#if>
+			<#if data.immuneToDragonBreath>
+				if (damagesource.is(DamageTypes.DRAGON_BREATH))
+					return false;
+			</#if>
+			<#if data.immuneToWither>
+				if (damagesource.is(DamageTypes.WITHER) || damagesource.is(DamageTypes.WITHER_SKULL))
+					return false;
+			</#if>
+			return super.hurt(damagesource, amount);
 		</#if>
-		<#if data.immuneToArrows>
-			if (damagesource.getDirectEntity() instanceof AbstractArrow)
-				return false;
-		</#if>
-		<#if data.immuneToPlayer>
-			if (damagesource.getDirectEntity() instanceof Player)
-				return false;
-		</#if>
-		<#if data.immuneToPotions>
-			if (damagesource.getDirectEntity() instanceof ThrownPotion || damagesource.getDirectEntity() instanceof AreaEffectCloud
-					|| damagesource.typeHolder().is(NeoForgeMod.POISON_DAMAGE))
-				return false;
-		</#if>
-		<#if data.immuneToFallDamage>
-			if (damagesource.is(DamageTypes.FALL))
-				return false;
-		</#if>
-		<#if data.immuneToCactus>
-			if (damagesource.is(DamageTypes.CACTUS))
-				return false;
-		</#if>
-		<#if data.immuneToDrowning>
-			if (damagesource.is(DamageTypes.DROWN))
-				return false;
-		</#if>
-		<#if data.immuneToLightning>
-			if (damagesource.is(DamageTypes.LIGHTNING_BOLT))
-				return false;
-		</#if>
-		<#if data.immuneToExplosion>
-			if (damagesource.is(DamageTypes.EXPLOSION) || damagesource.is(DamageTypes.PLAYER_EXPLOSION))
-				return false;
-		</#if>
-		<#if data.immuneToTrident>
-			if (damagesource.is(DamageTypes.TRIDENT))
-				return false;
-		</#if>
-		<#if data.immuneToAnvil>
-			if (damagesource.is(DamageTypes.FALLING_ANVIL))
-				return false;
-		</#if>
-		<#if data.immuneToDragonBreath>
-			if (damagesource.is(DamageTypes.DRAGON_BREATH))
-				return false;
-		</#if>
-		<#if data.immuneToWither>
-			if (damagesource.is(DamageTypes.WITHER) || damagesource.is(DamageTypes.WITHER_SKULL))
-				return false;
-		</#if>
-		return super.hurt(damagesource, amount);
 	}
     </#if>
 

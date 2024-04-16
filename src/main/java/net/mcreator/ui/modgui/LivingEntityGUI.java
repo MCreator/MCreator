@@ -152,6 +152,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 	private final JCheckBox immuneToAnvil = L10N.checkbox("elementgui.living_entity.immune_anvil");
 	private final JCheckBox immuneToWither = L10N.checkbox("elementgui.living_entity.immune_wither");
 	private final JCheckBox immuneToDragonBreath = L10N.checkbox("elementgui.living_entity.immune_dragon_breath");
+	private final JCheckBox invulnerable = L10N.checkbox("elementgui.living_entity.invulnerable");
 
 	private final JCheckBox waterMob = L10N.checkbox("elementgui.living_entity.is_water_mob");
 	private final JCheckBox flyingMob = L10N.checkbox("elementgui.living_entity.is_flying_mob");
@@ -430,6 +431,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		immuneToAnvil.setOpaque(false);
 		immuneToDragonBreath.setOpaque(false);
 		immuneToWither.setOpaque(false);
+		invulnerable.setOpaque(false);
 
 		subpane1.setOpaque(false);
 
@@ -520,7 +522,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		subpanel2.add(
 				PanelUtils.gridElements(3, 5, 0, 0, immuneToFire, immuneToArrows, immuneToFallDamage, immuneToCactus,
 						immuneToDrowning, immuneToLightning, immuneToPotions, immuneToPlayer, immuneToExplosion,
-						immuneToAnvil, immuneToTrident, immuneToDragonBreath, immuneToWither));
+						immuneToAnvil, immuneToTrident, immuneToDragonBreath, immuneToWither, invulnerable));
 
 		pane1.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.northAndCenterElement(subpane1, subpanel2)));
 
@@ -1056,6 +1058,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		immuneToAnvil.setSelected(livingEntity.immuneToAnvil);
 		immuneToWither.setSelected(livingEntity.immuneToWither);
 		immuneToDragonBreath.setSelected(livingEntity.immuneToDragonBreath);
+		invulnerable.setSelected(livingEntity.invulnerable);
 		xpAmount.setValue(livingEntity.xpAmount);
 		livingSound.setSound(livingEntity.livingSound);
 		hurtSound.setSound(livingEntity.hurtSound);
@@ -1169,6 +1172,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		livingEntity.immuneToAnvil = immuneToAnvil.isSelected();
 		livingEntity.immuneToWither = immuneToWither.isSelected();
 		livingEntity.immuneToDragonBreath = immuneToDragonBreath.isSelected();
+		livingEntity.invulnerable = invulnerable.isSelected();
 		livingEntity.xpAmount = (int) xpAmount.getValue();
 		livingEntity.ridable = ridable.isSelected();
 		livingEntity.canControlForward = canControlForward.isSelected();

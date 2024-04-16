@@ -132,6 +132,7 @@ import java.util.*;
 	public boolean immuneToAnvil;
 	public boolean immuneToWither;
 	public boolean immuneToDragonBreath;
+	public boolean invulnerable;
 
 	public MItemBlock mobDrop;
 
