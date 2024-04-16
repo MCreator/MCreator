@@ -2,7 +2,7 @@ Blockly.Extensions.register('procedure_dependencies_tooltip',
     function () {
         let thisBlock = this;
         this.setTooltip(function () {
-            const depList = javabridge.getAllDependencies(thisBlock.getFieldValue('procedure'));
+            const depList = javabridge.getDependencies(thisBlock.getFieldValue('procedure'));
             if (depList.length == 0)
                 return javabridge.t('blockly.extension.procedure_dep_tooltip.empty');
             let tooltip = javabridge.t('blockly.extension.procedure_dep_tooltip');
@@ -28,9 +28,16 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
             const procedure = this.getFieldValue('procedure');
             for (var i = 0; this.getField('name' + i); i++) {
                 const prevType = this.getInput('arg' + i).connection.getCheck();
-                let depType = javabridge.getDependencyType(procedure, this.getFieldValue('name' + i));
-                if (depType == '')
-                    depType = [];
+                let depType = null;
+                const depList = javabridge.getDependencies(procedure);
+                for (const dep of depList) {
+                    if (dep.getName() === this.getFieldValue('name' + i)) {
+                        depType = dep.getBlocklyType();
+                        if (depType == '')
+                            depType = [];
+                        break;
+                    }
+                }
                 // Set input checks from dependency type
                 this.getInput('arg' + i).setCheck(depType);
                 const newType = this.getInput('arg' + i).connection.getCheck();

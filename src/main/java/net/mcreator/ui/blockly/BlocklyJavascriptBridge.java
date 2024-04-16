@@ -241,24 +241,11 @@ public class BlocklyJavascriptBridge {
 		ext_triggers.put(external_trigger.getID(), external_trigger.getName());
 	}
 
-	@SuppressWarnings("unused") public String getDependencyType(String procedureName, String dependencyName) {
-		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
-		if (me != null && me.getGeneratableElement() instanceof Procedure procedure) {
-			Optional<Dependency> dependency = procedure.getDependencies().stream()
-					.filter(e -> e.getName().equals(dependencyName)).findFirst();
-			if (dependency.isPresent()) {
-				VariableType varType = VariableTypeLoader.INSTANCE.fromName(dependency.get().getRawType());
-				return varType != null ? varType.getBlocklyVariableType() : "";
-			}
-		}
-		return null;
-	}
-
-	@SuppressWarnings("unused") public String[] getAllDependencies(String procedureName) {
+	@SuppressWarnings("unused") public Dependency[] getDependencies(String procedureName) {
 		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
 		return me != null && me.getGeneratableElement() instanceof Procedure procedure ?
-				procedure.getDependencies().stream().map(Object::toString).toArray(String[]::new) :
-				new String[0];
+				procedure.getDependencies().toArray(Dependency[]::new) :
+				new Dependency[0];
 	}
 
 	@SuppressWarnings("unused") public String t(String key) {
