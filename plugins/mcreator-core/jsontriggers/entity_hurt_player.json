@@ -12,7 +12,7 @@
     },
     {
       "type": "field_data_list_selector",
-      "name": "source_entity",
+      "name": "sourceentity",
       "datalist": "entity"
     },
     {
