@@ -89,7 +89,7 @@ public class GTModElements {
 				}
 
 				// testing if element file deletion works properly (no exception thrown)
-				workspace.getGenerator().removeElementFilesAndLangKeys(generatableElement);
+				workspace.getGenerator().removeElementFilesAndWorkspaceLinks(generatableElement);
 
 				// testing if all element files were properly deleted
 				modElementFiles = workspace.getGenerator().getModElementGeneratorTemplatesList(generatableElement)
