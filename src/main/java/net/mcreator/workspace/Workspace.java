@@ -56,8 +56,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	private Set<ModElement> mod_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<VariableElement> variable_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
 	private Set<SoundElement> sound_elements = Collections.synchronizedSet(new LinkedHashSet<>(0));
-	private CreativeTabsOrder tab_element_order = new CreativeTabsOrder();
 	private ConcurrentHashMap<TagElement, ArrayList<String>> tag_elements = new ConcurrentHashMap<>();
+	private CreativeTabsOrder tab_element_order = new CreativeTabsOrder();
 	private ConcurrentHashMap<String, ConcurrentHashMap<String, String>> language_map = new ConcurrentHashMap<>() {{
 		put("en_us", new ConcurrentHashMap<>());
 	}};
@@ -231,8 +231,6 @@ public class Workspace implements Closeable, IGeneratorProvider {
 	public void removeModElement(ModElement element) {
 		if (!mod_elements.contains(element)) // skip element if it is not present on the list already
 			return;
-
-		tab_element_order.removeModElementFromTabs(element);
 
 		fileManager.getModElementManager().removeModElement(element);
 

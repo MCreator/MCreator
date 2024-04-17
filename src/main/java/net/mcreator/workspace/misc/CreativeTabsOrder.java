@@ -51,10 +51,10 @@ public class CreativeTabsOrder extends ConcurrentHashMap<String, ArrayList<Strin
 		}
 	}
 
-	public void removeModElementFromTabs(ModElement element) {
-		if (element.getGeneratableElement() instanceof ITabContainedElement) {
+	public void removeModElementFromTabs(GeneratableElement element) {
+		if (element instanceof ITabContainedElement) {
 			for (ArrayList<String> tabContents : this.values())
-				tabContents.remove(element.getName());
+				tabContents.remove(element.getModElement().getName());
 		}
 	}
 

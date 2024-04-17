@@ -88,8 +88,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 			return;
 		}
 
-		workspace.getCreativeTabsOrder().addOrUpdateModElementTabs(element);
-
 		cache.put(element.getModElement(), element);
 
 		FileIO.writeStringToFile(generatableElementToJSON(element),
