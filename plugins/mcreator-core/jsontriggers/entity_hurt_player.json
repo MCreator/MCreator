@@ -35,7 +35,7 @@
       "maxDamage"
     ],
     "fields": [
-      "source_entity",
+      "sourceentity",
       "blocked"
     ]
   }
