@@ -7,9 +7,9 @@
         "max": ${input$amount_h}
       },
       "source_entity": {
-        "type": "${field$source_entity}",
+        "type": "${field$source_entity}"
       },
-      "blocked": ${field$blocked},
+      "blocked": ${field$blocked}
     }
   }
 },
