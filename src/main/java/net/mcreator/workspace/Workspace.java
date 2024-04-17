@@ -234,9 +234,9 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		if (!mod_elements.contains(element)) // skip element if it is not present on the list already
 			return;
 
-		fileManager.getModElementManager().removeModElement(element);
-
 		tab_element_order.removeModElementFromTabs(element);
+
+		fileManager.getModElementManager().removeModElement(element);
 
 		// finally remove element form the list
 		mod_elements.remove(element);
