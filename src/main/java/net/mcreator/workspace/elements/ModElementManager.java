@@ -104,7 +104,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 		if (element.getType() != ModElementType.UNKNOWN) {
 			GeneratableElement generatableElement = element.getGeneratableElement();
 			if (generatableElement != null && workspace.getGenerator() != null)
-				workspace.getGenerator().removeElementFilesAndLangKeys(generatableElement);
+				workspace.getGenerator().removeElementFilesAndWorkspaceLinks(generatableElement);
 			else
 				LOG.warn("Failed to remove element files for element " + element);
 		}
