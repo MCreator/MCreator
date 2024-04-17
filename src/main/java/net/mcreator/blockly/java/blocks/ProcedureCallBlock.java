@@ -52,9 +52,8 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				return;
 			}
 
-			List<String> skippedDepsNames = new ArrayList<>(), processedDepsNames = new ArrayList<>();
-			List<DependencyInput> depInputs = mapDependencies(master, block, dependencies, skippedDepsNames,
-					processedDepsNames);
+			List<String> skippedDepsNames = new ArrayList<>();
+			List<DependencyInput> depInputs = mapDependencies(master, block, dependencies, skippedDepsNames);
 
 			// Add a warning for the passed dependencies that aren't used by the selected procedure
 			if (!skippedDepsNames.isEmpty()) {
@@ -117,11 +116,13 @@ public class ProcedureCallBlock implements IBlockGenerator {
 
 	@Nonnull
 	static List<DependencyInput> mapDependencies(BlocklyToCode master, Element block, List<Dependency> dependencies,
-			List<String> skippedDepsNames, List<String> processedDepsNames) throws TemplateGeneratorException {
+			List<String> skippedDepsNames) throws TemplateGeneratorException {
 		// The procedure dependencies, in a flattened {"name": "type"} map
 		Map<String, String> flattenedDeps = dependencies.stream()
 				.collect(Collectors.toMap(Dependency::getName, Dependency::getRawType));
 		List<DependencyInput> depInputs = new ArrayList<>();
+
+		List<String> processedDepsNames = new ArrayList<>();
 
 		Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
 		if (mutation != null && mutation.hasAttribute("inputs") && !mutation.getAttribute("inputs")

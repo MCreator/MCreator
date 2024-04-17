@@ -60,9 +60,9 @@ public class ProcedureRetvalBlock implements IBlockGenerator {
 				return;
 			}
 
-			List<String> skippedDepsNames = new ArrayList<>(), processedDepsNames = new ArrayList<>();
+			List<String> skippedDepsNames = new ArrayList<>();
 			List<ProcedureCallBlock.DependencyInput> depInputs = ProcedureCallBlock.mapDependencies(master, block,
-					dependencies, skippedDepsNames, processedDepsNames);
+					dependencies, skippedDepsNames);
 
 			// Add a warning for the passed dependencies that aren't used by the selected procedure
 			if (!skippedDepsNames.isEmpty()) {
