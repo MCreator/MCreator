@@ -64,7 +64,7 @@ public class Dependency implements Comparable<Dependency> {
 		return type;
 	}
 
-	public String getBlocklyType() {
+	@SuppressWarnings("unused") public String getBlocklyType() {
 		VariableType varType = VariableTypeLoader.INSTANCE.fromName(type);
 		return varType != null ? varType.getBlocklyVariableType() : "";
 	}
