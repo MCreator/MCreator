@@ -24,7 +24,6 @@ import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.component.ReordarableListTransferHandler;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
@@ -34,8 +33,6 @@ import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
-import javax.swing.event.ListDataEvent;
-import javax.swing.event.ListDataListener;
 import java.awt.*;
 import java.util.*;
 
@@ -51,7 +48,6 @@ public class ElementOrderEditor {
 		mainPanel.add("North", top);
 
 		LinkedHashMap<String, DefaultListModel<ModElement>> tabEditors = new LinkedHashMap<>();
-		Set<String> editedTabs = new HashSet<>();
 		JTabbedPane tabs = new JTabbedPane();
 		tabs.setBorder(BorderFactory.createEmptyBorder());
 
@@ -60,7 +56,8 @@ public class ElementOrderEditor {
 			if (generatableElement instanceof ITabContainedElement element) {
 				TabEntry tab = element.getCreativeTab();
 
-				if (tab == null || tab.getUnmappedValue().equals("No creative tab entry") || element.getCreativeTabItems().isEmpty()) {
+				if (tab == null || tab.getUnmappedValue().equals("No creative tab entry")
+						|| element.getCreativeTabItems().isEmpty()) {
 					continue;
 				}
 
@@ -90,23 +87,25 @@ public class ElementOrderEditor {
 						Icon tabIcon = null;
 						if (tab.getUnmappedValue().startsWith("CUSTOM:"))
 							tabIcon = new ImageIcon(ImageUtils.resizeAA(
-									MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
-											tab.getUnmappedValue()).getImage(), 24));
+									MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(), tab.getUnmappedValue())
+											.getImage(), 24));
 						tabs.addTab(tab.getUnmappedValue(), tabIcon, new JScrollPane(list));
 					}
 
 					tabEditors.put(tab.getUnmappedValue(), model);
 				}
 
+				// Add ME items here only if the tab items are in does not have order overridden
 				if (mcreator.getWorkspace().getCreativeTabsOrder().get(tab.getUnmappedValue()) == null)
 					tabEditors.get(tab.getUnmappedValue()).addElement(modElement);
 			}
 		}
 
-		// add contents of tabs with overridden elements order
+		// Add ME items of tabs with overridden elements order
 		for (String tab : tabEditors.keySet()) {
-			if (mcreator.getWorkspace().getCreativeTabsOrder().get(tab) != null) {
-				for (String element : mcreator.getWorkspace().getCreativeTabsOrder().get(tab)) {
+			ArrayList<String> tabOrder = mcreator.getWorkspace().getCreativeTabsOrder().get(tab);
+			if (tabOrder != null) {
+				for (String element : tabOrder) {
 					ModElement me = mcreator.getWorkspace().getModElementByName(element);
 					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement)
 						tabEditors.get(tab).addElement(me);
@@ -114,32 +113,21 @@ public class ElementOrderEditor {
 			}
 		}
 
+		Map<String, ModElement[]> originalOrder = new HashMap<>();
 		for (Map.Entry<String, DefaultListModel<ModElement>> entry : tabEditors.entrySet()) {
-			entry.getValue().addListDataListener(new ListDataListener() {
-				@Override public void intervalAdded(ListDataEvent e) {
-					editedTabs.add(entry.getKey());
-				}
-
-				@Override public void intervalRemoved(ListDataEvent e) {
-					editedTabs.add(entry.getKey());
-				}
-
-				@Override public void contentsChanged(ListDataEvent e) {
-					editedTabs.add(entry.getKey());
-				}
-			});
+			originalOrder.put(entry.getKey(), Collections.list(entry.getValue().elements()).toArray(new ModElement[0]));
 		}
 
 		mainPanel.add("Center", tabs);
-		mainPanel.setPreferredSize(new Dimension(748, 320));
+		mainPanel.setPreferredSize(new Dimension(720, 320));
 
 		int resultval = JOptionPane.showOptionDialog(mcreator, mainPanel, L10N.t("dialog.element_order.editor_title"),
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Save layout", "Cancel" },
-				"");
-
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+				new String[] { "Save layout", UIManager.getString("OptionPane.cancelButtonText") }, "");
 		if (resultval == 0) {
 			for (Map.Entry<String, DefaultListModel<ModElement>> entry : tabEditors.entrySet()) {
-				if (editedTabs.contains(entry.getKey())) {
+				ModElement[] newOrder = Collections.list(entry.getValue().elements()).toArray(new ModElement[0]);
+				if (!Arrays.equals(newOrder, originalOrder.get(entry.getKey()))) {
 					mcreator.getWorkspace().getCreativeTabsOrder()
 							.setElementOrderInTab(entry.getKey(), Collections.list(entry.getValue().elements()));
 				}
