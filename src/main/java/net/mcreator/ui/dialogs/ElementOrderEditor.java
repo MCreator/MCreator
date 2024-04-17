@@ -125,11 +125,6 @@ public class ElementOrderEditor {
 				else
 					element.setSortID(currid++);
 			}
-
-			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.element_order.change_message"),
-					L10N.t("dialog.element_order.change_title"), JOptionPane.INFORMATION_MESSAGE);
-
-			RegenerateCodeAction.regenerateCode(mcreator, true, false);
 		}
 	}
 
