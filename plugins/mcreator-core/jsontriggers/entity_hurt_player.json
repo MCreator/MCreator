@@ -1,0 +1,52 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "amount_l",
+      "check": "Number"
+    },
+    {
+      "type": "input_value",
+      "name": "amount_h",
+      "check": "Number"
+    },
+    {
+      "type": "field_input",
+      "name": "source_entity",
+      "text": "minecraft:zombie"
+    },
+    {
+      "type": "field_dropdown",
+      "name": "blocked",
+      "options": [
+        [
+          "False",
+          "false"
+        ],
+        [
+          "True",
+          "true"
+        ]
+      ]
+    }
+  ],
+  "inputsInline": true,
+  "previousStatement": null,
+  "nextStatement": null,
+  "colour": 195,
+  "mcreator": {
+    "toolbox_id": "items",
+    "toolbox_init": [
+      "<value name=\"amount_l\"><block type=\"math_number\"><field name=\"NUM\">0</field></block></value>",
+      "<value name=\"amount_h\"><block type=\"math_number\"><field name=\"NUM\">5</field></block></value>"
+    ],
+    "inputs": [
+      "amount_l",
+      "amount_h"
+    ],
+    "fields": [
+      "source_entity",
+      "blocked"
+    ]
+  }
+}
