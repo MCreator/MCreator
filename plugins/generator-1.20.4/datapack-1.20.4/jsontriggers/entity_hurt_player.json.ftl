@@ -3,8 +3,8 @@
   "conditions": {
     "damage": {
       "taken": {
-        "min": ${input$amount_l},
-        "max": ${input$amount_h}
+        "min": ${input$minDamage},
+        "max": ${input$maxDamage}
       },
       "source_entity": {
         "type": "${field$source_entity}"
