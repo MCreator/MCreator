@@ -194,7 +194,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			element.reinit(this); // if it is new element, it now probably has icons so we reinit modicons
 			mod_elements.add(element);
 
-			tab_element_order.addModElementToTabs(element);
+			tab_element_order.addOrUpdateModElementTabs(element.getGeneratableElement());
 
 			markDirty();
 		} else {

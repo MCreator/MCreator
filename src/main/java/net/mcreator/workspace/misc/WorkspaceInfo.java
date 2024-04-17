@@ -120,8 +120,8 @@ import java.util.*;
 
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
-				TabEntry tabEntry = tabElement.getCreativeTab();
-				if (tabEntry != null && !tabEntry.getUnmappedValue().equals("No creative tab entry")) {
+				TabEntry tab = tabElement.getCreativeTab();
+				if (tab != null && !tab.getUnmappedValue().equals("No creative tab entry")) {
 					if (!tabElement.getCreativeTabItems().isEmpty())
 						return true;
 				}

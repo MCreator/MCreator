@@ -88,7 +88,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 			return;
 		}
 
-		workspace.getCreativeTabsOrder().updateModElementTabs(element);
+		workspace.getCreativeTabsOrder().addOrUpdateModElementTabs(element);
 
 		cache.put(element.getModElement(), element);
 
