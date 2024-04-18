@@ -30,7 +30,6 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
-import javax.annotation.Nonnull;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -121,7 +120,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 	 * @param master           Blockly code processor to be used.
 	 * @param block            XML representation of the block being processed.
 	 * @param dependencies     List of dependencies required by the specified procedure.
-	 * @param skippedDepsNames List of dependencies that are defined on the block but not required by the procedure.
+	 * @param skippedDepsNames Pass empty list. This list will be filled with dependencies that are defined on the block but not required by the procedure.
 	 * @return List of converted dependencies to be supplied to code templates.
 	 * @throws TemplateGeneratorException In case of failure to process some dependency value blocks.
 	 */
