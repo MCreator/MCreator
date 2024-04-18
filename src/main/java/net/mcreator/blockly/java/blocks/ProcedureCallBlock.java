@@ -114,7 +114,17 @@ public class ProcedureCallBlock implements IBlockGenerator {
 		}
 	}
 
-	@Nonnull
+	/**
+	 * Processes list of selected procedure dependencies, filters those that are defined by the given block
+	 * and converts them to a format that includes the data to be used in code templates.
+	 *
+	 * @param master           Blockly code processor to be used.
+	 * @param block            XML representation of the block being processed.
+	 * @param dependencies     List of dependencies required by the specified procedure.
+	 * @param skippedDepsNames List of dependencies that are defined on the block but not required by the procedure.
+	 * @return List of converted dependencies to be supplied to code templates.
+	 * @throws TemplateGeneratorException In case of failure to process some dependency value blocks.
+	 */
 	static List<DependencyInput> mapDependencies(BlocklyToCode master, Element block, List<Dependency> dependencies,
 			List<String> skippedDepsNames) throws TemplateGeneratorException {
 		// The procedure dependencies, in a flattened {"name": "type"} map
