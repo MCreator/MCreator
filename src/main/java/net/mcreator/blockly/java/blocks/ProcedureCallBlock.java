@@ -167,7 +167,7 @@ public class ProcedureCallBlock implements IBlockGenerator {
 			}
 		}
 
-		// Add to master all the dependencies that weren't processed
+		// Add all the dependencies that weren't processed to master
 		dependencies.stream().filter(e -> !processedDepsNames.contains(e.getName())).forEach(master::addDependency);
 
 		return depInputs;
