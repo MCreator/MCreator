@@ -3,7 +3,7 @@ Blockly.Extensions.register('procedure_dependencies_tooltip',
         let thisBlock = this;
         this.setTooltip(function () {
             const depList = javabridge.getDependencies(thisBlock.getFieldValue('procedure'));
-            if (depList.length == 0)
+            if (depList.length === 0)
                 return javabridge.t('blockly.extension.procedure_dep_tooltip.empty');
             let tooltip = javabridge.t('blockly.extension.procedure_dep_tooltip');
             for (const dependency of depList)
@@ -62,7 +62,7 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
 function uniqueValueValidator(fieldName) {
     return function (newValue) {
         for (let i = 0; this.sourceBlock_.getField(fieldName + i); i++) {
-            if (this.sourceBlock_.getFieldValue(fieldName + i) == newValue && (fieldName + i) != this.name)
+            if (this.sourceBlock_.getFieldValue(fieldName + i) == newValue && (fieldName + i) !== this.name)
                 return null;
         }
         return newValue;
@@ -73,13 +73,13 @@ function uniqueValueValidator(fieldName) {
 function firstFreeIndex(block, fieldName, index, valueProvider) {
     const values = [];
     for (let i = 0; block.getField(fieldName + i); i++) {
-        if (index && i == index)
+        if (index && i === index)
             continue;
         values.push('' + block.getFieldValue(fieldName + i));
     }
     let retVal = 0;
     while (true) {
-        if (values.indexOf('' + (valueProvider ? valueProvider(retVal) : retVal)) == -1)
+        if (values.indexOf('' + (valueProvider ? valueProvider(retVal) : retVal)) === -1)
             break;
         retVal++;
     }
