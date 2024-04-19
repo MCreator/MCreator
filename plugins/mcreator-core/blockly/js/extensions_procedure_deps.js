@@ -106,7 +106,7 @@ function validOnLoad(field) {
 
 Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
     mutationToDom: function () {
-        var container = document.createElement('mutation');
+        const container = document.createElement('mutation');
         container.setAttribute('inputs', this.inputCount_);
         return container;
     },
@@ -130,7 +130,7 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
     decompose: function (workspace) {
         const containerBlock = workspace.newBlock('procedure_dependencies_mutator_container');
         containerBlock.initSvg();
-        var connection = containerBlock.getInput('STACK').connection;
+        let connection = containerBlock.getInput('STACK').connection;
         for (let i = 0; i < this.inputCount_; i++) {
             const inputBlock = workspace.newBlock('procedure_dependencies_mutator_input');
             inputBlock.nameValue_ = null;
