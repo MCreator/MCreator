@@ -106,11 +106,12 @@ public class Plugin implements Comparable<Plugin> {
 	/**
 	 * <p>The plugin is compatible when the version of MCreator used is included in the supported versions list.</p>
 	 * <p>When the supported versions list is null, the plugin is compatible with all versions of MCreator.</p>
+	 * <p>When the supported versions list contains the short version of MCreator, the plugin is compatible with that MCreator release.</p>
 	 *
 	 * @return <p>If the plugin is compatible with the version used.</p>
 	 */
 	public boolean isCompatible() {
-		return supportedversions == null || supportedversions.contains(Launcher.version.versionlong);
+		return supportedversions == null || supportedversions.contains(Launcher.version.versionlong) || (supportedversions.contains(Launcher.version.major) && !Launcher.version.isSnapshot());
 	}
 
 	/**
