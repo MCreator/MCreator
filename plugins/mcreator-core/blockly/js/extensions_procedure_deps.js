@@ -26,14 +26,14 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
             // Makes it so the block change and the unplug event get undone together.
             Blockly.Events.setGroup(changeEvent.group);
             const procedure = this.getFieldValue('procedure');
-            for (var i = 0; this.getField('name' + i); i++) {
+            for (let i = 0; this.getField('name' + i); i++) {
                 const prevType = this.getInput('arg' + i).connection.getCheck();
                 let depType = null;
                 const depList = javabridge.getDependencies(procedure);
                 for (const dep of depList) {
                     if (dep.getName() === this.getFieldValue('name' + i)) {
                         depType = dep.getBlocklyType();
-                        if (depType == '')
+                        if (depType === '')
                             depType = [];
                         break;
                     }
@@ -62,7 +62,7 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
 function uniqueValueValidator(fieldName) {
     return function (newValue) {
         for (let i = 0; this.sourceBlock_.getField(fieldName + i); i++) {
-            if (this.sourceBlock_.getFieldValue(fieldName + i) == newValue && (fieldName + i) !== this.name)
+            if (this.sourceBlock_.getFieldValue(fieldName + i) === newValue && (fieldName + i) !== this.name)
                 return null;
         }
         return newValue;
@@ -157,7 +157,7 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
         }
         for (let i = 0; i < this.inputCount_; i++) {
             const connection = this.getInput('arg' + i) && this.getInput('arg' + i).connection.targetConnection;
-            if (connection && connections.indexOf(connection) == -1)
+            if (connection && connections.indexOf(connection) === -1)
                 connection.disconnect();
         }
         this.inputCount_ = connections.length;
