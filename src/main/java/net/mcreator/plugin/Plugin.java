@@ -111,7 +111,17 @@ public class Plugin implements Comparable<Plugin> {
 	 * @return <p>If the plugin is compatible with the version used.</p>
 	 */
 	public boolean isCompatible() {
-		return supportedversions == null || supportedversions.contains(Launcher.version.versionlong) || (supportedversions.contains(Launcher.version.major) && !Launcher.version.isSnapshot());
+		// If supported versions is null, plugin is compatible with all versions
+		if (supportedversions == null)
+			return true;
+
+		// If the version is in the list (example: 202400112345), plugin is compatible
+		if (supportedversions.contains(Launcher.version.versionlong))
+			return true;
+
+		// If the major version is in the list (example: 2024001) and current version is not a snapshot, plugin is compatible
+		// This is used to make plugin compatible with patch releases of the same major version
+		return !Launcher.version.isSnapshot() && supportedversions.contains(Launcher.version.majorlong);
 	}
 
 	/**
