@@ -471,8 +471,10 @@ public class ${name}Block extends
 	}
 	</#if>
 
-	<#if data.requiresCorrectTool>
+	<#-- For harvest levels <= 3, we use vanilla tags (netherite already does need custom handing) -->
+	<#if data.requiresCorrectTool && (data.breakHarvestLevel > 3)>
 	@Override public boolean canHarvestBlock(BlockState state, BlockGetter world, BlockPos pos, Player player) {
+		<#-- If item is TieredItem, we check by level to be compatible with int harvest levels -->
 		if(player.getInventory().getSelected().getItem() instanceof
 				<#if data.destroyTool == "pickaxe">PickaxeItem
 				<#elseif data.destroyTool == "axe">AxeItem
@@ -480,7 +482,9 @@ public class ${name}Block extends
 				<#elseif data.destroyTool == "hoe">HoeItem
 				<#else>TieredItem</#if> tieredItem)
 			return tieredItem.getTier().getLevel() >= ${data.breakHarvestLevel};
-		return false;
+		<#-- in other cases (not TieredItem), we resort to default tier sorting and checking using tags -->
+		else
+			return super.canHarvestBlock(state, world, pos, player);
 	}
 	</#if>
 
