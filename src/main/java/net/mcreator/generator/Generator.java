@@ -256,10 +256,10 @@ public class Generator implements IGenerator, Closeable {
 			element.getModElement().putMetadata("files", generatorFiles.stream().map(GeneratorFile::getFile)
 					.map(e -> getFolderManager().getPathInWorkspace(e).replace(File.separator, "/")).toList());
 
-			// add lang keys to the workspace
+			// add/update lang keys to the workspace
 			LocalizationUtils.generateLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
 
-			// add tag elements to the workspace
+			// add/update tag elements to the workspace
 			TagsUtils.processDefinitionToTags(this, element, (List<?>) map.get("tags"), false);
 
 			// do additional tasks if mod element has them
@@ -283,7 +283,7 @@ public class Generator implements IGenerator, Closeable {
 				(List<?>) map.get("localizationkeys")).keySet());
 	}
 
-	public void removeElementFilesAndLangKeys(GeneratableElement generatableElement) {
+	public void removeElementFilesAndWorkspaceLinks(GeneratableElement generatableElement) {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
@@ -299,6 +299,8 @@ public class Generator implements IGenerator, Closeable {
 			if (workspace.getFolderManager().isFileInWorkspace(template.getFile()))
 				template.getFile().delete();
 		}
+
+		// delete other workspace links to this ME below
 
 		// delete localization keys associated with the mod element from the workspace
 		LocalizationUtils.deleteLocalizationKeys(this, generatableElement, (List<?>) map.get("localizationkeys"));

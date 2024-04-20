@@ -97,7 +97,7 @@ public class ModElementIDsDialog {
 
 			// we remove current files as new ones will be made for the new registry name
 			if (generatableElement != null) {
-				mcreator.getGenerator().removeElementFilesAndLangKeys(generatableElement);
+				mcreator.getGenerator().removeElementFilesAndWorkspaceLinks(generatableElement);
 			}
 
 			modElement.setRegistryName(registryName.getText()); // set new registry name
