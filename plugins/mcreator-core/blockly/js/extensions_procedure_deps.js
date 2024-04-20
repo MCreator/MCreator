@@ -15,21 +15,20 @@ Blockly.Extensions.register('procedure_dependencies_tooltip',
 Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
     function () {
         this.setOnChange(function (changeEvent) {
-            // Trigger the change only if a block is changed, moved, deleted or created
-            if ((changeEvent.type !== Blockly.Events.BLOCK_CHANGE ||
-                changeEvent.element !== 'field') &&
-                changeEvent.type !== Blockly.Events.BLOCK_CREATE &&
-                changeEvent.type !== Blockly.Events.BLOCK_MOVE) {
+            // Trigger the change only if a block is changed (fields only), moved, deleted or created
+            if ((changeEvent.type !== Blockly.Events.BLOCK_CHANGE || changeEvent.element !== 'field') &&
+                changeEvent.type !== Blockly.Events.BLOCK_MOVE &&
+                changeEvent.type !== Blockly.Events.BLOCK_DELETE &&
+                changeEvent.type !== Blockly.Events.BLOCK_CREATE) {
                 return;
             }
             const group = Blockly.Events.getGroup();
             // Makes it so the block change and the unplug event get undone together.
             Blockly.Events.setGroup(changeEvent.group);
-            const procedure = this.getFieldValue('procedure');
+            const depList = javabridge.getDependencies(this.getFieldValue('procedure'));
             for (let i = 0; this.getField('name' + i); i++) {
                 const prevType = this.getInput('arg' + i).connection.getCheck();
                 let depType = null;
-                const depList = javabridge.getDependencies(procedure);
                 for (const dep of depList) {
                     if (dep.getName() === this.getFieldValue('name' + i)) {
                         depType = dep.getBlocklyType();
@@ -42,6 +41,7 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
                 this.getInput('arg' + i).setCheck(depType);
                 const newType = this.getInput('arg' + i).connection.getCheck();
                 // Fire change event if block existed earlier and previous input type was different
+                // This is the reason we check changeEvent.element above
                 if (changeEvent.type === Blockly.Events.BLOCK_CHANGE &&
                     JSON.stringify(prevType) !== JSON.stringify(newType)) {
                     const inputCheckChange = new Blockly.Events.BlockChange(this, null, 'arg' + i, prevType, newType);
@@ -58,7 +58,6 @@ Blockly.Extensions.register('procedure_dependencies_onchange_mixin',
     });
 
 // Helper function to use in Blockly extensions that validate repeating fields' values meant to be unique
-// The nullValue function is used when mutator needs to set a valid value in the field right after its creation
 function uniqueValueValidator(fieldName) {
     return function (newValue) {
         for (let i = 0; this.sourceBlock_.getField(fieldName + i); i++) {
@@ -70,23 +69,26 @@ function uniqueValueValidator(fieldName) {
 }
 
 // Helper function to find first index not taken by repeating fields with a certain name
+// If index is defined, field with given name with that index will be skipped
+// If valueProvider is defined, its return value is compared with other field values, otherwise index itself is used
 function firstFreeIndex(block, fieldName, index, valueProvider) {
     const values = [];
     for (let i = 0; block.getField(fieldName + i); i++) {
-        if (index && i === index)
+        if (i === index)
             continue;
         values.push('' + block.getFieldValue(fieldName + i));
     }
     let retVal = 0;
     while (true) {
-        if (values.indexOf('' + (valueProvider ? valueProvider(retVal) : retVal)) === -1)
+        if (values.indexOf('' + valueProvider(retVal)) === -1)
             break;
         retVal++;
     }
-    return valueProvider ? valueProvider(retVal) : retVal;
+    return valueProvider(retVal);
 }
 
 // Helper function to disable validators on newly created repeating fields when loading from save file
+// Otherwise, if there is a custom value before equal default one in another field, setting it would fail
 function validOnLoad(field) {
     const fieldFromXml = field.fromXml;
     field.fromXml = function (fieldElement) {
