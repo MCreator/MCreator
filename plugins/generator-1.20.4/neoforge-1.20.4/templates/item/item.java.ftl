@@ -242,7 +242,7 @@ public class ${name}Item extends Item {
 
 	<@onItemUsedOnBlock data.onRightClickedOnBlock/>
 
-	<@onEntityHitWith data.onEntityHitWith/>
+	<@onEntityHitWith data.onEntityHitWith, (data.damageCount != 0 && data.enableMeleeDamage), 1/>
 
 	<@onEntitySwing data.onEntitySwing/>
 
@@ -314,19 +314,21 @@ public class ${name}Item extends Item {
 				.get(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
 		</#if>
 
+		<#if data.damageCount != 0>
 		itemstack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(entity.getUsedItemHand()));
+		</#if>
 
 		if (player.getAbilities().instabuild) {
 			projectile.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 		} else {
-			if (stack.isDamageableItem()){
+			if (stack.isDamageableItem()) {
 				if (stack.hurt(1, world.getRandom(), player)) {
 					stack.shrink(1);
 					stack.setDamageValue(0);
 					if (stack.isEmpty())
 						player.getInventory().removeItem(stack);
 				}
-			} else{
+			} else {
 				stack.shrink(1);
 				if (stack.isEmpty())
 				   player.getInventory().removeItem(stack);
