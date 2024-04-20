@@ -1005,8 +1005,9 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 
 	private void enableOrDisableFields() {
 		boolean isRaider = "Raider".equals(mobBehaviourType.getSelectedItem());
-		if (isRaider)
+		if (isRaider) {
 			breedable.setSelected(false);
+		}
 
 		raidCelebrationSound.setEnabled(isRaider);
 		for (JSpinner spinner : raidSpawnsCount)
