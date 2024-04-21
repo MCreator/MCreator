@@ -1,0 +1,1 @@
+Wybierz to ustawienie, aby generować posterunki Pillagerów w twoim biomie.
