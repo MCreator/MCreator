@@ -1,0 +1,1 @@
+Ta wartość określa czas, w tikach, przed odtworzenie dźwięku (pętla).
