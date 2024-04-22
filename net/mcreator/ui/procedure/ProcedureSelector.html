@@ -213,15 +213,15 @@ loadScripts(document, 'script');</script>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="ProcedureSelector.html" title="class in net.mcreator.ui.procedure">ProcedureSelector</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setDefaultName(java.lang.String)" class="member-name-link">setDefaultName</a><wbr>(<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/String.html" title="class or interface in java.lang" class="external-link">String</a>&nbsp;defaultName)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>protected net.mcreator.ui.procedure.ProcedureEntry</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#updateDepsList(boolean)" class="member-name-link">updateDepsList</a><wbr>(boolean&nbsp;smallIcons)</code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setEnabled(boolean)" class="member-name-link">setEnabled</a><wbr>(boolean&nbsp;enabled)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 </div>
 </div>
 </div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-net.mcreator.ui.procedure.AbstractProcedureSelector">Methods inherited from class&nbsp;net.mcreator.ui.procedure.<a href="AbstractProcedureSelector.html" title="class in net.mcreator.ui.procedure">AbstractProcedureSelector</a></h3>
-<code><a href="AbstractProcedureSelector.html#enableRealtimeValidation()">enableRealtimeValidation</a>, <a href="AbstractProcedureSelector.html#getSelectedProcedure()">getSelectedProcedure</a>, <a href="AbstractProcedureSelector.html#getValidationStatus()">getValidationStatus</a>, <a href="AbstractProcedureSelector.html#getValidator()">getValidator</a>, <a href="AbstractProcedureSelector.html#paint(java.awt.Graphics)">paint</a>, <a href="AbstractProcedureSelector.html#refreshList()">refreshList</a>, <a href="AbstractProcedureSelector.html#refreshListKeepSelected()">refreshListKeepSelected</a>, <a href="AbstractProcedureSelector.html#setEnabled(boolean)">setEnabled</a>, <a href="AbstractProcedureSelector.html#setSelectedProcedure(java.lang.String)">setSelectedProcedure</a>, <a href="AbstractProcedureSelector.html#setSelectedProcedure(net.mcreator.element.parts.procedure.Procedure)">setSelectedProcedure</a>, <a href="AbstractProcedureSelector.html#setValidator(net.mcreator.ui.validation.Validator)">setValidator</a></code></div>
+<code><a href="AbstractProcedureSelector.html#enableRealtimeValidation()">enableRealtimeValidation</a>, <a href="AbstractProcedureSelector.html#getSelectedProcedure()">getSelectedProcedure</a>, <a href="AbstractProcedureSelector.html#getValidationStatus()">getValidationStatus</a>, <a href="AbstractProcedureSelector.html#getValidator()">getValidator</a>, <a href="AbstractProcedureSelector.html#paint(java.awt.Graphics)">paint</a>, <a href="AbstractProcedureSelector.html#refreshList()">refreshList</a>, <a href="AbstractProcedureSelector.html#refreshListKeepSelected()">refreshListKeepSelected</a>, <a href="AbstractProcedureSelector.html#setSelectedProcedure(java.lang.String)">setSelectedProcedure</a>, <a href="AbstractProcedureSelector.html#setSelectedProcedure(net.mcreator.element.parts.procedure.Procedure)">setSelectedProcedure</a>, <a href="AbstractProcedureSelector.html#setValidator(net.mcreator.ui.validation.Validator)">setValidator</a></code></div>
 <div class="inherited-list">
 <h3 id="methods-inherited-from-class-javax.swing.JPanel">Methods inherited from class&nbsp;javax.swing.<a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html" title="class or interface in javax.swing" class="external-link">JPanel</a></h3>
 <code><a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html#getAccessibleContext()" title="class or interface in javax.swing" class="external-link">getAccessibleContext</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html#getUI()" title="class or interface in javax.swing" class="external-link">getUI</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html#getUIClassID()" title="class or interface in javax.swing" class="external-link">getUIClassID</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html#paramString()" title="class or interface in javax.swing" class="external-link">paramString</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html#setUI(javax.swing.plaf.PanelUI)" title="class or interface in javax.swing" class="external-link">setUI</a>, <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/javax/swing/JPanel.html#updateUI()" title="class or interface in javax.swing" class="external-link">updateUI</a></code></div>
@@ -409,9 +409,13 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="updateDepsList(boolean)">
-<h3>updateDepsList</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type">net.mcreator.ui.procedure.ProcedureEntry</span>&nbsp;<span class="element-name">updateDepsList</span><wbr><span class="parameters">(boolean&nbsp;smallIcons)</span></div>
+<section class="detail" id="setEnabled(boolean)">
+<h3>setEnabled</h3>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setEnabled</span><wbr><span class="parameters">(boolean&nbsp;enabled)</span></div>
+<dl class="notes">
+<dt>Overrides:</dt>
+<dd><code><a href="AbstractProcedureSelector.html#setEnabled(boolean)">setEnabled</a></code>&nbsp;in class&nbsp;<code><a href="AbstractProcedureSelector.html" title="class in net.mcreator.ui.procedure">AbstractProcedureSelector</a></code></dd>
+</dl>
 </section>
 </li>
 </ul>
