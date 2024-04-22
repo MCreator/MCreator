@@ -163,11 +163,10 @@ public class MCItemHolder extends JButton implements IValidable {
 		super.paintComponent(g);
 
 		if (showValidation) {
-
 			if (!block.isEmpty()) {
 				ImageIcon removeIcon;
-				if (!removeButtonHover || !isEnabled()) {
-					removeIcon = ImageUtils.changeSaturation(UIRES.get("18px.remove"), 0.4f);
+				if (removeButtonHover || !isEnabled()) {
+					removeIcon = ImageUtils.changeSaturation(UIRES.get("18px.remove"), 0.6f);
 				} else {
 					removeIcon = UIRES.get("18px.remove");
 				}

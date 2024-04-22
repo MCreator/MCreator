@@ -102,12 +102,12 @@ public class TextureHolder extends VButton {
 
 		if (!id.isEmpty()) {
 			ImageIcon removeIcon;
-			if (!removeButtonHover || !isEnabled()) {
-				removeIcon = ImageUtils.changeSaturation(UIRES.get("18px.remove"), 0.4f);
+			if (removeButtonHover || !isEnabled()) {
+				removeIcon = ImageUtils.changeSaturation(UIRES.get("18px.remove"), 0.6f);
 			} else {
 				removeIcon = UIRES.get("18px.remove");
 			}
-			g.drawImage(removeIcon.getImage(), 0, getHeight() - 11, 11, 11, null);
+			g.drawImage(removeIcon.getImage(), 1, getHeight() - 12, 11, 11, null);
 		}
 	}
 
