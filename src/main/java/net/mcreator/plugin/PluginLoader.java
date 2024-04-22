@@ -105,7 +105,7 @@ public class PluginLoader extends URLClassLoader {
 				if (!idList.containsAll(plugin.getInfo().getDependencies())) {
 					LOG.warn(plugin.getInfo().getName() + " can not be loaded. The plugin needs " + plugin.getInfo()
 							.getDependencies());
-					plugin.loaded_failure = "missing dependencies";
+					plugin.loaded_failure = "missing plugin dependencies";
 					continue;
 				}
 			}
@@ -285,7 +285,7 @@ public class PluginLoader extends URLClassLoader {
 	@Nullable private Plugin validatePlugin(Plugin plugin) {
 		if (!plugin.isBuiltin() && plugin.getSupportedVersions() == null) {
 			LOG.warn("Plugin " + plugin.getID() + " does not specify supportedversions.");
-			failedPlugins.add(new PluginLoadFailure(plugin, "missing supportedversions"));
+			failedPlugins.add(new PluginLoadFailure(plugin, "plugin is missing supportedversions"));
 			return null;
 		}
 
@@ -293,7 +293,7 @@ public class PluginLoader extends URLClassLoader {
 			LOG.warn("Plugin " + plugin.getID() + " is not compatible with this MCreator version!");
 			if (!Launcher.version.isDevelopment() && System.getenv("MCREATOR_PLUGINS_DEV")
 					== null) { // We allow loading of incompatible plugins in dev
-				failedPlugins.add(new PluginLoadFailure(plugin, "incompatible version"));
+				failedPlugins.add(new PluginLoadFailure(plugin, "incompatible MCreator version"));
 				return null;
 			}
 		}
