@@ -1890,7 +1890,7 @@ public class TestWorkspaceDataProvider {
 			recipe.smithingInputAdditionStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.smithingInputTemplateStack = new MItemBlock(modElement.getWorkspace(),
-					_true ? getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName() : "");
+					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 		}
