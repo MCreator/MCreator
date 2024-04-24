@@ -119,10 +119,6 @@ public class Plugin implements Comparable<Plugin> {
 		if (supportedversions.contains(Launcher.version.versionlong))
 			return true;
 
-		// TMP: Hardcoded check for this particular patch update
-		if (supportedversions.contains(202400115821L))
-			return true;
-
 		// If the major version is in the list (example: 2024001) and current version is not a snapshot, plugin is compatible
 		// This is used to make plugin compatible with patch releases of the same major version
 		return !Launcher.version.isSnapshot() && supportedversions.contains(Launcher.version.majorlong);
