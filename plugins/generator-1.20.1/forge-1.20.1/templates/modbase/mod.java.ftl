@@ -11,6 +11,9 @@ import org.apache.logging.log4j.Logger;
 	public static final String MODID = "${modid}";
 
 	public ${JavaModName}() {
+		// Start of user code block mod constructor
+		// End of user code block mod constructor
+
 		MinecraftForge.EVENT_BUS.register(this);
 
 		IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
