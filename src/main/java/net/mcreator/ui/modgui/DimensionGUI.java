@@ -64,7 +64,7 @@ import java.util.List;
 
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
-	private final VTextField igniterName = new VTextField(22);
+	private final VTextField igniterName = new VTextField(19);
 	private final JComboBox<String> igniterRarity = new JComboBox<>(
 			new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 
