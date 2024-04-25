@@ -19,7 +19,6 @@
 
 package net.mcreator.preferences.data;
 
-import net.mcreator.io.OS;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;

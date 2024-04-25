@@ -21,20 +21,21 @@ package net.mcreator.ui.dialogs;
 import net.mcreator.element.GeneratableElement;
 import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.component.ReordarableListTransferHandler;
+import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.elementlist.SmallIconModListRender;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ElementOrderEditor {
 
@@ -74,7 +75,20 @@ public class ElementOrderEditor {
 								list.setBackground(Theme.current().getAltBackgroundColor());
 
 								list.setCellRenderer(new SmallIconModListRender(false));
-								tabs.addTab(tab.getUnmappedValue(), new JScrollPane(list));
+
+								Optional<DataListEntry> tabEntry = tab.getDataListEntry();
+								if (tabEntry.isPresent()) {
+									tabs.addTab(tabEntry.get().getReadableName(), new ImageIcon(ImageUtils.resizeAA(
+													BlockItemIcons.getIconForItem(tabEntry.get().getTexture()).getImage(), 24)),
+											new JScrollPane(list));
+								} else {
+									Icon tabIcon = null;
+									if (tab.getUnmappedValue().startsWith("CUSTOM:"))
+										tabIcon = new ImageIcon(ImageUtils.resizeAA(
+												MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
+														tab.getUnmappedValue()).getImage(), 24));
+									tabs.addTab(tab.getUnmappedValue(), tabIcon, new JScrollPane(list));
+								}
 
 								tabEditors.put(tab.getUnmappedValue(), model);
 							}

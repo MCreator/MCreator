@@ -1387,7 +1387,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		tickRandomly.setSelected(block.tickRandomly);
 		creativeTabs.setListElements(block.creativeTabs);
 		destroyTool.setSelectedItem(block.destroyTool);
-		soundOnStep.setSelectedItem(block.soundOnStep.getUnmappedValue());
+		soundOnStep.setSelectedItem(block.soundOnStep);
 		breakSound.setSound(block.breakSound);
 		fallSound.setSound(block.fallSound);
 		hitSound.setSound(block.hitSound);

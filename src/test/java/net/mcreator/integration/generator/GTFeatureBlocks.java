@@ -94,7 +94,7 @@ public class GTFeatureBlocks {
 							<value name="border"><block type="mcitem_allblocks"><field name="value">Blocks.STONE</field></block></value>
 						</block></value><next>%s</next></block></xml>""".formatted(testXML);
 			} else {
-				switch (featureBlock.getOutputType()) {
+				switch (featureBlock.getOutputTypeForTests()) {
 				case "Feature" -> feature.featurexml = """
 						<xml xmlns="https://developers.google.com/blockly/xml">
 						<block type="feature_container" deletable="false" x="40" y="40">

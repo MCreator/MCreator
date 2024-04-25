@@ -209,24 +209,35 @@ public class ${name}Block extends <#if data.plantType == "normal">Flower<#elseif
 
 	<@onBlockAdded data.onBlockAdded, false, 0/>
 
-	<@onBlockTick data.onTickUpdate, false, 0/>
-
-	<#if data.plantType == "growapable">
-	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos blockpos, RandomSource random) {
-		if (world.isEmptyBlock(blockpos.above())) {
+	<#if data.plantType == "growapable" || hasProcedure(data.onTickUpdate)>
+	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
+		<#if data.plantType == "growapable">
+		if (world.isEmptyBlock(pos.above())) {
 			int i = 1;
-			for(;world.getBlockState(blockpos.below(i)).is(this); ++i);
+			for(;world.getBlockState(pos.below(i)).is(this); ++i);
 			if (i < ${data.growapableMaxHeight}) {
 				int j = blockstate.getValue(AGE);
-				if (CommonHooks.onCropsGrowPre(world, blockpos, blockstate, true)) {
+				if (CommonHooks.onCropsGrowPre(world, pos, blockstate, true)) {
 					if (j == 15) {
-						world.setBlockAndUpdate(blockpos.above(), defaultBlockState());
-						world.setBlock(blockpos, blockstate.setValue(AGE, 0), 4);
-					} else
-						world.setBlock(blockpos, blockstate.setValue(AGE, j + 1), 4);
+						world.setBlockAndUpdate(pos.above(), defaultBlockState());
+						world.setBlock(pos, blockstate.setValue(AGE, 0), 4);
+					} else {
+						world.setBlock(pos, blockstate.setValue(AGE, j + 1), 4);
+					}
 				}
 			}
 		}
+		</#if>
+
+		<#if hasProcedure(data.onTickUpdate)>
+			<@procedureCode data.onTickUpdate, {
+				"x": "pos.getX()",
+				"y": "pos.getY()",
+				"z": "pos.getZ()",
+				"world": "world",
+				"blockstate": "blockstate"
+			}/>
+		</#if>
 	}
 	</#if>
 

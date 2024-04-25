@@ -65,7 +65,8 @@ import java.util.List;
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
 	private final VTextField igniterName = new VTextField(22);
-	private final JComboBox<String> igniterRarity = new JComboBox<>(new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
+	private final JComboBox<String> igniterRarity = new JComboBox<>(
+			new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 
 	private StringListProcedureSelector specialInformation;
 
@@ -150,6 +151,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 
 		worldGenType.setRenderer(new ItemTexturesComboBoxRenderer());
 		biomesInDimension = new BiomeListField(mcreator);
+
+		portalParticles.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXX"));
 
 		portalFrame = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		mainFillerBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
@@ -257,7 +260,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.portal_igniter_name")));
 		proper22.add(igniterName);
 
-		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		proper22.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
 		proper22.add(igniterRarity);
 
 		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tabs"),
@@ -273,7 +277,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel igniterPanel = new JPanel(new BorderLayout(5, 5));
 		igniterPanel.setOpaque(false);
 
-		igniterPanel.add("North", PanelUtils.gridElements(1, 2,
+		igniterPanel.add("North", PanelUtils.gridElements(1, 2, 5, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_igniter"),
 						L10N.label("elementgui.dimension.enable_new_igniter")), enableIgniter));
 
@@ -306,17 +310,17 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.t("elementgui.dimension.portal_properties"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		JPanel dsg = new JPanel(new BorderLayout(5, 2));
-		dsg.setOpaque(false);
-		dsg.add("West", propertiesPanel);
-		dsg.add("East", PanelUtils.pullElementUp(igniterPanel));
+		JPanel portalPanelMain = new JPanel(new BorderLayout(0, 0));
+		portalPanelMain.setOpaque(false);
+		portalPanelMain.add("West", propertiesPanel);
+		portalPanelMain.add("East", PanelUtils.pullElementUp(igniterPanel));
 
 		JPanel portalPanel = new JPanel(new BorderLayout(5, 2));
 		portalPanel.setOpaque(false);
 		portalPanel.add("North", PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_portal"),
 						L10N.label("elementgui.dimension.enable_dimension_portal")), enablePortal));
-		portalPanel.add("Center", dsg);
+		portalPanel.add("Center", portalPanelMain);
 
 		pane2.setOpaque(false);
 

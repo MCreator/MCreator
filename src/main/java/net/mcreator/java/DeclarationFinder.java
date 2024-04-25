@@ -81,9 +81,12 @@ public class DeclarationFinder {
 			RSyntaxTextArea textArea, String clickedWord, JarManager jarManager) {
 		int start, end;
 		int caret = textArea.getCaretPosition();
+		String code = textArea.getText();
 
 		if (parser == null || parser.getCompilationUnit() == null)
 			return null;
+
+		InClassPosition pos;
 
 		Iterator<TypeDeclaration> i = parser.getCompilationUnit().getTypeDeclarationIterator();
 		while (i.hasNext()) {
@@ -93,9 +96,6 @@ public class DeclarationFinder {
 
 			if (caret > start && caret <= end) {
 				TypeDeclaration classNameInWhichWeAre = getLatestChild(td, caret);
-				String code = textArea.getText();
-
-				InClassPosition pos;
 
 				pos = DeclarationChecker.checkForThisDeclaration(code, clickedWord, classNameInWhichWeAre);
 				if (pos != null)
@@ -111,7 +111,13 @@ public class DeclarationFinder {
 				if (pos != null)
 					return pos;
 			} else if (caret < start) {
-				break;
+				// Before any declaration, could be imports section, so we check for class declarations
+				pos = DeclarationChecker.checkForClassDeclaration(workspace, clickedWord, parser.getCompilationUnit(),
+						jarManager);
+				if (pos != null)
+					return pos;
+				else
+					break;
 			}
 		}
 		return null;
@@ -132,7 +138,7 @@ public class DeclarationFinder {
 	}
 
 	public static class InClassPosition {
-		public int carret;
+		public int caret;
 		public boolean openInReadOnly = true;
 		public File virtualFile;
 		public File classFileNode; //null if current class

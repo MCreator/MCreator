@@ -87,3 +87,7 @@ templates:
 localizationkeys:
   - key: block.@modid.@registryname
     mapto: name
+
+tags:
+  - tag: BLOCKS:minecraft:replaceable
+    condition: isReplaceable

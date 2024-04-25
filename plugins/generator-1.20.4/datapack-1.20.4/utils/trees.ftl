@@ -20,6 +20,17 @@
 }
 </#macro>
 
+<#-- Macro for random spread foliage placer, used by mangrove and azalea trees -->
+<#macro randomSpreadFoliagePlacer radius offset foliage_height density>
+{
+  "type": "minecraft:random_spread_foliage_placer",
+  "radius": ${radius},
+  "offset": ${offset},
+  "foliage_height": ${foliage_height},
+  "leaf_placement_attempts": ${density}
+}
+</#macro>
+
 <#macro twoLayersFeatureSize limit lower_size upper_size min_clipped_height=-1>
 {
   "type": "minecraft:two_layers_feature_size",
