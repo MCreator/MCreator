@@ -394,7 +394,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false,
 							true, false));
 
-			centerComponent = new ArrayList<>(pages.values()).get(0);
+			centerComponent = new ArrayList<>(pages.values()).getFirst();
 		}
 
 		if (modElementCodeViewer != null) {

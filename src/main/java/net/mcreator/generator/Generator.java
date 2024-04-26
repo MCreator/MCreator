@@ -499,15 +499,14 @@ public class Generator implements IGenerator, Closeable {
 							(String) ((Map<?, ?>) list).get("listData"), generatableElement);
 
 					// we check type of listData collection and convert it to a list if needed
-					List<?> items;
-					if (listData instanceof Map<?, ?> listMap)
-						items = List.copyOf(listMap.entrySet());
-					else if (listData instanceof Collection<?> collection)
-						items = List.copyOf(collection);
-					else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
-						items = List.copyOf(StreamSupport.stream(iterable.spliterator(), false).toList());
-					else
-						items = List.of();
+					List<?> items = switch (listData) {
+						case Map<?, ?> listMap -> List.copyOf(listMap.entrySet());
+						case Collection<?> collection -> List.copyOf(collection);
+						case Iterable<?> iterable ->
+							// fallback for the worst case
+								List.copyOf(StreamSupport.stream(iterable.spliterator(), false).toList());
+						case null, default -> List.of();
+					};
 
 					GeneratorTemplatesList templatesList = new GeneratorTemplatesList(groupName, items,
 							new ArrayList<>());

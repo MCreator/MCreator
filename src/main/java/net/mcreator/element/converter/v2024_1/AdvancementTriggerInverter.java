@@ -82,7 +82,7 @@ public class AdvancementTriggerInverter implements IConverter {
 			Element candidate = (Element) blocks.item(i);
 
 			List<Element> children = BlocklyBlockUtil.getBlockProcedureStartingWithNext(candidate);
-			if (children.size() == 1 && children.get(0).getAttribute("type")
+			if (children.size() == 1 && children.getFirst().getAttribute("type")
 					.equals(BlocklyEditorType.JSON_TRIGGER.startBlockName())) {
 				trigger = candidate;
 				break;

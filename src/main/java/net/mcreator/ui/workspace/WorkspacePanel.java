@@ -1173,9 +1173,9 @@ import java.util.stream.Collectors;
 					modElementFiles.stream().filter(e -> !(e instanceof ListTemplate)).toList(), modElementGlobalFiles,
 					modElementListFiles).show(component, x, y);
 		else if (modElementFiles.size() == 1)
-			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
+			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.getFirst().getFile());
 		else if (modElementGlobalFiles.size() == 1)
-			ProjectFileOpener.openCodeFile(mcreator, modElementGlobalFiles.get(0).getFile());
+			ProjectFileOpener.openCodeFile(mcreator, modElementGlobalFiles.getFirst().getFile());
 	}
 
 	private void deleteCurrentlySelectedModElement() {

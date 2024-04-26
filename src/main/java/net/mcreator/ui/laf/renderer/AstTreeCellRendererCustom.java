@@ -57,13 +57,16 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 			setForeground(Theme.current().getBackgroundColor());
 		}
 
-		if (value instanceof JsonTree.JsonObjectNode) {
+		switch (value) {
+		case JsonTree.JsonObjectNode ignored -> {
 			setIcon(UIRES.get("16px.jsonobj"));
 			setText(value.toString());
-		} else if (value instanceof JsonTree.JsonArrayNode) {
+		}
+		case JsonTree.JsonArrayNode ignored -> {
 			setIcon(UIRES.get("16px.jsonarray"));
 			setText(value.toString());
-		} else if (value instanceof JsonTree.JsonNode node) {
+		}
+		case JsonTree.JsonNode node -> {
 			JsonElement element = node.getElement();
 			String type = null;
 			if (element.isJsonNull())
@@ -78,10 +81,11 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 			}
 			setText(value + (type == null ? "" : (" [" + type + "]")));
 			setIcon(UIRES.get("16px.jsonel"));
-		} else {
+		}
+		case null, default -> {
 			try {
 				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.java.tree.JavaTreeNode");
-				Method text = treeNodeClass.getMethod("getText", boolean.class);
+				Method text = treeNodeClass.getMethod("getText" , boolean.class);
 				Method icon = treeNodeClass.getMethod("getIcon");
 				icon.setAccessible(true);
 				text.setAccessible(true);
@@ -95,6 +99,7 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 					LOG.warn(e.getMessage(), e);
 				}
 			}
+		}
 		}
 		return this;
 	}
