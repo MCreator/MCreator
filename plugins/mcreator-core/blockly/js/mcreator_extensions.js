@@ -151,24 +151,14 @@ Blockly.Extensions.register('min_max_fields_validator',
 // Mutator to disable the "biome filter" placement inside the "inline placed feature" block
 Blockly.Extensions.registerMixin('disable_inside_inline_placed_feature',
     {
-        // Check if this block is inside the inline placed feature statement
-        getSurroundLoop: function () {
-            let block = this;
-            do {
-                if (block.type == 'placed_feature_inline') {
-                    return block;
-                }
-                block = block.getSurroundParent();
-            } while (block);
-            return null;
-        },
-
         onchange: function (e) {
             // Don't change state if it's at the start of a drag and it's not a move event
             if (!this.workspace.isDragging || this.workspace.isDragging() || e.type !== Blockly.Events.BLOCK_MOVE) {
                 return;
             }
-            const enabled = !(this.getSurroundLoop(this));
+            const enabled = !(checkIfWithin(this, function (type) {
+                return type === 'placed_feature_inline';
+            }));
             this.setWarningText(enabled ? null : javabridge.t('blockly.block.placed_feature_inline.disabled_placement'));
             if (!this.isInFlyout) {
                 const group = Blockly.Events.getGroup();
@@ -199,3 +189,43 @@ Blockly.Extensions.register('tag_input_field_validator', validateResourceLocatio
 
 Blockly.Extensions.register('geode_tag_fields_validator',
     validateResourceLocationFields('cannot_replace_tag', 'invalid_blocks_tag'));
+
+Blockly.Extensions.registerMixin('controls_flow_in_loop_check_exclude_wait',
+    {
+        onchange: function (e) {
+            // Don't change state if it's at the start of a drag and it's not a move event
+            if (!this.workspace.isDragging || this.workspace.isDragging() || e.type !== Blockly.Events.BLOCK_MOVE) {
+                return;
+            }
+            const isWithinLoop = !!(checkIfWithin(this, function (type) {
+                return Blockly.libraryBlocks.loops.loopTypes.has(type);
+            }));
+            const isWithinWaitBlock = !!(checkIfWithin(this, function (type) {
+                return type === 'wait';
+            }));
+            if (!isWithinLoop) {
+                this.setWarningText(Blockly.Msg['CONTROLS_FLOW_STATEMENTS_WARNING']);
+            } else if (isWithinWaitBlock) {
+                this.setWarningText(javabridge.t('blockly.block.controls_flow_statements.inside_wait'));
+            } else {
+                this.setWarningText(null);
+            }
+            if (!this.isInFlyout) {
+                const group = Blockly.Events.getGroup();
+                // Makes it so the move and the disable event get undone together.
+                Blockly.Events.setGroup(e.group);
+                this.setEnabled(isWithinLoop && !isWithinWaitBlock);
+                Blockly.Events.setGroup(group);
+            }
+        }
+    });
+
+function checkIfWithin(block, predicate) {
+    do {
+        if (predicate(block.type)) {
+            return block;
+        }
+        block = block.getSurroundParent();
+    } while (block);
+    return null;
+}

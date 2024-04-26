@@ -1,0 +1,1 @@
+Wybierz to ustawienie, aby generować leśny dwór w swoim biomie.

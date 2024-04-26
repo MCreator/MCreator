@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.blockly;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.blockly.java.ProcedureTemplateIO;
 import net.mcreator.io.ResourcePointer;
@@ -48,6 +49,9 @@ public class BlocklyTemplateDropdown extends JScrollablePopupMenu {
 	 */
 	public BlocklyTemplateDropdown(BlocklyPanel blocklyPanel, List<ResourcePointer> templatesSorted,
 			ProcedureGUI procedureGUI) {
+		setBorder(BorderFactory.createEmptyBorder());
+		putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
+
 		setMaximumVisibleRows(20);
 		for (ResourcePointer template : templatesSorted) {
 			try {
