@@ -427,7 +427,7 @@ public class ${name}Entity extends ${extendsClass} <#if data.ranged>implements R
 
 	private final CombinedInvWrapper combined = new CombinedInvWrapper(inventory, new EntityHandsInvWrapper(this), new EntityArmorInvWrapper(this));
 
-	public CombinedInvWrapper getInventory() {
+	public CombinedInvWrapper getCombinedInventory() {
 		return combined;
 	}
 

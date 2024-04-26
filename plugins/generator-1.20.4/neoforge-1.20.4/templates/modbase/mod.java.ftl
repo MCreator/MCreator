@@ -11,6 +11,9 @@ import org.apache.logging.log4j.Logger;
 	public static final String MODID = "${modid}";
 
 	public ${JavaModName}(IEventBus modEventBus) {
+		// Start of user code block mod constructor
+		// End of user code block mod constructor
+
 		NeoForge.EVENT_BUS.register(this);
 
 		modEventBus.addListener(this::registerNetworking);
