@@ -87,26 +87,6 @@ function firstFreeIndex(block, fieldName, index, valueProvider) {
     return valueProvider(retVal);
 }
 
-// Helper function to disable validators on newly created repeating fields when loading from save file
-// Otherwise, if there is a custom value before equal default one in another field, setting it would fail
-function validOnLoad(field) {
-    const fieldFromXml = field.fromXml;
-    field.fromXml = function (fieldElement) {
-        const validator = this.validator_;
-        this.validator_ = null;
-        fieldFromXml.call(this, fieldElement);
-        this.validator_ = validator;
-    };
-    const fieldLoadState = field.loadState; // we need to "override" this one too
-    field.loadState = function (state) { // to not get caught by loadLegacyState function on this field
-        const validator = this.validator_;
-        this.validator_ = null;
-        fieldLoadState.call(this, state);
-        this.validator_ = validator;
-    };
-    return field;
-}
-
 Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
     mutationToDom: function () {
         const container = document.createElement('mutation');
@@ -164,28 +144,20 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
         }
         this.inputCount_ = connections.length;
         this.updateShape_();
-        const validators = [];
+        const fieldValuesFlat = Object.values(fieldValues).concat(fieldValuesDummy);
+        let k = 0;
+        while (fieldValuesFlat.indexOf('dependency' + k) !== -1)
+            k++;
         for (let i = 0, j = 0; i < this.inputCount_; i++) {
             Blockly.Mutator.reconnect(connections[i], this, 'arg' + i);
             const currentField = this.getField('name' + i);
-            validators.push(currentField.getValidator());
+            const validator = currentField.getValidator();
             currentField.setValidator(null);
             if (connections[i])
-                currentField.setValue(fieldValues[connections[i].sourceBlock_.id] || 'dependency' + i);
-            else if (j < fieldValuesDummy.length)
-                currentField.setValue(fieldValuesDummy[j++] || 'dependency' + i);
-            else
-                currentField.setValue('dependency' + i);
-        }
-        const validNames = [];
-        for (let i = 0, j = 1; i < this.inputCount_; i++) {
-            const currentField = this.getField('name' + i);
-            let currentValue = currentField.getValue();
-            while (validNames.indexOf(currentValue) !== -1)
-                currentValue = 'dependency' + (j++);
-            validNames.push(currentValue);
-            currentField.setValue(currentValue);
-            currentField.setValidator(validators[i]);
+                currentField.setValue(fieldValues[connections[i].sourceBlock_.id] || '');
+            if (!connections[i] || currentField.getValue() === '')
+                currentField.setValue((j < fieldValuesDummy.length && fieldValuesDummy[j++]) || 'dependency' + (k++));
+            currentField.setValidator(validator);
         }
     },
 
@@ -208,17 +180,10 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
     updateShape_: function () {
         for (let i = 0; i < this.inputCount_; i++) {
             if (!this.getInput('arg' + i)) {
-                const validator = uniqueValueValidator('name');
-                const nameField = validOnLoad(new FieldJavaName('dependency' + i, validator));
                 this.appendValueInput('arg' + i).setAlign(Blockly.Input.Align.RIGHT)
                     .appendField(javabridge.t('blockly.block.call_procedure.name'))
-                    .appendField(nameField, 'name' + i)
+                    .appendField(new FieldJavaName('', uniqueValueValidator('name')), 'name' + i)
                     .appendField(javabridge.t('blockly.block.call_procedure.arg'));
-                if (validator.call(nameField, 'dependency' + i) == null) {
-                    nameField.setValue(firstFreeIndex(this, 'name', i, function (nextIndex) {
-                        return 'dependency' + nextIndex;
-                    }));
-                }
             }
         }
         for (let i = this.inputCount_; this.getInput('arg' + i); i++)
