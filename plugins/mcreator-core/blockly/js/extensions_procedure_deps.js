@@ -74,17 +74,17 @@ function uniqueValueValidator(fieldName) {
 function firstFreeIndex(block, fieldName, index, valueProvider) {
     const values = [];
     for (let i = 0; block.getField(fieldName + i); i++) {
-        if (i === index)
+        if (index && i === index)
             continue;
         values.push('' + block.getFieldValue(fieldName + i));
     }
     let retVal = 0;
     while (true) {
-        if (values.indexOf('' + valueProvider(retVal)) === -1)
+        if (values.indexOf('' + (valueProvider ? valueProvider(retVal) : retVal)) === -1)
             break;
         retVal++;
     }
-    return valueProvider(retVal);
+    return valueProvider ? valueProvider(retVal) : retVal;
 }
 
 Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
