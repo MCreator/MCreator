@@ -68,25 +68,6 @@ function uniqueValueValidator(fieldName) {
     };
 }
 
-// Helper function to find first index not taken by repeating fields with a certain name
-// If index is defined, field with given name with that index will be skipped
-// If valueProvider is defined, its return value is compared with other field values, otherwise index itself is used
-function firstFreeIndex(block, fieldName, index, valueProvider) {
-    const values = [];
-    for (let i = 0; block.getField(fieldName + i); i++) {
-        if (index && i === index)
-            continue;
-        values.push('' + block.getFieldValue(fieldName + i));
-    }
-    let retVal = 0;
-    while (true) {
-        if (values.indexOf('' + (valueProvider ? valueProvider(retVal) : retVal)) === -1)
-            break;
-        retVal++;
-    }
-    return valueProvider ? valueProvider(retVal) : retVal;
-}
-
 Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
     mutationToDom: function () {
         const container = document.createElement('mutation');
