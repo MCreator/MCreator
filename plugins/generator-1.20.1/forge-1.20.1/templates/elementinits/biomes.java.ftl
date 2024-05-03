@@ -118,7 +118,7 @@ import com.mojang.datafixers.util.Pair;
 						List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
 
 						<#list spawn_overworld_caves as biome>
-						addSurfaceRule(surfaceRules, anySurfaceRule(
+						addSurfaceRule(surfaceRules, 1, anySurfaceRule(
 							ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")),
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
@@ -127,7 +127,7 @@ import com.mojang.datafixers.util.Pair;
 						</#list>
 
 						<#list spawn_overworld as biome>
-						addSurfaceRule(surfaceRules, preliminarySurfaceRule(
+						addSurfaceRule(surfaceRules, 1, preliminarySurfaceRule(
 							ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")),
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
@@ -203,7 +203,7 @@ import com.mojang.datafixers.util.Pair;
 						List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
 
 						<#list spawn_nether as biome>
-						addSurfaceRule(surfaceRules, anySurfaceRule(
+						addSurfaceRule(surfaceRules, 2, anySurfaceRule(
 							ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")),
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
@@ -282,9 +282,9 @@ import com.mojang.datafixers.util.Pair;
 			parameters.add(point);
 	}
 
-	private static void addSurfaceRule(List<SurfaceRules.RuleSource> surfaceRules, SurfaceRules.RuleSource rule) {
+	private static void addSurfaceRule(List<SurfaceRules.RuleSource> surfaceRules,  int index, SurfaceRules.RuleSource rule) {
 		if (!surfaceRules.contains(rule))
-			surfaceRules.add(rule);
+			surfaceRules.add(index, rule);
 	}
 
 }
