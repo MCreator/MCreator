@@ -8,7 +8,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
     return {
         // Store number of inputs in XML as '<mutation inputs="inputCount_"></mutation>'
         mutationToDom: function () {
-            var container = document.createElement('mutation');
+            const container = document.createElement('mutation');
             container.setAttribute('inputs', this.inputCount_);
             return container;
         },
@@ -36,7 +36,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
         decompose: function (workspace) {
             const containerBlock = workspace.newBlock(mutatorContainer);
             containerBlock.initSvg();
-            var connection = containerBlock.getInput('STACK').connection;
+            let connection = containerBlock.getInput('STACK').connection;
             for (let i = 0; i < this.inputCount_; i++) {
                 const inputBlock = workspace.newBlock(mutatorInput);
                 inputBlock.initSvg();
@@ -61,7 +61,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
             if (isProperInput) {
                 for (let i = 0; i < this.inputCount_; i++) {
                     const connection = this.getInput(inputName + i) && this.getInput(inputName + i).connection.targetConnection;
-                    if (connection && connections.indexOf(connection) == -1) {
+                    if (connection && connections.indexOf(connection) === -1) {
                         connection.disconnect();
                     }
                 }
