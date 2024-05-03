@@ -69,28 +69,33 @@ function uniqueValueValidator(fieldName) {
 }
 
 Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
+    // Store number of inputs in XML as '<mutation inputs="inputCount_"></mutation>'
     mutationToDom: function () {
         const container = document.createElement('mutation');
         container.setAttribute('inputs', this.inputCount_);
         return container;
     },
 
+    // Retrieve number of inputs from XML
     domToMutation: function (xmlElement) {
         this.inputCount_ = parseInt(xmlElement.getAttribute('inputs'), 10);
         this.updateShape_();
     },
 
+    // Store number of inputs in JSON
     saveExtraState: function () {
         return {
             'inputCount': this.inputCount_
         };
     },
 
+    // Retrieve number of inputs from JSON
     loadExtraState: function (state) {
         this.inputCount_ = state['inputCount'];
         this.updateShape_();
     },
 
+    // "Split" this block into the correct number of inputs in the mutator UI
     decompose: function (workspace) {
         const containerBlock = workspace.newBlock('procedure_dependencies_mutator_container');
         containerBlock.initSvg();
@@ -105,11 +110,12 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
         return containerBlock;
     },
 
+    // Rebuild this block based on the number of inputs in the mutator UI
     compose: function (containerBlock) {
         let inputBlock = containerBlock.getInputTargetBlock('STACK');
         const connections = [];
         const fieldValues = {};
-        const fieldValuesDummy = [];
+        const fieldValuesDummy = []; // Names of dependency inputs (field values) that don't have any block attached
         while (inputBlock && !inputBlock.isInsertionMarker()) {
             connections.push(inputBlock.valueConnection_);
             if (inputBlock.valueConnection_)
@@ -118,6 +124,7 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
                 fieldValuesDummy.push(inputBlock.nameValue_);
             inputBlock = inputBlock.nextConnection && inputBlock.nextConnection.targetBlock();
         }
+        // Disconnect any children that don't belong
         for (let i = 0; i < this.inputCount_; i++) {
             const connection = this.getInput('arg' + i) && this.getInput('arg' + i).connection.targetConnection;
             if (connection && connections.indexOf(connection) === -1)
@@ -126,26 +133,36 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
         this.inputCount_ = connections.length;
         this.updateShape_();
         const fieldValuesFlat = Object.values(fieldValues).concat(fieldValuesDummy);
-        // Find first index not used by any name
+
+        // Find first index not used yet (by default dependency input names - dependency0, dependency1, ...)
         let k = 0;
         while (fieldValuesFlat.indexOf('dependency' + k) !== -1)
             k++;
+
+        // Reconnect any child blocks and update values
         for (let i = 0, j = 0; i < this.inputCount_; i++) {
             Blockly.Mutator.reconnect(connections[i], this, 'arg' + i);
             const currentField = this.getField('name' + i);
+
+            // Remove validator to avoid validation errors as we set new values
             const validator = currentField.getValidator();
             currentField.setValidator(null);
+
             // If input block is attached, the associated name is restored
             if (connections[i])
                 currentField.setValue(fieldValues[connections[i].sourceBlock_.id] || '');
+
             // If input is empty or associated name was not found, new name is set
             // Which is one of collected "dummy" names if some are still not processed or automatic name otherwise
             if (!connections[i] || currentField.getValue() === '')
                 currentField.setValue((j < fieldValuesDummy.length && fieldValuesDummy[j++]) || 'dependency' + (k++));
+
+            // Restore validator
             currentField.setValidator(validator);
         }
     },
 
+    // Keep track of the connected blocks, so that they don't get disconnected whenever an input is added or moved
     saveConnections: function (containerBlock) {
         let inputBlock = containerBlock.getInputTargetBlock('STACK');
         let i = 0;
@@ -162,6 +179,7 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
         }
     },
 
+    // Add/remove inputs from this block
     updateShape_: function () {
         for (let i = 0; i < this.inputCount_; i++) {
             if (!this.getInput('arg' + i)) {
