@@ -11,10 +11,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         name: Checkout Repository
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '21.0.3+9'
+          java-version: '21.0.3+9.0.LTS'
           distribution: 'temurin'
       - name: Generate Javadoc
         run: ./gradlew javadoc
