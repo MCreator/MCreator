@@ -74,7 +74,7 @@ import com.mojang.datafixers.util.Pair;
 							0 <#-- offset -->
 						),
 						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
-					);
+					));
 					addParameterPoint(parameters, new Pair<>(
 						new Climate.ParameterPoint(
 							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
@@ -86,11 +86,11 @@ import com.mojang.datafixers.util.Pair;
 							0 <#-- offset -->
 						),
 						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
-					);
+					));
 					</#list>
 
 					<#list spawn_overworld_caves as biome>
-						addParameterPoint(parameters, new Pair<>(
+					addParameterPoint(parameters, new Pair<>(
 						new Climate.ParameterPoint(
 							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
 							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
@@ -101,7 +101,7 @@ import com.mojang.datafixers.util.Pair;
 							0 <#-- offset -->
 						),
 						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
-					);
+					));
 					</#list>
 
 					chunkGenerator.biomeSource = MultiNoiseBiomeSource.createFromList(new Climate.ParameterList<>(parameters));
@@ -123,7 +123,7 @@ import com.mojang.datafixers.util.Pair;
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-						);
+						));
 						</#list>
 
 						<#list spawn_overworld as biome>
@@ -132,7 +132,7 @@ import com.mojang.datafixers.util.Pair;
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-						);
+						));
 						</#list>
 
 						NoiseGeneratorSettings moddedNoiseGeneratorSettings = new NoiseGeneratorSettings(
@@ -208,10 +208,7 @@ import com.mojang.datafixers.util.Pair;
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-						);
-						if (!surfaceRules.contains(netherSurface)) {
-							surfaceRules.add(2, netherSurface);
-						}
+						));
 						</#list>
 
 						NoiseGeneratorSettings moddedNoiseGeneratorSettings = new NoiseGeneratorSettings(
