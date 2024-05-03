@@ -174,7 +174,7 @@ import com.mojang.datafixers.util.Pair;
 							0 <#-- offset -->
 						),
 						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
-					);
+					));
 					addParameterPoint(parameters, new Pair<>(
 						new Climate.ParameterPoint(
 							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
@@ -186,7 +186,7 @@ import com.mojang.datafixers.util.Pair;
 							0 <#-- offset -->
 						),
 						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
-					);
+					));
 					</#list>
 
 					chunkGenerator.biomeSource = MultiNoiseBiomeSource.createFromList(new Climate.ParameterList<>(parameters));

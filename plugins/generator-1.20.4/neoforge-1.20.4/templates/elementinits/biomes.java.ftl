@@ -175,7 +175,7 @@ import com.google.common.base.Suppliers;
 							0 <#-- offset -->
 						),
 						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
-					);
+					));
 					addParameterPoint(parameters, new Pair<>(
 						new Climate.ParameterPoint(
 							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
@@ -187,7 +187,7 @@ import com.google.common.base.Suppliers;
 							0 <#-- offset -->
 						),
 						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
-					);
+					));
 					</#list>
 
 					chunkGenerator.biomeSource = MultiNoiseBiomeSource.createFromList(new Climate.ParameterList<>(parameters));
@@ -209,7 +209,7 @@ import com.google.common.base.Suppliers;
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
-						);
+						));
 						</#list>
 
 						NoiseGeneratorSettings moddedNoiseGeneratorSettings = new NoiseGeneratorSettings(
