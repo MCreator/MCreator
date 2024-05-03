@@ -63,7 +63,7 @@ import com.mojang.datafixers.util.Pair;
 					List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters().values());
 
 					<#list spawn_overworld as biome>
-					<#if biome?is_first>Pair<Climate.ParameterPoint, Holder<Biome>></#if> surfacePoint1 = new Pair<>(
+					addParameterPoint(parameters, new Pair<>(
 						new Climate.ParameterPoint(
 							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
 							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
@@ -75,7 +75,7 @@ import com.mojang.datafixers.util.Pair;
 						),
 						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
 					);
-					<#if biome?is_first>Pair<Climate.ParameterPoint, Holder<Biome>></#if> surfacePoint2 = new Pair<>(
+					addParameterPoint(parameters, new Pair<>(
 						new Climate.ParameterPoint(
 							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
 							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
@@ -87,14 +87,10 @@ import com.mojang.datafixers.util.Pair;
 						),
 						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
 					);
-					if (!parameters.contains(surfacePoint1) && !parameters.contains(surfacePoint2)) {
-						parameters.add(surfacePoint1);
-						parameters.add(surfacePoint2);
-					}
 					</#list>
 
 					<#list spawn_overworld_caves as biome>
-						<#if biome?is_first>Pair<Climate.ParameterPoint, Holder<Biome>></#if> cavePoint = new Pair<>(
+						addParameterPoint(parameters, new Pair<>(
 						new Climate.ParameterPoint(
 							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
 							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
@@ -106,9 +102,6 @@ import com.mojang.datafixers.util.Pair;
 						),
 						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
 					);
-					if (!parameters.contains(cavePoint)) {
-						parameters.add(cavePoint);
-					}
 					</#list>
 
 					chunkGenerator.biomeSource = MultiNoiseBiomeSource.createFromList(new Climate.ParameterList<>(parameters));
@@ -125,27 +118,21 @@ import com.mojang.datafixers.util.Pair;
 						List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
 
 						<#list spawn_overworld_caves as biome>
-						<#if biome?is_first>SurfaceRules.RuleSource</#if> caveSurface = anySurfaceRule(
+						addSurfaceRule(surfaceRules, anySurfaceRule(
 							ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")),
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
 						);
-						if (!surfaceRules.contains(caveSurface)) {
-							surfaceRules.add(1, caveSurface);
-						}
 						</#list>
 
 						<#list spawn_overworld as biome>
-						<#if biome?is_first>SurfaceRules.RuleSource</#if> preliminarySurface = preliminarySurfaceRule(
+						addSurfaceRule(surfaceRules, preliminarySurfaceRule(
 							ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")),
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
 							${mappedBlockToBlockStateCode(biome.getUnderwaterBlock())}
 						);
-						if (!surfaceRules.contains(preliminarySurface)) {
-							surfaceRules.add(1, preliminarySurface);
-						}
 						</#list>
 
 						NoiseGeneratorSettings moddedNoiseGeneratorSettings = new NoiseGeneratorSettings(
@@ -176,7 +163,7 @@ import com.mojang.datafixers.util.Pair;
 					List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters = new ArrayList<>(noiseSource.parameters().values());
 
 					<#list spawn_nether as biome>
-					<#if biome?is_first>Pair<Climate.ParameterPoint, Holder<Biome>></#if> netherPoint1 = new Pair<>(
+					addParameterPoint(parameters, new Pair<>(
 						new Climate.ParameterPoint(
 							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
 							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
@@ -188,7 +175,7 @@ import com.mojang.datafixers.util.Pair;
 						),
 						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
 					);
-					<#if biome?is_first>Pair<Climate.ParameterPoint, Holder<Biome>></#if> netherPoint2 = new Pair<>(
+					addParameterPoint(parameters, new Pair<>(
 						new Climate.ParameterPoint(
 							Climate.Parameter.span(${biome.genTemperature.min}f, ${biome.genTemperature.max}f),
 							Climate.Parameter.span(${biome.genHumidity.min}f, ${biome.genHumidity.max}f),
@@ -200,10 +187,6 @@ import com.mojang.datafixers.util.Pair;
 						),
 						biomeRegistry.getHolderOrThrow(ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")))
 					);
-					if (!parameters.contains(netherPoint1) && !parameters.contains(netherPoint2)) {
-						parameters.add(netherPoint1);
-						parameters.add(netherPoint2);
-					}
 					</#list>
 
 					chunkGenerator.biomeSource = MultiNoiseBiomeSource.createFromList(new Climate.ParameterList<>(parameters));
@@ -220,7 +203,7 @@ import com.mojang.datafixers.util.Pair;
 						List<SurfaceRules.RuleSource> surfaceRules = new ArrayList<>(sequenceRuleSource.sequence());
 
 						<#list spawn_nether as biome>
-						<#if biome?is_first>SurfaceRules.RuleSource</#if> netherSurface = anySurfaceRule(
+						addSurfaceRule(surfaceRules, anySurfaceRule(
 							ResourceKey.create(Registries.BIOME, new ResourceLocation("${modid}", "${biome.getModElement().getRegistryName()}")),
 							${mappedBlockToBlockStateCode(biome.groundBlock)},
 							${mappedBlockToBlockStateCode(biome.undergroundBlock)},
@@ -293,6 +276,16 @@ import com.mojang.datafixers.util.Pair;
 		);
 	}
 	</#if>
+
+	private static void addParameterPoint(List<Pair<Climate.ParameterPoint, Holder<Biome>>> parameters, Pair<Climate.ParameterPoint, Holder<Biome>> point) {
+		if (!parameters.contains(point))
+			parameters.add(point);
+	}
+
+	private static void addSurfaceRule(List<SurfaceRules.RuleSource> surfaceRules, SurfaceRules.RuleSource rule) {
+		if (!surfaceRules.contains(rule))
+			surfaceRules.add(rule);
+	}
 
 }
 
