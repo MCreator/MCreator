@@ -126,6 +126,7 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
         this.inputCount_ = connections.length;
         this.updateShape_();
         const fieldValuesFlat = Object.values(fieldValues).concat(fieldValuesDummy);
+        // Find first index not used by any name
         let k = 0;
         while (fieldValuesFlat.indexOf('dependency' + k) !== -1)
             k++;
@@ -134,8 +135,11 @@ Blockly.Extensions.registerMutator('procedure_dependencies_mutator', {
             const currentField = this.getField('name' + i);
             const validator = currentField.getValidator();
             currentField.setValidator(null);
+            // If input block is attached, the associated name is restored
             if (connections[i])
                 currentField.setValue(fieldValues[connections[i].sourceBlock_.id] || '');
+            // If input is empty or associated name was not found, new name is set
+            // Which is one of collected "dummy" names if some are still not processed or automatic name otherwise
             if (!connections[i] || currentField.getValue() === '')
                 currentField.setValue((j < fieldValuesDummy.length && fieldValuesDummy[j++]) || 'dependency' + (k++));
             currentField.setValidator(validator);
