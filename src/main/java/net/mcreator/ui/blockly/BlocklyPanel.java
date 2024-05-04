@@ -26,6 +26,7 @@ import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
+import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.io.FileIO;
 import net.mcreator.io.OS;
 import net.mcreator.plugin.MCREvent;
@@ -88,11 +89,7 @@ public class BlocklyPanel extends JFXPanel {
 
 				ThreadUtil.runOnSwingThread(() -> changeListeners.forEach(
 						listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this))));
-
-				return true;
 			}
-
-			return false;
 		});
 
 		ThreadUtil.runOnFxThread(() -> {
@@ -300,10 +297,6 @@ public class BlocklyPanel extends JFXPanel {
 		return null;
 	}
 
-	public BlocklyJavascriptBridge getJSBridge() {
-		return bridge;
-	}
-
 	public MCreator getMCreator() {
 		return mcreator;
 	}
@@ -319,6 +312,12 @@ public class BlocklyPanel extends JFXPanel {
 	private String escapeXML(String xml) {
 		return xml // escape single quotes, new lines, and escapes
 				.replace("\\", "\\\\").replace("'", "\\'").replace("\n", "\\n").replace("\r", "\\r");
+	}
+
+	public void addExternalTriggerForProcedureEditor(ExternalTrigger external_trigger) {
+		if (type != BlocklyEditorType.PROCEDURE)
+			throw new RuntimeException("This method can only be called from procedure editor");
+		bridge.addExternalTrigger(external_trigger);
 	}
 
 }

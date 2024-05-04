@@ -542,12 +542,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.PROCEDURE);
 
 			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
-					.forEach(blocklyPanel.getJSBridge()::addExternalTrigger);
+					.forEach(blocklyPanel::addExternalTriggerForProcedureEditor);
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
-			blocklyPanel.getJSBridge().setJavaScriptEventListener(
-					() -> new Thread(this::regenerateProcedure, "ProcedureRegenerate").start());
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(this::regenerateProcedure, "ProcedureRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(net.mcreator.element.types.Procedure.XML_BASE);
 			}

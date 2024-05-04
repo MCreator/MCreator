@@ -99,8 +99,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
-			blocklyPanel.getJSBridge().setJavaScriptEventListener(
-					() -> new Thread(CommandGUI.this::regenerateArgs, "CommandRegenerate").start());
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(CommandGUI.this::regenerateArgs, "CommandRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(Command.XML_BASE);
 			}
