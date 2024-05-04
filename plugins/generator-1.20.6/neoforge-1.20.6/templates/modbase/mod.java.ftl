@@ -48,11 +48,11 @@ import org.apache.logging.log4j.Logger;
 
 	<#-- Networking support below -->
 	private static boolean networkingRegistered = false;
-	private static final Map<ResourceLocation, NetworkMessage<?>> MESSAGES = new HashMap<>();
+	private static final Map<CustomPacketPayload.Type<?>, NetworkMessage<?>> MESSAGES = new HashMap<>();
 
-	private record NetworkMessage<T extends CustomPacketPayload>(FriendlyByteBuf.Reader<T> reader, IPlayPayloadHandler<T> handler) {}
+	private record NetworkMessage<T extends CustomPacketPayload>(StreamCodec<? extends FriendlyByteBuf, T> reader, IPayloadHandler<T> handler) {}
 
-	public static <T extends CustomPacketPayload> void addNetworkMessage(ResourceLocation id, FriendlyByteBuf.Reader<T> reader, IPlayPayloadHandler<T> handler) {
+	public static <T extends CustomPacketPayload> void addNetworkMessage(CustomPacketPayload.Type<T> id, StreamCodec<? extends FriendlyByteBuf, T> reader, IPayloadHandler<T> handler) {
 		if (networkingRegistered)
 			throw new IllegalStateException("Cannot register new network messages after networking has been registered");
 		MESSAGES.put(id, new NetworkMessage<>(reader, handler));
@@ -60,7 +60,7 @@ import org.apache.logging.log4j.Logger;
 
 	@SuppressWarnings({"rawtypes", "unchecked"}) private void registerNetworking(final RegisterPayloadHandlersEvent event) {
 		final PayloadRegistrar registrar = event.registrar(MODID);
-		MESSAGES.forEach((id, networkMessage) -> registrar.play(id, ((NetworkMessage) networkMessage).reader(), networkMessage.handler()));
+		MESSAGES.forEach((id, networkMessage) -> registrar.playBidirectional(id, ((NetworkMessage) networkMessage).reader(), ((NetworkMessage) networkMessage).handler()));
 		networkingRegistered = true;
 	}
 
@@ -72,17 +72,15 @@ import org.apache.logging.log4j.Logger;
 			workQueue.add(new Tuple<>(action, tick));
 	}
 
-	@SubscribeEvent public void tick(TickEvent.ServerTickEvent event) {
-		if (event.phase == TickEvent.Phase.END) {
-			List<Tuple<Runnable, Integer>> actions = new ArrayList<>();
-			workQueue.forEach(work -> {
-				work.setB(work.getB() - 1);
-				if (work.getB() == 0)
-					actions.add(work);
-			});
-			actions.forEach(e -> e.getA().run());
-			workQueue.removeAll(actions);
-		}
+	@SubscribeEvent public void tick(ServerTickEvent.Post event) {
+		List<Tuple<Runnable, Integer>> actions = new ArrayList<>();
+		workQueue.forEach(work -> {
+			work.setB(work.getB() - 1);
+			if (work.getB() == 0)
+				actions.add(work);
+		});
+		actions.forEach(e -> e.getA().run());
+		workQueue.removeAll(actions);
 	}
 
 }

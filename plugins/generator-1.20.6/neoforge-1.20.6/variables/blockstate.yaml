@@ -10,7 +10,7 @@ scopes:
     set: <#include "mcitems.ftl"> ${JavaModName}Variables.${name} = ${mappedBlockToBlockStateCode(value)};
   global_world:
     init: public BlockState ${var.getName()} = ${generator.map(var.getValue(), "blocksitems")}.defaultBlockState();
-    read: ${var.getName()} = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), nbt.getCompound("${var.getName()}"));
+    read: ${var.getName()} = NbtUtils.readBlockState(lookupProvider.lookupOrThrow(BuiltInRegistries.BLOCK.key()), nbt.getCompound("${var.getName()}"));
     write: nbt.put("${var.getName()}", NbtUtils.writeBlockState(${var.getName()}));
     get: /*@BlockState*/${JavaModName}Variables.WorldVariables.get(world).${name}
     set: |
@@ -19,7 +19,7 @@ scopes:
       ${JavaModName}Variables.WorldVariables.get(world).syncData(world);
   global_map:
     init: public BlockState ${var.getName()} = ${generator.map(var.getValue(), "blocksitems")}.defaultBlockState();
-    read: ${var.getName()} = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), nbt.getCompound("${var.getName()}"));
+    read: ${var.getName()} = NbtUtils.readBlockState(lookupProvider.lookupOrThrow(BuiltInRegistries.BLOCK.key()), nbt.getCompound("${var.getName()}"));
     write: nbt.put("${var.getName()}", NbtUtils.writeBlockState(${var.getName()}));
     get: /*@BlockState*/${JavaModName}Variables.MapVariables.get(world).${name}
     set: |
@@ -28,7 +28,7 @@ scopes:
       ${JavaModName}Variables.MapVariables.get(world).syncData(world);
   player_lifetime:
     init: public BlockState ${var.getName()} = ${generator.map(var.getValue(), "blocksitems")}.defaultBlockState();
-    read: ${var.getName()} = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), nbt.getCompound("${var.getName()}"));
+    read: ${var.getName()} = NbtUtils.readBlockState(lookupProvider.lookupOrThrow(BuiltInRegistries.BLOCK.key()), nbt.getCompound("${var.getName()}"));
     write: nbt.put("${var.getName()}", NbtUtils.writeBlockState(${var.getName()}));
     get: /*@BlockState*/${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
@@ -40,7 +40,7 @@ scopes:
       }
   player_persistent:
     init: public BlockState ${var.getName()} = ${generator.map(var.getValue(), "blocksitems")}.defaultBlockState();
-    read: ${var.getName()} = NbtUtils.readBlockState(BuiltInRegistries.BLOCK.asLookup(), nbt.getCompound("${var.getName()}"));
+    read: ${var.getName()} = NbtUtils.readBlockState(lookupProvider.lookupOrThrow(BuiltInRegistries.BLOCK.key()), nbt.getCompound("${var.getName()}"));
     write: nbt.put("${var.getName()}", NbtUtils.writeBlockState(${var.getName()}));
     get: /*@BlockState*/${entity}.getData(${JavaModName}Variables.PLAYER_VARIABLES).${name}
     set: |
