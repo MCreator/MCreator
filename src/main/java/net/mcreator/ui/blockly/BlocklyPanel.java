@@ -68,12 +68,8 @@ public class BlocklyPanel extends JFXPanel {
 
 	private boolean loaded = false;
 
-	private String currentXML = "";
-
 	private final MCreator mcreator;
 	private final BlocklyEditorType type;
-
-	private static final String MINIMAL_XML = "<xml xmlns=\"https://developers.google.com/blockly/xml\"></xml>";
 
 	private final List<ChangeListener> changeListeners = new ArrayList<>();
 
@@ -81,16 +77,8 @@ public class BlocklyPanel extends JFXPanel {
 		this.mcreator = mcreator;
 		this.type = type;
 
-		bridge = new BlocklyJavascriptBridge(mcreator, () -> {
-			String newXml = (String) executeJavaScriptSynchronously("workspaceToXML();");
-
-			if (newXml.length() > MINIMAL_XML.length()) {
-				this.currentXML = newXml;
-
-				ThreadUtil.runOnSwingThread(() -> changeListeners.forEach(
-						listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this))));
-			}
-		});
+		bridge = new BlocklyJavascriptBridge(mcreator, () -> ThreadUtil.runOnSwingThread(
+				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this)))));
 
 		ThreadUtil.runOnFxThread(() -> {
 			WebView browser = new WebView();
@@ -209,11 +197,18 @@ public class BlocklyPanel extends JFXPanel {
 	}
 
 	public String getXML() {
-		return this.currentXML;
+		return loaded ? (String) executeJavaScriptSynchronously("workspaceToXML();") : "";
 	}
 
-	public void setXMLDataOnly(String xml) {
-		this.currentXML = cleanupXML(xml);
+	public void setXML(String xml) {
+		executeJavaScriptSynchronously("""
+				workspace.clear();
+				Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom('%s'), workspace);
+				workspace.clearUndo();
+				""".formatted(escapeXML(xml)));
+
+		ThreadUtil.runOnSwingThread(
+				() -> changeListeners.forEach(listener -> listener.stateChanged(new ChangeEvent(BlocklyPanel.this))));
 	}
 
 	public void addBlocksFromXML(String xml) {
@@ -231,21 +226,6 @@ public class BlocklyPanel extends JFXPanel {
 					"Blockly.Xml.appendDomToWorkspace(Blockly.Xml.textToDom('<xml>" + cleanXML.substring(index)
 							+ "'), workspace)");
 		}
-	}
-
-	public void setXML(String xml) {
-		this.currentXML = xml;
-		executeJavaScriptSynchronously(
-				"Blockly.Xml.domToWorkspace(Blockly.Xml.textToDom('" + escapeXML(xml) + "'), workspace)");
-		executeJavaScriptSynchronously("workspace.clearUndo()");
-	}
-
-	public void clearWorkspace() {
-		executeJavaScriptSynchronously("workspace.clear()");
-	}
-
-	public void triggerEventFunction() {
-		executeJavaScriptSynchronously("blocklyEventFunction()");
 	}
 
 	public void addGlobalVariable(String name, String type) {

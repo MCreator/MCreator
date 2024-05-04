@@ -307,12 +307,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		rewardRecipes.setListElements(achievement.rewardRecipes.stream().map(NonMappableElement::new).toList());
 		rewardXP.setValue(achievement.rewardXP);
 
-		blocklyPanel.setXMLDataOnly(achievement.triggerxml);
-		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.clearWorkspace();
-			blocklyPanel.setXML(achievement.triggerxml);
-			blocklyPanel.triggerEventFunction();
-		});
+		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(achievement.triggerxml));
 	}
 
 	@Override public Achievement getElementFromGUI() {

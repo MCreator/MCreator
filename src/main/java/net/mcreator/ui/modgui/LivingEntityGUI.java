@@ -1110,12 +1110,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		if (model != null && model.getType() != null && model.getReadableName() != null)
 			mobModel.setSelectedItem(model);
 
-		blocklyPanel.setXMLDataOnly(livingEntity.aixml);
-		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.clearWorkspace();
-			blocklyPanel.setXML(livingEntity.aixml);
-			blocklyPanel.triggerEventFunction();
-		});
+		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(livingEntity.aixml));
 
 		enableOrDisableFields();
 

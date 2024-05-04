@@ -615,13 +615,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	}
 
 	@Override public void openInEditingMode(net.mcreator.element.types.Procedure procedure) {
-		blocklyPanel.setXMLDataOnly(procedure.procedurexml);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(procedure.procedurexml);
+
 			localVars.removeAllElements();
 			blocklyPanel.getLocalVariablesList().forEach(localVars::addElement);
-			blocklyPanel.triggerEventFunction();
 		});
 	}
 

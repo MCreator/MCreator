@@ -161,12 +161,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		type.setSelectedItem(command.type);
 		permissionLevel.setSelectedItem(command.permissionLevel);
 
-		blocklyPanel.setXMLDataOnly(command.argsxml);
-		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.clearWorkspace();
-			blocklyPanel.setXML(command.argsxml);
-			blocklyPanel.triggerEventFunction();
-		});
+		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(command.argsxml));
 	}
 
 	@Override public Command getElementFromGUI() {
