@@ -33,6 +33,7 @@ import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.DynamicContainer;
 import org.junit.jupiter.api.DynamicTest;
 import org.junit.jupiter.api.TestFactory;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -41,6 +42,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -56,7 +58,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 	private static final Logger LOG = LogManager.getLogger("Generator Test");
 
-	public @TestFactory Stream<DynamicTest> testGenerators() {
+	public @TestFactory Stream<DynamicContainer> testGenerators() {
 		long rgenseed = System.currentTimeMillis();
 		Random random = new Random(rgenseed);
 		LOG.info("Random number generator seed: " + rgenseed);
@@ -79,33 +81,39 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 		return fileNamesSorted.stream().map(generatorFile -> {
 			final String generator = generatorFile.replace("/generator.yaml", "");
-			return DynamicTest.dynamicTest("Test generator: " + generator, () -> {
-				LOG.info("================");
-				LOG.info("TESTING GENERATOR " + generator);
+			List<DynamicTest> tests = new ArrayList<>();
 
-				// create temporary directory
-				File workspaceDir = Files.createTempDirectory("mcreator_test_workspace").toFile();
+			LOG.info("================");
+			LOG.info("TESTING GENERATOR " + generator);
 
-				// we create a new workspace
-				WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
-				workspaceSettings.setVersion("1.0.0");
-				workspaceSettings.setDescription("Test mod");
-				workspaceSettings.setAuthor("Unit tests");
-				workspaceSettings.setLicense("GPL 3.0");
-				workspaceSettings.setWebsiteURL("https://mcreator.net/");
-				workspaceSettings.setUpdateURL("https://mcreator.net/");
-				workspaceSettings.setModPicture("example");
-				workspaceSettings.setModName("Test mod");
-				workspaceSettings.setCurrentGenerator(generator);
-				Workspace workspace = Workspace.createWorkspace(new File(workspaceDir, "test_mod.mcreator"),
-						workspaceSettings);
+			// create temporary directory
+			final File workspaceDir;
+			try {
+				workspaceDir = Files.createTempDirectory("mcreator_test_workspace").toFile();
+			} catch (IOException e) {
+				fail("Failed to create temporary directory for workspace", e);
+				throw new RuntimeException(e);
+			}
 
-				LOG.info("[" + generator + "] ----- Test workspace folder: " + workspace.getFolderManager()
-						.getWorkspaceFolder());
+			// we create a new workspace
+			WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
+			workspaceSettings.setVersion("1.0.0");
+			workspaceSettings.setDescription("Test mod");
+			workspaceSettings.setAuthor("Unit tests");
+			workspaceSettings.setLicense("GPL 3.0");
+			workspaceSettings.setWebsiteURL("https://mcreator.net/");
+			workspaceSettings.setUpdateURL("https://mcreator.net/");
+			workspaceSettings.setModPicture("example");
+			workspaceSettings.setModName("Test mod");
+			workspaceSettings.setCurrentGenerator(generator);
+			Workspace workspace = Workspace.createWorkspace(new File(workspaceDir, "test_mod.mcreator"),
+					workspaceSettings);
 
-				TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
+			LOG.info("[" + generator + "] Test workspace folder: " + workspace.getFolderManager().getWorkspaceFolder());
 
-				LOG.info("[" + generator + "] ----- Setting up workspace base for selected generator");
+			TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
+
+			tests.add(DynamicTest.dynamicTest("Workspace setup", () -> {
 				WorkspaceGeneratorSetup.setupWorkspaceBase(workspace);
 
 				if (workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
@@ -124,57 +132,45 @@ import static org.junit.jupiter.api.Assertions.fail;
 							});
 					latch.await();
 				}
-
-				LOG.info("[" + generator + "] ----- Testing base generation");
-				assertTrue(workspace.getGenerator().generateBase());
-
-				LOG.info("[" + generator + "] ----- Testing resource setup tasks");
-				workspace.getGenerator().runResourceSetupTasks();
-
-				LOG.info("[" + generator + "] ----- Preparing and generating sample mod elements");
-				GTSampleElements.provideAndGenerateSampleElements(random, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing mod elements generation");
-				GTModElements.runTest(LOG, generator, random, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing procedure triggers");
-				GTProcedureTriggers.runTest(LOG, generator, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing procedure blocks");
-				GTProcedureBlocks.runTest(LOG, generator, random, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing command argument blocks");
-				GTCommandArgBlocks.runTest(LOG, generator, random, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing feature blocks");
-				GTFeatureBlocks.runTest(LOG, generator, random, workspace);
-
-				LOG.info("[" + generator + "] ----- Testing AI task blocks");
-				GTAITaskBlocks.runTest(LOG, generator, random, workspace);
-
-				LOG.info("[" + generator + "] ----- Re-generating base to include generated mod elements");
-				assertTrue(workspace.getGenerator().generateBase());
-
-				LOG.info("[" + generator + "] ----- Reformatting the code and organising the imports");
+			}));
+			tests.add(DynamicTest.dynamicTest("Base generation",
+					() -> assertTrue(workspace.getGenerator().generateBase())));
+			tests.add(DynamicTest.dynamicTest("Resource setup tasks",
+					() -> workspace.getGenerator().runResourceSetupTasks()));
+			tests.add(DynamicTest.dynamicTest("Preparing and generating sample mod elements",
+					() -> GTSampleElements.provideAndGenerateSampleElements(random, workspace)));
+			tests.add(DynamicTest.dynamicTest("Testing mod elements generation",
+					() -> GTModElements.runTest(LOG, generator, random, workspace)));
+			tests.add(DynamicTest.dynamicTest("Testing procedure triggers",
+					() -> GTProcedureTriggers.runTest(LOG, generator, workspace)));
+			tests.add(DynamicTest.dynamicTest("Testing procedure blocks",
+					() -> GTProcedureBlocks.runTest(LOG, generator, random, workspace)));
+			tests.add(DynamicTest.dynamicTest("Testing command argument blocks",
+					() -> GTCommandArgBlocks.runTest(LOG, generator, random, workspace)));
+			tests.add(DynamicTest.dynamicTest("Testing feature blocks",
+					() -> GTFeatureBlocks.runTest(LOG, generator, random, workspace)));
+			tests.add(DynamicTest.dynamicTest("Testing AI task blocks",
+					() -> GTAITaskBlocks.runTest(LOG, generator, random, workspace)));
+			tests.add(DynamicTest.dynamicTest("Re-generating base to include generated mod elements",
+					() -> assertTrue(workspace.getGenerator().generateBase())));
+			tests.add(DynamicTest.dynamicTest("Reformatting the code and organising the imports", () -> {
 				try (Stream<Path> entries = Files.walk(workspace.getWorkspaceFolder().toPath())) {
 					ClassWriter.formatAndOrganiseImportsForFiles(workspace,
 							entries.filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList()), null);
 				}
-
-				LOG.info("[" + generator + "] ----- Testing workspace build with mod elements");
-				GTBuild.runTest(LOG, generator, workspace); // This will verify Java files
-
-				// We also need to verify JSON files
-				LOG.info("[" + generator + "] ----- Verifying workspace JSON files");
-				verifyGeneratedJSON(workspace);
-
-				LOG.info("[" + generator + "] ----- Attempting to stop all Gradle daemons");
+			}));
+			// This will verify Java files
+			tests.add(DynamicTest.dynamicTest("Testing workspace build with mod elements",
+					() -> GTBuild.runTest(LOG, generator, workspace)));
+			// We also need to verify JSON files
+			tests.add(DynamicTest.dynamicTest("Verifying workspace JSON files", () -> verifyGeneratedJSON(workspace)));
+			tests.add(DynamicTest.dynamicTest("Stop Gradle and close workspace", () -> {
 				GradleDaemonUtils.stopAllDaemons(workspace);
-
 				workspace.close();
-
 				FileIO.deleteDir(workspaceDir);
-			});
+			}));
+
+			return DynamicContainer.dynamicContainer("Test generator: " + generator, tests);
 		});
 	}
 
