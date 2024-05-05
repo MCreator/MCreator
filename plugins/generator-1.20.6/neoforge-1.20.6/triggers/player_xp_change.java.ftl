@@ -1,18 +1,15 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onEntityAttacked(LivingAttackEvent event) {
+	@SubscribeEvent public static void onPlayerXPChange(PlayerXpEvent.XpChange event) {
 		if (event.getEntity() != null) {
 			<#assign dependenciesCode><#compress>
 				<@procedureDependenciesCode dependencies, {
 					"x": "event.getEntity().getX()",
 					"y": "event.getEntity().getY()",
 					"z": "event.getEntity().getZ()",
-					"amount": "event.getAmount()",
 					"world": "event.getEntity().level()",
 					"entity": "event.getEntity()",
-					"damagesource": "event.getSource()",
-					"sourceentity": "event.getSource().getEntity()",
-					"immediatesourceentity": "event.getSource().getDirectEntity()",
+					"amount": "event.getAmount()",
 					"event": "event"
 				}/>
 			</#compress></#assign>

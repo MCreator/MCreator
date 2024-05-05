@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onPickup(EntityItemPickupEvent event) {
+	@SubscribeEvent public static void onPlayerRespawned(PlayerEvent.PlayerRespawnEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getEntity().getX()",
@@ -8,7 +8,7 @@
 				"z": "event.getEntity().getZ()",
 				"world": "event.getEntity().level()",
 				"entity": "event.getEntity()",
-				"itemstack": "event.getItem().getItem()",
+				"endconquered": "event.isEndConquered()",
 				"event": "event"
 			}/>
 		</#compress></#assign>

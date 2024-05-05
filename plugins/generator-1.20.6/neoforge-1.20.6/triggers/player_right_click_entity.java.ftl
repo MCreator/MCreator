@@ -1,13 +1,16 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onCropGrowPre(BlockEvent.CropGrowEvent.Pre event) {
+	@SubscribeEvent public static void onRightClickEntity(PlayerInteractEvent.EntityInteract event) {
+		if (event.getHand() != event.getEntity().getUsedItemHand())
+			return;
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getPos().getX()",
 				"y": "event.getPos().getY()",
 				"z": "event.getPos().getZ()",
-				"blockstate": "event.getState()",
 				"world": "event.getLevel()",
+				"entity": "event.getTarget()",
+				"sourceentity": "event.getEntity()",
 				"event": "event"
 			}/>
 		</#compress></#assign>

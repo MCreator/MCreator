@@ -1,6 +1,6 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onChat(ServerChatEvent event) {
+	@SubscribeEvent public static void onGemDropped(ItemTossEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getPlayer().getX()",
@@ -8,7 +8,7 @@
 				"z": "event.getPlayer().getZ()",
 				"world": "event.getPlayer().level()",
 				"entity": "event.getPlayer()",
-				"text": "event.getRawText()",
+				"itemstack": "event.getEntity().getItem()",
 				"event": "event"
 			}/>
 		</#compress></#assign>

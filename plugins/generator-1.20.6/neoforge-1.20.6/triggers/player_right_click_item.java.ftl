@@ -1,14 +1,15 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onPickup(EntityItemPickupEvent event) {
+	@SubscribeEvent public static void onRightClickItem(PlayerInteractEvent.RightClickItem event) {
+		if (event.getHand() != event.getEntity().getUsedItemHand())
+			return;
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-				"x": "event.getEntity().getX()",
-				"y": "event.getEntity().getY()",
-				"z": "event.getEntity().getZ()",
-				"world": "event.getEntity().level()",
+				"x": "event.getPos().getX()",
+				"y": "event.getPos().getY()",
+				"z": "event.getPos().getZ()",
+				"world": "event.getLevel()",
 				"entity": "event.getEntity()",
-				"itemstack": "event.getItem().getItem()",
 				"event": "event"
 			}/>
 		</#compress></#assign>

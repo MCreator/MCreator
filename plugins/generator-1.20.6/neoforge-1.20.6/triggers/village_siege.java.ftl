@@ -1,14 +1,13 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onEntityTamed(AnimalTameEvent event) {
+	@SubscribeEvent public static void onVillageSiege(VillageSiegeEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
-				"x": "event.getAnimal().getX()",
-				"y": "event.getAnimal().getY()",
-				"z": "event.getAnimal().getZ()",
-				"world": "event.getAnimal().level()",
-				"entity": "event.getAnimal()",
-				"sourceentity": "event.getTamer()",
+				"x": "event.getAttemptedSpawnPos().x",
+				"y": "event.getAttemptedSpawnPos().y",
+				"z": "event.getAttemptedSpawnPos().z",
+				"world": "event.getLevel()",
+				"entity": "event.getPlayer()",
 				"event": "event"
 			}/>
 		</#compress></#assign>

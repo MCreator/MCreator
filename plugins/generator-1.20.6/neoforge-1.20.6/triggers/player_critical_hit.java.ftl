@@ -1,14 +1,16 @@
 <#include "procedures.java.ftl">
 @EventBusSubscriber public class ${name}Procedure {
-	@SubscribeEvent public static void onPickup(EntityItemPickupEvent event) {
+	@SubscribeEvent public static void onPlayerCriticalHit(CriticalHitEvent event) {
 		<#assign dependenciesCode><#compress>
 			<@procedureDependenciesCode dependencies, {
 				"x": "event.getEntity().getX()",
 				"y": "event.getEntity().getY()",
 				"z": "event.getEntity().getZ()",
 				"world": "event.getEntity().level()",
-				"entity": "event.getEntity()",
-				"itemstack": "event.getItem().getItem()",
+				"entity": "event.getTarget()",
+				"sourceentity": "event.getEntity()",
+				"damagemodifier": "event.getDamageModifier()",
+				"isvanillacritical": "event.isVanillaCritical()",
 				"event": "event"
 			}/>
 		</#compress></#assign>
