@@ -718,7 +718,7 @@ public class TestWorkspaceDataProvider {
 								.map(e -> new MItemBlock(modElement.getWorkspace(), e.getName())).toList());
 			}
 			structure.terrainAdaptation = getRandomString(random,
-					Arrays.asList("none", "beard_thin", "beard_box", "bury"));
+					Arrays.asList("none", "beard_thin", "beard_box", "bury", "encapsulate"));
 			structure.projection = getRandomString(random, Arrays.asList("rigid", "terrain_matching"));
 			structure.restrictionBiomes = new ArrayList<>();
 			structure.spacing = 14;
