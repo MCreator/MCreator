@@ -19,21 +19,23 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.element.GeneratableElement;
+import net.mcreator.element.parts.TabEntry;
 import net.mcreator.element.types.interfaces.ITabContainedElement;
+import net.mcreator.minecraft.DataListEntry;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.component.ReordarableListTransferHandler;
+import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.renderer.elementlist.SmallIconModListRender;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.image.ImageUtils;
 import net.mcreator.workspace.elements.ModElement;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ElementOrderEditor {
 
@@ -59,7 +61,9 @@ public class ElementOrderEditor {
 							return;
 						}
 
-						if (tabEditors.get(element.getCreativeTab().getUnmappedValue()) == null) {
+						TabEntry tab = element.getCreativeTab();
+
+						if (tabEditors.get(tab.getUnmappedValue()) == null) {
 							DefaultListModel<ModElement> model = new DefaultListModel<>() {
 								@Override public void add(int idx, ModElement element) {
 									super.add(idx, element);
@@ -75,11 +79,24 @@ public class ElementOrderEditor {
 							list.setBackground(Theme.current().getAltBackgroundColor());
 
 							list.setCellRenderer(new SmallIconModListRender(false));
-							tabs.addTab(element.getCreativeTab().getUnmappedValue(), new JScrollPane(list));
 
-							tabEditors.put(element.getCreativeTab().getUnmappedValue(), model);
+							Optional<DataListEntry> tabEntry = tab.getDataListEntry();
+							if (tabEntry.isPresent()) {
+								tabs.addTab(tabEntry.get().getReadableName(), new ImageIcon(ImageUtils.resizeAA(
+												BlockItemIcons.getIconForItem(tabEntry.get().getTexture()).getImage(), 24)),
+										new JScrollPane(list));
+							} else {
+								Icon tabIcon = null;
+								if (tab.getUnmappedValue().startsWith("CUSTOM:"))
+									tabIcon = new ImageIcon(ImageUtils.resizeAA(
+											MCItem.getBlockIconBasedOnName(mcreator.getWorkspace(),
+													tab.getUnmappedValue()).getImage(), 24));
+								tabs.addTab(tab.getUnmappedValue(), tabIcon, new JScrollPane(list));
+							}
+
+							tabEditors.put(tab.getUnmappedValue(), model);
 						}
-						tabEditors.get(element.getCreativeTab().getUnmappedValue()).addElement(modElement);
+						tabEditors.get(tab.getUnmappedValue()).addElement(modElement);
 					}
 				});
 
@@ -108,11 +125,6 @@ public class ElementOrderEditor {
 				else
 					element.setSortID(currid++);
 			}
-
-			JOptionPane.showMessageDialog(mcreator, L10N.t("dialog.element_order.change_message"),
-					L10N.t("dialog.element_order.change_title"), JOptionPane.INFORMATION_MESSAGE);
-
-			RegenerateCodeAction.regenerateCode(mcreator, true, false);
 		}
 	}
 

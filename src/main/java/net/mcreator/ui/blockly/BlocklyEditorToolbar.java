@@ -242,6 +242,9 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				results.setVisible(false);
 
 				results = new JScrollablePopupMenu();
+				results.setBackground(Theme.current().getBackgroundColor());
+				results.setBorder(BorderFactory.createEmptyBorder());
+				results.putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
 				results.setMaximumVisibleRows(20);
 
 				for (ToolboxBlock block : filtered) {
@@ -261,7 +264,7 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 				}
 
 				results.setFocusable(false);
-				results.show(search, 0, 23);
+				results.show(search, 0, 24);
 			} else {
 				results.setVisible(false);
 			}

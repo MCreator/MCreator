@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!--
+  - MCreator (https://mcreator.net/)
+  - Copyright (C) 2012-2020, Pylo
+  - Copyright (C) 2020-2024, Pylo, opensource contributors
+  -
+  - This program is free software: you can redistribute it and/or modify
+  - it under the terms of the GNU General Public License as published by
+  - the Free Software Foundation, either version 3 of the License, or
+  - (at your option) any later version.
+  -
+  - This program is distributed in the hope that it will be useful,
+  - but WITHOUT ANY WARRANTY; without even the implied warranty of
+  - MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  - GNU General Public License for more details.
+  -
+  - You should have received a copy of the GNU General Public License
+  - along with this program.  If not, see <https://www.gnu.org/licenses/>.
+  -->
+
+<svg
+   width="18"
+   height="18"
+   version="1.1"
+   viewBox="0 0 4.7625 4.7625"
+   id="svg2"
+   sodipodi:docname="add_new.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="namedview2"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:showpageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:deskcolor="#505050"
+     inkscape:zoom="22.583333"
+     inkscape:cx="-1.5276753"
+     inkscape:cy="8.7896679"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg2" />
+  <g
+     stroke="#93c54b"
+     stroke-width=".52917"
+     id="g2"
+     inkscape:label="plus">
+    <path
+       d="m0.52917 2.3812h3.7042"
+       id="path1" />
+    <path
+       d="m2.3812 0.52917v3.7042"
+       id="path2" />
+  </g>
+  <g
+     id="g3"
+     inkscape:label="star"
+     transform="translate(0.10103675,-0.1076968)">
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.211667;stroke-dasharray:none;stroke-opacity:1"
+       d="M 3.7041667,1.0583333 V 0.52916667"
+       id="path3"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.211667;stroke-dasharray:none;stroke-opacity:1"
+       d="M 3.7041667,1.0583333 4.2074341,0.89481181"
+       id="path3-6"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.211667;stroke-dasharray:none;stroke-opacity:1"
+       d="M 3.7041667,1.0583333 4.0152031,1.4864381"
+       id="path3-6-3"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.211667;stroke-dasharray:none;stroke-opacity:1"
+       d="M 3.7041667,1.0583333 3.3931303,1.4864382"
+       id="path3-6-33"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;fill-opacity:1;stroke:#ffffff;stroke-width:0.211667;stroke-dasharray:none;stroke-opacity:1"
+       d="M 3.7041667,1.0583333 3.2008991,0.8948118"
+       id="path3-6-33-4"
+       sodipodi:nodetypes="cc" />
+  </g>
+</svg>

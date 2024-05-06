@@ -60,8 +60,8 @@ public class JJigsawPoolsList extends JSingleEntriesList<JJigsawPool, Structure.
 
 	Validator newPoolNameValidator(VTextField nameField) {
 		return new UniqueNameValidator(L10N.t("elementgui.structuregen.jigsaw_pool_name_validator"), nameField::getText,
-				() -> entryList.stream().map(JJigsawPool::getPoolName), new RegistryNameValidator(nameField,
-				L10N.t("elementgui.structuregen.jigsaw_pool_name_validator")));
+				() -> entryList.stream().map(JJigsawPool::getPoolName),
+				new RegistryNameValidator(nameField, L10N.t("elementgui.structuregen.jigsaw_pool_name_validator")));
 	}
 
 	ModElement getModElement() {

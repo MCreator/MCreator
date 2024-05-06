@@ -302,9 +302,12 @@ public class TestWorkspaceDataProvider {
 
 		if (workspace.getFolderManager().getStructuresDir() != null) {
 			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test.nbt"));
-			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test1.nbt"));
-			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
-			FileIO.writeBytesToFile(new byte[0], new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
+			FileIO.writeBytesToFile(new byte[0],
+					new File(workspace.getFolderManager().getStructuresDir(), "test1.nbt"));
+			FileIO.writeBytesToFile(new byte[0],
+					new File(workspace.getFolderManager().getStructuresDir(), "test2.nbt"));
+			FileIO.writeBytesToFile(new byte[0],
+					new File(workspace.getFolderManager().getStructuresDir(), "test3.nbt"));
 		}
 	}
 
@@ -1891,7 +1894,7 @@ public class TestWorkspaceDataProvider {
 			recipe.smithingInputAdditionStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.smithingInputTemplateStack = new MItemBlock(modElement.getWorkspace(),
-					_true ? getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName() : "");
+					getRandomMCItem(random, blocksAndItemsAndTagsNoAir).getName());
 			recipe.smithingReturnStack = new MItemBlock(modElement.getWorkspace(),
 					getRandomMCItem(random, blocksAndItemsNoAir).getName());
 		}

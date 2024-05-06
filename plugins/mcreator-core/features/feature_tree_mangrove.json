@@ -1,0 +1,141 @@
+{
+  "args0": [
+    {
+      "type": "field_dropdown",
+      "name": "type",
+      "options": [
+        [
+          "mangrove",
+          "mangrove"
+        ],
+        [
+          "tall mangrove",
+          "tall mangrove"
+        ]
+      ]
+    },
+    {
+      "type": "input_value",
+      "name": "dirt",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "trunk",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "foliage_density",
+      "value": 70,
+      "min": 0,
+      "max": 256,
+      "precision": 1
+    },
+    {
+      "type": "input_value",
+      "name": "foliage",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "input_value",
+      "name": "root_placer",
+      "check": "RootPlacer"
+    },
+    {
+      "type": "input_value",
+      "name": "can_grow_through",
+      "check": "BlockHolderSet"
+    },
+    {
+      "type": "field_number",
+      "name": "base_height",
+      "value": 2,
+      "min": 0,
+      "max": 32,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "height_variation_a",
+      "value": 1,
+      "min": 0,
+      "max": 24,
+      "precision": 1
+    },
+    {
+      "type": "field_number",
+      "name": "height_variation_b",
+      "value": 4,
+      "min": 0,
+      "max": 24,
+      "precision": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "branch_per_log_probability",
+      "value": 0.5,
+      "min": 0,
+      "max": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "force_dirt"
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_checkbox",
+      "name": "ignore_vines",
+      "checked": true
+    },
+    {
+      "type": "input_dummy"
+    }
+  ],
+  "mutator": "tree_decorator_mutator",
+  "output": "Feature",
+  "colour": 0,
+  "extensions": [
+    "add_image_to_bsp_inputs"
+  ],
+  "mcreator": {
+    "toolbox_id": "treefeatures",
+    "toolbox_init": [
+      "<mutation inputs=\"0\"></mutation>",
+      "<value name=\"dirt\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"trunk\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"foliage\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"can_grow_through\"><block type=\"block_holderset_tag\"><field name=\"tag\">minecraft:replaceable_by_trees</field></block></value>",
+      "<value name=\"root_placer\"><block type=\"root_placer_none\"></block></value>",
+      "~<value name=\"decorator0\"><block type=\"tree_decorator_trunk_vine\"></block></value>"
+    ],
+    "inputs": [
+      "dirt",
+      "trunk",
+      "foliage",
+      "root_placer",
+      "can_grow_through"
+    ],
+    "fields": [
+      "type",
+      "foliage_density",
+      "base_height",
+      "height_variation_a",
+      "height_variation_b",
+      "branch_per_log_probability",
+      "force_dirt",
+      "ignore_vines"
+    ],
+    "repeating_inputs": [
+      "decorator"
+    ]
+  }
+}

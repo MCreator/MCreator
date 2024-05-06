@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.modgui;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.ModElementTypeLoader;
 import net.mcreator.generator.GeneratorStats;
@@ -37,6 +38,7 @@ public class ModTypeDropdown extends JPopupMenu {
 
 	public ModTypeDropdown(MCreator mcreator) {
 		setBorder(BorderFactory.createEmptyBorder());
+		putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
 
 		List<ModElementType<?>> types = ModElementTypeLoader.REGISTRY.stream()
 				.sorted(Comparator.comparing(ModElementType::getReadableName))

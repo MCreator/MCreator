@@ -1,6 +1,6 @@
 Questo è il livello di strumento richiesto per rompere questo blocco.
 
-* 0 è legno
+* 0 è legno/oro
 * 1 è la pietra
 * 2 è la ferro
 * 3 è diamante.

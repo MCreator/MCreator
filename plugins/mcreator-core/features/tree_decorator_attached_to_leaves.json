@@ -1,0 +1,81 @@
+{
+  "args0": [
+    {
+      "type": "input_value",
+      "name": "provider",
+      "check": "BlockStateProvider"
+    },
+    {
+      "type": "field_number",
+      "name": "probability",
+      "value": 0.14,
+      "min": 0,
+      "max": 1
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "exclusion_radius_xz",
+      "value": 1,
+      "min": 0,
+      "max": 16
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "exclusion_radius_y",
+      "value": 0,
+      "min": 0,
+      "max": 16
+    },
+    {
+      "type": "input_dummy"
+    },
+    {
+      "type": "field_number",
+      "name": "required_empty_blocks",
+      "value": 2,
+      "min": 1,
+      "max": 16
+    },
+    {
+      "type": "input_dummy"
+    }
+  ],
+  "output": "TreeDecorator",
+  "colour": 320,
+  "extensions": [
+    "add_image_to_bsp_inputs"
+  ],
+  "mutator": "direction_list_mutator",
+  "mcreator": {
+    "toolbox_id": "treedecorators",
+    "toolbox_init": [
+      "<mutation inputs=\"1\"></mutation>",
+      "<value name=\"provider\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+    ],
+    "fields": [
+      "probability",
+      "exclusion_radius_xz",
+      "exclusion_radius_y",
+      "required_empty_blocks"
+    ],
+    "inputs": [
+      "provider"
+    ],
+    "repeating_fields": [
+      {
+        "name": "direction",
+        "field_definition": {
+          "testCount": 1,
+          "type": "field_data_list_dropdown",
+          "datalist": "direction"
+        }
+      }
+    ]
+  }
+}

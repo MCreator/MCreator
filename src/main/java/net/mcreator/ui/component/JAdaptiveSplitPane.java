@@ -33,7 +33,8 @@ public class JAdaptiveSplitPane extends JPanel {
 
 	private final double dividerLocation;
 
-	public JAdaptiveSplitPane(int orientation, Component leftComponent, Component rightComponent, double dividerLocation) {
+	public JAdaptiveSplitPane(int orientation, Component leftComponent, Component rightComponent,
+			double dividerLocation) {
 		setLayout(new BorderLayout(0, 0));
 		setOpaque(false);
 		setBorder(null);
