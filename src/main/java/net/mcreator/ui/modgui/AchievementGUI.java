@@ -222,8 +222,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
-			blocklyPanel.getJSBridge().setJavaScriptEventListener(
-					() -> new Thread(AchievementGUI.this::regenerateTrigger, "TriggerRegenerate").start());
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(AchievementGUI.this::regenerateTrigger, "TriggerRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(
 						"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
@@ -307,12 +307,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		rewardRecipes.setListElements(achievement.rewardRecipes.stream().map(NonMappableElement::new).toList());
 		rewardXP.setValue(achievement.rewardXP);
 
-		blocklyPanel.setXMLDataOnly(achievement.triggerxml);
-		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.clearWorkspace();
-			blocklyPanel.setXML(achievement.triggerxml);
-			blocklyPanel.triggerEventFunction();
-		});
+		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(achievement.triggerxml));
 	}
 
 	@Override public Achievement getElementFromGUI() {
