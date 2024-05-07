@@ -6,7 +6,7 @@
   "max_distance_from_center": ${data.maxDistanceFromCenter},
   "spawn_overrides": {},
   "step": "${generator.map(data.generationStep, "generationsteps")}",
-  "terrain_adaptation": "${data.terrainAdaptation?replace("encapsulate", "none")}",
+  "terrain_adaptation": "${data.terrainAdaptation}",
   "start_height": {
       "absolute": 0
   },
