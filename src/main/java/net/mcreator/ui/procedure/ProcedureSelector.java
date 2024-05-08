@@ -24,6 +24,7 @@ import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -208,7 +209,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			actionLabel.setText(L10N.t("procedure.common.do"));
 			procwrap = PanelUtils.westAndCenterElement(actionLabel, procedures);
 		} else {
-			procwrap = procedures;
+			procwrap = PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), procedures);
 		}
 
 		if (allowInlineEditor) {
