@@ -85,7 +85,7 @@ public class AstTreeCellRendererCustom extends DefaultTreeCellRenderer {
 		case null, default -> {
 			try {
 				Class<?> treeNodeClass = Class.forName("org.fife.rsta.ac.java.tree.JavaTreeNode");
-				Method text = treeNodeClass.getMethod("getText" , boolean.class);
+				Method text = treeNodeClass.getMethod("getText", boolean.class);
 				Method icon = treeNodeClass.getMethod("getIcon");
 				icon.setAccessible(true);
 				text.setAccessible(true);

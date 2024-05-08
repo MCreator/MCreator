@@ -502,9 +502,8 @@ public class Generator implements IGenerator, Closeable {
 					List<?> items = switch (listData) {
 						case Map<?, ?> listMap -> List.copyOf(listMap.entrySet());
 						case Collection<?> collection -> List.copyOf(collection);
-						case Iterable<?> iterable ->
-							// fallback for the worst case
-								List.copyOf(StreamSupport.stream(iterable.spliterator(), false).toList());
+						case Iterable<?> iterable -> List.copyOf(StreamSupport.stream(iterable.spliterator(), false)
+								.toList()); // fallback for the worst case
 						case null, default -> List.of();
 					};
 
