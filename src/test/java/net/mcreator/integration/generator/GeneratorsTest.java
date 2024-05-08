@@ -19,6 +19,8 @@
 package net.mcreator.integration.generator;
 
 import com.google.gson.Gson;
+import net.mcreator.element.ModElementType;
+import net.mcreator.generator.GeneratorStats;
 import net.mcreator.generator.setup.WorkspaceGeneratorSetup;
 import net.mcreator.gradle.GradleDaemonUtils;
 import net.mcreator.gradle.GradleErrorCodes;
@@ -133,38 +135,58 @@ import static org.junit.jupiter.api.Assertions.fail;
 					latch.await();
 				}
 			}));
+
 			tests.add(DynamicTest.dynamicTest(generator + " - Base generation",
 					() -> assertTrue(workspace.getGenerator().generateBase())));
 			tests.add(DynamicTest.dynamicTest(generator + " - Resource setup tasks",
 					() -> workspace.getGenerator().runResourceSetupTasks()));
+
 			tests.add(DynamicTest.dynamicTest(generator + " - Preparing and generating sample mod elements",
 					() -> GTSampleElements.provideAndGenerateSampleElements(random, workspace)));
 			tests.add(DynamicTest.dynamicTest(generator + " - Testing mod elements generation",
 					() -> GTModElements.runTest(LOG, generator, random, workspace)));
-			tests.add(DynamicTest.dynamicTest(generator + " - Testing procedure triggers",
-					() -> GTProcedureTriggers.runTest(LOG, generator, workspace)));
-			tests.add(DynamicTest.dynamicTest(generator + " - Testing procedure blocks",
-					() -> GTProcedureBlocks.runTest(LOG, generator, random, workspace)));
-			tests.add(DynamicTest.dynamicTest(generator + " - Testing command argument blocks",
-					() -> GTCommandArgBlocks.runTest(LOG, generator, random, workspace)));
-			tests.add(DynamicTest.dynamicTest(generator + " - Testing feature blocks",
-					() -> GTFeatureBlocks.runTest(LOG, generator, random, workspace)));
-			tests.add(DynamicTest.dynamicTest(generator + " - Testing AI task blocks",
-					() -> GTAITaskBlocks.runTest(LOG, generator, random, workspace)));
+
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
+					!= GeneratorStats.CoverageStatus.NONE) {
+				tests.add(DynamicTest.dynamicTest(generator + " - Testing procedure triggers",
+						() -> GTProcedureTriggers.runTest(LOG, generator, workspace)));
+				tests.add(DynamicTest.dynamicTest(generator + " - Testing procedure blocks",
+						() -> GTProcedureBlocks.runTest(LOG, generator, random, workspace)));
+			}
+
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.COMMAND)
+					!= GeneratorStats.CoverageStatus.NONE)
+				tests.add(DynamicTest.dynamicTest(generator + " - Testing command argument blocks",
+						() -> GTCommandArgBlocks.runTest(LOG, generator, random, workspace)));
+
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.FEATURE)
+					!= GeneratorStats.CoverageStatus.NONE)
+				tests.add(DynamicTest.dynamicTest(generator + " - Testing feature blocks",
+						() -> GTFeatureBlocks.runTest(LOG, generator, random, workspace)));
+
+			if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LIVINGENTITY)
+					!= GeneratorStats.CoverageStatus.NONE)
+				tests.add(DynamicTest.dynamicTest(generator + " - Testing AI task blocks",
+						() -> GTAITaskBlocks.runTest(LOG, generator, random, workspace)));
+
 			tests.add(DynamicTest.dynamicTest(generator + " - Re-generating base to include generated mod elements",
 					() -> assertTrue(workspace.getGenerator().generateBase())));
+
 			tests.add(DynamicTest.dynamicTest(generator + " - Reformatting the code and organising the imports", () -> {
 				try (Stream<Path> entries = Files.walk(workspace.getWorkspaceFolder().toPath())) {
 					ClassWriter.formatAndOrganiseImportsForFiles(workspace,
 							entries.filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList()), null);
 				}
 			}));
-			// This will verify Java files
+
+			// Verify Java files
 			tests.add(DynamicTest.dynamicTest(generator + " - Testing workspace build with mod elements",
 					() -> GTBuild.runTest(LOG, generator, workspace)));
-			// We also need to verify JSON files
+
+			// Verify JSON files
 			tests.add(DynamicTest.dynamicTest(generator + " - Verifying workspace JSON files",
 					() -> verifyGeneratedJSON(workspace)));
+
 			tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
 				GradleDaemonUtils.stopAllDaemons(workspace);
 				workspace.close();

@@ -42,12 +42,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTProcedureBlocks {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
-		// silently skip if procedures are not supported by this generator
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
-				== GeneratorStats.CoverageStatus.NONE) {
-			return;
-		}
-
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.PROCEDURE);
 
 		for (ToolboxBlock procedureBlock : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.PROCEDURE)
