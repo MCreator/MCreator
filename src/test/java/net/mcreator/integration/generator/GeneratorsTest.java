@@ -113,7 +113,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 			TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
 
-			tests.add(DynamicTest.dynamicTest("Workspace setup", () -> {
+			tests.add(DynamicTest.dynamicTest(generator + " - Workspace setup", () -> {
 				WorkspaceGeneratorSetup.setupWorkspaceBase(workspace);
 
 				if (workspace.getGeneratorConfiguration().getGradleTaskFor("setup_task") != null) {
@@ -133,38 +133,39 @@ import static org.junit.jupiter.api.Assertions.fail;
 					latch.await();
 				}
 			}));
-			tests.add(DynamicTest.dynamicTest("Base generation",
+			tests.add(DynamicTest.dynamicTest(generator + " - Base generation",
 					() -> assertTrue(workspace.getGenerator().generateBase())));
-			tests.add(DynamicTest.dynamicTest("Resource setup tasks",
+			tests.add(DynamicTest.dynamicTest(generator + " - Resource setup tasks",
 					() -> workspace.getGenerator().runResourceSetupTasks()));
-			tests.add(DynamicTest.dynamicTest("Preparing and generating sample mod elements",
+			tests.add(DynamicTest.dynamicTest(generator + " - Preparing and generating sample mod elements",
 					() -> GTSampleElements.provideAndGenerateSampleElements(random, workspace)));
-			tests.add(DynamicTest.dynamicTest("Testing mod elements generation",
+			tests.add(DynamicTest.dynamicTest(generator + " - Testing mod elements generation",
 					() -> GTModElements.runTest(LOG, generator, random, workspace)));
-			tests.add(DynamicTest.dynamicTest("Testing procedure triggers",
+			tests.add(DynamicTest.dynamicTest(generator + " - Testing procedure triggers",
 					() -> GTProcedureTriggers.runTest(LOG, generator, workspace)));
-			tests.add(DynamicTest.dynamicTest("Testing procedure blocks",
+			tests.add(DynamicTest.dynamicTest(generator + " - Testing procedure blocks",
 					() -> GTProcedureBlocks.runTest(LOG, generator, random, workspace)));
-			tests.add(DynamicTest.dynamicTest("Testing command argument blocks",
+			tests.add(DynamicTest.dynamicTest(generator + " - Testing command argument blocks",
 					() -> GTCommandArgBlocks.runTest(LOG, generator, random, workspace)));
-			tests.add(DynamicTest.dynamicTest("Testing feature blocks",
+			tests.add(DynamicTest.dynamicTest(generator + " - Testing feature blocks",
 					() -> GTFeatureBlocks.runTest(LOG, generator, random, workspace)));
-			tests.add(DynamicTest.dynamicTest("Testing AI task blocks",
+			tests.add(DynamicTest.dynamicTest(generator + " - Testing AI task blocks",
 					() -> GTAITaskBlocks.runTest(LOG, generator, random, workspace)));
-			tests.add(DynamicTest.dynamicTest("Re-generating base to include generated mod elements",
+			tests.add(DynamicTest.dynamicTest(generator + " - Re-generating base to include generated mod elements",
 					() -> assertTrue(workspace.getGenerator().generateBase())));
-			tests.add(DynamicTest.dynamicTest("Reformatting the code and organising the imports", () -> {
+			tests.add(DynamicTest.dynamicTest(generator + " - Reformatting the code and organising the imports", () -> {
 				try (Stream<Path> entries = Files.walk(workspace.getWorkspaceFolder().toPath())) {
 					ClassWriter.formatAndOrganiseImportsForFiles(workspace,
 							entries.filter(Files::isRegularFile).map(Path::toFile).collect(Collectors.toList()), null);
 				}
 			}));
 			// This will verify Java files
-			tests.add(DynamicTest.dynamicTest("Testing workspace build with mod elements",
+			tests.add(DynamicTest.dynamicTest(generator + " - Testing workspace build with mod elements",
 					() -> GTBuild.runTest(LOG, generator, workspace)));
 			// We also need to verify JSON files
-			tests.add(DynamicTest.dynamicTest("Verifying workspace JSON files", () -> verifyGeneratedJSON(workspace)));
-			tests.add(DynamicTest.dynamicTest("Stop Gradle and close workspace", () -> {
+			tests.add(DynamicTest.dynamicTest(generator + " - Verifying workspace JSON files",
+					() -> verifyGeneratedJSON(workspace)));
+			tests.add(DynamicTest.dynamicTest(generator + " - Stop Gradle and close workspace", () -> {
 				GradleDaemonUtils.stopAllDaemons(workspace);
 				workspace.close();
 				FileIO.deleteDir(workspaceDir);
