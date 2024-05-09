@@ -22,7 +22,7 @@
     "toolbox_id": "features",
     "toolbox_init": [
       "<value name=\"height\"><block type=\"int_provider_constant\"><field name=\"value\">5</field></block></value>",
-      "<value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+      "<value name=\"block\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>"
     ],
     "inputs": [
       "height",

@@ -29,6 +29,7 @@ import net.mcreator.java.ClassFinder;
 import net.mcreator.java.DeclarationFinder;
 import net.mcreator.java.debug.JVMDebugClient;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SquareLoaderIcon;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -37,6 +38,7 @@ import net.mcreator.ui.ide.ProjectFileOpener;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
+import net.mcreator.util.DesktopUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -119,7 +121,12 @@ public class DebugPanel extends JPanel {
 		JLabel nomarkers = L10N.label("debug.no_markers");
 		nomarkers.setFont(loading.getFont().deriveFont(13f));
 		nomarkers.setForeground(Theme.current().getAltForegroundColor());
-		JComponent nomarkerwrap = PanelUtils.totalCenterInPanel(nomarkers);
+		JButton showHelp = new JButton(L10N.t("common.help"));
+		showHelp.addActionListener(
+				e -> DesktopUtils.browseSafe(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-use-debugger"));
+		showHelp.setIcon(UIRES.get("16px.info"));
+		JComponent nomarkerwrap = PanelUtils.totalCenterInPanel(
+				PanelUtils.northAndCenterElement(nomarkers, PanelUtils.centerInPanel(showHelp), 10, 10));
 		nomarkerwrap.setPreferredSize(new Dimension(475, 0));
 
 		markers.setOpaque(false);

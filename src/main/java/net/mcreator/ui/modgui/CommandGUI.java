@@ -99,8 +99,8 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.COMMAND);
-			blocklyPanel.getJSBridge().setJavaScriptEventListener(
-					() -> new Thread(CommandGUI.this::regenerateArgs, "CommandRegenerate").start());
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(CommandGUI.this::regenerateArgs, "CommandRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(Command.XML_BASE);
 			}
@@ -161,12 +161,7 @@ public class CommandGUI extends ModElementGUI<Command> implements IBlocklyPanelH
 		type.setSelectedItem(command.type);
 		permissionLevel.setSelectedItem(command.permissionLevel);
 
-		blocklyPanel.setXMLDataOnly(command.argsxml);
-		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.clearWorkspace();
-			blocklyPanel.setXML(command.argsxml);
-			blocklyPanel.triggerEventFunction();
-		});
+		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(command.argsxml));
 	}
 
 	@Override public Command getElementFromGUI() {

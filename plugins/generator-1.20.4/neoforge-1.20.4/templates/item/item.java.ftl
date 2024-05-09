@@ -149,13 +149,30 @@ public class ${name}Item extends Item {
 	<#if hasProcedure(data.onRightClickedInAir) || data.hasInventory() || (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)) || data.enableRanged>
 	@Override public InteractionResultHolder<ItemStack> use(Level world, Player entity, InteractionHand hand) {
 		<#if data.enableRanged>
-		InteractionResultHolder<ItemStack> ar = InteractionResultHolder.success(entity.getItemInHand(hand));
+		InteractionResultHolder<ItemStack> ar = InteractionResultHolder.fail(entity.getItemInHand(hand));
 		<#else>
 		InteractionResultHolder<ItemStack> ar = super.use(world, entity, hand);
 		</#if>
 
 		<#if (hasProcedure(data.onStoppedUsing) && (data.useDuration > 0)) || data.enableRanged>
-		entity.startUsingItem(hand);
+			<#if data.enableRanged>
+				<#if hasProcedure(data.rangedUseCondition)>
+				if (<@procedureCode data.rangedUseCondition, {
+					"x": "entity.getX()",
+					"y": "entity.getY()",
+					"z": "entity.getZ()",
+					"world": "world",
+					"entity": "entity",
+					"itemstack": "ar.getObject()"
+				}, false/>)
+				</#if>
+				if (entity.getAbilities().instabuild || findAmmo(entity) != ItemStack.EMPTY) {
+					ar = InteractionResultHolder.success(entity.getItemInHand(hand));
+					entity.startUsingItem(hand);
+				}
+			<#else>
+				entity.startUsingItem(hand);
+			</#if>
 		</#if>
 
 		<#if data.hasInventory()>
@@ -225,7 +242,7 @@ public class ${name}Item extends Item {
 
 	<@onItemUsedOnBlock data.onRightClickedOnBlock/>
 
-	<@onEntityHitWith data.onEntityHitWith/>
+	<@onEntityHitWith data.onEntityHitWith, (data.damageCount != 0 && data.enableMeleeDamage), 1/>
 
 	<@onEntitySwing data.onEntitySwing/>
 
@@ -250,16 +267,7 @@ public class ${name}Item extends Item {
 			</#if>
 			<#if data.enableRanged && !data.shootConstantly>
 				if (!world.isClientSide() && entity instanceof ServerPlayer player) {
-					<#if hasProcedure(data.rangedUseCondition)>
-						double x = entity.getX();
-						double y = entity.getY();
-						double z = entity.getZ();
-						if (<@procedureOBJToConditionCode data.rangedUseCondition/>) {
-							<@arrowShootCode/>
-						}
-					<#else>
-						<@arrowShootCode/>
-					</#if>
+					<@arrowShootCode/>
 				}
 			</#if>
 		}
@@ -268,36 +276,32 @@ public class ${name}Item extends Item {
 	<#if data.enableRanged && data.shootConstantly>
 		@Override public void onUseTick(Level world, LivingEntity entity, ItemStack itemstack, int count) {
 			if (!world.isClientSide() && entity instanceof ServerPlayer player) {
-				<#if hasProcedure(data.rangedUseCondition)>
-					double x = entity.getX();
-					double y = entity.getY();
-					double z = entity.getZ();
-					if (<@procedureOBJToConditionCode data.rangedUseCondition/>) {
-						<@arrowShootCode/>
-						entity.releaseUsingItem();
-					}
-				<#else>
-					<@arrowShootCode/>
-					entity.releaseUsingItem();
-				</#if>
+				<@arrowShootCode/>
+				entity.releaseUsingItem();
 			}
 		}
+	</#if>
+
+	<#if data.enableRanged>
+	private ItemStack findAmmo(Player player) {
+		ItemStack stack = ProjectileWeaponItem.getHeldProjectile(player, e -> e.getItem() == ${generator.map(projectile, "projectiles", 2)});
+		if(stack == ItemStack.EMPTY) {
+			for (int i = 0; i < player.getInventory().items.size(); i++) {
+				ItemStack teststack = player.getInventory().items.get(i);
+				if(teststack != null && teststack.getItem() == ${generator.map(projectile, "projectiles", 2)}) {
+					stack = teststack;
+					break;
+				}
+			}
+		}
+		return stack;
+	}
 	</#if>
 }
 
 <#macro arrowShootCode>
 	<#assign projectile = data.projectile.getUnmappedValue()>
-	ItemStack stack = ProjectileWeaponItem.getHeldProjectile(entity, e -> e.getItem() == ${generator.map(projectile, "projectiles", 2)});
-	if(stack == ItemStack.EMPTY) {
-		for (int i = 0; i < player.getInventory().items.size(); i++) {
-			ItemStack teststack = player.getInventory().items.get(i);
-			if(teststack != null && teststack.getItem() == ${generator.map(projectile, "projectiles", 2)}) {
-				stack = teststack;
-				break;
-			}
-		}
-	}
-
+	ItemStack stack = findAmmo(player);
 	if (player.getAbilities().instabuild || stack != ItemStack.EMPTY) {
 		<#assign projectileClass = generator.map(projectile, "projectiles", 0)>
 		<#if projectile.startsWith("CUSTOM:")>
@@ -310,19 +314,21 @@ public class ${name}Item extends Item {
 				.get(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
 		</#if>
 
+		<#if data.damageCount != 0>
 		itemstack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(entity.getUsedItemHand()));
+		</#if>
 
 		if (player.getAbilities().instabuild) {
 			projectile.pickup = AbstractArrow.Pickup.CREATIVE_ONLY;
 		} else {
-			if (stack.isDamageableItem()){
+			if (stack.isDamageableItem()) {
 				if (stack.hurt(1, world.getRandom(), player)) {
 					stack.shrink(1);
 					stack.setDamageValue(0);
 					if (stack.isEmpty())
 						player.getInventory().removeItem(stack);
 				}
-			} else{
+			} else {
 				stack.shrink(1);
 				if (stack.isEmpty())
 				   player.getInventory().removeItem(stack);

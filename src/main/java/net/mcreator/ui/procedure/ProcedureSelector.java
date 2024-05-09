@@ -19,10 +19,12 @@
 package net.mcreator.ui.procedure;
 
 import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.ui.FlatLineBorder;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -30,7 +32,6 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
@@ -142,11 +143,11 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			}
 		});
 
-		setBackground(Theme.current().getBackgroundColor());
-		setBorder(BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()));
+		setBackground(UIManager.getColor("TextField.background"));
+		setBorder(new FlatLineBorder(new Insets(0, 0, 0, 0), UIManager.getColor("Component.borderColor")));
 
 		if (returnType != null) {
-			setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
+			setBorder(new FlatLineBorder(new Insets(0, 0, 0, 0), returnType.getBlocklyColor()));
 
 			if (returnType == VariableTypeLoader.BuiltInTypes.LOGIC)
 				defaultName = L10N.t("condition.common.true");
@@ -208,7 +209,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			actionLabel.setText(L10N.t("procedure.common.do"));
 			procwrap = PanelUtils.westAndCenterElement(actionLabel, procedures);
 		} else {
-			procwrap = procedures;
+			procwrap = PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), procedures);
 		}
 
 		if (allowInlineEditor) {
@@ -313,13 +314,24 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 		if (returnType != null)
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(1, 0, 1, 1, Theme.current().getAltBackgroundColor()),
+					new FlatLineBorder(new Insets(0, 0, 0, 0), UIManager.getColor("Component.borderColor")),
 					BorderFactory.createMatteBorder(0, 5, 0, 0, returnType.getBlocklyColor())));
 
 		return (ProcedureSelector) retval;
 	}
 
-	@Override protected ProcedureEntry updateDepsList(boolean smallIcons) {
+	@Override ProcedureEntry updateDepsList(boolean smallIcons) {
 		return super.updateDepsList(inline);
 	}
+
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+
+		if (enabled) {
+			setBackground(UIManager.getColor("TextField.background"));
+		} else {
+			setBackground(UIManager.getColor("TextField.disabledBackground"));
+		}
+	}
+
 }

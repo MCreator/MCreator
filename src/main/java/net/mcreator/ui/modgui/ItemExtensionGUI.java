@@ -41,6 +41,7 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
+import java.awt.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -119,6 +120,8 @@ public class ItemExtensionGUI extends ModElementGUI<ItemExtension> {
 		hasDispenseBehavior.setOpaque(false);
 		hasDispenseBehavior.setSelected(false);
 		hasDispenseBehavior.addActionListener(e -> updateDispenseElements());
+
+		dispenseResultItemstack.setPreferredSize(new Dimension(300, 0));
 
 		JComponent dispenserBehaviourPanel = PanelUtils.gridElements(3, 1, 0, 2, canDispense, dispenseSuccessCondition,
 				dispenseResultItemstack);

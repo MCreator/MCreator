@@ -49,6 +49,7 @@ import net.mcreator.element.converter.v2023_4.*;
 import net.mcreator.element.converter.v2024_1.AdvancementTriggerInverter;
 import net.mcreator.element.converter.v2024_1.ProcedureCustomDamageRemover;
 import net.mcreator.element.converter.v2024_1.TagModElementConverter;
+import net.mcreator.element.converter.v2024_2.FeatureBlockstateSelectorConverter;
 import net.mcreator.element.converter.v2024_2.ItemsCreativeTabsConverter;
 
 import java.util.HashMap;
@@ -178,7 +179,8 @@ public class ConverterRegistry {
 		));
 		put(ModElementType.FEATURE, List.of(
 			new HugeFungusFeatureConverter(),
-			new FeatureDimensionRestrictionConverter()
+			new FeatureDimensionRestrictionConverter(),
+			new FeatureBlockstateSelectorConverter()
 		));
 		put(ModElementType.STRUCTURE, List.of(
 			new StructureToFeatureConverter(),

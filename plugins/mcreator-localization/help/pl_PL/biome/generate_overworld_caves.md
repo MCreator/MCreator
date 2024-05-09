@@ -1,0 +1,1 @@
+Zaznacz to pole, aby ten biom pojawiał się pod ziemią (w jaskiniach) w overworld.

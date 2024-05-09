@@ -110,9 +110,9 @@
     "toolbox_id": "treefeatures",
     "toolbox_init": [
       "<mutation inputs=\"0\"></mutation>",
-      "<value name=\"dirt\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"trunk\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"foliage\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"dirt\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
+      "<value name=\"trunk\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
+      "<value name=\"foliage\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
       "<value name=\"can_grow_through\"><block type=\"block_holderset_tag\"><field name=\"tag\">minecraft:replaceable_by_trees</field></block></value>",
       "<value name=\"root_placer\"><block type=\"root_placer_none\"></block></value>",
       "~<value name=\"decorator0\"><block type=\"tree_decorator_trunk_vine\"></block></value>"
