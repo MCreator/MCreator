@@ -39,7 +39,7 @@
   "mcreator": {
     "toolbox_id": "advancedfeatures",
     "toolbox_init": [
-      "<value name=\"feature\"><block type=\"feature_simple_block\"><value name=\"block\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value></block></value>"
+      "<value name=\"feature\"><block type=\"feature_simple_block\"><value name=\"block\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value></block></value>"
     ],
     "inputs": [
       "feature"

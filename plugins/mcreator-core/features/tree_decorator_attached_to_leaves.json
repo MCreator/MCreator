@@ -56,7 +56,7 @@
     "toolbox_id": "treedecorators",
     "toolbox_init": [
       "<mutation inputs=\"1\"></mutation>",
-      "<value name=\"provider\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+      "<value name=\"provider\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>"
     ],
     "fields": [
       "probability",
