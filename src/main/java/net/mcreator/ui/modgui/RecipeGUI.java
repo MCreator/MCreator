@@ -300,7 +300,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			}
 		} else if ("Smithing".equals(recipeType.getSelectedItem())) {
 			if (!smithingRecipeMaker.cb1.containsItem() || !smithingRecipeMaker.cb2.containsItem()
-					|| !smithingRecipeMaker.cb3.containsItem()) {
+					|| !smithingRecipeMaker.cb3.containsItem() ||
+					// We request smithing recipe to have template for new recipes
+					(!isEditingMode() && !smithingRecipeMaker.cb4.containsItem())) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
 			}
