@@ -262,6 +262,9 @@ public class Generator implements IGenerator, Closeable {
 			// add/update tag elements to the workspace
 			TagsUtils.processDefinitionToTags(this, element, (List<?>) map.get("tags"), false);
 
+			// add/update tab sorting info to the workspace
+			workspace.getCreativeTabsOrder().addOrUpdateModElementTabs(element);
+
 			// do additional tasks if mod element has them
 			element.finalizeModElementGeneration();
 		}
@@ -307,6 +310,9 @@ public class Generator implements IGenerator, Closeable {
 
 		// delete tag elements associated with the mod element from the workspace
 		TagsUtils.processDefinitionToTags(this, generatableElement, (List<?>) map.get("tags"), true);
+
+		// delete tab sorting info associated with the mod element from the workspace
+		workspace.getCreativeTabsOrder().removeModElementFromTabs(generatableElement);
 	}
 
 	@Nonnull public List<GeneratorTemplate> getModBaseGeneratorTemplatesList(boolean performFSTasks) {

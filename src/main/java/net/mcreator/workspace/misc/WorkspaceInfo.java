@@ -133,7 +133,7 @@ import java.util.*;
 
 	public Map<String, List<MItemBlock>> getCreativeTabMap() {
 		List<GeneratableElement> elementsList = workspace.getModElements().stream()
-				.sorted(Comparator.comparing(ModElement::getSortID)).map(ModElement::getGeneratableElement).toList();
+				.map(ModElement::getGeneratableElement).toList();
 
 		Map<String, List<MItemBlock>> tabMap = new HashMap<>();
 
@@ -143,16 +143,38 @@ import java.util.*;
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
 				TabEntry tabEntry = tabElement.getCreativeTab();
-				List<MCItem> tabItems = tabElement.getCreativeTabItems();
-				if (tabEntry != null && tabItems != null && !tabItems.isEmpty()) {
+				if (tabEntry != null && !tabEntry.getUnmappedValue().equals("No creative tab entry")) {
 					String tab = tabEntry.getUnmappedValue();
-					if (tab != null && !tab.equals("No creative tab entry")) {
-						if (!tabMap.containsKey(tab)) {
+					List<MCItem> tabItems = tabElement.getCreativeTabItems();
+					if (tabItems != null && !tabItems.isEmpty()) {
+						if (!tabMap.containsKey(tab))
 							tabMap.put(tab, new ArrayList<>());
-						}
 
-						tabMap.get(tab)
-								.addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName())).toList());
+						// If tab does not have custom order, add items to the end of the list
+						if (workspace.getCreativeTabsOrder().get(tab) == null) {
+							tabMap.get(tab).addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
+									.toList());
+						}
+					}
+				}
+			}
+		}
+
+		// Last, we add items to tabs with custom order
+		for (String tab : tabMap.keySet()) {
+			ArrayList<String> tabOrder = workspace.getCreativeTabsOrder().get(tab);
+			if (tabOrder != null) {
+				if (!tabMap.containsKey(tab))
+					tabMap.put(tab, new ArrayList<>());
+
+				for (String element : tabOrder) {
+					ModElement me = workspace.getModElementByName(element);
+					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement tabElement) {
+						List<MCItem> tabItems = tabElement.getCreativeTabItems();
+						if (tabItems != null && !tabItems.isEmpty()) {
+							tabMap.get(tab).addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
+									.toList());
+						}
 					}
 				}
 			}
