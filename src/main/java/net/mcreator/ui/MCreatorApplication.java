@@ -210,7 +210,7 @@ public final class MCreatorApplication {
 
 				boolean directLaunch = false;
 				if (!launchArguments.isEmpty()) {
-					String lastArg = launchArguments.get(launchArguments.size() - 1);
+					String lastArg = launchArguments.getLast();
 					if (lastArg.length() >= 2 && lastArg.charAt(0) == '"'
 							&& lastArg.charAt(lastArg.length() - 1) == '"')
 						lastArg = lastArg.substring(1, lastArg.length() - 1);

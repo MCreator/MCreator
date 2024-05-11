@@ -195,7 +195,7 @@ public class JVMDebugClient {
 			if (!breakpoints.contains(breakpoint)) {
 				List<ReferenceType> classes = virtualMachine.classesByName(breakpoint.getClassname());
 				if (!classes.isEmpty()) {
-					ReferenceType classType = classes.get(0);
+					ReferenceType classType = classes.getFirst();
 					BreakpointRequest breakpointRequest = loadBreakpoint(classType, breakpoint.getLine());
 					breakpoint.setBreakpointRequest(breakpointRequest);
 					breakpoint.setLoaded(true);
@@ -219,7 +219,7 @@ public class JVMDebugClient {
 		if (locations.isEmpty())
 			throw new IllegalArgumentException("Invalid line number: " + line);
 
-		Location location = locations.get(0);
+		Location location = locations.getFirst();
 
 		BreakpointRequest breakpointRequest = virtualMachine.eventRequestManager().createBreakpointRequest(location);
 		breakpointRequest.enable();

@@ -193,13 +193,11 @@ public class BlocklyEditorToolbar extends TransparentToolBar {
 						blocklyPanel.addBlocksFromXML(procedureXml);
 					} catch (Exception e) {
 						LOG.error("Failed to import Blockly template", e);
-						SwingUtilities.invokeLater(() -> {
-							JOptionPane.showMessageDialog(mcreator,
-									L10N.t("blockly.templates." + blocklyEditorType.registryName()
-											+ ".import_failed.message"),
-									L10N.t("blockly.templates." + blocklyEditorType.registryName()
-											+ ".import_failed.title"), JOptionPane.WARNING_MESSAGE);
-						});
+						SwingUtilities.invokeLater(() -> JOptionPane.showMessageDialog(mcreator,
+								L10N.t("blockly.templates." + blocklyEditorType.registryName()
+										+ ".import_failed.message"),
+								L10N.t("blockly.templates." + blocklyEditorType.registryName()
+										+ ".import_failed.title"), JOptionPane.WARNING_MESSAGE));
 					}
 				}, "Blockly-Template-Import").start();
 			}

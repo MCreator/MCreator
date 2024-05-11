@@ -194,7 +194,7 @@ public abstract class BlocklyToCode implements IGeneratorProvider {
 		List<Element> conditionBlocks = XMLUtil.getChildrenWithName(condition, "block", "shadow");
 		if (conditionBlocks.isEmpty())
 			return;
-		Element block = conditionBlocks.get(0);
+		Element block = conditionBlocks.getFirst();
 		String type = block.getAttribute("type");
 
 		if (block.getAttribute("disabled").equals("true")) { // Add compile error if block is disabled

@@ -125,7 +125,7 @@ public class TagsUtils {
 			// only add this entry if it does not already exist in managed or unmanaged form
 			else if (!entries.contains(entryManaged) && !entries.contains(entry)) {
 				// We add managed entries to the beginning of the list
-				generator.getWorkspace().getTagElements().get(tag).add(0, entryManaged);
+				generator.getWorkspace().getTagElements().get(tag).addFirst(entryManaged);
 			}
 		}
 	}
