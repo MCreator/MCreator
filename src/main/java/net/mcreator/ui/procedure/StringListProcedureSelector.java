@@ -64,7 +64,8 @@ public class StringListProcedureSelector extends RetvalProcedureSelector<List<St
 
 		if (fixedValue != null) {
 			fixedValue.setBackground(Theme.current().getBackgroundColor());
-			fixedValue.setBorder(BorderFactory.createMatteBorder(1, 0, 1, 0, UIManager.getColor("Component.borderColor")));
+			fixedValue.setBorder(
+					BorderFactory.createMatteBorder(1, 0, 1, 0, UIManager.getColor("Component.borderColor")));
 		}
 	}
 

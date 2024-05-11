@@ -26,7 +26,6 @@ import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Arrays;
 
 public class LayerTransferable implements Transferable {

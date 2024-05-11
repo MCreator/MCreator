@@ -787,8 +787,8 @@ public class MinecraftImageGenerator {
 				switch (armorPieces.size()) {
 				case 1:
 					graphics2D.drawImage(
-							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.getFirst())), 28), 0, 0,
-							null);
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.getFirst())), 28), 0,
+							0, null);
 					break;
 				case 2:
 					graphics2D.drawImage(

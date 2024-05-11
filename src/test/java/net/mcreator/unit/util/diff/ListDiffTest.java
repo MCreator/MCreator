@@ -43,11 +43,11 @@ public class ListDiffTest {
 	private record TestObject(String fieldA, int fieldB) {
 
 		@Override public boolean equals(Object o) {
-				return o instanceof TestObject && ((TestObject) o).fieldB == fieldB;
-			}
-
-			@Override public int hashCode() {
-				return fieldB;
-			}
+			return o instanceof TestObject && ((TestObject) o).fieldB == fieldB;
 		}
+
+		@Override public int hashCode() {
+			return fieldB;
+		}
+	}
 }

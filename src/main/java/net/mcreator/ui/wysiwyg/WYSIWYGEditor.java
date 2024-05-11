@@ -98,10 +98,12 @@ public class WYSIWYGEditor extends JPanel {
 
 	public final JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
 	public final JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
-	public final JComboBox<String> priority = new JComboBox<>(new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
+	public final JComboBox<String> priority = new JComboBox<>(
+			new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 
 	public final VComboBox<String> overlayBaseTexture = new SearchableComboBox<>();
-	public final VComboBox<String> overlayTarget = new SearchableComboBox<>(ElementUtil.getDataListAsStringArray("screens"));
+	public final VComboBox<String> overlayTarget = new SearchableComboBox<>(
+			ElementUtil.getDataListAsStringArray("screens"));
 
 	public final MCreator mcreator;
 

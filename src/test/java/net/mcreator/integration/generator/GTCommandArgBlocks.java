@@ -25,7 +25,6 @@ import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Command;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -88,8 +87,8 @@ public class GTCommandArgBlocks {
 				workspace.getGenerator().generateElement(command, true);
 				workspace.getModElementManager().storeModElement(command);
 			} catch (Throwable t) {
-				fail("[" + generatorName + "] Failed generating command argument block: "
-						+ commandArg.getMachineName(), t);
+				fail("[" + generatorName + "] Failed generating command argument block: " + commandArg.getMachineName(),
+						t);
 			}
 		}
 

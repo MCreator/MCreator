@@ -24,7 +24,6 @@ import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.component.ReordarableListTransferHandler;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;

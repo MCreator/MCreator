@@ -22,7 +22,6 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
