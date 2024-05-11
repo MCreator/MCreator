@@ -40,22 +40,14 @@ public class ListDiffTest {
 		assertEquals(result.changed().size(), 1);
 	}
 
-	private static class TestObject {
-
-		final String fieldA;
-		final int fieldB;
-
-		TestObject(String fieldA, int fieldB) {
-			this.fieldA = fieldA;
-			this.fieldB = fieldB;
-		}
+	private record TestObject(String fieldA, int fieldB) {
 
 		@Override public boolean equals(Object o) {
-			return o instanceof TestObject && ((TestObject) o).fieldB == fieldB;
-		}
+				return o instanceof TestObject && ((TestObject) o).fieldB == fieldB;
+			}
 
-		@Override public int hashCode() {
-			return fieldB;
+			@Override public int hashCode() {
+				return fieldB;
+			}
 		}
-	}
 }

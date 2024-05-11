@@ -22,6 +22,7 @@ package net.mcreator.ui.views.editor.image.clipboard.transferables;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
 import net.mcreator.util.image.ImageUtils;
 
+import javax.annotation.Nonnull;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
@@ -32,10 +33,8 @@ import java.util.Arrays;
 public class CanvasTransferable implements Transferable {
 	private final BufferedImage image;
 	private final DataFlavor[] flavours = new DataFlavor[] { DataFlavor.imageFlavor };
-	private final Canvas canvas;
 
 	public CanvasTransferable(Canvas canvas) {
-		this.canvas = canvas;
 		image = canvas.getSelection().cropCanvas(canvas.getCanvasRenderer().render());
 	}
 
@@ -51,7 +50,7 @@ public class CanvasTransferable implements Transferable {
 		return Arrays.asList(flavours).contains(flavor);
 	}
 
-	@Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+	@Nonnull @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
 		if (flavor == DataFlavor.imageFlavor)
 			return image;
 		throw new UnsupportedFlavorException(flavor);

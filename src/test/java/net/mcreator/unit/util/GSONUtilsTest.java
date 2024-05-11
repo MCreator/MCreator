@@ -38,15 +38,8 @@ public class GSONUtilsTest {
 		assertFalse(GSONCompare.deepEquals(objB, objC));
 	}
 
-	private static class TestObject {
+	private record TestObject(String fieldA, int fieldB) {
 
-		final String fieldA;
-		final int fieldB;
-
-		TestObject(String fieldA, int fieldB) {
-			this.fieldA = fieldA;
-			this.fieldB = fieldB;
-		}
 	}
 
 }
