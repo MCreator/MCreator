@@ -464,7 +464,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					else // exclude the component itself
 						UnsupportedComponent.markUnsupported(c);
 				} catch (IllegalAccessException | NoSuchFieldException | NullPointerException e) {
-					LOG.warn("Failed to access component: " + entry, e);
+					LOG.warn("Failed to access component: {}", entry, e);
 				}
 			}
 

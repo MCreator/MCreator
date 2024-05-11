@@ -146,7 +146,7 @@ public class GradleConsole extends JPanel {
 							}
 						}
 					} catch (SecurityException | IllegalArgumentException ex) {
-						LOG.info("Loading JARs for code editor failed. Error: " + ex.getMessage());
+						LOG.info("Loading JARs for code editor failed. Error: {}", ex.getMessage());
 					}
 				}
 			}
@@ -469,7 +469,7 @@ public class GradleConsole extends JPanel {
 							if (!rerunFlag) {
 								rerunFlag = true;
 
-								LOG.warn("Gradle task suggested re-run. Attempting re-running task: " + command);
+								LOG.warn("Gradle task suggested re-run. Attempting re-running task: {}", command);
 
 								// Re-run the same command with the same listener
 								GradleConsole.this.exec(command, taskSpecificListener, progressListener, debugClient);

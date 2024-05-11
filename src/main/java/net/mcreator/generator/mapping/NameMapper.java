@@ -99,7 +99,7 @@ public class NameMapper {
 						retval = retval.replace("@registryname", element.getRegistryName())
 								.replace("@REGISTRYNAME", element.getRegistryNameUpper());
 					} else {
-						LOG.warn("Failed to determine registry name for: " + origName);
+						LOG.warn("Failed to determine registry name for: {}", origName);
 						retval = retval.replace("@registryname", UNKNOWN_ELEMENT)
 								.replace("@REGISTRYNAME", UNKNOWN_ELEMENT.toUpperCase(Locale.ENGLISH));
 					}

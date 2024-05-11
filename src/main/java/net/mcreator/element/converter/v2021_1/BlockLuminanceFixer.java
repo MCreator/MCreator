@@ -40,7 +40,7 @@ public class BlockLuminanceFixer implements IConverter {
 				block.luminance = (int) Math.floor(oldLuminance * 15);
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not update luminance field of: " + block.getModElement().getName());
+			LOG.warn("Could not update luminance field of: {}", block.getModElement().getName());
 		}
 		return block;
 	}

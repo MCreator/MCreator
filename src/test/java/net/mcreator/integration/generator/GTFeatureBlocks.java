@@ -189,8 +189,8 @@ public class GTFeatureBlocks {
 						feature.featurexml = getXMLFor("placement_block_predicate_filter", "condition", testXML);
 				case "IntProvider" -> feature.featurexml = getXMLFor("placement_count", "count", testXML);
 				default -> {
-					LOG.warn("[" + generatorName + "] Skipping feature block of unrecognized type: "
-							+ featureBlock.getMachineName());
+					LOG.warn("[{}] Skipping feature block of unrecognized type: {}", generatorName,
+							featureBlock.getMachineName());
 					continue;
 				}
 				}

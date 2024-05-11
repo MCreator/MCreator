@@ -147,7 +147,7 @@ public class RegenerateCodeAction extends GradleAction {
 				try {
 					GeneratableElement generatableElement = mod.getGeneratableElement();
 					if (generatableElement == null) {
-						LOG.warn("Failed to regenerate: " + mod.getName() + " as it has no generatable element");
+						LOG.warn("Failed to regenerate: {} as it has no generatable element", mod.getName());
 
 						if (!skipAll) {
 							int opt = JOptionPane.showOptionDialog(mcreator,
@@ -165,7 +165,7 @@ public class RegenerateCodeAction extends GradleAction {
 						continue;
 					}
 
-					LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: " + mod.getName());
+					LOG.debug("Regenerating {} mod element: {}", mod.getType().getReadableName(), mod.getName());
 
 					// generate mod element code
 					List<GeneratorFile> generatedFiles = mcreator.getGenerator()
@@ -187,7 +187,7 @@ public class RegenerateCodeAction extends GradleAction {
 
 					generatableElementsToSave.add(generatableElement);
 				} catch (Exception e) {
-					LOG.error("Failed to regenerate: " + mod.getName(), e);
+					LOG.error("Failed to regenerate: {}", mod.getName(), e);
 				}
 			}
 

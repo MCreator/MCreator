@@ -53,8 +53,7 @@ public abstract class WebConsoleListener {
 			WebConsoleListener listener = new WebConsoleListener() {
 				@Override public void messageAdded(WebView webView, String message, int lineNumber, String sourceId) {
 					String[] sidparsed = sourceId.split("/");
-					logger.info(
-							"[JFX JS bridge] [" + sidparsed[sidparsed.length - 1] + ": " + lineNumber + "] " + message);
+					logger.info("[JFX JS bridge] [{}: {}] {}", sidparsed[sidparsed.length - 1], lineNumber, message);
 				}
 			};
 

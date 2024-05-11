@@ -165,12 +165,12 @@ public final class MCreatorApplication {
 			for (String generator : fileNames) {
 				splashScreen.setProgress(70 + i * ((90 - 70) / fileNames.size()),
 						"Loading generators: " + generator.split("/")[0]);
-				LOG.info("Loading generator: " + generator);
+				LOG.info("Loading generator: {}", generator);
 				generator = generator.replace("/generator.yaml", "");
 				try {
 					Generator.GENERATOR_CACHE.put(generator, new GeneratorConfiguration(generator));
 				} catch (Exception e) {
-					LOG.error("Failed to load generator: " + generator, e);
+					LOG.error("Failed to load generator: {}", generator, e);
 				}
 				i++;
 			}
@@ -346,7 +346,7 @@ public final class MCreatorApplication {
 			// create list copy, so we don't modify the list we iterate
 			List<MCreator> mcreatorsTmp = new ArrayList<>(openMCreators);
 			for (MCreator mcreator : mcreatorsTmp) {
-				LOG.info("Attempting to close MCreator window with workspace: " + mcreator.getWorkspace());
+				LOG.info("Attempting to close MCreator window with workspace: {}", mcreator.getWorkspace());
 				if (!mcreator.closeThisMCreator(false)) {
 					canNotClose.set(true);
 					return;

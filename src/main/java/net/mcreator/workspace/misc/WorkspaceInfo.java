@@ -173,8 +173,8 @@ import java.util.*;
 				if (workspace.containsModElement(GeneratorWrapper.getElementPlainName(t.getUnmappedValue()))) {
 					retval.add(new UniquelyMappedElement(t));
 				} else {
-					LOG.warn("Broken reference found. Referencing non-existent element: " + t.getUnmappedValue()
-							.replaceFirst("CUSTOM:", ""));
+					LOG.warn("Broken reference found. Referencing non-existent element: {}",
+							t.getUnmappedValue().replaceFirst("CUSTOM:", ""));
 				}
 			} else {
 				retval.add(new UniquelyMappedElement(t));

@@ -601,8 +601,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			// if this mod element is not locked and has procedures, we try to update dependencies
 			// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
 			if (!element.isCodeLocked() && element.getGeneratableElement() != null) {
-				LOG.info("Regenerating " + element.getName() + " (" + element.getType()
-						+ ") because it triggers procedure " + procedure.getName());
+				LOG.info("Regenerating {} ({}) because it triggers procedure {}", element.getName(), element.getType(),
+						procedure.getName());
 				mcreator.getGenerator().generateElement(element.getGeneratableElement());
 
 				// Procedure may call other procedures that also need updating

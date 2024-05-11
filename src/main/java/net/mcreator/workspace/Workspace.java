@@ -189,8 +189,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			mod_elements.add(element);
 			markDirty();
 		} else {
-			LOG.warn(
-					"Trying to add existing mod element: " + element.getName() + " of type " + element.getTypeString());
+			LOG.warn("Trying to add existing mod element: {} of type {}", element.getName(), element.getTypeString());
 		}
 	}
 
@@ -199,7 +198,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			variable_elements.add(element);
 			markDirty();
 		} else {
-			LOG.warn("Trying to add existing variable element: " + element.getName());
+			LOG.warn("Trying to add existing variable element: {}", element.getName());
 		}
 	}
 
@@ -208,7 +207,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			tag_elements.put(element, new ArrayList<>());
 			markDirty();
 		} else {
-			LOG.warn("Trying to add existing tag element: " + element.getName());
+			LOG.warn("Trying to add existing tag element: {}", element.getName());
 		}
 	}
 
@@ -217,7 +216,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			sound_elements.add(element);
 			markDirty();
 		} else {
-			LOG.warn("Trying to add existing sound element: " + element.getName());
+			LOG.warn("Trying to add existing sound element: {}", element.getName());
 		}
 	}
 
@@ -327,8 +326,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 			if (modElement.getFolderPath() != null && !modElement.getFolderPath()
 					.equals(FolderElement.ROOT.getName())) {
 				if (!validPaths.contains(modElement.getFolderPath())) {
-					LOG.warn("Mod element: " + modElement.getName() + " has invalid path: "
-							+ modElement.getFolderPath());
+					LOG.warn("Mod element: {} has invalid path: {}", modElement.getName(), modElement.getFolderPath());
 					// reset orphaned elements to root
 					modElement.setParentFolder(null);
 				}
@@ -449,7 +447,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 			for (ModElement corrupted : corruptedElements) {
 				retval.removeModElement(corrupted);
-				LOG.warn("Detected corrupted mod element while deserializing. Element: " + corrupted);
+				LOG.warn("Detected corrupted mod element while deserializing. Element: {}", corrupted);
 			}
 
 			// Detect plugin requirements
@@ -458,7 +456,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 			retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
 			retval.reloadFolderStructure(); // assign parents to the folders
-			LOG.info("Loaded workspace file " + workspaceFile);
+			LOG.info("Loaded workspace file {}", workspaceFile);
 			return retval;
 		} else {
 			throw new FileNotFoundException();
@@ -500,7 +498,7 @@ public class Workspace implements Closeable, IGeneratorProvider {
 
 		retval.reloadModElements(); // reload mod element icons and register reference to this workspace for all of them
 		retval.reloadFolderStructure(); // assign parents to the folders
-		LOG.info("Loaded workspace file " + workspaceFile);
+		LOG.info("Loaded workspace file {}", workspaceFile);
 		return retval;
 	}
 
@@ -512,8 +510,8 @@ public class Workspace implements Closeable, IGeneratorProvider {
 		retval.generator = new Generator(retval);
 		retval.fileManager.saveWorkspaceDirectlyAndWait();
 		retval.getWorkspaceSettings().setWorkspace(retval);
-		LOG.info("Created new workspace with workspace file " + workspaceFile + ", modid: "
-				+ workspaceSettings.getModID() + ", generator: " + workspaceSettings.getCurrentGenerator());
+		LOG.info("Created new workspace with workspace file {}, modid: {}, generator: {}", workspaceFile,
+				workspaceSettings.getModID(), workspaceSettings.getCurrentGenerator());
 		return retval;
 	}
 

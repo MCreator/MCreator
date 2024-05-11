@@ -47,7 +47,7 @@ public class TagsUtils {
 							.generateFromTemplate(tagsSpecification.get("template").toString(), datamodel);
 					JSONWriter.writeJSONToFile(json, tagFile);
 				} catch (TemplateGeneratorException e) {
-					generator.getLogger().error("Failed to generate code for tag: " + tag.getKey(), e);
+					generator.getLogger().error("Failed to generate code for tag: {}", tag.getKey(), e);
 				}
 			}
 		});

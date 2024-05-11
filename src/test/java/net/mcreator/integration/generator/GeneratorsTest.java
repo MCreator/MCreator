@@ -63,7 +63,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 	public @TestFactory Stream<DynamicContainer> testGenerators() {
 		long rgenseed = System.currentTimeMillis();
 		Random random = new Random(rgenseed);
-		LOG.info("Random number generator seed: " + rgenseed);
+		LOG.info("Random number generator seed: {}", rgenseed);
 
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
 
@@ -79,14 +79,14 @@ import static org.junit.jupiter.api.Assertions.fail;
 			}
 		}).toList();
 
-		LOG.info("Generators found: " + fileNamesSorted);
+		LOG.info("Generators found: {}", fileNamesSorted);
 
 		return fileNamesSorted.stream().map(generatorFile -> {
 			final String generator = generatorFile.replace("/generator.yaml", "");
 			List<DynamicTest> tests = new ArrayList<>();
 
 			LOG.info("================");
-			LOG.info("TESTING GENERATOR " + generator);
+			LOG.info("TESTING GENERATOR {}", generator);
 
 			// create temporary directory
 			final File workspaceDir;
@@ -111,7 +111,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 			Workspace workspace = Workspace.createWorkspace(new File(workspaceDir, "test_mod.mcreator"),
 					workspaceSettings);
 
-			LOG.info("[" + generator + "] Test workspace folder: " + workspace.getFolderManager().getWorkspaceFolder());
+			LOG.info("[{}] Test workspace folder: {}", generator, workspace.getFolderManager().getWorkspaceFolder());
 
 			TestWorkspaceDataProvider.fillWorkspaceWithTestData(workspace);
 

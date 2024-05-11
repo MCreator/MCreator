@@ -40,7 +40,7 @@ public class PlantLuminanceFixer implements IConverter {
 				plant.luminance = (int) Math.floor(oldLuminance * 15);
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not update luminance field of: " + plant.getModElement().getName());
+			LOG.warn("Could not update luminance field of: {}", plant.getModElement().getName());
 		}
 		return plant;
 	}
