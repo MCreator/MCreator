@@ -1107,7 +1107,7 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			creativeTab.setSelectedItem(livingEntity.creativeTab);
 
 		Model model = livingEntity.getEntityModel();
-		if (model != null && model.getType() != null && model.getReadableName() != null)
+		if (model != null)
 			mobModel.setSelectedItem(model);
 
 		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(livingEntity.aixml));
