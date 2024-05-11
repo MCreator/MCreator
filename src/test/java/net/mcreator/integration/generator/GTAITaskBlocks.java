@@ -41,12 +41,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTAITaskBlocks {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
-		// silently skip if living entities are not supported by this generator
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.LIVINGENTITY)
-				== GeneratorStats.CoverageStatus.NONE) {
-			return;
-		}
-
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.AI_TASK);
 
 		for (ToolboxBlock aiTask : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK).getDefinedBlocks()

@@ -24,12 +24,19 @@ const workspace = Blockly.inject(blockly, {
     toolbox: '<xml id="toolbox"><category name="" colour=""></category></xml>'
 });
 
-function blocklyEventFunction() {
+workspace.addChangeListener(function (event) {
+    if (workspace.isDragging())
+        return; // Don't update while changes are happening.
+
+    if (event.isUiEvent)
+        return; // Don't update on UI-only events.
+
+    if (!event.recordUndo)
+        return; // Don't update if change does not record undo
+
     if (typeof javabridge !== "undefined")
         javabridge.triggerEvent();
-}
-
-workspace.addChangeListener(blocklyEventFunction);
+});
 
 window.addEventListener('resize', function () {
     Blockly.svgResize(workspace);

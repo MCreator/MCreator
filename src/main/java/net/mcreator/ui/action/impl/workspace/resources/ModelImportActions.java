@@ -226,11 +226,13 @@ public class ModelImportActions {
 		while (matcher.find())
 			txs.add(matcher.group(1));
 
-		newTextureMapDialog(mcreator, txs, file, true);
+		if (!txs.isEmpty()) {
+			newTextureMapDialog(mcreator, txs, file, true);
 
-		mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
-		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
-			((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+			mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
+			if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
+				((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+		}
 	}
 
 	public static class OBJ extends BasicAction {
