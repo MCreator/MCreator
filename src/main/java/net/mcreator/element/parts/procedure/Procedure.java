@@ -58,7 +58,7 @@ import java.util.List;
 				return ((net.mcreator.element.types.Procedure) generatableElement).getDependencies();
 			}
 		} else {
-			LOG.warn("Procedure " + name + " not found while trying to extract dependencies!");
+			LOG.warn("Procedure {} not found while trying to extract dependencies!", name);
 		}
 
 		this.exists = false;

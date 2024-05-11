@@ -91,7 +91,7 @@ public class Theme {
 			consoleFont = consoleFont.deriveFont(12.0f);
 			GraphicsEnvironment.getLocalGraphicsEnvironment().registerFont(consoleFont);
 		} catch (NullPointerException | FontFormatException | IOException e2) {
-			LOG.info("Failed to init MCreator Theme! Error " + e2.getMessage());
+			LOG.info("Failed to init MCreator Theme! Error {}", e2.getMessage());
 		}
 
 		return this;

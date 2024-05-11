@@ -133,7 +133,7 @@ public class ProjectJarManager extends JarManager {
 		String libString = classpathEntry.getLib(workspace);
 		File libFile = new File(libString);
 		if (!libFile.exists()) {
-			LOG.warn("Failed to load cached library " + libString);
+			LOG.warn("Failed to load cached library {}", libString);
 			throw new GradleCacheImportFailedException(new IOException("Failed to load cached library " + libString));
 		}
 
@@ -150,7 +150,7 @@ public class ProjectJarManager extends JarManager {
 		try {
 			addClassFileSource(libraryInfo);
 		} catch (IOException e) {
-			LOG.warn("Failed to load classpath file " + libString, e);
+			LOG.warn("Failed to load classpath file {}", libString, e);
 			throw new GradleCacheImportFailedException(new IOException("Failed to load classpath file " + libString));
 		}
 	}

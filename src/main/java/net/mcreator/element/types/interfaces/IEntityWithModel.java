@@ -21,9 +21,11 @@ package net.mcreator.element.types.interfaces;
 import net.mcreator.io.FileIO;
 import net.mcreator.workspace.resources.Model;
 
+import javax.annotation.Nullable;
+
 @SuppressWarnings("unused") public interface IEntityWithModel {
 
-	Model getEntityModel();
+	@Nullable Model getEntityModel();
 
 	default String getModelCode() {
 		Model model = getEntityModel();

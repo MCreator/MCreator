@@ -68,10 +68,10 @@ public class WYSIWYGEditor extends JPanel {
 	}};
 	//@formatter:on
 
-	public WYSIWYG editor = new WYSIWYG(this);
+	public final WYSIWYG editor = new WYSIWYG(this);
 
-	public ArrayListListModel<GUIComponent> components = new ArrayListListModel<>();
-	public JList<GUIComponent> list = new JList<>(components);
+	public final ArrayListListModel<GUIComponent> components = new ArrayListListModel<>();
+	public final JList<GUIComponent> list = new JList<>(components);
 
 	private final JButton moveComponent = new JButton(UIRES.get("18px.move"));
 	private final JButton editComponent = new JButton(UIRES.get("18px.edit"));
@@ -79,35 +79,37 @@ public class WYSIWYGEditor extends JPanel {
 	private final JButton moveComponentUp = new JButton(UIRES.get("18px.up"));
 	private final JButton moveComponentDown = new JButton(UIRES.get("18px.down"));
 
-	public JSpinner spa1 = new JSpinner(new SpinnerNumberModel(176, 0, 512, 1));
-	public JSpinner spa2 = new JSpinner(new SpinnerNumberModel(166, 0, 512, 1));
+	public final JSpinner spa1 = new JSpinner(new SpinnerNumberModel(176, 0, 512, 1));
+	public final JSpinner spa2 = new JSpinner(new SpinnerNumberModel(166, 0, 512, 1));
 
-	public JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
-	public JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
+	public final JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
+	public final JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 
-	public JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
-	public JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
+	public final JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
+	public final JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
+	public final JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
+	public final JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
 
-	public JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
+	public final JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 
-	public JComboBox<String> guiType = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
+	public final JComboBox<String> guiType = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
 
 	private boolean opening = false;
 
-	public JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
-	public JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
-	public JComboBox<String> priority = new JComboBox<>(new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
+	public final JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
+	public final JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
+	public final JComboBox<String> priority = new JComboBox<>(
+			new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 
-	public VComboBox<String> overlayBaseTexture = new SearchableComboBox<>();
-	public VComboBox<String> overlayTarget = new SearchableComboBox<>(ElementUtil.getDataListAsStringArray("screens"));
+	public final VComboBox<String> overlayBaseTexture = new SearchableComboBox<>();
+	public final VComboBox<String> overlayTarget = new SearchableComboBox<>(
+			ElementUtil.getDataListAsStringArray("screens"));
 
-	public MCreator mcreator;
+	public final MCreator mcreator;
 
-	public JPanel ovst = new JPanel();
+	public final JPanel ovst = new JPanel();
 
-	public JPanel sidebar = new JPanel(new BorderLayout(0, 0));
+	public final JPanel sidebar = new JPanel(new BorderLayout(0, 0));
 
 	private final Map<WYSIWYGComponentRegistration<?>, JButton> addComponentButtonsMap = new HashMap<>();
 

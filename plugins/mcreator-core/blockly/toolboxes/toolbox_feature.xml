@@ -18,7 +18,7 @@
     </category>
     <sep/>
     <category name="${t:blockly.category.blocks.feature}" colour="60">
-        <block type="mcitem_allblocks"/>
+        <block type="blockstate_selector"><mutation inputs="0"/></block>
         <custom-blocks/>
     </category>
     <category name="${t:blockly.category.intproviders}" colour="230">

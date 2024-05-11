@@ -53,7 +53,7 @@ import java.util.Map;
 					}
 				}
 			} catch (Exception e) {
-				LOG.error("Failed to load file provider for " + key, e);
+				LOG.error("Failed to load file provider for {}", key, e);
 			}
 			return null;
 		});

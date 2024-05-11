@@ -766,8 +766,8 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.AI_TASK)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.AI_BUILDER);
-			blocklyPanel.getJSBridge().setJavaScriptEventListener(
-					() -> new Thread(LivingEntityGUI.this::regenerateAITasks, "AITasksRegenerate").start());
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(LivingEntityGUI.this::regenerateAITasks, "AITasksRegenerate").start());
 			if (!isEditingMode()) {
 				setDefaultAISet();
 			}
@@ -1107,15 +1107,10 @@ public class LivingEntityGUI extends ModElementGUI<LivingEntity> implements IBlo
 			creativeTab.setSelectedItem(livingEntity.creativeTab);
 
 		Model model = livingEntity.getEntityModel();
-		if (model != null && model.getType() != null && model.getReadableName() != null)
+		if (model != null)
 			mobModel.setSelectedItem(model);
 
-		blocklyPanel.setXMLDataOnly(livingEntity.aixml);
-		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.clearWorkspace();
-			blocklyPanel.setXML(livingEntity.aixml);
-			blocklyPanel.triggerEventFunction();
-		});
+		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(livingEntity.aixml));
 
 		enableOrDisableFields();
 

@@ -53,14 +53,13 @@ public class ConverterUtils {
 			source.getWorkspace().getGenerator().generateElement(result);
 			source.getWorkspace().getModElementManager().storeModElement(result);
 
-			LOG.debug("Converted mod element " + source.getName() + " (" + source.getTypeString() + ") to "
-					+ result.getModElement().getType().getRegistryName() + " using " + converter.getClass()
-					.getSimpleName());
+			LOG.debug("Converted mod element {} ({}) to {} using {}", source.getName(), source.getTypeString(),
+					result.getModElement().getType().getRegistryName(), converter.getClass().getSimpleName());
 		} else {
 			source.getWorkspace().removeModElement(source);
 
-			LOG.debug("Converted mod element " + source.getName() + " (" + source.getTypeString()
-					+ ") to data format that is not a mod element using " + converter.getClass().getSimpleName());
+			LOG.debug("Converted mod element {} ({}) to data format that is not a mod element using {}",
+					source.getName(), source.getTypeString(), converter.getClass().getSimpleName());
 		}
 	}
 

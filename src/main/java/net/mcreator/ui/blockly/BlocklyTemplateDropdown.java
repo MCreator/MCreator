@@ -86,7 +86,7 @@ public class BlocklyTemplateDropdown extends JScrollablePopupMenu {
 				ComponentUtils.deriveFont(modTypeButton, 12);
 				add(modTypeButton);
 			} catch (Exception e) {
-				LOG.info("Failed to load template: " + template);
+				LOG.info("Failed to load template: {}", template);
 			}
 		}
 	}

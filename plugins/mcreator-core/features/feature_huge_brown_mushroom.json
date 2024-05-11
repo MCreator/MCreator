@@ -27,8 +27,8 @@
   "mcreator": {
     "toolbox_id": "features",
     "toolbox_init": [
-      "<value name=\"cap\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"stem\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>"
+      "<value name=\"cap\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
+      "<value name=\"stem\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>"
     ],
     "inputs": [
       "cap",
