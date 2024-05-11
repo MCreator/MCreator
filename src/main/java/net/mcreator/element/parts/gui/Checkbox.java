@@ -27,9 +27,9 @@ import java.awt.*;
 
 public class Checkbox extends GUIComponent {
 
-	public String name;
-	public String text;
-	public Procedure isCheckedProcedure;
+	public final String name;
+	public final String text;
+	public final Procedure isCheckedProcedure;
 
 	public Checkbox(String name, int x, int y, String text, Procedure isCheckedProcedure) {
 		super(x, y);

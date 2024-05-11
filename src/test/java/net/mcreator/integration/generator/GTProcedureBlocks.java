@@ -178,8 +178,7 @@ public class GTProcedureBlocks {
 				workspace.getGenerator().generateElement(procedure, true);
 				workspace.getModElementManager().storeModElement(procedure);
 			} catch (Throwable t) {
-				t.printStackTrace();
-				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.getMachineName());
+				fail("[" + generatorName + "] Failed generating procedure block: " + procedureBlock.getMachineName(), t);
 			}
 		}
 

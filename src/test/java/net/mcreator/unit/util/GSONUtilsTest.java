@@ -40,8 +40,8 @@ public class GSONUtilsTest {
 
 	private static class TestObject {
 
-		String fieldA;
-		int fieldB;
+		final String fieldA;
+		final int fieldB;
 
 		TestObject(String fieldA, int fieldB) {
 			this.fieldA = fieldA;

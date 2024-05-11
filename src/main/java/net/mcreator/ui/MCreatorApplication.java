@@ -70,7 +70,7 @@ public final class MCreatorApplication {
 
 	private static final Logger LOG = LogManager.getLogger("Application");
 
-	public static IWebAPI WEB_API = new D8WebAPI();
+	public static final IWebAPI WEB_API = new D8WebAPI();
 	public static final String SERVER_DOMAIN = "https://mcreator.net";
 	public static boolean isInternet = true;
 

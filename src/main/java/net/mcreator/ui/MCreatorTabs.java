@@ -390,6 +390,8 @@ public class MCreatorTabs {
 		}
 
 		public void setText(String name) {
+			this.text = name;
+
 			if (uppercase)
 				name = name.toUpperCase(Locale.ENGLISH);
 			blo.setText(name);

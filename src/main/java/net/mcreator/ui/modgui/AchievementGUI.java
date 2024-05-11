@@ -84,10 +84,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private final JComboBox<String> background = new JComboBox<>();
 
-	JCheckBox showPopup = L10N.checkbox("elementgui.common.enable");
-	JCheckBox announceToChat = L10N.checkbox("elementgui.common.enable");
-	JCheckBox hideIfNotCompleted = L10N.checkbox("elementgui.common.enable");
-	JCheckBox disableDisplay = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox showPopup = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox announceToChat = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox hideIfNotCompleted = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox disableDisplay = L10N.checkbox("elementgui.common.enable");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 

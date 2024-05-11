@@ -24,7 +24,7 @@ import net.mcreator.preferences.entries.BooleanEntry;
 
 public class BedrockSection extends PreferencesSection {
 
-	public BooleanEntry silentReload;
+	public final BooleanEntry silentReload;
 
 	BedrockSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);

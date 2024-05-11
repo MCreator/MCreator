@@ -25,8 +25,8 @@ import javax.annotation.Nullable;
 
 public class WorkspaceSettingsChange {
 
-	@Nonnull public WorkspaceSettings workspaceSettings;
-	@Nullable public WorkspaceSettings oldSettings;
+	@Nonnull public final WorkspaceSettings workspaceSettings;
+	@Nullable public final WorkspaceSettings oldSettings;
 
 	public boolean modidchanged;
 	public boolean packagechanged;

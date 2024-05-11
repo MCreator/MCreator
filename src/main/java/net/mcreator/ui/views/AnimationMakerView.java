@@ -594,7 +594,7 @@ public class AnimationMakerView extends ViewBase {
 	}
 
 	static class AnimationFrame {
-		Image image;
+		final Image image;
 
 		AnimationFrame(Image s) {
 			image = s;

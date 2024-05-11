@@ -201,8 +201,7 @@ public class GTFeatureBlocks {
 				assertTrue(workspace.getGenerator().generateElement(feature));
 				workspace.getModElementManager().storeModElement(feature);
 			} catch (Throwable t) {
-				fail("[" + generatorName + "] Failed generating procedure block: " + featureBlock.getMachineName());
-				t.printStackTrace();
+				fail("[" + generatorName + "] Failed generating procedure block: " + featureBlock.getMachineName(), t);
 			}
 		}
 	}

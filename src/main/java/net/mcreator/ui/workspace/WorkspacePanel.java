@@ -137,7 +137,7 @@ import java.util.stream.Collectors;
 
 	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem(
 			L10N.t("workspace.elements.list.sort_date"));
-	public JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name"));
+	public final JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name"));
 	private final JRadioButtonMenuItem sortType = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_type"));
 
 	private final OptionPaneValidatior folderNameValidator = new OptionPaneValidatior() {
@@ -1269,8 +1269,8 @@ import java.util.stream.Collectors;
 	}
 
 	private class FilterModel extends DefaultListModel<IElement> {
-		ArrayList<IElement> items;
-		ArrayList<IElement> filterItems;
+		final ArrayList<IElement> items;
+		final ArrayList<IElement> filterItems;
 
 		private final static Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
 

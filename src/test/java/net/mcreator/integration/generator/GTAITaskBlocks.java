@@ -84,8 +84,7 @@ public class GTAITaskBlocks {
 				workspace.getGenerator().generateElement(livingentity, true);
 				workspace.getModElementManager().storeModElement(livingentity);
 			} catch (Throwable t) {
-				t.printStackTrace();
-				fail("[" + generatorName + "] Failed generating AI task block: " + aiTask.getMachineName());
+				fail("[" + generatorName + "] Failed generating AI task block: " + aiTask.getMachineName(), t);
 			}
 		}
 

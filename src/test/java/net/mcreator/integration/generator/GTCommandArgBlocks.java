@@ -88,9 +88,8 @@ public class GTCommandArgBlocks {
 				workspace.getGenerator().generateElement(command, true);
 				workspace.getModElementManager().storeModElement(command);
 			} catch (Throwable t) {
-				t.printStackTrace();
 				fail("[" + generatorName + "] Failed generating command argument block: "
-						+ commandArg.getMachineName());
+						+ commandArg.getMachineName(), t);
 			}
 		}
 

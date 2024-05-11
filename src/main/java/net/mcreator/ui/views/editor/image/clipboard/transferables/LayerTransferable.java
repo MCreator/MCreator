@@ -55,8 +55,6 @@ public class LayerTransferable implements Transferable {
 	@Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
 		if (flavor == DataFlavor.imageFlavor)
 			return image;
-		//else if (flavor == DataFlavor.stringFlavor)
-		//	return layer.getName();
 		throw new UnsupportedFlavorException(flavor);
 	}
 }
