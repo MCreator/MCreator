@@ -62,7 +62,7 @@ record MCreatorDropTarget(MCreator mcreator) implements DropTargetListener {
 			try {
 				List<?> transferData = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 				if (!transferData.isEmpty()) {
-					Object transfObj = transferData.get(0);
+					Object transfObj = transferData.getFirst();
 					if (transfObj instanceof File file) {
 						if (file.getName().endsWith(".ogg")) {
 							SoundElementDialog.importSound(mcreator, new File[] { file });

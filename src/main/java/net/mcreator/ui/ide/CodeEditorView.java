@@ -82,8 +82,8 @@ public class CodeEditorView extends ViewBase {
 
 	private static final Logger LOG = LogManager.getLogger("Code Editor");
 
-	public SearchBar sed;
-	public ReplaceBar rep;
+	public final SearchBar sed;
+	public final ReplaceBar rep;
 
 	private final JSplitPane spne = new JSplitPane();
 

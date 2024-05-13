@@ -58,8 +58,8 @@ public class GTModElements {
 			List<GeneratableElement> modElementExamples = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
 					modElementType, false, random);
 
-			LOG.info("[" + generatorName + "] Testing mod element type generation " + modElementType.getReadableName()
-					+ " with " + modElementExamples.size() + " variants");
+			LOG.info("[{}] Testing mod element type generation {} with {} variants", generatorName,
+					modElementType.getReadableName(), modElementExamples.size());
 
 			modElementExamples.forEach(generatableElement -> {
 				// Check if all workspace fields are not null (from the TestWorkspaceDataProvider)

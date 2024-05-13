@@ -80,13 +80,13 @@ public class DebugMarkersHandler {
 												}
 											}));
 								} catch (Exception e) {
-									LOG.warn("Failed to add breakpoint for " + file, e);
+									LOG.warn("Failed to add breakpoint for {}", file, e);
 								}
 							});
 						}
 					});
 				} catch (Exception e) {
-					LOG.warn("Failed to find FQDN for " + file, e);
+					LOG.warn("Failed to find FQDN for {}", file, e);
 				}
 			}
 		});

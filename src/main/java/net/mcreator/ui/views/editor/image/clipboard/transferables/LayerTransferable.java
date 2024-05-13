@@ -21,11 +21,11 @@ package net.mcreator.ui.views.editor.image.clipboard.transferables;
 
 import net.mcreator.ui.views.editor.image.layer.Layer;
 
+import javax.annotation.Nonnull;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Arrays;
 
 public class LayerTransferable implements Transferable {
@@ -52,11 +52,9 @@ public class LayerTransferable implements Transferable {
 		return Arrays.asList(flavours).contains(flavor);
 	}
 
-	@Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException, IOException {
+	@Nonnull @Override public Object getTransferData(DataFlavor flavor) throws UnsupportedFlavorException {
 		if (flavor == DataFlavor.imageFlavor)
 			return image;
-		//else if (flavor == DataFlavor.stringFlavor)
-		//	return layer.getName();
 		throw new UnsupportedFlavorException(flavor);
 	}
 }

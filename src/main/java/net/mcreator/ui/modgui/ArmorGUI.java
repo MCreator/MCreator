@@ -973,19 +973,19 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		equipSound.setSound(armor.equipSound);
 
 		Model _helmetModel = armor.getHelmetModel();
-		if (_helmetModel != null && _helmetModel.getType() != null && _helmetModel.getReadableName() != null)
+		if (_helmetModel != null)
 			helmetModel.setSelectedItem(_helmetModel);
 
 		Model _bodyModel = armor.getBodyModel();
-		if (_bodyModel != null && _bodyModel.getType() != null && _bodyModel.getReadableName() != null)
+		if (_bodyModel != null)
 			bodyModel.setSelectedItem(_bodyModel);
 
 		Model _leggingsModel = armor.getLeggingsModel();
-		if (_leggingsModel != null && _leggingsModel.getType() != null && _leggingsModel.getReadableName() != null)
+		if (_leggingsModel != null)
 			leggingsModel.setSelectedItem(_leggingsModel);
 
 		Model _bootsModel = armor.getBootsModel();
-		if (_bootsModel != null && _bootsModel.getType() != null && _bootsModel.getReadableName() != null)
+		if (_bootsModel != null)
 			bootsModel.setSelectedItem(_bootsModel);
 
 		helmetModelTexture.setSelectedItem(armor.helmetModelTexture);
@@ -1033,12 +1033,15 @@ public class ArmorGUI extends ModElementGUI<Armor> {
 		Model helmetItemModel = armor.getHelmetItemModel();
 		if (helmetItemModel != null)
 			helmetItemRenderType.setSelectedItem(helmetItemModel);
+
 		Model bodyItemModel = armor.getBodyItemModel();
 		if (bodyItemModel != null)
 			bodyItemRenderType.setSelectedItem(bodyItemModel);
+
 		Model leggingsItemModel = armor.getLeggingsItemModel();
 		if (leggingsItemModel != null)
 			leggingsItemRenderType.setSelectedItem(leggingsItemModel);
+
 		Model bootsItemModel = armor.getBootsItemModel();
 		if (bootsItemModel != null)
 			bootsItemRenderType.setSelectedItem(bootsItemModel);

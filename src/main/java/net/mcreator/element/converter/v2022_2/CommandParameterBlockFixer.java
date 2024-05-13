@@ -46,7 +46,7 @@ public class CommandParameterBlockFixer implements IConverter {
 			}
 		} catch (Exception e) {
 			command.argsxml = "<xml><block type=\"args_start\" deletable=\"false\" x=\"40\" y=\"40\"></block></xml>";
-			LOG.warn("Using empty command parameters setup for command " + input.getModElement().getName());
+			LOG.warn("Using empty command parameters setup for command {}", input.getModElement().getName());
 		}
 		return command;
 	}

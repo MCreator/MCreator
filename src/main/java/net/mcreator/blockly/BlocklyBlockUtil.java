@@ -64,7 +64,7 @@ public class BlocklyBlockUtil {
 		List<Element> base_blocks = new ArrayList<>();
 		List<Element> nextblock = XMLUtil.getChildrenWithName(start_block, "block");
 		if (!nextblock.isEmpty()) {
-			Element block = nextblock.get(0);
+			Element block = nextblock.getFirst();
 			if (block != null) {
 				base_blocks.add(block);
 				// after we have first block, we can find all other blocks
@@ -92,14 +92,14 @@ public class BlocklyBlockUtil {
 			List<Element> nextchildren = XMLUtil.getChildrenWithName(current, "next");
 			if (nextchildren.isEmpty())
 				break;
-			Element next = nextchildren.get(0);
+			Element next = nextchildren.getFirst();
 			if (next == null)
 				break;
 
 			List<Element> nextblock = XMLUtil.getChildrenWithName(next, "block");
 			if (nextblock.isEmpty())
 				break;
-			Element block = nextblock.get(0);
+			Element block = nextblock.getFirst();
 			if (block != null) {
 				base_blocks.add(block);
 				current = block;
@@ -127,7 +127,7 @@ public class BlocklyBlockUtil {
 	 */
 	public static String getInputBlockType(Element input) {
 		List<Element> outputBlocks = XMLUtil.getChildrenWithName(input, "block", "shadow");
-		return outputBlocks.isEmpty() ? null : outputBlocks.get(0).getAttribute("type");
+		return outputBlocks.isEmpty() ? null : outputBlocks.getFirst().getAttribute("type");
 	}
 
 }

@@ -37,17 +37,18 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
 public abstract class AbstractTool implements MouseListener, MouseMotionListener, ToolActivationListener {
-	protected String name, description;
-	protected ImageIcon icon;
+	protected final String name;
+	protected final String description;
+	protected final ImageIcon icon;
 
 	private final JPanel propertiesPanel = new JPanel(new BorderLayout());
-	protected JPanel settingsPanel = new JPanel();
+	protected final JPanel settingsPanel = new JPanel();
 
 	protected Canvas canvas;
 	protected Layer layer;
-	protected ColorSelector colorSelector;
+	protected final ColorSelector colorSelector;
 	protected LayerPanel layerPanel;
-	protected VersionManager versionManager;
+	protected final VersionManager versionManager;
 
 	private JToggleButton toolPanelButton;
 	protected boolean startSuccess = false, processSuccess = false;

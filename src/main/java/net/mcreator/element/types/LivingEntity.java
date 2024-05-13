@@ -201,7 +201,7 @@ import java.util.*;
 		this.modelLayers = new ArrayList<>();
 	}
 
-	@Override public Model getEntityModel() {
+	@Override @Nullable public Model getEntityModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (Arrays.stream(LivingEntityGUI.builtinmobmodels).map(Model::getReadableName).noneMatch(mobModelName::equals)
 				&& !mobModelName.equals("Zombie")) // legacy check as zombie was supported in the past

@@ -144,26 +144,28 @@ public class WorkspaceDialogs {
 
 		private GeneratorFlavor flavorFilter = null;
 
-		JComponent generatorSelector;
-		ValidationGroup validationGroup = new ValidationGroup();
+		final JComponent generatorSelector;
+		final ValidationGroup validationGroup = new ValidationGroup();
 
-		VTextField modName = new VTextField(24);
-		VTextField modID = new VTextField(24);
+		final VTextField modName = new VTextField(24);
+		final VTextField modID = new VTextField(24);
 
-		VTextField packageName = new VTextField(24);
-		VTextField credits = new VTextField(24);
+		final VTextField packageName = new VTextField(24);
+		final VTextField credits = new VTextField(24);
 
-		VTextField version = new VTextField(24);
-		VTextField description = new VTextField(24);
-		VTextField author = new VTextField(24);
-		VTextField websiteURL = new VTextField(24);
+		final VTextField version = new VTextField(24);
+		final VTextField description = new VTextField(24);
+		final VTextField author = new VTextField(24);
+		final VTextField websiteURL = new VTextField(24);
 
-		JComboBox<String> modPicture = new JComboBox<>();
-		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
-		JTextField updateJSON = new JTextField(24);
-		JStringListField requiredMods, dependencies, dependants;
+		final JComboBox<String> modPicture = new JComboBox<>();
+		final JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
+		final JTextField updateJSON = new JTextField(24);
+		final JStringListField requiredMods;
+		final JStringListField dependencies;
+		final JStringListField dependants;
 
-		JComboBox<String> license = new JComboBox<>(
+		final JComboBox<String> license = new JComboBox<>(
 				new String[] { "Not specified", "Academic Free License v3.0", "Ace3 Style BSD", "All Rights Reserved",
 						"Apache License version 2.0", "Apple Public Source License version 2.0 (APSL)",
 						"BSD License Common Development and Distribution License (CDDL)",
@@ -176,9 +178,9 @@ public class WorkspaceDialogs {
 						"MIT License", "Mozilla Public License 1.0 (MPL)", "Mozilla Public License 1.1 (MPL 1.1)",
 						"Mozilla Public License 2.0", "Public Domain", "WTFPL", "Custom license" });
 
-		Map<String, JCheckBox> apis = new HashMap<>();
+		final Map<String, JCheckBox> apis = new HashMap<>();
 
-		JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
+		final JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
 
 		private boolean modIDManuallyEntered = false;
 		private boolean packageNameManuallyEntered = false;

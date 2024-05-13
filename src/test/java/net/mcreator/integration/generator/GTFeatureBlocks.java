@@ -25,7 +25,6 @@ import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.parts.procedure.Procedure;
 import net.mcreator.element.types.Feature;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.integration.TestWorkspaceDataProvider;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.blockly.BlocklyEditorType;
@@ -43,12 +42,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTFeatureBlocks {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
-		// silently skip if features are not supported by this generator
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.FEATURE)
-				== GeneratorStats.CoverageStatus.NONE) {
-			return;
-		}
-
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.FEATURE);
 
 		for (ToolboxBlock featureBlock : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
@@ -195,8 +188,8 @@ public class GTFeatureBlocks {
 						feature.featurexml = getXMLFor("placement_block_predicate_filter", "condition", testXML);
 				case "IntProvider" -> feature.featurexml = getXMLFor("placement_count", "count", testXML);
 				default -> {
-					LOG.warn("[" + generatorName + "] Skipping feature block of unrecognized type: "
-							+ featureBlock.getMachineName());
+					LOG.warn("[{}] Skipping feature block of unrecognized type: {}", generatorName,
+							featureBlock.getMachineName());
 					continue;
 				}
 				}
@@ -207,8 +200,7 @@ public class GTFeatureBlocks {
 				assertTrue(workspace.getGenerator().generateElement(feature));
 				workspace.getModElementManager().storeModElement(feature);
 			} catch (Throwable t) {
-				fail("[" + generatorName + "] Failed generating procedure block: " + featureBlock.getMachineName());
-				t.printStackTrace();
+				fail("[" + generatorName + "] Failed generating procedure block: " + featureBlock.getMachineName(), t);
 			}
 		}
 	}

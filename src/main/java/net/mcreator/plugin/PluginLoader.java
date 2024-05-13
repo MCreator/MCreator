@@ -103,16 +103,16 @@ public class PluginLoader extends URLClassLoader {
 		for (Plugin plugin : pluginsLoadList) {
 			if (plugin.getInfo().getDependencies() != null) {
 				if (!idList.containsAll(plugin.getInfo().getDependencies())) {
-					LOG.warn(plugin.getInfo().getName() + " can not be loaded. The plugin needs " + plugin.getInfo()
-							.getDependencies());
+					LOG.warn("{} can not be loaded. The plugin needs {}", plugin.getInfo().getName(),
+							plugin.getInfo().getDependencies());
 					plugin.loaded_failure = "missing plugin dependencies";
 					continue;
 				}
 			}
 
 			try {
-				LOG.info("Loading plugin: " + plugin.getID() + " from " + plugin.getFile() + ", weight: "
-						+ plugin.getWeight());
+				LOG.info("Loading plugin: {} from {}, weight: {}", plugin.getID(), plugin.getFile(),
+						plugin.getWeight());
 				addURL(plugin.toURL());
 
 				if (PreferencesManager.PREFERENCES.hidden.enableJavaPlugins.get() && plugin.isJavaPlugin()) {
@@ -134,7 +134,7 @@ public class PluginLoader extends URLClassLoader {
 
 								plugin.loaded_failure =
 										"internal error: " + e.getClass().getSimpleName() + ": " + e.getMessage();
-								LOG.error("Failed to load class " + name + " for plugin " + plugin.getID(), e);
+								LOG.error("Failed to load class {} for plugin {}", name, plugin.getID(), e);
 								throw e;
 							}
 						}
@@ -149,13 +149,13 @@ public class PluginLoader extends URLClassLoader {
 					JavaPlugin javaPlugin = (JavaPlugin) ctor.newInstance(plugin);
 					javaPlugins.add(javaPlugin);
 				} else if (plugin.isJavaPlugin()) {
-					LOG.warn(plugin.getID() + " is Java plugin, but Java plugins are disabled in preferences");
+					LOG.warn("{} is Java plugin, but Java plugins are disabled in preferences", plugin.getID());
 
 					plugin.loaded_failure = "Java plugins disabled";
 				}
 			} catch (Exception e) {
 				plugin.loaded_failure = "Load error: " + e.getMessage();
-				LOG.error("Failed to load plugin " + plugin.getID(), e);
+				LOG.error("Failed to load plugin {}", plugin.getID(), e);
 			}
 		}
 
@@ -224,7 +224,7 @@ public class PluginLoader extends URLClassLoader {
 	}
 
 	synchronized private List<Plugin> listPluginsFromFolder(File folder, boolean builtin) {
-		LOG.debug("Searching for plugins in: " + folder);
+		LOG.debug("Searching for plugins in: {}", folder);
 
 		List<Plugin> loadList = new ArrayList<>();
 
@@ -233,7 +233,7 @@ public class PluginLoader extends URLClassLoader {
 			Plugin plugin = loadPlugin(pluginFile, builtin);
 			if (plugin != null) {
 				if (plugins.contains(plugin)) {
-					LOG.warn("Trying to load duplicate plugin: " + plugin.getID() + " from: " + plugin.getFile());
+					LOG.warn("Trying to load duplicate plugin: {} from: {}", plugin.getID(), plugin.getFile());
 					continue;
 				}
 				plugins.add(plugin);
@@ -255,7 +255,7 @@ public class PluginLoader extends URLClassLoader {
 					plugin.file = pluginFile;
 					return validatePlugin(plugin);
 				} catch (Exception e) {
-					LOG.error("Failed to load plugin from " + pluginFile, e);
+					LOG.error("Failed to load plugin from {}", pluginFile, e);
 					failedPlugins.add(new PluginLoadFailure(FilenameUtils.getBaseName(pluginFile.getName()), pluginFile,
 							"IO error: " + e.getMessage()));
 				}
@@ -274,7 +274,7 @@ public class PluginLoader extends URLClassLoader {
 				plugin.file = pluginFile;
 				return validatePlugin(plugin);
 			} catch (Exception e) {
-				LOG.error("Failed to load plugin from " + pluginFile, e);
+				LOG.error("Failed to load plugin from {}", pluginFile, e);
 				failedPlugins.add(new PluginLoadFailure(FilenameUtils.getBaseName(pluginFile.getName()), pluginFile,
 						"IO error: " + e.getMessage()));
 			}
@@ -284,13 +284,13 @@ public class PluginLoader extends URLClassLoader {
 
 	@Nullable private Plugin validatePlugin(Plugin plugin) {
 		if (!plugin.isBuiltin() && plugin.getSupportedVersions() == null) {
-			LOG.warn("Plugin " + plugin.getID() + " does not specify supportedversions.");
+			LOG.warn("Plugin {} does not specify supportedversions.", plugin.getID());
 			failedPlugins.add(new PluginLoadFailure(plugin, "plugin is missing supportedversions"));
 			return null;
 		}
 
 		if (!plugin.isCompatible()) {
-			LOG.warn("Plugin " + plugin.getID() + " is not compatible with this MCreator version!");
+			LOG.warn("Plugin {} is not compatible with this MCreator version!", plugin.getID());
 			if (!Launcher.version.isDevelopment() && System.getenv("MCREATOR_PLUGINS_DEV")
 					== null) { // We allow loading of incompatible plugins in dev
 				failedPlugins.add(new PluginLoadFailure(plugin, "incompatible MCreator version"));
@@ -319,7 +319,7 @@ public class PluginLoader extends URLClassLoader {
 										null);
 							}
 						} catch (Exception e) {
-							LOG.warn("Failed to parse update info for plugin: " + plugin.getID(), e);
+							LOG.warn("Failed to parse update info for plugin: {}", plugin.getID(), e);
 						}
 					}
 				}

@@ -24,7 +24,6 @@ import net.mcreator.element.types.interfaces.ITabContainedElement;
 import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.MCItem;
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.component.ReordarableListTransferHandler;
 import net.mcreator.ui.init.BlockItemIcons;
 import net.mcreator.ui.init.L10N;
@@ -117,30 +116,20 @@ public class ElementOrderEditor {
 		}
 
 		mainPanel.add("Center", tabs);
-		mainPanel.setPreferredSize(new Dimension(748, 320));
+		mainPanel.setPreferredSize(new Dimension(720, 320));
 
 		int resultval = JOptionPane.showOptionDialog(mcreator, mainPanel, L10N.t("dialog.element_order.editor_title"),
-				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null, new String[] { "Save layout", "Cancel" },
-				"");
-
+				JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE, null,
+				new String[] { "Save layout", UIManager.getString("OptionPane.cancelButtonText") }, "");
 		if (resultval == 0) {
-			int currid = 1;
-
-			Map<ModElement, Integer> idmap = new HashMap<>();
 			for (Map.Entry<String, DefaultListModel<ModElement>> entry : tabEditors.entrySet()) {
-				for (int i = 0; i < entry.getValue().size(); i++) {
-					ModElement element = entry.getValue().getElementAt(i);
-					idmap.put(element, currid);
-					currid++;
+				ModElement[] newOrder = Collections.list(entry.getValue().elements()).toArray(new ModElement[0]);
+				if (!Arrays.equals(newOrder, originalOrder.get(entry.getKey()))) {
+					mcreator.getWorkspace().getCreativeTabsOrder()
+							.setElementOrderInTab(entry.getKey(), Collections.list(entry.getValue().elements()));
 				}
 			}
-
-			for (ModElement element : mcreator.getWorkspace().getModElements()) {
-				if (idmap.get(element) != null)
-					element.setSortID(idmap.get(element));
-				else
-					element.setSortID(currid++);
-			}
+			mcreator.getWorkspace().markDirty();
 		}
 	}
 

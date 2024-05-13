@@ -78,13 +78,13 @@ import static org.junit.jupiter.api.Assertions.*;
 		// reduce autosave interval for tests
 		PreferencesManager.PREFERENCES.backups.workspaceAutosaveInterval.set(2000);
 
-		LOG.info("Test workspace folder: " + workspace.getWorkspaceFolder());
+		LOG.info("Test workspace folder: {}", workspace.getWorkspaceFolder());
 	}
 
 	@Test public void testModElementsDefaultLocale() throws Exception {
 		long rgenseed = System.currentTimeMillis();
 		Random random = new Random(rgenseed);
-		LOG.info("Random number generator seed: " + rgenseed);
+		LOG.info("Random number generator seed: {}", rgenseed);
 
 		PreferencesManager.PREFERENCES.ui.language.set(L10N.DEFAULT_LOCALE);
 		L10N.initTranslations();
@@ -97,14 +97,14 @@ import static org.junit.jupiter.api.Assertions.*;
 	@Test public void testModElementsNonDefaultLocale() throws Exception {
 		long rgenseed = System.currentTimeMillis();
 		Random random = new Random(rgenseed);
-		LOG.info("Random number generator seed: " + rgenseed);
+		LOG.info("Random number generator seed: {}", rgenseed);
 
 		PreferencesManager.PREFERENCES.ui.language.set(
 				L10N.getSupportedLocales().stream().filter(locale -> locale != L10N.DEFAULT_LOCALE)
 						.max(Comparator.comparingInt(L10N::getUITextsLocaleSupport)).orElse(null));
 		L10N.initTranslations();
 
-		LOG.info("Testing mod element GUI for locale " + PreferencesManager.PREFERENCES.ui.language.get());
+		LOG.info("Testing mod element GUI for locale {}", PreferencesManager.PREFERENCES.ui.language.get());
 
 		testModElementLoading(random);
 	}
@@ -118,8 +118,8 @@ import static org.junit.jupiter.api.Assertions.*;
 			List<GeneratableElement> generatableElements = TestWorkspaceDataProvider.getModElementExamplesFor(workspace,
 					modElementType, true, random);
 
-			LOG.info("Testing mod element type UI " + modElementType.getReadableName() + " with "
-					+ generatableElements.size() + " variants");
+			LOG.info("Testing mod element type UI {} with {} variants", modElementType.getReadableName(),
+					generatableElements.size());
 
 			for (GeneratableElement generatableElementOrig : generatableElements) {
 				ModElement modElement = generatableElementOrig.getModElement();

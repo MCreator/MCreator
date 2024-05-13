@@ -40,7 +40,7 @@ public class DimensionLuminanceFixer implements IConverter {
 				dimension.portalLuminance = (int) Math.floor(oldLuminance * 15);
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not update luminance field of: " + dimension.getModElement().getName());
+			LOG.warn("Could not update luminance field of: {}", dimension.getModElement().getName());
 		}
 		return dimension;
 	}

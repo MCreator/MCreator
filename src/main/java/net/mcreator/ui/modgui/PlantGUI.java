@@ -879,7 +879,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		boundingBoxList.setEntries(plant.boundingBoxes);
 
 		Model model = plant.getItemModel();
-		if (model != null && model.getType() != null && model.getReadableName() != null)
+		if (model != null)
 			renderType.setSelectedItem(model);
 
 		plantType.setSelectedItem(plant.plantType);

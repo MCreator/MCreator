@@ -69,8 +69,8 @@ class DeclarationChecker {
 		List<ImportDeclaration> imports = compilationUnit.getImports();
 
 		if (clickedWord.contains(".")) {
-			DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(workspace,
-					clickedWord, compilationUnit.getPackageName(), jarManager);
+			DeclarationFinder.InClassPosition position = ClassFinder.fqdnToInClassPosition(workspace, clickedWord,
+					compilationUnit.getPackageName(), jarManager);
 			if (position != null)
 				return inClassPositionCaretFix(position, clickedWord);
 		}
@@ -94,8 +94,8 @@ class DeclarationChecker {
 		return inClassPositionCaretFix(position, clickedWord);
 	}
 
-	private static DeclarationFinder.InClassPosition inClassPositionCaretFix(
-			DeclarationFinder.InClassPosition original, String className) {
+	private static DeclarationFinder.InClassPosition inClassPositionCaretFix(DeclarationFinder.InClassPosition original,
+			String className) {
 		if (original == null)
 			return null;
 		String codeFromParent = FileIO.readFileToString(original.classFileNode);

@@ -403,11 +403,11 @@ public class BlockGUI extends ModElementGUI<Block> {
 
 				if (!isEditingMode()) {
 					lightOpacity.setValue(0);
-					if (blockBase.getSelectedItem().equals("Wall") || blockBase.getSelectedItem().equals("Fence")
-							|| blockBase.getSelectedItem().equals("TrapDoor") || blockBase.getSelectedItem()
-							.equals("Door") || blockBase.getSelectedItem().equals("FenceGate")
-							|| blockBase.getSelectedItem().equals("EndRod") || blockBase.getSelectedItem()
-							.equals("PressurePlate") || blockBase.getSelectedItem().equals("Button")) {
+					if ("Wall".equals(blockBase.getSelectedItem()) || "Fence".equals(blockBase.getSelectedItem())
+							|| "TrapDoor".equals(blockBase.getSelectedItem()) || "Door".equals(
+							blockBase.getSelectedItem()) || "FenceGate".equals(blockBase.getSelectedItem())
+							|| "EndRod".equals(blockBase.getSelectedItem()) || "PressurePlate".equals(
+							blockBase.getSelectedItem()) || "Button".equals(blockBase.getSelectedItem())) {
 						hasTransparency.setSelected(true);
 					}
 				}
@@ -1463,7 +1463,7 @@ public class BlockGUI extends ModElementGUI<Block> {
 		tickRate.setEnabled(!tickRandomly.isSelected());
 
 		Model model = block.getItemModel();
-		if (model != null && model.getType() != null && model.getReadableName() != null)
+		if (model != null)
 			renderType.setSelectedItem(model);
 
 		customDrop.setEnabled(!useLootTableForDrops.isSelected());

@@ -157,7 +157,7 @@ public class MCItem extends DataListEntry {
 			}
 
 		} catch (Exception e) {
-			LOG.warn("Failed to load icon for item: " + name, e);
+			LOG.warn("Failed to load icon for item: {}", name, e);
 		}
 
 		return DEFAULT_ICON;
