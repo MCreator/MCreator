@@ -50,7 +50,7 @@ public class ExternalBlockLoader {
 	private final Map<String, List<Tuple<ToolboxBlock, String>>> toolbox = new HashMap<>();
 
 	ExternalBlockLoader(String resourceFolder) {
-		LOG.debug("Loading blocks for " + resourceFolder);
+		LOG.debug("Loading blocks for {}", resourceFolder);
 
 		List<ToolboxCategory> toolboxCategories = new ArrayList<>();
 
@@ -81,8 +81,9 @@ public class ExternalBlockLoader {
 						if (parameters_count == parameters_count_en) {
 							jsonresult.add("message0", new JsonPrimitive(localized_message));
 						} else {
-							LOG.warn("Not all procedure block inputs are defined using %N for block "
-									+ toolboxBlock.getMachineName() + " for the selected language");
+							LOG.warn(
+									"Not all procedure block inputs are defined using %N for block {} for the selected language",
+									toolboxBlock.getMachineName());
 							if (localized_message_en != null) {
 								jsonresult.add("message0", new JsonPrimitive(localized_message_en));
 							}
@@ -105,7 +106,7 @@ public class ExternalBlockLoader {
 					toolboxBlocksList.add(toolboxBlock);
 				}
 			} catch (Exception e) {
-				LOG.error("Failed to load procedure block: " + procedureBlock, e);
+				LOG.error("Failed to load procedure block: {}", procedureBlock, e);
 			}
 		}
 

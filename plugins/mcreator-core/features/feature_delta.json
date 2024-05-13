@@ -31,8 +31,8 @@
   "mcreator": {
     "toolbox_id": "features",
     "toolbox_init": [
-      "<value name=\"contents\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"rim\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"contents\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
+      "<value name=\"rim\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
       "<value name=\"size\"><block type=\"int_provider_constant\"><field name=\"value\">5</field></block></value>",
       "<value name=\"rimSize\"><block type=\"int_provider_constant\"><field name=\"value\">1</field></block></value>"
     ],

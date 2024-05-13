@@ -26,8 +26,8 @@
   "mcreator": {
     "toolbox_id": "features",
     "toolbox_init": [
-      "<value name=\"targetState\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"newState\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"targetState\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
+      "<value name=\"newState\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
       "<value name=\"radius\"><block type=\"int_provider_constant\"><field name=\"value\">5</field></block></value>"
     ],
     "inputs": [

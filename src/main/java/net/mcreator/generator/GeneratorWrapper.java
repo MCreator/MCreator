@@ -76,7 +76,7 @@ import java.util.stream.Collectors;
 			return element.getMCItems().stream()
 					.anyMatch(e -> e.getName().equals(elementName) && e.getType().equals("block"));
 		else {
-			generator.getLogger().warn("Failed to determine mod element for: " + elementName);
+			generator.getLogger().warn("Failed to determine mod element for: {}", elementName);
 			return false;
 		}
 	}
@@ -96,7 +96,7 @@ import java.util.stream.Collectors;
 		if (element != null)
 			return element.getRegistryName();
 
-		generator.getLogger().warn("Failed to determine registry name for: " + modElement);
+		generator.getLogger().warn("Failed to determine registry name for: {}", modElement);
 		return NameMapper.UNKNOWN_ELEMENT;
 	}
 
@@ -106,7 +106,7 @@ import java.util.stream.Collectors;
 			return getResourceLocationForModElement(element);
 		}
 
-		generator.getLogger().warn("Failed to determine resource location for mod element: " + modElement);
+		generator.getLogger().warn("Failed to determine resource location for mod element: {}", modElement);
 		return generator.getWorkspaceSettings().getModID() + ":" + NameMapper.UNKNOWN_ELEMENT;
 	}
 

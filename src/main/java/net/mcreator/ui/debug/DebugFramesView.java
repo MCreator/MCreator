@@ -122,31 +122,20 @@ public class DebugFramesView extends JPanel {
 	}
 
 	private static String getValueString(Value value) {
-		if (value == null) {
-			return "null";
-		} else if (value instanceof StringReference) {
-			return ((StringReference) value).value();
-		} else if (value instanceof BooleanValue) {
-			return Boolean.toString(((BooleanValue) value).value());
-		} else if (value instanceof ByteValue) {
-			return Byte.toString(((ByteValue) value).value());
-		} else if (value instanceof CharValue) {
-			return Character.toString(((CharValue) value).value());
-		} else if (value instanceof ShortValue) {
-			return Short.toString(((ShortValue) value).value());
-		} else if (value instanceof IntegerValue) {
-			return Integer.toString(((IntegerValue) value).value());
-		} else if (value instanceof LongValue) {
-			return Long.toString(((LongValue) value).value());
-		} else if (value instanceof FloatValue) {
-			return Float.toString(((FloatValue) value).value());
-		} else if (value instanceof DoubleValue) {
-			return Double.toString(((DoubleValue) value).value());
-		} else if (value instanceof ArrayReference arrayReference) {
-			return "[size: " + arrayReference.getValues().size() + "]";
-		} else {
-			return value.toString();
-		}
+		return switch (value) {
+			case null -> "null";
+			case StringReference stringReference -> stringReference.value();
+			case BooleanValue booleanValue -> Boolean.toString(booleanValue.value());
+			case ByteValue byteValue -> Byte.toString(byteValue.value());
+			case CharValue charValue -> Character.toString(charValue.value());
+			case ShortValue shortValue -> Short.toString(shortValue.value());
+			case IntegerValue integerValue -> Integer.toString(integerValue.value());
+			case LongValue longValue -> Long.toString(longValue.value());
+			case FloatValue floatValue -> Float.toString(floatValue.value());
+			case DoubleValue doubleValue -> Double.toString(doubleValue.value());
+			case ArrayReference arrayReference -> "[size: " + arrayReference.getValues().size() + "]";
+			default -> value.toString();
+		};
 	}
 
 	private static class FramesCellRenderer extends DefaultTreeCellRenderer {

@@ -332,7 +332,7 @@ public final class WorkspaceSelector extends JFrame implements DropTargetListene
 			try {
 				List<?> transferData = (List<?>) transferable.getTransferData(DataFlavor.javaFileListFlavor);
 				if (!transferData.isEmpty()) {
-					Object transfObj = transferData.get(0);
+					Object transfObj = transferData.getFirst();
 					if (transfObj instanceof File workspaceFile) {
 						if (workspaceFile.getName().endsWith(".mcreator")) {
 							workspaceOpenListener.workspaceOpened(workspaceFile);

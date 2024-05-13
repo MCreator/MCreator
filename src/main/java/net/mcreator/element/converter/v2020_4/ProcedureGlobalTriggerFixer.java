@@ -78,7 +78,7 @@ public class ProcedureGlobalTriggerFixer implements IConverter {
 
 			procedure.procedurexml = writer.getBuffer().toString();
 		} catch (Exception e) {
-			LOG.warn("Failed to fix entity dependency for procedure " + input.getModElement().getName());
+			LOG.warn("Failed to fix entity dependency for procedure {}", input.getModElement().getName());
 		}
 
 		return procedure;

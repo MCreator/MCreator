@@ -137,7 +137,7 @@ import java.util.stream.Collectors;
 
 	private final JRadioButtonMenuItem sortDateCreated = new JRadioButtonMenuItem(
 			L10N.t("workspace.elements.list.sort_date"));
-	public JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name"));
+	public final JRadioButtonMenuItem sortName = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_name"));
 	private final JRadioButtonMenuItem sortType = new JRadioButtonMenuItem(L10N.t("workspace.elements.list.sort_type"));
 
 	private final OptionPaneValidatior folderNameValidator = new OptionPaneValidatior() {
@@ -1173,9 +1173,9 @@ import java.util.stream.Collectors;
 					modElementFiles.stream().filter(e -> !(e instanceof ListTemplate)).toList(), modElementGlobalFiles,
 					modElementListFiles).show(component, x, y);
 		else if (modElementFiles.size() == 1)
-			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.get(0).getFile());
+			ProjectFileOpener.openCodeFile(mcreator, modElementFiles.getFirst().getFile());
 		else if (modElementGlobalFiles.size() == 1)
-			ProjectFileOpener.openCodeFile(mcreator, modElementGlobalFiles.get(0).getFile());
+			ProjectFileOpener.openCodeFile(mcreator, modElementGlobalFiles.getFirst().getFile());
 	}
 
 	private void deleteCurrentlySelectedModElement() {
@@ -1269,8 +1269,8 @@ import java.util.stream.Collectors;
 	}
 
 	private class FilterModel extends DefaultListModel<IElement> {
-		ArrayList<IElement> items;
-		ArrayList<IElement> filterItems;
+		final ArrayList<IElement> items;
+		final ArrayList<IElement> filterItems;
 
 		private final static Pattern pattern = Pattern.compile("([^\"]\\S*|\".+?\")\\s*");
 

@@ -76,7 +76,7 @@ public class SpecialInformationConverter implements IConverter {
 				specialInformationField.set(input, new StringListProcedure(null, specialInfo));
 			}
 		} catch (Exception e) {
-			LOG.warn("Failed to convert special information for " + input.getModElement().getName(), e);
+			LOG.warn("Failed to convert special information for {}", input.getModElement().getName(), e);
 		}
 
 		return input;

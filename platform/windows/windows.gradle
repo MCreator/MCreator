@@ -50,7 +50,7 @@ tasks.register('exportWin64', Copy.class) {
     }
     into('plugins') { from 'build/plugins/' }
     into('license') { from 'license' }
-    into('jdk') { from 'jdk/jdk17_win_64' }
+    into('jdk') { from 'jdk/jdk21_win_64' }
 
     doLast {
         signFile(file('build/export/win64/mcreator.exe'))

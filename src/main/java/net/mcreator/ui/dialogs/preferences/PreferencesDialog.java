@@ -39,8 +39,8 @@ import java.util.Map;
 
 public class PreferencesDialog extends MCreatorDialog {
 
-	DefaultListModel<String> model = new DefaultListModel<>();
-	JPanel preferences = new JPanel();
+	final DefaultListModel<String> model = new DefaultListModel<>();
+	final JPanel preferences = new JPanel();
 
 	private final Map<String, JPanel> sectionPanels = new HashMap<>();
 
