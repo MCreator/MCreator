@@ -30,6 +30,7 @@ import net.mcreator.generator.GeneratorWrapper;
 import net.mcreator.generator.mapping.MappableElement;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.mapping.UniquelyMappedElement;
+import net.mcreator.minecraft.MCItem;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.TagElement;
@@ -149,10 +150,8 @@ import java.util.*;
 							tabMap.put(tab, new ArrayList<>());
 
 						// If tab does not have custom order, add items to the end of the list
-						if (workspace.getCreativeTabsOrder().get(tab) == null) {
-							tabMap.get(tab).addAll(tabItems.stream().map(e -> new MItemBlock(workspace, e.getName()))
-									.toList());
-						}
+						if (workspace.getCreativeTabsOrder().get(tab) == null)
+							tabMap.get(tab).addAll(tabItems);
 					}
 				}
 			}
