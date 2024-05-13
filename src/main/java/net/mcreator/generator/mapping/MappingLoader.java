@@ -75,8 +75,7 @@ public class MappingLoader {
 							mappings.put(mappingName, merged);
 						}
 					} catch (Exception e) {
-						LOG.error("[" + mappingName + "] Error: " + e.getMessage() + " for mapping file "
-								+ mappingResource);
+						LOG.error("[{}] Error: {} for mapping file {}", mappingName, e.getMessage(), mappingResource);
 					}
 				});
 			} catch (IOException e) {

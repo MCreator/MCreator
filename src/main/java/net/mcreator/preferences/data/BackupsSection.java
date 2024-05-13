@@ -25,10 +25,10 @@ import net.mcreator.preferences.entries.IntegerEntry;
 
 public class BackupsSection extends PreferencesSection {
 
-	public IntegerEntry workspaceAutosaveInterval;
-	public IntegerEntry automatedBackupInterval;
-	public IntegerEntry numberOfBackupsToStore;
-	public BooleanEntry backupOnVersionSwitch;
+	public final IntegerEntry workspaceAutosaveInterval;
+	public final IntegerEntry automatedBackupInterval;
+	public final IntegerEntry numberOfBackupsToStore;
+	public final BooleanEntry backupOnVersionSwitch;
 
 	public BackupsSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);

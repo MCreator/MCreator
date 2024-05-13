@@ -40,15 +40,7 @@ public class ListDiffTest {
 		assertEquals(result.changed().size(), 1);
 	}
 
-	private static class TestObject {
-
-		String fieldA;
-		int fieldB;
-
-		TestObject(String fieldA, int fieldB) {
-			this.fieldA = fieldA;
-			this.fieldB = fieldB;
-		}
+	private record TestObject(String fieldA, int fieldB) {
 
 		@Override public boolean equals(Object o) {
 			return o instanceof TestObject && ((TestObject) o).fieldB == fieldB;

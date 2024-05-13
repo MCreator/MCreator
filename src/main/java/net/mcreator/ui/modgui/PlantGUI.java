@@ -63,7 +63,6 @@ import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
-import java.awt.event.ActionListener;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
@@ -115,19 +114,20 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	private final MCItemHolder customDrop = new MCItemHolder(mcreator, ElementUtil::loadBlocksAndItems);
 
+	private final JComboBox<String> plantType = new JComboBox<>(new String[] { "normal", "double", "growapable" });
+	private final CardLayout plantTypesLayout = new CardLayout();
+	private final JPanel plantTypesCardPanel = new JPanel(plantTypesLayout);
+	private final JLabel plantTypeIndicator = new JLabel();
+
 	private final Model cross = new Model.BuiltInModel("Cross model");
 	private final Model crop = new Model.BuiltInModel("Crop model");
-	private final JRadioButton normalType = L10N.radiobutton("elementgui.plant.use_static_plant_type");
 	private final JComboBox<String> growapableSpawnType = new JComboBox<>();
 	private final JSpinner growapableMaxHeight = new JSpinner(new SpinnerNumberModel(3, 1, 14, 1));
 
 	private final JComboBox<String> suspiciousStewEffect = new JComboBox<>();
 	private final JSpinner suspiciousStewDuration = new JSpinner(new SpinnerNumberModel(100, 0, 100000, 1));
 
-	private final JRadioButton doubleType = L10N.radiobutton("elementgui.plant.use_double_plant_type");
-
 	private final DataListComboBox creativeTab = new DataListComboBox(mcreator);
-	private final JRadioButton growapableType = L10N.radiobutton("elementgui.plant.use_growable_plant_type");
 	private final SearchableComboBox<Model> renderType = new SearchableComboBox<>(new Model[] { cross, crop });
 
 	private final JComboBox<String> offsetType = new JComboBox<>(new String[] { "XZ", "XYZ", "NONE" });
@@ -302,10 +302,13 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		JPanel texturesAndRent = new JPanel(new BorderLayout(0, 0));
 		texturesAndRent.setOpaque(false);
 
-		texturesAndRent.add("Center", PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 1,
+		JComponent texturesPan = PanelUtils.totalCenterInPanel(PanelUtils.gridElements(2, 1,
 				ComponentUtils.squareAndBorder(texture, new Color(125, 255, 174),
 						L10N.t("elementgui.plant.texture_place_top_main")),
-				ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom")))));
+				ComponentUtils.squareAndBorder(textureBottom, L10N.t("elementgui.plant.texture_place_bottom"))));
+		texturesPan.setBorder(BorderFactory.createEmptyBorder(0, 50, 0, 50));
+		texturesAndRent.add("Center", texturesPan);
+
 		texturesAndRent.add("East", PanelUtils.centerAndSouthElement(rent, specialInformation, 2, 2));
 
 		texturesAndRent.setBorder(BorderFactory.createTitledBorder(
@@ -317,38 +320,38 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 		sbbp2.setOpaque(false);
 
-		ButtonGroup bg = new ButtonGroup();
-		bg.add(normalType);
-		bg.add(growapableType);
-		bg.add(doubleType);
-
-		normalType.setSelected(true);
-
-		normalType.setOpaque(false);
-		growapableType.setOpaque(false);
-		doubleType.setOpaque(false);
-
 		emissiveRendering.setOpaque(false);
 		isSolid.setOpaque(false);
 
 		isReplaceable.setOpaque(false);
 		isBonemealable.setOpaque(false);
 
-		ActionListener planttypeselected = event -> updatePlantType();
-		normalType.addActionListener(planttypeselected);
-		growapableType.addActionListener(planttypeselected);
-		doubleType.addActionListener(planttypeselected);
+		plantTypesCardPanel.setOpaque(false);
 
-		JPanel ptipe = new JPanel(new GridLayout(1, 3, 10, 10));
-		ptipe.setOpaque(false);
-
-		JPanel ptipe1 = new JPanel(new BorderLayout(5, 5));
-		ptipe1.setBorder(BorderFactory.createTitledBorder(
+		JPanel plantTypeSelector = new JPanel(new BorderLayout(5, 5));
+		plantTypeSelector.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.plant.type_static"), 0, 0, getFont().deriveFont(12.0f),
+				L10N.t("elementgui.plant.plant_types"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		JPanel staticPlantProperties = new JPanel(new GridLayout(2, 2, 0, 2));
+		JPanel plantTypePanel = new JPanel(new GridLayout(1, 2, 15, 2));
+		plantTypePanel.setOpaque(false);
+		plantTypePanel.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/plant_type"),
+				L10N.label("elementgui.plant.plant_type")));
+		plantTypePanel.add(plantType);
+
+		plantType.setRenderer(new PlantTypeListRenderer());
+
+		plantTypeIndicator.setBorder(BorderFactory.createEmptyBorder(0, 20, 0, 20));
+
+		plantTypeSelector.add("Center", PanelUtils.northAndCenterElement(plantTypePanel, plantTypesCardPanel, 2, 2));
+		plantTypeSelector.add("East", plantTypeIndicator);
+		plantTypeSelector.setOpaque(false);
+
+		// Panel for static plants
+		JPanel staticPlantCard = new JPanel(new BorderLayout(15, 5));
+
+		JPanel staticPlantProperties = new JPanel(new GridLayout(2, 2, 15, 2));
 		staticPlantProperties.setOpaque(false);
 		staticPlantProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("plant/suspicious_stew_effect"),
 				L10N.label("elementgui.plant.suspicious_stew_effect")));
@@ -357,38 +360,27 @@ public class PlantGUI extends ModElementGUI<Plant> {
 				L10N.label("elementgui.plant.suspicious_stew_duration")));
 		staticPlantProperties.add(suspiciousStewDuration);
 
-		ptipe1.add("Center", PanelUtils.pullElementUp(staticPlantProperties));
-		ptipe1.add("North", normalType);
-		ptipe1.add("South", PanelUtils.centerInPanel(new JLabel(UIRES.get("plant_normal"))));
-		ptipe1.setOpaque(false);
+		staticPlantCard.add("Center", PanelUtils.pullElementUp(staticPlantProperties));
+		staticPlantCard.setOpaque(false);
 
-		JPanel ptipe2 = new JPanel(new BorderLayout(5, 5));
-		ptipe2.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.plant.type_growable"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
-
-		ptipe2.add("Center", PanelUtils.pullElementUp(PanelUtils.gridElements(1, 2, 0, 2,
+		// Panel for sugar cane-like plants
+		JPanel growablePlantCard = new JPanel(new BorderLayout(15, 5));
+		growablePlantCard.add("Center", PanelUtils.pullElementUp(PanelUtils.gridElements(1, 2, 15, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("plant/max_height"),
 						L10N.label("elementgui.plant.max_height")), growapableMaxHeight)));
-		ptipe2.add("North", growapableType);
-		ptipe2.add("South", PanelUtils.centerInPanel(new JLabel(UIRES.get("plant_growable"))));
-		ptipe2.setOpaque(false);
+		growablePlantCard.setOpaque(false);
 
-		JPanel ptipe3 = new JPanel(new BorderLayout(5, 5));
-		ptipe3.setBorder(BorderFactory.createTitledBorder(
-				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
-				L10N.t("elementgui.plant.type_double"), 0, 0, getFont().deriveFont(12.0f),
-				Theme.current().getForegroundColor()));
-		ptipe3.add("North", doubleType);
-		ptipe3.add("South", PanelUtils.centerInPanel(new JLabel(UIRES.get("plant_double"))));
-		ptipe3.setOpaque(false);
+		// Panel for double plants
+		JPanel doublePlantCard = new JPanel(new BorderLayout(15, 5));
+		doublePlantCard.setOpaque(false);
 
-		ptipe.add("West", ptipe1);
-		ptipe.add("Center", ptipe2);
-		ptipe.add("East", ptipe3);
+		plantTypesCardPanel.add(staticPlantCard, "normal");
+		plantTypesCardPanel.add(growablePlantCard, "growapable");
+		plantTypesCardPanel.add(doublePlantCard, "double");
 
-		sbbp2.add("North", ptipe);
+		plantType.addActionListener(e -> updatePlantType());
+
+		sbbp2.add("North", PanelUtils.centerInPanel(plantTypeSelector));
 		sbbp2.add("Center", texturesAndRent);
 
 		pane2.setOpaque(false);
@@ -725,37 +717,22 @@ public class PlantGUI extends ModElementGUI<Plant> {
 	}
 
 	private void updatePlantType() {
-		if (normalType.isSelected()) {
-			generationType.setEnabled(true);
-			renderType.setEnabled(true);
-			suspiciousStewEffect.setEnabled(true);
-			suspiciousStewDuration.setEnabled(true);
-			growapableMaxHeight.setEnabled(false);
-		} else if (growapableType.isSelected()) {
-			generationType.setEnabled(false);
-			renderType.setEnabled(true);
-			suspiciousStewEffect.setEnabled(false);
-			suspiciousStewDuration.setEnabled(false);
-			growapableMaxHeight.setEnabled(true);
-		} else if (doubleType.isSelected()) {
-			generationType.setEnabled(true);
-			renderType.setSelectedItem(cross);
-			renderType.setEnabled(false);
-			suspiciousStewEffect.setEnabled(false);
-			suspiciousStewDuration.setEnabled(false);
-			growapableMaxHeight.setEnabled(false);
-		}
-
 		texture.setVisible(false);
 		textureBottom.setVisible(false);
 
-		if (doubleType.isSelected()) {
+		if ("double".equals(plantType.getSelectedItem())) {
 			texture.setVisible(true);
 			textureBottom.setVisible(true);
+			renderType.setSelectedItem(cross);
+			renderType.setEnabled(false);
 		} else {
 			texture.setVisible(true);
+			renderType.setEnabled(true);
 		}
 
+		plantTypesLayout.show(plantTypesCardPanel, (String) plantType.getSelectedItem());
+		plantTypeIndicator.setIcon(
+				UIRES.get("plant_" + plantType.getSelectedItem().toString().replace("growapable", "growable")));
 	}
 
 	private void updateSoundType() {
@@ -902,24 +879,10 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		boundingBoxList.setEntries(plant.boundingBoxes);
 
 		Model model = plant.getItemModel();
-		if (model != null && model.getType() != null && model.getReadableName() != null)
+		if (model != null)
 			renderType.setSelectedItem(model);
 
-		if (plant.plantType.equals("normal")) {
-			normalType.setSelected(true);
-			doubleType.setSelected(false);
-			growapableType.setSelected(false);
-		} else if (plant.plantType.equals("double")) {
-			normalType.setSelected(false);
-			doubleType.setSelected(true);
-			growapableType.setSelected(false);
-			textureBottom.setVisible(true);
-			renderType.setEnabled(false);
-		} else {
-			normalType.setSelected(false);
-			doubleType.setSelected(false);
-			growapableType.setSelected(true);
-		}
+		plantType.setSelectedItem(plant.plantType);
 
 		growapableSpawnType.setSelectedItem(plant.growapableSpawnType);
 		generationType.setSelectedItem(plant.generationType);
@@ -950,12 +913,7 @@ public class PlantGUI extends ModElementGUI<Plant> {
 		plant.particleTexture = particleTexture.getID();
 		plant.tintType = (String) tintType.getSelectedItem();
 		plant.isItemTinted = isItemTinted.isSelected();
-		if (normalType.isSelected())
-			plant.plantType = "normal";
-		else if (growapableType.isSelected())
-			plant.plantType = "growapable";
-		else
-			plant.plantType = "double";
+		plant.plantType = (String) plantType.getSelectedItem();
 		plant.growapableSpawnType = (String) growapableSpawnType.getSelectedItem();
 		plant.growapableMaxHeight = (int) growapableMaxHeight.getValue();
 		plant.suspiciousStewEffect = (String) suspiciousStewEffect.getSelectedItem();
@@ -1034,6 +992,16 @@ public class PlantGUI extends ModElementGUI<Plant> {
 
 	@Override public @Nullable URI contextURL() throws URISyntaxException {
 		return new URI(MCreatorApplication.SERVER_DOMAIN + "/wiki/how-make-plant");
+	}
+
+	private static class PlantTypeListRenderer extends DefaultListCellRenderer {
+		@Override
+		public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected,
+				boolean cellHasFocus) {
+			var label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
+			label.setText(L10N.t("elementgui.plant.plant_types." + value));
+			return label;
+		}
 	}
 
 }

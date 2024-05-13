@@ -32,11 +32,11 @@ public class GradleSection extends PreferencesSection {
 			(int) (((OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean()).getTotalMemorySize()
 					/ 1048576) - 1024;
 
-	public BooleanEntry buildOnSave;
-	public BooleanEntry passLangToMinecraft;
-	public IntegerEntry xms;
-	public IntegerEntry xmx;
-	public BooleanEntry offline;
+	public final BooleanEntry buildOnSave;
+	public final BooleanEntry passLangToMinecraft;
+	public final IntegerEntry xms;
+	public final IntegerEntry xmx;
+	public final BooleanEntry offline;
 
 	GradleSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);

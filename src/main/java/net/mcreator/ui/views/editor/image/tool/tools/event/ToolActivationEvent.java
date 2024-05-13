@@ -19,7 +19,7 @@
 package net.mcreator.ui.views.editor.image.tool.tools.event;
 
 public class ToolActivationEvent {
-	boolean activated;
+	final boolean activated;
 
 	public ToolActivationEvent(boolean activated) {
 		this.activated = activated;

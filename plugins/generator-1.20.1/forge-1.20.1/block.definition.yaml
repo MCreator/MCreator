@@ -401,6 +401,16 @@ tags:
     condition: "${data.destroyTool == 'shovel'}"
   - tag: BLOCKS:minecraft:mineable/hoe
     condition: "${data.destroyTool == 'hoe'}"
+
+  - tag: BLOCKS:minecraft:needs_stone_tool
+    condition: "${data.requiresCorrectTool && data.breakHarvestLevel == 1}"
+  - tag: BLOCKS:minecraft:needs_iron_tool
+    condition: "${data.requiresCorrectTool && data.breakHarvestLevel == 2}"
+  - tag: BLOCKS:minecraft:needs_diamond_tool
+    condition: "${data.requiresCorrectTool && data.breakHarvestLevel == 3}"
+  - tag: BLOCKS:forge:needs_netherite_tool
+    condition: "${data.requiresCorrectTool && data.breakHarvestLevel == 4}"
+
   - tag: BLOCKS:minecraft:stairs
     condition: "${data.blockBase! == 'Stairs'}"
   - tag: BLOCKS:minecraft:slabs
@@ -411,5 +421,6 @@ tags:
     condition: "${data.blockBase! == 'Wall'}"
   - tag: BLOCKS:minecraft:leaves
     condition: "${data.blockBase! == 'Leaves'}"
+
   - tag: BLOCKS:minecraft:replaceable
     condition: isReplaceable

@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.workspace;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.ui.MCreator;
@@ -37,8 +38,9 @@ class ModElementCodeDropdown extends JPopupMenu {
 	ModElementCodeDropdown(MCreator mcreator, List<GeneratorTemplate> modElementFiles,
 			List<GeneratorTemplate> modElementGlobalFiles, List<GeneratorTemplatesList> modElementListFiles) {
 		this.mcreator = mcreator;
+
 		setBorder(BorderFactory.createEmptyBorder());
-		setBackground((Theme.current().getAltBackgroundColor()).darker());
+		putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
 
 		int entryCounter = 0;
 

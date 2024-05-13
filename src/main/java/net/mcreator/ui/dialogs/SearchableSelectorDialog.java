@@ -65,8 +65,8 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 	}
 
 	class FilterModel extends DefaultListModel<T> {
-		ArrayList<T> entries;
-		ArrayList<T> filterEntries;
+		final ArrayList<T> entries;
+		final ArrayList<T> filterEntries;
 
 		FilterModel() {
 			super();

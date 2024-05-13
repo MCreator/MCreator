@@ -59,7 +59,7 @@ public class GradleErrorDialogs {
 			else if (errorCode == GradleErrorCodes.GRADLE_CACHEDATA_OUTDATED)
 				showGradleCacheOutdatedDialogOfflineMode(whereToShow, errorCode);
 			else
-				LOG.warn("Error with code " + errorCode + " was reported, but no response is registered.");
+				LOG.warn("Error with code {} was reported, but no response is registered.", errorCode);
 		});
 
 		return errorCode;

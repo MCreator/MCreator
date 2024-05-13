@@ -20,7 +20,7 @@ package net.mcreator.io.tree;
 
 public class FileTree {
 
-	public FileNode root;
+	public final FileNode root;
 
 	public FileTree(FileNode root) {
 		this.root = root;

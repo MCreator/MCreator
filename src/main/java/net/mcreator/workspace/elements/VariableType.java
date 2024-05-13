@@ -64,7 +64,7 @@ import java.util.Map;
 			else
 				return Color.decode(color);
 		} catch (Exception e) {
-			LOG.warn("The color for variable type " + name + " isn't formatted correctly. Using color black for it");
+			LOG.warn("The color for variable type {} isn't formatted correctly. Using color black for it", name);
 			return Color.BLACK;
 		}
 	}

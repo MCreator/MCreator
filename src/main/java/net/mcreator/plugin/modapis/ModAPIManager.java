@@ -77,9 +77,9 @@ public class ModAPIManager {
 
 				modApiList.put(FilenameUtilsPatched.getBaseName(apidefinition), modAPI);
 
-				LOG.debug("Loaded mod API definition: " + FilenameUtilsPatched.getBaseName(apidefinition));
+				LOG.debug("Loaded mod API definition: {}", FilenameUtilsPatched.getBaseName(apidefinition));
 			} catch (YamlEngineException e) {
-				LOG.error("Failed to load mod API definition for: " + apidefinition + ": " + e.getMessage());
+				LOG.error("Failed to load mod API definition for: {}: {}", apidefinition, e.getMessage());
 			}
 		}
 	}

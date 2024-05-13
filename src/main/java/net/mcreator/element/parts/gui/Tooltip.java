@@ -30,10 +30,10 @@ import java.awt.*;
 
 public class Tooltip extends SizedComponent {
 
-	public String name;
+	public final String name;
 
-	public StringProcedure text;
-	public Procedure displayCondition;
+	public final StringProcedure text;
+	public final Procedure displayCondition;
 
 	public Tooltip(String name, int x, int y, int width, int height, StringProcedure text, Procedure displayCondition) {
 		super(x, y, width, height);

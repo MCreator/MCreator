@@ -100,7 +100,7 @@ public class NotificationsRenderer {
 		balloonTip.setVisible(true);
 
 		if (!tips.isEmpty()) {
-			BalloonTip previous = tips.get(tips.size() - 1);
+			BalloonTip previous = tips.getLast();
 			previous.setVisible(false);
 			closeButton.addActionListener(e -> {
 				previous.setVisible(true);

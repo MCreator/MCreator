@@ -182,7 +182,7 @@ public class Generator implements IGenerator, Closeable {
 			this.generateElement(element, true);
 			return true;
 		} catch (TemplateGeneratorException e) {
-			LOG.error("Failed to generate mod element: " + element.getModElement().getName(), e);
+			LOG.error("Failed to generate mod element: {}", element.getModElement().getName(), e);
 			return false;
 		}
 	}
@@ -196,8 +196,8 @@ public class Generator implements IGenerator, Closeable {
 	public List<GeneratorFile> generateElement(GeneratableElement element, boolean formatAndOrganiseImports,
 			boolean performFSTasks) throws TemplateGeneratorException {
 		if (element.getModElement().isCodeLocked()) {
-			LOG.debug("Skipping code generation for mod element: " + element.getModElement().getName()
-					+ " - the code of this element is locked");
+			LOG.debug("Skipping code generation for mod element: {} - the code of this element is locked",
+					element.getModElement().getName());
 			return new ArrayList<>();
 		}
 
@@ -205,8 +205,8 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
 			if (element.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
-				LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-						.getRegistryName());
+				LOG.warn("Failed to load element definition for mod element type {}",
+						element.getModElement().getType().getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -256,11 +256,14 @@ public class Generator implements IGenerator, Closeable {
 			element.getModElement().putMetadata("files", generatorFiles.stream().map(GeneratorFile::getFile)
 					.map(e -> getFolderManager().getPathInWorkspace(e).replace(File.separator, "/")).toList());
 
-			// add lang keys to the workspace
+			// add/update lang keys to the workspace
 			LocalizationUtils.generateLocalizationKeys(this, element, (List<?>) map.get("localizationkeys"));
 
-			// add tag elements to the workspace
+			// add/update tag elements to the workspace
 			TagsUtils.processDefinitionToTags(this, element, (List<?>) map.get("tags"), false);
+
+			// add/update tab sorting info to the workspace
+			workspace.getCreativeTabsOrder().addOrUpdateModElementTabs(element);
 
 			// do additional tasks if mod element has them
 			element.finalizeModElementGeneration();
@@ -274,8 +277,8 @@ public class Generator implements IGenerator, Closeable {
 				.getModElementDefinition(element.getModElement().getType()); // config map
 		if (map == null) {
 			if (element.getModElement().getType() != ModElementType.UNKNOWN) // silently skip unknown elements
-				LOG.warn("Failed to load element definition for mod element type " + element.getModElement().getType()
-						.getRegistryName());
+				LOG.warn("Failed to load element definition for mod element type {}",
+						element.getModElement().getType().getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -283,15 +286,15 @@ public class Generator implements IGenerator, Closeable {
 				(List<?>) map.get("localizationkeys")).keySet());
 	}
 
-	public void removeElementFilesAndLangKeys(GeneratableElement generatableElement) {
+	public void removeElementFilesAndWorkspaceLinks(GeneratableElement generatableElement) {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(generatableElement.getModElement().getType());
 
 		if (map == null) {
 			if (generatableElement.getModElement().getType()
 					!= ModElementType.UNKNOWN) // silently skip unknown elements
-				LOG.warn("Failed to load element definition for mod element type " + generatableElement.getModElement()
-						.getType().getRegistryName());
+				LOG.warn("Failed to load element definition for mod element type {}",
+						generatableElement.getModElement().getType().getRegistryName());
 			return;
 		}
 
@@ -300,11 +303,16 @@ public class Generator implements IGenerator, Closeable {
 				template.getFile().delete();
 		}
 
+		// delete other workspace links to this ME below
+
 		// delete localization keys associated with the mod element from the workspace
 		LocalizationUtils.deleteLocalizationKeys(this, generatableElement, (List<?>) map.get("localizationkeys"));
 
 		// delete tag elements associated with the mod element from the workspace
 		TagsUtils.processDefinitionToTags(this, generatableElement, (List<?>) map.get("tags"), true);
+
+		// delete tab sorting info associated with the mod element from the workspace
+		workspace.getCreativeTabsOrder().removeModElementFromTabs(generatableElement);
 	}
 
 	@Nonnull public List<GeneratorTemplate> getModBaseGeneratorTemplatesList(boolean performFSTasks) {
@@ -431,8 +439,8 @@ public class Generator implements IGenerator, Closeable {
 		if (map == null) {
 			if (generatableElement.getModElement().getType()
 					!= ModElementType.UNKNOWN) // silently skip unknown elements
-				LOG.info("Failed to load element definition for mod element type " + generatableElement.getModElement()
-						.getType().getRegistryName());
+				LOG.info("Failed to load element definition for mod element type {}",
+						generatableElement.getModElement().getType().getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -479,8 +487,8 @@ public class Generator implements IGenerator, Closeable {
 		Map<?, ?> map = generatorConfiguration.getDefinitionsProvider()
 				.getModElementDefinition(generatableElement.getModElement().getType());
 		if (map == null) {
-			LOG.info("Failed to load element list templates definition for mod element type "
-					+ generatableElement.getModElement().getType().getRegistryName());
+			LOG.info("Failed to load element list templates definition for mod element type {}",
+					generatableElement.getModElement().getType().getRegistryName());
 			return new ArrayList<>();
 		}
 
@@ -497,15 +505,13 @@ public class Generator implements IGenerator, Closeable {
 							(String) ((Map<?, ?>) list).get("listData"), generatableElement);
 
 					// we check type of listData collection and convert it to a list if needed
-					List<?> items;
-					if (listData instanceof Map<?, ?> listMap)
-						items = List.copyOf(listMap.entrySet());
-					else if (listData instanceof Collection<?> collection)
-						items = List.copyOf(collection);
-					else if (listData instanceof Iterable<?> iterable) // fallback for the worst case
-						items = List.copyOf(StreamSupport.stream(iterable.spliterator(), false).toList());
-					else
-						items = List.of();
+					List<?> items = switch (listData) {
+						case Map<?, ?> listMap -> List.copyOf(listMap.entrySet());
+						case Collection<?> collection -> List.copyOf(collection);
+						case Iterable<?> iterable -> List.copyOf(StreamSupport.stream(iterable.spliterator(), false)
+								.toList()); // fallback for the worst case
+						case null, default -> List.of();
+					};
 
 					GeneratorTemplatesList templatesList = new GeneratorTemplatesList(groupName, items,
 							new ArrayList<>());

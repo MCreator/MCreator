@@ -24,10 +24,10 @@ import java.util.List;
 
 public class FileNode {
 
-	public List<FileNode> childs;
-	public List<FileNode> leafs;
-	public String data;
-	public String incrementalPath;
+	public final List<FileNode> childs;
+	public final List<FileNode> leafs;
+	public final String data;
+	public final String incrementalPath;
 
 	public FileNode(String nodeValue, String incrementalPath) {
 		childs = new ArrayList<>();

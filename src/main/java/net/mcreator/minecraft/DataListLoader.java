@@ -72,7 +72,7 @@ public class DataListLoader {
 							elementObj -> {
 								if (elementObj instanceof String elementObjStr) {
 									if (list.get().containsKey(elementObjStr))
-										LOG.warn("Duplicate datalist key: " + elementObjStr);
+										LOG.warn("Duplicate datalist key: {}", elementObjStr);
 									list.get().put(elementObjStr, new DataListEntry(elementObjStr));
 								} else if (elementObj instanceof Map<?, ?> element) {
 									String elementName = null;
@@ -99,25 +99,25 @@ public class DataListLoader {
 														Boolean.parseBoolean((String) element.get("subtypes")));
 
 											if (list.get().containsKey(elementName))
-												LOG.warn("Duplicate datalist key: " + elementName);
+												LOG.warn("Duplicate datalist key: {}", elementName);
 											list.get().put(elementName, mcitem);
 										} else {
 											if (list.get().containsKey(elementName))
-												LOG.warn("Duplicate datalist key: " + elementName);
+												LOG.warn("Duplicate datalist key: {}", elementName);
 											list.get().put(elementName, entry);
 										}
 									}
 								}
 							});
 				} catch (YamlEngineException e) {
-					LOG.error("Failed to parse datalist " + listName, e);
+					LOG.error("Failed to parse datalist {}", listName, e);
 				}
 			});
 		} catch (IOException e) {
 			LOG.error("Failed to load datalist resource", e);
 		}
 
-		LOG.debug("Added " + listName + " datamap to cache");
+		LOG.debug("Added {} datamap to cache", listName);
 
 		cache.put(listName, list.get());
 
