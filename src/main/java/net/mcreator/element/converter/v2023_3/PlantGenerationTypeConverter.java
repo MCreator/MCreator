@@ -44,7 +44,7 @@ public class PlantGenerationTypeConverter implements IConverter {
 				plant.generationType = "Flower";
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not update generation type of plant: " + plant.getModElement().getName());
+			LOG.warn("Could not update generation type of plant: {}", plant.getModElement().getName());
 		}
 		return plant;
 	}

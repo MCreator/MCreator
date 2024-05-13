@@ -50,7 +50,7 @@ public class HugeFungusFeatureConverter implements IConverter {
 		try {
 			feature.featurexml = fixXML(feature.featurexml);
 		} catch (Exception e) {
-			LOG.warn("Failed to convert feature " + input.getModElement().getName());
+			LOG.warn("Failed to convert feature {}", input.getModElement().getName());
 		}
 		return feature;
 	}

@@ -18,7 +18,7 @@ tasks.register('exportLinux64', Copy.class) {
     }
     into('plugins') { from 'build/plugins/' }
     into('license') { from 'license' }
-    into('jdk') { from 'jdk/jdk17_linux_64' }
+    into('jdk') { from 'jdk/jdk21_linux_64' }
     doLast {
         convertCRLF(file('build/export/linux64/mcreator.shdos'), file('build/export/linux64/mcreator.sh'))
         delete 'build/export/linux64/mcreator.shdos'

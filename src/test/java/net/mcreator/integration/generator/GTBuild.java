@@ -40,14 +40,14 @@ public class GTBuild {
 			buildLauncher.run();
 
 			if (sb.toString().contains(": warning:") || sb.toString().contains(": error: ")) {
-				LOG.warn("Gradle build for " + generatorName + " generator produced log:\n" + sb);
+				LOG.warn("Gradle build for {} generator produced log:\n{}", generatorName, sb);
 			}
 		} catch (GradleConnectionException | IllegalStateException e) {
-			LOG.error("Gradle build failed for " + generatorName + " generator with log:\n" + sb, e);
+			LOG.error("Gradle build failed for {} generator with log:\n{}", generatorName, sb, e);
 			throw e;
 		}
 
-		LOG.info("[" + generatorName + "] Gradle build OK");
+		LOG.info("[{}] Gradle build OK", generatorName);
 	}
 
 }

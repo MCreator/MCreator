@@ -34,7 +34,7 @@ public final class RecentWorkspaceEntry {
 
 	@Nullable private String mcrVersion;
 
-	public RecentWorkspaceEntry(Workspace workspace, File path, String mcrVersion) {
+	public RecentWorkspaceEntry(Workspace workspace, File path, @Nullable String mcrVersion) {
 		this.name = workspace.getWorkspaceSettings().getModName();
 		this.path = path.toString();
 		this.type = workspace.getGeneratorConfiguration().getGeneratorFlavor();

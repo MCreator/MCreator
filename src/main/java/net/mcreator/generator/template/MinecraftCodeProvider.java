@@ -76,7 +76,7 @@ import java.util.Map;
 				return null;
 			} catch (Exception e) {
 				this.workspace.markFailingGradleDependencies();
-				LOG.error("Failed to load code provider for " + key, e);
+				LOG.error("Failed to load code provider for {}", key, e);
 				return null;
 			}
 		});

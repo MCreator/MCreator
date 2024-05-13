@@ -22,7 +22,6 @@ import net.mcreator.blockly.data.BlocklyLoader;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Procedure;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
 import org.apache.logging.log4j.Logger;
@@ -34,12 +33,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTProcedureTriggers {
 
 	public static void runTest(Logger LOG, String generatorName, Workspace workspace) {
-		// silently skip procedure triggers not supported by this generator
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.PROCEDURE)
-				== GeneratorStats.CoverageStatus.NONE) {
-			return;
-		}
-
 		Set<String> generatorTriggers = workspace.getGeneratorStats().getProcedureTriggers();
 
 		for (ExternalTrigger externalTrigger : BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()) {
@@ -79,8 +72,7 @@ public class GTProcedureTriggers {
 				workspace.getGenerator().generateElement(procedure, true);
 				workspace.getModElementManager().storeModElement(procedure);
 			} catch (Throwable t) {
-				t.printStackTrace();
-				fail("[" + generatorName + "] Failed generating external trigger: " + externalTrigger.getID());
+				fail("[" + generatorName + "] Failed generating external trigger: " + externalTrigger.getID(), t);
 			}
 		}
 

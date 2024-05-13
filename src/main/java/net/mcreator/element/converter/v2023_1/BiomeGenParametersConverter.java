@@ -63,7 +63,7 @@ public class BiomeGenParametersConverter implements IConverter {
 			biome.genWeirdness = new Biome.ClimatePoint(Math.max(-2, weirdnessBase - normalizedWeight),
 					Math.min(2, weirdnessBase + normalizedWeight));
 		} catch (Exception e) {
-			LOG.warn("Could not update biome gen parameters of: " + biome.getModElement().getName(), e);
+			LOG.warn("Could not update biome gen parameters of: {}", biome.getModElement().getName(), e);
 		}
 
 		return biome;

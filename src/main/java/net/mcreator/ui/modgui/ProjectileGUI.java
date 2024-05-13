@@ -236,7 +236,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		onFlyingTick.setSelectedProcedure(projectile.onFlyingTick);
 
 		Model entityModel = projectile.getEntityModel();
-		if (entityModel != null && entityModel.getType() != null && entityModel.getReadableName() != null)
+		if (entityModel != null)
 			model.setSelectedItem(entityModel);
 	}
 

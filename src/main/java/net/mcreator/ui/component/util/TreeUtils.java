@@ -59,7 +59,7 @@ public class TreeUtils {
 			nodes.add(treeNode);
 			treeNode = treeNode.getParent();
 			while (treeNode != null) {
-				nodes.add(0, treeNode);
+				nodes.addFirst(treeNode);
 				treeNode = treeNode.getParent();
 			}
 		}

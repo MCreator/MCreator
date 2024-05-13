@@ -161,7 +161,7 @@ public class WorkspaceFileManager implements Closeable {
 			List<File> existingBackups = new ArrayList<>(Arrays.asList(existingBackupsArray));
 			existingBackups.sort(Comparator.comparingLong(File::lastModified));
 			Collections.reverse(existingBackups);
-			long lastBackupTime = existingBackups.get(0).lastModified();
+			long lastBackupTime = existingBackups.getFirst().lastModified();
 			if ((System.currentTimeMillis() - lastBackupTime) / (1000 * 60)
 					> PreferencesManager.PREFERENCES.backups.automatedBackupInterval.get()) {  // check if we have surpassed backup interval
 				if (existingBackupsArray.length

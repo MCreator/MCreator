@@ -99,7 +99,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 	private final DebugPanel debugPanel;
 
 	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
-		LOG.info("Opening MCreator workspace: " + workspace.getWorkspaceSettings().getModID());
+		LOG.info("Opening MCreator workspace: {}", workspace.getWorkspaceSettings().getModID());
 
 		this.windowUID = System.currentTimeMillis();
 		this.workspace = workspace;

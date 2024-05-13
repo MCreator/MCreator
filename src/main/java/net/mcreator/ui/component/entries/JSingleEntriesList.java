@@ -34,7 +34,7 @@ public abstract class JSingleEntriesList<T extends JPanel, U> extends JEntriesLi
 	protected final List<T> entryList = new ArrayList<>();
 	protected final JPanel entries = new JPanel(new GridLayout(0, 1, 0, 2));
 
-	protected JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
+	protected final JPanel topbar = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
 	public JSingleEntriesList(MCreator mcreator, IHelpContext gui) {
 		super(mcreator, new BorderLayout(), gui);

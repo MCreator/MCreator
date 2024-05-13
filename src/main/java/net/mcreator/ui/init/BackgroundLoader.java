@@ -48,7 +48,7 @@ public class BackgroundLoader {
 					else
 						throw new NullPointerException("ImageIO.read returned null");
 				} catch (Exception e) {
-					LOG.error("Can not load user background: " + f.getName(), e);
+					LOG.error("Can not load user background: {}", f.getName(), e);
 				}
 			});
 			return images;
@@ -65,7 +65,7 @@ public class BackgroundLoader {
 			try {
 				backgrounds.add(Toolkit.getDefaultToolkit().createImage(PluginLoader.INSTANCE.getResource(name)));
 			} catch (Exception e) {
-				LOG.error("Can not load theme background: " + name, e);
+				LOG.error("Can not load theme background: {}", name, e);
 			}
 		}
 		return backgrounds;

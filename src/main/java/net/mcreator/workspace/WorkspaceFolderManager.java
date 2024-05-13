@@ -93,7 +93,7 @@ public class WorkspaceFolderManager {
 			return true;
 		} else {
 			if (!silent)
-				LOG.warn(file.getAbsolutePath() + " is not in workspace path!");
+				LOG.warn("{} is not in workspace path!", file.getAbsolutePath());
 			return false;
 		}
 	}

@@ -45,7 +45,7 @@ public class BiomeDefaultFeaturesConverter implements IConverter {
 
 			biome.name = StringUtils.machineToReadableName(input.getModElement().getName());
 		} catch (Exception e) {
-			LOG.warn("Could not convert: " + biome.getModElement().getName());
+			LOG.warn("Could not convert: {}", biome.getModElement().getName());
 		}
 
 		return biome;

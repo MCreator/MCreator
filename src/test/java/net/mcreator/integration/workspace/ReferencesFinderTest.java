@@ -56,7 +56,7 @@ import static org.junit.jupiter.api.Assertions.*;
 	@BeforeAll public static void initTest(@TempDir File tempDir) {
 		long rgenseed = System.currentTimeMillis();
 		Random random = new Random(rgenseed);
-		LOG.info("Random number generator seed: " + rgenseed);
+		LOG.info("Random number generator seed: {}", rgenseed);
 
 		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
 				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);

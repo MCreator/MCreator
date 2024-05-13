@@ -127,8 +127,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
-			blocklyPanel.getJSBridge().setJavaScriptEventListener(
-					() -> new Thread(FeatureGUI.this::regenerateFeature, "FeatureRegenerate").start());
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(FeatureGUI.this::regenerateFeature, "FeatureRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(Feature.XML_BASE);
 			}
@@ -206,12 +206,7 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		generateCondition.setSelectedProcedure(feature.generateCondition);
 		refreshPlacementSettings(false);
 
-		blocklyPanel.setXMLDataOnly(feature.featurexml);
-		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.clearWorkspace();
-			blocklyPanel.setXML(feature.featurexml);
-			blocklyPanel.triggerEventFunction();
-		});
+		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(feature.featurexml));
 	}
 
 	@Override public Feature getElementFromGUI() {

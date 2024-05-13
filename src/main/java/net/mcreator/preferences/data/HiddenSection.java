@@ -32,15 +32,15 @@ import java.io.File;
 
 public class HiddenSection extends PreferencesSection {
 
-	public PreferencesEntry<IconSize> workspaceModElementIconSize;
-	public BooleanEntry fullScreen;
-	public IntegerEntry projectTreeSplitPos;
-	public BooleanEntry workspaceSortAscending;
-	public PreferencesEntry<SortType> workspaceSortOrder;
-	public PreferencesEntry<File> java_home;
-	public StringEntry uiTheme;
-	public BooleanEntry enableJavaPlugins;
-	public StringEntry lastWebsiteNewsRead;
+	public final PreferencesEntry<IconSize> workspaceModElementIconSize;
+	public final BooleanEntry fullScreen;
+	public final IntegerEntry projectTreeSplitPos;
+	public final BooleanEntry workspaceSortAscending;
+	public final PreferencesEntry<SortType> workspaceSortOrder;
+	public final PreferencesEntry<File> java_home;
+	public final StringEntry uiTheme;
+	public final BooleanEntry enableJavaPlugins;
+	public final StringEntry lastWebsiteNewsRead;
 
 	HiddenSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);

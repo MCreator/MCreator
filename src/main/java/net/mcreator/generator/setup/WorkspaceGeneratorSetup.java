@@ -52,14 +52,14 @@ public class WorkspaceGeneratorSetup {
 			if (workspace.getGeneratorConfiguration().getGeneratorName().equals(newGenerator.getGeneratorName()))
 				return;
 
-			LOG.info("Cleaning up generator for switch to " + newGenerator.getGeneratorName() + " from "
-					+ workspace.getGeneratorConfiguration().getGeneratorName());
+			LOG.info("Cleaning up generator for switch to {} from {}", newGenerator.getGeneratorName(),
+					workspace.getGeneratorConfiguration().getGeneratorName());
 
 			// close gradle connection so no files are locked
 			currentGenerator.close();
 		} else if (workspace.getWorkspaceSettings().getCurrentGenerator() != null) {
-			LOG.info("Cleaning up generator for switch to " + newGenerator.getGeneratorName()
-					+ " from non-existent generator " + workspace.getWorkspaceSettings().getCurrentGenerator());
+			LOG.info("Cleaning up generator for switch to {} from non-existent generator {}",
+					newGenerator.getGeneratorName(), workspace.getWorkspaceSettings().getCurrentGenerator());
 		}
 
 		// delete gradle dirs if present
@@ -87,8 +87,8 @@ public class WorkspaceGeneratorSetup {
 
 		AbstractFolderStructure folderStructure = AbstractFolderStructure.getFolderStructure(workspace);
 
-		LOG.info("Moving files to new locations while assuming " + folderStructure.getClass().getSimpleName()
-				+ " for the generator converting from");
+		LOG.info("Moving files to new locations while assuming {} for the generator converting from",
+				folderStructure.getClass().getSimpleName());
 
 		// move folders to the new locations, starting from more nested folders down
 		moveFilesToAnotherDir(folderStructure.getStructuresDir(),
@@ -111,12 +111,12 @@ public class WorkspaceGeneratorSetup {
 		if (sourceDir != null && sourceDir.isDirectory() && destinationDir != null) {
 			try {
 				if (!sourceDir.getCanonicalPath().equals(destinationDir.getCanonicalPath())) {
-					LOG.info("Moving " + sourceDir.getName() + " to a new directory " + destinationDir.getName());
+					LOG.info("Moving {} to a new directory {}", sourceDir.getName(), destinationDir.getName());
 					FileIO.copyDirectory(sourceDir, destinationDir);
 					FileIO.deleteDir(sourceDir);
 				}
 			} catch (IOException e) {
-				LOG.warn("Failed to move " + sourceDir.getName() + " dirs", e);
+				LOG.warn("Failed to move {} dirs", sourceDir.getName(), e);
 			}
 		}
 	}

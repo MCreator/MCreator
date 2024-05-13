@@ -23,7 +23,7 @@ import java.awt.event.ActionListener;
 
 public class BasicAction extends UnregisteredAction {
 
-	protected ActionRegistry actionRegistry;
+	protected final ActionRegistry actionRegistry;
 
 	public BasicAction(ActionRegistry actionRegistry, String name, ActionListener listener) {
 		super(name, listener);

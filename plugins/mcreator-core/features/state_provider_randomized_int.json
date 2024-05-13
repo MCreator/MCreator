@@ -30,6 +30,7 @@
   "output": "BlockStateProvider",
   "colour": 30,
   "mcreator": {
+    "group": "stateProviders",
     "toolbox_id": "blocks",
     "inputs": [
       "source",
@@ -42,7 +43,7 @@
       "state_provider_int_property_warning"
     ],
     "toolbox_init": [
-      "<value name=\"source\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"source\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
       "<value name=\"value\"><block type=\"int_provider_constant\"><field name=\"value\">2</field></block></value>"
     ]
   }
