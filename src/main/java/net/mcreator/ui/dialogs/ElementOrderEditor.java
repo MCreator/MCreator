@@ -99,6 +99,23 @@ public class ElementOrderEditor {
 			}
 		}
 
+		// Add ME items of tabs with overridden elements order
+		for (String tab : tabEditors.keySet()) {
+			ArrayList<String> tabOrder = mcreator.getWorkspace().getCreativeTabsOrder().get(tab);
+			if (tabOrder != null) {
+				for (String element : tabOrder) {
+					ModElement me = mcreator.getWorkspace().getModElementByName(element);
+					if (me != null && me.getGeneratableElement() instanceof ITabContainedElement)
+						tabEditors.get(tab).addElement(me);
+				}
+			}
+		}
+
+		Map<String, ModElement[]> originalOrder = new HashMap<>();
+		for (Map.Entry<String, DefaultListModel<ModElement>> entry : tabEditors.entrySet()) {
+			originalOrder.put(entry.getKey(), Collections.list(entry.getValue().elements()).toArray(new ModElement[0]));
+		}
+
 		mainPanel.add("Center", tabs);
 		mainPanel.setPreferredSize(new Dimension(748, 320));
 
