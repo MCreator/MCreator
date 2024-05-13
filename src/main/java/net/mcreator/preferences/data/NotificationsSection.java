@@ -24,11 +24,11 @@ import net.mcreator.preferences.entries.BooleanEntry;
 
 public class NotificationsSection extends PreferencesSection {
 
-	public BooleanEntry openWhatsNextPage;
-	public BooleanEntry checkAndNotifyForUpdates;
-	public BooleanEntry checkAndNotifyForPatches;
-	public BooleanEntry showWebsiteNewsNotifications;
-	public BooleanEntry checkAndNotifyForPluginUpdates;
+	public final BooleanEntry openWhatsNextPage;
+	public final BooleanEntry checkAndNotifyForUpdates;
+	public final BooleanEntry checkAndNotifyForPatches;
+	public final BooleanEntry showWebsiteNewsNotifications;
+	public final BooleanEntry checkAndNotifyForPluginUpdates;
 
 	NotificationsSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);

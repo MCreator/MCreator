@@ -1,0 +1,1 @@
+Wybierz to ustawienie, aby generować bagienne chatki w swoim biomie.

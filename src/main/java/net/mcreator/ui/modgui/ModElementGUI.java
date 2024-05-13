@@ -65,7 +65,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 	private boolean changed, listeningEnabled = false;
 	private final ModElementChangedListener elementUpdateListener;
 
-	@Nonnull protected ModElement modElement;
+	@Nonnull protected final ModElement modElement;
 	@Nullable private FolderElement targetFolder;
 
 	private ModElementCreatedListener<GE> modElementCreatedListener;
@@ -394,7 +394,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					ComponentUtils.applyPadding(PanelUtils.westAndEastElement(toolBarLeft, toolBar), 5, true, false,
 							true, false));
 
-			centerComponent = new ArrayList<>(pages.values()).get(0);
+			centerComponent = new ArrayList<>(pages.values()).getFirst();
 		}
 
 		if (modElementCodeViewer != null) {
@@ -464,7 +464,7 @@ public abstract class ModElementGUI<GE extends GeneratableElement> extends ViewB
 					else // exclude the component itself
 						UnsupportedComponent.markUnsupported(c);
 				} catch (IllegalAccessException | NoSuchFieldException | NullPointerException e) {
-					LOG.warn("Failed to access component: " + entry, e);
+					LOG.warn("Failed to access component: {}", entry, e);
 				}
 			}
 

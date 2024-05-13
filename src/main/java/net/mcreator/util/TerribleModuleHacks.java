@@ -56,7 +56,7 @@ public class TerribleModuleHacks {
 			method.setAccessible(true);
 			method.invoke(where, pn, toadd, true, true);
 		} catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-			LOG.error("Failed to open module: " + where.getName(), e);
+			LOG.error("Failed to open module: {}", where.getName(), e);
 		}
 	}
 

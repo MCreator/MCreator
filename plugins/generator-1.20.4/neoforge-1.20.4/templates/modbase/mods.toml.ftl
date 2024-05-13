@@ -71,3 +71,6 @@ displayTest="IGNORE_SERVER_VERSION"
     ordering="NONE"
     side="BOTH"
 </#list>
+
+# Start of user code block dependencies configuration
+# End of user code block dependencies configuration

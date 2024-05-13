@@ -44,7 +44,7 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 
 	private final JButton select = L10N.button("dialog.textures_selector.select");
 	private final FilterModel model = new FilterModel();
-	public JList<File> list = new JList<>(model);
+	public final JList<File> list = new JList<>(model);
 	private final TextureType type;
 	private final CardLayout layout = new CardLayout();
 	private final JPanel center = new JPanel(layout);
@@ -202,8 +202,8 @@ public class TypedTextureSelectorDialog extends MCreatorDialog {
 	}
 
 	private class FilterModel extends DefaultListModel<File> {
-		ArrayList<File> items;
-		ArrayList<File> filterItems;
+		final ArrayList<File> items;
+		final ArrayList<File> filterItems;
 
 		FilterModel() {
 			super();

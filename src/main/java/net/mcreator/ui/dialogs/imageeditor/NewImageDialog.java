@@ -53,7 +53,7 @@ public class NewImageDialog extends MCreatorDialog {
 
 		List<ResourcePointer> templatesSorted = new ArrayList<>(ImageMakerTexturesCache.CACHE.keySet());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
-		selection = templatesSorted.get(0);
+		selection = templatesSorted.getFirst();
 		TextureSelectorDialog templateChooser = new TextureSelectorDialog(templatesSorted, window);
 
 		JPanel settings = new JPanel(new GridBagLayout());

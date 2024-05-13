@@ -32,15 +32,15 @@ public class MCreatorVersionNumber {
 	private static final String buildFormat = "wwuHH";
 	private static final String buildVersion = "99999"; // by default use the largest possible value to prevent regenerating workspace and updating during development
 
-	public String full;
-	public String major;
+	public final String full;
+	public final String major;
 	public String build;
 
 	public boolean snapshot;
 
-	public long majorlong;
-	public long buildlong;
-	public long versionlong;
+	public final long majorlong;
+	public final long buildlong;
+	public final long versionlong;
 
 	public MCreatorVersionNumber(Properties properties) {
 		major = properties.getProperty("mcreator");

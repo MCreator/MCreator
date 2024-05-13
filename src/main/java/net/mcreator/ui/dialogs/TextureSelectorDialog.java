@@ -35,11 +35,11 @@ import java.util.Locale;
 
 public class TextureSelectorDialog extends MCreatorDialog {
 
-	public JButton naprej = new JButton(UIManager.getString("OptionPane.okButtonText"));
+	public final JButton naprej = new JButton(UIManager.getString("OptionPane.okButtonText"));
 
 	private final FilterModel model = new FilterModel();
 
-	public JList<ResourcePointer> list = new JList<>(model);
+	public final JList<ResourcePointer> list = new JList<>(model);
 
 	private final JTextField filterField = new JTextField(20);
 
@@ -119,8 +119,8 @@ public class TextureSelectorDialog extends MCreatorDialog {
 	}
 
 	private class FilterModel extends DefaultListModel<ResourcePointer> {
-		ArrayList<ResourcePointer> items;
-		ArrayList<ResourcePointer> filterItems;
+		final ArrayList<ResourcePointer> items;
+		final ArrayList<ResourcePointer> filterItems;
 
 		FilterModel() {
 			super();

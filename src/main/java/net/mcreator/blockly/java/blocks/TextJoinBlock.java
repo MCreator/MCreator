@@ -66,10 +66,10 @@ public class TextJoinBlock implements IBlockGenerator {
 			}
 
 			if (sumnum == 1) {
-				if (inputCodes.get(0).matches("\"[^\"]*\"")) { // The only element is a string, we return it as is
-					master.append(inputCodes.get(0));
+				if (inputCodes.getFirst().matches("\"[^\"]*\"")) { // The only element is a string, we return it as is
+					master.append(inputCodes.getFirst());
 				} else {
-					master.append("(\"\" + " + inputCodes.get(0) + ")");
+					master.append("(\"\" + " + inputCodes.getFirst() + ")");
 				}
 				return;
 			} else {

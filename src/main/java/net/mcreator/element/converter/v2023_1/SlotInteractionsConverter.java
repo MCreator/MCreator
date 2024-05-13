@@ -67,7 +67,7 @@ public class SlotInteractionsConverter implements IConverter {
 				});
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not update slot interaction fields of: " + gui.getModElement().getName(), e);
+			LOG.warn("Could not update slot interaction fields of: {}", gui.getModElement().getName(), e);
 		}
 
 		return gui;

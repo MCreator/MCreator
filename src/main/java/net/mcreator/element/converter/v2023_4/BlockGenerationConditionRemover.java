@@ -126,7 +126,7 @@ public class BlockGenerationConditionRemover implements IConverter {
 				definition.add("spawnWorldTypes", new JsonArray());
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not remove generation condition from block: " + input.getModElement().getName());
+			LOG.warn("Could not remove generation condition from block: {}", input.getModElement().getName());
 		}
 
 		return input;

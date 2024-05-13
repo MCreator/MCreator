@@ -24,8 +24,8 @@ import net.mcreator.ui.views.editor.image.layer.Layer;
 import java.util.UUID;
 
 public abstract class Change {
-	protected Canvas canvas;
-	protected Layer layer;
+	protected final Canvas canvas;
+	protected final Layer layer;
 	private UUID group = null;
 
 	public Change(Canvas canvas, Layer layer) {

@@ -129,7 +129,7 @@ public class TemplateGenerator {
 					templateGeneratorConfiguration.getConfiguration().getObjectWrapper());
 			return stringWriter.getBuffer().toString();
 		} catch (IOException | TemplateException e) {
-			LOG.error("Failed to generate template: " + templateName, e);
+			LOG.error("Failed to generate template: {}", templateName, e);
 			throw new TemplateGeneratorException();
 		}
 	}

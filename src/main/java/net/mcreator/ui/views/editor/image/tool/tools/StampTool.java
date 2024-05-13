@@ -64,7 +64,7 @@ public class StampTool extends AbstractDrawingTool {
 
 		List<ResourcePointer> templatesSorted = new ArrayList<>(ImageMakerTexturesCache.CACHE.keySet());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
-		selection = templatesSorted.get(0);
+		selection = templatesSorted.getFirst();
 		TextureSelectorDialog templateChooser = new TextureSelectorDialog(templatesSorted, window);
 
 		JButton templateChooserButton = new JButton(

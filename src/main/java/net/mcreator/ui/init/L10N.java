@@ -58,12 +58,12 @@ public class L10N {
 		if (supportedLocales.containsKey(getLocale())) {
 			rb = supportedLocales.get(getLocale()).resourceBundle();
 		} else {
-			LOG.warn("Locale " + getLocale() + " is not supported. Falling back to default locale.");
+			LOG.warn("Locale {} is not supported. Falling back to default locale.", getLocale());
 
 			rb = supportedLocales.get(DEFAULT_LOCALE).resourceBundle();
 		}
 
-		LOG.info("Setting default locale to: " + getLocale());
+		LOG.info("Setting default locale to: {}", getLocale());
 		Locale.setDefault(getLocale());
 		JComponent.setDefaultLocale(getLocale());
 	}

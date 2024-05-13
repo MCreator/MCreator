@@ -65,7 +65,8 @@ public class RunServerAction extends GradleAction {
 				if (n == 0) {
 					try {
 						Properties por = new Properties();
-						por.load(new FileInputStream(eulaFile));
+						if (eulaFile.isFile())
+							por.load(new FileInputStream(eulaFile));
 						por.setProperty("eula", "true");
 						por.store(new FileOutputStream(eulaFile),
 								"#Edited by MCreator - user agreed to EULA inside MCreator");
