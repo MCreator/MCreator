@@ -100,12 +100,9 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 					}
 				} else { // might be bound to block
 					boundBlockEntity = this.world.getBlockEntity(pos);
-					if (boundBlockEntity != null) {
-						IItemHandler cap = this.world.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
-						if (cap != null) {
-							this.internal = cap;
-							this.bound = true;
-						}
+					if (boundBlockEntity instanceof BaseContainerBlockEntity baseContainerBlockEntity) {
+						this.internal = new InvWrapper(baseContainerBlockEntity);
+						this.bound = true;
 					}
 				}
 			}
