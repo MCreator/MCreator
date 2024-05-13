@@ -7,7 +7,7 @@
     </#if>
   },
   "valid_blocks": ${input$valid_blocks}
-  <#if field$requires_block_below != "TRUE">,
+  <#if field$requires_block_below == "FALSE">,
   "requires_block_below": false
   </#if>
   <#if field$rock_count != "4">,
