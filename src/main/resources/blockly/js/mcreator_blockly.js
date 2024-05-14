@@ -31,9 +31,6 @@ workspace.addChangeListener(function (event) {
     if (event.isUiEvent)
         return; // Don't update on UI-only events.
 
-    if (!event.recordUndo)
-        return; // Don't update if change does not record undo
-
     if (typeof javabridge !== "undefined")
         javabridge.triggerEvent();
 });
