@@ -124,19 +124,12 @@ public class NameMapper {
 	}
 
 	@Nullable private String processMapping(Map<?, ?> mapping, String origName, int mappingTable) {
-		String mappedName = null;
-
-		Object mappedObject = mapping.get(origName);
-
-		if (mappedObject instanceof String) {
-			if (mappingTable == 0)
-				mappedName = (String) mappedObject;
-		} else if (mappedObject instanceof List<?> mappingValuesList) {
-			if (mappingTable < mappingValuesList.size())
-				mappedName = (String) mappingValuesList.get(mappingTable);
-		}
-
-		return mappedName;
+		return switch (mapping.get(origName)) {
+			case String mappingString when mappingTable == 0 -> mappingString;
+			case List<?> mappingValuesList when mappingTable < mappingValuesList.size() ->
+					(String) mappingValuesList.get(mappingTable);
+			case null, default -> null;
+		};
 	}
 
 }
