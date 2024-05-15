@@ -61,7 +61,7 @@
 <#if hasProcedure(procedure) || hurtStack>
 @Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
 	<#if hurtStack>
-		itemstack.hurtAndBreak(${hurtStackAmount}, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		itemstack.hurtAndBreak(${hurtStackAmount}, entity, LivingEntity.getSlotForHand(entity.getUsedItemHand()));
 	<#else>
 		boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
 	</#if>
