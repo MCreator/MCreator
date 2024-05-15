@@ -120,9 +120,8 @@ import java.util.*;
 
 		for (GeneratableElement element : elementsList) {
 			if (element instanceof ITabContainedElement tabElement) {
-				if (!tabElement.getCreativeTabs().isEmpty()) {
-					if (!tabElement.getCreativeTabItems().isEmpty())
-						return true;
+				if (!tabElement.getCreativeTabs().isEmpty() && !tabElement.getCreativeTabItems().isEmpty()) {
+					return true;
 				}
 			}
 		}
