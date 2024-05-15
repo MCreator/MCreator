@@ -5,5 +5,6 @@ templates:
   - template: feature/placed_feature.json.ftl
     writer: json
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
+    condition: hasPlacedFeature()
 
 field_exclusions: [generationStep, restrictionBiomes, generateCondition]

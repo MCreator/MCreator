@@ -1565,6 +1565,7 @@ public class TestWorkspaceDataProvider {
 			}
 			feature.generateCondition = _true ? new Procedure("condition1") : null;
 			feature.featurexml = Feature.XML_BASE;
+			feature.skipPlacement = !_true;
 			return feature;
 		}
 		return null;
