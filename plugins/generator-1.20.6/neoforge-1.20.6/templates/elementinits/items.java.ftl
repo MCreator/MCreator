@@ -44,7 +44,7 @@ package ${package}.init;
 <#assign itemsWithInventory = w.getGElementsOfType("item")?filter(e -> e.hasInventory())>
 
 <#if itemsWithInventory?size != 0>
-@EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD)
 </#if>
 public class ${JavaModName}Items {
 
@@ -54,19 +54,19 @@ public class ${JavaModName}Items {
 		<#if item.getModElement().getTypeString() == "armor">
 			<#if item.enableHelmet>
 			public static final DeferredHolder<Item, Item> ${item.getModElement().getRegistryNameUpper()}_HELMET =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", () -> new ${item.getModElement().getName()}Item.Helmet());
+				REGISTRY.register("${item.getModElement().getRegistryName()}_helmet", ${item.getModElement().getName()}Item.Helmet::new);
 			</#if>
 			<#if item.enableBody>
 			public static final DeferredHolder<Item, Item> ${item.getModElement().getRegistryNameUpper()}_CHESTPLATE =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_chestplate", () -> new ${item.getModElement().getName()}Item.Chestplate());
+				REGISTRY.register("${item.getModElement().getRegistryName()}_chestplate", ${item.getModElement().getName()}Item.Chestplate::new);
 			</#if>
 			<#if item.enableLeggings>
 			public static final DeferredHolder<Item, Item> ${item.getModElement().getRegistryNameUpper()}_LEGGINGS =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_leggings", () -> new ${item.getModElement().getName()}Item.Leggings());
+				REGISTRY.register("${item.getModElement().getRegistryName()}_leggings", ${item.getModElement().getName()}Item.Leggings::new);
 			</#if>
 			<#if item.enableBoots>
 			public static final DeferredHolder<Item, Item> ${item.getModElement().getRegistryNameUpper()}_BOOTS =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_boots", () -> new ${item.getModElement().getName()}Item.Boots());
+				REGISTRY.register("${item.getModElement().getRegistryName()}_boots", ${item.getModElement().getName()}Item.Boots::new);
 			</#if>
 		<#elseif item.getModElement().getTypeString() == "livingentity">
 			public static final DeferredHolder<Item, Item> ${item.getModElement().getRegistryNameUpper()}_SPAWN_EGG =
@@ -74,10 +74,10 @@ public class ${JavaModName}Items {
 						${item.spawnEggBaseColor.getRGB()}, ${item.spawnEggDotColor.getRGB()}, new Item.Properties()));
 		<#elseif item.getModElement().getTypeString() == "dimension" && item.hasIgniter()>
 			public static final DeferredHolder<Item, Item> ${item.getModElement().getRegistryNameUpper()} =
-				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
+				REGISTRY.register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
 		<#elseif item.getModElement().getTypeString() == "fluid" && item.generateBucket>
 			public static final DeferredHolder<Item, Item> ${item.getModElement().getRegistryNameUpper()}_BUCKET =
-				REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", () -> new ${item.getModElement().getName()}Item());
+				REGISTRY.register("${item.getModElement().getRegistryName()}_bucket", ${item.getModElement().getName()}Item::new);
 		<#elseif item.getModElement().getTypeString() == "block" || item.getModElement().getTypeString() == "plant">
 			<#if item.isDoubleBlock()>
 				<#assign hasDoubleBlocks = true>
@@ -88,7 +88,7 @@ public class ${JavaModName}Items {
 			</#if>
 		<#else>
 			public static final DeferredHolder<Item, Item> ${item.getModElement().getRegistryNameUpper()} =
-				REGISTRY.register("${item.getModElement().getRegistryName()}", () -> new ${item.getModElement().getName()}Item());
+				REGISTRY.register("${item.getModElement().getRegistryName()}", ${item.getModElement().getName()}Item::new);
 		</#if>
 	</#list>
 
@@ -96,24 +96,32 @@ public class ${JavaModName}Items {
 	// End of user code block custom items
 
 	<#if itemsWithInventory?size != 0>
-		public static final DeferredRegister<AttachmentType<?>> ATTACHMENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.ATTACHMENT_TYPES, ${JavaModName}.MODID);
+		public static final DeferredRegister.DataComponents DATA_COMPONENTS = DeferredRegister.createDataComponents(${JavaModName}.MODID);
 
 		<#list itemsWithInventory as item>
-			public static final DeferredHolder<AttachmentType<?>, AttachmentType<${item.getModElement().getName()}InventoryCapability>> ${item.getModElement().getRegistryNameUpper()}_INVENTORY =
-				ATTACHMENT_TYPES.register("${item.getModElement().getRegistryName()}_inventory",
-				() -> AttachmentType.serializable(${item.getModElement().getName()}InventoryCapability::new).build());
+			public static final DeferredHolder<DataComponentType<?>, DataComponentType<${item.getModElement().getName()}InventoryCapability>> ${item.getModElement().getRegistryNameUpper()}_INVENTORY =
+				DATA_COMPONENTS.registerComponentType("${item.getModElement().getRegistryName()}_inventory",
+					builder -> builder.persistent(${item.getModElement().getName()}InventoryCapability.CODEC).networkSynchronized(${item.getModElement().getName()}InventoryCapability.STREAM_CODEC)
+				);
 		</#list>
 
 		public static void register(IEventBus bus) {
 			REGISTRY.register(bus);
-			ATTACHMENT_TYPES.register(bus);
+			DATA_COMPONENTS.register(bus);
 		}
 
 		<#compress>
 		@SubscribeEvent public static void registerCapabilities(RegisterCapabilitiesEvent event) {
 			<#list itemsWithInventory as item>
-				event.registerItem(Capabilities.ItemHandler.ITEM, (stack, context) -> stack.getData(${item.getModElement().getRegistryNameUpper()}_INVENTORY),
-					${item.getModElement().getRegistryNameUpper()}.get());
+				event.registerItem(
+					Capabilities.ItemHandler.ITEM,
+					(stack, context) -> {
+						${item.getModElement().getName()}InventoryCapability cap = stack.getOrDefault(${item.getModElement().getRegistryNameUpper()}_INVENTORY, new ${item.getModElement().getName()}InventoryCapability());
+						cap.setOwner(stack);
+						return cap;
+					},
+					${item.getModElement().getRegistryNameUpper()}.get()
+				);
 			</#list>
 		}
 		</#compress>
