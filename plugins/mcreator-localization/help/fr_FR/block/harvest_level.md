@@ -1,6 +1,6 @@
 C'est le niveau d'outil requis pour briser ce bloc.
 
-* 0 est la main/bois
+* 0 est le bois/or
 * 1 est de la pierre
 * 2 est du fer
 * 3 est un diamant.

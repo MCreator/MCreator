@@ -35,7 +35,7 @@ displayTest="IGNORE_SERVER_VERSION"
     modId="minecraft"
     mandatory=true
     versionRange="[${generator.getGeneratorMinecraftVersion()}]"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 
 <#list settings.getRequiredMods() as e>
