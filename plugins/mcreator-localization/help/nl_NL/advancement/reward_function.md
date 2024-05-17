@@ -1,0 +1,1 @@
+Je kunt een functie kiezen die wordt uitgevoerd wanneer de speler een voortgang met deze parameter voltooit.
