@@ -190,7 +190,7 @@ public class ParticleGUI extends ModElementGUI<Particle> {
 
 	@Override public Particle getElementFromGUI() {
 		Particle particle = new Particle(modElement);
-		particle.texture = texture.getID() + ".png"; // legacy, old workspaces stored name with extension
+		particle.texture = texture.getTextureName() + ".png"; // legacy, old workspaces stored name with extension
 		particle.width = (double) width.getValue();
 		particle.height = (double) height.getValue();
 		particle.scale = (double) scale.getValue();

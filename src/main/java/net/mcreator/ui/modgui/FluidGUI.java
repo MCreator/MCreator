@@ -489,8 +489,8 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		Fluid fluid = new Fluid(modElement);
 		fluid.name = name.getText();
 		fluid.bucketName = bucketName.getText();
-		fluid.textureFlowing = textureFlowing.getID();
-		fluid.textureStill = textureStill.getID();
+		fluid.textureFlowing = textureFlowing.getTextureName();
+		fluid.textureStill = textureStill.getTextureName();
 		fluid.canMultiply = canMultiply.isSelected();
 		fluid.flowRate = (int) flowRate.getValue();
 		fluid.levelDecrease = (int) levelDecrease.getValue();
@@ -504,7 +504,7 @@ public class FluidGUI extends ModElementGUI<Fluid> {
 		fluid.viscosity = (int) viscosity.getValue();
 		fluid.temperature = (int) temperature.getValue();
 		fluid.generateBucket = generateBucket.isSelected();
-		fluid.textureBucket = textureBucket.getID();
+		fluid.textureBucket = textureBucket.getTextureName();
 		fluid.emptySound = emptySound.getSound();
 		fluid.rarity = (String) rarity.getSelectedItem();
 		fluid.resistance = (double) resistance.getValue();
