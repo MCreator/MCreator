@@ -21,16 +21,16 @@ package net.mcreator.ui.views.editor.image.color.palette;
 
 import net.mcreator.util.ArrayListListModel;
 
-import javax.swing.*;
 import java.awt.*;
-import java.awt.geom.Arc2D;
 import java.awt.image.BufferedImage;
 
-public class ColorPalette extends ArrayListListModel<Color> {
+public class ColorPalette {
+
 	private String name;
 
-	public ColorPalette(String name) {
+	private final ArrayListListModel<Color> colors = new ArrayListListModel<>();
 
+	public ColorPalette(String name) {
 		this.name = name;
 	}
 
@@ -40,6 +40,10 @@ public class ColorPalette extends ArrayListListModel<Color> {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public ArrayListListModel<Color> getColors() {
+		return colors;
 	}
 
 	public Image getIcon(int width, int height) {
@@ -54,7 +58,7 @@ public class ColorPalette extends ArrayListListModel<Color> {
 		g2d.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
 		g2d.setRenderingHint(RenderingHints.KEY_STROKE_CONTROL, RenderingHints.VALUE_STROKE_PURE);
 
-		int colorCount = Math.min(size(), width * height);
+		int colorCount = Math.min(colors.size(), width * height);
 
 		// calculate column/row count
 		int columns = (int) Math.ceil(Math.sqrt(colorCount));
@@ -77,7 +81,7 @@ public class ColorPalette extends ArrayListListModel<Color> {
 			float sizeX = cellSize * (xi + 1) - x;
 			float sizeY = cellSize * (yi + 1) - y;
 
-			g2d.setColor(get(i));
+			g2d.setColor(colors.get(i));
 			g2d.fillRect(Math.round(x), Math.round(y + offsetY), Math.round(sizeX), Math.round(sizeY));
 		}
 

@@ -19,23 +19,56 @@
 
 package net.mcreator.ui.views.editor.image.color;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import net.mcreator.io.FileIO;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
+import net.mcreator.ui.views.editor.image.color.palette.ColorPalette;
 import net.mcreator.ui.views.editor.image.color.palette.ColorPalettePanel;
 import net.mcreator.ui.views.editor.image.color.palettes.PaletteListPanel;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
+import net.mcreator.util.ArrayListListModel;
 
 import javax.swing.*;
+import java.io.File;
 
 public class PalettePanel extends JTabbedPane {
 
+	private static final Gson gson = new GsonBuilder().setLenient().create();
+
+	private final File paletteFile;
+
+	private final PaletteListPanel paletteListPanel;
+
 	public PalettePanel(MCreator mcreator, ToolPanel toolPanel) {
-		PaletteListPanel paletteListPanel = new PaletteListPanel(mcreator, this);
 		ColorPalettePanel colorPalettePanel = new ColorPalettePanel(mcreator, toolPanel);
 
+		this.paletteListPanel = new PaletteListPanel(mcreator, this);
 		paletteListPanel.setColorsPanel(colorPalettePanel);
 
-		addTab(L10N.t("dialog.image_maker.palette.list"), null, paletteListPanel, L10N.t("dialog.image_maker.palette.list.description"));
-		addTab(L10N.t("dialog.image_maker.palette.colors"), null, colorPalettePanel, L10N.t("dialog.image_maker.palette.colors.description"));
+		addTab(L10N.t("dialog.image_maker.palette.list"), null, paletteListPanel,
+				L10N.t("dialog.image_maker.palette.list.description"));
+		addTab(L10N.t("dialog.image_maker.palette.colors"), null, colorPalettePanel,
+				L10N.t("dialog.image_maker.palette.colors.description"));
+
+		this.paletteFile = new File(mcreator.getFolderManager().getWorkspaceCacheDir(), "colorPalettes");
 	}
+
+	public void storePalette() {
+		FileIO.writeStringToFile(gson.toJson(this.paletteListPanel.getPalettes()), this.paletteFile);
+	}
+
+	public void reloadPalette() {
+		ArrayListListModel<ColorPalette> palettes = this.paletteListPanel.getPalettes();
+
+		if (this.paletteFile.isFile()) {
+			palettes.clear();
+			palettes.addAll(
+					gson.fromJson(FileIO.readFileToString(this.paletteFile), PaletteListPanel.PaletteStorage.class));
+		} else {
+			// TODO: specify default palettes
+		}
+	}
+
 }

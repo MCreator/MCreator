@@ -20,12 +20,12 @@
 package net.mcreator.ui.views.editor.image.color;
 
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.util.ArrayListListModel;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.event.ListDataEvent;
 import javax.swing.event.ListDataListener;
@@ -39,7 +39,7 @@ import java.awt.event.MouseListener;
 public abstract class ListEditPanel<T> extends JPanel {
 
 	protected final MCreator mcreator;
-	
+
 	private final JPanel contentPanel = new JPanel(new CardLayout());
 	JScrollPane listScrollPane = new JScrollPane();
 	private ArrayListListModel<T> listModel;
@@ -51,6 +51,10 @@ public abstract class ListEditPanel<T> extends JPanel {
 
 	private final ListSelectionListener listSelectionListener = this::valueChanged;
 	private final ListDataListener listDataListener;
+
+	private boolean requestAtLeastOneElement = false;
+
+	private boolean promptOnDelete = true;
 
 	public ListEditPanel(MCreator mcreator) {
 		super(new BorderLayout());
@@ -94,38 +98,50 @@ public abstract class ListEditPanel<T> extends JPanel {
 		canEdit(false);
 
 		add.addActionListener(e -> {
-			listModel.add(selectedID() + 1, createNew(selected()));
-			select(selectedID() + 1);
+			T newItem = createNew(selected());
+			if (newItem != null) {
+				listModel.add(selectedIndex() + 1, newItem);
+				select(selectedIndex() + 1);
+			}
 		});
 
 		duplicate.addActionListener(e -> {
 			if (selected() != null)
-				listModel.add(selectedID(), selected());
+				listModel.add(selectedIndex(), selected());
 			updateControls();
 		});
 
 		up.addActionListener(e -> {
-			listModel.moveUp(selectedID());
-			select(selectedID() - 1);
+			listModel.moveUp(selectedIndex());
+			select(selectedIndex() - 1);
 		});
 
 		down.addActionListener(e -> {
-			listModel.moveDown(selectedID());
-			select(selectedID() + 1);
+			listModel.moveDown(selectedIndex());
+			select(selectedIndex() + 1);
 		});
 
 		edit.addActionListener(e -> promptEdit(selected()));
 
 		delete.addActionListener(e -> {
-			int confirmDialog = JOptionPane.showConfirmDialog(mcreator,
-					L10N.t("dialog.image_maker.list_edit_panel.dialog.confirm_deletion.message",
-							getItemName(selected())),
-					L10N.t("dialog.image_maker.list_edit_panel.dialog.confirm_deletion.title"),
-					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-			if (confirmDialog == 0) {
-				listModel.remove(selectedID());
+			int selected = selectedIndex();
+
+			if (promptOnDelete) {
+				int confirmDialog = JOptionPane.showConfirmDialog(mcreator,
+						L10N.t("dialog.image_maker.list_edit_panel.dialog.confirm_deletion.message",
+								getItemName(selected())),
+						L10N.t("dialog.image_maker.list_edit_panel.dialog.confirm_deletion.title"),
+						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+				if (confirmDialog == 0) {
+					listModel.remove(selectedIndex());
+					updateControls();
+				}
+			} else {
+				listModel.remove(selectedIndex());
 				updateControls();
 			}
+
+			list.setSelectedIndex(selected);
 		});
 		listDataListener = new ListDataListener() {
 			@Override public void intervalAdded(ListDataEvent e) {
@@ -158,7 +174,7 @@ public abstract class ListEditPanel<T> extends JPanel {
 
 	protected abstract void itemSelected(T selected);
 
-	public abstract T createNew(T selected);
+	@Nullable public abstract T createNew(T selected);
 
 	protected abstract void promptEdit(T selected);
 
@@ -180,7 +196,7 @@ public abstract class ListEditPanel<T> extends JPanel {
 		updateControls();
 	}
 
-	public int selectedID() {
+	public int selectedIndex() {
 		if (mode == ListMode.NORMAL)
 			return list.getSelectedIndex();
 		return -1;
@@ -195,9 +211,9 @@ public abstract class ListEditPanel<T> extends JPanel {
 	public void updateControls() {
 		if (!listModel.isEmpty()) {
 			setListMode(ListMode.NORMAL);
-			if (selectedID() != -1) {
-				down.setEnabled(selectedID() < listModel.size() - 1);
-				up.setEnabled(selectedID() > 0);
+			if (selectedIndex() != -1) {
+				down.setEnabled(selectedIndex() < listModel.size() - 1);
+				up.setEnabled(selectedIndex() > 0);
 				canEdit(true);
 			} else {
 				up.setEnabled(false);
@@ -213,10 +229,19 @@ public abstract class ListEditPanel<T> extends JPanel {
 		list.repaint();
 	}
 
+	public void setRequestAtLeastOneElement(boolean requestAtLeastOneElement) {
+		this.requestAtLeastOneElement = requestAtLeastOneElement;
+	}
+
+	public void setPromptOnDelete(boolean promptOnDelete) {
+		this.promptOnDelete = promptOnDelete;
+	}
+
 	private void canEdit(boolean can) {
 		edit.setEnabled(can);
 		duplicate.setEnabled(can);
-		delete.setEnabled(can && list.getModel().getSize() > 1); // Disable the button if only one element is present
+		delete.setEnabled(can && (!requestAtLeastOneElement
+				|| list.getModel().getSize() > 1)); // Disable the button if only one element is present
 	}
 
 	public void setList(ArrayListListModel<T> contents, ListCellRenderer<T> renderer) {

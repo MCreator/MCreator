@@ -23,17 +23,15 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.color.ListEditPanel;
 import net.mcreator.ui.views.editor.image.color.PalettePanel;
-import net.mcreator.ui.views.editor.image.color.palette.ColorPalettePanel;
 import net.mcreator.ui.views.editor.image.color.palette.ColorPalette;
+import net.mcreator.ui.views.editor.image.color.palette.ColorPalettePanel;
 import net.mcreator.util.ArrayListListModel;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.Arrays;
 
 public class PaletteListPanel extends ListEditPanel<ColorPalette> {
 
-	private final ArrayListListModel<ColorPalette> palettes = new ArrayListListModel<>();
+	private final PaletteStorage palettes = new PaletteStorage();
 	private final PalettePanel palettePanel;
 
 	private ColorPalettePanel colorPalettePanel;
@@ -42,39 +40,10 @@ public class PaletteListPanel extends ListEditPanel<ColorPalette> {
 		super(mcreator);
 		this.palettePanel = palettePanel;
 		setList(palettes, new PaletteCellRenderer());
-
-		palettes.add(new ColorPalette("Test 1"));
-		palettes.add(new ColorPalette("Test 2"));
-		palettes.add(new ColorPalette("Long name palette super long let'sgooooo"));
-
-		palettes.get(0).addAll(Arrays.asList(Color.red, Color.green, Color.blue, Color.yellow, Color.orange, Color.pink,
-				Color.cyan, Color.magenta, Color.black, Color.white));
-		for (int i = 0; i < 6; i++) {
-			float saturation = (float) Math.random() * 0.5f + 0.5f;
-			for (int j = 0; j < 6; j++) {
-				float brightness = (float) Math.random() * 0.5f + 0.5f;
-				for (int k = 0; k < 10; k++) {
-					palettes.getFirst().add(Color.getHSBColor((float) Math.random(), saturation, brightness));
-				}
-			}
-		}
-
-		palettes.get(1).addAll(Arrays.asList(Color.red, Color.green, Color.blue, Color.yellow, Color.orange, Color.cyan,
-				Color.magenta, Color.black, Color.white));
-
-		for (int i = 0; i < 8; i++) {
-			float saturation = (float) Math.random() * 0.5f + 0.5f;
-			for (int j = 0; j < 8; j++) {
-				float brightness = (float) Math.random() * 0.5f + 0.5f;
-				for (int k = 0; k < 16; k++) {
-					palettes.get(2).add(Color.getHSBColor((float) Math.random(), saturation, brightness));
-				}
-			}
-		}
 	}
 
 	@Override protected void itemSelected(ColorPalette selected) {
-		if (colorPalettePanel != null) {
+		if (colorPalettePanel != null && selected != null) {
 			colorPalettePanel.setPalette(selected);
 		}
 	}
@@ -107,4 +76,12 @@ public class PaletteListPanel extends ListEditPanel<ColorPalette> {
 	public void setColorsPanel(ColorPalettePanel colorPalettePanel) {
 		this.colorPalettePanel = colorPalettePanel;
 	}
+
+	public PaletteStorage getPalettes() {
+		return palettes;
+	}
+
+	public static final class PaletteStorage extends ArrayListListModel<ColorPalette> {
+	}
+
 }

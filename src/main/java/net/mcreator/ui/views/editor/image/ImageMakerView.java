@@ -355,7 +355,12 @@ public class ImageMakerView extends ViewBase implements MouseListener, MouseMoti
 		else
 			this.tab = new MCreatorTabs.Tab(this);
 
-		tab.setTabClosedListener(tab -> this.active = false);
+		tab.setTabClosedListener(tab -> {
+			this.active = false;
+			palettePanel.storePalette();
+		});
+		tab.setTabHiddenListener(tab -> palettePanel.storePalette());
+		tab.setTabShownListener(tab -> palettePanel.reloadPalette());
 
 		MCreatorTabs.Tab existing = mcreator.mcreatorTabs.showTabOrGetExisting(this.tab);
 		if (existing == null) {

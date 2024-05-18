@@ -23,7 +23,6 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JColor;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.color.ListEditPanel;
-import net.mcreator.ui.views.editor.image.color.palettes.PaletteListPanel;
 import net.mcreator.ui.views.editor.image.tool.ToolPanel;
 
 import javax.swing.*;
@@ -38,15 +37,19 @@ public class ColorPalettePanel extends ListEditPanel<Color> {
 	public ColorPalettePanel(MCreator mcreator, ToolPanel toolPanel) {
 		super(mcreator);
 		this.toolPanel = toolPanel;
+
+		setPromptOnDelete(false);
 	}
 
 	@Override protected void itemSelected(Color selected) {
-		toolPanel.getColorSelector().setForegroundColor(selected);
+		if (selected != null) {
+			toolPanel.getColorSelector().setForegroundColor(selected);
+		}
 	}
 
 	public void setPalette(ColorPalette palette) {
 		this.palette = palette;
-		setList(this.palette, new ColorCellRenderer());
+		setList(this.palette.getColors(), new ColorCellRenderer());
 
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		list.setVisibleRowCount(-1);
@@ -60,36 +63,29 @@ public class ColorPalettePanel extends ListEditPanel<Color> {
 		dialog = JColorChooser.createDialog(mcreator, L10N.t("dialog.image_maker.palette.dialog.new_color.title"), true,
 				JColor.colorChooser, event -> {
 					Color c = JColor.colorChooser.getColor();
-
 					if (c != null)
 						newColor.set(c);
-
 					dialog.setVisible(false);
-
 				}, event -> dialog.setVisible(false));
 		dialog.setVisible(true);
 		return newColor.get();
 	}
 
 	@Override protected void promptEdit(Color selected) {
-		int colorID = selectedID();
-		JColor.colorChooser.setColor(palette.get(colorID));
+		int colorID = selectedIndex();
+		JColor.colorChooser.setColor(palette.getColors().get(colorID));
 		dialog = JColorChooser.createDialog(mcreator, L10N.t("dialog.image_maker.palette.dialog.edit_color.title"),
 				true, JColor.colorChooser, event -> {
 					Color c = JColor.colorChooser.getColor();
-
 					if (c != null)
-						palette.set(colorID, c);
-
+						palette.getColors().set(colorID, c);
 					dialog.setVisible(false);
-
 				}, event -> dialog.setVisible(false));
 		dialog.setVisible(true);
 	}
 
 	@Override protected String getItemName(Color selected) {
-		return L10N.t("dialog.image_maker.palette.color.name_format",
-				String.format("#%06X", 0xFFFFFF & selected.getRGB()), selected.getRed(), selected.getGreen(),
-				selected.getBlue());
+		return selected.toString();
 	}
+
 }
