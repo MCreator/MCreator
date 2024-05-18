@@ -35,7 +35,7 @@ displayTest="IGNORE_SERVER_VERSION"
     modId="minecraft"
     mandatory=true
     versionRange="[${generator.getGeneratorMinecraftVersion()}]"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 
 <#list settings.getRequiredMods() as e>
@@ -64,3 +64,6 @@ displayTest="IGNORE_SERVER_VERSION"
     ordering="NONE"
     side="BOTH"
 </#list>
+
+# Start of user code block dependencies configuration
+# End of user code block dependencies configuration

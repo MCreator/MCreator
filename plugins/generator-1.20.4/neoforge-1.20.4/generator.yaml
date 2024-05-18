@@ -1,6 +1,6 @@
 name: NeoForge for @minecraft (@buildfileversion)
 status: stable
-buildfileversion: 20.4.190
+buildfileversion: 20.4.234
 
 import:
   - datapack-1.20.4
@@ -27,6 +27,9 @@ import_formatter:
     SoundEvent: net.minecraft.sounds
     Blocks: net.minecraft.world.level.block
     Items: net.minecraft.world.item
+    Multimap: com.google.common.collect
+    ImmutableSet: com.google.common.collect
+    Iterables: com.google.common.collect
 
 # base generator roots
 source_root: "@WORKSPACEROOT/src/main/java"

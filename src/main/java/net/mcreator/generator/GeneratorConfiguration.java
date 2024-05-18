@@ -41,8 +41,9 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 
 	@Nullable
 	public static GeneratorConfiguration getRecommendedGeneratorForFlavor(
-			Collection<GeneratorConfiguration> generatorConfigurations, GeneratorFlavor generatorFlavor) {
-		return generatorConfigurations.stream().filter(gc -> gc.getGeneratorFlavor() == generatorFlavor).sorted()
+			Collection<GeneratorConfiguration> generatorConfigurations, GeneratorFlavor... generatorFlavors) {
+		List<GeneratorFlavor> flavors = Arrays.asList(generatorFlavors);
+		return generatorConfigurations.stream().filter(gc -> flavors.contains(gc.getGeneratorFlavor())).sorted()
 				.findFirst().orElse(null);
 	}
 
@@ -71,6 +72,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 	private final List<String> compatibleJavaModelRequirementKeyWords = new ArrayList<>();
 	private final List<String> importFormatterDuplicatesWhitelist = new ArrayList<>();
 	private final Map<String, String> importFormatterPriorityImports = new HashMap<>();
+	private final List<GeneratorImport> generatorImports = new ArrayList<>();
 
 	public GeneratorConfiguration(String generatorName) {
 		this.generatorName = generatorName;
@@ -83,10 +85,16 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 			generatorConfig = new ConcurrentHashMap<>(
 					generatorConfig); // make this map concurrent, cache can be reused by multiple instances
 		} catch (YamlEngineException e) {
-			LOG.fatal("[" + generatorName + "] Error: " + e.getMessage());
+			LOG.fatal("[{}] Error: {}", generatorName, e.getMessage());
 		}
 
 		this.generatorFlavor = GeneratorFlavor.valueOf(this.generatorName.split("-")[0].toUpperCase(Locale.ENGLISH));
+
+		// First, preprocess generator imports as we will need them in the next steps
+		if (generatorConfig.get("import") != null) {
+			((List<?>) generatorConfig.get("import")).forEach(
+					importConfig -> generatorImports.add(new GeneratorImport(importConfig)));
+		}
 
 		// load mappings
 		this.mappingLoader = new MappingLoader(this);
@@ -183,10 +191,15 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 				new ArrayList<>();
 	}
 
-	public List<String> getImports() {
-		return (generatorConfig.get("import") != null) ?
-				((List<?>) generatorConfig.get("import")).stream().map(Object::toString).toList() :
-				new ArrayList<>();
+	public Collection<String> getGeneratorPaths(String subpath) {
+		List<String> paths = new ArrayList<>();
+		// load generator first as the current generator has the highest priority
+		paths.add(generatorName + "/" + subpath);
+		for (GeneratorImport generatorImport : generatorImports) {
+			if (!generatorImport.isExcluded(subpath))
+				paths.add(generatorImport.getPath() + "/" + subpath);
+		}
+		return paths;
 	}
 
 	public GeneratorFlavor getGeneratorFlavor() {
@@ -280,7 +293,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
 
 		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + type.getRegistryName());
+			LOG.info("Failed to load element definition for mod element type {}", type.getRegistryName());
 			return null;
 		}
 
@@ -298,7 +311,7 @@ public class GeneratorConfiguration implements Comparable<GeneratorConfiguration
 		Map<?, ?> map = definitionsProvider.getModElementDefinition(type);
 
 		if (map == null) {
-			LOG.info("Failed to load element definition for mod element type " + type.getRegistryName());
+			LOG.info("Failed to load element definition for mod element type {}", type.getRegistryName());
 			return null;
 		}
 

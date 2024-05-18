@@ -19,7 +19,7 @@
 package net.mcreator.ui.dialogs.imageeditor;
 
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.views.editor.image.canvas.Canvas;
@@ -103,8 +103,8 @@ public class ResizeDialog extends MCreatorDialog {
 
 		controls.add(cancel, BorderLayout.WEST);
 		controls.add(ok, BorderLayout.EAST);
-		add(PanelUtils.maxMargin(settings, 5, true, true, true, true), BorderLayout.CENTER);
-		add(PanelUtils.maxMargin(controls, 5, true, true, true, true), BorderLayout.SOUTH);
+		add(ComponentUtils.applyPadding(settings, 5, true, true, true, true), BorderLayout.CENTER);
+		add(ComponentUtils.applyPadding(controls, 5, true, true, true, true), BorderLayout.SOUTH);
 		setSize(400, 150);
 		setResizable(false);
 		setLocationRelativeTo(window);

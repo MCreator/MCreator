@@ -83,9 +83,9 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		Launcher.version = new MCreatorVersionNumber(conf);
 
 		// print version of Java
-		LOG.info("Java version: " + System.getProperty("java.version") + ", VM: " + System.getProperty("java.vm.name")
-				+ ", vendor: " + System.getProperty("java.vendor"));
-		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
+		LOG.info("Java version: {}, VM: {}, vendor: {}", System.getProperty("java.version"),
+				System.getProperty("java.vm.name"), System.getProperty("java.vendor"));
+		LOG.info("Current JAVA_HOME for running instance: {}", System.getProperty("java.home"));
 
 		// load preferences
 		PreferencesManager.init();
@@ -104,7 +104,7 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		PreferencesManager.PREFERENCES.gradle.xmx.set(3072); // 3G
 
 		// Disable native file choosers for tests due to threading issues
-		PreferencesManager.PREFERENCES.ui.useNativeFileChooser.set(false);
+		PreferencesManager.PREFERENCES.ui.nativeFileChooser.set(false);
 
 		// Do not track unit tests
 		GoogleAnalytics.ANALYTICS_ENABLED = false;
@@ -164,7 +164,7 @@ public class IntegrationTestSetup implements BeforeAllCallback {
 		// load generator configurations
 		Set<String> fileNames = PluginLoader.INSTANCE.getResources(Pattern.compile("generator\\.yaml"));
 		for (String generator : fileNames) {
-			LOG.info("Loading generator: " + generator);
+			LOG.info("Loading generator: {}", generator);
 			generator = generator.replace("/generator.yaml", "");
 			Generator.GENERATOR_CACHE.put(generator, new GeneratorConfiguration(generator));
 		}

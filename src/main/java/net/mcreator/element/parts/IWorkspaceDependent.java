@@ -74,8 +74,8 @@ public interface IWorkspaceDependent {
 					try {
 						processWorkspaceDependentObjects(field.get(object), processor);
 					} catch (Exception e) {
-						LOG.warn("Failed to pass workspace to field " + field.getName() + " of object "
-								+ object.getClass().getSimpleName());
+						LOG.warn("Failed to pass workspace to field {} of object {}", field.getName(),
+								object.getClass().getSimpleName());
 					}
 				}
 			}

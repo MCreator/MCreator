@@ -60,12 +60,12 @@ public class Launcher {
 			LOG.error("Failed to read MCreator config", e);
 		}
 
-		LOG.info("Starting MCreator " + version);
+		LOG.info("Starting MCreator {}", version);
 
 		// print version of Java
-		LOG.info("Java version: " + System.getProperty("java.version") + ", VM: " + System.getProperty("java.vm.name")
-				+ ", vendor: " + System.getProperty("java.vendor"));
-		LOG.info("Current JAVA_HOME for running instance: " + System.getProperty("java.home"));
+		LOG.info("Java version: {}, VM: {}, vendor: {}", System.getProperty("java.version"),
+				System.getProperty("java.vm.name"), System.getProperty("java.vendor"));
+		LOG.info("Current JAVA_HOME for running instance: {}", System.getProperty("java.home"));
 
 		// after we have libraries loaded, we load preferences
 		PreferencesManager.init();
@@ -73,12 +73,9 @@ public class Launcher {
 		// set system properties from preferences
 		System.setProperty("apple.laf.useScreenMenuBar",
 				Boolean.toString(PreferencesManager.PREFERENCES.ui.usemacOSMenuBar.get()));
-		System.setProperty("awt.useSystemAAFontSettings", PreferencesManager.PREFERENCES.ui.textAntialiasingType.get());
-		System.setProperty("swing.aatext", Boolean.toString(PreferencesManager.PREFERENCES.ui.aaText.get()));
 		System.setProperty("sun.java2d.opengl",
 				Boolean.toString(PreferencesManager.PREFERENCES.ui.use2DAcceleration.get()));
 		System.setProperty("sun.java2d.d3d", "false");
-		System.setProperty("prism.lcdtext", "false");
 
 		// Init JFX Toolkit
 		ThreadUtil.runOnSwingThreadAndWait(JFXPanel::new);
@@ -93,8 +90,8 @@ public class Launcher {
 			System.exit(-1);
 		}
 
-		LOG.info("Installation path: " + System.getProperty("user.dir"));
-		LOG.info("User home of MCreator: " + UserFolderManager.getFileFromUserFolder("/"));
+		LOG.info("Installation path: {}", System.getProperty("user.dir"));
+		LOG.info("User home of MCreator: {}", UserFolderManager.getFileFromUserFolder("/"));
 
 		if (!UserFolderManager.createUserFolderIfNotExists()) {
 			JOptionPane.showMessageDialog(null, "<html><b>MCreator failed to write to user directory!</b><br><br>"

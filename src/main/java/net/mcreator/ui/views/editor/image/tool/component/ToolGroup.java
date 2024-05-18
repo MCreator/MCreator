@@ -18,21 +18,20 @@
 
 package net.mcreator.ui.views.editor.image.tool.component;
 
-import net.mcreator.ui.component.util.WrapLayout;
-
 import javax.swing.*;
 import java.awt.*;
 
 public class ToolGroup extends JPanel {
-	private final JPanel tools = new JPanel(new WrapLayout(FlowLayout.LEFT));
+
+	private final JPanel tools = new JPanel(new GridLayout(-1, 7, 4, 4));
 
 	public ToolGroup(String name) {
-		super(new BorderLayout());
+		super(new BorderLayout(4, 4));
 		JLabel label = new JLabel(name);
-		tools.setOpaque(false);
 
 		add(label, BorderLayout.NORTH);
 		add(tools, BorderLayout.CENTER);
+		setBorder(BorderFactory.createEmptyBorder(0, 0, 8, 0));
 	}
 
 	public void register(JToggleButton toolButton) {
@@ -42,4 +41,5 @@ public class ToolGroup extends JPanel {
 	public void register(JButton toolButton) {
 		tools.add(toolButton);
 	}
+
 }

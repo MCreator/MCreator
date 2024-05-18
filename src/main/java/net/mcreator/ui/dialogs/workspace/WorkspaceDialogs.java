@@ -54,7 +54,6 @@ import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -99,7 +98,7 @@ public class WorkspaceDialogs {
 
 		workspaceDialog.getRootPane().setDefaultButton(ok);
 		workspaceDialog.pack();
-		workspaceDialog.setSize(workspaceDialog.getBounds().width, 620);
+		workspaceDialog.setSize(680, 620);
 		workspaceDialog.setLocationRelativeTo(mcreator);
 
 		workspaceDialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -145,26 +144,28 @@ public class WorkspaceDialogs {
 
 		private GeneratorFlavor flavorFilter = null;
 
-		JComponent generatorSelector;
-		ValidationGroup validationGroup = new ValidationGroup();
+		final JComponent generatorSelector;
+		final ValidationGroup validationGroup = new ValidationGroup();
 
-		VTextField modName = new VTextField(24);
-		VTextField modID = new VTextField(24);
+		final VTextField modName = new VTextField(24);
+		final VTextField modID = new VTextField(24);
 
-		VTextField packageName = new VTextField(24);
-		VTextField credits = new VTextField(24);
+		final VTextField packageName = new VTextField(24);
+		final VTextField credits = new VTextField(24);
 
-		VTextField version = new VTextField(24);
-		VTextField description = new VTextField(24);
-		VTextField author = new VTextField(24);
-		VTextField websiteURL = new VTextField(24);
+		final VTextField version = new VTextField(24);
+		final VTextField description = new VTextField(24);
+		final VTextField author = new VTextField(24);
+		final VTextField websiteURL = new VTextField(24);
 
-		JComboBox<String> modPicture = new JComboBox<>();
-		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
-		JTextField updateJSON = new JTextField(24);
-		JStringListField requiredMods, dependencies, dependants;
+		final JComboBox<String> modPicture = new JComboBox<>();
+		final JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
+		final JTextField updateJSON = new JTextField(24);
+		final JStringListField requiredMods;
+		final JStringListField dependencies;
+		final JStringListField dependants;
 
-		JComboBox<String> license = new JComboBox<>(
+		final JComboBox<String> license = new JComboBox<>(
 				new String[] { "Not specified", "Academic Free License v3.0", "Ace3 Style BSD", "All Rights Reserved",
 						"Apache License version 2.0", "Apple Public Source License version 2.0 (APSL)",
 						"BSD License Common Development and Distribution License (CDDL)",
@@ -177,9 +178,9 @@ public class WorkspaceDialogs {
 						"MIT License", "Mozilla Public License 1.0 (MPL)", "Mozilla Public License 1.1 (MPL 1.1)",
 						"Mozilla Public License 2.0", "Public Domain", "WTFPL", "Custom license" });
 
-		Map<String, JCheckBox> apis = new HashMap<>();
+		final Map<String, JCheckBox> apis = new HashMap<>();
 
-		JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
+		final JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
 
 		private boolean modIDManuallyEntered = false;
 		private boolean packageNameManuallyEntered = false;
@@ -201,21 +202,19 @@ public class WorkspaceDialogs {
 			Generator.GENERATOR_CACHE.values().forEach(generator::addItem);
 
 			JPanel _basicSettings = new JPanel();
+			_basicSettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			_basicSettings.setLayout(new BoxLayout(_basicSettings, BoxLayout.PAGE_AXIS));
 
 			JPanel _advancedSettings = new JPanel();
+			_advancedSettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			_advancedSettings.setLayout(new BoxLayout(_advancedSettings, BoxLayout.PAGE_AXIS));
 
 			JPanel _external_apis = new JPanel();
+			_external_apis.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			_external_apis.setLayout(new BoxLayout(_external_apis, BoxLayout.PAGE_AXIS));
 
 			if (workspace != null) {
 				JTabbedPane master = new JTabbedPane();
-				master.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-				master.setUI(new BasicTabbedPaneUI() {
-					@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
-					}
-				});
 				master.addTab(L10N.t("dialog.workspace_settings.tab.general"),
 						PanelUtils.pullElementUp(_basicSettings));
 				master.addTab(L10N.t("dialog.workspace_settings.tab.apis"), PanelUtils.pullElementUp(_external_apis));

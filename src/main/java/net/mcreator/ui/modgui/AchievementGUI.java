@@ -30,6 +30,7 @@ import net.mcreator.generator.blockly.BlocklyBlockCodeGenerator;
 import net.mcreator.generator.blockly.ProceduralBlockCodeGenerator;
 import net.mcreator.generator.mapping.NonMappableElement;
 import net.mcreator.generator.template.TemplateGeneratorException;
+import net.mcreator.minecraft.DataListEntry;
 import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -83,10 +84,10 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 	private final JComboBox<String> background = new JComboBox<>();
 
-	JCheckBox showPopup = L10N.checkbox("elementgui.common.enable");
-	JCheckBox announceToChat = L10N.checkbox("elementgui.common.enable");
-	JCheckBox hideIfNotCompleted = L10N.checkbox("elementgui.common.enable");
-	JCheckBox disableDisplay = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox showPopup = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox announceToChat = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox hideIfNotCompleted = L10N.checkbox("elementgui.common.enable");
+	private final JCheckBox disableDisplay = L10N.checkbox("elementgui.common.enable");
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -124,6 +125,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 
 		background.setPrototypeDisplayValue("XXXXXXXXXXXXXXXXXXXXXXXXXX");
 		background.setRenderer(new WTextureComboBoxRenderer.TypeTextures(mcreator.getWorkspace(), TextureType.SCREEN));
+
+		parentAchievement.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXXXXXX"));
 
 		showPopup.setOpaque(false);
 		announceToChat.setOpaque(false);
@@ -219,8 +222,8 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.JSON_TRIGGER)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.EMPTY);
-			blocklyPanel.getJSBridge().setJavaScriptEventListener(
-					() -> new Thread(AchievementGUI.this::regenerateTrigger, "TriggerRegenerate").start());
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(AchievementGUI.this::regenerateTrigger, "TriggerRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(
 						"<xml><block type=\"advancement_trigger\" deletable=\"false\" x=\"40\" y=\"80\"/></xml>");
@@ -233,9 +236,9 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 				L10N.t("elementgui.advancement.trigger_builder"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION,
 				getFont(), Theme.current().getForegroundColor()));
 
-		JComponent wrap = PanelUtils.northAndCenterElement(PanelUtils.westAndCenterElement(propertiesPanel, logicPanel),
-				advancementTrigger);
-		wrap.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
+		JComponent wrap = PanelUtils.northAndCenterElement(
+				PanelUtils.gridElements(1, 2, 5, 5, propertiesPanel, logicPanel), advancementTrigger);
+		wrap.setBorder(BorderFactory.createEmptyBorder(0, 5, 5, 5));
 		addPage(wrap, false);
 
 		if (!isEditingMode()) {
@@ -293,7 +296,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		achievementDescription.setText(achievement.achievementDescription);
 		achievementIcon.setBlock(achievement.achievementIcon);
 		achievementType.setSelectedItem(achievement.achievementType);
-		parentAchievement.setSelectedItem(achievement.parent.getUnmappedValue());
+		parentAchievement.setSelectedItem(achievement.parent);
 		disableDisplay.setSelected(achievement.disableDisplay);
 		showPopup.setSelected(achievement.showPopup);
 		announceToChat.setSelected(achievement.announceToChat);
@@ -304,12 +307,7 @@ public class AchievementGUI extends ModElementGUI<Achievement> implements IBlock
 		rewardRecipes.setListElements(achievement.rewardRecipes.stream().map(NonMappableElement::new).toList());
 		rewardXP.setValue(achievement.rewardXP);
 
-		blocklyPanel.setXMLDataOnly(achievement.triggerxml);
-		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.clearWorkspace();
-			blocklyPanel.setXML(achievement.triggerxml);
-			blocklyPanel.triggerEventFunction();
-		});
+		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(achievement.triggerxml));
 	}
 
 	@Override public Achievement getElementFromGUI() {

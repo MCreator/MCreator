@@ -140,7 +140,7 @@ public class MaterialProcedureConverter extends ProcedureConverter {
 				Element blockToTest = null;
 				for (Element value : XMLUtil.getChildrenWithName(element, "value")) {
 					if (value.getAttribute("name").equals("a")) {
-						blockToTest = XMLUtil.getDirectChildren(value).get(0);
+						blockToTest = XMLUtil.getDirectChildren(value).getFirst();
 					}
 				}
 

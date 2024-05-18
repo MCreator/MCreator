@@ -19,7 +19,6 @@
 
 package net.mcreator.preferences.data;
 
-import net.mcreator.io.OS;
 import net.mcreator.preferences.PreferencesEntry;
 import net.mcreator.preferences.PreferencesSection;
 import net.mcreator.preferences.entries.BooleanEntry;
@@ -33,18 +32,16 @@ import java.util.Locale;
 
 public class UISection extends PreferencesSection {
 
-	public PreferencesEntry<Locale> language;
-	public ColorEntry interfaceAccentColor;
-	public StringEntry backgroundSource;
-	public BooleanEntry aaText;
-	public StringEntry textAntialiasingType;
-	public BooleanEntry usemacOSMenuBar;
-	public BooleanEntry useNativeFileChooser;
-	public BooleanEntry expandSectionsByDefault;
-	public BooleanEntry use2DAcceleration;
-	public BooleanEntry autoReloadTabs;
-	public BooleanEntry remindOfUnsavedChanges;
-	public BooleanEntry discordRichPresenceEnable;
+	public final PreferencesEntry<Locale> language;
+	public final ColorEntry interfaceAccentColor;
+	public final StringEntry backgroundSource;
+	public final BooleanEntry usemacOSMenuBar;
+	public final BooleanEntry nativeFileChooser;
+	public final BooleanEntry expandSectionsByDefault;
+	public final BooleanEntry use2DAcceleration;
+	public final BooleanEntry autoReloadTabs;
+	public final BooleanEntry remindOfUnsavedChanges;
+	public final BooleanEntry discordRichPresenceEnable;
 
 	public UISection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -53,12 +50,8 @@ public class UISection extends PreferencesSection {
 		interfaceAccentColor = addEntry(new ColorEntry("interfaceAccentColor", ColorScheme.MAIN_TINT_DEFAULT));
 		backgroundSource = addEntry(
 				new StringEntry("backgroundSource", "All", "All", "Current theme", "Custom", "None"));
-		aaText = addEntry(new BooleanEntry("aaText", true));
-		textAntialiasingType = addEntry(
-				new StringEntry("textAntialiasingType", "on", "on", "off", "gasp", "lcd", "lcd_hbgr", "lcd_vrgb",
-						"lcd_vbgr"));
 		usemacOSMenuBar = addEntry(new BooleanEntry("useMacOSMenuBar", true));
-		useNativeFileChooser = addEntry(new BooleanEntry("useNativeFileChooser", OS.getOS() == OS.WINDOWS));
+		nativeFileChooser = addEntry(new BooleanEntry("nativeFileChooser", true));
 		expandSectionsByDefault = addEntry(new BooleanEntry("expandSectionsByDefault", false));
 		use2DAcceleration = addEntry(new BooleanEntry("use2DAcceleration", false));
 		autoReloadTabs = addEntry(new BooleanEntry("autoReloadTabs", true));

@@ -57,11 +57,11 @@
 </#if>
 </#macro>
 
-<#macro onEntityHitWith procedure="" hurtStack=false>
+<#macro onEntityHitWith procedure="" hurtStack=false hurtStackAmount=2>
 <#if hasProcedure(procedure) || hurtStack>
 @Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
 	<#if hurtStack>
-		itemstack.hurtAndBreak(2, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		itemstack.hurtAndBreak(${hurtStackAmount}, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 	<#else>
 		boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
 	</#if>
@@ -354,24 +354,6 @@
 		"entity": "Minecraft.getInstance().player",
 		"blockstate": "blockstate"
 	}/>
-}
-</#if>
-</#macro>
-
-<#macro onBlockTick procedure="" scheduleTick=false tickRate=0>
-<#if hasProcedure(procedure)>
-@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
-	super.tick(blockstate, world, pos, random);
-	<@procedureCode procedure, {
-		"x": "pos.getX()",
-		"y": "pos.getY()",
-		"z": "pos.getZ()",
-		"world": "world",
-		"blockstate": "blockstate"
-	}/>
-	<#if scheduleTick>
-	world.scheduleTick(pos, this, ${tickRate});
-	</#if>
 }
 </#if>
 </#macro>

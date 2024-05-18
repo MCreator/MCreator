@@ -94,8 +94,8 @@ public class ShareableZIPManager {
 							generatableElement.getModElement().reinit(workspace);
 						}
 					} else {
-						LOG.debug("Skipping preloading of mod element " + mod.getName()
-								+ " as it was converted to a different type");
+						LOG.debug("Skipping preloading of mod element {} as it was converted to a different type",
+								mod.getName());
 					}
 
 					i++;

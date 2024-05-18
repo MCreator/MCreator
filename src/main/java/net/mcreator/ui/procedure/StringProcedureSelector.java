@@ -66,7 +66,7 @@ public class StringProcedureSelector extends RetvalProcedureSelector<String, Str
 		if (fixedValue != null) {
 			fixedValue.setBackground(Theme.current().getBackgroundColor());
 			fixedValue.setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(1, 5, 1, allowInlineEditor ? 5 : 0, this.getBackground()),
+					BorderFactory.createMatteBorder(1, 1, 1, 0, UIManager.getColor("Component.borderColor")),
 					BorderFactory.createMatteBorder(0, 5, 0, 5, fixedValue.getBackground())));
 		}
 	}

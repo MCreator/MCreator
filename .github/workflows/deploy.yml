@@ -13,6 +13,9 @@ jobs:
     name: Build and Export (all but MacOS)
     runs-on: ubuntu-latest
     environment: production
+    permissions:
+      contents: write
+      id-token: write
     outputs:
       mcr_version: ${{ steps.determineExportVersion.outputs.mcr_version }}
       mc_version: ${{ steps.determineExportVersion.outputs.mc_version }}
@@ -28,22 +31,43 @@ jobs:
           For more information, read LICENSE.txt.
           EOF
           exit 1
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '17.0.10+7'
+          java-version: '21.0.3+9.0.LTS'
           distribution: 'temurin'
       - name: Install Dependencies
         run: |
           sudo apt-get install -y mkisofs nsis nsis-pluginapi
           wget https://nsis.sourceforge.io/mediawiki/images/d/d3/LockedList.zip
           sudo unzip LockedList.zip -d /usr/share/nsis/
+      - uses: google-github-actions/auth@a6e2e39c0a0331da29f7fd2c2a20a427e8d3ad1f
+        name: Authenticate to Google Cloud
+        with:
+          workload_identity_provider: ${{ secrets.GC_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ secrets.GC_PROJECT_ID }}
+      - uses: google-github-actions/setup-gcloud@98ddc00a17442e89a24bbf282954a3b65ce6d200
+        name: Set up Google Cloud SDK
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
-        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux
+        env:
+          WIN_CERT_PEM: ${{ secrets.WIN_CERT_PEM }}
+          WIN_CERT_KEYNAME: ${{ secrets.WIN_CERT_KEYNAME }}
+          WIN_CERT_KEYSTORE: ${{ secrets.WIN_CERT_KEYSTORE }}
+        run: |
+          export WIN_CERT_STOREPASS="$(gcloud auth print-access-token)"
+          echo "$WIN_CERT_PEM" > codesign-chain.pem
+          xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
-        run: xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux -Psnapshot=true
+        env:
+          WIN_CERT_PEM: ${{ secrets.WIN_CERT_PEM }}
+          WIN_CERT_KEYNAME: ${{ secrets.WIN_CERT_KEYNAME }}
+          WIN_CERT_KEYSTORE: ${{ secrets.WIN_CERT_KEYSTORE }}
+        run: |
+          export WIN_CERT_STOREPASS="$(gcloud auth print-access-token)"
+          echo "$WIN_CERT_PEM" > codesign-chain.pem
+          xvfb-run -a ./gradlew generateExportReport exportWindows exportLinux -Psnapshot=true
       - name: Determine Export Version
         id: determineExportVersion
         run: |
@@ -83,19 +107,43 @@ jobs:
     environment: production
     steps:
       - uses: actions/checkout@v4
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '17.0.10+7'
+          java-version: '21.0.3+9.0.LTS'
           distribution: 'temurin'
       - name: Install Dependencies
         run: |
           brew install create-dmg
+      - name: Prepare Keychain
+        env:
+          MACOS_CERTIFICATE: ${{ secrets.MACOS_CERTIFICATE }}
+          MACOS_CERTIFICATE_PWD: ${{ secrets.MACOS_CERTIFICATE_PWD }}
+          MACOS_CI_KEYCHAIN_PWD: ${{ secrets.MACOS_CI_KEYCHAIN_PWD }}
+          MACOS_NOTARIZATION_APPLE_ID: ${{ secrets.MACOS_NOTARIZATION_APPLE_ID }}
+          MACOS_NOTARIZATION_TEAM_ID: ${{ secrets.MACOS_NOTARIZATION_TEAM_ID }}
+          MACOS_NOTARIZATION_PWD: ${{ secrets.MACOS_NOTARIZATION_PWD }}
+        run: |
+          echo $MACOS_CERTIFICATE | base64 --decode > certificate.p12
+
+          security create-keychain -p "$MACOS_CI_KEYCHAIN_PWD" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "$MACOS_CI_KEYCHAIN_PWD" build.keychain
+          security set-keychain-settings -t 3600 -u build.keychain
+
+          security import certificate.p12 -P "$MACOS_CERTIFICATE_PWD" -T /usr/bin/codesign -k ~/Library/Keychains/build.keychain
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$MACOS_CI_KEYCHAIN_PWD" build.keychain
+
+          xcrun notarytool store-credentials "notarytool-profile" --apple-id "$MACOS_NOTARIZATION_APPLE_ID" --team-id "$MACOS_NOTARIZATION_TEAM_ID" --password "$MACOS_NOTARIZATION_PWD"
       - name: Build and Export Release Using Gradle
         if: github.event.inputs.release-type == 'release'
+        env:
+          MACOS_CERTIFICATE_NAME: ${{ secrets.MACOS_CERTIFICATE_NAME }}
         run: ./gradlew generateExportReport exportMac -Pbuilddate=${{ needs.export1.outputs.build_date }}
       - name: Build and Export Snapshot Using Gradle
         if: github.event.inputs.release-type == 'snapshot'
+        env:
+          MACOS_CERTIFICATE_NAME: ${{ secrets.MACOS_CERTIFICATE_NAME }}
         run: ./gradlew generateExportReport exportMac -Psnapshot=true -Pbuilddate=${{ needs.export1.outputs.build_date }}
       - name: Upload Binaries and Tag Release
         uses: svenstaro/upload-release-action@04733e069f2d7f7f0b4aebc4fbdbce8613b03ccd

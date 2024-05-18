@@ -151,7 +151,7 @@ public class DesktopUtils {
 				return false;
 			}
 
-			LOG.info("Trying to use Desktop.getDesktop().browse() with " + uri.toString());
+			LOG.info("Trying to use Desktop.getDesktop().browse() with {}", uri.toString());
 			Desktop.getDesktop().browse(uri);
 
 			return true;
@@ -179,14 +179,14 @@ public class DesktopUtils {
 
 			if (selectOnly) {
 				if (SystemUtils.IS_OS_WINDOWS) { // https://bugs.openjdk.java.net/browse/JDK-8233994
-					LOG.info("Trying to execute: explorer /select," + file.getPath());
+					LOG.info("Trying to execute: explorer /select,{}", file.getPath());
 					return Runtime.getRuntime().exec("explorer /select," + file.getPath()) != null;
 				} else {
-					LOG.info("Trying to use Desktop.getDesktop().browseFileDirectory() with " + file.toString());
+					LOG.info("Trying to use Desktop.getDesktop().browseFileDirectory() with {}", file.toString());
 					Desktop.getDesktop().browseFileDirectory(file);
 				}
 			} else {
-				LOG.info("Trying to use Desktop.getDesktop().open() with " + file.toString());
+				LOG.info("Trying to use Desktop.getDesktop().open() with {}", file.toString());
 				Desktop.getDesktop().open(file);
 			}
 
@@ -209,7 +209,7 @@ public class DesktopUtils {
 				return false;
 			}
 
-			LOG.info("Trying to use Desktop.getDesktop().edit() with " + file);
+			LOG.info("Trying to use Desktop.getDesktop().edit() with {}", file);
 			Desktop.getDesktop().edit(file);
 
 			return true;
@@ -220,7 +220,7 @@ public class DesktopUtils {
 	}
 
 	private static boolean runCommand(String command, String args, String file) {
-		LOG.info("Trying to exec:\n   cmd = " + command + "\n   args = " + args + "\n   %s = " + file);
+		LOG.info("Trying to exec:\n   cmd = {}\n   args = {}\n   %s = {}", command, args, file);
 
 		String[] parts = prepareCommand(command, args, file);
 

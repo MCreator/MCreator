@@ -20,7 +20,6 @@
 package net.mcreator.ui.dialogs;
 
 import net.mcreator.ui.MCreator;
-import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.workspace.Workspace;
 
 import javax.swing.*;
@@ -63,12 +62,11 @@ public abstract class SearchableSelectorDialog<T> extends MCreatorDialog {
 				model.refilter();
 			}
 		});
-		ComponentUtils.deriveFont(filterField, 15);
 	}
 
 	class FilterModel extends DefaultListModel<T> {
-		ArrayList<T> entries;
-		ArrayList<T> filterEntries;
+		final ArrayList<T> entries;
+		final ArrayList<T> filterEntries;
 
 		FilterModel() {
 			super();

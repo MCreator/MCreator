@@ -48,11 +48,9 @@ import net.mcreator.workspace.settings.WorkspaceSettings;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.fail;
@@ -61,10 +59,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 
 	private static MCreator mcreator;
 
-	@BeforeAll public static void initTest() throws IOException {
-		// create temporary directory
-		Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
-
+	@BeforeAll public static void initTest(@TempDir File tempDir) {
 		GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(
 				Generator.GENERATOR_CACHE.values(), GeneratorFlavor.BaseLanguage.JAVA);
 
@@ -75,8 +70,7 @@ import static org.junit.jupiter.api.Assertions.fail;
 		WorkspaceSettings workspaceSettings = new WorkspaceSettings("test_mod");
 		workspaceSettings.setModName("Test mod");
 		workspaceSettings.setCurrentGenerator(generatorConfiguration.getGeneratorName());
-		Workspace workspace = Workspace.createWorkspace(new File(tempDirWithPrefix.toFile(), "test_mod.mcreator"),
-				workspaceSettings);
+		Workspace workspace = Workspace.createWorkspace(new File(tempDir, "test_mod.mcreator"), workspaceSettings);
 
 		mcreator = new MCreator(null, workspace);
 	}

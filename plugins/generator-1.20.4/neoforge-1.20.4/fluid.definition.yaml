@@ -33,3 +33,6 @@ localizationkeys:
   - key: item.@modid.@registryname_bucket
     mapto: bucketName
     condition: generateBucket
+
+tags:
+  - tag: BLOCKS:minecraft:replaceable

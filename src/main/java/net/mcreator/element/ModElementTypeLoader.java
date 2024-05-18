@@ -29,7 +29,7 @@ import java.util.Set;
 
 public class ModElementTypeLoader {
 
-	public static List<ModElementType<?>> REGISTRY = new ArrayList<>();
+	public static final List<ModElementType<?>> REGISTRY = new ArrayList<>();
 
 	public static void loadModElements() {
 		//@formatter:off

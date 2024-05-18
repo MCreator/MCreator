@@ -18,9 +18,12 @@
 
 package net.mcreator.ui.dialogs.workspace;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.util.SystemInfo;
 import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
+import net.mcreator.io.OS;
 import net.mcreator.io.net.analytics.AnalyticsConstants;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
@@ -69,7 +72,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 			UIRES.get("16px.bedrock"));
 
 	public NewWorkspaceDialog(Window w) {
-		super(w, L10N.t("dialog.new_workspace.title"), true);
+		super(w, null, true);
 
 		AbstractWorkspacePanel forgeWorkspacePanel = new ForgeWorkspacePanel(this);
 		AbstractWorkspacePanel neoforgeWorkspacePanel = new NeoForgeWorkspacePanel(this);
@@ -151,6 +154,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		ButtonGroup buttonGroup = new ButtonGroup();
 
 		forge.setHorizontalAlignment(SwingConstants.LEFT);
+		forge.setBackground(Theme.current().getBackgroundColor());
 		forge.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -161,6 +165,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		});
 
 		neoforge.setHorizontalAlignment(SwingConstants.LEFT);
+		neoforge.setBackground(Theme.current().getBackgroundColor());
 		neoforge.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -171,6 +176,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		});
 
 		fabric.setHorizontalAlignment(SwingConstants.LEFT);
+		fabric.setBackground(Theme.current().getBackgroundColor());
 		fabric.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -181,6 +187,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		});
 
 		quilt.setHorizontalAlignment(SwingConstants.LEFT);
+		quilt.setBackground(Theme.current().getBackgroundColor());
 		quilt.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -191,6 +198,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		});
 
 		spigot.setHorizontalAlignment(SwingConstants.LEFT);
+		spigot.setBackground(Theme.current().getBackgroundColor());
 		spigot.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -201,6 +209,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		});
 
 		datapack.setHorizontalAlignment(SwingConstants.LEFT);
+		datapack.setBackground(Theme.current().getBackgroundColor());
 		datapack.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -211,6 +220,7 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		});
 
 		addon.setHorizontalAlignment(SwingConstants.LEFT);
+		addon.setBackground(Theme.current().getBackgroundColor());
 		addon.setBorder(BorderFactory.createCompoundBorder(
 				BorderFactory.createMatteBorder(0, 0, 1, 0, Theme.current().getAltBackgroundColor()),
 				BorderFactory.createEmptyBorder(8, 8, 8, 30)));
@@ -272,6 +282,15 @@ public class NewWorkspaceDialog extends MCreatorDialog {
 		JComponent wrapPan = PanelUtils.northAndCenterElement(workspaceType, new JEmptyBox());
 		wrapPan.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 1, Theme.current().getAltBackgroundColor()));
 		add("West", wrapPan);
+
+		if (OS.getOS() == OS.WINDOWS) {
+			getRootPane().putClientProperty(FlatClientProperties.FULL_WINDOW_CONTENT, true);
+		} else if (OS.getOS() == OS.MAC && SystemInfo.isMacFullWindowContentSupported) {
+			getRootPane().putClientProperty("apple.awt.fullWindowContent", true);
+			getRootPane().putClientProperty("apple.awt.transparentTitleBar", true);
+			getRootPane().putClientProperty("apple.awt.windowTitleVisible", false);
+			getRootPane().setBorder(BorderFactory.createEmptyBorder(22, 0, 0, 0));
+		}
 
 		getRootPane().setDefaultButton(ok);
 		pack();

@@ -35,7 +35,6 @@ import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.NewVariableDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.SlickDarkScrollBarUI;
 import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.validation.AggregatedValidationResult;
 import net.mcreator.ui.validation.Validator;
@@ -352,13 +351,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		scrollPane.setBackground(Theme.current().getBackgroundColor());
 		scrollPane.getViewport().setOpaque(false);
 		scrollPane.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPane.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), scrollPane.getVerticalScrollBar()));
-		scrollPane.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPane.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPane.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), scrollPane.getHorizontalScrollBar()));
-		scrollPane.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPane.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		localVarsPan.add("Center", scrollPane);
 
@@ -495,13 +488,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		scrollPaneDeps.setBackground(Theme.current().getBackgroundColor());
 		scrollPaneDeps.getViewport().setOpaque(false);
 		scrollPaneDeps.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPaneDeps.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), scrollPaneDeps.getVerticalScrollBar()));
-		scrollPaneDeps.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneDeps.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPaneDeps.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), scrollPaneDeps.getHorizontalScrollBar()));
-		scrollPaneDeps.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 		depsPan.add("Center", scrollPaneDeps);
 		depsPan.setPreferredSize(new Dimension(150, 0));
@@ -525,13 +512,7 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 		scrollPaneExtDeps.setBackground(Theme.current().getBackgroundColor());
 		scrollPaneExtDeps.getViewport().setOpaque(false);
 		scrollPaneExtDeps.getVerticalScrollBar().setUnitIncrement(11);
-		scrollPaneExtDeps.getVerticalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), scrollPaneExtDeps.getVerticalScrollBar()));
-		scrollPaneExtDeps.getVerticalScrollBar().setPreferredSize(new Dimension(8, 0));
 		scrollPaneExtDeps.getHorizontalScrollBar().setUnitIncrement(11);
-		scrollPaneExtDeps.getHorizontalScrollBar().setUI(new SlickDarkScrollBarUI(Theme.current().getBackgroundColor(),
-				Theme.current().getAltBackgroundColor(), scrollPaneExtDeps.getHorizontalScrollBar()));
-		scrollPaneExtDeps.getHorizontalScrollBar().setPreferredSize(new Dimension(0, 8));
 		scrollPaneExtDeps.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 0));
 
 		triggerDepsPan.add("Center", PanelUtils.northAndCenterElement(triggerInfoPanel,
@@ -561,12 +542,12 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.PROCEDURE);
 
 			BlocklyLoader.INSTANCE.getExternalTriggerLoader().getExternalTrigers()
-					.forEach(blocklyPanel.getJSBridge()::addExternalTrigger);
+					.forEach(blocklyPanel::addExternalTriggerForProcedureEditor);
 			for (VariableElement variable : mcreator.getWorkspace().getVariableElements()) {
 				blocklyPanel.addGlobalVariable(variable.getName(), variable.getType().getBlocklyVariableType());
 			}
-			blocklyPanel.getJSBridge().setJavaScriptEventListener(
-					() -> new Thread(this::regenerateProcedure, "ProcedureRegenerate").start());
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(this::regenerateProcedure, "ProcedureRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(net.mcreator.element.types.Procedure.XML_BASE);
 			}
@@ -620,8 +601,8 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 			// if this mod element is not locked and has procedures, we try to update dependencies
 			// in this case, we (re)generate mod element code so dependencies get updated in the trigger code
 			if (!element.isCodeLocked() && element.getGeneratableElement() != null) {
-				LOG.info("Regenerating " + element.getName() + " (" + element.getType()
-						+ ") because it triggers procedure " + procedure.getName());
+				LOG.info("Regenerating {} ({}) because it triggers procedure {}", element.getName(), element.getType(),
+						procedure.getName());
 				mcreator.getGenerator().generateElement(element.getGeneratableElement());
 
 				// Procedure may call other procedures that also need updating
@@ -634,13 +615,11 @@ public class ProcedureGUI extends ModElementGUI<net.mcreator.element.types.Proce
 	}
 
 	@Override public void openInEditingMode(net.mcreator.element.types.Procedure procedure) {
-		blocklyPanel.setXMLDataOnly(procedure.procedurexml);
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.clearWorkspace();
 			blocklyPanel.setXML(procedure.procedurexml);
+
 			localVars.removeAllElements();
 			blocklyPanel.getLocalVariablesList().forEach(localVars::addElement);
-			blocklyPanel.triggerEventFunction();
 		});
 	}
 

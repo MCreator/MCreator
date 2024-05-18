@@ -42,7 +42,7 @@ public final class FileIO {
 		try (FileInputStream fis = new FileInputStream(f)) {
 			return IOUtils.toString(fis, StandardCharsets.UTF_8);
 		} catch (Exception e) {
-			LOG.error("Error reading: " + e.getMessage(), e);
+			LOG.error("Error reading: {}", e.getMessage(), e);
 			return "";
 		}
 	}
@@ -61,7 +61,7 @@ public final class FileIO {
 		try (InputStream dis = classLoader.getResourceAsStream(resource)) {
 			return dis != null ? IOUtils.toString(dis, StandardCharsets.UTF_8) : "";
 		} catch (Exception e) {
-			LOG.error("Error resource reading: " + e.getMessage(), e);
+			LOG.error("Error resource reading: {}", e.getMessage(), e);
 			return "";
 		}
 	}
@@ -73,7 +73,7 @@ public final class FileIO {
 		try (InputStream dis = resource.openConnection().getInputStream()) {
 			return dis != null ? IOUtils.toString(dis, StandardCharsets.UTF_8) : "";
 		} catch (Exception e) {
-			LOG.error("Error resource reading: " + e.getMessage(), e);
+			LOG.error("Error resource reading: {}", e.getMessage(), e);
 			return "";
 		}
 	}
@@ -86,7 +86,7 @@ public final class FileIO {
 		try {
 			f.createNewFile();
 		} catch (Exception e) {
-			LOG.error("Error touching " + e.getMessage(), e);
+			LOG.error("Error touching {}", e.getMessage(), e);
 		}
 	}
 
@@ -99,7 +99,7 @@ public final class FileIO {
 				new OutputStreamWriter(new FileOutputStream(f), StandardCharsets.UTF_8))) {
 			out.write(c);
 		} catch (Exception e) {
-			LOG.error("Error writing " + e.getMessage(), e);
+			LOG.error("Error writing {}", e.getMessage(), e);
 		}
 	}
 
@@ -111,7 +111,7 @@ public final class FileIO {
 		try (FileOutputStream out = new FileOutputStream(f)) {
 			out.write(c);
 		} catch (Exception e) {
-			LOG.error("Error writing " + e.getMessage(), e);
+			LOG.error("Error writing {}", e.getMessage(), e);
 		}
 	}
 
@@ -123,13 +123,13 @@ public final class FileIO {
 		try {
 			ImageIO.write(image, "png", f);
 		} catch (IOException e) {
-			LOG.error("Error writing image " + e.getMessage(), e);
+			LOG.error("Error writing image {}", e.getMessage(), e);
 		}
 	}
 
 	public static void copyFile(File from, File to) {
 		if (from.isDirectory())
-			LOG.fatal("Trying to copy folder as a file: " + from);
+			LOG.fatal("Trying to copy folder as a file: {}", from);
 
 		try {
 			File parentDir = to.getAbsoluteFile().getParentFile();
@@ -138,7 +138,7 @@ public final class FileIO {
 
 			Files.copy(from.toPath(), to.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
-			LOG.error("Error copying file: " + e.getMessage(), e);
+			LOG.error("Error copying file: {}", e.getMessage(), e);
 		}
 	}
 

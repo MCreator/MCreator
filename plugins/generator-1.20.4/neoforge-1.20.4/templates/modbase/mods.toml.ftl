@@ -32,10 +32,17 @@ displayTest="IGNORE_SERVER_VERSION"
 # End of user code block mod configuration
 
 [[dependencies.${settings.getModID()}]]
+    modId="neoforge"
+    type="required"
+    versionRange="[${generator.getGeneratorBuildFileVersion()},)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${settings.getModID()}]]
     modId="minecraft"
     type="required"
     versionRange="[${generator.getGeneratorMinecraftVersion()}]"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 
 <#list settings.getRequiredMods() as e>
@@ -64,3 +71,6 @@ displayTest="IGNORE_SERVER_VERSION"
     ordering="NONE"
     side="BOTH"
 </#list>
+
+# Start of user code block dependencies configuration
+# End of user code block dependencies configuration

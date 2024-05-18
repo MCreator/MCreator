@@ -26,7 +26,6 @@ import net.mcreator.ui.workspace.IReloadableFilterable;
 import net.mcreator.ui.workspace.WorkspacePanel;
 
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import java.awt.*;
 
 public class WorkspacePanelResources extends AbstractWorkspacePanel {
@@ -88,10 +87,6 @@ public class WorkspacePanelResources extends AbstractWorkspacePanel {
 		}
 
 		resourceTabs.setOpaque(false);
-		resourceTabs.setUI(new BasicTabbedPaneUI() {
-			@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
-			}
-		});
 		resourceTabs.addChangeListener(changeEvent -> reloadElements());
 		add(resourceTabs);
 	}

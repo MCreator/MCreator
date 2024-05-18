@@ -38,6 +38,7 @@ import net.mcreator.workspace.references.TextureReference;
 import net.mcreator.workspace.resources.Model;
 import net.mcreator.workspace.resources.TexturedModel;
 
+import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -106,6 +107,11 @@ import java.util.*;
 	public boolean leggingsImmuneToFire;
 	public boolean bootsImmuneToFire;
 
+	public LogicProcedure helmetGlowCondition;
+	public LogicProcedure bodyGlowCondition;
+	public LogicProcedure leggingsGlowCondition;
+	public LogicProcedure bootsGlowCondition;
+
 	public LogicProcedure helmetPiglinNeutral;
 	public LogicProcedure bodyPiglinNeutral;
 	public LogicProcedure leggingsPiglinNeutral;
@@ -158,35 +164,35 @@ import java.util.*;
 		return MinecraftImageGenerator.Preview.generateArmorPreviewPicture(armorPieces);
 	}
 
-	public Model getHelmetModel() {
+	@Nullable public Model getHelmetModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (!helmetModelName.equals("Default"))
 			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), helmetModelName, modelType);
 	}
 
-	public Model getBodyModel() {
+	@Nullable public Model getBodyModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (!bodyModelName.equals("Default"))
 			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), bodyModelName, modelType);
 	}
 
-	public Model getLeggingsModel() {
+	@Nullable public Model getLeggingsModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (!leggingsModelName.equals("Default"))
 			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), leggingsModelName, modelType);
 	}
 
-	public Model getBootsModel() {
+	@Nullable public Model getBootsModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (!bootsModelName.equals("Default"))
 			modelType = Model.Type.JAVA;
 		return Model.getModelByParams(getModElement().getWorkspace(), bootsModelName, modelType);
 	}
 
-	public Model getHelmetItemModel() {
+	@Nullable public Model getHelmetItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (helmetItemRenderType == 1)
 			modelType = Model.Type.JSON;
@@ -195,7 +201,7 @@ import java.util.*;
 		return Model.getModelByParams(getModElement().getWorkspace(), helmetItemCustomModelName, modelType);
 	}
 
-	public Model getBodyItemModel() {
+	@Nullable public Model getBodyItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (bodyItemRenderType == 1)
 			modelType = Model.Type.JSON;
@@ -204,7 +210,7 @@ import java.util.*;
 		return Model.getModelByParams(getModElement().getWorkspace(), bodyItemCustomModelName, modelType);
 	}
 
-	public Model getLeggingsItemModel() {
+	@Nullable public Model getLeggingsItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (leggingsItemRenderType == 1)
 			modelType = Model.Type.JSON;
@@ -213,7 +219,7 @@ import java.util.*;
 		return Model.getModelByParams(getModElement().getWorkspace(), leggingsItemCustomModelName, modelType);
 	}
 
-	public Model getBootsItemModel() {
+	@Nullable public Model getBootsItemModel() {
 		Model.Type modelType = Model.Type.BUILTIN;
 		if (bootsItemRenderType == 1)
 			modelType = Model.Type.JSON;
@@ -256,43 +262,57 @@ import java.util.*;
 	}
 
 	public boolean hasHelmetNormalModel() {
-		return getHelmetItemModel().getType() == Model.Type.BUILTIN && getHelmetItemModel().getReadableName()
+		Model helmetItemModel = getHelmetItemModel();
+		return helmetItemModel == null
+				|| helmetItemModel.getType() == Model.Type.BUILTIN && helmetItemModel.getReadableName()
 				.equals("Normal");
 	}
 
 	public boolean hasHelmetToolModel() {
-		return getHelmetItemModel().getType() == Model.Type.BUILTIN && getHelmetItemModel().getReadableName()
-				.equals("Tool");
+		Model helmetItemModel = getHelmetItemModel();
+		if (helmetItemModel == null)
+			return false;
+		return helmetItemModel.getType() == Model.Type.BUILTIN && helmetItemModel.getReadableName().equals("Tool");
 	}
 
 	public boolean hasBodyNormalModel() {
-		return getBodyItemModel().getType() == Model.Type.BUILTIN && getBodyItemModel().getReadableName()
+		Model bodyItemModel = getBodyItemModel();
+		return bodyItemModel == null || bodyItemModel.getType() == Model.Type.BUILTIN && bodyItemModel.getReadableName()
 				.equals("Normal");
 	}
 
 	public boolean hasBodyToolModel() {
-		return getBodyItemModel().getType() == Model.Type.BUILTIN && getBodyItemModel().getReadableName()
-				.equals("Tool");
+		Model bodyItemModel = getBodyItemModel();
+		if (bodyItemModel == null)
+			return false;
+		return bodyItemModel.getType() == Model.Type.BUILTIN && bodyItemModel.getReadableName().equals("Tool");
 	}
 
 	public boolean hasLeggingsNormalModel() {
-		return getLeggingsItemModel().getType() == Model.Type.BUILTIN && getLeggingsItemModel().getReadableName()
+		Model leggingsItemModel = getLeggingsItemModel();
+		return leggingsItemModel == null
+				|| leggingsItemModel.getType() == Model.Type.BUILTIN && leggingsItemModel.getReadableName()
 				.equals("Normal");
 	}
 
 	public boolean hasLeggingsToolModel() {
-		return getLeggingsItemModel().getType() == Model.Type.BUILTIN && getLeggingsItemModel().getReadableName()
-				.equals("Tool");
+		Model leggingsItemModel = getLeggingsItemModel();
+		if (leggingsItemModel == null)
+			return false;
+		return leggingsItemModel.getType() == Model.Type.BUILTIN && leggingsItemModel.getReadableName().equals("Tool");
 	}
 
 	public boolean hasBootsNormalModel() {
-		return getBootsItemModel().getType() == Model.Type.BUILTIN && getBootsItemModel().getReadableName()
-				.equals("Normal");
+		Model bootsItemModel = getBootsItemModel();
+		return bootsItemModel == null
+				|| bootsItemModel.getType() == Model.Type.BUILTIN && bootsItemModel.getReadableName().equals("Normal");
 	}
 
 	public boolean hasBootsToolModel() {
-		return getBootsItemModel().getType() == Model.Type.BUILTIN && getBootsItemModel().getReadableName()
-				.equals("Tool");
+		Model bootsItemModel = getBootsItemModel();
+		if (bootsItemModel == null)
+			return false;
+		return bootsItemModel.getType() == Model.Type.BUILTIN && bootsItemModel.getReadableName().equals("Tool");
 	}
 
 	public String getArmorModelsCode() {
@@ -301,12 +321,15 @@ import java.util.*;
 		Model model1 = getHelmetModel();
 		if (model1 != null && model1.getType() == Model.Type.JAVA)
 			models.add(model1);
+
 		Model model2 = getBodyModel();
 		if (model2 != null && model2.getType() == Model.Type.JAVA)
 			models.add(model2);
+
 		Model model3 = getLeggingsModel();
 		if (model3 != null && model3.getType() == Model.Type.JAVA)
 			models.add(model3);
+
 		Model model4 = getBootsModel();
 		if (model4 != null && model4.getType() == Model.Type.JAVA)
 			models.add(model4);

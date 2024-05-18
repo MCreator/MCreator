@@ -27,7 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class ResourcePointer {
-	public Object identifier;
+	public final Object identifier;
 	private final boolean inClasspath;
 
 	public ResourcePointer(File file) {

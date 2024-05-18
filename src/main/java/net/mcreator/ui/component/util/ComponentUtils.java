@@ -23,7 +23,6 @@ import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.util.DesktopUtils;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -31,59 +30,24 @@ import java.awt.event.MouseEvent;
 
 public class ComponentUtils {
 
-	public static JComponent setForeground(JComponent component, Color color) {
+	public static <T extends JComponent> T applyPadding(T what, int margin, boolean top, boolean left, boolean bottom,
+			boolean right) {
+		what.setBorder(BorderFactory.createEmptyBorder(top ? margin : 0, left ? margin : 0, bottom ? margin : 0,
+				right ? margin : 0));
+		return what;
+	}
+
+	public static <T extends JComponent> T setForeground(T component, Color color) {
 		component.setForeground(color);
 		return component;
 	}
 
-	public static JComponent deriveFont(JComponent component, float param) {
-		component.setFont(component.getFont().deriveFont(param));
+	public static <T extends JComponent> T deriveFont(T component, float param) {
+		Font font = component.getFont();
+		if (font == null)
+			font = Theme.current().getFont();
+		component.setFont(font.deriveFont(param));
 		return component;
-	}
-
-	public static void normalizeButton2(JButton button) {
-		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 1),
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
-						BorderFactory.createLineBorder(new Color(30, 30, 30), 4))));
-		button.setBackground(Theme.current().getAltBackgroundColor());
-	}
-
-	public static void normalizeButton2(JToggleButton button) {
-		Border off = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 1),
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
-						BorderFactory.createLineBorder(new Color(30, 30, 30), 4)));
-		Border on = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(30, 30, 30), 1),
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getBackgroundColor(), 1),
-						BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 4)));
-		button.setBorder(button.isSelected() ? on : off);
-		button.setBackground(button.isSelected() ? Theme.current().getAltBackgroundColor() : new Color(30, 30, 30));
-		button.addChangeListener(e -> {
-			button.setBorder(button.isSelected() ? on : off);
-			button.setBackground(button.isSelected() ? Theme.current().getAltBackgroundColor() : new Color(30, 30, 30));
-		});
-	}
-
-	public static void normalizeButton4(AbstractButton button) {
-		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0, 0, 0, 0), 1),
-				BorderFactory.createCompoundBorder(
-						BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor(), 1),
-						BorderFactory.createMatteBorder(1, 3, 1, 3, new Color(0, 0, 0, 0)))));
-		button.setBackground(new Color(0, 0, 0, 0));
-		button.setOpaque(false);
-		button.setForeground(Theme.current().getForegroundColor());
-		deriveFont(button, 11);
-	}
-
-	public static void normalizeButton5(AbstractButton button) {
-		button.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(new Color(0x5B6452), 1),
-				BorderFactory.createMatteBorder(1, 3, 1, 3, new Color(0, 0, 0, 0))));
-		button.setBackground(new Color(0, 0, 0, 0));
-		button.setOpaque(false);
-		button.setForeground(new Color(0x9CB482));
-		deriveFont(button, 11);
 	}
 
 	public static Component wrapWithInfoButton(Component ca, String url) {

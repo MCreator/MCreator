@@ -96,7 +96,7 @@ public class HelpUtils {
 
 					balloonTip = new BalloonTip(lab, scrollPane,
 							new EdgedBalloonStyle(Theme.current().getBackgroundColor(),
-									Theme.current().getAltForegroundColor()), BalloonTip.Orientation.LEFT_BELOW,
+									Theme.current().getAltBackgroundColor()), BalloonTip.Orientation.LEFT_BELOW,
 							BalloonTip.AttachLocation.ALIGNED, 10, 10, false);
 
 					balloonTip.setFocusable(true);

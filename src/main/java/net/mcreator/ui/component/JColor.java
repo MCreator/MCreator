@@ -18,6 +18,7 @@
 
 package net.mcreator.ui.component;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.init.UIRES;
 import net.mcreator.ui.laf.themes.Theme;
@@ -59,10 +60,8 @@ public class JColor extends JPanel {
 
 		colorText = new JTextField(9);
 		colorText.setEditable(false);
-		colorText.setPreferredSize(new Dimension(0, 38));
-		colorText.setBorder(
-				BorderFactory.createCompoundBorder(BorderFactory.createMatteBorder(0, 0, 0, 3, getBackground()),
-						BorderFactory.createMatteBorder(1, 1, 1, 0, getBackground())));
+		colorText.setPreferredSize(new Dimension(0, 24));
+		colorText.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0));
 		colorText.setHorizontalAlignment(JTextField.CENTER);
 		colorText.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent e) {
@@ -71,15 +70,8 @@ public class JColor extends JPanel {
 			}
 		});
 
-		edit.setOpaque(false);
-		edit.setMargin(new Insets(0, 0, 0, 0));
-		edit.setBorder(BorderFactory.createEmptyBorder());
-		edit.setContentAreaFilled(false);
-
-		remove.setOpaque(false);
-		remove.setMargin(new Insets(0, 0, 0, 0));
-		remove.setBorder(BorderFactory.createEmptyBorder());
-		remove.setContentAreaFilled(false);
+		edit.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
+		remove.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 
 		edit.addActionListener(e -> {
 			colorChooser.setColor(getColor());
@@ -95,6 +87,7 @@ public class JColor extends JPanel {
 
 		JPanel controls = PanelUtils.totalCenterInPanel(
 				allowNullColor ? PanelUtils.gridElements(1, 2, 2, 0, edit, remove) : edit);
+		controls.setBorder(BorderFactory.createEmptyBorder(0, 3, 0, 0));
 		controls.setOpaque(true);
 		controls.setBackground(getBackground());
 

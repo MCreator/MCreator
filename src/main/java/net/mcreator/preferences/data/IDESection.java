@@ -26,13 +26,13 @@ import net.mcreator.preferences.entries.StringEntry;
 
 public class IDESection extends PreferencesSection {
 
-	public StringEntry editorTheme;
-	public IntegerEntry fontSize;
-	public BooleanEntry autocomplete;
-	public StringEntry autocompleteMode;
-	public BooleanEntry autocompleteDocWindow;
-	public BooleanEntry lineNumbers;
-	public BooleanEntry errorInfoEnable;
+	public final StringEntry editorTheme;
+	public final IntegerEntry fontSize;
+	public final BooleanEntry autocomplete;
+	public final StringEntry autocompleteMode;
+	public final BooleanEntry autocompleteDocWindow;
+	public final BooleanEntry lineNumbers;
+	public final BooleanEntry errorInfoEnable;
 
 	IDESection(String preferencesIdentifier) {
 		super(preferencesIdentifier);

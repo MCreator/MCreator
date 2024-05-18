@@ -1,0 +1,1 @@
+Wybierz to ustawienie, aby generować oceaniczne monumenty w swoim biomie.

@@ -18,10 +18,13 @@
 
 package net.mcreator.ui.procedure;
 
+import com.formdev.flatlaf.FlatClientProperties;
+import com.formdev.flatlaf.ui.FlatLineBorder;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.ModElementType;
 import net.mcreator.java.JavaConventions;
 import net.mcreator.ui.MCreator;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComboBoxFullWidthPopup;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
@@ -29,12 +32,12 @@ import net.mcreator.ui.help.HelpUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
-import net.mcreator.ui.laf.themes.Theme;
 import net.mcreator.ui.modgui.ModElementGUI;
 import net.mcreator.ui.validation.component.VTextField;
 import net.mcreator.ui.validation.optionpane.OptionPaneValidatior;
 import net.mcreator.ui.validation.optionpane.VOptionPane;
 import net.mcreator.ui.validation.validators.ModElementNameValidator;
+import net.mcreator.ui.workspace.breadcrumb.WorkspaceFolderBreadcrumb;
 import net.mcreator.util.StringUtils;
 import net.mcreator.workspace.elements.ModElement;
 import net.mcreator.workspace.elements.VariableType;
@@ -140,11 +143,11 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			}
 		});
 
-		setBackground(Theme.current().getBackgroundColor());
-		setBorder(BorderFactory.createLineBorder(Theme.current().getAltBackgroundColor()));
+		setBackground(UIManager.getColor("TextField.background"));
+		setBorder(new FlatLineBorder(new Insets(0, 0, 0, 0), UIManager.getColor("Component.borderColor")));
 
 		if (returnType != null) {
-			setBorder(BorderFactory.createLineBorder(returnType.getBlocklyColor()));
+			setBorder(new FlatLineBorder(new Insets(0, 0, 0, 0), returnType.getBlocklyColor()));
 
 			if (returnType == VariableTypeLoader.BuiltInTypes.LOGIC)
 				defaultName = L10N.t("condition.common.true");
@@ -206,13 +209,11 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 			actionLabel.setText(L10N.t("procedure.common.do"));
 			procwrap = PanelUtils.westAndCenterElement(actionLabel, procedures);
 		} else {
-			procwrap = procedures;
+			procwrap = PanelUtils.westAndCenterElement(new JEmptyBox(3, 3), procedures);
 		}
 
 		if (allowInlineEditor) {
-			add.setContentAreaFilled(false);
-			add.setOpaque(false);
-			add.setMargin(new Insets(0, 0, 0, 0));
+			add.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 			add.addActionListener(e -> {
 				String procedureNameString = "";
 				if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI) {
@@ -227,6 +228,8 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 							procedureNameBuilder.toString().replace("When", ""));
 				}
 
+				WorkspaceFolderBreadcrumb.Small breadcrumb = new WorkspaceFolderBreadcrumb.Small(mcreator);
+
 				procedureNameString = VOptionPane.showInputDialog(mcreator,
 						L10N.t("action.procedure.enter_procedure_name"),
 						L10N.t("action.procedure.new_procedure_dialog_title"), null, new OptionPaneValidatior() {
@@ -235,13 +238,15 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 										L10N.t("common.mod_element_name")).validate();
 							}
 						}, L10N.t("action.procedure.create_procedure"),
-						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString);
+						UIManager.getString("OptionPane.cancelButtonText"), procedureNameString,
+						breadcrumb.getInScrollPane(), null);
 
 				if (procedureNameString != null) {
 					ModElement element = new ModElement(mcreator.getWorkspace(), procedureNameString,
 							ModElementType.PROCEDURE);
 					ModElementGUI<?> newGUI = ModElementType.PROCEDURE.getModElementGUI(mcreator, element, false);
 					if (newGUI != null) {
+						newGUI.setTargetFolder(breadcrumb.getCurrentFolder());
 						newGUI.showView();
 						newGUI.setModElementCreatedListener(generatableElement -> {
 							String modName = JavaConventions.convertToValidClassName(
@@ -253,9 +258,7 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 				}
 			});
 
-			edit.setMargin(new Insets(0, 0, 0, 0));
-			edit.setOpaque(false);
-			edit.setContentAreaFilled(false);
+			edit.putClientProperty(FlatClientProperties.BUTTON_TYPE, FlatClientProperties.BUTTON_TYPE_BORDERLESS);
 			edit.addActionListener(e -> {
 				if (getSelectedProcedure() != null) {
 					ModElement selectedProcedureAsModElement = mcreator.getWorkspace()
@@ -267,14 +270,14 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 				}
 			});
 
-			componentB = PanelUtils.centerAndEastElement(procwrap, PanelUtils.westAndEastElement(add, edit));
-			componentB.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 4));
+			componentB = PanelUtils.centerAndEastElement(procwrap, PanelUtils.westAndEastElement(add, edit), 3, 0);
+			componentB.setBorder(BorderFactory.createEmptyBorder(0, 0, 3, 3));
 		} else {
-			procwrap.setBorder(BorderFactory.createEmptyBorder(0, 0, 4, 4));
+			procwrap.setBorder(BorderFactory.createEmptyBorder(0, 0, 3, 3));
 			componentB = procwrap;
 		}
 
-		componentA = PanelUtils.join(FlowLayout.LEFT, 4, 4, top);
+		componentA = PanelUtils.join(FlowLayout.LEFT, 3, 3, top);
 
 		add("North", componentA);
 		add("South", componentB);
@@ -311,13 +314,24 @@ public class ProcedureSelector extends AbstractProcedureSelector {
 
 		if (returnType != null)
 			setBorder(BorderFactory.createCompoundBorder(
-					BorderFactory.createMatteBorder(1, 0, 1, 1, Theme.current().getAltBackgroundColor()),
+					new FlatLineBorder(new Insets(0, 0, 0, 0), UIManager.getColor("Component.borderColor")),
 					BorderFactory.createMatteBorder(0, 5, 0, 0, returnType.getBlocklyColor())));
 
 		return (ProcedureSelector) retval;
 	}
 
-	@Override protected ProcedureEntry updateDepsList(boolean smallIcons) {
+	@Override ProcedureEntry updateDepsList(boolean smallIcons) {
 		return super.updateDepsList(inline);
 	}
+
+	@Override public void setEnabled(boolean enabled) {
+		super.setEnabled(enabled);
+
+		if (enabled) {
+			setBackground(UIManager.getColor("TextField.background"));
+		} else {
+			setBackground(UIManager.getColor("TextField.disabledBackground"));
+		}
+	}
+
 }

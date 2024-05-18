@@ -45,7 +45,7 @@ import java.awt.event.*;
  * regenerates the code preview upon UI changes.</p>
  */
 public interface ModElementChangedListener
-		extends MouseListener, KeyListener, ActionListener, ChangeListener, DocumentListener {
+		extends MouseListener, KeyListener, ActionListener, ItemListener, ChangeListener, DocumentListener {
 
 	/**
 	 * <p>The main listener method, triggered when an event occurs on a registered container</p>
@@ -61,32 +61,22 @@ public interface ModElementChangedListener
 		if (component instanceof ITechnicalComponent)
 			return; // don't add listeners if component triggers actions not affecting mod element directly
 
-		if (component instanceof MCItemHolder itemHolder) {
-			itemHolder.addBlockSelectedListener(this);
-		} else if (component instanceof JColor jcolor) {
-			jcolor.addColorSelectedListener(this);
-		} else if (component instanceof SoundSelector soundSelector) {
-			soundSelector.addSoundSelectedListener(this);
-		} else if (component instanceof JItemListField<?> listField) {
-			listField.addChangeListener(this);
-		} else if (component instanceof JStringListField stringList) {
-			stringList.addChangeListener(this);
-		} else if (component instanceof JEntriesList entriesList) {
-			entriesList.addEntryRegisterListener(c -> {
-				registerUI(c);
-				modElementChanged();
-			});
-		} else if (component instanceof AbstractButton button) {
-			button.addActionListener(this);
-		} else if (component instanceof JSpinner spinner) {
-			spinner.addChangeListener(this);
-		} else if (component instanceof JComboBox<?> comboBox) {
-			comboBox.addActionListener(this);
-		} else if (component instanceof JTextComponent textComponent) {
-			textComponent.getDocument().addDocumentListener(this);
-		} else if (component instanceof BlocklyPanel blocklyPanel) {
-			blocklyPanel.addChangeListener(this);
-		} else {
+		switch (component) {
+		case MCItemHolder itemHolder -> itemHolder.addBlockSelectedListener(this);
+		case JColor jcolor -> jcolor.addColorSelectedListener(this);
+		case SoundSelector soundSelector -> soundSelector.addSoundSelectedListener(this);
+		case JItemListField<?> listField -> listField.addChangeListener(this);
+		case JStringListField stringList -> stringList.addChangeListener(this);
+		case JEntriesList entriesList -> entriesList.addEntryRegisterListener(c -> {
+			registerUI(c);
+			modElementChanged();
+		});
+		case AbstractButton button -> button.addActionListener(this);
+		case JSpinner spinner -> spinner.addChangeListener(this);
+		case JComboBox<?> comboBox -> comboBox.addItemListener(this);
+		case JTextComponent textComponent -> textComponent.getDocument().addDocumentListener(this);
+		case BlocklyPanel blocklyPanel -> blocklyPanel.addChangeListener(this);
+		default -> {
 			if (!isGenericComponent(component)) {
 				component.addMouseListener(this);
 				component.addKeyListener(this);
@@ -96,6 +86,7 @@ public interface ModElementChangedListener
 				if (subComponent instanceof JComponent jcomponent)
 					registerUI(jcomponent);
 			}
+		}
 		}
 	}
 
@@ -115,12 +106,11 @@ public interface ModElementChangedListener
 	}
 
 	@Override default void actionPerformed(ActionEvent e) {
-		if (e.getSource() instanceof JComboBox) {
-			if (e.getModifiers() != 0)
-				modElementChanged();
-		} else {
-			modElementChanged();
-		}
+		modElementChanged();
+	}
+
+	@Override default void itemStateChanged(ItemEvent e) {
+		modElementChanged();
 	}
 
 	@Override default void stateChanged(ChangeEvent e) {

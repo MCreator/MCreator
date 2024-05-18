@@ -154,7 +154,7 @@ public class ModelImportActions {
 				return;
 			}
 		} catch (Exception err) {
-			LOG.error("Failed to load Java model: " + file, err);
+			LOG.error("Failed to load Java model: {}", file, err);
 			JOptionPane.showMessageDialog(mcreator,
 					L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.message"),
 					L10N.t("dialog.workspace.resources.import_java_model.invalid_model_format.title"),
@@ -226,11 +226,13 @@ public class ModelImportActions {
 		while (matcher.find())
 			txs.add(matcher.group(1));
 
-		newTextureMapDialog(mcreator, txs, file, true);
+		if (!txs.isEmpty()) {
+			newTextureMapDialog(mcreator, txs, file, true);
 
-		mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
-		if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
-			((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+			mcreator.mv.resourcesPan.workspacePanelModels.reloadElements();
+			if (mcreator.mcreatorTabs.getCurrentTab().getContent() instanceof ModElementGUI)
+				((ModElementGUI<?>) mcreator.mcreatorTabs.getCurrentTab().getContent()).reloadDataLists();
+		}
 	}
 
 	public static class OBJ extends BasicAction {

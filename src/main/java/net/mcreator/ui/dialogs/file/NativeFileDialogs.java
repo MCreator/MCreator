@@ -35,7 +35,7 @@ import java.util.List;
 import static net.mcreator.ui.dialogs.file.FileDialogs.prevDir;
 
 /**
- * Should only be used on Windows OS at the time of writing due to Threading issues on *nix systems
+ * Should only be used on Windows or macOS at the time of writing due to Threading issues
  */
 class NativeFileDialogs {
 
@@ -63,7 +63,7 @@ class NativeFileDialogs {
 		if (multiSelect) {
 			List<File> files = chooser.showOpenMultipleDialog();
 			if (files != null && !files.isEmpty()) {
-				prevDir = files.get(0).getParentFile();
+				prevDir = files.getFirst().getParentFile();
 				return files.toArray(File[]::new);
 			}
 		} else {

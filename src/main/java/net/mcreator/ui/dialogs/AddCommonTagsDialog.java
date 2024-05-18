@@ -94,8 +94,8 @@ public class AddCommonTagsDialog {
 		callables.add(addTag(mcreator, entityTags, "arrows", "minecraft", TagType.ENTITIES, false));
 		callables.add(addTag(mcreator, entityTags, "impact_projectiles", "minecraft", TagType.ENTITIES, false));
 		callables.add(addTag(mcreator, entityTags, "beehive_inhabitors", "minecraft", TagType.ENTITIES, false));
-		callables.add(addTag(mcreator, entityTags, "raiders", "minecraft", TagType.ENTITIES, false));
 		callables.add(addTag(mcreator, entityTags, "skeletons", "minecraft", TagType.ENTITIES, false));
+		callables.add(addTag(mcreator, entityTags, "powder_snow_walkable_mobs", "minecraft", TagType.ENTITIES, false));
 
 		callables.add(addTag(mcreator, biomeTags, "is_overworld", "minecraft", TagType.BIOMES, true));
 		callables.add(addTag(mcreator, biomeTags, "is_nether", "minecraft", TagType.BIOMES, false));
@@ -119,7 +119,8 @@ public class AddCommonTagsDialog {
 		callables.add(addTag(mcreator, damageTypeTags, "bypasses_armor", "minecraft", TagType.DAMAGE_TYPES, false));
 		callables.add(addTag(mcreator, damageTypeTags, "bypasses_cooldown", "minecraft", TagType.DAMAGE_TYPES, false));
 		callables.add(addTag(mcreator, damageTypeTags, "bypasses_effects", "minecraft", TagType.DAMAGE_TYPES, false));
-		callables.add(addTag(mcreator, damageTypeTags, "bypasses_enchantments", "minecraft", TagType.DAMAGE_TYPES, false));
+		callables.add(
+				addTag(mcreator, damageTypeTags, "bypasses_enchantments", "minecraft", TagType.DAMAGE_TYPES, false));
 		callables.add(addTag(mcreator, damageTypeTags, "bypasses_shield", "minecraft", TagType.DAMAGE_TYPES, false));
 
 		ok.addActionListener(e -> {

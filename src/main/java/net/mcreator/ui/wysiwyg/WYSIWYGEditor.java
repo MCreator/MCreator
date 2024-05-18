@@ -28,7 +28,6 @@ import net.mcreator.minecraft.ElementUtil;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.SearchableComboBox;
-import net.mcreator.ui.component.TransparentToolBar;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.component.zoompane.JZoomPane;
 import net.mcreator.ui.dialogs.TextureImportDialogs;
@@ -69,10 +68,10 @@ public class WYSIWYGEditor extends JPanel {
 	}};
 	//@formatter:on
 
-	public WYSIWYG editor = new WYSIWYG(this);
+	public final WYSIWYG editor = new WYSIWYG(this);
 
-	public ArrayListListModel<GUIComponent> components = new ArrayListListModel<>();
-	public JList<GUIComponent> list = new JList<>(components);
+	public final ArrayListListModel<GUIComponent> components = new ArrayListListModel<>();
+	public final JList<GUIComponent> list = new JList<>(components);
 
 	private final JButton moveComponent = new JButton(UIRES.get("18px.move"));
 	private final JButton editComponent = new JButton(UIRES.get("18px.edit"));
@@ -80,35 +79,37 @@ public class WYSIWYGEditor extends JPanel {
 	private final JButton moveComponentUp = new JButton(UIRES.get("18px.up"));
 	private final JButton moveComponentDown = new JButton(UIRES.get("18px.down"));
 
-	public JSpinner spa1 = new JSpinner(new SpinnerNumberModel(176, 0, 512, 1));
-	public JSpinner spa2 = new JSpinner(new SpinnerNumberModel(166, 0, 512, 1));
+	public final JSpinner spa1 = new JSpinner(new SpinnerNumberModel(176, 0, 512, 1));
+	public final JSpinner spa2 = new JSpinner(new SpinnerNumberModel(166, 0, 512, 1));
 
-	public JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
-	public JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
+	public final JSpinner invOffX = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
+	public final JSpinner invOffY = new JSpinner(new SpinnerNumberModel(0, -4096, 4096, 1));
 
-	public JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
-	public JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
-	public JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
+	public final JSpinner sx = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
+	public final JSpinner sy = new JSpinner(new SpinnerNumberModel(18, 1, 100, 1));
+	public final JSpinner ox = new JSpinner(new SpinnerNumberModel(11, 1, 100, 1));
+	public final JSpinner oy = new JSpinner(new SpinnerNumberModel(15, 1, 100, 1));
 
-	public JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
+	public final JCheckBox snapOnGrid = L10N.checkbox("elementgui.gui.snap_components_on_grid");
 
-	public JComboBox<String> guiType = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
+	public final JComboBox<String> guiType = new JComboBox<>(new String[] { "GUI without slots", "GUI with slots" });
 
 	private boolean opening = false;
 
-	public JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
-	public JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
-	public JComboBox<String> priority = new JComboBox<>(new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
+	public final JCheckBox renderBgLayer = new JCheckBox((L10N.t("elementgui.gui.render_background_layer")));
+	public final JCheckBox doesPauseGame = new JCheckBox((L10N.t("elementgui.gui.pause_game")));
+	public final JComboBox<String> priority = new JComboBox<>(
+			new String[] { "NORMAL", "HIGH", "HIGHEST", "LOW", "LOWEST" });
 
-	public VComboBox<String> overlayBaseTexture = new SearchableComboBox<>();
-	public VComboBox<String> overlayTarget = new SearchableComboBox<>(ElementUtil.getDataListAsStringArray("screens"));
+	public final VComboBox<String> overlayBaseTexture = new SearchableComboBox<>();
+	public final VComboBox<String> overlayTarget = new SearchableComboBox<>(
+			ElementUtil.getDataListAsStringArray("screens"));
 
-	public MCreator mcreator;
+	public final MCreator mcreator;
 
-	public JPanel ovst = new JPanel();
+	public final JPanel ovst = new JPanel();
 
-	public JPanel sidebar = new JPanel(new BorderLayout(0, 0));
+	public final JPanel sidebar = new JPanel(new BorderLayout(0, 0));
 
 	private final Map<WYSIWYGComponentRegistration<?>, JButton> addComponentButtonsMap = new HashMap<>();
 
@@ -196,8 +197,8 @@ public class WYSIWYGEditor extends JPanel {
 				(L10N.t("elementgui.gui.component_list")), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		TransparentToolBar bar2 = new TransparentToolBar();
-		bar2.setBorder(null);
+		JToolBar bar2 = new JToolBar();
+		bar2.setOpaque(false);
 		bar2.setFloatable(false);
 
 		moveComponent.setToolTipText((L10N.t("elementgui.gui.move_component")));
@@ -206,23 +207,11 @@ public class WYSIWYGEditor extends JPanel {
 		moveComponentUp.setToolTipText((L10N.t("elementgui.gui.move_component_up")));
 		moveComponentDown.setToolTipText((L10N.t("elementgui.gui.move_component_down")));
 
-		moveComponent.setMargin(new Insets(0, 0, 0, 0));
-		removeComponent.setMargin(new Insets(0, 0, 0, 0));
-		editComponent.setMargin(new Insets(0, 0, 0, 0));
-		moveComponentUp.setMargin(new Insets(0, 0, 0, 0));
-		moveComponentDown.setMargin(new Insets(0, 0, 0, 0));
-
-		moveComponent.setOpaque(false);
-		removeComponent.setOpaque(false);
-		editComponent.setOpaque(false);
-		moveComponentUp.setOpaque(false);
-		moveComponentDown.setOpaque(false);
-
-		moveComponent.setBorder(BorderFactory.createEmptyBorder());
-		removeComponent.setBorder(BorderFactory.createEmptyBorder());
-		editComponent.setBorder(BorderFactory.createEmptyBorder());
-		moveComponentUp.setBorder(BorderFactory.createEmptyBorder());
-		moveComponentDown.setBorder(BorderFactory.createEmptyBorder());
+		moveComponent.setMargin(new Insets(1, 1, 1, 1));
+		removeComponent.setMargin(new Insets(1, 1, 1, 1));
+		editComponent.setMargin(new Insets(1, 1, 1, 1));
+		moveComponentUp.setMargin(new Insets(1, 1, 1, 1));
+		moveComponentDown.setMargin(new Insets(1, 1, 1, 1));
 
 		bar2.add(moveComponent);
 		bar2.add(moveComponentUp);
@@ -441,7 +430,6 @@ public class WYSIWYGEditor extends JPanel {
 		zoomHolder.add("West", add);
 
 		sidebar.setPreferredSize(new Dimension(250, 10));
-		sidebar.setOpaque(false);
 
 		add("East", sidebar);
 		add("Center", zoomHolder);
