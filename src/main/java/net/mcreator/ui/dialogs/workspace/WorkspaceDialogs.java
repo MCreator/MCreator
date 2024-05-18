@@ -30,6 +30,7 @@ import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.JStringListField;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.component.util.ThreadUtil;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.init.UIRES;
@@ -44,14 +45,15 @@ import net.mcreator.ui.validation.validators.TextFieldValidatorJSON;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.util.DesktopUtils;
 import net.mcreator.util.FilenameUtilsPatched;
+import net.mcreator.workspace.MissingGeneratorFeaturesException;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.WorkspaceUtils;
 import net.mcreator.workspace.settings.WorkspaceSettings;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 
 import javax.annotation.Nullable;
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicComboBoxUI;
-import javax.swing.plaf.basic.BasicTabbedPaneUI;
 import javax.swing.text.AbstractDocument;
 import javax.swing.text.AttributeSet;
 import javax.swing.text.BadLocationException;
@@ -96,7 +98,7 @@ public class WorkspaceDialogs {
 
 		workspaceDialog.getRootPane().setDefaultButton(ok);
 		workspaceDialog.pack();
-		workspaceDialog.setSize(workspaceDialog.getBounds().width, 620);
+		workspaceDialog.setSize(680, 620);
 		workspaceDialog.setLocationRelativeTo(mcreator);
 
 		workspaceDialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -115,10 +117,17 @@ public class WorkspaceDialogs {
 
 			WorkspaceSettingsChange change = new WorkspaceSettingsChange(newsettings, oldsettings);
 
+			try {
+				verifyWorkspaceForCompatibilityWithGeneratorAndPlugins(mcreator, in,
+						(GeneratorConfiguration) wdp.generator.getSelectedItem());
+			} catch (MissingGeneratorFeaturesException e) {
+				return null;
+			}
+
 			if (change.refactorNeeded()) {
 				String[] options = new String[] { L10N.t("dialog.workspace_settings.refactor.yes"),
 						L10N.t("dialog.workspace_settings.refactor.no") };
-				int option = JOptionPane.showOptionDialog(null, change.generatorFlavorChanged ?
+				int option = JOptionPane.showOptionDialog(mcreator, change.generatorFlavorChanged ?
 								L10N.t("dialog.workspace_settings.refactor.text_flavor_switch") :
 								L10N.t("dialog.workspace_settings.refactor.text"),
 						L10N.t("dialog.workspace_settings.refactor.title"), JOptionPane.YES_NO_OPTION,
@@ -135,27 +144,28 @@ public class WorkspaceDialogs {
 
 		private GeneratorFlavor flavorFilter = null;
 
-		JComponent generatorSelector;
-		ValidationGroup validationGroup = new ValidationGroup();
+		final JComponent generatorSelector;
+		final ValidationGroup validationGroup = new ValidationGroup();
 
-		VTextField modName = new VTextField(24);
-		VTextField modID = new VTextField(24);
+		final VTextField modName = new VTextField(24);
+		final VTextField modID = new VTextField(24);
 
-		VTextField packageName = new VTextField(24);
-		VTextField credits = new VTextField(24);
+		final VTextField packageName = new VTextField(24);
+		final VTextField credits = new VTextField(24);
 
-		VTextField version = new VTextField(24);
-		VTextField description = new VTextField(24);
-		VTextField author = new VTextField(24);
-		VTextField websiteURL = new VTextField(24);
+		final VTextField version = new VTextField(24);
+		final VTextField description = new VTextField(24);
+		final VTextField author = new VTextField(24);
+		final VTextField websiteURL = new VTextField(24);
 
-		JComboBox<String> modPicture = new JComboBox<>();
-		JCheckBox lockBaseModFiles = L10N.checkbox("dialog.workspace_settings.lock_base_files");
-		JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
-		JTextField updateJSON = new JTextField(24);
-		JStringListField requiredMods, dependencies, dependants;
+		final JComboBox<String> modPicture = new JComboBox<>();
+		final JCheckBox serverSideOnly = L10N.checkbox("dialog.workspace_settings.server_side_mod");
+		final JTextField updateJSON = new JTextField(24);
+		final JStringListField requiredMods;
+		final JStringListField dependencies;
+		final JStringListField dependants;
 
-		JComboBox<String> license = new JComboBox<>(
+		final JComboBox<String> license = new JComboBox<>(
 				new String[] { "Not specified", "Academic Free License v3.0", "Ace3 Style BSD", "All Rights Reserved",
 						"Apache License version 2.0", "Apple Public Source License version 2.0 (APSL)",
 						"BSD License Common Development and Distribution License (CDDL)",
@@ -168,9 +178,9 @@ public class WorkspaceDialogs {
 						"MIT License", "Mozilla Public License 1.0 (MPL)", "Mozilla Public License 1.1 (MPL 1.1)",
 						"Mozilla Public License 2.0", "Public Domain", "WTFPL", "Custom license" });
 
-		Map<String, JCheckBox> apis = new HashMap<>();
+		final Map<String, JCheckBox> apis = new HashMap<>();
 
-		JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
+		final JComboBox<GeneratorConfiguration> generator = new JComboBox<>();
 
 		private boolean modIDManuallyEntered = false;
 		private boolean packageNameManuallyEntered = false;
@@ -192,21 +202,19 @@ public class WorkspaceDialogs {
 			Generator.GENERATOR_CACHE.values().forEach(generator::addItem);
 
 			JPanel _basicSettings = new JPanel();
+			_basicSettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			_basicSettings.setLayout(new BoxLayout(_basicSettings, BoxLayout.PAGE_AXIS));
 
 			JPanel _advancedSettings = new JPanel();
+			_advancedSettings.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			_advancedSettings.setLayout(new BoxLayout(_advancedSettings, BoxLayout.PAGE_AXIS));
 
 			JPanel _external_apis = new JPanel();
+			_external_apis.setBorder(BorderFactory.createEmptyBorder(5, 5, 0, 5));
 			_external_apis.setLayout(new BoxLayout(_external_apis, BoxLayout.PAGE_AXIS));
 
 			if (workspace != null) {
 				JTabbedPane master = new JTabbedPane();
-				master.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-				master.setUI(new BasicTabbedPaneUI() {
-					@Override protected void paintContentBorder(Graphics g, int tabPlacement, int selectedIndex) {
-					}
-				});
 				master.addTab(L10N.t("dialog.workspace_settings.tab.general"),
 						PanelUtils.pullElementUp(_basicSettings));
 				master.addTab(L10N.t("dialog.workspace_settings.tab.apis"), PanelUtils.pullElementUp(_external_apis));
@@ -518,14 +526,12 @@ public class WorkspaceDialogs {
 				_external_apis.add(apiSettings);
 			}
 
-			JPanel advancedSettings = new JPanel(new GridLayout(3, 2, 5, 2));
+			JPanel advancedSettings = new JPanel(new GridLayout(2, 2, 5, 2));
 			advancedSettings.setBorder(BorderFactory.createTitledBorder(BorderFactory.createLineBorder(Color.gray, 1),
 					L10N.t("dialog.workspace_settings.section.advanced")));
 			_advancedSettings.add(advancedSettings);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.server_side_only"));
 			advancedSettings.add(serverSideOnly);
-			advancedSettings.add(L10N.label("dialog.workspace_settings.lock_base_files_label"));
-			advancedSettings.add(lockBaseModFiles);
 			advancedSettings.add(L10N.label("dialog.workspace_settings.update_url"));
 			advancedSettings.add(updateJSON);
 
@@ -558,7 +564,6 @@ public class WorkspaceDialogs {
 						L10N.t("dialog.workspace.settings.workspace_nopic_default") :
 						workspace.getWorkspaceSettings().getModPicture());
 				serverSideOnly.setSelected(workspace.getWorkspaceSettings().isServerSideOnly());
-				lockBaseModFiles.setSelected(workspace.getWorkspaceSettings().isLockBaseModFiles());
 				updateJSON.setText(workspace.getWorkspaceSettings().getUpdateURL());
 				credits.setText(workspace.getWorkspaceSettings().getCredits());
 				packageName.setText(workspace.getWorkspaceSettings().getModElementsPackage());
@@ -594,7 +599,6 @@ public class WorkspaceDialogs {
 					(String) modPicture.getSelectedItem());
 			retVal.setModElementsPackage(packageName.getText().isEmpty() ? null : packageName.getText());
 			retVal.setServerSideOnly(serverSideOnly.isSelected());
-			retVal.setLockBaseModFiles(lockBaseModFiles.isSelected());
 			retVal.setUpdateURL(updateJSON.getText().isEmpty() ? null : updateJSON.getText());
 			retVal.setCurrentGenerator(
 					((GeneratorConfiguration) Objects.requireNonNull(generator.getSelectedItem())).getGeneratorName());
@@ -638,6 +642,35 @@ public class WorkspaceDialogs {
 		stringBuilder.append(L10N.t("dialog.workspace_settings.dialog.error"));
 		JOptionPane.showMessageDialog(w, stringBuilder.toString(),
 				L10N.t("dialog.workspace_settings.dialog.error.title"), JOptionPane.ERROR_MESSAGE);
+	}
+
+	/**
+	 * Verifies workspace for compatibility with the suggested generator and plugins.
+	 *
+	 * @param parent                 the parent, null if no UI message should be shown
+	 * @param workspace              the workspace to verify
+	 * @param generatorConfiguration the generator configuration to verify against
+	 * @throws MissingGeneratorFeaturesException the missing workspace plugins exception
+	 */
+	public static void verifyWorkspaceForCompatibilityWithGeneratorAndPlugins(@Nullable Window parent,
+			Workspace workspace, GeneratorConfiguration generatorConfiguration)
+			throws MissingGeneratorFeaturesException {
+		try {
+			WorkspaceUtils.verifyPluginRequirements(workspace, generatorConfiguration);
+		} catch (MissingGeneratorFeaturesException e) {
+			if (parent != null) {
+				ThreadUtil.runOnSwingThreadAndWait(() -> {
+					StringBuilder problems = new StringBuilder();
+					for (Map.Entry<String, Collection<String>> entry : e.getMissingDefinitions().entrySet()) {
+						problems.append("<b>").append(entry.getKey()).append(":</b> ")
+								.append(String.join(", ", entry.getValue())).append("<br>");
+					}
+					JOptionPane.showMessageDialog(parent, L10N.t("dialog.workspace.missing_plugins_message", problems),
+							L10N.t("dialog.workspace.missing_plugins_title"), JOptionPane.ERROR_MESSAGE);
+				});
+			}
+			throw e;
+		}
 	}
 
 }

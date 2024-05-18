@@ -92,16 +92,6 @@ public class RegenerateCodeAction extends GradleAction {
 					modElementFiles.forEach(File::delete);
 			}
 
-			// keep base mod files that can be locked if selected so in the workspace settings
-			if (mcreator.getWorkspaceSettings().isLockBaseModFiles()) {
-				mcreator.getGenerator().getModBaseGeneratorTemplatesList(false).forEach(generatorTemplate -> {
-					if (generatorTemplate.canBeLocked()) // can this file be locked
-						// are mod base file locked
-						toBePreserved.add(
-								generatorTemplate.getFile()); // we add locked base mod files on the to be preserved list
-				});
-			}
-
 			// delete all non mod element related files from code base package
 			File[] files = FileIO.listFilesRecursively(mcreator.getGenerator().getGeneratorPackageRoot());
 			for (File a : files) {
@@ -157,7 +147,7 @@ public class RegenerateCodeAction extends GradleAction {
 				try {
 					GeneratableElement generatableElement = mod.getGeneratableElement();
 					if (generatableElement == null) {
-						LOG.warn("Failed to regenerate: " + mod.getName() + " as it has no generatable element");
+						LOG.warn("Failed to regenerate: {} as it has no generatable element", mod.getName());
 
 						if (!skipAll) {
 							int opt = JOptionPane.showOptionDialog(mcreator,
@@ -175,7 +165,7 @@ public class RegenerateCodeAction extends GradleAction {
 						continue;
 					}
 
-					LOG.debug("Regenerating " + mod.getType().getReadableName() + " mod element: " + mod.getName());
+					LOG.debug("Regenerating {} mod element: {}", mod.getType().getReadableName(), mod.getName());
 
 					// generate mod element code
 					List<GeneratorFile> generatedFiles = mcreator.getGenerator()
@@ -197,7 +187,7 @@ public class RegenerateCodeAction extends GradleAction {
 
 					generatableElementsToSave.add(generatableElement);
 				} catch (Exception e) {
-					LOG.error("Failed to regenerate: " + mod.getName(), e);
+					LOG.error("Failed to regenerate: {}", mod.getName(), e);
 				}
 			}
 

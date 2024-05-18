@@ -180,8 +180,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		events.add(onHitsPlayer);
 		events.add(onFlyingTick);
 
-		triggersPanels.add("Center",
-				PanelUtils.totalCenterInPanel(PanelUtils.maxMargin(events, 20, true, true, true, true)));
+		triggersPanels.add("Center", PanelUtils.totalCenterInPanel(events));
 
 		customModelTexture.setValidator(() -> {
 			if (!modelDefault.equals(model.getSelectedItem()))
@@ -237,7 +236,7 @@ public class ProjectileGUI extends ModElementGUI<Projectile> {
 		onFlyingTick.setSelectedProcedure(projectile.onFlyingTick);
 
 		Model entityModel = projectile.getEntityModel();
-		if (entityModel != null && entityModel.getType() != null && entityModel.getReadableName() != null)
+		if (entityModel != null)
 			model.setSelectedItem(entityModel);
 	}
 

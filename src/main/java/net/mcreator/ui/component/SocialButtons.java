@@ -31,20 +31,21 @@ public class SocialButtons extends JPanel {
 	public SocialButtons() {
 		setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
 		add(createButton("yt", "https://www.youtube.com/subscription_center?add_user=PyloGroup"));
-		add(new JEmptyBox(2, 2));
+		add(new JEmptyBox(4, 4));
 		add(createButton("tw", "https://twitter.com/PyloDEV"));
-		add(new JEmptyBox(2, 2));
+		add(new JEmptyBox(4, 4));
 		add(createButton("rd", "https://www.reddit.com/r/MCreator/"));
-		add(new JEmptyBox(2, 2));
+		add(new JEmptyBox(4, 4));
 		add(createButton("ig", "https://www.instagram.com/pylocompany/"));
-		add(new JEmptyBox(2, 2));
+		add(new JEmptyBox(4, 4));
 		add(createButton("gh", "https://github.com/MCreator/MCreator"));
-		add(new JEmptyBox(2, 2));
+		add(new JEmptyBox(4, 4));
 		add(createButton("fb", "https://www.facebook.com/PyloDEV"));
+		setOpaque(false);
 	}
 
 	private JLabel createButton(String icon, String url) {
-		JLabel label = new JLabel(UIRES.SVG.getBuiltIn("social." + icon, 18, 18));
+		JLabel label = new JLabel(UIRES.SVG.getBuiltIn("social." + icon, 16, 18));
 		label.setCursor(new Cursor(Cursor.HAND_CURSOR));
 		label.addMouseListener(new MouseAdapter() {
 			@Override public void mouseClicked(MouseEvent mouseEvent) {

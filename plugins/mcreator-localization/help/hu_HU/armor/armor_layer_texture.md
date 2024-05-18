@@ -1,0 +1,1 @@
+A páncél réteg textúrák akkor jelennek meg ha a játékos felveszi a páncélt.

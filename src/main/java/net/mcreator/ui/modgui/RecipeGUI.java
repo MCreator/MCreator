@@ -169,7 +169,7 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 		recipesPanel.add(PanelUtils.totalCenterInPanel(smithingRecipeMaker), "smithing");
 		recipesPanel.add(PanelUtils.totalCenterInPanel(brewingRecipeMaker), "brewing");
 
-		JComponent recwrap = PanelUtils.maxMargin(recipesPanel, 10, true, true, true, true);
+		JComponent recwrap = ComponentUtils.applyPadding(recipesPanel, 10, true, true, true, true);
 		recwrap.setBorder(BorderFactory.createTitledBorder(
 				BorderFactory.createLineBorder(Theme.current().getForegroundColor(), 1),
 				L10N.t("elementgui.recipe.definition"), TitledBorder.LEADING, TitledBorder.DEFAULT_POSITION, getFont(),
@@ -300,7 +300,9 @@ public class RecipeGUI extends ModElementGUI<Recipe> {
 			}
 		} else if ("Smithing".equals(recipeType.getSelectedItem())) {
 			if (!smithingRecipeMaker.cb1.containsItem() || !smithingRecipeMaker.cb2.containsItem()
-					|| !smithingRecipeMaker.cb3.containsItem()) {
+					|| !smithingRecipeMaker.cb3.containsItem() ||
+					// We request smithing recipe to have template for new recipes
+					(!isEditingMode() && !smithingRecipeMaker.cb4.containsItem())) {
 				return new AggregatedValidationResult.FAIL(
 						L10N.t("elementgui.recipe.error_smithing_no_ingredient_addition_and_result"));
 			}

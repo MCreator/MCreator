@@ -94,8 +94,8 @@ public class ShareableZIPManager {
 							generatableElement.getModElement().reinit(workspace);
 						}
 					} else {
-						LOG.debug("Skipping preloading of mod element " + mod.getName()
-								+ " as it was converted to a different type");
+						LOG.debug("Skipping preloading of mod element {} as it was converted to a different type",
+								mod.getName());
 					}
 
 					i++;
@@ -104,7 +104,7 @@ public class ShareableZIPManager {
 
 				// make sure we store any potential changes made to the workspace
 				workspace.markDirty();
-			} catch (UnsupportedGeneratorException | MissingWorkspacePluginsException e) {
+			} catch (UnsupportedGeneratorException | MissingGeneratorFeaturesException e) {
 				// Exception that already prompted user action resulting in us landing here happened before
 				// So we just cancel the import at this point by returning null
 				retval.set(null);

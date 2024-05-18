@@ -49,7 +49,7 @@ import net.mcreator.ui.workspace.selector.RecentWorkspaceEntry;
 import net.mcreator.ui.workspace.selector.WorkspaceSelector;
 import net.mcreator.util.MCreatorVersionNumber;
 import net.mcreator.workspace.CorruptedWorkspaceFileException;
-import net.mcreator.workspace.MissingWorkspacePluginsException;
+import net.mcreator.workspace.MissingGeneratorFeaturesException;
 import net.mcreator.workspace.UnsupportedGeneratorException;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -70,7 +70,7 @@ public final class MCreatorApplication {
 
 	private static final Logger LOG = LogManager.getLogger("Application");
 
-	public static IWebAPI WEB_API = new D8WebAPI();
+	public static final IWebAPI WEB_API = new D8WebAPI();
 	public static final String SERVER_DOMAIN = "https://mcreator.net";
 	public static boolean isInternet = true;
 
@@ -165,12 +165,12 @@ public final class MCreatorApplication {
 			for (String generator : fileNames) {
 				splashScreen.setProgress(70 + i * ((90 - 70) / fileNames.size()),
 						"Loading generators: " + generator.split("/")[0]);
-				LOG.info("Loading generator: " + generator);
+				LOG.info("Loading generator: {}", generator);
 				generator = generator.replace("/generator.yaml", "");
 				try {
 					Generator.GENERATOR_CACHE.put(generator, new GeneratorConfiguration(generator));
 				} catch (Exception e) {
-					LOG.error("Failed to load generator: " + generator, e);
+					LOG.error("Failed to load generator: {}", generator, e);
 				}
 				i++;
 			}
@@ -206,9 +206,11 @@ public final class MCreatorApplication {
 			SwingUtilities.invokeLater(() -> {
 				workspaceSelector = new WorkspaceSelector(this, this::openWorkspaceInMCreator);
 
+				splashScreen.setVisible(false);
+
 				boolean directLaunch = false;
 				if (!launchArguments.isEmpty()) {
-					String lastArg = launchArguments.get(launchArguments.size() - 1);
+					String lastArg = launchArguments.getLast();
 					if (lastArg.length() >= 2 && lastArg.charAt(0) == '"'
 							&& lastArg.charAt(lastArg.length() - 1) == '"')
 						lastArg = lastArg.substring(1, lastArg.length() - 1);
@@ -223,8 +225,6 @@ public final class MCreatorApplication {
 
 				if (!directLaunch)
 					showWorkspaceSelector();
-
-				splashScreen.setVisible(false);
 			});
 
 			LOG.debug("Application loader finished");
@@ -320,7 +320,7 @@ public final class MCreatorApplication {
 				reportFailedWorkspaceOpen(
 						new IOException("Corrupted workspace file and no backups found", corruptedWorkspaceFile));
 			}
-		} catch (MissingWorkspacePluginsException e) {
+		} catch (MissingGeneratorFeaturesException e) {
 			LOG.error("Failed to open workspace due to missing plugins", e);
 		} catch (IOException | UnsupportedGeneratorException e) {
 			LOG.error("Failed to open workspace!", e);
@@ -346,7 +346,7 @@ public final class MCreatorApplication {
 			// create list copy, so we don't modify the list we iterate
 			List<MCreator> mcreatorsTmp = new ArrayList<>(openMCreators);
 			for (MCreator mcreator : mcreatorsTmp) {
-				LOG.info("Attempting to close MCreator window with workspace: " + mcreator.getWorkspace());
+				LOG.info("Attempting to close MCreator window with workspace: {}", mcreator.getWorkspace());
 				if (!mcreator.closeThisMCreator(false)) {
 					canNotClose.set(true);
 					return;

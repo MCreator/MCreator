@@ -101,7 +101,7 @@ public class BlocklyTestUtil {
 			}
 
 			if (!templatesDefined) {
-				LOG.warn("Skipping Blockly block with incomplete template: " + toolboxBlock.getMachineName());
+				LOG.warn("Skipping Blockly block with incomplete template: {}", toolboxBlock.getMachineName());
 				return false;
 			}
 		}
@@ -131,7 +131,7 @@ public class BlocklyTestUtil {
 			}
 
 			if (processed != toolboxBlock.getFields().size()) {
-				LOG.warn("Skipping Blockly block with special fields: " + toolboxBlock.getMachineName());
+				LOG.warn("Skipping Blockly block with special fields: {}", toolboxBlock.getMachineName());
 				return false;
 			}
 		}
@@ -153,8 +153,8 @@ public class BlocklyTestUtil {
 				}
 			}
 			if (processedFields != totalFields) {
-				LOG.warn("Skipping Blockly block with incorrectly defined repeating field: "
-						+ toolboxBlock.getMachineName());
+				LOG.warn("Skipping Blockly block with incorrectly defined repeating field: {}",
+						toolboxBlock.getMachineName());
 				return false;
 			}
 		}
@@ -241,8 +241,6 @@ public class BlocklyTestUtil {
 			return ElementUtil.loadDirections();
 		case "biome":
 			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "dimension":
-			return ElementUtil.loadAllDimensions(workspace);
 		case "dimensionCustom":
 			return workspace.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
 					.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new);

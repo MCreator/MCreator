@@ -52,7 +52,7 @@ public abstract class ProcedureConverter implements IConverter {
 			if (dependencies_changed)
 				refreshDependencies(procedure);
 		} catch (Exception e) {
-			LOG.warn("Failed to convert procedure block setup for " + input.getModElement().getName(), e);
+			LOG.warn("Failed to convert procedure block setup for {}", input.getModElement().getName(), e);
 		}
 
 		return procedure;

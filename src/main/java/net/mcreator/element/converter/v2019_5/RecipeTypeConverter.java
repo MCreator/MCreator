@@ -43,8 +43,8 @@ public class RecipeTypeConverter implements IConverter {
 				recipe.recipeType = "Smelting";
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not determine recipe type for " + input.getModElement().getName()
-					+ ", falling back to crafting type.");
+			LOG.warn("Could not determine recipe type for {}, falling back to crafting type.",
+					input.getModElement().getName());
 			recipe.recipeType = "Crafting";
 		}
 		return recipe;

@@ -1,0 +1,1 @@
+Ez a paraméter szabályozza, hogy a tényleges maximális részecskék életkora mennyivel térhet el pozitív vagy negatív értékben a megadott maximális kortól.

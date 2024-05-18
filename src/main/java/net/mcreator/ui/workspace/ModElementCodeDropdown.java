@@ -19,6 +19,7 @@
 
 package net.mcreator.ui.workspace;
 
+import com.formdev.flatlaf.FlatClientProperties;
 import net.mcreator.generator.GeneratorTemplate;
 import net.mcreator.generator.GeneratorTemplatesList;
 import net.mcreator.ui.MCreator;
@@ -37,8 +38,9 @@ class ModElementCodeDropdown extends JPopupMenu {
 	ModElementCodeDropdown(MCreator mcreator, List<GeneratorTemplate> modElementFiles,
 			List<GeneratorTemplate> modElementGlobalFiles, List<GeneratorTemplatesList> modElementListFiles) {
 		this.mcreator = mcreator;
+
 		setBorder(BorderFactory.createEmptyBorder());
-		setBackground((Theme.current().getAltBackgroundColor()).darker());
+		putClientProperty(FlatClientProperties.POPUP_BORDER_CORNER_RADIUS, 0);
 
 		int entryCounter = 0;
 
@@ -74,7 +76,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 				listMenu.setBackground((Theme.current().getAltBackgroundColor()).darker());
 				listMenu.setForeground(Theme.current().getForegroundColor());
 				listMenu.setIconTextGap(8);
-				listMenu.setBorder(BorderFactory.createEmptyBorder(10, 0, 11, 0));
+				listMenu.setBorder(BorderFactory.createEmptyBorder(10, 8, 11, 0));
 
 				for (int i = 0; i < list.listData().size(); i++) {
 					if (i > 0 && listMenu.getMenuComponents().length > 0 && !list.templates().get(i).isEmpty())
@@ -105,7 +107,7 @@ class ModElementCodeDropdown extends JPopupMenu {
 		item.setBackground((Theme.current().getAltBackgroundColor()).darker());
 		item.setForeground(Theme.current().getForegroundColor());
 		item.setIconTextGap(8);
-		item.setBorder(BorderFactory.createEmptyBorder(4, 0, 4, 0));
+		item.setBorder(BorderFactory.createEmptyBorder(4, 8, 4, 0));
 		item.addActionListener(e -> ProjectFileOpener.openCodeFile(mcreator, template.getFile()));
 		return item;
 	}

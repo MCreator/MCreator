@@ -49,29 +49,25 @@ import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class BlocklyJavascriptBridge {
+public final class BlocklyJavascriptBridge {
 
 	private static final Logger LOG = LogManager.getLogger("Blockly JS Bridge");
 
-	private JavaScriptEventListener listener;
-	private final Supplier<Boolean> blocklyEvent;
+	private final Runnable blocklyEvent;
 	private final MCreator mcreator;
 
 	private final Object NESTED_LOOP_KEY = new Object();
 
-	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Supplier<Boolean> blocklyEvent) {
+	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Runnable blocklyEvent) {
 		this.blocklyEvent = blocklyEvent;
 		this.mcreator = mcreator;
 	}
 
 	// these methods are called from JavaScript so we suppress warnings
 	@SuppressWarnings("unused") public void triggerEvent() {
-		boolean success = blocklyEvent.get();
-		if (success && listener != null)
-			listener.event();
+		blocklyEvent.run();
 	}
 
 	@SuppressWarnings("unused") public String getMCItemURI(String name) {
@@ -190,7 +186,6 @@ public class BlocklyJavascriptBridge {
 			case "biome" -> openDataListEntrySelector(
 					w -> ElementUtil.loadAllBiomes(w).stream().filter(e -> e.isSupportedInWorkspace(w)).toList(),
 					"biome");
-			case "dimension" -> openStringEntrySelector(ElementUtil::loadAllDimensions, "dimension");
 			case "dimensionCustom" -> openStringEntrySelector(
 					w -> w.getModElements().stream().filter(m -> m.getType() == ModElementType.DIMENSION)
 							.map(m -> "CUSTOM:" + m.getName()).toArray(String[]::new), "dimension");
@@ -236,7 +231,7 @@ public class BlocklyJavascriptBridge {
 		put("no_ext_trigger", L10N.t("trigger.no_ext_trigger"));
 	}};
 
-	public void addExternalTrigger(ExternalTrigger external_trigger) {
+	void addExternalTrigger(ExternalTrigger external_trigger) {
 		ext_triggers.put(external_trigger.getID(), external_trigger.getName());
 	}
 
@@ -298,8 +293,6 @@ public class BlocklyJavascriptBridge {
 					.toArray(String[]::new);
 		case "biome":
 			return ElementUtil.loadAllBiomes(workspace).stream().map(DataListEntry::getName).toArray(String[]::new);
-		case "dimension":
-			return ElementUtil.loadAllDimensions(workspace);
 		case "dimension_custom":
 			retval = workspace.getModElements().stream().filter(mu -> mu.getType() == ModElementType.DIMENSION)
 					.map(mu -> "CUSTOM:" + mu.getName()).collect(Collectors.toList());
@@ -365,10 +358,6 @@ public class BlocklyJavascriptBridge {
 		return DataListLoader.loadDataMap(datalist).containsKey(value) ?
 				DataListLoader.loadDataMap(datalist).get(value).getReadableName() :
 				"";
-	}
-
-	public void setJavaScriptEventListener(JavaScriptEventListener listener) {
-		this.listener = listener;
 	}
 
 }

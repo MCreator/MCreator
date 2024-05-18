@@ -19,7 +19,7 @@
 package net.mcreator.ui.action;
 
 import net.mcreator.util.image.EmptyIcon;
-import net.mcreator.util.image.ImageUtils;
+import net.mcreator.util.image.IconUtils;
 
 import javax.annotation.Nonnull;
 import javax.swing.*;
@@ -51,7 +51,7 @@ public class UnregisteredAction extends AbstractAction implements Comparable<Unr
 
 	public UnregisteredAction setIcon(ImageIcon icon) {
 		if (icon != null) {
-			putValue(SMALL_ICON, new ImageIcon(ImageUtils.resizeAA(icon.getImage(), 16, 16)));
+			putValue(SMALL_ICON, IconUtils.resize(icon, 16, 16));
 			putValue(LARGE_ICON_KEY, icon);
 		} else {
 			putValue(SMALL_ICON, EMPTY);

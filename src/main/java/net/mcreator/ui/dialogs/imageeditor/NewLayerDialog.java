@@ -21,6 +21,7 @@ package net.mcreator.ui.dialogs.imageeditor;
 import net.mcreator.io.ResourcePointer;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.MCreatorDialog;
 import net.mcreator.ui.dialogs.TextureSelectorDialog;
@@ -48,7 +49,7 @@ public class NewLayerDialog extends MCreatorDialog {
 
 		templatesSorted = new ArrayList<>(ImageMakerTexturesCache.CACHE.keySet());
 		templatesSorted.sort(Comparator.comparing(resourcePointer -> resourcePointer.identifier.toString()));
-		selection = templatesSorted.get(0);
+		selection = templatesSorted.getFirst();
 		TextureSelectorDialog templateChooser = new TextureSelectorDialog(templatesSorted, window);
 
 		JPanel settings = new JPanel(new GridBagLayout());
@@ -164,8 +165,8 @@ public class NewLayerDialog extends MCreatorDialog {
 
 		controls.add(cancel, BorderLayout.WEST);
 		controls.add(ok, BorderLayout.EAST);
-		add(PanelUtils.maxMargin(settings, 5, true, true, true, true), BorderLayout.CENTER);
-		add(PanelUtils.maxMargin(controls, 5, true, true, true, true), BorderLayout.SOUTH);
+		add(ComponentUtils.applyPadding(settings, 5, true, true, true, true), BorderLayout.CENTER);
+		add(ComponentUtils.applyPadding(controls, 5, true, true, true, true), BorderLayout.SOUTH);
 		setSize(500, 300);
 		setResizable(false);
 		setLocationRelativeTo(window);

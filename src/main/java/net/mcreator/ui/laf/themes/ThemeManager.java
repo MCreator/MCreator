@@ -19,22 +19,22 @@
 
 package net.mcreator.ui.laf.themes;
 
+import com.formdev.flatlaf.FlatLaf;
+import com.formdev.flatlaf.IntelliJTheme;
 import com.google.gson.Gson;
 import net.mcreator.io.FileIO;
+import net.mcreator.io.OS;
 import net.mcreator.plugin.PluginLoader;
 import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.laf.LafUtil;
-import net.mcreator.ui.laf.MCreatorTheme;
 import net.mcreator.util.image.ImageUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.swing.*;
-import javax.swing.plaf.metal.MetalLookAndFeel;
 import java.io.File;
 import java.net.URL;
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -55,11 +55,33 @@ public class ThemeManager {
 	 */
 	public static void applySelectedTheme() {
 		try {
-			MetalLookAndFeel.setCurrentTheme(new MCreatorTheme(Theme.current()));
-			UIManager.setLookAndFeel(new MetalLookAndFeel());
+			if (OS.getOS() == OS.LINUX) {
+				// We need to call this to enable the window decorations on Linux
+				JFrame.setDefaultLookAndFeelDecorated(true);
+				JDialog.setDefaultLookAndFeelDecorated(true);
+			}
+
+			Theme theme = Theme.current();
+
+			Map<String, String> flatLafDefaults = new HashMap<>();
+			theme.applyFlatLafOverrides(flatLafDefaults);
+			FlatLaf.setGlobalExtraDefaults(flatLafDefaults);
+
+			FlatLaf laf;
+			String themeName = theme.getFlatLafTheme();
+			if (themeName.endsWith(".json")) {
+				laf = IntelliJTheme.createLaf(Objects.requireNonNull(
+						PluginLoader.INSTANCE.getResourceAsStream("themes/" + theme.getID() + "/" + themeName)));
+			} else {
+				laf = (FlatLaf) Class.forName("com.formdev.flatlaf." + themeName).getConstructor().newInstance();
+			}
+
+			UIManager.setLookAndFeel(laf);
+
+			theme.applyUIDefaultsOverrides(UIManager.getDefaults());
+
 			LafUtil.applyDefaultHTMLStyles();
-			LafUtil.fixMacOSActions();
-		} catch (UnsupportedLookAndFeelException e) {
+		} catch (Exception e) {
 			LOG.error("Failed to set MCreator UI theme", e);
 		}
 	}
@@ -86,7 +108,7 @@ public class ThemeManager {
 		}
 
 		CURRENT_THEME = getTheme(PreferencesManager.PREFERENCES.hidden.uiTheme.get()).init();
-		LOG.info("Using MCreator UI theme: " + CURRENT_THEME.getID());
+		LOG.info("Using MCreator UI theme: {}", CURRENT_THEME.getID());
 	}
 
 	public static LinkedHashSet<Theme> getThemes() {
@@ -108,7 +130,7 @@ public class ThemeManager {
 		if (id.equals("default_dark"))
 			throw new RuntimeException("No themes present in MCreator");
 
-		LOG.warn("Default theme will be used due to missing theme: " + id);
+		LOG.warn("Default theme will be used due to missing theme: {}", id);
 
 		return getTheme("default_dark");
 	}

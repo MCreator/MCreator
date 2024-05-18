@@ -199,7 +199,8 @@ public class MinecraftImageGenerator {
 		BufferedImage bucketMask = ImageUtils.toBufferedImage(UIRES.get("mod_preview_bases.bucket_mask").getImage());
 		// The fluid image is resized to avoid issues with animated textures
 		BufferedImage fluidOverlay = ImageUtils.resizeAndCrop(fluid.getImage(), 32);
-		return ImageUtils.drawOver(UIRES.get("mod_preview_bases.bucket_base"), new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
+		return ImageUtils.drawOver(UIRES.get("mod_preview_bases.bucket_base"),
+				new ImageIcon(ImageUtils.maskTransparency(fluidOverlay, bucketMask)));
 	}
 
 	public static ImageIcon generateSpawnEggIcon(Color baseColor, Color dotColor) {
@@ -786,8 +787,8 @@ public class MinecraftImageGenerator {
 				switch (armorPieces.size()) {
 				case 1:
 					graphics2D.drawImage(
-							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.get(0))), 28), 0, 0,
-							null);
+							ImageUtils.resizeAA(ImageUtils.autoCropTile(ImageIO.read(armorPieces.getFirst())), 28), 0,
+							0, null);
 					break;
 				case 2:
 					graphics2D.drawImage(
@@ -1424,7 +1425,7 @@ public class MinecraftImageGenerator {
 				if (tex != null) {
 					tex1 = ImageUtils.resizeAA(tex, drawWidth1, drawHeight1);
 				} else {
-					tex1 = ImageUtils.resizeAA(rantex.get(0), drawWidth1, drawHeight1);
+					tex1 = ImageUtils.resizeAA(rantex.getFirst(), drawWidth1, drawHeight1);
 				}
 				graphics2D.drawImage(tex1, 6 - drawWidth1 / 2, 3 - drawHeight1 / 2, null);
 

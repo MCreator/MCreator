@@ -25,6 +25,7 @@ import net.mcreator.generator.Generator;
 import net.mcreator.generator.GeneratorConfiguration;
 import net.mcreator.generator.GeneratorFlavor;
 import net.mcreator.integration.ui.UITestUtil;
+import net.mcreator.io.FileIO;
 import net.mcreator.io.zip.ZipIO;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.modgui.ModElementGUI;
@@ -42,7 +43,6 @@ import org.reflections.util.ConfigurationBuilder;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -65,10 +65,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 				FileUtils.copyURLToFile(Objects.requireNonNull(getClass().getResource("/" + testWorkspace)),
 						workspaceZip);
 
-				Path tempDirWithPrefix = Files.createTempDirectory("mcreator_test_workspace");
-				File workspaceDir = tempDirWithPrefix.toFile();
+				File workspaceDir = Files.createTempDirectory("mcreator_test_workspace").toFile();
 
 				ZipIO.unzip(workspaceZip.getAbsolutePath(), workspaceDir.getAbsolutePath());
+
+				workspaceZip.delete();
 
 				File workspaceFile = WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(workspaceDir);
 
@@ -116,6 +117,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 						UITestUtil.testIfValidationPasses(modElementGUI, false);
 					}
 				}
+
+				FileIO.deleteDir(workspaceDir);
 			});
 		});
 	}

@@ -1,6 +1,6 @@
 L'outil avec le niveau de récolte donné (aussi appelé "tiers") ne peut être utilisé seulement par le même tier, ou en dessous.
 
-* 0 est à main nue/bois
+* 0 est le bois/or
 * 1 est la pierre
 * 2 est le fer
 * 3 est le diamant

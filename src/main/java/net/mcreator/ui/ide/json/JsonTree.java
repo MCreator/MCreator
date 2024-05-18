@@ -139,7 +139,7 @@ public class JsonTree extends AbstractSourceTree {
 
 	public static class JsonNode extends DefaultMutableTreeNode {
 
-		JsonElement element;
+		final JsonElement element;
 
 		public JsonNode(JsonElement element, String s) {
 			super(s);

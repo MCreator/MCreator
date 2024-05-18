@@ -118,7 +118,7 @@ public class PlantGenerationConditionRemover implements IConverter {
 				definition.add("spawnWorldTypes", new JsonArray());
 			}
 		} catch (Exception e) {
-			LOG.warn("Could not remove generation condition from plant: " + input.getModElement().getName());
+			LOG.warn("Could not remove generation condition from plant: {}", input.getModElement().getName());
 		}
 
 		return input;

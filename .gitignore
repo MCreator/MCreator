@@ -10,6 +10,7 @@
 **/.idea/shelf
 **/.idea/libraries-with-intellij-classes.xml
 **/.idea/php.xml
+**/.idea/copilot/
 
 #FILES FOR GRADLE
 #=======================

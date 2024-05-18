@@ -24,8 +24,8 @@ import net.mcreator.ui.MCreator;
 import net.mcreator.workspace.settings.WorkspaceSettingsChange;
 
 public class WorkspaceRefactoringEvent extends MCREvent {
-	private MCreator mcreator;
-	private WorkspaceSettingsChange change;
+	private final MCreator mcreator;
+	private final WorkspaceSettingsChange change;
 
 	/**
 	 * <p>An event triggered each time MCreator refactors a {@link net.mcreator.workspace.Workspace}.

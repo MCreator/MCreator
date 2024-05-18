@@ -32,15 +32,15 @@ import java.io.File;
 
 public class HiddenSection extends PreferencesSection {
 
-	public PreferencesEntry<IconSize> workspaceModElementIconSize;
-	public BooleanEntry fullScreen;
-	public IntegerEntry projectTreeSplitPos;
-	public BooleanEntry workspaceSortAscending;
-	public PreferencesEntry<SortType> workspaceSortType;
-	public PreferencesEntry<File> java_home;
-	public StringEntry uiTheme;
-	public BooleanEntry enableJavaPlugins;
-	public StringEntry lastWebsiteNewsRead;
+	public final PreferencesEntry<IconSize> workspaceModElementIconSize;
+	public final BooleanEntry fullScreen;
+	public final IntegerEntry projectTreeSplitPos;
+	public final BooleanEntry workspaceSortAscending;
+	public final PreferencesEntry<SortType> workspaceSortOrder;
+	public final PreferencesEntry<File> java_home;
+	public final StringEntry uiTheme;
+	public final BooleanEntry enableJavaPlugins;
+	public final StringEntry lastWebsiteNewsRead;
 
 	HiddenSection(String preferencesIdentifier) {
 		super(preferencesIdentifier);
@@ -57,7 +57,7 @@ public class HiddenSection extends PreferencesSection {
 		fullScreen = addEntry(new BooleanEntry("fullScreen", false));
 		projectTreeSplitPos = addEntry(new IntegerEntry("projectTreeSplitPos", 0));
 		workspaceSortAscending = addEntry(new BooleanEntry("workspaceSortAscending", true));
-		workspaceSortType = addEntry(new HiddenEntry<>("workspaceSortType", SortType.CREATED) {
+		workspaceSortOrder = addEntry(new HiddenEntry<>("workspaceSortOrder", SortType.CREATED) {
 			@Override public void setValueFromJsonElement(JsonElement object) {
 				this.value = SortType.valueOf(object.getAsString());
 			}
@@ -89,7 +89,7 @@ public class HiddenSection extends PreferencesSection {
 	}
 
 	public enum SortType {
-		NAME, CREATED, TYPE, LOADORDER
+		NAME, CREATED, TYPE
 	}
 
 	public enum IconSize {

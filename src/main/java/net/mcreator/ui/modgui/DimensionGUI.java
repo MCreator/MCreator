@@ -62,7 +62,9 @@ import java.net.URISyntaxException;
 
 public class DimensionGUI extends ModElementGUI<Dimension> {
 
-	private final VTextField igniterName = new VTextField(14);
+	private final VTextField igniterName = new VTextField(19);
+	private final JComboBox<String> igniterRarity = new JComboBox<>(
+			new String[] { "COMMON", "UNCOMMON", "RARE", "EPIC" });
 
 	private StringListProcedureSelector specialInformation;
 
@@ -148,6 +150,8 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		worldGenType.setRenderer(new ItemTexturesComboBoxRenderer());
 		biomesInDimension = new BiomeListField(mcreator);
 
+		portalParticles.setPrototypeDisplayValue(new DataListEntry.Dummy("XXXXXXXXXXXXXXXXXXX"));
+
 		portalFrame = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		mainFillerBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
 		fluidBlock = new MCItemHolder(mcreator, ElementUtil::loadBlocks);
@@ -231,7 +235,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel proper = new JPanel(new GridLayout(4, 2, 5, 2));
 		proper.setOpaque(false);
 
-		JPanel proper22 = new JPanel(new GridLayout(2, 2, 5, 2));
+		JPanel proper22 = new JPanel(new GridLayout(3, 2, 5, 2));
 		proper22.setOpaque(false);
 
 		proper.add(HelpUtils.wrapWithHelpButton(this.withEntry("dimension/portal_particles"),
@@ -254,6 +258,10 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.label("elementgui.dimension.portal_igniter_name")));
 		proper22.add(igniterName);
 
+		proper22.add(
+				HelpUtils.wrapWithHelpButton(this.withEntry("item/rarity"), L10N.label("elementgui.common.rarity")));
+		proper22.add(igniterRarity);
+
 		proper22.add(HelpUtils.wrapWithHelpButton(this.withEntry("common/creative_tab"),
 				L10N.label("elementgui.dimension.portal_igniter_tab")));
 		proper22.add(igniterTab);
@@ -265,7 +273,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		JPanel igniterPanel = new JPanel(new BorderLayout(5, 5));
 		igniterPanel.setOpaque(false);
 
-		igniterPanel.add("North", PanelUtils.gridElements(1, 2,
+		igniterPanel.add("North", PanelUtils.gridElements(1, 2, 5, 2,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_igniter"),
 						L10N.label("elementgui.dimension.enable_new_igniter")), enableIgniter));
 
@@ -298,17 +306,17 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 				L10N.t("elementgui.dimension.portal_properties"), 0, 0, getFont().deriveFont(12.0f),
 				Theme.current().getForegroundColor()));
 
-		JPanel dsg = new JPanel(new BorderLayout(5, 2));
-		dsg.setOpaque(false);
-		dsg.add("West", propertiesPanel);
-		dsg.add("East", PanelUtils.pullElementUp(igniterPanel));
+		JPanel portalPanelMain = new JPanel(new BorderLayout(0, 0));
+		portalPanelMain.setOpaque(false);
+		portalPanelMain.add("West", propertiesPanel);
+		portalPanelMain.add("East", PanelUtils.pullElementUp(igniterPanel));
 
 		JPanel portalPanel = new JPanel(new BorderLayout(5, 2));
 		portalPanel.setOpaque(false);
 		portalPanel.add("North", PanelUtils.join(FlowLayout.LEFT,
 				HelpUtils.wrapWithHelpButton(this.withEntry("dimension/enable_portal"),
 						L10N.label("elementgui.dimension.enable_dimension_portal")), enablePortal));
-		portalPanel.add("Center", dsg);
+		portalPanel.add("Center", portalPanelMain);
 
 		pane2.setOpaque(false);
 
@@ -376,6 +384,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		specialInformation.setEnabled(enabled);
 		texture.setEnabled(enabled);
 		portalMakeCondition.setEnabled(enabled);
+		igniterRarity.setEnabled(enabled);
 	}
 
 	@Override public void reloadDataLists() {
@@ -411,12 +420,13 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		portalSound.setSound(dimension.portalSound);
 		enableIgniter.setSelected(dimension.enableIgniter);
 		igniterName.setText(dimension.igniterName);
+		igniterRarity.setSelectedItem(dimension.igniterRarity);
 		specialInformation.setSelectedProcedure(dimension.specialInformation);
 		portalTexture.setTextureFromTextureName(dimension.portalTexture);
 		texture.setTextureFromTextureName(dimension.texture);
 		worldGenType.setSelectedItem(dimension.worldGenType);
 		sleepResult.setSelectedItem(dimension.sleepResult);
-		igniterTab.setSelectedItem(dimension.igniterTab.getUnmappedValue());
+		igniterTab.setSelectedItem(dimension.igniterTab);
 		portalParticles.setSelectedItem(dimension.portalParticles);
 		biomesInDimension.setListElements(dimension.biomesInDimension);
 		airColor.setColor(dimension.airColor);
@@ -456,6 +466,7 @@ public class DimensionGUI extends ModElementGUI<Dimension> {
 		dimension.portalFrame = portalFrame.getBlock();
 		dimension.enableIgniter = enableIgniter.isSelected();
 		dimension.igniterName = igniterName.getText();
+		dimension.igniterRarity = (String) igniterRarity.getSelectedItem();
 		dimension.specialInformation = specialInformation.getSelectedProcedure();
 		dimension.worldGenType = (String) worldGenType.getSelectedItem();
 		dimension.sleepResult = (String) sleepResult.getSelectedItem();

@@ -153,8 +153,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 		if (clicks == 2 && list.dndCustom) {
 			srcPoint = null; // Initiate DND action
 		} else if (clicks == 1 && list.dndCustom) {
-			if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0
-					|| (e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0) {
+			if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0) {
 				selection = list.getSelectedIndices();
 			} else {
 				selection = null; // If only one click, reset the DND selection candidates

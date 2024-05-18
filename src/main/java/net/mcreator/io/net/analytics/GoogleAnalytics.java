@@ -118,9 +118,9 @@ public class GoogleAnalytics {
 
 			processRequestURL(getGATrackURL(payload));
 
-			LOG.info("Tracked page: " + page);
+			LOG.info("Tracked page: {}", page);
 		} catch (Exception e) {
-			LOG.warn("Failed to track page: " + page, e);
+			LOG.warn("Failed to track page: {}", page, e);
 		}
 	}
 
@@ -132,9 +132,9 @@ public class GoogleAnalytics {
 			payload.put("ep.ctx", context);
 			processRequestURL(getGATrackURL(payload));
 
-			LOG.info("Tracked event: " + name + ", context: " + context);
+			LOG.info("Tracked event: {}, context: {}", name, context);
 		} catch (Exception e) {
-			LOG.warn("Failed to track event: " + name + ", context: " + context, e);
+			LOG.warn("Failed to track event: {}, context: {}", name, context, e);
 		}
 	}
 

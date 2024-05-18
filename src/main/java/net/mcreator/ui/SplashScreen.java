@@ -101,6 +101,7 @@ public class SplashScreen extends JWindow {
 		setSize(imagePanel.getSize());
 		setLocationRelativeTo(null);
 		setVisible(true);
+		setAlwaysOnTop(true);
 		requestFocus();
 		requestFocusInWindow();
 		toFront();

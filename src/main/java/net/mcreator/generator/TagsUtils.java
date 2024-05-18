@@ -47,7 +47,7 @@ public class TagsUtils {
 							.generateFromTemplate(tagsSpecification.get("template").toString(), datamodel);
 					JSONWriter.writeJSONToFile(json, tagFile);
 				} catch (TemplateGeneratorException e) {
-					generator.getLogger().error("Failed to generate code for tag: " + tag.getKey(), e);
+					generator.getLogger().error("Failed to generate code for tag: {}", tag.getKey(), e);
 				}
 			}
 		});
@@ -57,8 +57,8 @@ public class TagsUtils {
 		String rawName = (String) workspace.getGeneratorConfiguration().getTagsSpecification().get("name");
 
 		String name = GeneratorTokens.replaceTokens(workspace,
-				rawName.replace("@namespace", tagElement.getNamespace()).replace("@name", tagElement.getName())
-						.replace("@folder", tagElement.type().getFolder()));
+				rawName.replace("@namespace", tagElement.getMinecraftNamespace(workspace))
+						.replace("@name", tagElement.getName()).replace("@folder", tagElement.type().getFolder()));
 
 		File tagFile = new File(name);
 		if (workspace.getFolderManager().isFileInWorkspace(tagFile)) {
@@ -125,7 +125,7 @@ public class TagsUtils {
 			// only add this entry if it does not already exist in managed or unmanaged form
 			else if (!entries.contains(entryManaged) && !entries.contains(entry)) {
 				// We add managed entries to the beginning of the list
-				generator.getWorkspace().getTagElements().get(tag).add(0, entryManaged);
+				generator.getWorkspace().getTagElements().get(tag).addFirst(entryManaged);
 			}
 		}
 	}

@@ -57,11 +57,11 @@
 </#if>
 </#macro>
 
-<#macro onEntityHitWith procedure="" hurtStack=false>
+<#macro onEntityHitWith procedure="" hurtStack=false hurtStackAmount=2>
 <#if hasProcedure(procedure) || hurtStack>
 @Override public boolean hurtEnemy(ItemStack itemstack, LivingEntity entity, LivingEntity sourceentity) {
 	<#if hurtStack>
-		itemstack.hurtAndBreak(2, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
+		itemstack.hurtAndBreak(${hurtStackAmount}, entity, i -> i.broadcastBreakEvent(EquipmentSlot.MAINHAND));
 	<#else>
 		boolean retval = super.hurtEnemy(itemstack, entity, sourceentity);
 	</#if>
@@ -344,7 +344,7 @@
 
 <#macro onAnimateTick procedure="">
 <#if hasProcedure(procedure)>
-@Override public void animateTick(BlockState blockstate, Level world, BlockPos pos, RandomSource random) {
+@Override @OnlyIn(Dist.CLIENT) public void animateTick(BlockState blockstate, Level world, BlockPos pos, RandomSource random) {
 	super.animateTick(blockstate, world, pos, random);
 	<@procedureCode procedure, {
 	"x": "pos.getX()",

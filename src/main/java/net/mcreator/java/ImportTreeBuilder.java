@@ -95,7 +95,7 @@ public class ImportTreeBuilder {
 							if ((accessFlags & AccessFlag.PUBLIC) == 0 && (accessFlags & AccessFlag.PROTECTED) == 0)
 								continue;
 						} catch (Exception e) {
-							LOG.debug("Failed to check access flags of " + entryName + " - assuming public");
+							LOG.debug("Failed to check access flags of {} - assuming public", entryName);
 						}
 
 						String fqdn = entryName.replace('\\', '.').replace('/', '.');
