@@ -280,6 +280,7 @@ import java.util.*;
 
 		public String model;
 		@TextureReference(TextureType.ENTITY) public String texture;
+		public boolean disableHurtOverlay;
 		public boolean glow;
 		public Procedure condition;
 

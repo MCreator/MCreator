@@ -30,60 +30,38 @@ import net.mcreator.ui.init.L10N;
 import net.mcreator.util.XMLUtil;
 import org.w3c.dom.Element;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ProcedureCallBlock implements IBlockGenerator {
 
 	@Override public void generateBlock(BlocklyToCode master, Element block) throws TemplateGeneratorException {
-		Element element = XMLUtil.getFirstChildrenWithName(block, "field");
+		Element procedureField = XMLUtil.getFirstChildrenWithName(block, "field");
 		String type = block.getAttribute("type");
 
-		if (element != null && !"".equals(element.getTextContent())) {
-			Procedure procedure = new Procedure(element.getTextContent());
-			procedure.getDependencies(master.getWorkspace()).forEach(master::addDependency);
+		if (procedureField != null && procedureField.getTextContent() != null && !procedureField.getTextContent()
+				.isEmpty()) {
+			Procedure procedure = new Procedure(procedureField.getTextContent());
+			List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
 
+			// If the procedure doesn't actually exist, add a warning and skip this block
 			if (!procedure.exists) {
 				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 						L10N.t("blockly.warnings.call_procedure.nonexistent", procedure.getName())));
 				return;
 			}
 
-			Element x = null, y = null, z = null;
-			List<Element> values = XMLUtil.getChildrenWithName(block, "value");
-			for (Element e : values)
-				switch (e.getAttribute("name")) {
-				case "x":
-					x = e;
-					break;
-				case "y":
-					y = e;
-					break;
-				case "z":
-					z = e;
-					break;
-				}
-			boolean call_at = false;
-			if (x != null || y != null || z != null)
-				if (x != null && y != null && z != null)
-					call_at = true;
-				else
-					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
-							L10N.t("blockly.warnings.call_procedure.missing_inputs")));
+			List<String> skippedDepsNames = new ArrayList<>();
+			List<DependencyInput> depInputs = mapDependencies(master, block, dependencies, skippedDepsNames);
 
-			String xcode = "";
-			String ycode = "";
-			String zcode = "";
-
-			if (call_at) {
-				xcode = BlocklyToCode.directProcessOutputBlock(master, x);
-				ycode = BlocklyToCode.directProcessOutputBlock(master, y);
-				zcode = BlocklyToCode.directProcessOutputBlock(master, z);
+			// Add a warning for the passed dependencies that aren't used by the selected procedure
+			if (!skippedDepsNames.isEmpty()) {
+				master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("blockly.warnings.call_procedure.extra_deps", procedure.getName(),
+								String.join(", ", skippedDepsNames))));
 			}
 
-			List<Dependency> dependencies = procedure.getDependencies(master.getWorkspace());
+			// Handle dependencies in the command editor
 			if (master instanceof BlocklyToJava blocklyToJava
 					&& blocklyToJava.getEditorType() == BlocklyEditorType.COMMAND_ARG) {
 				List<Dependency> dependenciesProvided;
@@ -116,43 +94,96 @@ public class ProcedureCallBlock implements IBlockGenerator {
 				Map<String, Object> dataModel = new HashMap<>();
 				dataModel.put("procedure", procedure.getName());
 				dataModel.put("dependencies", dependencies);
-
-				if (call_at) {
-					dataModel.put("x", xcode);
-					dataModel.put("y", ycode);
-					dataModel.put("z", zcode);
+				if (type.equals("call_procedure")) {
+					dataModel.put("depInputs", depInputs.toArray(DependencyInput[]::new));
 				}
 
-				if (master instanceof BlocklyToJava blocklyToJava
-						&& blocklyToJava.getEditorType() == BlocklyEditorType.COMMAND_ARG) {
-					if (type.equals("old_command")) {
-						master.append(
-								master.getTemplateGenerator().generateFromTemplate("_old_command.java.ftl", dataModel));
-					} else {
-						master.append(master.getTemplateGenerator()
-								.generateFromTemplate("_call_procedure.java.ftl", dataModel));
-					}
+				if (type.equals("old_command")) {
+					master.append(
+							master.getTemplateGenerator().generateFromTemplate("_old_command.java.ftl", dataModel));
 				} else {
-					if (type.equals("call_procedure_at")) {
-						master.append(master.getTemplateGenerator()
-								.generateFromTemplate("_call_procedure_at.java.ftl", dataModel));
-					} else {
-						master.append(master.getTemplateGenerator()
-								.generateFromTemplate("_call_procedure.java.ftl", dataModel));
-					}
+					master.append(
+							master.getTemplateGenerator().generateFromTemplate("_call_procedure.java.ftl", dataModel));
 				}
 			}
 		} else {
+			// No procedure is selected, skip this block
 			master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
 					L10N.t("blockly.warnings.call_procedure.empty")));
 		}
 	}
 
+	/**
+	 * Processes list of selected procedure dependencies, filters those that are defined by the given block
+	 * and converts them to a format that includes the data to be used in code templates.
+	 *
+	 * @param master           Blockly code processor to be used.
+	 * @param block            XML representation of the block being processed.
+	 * @param dependencies     List of dependencies required by the specified procedure.
+	 * @param skippedDepsNames Pass empty list. This list will be filled with dependencies that are defined on the block but not required by the procedure.
+	 * @return List of converted dependencies to be supplied to code templates.
+	 * @throws TemplateGeneratorException In case of failure to process some dependency value blocks.
+	 */
+	static List<DependencyInput> mapDependencies(BlocklyToCode master, Element block, List<Dependency> dependencies,
+			List<String> skippedDepsNames) throws TemplateGeneratorException {
+		// The procedure dependencies, in a flattened {"name": "type"} map
+		Map<String, String> flattenedDeps = dependencies.stream()
+				.collect(Collectors.toMap(Dependency::getName, Dependency::getRawType));
+		List<DependencyInput> depInputs = new ArrayList<>();
+
+		List<String> processedDepsNames = new ArrayList<>();
+
+		Element mutation = XMLUtil.getFirstChildrenWithName(block, "mutation");
+		if (mutation != null && mutation.hasAttribute("inputs") && !mutation.getAttribute("inputs")
+				.equals("undefined")) {
+			int depCount = Integer.parseInt(mutation.getAttribute("inputs"));
+			Map<String, Element> fields = XMLUtil.getChildrenWithName(block, "field").stream()
+					.filter(e -> e.getAttribute("name").matches("name\\d+"))
+					.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+			Map<String, Element> inputs = XMLUtil.getChildrenWithName(block, "value").stream()
+					.filter(e -> e.getAttribute("name").matches("arg\\d+"))
+					.collect(Collectors.toMap(e -> e.getAttribute("name"), e -> e));
+
+			for (int i = 0; i < depCount; i++) {
+				String currentName = fields.get("name" + i).getTextContent();
+				String currentArg;
+				if (inputs.containsKey("arg" + i)) {
+					// If the procedure actually has this dependency, also generate the code
+					if (flattenedDeps.containsKey(currentName)) {
+						currentArg = master.directProcessOutputBlockWithoutParentheses(inputs.get("arg" + i));
+					} else {
+						// We don't need to do any further processing, skip this dependency
+						skippedDepsNames.add(currentName);
+						continue;
+					}
+				} else {
+					// Keep processing to look for other missing inputs
+					currentArg = "";
+					master.addCompileNote(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
+							L10N.t("blockly.errors.call_procedure.missing_inputs", currentName)));
+				}
+				depInputs.add(new DependencyInput(currentName, flattenedDeps.get(currentName), currentArg));
+				processedDepsNames.add(currentName);
+			}
+		}
+
+		// Add all the dependencies that weren't processed to master
+		dependencies.stream().filter(e -> !processedDepsNames.contains(e.getName())).forEach(master::addDependency);
+
+		return depInputs;
+	}
+
 	@Override public String[] getSupportedBlocks() {
-		return new String[] { "call_procedure", "call_procedure_at", "old_command" };
+		return new String[] { "call_procedure", "old_command" };
 	}
 
 	@Override public BlockType getBlockType() {
 		return BlockType.PROCEDURAL;
 	}
+
+	/**
+	 * The record holds info about a single dependency row in the block (name, type, input code)
+	 */
+	public record DependencyInput(String name, String type, String value) {}
+
 }

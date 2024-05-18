@@ -69,6 +69,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 				ZipIO.unzip(workspaceZip.getAbsolutePath(), workspaceDir.getAbsolutePath());
 
+				workspaceZip.delete();
+
 				File workspaceFile = WorkspaceUtils.getWorkspaceFileForWorkspaceFolder(workspaceDir);
 
 				GeneratorConfiguration generatorConfiguration = GeneratorConfiguration.getRecommendedGeneratorForBaseLanguage(

@@ -208,7 +208,8 @@ public class ProgressDialog extends MCreatorDialog {
 			JLabel status = new JLabel();
 			status.setText(ma.name);
 
-			if (ma.status == ProgressUnit.Status.LOADING) {
+			switch (ma.status) {
+			case LOADING -> {
 				JLabel status2 = new JLabel(LOADER_CACHE.computeIfAbsent(ma,
 						e -> new SquareLoaderIcon(list, 4, 1, Theme.current().getForegroundColor())));
 				status2.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 2));
@@ -218,12 +219,10 @@ public class ProgressDialog extends MCreatorDialog {
 				bar.setValue(ma.percent);
 				if (bar.getValue() > 0)
 					stap.add("West", PanelUtils.totalCenterInPanel(bar));
-			} else if (ma.status == ProgressUnit.Status.COMPLETE) {
-				stap.add("East", PanelUtils.centerInPanel(new JLabel(complete)));
-			} else if (ma.status == ProgressUnit.Status.ERROR) {
-				stap.add("East", PanelUtils.centerInPanel(new JLabel(remove)));
-			} else if (ma.status == ProgressUnit.Status.WARNING) {
-				stap.add("East", PanelUtils.centerInPanel(new JLabel(warning)));
+			}
+			case COMPLETE -> stap.add("East", PanelUtils.centerInPanel(new JLabel(complete)));
+			case ERROR -> stap.add("East", PanelUtils.centerInPanel(new JLabel(remove)));
+			case WARNING -> stap.add("East", PanelUtils.centerInPanel(new JLabel(warning)));
 			}
 
 			add("West", status);
