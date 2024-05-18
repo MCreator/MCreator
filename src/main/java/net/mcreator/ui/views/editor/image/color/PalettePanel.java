@@ -28,13 +28,10 @@ import net.mcreator.ui.views.editor.image.tool.ToolPanel;
 import javax.swing.*;
 
 public class PalettePanel extends JTabbedPane {
-	private final PaletteListPanel paletteListPanel;
-	private final ColorPalettePanel colorPalettePanel;
 
 	public PalettePanel(MCreator mcreator, ToolPanel toolPanel) {
-
-		paletteListPanel = new PaletteListPanel(mcreator, this);
-		colorPalettePanel = new ColorPalettePanel(mcreator, toolPanel);
+		PaletteListPanel paletteListPanel = new PaletteListPanel(mcreator, this);
+		ColorPalettePanel colorPalettePanel = new ColorPalettePanel(mcreator, toolPanel);
 
 		paletteListPanel.setColorsPanel(colorPalettePanel);
 

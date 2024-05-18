@@ -37,14 +37,18 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 public abstract class ListEditPanel<T> extends JPanel {
+
 	protected final MCreator mcreator;
+	
 	private final JPanel contentPanel = new JPanel(new CardLayout());
 	JScrollPane listScrollPane = new JScrollPane();
 	private ArrayListListModel<T> listModel;
 	protected JList<T> list;
 	private final JButton add, duplicate, edit, up, down, delete;
 	private ListMode mode = ListMode.EMPTY;
+
 	private MouseListener listListener;
+
 	private final ListSelectionListener listSelectionListener = this::valueChanged;
 	private final ListDataListener listDataListener;
 
@@ -52,7 +56,9 @@ public abstract class ListEditPanel<T> extends JPanel {
 		super(new BorderLayout());
 		this.mcreator = mcreator;
 
-		TransparentToolBar controls = new TransparentToolBar();
+		JToolBar controls = new JToolBar();
+		controls.setOpaque(false);
+		controls.setFloatable(false);
 
 		JLabel closed = L10N.label("dialog.image_maker.list_edit_panel.nothing_opened");
 		JLabel empty = L10N.label("dialog.image_maker.list_edit_panel.nothing_to_show");
@@ -65,37 +71,25 @@ public abstract class ListEditPanel<T> extends JPanel {
 		delete = new JButton(UIRES.get("18px.remove"));
 
 		add.setToolTipText(L10N.t("dialog.image_maker.list_edit_panel.add"));
-		add.setMargin(new Insets(0, 0, 0, 0));
-		add.setOpaque(false);
-		add.setBorder(BorderFactory.createEmptyBorder());
+		add.setMargin(new Insets(1, 1, 1, 1));
 		add.setEnabled(false);
 
 		duplicate.setToolTipText(L10N.t("dialog.image_maker.list_edit_panel.duplicate"));
-		duplicate.setMargin(new Insets(0, 0, 0, 0));
-		duplicate.setOpaque(false);
-		duplicate.setBorder(BorderFactory.createEmptyBorder());
+		duplicate.setMargin(new Insets(1, 1, 1, 1));
 
 		up.setToolTipText(L10N.t("dialog.image_maker.list_edit_panel.move_up"));
-		up.setMargin(new Insets(0, 0, 0, 0));
-		up.setOpaque(false);
-		up.setBorder(BorderFactory.createEmptyBorder());
+		up.setMargin(new Insets(1, 1, 1, 1));
 		up.setEnabled(false);
 
 		down.setToolTipText(L10N.t("dialog.image_maker.list_edit_panel.move_down"));
-		down.setMargin(new Insets(0, 0, 0, 0));
-		down.setOpaque(false);
-		down.setBorder(BorderFactory.createEmptyBorder());
+		down.setMargin(new Insets(1, 1, 1, 1));
 		down.setEnabled(false);
 
 		edit.setToolTipText(L10N.t("dialog.image_maker.list_edit_panel.edit"));
-		edit.setMargin(new Insets(0, 0, 0, 0));
-		edit.setOpaque(false);
-		edit.setBorder(BorderFactory.createEmptyBorder());
+		edit.setMargin(new Insets(1, 1, 1, 1));
 
 		delete.setToolTipText(L10N.t("dialog.image_maker.list_edit_panel.delete"));
-		delete.setMargin(new Insets(0, 0, 0, 0));
-		delete.setOpaque(false);
-		delete.setBorder(BorderFactory.createEmptyBorder());
+		delete.setMargin(new Insets(1, 1, 1, 1));
 
 		canEdit(false);
 

@@ -32,19 +32,16 @@ import java.awt.*;
 import java.util.Arrays;
 
 public class PaletteListPanel extends ListEditPanel<ColorPalette> {
+
 	private final ArrayListListModel<ColorPalette> palettes = new ArrayListListModel<>();
 	private final PalettePanel palettePanel;
+
 	private ColorPalettePanel colorPalettePanel;
 
 	public PaletteListPanel(MCreator mcreator, PalettePanel palettePanel) {
 		super(mcreator);
 		this.palettePanel = palettePanel;
 		setList(palettes, new PaletteCellRenderer());
-
-		//list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		//list.setVisibleRowCount(-1);
-		//list.setFixedCellHeight(20);
-		//list.setFixedCellWidth(20);
 
 		palettes.add(new ColorPalette("Test 1"));
 		palettes.add(new ColorPalette("Test 2"));
@@ -57,7 +54,7 @@ public class PaletteListPanel extends ListEditPanel<ColorPalette> {
 			for (int j = 0; j < 6; j++) {
 				float brightness = (float) Math.random() * 0.5f + 0.5f;
 				for (int k = 0; k < 10; k++) {
-					palettes.get(0).add(Color.getHSBColor((float) Math.random(), saturation, brightness));
+					palettes.getFirst().add(Color.getHSBColor((float) Math.random(), saturation, brightness));
 				}
 			}
 		}
