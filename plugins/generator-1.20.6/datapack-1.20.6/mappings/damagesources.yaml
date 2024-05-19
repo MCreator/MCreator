@@ -99,6 +99,12 @@ TRIDENT:
 MOB_PROJECTILE:
   - DamageTypes.MOB_PROJECTILE
   - mob_projectile
+SPIT:
+  - DamageTypes.SPIT
+  - spit
+WIND_CHARGE:
+  - DamageTypes.WIND_CHARGE
+  - wind_charge
 FIREWORKS:
   - DamageTypes.FIREWORKS
   - fireworks
