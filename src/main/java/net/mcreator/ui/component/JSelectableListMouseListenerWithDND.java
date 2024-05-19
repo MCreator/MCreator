@@ -40,6 +40,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 	@Nullable private Point srcPoint = new Point(); // when null, we are in dnd
 
 	private int[] selection = null;
+	private boolean selected;
 
 	int[] finalDNDselection = null;
 
@@ -145,14 +146,19 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 				}
 			}
 
+			selected = !list.isSelectionEmpty();
 			stopDNDAction();
 		}
 	}
 
 	@Override public void pressFiltered(MouseEvent e, int clicks) {
-		if (clicks == 2 && list.dndCustom) {
+		if (selected && Arrays.stream(selection).anyMatch(i -> list.getCellBounds(i, i).contains(e.getPoint()))
+				&& list.dndCustom) {
 			srcPoint = null; // Initiate DND action
-		} else if (clicks == 1 && list.dndCustom) {
+			return;
+		}
+		selected = false;
+		if (clicks == 1 && list.dndCustom) {
 			if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0) {
 				selection = list.getSelectedIndices();
 			} else {
