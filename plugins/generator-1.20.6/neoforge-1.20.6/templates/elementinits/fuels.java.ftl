@@ -39,10 +39,9 @@
 
 package ${package}.init;
 
-@Mod.EventBusSubscriber public class ${JavaModName}Fuels {
+@EventBusSubscriber public class ${JavaModName}Fuels {
 
-	@SubscribeEvent
-	public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
+	@SubscribeEvent public static void furnaceFuelBurnTimeEvent(FurnaceFuelBurnTimeEvent event) {
 		<#compress>
 		ItemStack itemstack = event.getItemStack();
 		<#list itemextensions?filter(e -> e.enableFuel) as extension>
@@ -57,7 +56,5 @@ package ${package}.init;
 		</#list>
 		</#compress>
 	}
-
 }
-
 <#-- @formatter:on -->
