@@ -64,3 +64,15 @@
   texture: 4521796
 - DARKNESS:
   texture: 2696993
+- TRIAL_OMEN:
+  texture: 0000000
+- RAID_OMEN:
+  texture: 0000000
+- WIND_CHARGED:
+  texture: 0000000
+- WEAVING:
+  texture: 0000000
+- OOZING:
+  texture: 0000000
+- INFESTED:
+  texture: 0000000
