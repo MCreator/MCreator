@@ -84,3 +84,11 @@
   texture: 16773073
 - LONG_SLOW_FALLING:
   texture: 16773073
+- WIND_CHARGED:
+  texture: 12438015
+- WEAVING:
+  texture: 7891290
+- OOZING:
+  texture: 10092451
+- INFESTED:
+  texture: 9214860
