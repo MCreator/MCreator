@@ -138,7 +138,6 @@ public class ${name}Block extends
 		</#if>
 		<#if (data.boundingBoxes?? && !data.blockBase?? && !data.isFullCube() && data.offsetType != "NONE")
 				|| (data.blockBase?has_content && !data.isFullCube())>
-			.dynamicShape()
 		</#if>
 		<#if data.offsetType != "NONE">
 			.offsetType(Block.OffsetType.${data.offsetType})
