@@ -44,6 +44,7 @@ public class JLootTableEntry extends JPanel {
 
 	private final JCheckBox affectedByFortune = L10N.checkbox("elementgui.loot_table.affected_by_fortune");
 	private final JCheckBox explosionDecay = L10N.checkbox("elementgui.loot_table.enable_explosion_decay");
+	private final JCheckBox affectedByFire = L10N.checkbox("elementgui.loot_table.affected_by_fire");
 
 	private final JComboBox<String> silkTouchMode = new JComboBox<>(
 			new String[] { "Ignore silk touch", "Only with silk touch", "Only without silk touch" });
@@ -90,6 +91,10 @@ public class JLootTableEntry extends JPanel {
 
 		line1.add(L10N.label("elementgui.loot_table.silk_touch_mode"));
 		line1.add(silkTouchMode);
+
+		line1.add(new JEmptyBox(15, 5));
+
+		line1.add(affectedByFire);
 
 		affectedByFortune.setOpaque(false);
 		explosionDecay.setOpaque(false);
@@ -140,6 +145,8 @@ public class JLootTableEntry extends JPanel {
 
 		entry.silkTouchMode = silkTouchMode.getSelectedIndex();
 
+		entry.affectedByFire = affectedByFire.isSelected();
+
 		return entry;
 	}
 
@@ -157,5 +164,7 @@ public class JLootTableEntry extends JPanel {
 		explosionDecay.setSelected(e.explosionDecay);
 
 		silkTouchMode.setSelectedIndex(e.silkTouchMode);
+
+		affectedByFire.setSelected(e.affectedByFire);
 	}
 }

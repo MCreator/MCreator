@@ -55,7 +55,7 @@ import java.util.List;
 
 			public int minEnchantmentLevel, maxEnchantmentLevel;
 
-			public boolean affectedByFortune, explosionDecay;
+			public boolean affectedByFortune, explosionDecay, affectedByFire;
 
 			public int silkTouchMode;
 

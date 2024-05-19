@@ -94,6 +94,22 @@
                       "formula": "minecraft:ore_drops"
                     }
                     </#if>
+                    <#if entry.affectedByFire>
+                    ,{
+                      "function": "furnace_smelt",
+                      "conditions": [
+                        {
+                          "condition": "entity_properties",
+                          "entity": "this",
+                          "predicate": {
+                            "flags": {
+                              "is_on_fire": true
+                            }
+                          }
+                        }
+                      ]
+                    }
+                    </#if>
                 ]
               }
                 <#if entry?has_next>,</#if>
