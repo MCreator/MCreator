@@ -36,7 +36,7 @@
 package ${package}.item.extension;
 
 <#compress>
-@Mod.EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ItemExtension {
+@EventBusSubscriber(bus = Mod.EventBusSubscriber.Bus.MOD) public class ${name}ItemExtension {
 	@SubscribeEvent public static void init(FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> DispenserBlock.registerBehavior(${mappedMCItemToItem(data.item)}, new OptionalDispenseItemBehavior() {
 			public ItemStack execute(BlockSource blockSource, ItemStack stack) {
