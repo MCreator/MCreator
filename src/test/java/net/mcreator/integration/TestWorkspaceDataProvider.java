@@ -1439,7 +1439,7 @@ public class TestWorkspaceDataProvider {
 			particle.width = 2.3;
 			particle.frameDuration = 2;
 			particle.height = 1.38;
-			particle.scale = 1.38;
+			particle.scale = new NumberProcedure(emptyLists ? null : "number1", 1.38);
 			particle.gravity = 12.3;
 			particle.speedFactor = 1.3;
 			particle.canCollide = _true;
