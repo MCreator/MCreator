@@ -94,7 +94,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private LogicProcedureSelector glowCondition;
 
 	private final JCheckBox enableRanged = L10N.checkbox("elementgui.common.enable");
-
+	private final JSpinner accuracy = new JSpinner(new SpinnerNumberModel(1.5, 1, 10, 0.1));
 	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
 
 	private ProcedureSelector onRangedItemUsed;
@@ -441,7 +441,10 @@ public class ItemGUI extends ModElementGUI<Item> {
 				L10N.label("elementgui.item.shoot_constantly")));
 		shootConstantly.setOpaque(false);
 		rangedProperties.add(shootConstantly);
-
+		accuracy.setOpaque(false);
+		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/accuracy"),
+				L10N.label("elementgui.item.accuracy")));
+		rangedProperties.add(accuracy);
 		JPanel rangedTriggers = new JPanel(new GridLayout(2, 1, 2, 2));
 		rangedTriggers.setOpaque(false);
 		rangedTriggers.add(rangedUseCondition);
@@ -498,6 +501,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private void updateRangedPanel() {
 		if (enableRanged.isSelected()) {
 			shootConstantly.setEnabled(true);
+			accuracy.setEnabled(true);
 			projectile.setEnabled(true);
 			onRangedItemUsed.setEnabled(true);
 			rangedUseCondition.setEnabled(true);
@@ -511,6 +515,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 			}
 		} else {
 			shootConstantly.setEnabled(false);
+			accuracy.setEnabled(false);
 			projectile.setEnabled(false);
 			onRangedItemUsed.setEnabled(false);
 			rangedUseCondition.setEnabled(false);
@@ -608,6 +613,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		eatResultItem.setBlock(item.eatResultItem);
 		enableRanged.setSelected(item.enableRanged);
 		shootConstantly.setSelected(item.shootConstantly);
+		accuracy.setValue(item.accuracy);
 		projectile.setSelectedItem(item.projectile);
 		rangedUseCondition.setSelectedProcedure(item.rangedUseCondition);
 		onRangedItemUsed.setSelectedProcedure(item.onRangedItemUsed);
@@ -665,6 +671,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		item.eatResultItem = eatResultItem.getBlock();
 		item.enableRanged = enableRanged.isSelected();
 		item.shootConstantly = shootConstantly.isSelected();
+		item.accuracy = (double) accuracy.getValue();
 		item.projectile = new ProjectileEntry(mcreator.getWorkspace(), projectile.getSelectedItem());
 		item.onRangedItemUsed = onRangedItemUsed.getSelectedProcedure();
 		item.rangedUseCondition = rangedUseCondition.getSelectedProcedure();

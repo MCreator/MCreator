@@ -35,6 +35,8 @@
 
 package ${package}.item;
 
+import java.util.Random;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 <#compress>
@@ -288,6 +290,18 @@ public class ${name}Item extends Item {
 					<@arrowShootCode/>
 				}
 			</#if>
+			<#if (data.enableRanged && (data.accuracy > 0))>
+			Vec3 direction = entity.getViewVector(1.0F);
+
+			Random random = new Random();
+			double spread = (1.0 - ${data.accuracy}) * ${data.accuracy}/100;
+			double dx = direction.x + (random.nextGaussian() * spread);
+			double dy = direction.y + (random.nextGaussian() * spread);
+			double dz = direction.z + (random.nextGaussian() * spread);
+			
+			projectile.shoot(dx, dy, dz, 1.2F, (float)spread); 
+			
+			</#if>
 		}
 	</#if>
 
@@ -331,7 +345,15 @@ public class ${name}Item extends Item {
 			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), ForgeRegistries.SOUND_EVENTS
 				.getValue(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
 		</#if>
+		<#if (data.accuracy > 0)>
+		Vec3 direction = entity.getViewVector(1.0F);
 
+			Random random = new Random();
+			double spread = (1.0 - data.accuracy) * 0.5; 
+			direction = direction.add(random.nextGaussian() * spread, random.nextGaussian() * spread, random.nextGaussian() * spread);
+
+			projectile.shoot(direction.x, direction.y, direction.z, 1, 0);
+	</#if>
 		<#if data.damageCount != 0>
 		itemstack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(entity.getUsedItemHand()));
 		</#if>

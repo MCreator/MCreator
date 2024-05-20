@@ -34,7 +34,8 @@
 <#include "../triggers.java.ftl">
 
 package ${package}.item;
-
+import java.util.Random;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 
 <#compress>
@@ -270,6 +271,7 @@ public class ${name}Item extends Item {
 					<@arrowShootCode/>
 				}
 			</#if>
+
 		}
 	</#if>
 
@@ -297,6 +299,8 @@ public class ${name}Item extends Item {
 		return stack;
 	}
 	</#if>
+
+
 }
 
 <#macro arrowShootCode>
@@ -308,11 +312,23 @@ public class ${name}Item extends Item {
 			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom());
 		<#elseif projectile.endsWith("Arrow")>
 			${projectileClass} projectile = new ${projectileClass}(world, entity, stack);
-			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, 1.0F);
 			world.addFreshEntity(projectile);
 			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
 				.get(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
 		</#if>
+
+		<#if (data.accuracy > 0)>
+		Vec3 direction = entity.getViewVector(1.0F);
+
+		Random random = new Random();
+		double spread = (1.0 - ${data.accuracy}) * ${data.accuracy}/100; 
+		double dx = direction.x + (random.nextGaussian() * spread);
+		double dy = direction.y + (random.nextGaussian() * spread);
+		double dz = direction.z + (random.nextGaussian() * spread);
+		
+		projectile.shoot(dx, dy, dz, 1F, (float)spread);
+		
+	</#if>
 
 		<#if data.damageCount != 0>
 		itemstack.hurtAndBreak(1, entity, e -> e.broadcastBreakEvent(entity.getUsedItemHand()));
