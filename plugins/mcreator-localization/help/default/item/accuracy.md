@@ -1,0 +1,1 @@
+Sets the accuracy of the projectile shot.  Default 1.5 (Bow).  1 is no spread and 10 is a lot of spread.
