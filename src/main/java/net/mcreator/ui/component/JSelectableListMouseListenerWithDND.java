@@ -121,8 +121,6 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 			System.arraycopy(curr, 0, indices, selNew.length, curr.length);
 			list.setSelectedIndices(indices);
 			list.repaint();
-
-			selection = indices;
 		}
 	}
 
@@ -154,12 +152,6 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 		if (list.dndCustom && selection != null && Arrays.stream(selection)
 				.anyMatch(i -> list.getCellBounds(i, i).contains(e.getPoint()))) {
 			srcPoint = null; // Initiate DND action
-		} else if (clicks == 1 && list.dndCustom) {
-			if ((e.getModifiersEx() & InputEvent.SHIFT_DOWN_MASK) != 0) {
-				selection = list.getSelectedIndices();
-			} else {
-				selection = null; // If only one click, reset the DND selection candidates
-			}
 		} else if (clicks == 0) {
 			int index = list.locationToIndex(e.getPoint());
 			Rectangle rect = list.getCellBounds(index, index);
