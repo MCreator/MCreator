@@ -873,6 +873,8 @@ import java.util.stream.Collectors;
 		search.setText(null); // clear the search bar
 		currentFolder = switchTo;
 
+		list.cancelDND();
+
 		sectionTabs.get("mods").reloadElements();
 
 		// reload breadcrumb

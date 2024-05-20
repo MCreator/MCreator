@@ -60,6 +60,7 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 		list.setCursor(null);
 		if (list.additionalDNDComponent != null)
 			list.additionalDNDComponent.setCursor(null);
+		selection = null;
 		finalDNDselection = null;
 	}
 
@@ -143,8 +144,8 @@ class JSelectableListMouseListenerWithDND<T> extends MousePressListener {
 				}
 			}
 
-			selection = list.getSelectedIndices();
 			stopDNDAction();
+			selection = list.getSelectedIndices();
 		}
 	}
 
