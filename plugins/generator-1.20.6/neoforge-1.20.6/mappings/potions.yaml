@@ -1,7 +1,6 @@
-_default: Potions.EMPTY
+_default: Potions.WATER
 _mcreator_prefix: "CUSTOM:"
 _mcreator_map_template: "@JavaModNamePotions.@REGISTRYNAME.get()"
-EMPTY: Potions.EMPTY
 WATER: Potions.WATER
 MUNDANE: Potions.MUNDANE
 THICK: Potions.THICK
@@ -44,3 +43,7 @@ LONG_WEAKNESS: Potions.LONG_WEAKNESS
 LUCK: Potions.LUCK
 SLOW_FALLING: Potions.SLOW_FALLING
 LONG_SLOW_FALLING: Potions.LONG_SLOW_FALLING
+WIND_CHARGED: Potions.WIND_CHARGED
+WEAVING: Potions.WEAVING
+OOZING: Potions.OOZING
+INFESTED: Potions.INFESTED
