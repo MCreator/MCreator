@@ -63,7 +63,7 @@ class NativeFileDialogs {
 		if (multiSelect) {
 			List<File> files = chooser.showOpenMultipleDialog();
 			if (files != null && !files.isEmpty()) {
-				prevDir = files.get(0).getParentFile();
+				prevDir = files.getFirst().getParentFile();
 				return files.toArray(File[]::new);
 			}
 		} else {

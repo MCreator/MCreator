@@ -244,7 +244,7 @@ public class MCreatorTabs {
 
 			if (tab.equals(this.current))
 				if (!showTab(this.previous)) {
-					showTab(tabs.get(0));
+					showTab(tabs.getFirst());
 				}
 
 			if (tab.tabClosedListener != null)
@@ -390,6 +390,8 @@ public class MCreatorTabs {
 		}
 
 		public void setText(String name) {
+			this.text = name;
+
 			if (uppercase)
 				name = name.toUpperCase(Locale.ENGLISH);
 			blo.setText(name);

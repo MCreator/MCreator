@@ -25,7 +25,6 @@ import net.mcreator.blockly.data.StatementInput;
 import net.mcreator.blockly.data.ToolboxBlock;
 import net.mcreator.element.ModElementType;
 import net.mcreator.element.types.Command;
-import net.mcreator.generator.GeneratorStats;
 import net.mcreator.ui.blockly.BlocklyEditorType;
 import net.mcreator.workspace.Workspace;
 import net.mcreator.workspace.elements.ModElement;
@@ -40,12 +39,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 public class GTCommandArgBlocks {
 
 	public static void runTest(Logger LOG, String generatorName, Random random, Workspace workspace) {
-		// silently skip if commands are not supported by this generator
-		if (workspace.getGeneratorStats().getModElementTypeCoverageInfo().get(ModElementType.COMMAND)
-				== GeneratorStats.CoverageStatus.NONE) {
-			return;
-		}
-
 		Set<String> generatorBlocks = workspace.getGeneratorStats().getBlocklyBlocks(BlocklyEditorType.COMMAND_ARG);
 
 		for (ToolboxBlock commandArg : BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.COMMAND_ARG)
@@ -94,9 +87,8 @@ public class GTCommandArgBlocks {
 				workspace.getGenerator().generateElement(command, true);
 				workspace.getModElementManager().storeModElement(command);
 			} catch (Throwable t) {
-				t.printStackTrace();
-				fail("[" + generatorName + "] Failed generating command argument block: "
-						+ commandArg.getMachineName());
+				fail("[" + generatorName + "] Failed generating command argument block: " + commandArg.getMachineName(),
+						t);
 			}
 		}
 

@@ -46,7 +46,7 @@ public abstract class AbstractWorkspacePanel extends JPanel {
 
 	private boolean workspaceFolderAltered = false;
 
-	protected JButton selectWorkspaceFolder = new JButton("<html>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;");
+	protected final JButton selectWorkspaceFolder = new JButton("<html>&nbsp;&nbsp;&nbsp;...&nbsp;&nbsp;&nbsp;");
 
 	public AbstractWorkspacePanel(Window parent) {
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));

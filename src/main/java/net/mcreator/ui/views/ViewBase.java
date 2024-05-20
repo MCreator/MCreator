@@ -26,7 +26,7 @@ import java.awt.*;
 
 public abstract class ViewBase extends JPanel {
 
-	protected MCreator mcreator;
+	protected final MCreator mcreator;
 
 	protected ViewBase(MCreator mcreator) {
 		super(new BorderLayout());

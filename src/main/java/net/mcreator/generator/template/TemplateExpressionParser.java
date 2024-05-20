@@ -98,7 +98,7 @@ public class TemplateExpressionParser {
 				return (boolean) getValueFrom(condition, conditionDataProvider);
 			}
 		} catch (Exception e) {
-			LOG.error("Failed to parse condition: " + condition, e);
+			LOG.error("Failed to parse condition: {}", condition, e);
 		}
 
 		return false;
@@ -129,7 +129,7 @@ public class TemplateExpressionParser {
 
 			return retVal.get();
 		} catch (Exception e) {
-			LOG.error("Failed to parse FTL expression: " + expression, e);
+			LOG.error("Failed to parse FTL expression: {}", expression, e);
 			return null;
 		}
 	}

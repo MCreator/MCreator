@@ -86,7 +86,7 @@ public class GeneratorTokens {
 								listItem.getClass().getMethod(ref.replace("()", "").trim()).invoke(listItem) :
 								listItem.getClass().getField(ref.trim()).get(listItem);
 					} catch (Exception e) {
-						LOG.warn("Failed to load token value " + match, e);
+						LOG.warn("Failed to load token value {}", match, e);
 					}
 				}
 			} else if (element != null) { // get a value from the mod element
@@ -95,7 +95,7 @@ public class GeneratorTokens {
 							element.getClass().getMethod(match.replace("()", "").trim()).invoke(element) :
 							element.getClass().getField(match.trim()).get(element);
 				} catch (Exception e) {
-					LOG.warn("Failed to load token value " + match, e);
+					LOG.warn("Failed to load token value {}", match, e);
 				}
 			}
 			rawname = rawname.replace("@[" + match + "]", String.valueOf(value));

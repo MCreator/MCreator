@@ -26,19 +26,19 @@ import net.mcreator.preferences.entries.StringEntry;
 
 public class BlocklySection extends PreferencesSection {
 
-	public StringEntry blockRenderer;
-	public IntegerEntry colorSaturation;
-	public IntegerEntry colorValue;
-	public BooleanEntry useSmartSort;
-	public StringEntry expandCategories;
-	public BooleanEntry enableComments;
-	public BooleanEntry enableCollapse;
-	public BooleanEntry enableTrashcan;
-	public IntegerEntry maxScale;
-	public IntegerEntry minScale;
-	public IntegerEntry scaleSpeed;
-	public BooleanEntry legacyFont;
-	public BooleanEntry transparentBackground;
+	public final StringEntry blockRenderer;
+	public final IntegerEntry colorSaturation;
+	public final IntegerEntry colorValue;
+	public final BooleanEntry useSmartSort;
+	public final StringEntry expandCategories;
+	public final BooleanEntry enableComments;
+	public final BooleanEntry enableCollapse;
+	public final BooleanEntry enableTrashcan;
+	public final IntegerEntry maxScale;
+	public final IntegerEntry minScale;
+	public final IntegerEntry scaleSpeed;
+	public final BooleanEntry legacyFont;
+	public final BooleanEntry transparentBackground;
 
 	BlocklySection(String preferencesIdentifier) {
 		super(preferencesIdentifier);

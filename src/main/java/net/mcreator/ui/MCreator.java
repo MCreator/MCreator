@@ -31,17 +31,13 @@ import net.mcreator.preferences.PreferencesManager;
 import net.mcreator.ui.action.ActionRegistry;
 import net.mcreator.ui.action.impl.workspace.RegenerateCodeAction;
 import net.mcreator.ui.browser.WorkspaceFileBrowser;
-import net.mcreator.ui.component.BlockingGlassPane;
-import net.mcreator.ui.component.ImagePanel;
-import net.mcreator.ui.component.JAdaptiveSplitPane;
-import net.mcreator.ui.component.JEmptyBox;
-import net.mcreator.ui.component.SquareLoaderIcon;
+import net.mcreator.ui.component.*;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
+import net.mcreator.ui.debug.DebugPanel;
 import net.mcreator.ui.dialogs.workspace.WorkspaceGeneratorSetupDialog;
 import net.mcreator.ui.gradle.GradleConsole;
 import net.mcreator.ui.init.AppIcon;
-import net.mcreator.ui.debug.DebugPanel;
 import net.mcreator.ui.init.BackgroundLoader;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.ui.laf.themes.Theme;
@@ -103,7 +99,7 @@ public final class MCreator extends JFrame implements IWorkspaceProvider, IGener
 	private final DebugPanel debugPanel;
 
 	public MCreator(@Nullable MCreatorApplication application, @Nonnull Workspace workspace) {
-		LOG.info("Opening MCreator workspace: " + workspace.getWorkspaceSettings().getModID());
+		LOG.info("Opening MCreator workspace: {}", workspace.getWorkspaceSettings().getModID());
 
 		this.windowUID = System.currentTimeMillis();
 		this.workspace = workspace;

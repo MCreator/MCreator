@@ -21,9 +21,11 @@ package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
 import javafx.application.Platform;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Procedure;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.AIConditionEditor;
@@ -49,29 +51,25 @@ import javax.swing.*;
 import java.io.ByteArrayOutputStream;
 import java.util.*;
 import java.util.function.Function;
-import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public class BlocklyJavascriptBridge {
+public final class BlocklyJavascriptBridge {
 
 	private static final Logger LOG = LogManager.getLogger("Blockly JS Bridge");
 
-	private JavaScriptEventListener listener;
-	private final Supplier<Boolean> blocklyEvent;
+	private final Runnable blocklyEvent;
 	private final MCreator mcreator;
 
 	private final Object NESTED_LOOP_KEY = new Object();
 
-	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Supplier<Boolean> blocklyEvent) {
+	BlocklyJavascriptBridge(@Nonnull MCreator mcreator, @Nonnull Runnable blocklyEvent) {
 		this.blocklyEvent = blocklyEvent;
 		this.mcreator = mcreator;
 	}
 
 	// these methods are called from JavaScript so we suppress warnings
 	@SuppressWarnings("unused") public void triggerEvent() {
-		boolean success = blocklyEvent.get();
-		if (success && listener != null)
-			listener.event();
+		blocklyEvent.run();
 	}
 
 	@SuppressWarnings("unused") public String getMCItemURI(String name) {
@@ -235,8 +233,15 @@ public class BlocklyJavascriptBridge {
 		put("no_ext_trigger", L10N.t("trigger.no_ext_trigger"));
 	}};
 
-	public void addExternalTrigger(ExternalTrigger external_trigger) {
+	void addExternalTrigger(ExternalTrigger external_trigger) {
 		ext_triggers.put(external_trigger.getID(), external_trigger.getName());
+	}
+
+	@SuppressWarnings("unused") public Dependency[] getDependencies(String procedureName) {
+		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
+		return me != null && me.getGeneratableElement() instanceof Procedure procedure ?
+				procedure.getDependencies().toArray(Dependency[]::new) :
+				new Dependency[0];
 	}
 
 	@SuppressWarnings("unused") public String t(String key) {
@@ -362,10 +367,6 @@ public class BlocklyJavascriptBridge {
 		return DataListLoader.loadDataMap(datalist).containsKey(value) ?
 				DataListLoader.loadDataMap(datalist).get(value).getReadableName() :
 				"";
-	}
-
-	public void setJavaScriptEventListener(JavaScriptEventListener listener) {
-		this.listener = listener;
 	}
 
 }

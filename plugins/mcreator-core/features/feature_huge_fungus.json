@@ -42,10 +42,10 @@
   "mcreator": {
     "toolbox_id": "features",
     "toolbox_init": [
-      "<value name=\"ground\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"stem\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"hat\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
-      "<value name=\"decor\"><block type=\"mcitem_allblocks\"><field name=\"value\"></field></block></value>",
+      "<value name=\"ground\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
+      "<value name=\"stem\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
+      "<value name=\"hat\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
+      "<value name=\"decor\"><block type=\"blockstate_selector\"><mutation inputs=\"0\"/><field name=\"block\"></field></block></value>",
       "<value name=\"replaceable_blocks\"><block type=\"block_predicate_matching_blocks\"><field name=\"x\">0</field><field name=\"y\">0</field><field name=\"z\">0</field><value name=\"blockSet\"><block type=\"block_holderset_tag\"><field name=\"tag\">replaceable_by_trees</field></block></value></block></value>"
     ],
     "inputs": [

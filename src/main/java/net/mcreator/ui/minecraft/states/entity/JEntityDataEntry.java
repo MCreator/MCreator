@@ -109,14 +109,12 @@ public class JEntityDataEntry extends JSimpleListEntry<PropertyDataWithValue<?>>
 	}
 
 	private String getTypeString(PropertyData<?> data) {
-		if (data instanceof PropertyData.LogicType)
-			return "Logic";
-		else if (data instanceof PropertyData.StringType)
-			return "String";
-		else if (data instanceof PropertyData.IntegerType)
-			return "Integer";
-		else
-			return "Unknown";
+		return switch (data) {
+			case PropertyData.LogicType ignored -> "Logic";
+			case PropertyData.StringType ignored -> "String";
+			case PropertyData.IntegerType ignored -> "Integer";
+			case null, default -> "Unknown";
+		};
 	}
 
 }

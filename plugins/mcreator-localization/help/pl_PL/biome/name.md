@@ -1,0 +1,1 @@
+Nazwa biomu jest używana przez trochę modów lub Minecraft z Buffetem (pojedynczym biomem), dla przykładu. Nie zmieni się nazwa w F3 menu.

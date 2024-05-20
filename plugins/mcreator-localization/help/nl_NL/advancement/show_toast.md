@@ -1,0 +1,1 @@
+Laat de voortgang rechtsboven op het scherm zien als de speler de voortgang heeft voltooit.

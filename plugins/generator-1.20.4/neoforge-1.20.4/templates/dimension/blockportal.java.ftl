@@ -43,20 +43,17 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 				.strength(-1.0F).sound(SoundType.GLASS).lightLevel(s -> ${data.portalLuminance}).noLootTable());
 	}
 
-	<#if hasProcedure(data.onPortalTickUpdate)>
-	@Override public void tick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
-		<@procedureCode data.onPortalTickUpdate, {
-			"x": "pos.getX()",
-			"y": "pos.getY()",
-			"z": "pos.getZ()",
-			"world": "world",
-			"blockstate": "blockstate"
-		}/>
-	}
-	</#if>
-
-	<#-- Prevent ZOMBIFIED_PIGLINs from spawning -->
-	@Override public void randomTick(BlockState state, ServerLevel world, BlockPos pos, RandomSource random) {
+	@Override public void randomTick(BlockState blockstate, ServerLevel world, BlockPos pos, RandomSource random) {
+		<#-- Do not call super to prevent ZOMBIFIED_PIGLINs from spawning -->
+		<#if hasProcedure(data.onPortalTickUpdate)>
+			<@procedureCode data.onPortalTickUpdate, {
+				"x": "pos.getX()",
+				"y": "pos.getY()",
+				"z": "pos.getZ()",
+				"world": "world",
+				"blockstate": "blockstate"
+			}/>
+		</#if>
 	}
 
 	public static void portalSpawn(Level world, BlockPos pos) {
@@ -66,7 +63,7 @@ public class ${name}PortalBlock extends NetherPortalBlock {
 		}
 	}
 
-	${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "updateShape", "BlockState", "Direction", "BlockState", "LevelAccessor", "BlockPos", "BlockPos")
+	@Override ${mcc.getMethod("net.minecraft.world.level.block.NetherPortalBlock", "updateShape", "BlockState", "Direction", "BlockState", "LevelAccessor", "BlockPos", "BlockPos")
 				   .replace("new PortalShape(", "new "+name+"PortalShape(")}
 
 	@OnlyIn(Dist.CLIENT) @Override public void animateTick(BlockState state, Level world, BlockPos pos, RandomSource random) {

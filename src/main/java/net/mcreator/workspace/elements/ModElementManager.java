@@ -102,9 +102,9 @@ import java.util.concurrent.atomic.AtomicInteger;
 		if (element.getType() != ModElementType.UNKNOWN) {
 			GeneratableElement generatableElement = element.getGeneratableElement();
 			if (generatableElement != null && workspace.getGenerator() != null)
-				workspace.getGenerator().removeElementFilesAndLangKeys(generatableElement);
+				workspace.getGenerator().removeElementFilesAndWorkspaceLinks(generatableElement);
 			else
-				LOG.warn("Failed to remove element files for element " + element);
+				LOG.warn("Failed to remove element files for element {}", element);
 		}
 
 		// after we don't need the definition anymore, remove actual files
@@ -172,8 +172,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 		try {
 			return gson.fromJson(json, GeneratableElement.class);
 		} catch (JsonSyntaxException e) {
-			LOG.warn("Failed to load generatable element " + modElement.getName()
-					+ " from JSON. This can lead to errors further down the road!", e);
+			LOG.warn("Failed to load generatable element {} from JSON. This can lead to errors further down the road!",
+					modElement.getName(), e);
 			return null;
 		} finally {
 			this.modElementsInConversion.pop();
@@ -210,7 +210,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 						new File(workspace.getFolderManager().getModElementPicturesCacheDir(),
 								element.getModElement().getName() + ".png"));
 		} catch (Exception e1) {
-			LOG.warn("Failed to generate mod element picture for " + element.getModElement().getName(), e1);
+			LOG.warn("Failed to generate mod element picture for {}", element.getModElement().getName(), e1);
 		}
 	}
 

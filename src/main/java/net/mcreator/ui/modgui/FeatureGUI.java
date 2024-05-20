@@ -61,6 +61,7 @@ import java.util.Set;
 
 public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelHolder {
 
+	private final JCheckBox skipPlacement = L10N.checkbox("elementgui.common.enable");
 	private ProcedureSelector generateCondition;
 	private BiomeListField restrictionBiomes;
 	private final JComboBox<String> generationStep = new JComboBox<>(
@@ -87,6 +88,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 				Dependency.fromString("x:number/y:number/z:number/world:world")).setDefaultName(
 				L10N.t("condition.common.no_additional")).makeInline();
 
+		skipPlacement.setOpaque(false);
+
 		if (!isEditingMode())
 			generationStep.setSelectedItem("SURFACE_STRUCTURES");
 
@@ -95,7 +98,11 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		restrictionBiomes.setPreferredSize(new Dimension(380, -1));
 
 		JPanel page1 = new JPanel(new BorderLayout(10, 10));
-		JPanel properties = new JPanel(new GridLayout(2, 2, 4, 2));
+		JPanel properties = new JPanel(new GridLayout(3, 2, 4, 2));
+
+		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("feature/skip_placement"),
+				L10N.label("elementgui.feature.skip_placement")));
+		properties.add(skipPlacement);
 
 		properties.add(HelpUtils.wrapWithHelpButton(this.withEntry("feature/generation_stage"),
 				L10N.label("elementgui.feature.generation_stage")));
@@ -107,6 +114,9 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 
 		properties.setOpaque(false);
 
+		skipPlacement.addActionListener(e -> refreshPlacementSettings(true));
+		refreshPlacementSettings(false);
+
 		JComponent propertiesAndCondition = PanelUtils.northAndCenterElement(properties,
 				PanelUtils.westAndCenterElement(new JEmptyBox(4, 4), generateCondition), 0, 2);
 
@@ -117,8 +127,8 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		blocklyPanel.addTaskToRunAfterLoaded(() -> {
 			BlocklyLoader.INSTANCE.getBlockLoader(BlocklyEditorType.FEATURE)
 					.loadBlocksAndCategoriesInPanel(blocklyPanel, ToolboxType.FEATURE);
-			blocklyPanel.getJSBridge().setJavaScriptEventListener(
-					() -> new Thread(FeatureGUI.this::regenerateFeature, "FeatureRegenerate").start());
+			blocklyPanel.addChangeListener(
+					changeEvent -> new Thread(FeatureGUI.this::regenerateFeature, "FeatureRegenerate").start());
 			if (!isEditingMode()) {
 				blocklyPanel.setXML(Feature.XML_BASE);
 			}
@@ -162,6 +172,11 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		List<BlocklyCompileNote> compileNotesArrayList = blocklyToFeature.getCompileNotes();
 
 		SwingUtilities.invokeLater(() -> {
+			if (!skipPlacement.isSelected() && blocklyToFeature.isPlacementEmpty()) {
+				compileNotesArrayList.add(new BlocklyCompileNote(BlocklyCompileNote.Type.WARNING,
+						L10N.t("blockly.warnings.features.missing_placement")));
+			}
+
 			compileNotesPanel.updateCompileNotes(compileNotesArrayList);
 			blocklyChangedListeners.forEach(l -> l.blocklyChanged(blocklyPanel));
 		});
@@ -177,21 +192,26 @@ public class FeatureGUI extends ModElementGUI<Feature> implements IBlocklyPanelH
 		generateCondition.refreshListKeepSelected();
 	}
 
+	private void refreshPlacementSettings(boolean updateCompileNotes) {
+		generationStep.setEnabled(!skipPlacement.isSelected());
+		restrictionBiomes.setEnabled(!skipPlacement.isSelected());
+		if (updateCompileNotes)
+			regenerateFeature();
+	}
+
 	@Override protected void openInEditingMode(Feature feature) {
+		skipPlacement.setSelected(feature.skipPlacement);
 		generationStep.setSelectedItem(feature.generationStep);
 		restrictionBiomes.setListElements(feature.restrictionBiomes);
 		generateCondition.setSelectedProcedure(feature.generateCondition);
+		refreshPlacementSettings(false);
 
-		blocklyPanel.setXMLDataOnly(feature.featurexml);
-		blocklyPanel.addTaskToRunAfterLoaded(() -> {
-			blocklyPanel.clearWorkspace();
-			blocklyPanel.setXML(feature.featurexml);
-			blocklyPanel.triggerEventFunction();
-		});
+		blocklyPanel.addTaskToRunAfterLoaded(() -> blocklyPanel.setXML(feature.featurexml));
 	}
 
 	@Override public Feature getElementFromGUI() {
 		Feature feature = new Feature(modElement);
+		feature.skipPlacement = skipPlacement.isSelected();
 		feature.generationStep = (String) generationStep.getSelectedItem();
 		feature.restrictionBiomes = restrictionBiomes.getListElements();
 		feature.generateCondition = generateCondition.getSelectedProcedure();

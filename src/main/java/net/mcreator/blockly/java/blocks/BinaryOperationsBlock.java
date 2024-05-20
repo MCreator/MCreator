@@ -81,28 +81,27 @@ public class BinaryOperationsBlock implements IBlockGenerator {
 
 	private static String withoutParentheses(String code, String blockType, String operator) {
 		String lowerPriority; // Operations that require () because of lower priority or non-associativity
-		if ("logic_binary_ops".equals(blockType)) {
-			lowerPriority = switch (operator) {
-				case "!=", "==" -> "=^&|?"; // = is needed to avoid bad operand types
-				case "^" -> "&|?";
-				case "&&" -> "|?";
-				case "||" -> "?";
-				default -> "!=^&|?";
-			};
-		} else if ("math_dual_ops".equals(blockType)) {
-			lowerPriority = switch (operator) {
-				case "*" -> "+-/%&^|?";
-				case "-" -> "+-&^|?";
-				case "+" -> "&^|?";
-				case "&" -> "^|?";
-				case "^" -> "|?";
-				case "|" -> "?";
-				default -> "+-*/%&^|?";
-			};
-		} else if ("math_binary_ops".equals(blockType)) {
-			lowerPriority = "&^|?";
-		} else {
+		switch (blockType) {
+		case "logic_binary_ops" -> lowerPriority = switch (operator) {
+			case "!=", "==" -> "=^&|?"; // = is needed to avoid bad operand types
+			case "^" -> "&|?";
+			case "&&" -> "|?";
+			case "||" -> "?";
+			default -> "!=^&|?";
+		};
+		case "math_dual_ops" -> lowerPriority = switch (operator) {
+			case "*" -> "+-/%&^|?";
+			case "-" -> "+-&^|?";
+			case "+" -> "&^|?";
+			case "&" -> "^|?";
+			case "^" -> "|?";
+			case "|" -> "?";
+			default -> "+-*/%&^|?";
+		};
+		case "math_binary_ops" -> lowerPriority = "&^|?";
+		case null, default -> {
 			return code;
+		}
 		}
 		return ProcedureCodeOptimizer.removeParentheses(code, lowerPriority);
 	}

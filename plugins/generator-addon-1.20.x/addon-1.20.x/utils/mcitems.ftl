@@ -26,7 +26,7 @@
             <#return "\"item\": \"minecraft:air\"">
         </#if>
     <#elseif mappedBlock.toString().startsWith("TAG:")>
-        <#return "\"type\": \"forge:ore_dict\", \"ore\": \"" + mappedBlock.toString().replace("TAG:", "").replace(":", "").replace("/", "") + "\"">
+        <#return "\"type\": \"forge:ore_dict\", \"ore\": \"" + mappedBlock.toString().replace("TAG:", "").replace("mod:", modid + ":").replace(":", "").replace("/", "") + "\"">
     <#else>
         <#assign mapped = mappedBlock.toString()>
         <#if mapped.toString().contains("#")>
@@ -38,7 +38,6 @@
         </#if>
     </#if>
 </#function>
-
 
 <#function mappedMCItemToRegistryNameNoTags mappedBlock>
     <#if mappedBlock.getUnmappedValue().startsWith("CUSTOM:")>

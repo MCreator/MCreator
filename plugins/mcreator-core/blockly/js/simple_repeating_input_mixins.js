@@ -4,11 +4,11 @@
 // The input provider is a function that accepts the block being mutated, the input name and the input index
 // If the input provider returns a dummy input (i.e. only repeating fields are being added), isProperInput must be set to false
 function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, inputProvider, isProperInput = true,
-        fieldNames = [], disableIfEmpty) {
+                                   fieldNames = [], disableIfEmpty) {
     return {
         // Store number of inputs in XML as '<mutation inputs="inputCount_"></mutation>'
         mutationToDom: function () {
-            var container = document.createElement('mutation');
+            const container = document.createElement('mutation');
             container.setAttribute('inputs', this.inputCount_);
             return container;
         },
@@ -36,7 +36,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
         decompose: function (workspace) {
             const containerBlock = workspace.newBlock(mutatorContainer);
             containerBlock.initSvg();
-            var connection = containerBlock.getInput('STACK').connection;
+            let connection = containerBlock.getInput('STACK').connection;
             for (let i = 0; i < this.inputCount_; i++) {
                 const inputBlock = workspace.newBlock(mutatorInput);
                 inputBlock.initSvg();
@@ -61,7 +61,7 @@ function simpleRepeatingInputMixin(mutatorContainer, mutatorInput, inputName, in
             if (isProperInput) {
                 for (let i = 0; i < this.inputCount_; i++) {
                     const connection = this.getInput(inputName + i) && this.getInput(inputName + i).connection.targetConnection;
-                    if (connection && connections.indexOf(connection) == -1) {
+                    if (connection && connections.indexOf(connection) === -1) {
                         connection.disconnect();
                     }
                 }
@@ -218,3 +218,25 @@ Blockly.Extensions.registerMutator('tree_decorator_mutator', simpleRepeatingInpu
                 .appendField(javabridge.t('blockly.block.feature_tree.decorator_input'));
         }),
     undefined, ['tree_decorator_mutator_input']);
+
+// Mutator for direction list in the "attached to leaves" tree decorator
+Blockly.Extensions.registerMutator('direction_list_mutator', simpleRepeatingInputMixin(
+        'direction_list_mutator_container', 'direction_list_mutator_input', 'direction',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendDummyInput(inputName + index).setAlign(Blockly.Input.Align.RIGHT)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.input'))
+                .appendField(new FieldDataListDropdown('direction'), 'direction' + index);
+        }, false, ['direction'], true),
+    undefined, ['direction_list_mutator_input']);
+
+// Mutator for feature blockstate selector
+Blockly.Extensions.registerMutator('blockstate_selector_mutator', simpleRepeatingInputMixin(
+        'blockstate_selector_mutator_container', 'blockstate_selector_mutator_input', 'state',
+        function (thisBlock, inputName, index) {
+            thisBlock.appendDummyInput(inputName + index)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.with_property'))
+                .appendField(new Blockly.FieldTextInput('property'), 'property' + index)
+                .appendField(javabridge.t('blockly.block.' + thisBlock.type + '.set_to'))
+                .appendField(new Blockly.FieldTextInput('value'), 'value' + index);
+        }, false, ['property', 'value'], false),
+    undefined, ['blockstate_selector_mutator_input']);

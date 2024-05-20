@@ -27,7 +27,7 @@ public abstract class MousePressListener extends MouseAdapter {
 
 	private int eventCnt = 0;
 
-	Timer timer = new Timer("dbc", false);
+	final Timer timer = new Timer("dbc", false);
 
 	@Override public final void mousePressed(MouseEvent e) {
 		pressFiltered(e, 0);
