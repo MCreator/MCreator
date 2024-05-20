@@ -94,7 +94,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 	private LogicProcedureSelector glowCondition;
 
 	private final JCheckBox enableRanged = L10N.checkbox("elementgui.common.enable");
-	private final JSpinner accuracy = new JSpinner(new SpinnerNumberModel(1.5, 1, 10, 0.1));
+	private final JSpinner accuracy = new JSpinner(new SpinnerNumberModel(1, 0, 10, 0.1));
 	private final JCheckBox shootConstantly = L10N.checkbox("elementgui.common.enable");
 
 	private ProcedureSelector onRangedItemUsed;
@@ -424,7 +424,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 
 		updateRangedPanel();
 
-		JPanel rangedProperties = new JPanel(new GridLayout(3, 2, 2, 2));
+		JPanel rangedProperties = new JPanel(new GridLayout(4, 2, 2, 2));
 		rangedProperties.setOpaque(false);
 
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/enable_ranged_item"),

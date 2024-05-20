@@ -171,6 +171,27 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 		return entityarrow;
 	}
 
+	public static ${name}Entity shoot(LivingEntity entity, double inaccuracy) {
+		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, entity.level());
+		entityarrow.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, ${data.power}, (float) inaccuracy);
+
+		entityarrow.setSilent(true);
+		entityarrow.setBaseDamage(${data.damage});
+		entityarrow.setKnockback(${data.knockback});
+		entityarrow.setCritArrow(${data.showParticles});
+		<#if data.igniteFire>
+			entityarrow.setSecondsOnFire(100);
+		</#if>
+		entity.level().addFreshEntity(entityarrow);
+
+		<#if data.actionSound.toString()?has_content>
+		entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
+				.get(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (RandomSource.create().nextFloat() * 0.5f + 1));
+		</#if>
+
+		return entityarrow;
+	}
+
 }
 </#compress>
 

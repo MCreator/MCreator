@@ -1,1 +1,5 @@
-Sets the accuracy of the projectile shot.  Default 1.5 (Bow).  1 is no spread and 10 is a lot of spread.
+Sets the accuracy of the projectile shot.\
+0 - No effect\
+1 - Bow Accuracy\
+6 - Dispenser Accuracy\
+10 - Greatest Effect
