@@ -20,9 +20,7 @@
 <xml id="toolbox">
     <custom-other/>
     <category name="${t:blockly.category.actions}" colour="250">
-        <block type="call_procedure">
-            <mutation inputs="0"/>
-        </block>
+        <block type="call_procedure"/>
         <block type="old_command"/>
         <custom-actions/>
     </category>
