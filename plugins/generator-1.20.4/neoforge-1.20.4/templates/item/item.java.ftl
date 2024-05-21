@@ -296,8 +296,6 @@ public class ${name}Item extends Item {
 		return stack;
 	}
 	</#if>
-
-
 }
 
 <#macro arrowShootCode>

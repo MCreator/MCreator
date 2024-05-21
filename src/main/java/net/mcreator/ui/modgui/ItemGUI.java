@@ -443,7 +443,7 @@ public class ItemGUI extends ModElementGUI<Item> {
 		rangedProperties.add(shootConstantly);
 		rangedAccuracy.setOpaque(false);
 		rangedProperties.add(HelpUtils.wrapWithHelpButton(this.withEntry("item/rangedAccuracy"),
-				L10N.label("elementgui.item.rangedAccuracy")));
+				L10N.label("elementgui.item.ranged_accuracy")));
 		rangedProperties.add(rangedAccuracy);
 		JPanel rangedTriggers = new JPanel(new GridLayout(2, 1, 2, 2));
 		rangedTriggers.setOpaque(false);
