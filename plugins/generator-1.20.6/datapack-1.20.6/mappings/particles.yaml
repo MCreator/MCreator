@@ -8,12 +8,6 @@ _default:
 VILLAGER_ANGRY:
   - ParticleTypes.ANGRY_VILLAGER
   - "angry_villager"
-BLOCK:
-  - ParticleTypes.BLOCK
-  - "block"
-BLOCK_MARKER:
-  - ParticleTypes.BLOCK_MARKER
-  - "block_marker"
 WATER_BUBBLE:
   - ParticleTypes.BUBBLE
   - "bubble"
@@ -44,12 +38,6 @@ DRIP_WATER:
 WATER_DROP:
   - ParticleTypes.FALLING_WATER
   - "falling_water"
-DUST:
-  - ParticleTypes.DUST
-  - "dust"
-DUST_COLOR_TRANSITION:
-  - ParticleTypes.DUST_COLOR_TRANSITION
-  - "dust_color_transition"
 SPELL:
   - ParticleTypes.EFFECT
   - "effect"
@@ -65,9 +53,6 @@ ENCHANTMENT_TABLE:
 END_ROD:
   - ParticleTypes.END_ROD
   - "end_rod"
-ENTITY_EFFECT:
-  - ParticleTypes.ENTITY_EFFECT
-  - "entity_effect"
 EXPLOSION_EMITTER:
   - ParticleTypes.EXPLOSION_EMITTER
   - "explosion_emitter"
@@ -89,9 +74,6 @@ GUST_EMITTER:
 SONIC_BOOM:
   - ParticleTypes.SONIC_BOOM
   - "sonic_boom"
-FALLING_DUST:
-  - ParticleTypes.FALLING_DUST
-  - "falling_dust"
 FIREWORKS_SPARK:
   - ParticleTypes.FIREWORK
   - "firework"
@@ -110,9 +92,6 @@ CHERRY_LEAVES:
 SCULK_SOUL:
   - ParticleTypes.SCULK_SOUL
   - "sculk_soul"
-SCULK_CHARGE:
-  - ParticleTypes.SCULK_CHARGE
-  - "sculk_charge"
 SCULK_CHARGE_POP:
   - ParticleTypes.SCULK_CHARGE_POP
   - "sculk_charge_pop"
@@ -137,12 +116,6 @@ HEART:
 SPELL_INSTANT:
   - ParticleTypes.INSTANT_EFFECT
   - "instant_effect"
-ITEM:
-  - ParticleTypes.ITEM
-  - "item"
-VIBRATION:
-  - ParticleTypes.VIBRATION
-  - "vibration"
 SLIME:
   - ParticleTypes.ITEM_SLIME
   - "item_slime"
@@ -302,9 +275,6 @@ ELECTRIC_SPARK:
 SCRAPE:
   - ParticleTypes.SCRAPE
   - "scrape"
-SHRIEK:
-  - ParticleTypes.SHRIEK
-  - "shriek"
 EGG_CRACK:
   - ParticleTypes.EGG_CRACK
   - "egg_crack"
@@ -320,9 +290,6 @@ TRIAL_SPAWNER_DETECTION_OMINOUS:
 VAULT_CONNECTION:
   - ParticleTypes.VAULT_CONNECTION
   - "vault_connection"
-GUST_DUST:
-  - ParticleTypes.DUST_PILLAR
-  - "dust_pillar"
 OMINOUS_SPAWNING:
   - ParticleTypes.OMINOUS_SPAWNING
   - "ominous_spawning"
@@ -334,9 +301,12 @@ TRIAL_OMEN:
   - "trial_omen"
 
 #LEGACY
+GUST_DUST:
+  - ParticleTypes.GUST
+  - "gust"
 SPELL_MOB_AMBIENT:
-  - ParticleTypes.ENTITY_EFFECT
-  - "entity_effect"
+  - ParticleTypes.EFFECT
+  - "effect"
 DRIPPING_CHERRY_LEAVES:
   - ParticleTypes.CHERRY_LEAVES
   - "cherry_leaves"
