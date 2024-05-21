@@ -98,7 +98,7 @@ import java.util.*;
 	// Ranged properties
 	public boolean enableRanged;
 	public boolean shootConstantly;
-	public double accuracy;
+	public double rangedAccuracy;
 	public ProjectileEntry projectile;
 	public Procedure onRangedItemUsed;
 	public Procedure rangedUseCondition;

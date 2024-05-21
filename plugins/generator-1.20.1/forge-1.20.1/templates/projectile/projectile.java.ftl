@@ -135,13 +135,13 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 			this.discard();
 	}
 
-	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource source) {
-		return shoot(world, entity, source, ${data.power}f, ${data.damage}, ${data.knockback});
+	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource source, double inaccuracy) {
+		return shoot(world, entity, source, ${data.power}f, ${data.damage}, ${data.knockback}, inaccuracy);
 	}
 
-	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource random, float power, double damage, int knockback) {
+	public static ${name}Entity shoot(Level world, LivingEntity entity, RandomSource random, float power, double damage, int knockback, double inaccuracy) {
 		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, world);
-		entityarrow.shoot(entity.getViewVector(1).x, entity.getViewVector(1).y, entity.getViewVector(1).z, power * 2, 0);
+		entityarrow.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, power * 2, (float) inaccuracy);
 		entityarrow.setSilent(true);
 		entityarrow.setCritArrow(${data.showParticles});
 		entityarrow.setBaseDamage(damage);
@@ -182,28 +182,6 @@ public class ${name}Entity extends AbstractArrow implements ItemSupplier {
 
 		return entityarrow;
 	}
-	
-	public static ${name}Entity shoot(LivingEntity entity, double inaccuracy) {
-		${name}Entity entityarrow = new ${name}Entity(${JavaModName}Entities.${data.getModElement().getRegistryNameUpper()}.get(), entity, entity.level());
-		entityarrow.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, ${data.power}, (float) inaccuracy);
-
-		entityarrow.setSilent(true);
-		entityarrow.setBaseDamage(${data.damage});
-		entityarrow.setKnockback(${data.knockback});
-		entityarrow.setCritArrow(${data.showParticles});
-		<#if data.igniteFire>
-			entityarrow.setSecondsOnFire(100);
-		</#if>
-		entity.level().addFreshEntity(entityarrow);
-
-		<#if data.actionSound.toString()?has_content>
-		entity.level().playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
-				.get(new ResourceLocation("${data.actionSound}")), SoundSource.PLAYERS, 1, 1f / (RandomSource.create().nextFloat() * 0.5f + 1));
-		</#if>
-
-		return entityarrow;
-	}
-
 }
 </#compress>
 

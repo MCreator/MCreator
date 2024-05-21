@@ -288,18 +288,6 @@ public class ${name}Item extends Item {
 					<@arrowShootCode/>
 				}
 			</#if>
-			<#if (data.enableRanged && (data.accuracy > 0))>
-			Vec3 direction = entity.getViewVector(1.0F);
-
-			Random random = new Random();
-			double spread = (1.0 - ${data.accuracy}) * ${data.accuracy}/100;
-			double dx = direction.x + (random.nextGaussian() * spread);
-			double dy = direction.y + (random.nextGaussian() * spread);
-			double dz = direction.z + (random.nextGaussian() * spread);
-			
-			projectile.shoot(dx, dy, dz, 1.2F, (float)spread); 
-			
-			</#if>
 		}
 	</#if>
 
@@ -335,8 +323,7 @@ public class ${name}Item extends Item {
 	if (player.getAbilities().instabuild || stack != ItemStack.EMPTY) {
 		<#assign projectileClass = generator.map(projectile, "projectiles", 0)>
 		<#if projectile.startsWith("CUSTOM:")>
-			${projectileClass} projectile = ${projectileClass}.shoot(entity, ${data.accuracy});
-
+			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom(), ${data.rangedAccuracy});
 		<#elseif projectile.endsWith("Arrow")>
 			${projectileClass} projectile = new ${projectileClass}(world, entity);
 			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, 1.0F);

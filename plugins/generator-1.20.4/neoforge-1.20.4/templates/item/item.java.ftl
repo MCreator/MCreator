@@ -269,7 +269,6 @@ public class ${name}Item extends Item {
 					<@arrowShootCode/>
 				}
 			</#if>
-
 		}
 	</#if>
 
@@ -307,7 +306,7 @@ public class ${name}Item extends Item {
 	if (player.getAbilities().instabuild || stack != ItemStack.EMPTY) {
 		<#assign projectileClass = generator.map(projectile, "projectiles", 0)>
 		<#if projectile.startsWith("CUSTOM:")>
-			${projectileClass} projectile = ${projectileClass}.shoot(entity, ${data.accuracy});
+			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom(), ${data.rangedAccuracy});
 		<#elseif projectile.endsWith("Arrow")>
 			${projectileClass} projectile = new ${projectileClass}(world, entity, stack);
 			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, ${data.accuracy}F);
