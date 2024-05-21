@@ -68,7 +68,16 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 
 	<#if hasProcedure(data.activeTickCondition) || hasProcedure(data.onActiveTick)>
 		@Override public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
-			<#if hasProcedure(data.onActiveTick)>
+			<#if hasProcedure(data.activeTickCondition)>
+				return <@procedureOBJToConditionCode data.activeTickCondition/>;
+			<#else>
+				return true;
+			</#if>
+		}
+	</#if>
+
+	<#if hasProcedure(data.onActiveTick)>
+		@Override public boolean applyEffectTick(LivingEntity entity, int amplifier) {
 			<@procedureCode data.onActiveTick, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
@@ -77,12 +86,7 @@ public class ${name}MobEffect extends <#if data.isInstant>Instantenous</#if>MobE
 				"entity": "entity",
 				"amplifier": "amplifier"
 			}/>
-			</#if>
-			<#if hasProcedure(data.activeTickCondition)>
-				return <@procedureOBJToConditionCode data.activeTickCondition/>;
-			<#else>
-				return true;
-			</#if>
+			return super.applyEffectTick(entity, amplifier);
 		}
 	</#if>
 
