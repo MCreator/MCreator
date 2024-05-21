@@ -309,7 +309,7 @@ public class ${name}Item extends Item {
 			${projectileClass} projectile = ${projectileClass}.shoot(world, entity, world.getRandom(), ${data.rangedAccuracy});
 		<#elseif projectile.endsWith("Arrow")>
 			${projectileClass} projectile = new ${projectileClass}(world, entity, stack);
-			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, ${data.accuracy}F);
+			projectile.shootFromRotation(entity, entity.getXRot(), entity.getYRot(), 0, 3.15f, ${data.rangedAccuracy}F);
 			world.addFreshEntity(projectile);
 			world.playSound(null, entity.getX(), entity.getY(), entity.getZ(), BuiltInRegistries.SOUND_EVENT
 				.get(new ResourceLocation("entity.arrow.shoot")), SoundSource.PLAYERS, 1, 1f / (world.getRandom().nextFloat() * 0.5f + 1));
