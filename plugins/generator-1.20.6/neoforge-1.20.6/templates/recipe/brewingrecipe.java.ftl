@@ -42,8 +42,9 @@ package ${package}.recipes.brewing;
 	@Override public boolean isInput(ItemStack input) {
 		<#if data.brewingInputStack?starts_with("POTION:")>
 		Item inputItem = input.getItem();
+		Optional<Holder<Potion>> optionalPotion = input.getOrDefault(DataComponents.POTION_CONTENTS, PotionContents.EMPTY).potion();
 		return (inputItem == Items.POTION || inputItem == Items.SPLASH_POTION || inputItem == Items.LINGERING_POTION)
-			&& PotionUtils.getPotion(input) == ${generator.map(data.brewingInputStack?replace("POTION:",""), "potions")};
+			&& !optionalPotion.isEmpty() && optionalPotion.get().is(${generator.map(data.brewingInputStack?replace("POTION:",""), "potions")});
 		<#else>
 		return ${mappedMCItemToIngredient(data.brewingInputStack)}.test(input);
 		</#if>
@@ -56,11 +57,11 @@ package ${package}.recipes.brewing;
 	@Override public ItemStack getOutput(ItemStack input, ItemStack ingredient) {
 		if (isInput(input) && isIngredient(ingredient)) {
 			<#if data.brewingReturnStack?starts_with("POTION:")>
-			return PotionUtils.setPotion(
+			return PotionContents.createItemStack(
 				<#if data.brewingInputStack?starts_with("POTION:")>
-				new ItemStack(input.getItem())
+				input.getItem()
 				<#else>
-				new ItemStack(Items.POTION)
+				Items.POTION
 				</#if>, ${generator.map(data.brewingReturnStack?replace("POTION:",""), "potions")});
 			<#else>
 			return ${mappedMCItemToItemStackCode(data.brewingReturnStack, 1)};
