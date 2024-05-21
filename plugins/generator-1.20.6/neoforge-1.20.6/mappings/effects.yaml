@@ -1,6 +1,6 @@
 _default: MobEffects.MOVEMENT_SPEED
 _mcreator_prefix: "CUSTOM:"
-_mcreator_map_template: "@JavaModNameMobEffects.@REGISTRYNAME.get()"
+_mcreator_map_template: "@JavaModNameMobEffects.@REGISTRYNAME"
 SPEED: MobEffects.MOVEMENT_SPEED
 SLOWNESS: MobEffects.MOVEMENT_SLOWDOWN
 HASTE: MobEffects.DIG_SPEED
