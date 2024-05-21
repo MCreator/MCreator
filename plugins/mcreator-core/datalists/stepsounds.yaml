@@ -218,3 +218,9 @@
   texture: SPONGE#0
 - WET_SPONGE:
   texture: SPONGE#1
+- VAULT
+  texture: VAULT
+- HEAVY_CORE
+  texture: HEAVY_CORE
+- COBWEB
+  texture: WEB
