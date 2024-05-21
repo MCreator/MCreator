@@ -100,11 +100,9 @@
 	    "height": ${foliage_placer[3]}
       <#elseif foliage_placer?size == 5>,
         "crown_height": {
-          "type": "minecraft:uniform",
-          "value": {
-            "min_inclusive": ${foliage_placer[3]},
-            "max_inclusive": ${foliage_placer[4]}
-          }
+          "type": "uniform",
+          "min_inclusive": ${foliage_placer[3]},
+          "max_inclusive": ${foliage_placer[4]}
         }
 	  </#if>
     },
