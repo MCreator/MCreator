@@ -64,7 +64,7 @@ package ${package}.init;
 
 	private static void expireEffects(Entity entity, MobEffectInstance effectInstance) {
 		<#compress>
-		MobEffect effect = effectInstance.getEffect().value();
+		MobEffect effect = effectInstance.getEffect().is(Holder<MobEffect>);
 		<#list effects_that_expire as effect>
 		if (effect == ${effect.getModElement().getRegistryNameUpper()}.get()) {
 			<@procedureCode effect.onExpired, {
@@ -81,4 +81,5 @@ package ${package}.init;
 	}
 	</#if>
 }
+
 <#-- @formatter:on -->
