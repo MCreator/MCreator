@@ -99,7 +99,9 @@
     <category name="${t:blockly.category.advanced}" colour="250">
         <block type="cancel_event"/>
         <block type="set_event_result"/>
-        <block type="call_procedure"/>
+        <block type="call_procedure">
+            <mutation inputs="0"/>
+        </block>
         <block type="call_procedure">
             <mutation inputs="3"/>
             <field name="name0">x</field>
