@@ -58,6 +58,8 @@ import java.util.List;
 			public boolean affectedByFortune, explosionDecay;
 
 			public int silkTouchMode;
+			
+			public int condition;
 
 			// initiate default values
 			public Entry() {

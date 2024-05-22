@@ -48,6 +48,9 @@ public class JLootTableEntry extends JPanel {
 	private final JComboBox<String> silkTouchMode = new JComboBox<>(
 			new String[] { "Ignore silk touch", "Only with silk touch", "Only without silk touch" });
 
+	private final JComboBox<String> conditions = new JComboBox<>(
+			new String[] { "No Condition", "Affected by fire", "Killed by player", "Random Difficulty Chance", "Killed by fire", "Killed by entity" });
+
 	public JLootTableEntry(MCreator mcreator, JPanel parent, List<JLootTableEntry> entryList) {
 		setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
 
@@ -90,7 +93,6 @@ public class JLootTableEntry extends JPanel {
 
 		line1.add(L10N.label("elementgui.loot_table.silk_touch_mode"));
 		line1.add(silkTouchMode);
-
 		affectedByFortune.setOpaque(false);
 		explosionDecay.setOpaque(false);
 
@@ -108,6 +110,9 @@ public class JLootTableEntry extends JPanel {
 
 		line2.add(L10N.label("elementgui.loot_table.enchantments_level"));
 		line2.add(enchantmentsLevel);
+		line2.add(new JEmptyBox(15, 5));
+		line2.add(L10N.label("elementgui.loot_table.loot_conditions"));
+		line2.add(conditions);
 
 		add(PanelUtils.centerAndEastElement(line1, PanelUtils.join(remove)));
 		add(line2);
@@ -117,6 +122,9 @@ public class JLootTableEntry extends JPanel {
 	}
 
 	public void reloadDataLists() {
+		if (conditions.getSelectedIndex() == 0) {
+			
+		}
 	}
 
 	public LootTable.Pool.Entry getEntry() {
@@ -139,7 +147,7 @@ public class JLootTableEntry extends JPanel {
 		entry.explosionDecay = explosionDecay.isSelected();
 
 		entry.silkTouchMode = silkTouchMode.getSelectedIndex();
-
+		entry.condition = conditions.getSelectedIndex();
 		return entry;
 	}
 
@@ -157,5 +165,6 @@ public class JLootTableEntry extends JPanel {
 		explosionDecay.setSelected(e.explosionDecay);
 
 		silkTouchMode.setSelectedIndex(e.silkTouchMode);
+		conditions.setSelectedIndex(e.condition);
 	}
 }
