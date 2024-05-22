@@ -54,6 +54,19 @@ block.anvil.land: block.anvil.land
 block.anvil.place: block.anvil.place
 block.anvil.step: block.anvil.step
 block.anvil.use: block.anvil.use
+entity.armadillo.eat: entity.armadillo.eat
+entity.armadillo.hurt: entity.armadillo.hurt
+entity.armadillo.hurt_reduced: entity.armadillo.hurt_reduced
+entity.armadillo.ambient: entity.armadillo.ambient
+entity.armadillo.step: entity.armadillo.step
+entity.armadillo.death: entity.armadillo.death
+entity.armadillo.roll: entity.armadillo.roll
+entity.armadillo.land: entity.armadillo.land
+entity.armadillo.scute_drop: entity.armadillo.scute_drop
+entity.armadillo.unroll_finish: entity.armadillo.unroll_finish
+entity.armadillo.peek: entity.armadillo.peek
+entity.armadillo.unroll_start: entity.armadillo.unroll_start
+entity.armadillo.brush: entity.armadillo.brush
 item.armor.equip_chain: item.armor.equip_chain
 item.armor.equip_diamond: item.armor.equip_diamond
 item.armor.equip_netherite: item.armor.equip_netherite
@@ -63,6 +76,8 @@ item.armor.equip_gold: item.armor.equip_gold
 item.armor.equip_iron: item.armor.equip_iron
 item.armor.equip_leather: item.armor.equip_leather
 item.armor.equip_turtle: item.armor.equip_turtle
+item.armor.equip_wolf: item.armor.equip_wolf
+item.armor.unequip_wolf: item.armor.unequip_wolf
 entity.armorstand.break: entity.armor_stand.break
 entity.armorstand.fall: entity.armor_stand.fall
 entity.armorstand.hit: entity.armor_stand.hit
@@ -154,6 +169,11 @@ entity.blaze.hurt: entity.blaze.hurt
 entity.blaze.shoot: entity.blaze.shoot
 entity.boat.paddle_land: entity.boat.paddle_land
 entity.boat.paddle_water: entity.boat.paddle_water
+entity.bogged.ambient: entity.bogged.ambient
+entity.bogged.death: entity.bogged.death
+entity.bogged.hurt: entity.bogged.hurt
+entity.bogged.shear: entity.bogged.shear
+entity.bogged.step: entity.bogged.step
 block.bone_block.break: block.bone_block.break
 block.bone_block.fall: block.bone_block.fall
 block.bone_block.hit: block.bone_block.hit
@@ -166,6 +186,8 @@ block.blastfurnace.fire_crackle: block.blastfurnace.fire_crackle
 item.bottle.empty: item.bottle.empty
 item.bottle.fill: item.bottle.fill
 item.bottle.fill_dragonbreath: item.bottle.fill_dragonbreath
+entity.breeze.charge: entity.breeze.charge
+entity.breeze.deflect: entity.breeze.deflect
 entity.breeze.inhale: entity.breeze.inhale
 entity.breeze.idle_ground: entity.breeze.idle_ground
 entity.breeze.idle_air: entity.breeze.idle_air
@@ -175,6 +197,8 @@ entity.breeze.land: entity.breeze.land
 entity.breeze.slide: entity.breeze.slide
 entity.breeze.death: entity.breeze.death
 entity.breeze.hurt: entity.breeze.hurt
+entity.breeze.whirl: entity.breeze.whirl
+entity.breeze.wind_burst: entity.breeze.wind_burst
 block.brewing_stand.brew: block.brewing_stand.brew
 item.brush.brushing: item.brush.brushing.generic
 item.brush.brushing.sand: item.brush.brushing.sand
@@ -296,6 +320,11 @@ block.chiseled_bookshelf.place: block.chiseled_bookshelf.place
 block.chorus_flower.death: block.chorus_flower.death
 block.chorus_flower.grow: block.chorus_flower.grow
 item.chorus_fruit.teleport: item.chorus_fruit.teleport
+block.cobweb.break: block.cobweb.break
+block.cobweb.step: block.cobweb.step
+block.cobweb.place: block.cobweb.place
+block.cobweb.hit: block.cobweb.hit
+block.cobweb.fall: block.cobweb.fall
 entity.cod.ambient: entity.cod.ambient
 entity.cod.death: entity.cod.death
 entity.cod.flop: entity.cod.flop
@@ -397,6 +426,7 @@ entity.donkey.angry: entity.donkey.angry
 entity.donkey.chest: entity.donkey.chest
 entity.donkey.death: entity.donkey.death
 entity.donkey.hurt: entity.donkey.hurt
+entity.donkey.jump: entity.donkey.jump
 entity.donkey.eat: entity.donkey.eat
 block.dripstone_block.break: block.dripstone_block.break
 block.dripstone_block.step: block.dripstone_block.step
@@ -472,7 +502,6 @@ entity.evocation_illager.prepare_summon: entity.evoker.prepare_summon
 entity.evocation_illager.prepare_wololo: entity.evoker.prepare_wololo
 entity.experience_bottle.throw: entity.experience_bottle.throw
 entity.experience_orb.pickup: entity.experience_orb.pickup
-entity.experience_orb.touch: entity.experience_orb.pickup #LEGACY
 block.fence_gate.close: block.fence_gate.close
 block.fence_gate.open: block.fence_gate.open
 item.firecharge.use: item.firecharge.use
@@ -629,6 +658,11 @@ block.hanging_sign.break: block.hanging_sign.break
 block.hanging_sign.fall: block.hanging_sign.fall
 block.hanging_sign.hit: block.hanging_sign.hit
 block.hanging_sign.place: block.hanging_sign.place
+block.heavy_core.break: block.heavy_core.break
+block.heavy_core.fall: block.heavy_core.fall
+block.heavy_core.hit: block.heavy_core.hit
+block.heavy_core.place: block.heavy_core.place
+block.heavy_core.step: block.heavy_core.step
 block.nether_wood_hanging_sign.step: block.nether_wood_hanging_sign.step
 block.nether_wood_hanging_sign.break: block.nether_wood_hanging_sign.break
 block.nether_wood_hanging_sign.fall: block.nether_wood_hanging_sign.fall
@@ -645,8 +679,13 @@ block.trial_spawner.place: block.trial_spawner.place
 block.trial_spawner.hit: block.trial_spawner.hit
 block.trial_spawner.fall: block.trial_spawner.fall
 block.trial_spawner.spawn_mob: block.trial_spawner.spawn_mob
+block.trial_spawner.about_to_spawn_item: block.trial_spawner.about_to_spawn_item
+block.trial_spawner.spawn_item: block.trial_spawner.spawn_item
+block.trial_spawner.spawn_item_begin: block.trial_spawner.spawn_item_begin
 block.trial_spawner.detect_player: block.trial_spawner.detect_player
+block.trial_spawner.charge_activate: block.trial_spawner.charge_activate
 block.trial_spawner.ambient: block.trial_spawner.ambient
+block.trial_spawner.ambient_charged: block.trial_spawner.ambient_charged
 block.trial_spawner.open_shutter: block.trial_spawner.open_shutter
 block.trial_spawner.close_shutter: block.trial_spawner.close_shutter
 block.trial_spawner.eject_item: block.trial_spawner.eject_item
@@ -761,6 +800,9 @@ block.lodestone.place: block.lodestone.place
 block.lodestone.hit: block.lodestone.hit
 block.lodestone.fall: block.lodestone.fall
 item.lodestone_compass.lock: item.lodestone_compass.lock
+item.mace.smash_air: item.mace.smash_air
+item.mace.smash_ground: item.mace.smash_ground
+item.mace.smash_ground_heavy: item.mace.smash_ground_heavy
 entity.magmacube.death: entity.magma_cube.death
 entity.magmacube.hurt: entity.magma_cube.hurt
 entity.small_magmacube.hurt: entity.magma_cube.hurt_small
@@ -823,6 +865,7 @@ entity.mule.ambient: entity.mule.ambient
 entity.mule.chest: entity.mule.chest
 entity.mule.death: entity.mule.death
 entity.mule.hurt: entity.mule.hurt
+entity.mule.jump: entity.mule.jump
 entity.mule.angry: entity.mule.angry
 entity.mule.eat: entity.mule.eat
 music.creative: music.creative
@@ -965,6 +1008,7 @@ block.note_block.imitate.piglin: block.note_block.imitate.piglin
 entity.ocelot.hurt: entity.ocelot.hurt
 entity.ocelot.ambient: entity.ocelot.ambient
 entity.ocelot.death: entity.ocelot.death
+item.ominous_bottle.dispose: item.ominous_bottle.dispose
 entity.painting.break: entity.painting.break
 entity.painting.place: entity.painting.place
 entity.panda.pre_sneeze: entity.panda.pre_sneeze
@@ -984,20 +1028,18 @@ entity.parrot.eat: entity.parrot.eat
 entity.parrot.fly: entity.parrot.fly
 entity.parrot.hurt: entity.parrot.hurt
 entity.parrot.imitate.blaze: entity.parrot.imitate.blaze
+entity.parrot.imitate.bogged: entity.parrot.imitate.bogged
 entity.parrot.imitate.breeze: entity.parrot.imitate.breeze
 entity.parrot.imitate.creeper: entity.parrot.imitate.creeper
 entity.parrot.imitate.drowned: entity.parrot.imitate.drowned
-entity.parrot.imitate.panda: entity.parrot.imitate.drowned #LEGACY
 entity.parrot.imitate.elder_guardian: entity.parrot.imitate.elder_guardian
 entity.parrot.imitate.enderdragon: entity.parrot.imitate.ender_dragon
-entity.parrot.imitate.enderman: entity.parrot.imitate.endermite #LEGACY
 entity.parrot.imitate.endermite: entity.parrot.imitate.endermite
 entity.parrot.imitate.evocation_illager: entity.parrot.imitate.evoker
 entity.parrot.imitate.ghast: entity.parrot.imitate.ghast
 entity.parrot.imitate.guardian: entity.parrot.imitate.guardian
 entity.parrot.imitate.hoglin: entity.parrot.imitate.hoglin
 entity.parrot.imitate.husk: entity.parrot.imitate.husk
-entity.parrot.imitate.polar_bear: entity.parrot.imitate.husk #LEGACY
 entity.parrot.imitate.illusion_illager: entity.parrot.imitate.illusioner
 entity.parrot.imitate.magmacube: entity.parrot.imitate.magma_cube
 entity.parrot.imitate.phantom: entity.parrot.imitate.phantom
@@ -1016,11 +1058,9 @@ entity.parrot.imitate.vindication_illager: entity.parrot.imitate.vindicator
 entity.parrot.imitate.warden: entity.parrot.imitate.warden
 entity.parrot.imitate.witch: entity.parrot.imitate.witch
 entity.parrot.imitate.wither: entity.parrot.imitate.wither
-entity.parrot.imitate.wolf: entity.parrot.imitate.wither #LEGACY
 entity.parrot.imitate.wither_skeleton: entity.parrot.imitate.wither_skeleton
 entity.parrot.imitate.zoglin: entity.parrot.imitate.zoglin
 entity.parrot.imitate.zombie: entity.parrot.imitate.zombie
-entity.parrot.imitate.zombie_pigman: entity.parrot.imitate.zombie #LEGACY
 entity.parrot.imitate.zombie_villager: entity.parrot.imitate.zombie_villager
 entity.parrot.step: entity.parrot.step
 entity.phantom.ambient: entity.phantom.ambient
@@ -1393,6 +1433,19 @@ ui.stonecutter.select_recipe: ui.stonecutter.select_recipe
 ui.toast.challenge_complete: ui.toast.challenge_complete
 ui.toast.in: ui.toast.in
 ui.toast.out: ui.toast.out
+block.vault.activate: block.vault.activate
+block.vault.ambient: block.vault.ambient
+block.vault.break: block.vault.break
+block.vault.close_shutter: block.vault.close_shutter
+block.vault.deactivate: block.vault.deactivate
+block.vault.eject_item: block.vault.eject_item
+block.vault.fall: block.vault.fall
+block.vault.hit: block.vault.hit
+block.vault.insert_item: block.vault.insert_item
+block.vault.insert_item_fail: block.vault.insert_item_fail
+block.vault.open_shutter: block.vault.open_shutter
+block.vault.place: block.vault.place
+block.vault.step: block.vault.step
 entity.vex.ambient: entity.vex.ambient
 entity.vex.charge: entity.vex.charge
 entity.vex.death: entity.vex.death
@@ -1468,11 +1521,13 @@ block.wet_grass.hit: block.wet_grass.hit
 block.wet_grass.place: block.wet_grass.place
 block.wet_grass.step: block.wet_grass.step
 block.wet_sponge.break: block.wet_sponge.break
+block.wet_sponge.dries: block.wet_sponge.dries
 block.wet_sponge.fall: block.wet_sponge.fall
 block.wet_sponge.hit: block.wet_sponge.hit
 block.wet_sponge.place: block.wet_sponge.place
 block.wet_sponge.step: block.wet_sponge.step
-entity.generic.wind_burst: entity.generic.wind_burst
+entity.generic.wind_burst: entity.wind_charge.wind_burst
+entity.wind_charge.throw: entity.wind_charge.throw
 entity.witch.ambient: entity.witch.ambient
 entity.witch.celebrate: entity.witch.celebrate
 entity.witch.death: entity.witch.death
@@ -1489,6 +1544,10 @@ entity.wither_skeleton.death: entity.wither_skeleton.death
 entity.wither_skeleton.hurt: entity.wither_skeleton.hurt
 entity.wither_skeleton.step: entity.wither_skeleton.step
 entity.wither.spawn: entity.wither.spawn
+item.wolf_armor.break: item.wolf_armor.break
+item.wolf_armor.crack: item.wolf_armor.crack
+item.wolf_armor.damage: item.wolf_armor.damage
+item.wolf_armor.repair: item.wolf_armor.repair
 entity.wolf.ambient: entity.wolf.ambient
 entity.wolf.death: entity.wolf.death
 entity.wolf.growl: entity.wolf.growl
@@ -1545,3 +1604,6 @@ entity.zombie_villager.cure: entity.zombie_villager.cure
 entity.zombie_villager.death: entity.zombie_villager.death
 entity.zombie_villager.hurt: entity.zombie_villager.hurt
 entity.zombie_villager.step: entity.zombie_villager.step
+event.mob_effect.bad_omen: event.mob_effect.bad_omen
+event.mob_effect.trial_omen: event.mob_effect.trial_omen
+event.mob_effect.raid_omen: event.mob_effect.raid_omen
