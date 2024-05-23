@@ -110,6 +110,3 @@ WithNarratorSettings: SimpleOptionsSubScreen
 Working: ProgressScreen
 WorldLoadProgress: LevelLoadingScreen
 WorldSelection: SelectWorldScreen
-
-#LEGACY
-Realms32bitWarning: WarningScreen
