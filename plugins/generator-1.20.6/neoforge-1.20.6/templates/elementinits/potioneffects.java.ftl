@@ -64,9 +64,8 @@ package ${package}.init;
 
 	private static void expireEffects(Entity entity, MobEffectInstance effectInstance) {
 		<#compress>
-		MobEffect effect = effectInstance.getEffect().is(Holder<MobEffect>);
 		<#list effects_that_expire as effect>
-		if (effect == ${effect.getModElement().getRegistryNameUpper()}.get()) {
+		if (!effectInstance.getEffect().isEmpty() && effectInstance.getEffect().is(${effect.getModElement().getRegistryNameUpper()}.get())) {
 			<@procedureCode effect.onExpired, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
