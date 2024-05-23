@@ -21,9 +21,11 @@ package net.mcreator.ui.blockly;
 
 import com.google.gson.Gson;
 import javafx.application.Platform;
+import net.mcreator.blockly.data.Dependency;
 import net.mcreator.blockly.data.ExternalTrigger;
 import net.mcreator.blockly.java.BlocklyVariables;
 import net.mcreator.element.ModElementType;
+import net.mcreator.element.types.Procedure;
 import net.mcreator.minecraft.*;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.dialogs.AIConditionEditor;
@@ -233,6 +235,13 @@ public final class BlocklyJavascriptBridge {
 
 	void addExternalTrigger(ExternalTrigger external_trigger) {
 		ext_triggers.put(external_trigger.getID(), external_trigger.getName());
+	}
+
+	@SuppressWarnings("unused") public Dependency[] getDependencies(String procedureName) {
+		ModElement me = mcreator.getWorkspace().getModElementByName(procedureName);
+		return me != null && me.getGeneratableElement() instanceof Procedure procedure ?
+				procedure.getDependencies().toArray(Dependency[]::new) :
+				new Dependency[0];
 	}
 
 	@SuppressWarnings("unused") public String t(String key) {

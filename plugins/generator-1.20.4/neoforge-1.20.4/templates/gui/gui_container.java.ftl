@@ -100,12 +100,9 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 					}
 				} else { // might be bound to block
 					boundBlockEntity = this.world.getBlockEntity(pos);
-					if (boundBlockEntity != null) {
-						IItemHandler cap = this.world.getCapability(Capabilities.ItemHandler.BLOCK, pos, null);
-						if (cap != null) {
-							this.internal = cap;
-							this.bound = true;
-						}
+					if (boundBlockEntity instanceof BaseContainerBlockEntity baseContainerBlockEntity) {
+						this.internal = new InvWrapper(baseContainerBlockEntity);
+						this.bound = true;
 					}
 				}
 			}
@@ -116,7 +113,6 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 					this.customSlots.put(${component.id}, this.addSlot(new SlotItemHandler(internal, ${component.id},
 						${component.gx(data.width) + 1},
 						${component.gy(data.height) + 1}) {
-						private final int slot = ${component.id};
 
 						<#if hasProcedure(component.disablePickup) || component.disablePickup.getFixedValue()>
 						@Override public boolean mayPickup(Player entity) {
@@ -254,7 +250,9 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 								if(j == ${component.id}) continue;
 							</#if>
 						</#list>
-						playerIn.drop(internal.extractItem(j, internal.getStackInSlot(j).getCount(), false), false);
+						playerIn.drop(internal.getStackInSlot(j), false);
+						if (internal instanceof IItemHandlerModifiable ihm)
+							ihm.setStackInSlot(j, ItemStack.EMPTY);
 					}
 				} else {
 					for(int i = 0; i < internal.getSlots(); ++i) {
@@ -263,7 +261,9 @@ public class ${name}Menu extends AbstractContainerMenu implements Supplier<Map<I
 								if(i == ${component.id}) continue;
 							</#if>
 						</#list>
-						playerIn.getInventory().placeItemBackInInventory(internal.extractItem(i, internal.getStackInSlot(i).getCount(), false));
+						playerIn.getInventory().placeItemBackInInventory(internal.getStackInSlot(i));
+						if (internal instanceof IItemHandlerModifiable ihm)
+							ihm.setStackInSlot(i, ItemStack.EMPTY);
 					}
 				}
 			}

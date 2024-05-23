@@ -35,14 +35,14 @@ displayTest="IGNORE_SERVER_VERSION"
     modId="neoforge"
     type="required"
     versionRange="[${generator.getGeneratorBuildFileVersion()},)"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 
 [[dependencies.${settings.getModID()}]]
     modId="minecraft"
     type="required"
     versionRange="[${generator.getGeneratorMinecraftVersion()}]"
-    ordering="NONE"
+    ordering="AFTER"
     side="BOTH"
 
 <#list settings.getRequiredMods() as e>

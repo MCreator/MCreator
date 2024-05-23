@@ -5,12 +5,14 @@ templates:
   - template: json/feature_biome_modifier.json.ftl
     writer: json
     name: "@MODDATAROOT/neoforge/biome_modifier/@registryname_biome_modifier.json"
+    condition: hasPlacedFeature()
   - template: feature/configured_feature.json.ftl # loaded from datapack generator
     writer: json
     name: "@MODDATAROOT/worldgen/configured_feature/@registryname.json"
   - template: feature/placed_feature.json.ftl # loaded from datapack generator
     writer: json
     name: "@MODDATAROOT/worldgen/placed_feature/@registryname.json"
+    condition: hasPlacedFeature()
 
 # Templates for custom structure feature
 global_templates:

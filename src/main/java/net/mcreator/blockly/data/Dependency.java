@@ -21,6 +21,7 @@ package net.mcreator.blockly.data;
 import net.mcreator.generator.mapping.NameMapper;
 import net.mcreator.ui.init.L10N;
 import net.mcreator.workspace.Workspace;
+import net.mcreator.workspace.elements.VariableType;
 import net.mcreator.workspace.elements.VariableTypeLoader;
 
 import java.awt.*;
@@ -61,6 +62,11 @@ public class Dependency implements Comparable<Dependency> {
 
 	public String getRawType() {
 		return type;
+	}
+
+	@SuppressWarnings("unused") public String getBlocklyType() {
+		VariableType varType = VariableTypeLoader.INSTANCE.fromName(type);
+		return varType != null ? varType.getBlocklyVariableType() : "";
 	}
 
 	public String getName() {

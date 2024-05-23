@@ -46,6 +46,7 @@ import net.mcreator.ui.minecraft.states.StateMap;
 import net.mcreator.ui.modgui.ItemGUI;
 import net.mcreator.ui.modgui.LivingEntityGUI;
 import net.mcreator.ui.workspace.resources.TextureType;
+import net.mcreator.util.ListUtils;
 import net.mcreator.util.StringUtils;
 import net.mcreator.util.image.EmptyIcon;
 import net.mcreator.workspace.Workspace;
@@ -982,7 +983,10 @@ public class TestWorkspaceDataProvider {
 			item.destroyAnyBlock = _true;
 			item.inventorySize = 10;
 			item.inventoryStackSize = 42;
-			item.guiBoundTo = "<NONE>";
+			item.guiBoundTo = getRandomItem(random, ListUtils.merge(Collections.singleton("<NONE>"),
+					modElement.getWorkspace().getModElements().stream()
+							.filter(var -> var.getType() == ModElementType.GUI).map(ModElement::getName)
+							.collect(Collectors.toList())));
 			item.recipeRemainder = new MItemBlock(modElement.getWorkspace(),
 					emptyLists ? "" : getRandomMCItem(random, blocksAndItems).getName());
 			item.stayInGridWhenCrafting = _true;
@@ -1048,6 +1052,7 @@ public class TestWorkspaceDataProvider {
 			item.projectile = new ProjectileEntry(modElement.getWorkspace(),
 					getRandomDataListEntry(random, ElementUtil.loadArrowProjectiles(modElement.getWorkspace())));
 			item.shootConstantly = emptyLists;
+			item.rangedItemChargesPower = !item.shootConstantly;
 			item.onRangedItemUsed = new Procedure("procedure4");
 			item.rangedUseCondition = new Procedure("condition1");
 			return item;
@@ -1210,7 +1215,10 @@ public class TestWorkspaceDataProvider {
 			block.breakHarvestLevel = 4;
 			block.tickRandomly = _true;
 			block.hasInventory = _true;
-			block.guiBoundTo = "<NONE>";
+			block.guiBoundTo = getRandomItem(random, ListUtils.merge(Collections.singleton("<NONE>"),
+					modElement.getWorkspace().getModElements().stream()
+							.filter(var -> var.getType() == ModElementType.GUI).map(ModElement::getName)
+							.collect(Collectors.toList())));
 			block.openGUIOnRightClick = !_true;
 			block.inventorySize = 10;
 			block.inventoryStackSize = 42;
@@ -1432,7 +1440,7 @@ public class TestWorkspaceDataProvider {
 			particle.width = 2.3;
 			particle.frameDuration = 2;
 			particle.height = 1.38;
-			particle.scale = 1.38;
+			particle.scale = new NumberProcedure(emptyLists ? null : "number1", 1.38);
 			particle.gravity = 12.3;
 			particle.speedFactor = 1.3;
 			particle.canCollide = _true;
@@ -1565,6 +1573,7 @@ public class TestWorkspaceDataProvider {
 			}
 			feature.generateCondition = _true ? new Procedure("condition1") : null;
 			feature.featurexml = Feature.XML_BASE;
+			feature.skipPlacement = !_true;
 			return feature;
 		}
 		return null;
@@ -1649,7 +1658,10 @@ public class TestWorkspaceDataProvider {
 		livingEntity.ridable = _true;
 		livingEntity.canControlStrafe = !_true;
 		livingEntity.canControlForward = _true;
-		livingEntity.guiBoundTo = "<NONE>";
+		livingEntity.guiBoundTo = getRandomItem(random, ListUtils.merge(Collections.singleton("<NONE>"),
+				modElement.getWorkspace().getModElements().stream()
+						.filter(var -> var.getType() == ModElementType.GUI).map(ModElement::getName)
+						.collect(Collectors.toList())));
 		livingEntity.mobDrop = new MItemBlock(modElement.getWorkspace(),
 				getRandomMCItem(random, blocksAndItems).getName());
 		livingEntity.livingSound = new Sound(modElement.getWorkspace(),
@@ -1731,6 +1743,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
 			modelLayer.texture = "entityTx2.png";
+			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = true;
 			modelLayer.condition = null;
 			livingEntity.modelLayers.add(modelLayer);
@@ -1738,6 +1751,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
 			modelLayer.texture = "test.png";
+			modelLayer.disableHurtOverlay = false;
 			modelLayer.glow = false;
 			modelLayer.condition = new Procedure("condition1");
 			livingEntity.modelLayers.add(modelLayer);
@@ -1745,6 +1759,7 @@ public class TestWorkspaceDataProvider {
 			modelLayer.setWorkspace(modElement.getWorkspace());
 			modelLayer.model = "Default";
 			modelLayer.texture = "entityTx2.png";
+			modelLayer.disableHurtOverlay = true;
 			modelLayer.glow = true;
 			modelLayer.condition = null;
 			livingEntity.modelLayers.add(modelLayer);
@@ -1919,6 +1934,12 @@ public class TestWorkspaceDataProvider {
 		int listSize = list.length;
 		int randomIndex = random.nextInt(listSize);
 		return list[randomIndex];
+	}
+
+	public static <T> T getRandomItem(Random random, List<T> list) {
+		int listSize = list.size();
+		int randomIndex = random.nextInt(listSize);
+		return list.get(randomIndex);
 	}
 
 	public static DataListEntry getRandomDataListEntry(Random random, List<DataListEntry> list) {

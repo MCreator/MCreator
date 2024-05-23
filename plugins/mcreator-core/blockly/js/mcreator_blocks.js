@@ -80,22 +80,11 @@ Blockly.Blocks['call_procedure'] = {
         this.setPreviousStatement(true);
         this.setNextStatement(true);
         this.setColour(250);
-    }
-};
-
-Blockly.Blocks['call_procedure_at'] = {
-    init: function () {
-        this.appendDummyInput()
-            .appendField(javabridge.t("blockly.block.call_procedure"))
-            .appendField(new FieldDataListSelector('procedure'), 'procedure')
-            .appendField(javabridge.t("blockly.block.call_procedure.at"));
-        this.appendValueInput('x').setCheck('Number').appendField('x: ');
-        this.appendValueInput('y').setCheck('Number').appendField('y: ');
-        this.appendValueInput('z').setCheck('Number').appendField('z: ');
-        this.setInputsInline(true);
-        this.setPreviousStatement(true);
-        this.setNextStatement(true);
-        this.setColour(250);
+        if (editorType === "procedures") {
+            Blockly.Extensions.apply('procedure_dependencies_tooltip', this, false);
+            Blockly.Extensions.apply('procedure_dependencies_mutator', this, true);
+            Blockly.Extensions.apply('procedure_dependencies_onchange_mixin', this, false);
+        }
     }
 };
 
@@ -536,6 +525,10 @@ Blockly.Blocks['time_week_of_year'] = {
         this.setOutput(true, 'Number');
     }
 };
+
+// Mutator blocks for procedure dependencies
+registerSimpleMutatorContainer('procedure_dependencies_mutator_container', 'blockly.block.call_procedure.container', 250);
+registerSimpleMutatorInput('procedure_dependencies_mutator_input', 'blockly.block.call_procedure.input', 250, true);
 
 // Mutator blocks for "Any/All of" block predicates
 registerSimpleMutatorContainer(
