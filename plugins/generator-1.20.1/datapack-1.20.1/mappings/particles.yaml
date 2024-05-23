@@ -5,9 +5,6 @@ _mcreator_map_template:
 _default:
   - ParticleTypes.CRIT
   - "crit"
-SPELL_MOB_AMBIENT:
-  - ParticleTypes.AMBIENT_ENTITY_EFFECT
-  - "ambient_entity_effect"
 VILLAGER_ANGRY:
   - ParticleTypes.ANGRY_VILLAGER
   - "angry_villager"
@@ -263,14 +260,3 @@ SCRAPE:
 EGG_CRACK:
   - ParticleTypes.EGG_CRACK
   - "egg_crack"
-
-#LEGACY
-DRIPPING_CHERRY_LEAVES:
-  - ParticleTypes.CHERRY_LEAVES
-  - "cherry_leaves"
-FALLING_CHERRY_LEAVES:
-  - ParticleTypes.CHERRY_LEAVES
-  - "cherry_leaves"
-LANDING_CHERRY_LEAVES:
-  - ParticleTypes.CHERRY_LEAVES
-  - "cherry_leaves"
