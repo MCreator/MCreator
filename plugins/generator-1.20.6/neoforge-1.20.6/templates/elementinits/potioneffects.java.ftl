@@ -38,8 +38,7 @@
 package ${package}.init;
 
 <#assign effects_that_expire = potioneffects?filter(effect -> hasProcedure(effect.onExpired))>
-
-<#if effects_that_expire?size != 0>@Mod.EventBusSubscriber </#if>public class ${JavaModName}MobEffects {
+<#if effects_that_expire?size != 0>@EventBusSubscriber </#if>public class ${JavaModName}MobEffects {
 
 	public static final DeferredRegister<MobEffect> REGISTRY = DeferredRegister.create(Registries.MOB_EFFECT, ${JavaModName}.MODID);
 
@@ -65,9 +64,8 @@ package ${package}.init;
 
 	private static void expireEffects(Entity entity, MobEffectInstance effectInstance) {
 		<#compress>
-		MobEffect effect = effectInstance.getEffect();
 		<#list effects_that_expire as effect>
-		if (effect == ${effect.getModElement().getRegistryNameUpper()}.get()) {
+		if (effectInstance.getEffect().is(${effect.getModElement().getRegistryNameUpper()})) {
 			<@procedureCode effect.onExpired, {
 				"x": "entity.getX()",
 				"y": "entity.getY()",
