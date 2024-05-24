@@ -60,7 +60,7 @@ CustomizeSkin: SkinCustomizationScreen
 DatapackFailure: DatapackLoadFailureScreen
 Death: DeathScreen
 Demo: DemoIntroScreen
-DirtMessage: GenericDirtMessageScreen
+DirtMessage: GenericMessageScreen
 Disconnected: DisconnectedScreen
 DisconnectedRealms: DisconnectedRealmsScreen
 DownloadTerrain: ReceivingLevelScreen
@@ -70,6 +70,7 @@ EffectRenderingInventory: EffectRenderingInventoryScreen
 Error: ErrorScreen
 Experiments: ExperimentsScreen
 FlatPresets: PresetFlatWorldScreen
+FontOptions: FontOptionsScreen
 GamemodeSelection: GameModeSwitcherScreen
 GenericWaiting: GenericWaitingScreen
 GPUWarning: PopupScreen
@@ -88,7 +89,6 @@ Options: OptionsScreen
 OptionsSounds: SoundOptionsScreen
 Pack: PackSelectionScreen
 Realms: RealmsScreen
-Realms32bitWarning: Realms32bitWarningScreen
 RecoverWorldData: RecoverWorldDataScreen
 ReportPlayer: ReportPlayerScreen
 ReportReasonSelection: ReportReasonSelectionScreen
