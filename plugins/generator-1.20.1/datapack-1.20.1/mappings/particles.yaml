@@ -53,9 +53,6 @@ ENCHANTMENT_TABLE:
 END_ROD:
   - ParticleTypes.END_ROD
   - "end_rod"
-ENTITY_EFFECT:
-  - ParticleTypes.ENTITY_EFFECT
-  - "entity_effect"
 EXPLOSION_EMITTER:
   - ParticleTypes.EXPLOSION_EMITTER
   - "explosion_emitter"
