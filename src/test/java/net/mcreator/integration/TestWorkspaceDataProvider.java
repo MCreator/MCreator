@@ -1121,8 +1121,8 @@ public class TestWorkspaceDataProvider {
 			potionEffect.color = Color.magenta;
 			potionEffect.icon = "effect1.png";
 			potionEffect.isInstant = !_true;
-			potionEffect.isBad = _true;
-			potionEffect.isBenefitical = !_true;
+			potionEffect.mobEffectCategory = getRandomItem(random,
+					new String[] { "NEUTRAL", "HARMFUL", "BENEFICIAL"});
 			potionEffect.renderStatusInHUD = _true;
 			potionEffect.renderStatusInInventory = _true;
 			potionEffect.onStarted = new Procedure("procedure1");
