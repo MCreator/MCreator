@@ -1,4 +1,4 @@
-This parameter controls the healing for the potion
+This parameter controls the potion healing
 
 There are various types of cures:
 
