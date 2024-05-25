@@ -49,6 +49,10 @@ import java.io.File;
 	public Procedure onExpired;
 	public Procedure activeTickCondition;
 
+	private PotionEffect() {
+		this(null);
+	}
+
 	public PotionEffect(ModElement element) {
 		super(element);
 
