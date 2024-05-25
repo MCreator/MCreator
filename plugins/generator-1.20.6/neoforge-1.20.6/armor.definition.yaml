@@ -122,6 +122,20 @@ templates:
     variables: "item=boots"
     name: "@MODASSETSROOT/models/item/@registryname_boots.json"
 
+tags:
+  - tag: ITEMS:minecraft:head_armor
+    condition: enableHelmet
+    entry: "CUSTOM:@NAME.helmet"
+  - tag: ITEMS:minecraft:chest_armor
+    condition: enableBody
+    entry: "CUSTOM:@NAME.body"
+  - tag: ITEMS:minecraft:leg_armor
+    condition: enableLeggings
+    entry: "CUSTOM:@NAME.legs"
+  - tag: ITEMS:minecraft:foot_armor
+    condition: enableBoots
+    entry: "CUSTOM:@NAME.boots"
+
 localizationkeys:
   - key: item.@modid.@registryname_helmet
     mapto: helmetName
