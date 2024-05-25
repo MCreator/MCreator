@@ -147,16 +147,10 @@ public class MCItemSelectorDialog extends SearchableSelectorDialog<MCItem> {
 
 		JPanel mainComponent = new JPanel(new BorderLayout());
 		mainComponent.add("North", top);
-
 		mainComponent.add("Center", new JScrollPane(list));
-
 		add("Center", mainComponent);
 
 		setSize(hasPotions ? 970 : 900, 425);
-
-		Dimension dim = getToolkit().getScreenSize();
-		Rectangle abounds = getBounds();
-		setLocation((dim.width - abounds.width) / 2, (dim.height - abounds.height) / 2);
 		setLocationRelativeTo(mcreator);
 
 		this.addWindowListener(new WindowAdapter() {
