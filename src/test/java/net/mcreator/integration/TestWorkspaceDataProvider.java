@@ -1125,6 +1125,8 @@ public class TestWorkspaceDataProvider {
 			potionEffect.isBenefitical = !_true;
 			potionEffect.renderStatusInHUD = _true;
 			potionEffect.renderStatusInInventory = _true;
+			potionEffect.potionCures = getRandomItem(random,
+					new String[] { "DEFAULT_CURES", "PROTECTED_BY_TOTEM", "HONEY", "MILK"});
 			potionEffect.onStarted = new Procedure("procedure1");
 			potionEffect.onActiveTick = new Procedure("procedure2");
 			potionEffect.onExpired = new Procedure("procedure3");

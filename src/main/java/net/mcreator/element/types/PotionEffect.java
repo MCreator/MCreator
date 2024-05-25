@@ -42,6 +42,7 @@ import java.io.File;
 	public boolean isBenefitical;
 	public boolean renderStatusInInventory;
 	public boolean renderStatusInHUD;
+	public String potionCures;
 
 	public Procedure onStarted;
 	public Procedure onActiveTick;
@@ -50,6 +51,8 @@ import java.io.File;
 
 	public PotionEffect(ModElement element) {
 		super(element);
+
+		this.potionCures = "DEFAULT_CURES";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {

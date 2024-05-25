@@ -24,6 +24,7 @@ import net.mcreator.element.types.PotionEffect;
 import net.mcreator.ui.MCreator;
 import net.mcreator.ui.MCreatorApplication;
 import net.mcreator.ui.component.JColor;
+import net.mcreator.ui.component.JEmptyBox;
 import net.mcreator.ui.component.util.ComponentUtils;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.dialogs.TypedTextureSelectorDialog;
@@ -58,6 +59,8 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 	private final JCheckBox isBenefitical = L10N.checkbox("elementgui.potioneffect.is_benefitical");
 	private final JCheckBox renderStatusInInventory = L10N.checkbox("elementgui.common.enable");
 	private final JCheckBox renderStatusInHUD = L10N.checkbox("elementgui.common.enable");
+	private final JComboBox<String> potionCures = new JComboBox<>(
+			new String[] { "DEFAULT_CURES", "PROTECTED_BY_TOTEM", "HONEY", "MILK"});
 
 	private final ValidationGroup page1group = new ValidationGroup();
 
@@ -93,7 +96,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		JPanel pane3 = new JPanel(new BorderLayout());
 		JPanel pane4 = new JPanel(new BorderLayout());
 
-		JPanel selp = new JPanel(new GridLayout(8, 2, 50, 2));
+		JPanel selp = new JPanel(new GridLayout(9, 2, 50, 2));
 
 		ComponentUtils.deriveFont(effectName, 16);
 
@@ -133,6 +136,10 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/render_in_hud"),
 				L10N.label("elementgui.potioneffect.render_status_hud")));
 		selp.add(renderStatusInHUD);
+
+		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/cures"),
+				L10N.label("elementgui.potioneffect.cures")));
+		selp.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, potionCures, new JEmptyBox(5, 5)));
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/color"),
 				L10N.label("elementgui.potioneffect.color")));
@@ -200,6 +207,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		onActiveTick.setSelectedProcedure(potion.onActiveTick);
 		onExpired.setSelectedProcedure(potion.onExpired);
 		activeTickCondition.setSelectedProcedure(potion.activeTickCondition);
+		potionCures.setSelectedItem(potion.potionCures);
 	}
 
 	@Override public PotionEffect getElementFromGUI() {
@@ -216,6 +224,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 		potion.onActiveTick = onActiveTick.getSelectedProcedure();
 		potion.onExpired = onExpired.getSelectedProcedure();
 		potion.activeTickCondition = activeTickCondition.getSelectedProcedure();
+		potion.potionCures = (String) potionCures.getSelectedItem();
 		return potion;
 	}
 

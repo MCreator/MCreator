@@ -47,6 +47,12 @@ public class ${name}MobEffect extends MobEffect {
 		}
 	</#if>
 
+	<#if data.potionCures != "DEFAULT_CURES">
+	@Override public void fillEffectCures(Set<EffectCure> cures, MobEffectInstance effectInstance) {
+		cures.add(EffectCures.${data.potionCures});
+	}
+	</#if>
+
 	<#if hasProcedure(data.onStarted)>
 		<#if data.isInstant>
 			@Override public void applyInstantenousEffect(Entity source, Entity indirectSource, LivingEntity entity, int amplifier, double health) {
