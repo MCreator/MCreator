@@ -38,8 +38,7 @@ import java.io.File;
 	@TextureReference(TextureType.EFFECT) public String icon;
 	public Color color;
 	public boolean isInstant;
-	public boolean isBad;
-	public boolean isBenefitical;
+	public String mobEffectCategory;
 	public boolean renderStatusInInventory;
 	public boolean renderStatusInHUD;
 
@@ -48,8 +47,14 @@ import java.io.File;
 	public Procedure onExpired;
 	public Procedure activeTickCondition;
 
+	private PotionEffect() {
+		this(null);
+	}
+
 	public PotionEffect(ModElement element) {
 		super(element);
+
+		this.mobEffectCategory = "NEUTRAL";
 	}
 
 	@Override public BufferedImage generateModElementPicture() {
