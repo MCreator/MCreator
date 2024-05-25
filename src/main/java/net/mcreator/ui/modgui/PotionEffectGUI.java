@@ -139,7 +139,7 @@ public class PotionEffectGUI extends ModElementGUI<PotionEffect> {
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/cures"),
 				L10N.label("elementgui.potioneffect.cures")));
-		selp.add(PanelUtils.join(FlowLayout.LEFT, 0, 0, potionCures, new JEmptyBox(5, 5)));
+		selp.add(potionCures);
 
 		selp.add(HelpUtils.wrapWithHelpButton(this.withEntry("potioneffect/color"),
 				L10N.label("elementgui.potioneffect.color")));
