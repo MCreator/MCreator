@@ -137,7 +137,7 @@ public class PaintingGUI extends ModElementGUI<Painting> {
 		painting.author = author.getText();
 		painting.width = (int) width.getValue();
 		painting.height = (int) height.getValue();
-		painting.texture = texture.getID() + ".png"; // legacy, old workspaces stored name with extension
+		painting.texture = texture.getTextureName() + ".png"; // legacy, old workspaces stored name with extension
 		return painting;
 	}
 

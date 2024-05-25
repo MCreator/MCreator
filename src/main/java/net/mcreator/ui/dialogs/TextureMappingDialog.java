@@ -166,7 +166,7 @@ public class TextureMappingDialog {
 			panel.add(PanelUtils.join(tx[idx]));
 			int finalIdx = idx;
 			tx[idx].setActionListener(
-					e -> currentState.get(currentMappingName).getTextureMap().put(s.getKey(), tx[finalIdx].getID()));
+					e -> currentState.get(currentMappingName).getTextureMap().put(s.getKey(), tx[finalIdx].getTextureName()));
 			idx++;
 		}
 

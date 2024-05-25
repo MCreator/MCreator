@@ -21,13 +21,11 @@ package net.mcreator.ui.dialogs.wysiwyg;
 import net.mcreator.blockly.data.Dependency;
 import net.mcreator.element.parts.gui.GUIComponent;
 import net.mcreator.element.parts.gui.Image;
-import net.mcreator.ui.component.SearchableComboBox;
 import net.mcreator.ui.component.util.PanelUtils;
 import net.mcreator.ui.help.IHelpContext;
 import net.mcreator.ui.init.L10N;
-import net.mcreator.ui.laf.renderer.WTextureComboBoxRenderer;
+import net.mcreator.ui.minecraft.TextureComboBox;
 import net.mcreator.ui.procedure.ProcedureSelector;
-import net.mcreator.ui.validation.component.VComboBox;
 import net.mcreator.ui.workspace.resources.TextureType;
 import net.mcreator.ui.wysiwyg.WYSIWYGEditor;
 import net.mcreator.workspace.elements.VariableTypeLoader;
@@ -35,21 +33,16 @@ import net.mcreator.workspace.elements.VariableTypeLoader;
 import javax.annotation.Nullable;
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
 
 public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 
 	public ImageDialog(WYSIWYGEditor editor, @Nullable Image image) {
 		super(editor, image);
-		setSize(560, 180);
+		setSize(650, 180);
 		setLocationRelativeTo(editor.mcreator);
 		setModal(true);
 
-		VComboBox<String> textureSelector = new SearchableComboBox<>(
-				editor.mcreator.getFolderManager().getTexturesList(TextureType.SCREEN).stream().map(File::getName)
-						.toArray(String[]::new));
-		textureSelector.setRenderer(
-				new WTextureComboBoxRenderer.TypeTextures(editor.mcreator.getWorkspace(), TextureType.SCREEN));
+		TextureComboBox textureSelector = new TextureComboBox(editor.mcreator, TextureType.SCREEN, false);
 
 		JPanel options = new JPanel();
 		options.setLayout(new BoxLayout(options, BoxLayout.PAGE_AXIS));
@@ -84,7 +77,7 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 
 		if (image != null) {
 			ok.setText(L10N.t("dialog.common.save_changes"));
-			textureSelector.setSelectedItem(image.image);
+			textureSelector.setTextureFromTextureName(image.image);
 			scale1x.setSelected(image.use1Xscale);
 			displayCondition.setSelectedProcedure(image.displayCondition);
 			anchor.setSelectedItem(image.anchorPoint);
@@ -93,10 +86,9 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 		cancel.addActionListener(arg01 -> setVisible(false));
 		ok.addActionListener(arg01 -> {
 			setVisible(false);
-			String imageTxt = textureSelector.getSelectedItem();
-			if (imageTxt != null) {
+			if (textureSelector.hasTexture()) {
 				if (image == null) {
-					Image component = new Image(0, 0, imageTxt, scale1x.isSelected(),
+					Image component = new Image(0, 0, textureSelector.getTextureName(), scale1x.isSelected(),
 							displayCondition.getSelectedProcedure());
 					if (!editor.isNotOverlayType)
 						component.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
@@ -107,8 +99,8 @@ public class ImageDialog extends AbstractWYSIWYGDialog<Image> {
 				} else {
 					int idx = editor.components.indexOf(image);
 					editor.components.remove(image);
-					Image imageNew = new Image(image.getX(), image.getY(), imageTxt, scale1x.isSelected(),
-							displayCondition.getSelectedProcedure());
+					Image imageNew = new Image(image.getX(), image.getY(), textureSelector.getTextureName(),
+							scale1x.isSelected(), displayCondition.getSelectedProcedure());
 					if (!editor.isNotOverlayType)
 						imageNew.anchorPoint = (GUIComponent.AnchorPoint) anchor.getSelectedItem();
 					editor.components.add(idx, imageNew);
