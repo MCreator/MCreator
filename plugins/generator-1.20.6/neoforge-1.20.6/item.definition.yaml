@@ -63,8 +63,10 @@ list_templates:
         name: "@MODASSETSROOT/models/item/@registryname_@itemindex.json"
 
 tags:
-  - tag: ITEMS:minecraft:wolf_food
+  - tag: ITEMS:minecraft:meat
     condition: "${data.isFood && data.isMeat}"
+  - tag: ITEMS:minecraft:enchantable/durability
+    condition: ${data.damageCount != 0}
 
 localizationkeys:
   - key: item.@modid.@registryname
