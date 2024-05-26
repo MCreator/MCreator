@@ -62,9 +62,7 @@ public class SetEventResultBlock implements IBlockGenerator {
 				} else if (!trigger.has_result) {
 					master.getCompileNotes().add(new BlocklyCompileNote(BlocklyCompileNote.Type.ERROR,
 							L10N.t("blockly.error.event_result.external_trigger_no_result")));
-				}
-
-				if (master.getTemplateGenerator() != null) {
+				} else if (master.getTemplateGenerator() != null) {
 					Map<String, Object> dataModel = new HashMap<>();
 					dataModel.put("result", value);
 					String code = master.getTemplateGenerator()

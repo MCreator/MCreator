@@ -26,15 +26,15 @@ templates:
 
 tags:
   - tag: ITEMS:minecraft:pickaxes
-    condition: ${data.data.toolType == "Pickaxe" || data.data.toolType == "Special" || data.data.toolType == "MultiTool"}
+    condition: ${data.toolType == "Pickaxe" || data.toolType == "Special" || data.toolType == "MultiTool"}
   - tag: ITEMS:minecraft:axes
-    condition: ${data.data.toolType == "Axe" || data.data.toolType == "MultiTool"}
+    condition: ${data.toolType == "Axe" || data.toolType == "MultiTool"}
   - tag: ITEMS:minecraft:swords
-    condition: ${data.data.toolType == "Sword" || data.data.toolType == "MultiTool"}
+    condition: ${data.toolType == "Sword" || data.toolType == "MultiTool"}
   - tag: ITEMS:minecraft:shovels
-    condition: ${data.data.toolType == "Spade"}
+    condition: ${data.toolType == "Spade"}
   - tag: ITEMS:minecraft:hoes
-    condition: ${data.data.toolType == "Hoe"}
+    condition: ${data.toolType == "Hoe"}
 
 localizationkeys:
   - key: item.@modid.@registryname
