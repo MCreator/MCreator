@@ -1,5 +1,5 @@
 <svg width="14" height="14" version="1.1" viewBox="0 0 14 14" xmlns="http://www.w3.org/2000/svg">
     <polyline points="2 1.5 12.5 1.5 12.5 12.5 1.5 12.5 1.5 1" fill="none" stroke="#C7C7C7" stroke-width="1" stroke-dasharray="2 2 2 2 2 1" />
-    <path fill="none" stroke="white" stroke-width="1.25" aria-label="?" d="m5.5 5 c0 -2 3 -2 3 0 c0 2.5 -1.5 1 -1.5 3.75" />
-    <circle cx="7" cy="10.5" r="0.75" fill="white" />
+    <path fill="none" stroke="white" stroke-width="1.25" aria-label="?" d="m5.25 4.9 c0 -2.1 3.5 -2.1 3.5 0 c0 2.25 -1.9 1.6 -1.9 3.95" />
+    <circle cx="6.9" cy="10.6" r="0.75" fill="white" />
 </svg>
